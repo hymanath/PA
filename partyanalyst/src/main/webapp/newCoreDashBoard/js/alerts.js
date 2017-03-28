@@ -852,7 +852,12 @@
 						},
 						labels: {
 								formatter: function() {
-									return this.value.toString().substring(0, 10)+'...';
+									if(this.value.toString() >= 12){
+										return this.value.toString().substring(0, 12)+'...';
+									}else{
+										return this.value;
+									}
+									
 								},
 								
 							}
@@ -904,7 +909,7 @@
 									if (this.y === 0) {
 										return null;
 									} else {
-										return Highcharts.numberFormat(this.y, 0) +""; 
+										return (this.y); 
 									}
 								}
 							  
@@ -1107,7 +1112,7 @@
 			    var highChartDivHight = result.length*40;
 			    $("#"+divId).height(highChartDivHight);
 			 }else{
-				$("#"+divId).height(300);		
+				$("#"+divId).height(400);		
 			 }
 			
 		 if(result != null && result.length > 0){
@@ -1220,7 +1225,10 @@
 						style: {
 							fontWeight: 'bold',
 							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
+						},
+						formatter: function() {
+                        return  (this.total);
+                    },
 					}
 				},
 				tooltip: {
@@ -1276,7 +1284,7 @@
 		 }else{
 			 $("#"+divId).html("NO DATA AVAILABLE.");
 		 }
-		 if(result != null && result.length > 15){ 
+		 if(result != null && result.length > 10){ 
 				$("#constituencyOvervwGraph").mCustomScrollbar();//{setHeight:'600px'}
 				$("#constituencyOvervwGraph").css("height","655px");
 				//$("#constituencyOvervwGraph").mCustomScrollbar({setHeight:'655px'})
@@ -1651,7 +1659,7 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(disctrictId){
 								});	
 						}else{
 						 $("#groupAssign"+i).css("height","35px");
-						  $(".groupAssignCls").hide();
+						  //$(".groupAssignCls").hide();
 						}
 					}
 				}
@@ -2335,8 +2343,18 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 										fontFamily: 'Verdana, sans-serif'
 									},
 									formatter: function() {
-										return this.value.toString().substring(0, 8)+'...';
+										if(this.value.toString() >=8){
+											return this.value.toString().substring(0, 8)+'...';
+										}else{
+											return this.value;
+										}
+										
 									},
+									style: {
+										fontSize: '11px',
+										fontFamily: '"Lucida Grande","Lucida Sans Unicode",Arial,Helvetica,sans-serif',
+										textTransform: "uppercase"
+									}
 								}
 						},
 						yAxis: {
@@ -2351,7 +2369,10 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 								style: {
 									fontWeight: 'bold',
 									color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-								}
+								},
+								formatter: function() {
+								return  (this.total);
+							},
 							}
 							
 						},
@@ -2877,46 +2898,126 @@ function getTotalArticledetails(articleId){
 			str+='<tr>';
 			   if(result.overAllVO.totalAlertCnt > 0){
 				   //typeId,count,type
-				str+='<td colspan="2" onclick ="getEditioDtls(0,0);arrowPositionMove(overAllArrowPostion);" id="overAllArrowPostion" class="alertsArrow alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0"><div class="alertsArrow alertInnerArrow" ><h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(0,'+result.overAllVO.totalAlertCnt+',\'TOTAL ALERTS\');" attr_alert_type_name="TOTAL ALERTS" attr_alert_count="'+result.overAllVO.totalAlertCnt+'" attr_alert_type="0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i></h3><p>TOTAL ALERTS</p></div></td>';
+				str+='<td colspan="2" onclick ="getEditioDtls(0,0);arrowPositionMove(overAllArrowPostion);" id="overAllArrowPostion" class="alertsArrow alertOverViewDetailsCls" attr_alert_type_id="0" attr_edition_type_id="0">';
+				str+='<div class="alertsArrow alertInnerArrow" >';
+					if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+						
+						str+='<h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(0,'+result.overAllVO.totalAlertCnt+',\'TOTAL ALERTS\');" attr_alert_type_name="TOTAL ALERTS" attr_alert_count="'+result.overAllVO.totalAlertCnt+'" attr_alert_type="0" ></i>';
+						str+='</h3>';
+					
+					}else{
+						str+='<h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(0,'+result.overAllVO.totalAlertCnt+',\'TOTAL ALERTS\');" attr_alert_type_name="TOTAL ALERTS" attr_alert_count="'+result.overAllVO.totalAlertCnt+'" attr_alert_type="0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i>';
+						str+='</h3>';
+					}
+				
+				
+				str+='<p>TOTAL ALERTS</p>';
+				str+='</div>';
+				str+='</td>';
 			   }else{
 				str+='<td colspan="2"><div class="alertsArrow alertInnerArrow"><h3 class="alertColorFont">'+result.overAllVO.totalAlertCnt+'</h3><p>TOTAL ALERTS</p></div></td>';   
 			   }
 				
 				if(!(result.overAllVO.partyAlertCnt == 0)){
 					var partyAlertPerc = ((parseInt(result.overAllVO.partyAlertCnt)*100)/parseInt(result.overAllVO.totalAlertCnt)).toFixed(2);
-				str+='<td colspan="2" onclick ="getEditioDtls(1,0);arrowPositionMove(overAllPartyArrowPostion);" id="overAllPartyArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="1" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp<small>('+partyAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(1,'+result.overAllVO.partyAlertCnt+',\'PARTY ALERTS\');" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i></h3><p>PARTY</p></div></td>';
+					
+					str+='<td colspan="2" onclick ="getEditioDtls(1,0);arrowPositionMove(overAllPartyArrowPostion);" id="overAllPartyArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="1" attr_edition_type_id="0">';
+					str+='<div class="alertInnerArrow " >';
+					if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+						str+='<h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp<small>('+partyAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(1,'+result.overAllVO.partyAlertCnt+',\'PARTY ALERTS\');" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" ></i>';
+						str+='</h3>';
+					}else{
+						str+='<h3 class="alertColorFont">'+result.overAllVO.partyAlertCnt+'&nbsp<small>('+partyAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(1,'+result.overAllVO.partyAlertCnt+',\'PARTY ALERTS\');" attr_alert_type_name="PARTY ALERTS" attr_alert_count="'+result.overAllVO.partyAlertCnt+'" attr_alert_type="1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i>';
+						str+='</h3>';
+					}
+					
+					
+					str+='<p>PARTY</p>';
+					str+='</div>';
+					str+='</td>';
 				}
 				if(!(result.overAllVO.govtAlertCnt == 0)){
 					var govtAlertPerc = ((parseInt(result.overAllVO.govtAlertCnt)*100)/parseInt(result.overAllVO.totalAlertCnt)).toFixed(2);
-					str+='<td colspan="2" onclick ="getEditioDtls(2,0);arrowPositionMove(overAllgovtArrowPostion);" id="overAllgovtArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="2" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.govtAlertCnt+'&nbsp<small>('+govtAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(2,'+result.overAllVO.govtAlertCnt+',\'GOVT ALERTS\');"  attr_alert_count="'+result.overAllVO.govtAlertCnt+'" attr_alert_type_name="GOVT ALERTS" attr_alert_type="2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i></h3><p>GOVT</p></div></td>';
+					
+					str+='<td colspan="2" onclick ="getEditioDtls(2,0);arrowPositionMove(overAllgovtArrowPostion);" id="overAllgovtArrowPostion" class="alertOverViewDetailsCls " attr_alert_type_id="2" attr_edition_type_id="0">';
+					str+='<div class="alertInnerArrow " >';
+					if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+						str+='<h3 class="alertColorFont">'+result.overAllVO.govtAlertCnt+'&nbsp<small>('+govtAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(2,'+result.overAllVO.govtAlertCnt+',\'GOVT ALERTS\');"  attr_alert_count="'+result.overAllVO.govtAlertCnt+'" attr_alert_type_name="GOVT ALERTS" attr_alert_type="2" ></i>';
+						str+='</h3>';
+					}else{
+						str+='<h3 class="alertColorFont">'+result.overAllVO.govtAlertCnt+'&nbsp<small>('+govtAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(2,'+result.overAllVO.govtAlertCnt+',\'GOVT ALERTS\');"  attr_alert_count="'+result.overAllVO.govtAlertCnt+'" attr_alert_type_name="GOVT ALERTS" attr_alert_type="2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i>';
+						str+='</h3>';
+					}
+					
+					
+					str+='<p>GOVT</p>';
+					str+='</div></td>';
 				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
 					var otherAlertPerc = ((parseInt(result.overAllVO.otherAlertCnt)*100)/parseInt(result.overAllVO.totalAlertCnt)).toFixed(2);
-				str+='<td colspan="2" onclick ="getEditioDtls(3,0);arrowPositionMove(overAllotherdArrowPostion);" id="overAllotherdArrowPostion"  class="alertOverViewDetailsCls " 	attr_alert_type_id="3" attr_edition_type_id="0"><div class="alertInnerArrow " ><h3 class="alertColorFont">'+result.overAllVO.otherAlertCnt+'&nbsp<small>('+otherAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" attr_alert_type_name="OTHERS ALERTS" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(3,'+result.overAllVO.otherAlertCnt+',\'OTHERS ALERTS\');"   attr_alert_count="'+result.overAllVO.otherAlertCnt+'" attr_alert_type="3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i></h3><p>OTHERS</p></div></td>';
+					
+				str+='<td colspan="2" onclick ="getEditioDtls(3,0);arrowPositionMove(overAllotherdArrowPostion);" id="overAllotherdArrowPostion"  class="alertOverViewDetailsCls " 	attr_alert_type_id="3" attr_edition_type_id="0">';
+				str+='<div class="alertInnerArrow " >';
+				if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+					str+='<h3 class="alertColorFont">'+result.overAllVO.otherAlertCnt+'&nbsp<small>('+otherAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" attr_alert_type_name="OTHERS ALERTS" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(3,'+result.overAllVO.otherAlertCnt+',\'OTHERS ALERTS\');"   attr_alert_count="'+result.overAllVO.otherAlertCnt+'" attr_alert_type="3" ></i>';
+					str+='</h3>';
+				}else{
+					str+='<h3 class="alertColorFont">'+result.overAllVO.otherAlertCnt+'&nbsp<small>('+otherAlertPerc+'%)</small>&nbsp&nbsp<i style="cursor: pointer; font-size: 16px; margin-top: 10px;color:#524C4C;" attr_alert_type_name="OTHERS ALERTS" class="glyphicon glyphicon-info-sign alertDetailsCls" onclick="alertDetails(3,'+result.overAllVO.otherAlertCnt+',\'OTHERS ALERTS\');"   attr_alert_count="'+result.overAllVO.otherAlertCnt+'" attr_alert_type="3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details." aria-describedby="tooltip681435"></i>';
+					str+='</h3>';
+				}
+				
+				
+				str+='<p>OTHERS</p>';
+				str+='</div></td>';
 				}
 			str+='</tr>';
 			str+='<tr>';
 			   if(totalMainCount > 0){
-				str+='<td onclick ="arrowPositionMove1(overAllArrowPostionLow);" id="overAllArrowPostionLow"  class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">Main<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="1" attr_category_id="0" attr_status_id="0" attr_count="'+totalMainCount+'" attr_alert_type_id="0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i></p>';
+				str+='<td onclick ="arrowPositionMove1(overAllArrowPostionLow);" id="overAllArrowPostionLow"  class="alertOverViewDetailsLowCls" >';
+				str+='<div class="alertInnerArrowLow">';
+				if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+					str+='<p style="font-size:13px;" class="text-muted text-capital">Main<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="1" attr_category_id="0" attr_status_id="0" attr_count="'+totalMainCount+'" attr_alert_type_id="0" ></i>';
+					str+='</p>';
+				}else{
+					str+='<p style="font-size:13px;" class="text-muted text-capital">Main<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="1" attr_category_id="0" attr_status_id="0" attr_count="'+totalMainCount+'" attr_alert_type_id="0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+					str+='</p>';
+				}
+				
+				
 				str+='<p style="font-size:13px;cursor:pointer;"  onclick ="getEditioDtls(0,1);" attr_alert_type_id="0" attr_edition_type_id="1"><span class="alertColorFont">'+totalMainCount+'</span></p></div></td>';
 		       }else{
-			    str+='<td  id="overAllArrowPostionLow" class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">Main</p>';
+			    str+='<td  id="overAllArrowPostionLow" class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">Main</p>';
 				str+='<p style="font-size:13px;"><span class="alertColorFont">0</span></p></div></td>';
 	  	       }
 				
 				if(totalDistCount > 0){
-				str+='<td onclick ="arrowPositionMove1(overAllMainArrowPostionLow);" id="overAllMainArrowPostionLow" class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">District<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="2" attr_category_id="0" attr_status_id="0" attr_count="'+totalDistCount+'" attr_alert_type_id="0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i></p>';
+				str+='<td onclick ="arrowPositionMove1(overAllMainArrowPostionLow);" id="overAllMainArrowPostionLow" class="alertOverViewDetailsLowCls" >';
+				str+='<div class="alertInnerArrowLow">';
+				if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+					str+='<p style="font-size:13px;" class="text-muted text-capital">District<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="2" attr_category_id="0" attr_status_id="0" attr_count="'+totalDistCount+'" attr_alert_type_id="0" ></i>';
+					str+='</p>';
+				}else{
+					str+='<p style="font-size:13px;" class="text-muted text-capital">District<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="2" attr_category_id="0" attr_status_id="0" attr_count="'+totalDistCount+'" attr_alert_type_id="0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+					str+='</p>';
+				}
+				
+				
 				str+='<p style="font-size:13px;cursor:pointer;" onclick="getEditioDtls(0,2);" attr_alert_type_id="0" attr_edition_type_id="2"><span class="alertColorFont">'+totalDistCount+'</span></p></div></td>';
 				}else{
-				str+='<td class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">District</p>';
+				str+='<td class="alertOverViewDetailsLowCls" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">District</p>';
 				str+='<p style="font-size:13px;"><span class="alertColorFont">0</span></p></div></td>';
 				}
 				
 				if(!(result.overAllVO.partyAlertCnt == 0)){
 					
-					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyArrowPostion)" id="overAlltotalpartyArrowPostion" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[0].edition+''
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyArrowPostion)" id="overAlltotalpartyArrowPostion" ><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">'+result.totalPartyList[0].edition+''
 					if(result.totalPartyList[0].editionCnt > 0){
-					str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[0].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+						if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[0].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" ></i>';	
+						}else{
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[0].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+						}
+					
 					}
 					str+='</p>';
 					if(result.totalPartyList[0].editionCnt == 0){
@@ -2926,9 +3027,14 @@ function getTotalArticledetails(articleId){
 					}
 					
 					
-					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyEdArrowPostion)" id="overAlltotalpartyEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalPartyList[1].edition+''
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalpartyEdArrowPostion)" id="overAlltotalpartyEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">'+result.totalPartyList[1].edition+''
 					if(result.totalPartyList[1].editionCnt > 0){
-					str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[1].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+						if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[1].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" ></i>';
+						}else{
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalPartyList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalPartyList[1].editionCnt+'" attr_alert_type_id="'+result.totalPartyList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+						}
+					
 					}
 					str+='</p>';
 					if(result.totalPartyList[1].editionCnt == 0){  
@@ -2939,9 +3045,14 @@ function getTotalArticledetails(articleId){
 					
 				}
 				if(!(result.overAllVO.govtAlertCnt == 0)){
-					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalgovtEdArrowPostion)" id="overAlltotalgovtEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[0].edition+''
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalgovtEdArrowPostion)" id="overAlltotalgovtEdArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">'+result.totalGovtList[0].edition+''
 					if(result.totalGovtList[0].editionCnt > 0){
-					 str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[0].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+						if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+							 str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[0].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" ></i>';
+						}else{
+							 str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[0].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+						}
+					
 					}
 					str+='</p>';    
 					if(result.totalGovtList[0].editionCnt == 0){
@@ -2950,9 +3061,14 @@ function getTotalArticledetails(articleId){
 						str+='<p onclick ="getEditioDtls('+result.totalGovtList[0].alertTypeId+','+result.totalGovtList[0].editionId+');" style="font-size:13px;cursor:pointer;" class="" attr_alert_type_id="'+result.totalGovtList[0].alertTypeId+'" attr_edition_type_id="'+result.totalGovtList[0].editionId+'"><span class="alertColorFont">'+result.totalGovtList[0].editionCnt+'</span></p></div></td>';
 					}
 					
-					str+='<td class="alertOverViewDetailsLowCls " onclick="arrowPositionMove1(overAlltotalgovtEd1ArrowPostion)" id="overAlltotalgovtEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalGovtList[1].edition+''
+					str+='<td class="alertOverViewDetailsLowCls " onclick="arrowPositionMove1(overAlltotalgovtEd1ArrowPostion)" id="overAlltotalgovtEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">'+result.totalGovtList[1].edition+''
 					if(result.totalGovtList[1].editionCnt > 0){
-						str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[1].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+						if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[1].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" ></i>';
+						}else{
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalGovtList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalGovtList[1].editionCnt+'" attr_alert_type_id="'+result.totalGovtList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';
+						}
+						
 					}
 					str+='</p>';
 					if(result.totalGovtList[1].editionCnt == 0){
@@ -2963,9 +3079,14 @@ function getTotalArticledetails(articleId){
 					
 				}
 				if(!(result.overAllVO.otherAlertCnt == 0)){
-					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalothersEd1ArrowPostion)" id="overAlltotalothersEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[0].edition+''
+					str+='<td class="alertOverViewDetailsLowCls" onclick="arrowPositionMove1(overAlltotalothersEd1ArrowPostion)" id="overAlltotalothersEd1ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">'+result.totalOtherList[0].edition+''
 					if(result.totalOtherList[0].editionCnt > 0){
-					str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[0].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+						if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[0].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" ></i>';	
+						}else{
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[0].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[0].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+						}
+					
 					}
 					str+='</p>';
 					if(result.totalOtherList[0].editionCnt == 0){
@@ -2974,9 +3095,14 @@ function getTotalArticledetails(articleId){
 						str+='<p onclick ="getEditioDtls('+result.totalOtherList[0].alertTypeId+','+result.totalOtherList[0].editionId+');" style="font-size:13px;cursor:pointer;"  attr_alert_type_id="'+result.totalOtherList[0].alertTypeId+'" attr_edition_type_id="'+result.totalOtherList[0].editionId+'"><span class="alertColorFont">'+result.totalOtherList[0].editionCnt+'</span></p></div></td>';
 					}
 					
-					str+='<td class="alertOverViewDetailsLowCls1" onclick="arrowPositionMove1(overAlltotalothersEd2ArrowPostion);" id="overAlltotalothersEd2ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted">'+result.totalOtherList[1].edition+''
+					str+='<td class="alertOverViewDetailsLowCls1" onclick="arrowPositionMove1(overAlltotalothersEd2ArrowPostion);" id="overAlltotalothersEd2ArrowPostion"><div class="alertInnerArrowLow"><p style="font-size:13px;" class="text-muted text-capital">'+result.totalOtherList[1].edition+''
 					if(result.totalOtherList[1].editionCnt > 0){
-					str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[1].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+						if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[1].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" ></i>';	
+						}else{
+							str+='<i style="cursor: pointer; font-size: 12px; margin-top: 10px;color:#524C4C;margin-left:5px;" class="glyphicon glyphicon-info-sign alertDtlsCls" attr_edition_id="'+result.totalOtherList[1].editionId+'" attr_category_id="0" attr_status_id="0" attr_count="'+result.totalOtherList[1].editionCnt+'" attr_alert_type_id="'+result.totalOtherList[1].alertTypeId+'" data-toggle="tooltip" data-placement="top" title="" data-original-title="Click to get alert details."></i>';	
+						}
+					
 					}
 					str+='</p>';
 					if(result.totalOtherList[1].editionCnt == 0){
@@ -3250,6 +3376,8 @@ function getTotalArticledetails(articleId){
 		$(id1).find(".alertInnerArrowLow").addClass("alertsArrowLow");
 	}
 	function getEditioDtls(alertTypeStr,alertEdition){
+		  $("#alertOverviewDetails").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		  
 		$("#alertTypeHiddenId").attr("attr_alert_id",alertTypeStr);
 		$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id",alertEdition);  //undefined  
 		 var districtId = $("#districtSelectBoxId").val();
@@ -3313,6 +3441,7 @@ function getTotalArticledetails(articleId){
 			dataType : 'json',  
 			data : {task :JSON.stringify(jsObj)}          
 		}).done(function(result){
+			$("#alertOverviewDetails").html('');
 			if(result != null){
 			  buildAlertOverviewDetails(result,alertEdition,alertTypeStr)
 			}else{
@@ -3632,9 +3761,9 @@ function getTotalArticledetails(articleId){
 			str+='<div class="table-responsive">';
 		}
 		  if(divId=="constituencyLevelTblDivId"){
-		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered" id="constituencyAlertDataTblId">'; 
+		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="constituencyAlertDataTblId">'; 
 	     }else if(divId=="districtImpactLevelTblDivId"){
-		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered" id="districtAlertDataTblId">';  
+		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="districtAlertDataTblId">';  
 	     }
 		  str+='<thead>';
 		       str+='<th></th>';
@@ -3790,7 +3919,7 @@ function getTotalArticledetails(articleId){
 			var highChartDivHight = result.length*40;
 			$("#"+divId).height(highChartDivHight);
 		 }else{
-			$("#"+divId).height(300);		
+			$("#"+divId).height(400);		
 		 }
 		 if(result != null && result.length > 0){
 			 var locationName = [];
@@ -3949,7 +4078,7 @@ function getTotalArticledetails(articleId){
 				mainJosnObjArr.push({name:'TV9',data:tV9AlertArr,color:"#D62624"});  
 			  }
 			   if(tV5AlertArr != null && tV5AlertArr.length > 0){
-				mainJosnObjArr.push({name:'TV5',data:tV5AlertArr,color:"#FDF1F9"});  
+				mainJosnObjArr.push({name:'TV5',data:tV5AlertArr,color:"#8510e5"});  
 			  }
 			   if(eTVAPAlertArr != null && eTVAPAlertArr.length > 0){
 				mainJosnObjArr.push({name:'E TV AP',data:eTVAPAlertArr,color:"#FEC16D"});  
@@ -4005,7 +4134,10 @@ function getTotalArticledetails(articleId){
 						style: {
 							fontWeight: 'bold',
 							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
+						},
+						formatter: function() {
+                        return  (this.total);
+                    },
 					}
 				},
 				tooltip: {
@@ -4052,7 +4184,7 @@ function getTotalArticledetails(articleId){
 						reversed: false,
 						verticalAlign:'top',
 						useHTML:true,
-						labelFormatter: function () {return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.name+'.png" style="width:45px;" vertical-align: middle" />';}
+						labelFormatter: function () {return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.name+'.png"  />';}
 						
 						},
 				credits: {
@@ -4077,13 +4209,18 @@ function getTotalArticledetails(articleId){
 	 var str='';
 	  str+='<div class="table-responsive">';
 	 if(divId=="constituencyLevelTblDivId"){
-		  str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered" id="cnsttncyWsPublctnAlrtCntSmmryDataTblId">'; 
+		  str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="cnsttncyWsPublctnAlrtCntSmmryDataTblId">'; 
 	 }else if(divId=="districtImpactLevelTblDivId"){
-		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered" id="dstrctWsPublctnAlrtCntSmmryDataTblId">';
+		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="dstrctWsPublctnAlrtCntSmmryDataTblId">';
 	 }
 	 
 		 str+='<thead>';
-		       str+='<th></th>';
+		 if(divId=="constituencyLevelTblDivId"){
+				str+='<th>Constituency</th>';
+		 }else if(divId=="districtImpactLevelTblDivId"){
+			  str+='<th>District</th>';
+		 }
+		      
 			   str+='<th>Total</th>';
 		       if(result != null && result.length > 0){
 				    if(result[0].subList != null && result[0].subList.length > 0){
@@ -4385,10 +4522,14 @@ function getStateImpactandItsSubLevelAlert(){
 						},
 						 stackLabels: {
 						enabled: true,
+						
 						style: {
 							fontWeight: 'bold',
 							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
+						},
+						formatter: function() {
+                        return  (this.total);
+                    },
 					}
 				},
 				legend: {
@@ -4396,8 +4537,11 @@ function getStateImpactandItsSubLevelAlert(){
 					verticalAlign:'top'
 				},
 				 tooltip: {
-					headerFormat: '<b>{series.name}</b><br/>',
-					pointFormat: '{point.y}'
+					 formatter: function() {
+                        return  (this.series.name)+" - "+(this.total);
+                    },
+					//headerFormat: '<b>{series.name}</b><br/>',
+					//pointFormat: '{point.y}'
 				},
 				 plotOptions: {
 					bar: {
@@ -4433,7 +4577,7 @@ function getStateImpactandItsSubLevelAlert(){
 	  var str= '';
 	   if(result.subList1 != null && result.subList1.length > 0){
 		   str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered text_align_center">';
 				str+='<thead class="bg_ED">';
 				str+='<th>TOTAL</th>';
 				for(var i in result.subList1){
@@ -4562,6 +4706,7 @@ function getStateImpactandItsSubLevelAlert(){
 				mainJosnObjArr.push({name:'VILLAGE/WARD/PANCHAYAT',data:vllgWrdPnchytImpctArr,color:"#FC690D"});  
 			  } 
 			  var getWidth = $("#districtOvervwGraph").width();
+			  $("#districtImpactLevelHighChartDivId").height(650);	
 			  $("#districtImpactLevelHighChartDivId").css("width",getWidth);	
 			  $("#districtImpactLevelHighChartDivId").highcharts({
 				chart: {
@@ -4580,6 +4725,14 @@ function getStateImpactandItsSubLevelAlert(){
 					categories: districtNameArr,
 					title: {
 						text: null
+					},
+					labels: {
+						//rotation: -45,
+						style: {
+							fontSize: '11px',
+							fontFamily: '"Lucida Grande","Lucida Sans Unicode",Arial,Helvetica,sans-serif',
+							textTransform: "uppercase"
+						}
 					}
 				},
 				yAxis: {
@@ -4598,7 +4751,10 @@ function getStateImpactandItsSubLevelAlert(){
 						style: {
 							fontWeight: 'bold',
 							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
+						},
+						formatter: function() {
+                        return  (this.total);
+                    },
 					}
 				},
 				tooltip: {
@@ -4657,12 +4813,17 @@ function getStateImpactandItsSubLevelAlert(){
 		   var impactLevelObj = result.subList1[0].subList1;
 		   str+='<div class="table-responsive">';
 		    if(divId=="constituencyLevelTblDivId"){
-			   str+='<table class="table table-bordered" id="constituencyLevelDataTblId">';	
+			   str+='<table class="table table-bordered text_align_center" id="constituencyLevelDataTblId">';	
 			}else{
-			   str+='<table class="table table-bordered" id="DistrictLevelDataTblId">';	
+			   str+='<table class="table table-bordered text_align_center" id="DistrictLevelDataTblId">';	
 			}
 				str+='<thead class="bg_ED">';
-				str+='<th></th>';
+				 if(divId=="constituencyLevelTblDivId"){
+					str+='<th>Constituency</th>';
+				}else{
+				  str+='<th>District</th>';
+				}
+				
 				str+='<th>Total</th>';
 				for(var i in impactLevelObj){
 					str+='<th>'+impactLevelObj[i].name+'</th>';
@@ -4785,9 +4946,20 @@ function getStateImpactandItsSubLevelAlert(){
 					type: 'category',
 					labels: {
 								formatter: function() {
-									return this.value.toString().substring(0, 10)+'...';
+									if(this.value.toString()>=10){
+										return this.value.toString().substring(0, 10)+'...';
+									}else{
+										return this.value;
+									}
+									
 								},
-							}
+								style: {
+									fontSize: '11px',
+									fontFamily: '"Lucida Grande","Lucida Sans Unicode",Arial,Helvetica,sans-serif',
+									textTransform: "uppercase"
+								}
+							},
+							
 				},
 				yAxis: {
 					min: 0,
@@ -4804,7 +4976,10 @@ function getStateImpactandItsSubLevelAlert(){
 						style: {
 							fontWeight: 'bold',
 							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
+						},
+						formatter: function() {
+                        return  (this.total);
+                    },
 					}
 				},
 				legend: {
@@ -4854,15 +5029,15 @@ function getStateImpactandItsSubLevelAlert(){
 	   if(result.subList1 != null && result.subList1.length > 0){
 		   var impactLevelObj = result.subList1[0].subList1;
 		   str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered text_align_center">';
 				str+='<thead class="bg_ED">';
-				str+='<th></th>';
+				str+='<th style="text-align:center;">CORP-GMC</th>';
 				str+='<th style="text-align:center;">Total</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				 for(var i in result.subList1){
 				  str+='<tr>';
-				  str+='<td>'+result.subList1[i].name+'</td>';
+				  str+='<td style="text-align:center;">'+result.subList1[i].name+'</td>';
 				  if(result.subList1[i].alertCount > 0){
 					str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getLocationWiseAlertDtls(\''+result.subList1[i].id+'\',\''+result.subList1[i].alertCount+'\',\''+locationType+'\',8);">'+result.subList1[i].alertCount+'</td>';  
 				  }else{
@@ -4870,6 +5045,7 @@ function getStateImpactandItsSubLevelAlert(){
 				  }
 				  str+='</tr>';
 				}
+				str+='</tbody>';
 			str+='</table>';
 		str+='</div>'
 	   }else{
@@ -4990,7 +5166,8 @@ function getStateImpactandItsSubLevelAlert(){
 					categories: constituencyName,
 					title: {
 						text: null
-					}
+					},
+					
 				},
 				yAxis: {
 					min: 0,
@@ -5009,7 +5186,10 @@ function getStateImpactandItsSubLevelAlert(){
 						style: {
 							fontWeight: 'bold',
 							color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-						}
+						},
+						formatter: function() {
+                        return  (this.total);
+                    },
 					}
 				},
 				tooltip: {
@@ -5164,8 +5344,18 @@ function getStateImpactandItsSubLevelAlert(){
 										fontFamily: 'Verdana, sans-serif'
 									},
 									formatter: function() {
-										return this.value.toString().substring(0, 8)+'...';
+										if(this.value.toString() >=8){
+											return this.value.toString().substring(0, 8)+'...';
+										}else{
+											return this.value;
+										}
+										
 									},
+									style: {
+										fontSize: '11px',
+										fontFamily: '"Lucida Grande","Lucida Sans Unicode",Arial,Helvetica,sans-serif',
+										textTransform: "uppercase"
+									}
 								}
 						},
 						yAxis: {
@@ -5180,7 +5370,10 @@ function getStateImpactandItsSubLevelAlert(){
 								style: {
 									fontWeight: 'bold',
 									color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-								}
+								},
+								formatter: function() {
+									return  (this.total);
+								},
 							}
 							
 						},
@@ -5257,7 +5450,7 @@ function getStateImpactandItsSubLevelAlert(){
 	  var str= '';
 	   if(result.statusList != null && result.statusList.length > 0){
 		   str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered text_align_center">';
 				str+='<thead class="bg_ED">';
 				str+='<th>Total</th>';
 				for(var i in result.statusList){
@@ -5366,12 +5559,12 @@ function getStateImpactandItsSubLevelAlert(){
 											if(this.value=="Total"){
 												return this.value;
 											}
-											return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.value+'.png" style="width:45px;" vertical-align: middle" />';
+											return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.value+'.png" style="vertical-align: middle;"/>';
 											
 										},
-										//rotation: -45,
+										rotation: -55,
 										style: {
-											fontSize: '13px',
+											fontSize: '10px',
 											fontFamily: 'Verdana, sans-serif'
 										},
 									}
@@ -5461,7 +5654,8 @@ function getStateImpactandItsSubLevelAlert(){
 								style: {
 									fontWeight: 'bold',
 									color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-								}
+								},
+							
 						}
 						}]
 					});
@@ -5516,7 +5710,7 @@ function getStateImpactandItsSubLevelAlert(){
 	  var str= '';
 	   if(result.subList1 != null && result.subList1.length > 0){
 		   str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered">';
+			str+='<table class="table table-bordered text_align_center">';
 				str+='<thead class="bg_ED">';
 				str+='<th>Total</th>';
 				for(var i in result.subList1){
@@ -5548,16 +5742,26 @@ function getStateImpactandItsSubLevelAlert(){
 	}
 	
 	
-$(document).on("click",".childUserTypeClsForAlert",function(){
+/* $(document).on("click",".childUserTypeClsForAlert",function(){
 	var childUserTypeId = $(this).attr("attr_userTypeId");
 	var childUserType = $(this).attr("attr_userType");
 	  getSelectedChildTypeMembersForAlert(childUserTypeId,childUserType);
-});
-$(document).on("click",".remveAlertSlcUsrType",function(){
+}); */
+function childUserTypeClsForAlert(childUserTypeId,childUserType){
+	
+	getSelectedChildTypeMembersForAlert(childUserTypeId,childUserType);
+}
+/* $(document).on("click",".remveAlertSlcUsrType",function(){
 		 var removeSelected = $(this).attr("attr_removeSelecUserType"); 
 		 $("#"+removeSelected).html(' ');
 		 $("#"+removeSelected).closest('.showHideTr').hide();
-});
+}); */
+
+function remveAlertSlcUsrType(removeSelected){
+	$("#"+removeSelected).html(' ');
+	$("#"+removeSelected).closest('.showHideTr').hide();
+}
+/*  
 $(document).on("click",".childActivityMemberDtlsCls",function(){
 	    $(this).next('tr.showHideTr').show(); 
 		var activityMemberId = $(this).attr("attr_activitymemberid");  
@@ -5571,8 +5775,21 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 		 getDirectChildActivityAlertMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 	     getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType);	
 		 }	
-});
-	$(document).on("click",".activityMemberClsForAlertBlock",function(){
+}); */
+function childActivityMemberDtlsCls(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,id){
+	
+	 $("#"+id).show(); 
+	 //var childActivityMemberId = $(this).closest('tr').next('tr.showHideTr').attr("attr_id"); 
+	 if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+	  getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  
+	 }else{
+	 getDirectChildActivityAlertMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+	 getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType);	
+	 }	
+	 
+}
+
+	/* $(document).on("click",".activityMemberClsForAlertBlock",function(){
 	    
 		$(".alertslickPanelSlider").find("li").find(".panelSlick").removeClass("panelActiveSlick");
 		$(this).find(".panelSlick").addClass("panelActiveSlick");
@@ -5587,7 +5804,19 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 		  getDirectChildActivityAlertMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
 	      getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  		
 		 }
-});
+}); */
+function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,selectedMemberName,activityMemberId,userTypeId){
+	
+	
+	$(".alertslickPanelSlider").find("li").find(".panelSlick").removeClass("panelActiveSlick");
+	$("#panelColor"+activityMemberId).find(".panelSlick").addClass("panelActiveSlick");
+	if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+	  getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  		
+	 }else{
+	  getDirectChildActivityAlertMemberDetails(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+	  getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  		
+	 }
+}
 	function getAllItsSubUserTypeIdsByParentUserTypeIdForAlert(){
 		   $(".alertComparisonblock").show();
 		   $(".alertComBlockCls").show();
@@ -5625,7 +5854,9 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 			  firstChildUserTypeIdString = result[0].shortName;
 			  userType=result[0].userType;
 			 for(var i in result){
-              str+='<li attr_userTypeId="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\' class="childUserTypeClsForAlert">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+              //str+='<li attr_userTypeId="'+result[i].shortName+'" attr_userType=\''+result[i].userType+'\' class="childUserTypeClsForAlert">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+			  
+			   str+='<li onclick="childUserTypeClsForAlert(\''+result[i].shortName+'\',\''+result[i].userType+'\');">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
 			 }
 		 }
 		str+='</ul>';
@@ -5639,6 +5870,7 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 	  $("#alertChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  $("#userTypeWiseChildDtlsTabForAlertId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  $("#candidateLocationAlertDtlsStatusWiseDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	  
 	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
 	   var parentActivityMemberId = globalActivityMemberId;
       var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
@@ -5694,7 +5926,9 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 	    if(result[i].totalCount > 0){
 			 isDataAvailale = true;
 		 } 
-	     str+='<li style="cursor:pointer;" class="activityMemberClsForAlertBlock"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabForAlertId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
+	     //str+='<li style="cursor:pointer;" class="activityMemberClsForAlertBlock"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabForAlertId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
+		 
+		  str+='<li style="cursor:pointer;" id="panelColor'+result[i].activityMemberId+'" onclick="activityMemberClsForAlertBlock(\''+result[i].userType+'\',\'userTypeWiseChildDtlsTabForAlertId\',\''+result[i].name+'\',\''+result[i].activityMemberId+'\',\''+result[i].userTypeId+'\');" class=""  style="width:380px !important;">';
 	     if(i==0){
 			str+='<div class="panel panel-default panelSlick panelActiveSlick">';
 		  }else{
@@ -5712,7 +5946,8 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 		 }else{
 		   str+='<h4 class="text-capital">'+result[i].userType+'</h4>';	 
 		 }
-			 str+='<table class="table table-condensed">';
+			str+='<div class="table-responsive">';
+			 str+='<table class="table table-condensed text_align_center">';
 				 str+='<thead>';
 					 str+='<th>Total Alerts</th>';
 					 str+='<th>Involved</th>';
@@ -5720,6 +5955,7 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 					str+='<th>Pending</th>';
 					str+='<th>Completed</th>';
 				 str+='</thead>';
+				 str+='</tbody>';
 				 str+='<tr>';
 					 str+='<td>'+result[i].totalCount+'</td>';
 					 str+='<td>'+result[i].negativeCount+'</td>';
@@ -5749,7 +5985,9 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 					   str+='<td> - </td>';	  
 				   }
 				 str+='</tr>';
+				 str+='</tbody>';
 			 str+='</table>';
+			  str+='</div>';
 		 str+='</div>';
 	 str+='</div> ';
     str+=' </li> ';  
@@ -5853,7 +6091,9 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 		var isDataAvailale = false;
 		str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabForAlertId"){
-			str+='<span class="remveAlertSlcUsrType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
+			//str+='<span class="remveAlertSlcUsrType pull-right" attr_removeSelecUserType = "'+childActivityMemberId+'" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
+			
+			str+='<span onclick="remveAlertSlcUsrType(\''+childActivityMemberId+'\');" class=" pull-right" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
 		 } 
 		 str+='<div class="table-responsive">';
 		 if(childActivityMemberId != "userTypeWiseChildDtlsTabForAlertId"){
@@ -5878,7 +6118,9 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 				 isDataAvailale = true;
 			 } 
 		var yourValues = result[i].locationName;
-		   str+='<tr  class="childActivityMemberDtlsCls"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
+		   //str+='<tr  class="childActivityMemberDtlsCls"  attr_activitymemberid = "'+result[i].activityMemberId+'" attr_usertypeid = "'+result[i].userTypeId+'" attr_selectedmembername = "'+result[i].name+'" attr_selectedusertype = "'+result[i].userType+'">';
+		   
+		    str+='<tr  onclick="childActivityMemberDtlsCls(\''+result[i].activityMemberId+'\',\''+result[i].userTypeId+'\',\''+result[i].name+'\',\''+result[i].userType+'\',\'childMemDtslId'+result[i].userTypeId+''+i+'\',\'tr'+result[i].userTypeId+''+i+'\');" class="" >';
 			str+='<td>';
 				str+='<span class="tableCount">'+rank+'</span>';
 			str+='</td>';
@@ -5919,7 +6161,7 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 			   str+='<td> - </td>';	  
 		   }
 		 str+='</tr>';
-		str+='<tr class="showHideTr" style="display:none" attr_id = "childMemDtslId'+result[i].userTypeId+''+i+'">';
+		str+='<tr class="showHideTr" style="display:none" id="tr'+result[i].userTypeId+''+i+'" attr_id = "childMemDtslId'+result[i].userTypeId+''+i+'">';
 		str+='<td colspan="8"  id="childMemDtslId'+result[i].userTypeId+''+i+'">';
 		str+='</td>';
 		 rank=rank+1;
@@ -5979,10 +6221,13 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
     var statusColorObj =  {"1":"#A27FC2","2":"#0175F3","3":"#3EC3FF","4":"#049968","5":"#F21A98","6":"#FD6E07","7":"#CF0001"};	
 	var str='';
 	 var width = 100 / result.length;
+	  str+='<div class="col-xs-12 col-sm-12 col-md-12">';
+		   str+='<h4 class="text-capital impactLevelHeadingCls" style="background-color:#ddd;padding:6px;">Impact Scope Wise Alert<span style="margin-left:12px" id="selectedMemberHeadingId"></span></h4>';
 	  for(var i in result){
-		 str+='<h4 class="text-capital">'+result[i].name+'</h4><br>';
+		 str+='<h4 class="text-capital m_top10">'+result[i].name+'</h4><br>';
 		      if(result[i].subList1 != null && result[i].subList1.length > 0){
 				 var statusObj = result[i].subList1[0].statusList;
+				 
 				  str+='<ul class="list-inline">';
 				  if(statusObj != null && statusObj.length > 0){
 					 for(var k in statusObj){
@@ -5990,20 +6235,31 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 					 } 
 				  }  
 				   str+='</ul>';
+				  
 				  str+='<ul class="alertsGraphUl list-inline slickSlider">';
 				  for(var j in result[i].subList1){
 					//str+='<h4 class="panel-title text-capital">'+result[i].subList1[j].name+'</h4>';
 					if(result[i].subList1[j].alertCount > 0){
-						str+='<li style="width:25%;margin-right: 40px;" >';//width
+						str+='<li class="col-md-4 col-xs-12 col-sm-12">';//width
 					     str+='<div id="statusWiseHighChart'+i+''+j+'"></div>';
 						str+='</li>';					  
 					}
 					
 				  } 
 			 str+='</ul>';  
+			
 			  }
 	  }
+	   str+='</div>';  
 	 $("#candidateLocationAlertDtlsStatusWiseDivId").html(str);
+	 $(".slickSlider").slick({
+			slide: 'li',
+				 slidesToShow: 4,
+				 slidesToScroll: 1,
+				 infinite: false,
+				//variableWidth: true,
+				 
+		});
 	 
 	 for(var i in result){
 		  if(result[i].subList1 != null && result[i].subList1.length > 0){
@@ -6080,13 +6336,25 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 							type: 'column'
 						},
 						title: {
-							text: ''+result[i].subList1[j].name+''
+							useHTML: true,
+							text: ''+result[i].subList1[j].name+'',
+							style: {
+								fontSize: '12px',
+								fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
+								textTransform: "uppercase"
+								
+						}
 						},
 						xAxis: {
+							 min: 0,
+							 gridLineWidth: 0,
+							 minorGridLineWidth: 0,
 							categories: ['Total','Assigned','Involved']
 						},
 						yAxis: {
 							min: 0,
+						   gridLineWidth: 0,
+							minorGridLineWidth: 0,
 							title: {
 								text: ''
 							}
@@ -6113,15 +6381,7 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
    	if(!isDataAvailale){
 		  $(".impactLevelWiseComparisonBlockCls").hide();	
 	} 
-$(".slickSlider").slick({
-			 slide: 'li',
-			 slidesToShow: 4,
-			 slidesToScroll: 3,
-			 infinite: false,
-			 swipeToSlide:false,
-			 swipe:false,
-			 touchMove:false
-		}); 
+ 
  }
     $(document).on("click",".constituencyUl li",function(){
 			$(".constituencyUl li").removeClass("active");
