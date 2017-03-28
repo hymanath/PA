@@ -20832,7 +20832,7 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 
 		vo.setId(Long.valueOf(obj[0] !=null ? obj[0].toString() :"0"));
 		vo.setName(obj[1] !=null ? obj[1].toString() :"");
-		if(commonMethodsUtilService.isListOrSetValid(returnList) && returnList.get(0) != null && commonMethodsUtilService.isListOrSetValid(returnList.get(0).getSubList()))
+		if(commonMethodsUtilService.isListOrSetValid(returnList) && returnList.get(0) != null )
 			returnList.get(0).getSubList().add(vo);
 	}
 }
