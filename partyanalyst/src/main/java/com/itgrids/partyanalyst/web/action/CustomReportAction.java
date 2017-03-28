@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.web.action;
 
 
 import java.io.File;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -30,10 +29,10 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	private HttpSession 				session;
 	private String 						task;
 	private JSONObject					jObj;
-
-    private List<CustomReportVO>                     customReportVOList;
-    private ICustomReportService			 		customReportService;
-	private ResultStatus                         resultStatus;
+	
+	 private List<CustomReportVO>                     customReportVOList;
+	    private ICustomReportService			 		customReportService;
+		private ResultStatus                         resultStatus;
 
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -153,7 +152,7 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
     public String getProgramReportsDetails(){
     	try {
     		jObj = new JSONObject(getTask());
-    		customReportService.getProgramReportsDetails(jObj.getLong("id"));
+    		customReportVOList = customReportService.getProgramReportsDetails(jObj.getLong("id"));
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getProgramReportsDetails() method, Exception - ",e); 
 		}
