@@ -2574,7 +2574,7 @@ public String saveActivityLocationDetails(){
 				activityVO.getActivityVoList().add(locationVO);*/
 			//}
 			 if(activityVO.getTypes() == null){
-				 activityVO.setTypes("6,7");
+				 activityVO.setTypes("6");
 			 }
 			result1 = cadreCommitteeService.saveActivityLocationDetails(activityVO,userId);
 			
