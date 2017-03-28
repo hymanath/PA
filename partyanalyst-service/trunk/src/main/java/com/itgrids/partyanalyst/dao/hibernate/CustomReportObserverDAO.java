@@ -17,7 +17,7 @@ public class CustomReportObserverDAO extends GenericDaoHibernate<CustomReportObs
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getObserverDetails(Long programId){
-		Query query = getSession().createQuery(" select cro.customReportId,cro.tdpCadre.tdpCadreId,cro.tdpCadre.firstname," +
+		Query query = getSession().createQuery(" select cro.customReportId,cro.tdpCadre.tdpCadreId,cro.tdpCadre.firstname " +
 				" from CustomReportObserver cro " +
 				" where cro.customReport.customReportProgramId = :programId and cro.isDeleted='N'");
 	   query.setParameter("programId", programId);

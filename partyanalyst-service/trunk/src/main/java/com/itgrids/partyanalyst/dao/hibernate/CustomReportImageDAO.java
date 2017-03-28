@@ -18,7 +18,7 @@ public class CustomReportImageDAO extends GenericDaoHibernate<CustomReportImage,
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getImageDetails(Long programId){
-		Query query = getSession().createQuery("select cri.customReportimageId,cri.imageName,cri.path" +
+		Query query = getSession().createQuery("select cri.customReportId,cri.imageName,cri.path,cri.customReportimageId " +
 		        " from CustomReportImage cri where cri.customReport.customReportProgramId = :programId " +
 			    "and cri.isDeleted='N'");
 		query.setParameter("programId", programId);
