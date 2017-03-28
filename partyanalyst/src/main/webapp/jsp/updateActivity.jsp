@@ -297,13 +297,14 @@
 			<div class="col-md-3" id="statusDivId" style="display:none;">
 				<label>ivr Status</label>
 				<select id="ivrStusId" class="form-control" name="activityVO.actalIvrStatus">
+					<option value="NULL"> Select IVR Status </option>
 					<option value="Y"> Y </option>
 					<option value="N"> N </option>
 					<option value="NULL"> NA </option>
 				</select>
 			</div>
 			<div class="col-md-3">
-				<a id="reSearchId" class="btn btn-success" style="margin-top:23px;display:none;" href="javascript:{getLocationWiseDetailsForActivity();}" >Get Details</a>
+				<a id="reSearchId" class="btn btn-success" style="margin-top:23px;display:none;" href="javascript:{getLocationWiseDetailsForActivity(1);}" >Get Details</a>
 			</div>
 		</div>
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
@@ -962,6 +963,7 @@ function getMunciMandalsList(constituencyId)
 }
 
 function getPanchayatWardByMandal(mandalId){
+	
 		     $('#villageWardsList').find('option').remove();
 			 $('#villageWardsList').append('<option value="0"> Select Mandal/Town/Division</option>');	
 			var jsObj={
@@ -2918,12 +2920,16 @@ function getLocationWiseDetailsForActivity(roundId)
 					locationId = $('#constiList').val();
 					searchBy = "constituency";
 					if(locationId == 0)
-				{
+					{
 					locationId = $('#districtList').val();
 					searchBy = "district";
-				}
+					}
+				}else if (locationId.charAt(0)==1){
+					searchBy = "Muncipality";
 				}
 				
+			}else if (locationId.charAt(0)==2){
+				searchBy = "ward";
 			}
 			
 			var value = "all";
@@ -2964,11 +2970,38 @@ function getLocationWiseDetailsForActivity(roundId)
 						$("#buildAssConsActivity").hide();
 						$("#hideAsmblyData").hide();
 						$("#showAsmblyData").show();
+						
+						
+						$("#attributeTypeId").show();
+					
+					if(round==0){
+						round = 1;
+						
+						$("#attributeTypeList").empty();
+						$("#attributeTypeList").append('<option value="0">Select Option</option>');
+						$("#attributeTypeList").trigger("chosen:updated");
+						if(result[0].subList != null && result[0].subList.length > 0){
+						  for(var i in result[0].subList){
+						   //$("#attributeTypeList").css('display','block');
+						   if(result[0].subList[i].id != null){
+						   $("#attributeTypeList").append('<option value="'+result[0].subList[i].id+'" selected>'+result[0].subList[i].name+'</option>');
+						   
+						  }
+						 }
+						 $("#attributeTypeList").trigger("chosen:updated");
+						}
+						$('#attributeTypeList').trigger('change');
+						getLocationWiseDetailsForActivity(1);
+						return;
+					}
+					
+					
+					
 						str+='<table class="table table-bordered bg_ff" id="locationsTab">';
 						str+='<thead>';
 						str+='<tr>';
 						//str+='<th>CONSTITUENCY</th>';
-						str+='<th> <input type="checkbox" class="allcheckBoxCls" style="background-color:#00B17D; color:#fff;"/> Select All </th>';
+						str+='<th style="background-color:#00B17D; color:#fff;" > <input type="checkbox" class="allcheckBoxCls" /> Select All </th>';
 						if(activityLevelId == 2)
 							;//str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 						else if(activityLevelId == 1){	
@@ -3113,27 +3146,10 @@ function getLocationWiseDetailsForActivity(roundId)
 						str+='</table>';
 					}
 					$('#home').html(str);
-					$("#attributeTypeId").show();
 					
-					if(round==0){
-						round = 1;
-						$("#attributeTypeList").empty();
-						$("#attributeTypeList").append('<option value="0">Select Option</option>');
-						$("#attributeTypeList").trigger("chosen:updated");
-						if(result[0].subList != null && result[0].subList.length > 0){
-						  for(var i in result[0].subList){
-						   //$("#attributeTypeList").css('display','block');
-						   if(result[0].subList[i].id != null){
-						   $("#attributeTypeList").append('<option value="'+result[0].subList[i].id+'">'+result[0].subList[i].name+'</option>');
-						   
-						  }
-						 }
-						 $("#attributeTypeList").trigger("chosen:updated");
-						}
-					}
 					
 					$(".condDateCls").daterangepicker({singleDatePicker:true,format:'YYYY-MM-DD',maxDate:new Date()});
-					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px;z-index:99;"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="saveActyDetails();"/></div>');
+					$('#home').append(' <div style="position:fixed;bottom:0;margin-left:-30px;z-index:99;" id="submtBtn"><input type="button" value="UPDATE DATE DETAILS" class="btn btn-custom btn-success" onclick="saveActyDetails();"/></div>');
 					$("#locationsTab").dataTable({
 					"iDisplayLength": 20,
 					"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
@@ -3159,6 +3175,8 @@ function saveActyDetails(){
 		 $("#chCkBxErrMsgId").html('<span style="color:red;">Please check atleast one check box.</span>');
 		 return;
 	 }
+	 
+		$('#submtBtn').hide();
 		
 	var uploadHandler = {
 		 upload: function(result) {
