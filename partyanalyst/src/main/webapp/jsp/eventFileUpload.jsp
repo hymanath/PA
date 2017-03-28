@@ -176,7 +176,8 @@ var actScopeId = '${activityScopeId}';
 var locationValueID = '${locationValue}';
 var actvityLevelId = '${activityLevel}';
 var locationName = '${locationName}';
-var globalLctnInfoId = '${lctionInfoId}';
+var globalLctnInfoId = '${temp}';
+var globalTableName = '${task}';
 
 
 
