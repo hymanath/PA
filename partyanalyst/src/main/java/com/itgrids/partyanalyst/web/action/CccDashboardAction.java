@@ -892,7 +892,7 @@ public class CccDashboardAction extends ActionSupport implements ServletRequestA
 			   String fromDateStr = jObj.getString("fromDate");
 			   String toDateStr = jObj.getString("toDate");
 				
-				govtDeptVoList = cccDashboardService.getSubOrdinatesAlertsOverView(designationId,levelId,fromDateStr,toDateStr);
+				govtDeptVoList = cccDashboardService.getSubOrdinatesAlertsOverView(designationId,levelId,fromDateStr,toDateStr,userId);
 		   } catch (Exception e) {
 			   LOG.error("Exception Raised in getSubOrdinatesAlertsOverView() in CccDashboardAction",e);
 			}
@@ -1247,4 +1247,41 @@ public String getDepartmentAndDistrictWiseAlertsCountsAlerts(){
 	}
 	return Action.SUCCESS;
 	}
+
+	public String getSubDesignationOfficersInfo(){
+		try {
+			
+			session = request.getSession();  
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   Long userId = regVo.getRegistrationID();
+			   
+			   deptList = cccDashboardService.getSubDesignationOfficersInfo(userId);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getSubDesignationOfficersInfo() in CccDashboardAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSubDesignationsInfo(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			session = request.getSession();  
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   Long userId = regVo.getRegistrationID();
+			   
+				Long levelId = jObj.getLong("levelId");
+			   
+			   deptList = cccDashboardService.getSubDesignationsInfo(userId,levelId);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getSubDesignationsInfo() in CccDashboardAction",e);
+		}
+		return Action.SUCCESS;
+	}
+
 }

@@ -16231,6 +16231,7 @@
 	 	<action name="customReportAction" class="customReportAction">
 	   		 <result name="success">/jsp/customReports.jsp</result>			
 	    </action>
+	    
 	    <action name="getTotalExpectedReportsAction" class="customReportAction" method="getTotalExpectedReports">
 			<result type="json" name="success">
    				<param name="root">customReportVOList</param>
@@ -16270,6 +16271,19 @@
 			<result type="json" name="success">
 	   			<param name="root">userTypeVOList</param>
 	   		</result>
-		 </action>   
+		 </action>  
+	    
+	    <action name="getSubDesignationOfficersInfoAction" class="cccDashboardAction" method="getSubDesignationOfficersInfo">
+			<result type="json" name="success">		   
+				<param name="root">deptList</param>
+			</result>	
+		</action>
+		
+		<action name="getSubDesignationsInfoAction" class="cccDashboardAction" method="getSubDesignationsInfo">
+		<result type="json" name="success">		   
+			<param name="root">deptList</param>
+		</result>	
+	</action>
+	    
  </package>
 </struts>

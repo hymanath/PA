@@ -4101,6 +4101,8 @@
 		<property name="alertCandidateDAO" ref="alertCandidateDAO" ></property>
 		<property name="govtDepartmentLevelDetailsDAO" ref="govtDepartmentLevelDetailsDAO" ></property>
 		<property name="panchayatDAO" ref="panchayatDAO" ></property>
+		<property name="govtDepartmentDesignationMappingDAO" ref="govtDepartmentDesignationMappingDAO" ></property>
+		
 	</bean>
 	<bean name="geodemographicService" class="com.itgrids.core.api.service.impl.GeodemographicService">	
 	    <property name="districtDAO" ref="districtDAO" ></property>
