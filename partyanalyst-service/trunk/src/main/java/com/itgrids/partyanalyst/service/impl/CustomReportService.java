@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICustomReportObserverDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportProgramDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportFileDAO;
@@ -36,8 +38,19 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 	
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ICustomReportProgramDAO customReportProgramDAO;
+	private ICustomReportObserverDAO customReportObserverDAO;
 
-	 public ActivityService getActivityService() {
+	
+	 public ICustomReportObserverDAO getCustomReportObserverDAO() {
+		return customReportObserverDAO;
+	}
+
+	public void setCustomReportObserverDAO(
+			ICustomReportObserverDAO customReportObserverDAO) {
+		this.customReportObserverDAO = customReportObserverDAO;
+	}
+
+	public ActivityService getActivityService() {
 			return activityService;
 		}
 
@@ -233,7 +246,38 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		return finalList;
 	}	
 	
-	 
+	public List<CustomReportVO> getProgramReportsDetails(Long programId){
+		List<CustomReportVO> finalList = new ArrayList<CustomReportVO>(0);
+		try {
+			Map<Long,List<CustomReportVO>> observersMap = new LinkedHashMap<Long, List<CustomReportVO>>(0);
+			//get observer details for program
+			//0-customReportId,1-tdpCadreId,2-firstname
+			List<Object[]> obserersObjList = customReportObserverDAO.getObserverDetails(programId);
+			if(obserersObjList != null && obserersObjList.size() > 0){
+				for (Object[] objects : obserersObjList) {
+					if(observersMap.get((Long)objects[0]) == null){
+						List<CustomReportVO> newObserverVoList = new ArrayList<CustomReportVO>(0);
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setId((Long)objects[1]);
+						vo.setName(objects[2].toString());
+						newObserverVoList.add(vo);
+						observersMap.put((Long)objects[0], newObserverVoList);
+					}else{
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setId((Long)objects[1]);
+						vo.setName(objects[2].toString());
+						observersMap.get((Long)objects[0]).add(vo);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getCustomReportProgram() method, Exception - ",e);
+		}
+		return finalList;
+	} 
 	
 
 }

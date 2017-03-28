@@ -13,5 +13,5 @@ public interface ICustomReportService {
 	public List<CustomReportVO> getTotalExpectedReports(Long customReportProgramId);
 	 public ResultStatus saveCustomReportUploadFile(final Map<File,String> mapfiles,final Long userId);
 	public List<CustomReportVO> getCustomReportPrograms(String startDateStr,String endDateStr);
-
+	public List<CustomReportVO> getProgramReportsDetails(Long programId);
 }

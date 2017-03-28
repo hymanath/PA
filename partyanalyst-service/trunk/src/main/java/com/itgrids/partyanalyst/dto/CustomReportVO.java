@@ -12,8 +12,15 @@ public class CustomReportVO implements Serializable {
 	private Long notSubmited=0l;
 	private File file;
 	private String selected = "false";
+	private Long reportId;
 	
 	
+	public Long getReportId() {
+		return reportId;
+	}
+	public void setReportId(Long reportId) {
+		this.reportId = reportId;
+	}
 	public String getSelected() {
 		return selected;
 	}
