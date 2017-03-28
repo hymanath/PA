@@ -17,11 +17,11 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.ICustomReportFileDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportImageDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportLocationDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportObserverDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportProgramDAO;
+import com.itgrids.partyanalyst.dao.IcustomReportFileDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportFileDAO;
 import com.itgrids.partyanalyst.dto.CustomReportVO;
@@ -38,24 +38,30 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 	 private CustomReportDAO customReportDAO;
 	 private CustomReportVO customReportVO;
 	 private ActivityService activityService;
-	 private ICustomReportFileDAO customReportFileDAO;
+	 
 	
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private ICustomReportProgramDAO customReportProgramDAO;
 	private ICustomReportObserverDAO customReportObserverDAO;
     private ICustomReportLocationDAO customReportLocationDAO;
     private ICustomReportImageDAO customReportImageDAO;
-    
+    private IcustomReportFileDAO customReportFileDAO;
 	
-	 public ICustomReportImageDAO getCustomReportImageDAO() {
+    
+	 public IcustomReportFileDAO getCustomReportFileDAO() {
+		return customReportFileDAO;
+	}
+	public void setCustomReportFileDAO(IcustomReportFileDAO customReportFileDAO) {
+		this.customReportFileDAO = customReportFileDAO;
+	}
+	
+	public ICustomReportImageDAO getCustomReportImageDAO() {
 		return customReportImageDAO;
 	}
 	public void setCustomReportImageDAO(ICustomReportImageDAO customReportImageDAO) {
 		this.customReportImageDAO = customReportImageDAO;
 	}
-	public void setCustomReportFileDAO(ICustomReportFileDAO customReportFileDAO) {
-		this.customReportFileDAO = customReportFileDAO;
-	}
+	
 	public ICustomReportLocationDAO getCustomReportLocationDAO() {
 		return customReportLocationDAO;
 	}
@@ -118,9 +124,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		this.customReportDAO = customReportDAO;
 	}
 
-	public void setCustomReportFileDAO(CustomReportFileDAO customReportFileDAO) {
-		this.customReportFileDAO = customReportFileDAO;
-	}
+	
 	public List<CustomReportVO> getTotalExpectedReports(Long customReportProgramId) {
 		List<CustomReportVO> customReportList=new ArrayList<CustomReportVO>();
 		List<Object[]> reportDetails=null;
