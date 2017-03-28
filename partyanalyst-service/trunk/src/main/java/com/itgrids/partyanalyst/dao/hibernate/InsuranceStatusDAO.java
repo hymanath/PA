@@ -153,22 +153,38 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	public List<Object[]> getStatusAndInsuranceCompanyWiseComplaintDetails(List<Long> complaintIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct cm.Complaint_id as complaintId," +
-					" cm.name as name,cm.mobile_no as mobileNo," +
-					" cm.membership_id as membershipId," +
-					" cm.district_id as districtId," +
-					" cm.Location as districtName," +
-					" cm.assembly_id as constId," +
-					" cm.constituency as constituency," +
+					" tc.first_name as name,tc.mobile_no as mobileNo," +
+					" tc.membership_id as membershipId," +
+					" d.district_id as districtId," +
+					" d.district_name as districtName," +
+					" c.constituency_id as constId," +
+					" c.name as constituency," +
 					" cm.Subject as subject," +
 					" cm.description as description," +
 					" cm.issue_type as issueType," +
 					" gis.grievance_insurance_status_id statusId," +
 					" gis.status as status," +
-					" cm.Raised_Date as postedDate" +
+					" cm.Raised_Date as postedDate," +
+					" t.tehsil_id as tehsilId," +
+					" t.tehsil_name as tehsilName," +
+					" leb.local_election_body_id as lebId," +
+					" leb.name as lebName," +
+					" p.panchayat_id as pancId," +
+					" p.panchayat_name as pancName," +
+					" w.constituency_id as wardId," +
+					" w.name as wardName" +
 					
-					" from complaint_master cm,grievance_insurance_status gis" +
+					" from complaint_master cm,grievance_insurance_status gis,tdp_cadre tc,user_address ua" +
+					" left join district d on ua.district_id = d.district_id" +
+					" left join constituency c on ua.constituency_id = c.constituency_id" +
+					" left join tehsil t on ua.tehsil_id = t.tehsil_id" +
+					" left join local_election_body leb on ua.local_election_body = leb.local_election_body_id" +
+					" left join panchayat p on ua.panchayat_id = p.panchayat_id" +
+					" left join constituency w on ua.ward = w.constituency_id" +
 				" where cm.grievance_insurance_status_id = gis.grievance_insurance_status_id" +
-				" and cm.Complaint_id in (:complaintIds)");
+					" and cm.membership_id = tc.membership_id" +
+					" and tc.address_id = ua.user_address_id" +
+					" and cm.Complaint_id in (:complaintIds)");
 					
     	
     	Query query = getSession().createSQLQuery(sb.toString())
@@ -178,10 +194,29 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
     			.addScalar("constId", Hibernate.LONG).addScalar("constituency", Hibernate.STRING)
     			.addScalar("subject", Hibernate.STRING).addScalar("description", Hibernate.STRING)
     			.addScalar("issueType", Hibernate.STRING).addScalar("statusId", Hibernate.LONG)
-    			.addScalar("status", Hibernate.STRING).addScalar("postedDate", Hibernate.STRING);
+    			.addScalar("status", Hibernate.STRING).addScalar("postedDate", Hibernate.STRING)
+    			.addScalar("tehsilId", Hibernate.LONG).addScalar("tehsilName", Hibernate.STRING)
+    			.addScalar("lebId", Hibernate.LONG).addScalar("lebName", Hibernate.STRING)
+    			.addScalar("pancId", Hibernate.LONG).addScalar("pancName", Hibernate.STRING)
+    			.addScalar("wardId", Hibernate.LONG).addScalar("wardName", Hibernate.STRING);
     	
     	query.setParameterList("complaintIds", complaintIds);
     	
     	return query.list();
+	}
+	
+	public List<Object[]> getLatestComplaintResponsesForComplaintIds(List<Long> complaintIds){
+		Query query = getSession().createSQLQuery("select model.Complaint_id as complaintId," +
+											" model.Complaint_description as comment," +
+											" model.created_at as createdDate" +
+											" from complaint_responses model" +
+											" where model.Complaint_id in (:complaintIds)" +
+											" order by model.complaint_responseID asc")
+											.addScalar("complaintId", Hibernate.LONG)
+											.addScalar("comment", Hibernate.STRING)
+											.addScalar("createdDate", Hibernate.STRING);
+		
+		query.setParameterList("complaintIds", complaintIds);
+		return query.list();
 	}
 }
