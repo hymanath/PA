@@ -5582,7 +5582,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 		return null;
  	}
- //sanjeet
  public void setAlertDtls(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, List<Object[]> alertList){//abcd
 		try{
 			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
