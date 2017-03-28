@@ -1202,6 +1202,13 @@
 	               	 	 <value>com.itgrids.partyanalyst.model.ActivityRequiredAttribute</value>
 	                   <!--  CUSTOM REPORT END -->
 	                   
+	                   <!--  Assembly Session  -->
+	                     <value>com.itgrids.partyanalyst.model.SpeechAspect</value>
+	                  	 <value>com.itgrids.partyanalyst.model.MemberSpeechAspect</value>
+	                  	 <value>com.itgrids.partyanalyst.model.SpeechCategory</value>
+	                  	 <value>com.itgrids.partyanalyst.model.MemberSpeechCategory</value>
+	                   <!--  Assembly Session End -->
+	                   
 	              </list>
 			
 		</property>
