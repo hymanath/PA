@@ -1,11 +1,11 @@
 package com.itgrids.partyanalyst.dao;
 
-	import org.appfuse.dao.GenericDao;
+import java.util.List;
 
-    import com.itgrids.partyanalyst.model.CustomReportLocation;
+import org.appfuse.dao.GenericDao;
 
-	public interface ICustomReportLocationDAO extends GenericDao<CustomReportLocation, Long>{
+import com.itgrids.partyanalyst.model.CustomReportLocation;
 
-	
-
+public interface ICustomReportLocationDAO extends GenericDao<CustomReportLocation, Long>{
+	public List<Object[]> getLocationDetails(Long programId);
 }
