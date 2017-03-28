@@ -1769,7 +1769,8 @@
 	<bean id="customReportAction" class="com.itgrids.partyanalyst.web.action.CustomReportAction" singleton="false">
 		<property name="customReportService" ref="customReportService" />		
 	</bean>	
-	
+	<bean id="assemblySessionAction" class="com.itgrids.partyanalyst.web.action.AssemblySessionAction" singleton="false">		
+	</bean>
 	
 </beans>	
 	
