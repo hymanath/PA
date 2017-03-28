@@ -3067,6 +3067,11 @@ public List<Object[]> getLocationWise(Long userAccessLevelId,Long userAccessLeve
 		}else if(locationType != null && locationType.equalsIgnoreCase("Panchayat")){
 			   queryStr.append(" and model.address.panchayat.panchayatId = :userAccessLevelValues");  
 		}
+		else if(locationType != null && locationType.equalsIgnoreCase("Muncipality")){
+			   queryStr.append(" and leb.localElectionBodyId = :userAccessLevelValues");  
+		}else if(locationType != null && locationType.equalsIgnoreCase("ward")){
+			   queryStr.append(" and w.constituencyId = :userAccessLevelValues");  
+		}
 	}
 	
 	if(checkedValue.trim().equalsIgnoreCase("notConducted")){
@@ -3133,7 +3138,7 @@ public List<Object[]> getWardsByMun(Long muncipId,Long activityScopeId ){
 			//" left join model.address.tehsil tehsil" +
 			//" left join model.address.localElectionBody leb" +
 			" where model.address.localElectionBody.localElectionBodyId = :muncipId" +
-			" and model.activityScope.activityScopeId = :activityScopeId order by model.address.ward.name ");
+			" and model.activityScope.activityScopeId = :activityScopeId order by model.address.ward.constituencyId ");
 	query.setParameter("muncipId", muncipId);
 	query.setParameter("activityScopeId", activityScopeId);
 	return query.list();
