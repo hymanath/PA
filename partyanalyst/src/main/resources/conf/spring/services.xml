@@ -4122,5 +4122,7 @@
 		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" ></property>
 		<property name="insuranceStatusDAO" ref="insuranceStatusDAO" ></property>
 	</bean>
+	<bean name="assemblySessionService" class="com.itgrids.partyanalyst.service.impl.AssemblySessionService">
+	</bean>
 </beans>			
 	
