@@ -426,6 +426,9 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 					if(reqParamName.equalsIgnoreCase("activityLocationInfoId")){
 						eventFileUploadVO.setActivityLocationInfoId(reqValue!= null?Long.valueOf(reqValue.toString()):null);
 					}
+					if(reqParamName.equalsIgnoreCase("tableName")){
+						eventFileUploadVO.setTableName(reqValue!= null?reqValue.toString():null);
+					}
 				  }
 					
 				}
