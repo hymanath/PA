@@ -3113,7 +3113,16 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    activityInfoDocument.setLocationValueAddress(levelValue);
 		    
 		    
-		   List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), levelValue);
+		    if(eventFileUploadVO.getTableName() != null){
+		    	if(eventFileUploadVO.getTableName().equalsIgnoreCase("LocationInfo")){
+		    		 activityInfoDocument.setActivityLocationInfoId(eventFileUploadVO.getActivityLocationInfoId());
+		    	}else if(eventFileUploadVO.getTableName().equalsIgnoreCase("ConductedInfo")){
+		    		 activityInfoDocument.setActivityConductedInfoId(eventFileUploadVO.getActivityLocationInfoId());
+		    	}else{
+		    		 activityInfoDocument.setActivityConductedInfoId(eventFileUploadVO.getActivityLocationInfoId());
+		    	}
+		    }
+		  /* List<Long> ids  = activityLocationInfoDAO.getActivityLocationInfoIdByLocationLevelAndLocationValue(eventFileUploadVO.getActivityScopeId(),eventFileUploadVO.getLevelId(), levelValue);
 			if(ids != null && ids.size()>0){
 				try {
 					 activityInfoDocument.setActivityLocationInfoId(ids.get(0));
@@ -3125,7 +3134,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 						 activityInfoDocument.setActivityConductedInfoId(conductedIds.get(0));
 					} catch (Exception e) {}
 				}	
-			}
+			}*/
 			/*else
 			{
 				ActivityLocationInfo activityLocationInfo = new ActivityLocationInfo();
