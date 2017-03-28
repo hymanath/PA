@@ -5929,7 +5929,8 @@ $(document).on("click",".childActivityMemberDtlsCls",function(){
 	}
  function getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType){
 	    $(".impactLevelWiseComparisonBlockCls").show();
-	  $("#candidateLocationAlertDtlsStatusWiseDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	    $("#selectedMemberHeadingId").html('<span class="text-capital">('+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+')</span>');	 
+	    $("#candidateLocationAlertDtlsStatusWiseDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
 			alertId = 0;
