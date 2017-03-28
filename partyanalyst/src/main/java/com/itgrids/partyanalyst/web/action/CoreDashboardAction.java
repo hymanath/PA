@@ -55,6 +55,7 @@ import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICoreDashboardEventsActivitiesService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
+import com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService;
 import com.itgrids.partyanalyst.service.ICoreDashboardMainService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICoreDashboardService;
@@ -102,6 +103,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private IAttendanceCoreDashBoardService attendanceCoreDashBoardService;
 	private ICoreDashboardToursService coreDashboardToursService;
 	private IAlertService alertService;
+	private ICoreDashboardInsuranceService coreDashboardInsuranceService;
 	
 	private List<CoreDebateVO> codeDebateVoList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
@@ -842,6 +844,10 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 
 	public void setAlertService(IAlertService alertService) {
 		this.alertService = alertService;
+	}
+   public void setCoreDashboardInsuranceService(
+			ICoreDashboardInsuranceService coreDashboardInsuranceService) {
+		this.coreDashboardInsuranceService = coreDashboardInsuranceService;
 	}
 
 	//business methods
@@ -4077,4 +4083,33 @@ public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
 	}
 	return Action.SUCCESS;
 }
+
+	public String getUserTypeWiseTotalCadreInsuranceComplainctCnt(){
+		  try{
+				LOG.info("Entered into getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt()  of CoreDashboardAction");
+				
+				Long userId = null;
+				HttpSession session = request.getSession();
+				 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+				 if(user == null || user.getRegistrationID() == null){
+					//return ERROR;
+					 userId = 1L;
+				 }
+				 else
+				userId = user.getRegistrationID();
+				 
+				jObj = new JSONObject(getTask());
+				Long userTypeId = jObj.getLong("userTypeId");
+				Long activityMemberId = jObj.getLong("activityMemberId");
+				Long stateId = jObj.getLong("stateId");
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long cadreEnrollmentYearId = jObj.getLong("cadreEnrollmentYearId"); 
+				 userTypeVOList = coreDashboardInsuranceService.getUserTypeWiseTotalCadreInsuranceComplainctCnt(activityMemberId,userId,userTypeId,stateId,cadreEnrollmentYearId,fromDate,toDate);
+			}catch(Exception e){
+				LOG.error("Exception raised at getUserTypeWiseTotalCadreInsuranceComplainctCnt() method of CoreDashBoardAction", e);
+			}
+			return Action.SUCCESS; 
+		  
+	}
 }

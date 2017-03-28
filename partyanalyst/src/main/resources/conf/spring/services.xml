@@ -4121,6 +4121,8 @@
 	<bean name="coreDashboardInsuranceService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardInsuranceService">
 		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO" ></property>
 		<property name="insuranceStatusDAO" ref="insuranceStatusDAO" ></property>
+		<property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
+		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 	</bean>
 	<bean name="assemblySessionService" class="com.itgrids.partyanalyst.service.impl.AssemblySessionService">
 	</bean>
