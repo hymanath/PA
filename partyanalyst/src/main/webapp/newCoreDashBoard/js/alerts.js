@@ -1281,36 +1281,7 @@
 				$("#constituencyOvervwGraph").css("height","auto");
 			}
 		 } 
-	/* function buildDistrictImpactLevelTabularRsltStatusWise(result,locationType){
-		var str= '';
-	   if(result != null && result.length > 0){
-		   var statusObj = result[0].subList1;
-		   str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered">';
-				str+='<thead class="bg_ED">';
-				str+='<th></th>';
-				str+='<th>Total</th>';
-				for(var i in statusObj){
-					str+='<th>'+statusObj[i].statusType+'</th>';
-				}
-				str+='</thead>';
-				str+='<tbody>';
-				 for(var i in result){
-				  str+='<tr>';
-				  str+='<td>'+result[i].name+'</td>';
-				  str+='<td>'+result[i].totalAlertCnt+'</td>';
-				 for(var j in result[i].subList1){
-				    str+='<td>'+result[i].subList1[j].totalAlertCnt+'</td>';	 
-				 }
-				}
-				str+='</tr>';
-			str+='</table>';
-		str+='</div>'
-	   }else{
-		 str+='NO DATA AVAILABLE';  
-	   }
-	   $("#districtImpactLevelTblDivId").html(str);
-	} */
+		 
 	function buildAlertAssignedCandidates(result)
 	{
 	var str='';
@@ -2293,10 +2264,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		/* if(location == "date"){
-			alertId = 0;
-			editionId = 0;
-		} */
 		var jsObj={  
 			activityMemberId : 	globalActivityMemberId,      
 			stateId : 			globalStateId,           
@@ -2454,31 +2421,6 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 				$("#stateImpactLevelHighChartDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
 		}	 
-	/* function buildStateImpactLevelTabularRsltStatusWise(result){
-		 var str= '';
-	   if(result != null ){
-		   str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered">';
-				str+='<thead class="bg_ED">';
-				str+='<th>Total</th>';
-				for(var i in result.statusList){
-					str+='<th>'+result.statusList[i].name+'</th>';
-				}
-				str+='</thead>';
-				str+='<tbody>';
-				str+='<tr>';
-				 str+='<td>'+result.alertCount+'</td>';
-				 for(var i in result.statusList){
-				  str+='<td>'+result.statusList[i].alertCount+'</td>';
-				}
-				str+='<tr>';
-			str+='</table>';
-		str+='</div>'
-	   }else{
-		 str+='NO DATA AVAILABLE';  
-	   }
-	   $("#stateImpactLevelTblDivId").html(str);
-	} */
 	$(document).on("click",".prgrmCmmttAndOthrCls",function(){
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
@@ -3099,9 +3041,7 @@ function getTotalArticledetails(articleId){
 						str+='</div>';
 						for(var i in result.statusList)     
 						{
-							/* if(result.statusList[i].statusType == "Unable to Resolve"){
-								continue;           
-							} */
+			
 							str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 								str+='<div class="bg_ED">';
 								if((navigator.userAgent.match(/iPhone/i)) ||  (navigator.userAgent.match(/iPad/i))) {
@@ -3252,8 +3192,7 @@ function getTotalArticledetails(articleId){
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
 										{
-											/* if(result.categoryList[i].statusList[j].statusTypeId == 5)
-												continue;   */     
+										   
 											str+='<td>';
 												str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusType+'</p>';
 											str+='</td>';
@@ -3262,8 +3201,7 @@ function getTotalArticledetails(articleId){
 										str+='<tr>';
 										for(var j in result.categoryList[i].statusList)
 										{
-											/* if(result.categoryList[i].statusList[j].statusTypeId == 5)
-												continue; */
+										
 											str+='<td>';
 												if(result.categoryList[i].statusList[j].statusCnt == 0){
 													str+='<p class="text-muted">'+result.categoryList[i].statusList[j].statusCnt+'&nbsp;&nbsp;<small class="text-success">'+result.categoryList[i].statusList[j].statusCntPer+'%</small></p>';
@@ -3445,7 +3383,7 @@ function getTotalArticledetails(articleId){
 		var selectedAlertType = type;
 		getAlertDetatilsByAlertType(alertTypeId,alertCount,selectedAlertType,globalImpactScopeArr,0);
 	}
-	//sumit
+	
 	function getImpactLevelWiseAlertDtls(impactLevelId,totalAlertCnt){
 		var impactScopArr = [];
 		if(impactLevelId == 5){
@@ -3551,7 +3489,7 @@ function getTotalArticledetails(articleId){
 		} 
 		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,loctionType,"false",0);
 	}
-	//sanjeet
+	
 	function getLocationWiseAlertDtls(locationIdStr,totalAlertCnt,loctionType,impactLevelId){
 		var locationLevel = "";
 		var districtIdArr =[];
@@ -4408,7 +4346,7 @@ function getStateImpactandItsSubLevelAlert(){
 		   }
       });	
 	}
-	//santosh
+	
 	function buildStateImpactLevelHighChartRslt(result){
 		if(result.subList1 != null && result.subList1.length > 0){
 			var impactLevelColorObj =  {"1":"#967BDC","2":"#4FDAB1","3":"#0267FE","8":"#32CCFE","5":"#019966","7":"#FF6600"};	
@@ -4784,11 +4722,7 @@ function getStateImpactandItsSubLevelAlert(){
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		/* if(location == "date"){
-			alertId = 0;
-			editionId = 0;
-		} */
-	
+
 		var jsObj={  
 			activityMemberId : 	globalActivityMemberId,      
 			stateId : 			globalStateId,           
@@ -5134,41 +5068,6 @@ function getStateImpactandItsSubLevelAlert(){
 			
 		
 	}
-	/* function buildConstituencyImpactLevelTabularRslt(result){
-	  var str= '';
-	   if(result.subList1 != null && result.subList1.length > 0){
-		   var impactLevelObj = result.subList1[0].subList1;
-		   str+='<div class="table-responsive">';
-			str+='<table class="table table-bordered" id="constituencyLevelDataTblId">';
-				str+='<thead class="bg_ED">';
-				str+='<th></th>';
-				str+='<th>Total</th>';
-				for(var i in impactLevelObj){
-					str+='<th>'+impactLevelObj[i].name+'</th>';
-				}
-				str+='</thead>';
-				str+='<tbody>';
-				 for(var i in result.subList1){
-				  str+='<tr>';
-				  str+='<td>'+result.subList1[i].name+'</td>';
-				  str+='<td>'+result.subList1[i].totalAlertCnt+'</td>';
-				 for(var j in result.subList1[i].subList1){
-				    str+='<td>'+result.subList1[i].subList1[j].alertCount+'</td>';	 
-				 }
-				}
-				str+='</tr>';
-			str+='</table>';
-		str+='</div>'
-	   }else{
-		 str+='NO DATA AVAILABLE';  
-	   }
-	   $("#constituencyLevelTblDivId").html(str);
-	    $("#constituencyLevelDataTblId").dataTable({
-			"aaSorting": [],
-			"iDisplayLength" : 15,
-			"aLengthMenu": [[10,15,20,30,50, 100, -1], [10,15,20,30,50, 100, "All"]]
-		});   
-	} */
  function getGhmcImpactLevelAlertStatusWise(districtId){
 	   /*Hiding Block if impact Level is not selected*/
 	      $(".gmcImpactLevelBlockCls").show();	
@@ -5350,92 +5249,6 @@ function getStateImpactandItsSubLevelAlert(){
 			}else{
 				$("#gmcImpactLevelHighChartDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
-		/* var corpGmcImparArr = [];
-	  	if(result.statusList != null && result.statusList.length > 0){
-			for(var i in result.statusList){
-				var obj1 = {
-					name: result.statusList[i].name,
-					y: result.statusList[i].alertCount,
-					extra:result.statusList[i].id       
-				};
-				corpGmcImparArr.push(obj1);
-			}	
-		}
-	   $("#gmcImpactLevelHighChartDivId").highcharts({  
-				colors: ['#53BF8B'],    
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: ''
-				},
-				subtitle: {
-					text: ''
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					
-					type: 'category',
-					labels: {
-								formatter: function() {
-									return this.value.toString().substring(0, 10)+'...';
-								},
-							}
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: ''
-					},
-					labels: {
-						enabled:false
-					}
-				},
-				legend: {
-					enabled: false
-				},	
-				plotOptions: {
-					column: {
-						stacking: 'normal',
-						dataLabels: {
-							enabled: true,
-							 formatter: function() {
-								if (this.y === 0) {
-									return null;
-								} else {
-									return Highcharts.numberFormat(this.y,0);      
-								}
-							}
-						}
-					},
-					series: {
-						cursor: 'pointer',
-						point: {
-							events: {
-								click: function () {
-									//var districtId = this.extra;
-									//var totalAlertCnt = this.y;
-									//var districtIdArr=[districtId];
-									//buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district","","false",0);
-								}
-							}
-						}  
-				     },
-				},
-				tooltip: {
-					headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
-				},
-			 	series: [{    
-					name: 'Number Of Alerts',    
-					data: corpGmcImparArr
-				}],
-			 
-			});   */
 	}
 	function buildStateOrGhmcImpactLevelTabularRsltStatusWise(result,divId,locationType){
 	  var str= '';
@@ -5653,105 +5466,6 @@ function getStateImpactandItsSubLevelAlert(){
 			}else{
 				$("#"+divId).html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
-		
-		/* var stateImpactPublicationArr = [];
-		var channelNamesArr =[];
-	  	if(result.subList1 != null && result.subList1.length > 0){
-			for(var i in result.subList1){
-				channelNamesArr.push(result.subList1[i].name);
-				var obj1 = {
-					name: result.subList1[i].name,
-					y: result.subList1[i].alertCnt,
-					extra:result.subList1[i].id       
-				};
-				stateImpactPublicationArr.push(obj1);
-			}	
-		}
-		var getWidth = $("#stateOvervwGraph").width();
-		$("#"+divId).css("width",getWidth);	
-	   $("#"+divId).highcharts({  
-				colors: ['#53BF8B'],    
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: ''
-				},
-				subtitle: {
-					text: ''
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: channelNamesArr,
-					type: 'category',
-					labels: {
-								useHTML: true,
-								formatter: function() {
-									return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.value+'.png" style="width:45px;" vertical-align: middle" />';
-									
-								},
-								rotation: -45,
-								style: {
-									fontSize: '13px',
-									fontFamily: 'Verdana, sans-serif'
-								},
-							}
-					
-				},
-				yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					title: {
-						text: ''
-					},
-					labels: {
-						enabled:false
-					}
-				},
-				legend: {
-					enabled: false
-				},	
-				plotOptions: {
-					column: {
-						stacking: 'normal',
-						dataLabels: {
-							enabled: true,
-							 formatter: function() {
-								if (this.y === 0) {
-									return null;
-								} else {
-									return Highcharts.numberFormat(this.y,0);      
-								}
-							}
-						}
-					},
-					series: {
-						cursor: 'pointer',
-						point: {
-							events: {
-								click: function () {
-									//var districtId = this.extra;
-									//var totalAlertCnt = this.y;
-									//var districtIdArr=[districtId];
-									//buildDistrictWiseAlert(districtIdArr,totalAlertCnt,0,0,"district","","false",0);
-								}
-							}
-						}  
-				     },
-				},
-				tooltip: {
-					headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-					pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b>'
-				},
-			 	series: [{    
-					name: 'Number Of Alerts',    
-					data: stateImpactPublicationArr
-				}],
-			 
-			});   */
 	}
  function getCorpGHMCImpcatLevelAlertCntPublicationWise(districtId){
 		/*Hiding Block if impact Level is not selected*/
