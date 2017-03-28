@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ComplaintMasterVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardInsuranceVO;
+import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.dto.InsuranceLagDaysVO;
 
 public interface ICoreDashboardInsuranceService {
@@ -12,5 +13,6 @@ public interface ICoreDashboardInsuranceService {
 			String fromDateStr,String toDateStr);
 	public List<ComplaintMasterVO> getInsuraceStatusWiseComplaintsDetails(Long activityMemberId,Long cadreYearId,Long stateId,
 			String fromDateStr,String toDateStr,String status,Long companyId,String issueType);
+	public List<List<UserTypeVO>> getUserTypeWiseTotalCadreInsuranceComplainctCnt(Long activityMemberId,Long userId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,String fromDateStr,String toDateStr);
 	public InsuranceLagDaysVO getLagDaysInsuranceComplaintsCounts(Long activityMemberId,Long cadreYearId,Long stateId,String status,Long companyId,String issueType);
 }
