@@ -167,7 +167,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 					" cm.Raised_Date as postedDate" +
 					
 					" from complaint_master cm,grievance_insurance_status gis" +
-				" where cm.Complaint_id in (:complaintIds)");
+				" where cm.grievance_insurance_status_id = gis.grievance_insurance_status_id" +
+				" and cm.Complaint_id in (:complaintIds)");
 					
     	
     	Query query = getSession().createSQLQuery(sb.toString())
