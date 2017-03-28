@@ -306,14 +306,15 @@
 			<div class="col-md-3">
 				<a id="reSearchId" class="btn btn-success" style="margin-top:23px;display:none;" href="javascript:{getLocationWiseDetailsForActivity(1);}" >Get Details</a>
 			</div>
+			<div id="statsErrDiv"></div>
 		</div>
 		<div class="panel panel-default panel-custom" id="resultsDiv" style="display:none;">
 		    	<div class="panel-heading">
-                	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headingId"> - Activity Name(Activity level) <!--( <span >
+                	<h4 class="panel-title"><span class="font-40" id="constncyId">SEARCH RESULTS  </span><span class="font-12" id="headinggId"> <!--( <span >
 							 <i class="getImageCls glyphicon glyphicon-camera" style="cursor:pointer;display:none" title="View All Images" id="imageButId"></i>
 						</span> )--></span>
 						
-						<span style="background-color: lightblue; border-radius: 5px; padding: 10px;">
+						<span  class="" style="background-color: lightblue; border-radius: 5px; padding: 10px;float:right;">
 						<label class="checkbox-inline">
 								<input type="radio" checked="checked" id="allId" onclick="getLocationWiseDetailsForActivity(1);" name="radio1">All
 							</label>
@@ -2774,6 +2775,10 @@ function getConstitiensList(){
 	$("#procesingImg3").show();
 	var activityId = $("#ActivityList").val();
 	
+	$('#villageWardsList').find('option').remove();
+	$('#villageWardsList').append('<option value="0">All</option>');
+	$('#mandalsList').find('option').remove();
+	$('#mandalsList').append('<option value="0">All</option>');
 	var jsObj={	
 			activityId:activityId,
 			stateId:1			
@@ -2788,10 +2793,10 @@ function getConstitiensList(){
 			{
 				$("#procesingImg3").hide();
 				$('#constiList').find('option').remove();
-				//$('#constiList').append('<option value="0">All</option>');
+				$('#constiList').append('<option value="0">Select Constituency </option>');
 				for(var i in result)
-				$('#constiList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
-		}
+					$('#constiList').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
 		   });
 	}
 $(document).on("change","#constiList",function(){
@@ -2799,7 +2804,8 @@ $(document).on("change","#constiList",function(){
 	$('#mandalsList').append('<option value="0">All</option>');
 	var constituencyId = $(this).val();
 	var activityScopeId = $("#ActivityList").val();
-	
+	$('#villageWardsList').find('option').remove();
+	$('#villageWardsList').append('<option value="0">All</option>');
 	var jsObj={	
 			constituencyId:constituencyId,
 			activityScopeId : activityScopeId			
@@ -2844,6 +2850,7 @@ $(document).on("change","#mandalsList",function(){
 });
 
 var round=0;
+var attributesArr=[];
 function getLocationWiseDetailsForActivity(roundId)
 {
 	if(roundId==0)
@@ -2981,6 +2988,13 @@ function getLocationWiseDetailsForActivity(roundId)
 						$("#attributeTypeList").append('<option value="0">Select Option</option>');
 						$("#attributeTypeList").trigger("chosen:updated");
 						if(result[0].subList != null && result[0].subList.length > 0){
+							attributesArr=[];
+							if(attributesArr.length==0){
+								 for(var i in result[0].subList){
+									 var obj = {"id":result[0].subList[i].id, "name":result[0].subList[i].name}
+									 attributesArr.push(obj);
+								 }
+							}
 						  for(var i in result[0].subList){
 						   //$("#attributeTypeList").css('display','block');
 						   if(result[0].subList[i].id != null){
@@ -2989,6 +3003,11 @@ function getLocationWiseDetailsForActivity(roundId)
 						  }
 						 }
 						 $("#attributeTypeList").trigger("chosen:updated");
+						}else{
+							if(attributesArr != null && attributesArr.length>0){
+								for(var k in attributesArr)
+									 $("#attributeTypeList").append('<option value="'+attributesArr[k].id+'" selected>'+attributesArr[k].name+'</option>');
+							}
 						}
 						$('#attributeTypeList').trigger('change');
 						getLocationWiseDetailsForActivity(1);
@@ -3172,23 +3191,25 @@ function saveActyDetails(){
 		}
 	 });
 	 if(infoId == "" || infoId == null){
-		 $("#chCkBxErrMsgId").html('<span style="color:red;">Please check atleast one check box.</span>');
+		 $("#chCkBxErrMsgId").html('<span style="color:red;">Please check atleast one check box.</span> <center><img class="text-center" id="dataoadingImg" src="images/Loading-data.gif" style="width:40px;height:40px;"/></center>');
 		 return;
 	 }
 	 
-		$('#submtBtn').hide();
-		
+		$('#submtBtn,#searchId,#reSearchId').hide();
+		$('#statsErrDiv').html(" <span style='color:green;font-weight:bold;'> Please wait Activity Details are updating...</span>");
 	var uploadHandler = {
 		 upload: function(result) {
 			//console.log(result);
 			uploadResult = result.responseText; 
 			var stringext = uploadResult.substr(6,7);
-			
+			$('#statsErrDiv').html("  <span style='color:green;font-weight:bold;'> Activity Details Updated Successfully... </span>");
+			getLocationWiseDetailsForActivity(1);
+			$('#submtBtn,#searchId,#reSearchId').show();
 			if(stringext == "success"){
-				alert("Activity Details Updated Successfully...");
-				getLocationWiseDetailsForActivity(1);
+				//getLocationWiseDetailsForActivity(1);
 			}else{
-				alert("Activity Details Not Updated. Please check once.");
+				/*$('#statsErrDiv').html(" <span style='color:red;font-weight:bold;'>Activity Details Not Updated.Give all inputs properly.then try again...</span>");*/
+				$('#submtBtn,#searchId,#reSearchId').show();
 			}
 		}
 	};

@@ -48,10 +48,10 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-						<div class="col-md-6">
-								<label>Activity Date </label>
-								 <input type="text" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
-							</div>	
+							<!--<div class="col-md-6">
+								<label>Activity Date </label>-->
+								 <input type="hidden" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
+							<!--</div>	-->
 						  <div class="col-md-6">
 							 <label>Day   </label>
 							 <select id="day" class="form-control"></select> 
@@ -226,7 +226,7 @@ else
 	function getDays()
 	{
 	  for(var i=1;i<=20;i++){
-		$("#day").append("<option value='"+i+"'>"+i+"</option>")
+		$("#day").append("<option value='"+i+"'> Day - "+i+"</option>")
 	  }
 	}
 	
