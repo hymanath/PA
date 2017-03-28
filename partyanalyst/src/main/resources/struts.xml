@@ -16261,12 +16261,15 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	    </action>		
-	    
 	    <action name="getProgramReportsDetailsAction" class="customReportAction" method="getProgramReportsDetails">
 			<result type="json" name="success">
 				<param name="root">idAndNameVOList</param>
 			</result>
 	    </action>
-	     
+		  <action name="getUserTypeWiseTotalCadreInsuranceComplainctCntAction" class="coreDashboardAction" method="getUserTypeWiseTotalCadreInsuranceComplainctCnt">
+			<result type="json" name="success">
+	   			<param name="root">userTypeVOList</param>
+	   		</result>
+		 </action>   
  </package>
 </struts>
