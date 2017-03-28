@@ -28,6 +28,7 @@ public class GeoLevelReportVO extends BaseModel implements Serializable{
 	private String isGenderChkd;
 	private String isAgeRngeChkd;
 	private Long stateId;
+	private List<Long>  distIds = new ArrayList<Long>();
 	
 	
 	public Long getStateId() {
@@ -135,6 +136,11 @@ public class GeoLevelReportVO extends BaseModel implements Serializable{
 	public void setIsAgeRngeChkd(String isAgeRngeChkd) {
 		this.isAgeRngeChkd = isAgeRngeChkd;
 	}
-	
+	public List<Long> getDistIds() {
+		return distIds;
+	}
+	public void setDistIds(List<Long> distIds) {
+		this.distIds = distIds;
+	}
 	
 }
