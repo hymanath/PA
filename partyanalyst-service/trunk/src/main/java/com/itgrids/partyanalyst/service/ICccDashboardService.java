@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 
 public interface ICccDashboardService {   
 	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
@@ -48,7 +49,7 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getAssignedDesignationsForUser(Long userId);
 	public GovtDepartmentVO getAssignedLevelsForUser(Long userId,Long designationId);
 	public List<GovtDepartmentVO> getSubLevelsForUser(Long userId,Long designationId);
-	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate);
+	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate,Long userId);
 	public String updatingAlertInformation(final AlertAssigningVO inputvo);
 	public List<AlertVO> getTotalAlertByDeptForOfficer(String fromDateStr, String toDateStr,Long userId);
 	public List<AlertVO> getTotalAlertByStatusForOfficer(String fromDateStr, String toDateStr,Long userId);
@@ -72,4 +73,8 @@ public interface ICccDashboardService {
 	public String getDesignationForUser(Long userId);
 	public List<AlertCoreDashBoardVO> getDepartmentAndDistrictWiseAlertsCountsAlerts(String startDateStr,String endDateStr,Long stateId,List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long levelId,
 			List<Long> regionScopeValues,String type,Long statusId,int startIndex,int endIndex);
+	
+	public List<IdAndNameVO> getSubDesignationOfficersInfo(Long parentOfficerId);
+	public List<IdAndNameVO> getSubDesignationsInfo(Long parentOfficerId,Long levelId);
+	
 } 

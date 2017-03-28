@@ -712,57 +712,77 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		return query.list();
 	}
 	
-	public List<Object[]> getSubOrdinatesAlertDetails(Long designationId,Long levelId,Date fromDate,Date toDate){
+	public List<Object[]> getSubOrdinatesAlertDetails(Long designationId,Long levelId,Date fromDate,Date toDate,Long userLevelId,Set<Long> levelValues){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct");
 		if(levelId != null && levelId == 2l)
-			sb.append(" S.stateId,S.stateName ,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.stateId,model.govtDepartmentDesignationOfficer.userAddress.state.stateName ,");
 		else if(levelId != null && levelId == 3l)
-			sb.append(" D.districtId,D.districtName,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.district.districtId,model.govtDepartmentDesignationOfficer.userAddress.district.districtName,");
 		else if(levelId != null && levelId == 4l)
-			sb.append(" C.constituencyId,C.name,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.constituency.constituencyId,model.govtDepartmentDesignationOfficer.userAddress.constituency.name,");
 		else if(levelId != null && levelId == 5l)
-			sb.append(" T.tehsilId,T.tehsilName,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.tehsil.tehsilId,model.govtDepartmentDesignationOfficer.userAddress.tehsil.tehsilName,");
 		else if(levelId != null && levelId == 6l)
-			sb.append(" P.panchayatId,P.panchayatName,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.panchayat.panchayatId,model.govtDepartmentDesignationOfficer.userAddress.panchayat.panchayatName,");
 		else if(levelId != null && levelId == 7l)
-			sb.append(" LEB.localElectionBodyId,LEB.name,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.localElectionBody.localElectionBodyId,model.govtDepartmentDesignationOfficer.userAddress.localElectionBody..name,");
 		else if(levelId != null && levelId == 8l)
-			sb.append(" W.constituencyId,W.name,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.ward.constituencyId,model.govtDepartmentDesignationOfficer.userAddress.ward.name,");
 		
 		sb.append(" model.alertStatus.alertStatusId," +
 					" model.alertStatus.alertStatus," +
 					" count(model.alert.alertId)" +
 					" from AlertAssignedOfficer model" +
-					" left join model.govtDepartmentDesignationOfficer.userAddress UA " +
-					" left join UA.state S " +
+					//" ,  model.govtDepartmentDesignationOfficer.userAddress UA " +
+				/*	" left join UA.state S " +
 					" left join UA.district D" +
 					" left join UA.constituency C" +
 					" left join UA.tehsil T" +
 					" left join UA.localElectionBody LEB" +
 					" left join UA.panchayat P" +
-					" left join UA.ward W" +
+					" left join UA.ward W" +*/
 					" where model.alert.isDeleted = 'N' and model.isDeleted = 'N'" +
 					" and model.alert.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")" +
 					" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId = :designationId");
 		if(fromDate != null && toDate != null)
 			sb.append(" and (date(model.insertedTime) between :fromDate and :toDate)");
 		
+		if(userLevelId !=null && userLevelId.longValue()>0l && levelValues !=null && levelValues.size()>0){
+				if(userLevelId.longValue() == 2L){
+					sb.append(" and model.govtDepartmentDesignationOfficer.userAddress.stateId in (:levelValues) ");
+				}else if(userLevelId.longValue() == 3L){
+					sb.append(" and model.govtDepartmentDesignationOfficer.userAddress.district.districtId in (:levelValues) ");
+				}else if(userLevelId.longValue() == 4l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.userAddress.constituency.constituencyId in (:levelValues) ");
+				}else if(userLevelId.longValue() == 5l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.userAddress.tehsil.tehsilId in (:levelValues) ");
+				}else if(userLevelId.longValue() == 6l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.userAddress.panchayat.panchayatId in (:levelValues) ");
+				}else if(userLevelId.longValue() == 7l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.userAddress.localElectionBody.localElectionBodyId in (:levelValues) ");
+				}else if(userLevelId.longValue() == 8l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.userAddress.ward.constituencyId in (:levelValues)");
+				}
+		}
+		
+		
+		
 		sb.append(" group by");
 		if(levelId != null && levelId == 2l)
-			sb.append(" S.stateId, ");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.stateId, ");
 		else if(levelId != null && levelId == 3l)
-			sb.append(" D.districtId,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.district.districtId,");
 		else if(levelId != null && levelId == 4l)
-			sb.append(" C.constituencyId,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.constituency.constituencyId,");
 		else if(levelId != null && levelId == 5l)
-			sb.append(" T.tehsilId,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.tehsil.tehsilId,");
 		else if(levelId != null && levelId == 6l)
-			sb.append(" P.panchayatId,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.panchayat.panchayatId,");
 		else if(levelId != null && levelId == 7l)
-			sb.append(" LEB.localElectionBodyId,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.localElectionBody.localElectionBodyId,");
 		else if(levelId != null && levelId == 8l)
-			sb.append(" W.constituencyId,");
+			sb.append(" model.govtDepartmentDesignationOfficer.userAddress.ward.constituencyId,");
 		sb.append(" model.alertStatusId");
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -770,6 +790,9 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
+		}
+		if(userLevelId !=null && userLevelId.longValue()>0l && levelValues !=null && levelValues.size()>0){
+			query.setParameterList("levelValues", levelValues);
 		}
 		
 		return query.list();
