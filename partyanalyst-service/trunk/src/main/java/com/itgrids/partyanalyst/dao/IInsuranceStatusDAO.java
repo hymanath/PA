@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.CadreInsuranceInputVO;
 import com.itgrids.partyanalyst.model.InsuranceStatus;
 
 public interface IInsuranceStatusDAO extends GenericDao<InsuranceStatus, Long>{
@@ -15,5 +16,8 @@ public interface IInsuranceStatusDAO extends GenericDao<InsuranceStatus, Long>{
 	public List<Long> getStatusAndInsuranceCompanyWiseComplaintIds(Long locationId,Set<Long> locationValuesSet,Long stateId,Long cadreYearId,Date fromDate,Date toDate,
 			List<Long> statusIds,Long companyId,String issueType);
 	public List<Object[]> getStatusAndInsuranceCompanyWiseComplaintDetails(List<Long> complaintIds);
-	public List<Object[]> getLatestComplaintResponsesForComplaintIds(List<Long> complaintIds);
+	public List<Object[]> getLocationWiseComplaintCntBasedOnUserAccessLevel(CadreInsuranceInputVO inputVO);
+	public List<String> getAllIssueType(Long stateId);
+	public List<Object[]> getAllGrievanceInsuranceStatus();
+	public List<Object[]> getLatestComplaintResponsesForComplaintIds(List<Long> complaintIds); 
 }
