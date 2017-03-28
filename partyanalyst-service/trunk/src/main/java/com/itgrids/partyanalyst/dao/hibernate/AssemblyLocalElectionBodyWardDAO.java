@@ -204,7 +204,7 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 	
 	public List<Object[]> getWardsInLocalElectionBody(List<Long> localBodyIds,Long constituencyId){
 		StringBuilder str = new StringBuilder();
-		str.append("select model.constituency.constituencyId," +
+		str.append("select distinct model.constituency.constituencyId," +
 						" model.constituency.name," +
 						" concat(model.assemblyLocalElectionBody.localElectionBody.name,' ',model.assemblyLocalElectionBody.localElectionBody.electionType.electionType)" +
 						" from AssemblyLocalElectionBodyWard model" +
