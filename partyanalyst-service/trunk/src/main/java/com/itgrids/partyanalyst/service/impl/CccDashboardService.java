@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationMappingDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentLevelDAO;
@@ -42,12 +43,13 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;  
+import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficer;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerAction;
@@ -89,7 +91,13 @@ public class CccDashboardService extends AlertService implements ICccDashboardSe
 	private IGovtDepartmentLevelDetailsDAO govtDepartmentLevelDetailsDAO;
 	private IPanchayatDAO panchayatDAO;
 	
+	private IGovtDepartmentDesignationMappingDAO govtDepartmentDesignationMappingDAO;
 	
+	public void setGovtDepartmentDesignationMappingDAO(
+			IGovtDepartmentDesignationMappingDAO govtDepartmentDesignationMappingDAO) {
+		this.govtDepartmentDesignationMappingDAO = govtDepartmentDesignationMappingDAO;
+	}
+
 	public IPanchayatDAO getPanchayatDAO() {
 		return panchayatDAO;
 	}
@@ -2012,7 +2020,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 		return returnList;
 	}
 	
-	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate){
+	public List<GovtDepartmentVO> getSubOrdinatesAlertsOverView(Long designationId,Long levelId,String startDate,String endDate,Long userId){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
 			Map<Long,GovtDepartmentVO> locationMap = new LinkedHashMap<Long, GovtDepartmentVO>();
@@ -2031,7 +2039,23 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 				levelId = levelIds.get(0);
 			}
 			
-			List<Object[]> list = alertAssignedOfficerDAO.getSubOrdinatesAlertDetails(designationId, levelId, fromDate, toDate);
+			Long userLevelId=0l;
+			Set<Long> levelValues = new HashSet<Long>(0); 
+			List<Object[]> locationObj = govtDepartmentDesignationOfficerDetailsDAO.getLocationInfoOfUser(userId);
+			
+			if(locationObj !=null && locationObj.size()>0){
+				for (Object[] objects : locationObj) {
+					userLevelId = objects[0] !=null ? (Long)objects[0]:0l;
+					levelValues.add(objects[1] !=null ? (Long)objects[1]:0l);
+				}
+			}
+			
+			if(userLevelId !=null && userLevelId.longValue()>0l){
+				userLevelId = getRegionScopeIdBylevel(userLevelId);
+			}
+			
+			
+			List<Object[]> list = alertAssignedOfficerDAO.getSubOrdinatesAlertDetails(designationId, levelId, fromDate, toDate,userLevelId,levelValues);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
@@ -2069,7 +2093,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 		}
 		return returnList;
 	}
-	
+		
 	public List<GovtDepartmentVO> setStatusList(List<Object[]> list){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
@@ -2886,6 +2910,102 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 			
 		} catch (Exception e) {
 			logger.error("Error occured getDepartmentAndDistrictWiseAlertsCountsAlerts() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+
+	public List<IdAndNameVO> getSubDesignationOfficersInfo(Long userId){
+		
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>(0);
+		
+		try {
+			
+			Map<Long,List<IdAndNameVO>> desigmap = new HashMap<Long, List<IdAndNameVO>>();
+			
+			List<Long> parentDesignationIds = new ArrayList<Long>();
+			
+			
+			List<Long> designations  = govtDepartmentDesignationOfficerDetailsDAO.getDesignationInfoForUser(userId);
+			
+			Long parentDesignationId=0l;
+			if(designations !=null){
+				parentDesignationId = designations.get(0);
+			}
+			
+			parentDesignationIds.add(parentDesignationId);
+			
+			//0.parentDesignationId,1.govtDepartmentLevelId,2.levelName
+			List<Object[]> details =  govtDepartmentDesignationMappingDAO.getSubDesignationLevelInfo(parentDesignationIds);
+			
+			setLevelsIntoMapOfDesignation(details,desigmap);
+			
+			if(desigmap !=null && desigmap.size()>0){				
+				returnList = desigmap.get(parentDesignationId);				
+			}
+			
+			
+		} catch (Exception e) {
+			logger.error("Error occured getSubDesignationOfficersInfo() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public void setLevelsIntoMapOfDesignation(List<Object[]> details,Map<Long,List<IdAndNameVO>> desigmap){
+		try {
+			
+			if(details !=null && details.size()>0){
+				for (Object[] officerObj : details) {
+					
+					List<IdAndNameVO> levels = desigmap.get(officerObj[0] !=null ? (Long)officerObj[0]:null);
+					
+					if(levels == null){						
+						levels = new ArrayList<IdAndNameVO>();
+						desigmap.put((Long)officerObj[0], levels);
+					}
+					if(officerObj[1] !=null){						
+						IdAndNameVO VO = new IdAndNameVO();
+						
+						VO.setId((Long)officerObj[1]);
+						VO.setName(officerObj[2] !=null ? officerObj[2].toString():null);
+						
+						levels.add(VO);						
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error occured setLevelsIntoMapOfDesignation() method of CccDashboardService",e);
+		}
+	}
+	
+	public List<IdAndNameVO> getSubDesignationsInfo(Long userId,Long levelId){
+		List<IdAndNameVO> returnList = new ArrayList<IdAndNameVO>(0);
+		try {
+			
+			Map<Long,List<IdAndNameVO>> desigmap = new HashMap<Long, List<IdAndNameVO>>();
+			
+			
+			List<Long> designations  = govtDepartmentDesignationOfficerDetailsDAO.getDesignationInfoForUser(userId);
+			
+			Long parentDesignationId=0l;
+			if(designations !=null){
+				parentDesignationId = designations.get(0);
+			}
+			
+			
+			List<Long> parentDesignationIds = new ArrayList<Long>();			
+			parentDesignationIds.add(parentDesignationId);
+			
+			List<Object[]> objList =  govtDepartmentDesignationMappingDAO.getSubDesignationsInfo(parentDesignationIds,levelId);
+			
+			setLevelsIntoMapOfDesignation(objList,desigmap);
+			
+			if(desigmap !=null && desigmap.size()>0){				
+				returnList = desigmap.get(parentDesignationId);				
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error occured getSubDesignationListInfo() method of CccDashboardService",e);
 		}
 		return returnList;
 	}

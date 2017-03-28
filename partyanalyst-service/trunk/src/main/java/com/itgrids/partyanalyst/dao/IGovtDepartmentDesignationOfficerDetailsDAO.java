@@ -14,4 +14,6 @@ public interface IGovtDepartmentDesignationOfficerDetailsDAO extends GenericDao<
 	public List<String> getDesignationsForUser(Long userId);
 	public List<Long> getDesignationOfficerIdsNew(Long levelId,Long levelValue,Long designationId,Long officerId);
 	public List<Object[]> getDesignationsForDepartmentAndLevelLocation(Long govtDepartmentId,Long levelId,Long levelValue);
+	public List<Object[]> getLocationInfoOfUser(Long userId);
+	public List<Long> getDesignationInfoForUser(Long userId);
 }
