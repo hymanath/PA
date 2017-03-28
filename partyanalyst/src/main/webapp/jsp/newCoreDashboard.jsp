@@ -499,7 +499,7 @@
 												 <div id="userTypeWiseChildDtlsTabForAlertId"></div>
 													<div class="row impactLevelWiseComparisonBlockCls">
 														<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-														  <h4 class="text-capital" style="background-color:#ddd;padding:6px;">Impact Scope Wise Alert </h4>
+														  <h4 class="text-capital impactLevelHeadingCls" style="background-color:#ddd;padding:6px;">Impact Scope Wise Alert<span style="margin-left:12px" id="selectedMemberHeadingId"></span></h4>
 															  <div id="candidateLocationAlertDtlsStatusWiseDivId" class="m_top20"></div>
 														</div>
 													</div>
