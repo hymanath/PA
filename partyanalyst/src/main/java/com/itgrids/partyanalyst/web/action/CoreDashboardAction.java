@@ -4112,4 +4112,48 @@ public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
 			return Action.SUCCESS; 
 		  
 	}
+	public String getSelectedChildMemberCadreInsuranceComplainctCnt(){
+		try{
+			    jObj = new JSONObject(getTask());
+			 	Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+			 	List<Long> childUserTypeIds=new ArrayList<Long>();
+				JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+				if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+					for( int i=0;i<childUserTypeIdsArray.length();i++){
+						childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+					}
+				}
+				String reportType = jObj.getString("reportType");
+				Long stateId = jObj.getLong("stateId");
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long cadreEnrollmentYearId = jObj.getLong("cadreEnrollmentYearId"); 
+				activityMembersList = coreDashboardInsuranceService.getSelectedChildMemberCadreInsuranceComplainctCnt(parentActivityMemberId,childUserTypeIds,reportType,stateId,cadreEnrollmentYearId,fromDate,toDate);
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getSelectedChildMemberCadreInsuranceComplainctCnt() method of CoreDashBoardAction", e); 
+		 }
+		 return Action.SUCCESS;
+	}
+	public String getDirectChildMemberCadreInsuranceComplainctCnt(){
+		try{
+		    jObj = new JSONObject(getTask());
+		 	Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+		 	List<Long> childUserTypeIds=new ArrayList<Long>();
+			JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+			if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+				for( int i=0;i<childUserTypeIdsArray.length();i++){
+					childUserTypeIds.add(Long.valueOf(childUserTypeIdsArray.getString(i)));
+				}
+			}
+			String reportType = jObj.getString("reportType");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long cadreEnrollmentYearId = jObj.getLong("cadreEnrollmentYearId"); 
+			activityMembersList = coreDashboardInsuranceService.getSelectedChildMemberCadreInsuranceComplainctCnt(parentActivityMemberId,childUserTypeIds,reportType,stateId,cadreEnrollmentYearId,fromDate,toDate);
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getSelectedChildMemberCadreInsuranceComplainctCnt() method of CoreDashBoardAction", e); 
+		 }
+	 return Action.SUCCESS;
+	}
 }

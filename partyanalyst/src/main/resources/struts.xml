@@ -16267,23 +16267,30 @@
 				<param name="root">customReportVOList</param>
 			</result>
 	    </action>
+	     <action name="getSubDesignationOfficersInfoAction" class="cccDashboardAction" method="getSubDesignationOfficersInfo">
+			<result type="json" name="success">		   
+				<param name="root">deptList</param>
+			</result>	
+		</action>
+		<action name="getSubDesignationsInfoAction" class="cccDashboardAction" method="getSubDesignationsInfo">
+		<result type="json" name="success">		   
+			<param name="root">deptList</param>
+		</result>	
+	     </action>
 		  <action name="getUserTypeWiseTotalCadreInsuranceComplainctCntAction" class="coreDashboardAction" method="getUserTypeWiseTotalCadreInsuranceComplainctCnt">
 			<result type="json" name="success">
 	   			<param name="root">userTypeVOList</param>
 	   		</result>
 		 </action>  
-	    
-	    <action name="getSubDesignationOfficersInfoAction" class="cccDashboardAction" method="getSubDesignationOfficersInfo">
-			<result type="json" name="success">		   
-				<param name="root">deptList</param>
-			</result>	
-		</action>
-		
-		<action name="getSubDesignationsInfoAction" class="cccDashboardAction" method="getSubDesignationsInfo">
-		<result type="json" name="success">		   
-			<param name="root">deptList</param>
-		</result>	
-	</action>
-	    
+		 <action name="getSelectedChildMemberCadreInsuranceComplainctCntAction" class="coreDashboardAction" method="getSelectedChildMemberCadreInsuranceComplainctCnt">
+			<result type="json" name="success">
+	   			<param name="root">activityMembersList</param>
+	   		</result>
+		 </action> 
+		  <action name="getDirectChildMemberCadreInsuranceComplainctCntAction" class="coreDashboardAction" method="getDirectChildMemberCadreInsuranceComplainctCnt">
+			<result type="json" name="success">
+	   			<param name="root">activityMembersList</param>
+	   		</result>
+		 </action> 
  </package>
 </struts>
