@@ -6,10 +6,10 @@ import java.util.List;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
-import com.itgrids.partyanalyst.dao.IcustomReportFileDAO;
+import com.itgrids.partyanalyst.dao.ICustomReportFileDAO;
 import com.itgrids.partyanalyst.model.CustomReportFile;
 
-public class CustomReportFileDAO extends GenericDaoHibernate<CustomReportFile, Long> implements IcustomReportFileDAO {
+public class CustomReportFileDAO extends GenericDaoHibernate<CustomReportFile, Long> implements ICustomReportFileDAO {
 
 	public CustomReportFileDAO() {
 		super(CustomReportFile.class);
