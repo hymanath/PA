@@ -262,9 +262,11 @@
 		
 		highcharts(id,type,xAxis,yAxis,legend,data); */
 	
-    /* Cadre Insurance Call */
-	// getUserTypeWiseTotalCadreInsuranceComplainctCnt();
+    /* Cadre Insurance comparison Call */
+	 //getUserTypeWiseTotalCadreInsuranceComplainctCnt();
 	// getSelectedChildMemberCadreInsuranceComplainctCnt("","");
+	 //getCandiateWiseCadreInsurencaeDtls();
+	// getDirectChildMemberCadreInsuranceComplainctCnt();
 	 function getUserTypeWiseTotalCadreInsuranceComplainctCnt(){
 		  var jsObj ={ 
 		             activityMemberId : 44,//globalActivityMemberId
@@ -315,7 +317,7 @@ function getDirectChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdStr
         var jsObj = { 
 					   parentActivityMemberId : 44,
 					   childUserTypeIdsArray : childUserTypeIdsArray,
-					   reportType :"selectedUserType",
+					   reportType :"directChild",
 					   stateId : globalStateIdForCadreInsurance,           
 					   fromDate: "",        
 					   toDate :	"",
@@ -324,6 +326,23 @@ function getDirectChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdStr
 	  $.ajax({
 			type : 'POST',
 			url : 'getDirectChildMemberCadreInsuranceComplainctCntAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			console.log(result);
+		});
+}
+function getCandiateWiseCadreInsurencaeDtls(){
+	     var jsObj = { 
+					   activityMemberId : 5,
+					   stateId : globalStateIdForCadreInsurance,           
+					   fromDate: "",        
+					   toDate :	"",
+					   cadreEnrollmentYearId : 0
+				  }
+	  $.ajax({
+			type : 'POST',
+			url : 'getCandiateWiseCadreInsurencaeDtlsAction.action',
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){

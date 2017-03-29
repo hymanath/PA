@@ -16292,5 +16292,10 @@
 	   			<param name="root">activityMembersList</param>
 	   		</result>
 		 </action> 
+		  <action name="getCandiateWiseCadreInsurencaeDtlsAction" class="coreDashboardAction" method="getCandiateWiseCadreInsurencaeDtls">
+			<result type="json" name="success">
+	   			<param name="root">activityMembersList</param>
+	   		</result>
+		 </action> 
  </package>
 </struts>

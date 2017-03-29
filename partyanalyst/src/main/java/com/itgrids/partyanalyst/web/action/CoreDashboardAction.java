@@ -4156,4 +4156,19 @@ public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
 		 }
 	 return Action.SUCCESS;
 	}
+	public String getCandiateWiseCadreInsurencaeDtls(){
+		try{
+		    jObj = new JSONObject(getTask());
+		 	Long activityMemberId = jObj.getLong("activityMemberId");
+		 	Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long cadreEnrollmentYearId = jObj.getLong("cadreEnrollmentYearId"); 
+			activityMembersList = coreDashboardInsuranceService.getCandiateWiseCadreInsurencaeDtls(activityMemberId,stateId,cadreEnrollmentYearId,fromDate,toDate);
+		 }catch(Exception e){
+			 LOG.error("Exception raised at getCandiateWiseCadreInsurencaeDtls() method of CoreDashBoardAction", e); 
+		 }
+	 return Action.SUCCESS;
+	}
+	
 }
