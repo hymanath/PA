@@ -799,7 +799,7 @@ $(document).on("click",".programSkillsCls",function(){
 			$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}else if( $(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".alertsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert").hide();
+			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert,.alertComparisonblock").hide();
 			$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}
 	
@@ -880,7 +880,7 @@ $(document).on("click",".trainingIconExpand",function(){
 			$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}else if( $(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 			$(".alertsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert").hide();
+			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert,.alertComparisonblock").hide();
 			$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}else if( $(".tourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 				$(".tourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
