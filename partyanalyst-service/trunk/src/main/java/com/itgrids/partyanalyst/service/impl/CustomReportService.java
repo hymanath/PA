@@ -17,13 +17,12 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICustomReportFileDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportImageDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportLocationDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportObserverDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportProgramDAO;
-import com.itgrids.partyanalyst.dao.IcustomReportFileDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CustomReportFileDAO;
 import com.itgrids.partyanalyst.dto.CustomReportVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -45,16 +44,16 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 	private ICustomReportObserverDAO customReportObserverDAO;
     private ICustomReportLocationDAO customReportLocationDAO;
     private ICustomReportImageDAO customReportImageDAO;
-    private IcustomReportFileDAO customReportFileDAO;
+    private ICustomReportFileDAO customReportFileDAO;
 	
     
-	 public IcustomReportFileDAO getCustomReportFileDAO() {
+	
+	public ICustomReportFileDAO getCustomReportFileDAO() {
 		return customReportFileDAO;
 	}
-	public void setCustomReportFileDAO(IcustomReportFileDAO customReportFileDAO) {
+	public void setCustomReportFileDAO(ICustomReportFileDAO customReportFileDAO) {
 		this.customReportFileDAO = customReportFileDAO;
 	}
-	
 	public ICustomReportImageDAO getCustomReportImageDAO() {
 		return customReportImageDAO;
 	}
