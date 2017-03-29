@@ -226,17 +226,21 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 StringBuilder queryStr = new StringBuilder();
 	     queryStr.append("select");
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-	       queryStr.append("  state.state_id as stateId,");  
+	       queryStr.append("  state.state_id as stateId,state.state_name as stateName,");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-		     queryStr.append(" district.district_id as districtId,");  
+		     queryStr.append(" district.district_id as districtId,district.district_name as districtName,");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-		     queryStr.append(" parliamentConstituency.constituency_id as parliamentConstituencyId,");  
+		     queryStr.append(" parliamentConstituency.constituency_id as parliamentConstituencyId,parliamentConstituency.name as parliamentConName,");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-		     queryStr.append(" constituency.constituency_id as assemblyId,");  
+		     queryStr.append(" constituency.constituency_id as assemblyId,constituency.name as constituencyName,");  
 		 }
 	  
 	     queryStr.append(" CM.issue_type as issueType,GIS.grievance_insurance_status_id as grievanceInsuranceStatusId,COUNT(distinct CM.Complaint_id) as count,sum(CM.approved_amount) as approvedAmount ");
-	     queryStr.append(" FROM complaint_master CM,grievance_insurance_status GIS,tdp_cadre TC,tdp_cadre_enrollment_year EY ");
+	     queryStr.append(" FROM complaint_master CM,grievance_insurance_status GIS ");
+	     
+	     if(inputVO.getEnrollmentYearId() != null && inputVO.getEnrollmentYearId().longValue() > 0){
+	    	 queryStr.append(",tdp_cadre TC,tdp_cadre_enrollment_year EY ");
+	     }
 	     
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	       queryStr.append(",state as state WHERE state.state_id = CM.state_id_cmp ");  
@@ -249,10 +253,13 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }
 	   
 	     queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND"+
-					     " CM.type_of_issue = 'Insurance' AND "+
-					     " CM.membership_id = TC.membership_id AND "+
-					     " TC.tdp_cadre_id = EY.tdp_cadre_id AND "+
-					     " CM.delete_status IS NULL AND "+
+					     " CM.type_of_issue = 'Insurance'  ");
+	     if(inputVO.getEnrollmentYearId() != null && inputVO.getEnrollmentYearId().longValue() > 0){
+		   queryStr.append(" AND CM.membership_id = TC.membership_id AND "+
+	                       " TC.tdp_cadre_id = EY.tdp_cadre_id  ");
+
+	     }
+		 queryStr.append(" AND CM.delete_status IS NULL AND "+
 					     " (CM.`Subject` IS NOT NULL OR CM.`Subject` != '') ");
 	
 	     if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0){
@@ -286,13 +293,17 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	     queryStr.append(",CM.issue_type,GIS.grievance_insurance_status_id");
          SQLQuery sqlQuery = getSession().createSQLQuery(queryStr.toString());
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-		    sqlQuery.addScalar("stateId",Hibernate.LONG); 
+		     sqlQuery.addScalar("stateId",Hibernate.LONG); 
+		     sqlQuery.addScalar("stateName",Hibernate.STRING);
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 			 sqlQuery.addScalar("districtId",Hibernate.LONG);
+			 sqlQuery.addScalar("districtName",Hibernate.STRING);
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
 			 sqlQuery.addScalar("parliamentConstituencyId",Hibernate.LONG); 
+			 sqlQuery.addScalar("parliamentConName",Hibernate.STRING);
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 			 sqlQuery.addScalar("assemblyId",Hibernate.LONG);
+			 sqlQuery.addScalar("constituencyName",Hibernate.STRING);
 		 }
 	     sqlQuery.addScalar("issueType",Hibernate.STRING);
 	     sqlQuery.addScalar("grievanceInsuranceStatusId",Hibernate.LONG);
@@ -344,23 +355,26 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 StringBuilder queryStr = new StringBuilder();
 	     queryStr.append("select");
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-	          queryStr.append("  state.state_id as stateId,");  
+	          queryStr.append(" state.state_id as stateId,state.state_name as stateName,");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-		     queryStr.append(" district.district_id as districtId,");  
+		     queryStr.append(" district.district_id as districtId,district.district_name as districtName,");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-		     queryStr.append(" parliamentConstituency.constituency_id as parliamentConstituencyId,");  
+		     queryStr.append(" parliamentConstituency.constituency_id as parliamentConstituencyId,parliamentConstituency.name as parliamentConName,");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 			 if(inputVO.getActivityMemerId() != null && (inputVO.getActivityMemerId().longValue() == 4l || inputVO.getActivityMemerId().longValue() == 5l)){
-			  queryStr.append(" district.district_id as districtId,");  
+			  queryStr.append(" district.district_id as districtId,district.district_name as districtName, ");  
 			 }else{
-			  queryStr.append(" constituency.constituency_id as assemblyId,");	 
+			  queryStr.append(" constituency.constituency_id as assemblyId,constituency.name as constituencyName,");	 
 			 }
 		 }
 	     queryStr.append(" CM.issue_type as issueType,GIS.grievance_insurance_status_id as grievanceInsuranceStatusId,COUNT(distinct CM.Complaint_id) as count ");
 	     if(resultType.equalsIgnoreCase("complaintCnt")){
 	    	queryStr.append(",sum(CM.approved_amount) as approvedAmount"); 
 	     }
-	     queryStr.append(" FROM complaint_master CM,grievance_insurance_status GIS,tdp_cadre TC,tdp_cadre_enrollment_year EY ");
+	      queryStr.append(" FROM complaint_master CM,grievance_insurance_status GIS ");
+	      if(inputVO.getEnrollmentYearId() != null && inputVO.getEnrollmentYearId().longValue() > 0){
+	    	 queryStr.append(",tdp_cadre TC,tdp_cadre_enrollment_year EY ");
+	      }
 	     
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 	       queryStr.append(",state as state WHERE state.state_id = CM.state_id_cmp ");  
@@ -375,13 +389,21 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				 queryStr.append(",constituency as constituency WHERE constituency.constituency_id = CM.assembly_id ");	 
 			 }
 		 }
-	   
-	     queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND"+
+		     queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND"+
+				     " CM.type_of_issue = 'Insurance'  ");
+			 if(inputVO.getEnrollmentYearId() != null && inputVO.getEnrollmentYearId().longValue() > 0){
+			   queryStr.append(" AND CM.membership_id = TC.membership_id AND "+
+			                   " TC.tdp_cadre_id = EY.tdp_cadre_id  ");
+			
+			 }
+			 queryStr.append(" AND CM.delete_status IS NULL AND "+
+						     " (CM.`Subject` IS NOT NULL OR CM.`Subject` != '') ");
+	        /*   queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND"+
 					     " CM.type_of_issue = 'Insurance' AND "+
 					     " CM.membership_id = TC.membership_id AND "+
 					     " TC.tdp_cadre_id = EY.tdp_cadre_id AND "+
 					     " CM.delete_status IS NULL AND "+
-					     " (CM.`Subject` IS NOT NULL OR CM.`Subject` != '') ");
+					     " (CM.`Subject` IS NOT NULL OR CM.`Subject` != '') ");*/
 	
 	     if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0){
 			 queryStr.append(" and CM.state_id_cmp =:stateId ");
@@ -422,13 +444,22 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	     queryStr.append(",CM.issue_type,GIS.grievance_insurance_status_id");
          SQLQuery sqlQuery = getSession().createSQLQuery(queryStr.toString());
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-		    sqlQuery.addScalar("stateId",Hibernate.LONG); 
+		        sqlQuery.addScalar("stateId",Hibernate.LONG); 
+		        sqlQuery.addScalar("stateName",Hibernate.STRING);
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
-			 sqlQuery.addScalar("districtId",Hibernate.LONG);
+			    sqlQuery.addScalar("districtId",Hibernate.LONG);
+			    sqlQuery.addScalar("districtName",Hibernate.STRING);
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-			 sqlQuery.addScalar("parliamentConstituencyId",Hibernate.LONG); 
+			    sqlQuery.addScalar("parliamentConstituencyId",Hibernate.LONG);
+			    sqlQuery.addScalar("parliamentConName",Hibernate.STRING);
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
-			 sqlQuery.addScalar("assemblyId",Hibernate.LONG);
+			 if(inputVO.getActivityMemerId() != null && (inputVO.getActivityMemerId().longValue() == 4l || inputVO.getActivityMemerId().longValue() == 5l)){
+				sqlQuery.addScalar("districtId",Hibernate.LONG);
+				sqlQuery.addScalar("districtName",Hibernate.STRING);
+			 }else{
+				sqlQuery.addScalar("assemblyId",Hibernate.LONG);
+				sqlQuery.addScalar("constituencyName",Hibernate.STRING);
+			}
 		 }
 	     sqlQuery.addScalar("issueType",Hibernate.STRING);
 	     sqlQuery.addScalar("grievanceInsuranceStatusId",Hibernate.LONG);

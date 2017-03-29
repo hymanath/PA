@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -420,10 +421,19 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 		}
 		return d;
 	}
-	/*
-	 * Santosh (non-Javadoc)
-	 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getUserTypeWiseTotalCadreInsuranceComplainctCnt(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
-	 */
+	/**
+	* @param  Long activityMemberId
+	* @param  Long userId
+	* @param  Long userTypeId
+	* @param Long stateId
+	* @param cadreEnrollmentYearId
+	* @param String fromDateStr
+	* @param String toDateStr
+	* @return  List<List<UserTypeVO>>
+	* @author Santosh 
+	* @Description :This Service Method is used to get top5 strong or top5 poor members cadre complaint count wise based on candidate access location. 
+	*  @since 28-MARCH-2017
+	*/
 	public List<List<UserTypeVO>> getUserTypeWiseTotalCadreInsuranceComplainctCnt(Long activityMemberId,Long userId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,String fromDateStr,String toDateStr) {
 		 
 		  List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
@@ -466,7 +476,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			    		 inputVO.setUserAccessLevelId(entry.getKey());
 			    		 inputVO.setUserAccessLevelValues(entry.getValue());
 			    		 List<Object[]> rtrnComplaintCnt = insuranceStatusDAO.getLocationWiseComplaintCntBasedOnUserAccessLevel(inputVO);
-			    		 setComplaintCount(entry.getKey(),rtrnComplaintCnt,complainctCntMap,issueTypeList);
+			    		 setComplaintCount(entry.getKey(),rtrnComplaintCnt,complainctCntMap,issueTypeList,"complaintCnt");
 			    		
 			    	 }
 			     }
@@ -526,8 +536,8 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					    		 for(UserTypeVO issueTypeVO:vo.getSubList()){
 					    			 if(issueTypeVO.getSubList() != null && issueTypeVO.getSubList().size() >0l){
 					    				 for(UserTypeVO statusVO:issueTypeVO.getSubList()){
-					    					 vo.setTotalCount(vo.getTotalCount()+statusVO.getTotalCount());//Over All Count candidate wise
-					    					 issueTypeVO.setTotalCount(issueTypeVO.getTotalCount()+statusVO.getTotalCount());//Issue Type wise total count
+					    					 vo.setTotalCount(vo.getTotalCount()+statusVO.getTotalCount());//Over all complaint count candidate wise
+					    					 issueTypeVO.setTotalCount(issueTypeVO.getTotalCount()+statusVO.getTotalCount());//Issue type wise total complaint count
 					    				 }
 					    			 }
 					    		 }
@@ -671,7 +681,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 	    	 }
 	    	 return resultList;
 		 }
-		 public void setComplaintCount(Long userAccessLevelId,List<Object[]> objList,Map<String,UserTypeVO> locationWisecomplaintMap,List<UserTypeVO> issueTypeList){
+		 public void setComplaintCount(Long userAccessLevelId,List<Object[]> objList,Map<String,UserTypeVO> locationWisecomplaintMap,List<UserTypeVO> issueTypeList,String type){
 			 try{
 				 if(objList != null && objList.size() > 0){
 					 for(Object[] param:objList){
@@ -680,13 +690,17 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						  if(locationVO == null){
 							  locationVO = new UserTypeVO();
 							  locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							  locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							  locationVO.setSubList(getIssueTypeLst(issueTypeList));
 							  locationWisecomplaintMap.put(locationLevelAndId,locationVO);
 						  }
-						 String issueType = commonMethodsUtilService.getStringValueForObject(param[1]);
-						 Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
-						 Long complaintCnt = commonMethodsUtilService.getLongValueForObject(param[3]);
-						 Long approvedAmt = commonMethodsUtilService.getLongValueForObject(param[4]);
+						 String issueType = commonMethodsUtilService.getStringValueForObject(param[2]);
+						 Long statusId = commonMethodsUtilService.getLongValueForObject(param[3]);
+						 Long complaintCnt = commonMethodsUtilService.getLongValueForObject(param[4]);
+						 Long approvedAmt = 0l;
+						 if(type.equalsIgnoreCase("complaintCnt")){
+							  approvedAmt = commonMethodsUtilService.getLongValueForObject(param[5]);	 
+						 }
 						 List<UserTypeVO>  statusList = getIssueTypeMatchVO(locationVO.getSubList(),issueType);
 						 
 					     if(statusId == 1l || statusId == 2l){
@@ -701,8 +715,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						 if(statusList != null && statusList.size() > 0){
 							 UserTypeVO statusMatchVO = getStatusMatchVO(statusList,statusId);
 							  if(statusMatchVO != null ){
-								  statusMatchVO.setTotalCount(statusMatchVO.getTotalCount()+complaintCnt);
-								  statusMatchVO.setPositiveCount(statusMatchVO.getPositiveCount()+approvedAmt);
+								  if(type.equalsIgnoreCase("complaintCnt")){
+									  statusMatchVO.setTotalCount(statusMatchVO.getTotalCount()+complaintCnt);//complaint count
+									  statusMatchVO.setPositiveCount(statusMatchVO.getPositiveCount()+approvedAmt);//approved amount
+								  }else if(type.equalsIgnoreCase("benefitCnt")){
+									   statusMatchVO.setNegativeCount(statusMatchVO.getNegativeCount()+complaintCnt);//benefit member count
+								  }
 							  }
 						 }
 				   }
@@ -712,19 +730,19 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			 }
 		 }
 		public UserTypeVO getStatusMatchVO(List<UserTypeVO> statuVOList,Long statusId){
-				try{
-					if(statuVOList == null || statuVOList.size() == 0)
-						return null;
-					for(UserTypeVO statusVO:statuVOList){
-						if(statusVO.getId().equals(statusId)){
-							return statusVO;
-						}
+			try{
+				if(statuVOList == null || statuVOList.size() == 0)
+					return null;
+				for(UserTypeVO statusVO:statuVOList){
+					if(statusVO.getId().equals(statusId)){
+						return statusVO;
 					}
-				}catch(Exception e){
-					LOG.error("Error occured at getStatusList() in CoreDashboardInsuranceService class",e);
 				}
-				return null;
-		  }
+			}catch(Exception e){
+				LOG.error("Error occured at getStatusList() in CoreDashboardInsuranceService class",e);
+			}
+			return null;
+		}
 		public List<UserTypeVO> getIssueTypeMatchVO(List<UserTypeVO> statuVOList,String issueType){
 			try{
 				if(statuVOList == null || statuVOList.size() == 0)
@@ -739,158 +757,173 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			}
 			return null;
 	  }
-		/*
-		 * Santosh (non-Javadoc)
-		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getSelectedChildMemberCadreInsuranceComplainctCnt(java.lang.Long, java.util.List, java.lang.String, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String)
-		 */
-		@SuppressWarnings("unused")
+		/**
+		* @param  Long parentActivityMemberId
+		* @param  List<Long> childUserTypeIds
+		* @param  String reportType
+		* @param Long stateId
+		* @param cadreEnrollmentYearId
+		* @param String fromDateStr
+		* @param String toDateStr
+		* @return  List<UserTypeVO>
+		* @author Santosh 
+		* @Description :This Service Method is used to get selected child member and direct child member cadre complaint details based on selection. 
+		*  @since 29-MARCH-2017
+		*/
 		public List<UserTypeVO> getSelectedChildMemberCadreInsuranceComplainctCnt(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,Long cadreEnrollmentYearId,String fromDateStr,String toDateStr){
-			 List<UserTypeVO> resultList = new ArrayList<UserTypeVO>();
-			 List<UserTypeVO> issueTypeList = new ArrayList<UserTypeVO>();
-			 Map<String,UserTypeVO> complainctCntMap  = new HashMap<String, UserTypeVO>(0);
-			 try {
-				 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-				 Date fromDate = null;
-				 Date toDate = null;
-				 if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && fromDateStr.length() > 0){
-					fromDate = sdf.parse(fromDateStr);
-					toDate = sdf.parse(toDateStr);
-				 }
-				  //Setting query input parameter
-			     CadreInsuranceInputVO inputVO = new CadreInsuranceInputVO();
-			     inputVO.setStateId(stateId);
-			     inputVO.setFromDate(fromDate);
-			     inputVO.setToDate(toDate);
-			     inputVO.setEnrollmentYearId(cadreEnrollmentYearId);
-			    
-				 Map<Long,Set<Long>> locationLevelIdsMap=null;
-				 Map<String,String>     nameForLocationMap=null;
-				 ActivityMemberVO activityMemberVO=null;
-				 Map<Long,UserTypeVO> childActivityMembersMap=null;
-					  
-					//calling generic method to get childActivityMembers and there location level and values
-					  
-						  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
-							  activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
-							  childActivityMembersMap= activityMemberVO.getActivityMembersMap();
-							  locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
-						  }else if(reportType != null && reportType.equalsIgnoreCase("directChild")){
-							  if(childUserTypeIds != null && childUserTypeIds.size()>0){
-								   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeIds.get(0));//activityMemerId,userTypeId
+				 List<UserTypeVO> resultList = new ArrayList<UserTypeVO>();
+				 List<UserTypeVO> issueTypeList = new ArrayList<UserTypeVO>();
+				 Map<String,UserTypeVO> complainctCntMap  = new HashMap<String, UserTypeVO>(0);
+				 try {
+							 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+							 Date fromDate = null;
+							 Date toDate = null;
+							 if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && fromDateStr.length() > 0){
+								fromDate = sdf.parse(fromDateStr);
+								toDate = sdf.parse(toDateStr);
+							 }
+							  //Setting query input parameter
+						     CadreInsuranceInputVO inputVO = new CadreInsuranceInputVO();
+						     inputVO.setStateId(stateId);
+						     inputVO.setFromDate(fromDate);
+						     inputVO.setToDate(toDate);
+						     inputVO.setEnrollmentYearId(cadreEnrollmentYearId);
+						    
+							 Map<Long,Set<Long>> locationLevelIdsMap=null;
+							 Map<String,String>     nameForLocationMap=null;
+							 ActivityMemberVO activityMemberVO=null;
+							 Map<Long,UserTypeVO> childActivityMembersMap=null;
+						  
+						       //calling generic method to get childActivityMembers and there location level and values
+						  
+							  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
+								  activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
+								  childActivityMembersMap= activityMemberVO.getActivityMembersMap();
+								  locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
+							  }else if(reportType != null && reportType.equalsIgnoreCase("directChild")){
+								  if(childUserTypeIds != null && childUserTypeIds.size()>0){
+									   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeIds.get(0));//activityMemerId,userTypeId
+								  }
+								   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+								   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
 							  }
-							   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
-							   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+						  
+							  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+								  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
+							  }
+						  
+						     //PrepareTemplate
+						      List<String> rtrnissutTypeObj = insuranceStatusDAO.getAllIssueType(stateId);
+						      List<Object[]> rtrnStatusObjLst = insuranceStatusDAO.getAllGrievanceInsuranceStatus();
+						      //Prepare Template
+						      prepareTemplate(rtrnissutTypeObj,rtrnStatusObjLst,issueTypeList);
+						      //Setting Candidate Wise Template
+						      settingCandiateWiseIssueTypeAndStatusDetails(childActivityMembersMap,issueTypeList);
+						      
+						if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+					    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+					    		 inputVO.setUserAccessLevelId(entry.getKey());
+					    		 inputVO.setUserAccessLevelValues(entry.getValue());
+					    		 List<Object[]> rtrnComplaintCnt = insuranceStatusDAO.getLocationWiseComplaintCntBasedOnUserAccessLevel(inputVO);
+					    		 setComplaintCount(entry.getKey(),rtrnComplaintCnt,complainctCntMap,issueTypeList,"complaintCnt");
+					    
+					    	  }
+						    }
+						 //pushing complaint and approved amount count
+					      if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+					    	 
+					    	      for(UserTypeVO vo:childActivityMembersMap.values()){
+							    	  
+							    	  for(Long locationValueId:vo.getLocationValuesSet()){
+							    		  
+							    		  String key = vo.getLocationLevelId()+"-"+locationValueId;
+							    		  
+							    		  if(complainctCntMap.get(key) != null){
+							    			  
+							    			  UserTypeVO issueTypeVO = complainctCntMap.get(key);
+							    			  
+							    				  if(issueTypeVO.getSubList() != null && issueTypeVO.getSubList().size() > 0){
+							    					  
+							    					  for(UserTypeVO issTypeVO:issueTypeVO.getSubList()){
+							    						  
+							    						  List<UserTypeVO> statuList = getIssueTypeMatchVO(vo.getSubList(),issTypeVO.getName());
+							    						  
+							    						  if(statuList != null && statuList.size() > 0){
+							    							  
+							    							  if(issTypeVO.getSubList() != null && issTypeVO.getSubList().size() > 0){
+							    								  
+							    								for(UserTypeVO statusVO:issTypeVO.getSubList()) {
+							    									
+							    									UserTypeVO matchVO = getStatusMatchVO(statuList, statusVO.getId());
+							    									
+							    									 if(matchVO != null){
+							    										 
+							    										 matchVO.setTotalCount(matchVO.getTotalCount()+statusVO.getTotalCount());//pushing complaint count
+							    										 matchVO.setPositiveCount(matchVO.getPositiveCount()+statusVO.getPositiveCount());//we are pushing approved amount
+							    									 }
+							    								}
+							    							  }
+							    						  }
+							    					  }
+							    				  }
+							    			  }
+							    	  }
+							      }
 						  }
-					  
-						  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
-							  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
-						  }
-					  
-					     //PrepareTemplate
-					      List<String> rtrnissutTypeObj = insuranceStatusDAO.getAllIssueType(stateId);
-					      List<Object[]> rtrnStatusObjLst = insuranceStatusDAO.getAllGrievanceInsuranceStatus();
-					      //Prepare Template
-					      prepareTemplate(rtrnissutTypeObj,rtrnStatusObjLst,issueTypeList);
-					      //Setting Candidate Wise Template
-					      settingCandiateWiseIssueTypeAndStatusDetails(childActivityMembersMap,issueTypeList);
-					      
-					if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
-				    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
-				    		 inputVO.setUserAccessLevelId(entry.getKey());
-				    		 inputVO.setUserAccessLevelValues(entry.getValue());
-				    		 List<Object[]> rtrnComplaintCnt = insuranceStatusDAO.getLocationWiseComplaintCntBasedOnUserAccessLevel(inputVO);
-				    		 setComplaintCount(entry.getKey(),rtrnComplaintCnt,complainctCntMap,issueTypeList);
-				    
-				    	  }
-					    }
-					 //pushing complaint and approved amount count
-				      if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
-				    	 
-				    	      for(UserTypeVO vo:childActivityMembersMap.values()){
-						    	  
+	
+					   // setting location name for direct child 
+					   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+						      for(UserTypeVO vo:childActivityMembersMap.values()){
 						    	  for(Long locationValueId:vo.getLocationValuesSet()){
-						    		  
-						    		  String key = vo.getLocationLevelId()+"-"+locationValueId;
-						    		  
-						    		  if(complainctCntMap.get(key) != null){
-						    			  
-						    			  UserTypeVO issueTypeVO = complainctCntMap.get(key);
-						    			  
-						    				  if(issueTypeVO.getSubList() != null && issueTypeVO.getSubList().size() > 0){
-						    					  
-						    					  for(UserTypeVO issTypeVO:issueTypeVO.getSubList()){
-						    						  
-						    						  List<UserTypeVO> statuList = getIssueTypeMatchVO(vo.getSubList(),issTypeVO.getName());
-						    						  
-						    						  if(statuList != null && statuList.size() > 0){
-						    							  
-						    							  if(issTypeVO.getSubList() != null && issTypeVO.getSubList().size() > 0){
-						    								  
-						    								for(UserTypeVO statusVO:issTypeVO.getSubList()) {
-						    									
-						    									UserTypeVO matchVO = getStatusMatchVO(statuList, statusVO.getId());
-						    									
-						    									 if(matchVO != null){
-						    										 
-						    										 matchVO.setTotalCount(matchVO.getTotalCount()+statusVO.getTotalCount());
-						    										 matchVO.setPositiveCount(matchVO.getPositiveCount()+statusVO.getPositiveCount());//we are pushing approved amount
-						    									 }
-						    								}
-						    							  }
-						    						  }
-						    					  }
-						    				  }
-						    			  }
+						    		  String key = vo.getLocationLevelId()+"_"+locationValueId;
+						    		  if(vo.getLocationName() == null || vo.getLocationName().isEmpty()){
+						    			  vo.setLocationName(nameForLocationMap.get(key));
+									   }else{
+										   vo.setLocationName(vo.getLocationName()+","+ nameForLocationMap.get(key) );  
+									   }
 						    	  }
 						      }
-					  }
-
-				   // setting location name for direct child 
-				   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
-					      for(UserTypeVO vo:childActivityMembersMap.values()){
-					    	  for(Long locationValueId:vo.getLocationValuesSet()){
-					    		  String key = vo.getLocationLevelId()+"_"+locationValueId;
-					    		  if(vo.getLocationName() == null || vo.getLocationName().isEmpty()){
-					    			  vo.setLocationName(nameForLocationMap.get(key));
-								   }else{
-									   vo.setLocationName(vo.getLocationName()+","+ nameForLocationMap.get(key) );  
-								   }
-					    	  }
-					      }
-				    }
-				   
-				   // Calculate Total Complaint Count Candidate Wise
-				     if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
-				    	      for(UserTypeVO vo:childActivityMembersMap.values()){
-						    	 if(vo.getSubList() != null && vo.getSubList().size() > 0){
-						    		 for(UserTypeVO issueTypeVO:vo.getSubList()){
-						    			 if(issueTypeVO.getSubList() != null && issueTypeVO.getSubList().size() >0l){
-						    				 for(UserTypeVO statusVO:issueTypeVO.getSubList()){
-						    					 vo.setPositiveCount(vo.getPositiveCount()+statusVO.getPositiveCount());
-						    					 vo.setTotalCount(vo.getTotalCount()+statusVO.getTotalCount());//Over All Count candidate wise
-						    					 issueTypeVO.setTotalCount(issueTypeVO.getTotalCount()+statusVO.getTotalCount());//Issue Type wise total count
-						    					 issueTypeVO.setPositiveCount(issueTypeVO.getPositiveCount()+statusVO.getPositiveCount());
-						    					
-						    				 }
-						    			 }
-						    		 }
-						    	 }
+					    }
+					   
+					   // Calculate Total Complaint Count Candidate Wise
+					     if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+					    	      for(UserTypeVO vo:childActivityMembersMap.values()){
+							    	 if(vo.getSubList() != null && vo.getSubList().size() > 0){
+							    		 for(UserTypeVO issueTypeVO:vo.getSubList()){
+							    			 if(issueTypeVO.getSubList() != null && issueTypeVO.getSubList().size() >0l){
+							    				 for(UserTypeVO statusVO:issueTypeVO.getSubList()){
+							    					 vo.setPositiveCount(vo.getPositiveCount()+statusVO.getPositiveCount());
+							    					 vo.setTotalCount(vo.getTotalCount()+statusVO.getTotalCount());//Over All Count candidate wise
+							    					 issueTypeVO.setTotalCount(issueTypeVO.getTotalCount()+statusVO.getTotalCount());//Issue Type wise total count
+							    					 issueTypeVO.setPositiveCount(issueTypeVO.getPositiveCount()+statusVO.getPositiveCount());
+							    					
+							    				 }
+							    			 }
+							    		 }
+							    	 }
+						   }
 					   }
-				   }
-			 
-			  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
-				  resultList.addAll(childActivityMembersMap.values());
-			  }
-			  
-		    /*if(resultList != null && resultList.size() > 0)
-			  {
-				  Collections.sort(resultList, eventInviteeAttendedPercDesc);
-			  }*/
-			} catch (Exception e) {
-				 LOG.error("Error occured at getSelectedChildMemberCadreInsuranceComplainctCnt() in CoreDashboardInsuranceService class",e);
+				 
+					  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+						  resultList.addAll(childActivityMembersMap.values());
+					  }
+					  if(resultList != null && resultList.size() > 0){
+						 Collections.sort(resultList, cadreSortingByComplaintCount);
+					  }
+			 } catch (Exception e) {
+					 LOG.error("Error occured at getSelectedChildMemberCadreInsuranceComplainctCnt() in CoreDashboardInsuranceService class",e);
 			}
-			 return resultList;
-		 }
+		return resultList;
+	  }
+	   public static Comparator<UserTypeVO> cadreSortingByComplaintCount = new Comparator<UserTypeVO>() {
+			@Override
+			public int compare(UserTypeVO member1, UserTypeVO member2) {
+				Long count2 = member2.getTotalCount();
+				Long count1 = member1.getTotalCount();
+				//descending order of percantages.
+				 return count1.compareTo(count2);
+			}
+		};
 		public void settingCandiateWiseIssueTypeAndStatusDetails(Map<Long,UserTypeVO> userTypeMapDtls,List<UserTypeVO> issueTypeList){
 			try{
 				if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
@@ -902,4 +935,84 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				LOG.error("Error occured at settingCandiateWiseIssueTypeAndStatusDetails() in CoreDashboardInsuranceService class",e);
 			}
 		}
+		/**
+		* @param  Long activityMemberId
+		* @param Long stateId
+		* @param cadreEnrollmentYearId
+		* @param String fromDateStr
+		* @param String toDateStr
+		* @return  List<UserTypeVO>
+		* @author Santosh 
+		* @Description :This Service Method is used to get candidate wise cadre complaint details. 
+		*  @since 29-MARCH-2017
+		*/
+		public List<UserTypeVO> getCandiateWiseCadreInsurencaeDtls(Long activityMemberId,Long stateId,Long cadreEnrollmentYearId,String fromDateStr,String toDateStr){
+			 List<UserTypeVO> resultList = new ArrayList<UserTypeVO>();
+			 List<UserTypeVO> issueTypeList = new ArrayList<UserTypeVO>();
+			 Long locationAccessLevelId = 0l;
+			 Set<Long> locationValues = new HashSet<Long>(0);
+			 Map<String,UserTypeVO> complainctCntMap  = new HashMap<String, UserTypeVO>(0);
+			 try {
+				 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				 Date fromDate = null;
+				 Date toDate = null;
+				 if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && fromDateStr.length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				 }
+				 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+				 if(rtrnUsrAccssLvlIdAndVlusObjLst != null && rtrnUsrAccssLvlIdAndVlusObjLst.size() > 0){
+					 locationAccessLevelId=(Long) rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0];
+					 for(Object[] param:rtrnUsrAccssLvlIdAndVlusObjLst){
+						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					 }
+				 }
+				  //Setting query input parameter
+			     CadreInsuranceInputVO inputVO = new CadreInsuranceInputVO();
+			     inputVO.setStateId(stateId);
+			     inputVO.setFromDate(fromDate);
+			     inputVO.setToDate(toDate);
+			     inputVO.setEnrollmentYearId(cadreEnrollmentYearId);
+			     inputVO.setActivityMemerId(activityMemberId);
+			     inputVO.setUserAccessLevelId(locationAccessLevelId);
+			     inputVO.setUserAccessLevelValues(locationValues);
+			     //PrepareTemplate
+			      List<String> rtrnissutTypeObj = insuranceStatusDAO.getAllIssueType(stateId);
+			      List<Object[]> rtrnStatusObjLst = insuranceStatusDAO.getAllGrievanceInsuranceStatus();
+			      //Prepare Template
+			      prepareTemplate(rtrnissutTypeObj,rtrnStatusObjLst,issueTypeList);
+			      List<Object[]> rtrnComplaintCntObjLst = insuranceStatusDAO.getLocationWiseComplaintAndBenefitMemberCntBasedOnUserAccessLevel(inputVO, "complaintCnt");
+			      List<Object[]> rtrnBenefitCntObjLst = insuranceStatusDAO.getLocationWiseComplaintAndBenefitMemberCntBasedOnUserAccessLevel(inputVO, "BenefitCnt");
+			      setComplaintCount(locationAccessLevelId,rtrnComplaintCntObjLst,complainctCntMap,issueTypeList,"complaintCnt");
+			      setComplaintCount(locationAccessLevelId,rtrnBenefitCntObjLst,complainctCntMap,issueTypeList,"benefitCnt");
+			      //Calculate over all details candidate wise
+				     if(complainctCntMap != null && complainctCntMap.size() > 0){
+				    	      for(UserTypeVO vo:complainctCntMap.values()){
+						    	 if(vo.getSubList() != null && vo.getSubList().size() > 0){
+						    		 for(UserTypeVO issueTypeVO:vo.getSubList()){
+						    			 if(issueTypeVO.getSubList() != null && issueTypeVO.getSubList().size() >0l){
+						    				 for(UserTypeVO statusVO:issueTypeVO.getSubList()){
+						    					 vo.setPositiveCount(vo.getPositiveCount()+statusVO.getPositiveCount());//Over all approved amount location wise 
+						    					 vo.setNegativeCount(vo.getNegativeCount()+statusVO.getNegativeCount());//Over all benefit candidate count 
+						    					 vo.setTotalCount(vo.getTotalCount()+statusVO.getTotalCount());//Over all complaint Count location  wise
+						    					 issueTypeVO.setTotalCount(issueTypeVO.getTotalCount()+statusVO.getTotalCount());//Issue Type wise total count
+						    					 issueTypeVO.setPositiveCount(issueTypeVO.getPositiveCount()+statusVO.getPositiveCount());//issue type wise total approved amount
+						    					 issueTypeVO.setNegativeCount(issueTypeVO.getNegativeCount()+statusVO.getNegativeCount());//issue type wise benefit candidate count
+						    				 }
+						    			 }
+						    		 }
+						    	 }
+					   }
+				   }
+				  if(complainctCntMap != null && complainctCntMap.size() > 0){
+					  resultList = new ArrayList<UserTypeVO>(complainctCntMap.values());
+				  }
+				  if(resultList != null && resultList.size() > 0){
+						 Collections.sort(resultList, cadreSortingByComplaintCount);
+				  }
+			} catch (Exception e) {
+				 LOG.error("Error occured at getCandiateWiseCadreInsurencaeDtls() in CoreDashboardInsuranceService class",e);
+			}
+			 return resultList;
+	}
 }
