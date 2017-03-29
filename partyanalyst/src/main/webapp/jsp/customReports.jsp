@@ -67,22 +67,22 @@
 							<div id="tempDivId"></div>
 							<div class="row">
 								<div class="col-md-4 col-xs-12 col-sm-4">
-									<select class="form-control" id="programSelId">
-									</select>
+									<select class="form-control" id="programSelId"></select>
 								</div>
 								<div class="col-md-5 col-xs-12 col-sm-5">
 									<ul class="list-inline border-box">
-										<li>Total Expected Reports:
-										<span> 150</span>
+										<li>Total Expected Reports :
+										<span id="totalExpectedReportsSpanId"></span>
 										</li>
-										<li>Submited:
-										<span> 100 </span>
+										<li>Submited :
+										<span id="submittedReportsSpanId"></span>
 										</li>
-										<li>Not Submited:
-										<span> 50</span>
+										<li>Not Submited :
+										<span id="notSubmittedReportsSapnId"></span>
 										</li>
 									</ul>
 								</div>
+								<div id="detailedReportsDivId"></div>
 							</div>
 							<button type="button" class="btn btn-success uploadDivCls">Upload</button>
 					    </div>
@@ -170,15 +170,21 @@ initializeCustomReport();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			for(var i in result){
-			if(result[i].name === 'y'){
-			  var submitted = result[i].count;	
-			} 
-			 if(result[i].name === 'n'){
-				var notSubmitted = result[i].count;
+			if(result != null){
+				var totalCount = 0;
+				for(var i in result){
+					if(result[i].name === 'Y'){
+						totalCount = totalCount+result[i].count;
+						$("#submittedReportsSpanId").html(" "+result[i].count);	
+					} 
+					 if(result[i].name === 'N'){
+						 totalCount = totalCount+result[i].count;
+						$("#notSubmittedReportsSapnId").html(" "+result[i].count);
+					}
+				}
+				$("#totalExpectedReportsSpanId").html(" "+totalCount);
 			}
-			var totalExpertedReports= submitted+notSubmitted;
-			}
+			
 		});
 	}
 </script>

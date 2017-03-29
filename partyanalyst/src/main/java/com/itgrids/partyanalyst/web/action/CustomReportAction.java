@@ -76,7 +76,8 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	public void setjObj(JSONObject jObj) {
 		this.jObj = jObj;
 	}
-	public void setServletRequest(HttpServletRequest arg0) {
+	public void setServletRequest(HttpServletRequest request) {
+		this.request = request;
 	}
 	public String execute(){
 		
