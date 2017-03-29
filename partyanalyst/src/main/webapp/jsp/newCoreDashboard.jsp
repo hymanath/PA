@@ -4325,6 +4325,7 @@
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/statusColorCodesForNews.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>
