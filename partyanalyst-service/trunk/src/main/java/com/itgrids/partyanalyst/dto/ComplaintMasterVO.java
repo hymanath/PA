@@ -6,6 +6,9 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author SRAVANTH
  * @date MAR 27, 2017
@@ -34,8 +37,15 @@ public class ComplaintMasterVO {
 	private Long madalId;
 	private Long villageId;
 	private String memberShipNo;
+	private List<ComplaintScanCopyVO> scanCopyList = new ArrayList<ComplaintScanCopyVO>();
 	
 	
+	public List<ComplaintScanCopyVO> getScanCopyList() {
+		return scanCopyList;
+	}
+	public void setScanCopyList(List<ComplaintScanCopyVO> scanCopyList) {
+		this.scanCopyList = scanCopyList;
+	}
 	public String getMemberShipNo() {
 		return memberShipNo;
 	}

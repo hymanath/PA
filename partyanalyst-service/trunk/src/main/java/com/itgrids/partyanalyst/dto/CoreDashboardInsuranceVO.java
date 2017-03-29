@@ -25,6 +25,12 @@ public class CoreDashboardInsuranceVO {
 	private CoreDashboardInsuranceVO coreDashboardInsuranceVO = new CoreDashboardInsuranceVO();
 	private Double percentage = 0.00;
 	
+	private String remarks;
+	private String updatedTime;
+	private String subject;
+	private String raisedDate;
+	private String image;
+	
 	
 	public Long getId() {
 		return id;
@@ -80,5 +86,35 @@ public class CoreDashboardInsuranceVO {
 	}
 	public void setPercentage(Double percentage) {
 		this.percentage = percentage;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	public String getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(String updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	public String getSubject() {
+		return subject;
+	}
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+	public String getRaisedDate() {
+		return raisedDate;
+	}
+	public void setRaisedDate(String raisedDate) {
+		this.raisedDate = raisedDate;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
 	}
 }
