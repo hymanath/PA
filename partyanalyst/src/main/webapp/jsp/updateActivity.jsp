@@ -2971,6 +2971,7 @@ function getLocationWiseDetailsForActivity(roundId)
 				  url: 'getLocationDetailsForActivityAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
+				 $('#statsErrDiv').html('');
 				 var str='';
 				 	if( result!= null)
 					{
@@ -2984,10 +2985,12 @@ function getLocationWiseDetailsForActivity(roundId)
 					if(round==0){
 						round = 1;
 						
-						$("#attributeTypeList").empty();
-						$("#attributeTypeList").append('<option value="0">Select Option</option>');
-						$("#attributeTypeList").trigger("chosen:updated");
-						if(result[0].subList != null && result[0].subList.length > 0){
+						
+						if(result.length>0 && result[0].subList != null && result[0].subList.length > 0){
+							$("#attributeTypeList").empty();
+							$("#attributeTypeList").append('<option value="0">Select Option</option>');
+							$("#attributeTypeList").trigger("chosen:updated");
+							
 							attributesArr=[];
 							if(attributesArr.length==0){
 								 for(var i in result[0].subList){
@@ -2998,16 +3001,21 @@ function getLocationWiseDetailsForActivity(roundId)
 						  for(var i in result[0].subList){
 						   //$("#attributeTypeList").css('display','block');
 						   if(result[0].subList[i].id != null){
-						   $("#attributeTypeList").append('<option value="'+result[0].subList[i].id+'" selected>'+result[0].subList[i].name+'</option>');
-						   
+								$("#attributeTypeList").append('<option value="'+result[0].subList[i].id+'" selected>'+result[0].subList[i].name+'</option>');
+							}
 						  }
-						 }
-						 $("#attributeTypeList").trigger("chosen:updated");
+						  $("#attributeTypeList").trigger("chosen:updated");
 						}else{
+							$("#attributeTypeList").empty();
+							$("#attributeTypeList").append('<option value="0">Select Option</option>');
+							$("#attributeTypeList").trigger("chosen:updated");
+							
+							
 							if(attributesArr != null && attributesArr.length>0){
 								for(var k in attributesArr)
 									 $("#attributeTypeList").append('<option value="'+attributesArr[k].id+'" selected>'+attributesArr[k].name+'</option>');
 							}
+							 $("#attributeTypeList").trigger("chosen:updated");
 						}
 						$('#attributeTypeList').trigger('change');
 						getLocationWiseDetailsForActivity(1);
