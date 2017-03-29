@@ -1043,9 +1043,11 @@ public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> 
 			sb.append(" and model.userAddress.panchayat.panchayatId in (:villageIdsList) ");
 		}else{
 			sb.append(" and model.userAddress.panchayat.panchayatId in (:villageIdsList) ");
+			if(wardIdsList != null && wardIdsList.size() > 0)
+				sb.append(" or  model.userAddress.ward.constituencyId in (:wardIdsList) ");
 		}
 			
-	} if(wardIdsList != null && wardIdsList.size() > 0){
+	} else if(wardIdsList != null && wardIdsList.size() > 0){
 		if(wardIdsList != null && wardIdsList.size() > 0){
 			sb.append(" and  model.userAddress.ward.constituencyId in (:wardIdsList) ");
 		}else{
