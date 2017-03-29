@@ -221,6 +221,142 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		query.setParameterList("complaintIds", complaintIds);
 		return query.list();
 	}
+	
+	//Complaint Details Starts
+	
+	public List<Object[]> getAllStatusDetailsByComplaint(Long complaintId,String type)
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.complaint_tracking_id as complaintTrackingId," +
+					" model.complaint_progress_status_id as statusId," +
+					" model.comment as comment," +
+					" date(model.inserted_time) as insertedDate," +
+					" model.name as name" +
+				" from complaint_tracking model" +
+				" where model.Complaint_id =:complaintId");
+		
+		if(type.equalsIgnoreCase("grievance")){
+			sb.append(" and model.complaint_progress_status_id in (1,5)" );
+		}
+		else if(type.equalsIgnoreCase("insurance")){
+			sb.append(" and model.complaint_progress_status_id in (1,11)" );
+		}
+		sb.append(" order by model.complaint_tracking_id asc");
+		
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("complaintTrackingId", Hibernate.LONG)
+				.addScalar("statusId", Hibernate.LONG)
+				.addScalar("comment", Hibernate.STRING)
+				.addScalar("insertedDate", Hibernate.STRING)
+				.addScalar("name", Hibernate.STRING);
+		
+		/*Query query = getSession().createQuery("select " +
+		    " distinct model.complaintTrackingId,model.complaintProgressStatusId, model.comment, date(model.insertedTime),model.cadre.firstName,model.cadre.lastName" +
+		    " from ComplaintTracking model " + 
+			" where model.complaintProgressStatusId in (1,5) and model.complaintId =:complaintId " +
+			" order by model.complaintTrackingId asc ");*/
+		query.setParameter("complaintId", complaintId);
+		return query.list();
+	}
+	
+	public List<Object[]> getInsuranceStatus()
+	{
+		Query query = getSession().createSQLQuery("select model.grievance_insurance_status_id as statusId," +
+										" model.status as status," +
+										" model.order_no as orderNo" +
+										" from grievance_insurance_status model")
+										.addScalar("statusId", Hibernate.LONG)
+										.addScalar("status", Hibernate.STRING)
+										.addScalar("orderNo", Hibernate.LONG);
+		return query.list();
+	}
+	
+	public List<String> getStatusBycomplaintIdForInsurance(Long complaintId){
+		
+		Query query = getSession().createSQLQuery("select gis.status as status" +
+							" from complaint_master cm,grievance_insurance_status gis" +
+							" where cm.grievance_insurance_status_id = gis.grievance_insurance_status_id" +
+							" and (cm.delete_status !='0' or cm.delete_status is null) and cm.Subject !=''" +
+							" and cm.Complaint_id = :complaintId ")
+							.addScalar("status", Hibernate.STRING);
+		
+		query.setParameter("complaintId", complaintId);
+		return query.list();
+	}
+	
+	public List<Object[]> getComplaintScanCopies(Long complaintId){
+		Query query = getSession().createSQLQuery(" select sc.scanned_copy_id as copyId," +
+										" sc.scanned_copy_path as path," +
+										" sc.inserted_time as insertedTime" +
+									" from complaint_scanned_copy csc,scanned_copy sc,complaint_master cm " +
+									" where csc.scanned_copy_id = sc.scanned_copy_id" +
+										" and csc.complaint_id = cm.Complaint_id" +
+										" and cm.Complaint_id =:complaintId" +
+										" and sc.is_deleted = 'N'" +
+										" and (cm.delete_status !='0' or cm.delete_status is null) and cm.Subject !=''" +
+										" order by sc.scanned_copy_id desc ")
+										.addScalar("copyId", Hibernate.LONG)
+										.addScalar("path", Hibernate.STRING)
+										.addScalar("insertedTime", Hibernate.STRING);
+		query.setParameter("complaintId", complaintId);
+		
+		return query.list();
+	}
+	
+	public List getScanCopyForComplaint(Long complaintId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.scan_copy as scanCopy" +
+					" from complaint_master model" +
+					" where (model.delete_status !='0' or model.delete_status is null) and model.Subject !='' " +
+					" and model.Complaint_id = :complaintId ");
+		Query query = getSession().createSQLQuery(str.toString()).addScalar("scanCopy", Hibernate.STRING);
+		query.setParameter("complaintId", complaintId);
+		return query.list();	
+	}
+	
+	public List<Object[]> getSubjectAndDescForComplaint(Long complaintId){
+		Query query = getSession().createSQLQuery("select cm.Subject as subject,cm.description as description" +
+										" from complaint_master cm" +
+										" where cm.Complaint_id = :complaintId" +
+										" and (cm.delete_status !='0' or cm.delete_status is null) and cm.Subject !=''")
+										.addScalar("subject", Hibernate.STRING)
+										.addScalar("description", Hibernate.STRING);
+		
+		query.setParameter("complaintId", complaintId);
+		return query.list();
+	}
+	
+	public List<Object[]> getRemarks(Long complaintId){
+		Query query = getSession().createSQLQuery("select model.comment as comment,model.name as name,model.inserted_time as insertedTime" +
+							" from complaint_tracking model,complaint_master cm" +
+							" where model.Complaint_id = cm.Complaint_id" +
+							" and model.Complaint_id = :complaintId and model.complaint_progress_status_id = 2 " +
+							" and (cm.delete_status !='0' or cm.delete_status is null) and cm.Subject !='' order by model.inserted_time desc")
+							.addScalar("comment", Hibernate.STRING).addScalar("name", Hibernate.STRING).addScalar("insertedTime", Hibernate.STRING);
+		query.setParameter("complaintId", complaintId);
+		return query.list();
+	}
+	
+	public List<Object[]> getComplaintResponsesByComplaintId(Long complaintId)
+	{
+		Query query = getSession().createSQLQuery(" select model.Complaint_description as description,model2.first_name as firstName," +
+				" model.created_at as created,model2.image as image,cm.Complaint_id as complaintId" +
+				" from complaint_responses model,cadre model2,complaint_master cm " +
+				" where model.Reply_UserID = model2.cadre_id" +
+				" and model.Complaint_id = cm.Complaint_id" +
+				" and model.Complaint_id = :complaintId " +
+				" and (cm.delete_status !='0' or cm.delete_status is null) and cm.Subject !=''" +
+				" order by model.complaint_responseID desc")
+				.addScalar("description", Hibernate.STRING).addScalar("firstName", Hibernate.STRING)
+				.addScalar("created", Hibernate.STRING).addScalar("image", Hibernate.STRING).addScalar("complaintId", Hibernate.LONG);
+		
+		query.setParameter("complaintId", complaintId);
+		
+		return query.list();
+	}
+	
+	//Complaint Details Ends
 	  public List<Object[]> getLocationWiseComplaintCntBasedOnUserAccessLevel(CadreInsuranceInputVO inputVO){
 		
 		 StringBuilder queryStr = new StringBuilder();
