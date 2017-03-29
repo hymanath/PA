@@ -235,7 +235,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		     queryStr.append(" constituency.constituency_id as assemblyId,");  
 		 }
 	  
-	     queryStr.append(" CM.issue_type as issueType,GIS.grievance_insurance_status_id as grievanceInsuranceStatusId,COUNT(distinct CM.Complaint_id) as count ");
+	     queryStr.append(" CM.issue_type as issueType,GIS.grievance_insurance_status_id as grievanceInsuranceStatusId,COUNT(distinct CM.Complaint_id) as count,sum(CM.approved_amount) as approvedAmount ");
 	     queryStr.append(" FROM complaint_master CM,grievance_insurance_status GIS,tdp_cadre TC,tdp_cadre_enrollment_year EY ");
 	     
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -247,6 +247,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 		     queryStr.append(",constituency as constituency WHERE constituency.constituency_id = CM.assembly_id ");  
 		 }
+	   
 	     queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND"+
 					     " CM.type_of_issue = 'Insurance' AND "+
 					     " CM.membership_id = TC.membership_id AND "+
@@ -296,6 +297,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	     sqlQuery.addScalar("issueType",Hibernate.STRING);
 	     sqlQuery.addScalar("grievanceInsuranceStatusId",Hibernate.LONG);
 	     sqlQuery.addScalar("count",Hibernate.LONG);
+	     sqlQuery.addScalar("approvedAmount",Hibernate.LONG);
 	     
 	     if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0){
 		   sqlQuery.setParameter("stateId", inputVO.getStateId());	
@@ -337,4 +339,117 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		  sqlQuery.addScalar("status",Hibernate.STRING);
 		  return sqlQuery.list();
 	 }
+	 public List<Object[]> getLocationWiseComplaintAndBenefitMemberCntBasedOnUserAccessLevel(CadreInsuranceInputVO inputVO,String resultType){
+			
+		 StringBuilder queryStr = new StringBuilder();
+	     queryStr.append("select");
+	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	          queryStr.append("  state.state_id as stateId,");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		     queryStr.append(" district.district_id as districtId,");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		     queryStr.append(" parliamentConstituency.constituency_id as parliamentConstituencyId,");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 if(inputVO.getActivityMemerId() != null && (inputVO.getActivityMemerId().longValue() == 4l || inputVO.getActivityMemerId().longValue() == 5l)){
+			  queryStr.append(" district.district_id as districtId,");  
+			 }else{
+			  queryStr.append(" constituency.constituency_id as assemblyId,");	 
+			 }
+		 }
+	     queryStr.append(" CM.issue_type as issueType,GIS.grievance_insurance_status_id as grievanceInsuranceStatusId,COUNT(distinct CM.Complaint_id) as count ");
+	     if(resultType.equalsIgnoreCase("complaintCnt")){
+	    	queryStr.append(",sum(CM.approved_amount) as approvedAmount"); 
+	     }
+	     queryStr.append(" FROM complaint_master CM,grievance_insurance_status GIS,tdp_cadre TC,tdp_cadre_enrollment_year EY ");
+	     
+	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	       queryStr.append(",state as state WHERE state.state_id = CM.state_id_cmp ");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		     queryStr.append(",district as district WHERE district.district_id = CM.district_id ");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		     queryStr.append(",constituency as parliamentConstituency WHERE parliamentConstituency.constituency_id = CM.parliament_id");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 if(inputVO.getActivityMemerId() != null && (inputVO.getActivityMemerId().longValue() == 4l || inputVO.getActivityMemerId().longValue() == 5l)){
+				  queryStr.append(",constituency as constituency,district as district WHERE constituency.constituency_id = CM.assembly_id and district.district_id=constituency.district_id "); 
+			 }else{
+				 queryStr.append(",constituency as constituency WHERE constituency.constituency_id = CM.assembly_id ");	 
+			 }
+		 }
+	   
+	     queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id AND"+
+					     " CM.type_of_issue = 'Insurance' AND "+
+					     " CM.membership_id = TC.membership_id AND "+
+					     " TC.tdp_cadre_id = EY.tdp_cadre_id AND "+
+					     " CM.delete_status IS NULL AND "+
+					     " (CM.`Subject` IS NOT NULL OR CM.`Subject` != '') ");
+	
+	     if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0){
+			 queryStr.append(" and CM.state_id_cmp =:stateId ");
+		 }
+	     if(inputVO.getEnrollmentYearId() != null && inputVO.getEnrollmentYearId().longValue() > 0){
+	    	 queryStr.append(" and EY.enrollment_year_id =:enrollmentYearId ");
+	     }
+	     if(inputVO.getFromDate() !=null && inputVO.getToDate() !=null){
+			 queryStr.append(" and date(CM.Raised_Date) between :startDate and :endDate  ");
+		 }
+	     if(resultType.equalsIgnoreCase("BenefitCnt")){
+	    	queryStr.append(" and CM.approved_amount is not null "); 
+	     }
+	   
+	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		 	queryStr.append(" and state.state_id in (:userAccessLevelValues)");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		    queryStr.append(" and district.district_id in (:userAccessLevelValues)");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		    queryStr.append(" and parliamentConstituency.constituency_id in (:userAccessLevelValues)");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			queryStr.append(" and constituency.constituency_id in (:userAccessLevelValues)");  
+		 }
+	     
+	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+	         queryStr.append("  group by state.state_id");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+		     queryStr.append(" group by district.district_id");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		     queryStr.append(" group by parliamentConstituency.constituency_id");  
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 if(inputVO.getActivityMemerId() != null && (inputVO.getActivityMemerId().longValue() == 4l || inputVO.getActivityMemerId().longValue() == 5l)){
+				  queryStr.append(" group by district.district_id "); 
+			 }else{
+			      queryStr.append(" group by constituency.constituency_id");  
+			 }
+		 }
+	     queryStr.append(",CM.issue_type,GIS.grievance_insurance_status_id");
+         SQLQuery sqlQuery = getSession().createSQLQuery(queryStr.toString());
+	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+		    sqlQuery.addScalar("stateId",Hibernate.LONG); 
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			 sqlQuery.addScalar("districtId",Hibernate.LONG);
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			 sqlQuery.addScalar("parliamentConstituencyId",Hibernate.LONG); 
+		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 sqlQuery.addScalar("assemblyId",Hibernate.LONG);
+		 }
+	     sqlQuery.addScalar("issueType",Hibernate.STRING);
+	     sqlQuery.addScalar("grievanceInsuranceStatusId",Hibernate.LONG);
+	     sqlQuery.addScalar("count",Hibernate.LONG);
+	     if(resultType.equalsIgnoreCase("complaintCnt")){
+	    	 sqlQuery.addScalar("approvedAmount",Hibernate.LONG); 
+		 }
+	     
+	     if(inputVO.getStateId() != null && inputVO.getStateId().longValue() > 0){
+		   sqlQuery.setParameter("stateId", inputVO.getStateId());	
+		 }
+	     if(inputVO.getEnrollmentYearId() != null && inputVO.getEnrollmentYearId().longValue() > 0){
+	    	 sqlQuery.setParameter("enrollmentYearId", inputVO.getEnrollmentYearId());
+	     }
+		 if(inputVO.getUserAccessLevelValues() != null && inputVO.getUserAccessLevelValues().size() > 0){
+		    sqlQuery.setParameterList("userAccessLevelValues", inputVO.getUserAccessLevelValues());
+		 }
+		 if(inputVO.getFromDate() !=null && inputVO.getToDate() !=null){
+			  sqlQuery.setDate("startDate", inputVO.getFromDate());
+			  sqlQuery.setDate("endDate", inputVO.getToDate());
+		 }
+		 return sqlQuery.list();
+	}
 }
