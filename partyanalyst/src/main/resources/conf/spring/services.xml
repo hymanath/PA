@@ -4120,6 +4120,7 @@
 		<property name="customReportObserverDAO" ref="customReportObserverDAO" ></property>
 		<property name="customReportLocationDAO" ref="customReportLocationDAO" ></property>
 		<property name="customReportImageDAO" ref="customReportImageDAO" ></property>
+		<property name="transactionTemplate" ref="transactionTemplate" ></property>
 	</bean>
 	
 	<bean name="coreDashboardInsuranceService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardInsuranceService">
