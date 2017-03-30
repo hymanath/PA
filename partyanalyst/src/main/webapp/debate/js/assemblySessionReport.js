@@ -1,7 +1,5 @@
-alert(1)
 //getElectionYears();
 function getElectionYears(){
-alert(5)
 	var jObj = {
 			};		
 			$.ajax({
@@ -79,10 +77,8 @@ function getDates(){
 					}
 			 });
 }
-getSessionDetails();
+//getSessionDetails();
 function getSessionDetails(){
-	alert(2)
-	
 	var startDate;
 	var endDate;
 	//var termId = $("#elctonId").val();
@@ -104,6 +100,18 @@ function getSessionDetails(){
 			$.ajax({
 				  type:'POST',
 				  url: 'getSessionDetailsAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){
+			 });
+}
+getDayWiseDetails();
+function getDayWiseDetails(){
+	var jObj = {
+				 adminHouseSessionDayId : 145
+			};		
+			$.ajax({
+				  type:'POST',
+				  url: 'getDayWiseDetailsAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
 			 });
