@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.AdminHouseMember;
 
 public interface IAdminHouseMemberDAO extends GenericDao<AdminHouseMember, Long>{
 	
+	public List<Object[]> getcandateNameForPartyId(Long partyId);
+	
 }
