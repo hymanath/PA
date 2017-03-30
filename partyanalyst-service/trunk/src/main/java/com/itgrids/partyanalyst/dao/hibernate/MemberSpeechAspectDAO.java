@@ -120,5 +120,33 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		return query.list();
 		
 	}
+	public MemberSpeechAspect updateMemberDetails(Long adminHouseMemberId,Long adminHouseSessionDayId,Long speechAspectId){
+		StringBuilder sb = new StringBuilder();
+			sb.append("select model" +
+					" from MemberSpeechAspect model " +
+					" where model.isDeleted = 'N' and model.adminHouseMember.isDeleted = 'N' ");
+		if(adminHouseMemberId != null && adminHouseMemberId.longValue() > 0l)
+		{
+			sb.append(" and model.adminHouseMember.adminHouseMemberId = :adminHouseMemberId");	
+		}
+		if(adminHouseSessionDayId != null && adminHouseSessionDayId.longValue() > 0l)
+		{
+			sb.append(" and model.adminHouseSessionDay.adminHouseSessionDayId = :adminHouseSessionDayId");
+		}
+		if(speechAspectId != null && speechAspectId.longValue() > 0l)
+		{
+			sb.append(" and model.speechAspect.speechAspectId = :speechAspectId");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(adminHouseMemberId != null && adminHouseMemberId.longValue() > 0l)
+			query.setParameter("adminHouseMemberId", adminHouseMemberId);
+		if(adminHouseSessionDayId != null && adminHouseSessionDayId.longValue() > 0l)
+			query.setParameter("adminHouseSessionDayId", adminHouseSessionDayId);
+		if(speechAspectId != null && speechAspectId.longValue() > 0l)
+			query.setParameter("speechAspectId", speechAspectId);
+		
+		return (MemberSpeechAspect) query.uniqueResult();
+	}
 
 }
