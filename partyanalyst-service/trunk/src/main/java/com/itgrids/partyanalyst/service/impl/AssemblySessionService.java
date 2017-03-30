@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IAdminHouseMemberDAO;
 import com.itgrids.partyanalyst.dao.IAdminHouseSessionDAO;
 import com.itgrids.partyanalyst.dao.IAdminHouseTermDAO;
 import com.itgrids.partyanalyst.dao.IHouseSessionDAO;
@@ -16,7 +17,7 @@ import com.itgrids.partyanalyst.dao.IMemberSpeechAspectDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ISpeechAspectDAO;
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
-import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
+import com.itgrids.partyanalyst.model.MemberSpeechAspect;
 import com.itgrids.partyanalyst.service.IAssemblySessionService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
@@ -31,6 +32,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 	private IPartyDAO partyDAO;
 	private IAdminHouseSessionDAO adminHouseSessionDAO;
 	private ISpeechAspectDAO speechAspectDAO;
+	private IAdminHouseMemberDAO adminHouseMemberDAO;
 	
 	
 	public IAdminHouseSessionDAO getAdminHouseSessionDAO() {
@@ -69,14 +71,20 @@ public class AssemblySessionService implements IAssemblySessionService{
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}
-	
-	
 	public ISpeechAspectDAO getSpeechAspectDAO() {
 		return speechAspectDAO;
 	}
 	public void setSpeechAspectDAO(ISpeechAspectDAO speechAspectDAO) {
 		this.speechAspectDAO = speechAspectDAO;
 	}
+	public IAdminHouseMemberDAO getAdminHouseMemberDAO() {
+		return adminHouseMemberDAO;
+	}
+	public void setAdminHouseMemberDAO(IAdminHouseMemberDAO adminHouseMemberDAO) {
+		this.adminHouseMemberDAO = adminHouseMemberDAO;
+	}
+	
+	
 	public List<AdminHouseVO> getAllElecYears(){
 		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
 		try{
@@ -275,8 +283,8 @@ public class AssemblySessionService implements IAssemblySessionService{
 						}else{
 							AdminHouseVO  speechAspectVO = getMatchedVOAspectList(candidateVO.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[5]));
 							 if(speechAspectVO != null){
-								 speechAspectVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[6]));
-								 partyVO.setTotal(partyVO.getTotal()+speechAspectVO.getCount());
+								 speechAspectVO.setScore(Double.valueOf(objects[6] != null ? objects[6].toString():"0.0"));
+								 partyVO.setTotal(partyVO.getTotal()+speechAspectVO.getScore());
 							 }
 						}
 					}
@@ -328,6 +336,68 @@ public class AssemblySessionService implements IAssemblySessionService{
 			 LOG.error("Exception Occured in getMatchedVOList() method, Exception - ",e);
 		}
 		return null;
+	}
+	
+	public String updateMemberSpeechAspectDetails(final AdminHouseVO adminHouseVO){
+		String status = null;
+		try{
+			if(adminHouseVO != null){
+				List<AdminHouseVO> speechAspectList = adminHouseVO.getCandidateList();
+				if(speechAspectList != null && speechAspectList.size() > 0l){
+					for (AdminHouseVO  adminHousevo: speechAspectList) {
+							MemberSpeechAspect memberSpeechAspect = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
+							if(memberSpeechAspect != null){
+								memberSpeechAspect.setScore(adminHousevo.getValue());
+								memberSpeechAspectDAO.save(memberSpeechAspect);
+								status = "success";
+							}
+						}
+					}
+				}
+		}catch(Exception e){
+			status = "failure";
+			 LOG.error("Exception Occured in updateMemberSpeechAspectDetails() method, Exception - ",e);
+		}
+		return status;
+	}
+	public String deleteMemberDetails(final AdminHouseVO adminHouseVO){
+		String status = null;
+		try{
+			if(adminHouseVO != null){
+				List<AdminHouseVO> speechAspectList = adminHouseVO.getCandidateList();
+				if(speechAspectList != null && speechAspectList.size() > 0l){
+					for (AdminHouseVO  adminHousevo: speechAspectList) {
+							MemberSpeechAspect memberSpeechAspect = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
+							if(memberSpeechAspect != null){
+								memberSpeechAspect.setIsDeleted("Y");
+								memberSpeechAspectDAO.save(memberSpeechAspect);
+								status = "success";
+							}
+						}
+					}
+				}
+		}catch(Exception e){
+			status = "failure";
+			 LOG.error("Exception Occured in deleteMemberDetails() method, Exception - ",e);
+		}
+		return status;
+	}
+	public List<AdminHouseVO> getCandidateNameForParty(Long partyId){
+		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
+		try{
+			List<Object[]> partyList = adminHouseMemberDAO.getcandateNameForPartyId(partyId);
+			if(partyList != null && partyList.size() > 0){
+				for (Object[] objects : partyList) {
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setAdminHouseMemberId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					returnList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			 LOG.error("Exception Occured in getCandidateNameForParty() method, Exception - ",e);
+		}
+		return returnList;
 	}
 }
 
