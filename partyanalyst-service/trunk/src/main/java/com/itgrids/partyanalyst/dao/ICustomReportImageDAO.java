@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.CustomReportImage;
 
 public interface ICustomReportImageDAO extends GenericDao<CustomReportImage, Long> {
 	public List<Object[]> getImageDetails(Long programId);
+	public List<Object[]> getImageForAReport(Long reportId);
 }
