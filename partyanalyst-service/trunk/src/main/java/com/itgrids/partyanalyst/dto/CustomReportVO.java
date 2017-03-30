@@ -7,6 +7,7 @@ import java.util.List;
 
 public class CustomReportVO implements Serializable {
 	
+	public static final long getScope = 0;
 	private Long id;
 	private String name;
 	private Long count = 0l;
@@ -21,6 +22,8 @@ public class CustomReportVO implements Serializable {
 	private String membershipNo;
 	private String voterNum;
 	private String mobileNum;
+	private Long locationId;
+	private String locationName;
 	
 	private List<CustomReportVO> observersList = new ArrayList<CustomReportVO>(0);
 	private List<CustomReportVO> locationsList = new ArrayList<CustomReportVO>(0);
@@ -29,6 +32,18 @@ public class CustomReportVO implements Serializable {
 		
 	
 	
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
 	public String getMobileNum() {
 		return mobileNum;
 	}
@@ -52,7 +67,8 @@ public class CustomReportVO implements Serializable {
 	}
 	public void setPath(String path) {
 		this.path = path;
-	}
+	}	
+
 	public String getScope() {
 		return scope;
 	}

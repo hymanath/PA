@@ -17,16 +17,30 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportFileDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportImageDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportLocationDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportObserverDAO;
 import com.itgrids.partyanalyst.dao.ICustomReportProgramDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CustomReportDAO;
 import com.itgrids.partyanalyst.dto.CustomReportVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.CustomReportFile;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Panchayat;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ICustomReportService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -45,9 +59,57 @@ public class CustomReportService extends AlertService implements ICustomReportSe
     private ICustomReportLocationDAO customReportLocationDAO;
     private ICustomReportImageDAO customReportImageDAO;
     private ICustomReportFileDAO customReportFileDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private ITehsilDAO tehsilDAO;
+	private IPanchayatDAO panchayatDAO;
+    private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IBoothDAO boothDAO;
+	private IStateDAO stateDAO;
 	
-    
 	
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+	public IPanchayatDAO getPanchayatDAO() {
+		return panchayatDAO;
+	}
+	public void setPanchayatDAO(IPanchayatDAO panchayatDAO) {
+		this.panchayatDAO = panchayatDAO;
+	}
 	public ICustomReportFileDAO getCustomReportFileDAO() {
 		return customReportFileDAO;
 	}
@@ -284,6 +346,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						CustomReportVO vo = new CustomReportVO();
 						vo.setReportId((Long)objects[0]);
 						vo.setId((Long)objects[1]);
+						
 						vo.setName(objects[2].toString());
 						newObserverVoList.add(vo);
 						observersMap.put((Long)objects[0], newObserverVoList);
@@ -308,6 +371,34 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						vo.setReportId((Long)objects[0]);
 						vo.setId((Long)objects[1]);
 						vo.setScope(objects[2].toString());
+						if((Long) objects[3] == 2l){
+							State state = stateDAO.get((Long) objects[3]);
+							 vo.setLocationName(state.getStateName());
+						}else if((Long) objects[3] == 3l){
+						  District dist = districtDAO.get((Long) objects[3]);
+						    vo.setLocationName(dist.getDistrictName());
+						}else if((Long) objects[3] == 4l){
+							Constituency cons = constituencyDAO.get((Long) objects[3]);
+							vo.setLocationName(cons.getName()+" Constituency ");
+						}else if((Long) objects[3] == 5l){
+							Tehsil tehsil = tehsilDAO.get((Long) objects[3]);
+							vo.setLocationName(tehsil.getTehsilName()+" Mandal ");
+						}else if((Long) objects[3] == 6l){
+							Panchayat panc = panchayatDAO.get((Long) objects[3]);
+							 vo.setLocationName(panc.getPanchayatName()+" Panchayat ");
+						}else if((Long) objects[3] == 7l){
+							LocalElectionBody leb = localElectionBodyDAO.get((Long) objects[3]);
+							vo.setLocationName(leb.getName()+" Municipality ");
+						}else if((Long) objects[3] == 8l){
+							Constituency ward = constituencyDAO.get((Long) objects[3]);
+							 vo.setLocationName(ward.getName()+" Ward ");
+						}else if((Long) objects[3] == 9l){
+							Booth booth = boothDAO.get((Long) objects[3]);
+							  vo.setLocationName(booth.getPartName()+ " Booth ");
+						}else if((Long) objects[3] == 9l){
+							Constituency parliamentCons = constituencyDAO.get((Long) objects[3]);
+							  vo.setLocationName(parliamentCons.getName());
+						}
 						vo.setLocationValue((Long)objects[3]);
 						newLocationVoList.add(vo);
 						locationsMap.put((Long)objects[0], newLocationVoList);						
@@ -316,6 +407,34 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						vo.setReportId((Long)objects[0]);
 						vo.setId((Long)objects[1]);
 						vo.setScope(objects[2].toString());
+						if((Long) objects[3] == 2l){
+							State state = stateDAO.get((Long) objects[3]);
+							 vo.setLocationName(state.getStateName());
+						}else if((Long) objects[3] == 3l){
+						  District dist = districtDAO.get((Long) objects[3]);
+						    vo.setLocationName(dist.getDistrictName());
+						}else if((Long) objects[3] == 4l){
+							Constituency cons = constituencyDAO.get((Long) objects[3]);
+							vo.setLocationName(cons.getName()+" Constituency ");
+						}else if((Long) objects[3] == 5l){
+							Tehsil tehsil = tehsilDAO.get((Long) objects[3]);
+							vo.setLocationName(tehsil.getTehsilName()+" Mandal ");
+						}else if((Long) objects[3] == 6l){
+							Panchayat panc = panchayatDAO.get((Long) objects[3]);
+							 vo.setLocationName(panc.getPanchayatName()+" Panchayat ");
+						}else if((Long) objects[3] == 7l){
+							LocalElectionBody leb = localElectionBodyDAO.get((Long) objects[3]);
+							vo.setLocationName(leb.getName()+" Municipality ");
+						}else if((Long) objects[3] == 8l){
+							Constituency ward = constituencyDAO.get((Long) objects[3]);
+							 vo.setLocationName(ward.getName()+" Ward ");
+						}else if((Long) objects[3] == 9l){
+							Booth booth = boothDAO.get((Long) objects[3]);
+							  vo.setLocationName(booth.getPartName()+ " Booth ");
+						}else if((Long) objects[3] == 9l){
+							Constituency parliamentCons = constituencyDAO.get((Long) objects[3]);
+							  vo.setLocationName(parliamentCons.getName());
+						}
 						vo.setLocationValue((Long)objects[3]);
 						locationsMap.get((Long)objects[0]).add(vo);
 					}
@@ -432,11 +551,11 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 			}
 		}
 		return null;
-	}
-	
+	}	
 	public CustomReportVO getReportFullDetails(Long reportId){
 		CustomReportVO vo = new CustomReportVO();
 		try {
+			//observer
 			//0-tdpCadreId,1-membershipnum,2-firstname,3-image,4-voterIDCardNo,5-mobileNo
 			List<Object[]> observersObjList = customReportObserverDAO.getObserversForAReport(reportId);
 			
@@ -451,13 +570,35 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 					observerVO.setMobileNum(objects[5].toString());
 					vo.getObserversList().add(observerVO);
 				}
+			}/*
+			  //image 
+		     //0-customReportimageId,1-imageName,2-path 
+			List<Object[]> imageObjList = customReportImageDAO.getImageForAReport(reportId);
+			if(imageObjList != null && imageObjList.size() > 0){
+				for (Object[] objects : imageObjList) {
+					CustomReportVO imageVO = new CustomReportVO();
+					imageVO.setId((Long)objects[0]);
+					imageVO.setName(objects[1].toString());
+					imageVO.setPath("/cadreImages/"+objects[2].toString());
+					vo.getImagesList().add(imageVO);
+				}
+				
+			}*/
+			//File
+			//0-customReportFileId,1-fileName,2-path
+			List<Object[]> fileObjList = customReportFileDAO.getFileForAReport(reportId);
+			if(fileObjList != null && fileObjList.size() > 0){
+				for (Object[] objects : fileObjList) {
+					CustomReportVO fileVO = new CustomReportVO();
+					fileVO.setId((Long)objects[0]);
+					fileVO.setName(objects[1].toString());
+					fileVO.setPath("/cadreReports/"+objects[2].toString());
+					vo.getFileList().add(fileVO);
+				}
 			}
-			
-			
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getReportFullDetails(-) method, Exception - ",e);
 		}
 		return vo;
 	}
-
 }
