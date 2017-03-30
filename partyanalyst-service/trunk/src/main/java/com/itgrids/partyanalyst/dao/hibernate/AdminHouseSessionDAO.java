@@ -19,7 +19,7 @@ public class AdminHouseSessionDAO extends GenericDaoHibernate<AdminHouseSession,
 		
 		sb.append(" select model.houseSession.houseSessionId,model.houseSession.sessionName from AdminHouseSession model where " +
 				" model.houseSession.isDeleted = 'N' and model.houseSession.isActive = 'Y' and " +
-				"model.adminHouse.adminHouseId = 1 and model.adminHouseTerm.isDeleted = 'N' and model.adminHouseTerm.isActive = 'Y' " );
+				"model.houseSession.adminHouse.adminHouseId = 3 and model.adminHouseTerm.isDeleted = 'N' and model.adminHouseTerm.isActive = 'Y' " );
 		 if(termId != null && termId.longValue() > 0l){
 			 sb.append(" and model.adminHouseTerm.adminHouseTermId = :termId " ); 
 		 }
@@ -41,7 +41,7 @@ public class AdminHouseSessionDAO extends GenericDaoHibernate<AdminHouseSession,
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select distinct model.year,model.yearDesc from AdminHouseSession model where " +
-				" model.adminHouse.adminHouseId = 1 and model.adminHouseTerm.isDeleted = 'N' " +
+				" model.houseSession.adminHouse.adminHouseId = 3 and model.adminHouseTerm.isDeleted = 'N' " +
 				" and model.adminHouseTerm.isActive = 'Y'  and model.isActive = 'Y' and model.isDeleted = 'N' " );
 		 if(termId != null && termId.longValue() > 0l){
 			 sb.append(" and model.adminHouseTerm.adminHouseTermId = :termId " ); 
@@ -56,9 +56,9 @@ public class AdminHouseSessionDAO extends GenericDaoHibernate<AdminHouseSession,
 	
 	public Object[] getDates(Long termId,String sessionYear,Long sessionId){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select min(model.fromDate),max(model.toDate)" +
-				" from AdminHouseSession model " +
-				" model.adminHouse.adminHouseId = 1 and model.adminHouseTerm.isDeleted = 'N' " +
+		sb.append("select min(model.fromDate),max(model.toDate) " +
+				" from AdminHouseSession model  where " +
+				" model.houseSession.adminHouse.adminHouseId = 3 and model.adminHouseTerm.isDeleted = 'N' " +
 				" and model.adminHouseTerm.isActive = 'Y' and model.isActive = 'Y' and model.isDeleted = 'N' " );
 		if(termId != null && termId.longValue() > 0l){
 			sb.append(" and model.adminHouseTerm.adminHouseTermId = :termId " ); 

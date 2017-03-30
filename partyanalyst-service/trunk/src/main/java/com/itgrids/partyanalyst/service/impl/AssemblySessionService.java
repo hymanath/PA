@@ -3,11 +3,15 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAdminHouseMemberDAO;
 import com.itgrids.partyanalyst.dao.IAdminHouseSessionDAO;
@@ -17,7 +21,11 @@ import com.itgrids.partyanalyst.dao.IMemberSpeechAspectDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ISpeechAspectDAO;
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
+import com.itgrids.partyanalyst.dto.AssemblySessionReportVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.MemberSpeechAspect;
+import com.itgrids.partyanalyst.model.SpeechAspect;
 import com.itgrids.partyanalyst.service.IAssemblySessionService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
@@ -25,16 +33,32 @@ public class AssemblySessionService implements IAssemblySessionService{
 
 	
 	private final static Logger LOG = Logger.getLogger(AssemblySessionService.class);
-	private IAdminHouseTermDAO adminHouseTermDAO;
-	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
-	private IHouseSessionDAO houseSessionDAO;
-	private IMemberSpeechAspectDAO memberSpeechAspectDAO;
-	private IPartyDAO partyDAO;
-	private IAdminHouseSessionDAO adminHouseSessionDAO;
-	private ISpeechAspectDAO speechAspectDAO;
 	private IAdminHouseMemberDAO adminHouseMemberDAO;
 	
+	private ISpeechAspectDAO 					speechAspectDAO;
+	private TransactionTemplate 				transactionTemplate;
 	
+	private IAdminHouseTermDAO 					adminHouseTermDAO;
+	private CommonMethodsUtilService 	commonMethodsUtilService = new CommonMethodsUtilService();
+	private IHouseSessionDAO 					houseSessionDAO;
+	private IMemberSpeechAspectDAO 				memberSpeechAspectDAO;
+	private IPartyDAO 							partyDAO;
+	private IAdminHouseSessionDAO 				adminHouseSessionDAO;
+	
+	
+	
+	public ISpeechAspectDAO getSpeechAspectDAO() {
+		return speechAspectDAO;
+	}
+	public void setSpeechAspectDAO(ISpeechAspectDAO speechAspectDAO) {
+		this.speechAspectDAO = speechAspectDAO;
+	}
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
 	public IAdminHouseSessionDAO getAdminHouseSessionDAO() {
 		return adminHouseSessionDAO;
 	}
@@ -71,12 +95,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}
-	public ISpeechAspectDAO getSpeechAspectDAO() {
-		return speechAspectDAO;
-	}
-	public void setSpeechAspectDAO(ISpeechAspectDAO speechAspectDAO) {
-		this.speechAspectDAO = speechAspectDAO;
-	}
+	
 	public IAdminHouseMemberDAO getAdminHouseMemberDAO() {
 		return adminHouseMemberDAO;
 	}
@@ -125,10 +144,10 @@ public class AssemblySessionService implements IAssemblySessionService{
 		try{
 			Map<Long,AdminHouseVO> sessionListtMap = new LinkedHashMap<Long,AdminHouseVO>();
 			List<Long> sessionIds = new ArrayList<Long>(0);
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			Date startDate = null;
 			Date endDate = null;
-			if(startDateStr != null && endDateStr != null){
+			if(startDateStr != null && endDateStr != null && !startDateStr.toString().isEmpty() && !endDateStr.toString().isEmpty() ){
 				startDate = sdf.parse(endDateStr);
 				endDate = sdf.parse(endDateStr);
 			}
@@ -151,26 +170,37 @@ public class AssemblySessionService implements IAssemblySessionService{
 						vo.setSessionId(commonMethodsUtilService.getLongValueForObject(objects[1]));
 						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[2]));
 						vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[3]));
+						
 						vo.setAdminHouseSessionId(commonMethodsUtilService.getLongValueForObject(objects[4]));
 						sessionListtMap.put(commonMethodsUtilService.getLongValueForObject(objects[4]),vo);
 					
 				}
 			}
+			Map<Long,AdminHouseVO> dayMap = new HashMap<Long,AdminHouseVO>();
 			List<Object[]> dayWiseList = memberSpeechAspectDAO.getDayWisePartyWiseCount(termId, sessionYear, sessionIds, startDate, endDate);
 			if(dayWiseList != null && dayWiseList.size() >0l){
 				for (Object[] objects : dayWiseList) {
 					AdminHouseVO vo = sessionListtMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
 					if(vo != null){
-						vo = new AdminHouseVO();
-						vo.setDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
-						vo.setAdminHouseSessionDayId(commonMethodsUtilService.getLongValueForObject(objects[4]));
-						vo.setPartyList(getAllParties());
-						AdminHouseVO  partyVO = getMatchedVOList(vo.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[1]));
+						AdminHouseVO dayVO = dayMap.get(commonMethodsUtilService.getLongValueForObject(objects[4]));
+						if(dayVO != null){
+						
+						AdminHouseVO  partyVO = getMatchedVOList(dayVO.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[1]));
 							 if(partyVO != null){
-								 partyVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
-								 partyVO.setPartyName(vo.getPartyName() + "-" +partyVO.getCount());
-								 partyVO.setPartyId(vo.getPartyId());
+								 partyVO.setCount(partyVO.getCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+								 partyVO.setPartyName(partyVO.getPartyName() + "-" +partyVO.getCount());
+								 dayVO.setCount(dayVO.getCount()+partyVO.getCount());//Day Wise total Members Count
+								// partyVO.setPartyId(vo.getPartyId());
 							 }
+						   }else{
+							   dayVO = new AdminHouseVO();
+							   dayVO.setDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
+							   dayVO.setStartDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
+								dayVO.setAdminHouseSessionDayId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+								dayVO.setPartyList(getAllParties());
+								vo.getCandidateList().add(dayVO);
+							   dayMap.put(commonMethodsUtilService.getLongValueForObject(objects[4]), dayVO);
+						   }
 						}
 					}
 				}
@@ -251,6 +281,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 		}
 		return returnList;
 	} 
+	
 	public List<AdminHouseVO> getDayWiseDetails(Long adminHseSessionDayId){
 		List<AdminHouseVO> finalList = new ArrayList<AdminHouseVO>(0);
 		try{
@@ -265,10 +296,6 @@ public class AssemblySessionService implements IAssemblySessionService{
 							partyVO.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 							partyVO.setPartyList(getSpeechAspectList());
-							//vo.setCandidateId(commonMethodsUtilService.getLongValueForObject(objects[3]));
-							//vo.setAdminHouseMemberId(commonMethodsUtilService.getLongValueForObject(objects[4]));
-							//vo.setSpeechAsceptId(commonMethodsUtilService.getLongValueForObject(objects[5]));
-							//vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[6]));
 							partyDetailsMap.put(partyVO.getPartyId(), partyVO);
 					}else{
 						AdminHouseVO candidateVO = canDetailedMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
@@ -283,8 +310,8 @@ public class AssemblySessionService implements IAssemblySessionService{
 						}else{
 							AdminHouseVO  speechAspectVO = getMatchedVOAspectList(candidateVO.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[5]));
 							 if(speechAspectVO != null){
-								 speechAspectVO.setScore(Double.valueOf(objects[6] != null ? objects[6].toString():"0.0"));
-								 partyVO.setTotal(partyVO.getTotal()+speechAspectVO.getScore());
+								 speechAspectVO.setScore(speechAspectVO.getScore()+Double.valueOf(objects[6] != null ? objects[6].toString():"0.0"));
+								 candidateVO.setTotal(candidateVO.getTotal()+speechAspectVO.getScore());
 							 }
 						}
 					}
@@ -399,5 +426,46 @@ public class AssemblySessionService implements IAssemblySessionService{
 		}
 		return returnList;
 	}
+	public ResultStatus saveMemberSpeechAspect(final AssemblySessionReportVO vo){
+		final ResultStatus resultStatus = new ResultStatus();
+		try{
+			LOG.info("Enterd into saveMemberSpeechAspect method in AssemblySessionService class");
+			 transactionTemplate.execute(new TransactionCallback() {
+				  public Object doInTransaction(TransactionStatus status) {
+			if(vo != null && vo.getMembersList() != null && vo.getMembersList().size() > 0){
+				for(AssemblySessionReportVO memberVO : vo.getMembersList() ){
+					
+					if(memberVO.getScalesList() != null && memberVO.getScalesList().size() > 0){
+						for(AssemblySessionReportVO scaleVO : memberVO.getScalesList()){
+							MemberSpeechAspect memberSpeechAspect  = memberSpeechAspectDAO.getPrimaryKey(memberVO.getAdminHouseSessionDayId(),memberVO.getMemberId(),scaleVO.getSpeechAspectId());
+							if(memberSpeechAspect == null){
+								memberSpeechAspect = new MemberSpeechAspect();
+							}
+							
+							SpeechAspect  speechAspect = speechAspectDAO.get(scaleVO.getSpeechAspectId());
+							if(speechAspect != null){
+								memberSpeechAspect.setSpeechAspectId(speechAspect.getSpeechAspectId());
+							}
+							memberSpeechAspect.setIsDeleted("N");
+							memberSpeechAspect.setAdminHouseSessionDayId(memberVO.getAdminHouseSessionDayId());
+							memberSpeechAspect.setScore(scaleVO.getScore());
+							memberSpeechAspect.setAdminHouseMemberId(memberVO.getMemberId());
+							memberSpeechAspectDAO.save(memberSpeechAspect);
+						}
+					}
+				}
+			}
+			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			  return resultStatus;
+		}
+			 
+	});
+}catch(Exception e){
+	LOG.error("Error occured in saveMemberSpeechAspect method in AssemblySessionService class",e);
+	resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
+	}
+	
 }
 

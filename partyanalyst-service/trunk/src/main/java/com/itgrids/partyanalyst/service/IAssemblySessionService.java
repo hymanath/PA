@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
+import com.itgrids.partyanalyst.dto.AssemblySessionReportVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 
 
 public interface IAssemblySessionService 
@@ -18,4 +20,5 @@ public interface IAssemblySessionService
 	public String deleteMemberDetails(final AdminHouseVO adminHouseVO);
 	public String updateMemberSpeechAspectDetails(final AdminHouseVO adminHouseVO);
 	public List<AdminHouseVO> getCandidateNameForParty(Long partyId);
+	public ResultStatus saveMemberSpeechAspect(final AssemblySessionReportVO vo);
 }

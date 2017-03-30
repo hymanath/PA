@@ -18,7 +18,7 @@ public class HouseSessionDAO extends GenericDaoHibernate<HouseSession, Long> imp
 		Query query = getSession().createQuery("select model.houseSessionId," +
 				" model.sessionName " +
 				" from HouseSession model " +
-				" where model.adminHouse.adminHouseId = 1" +
+				" where model.adminHouse.adminHouseId = 3" +
 				" and model.isActive = 'Y' and model.isDeleted = 'N' ");
 		return query.list();
 	}
