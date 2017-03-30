@@ -3081,8 +3081,12 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 			{
 			for(var j in result[i].subList)
 			{
-				
-				str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
+				if(parseInt(result[i].subList[j].id) != parseInt(attr_image_info_id)){
+						str+='<li id="img'+result[i].subList[j].id+'">';
+						str+='<img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="margin-bottom: 10px;">';
+						str+='<i class="glyphicon glyphicon-trash removeImg" style="cursor: pointer; background: #fff; padding: 2px; float: right; top: 0px; box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.4);margin_top:15px;" title="Clicke here to remove this image." attr_image_info_id ="'+result[i].subList[j].id+'"  path="\''+path+'\'" attr_activity_scopeid="'+attr_activity_scopeid+'"  locationScope="'+locationScope+'" locationScopeValue="'+locationScopeValue+'" ></i>';
+						str+='</li>';
+				}
 			}
 			}
 			  str+='</ul>';
@@ -3093,7 +3097,8 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 		{	 
 			for(var j in result[i].subList)
 			{
-				str+='<li><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"/></li>';	
+				if(parseInt(result[i].subList[j].id) != parseInt(attr_image_info_id))
+					str+='<li class="img'+result[i].subList[j].id+'" ><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"/></li>';	
 			}
 		}
 				str+='</ul>';
@@ -3104,7 +3109,7 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 			  slidesToShow: 1,
 			  slidesToScroll: 1,
 			  slide: 'li',
-			  arrows: false,
+			  arrows: true,
 			  fade: true,
 			  asNavFor: '.slider-nav'
 			});
@@ -4288,7 +4293,9 @@ $(document).on("click",".ConstImagesClose",function(){
 		$("body").addClass("modal-open");
 	},400)
 });
+var globalImagesId='';
 $(document).on("click",".getImagesCls",function(){
+	globalImagesId=$(this).attr('id');
 	$(".imagesModalClose").addClass("ConstImagesClose");
 	$('#imagesModalDivId').modal({
 		show: true,
@@ -4301,6 +4308,8 @@ $(document).on("click",".getImagesCls",function(){
 	//alert(cnstitncyId);
 	var searchType = $(this).attr("attr_search_type");
 	var value = $(this).attr("attr_value");
+	var attr_location_nam = $(this).attr("attr_location_nam");	
+	$('#myModalSLabel').html(''+attr_location_nam+' Images Details ');
 	 if(activityLevelId == 5){
 		getMandalOrMuncList(cnstitncyId,5,value,attr_activity_scopeid);
 	}/*else if(searchType == "mandal"){
@@ -4550,3 +4559,108 @@ function refreshEventsActivities(){
 	getEventBasicCntDtls();
 	getActivitiesDetails();
 }
+
+  $(document).on("click",".removeImg",function(){
+	  var acitivityInfoDocId = $(this).attr('attr_image_info_id');
+	  var path = $(this).attr('path');
+	  var attr_activity_scopeid = $(this).attr('attr_activity_scopeid');
+	  var locationScope = $(this).attr('locationScope');
+	  var locationScopeValue = $(this).attr('locationScopeValue');
+	  
+	  var ok = confirm("Are you sure want to remove this image?");
+	  if(ok){
+		   var jsObj ={ 
+				 acitivityInfoDocId:acitivityInfoDocId			 
+			  }
+			$.ajax({
+				type : 'POST',
+				url : 'deleteUploadedFileAction.action',
+				dataType : 'json',
+				data : {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+				
+				if(result.resultCode != null && result.resultCode == 0){
+					alert(" Image deleted Successfully...");
+					refreshImagesBuilding(globalImagesId);
+				}else{
+					alert("Image deletion Failed...");
+				}
+			});
+	  }
+	 
+  });
+  
+  function refreshImagesBuilding(globalImagesId){
+	  
+			$(".imagesModalClose").addClass("ConstImagesClose");			
+			var attr_activity_scopeid = $('#'+globalImagesId+'').attr("attr_scope_id");
+			var activityLevelId = $('#'+globalImagesId+'').attr("attr_activity_lvl_id");
+			var cnstitncyId = $('#'+globalImagesId+'').attr("attr_constituency_id");
+			//alert(cnstitncyId);
+			var searchType = $('#'+globalImagesId+'').attr("attr_search_type");
+			var value = $('#'+globalImagesId+'').attr("attr_value");
+			
+			var attr_location_nam = $('#'+globalImagesId+'').attr("attr_location_nam");
+			
+			$('#myModalSLabel').html(''+attr_location_nam+' Images Details ');
+			 if(activityLevelId == 5){
+				getMandalOrMuncList(cnstitncyId,5,value,attr_activity_scopeid);
+			}/*else if(searchType == "mandal"){
+				getPanchayatList(cnstitncyId,attr_activity_scopeid,value);
+			} *//* else if(searchType == "villageWard" ||  searchType == "onlyvillage"){
+				str +='<th class="text-capital">Village/Ward name</th>';
+			} */
+			
+			var str='';
+				str+='<div class="row">';
+					str+='<div class="col-md-9">';
+						str+='<nav class="navbar navbar-default navbarCollapseCustom">';
+							str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
+							  str+='<ul class="nav navbar-nav" id="popupDaysDiv">';
+							  
+							  str+='</ul>';
+							str+='</div>';
+						str+='</nav>';
+						str+='<div class="bg_CC pad_10" id="popupImages">';
+							
+						str+='</div>';
+						str+=' <div id="paginationImagesDivId"></div>';
+					str+='</div>';
+					str+='<div class="col-md-3" style="box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);padding:0px">';
+					if(searchType == "constituency")
+						str+='<div id="mandalsUlId"></div>';
+					else if(searchType == "mandal")
+						str+='<div id="villageUlId"></div>';
+					str+='</div>';
+				str+='</div>';
+			$("#buildImagesId").html(str);
+				
+		//buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
+		//getAvailableDates(globallocationScope,globallocationValue,day,path);
+		if(activityLevelId == 1 || activityLevelId == 2){
+			globalActivityScope = attr_activity_scopeid;
+			getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
+			//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+			getEventsDocuments("","",attr_activity_scopeid);
+			getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
+		}/* else if(searchType == "mandal"){
+			globalActivityScope = attr_activity_scopeid;
+			getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
+			//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+			getEventsDocuments("","",attr_activity_scopeid);
+			getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
+		}else if(searchType == "panchayat"){
+			globalActivityScope = attr_activity_scopeid;
+			getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
+			//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+			getEventsDocuments("","",attr_activity_scopeid);
+			getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
+		} */else if(activityLevelId == 5){
+			globalActivityScope = attr_activity_scopeid;
+			getAvailablDates('constituency',cnstitncyId,1,'',attr_activity_scopeid)
+			//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+			getEventsDocuments("","",attr_activity_scopeid);
+			getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId,"");
+		}
+
+  }
