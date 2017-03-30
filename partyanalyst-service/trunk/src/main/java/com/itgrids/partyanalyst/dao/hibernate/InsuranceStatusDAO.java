@@ -26,7 +26,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 					" gic.grievance_insurance_company_id as comapnyId," +
 					" gic.company_name as compantName," +
 					" cm.issue_type as issueType," +
-					" count(distinct cm.Complaint_id) as count" +
+					" count(distinct cm.Complaint_id) as count," +
+					" sum(cm.approved_amount) as amount" +
 					" from complaint_master cm,tdp_cadre_enrollment_year tcey,tdp_cadre tc,complaint_master_insurance_company cmic," +
 					" grievance_insurance_company gic,grievance_insurance_status gis" +
 				" where" +
@@ -66,7 +67,8 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 				.addScalar("comapnyId", Hibernate.LONG)
 				.addScalar("compantName", Hibernate.STRING)
 				.addScalar("issueType", Hibernate.STRING)
-				.addScalar("count", Hibernate.LONG);
+				.addScalar("count", Hibernate.LONG)
+				.addScalar("amount", Hibernate.LONG);
 		
 		if(stateId != null && stateId > 0l)
 			query.setParameter("stateId", stateId);
