@@ -16,6 +16,7 @@ public class AdminHouseVO implements Serializable{
 	private String startDate;
 	private List<AdminHouseVO> partyList = new ArrayList<AdminHouseVO>(0); 
 	private Long adminHouseSessionId;
+	private Long adminHouseSessionDayId;
 	
 	public Long getId() {
 		return id;
@@ -76,6 +77,12 @@ public class AdminHouseVO implements Serializable{
 	}
 	public void setAdminHouseSessionId(Long adminHouseSessionId) {
 		this.adminHouseSessionId = adminHouseSessionId;
+	}
+	public Long getAdminHouseSessionDayId() {
+		return adminHouseSessionDayId;
+	}
+	public void setAdminHouseSessionDayId(Long adminHouseSessionDayId) {
+		this.adminHouseSessionDayId = adminHouseSessionDayId;
 	}
 	
 }
