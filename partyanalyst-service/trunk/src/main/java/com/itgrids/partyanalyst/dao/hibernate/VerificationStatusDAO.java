@@ -222,6 +222,9 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			    queryStr.append(" and model.alert.alertType.alertTypeId in (:alertType)");	
 			}
 			if(scopeIds != null && scopeIds.size() > 0L){
+				 if(scopeIds.get(0).longValue() == 8l){
+						queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+				 }
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:scopeIds)");	
 			}
 			if(alertStatusIds != null && alertStatusIds.size() > 0L){
@@ -268,7 +271,7 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			 }
 				return query.list();
 	   }
-	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, List<Long> alertActionStatusIds, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList,Long actionTypeId,List<Long> impactScopeIds){
+	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, List<Long> alertStatusIds, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList,Long actionTypeId,List<Long> impactScopeIds,Long alertVerificationStatusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");     
 		queryStr.append(" model.alertId, " +//0
@@ -325,13 +328,19 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			queryStr.append(" and alertType.alertTypeId = (:alertTypeId) ");
 		}
 		
-		if(alertActionStatusIds != null && alertActionStatusIds.size() > 0L){
-			queryStr.append(" and model1.actionTypeStatusId in (:actionTypeStatusIds) ");
+		if(alertStatusIds != null && alertStatusIds.size() > 0L){
+			queryStr.append(" and alertStatus.alertStatusId in (:alertStatusIds) ");
+		}
+		if(alertVerificationStatusId != null && alertVerificationStatusId.longValue() > 0){
+			queryStr.append(" and model1.actionTypeStatusId =:actionTypeStatusId ");
 		}
 		if(editionList != null && editionList.size() > 0){
 			queryStr.append(" and editionType.editionTypeId in (:editionList) ");
 		}
 		if(impactScopeIds != null && impactScopeIds.size() > 0){
+			if(impactScopeIds.get(0).longValue() == 8l){//ghmc
+	    		queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+")");//election type
+	    	}
 			queryStr.append(" and alertImpactScope.alertImpactScopeId in (:impactScopeIds) ");
 		}
 		
@@ -359,8 +368,8 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		if(stateId != null && stateId.longValue() > 0){
 			query.setParameter("stateId", stateId);
 		}
-		if(alertActionStatusIds != null && alertActionStatusIds.size() > 0L){
-			query.setParameterList("actionTypeStatusIds", alertActionStatusIds);
+		if(alertStatusIds != null && alertStatusIds.size() > 0L){
+			query.setParameterList("alertStatusIds", alertStatusIds);
 		}
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			query.setParameterList("userAccessLevelValues", userAccessLevelValues);
@@ -373,6 +382,9 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 		}
 		if(impactScopeIds != null && impactScopeIds.size() > 0){
 			query.setParameterList("impactScopeIds", impactScopeIds);
+		}
+		if(alertVerificationStatusId != null && alertVerificationStatusId.longValue() > 0){
+			query.setParameter("actionTypeStatusId", alertVerificationStatusId);
 		}
 		return query.list();
 	}
