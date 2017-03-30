@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreReportVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CardSenderVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardInsuranceVO;
 import com.itgrids.partyanalyst.dto.FieldReportVO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -57,6 +58,7 @@ import com.itgrids.partyanalyst.service.ICadreRegistrationForOtherStatesService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
 import com.itgrids.partyanalyst.service.ICandidateUpdationDetailsService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService;
 import com.itgrids.partyanalyst.service.ICoreDashboardPartyMeetingService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
@@ -169,9 +171,24 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 	private List<List<MeetingDtlsVO>> listOfMeetingDtlsVOs ;
 	private List<IdNameVO> idNameVOs;
 	private List<MeetingBasicDetailsVO> basicDetailsVOs;
+	private ICoreDashboardInsuranceService coreDashboardInsuranceService;
+	private List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs;
 	
 	
-	
+	public List<CoreDashboardInsuranceVO> getCoreDashboardInsuranceVOs() {
+		return coreDashboardInsuranceVOs;
+	}
+	public void setCoreDashboardInsuranceVOs(
+			List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs) {
+		this.coreDashboardInsuranceVOs = coreDashboardInsuranceVOs;
+	}
+	public ICoreDashboardInsuranceService getCoreDashboardInsuranceService() {
+		return coreDashboardInsuranceService;
+	}
+	public void setCoreDashboardInsuranceService(
+			ICoreDashboardInsuranceService coreDashboardInsuranceService) {
+		this.coreDashboardInsuranceService = coreDashboardInsuranceService;
+	}
 	public List<List<MeetingDtlsVO>> getListOfMeetingDtlsVOs() {
 		return listOfMeetingDtlsVOs;
 	}
@@ -3374,4 +3391,80 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 		}
 		return Action.SUCCESS;
 	}
+  	public String getDistrictWiseThenCategoryWiseInsuranceMemberCount(){
+  		try{
+  			jobj = new JSONObject(getTask());
+  			Long activityMemberId = jobj.getLong("activityMemberId");
+  			Long userTypeId = jobj.getLong("userTypeId");
+  			Long stateId = jobj.getLong("stateId");
+  			Long cadreEnrollmentYearId = jobj.getLong("cadreEnrollmentYearId");
+  			Long locationId = jobj.getLong("locationId");
+  			String status = jobj.getString("status");
+  			String category = jobj.getString("category");
+  			String fromDateStr = jobj.getString("fromDateStr");
+  			String toDateStr = jobj.getString("toDateStr");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getDistrictWiseThenCategoryWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr);
+  			
+  		}catch(Exception e){
+  			LOG.error("Exception raised at getDistrictWiseThenCategoryWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
+  		}
+  		return Action.SUCCESS;
+  	}
+  	public String getConstituencyWiseThenCategoryWiseInsuranceMemberCount(){
+  		try{
+  			jobj = new JSONObject(getTask());
+  			Long activityMemberId = jobj.getLong("activityMemberId");
+  			Long userTypeId = jobj.getLong("userTypeId");
+  			Long stateId = jobj.getLong("stateId");
+  			Long cadreEnrollmentYearId = jobj.getLong("cadreEnrollmentYearId");
+  			Long locationId = jobj.getLong("locationId");
+  			String status = jobj.getString("status");
+  			String category = jobj.getString("category");
+  			String fromDateStr = jobj.getString("fromDateStr");
+  			String toDateStr = jobj.getString("toDateStr");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr);
+  			
+  		}catch(Exception e){
+  			LOG.error("Exception raised at getDistrictWiseThenCategoryWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
+  		}
+  		return Action.SUCCESS;
+  	}
+  	public String getDistrictWiseThenStatusWiseInsuranceMemberCount(){
+  		try{
+  			jobj = new JSONObject(getTask());
+  			Long activityMemberId = jobj.getLong("activityMemberId");
+  			Long userTypeId = jobj.getLong("userTypeId");
+  			Long stateId = jobj.getLong("stateId");
+  			Long cadreEnrollmentYearId = jobj.getLong("cadreEnrollmentYearId");
+  			Long locationId = jobj.getLong("locationId");
+  			String status = jobj.getString("status");
+  			String category = jobj.getString("category");
+  			String fromDateStr = jobj.getString("fromDateStr");
+  			String toDateStr = jobj.getString("toDateStr");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getDistrictWiseThenStatusWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr);
+  			
+  		}catch(Exception e){
+  			LOG.error("Exception raised at getDistrictWiseThenCategoryWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
+  		}
+  		return Action.SUCCESS;
+  	}
+  	public String getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
+  		try{
+  			jobj = new JSONObject(getTask());
+  			Long activityMemberId = jobj.getLong("activityMemberId");
+  			Long userTypeId = jobj.getLong("userTypeId");
+  			Long stateId = jobj.getLong("stateId");
+  			Long cadreEnrollmentYearId = jobj.getLong("cadreEnrollmentYearId");
+  			Long locationId = jobj.getLong("locationId");
+  			String status = jobj.getString("status");
+  			String category = jobj.getString("category");
+  			String fromDateStr = jobj.getString("fromDateStr");
+  			String toDateStr = jobj.getString("toDateStr");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getConstituencyWiseThenStatusWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr);
+  			
+  		}catch(Exception e){ 
+  			LOG.error("Exception raised at getDistrictWiseThenCategoryWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
+  		}
+  		return Action.SUCCESS;
+  	}
 }
