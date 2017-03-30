@@ -34,14 +34,15 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	private ICustomReportService			 		customReportService;
 	private ResultStatus                         resultStatus;
 	private CustomReportVO customReportVO;
-	private String Description;
+	private String description;
 	
 	
+
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 	public CustomReportVO getCustomReportVO() {
 		return customReportVO;
@@ -157,7 +158,7 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 				   			}	
 		   		}
 		     
-		   		resultStatus = customReportService.saveCustomReportUploadFile(mapfiles, userId,Description);
+		   		resultStatus = customReportService.saveCustomReportUploadFile(mapfiles, userId,description);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in reportUploadForm() method, Exception - ",e); 
