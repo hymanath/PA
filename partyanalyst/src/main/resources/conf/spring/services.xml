@@ -4121,6 +4121,14 @@
 		<property name="customReportLocationDAO" ref="customReportLocationDAO" ></property>
 		<property name="customReportImageDAO" ref="customReportImageDAO" ></property>
 		<property name="transactionTemplate" ref="transactionTemplate" ></property>
+		<property name="districtDAO" ref="districtDAO" ></property>
+		<property name="constituencyDAO" ref="constituencyDAO" ></property>
+		<property name="tehsilDAO" ref="tehsilDAO" ></property>
+		<property name="panchayatDAO" ref="panchayatDAO" ></property>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" ></property>
+		<property name="boothDAO" ref="boothDAO" ></property>
+		<property name="stateDAO" ref="stateDAO" ></property>
+		<property name="dateUtilService" ref="dateUtilService" ></property>
 	</bean>
 	
 	<bean name="coreDashboardInsuranceService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardInsuranceService">
