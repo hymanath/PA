@@ -732,4 +732,27 @@ function getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
 	}).done(function(result){  
 			console.log(result);
 	});
-}     
+}
+//getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS();      
+function getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(){
+	var jsObj = { 
+					   stateId :globalStateIdForCadreInsurance,
+					   cadreEnrollmentYearId : 0,           
+					   locationId: 0,                                       
+					   status :	"",  
+					   category : "",             
+					   fromDateStr : "",
+					   toDateStr : "",
+					   type : "category",
+					   locationType : "constituency"   
+				  };
+	console.log(jsObj);                                
+	$.ajax({
+			type : 'POST',
+			url : 'getDistrictWiseThenCategoryWiseInsuranceMemberCountForTSAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){  
+			console.log(result);
+	});
+}        
