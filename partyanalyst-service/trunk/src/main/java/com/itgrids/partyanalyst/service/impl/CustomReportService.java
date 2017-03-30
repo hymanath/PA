@@ -196,7 +196,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 
 	
 	public List<CustomReportVO> getTotalExpectedReports(Long customReportProgramId) {
-		List<CustomReportVO> customReportList=new ArrayList<CustomReportVO>();
+		List<CustomReportVO> customReportList=new ArrayList<CustomReportVO>(0);
 		List<Object[]> reportDetails=null;
 		
 		try{
@@ -318,12 +318,12 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		List<CustomReportVO> finalList = new ArrayList<CustomReportVO>(0);
 		
 		try {
-			  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		      Date fromDate = null,toDate = null;
 		      
 		      if(startDateStr != null && endDateStr != null){
-		        fromDate = sdf.parse(startDateStr);
-		        toDate = sdf.parse(endDateStr);
+		        fromDate = sdf.parse(startDateStr.trim());
+		        toDate = sdf.parse(endDateStr.trim());
 		      }			
 			List<Object[]> objList =customReportProgramDAO.getCustomReportPogram(fromDate,toDate);
 			if(objList !=null && objList.size()>0){
