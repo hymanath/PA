@@ -15,4 +15,7 @@ public interface IAssemblySessionService
 	public List<AdminHouseVO> getDates(Long termId,String sessionYear,Long sessionId);
 	public List<AdminHouseVO> getDayWiseDetails(Long adminHseSessionDayId);
 	public List<AdminHouseVO> getSpeechAspectList();
+	public String deleteMemberDetails(final AdminHouseVO adminHouseVO);
+	public String updateMemberSpeechAspectDetails(final AdminHouseVO adminHouseVO);
+	public List<AdminHouseVO> getCandidateNameForParty(Long partyId);
 }
