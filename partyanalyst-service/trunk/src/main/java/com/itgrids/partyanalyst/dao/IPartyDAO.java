@@ -79,5 +79,6 @@ public interface IPartyDAO extends GenericDao<Party, Long>{
 	public List<Object[]> getPartiesListByStateId(List<Long> statesList);
 	public List<Object[]> getPartiesList();
 	public List<Object[]> getPartiesListForCoreDashBoard(String state);
+	public List<Object[]> getAllPartyNames();
 	
 }
