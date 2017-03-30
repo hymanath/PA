@@ -23,5 +23,14 @@ public class CustomReportImageDAO extends GenericDaoHibernate<CustomReportImage,
 			    "and cri.isDeleted='N'");
 		query.setParameter("programId", programId);
 		 return query.list();
-	}	
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getImageForAReport(Long reportId){
+		Query query = getSession().createQuery(" select model.customReportimageId,model.imageName,model.path " 
+				+ " from CustomReportImage model"				
+				+ " where model.customReportId = :reportId and model.isDeleted='N' ");		
+		query.setParameter("reportId", reportId);
+		return query.list();
+	}
+		
 }
