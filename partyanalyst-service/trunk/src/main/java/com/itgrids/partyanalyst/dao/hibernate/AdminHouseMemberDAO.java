@@ -15,4 +15,12 @@ public class AdminHouseMemberDAO extends GenericDaoHibernate<AdminHouseMember, L
 		super(AdminHouseMember.class);
 		
 	}
+	public List<Object[]> getcandateNameForPartyId(Long partyId){
+		Query query = getSession().createQuery("select model.adminHouseMemberId," +
+				" model.memberName " +
+				" from AdminHouseMember model" +
+				" where model.party.partyId = :partyId and model.isDeleted = 'N' ");
+		query.setParameter("partyId", partyId);
+		return query.list();
+	}
 }
