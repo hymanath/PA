@@ -92,4 +92,17 @@ getCustomReportPrograms();
 		});
 	}
 	
-	$(document).on("click",".editReportCls")
+	$(document).on("click",".editReportCls",function(){
+		var jsObj={
+			reportId:$(this).attr("attr_report_id")
+		}
+		
+		$.ajax({
+		  type : "GET",
+		  url : "getReportFullDetailsAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	});

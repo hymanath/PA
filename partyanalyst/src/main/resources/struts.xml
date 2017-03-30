@@ -16324,6 +16324,12 @@
 			<result type="json" name="success">
 	   			<param name="root">activityMembersList</param>
 	   		</result>
-		 </action> 
+		 </action>
+		 
+		 <action name="getReportFullDetailsAction" class="customReportAction" method="getReportFullDetails">
+			<result type="json" name="success">
+		   		<param name="root">customReportVO</param>
+		   	</result>
+		</action> 
  </package>
 </struts>
