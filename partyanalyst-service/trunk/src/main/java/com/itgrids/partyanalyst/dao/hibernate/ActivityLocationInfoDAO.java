@@ -1488,16 +1488,16 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 		if(type != null){
 			
 			if(type.equalsIgnoreCase("yes")){
-	    		queryStr.append(" and ( (model.conductedDate is not null and  model.ivrStatus='Y' ) OR" +
+	    		queryStr.append(" and model.updatedStatus='UPDATED'  and ( (model.conductedDate is not null and  model.ivrStatus='Y' ) OR" +
 	    				"  ( model.conductedDate is not null and model.ivrStatus is null ) OR " +
 	    				"  ( model.conductedDate is null and model.ivrStatus='Y' ) ) ");
 	    	}
 	    	else if(type.equalsIgnoreCase("no")){
-	    		queryStr.append(" and ( (model.conductedDate is null and model.ivrStatus='N' )  OR " +
+	    		queryStr.append("  and model.updatedStatus='UPDATED'  and ( (model.conductedDate is null and model.ivrStatus='N' )  OR " +
 	    				" ( model.conductedDate is null and model.ivrStatus is null )  ) ");
 	    	}
 	    	else if(type.equalsIgnoreCase("maybe")){
-	    		queryStr.append(" and ( (model.conductedDate is not null and model.ivrStatus='N' ) ) ");
+	    		queryStr.append("  and model.updatedStatus='UPDATED'  and ( (model.conductedDate is not null and model.ivrStatus='N' ) ) ");
 	    	}
 			
 			/*if(type.equalsIgnoreCase("yes"))
