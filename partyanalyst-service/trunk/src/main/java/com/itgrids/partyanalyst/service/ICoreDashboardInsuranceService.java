@@ -24,4 +24,6 @@ public interface ICoreDashboardInsuranceService {
 	
 	public List<UserTypeVO> getSelectedChildMemberCadreInsuranceComplainctCnt(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,Long cadreEnrollmentYearId,String fromDateStr,String toDateStr);
 	public List<UserTypeVO> getCandiateWiseCadreInsurencaeDtls(Long activityMemberId,Long stateId,Long cadreEnrollmentYearId,String fromDateStr,String toDateStr);
+	
+	public List<CoreDashboardInsuranceVO> getInsuranceCompanyWiseOverviewAndStatusDetails(Long activityMemberId,Long cadreYearId,String fromDateStr,String toDateStr);
 }

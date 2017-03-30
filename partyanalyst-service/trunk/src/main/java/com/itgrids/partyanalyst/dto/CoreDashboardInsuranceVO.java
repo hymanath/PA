@@ -31,6 +31,11 @@ public class CoreDashboardInsuranceVO {
 	private String raisedDate;
 	private String image;
 	
+	private List<CoreDashboardInsuranceVO> overViewList = new ArrayList<CoreDashboardInsuranceVO>();
+	private List<CoreDashboardInsuranceVO> deathList = new ArrayList<CoreDashboardInsuranceVO>();
+	private List<CoreDashboardInsuranceVO> hospitalizationList = new ArrayList<CoreDashboardInsuranceVO>();
+	private Long amount = 0l;
+	
 	
 	public Long getId() {
 		return id;
@@ -116,5 +121,30 @@ public class CoreDashboardInsuranceVO {
 	}
 	public void setImage(String image) {
 		this.image = image;
+	}
+	public List<CoreDashboardInsuranceVO> getOverViewList() {
+		return overViewList;
+	}
+	public void setOverViewList(List<CoreDashboardInsuranceVO> overViewList) {
+		this.overViewList = overViewList;
+	}
+	public List<CoreDashboardInsuranceVO> getDeathList() {
+		return deathList;
+	}
+	public void setDeathList(List<CoreDashboardInsuranceVO> deathList) {
+		this.deathList = deathList;
+	}
+	public List<CoreDashboardInsuranceVO> getHospitalizationList() {
+		return hospitalizationList;
+	}
+	public void setHospitalizationList(
+			List<CoreDashboardInsuranceVO> hospitalizationList) {
+		this.hospitalizationList = hospitalizationList;
+	}
+	public Long getAmount() {
+		return amount;
+	}
+	public void setAmount(Long amount) {
+		this.amount = amount;
 	}
 }

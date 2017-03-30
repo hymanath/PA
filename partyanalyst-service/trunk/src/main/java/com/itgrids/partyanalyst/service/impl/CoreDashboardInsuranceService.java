@@ -846,6 +846,189 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 	
 	//Complaint Details Ends
 	
+	public List<CoreDashboardInsuranceVO> getInsuranceCompanyWiseOverviewAndStatusDetails(Long activityMemberId,Long cadreYearId,String fromDateStr,String toDateStr){
+		List<CoreDashboardInsuranceVO> returnList = new ArrayList<CoreDashboardInsuranceVO>();
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+			if(fromDateStr != null && toDateStr != null){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			Long locationId = 0L;
+			Set<Long> locationValuesSet = new java.util.HashSet<Long>();
+			List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   for (Object[] obj : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				   locationId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+				   locationValuesSet.add(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+			   }
+		    }
+		    
+		    List<Object[]> companyList = insuranceStatusDAO.getAllInsuranceCompanies();
+		    String statusStr = IConstants.CORE_DASHBOARD_INSURANCE_STATUS;
+			String[] statusTemplate = statusStr.split(",");
+		    
+			CoreDashboardInsuranceVO apvo = new CoreDashboardInsuranceVO();
+		    setInsuranceCompaniesListsTemplate(companyList, apvo);
+		    setStatusTemplateList(statusTemplate, apvo);
+			
+		    List<Object[]> apList = insuranceStatusDAO.getStatusAndInsuranceCompanyWiseComplaints(locationId, locationValuesSet, 1l, cadreYearId, fromDate, toDate);
+		    if(apList != null && !apList.isEmpty()){
+		    	for (Object[] obj : apList) {
+		    		Long statusId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long companyId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					String issueType = obj[3] != null ? obj[3].toString():"";
+					Long count = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
+					Long amount = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+					
+					String status = "";
+					if(statusId == 1l || statusId == 2l)
+						status = "INTIMATIONS";
+					else if(statusId == 3l || statusId == 7l)
+						status = "FORWARDED";
+					else if(statusId == 6l || statusId == 8l)
+						status = "SETTLED";
+					else if(statusId == 4l || statusId == 5l)
+						status = "REJECTED";
+					
+					CoreDashboardInsuranceVO overAllCmpnyvo = getMatchVO(apvo.getOverViewList(), companyId);
+					if(issueType != null && issueType.equalsIgnoreCase("Death")){
+						CoreDashboardInsuranceVO deathCmpnyvo = getMatchVO(apvo.getDeathList(), companyId);
+						overAllCmpnyvo.setDeathCount(overAllCmpnyvo.getDeathCount()+count);
+						deathCmpnyvo.setTotalCount(deathCmpnyvo.getTotalCount()+count);
+						
+						CoreDashboardInsuranceVO statusvo = getMatchedVOByStatusStr(deathCmpnyvo.getSubList(), status);
+						statusvo.setCount(statusvo.getCount()+count);
+					}
+					else if(issueType != null && issueType.equalsIgnoreCase("Hospitalization")){
+						CoreDashboardInsuranceVO hsptlCmpnyvo = getMatchVO(apvo.getHospitalizationList(), companyId);
+						overAllCmpnyvo.setHospitalizationCount(overAllCmpnyvo.getHospitalizationCount()+count);
+						hsptlCmpnyvo.setTotalCount(hsptlCmpnyvo.getTotalCount()+count);
+						
+						CoreDashboardInsuranceVO statusvo = getMatchedVOByStatusStr(hsptlCmpnyvo.getSubList(), status);
+						statusvo.setCount(statusvo.getCount()+count);
+					}
+					overAllCmpnyvo.setTotalCount(overAllCmpnyvo.getTotalCount()+count);
+				}
+		    }
+		    
+		    CoreDashboardInsuranceVO tsvo = new CoreDashboardInsuranceVO();
+		    setInsuranceCompaniesListsTemplate(companyList, tsvo);
+		    setStatusTemplateList(statusTemplate, tsvo);
+			
+		    List<Object[]> tsList = insuranceStatusDAO.getStatusAndInsuranceCompanyWiseComplaints(0l, null, 2l, cadreYearId, fromDate, toDate);
+		    if(tsList != null && !tsList.isEmpty()){
+		    	for (Object[] obj : tsList) {
+		    		Long statusId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long companyId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					String issueType = obj[3] != null ? obj[3].toString():"";
+					Long count = Long.valueOf(obj[4] != null ? obj[4].toString():"0");
+					Long amount = Long.valueOf(obj[5] != null ? obj[5].toString():"0");
+					
+					String status = "";
+					if(statusId == 1l || statusId == 2l)
+						status = "INTIMATIONS";
+					else if(statusId == 3l || statusId == 7l)
+						status = "FORWARDED";
+					else if(statusId == 6l || statusId == 8l)
+						status = "SETTLED";
+					else if(statusId == 4l || statusId == 5l)
+						status = "REJECTED";
+					
+					CoreDashboardInsuranceVO overAllCmpnyvo = getMatchVO(tsvo.getOverViewList(), companyId);
+					if(issueType != null && issueType.equalsIgnoreCase("Death")){
+						CoreDashboardInsuranceVO deathCmpnyvo = getMatchVO(tsvo.getDeathList(), companyId);
+						overAllCmpnyvo.setDeathCount(overAllCmpnyvo.getDeathCount()+count);
+						deathCmpnyvo.setTotalCount(deathCmpnyvo.getTotalCount()+count);
+						deathCmpnyvo.setAmount(deathCmpnyvo.getAmount()+amount);
+						
+						CoreDashboardInsuranceVO statusvo = getMatchedVOByStatusStr(deathCmpnyvo.getSubList(), status);
+						statusvo.setCount(statusvo.getCount()+count);
+					}
+					else if(issueType != null && issueType.equalsIgnoreCase("Hospitalization")){
+						CoreDashboardInsuranceVO hsptlCmpnyvo = getMatchVO(tsvo.getHospitalizationList(), companyId);
+						overAllCmpnyvo.setHospitalizationCount(overAllCmpnyvo.getHospitalizationCount()+count);
+						hsptlCmpnyvo.setTotalCount(hsptlCmpnyvo.getTotalCount()+count);
+						hsptlCmpnyvo.setAmount(hsptlCmpnyvo.getAmount()+amount);
+						
+						CoreDashboardInsuranceVO statusvo = getMatchedVOByStatusStr(hsptlCmpnyvo.getSubList(), status);
+						statusvo.setCount(statusvo.getCount()+count);
+					}
+					overAllCmpnyvo.setTotalCount(overAllCmpnyvo.getTotalCount()+count);
+					overAllCmpnyvo.setAmount(overAllCmpnyvo.getAmount()+amount);
+				}
+		    }
+		    
+		    returnList.add(apvo);
+		    returnList.add(tsvo);
+		    
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getInsuranceCompanyWiseOverviewAndStatusDetails() method, Exception - ",e);
+		}
+		return returnList;
+	}
+	
+	public void setInsuranceCompaniesListsTemplate(List<Object[]> list,CoreDashboardInsuranceVO statevo){
+		try {
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					CoreDashboardInsuranceVO vo = new CoreDashboardInsuranceVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					
+					statevo.getOverViewList().add(vo);
+					statevo.getDeathList().add(vo);
+					statevo.getHospitalizationList().add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in setInsuranceCompaniesList on CoreDashboardInsuranceService", e);
+		}
+	}
+	
+	public void setStatusTemplateList(String[] statusArr,CoreDashboardInsuranceVO apvo){
+		try {
+			if(apvo.getDeathList() != null && !apvo.getDeathList().isEmpty()){
+				for (CoreDashboardInsuranceVO companyvo : apvo.getDeathList()) {
+					if(statusArr != null && statusArr.length > 0){
+						for (String status : statusArr) {
+							CoreDashboardInsuranceVO vo = new CoreDashboardInsuranceVO();
+							vo.setName(status);
+							companyvo.getSubList().add(vo);
+						}
+					}
+				}
+			}
+			if(apvo.getHospitalizationList() != null && !apvo.getHospitalizationList().isEmpty()){
+				for (CoreDashboardInsuranceVO companyvo : apvo.getHospitalizationList()) {
+					if(statusArr != null && statusArr.length > 0){
+						for (String status : statusArr) {
+							CoreDashboardInsuranceVO vo = new CoreDashboardInsuranceVO();
+							vo.setName(status);
+							companyvo.getSubList().add(vo);
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in setStatusTemplateList on CoreDashboardInsuranceService", e);
+		}
+	}
+	
+	public CoreDashboardInsuranceVO getMatchedVOByStatusStr(List<CoreDashboardInsuranceVO> list,String status){
+		if(list == null || list.isEmpty())
+			return null;
+		for(CoreDashboardInsuranceVO vo:list){
+			 if(vo.getName().equalsIgnoreCase(status)){
+				 return vo;
+			 }
+		}
+		return null;
+	}
+	
 	/**
 	* @param  Long activityMemberId
 	* @param  Long userId
