@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.CustomReport;
 import com.itgrids.partyanalyst.model.CustomReportFile;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -43,6 +44,7 @@ import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.service.ICustomReportService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
@@ -66,8 +68,15 @@ public class CustomReportService extends AlertService implements ICustomReportSe
     private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
 	private IStateDAO stateDAO;
+	private DateUtilService dateUtilService;
 	
 	
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -244,7 +253,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 	}
 
 	
-	public ResultStatus saveCustomReportUploadFile(final Map<File, String> mapfiles, final Long userId) {
+	public ResultStatus saveCustomReportUploadFile(final Map<File, String> mapfiles, final Long userId,final String description) {
 		final ResultStatus resultStatus = new ResultStatus();
 		try {
 			
@@ -252,6 +261,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 				public void doInTransactionWithoutResult(TransactionStatus status) {
 		String folderName = folderCreation();
 		CustomReportFile customReportFile = null;
+		CustomReport customReport = null;
 		
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
@@ -263,7 +273,11 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		
 		 StringBuilder pathBuilder = new StringBuilder();
 		 StringBuilder str ;
-		 
+		 customReport = new CustomReport();
+		   customReport.setDescription(description);
+		   customReport.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		   customReport.setUpdatedBy(userId);
+		   customReport = customReportDAO.save(customReport);
 			
 		 for (Map.Entry<File, String> entry : mapfiles.entrySet())
 		 {
@@ -371,31 +385,31 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						vo.setReportId((Long)objects[0]);
 						vo.setId((Long)objects[1]);
 						vo.setScope(objects[2].toString());
-						if((Long) objects[3] == 2l){
+						if((Long) objects[1] == 2l){
 							State state = stateDAO.get((Long) objects[3]);
 							 vo.setLocationName(state.getStateName());
-						}else if((Long) objects[3] == 3l){
+						}else if((Long) objects[1] == 3l){
 						  District dist = districtDAO.get((Long) objects[3]);
 						    vo.setLocationName(dist.getDistrictName());
-						}else if((Long) objects[3] == 4l){
+						}else if((Long) objects[1] == 4l){
 							Constituency cons = constituencyDAO.get((Long) objects[3]);
 							vo.setLocationName(cons.getName()+" Constituency ");
-						}else if((Long) objects[3] == 5l){
+						}else if((Long) objects[1] == 5l){
 							Tehsil tehsil = tehsilDAO.get((Long) objects[3]);
 							vo.setLocationName(tehsil.getTehsilName()+" Mandal ");
-						}else if((Long) objects[3] == 6l){
+						}else if((Long) objects[1] == 6l){
 							Panchayat panc = panchayatDAO.get((Long) objects[3]);
 							 vo.setLocationName(panc.getPanchayatName()+" Panchayat ");
-						}else if((Long) objects[3] == 7l){
+						}else if((Long) objects[1] == 7l){
 							LocalElectionBody leb = localElectionBodyDAO.get((Long) objects[3]);
 							vo.setLocationName(leb.getName()+" Municipality ");
-						}else if((Long) objects[3] == 8l){
+						}else if((Long) objects[1] == 8l){
 							Constituency ward = constituencyDAO.get((Long) objects[3]);
 							 vo.setLocationName(ward.getName()+" Ward ");
-						}else if((Long) objects[3] == 9l){
+						}else if((Long) objects[1] == 9l){
 							Booth booth = boothDAO.get((Long) objects[3]);
 							  vo.setLocationName(booth.getPartName()+ " Booth ");
-						}else if((Long) objects[3] == 9l){
+						}else if((Long) objects[1] == 9l){
 							Constituency parliamentCons = constituencyDAO.get((Long) objects[3]);
 							  vo.setLocationName(parliamentCons.getName());
 						}
@@ -407,31 +421,31 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						vo.setReportId((Long)objects[0]);
 						vo.setId((Long)objects[1]);
 						vo.setScope(objects[2].toString());
-						if((Long) objects[3] == 2l){
+						if((Long) objects[1] == 2l){
 							State state = stateDAO.get((Long) objects[3]);
 							 vo.setLocationName(state.getStateName());
-						}else if((Long) objects[3] == 3l){
+						}else if((Long) objects[1] == 3l){
 						  District dist = districtDAO.get((Long) objects[3]);
 						    vo.setLocationName(dist.getDistrictName());
-						}else if((Long) objects[3] == 4l){
+						}else if((Long) objects[1] == 4l){
 							Constituency cons = constituencyDAO.get((Long) objects[3]);
 							vo.setLocationName(cons.getName()+" Constituency ");
-						}else if((Long) objects[3] == 5l){
+						}else if((Long) objects[1] == 5l){
 							Tehsil tehsil = tehsilDAO.get((Long) objects[3]);
 							vo.setLocationName(tehsil.getTehsilName()+" Mandal ");
-						}else if((Long) objects[3] == 6l){
+						}else if((Long) objects[1] == 6l){
 							Panchayat panc = panchayatDAO.get((Long) objects[3]);
 							 vo.setLocationName(panc.getPanchayatName()+" Panchayat ");
-						}else if((Long) objects[3] == 7l){
+						}else if((Long) objects[1] == 7l){
 							LocalElectionBody leb = localElectionBodyDAO.get((Long) objects[3]);
 							vo.setLocationName(leb.getName()+" Municipality ");
-						}else if((Long) objects[3] == 8l){
+						}else if((Long) objects[1] == 8l){
 							Constituency ward = constituencyDAO.get((Long) objects[3]);
 							 vo.setLocationName(ward.getName()+" Ward ");
-						}else if((Long) objects[3] == 9l){
+						}else if((Long) objects[1] == 9l){
 							Booth booth = boothDAO.get((Long) objects[3]);
 							  vo.setLocationName(booth.getPartName()+ " Booth ");
-						}else if((Long) objects[3] == 9l){
+						}else if((Long) objects[1] == 9l){
 							Constituency parliamentCons = constituencyDAO.get((Long) objects[3]);
 							  vo.setLocationName(parliamentCons.getName());
 						}
@@ -570,7 +584,10 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 					observerVO.setMobileNum(objects[5].toString());
 					vo.getObserversList().add(observerVO);
 				}
-			}/*
+			}
+			String description = customReportDAO.getDescriptionForReportId(reportId);
+			vo.setName(description);
+			/*
 			  //image 
 		     //0-customReportimageId,1-imageName,2-path 
 			List<Object[]> imageObjList = customReportImageDAO.getImageForAReport(reportId);
