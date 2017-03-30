@@ -958,6 +958,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			queryStr.append(" and constituency.constituencyId in (:userAccessLevelValues)");     
 		}
 		if(scopeIdList != null && scopeIdList.size() > 0){
+			if(scopeIdList.get(0).longValue() == 8l){
+				queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			}
 			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
 		}
 		if(alertTypeList != null && alertTypeList.size() > 0){
@@ -1213,6 +1216,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			queryStr.append(" and editionType.editionTypeId in (:editionList) ");
 		}
 		if(impactScopeIds != null && impactScopeIds.size() > 0){
+			if(impactScopeIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			}
 			queryStr.append(" and alertImpactScope.alertImpactScopeId in (:impactScopeIds) ");
 		}
 		
@@ -1276,6 +1282,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			  queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
 		  }
 		  if(scopeIds != null && scopeIds.size() > 0){
+			  if(scopeIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+				}
 			  queryStr.append(" and model.alertImpactScope.alertImpactScopeId in (:scopeIds)");
 		  }
 		  if(alertStatusIds != null && alertStatusIds.size() > 0){
@@ -1354,6 +1363,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			  queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(scopeIds != null && scopeIds.size() > 0){
+			    if(scopeIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+				}
 			  queryStr.append(" and model.alertImpactScope.alertImpactScopeId in (:scopeIds) ");  
 		 }
 		 if(alertStatusIds != null && alertStatusIds.size() > 0){
@@ -1445,6 +1457,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
     		queryStr.append(" and model.editionType.editionTypeId in (:editionTypes) ");
     	}
 	    if(scopeIds != null && scopeIds.size() > 0){
+	    	 if(scopeIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 	    	queryStr.append(" and model.alertImpactScope.alertImpactScopeId in (:scopeIds) ");
 	    }
 	    queryStr.append(" group by model.alertCategory.alertCategoryId");
@@ -1517,6 +1532,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
     		queryStr.append(" and model.editionType.editionTypeId in (:editionTypes) ");
     	}
 	     if(scopeIds != null && scopeIds.size() > 0){
+	    	 if(scopeIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 	    	queryStr.append(" and model.alertImpactScope.alertImpactScopeId in (:scopeIds) ");
 	    }
 	     if(alertStatusIds != null && alertStatusIds.size() > 0){
@@ -1548,7 +1566,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		 }
 		return query.list();  
 	}
-	public List<Object[]> getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionList,List<Long> alertStatusIds){
+	public List<Object[]> getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionList,List<Long> alertStatusIds,List<Long> scopeIdList){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertCategory.alertCategoryId," +
 		  				  " model.alertCategory.category," +
@@ -1585,7 +1603,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    if(alertStatusIds != null && alertStatusIds.size() > 0){
 	    	queryStr.append(" and model.alertStatus.alertStatusId in (:alertStatusIds) ");
 	    }
-	    
+	    if(scopeIdList != null && scopeIdList.size() > 0){
+			if(scopeIdList.get(0).longValue() == 8l){
+				queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			}
+			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
+		}
 	    queryStr.append(" group by model.alertCategory.alertCategoryId,model.alertImpactScope.alertImpactScopeId ");
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
@@ -1607,9 +1630,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    if(alertStatusIds != null && alertStatusIds.size() > 0){
 	    	query.setParameterList("alertStatusIds", alertStatusIds);
 	    }
+	    if(scopeIdList != null && scopeIdList.size() > 0){
+			query.setParameterList("scopeIdList", scopeIdList);
+		}
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList, List<Long> editionList,List<Long> alertStatusIds){
+	public List<Object[]> getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList, List<Long> editionList,List<Long> alertStatusIds,List<Long> scopeIdList){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertCategory.alertCategoryId," +
 		  				  " model.alertCategory.category," +
@@ -1650,6 +1676,12 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    if(alertStatusIds != null && alertStatusIds.size() > 0){
 	    	queryStr.append(" and model.alertStatus.alertStatusId in (:alertStatusIds) ");
 	    }
+	    if(scopeIdList != null && scopeIdList.size() > 0){
+			if(scopeIdList.get(0).longValue() == 8l){
+				queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			}
+			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
+		}
 	    queryStr.append(" group by model.alertCategory.alertCategoryId,model.alertImpactScope.alertImpactScopeId,model.alertStatus.alertStatusId ");
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
@@ -1671,6 +1703,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    if(alertStatusIds != null && alertStatusIds.size() > 0){
 	    	query.setParameterList("alertStatusIds", alertStatusIds);
 	    }
+	    if(scopeIdList != null && scopeIdList.size() > 0){
+			query.setParameterList("scopeIdList", scopeIdList);
+		}
 		return query.list();
 	}
 	public List<Object[]> getPublicRepresentativeTypeAlertDtls(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,List<Long> impactLevelIds,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionTypeList,Long districtId,List<Long> alertStatusIds){
@@ -1690,6 +1725,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 if(impactLevelIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -1759,6 +1797,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 if(impactLevelIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
 		 
@@ -1829,6 +1870,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 if(impactLevelIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -1897,6 +1941,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 if(impactLevelIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -1979,6 +2026,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	       queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 	    }
 	    if(impactLevelIds != null && impactLevelIds.size() > 0){
+	    	if(impactLevelIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			}
 	      queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 	    }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -2073,6 +2123,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	       queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 	    }
 	    if(impactLevelIds != null && impactLevelIds.size() > 0){
+	      if(impactLevelIds.get(0).longValue() == 8l){
+				queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+		   }
 	      queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 	    }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -2174,6 +2227,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			  queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(impactLevelIds != null && impactLevelIds.size() > 0){
+			 if(impactLevelIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
 		 if(tdpBasicCommiteeIds != null && tdpBasicCommiteeIds.size() > 0){
@@ -2263,6 +2319,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	        queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 	     }
 	     if(impactLevelIds != null && impactLevelIds.size() > 0){
+	    	 if(impactLevelIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 	       queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 	     }
 	     if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size() > 0){
@@ -2403,6 +2462,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	       queryStr.append(" and date(alert.createdTime) between :startDate and :endDate  ");
 	    }
 	    if(impactLevelIds != null && impactLevelIds.size() > 0){  
+	       if(impactLevelIds.get(0).longValue() == 8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+		   }
 	      queryStr.append(" and alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 	    }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -2561,6 +2623,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			queryStr.append(" and date(model.alert.createdTime) between :startDate and :endDate  ");
 		}
 		if(impactLevelIds != null && impactLevelIds.size() > 0){
+			if(impactLevelIds != null && impactLevelIds.get(0).longValue()==8l){
+					queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+")"); 
+			}
 			queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		}
 		if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size() > 0){
@@ -2699,6 +2764,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			queryStr.append(" and date(alert.createdTime) between :startDate and :endDate  ");
 		}
 		if(impactLevelIds != null && impactLevelIds.size() > 0){
+			if(impactLevelIds != null && impactLevelIds.get(0).longValue()==8l){
+				queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+")"); 
+		    }
 			queryStr.append(" and alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		}
 		if(tdpCommitteeLevelIds != null && tdpCommitteeLevelIds.size() > 0){
@@ -2836,6 +2904,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	       queryStr.append(" and date(alert.createdTime) between :startDate and :endDate  ");
 	    }
 	    if(impactLevelIds != null && impactLevelIds.size() > 0){  
+	       if(impactLevelIds != null && impactLevelIds.get(0).longValue()==8l){
+				queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+")"); 
+		   }
 	      queryStr.append(" and alert.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 	    }
 	    if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -4295,6 +4366,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			queryStr.append(" and alertType.alertTypeId = (:alertTypeId) ");
 		}
 		if(impactScopeIds != null && impactScopeIds.size() > 0){
+			if(impactScopeIds.get(0).longValue() == 8l){
+				queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			}
 			queryStr.append(" and alertImpactScope.alertImpactScopeId in (:impactScopeIds) ");	
 		}
 		if(alertStatusIds != null && alertStatusIds.size() > 0){
@@ -5354,6 +5428,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			queryStr.append(" and model.userAddress.constituency.constituencyId in (:userAccessLevelValues)");     
 		}
 		if(scopeIdList != null && scopeIdList.size() > 0){
+			 if(scopeIdList.get(0).longValue() == 8l){
+				 queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
 		}
 		if(alertTypeList != null && alertTypeList.size() > 0){
@@ -5478,6 +5555,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			 queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(alertInputsVO.getImpactLevelIds() != null && alertInputsVO.getImpactLevelIds().size() > 0){
+			 if(alertInputsVO.getImpactLevelIds().get(0).longValue() == 8l){
+				 queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			 queryStr.append(" and model.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
 		 if(impactLevel.equalsIgnoreCase("CORPGMC") || type.equalsIgnoreCase("GHMC")){
@@ -5588,6 +5668,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			 queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(alertInputsVO.getImpactLevelIds() != null && alertInputsVO.getImpactLevelIds().size() > 0){
+			 if(alertInputsVO.getImpactLevelIds().get(0).longValue() == 8l){
+					queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			 queryStr.append(" and model.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
 	   /* if(alertInputsVO.getUserAccessLevelId() != null && alertInputsVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -5680,6 +5763,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			 queryStr.append(" and date(model.createdTime) between :startDate and :endDate  ");
 		 }
 		 if(alertInputsVO.getImpactLevelIds() != null && alertInputsVO.getImpactLevelIds().size() > 0){
+			 if(alertInputsVO.getImpactLevelIds().get(0).longValue() == 8l){
+					queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+			 }
 			 queryStr.append(" and model.alertImpactScope.alertImpactScopeId in (:impactLevelIds)");
 		 }
 	    if(alertInputsVO.getUserAccessLevelId() != null && alertInputsVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
