@@ -348,4 +348,97 @@ function getCandiateWiseCadreInsurencaeDtls(){
 		}).done(function(result){
 			console.log(result);
 		});
+}  
+
+//getDistrictWiseThenCategoryWiseInsuranceMemberCount();    
+function getDistrictWiseThenCategoryWiseInsuranceMemberCount(){
+	var jsObj = { 
+					   activityMemberId : 44,                           
+					   userTypeId : 2,              
+					   stateId :globalStateIdForCadreInsurance,
+					   cadreEnrollmentYearId : 0,           
+					   locationId: 0,        
+					   status :	"",
+					   category : "", 
+					   fromDateStr : "",
+					   toDateStr : ""        
+				  };
+	console.log(jsObj);    
+	$.ajax({
+			type : 'POST',
+			url : 'getDistrictWiseThenCategoryWiseInsuranceMemberCountAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+			console.log(result);
+	});
 }
+//getConstituencyWiseThenCategoryWiseInsuranceMemberCount();     
+function getConstituencyWiseThenCategoryWiseInsuranceMemberCount(){
+	var jsObj = { 
+					   activityMemberId : 44,                                       
+					   userTypeId : 2,                
+					   stateId :globalStateIdForCadreInsurance,
+					   cadreEnrollmentYearId : 0,           
+					   locationId: 0,                               
+					   status :	"",
+					   category : "", 
+					   fromDateStr : "",
+					   toDateStr : ""        
+				  };
+	console.log(jsObj);                                    
+	$.ajax({
+			type : 'POST',
+			url : 'getConstituencyWiseThenCategoryWiseInsuranceMemberCountAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+			console.log(result);
+	});
+} 
+//getDistrictWiseThenStatusWiseInsuranceMemberCount();      
+function getDistrictWiseThenStatusWiseInsuranceMemberCount(){
+	var jsObj = { 
+					   activityMemberId : 44,                                     
+					   userTypeId : 2,                         
+					   stateId :globalStateIdForCadreInsurance,
+					   cadreEnrollmentYearId : 0,           
+					   locationId: 0,                                       
+					   status :	"",  
+					   category : "",             
+					   fromDateStr : "",
+					   toDateStr : ""                    
+				  };
+	console.log(jsObj);                                
+	$.ajax({
+			type : 'POST',
+			url : 'getDistrictWiseThenStatusWiseInsuranceMemberCountAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+			console.log(result);
+	});
+} 
+//getConstituencyWiseThenStatusWiseInsuranceMemberCount();      
+function getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
+	var jsObj = { 
+					   activityMemberId : 44,                                     
+					   userTypeId : 2,                         
+					   stateId :globalStateIdForCadreInsurance,
+					   cadreEnrollmentYearId : 0,           
+					   locationId: 0,                                       
+					   status :	"",  
+					   category : "",             
+					   fromDateStr : "",
+					   toDateStr : ""                       
+				  };
+	console.log(jsObj);                                
+	$.ajax({
+			type : 'POST',
+			url : 'getConstituencyWiseThenStatusWiseInsuranceMemberCountAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){  
+			console.log(result);
+	});
+}     
