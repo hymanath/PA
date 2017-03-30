@@ -104,7 +104,7 @@ function getSessionDetails(){
 			 }).done(function(result){
 			 });
 }
-getDayWiseDetails();
+//getDayWiseDetails();
 function getDayWiseDetails(){
 	var jObj = {
 				 adminHouseSessionDayId : 145
@@ -114,5 +114,39 @@ function getDayWiseDetails(){
 				  url: 'getDayWiseDetailsAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
+			 });
+}
+//getPatries();
+function getPatries(){
+	
+	var jObj = {
+			};		
+			$.ajax({
+				  type:'POST',
+				  url: 'getPartiesAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){
+				 if(result != null && result.length >0)
+					{
+						for(var i in result)
+						$('#').append('<option value="'+result[i].partyId+'">'+result[i].PartyName+'</option>');
+					}
+			 });
+}
+//getCandidates();
+function getCandidates(){
+	var jObj = {
+				partyId : 872
+			};		
+			$.ajax({
+				  type:'POST',
+				  url: 'getcandidatesForPartyAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){
+				 if(result != null && result.length >0)
+					{
+						for(var i in result)
+						$('#').append('<option value="'+result[i].adminHouseMemberId+'">'+result[i].Name+'</option>');
+					}
 			 });
 }
