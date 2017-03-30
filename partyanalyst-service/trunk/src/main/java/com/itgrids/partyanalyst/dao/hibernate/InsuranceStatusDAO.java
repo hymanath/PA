@@ -968,4 +968,124 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 
 		 return query.list();
 	 }
+	 public List<Object[]> getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type, String locationType){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select");
+		 if(locationType.equalsIgnoreCase("constituency")){
+			 queryStr.append(" CM.assembly_id as locId, " +
+		 		 	 		 " CON.name as locName "); 
+		 }else{
+			 queryStr.append(" DIST.district_id as locId, " +
+				 		 	 " DIST.district_name as locName "); 
+		 }
+		 
+		
+		 if(type.equalsIgnoreCase("status")){
+			 queryStr.append(" ,GIS.grievance_insurance_status_id as issueType,COUNT(distinct CM.Complaint_id) as count, SUM(CM.approved_amount) as amount");
+		 }else{
+			 queryStr.append(" ,CM.issue_type as issueType ,COUNT(distinct CM.Complaint_id) as count, SUM(CM.approved_amount) as amount");
+		 }
+		 
+		 
+		 queryStr.append(" FROM complaint_master CM, grievance_insurance_status GIS, district DIST ");
+		 
+		 if(locationType.equalsIgnoreCase("constituency")){
+			 queryStr.append(" ,constituency CON ");
+		 }
+		 
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 queryStr.append(" ,tdp_cadre TC,tdp_cadre_enrollment_year TCEY "); 
+		 }
+		 
+		
+		 if(locationType.equalsIgnoreCase("constituency")){
+			 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id ");  
+		 }else{
+			 queryStr.append(" WHERE CM.district_id = DIST.district_id ");
+		 }
+		 
+		 //queryStr.append(" AND CM.approved_amount is not null "); 
+		 
+		 if(stateId != null && stateId.longValue() > 0L){
+			 queryStr.append(" AND state_id_cmp =:stateId ");  
+		 }
+		 
+		 queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id "+
+				 		 " AND CM.type_of_issue = 'Insurance'  " );
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 queryStr.append(" AND CM.membership_id = TC.membership_id  "+
+				 		 	 " AND TC.tdp_cadre_id = TCEY.tdp_cadre_id  " +
+				 		 	 " AND TCEY.enrollment_year_id = :cadreEnrollmentYearId ");
+		 }
+		 queryStr.append(" AND CM.delete_status IS NULL  "+
+				 		 " AND (CM.`Subject` IS NOT NULL OR CM.`Subject` != '') ");
+		
+		 if(statusIdList != null && statusIdList.size() > 0){
+			 queryStr.append(" AND GIS.grievance_insurance_status_id in (:statusIdList) ");
+		 }
+		 if(category != null && !category.trim().isEmpty() && category.trim().length() > 0){
+			 queryStr.append(" AND CM.issue_type like '%"+category+"%' ");
+		 }
+		 if(fromDate != null && toDate != null){
+			 queryStr.append(" AND date(CM.Raised_Date) between :fromDate and :toDate  ");
+		 }
+		 if(locationId != null && locationId.longValue() > 0L){
+			 if(locationType.equalsIgnoreCase("constituency")){
+				 queryStr.append(" and CM.assembly_id =:locationId ");
+			 }else{
+				 queryStr.append(" and CM.district_id =:locationId");
+			 }
+			 
+		 }else{
+			 queryStr.append(" and CM.district_id in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		 }
+		  
+		 
+		 
+		 if(locationType.equalsIgnoreCase("constituency")){
+			 if(type.equalsIgnoreCase("status")){
+				 queryStr.append("  group by CM.assembly_id, GIS.grievance_insurance_status_id");
+			 }else{
+				 queryStr.append(" group by CM.assembly_id, CM.issue_type ");  
+			 }
+		 }else{
+			 if(type.equalsIgnoreCase("status")){
+				 queryStr.append("  group by DIST.district_id, GIS.grievance_insurance_status_id");
+			 }else{
+				 queryStr.append(" group by DIST.district_id, CM.issue_type");  
+			 }
+		 }
+		 SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		 
+		 query.addScalar("locId", Hibernate.LONG);
+		 query.addScalar("locName",Hibernate.STRING);
+		 if(type.equalsIgnoreCase("status")){
+			 query.addScalar("issueType",Hibernate.LONG);
+		 }else{
+			 query.addScalar("issueType",Hibernate.STRING);
+		 }
+		 query.addScalar("count",Hibernate.LONG);
+		 query.addScalar("amount",Hibernate.LONG);
+		 
+		 if(stateId != null && stateId.longValue() > 0L){
+			 query.setParameter("stateId", stateId);
+		 }
+		 
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 query.setParameter("cadreEnrollmentYearId", cadreEnrollmentYearId);
+		 }
+		 
+		 if(statusIdList != null && statusIdList.size() > 0){
+			 query.setParameterList("statusIdList", statusIdList);
+		 }
+		 
+		 if(fromDate != null && toDate != null){
+			 query.setDate("fromDate",fromDate);
+			 query.setDate("toDate",toDate);
+		 }  
+		 if(locationId != null && locationId.longValue() > 0L){
+			 query.setParameter("locationId", locationId);
+		 }
+		 return query.list();
+	 }
 }
