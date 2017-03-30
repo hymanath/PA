@@ -14,7 +14,6 @@ import com.itgrids.partyanalyst.dao.IAdminHouseTermDAO;
 import com.itgrids.partyanalyst.dao.IHouseSessionDAO;
 import com.itgrids.partyanalyst.dao.IMemberSpeechAspectDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
 import com.itgrids.partyanalyst.service.IAssemblySessionService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -147,6 +146,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 					if(vo != null){
 						vo = new AdminHouseVO();
 						vo.setDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						vo.setAdminHouseSessionDayId(commonMethodsUtilService.getLongValueForObject(objects[4]));
 						vo.setPartyList(getAllParties());
 						AdminHouseVO  partyVO = getMatchedVOList(vo.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[1]));
 							 if(partyVO != null){
