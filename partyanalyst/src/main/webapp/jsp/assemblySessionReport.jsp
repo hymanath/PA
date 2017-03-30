@@ -10,8 +10,8 @@
 
 
 
-<script>
+
 <script src="debate/js/assemblySessionReport.js" type="text/javascript"></script>
-</script>
+
 </body>
 </html>
