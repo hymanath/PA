@@ -2,10 +2,13 @@ getCustomReportPrograms();
 	function getCustomReportPrograms(){
 		var $list = $('#programSelId'),
 			templatess = Handlebars.compile($('#select-box').html());
-		var jsObj={
-			startDateStr:"21-03-2017",
-			endDateStr:"21-03-2017"
-		}
+		  var date=$(".multiDateRangePicker").val();
+	      var str=date.split("-");
+	      
+	    var jsObj={
+	      startDateStr:str[0],
+	      endDateStr:str[1]
+	    }
 		
 		$.ajax({
 		  type : "GET",
