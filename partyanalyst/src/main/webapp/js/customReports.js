@@ -43,7 +43,7 @@ getCustomReportPrograms();
 					str+='<tr>';
 						str+='<th>Location</th>';
 						str+='<th>Observer Name</th>';
-						str+='<th>Images</th>';
+						//str+='<th>Images</th>';
 						str+='<th>Files</th>';
 						str+='<th>Edit</th>';
 					str+='</tr>';
@@ -56,7 +56,7 @@ getCustomReportPrograms();
 							var locations = "";
 							if(result[i].locationsList != null && result[i].locationsList.length > 0){
 								for(var t in result[i].locationsList){
-									locations = locations==""?result[i].locationsList[t].locationValue:locations+", "+result[i].locationsList[t].locationValue;
+									locations = locations==""?result[i].locationsList[t].locationName:locations+", "+result[i].locationsList[t].locationName;
 								}
 							}
 							str+='<td>'+locations+'</td>';
@@ -69,11 +69,11 @@ getCustomReportPrograms();
 							}
 							str+='<td>'+observers+'</td>';
 							
-							if(result[i].imagesList != null && result[i].imagesList.length > 0){
+							/* if(result[i].imagesList != null && result[i].imagesList.length > 0){
 								str+='<td><i class="glyphicon glyphicon-picture"></i></td>';
 							}else{
 								str+='<td>Not Submitted</td>';
-							}
+							} */
 							
 							if(result[i].fileList != null && result[i].fileList.length > 0){
 								str+='<td><i class="glyphicon glyphicon-file"></i></td>';
@@ -81,7 +81,7 @@ getCustomReportPrograms();
 								str+='<td>Not Submitted</td>';
 							}
 							
-							str+='<td><span class="editReportCls" attr_report_id="'+result[i].reportId+'"><i class="glyphicon glyphicon-edit"></i></span></td>';
+							str+='<td><span class="editReportCls" attr_report_id="'+result[i].reportId+'"><i class="glyphicon glyphicon-edit" style="cursor:pointer;"></i></span></td>';
 							
 							str+='</tr>';
 						}
@@ -96,6 +96,7 @@ getCustomReportPrograms();
 	}
 	
 	$(document).on("click",".editReportCls",function(){
+		$("#uploadModalDivId").modal("show");
 		var jsObj={
 			reportId:$(this).attr("attr_report_id")
 		}
