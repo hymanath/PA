@@ -22,7 +22,7 @@ public class CoreDashboardInsuranceVO {
 	private Long deathCount = 0l;
 	private Long hospitalizationCount = 0l;
 	private List<CoreDashboardInsuranceVO> subList = new ArrayList<CoreDashboardInsuranceVO>();
-	private CoreDashboardInsuranceVO coreDashboardInsuranceVO = new CoreDashboardInsuranceVO();
+	private CoreDashboardInsuranceVO coreDashboardInsuranceVO;
 	private Double percentage = 0.00;
 	private Long totalCategroyCount = 0L;//death and hospitalization
 	private Long totalStatusCount = 0L;
@@ -82,6 +82,8 @@ public class CoreDashboardInsuranceVO {
 	public void setHospitalizationCount(Long hospitalizationCount) {
 		this.hospitalizationCount = hospitalizationCount;
 	}
+	
+	
 	public CoreDashboardInsuranceVO getCoreDashboardInsuranceVO() {
 		return coreDashboardInsuranceVO;
 	}
