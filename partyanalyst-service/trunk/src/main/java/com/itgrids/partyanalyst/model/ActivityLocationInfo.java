@@ -49,7 +49,7 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	private User insertedUser;
 	private User updatedUser;
 	private UserAddress  address;
-	
+	private String updatedStatus;
 	/*private String insertType;*/
 	
 	@Id
@@ -255,6 +255,14 @@ public class ActivityLocationInfo extends BaseModel implements Serializable{
 	}
 	public void setAddress(UserAddress address) {
 		this.address = address;
+	}
+	
+	@Column(name="updated_status")
+	public String getUpdatedStatus() {
+		return updatedStatus;
+	}
+	public void setUpdatedStatus(String updatedStatus) {
+		this.updatedStatus = updatedStatus;
 	}
 	
 	
