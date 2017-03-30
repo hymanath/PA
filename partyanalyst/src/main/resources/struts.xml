@@ -16330,6 +16330,11 @@
 			<result type="json" name="success">
 		   		<param name="root">customReportVO</param>
 		   	</result>
-		</action> 
+		</action>
+		 <action name="getDayWiseDetailsAction" class="assemblySessionAction" method="getDayWiseDetails">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action> 
  </package>
 </struts>
