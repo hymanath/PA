@@ -1659,7 +1659,7 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(disctrictId){
 								});	
 						}else{
 						 $("#groupAssign"+i).css("height","35px");
-						  //$(".groupAssignCls").hide();
+						  $(".groupAssignCls").hide();
 						}
 					}
 				}
