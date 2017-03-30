@@ -262,11 +262,10 @@
 		
 		highcharts(id,type,xAxis,yAxis,legend,data); */
 	
-    /* Cadre Insurance comparison Call */
-	 //getUserTypeWiseTotalCadreInsuranceComplainctCnt();
-	// getSelectedChildMemberCadreInsuranceComplainctCnt("","");
-	 //getCandiateWiseCadreInsurencaeDtls();
-	// getDirectChildMemberCadreInsuranceComplainctCnt();
+      /* Comparison Block Start */
+	  //getUserTypeWiseTotalCadreInsuranceComplainctCnt();
+	  //getSelectedChildMemberCadreInsuranceComplainctCnt("","");
+	  //getDirectChildMemberCadreInsuranceComplainctCnt();
 	 function getUserTypeWiseTotalCadreInsuranceComplainctCnt(){
 		  var jsObj ={ 
 		             activityMemberId : 44,//globalActivityMemberId
@@ -286,15 +285,78 @@
 		});
 		
 	} 
+	
+	function getInsuranceChildUserType(childUserTypeId,childUserType){
+	   getSelectedChildMemberCadreInsuranceComplainctCnt(childUserTypeId,childUserType);
+   }
+   function getDirectChildTypeMemberDtls(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,id){
+	 $("#"+id).show(); 
+	 if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+	  getCandiateWiseCadreInsurencaeDtls();(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  
+	 }else{
+	 getDirectChildMemberCadreInsuranceComplainctCnt(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+	  getCandiateWiseCadreInsurencaeDtls();(userTypeId,activityMemberId,selectedMemberName,selectedUserType);	
+	 }	
+   }
+   function getInsuranceChildUserTypeDls(selectedUserType,childActivityMemberId,selectedMemberName,activityMemberId,userTypeId){
+		$(".insuranceSlickPanelSlider").find("li").find(".panelSlick").removeClass("panelActiveSlick");
+		$("#panelColor"+activityMemberId).find(".panelSlick").addClass("panelActiveSlick");
+		if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
+		  getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  		
+		 }else{
+		  getDirectChildMemberCadreInsuranceComplainctCnt(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
+		  getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  		
+		 }
+  }
+	function remveInsuranceSlcUsrType(removeSelected){
+		$("#"+removeSelected).html(' ');
+		$("#"+removeSelected).closest('.showHideTr').hide();
+	}
+	function getAllItsSubUserTypeIdsByParentUserTypeForInsurance(){
+	     $("#childUserTypeDetailsDivForCadreInsurance").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 $("#cadreInsuranceChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 $("#userTypeWiseChildDtlsTabForCadreInsuranceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		var jsObj = {parentUserTypeId : globalUserTypeId}
+		$.ajax({
+			type : 'POST',
+			url : 'getAllItsSubUserTypeIdsByParentUserTypeIdAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$("#childUserTypeDetailsDivForCadreInsurance").html(" ");	
+			if(result != null && result.length > 0){
+			 buildUserTypesAndItsChildRlstForInsurance(result);	
+			}else{
+			$("#childUserTypeDetailsDivForCadreInsurance").html("NO DATA AVAILABLE");
+			}
+		});		 
+	}
+	function buildUserTypesAndItsChildRlstForInsurance(result){
+		var str='';
+		 str+='<ul class="comparisonSelect">';
+		 var firstChildUserTypeIdString;
+		 var userType;
+		 if(result !=null && result.length >0){
+			  firstChildUserTypeIdString = result[0].shortName;
+			  userType=result[0].userType;
+			 for(var i in result){
+    		   str+='<li onclick="getInsuranceChildUserType(\''+result[i].shortName+'\',\''+result[i].userType+'\');">'+result[i].userType+'<span class="closeIconComparison"></span></li>';
+			 }
+		 }
+		str+='</ul>';
+		$("#childUserTypeDetailsDivForCadreInsurance").html(str);
+		$(".comparisonSelect li:first-child").addClass("active")
+		
+		getSelectedChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdString,userType);
+	}
 	function getSelectedChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdString,childUserType){
-	 // $("#alertChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	//  $("#userTypeWiseChildDtlsTabForAlertId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 // $("#candidateLocationAlertDtlsStatusWiseDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	 // var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
-	 var childUserTypeIdsArray = [3];
-	 //  var parentActivityMemberId = globalActivityMemberId;
+	   $("#cadreInsuranceChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   $("#userTypeWiseChildDtlsTabForCadreInsuranceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   $("#candidateWiseCadreInsuranceDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
+	  var parentActivityMemberId = globalActivityMemberId;
         var jsObj = { 
-					   parentActivityMemberId : 44,
+					   parentActivityMemberId : parentActivityMemberId,
 					   childUserTypeIdsArray : childUserTypeIdsArray,
 					   reportType :"selectedUserType",
 					   stateId : globalStateIdForCadreInsurance,           
@@ -308,14 +370,126 @@
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			console.log(result);
+			$("#cadreInsuranceChildActivityMemberDivId").html(' ');
+			if(result != null && result.length > 0){
+				buildChildTypeMembersForInsuranceReslt(result,childUserType);
+			}else{
+				$("#cadreInsuranceChildActivityMemberDivId").html(' ');
+			}
 		});
 }
-function getDirectChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdString,childUserType){
-	 var childUserTypeIdsArray = [3];
-	 //  var parentActivityMemberId = globalActivityMemberId;
+function buildChildTypeMembersForInsuranceReslt(result,childUserType){
+	  var userTypeId = result[0].userTypeId;
+	  var activityMemberId = result[0].activityMemberId;
+	  var selectedMemberName = result[0].name;
+	  var selectedUserType = result[0].userType;
+	  var str = '';
+	  str+='<ul class="list-inline insuranceSlickPanelSlider">';
+	  var rank=1; 
+	   for(var i in result){
+	     //str+='<li style="cursor:pointer;" class="activityMemberClsForAlertBlock"  attr_selectedusertype="'+result[i].userType+'"  attr_id="userTypeWiseChildDtlsTabForAlertId"  attr_selectedmembername="'+result[i].name+'"  attr_activitymemberid='+result[i].activityMemberId+'  attr_usertypeid='+result[i].userTypeId+' style="width:380px !important;">';
+		 
+		  str+='<li style="cursor:pointer;" id="panelColor'+result[i].activityMemberId+'" onclick="getInsuranceChildUserTypeDls(\''+result[i].userType+'\',\'userTypeWiseChildDtlsTabForCadreInsuranceDivId\',\''+result[i].name+'\',\''+result[i].activityMemberId+'\',\''+result[i].userTypeId+'\');" class=""  style="width:380px !important;">';
+	     if(i==0){
+			str+='<div class="panel panel-default panelSlick panelActiveSlick">';
+		  }else{
+		   str+='<div class="panel panel-default panelSlick">';
+		  }
+		  str+='<div class="panel-heading">';
+			 str+='<h4 class="panel-title">'+result[i].name+'</h4>';
+			 str+='<span class="count">'+rank+'</span>';
+		 str+='</div>';
+		 str+='<div class="panel-body">';
+	   if(result[i].userTypeId != null && result[i].userTypeId==7 || result[i].userTypeId==9 || result[i].userTypeId==5 || result[i].userTypeId==6){// MLA Constituency Incharge, MP and District President Incharge 
+		   var lctnName = result[i].locationName;
+           lctnName = lctnName.substring(0, lctnName.lastIndexOf(" "));
+		   str+='<h4 class="text-capital">'+result[i].userType+' ('+lctnName+')</h4>';	 
+		 }else{
+		   str+='<h4 class="text-capital">'+result[i].userType+'</h4>';	 
+		 }
+			str+='<div class="table-responsive">';
+			 str+='<table class="table table-condensed text_align_center">';
+				 str+='<thead>';
+					 str+='<th>Total</th>';
+					 if(result[i].subList != null && result[i].subList.length > 0){
+						 for(var k in result[i].subList){
+							 str+='<th>'+result[i].subList[k].name+'</th>';	 
+						 }
+					 }
+				 str+='</thead>';
+				 str+='</tbody>';
+				 str+='<tr>';
+				 // positiveCount : this key contain approved amount
+					 str+='<td>'+result[i].totalCount+'('+result[i].positiveCount+')</td>';
+					  if(result[i].subList != null && result[i].subList.length > 0){
+						 for(var j in result[i].subList){
+							 if(result[i].subList[j].totalCount > 0){
+								str+='<th>'+result[i].subList[j].totalCount+'('+result[i].subList[j].positiveCount+')</th>';	 	
+							 }
+						 }
+					 }
+				 str+='</tr>';
+				 str+='</tbody>';
+			 str+='</table>';
+			  str+='</div>';
+		 str+='</div>';
+	 str+='</div> ';
+    str+=' </li> ';  
+	rank=rank+1;
+   }
+   $("#cadreInsuranceChildActivityMemberDivId").html(str);
+   $(".insuranceSlickPanelSlider").slick({
+			 slide: 'li',
+			 slidesToShow: 3,
+			 slidesToScroll: 3,
+			 infinite: false,
+			  responsive: [
+				{
+				  breakpoint: 1024,
+				  settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					infinite: false,
+					dots: false
+				  }
+				},
+				{
+				  breakpoint: 800,
+				  settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2
+				  }
+				},
+				{
+				  breakpoint: 600,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				},
+				{
+				  breakpoint: 480,
+				  settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				  }
+				}
+				// You can unslick at a given breakpoint now by adding:
+				// settings: "unslick"
+				// instead of a settings object
+			  ]
+		});  
+	     getDirectChildMemberCadreInsuranceComplainctCnt(activityMemberId,userTypeId,selectedMemberName,selectedUserType,"userTypeWiseChildDtlsTabForCadreInsuranceDivId");
+		 getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);
+ }
+function getDirectChildMemberCadreInsuranceComplainctCnt(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberDivId){
+      $("#"+childActivityMemberDivId).show();
+      $("#"+childActivityMemberDivId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	  var childUserTypeIdsArray = [];
+	   childUserTypeIdsArray.push(userTypeId);
+	   var parentActivityMemberId = activityMemberId;
         var jsObj = { 
-					   parentActivityMemberId : 44,
+					   parentActivityMemberId : parentActivityMemberId,
 					   childUserTypeIdsArray : childUserTypeIdsArray,
 					   reportType :"directChild",
 					   stateId : globalStateIdForCadreInsurance,           
@@ -329,11 +503,127 @@ function getDirectChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdStr
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			console.log(result);
+			 $("#"+childActivityMemberDivId).html('');
+		  if(result != null && result.length > 0){
+			  buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,selectedUserType,childActivityMemberDivId,userTypeId);
+		  }else{
+			  $("#"+childActivityMemberDivId).hide();
+			  if(childActivityMemberDivId == "userTypeWiseChildDtlsTabForCadreInsuranceDivId"){
+				//$("#"+childActivityMemberDivId).html("<h5><span  class='text-capital'>"+selectedMemberName+"</span> - <span class='text-capitalize'>"+selectedUserType+"</span> - ( No Data Available )</h5>");
+			}
+		  }
 		});
 }
-function getCandiateWiseCadreInsurencaeDtls(){
-	     var jsObj = { 
+
+function buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,selectedUserType,childActivityMemberDivId,userTypeId){
+		var str=''; 
+		str+='<h4><span  class="text-capital">'+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+'</span></h4>';
+		 if(childActivityMemberDivId != "userTypeWiseChildDtlsTabForCadreInsuranceDivId"){
+			str+='<span onclick="remveInsuranceSlcUsrType(\''+childActivityMemberDivId+'\');" class=" pull-right" style="margin-top: -5px;"><i class="glyphicon glyphicon-remove"></i></span>';
+		 } 
+			 str+='<div class="table-responsive">';
+			 if(childActivityMemberDivId != "userTypeWiseChildDtlsTabForCadreInsuranceDivId"){
+				 str+='<table  class="table table-condensed tableHoverLevelsInner m_top20">';
+			 }else{
+				str+='<table class="table table-condensed tableHoverLevels m_top20">';  
+			 }
+				str+='<thead   class="bg_D8 text-capital">';
+					str+='<th>Rank</th>';
+					str+='<th>Designation</th>';
+					str+='<th>Name</th>';
+					str+='<th style="text-align:center;">Total</th>';
+					//debugger
+					var issueTypeDtls = result[0].subList;
+					var statusObj; 
+					 if(issueTypeDtls != null && issueTypeDtls.length > 0){
+						statusObj = issueTypeDtls[0].subList;
+						 for(var i in issueTypeDtls){
+							 str+='<th>'+issueTypeDtls[i].name+'</th>';	 
+						 }
+					 }
+					 if(statusObj != null && statusObj.length > 0){
+						 for(var i in statusObj){
+							 str+='<th>'+statusObj[i].name+'</th>';	  
+						 }
+					 }
+				str+'=</thead>';
+		str+='<tbody>';
+		var rank=1;
+		 for(var i in result){
+		 var yourValues = result[i].locationName;
+		    str+='<tr  onclick="getDirectChildTypeMemberDtls(\''+result[i].activityMemberId+'\',\''+result[i].userTypeId+'\',\''+result[i].name+'\',\''+result[i].userType+'\',\'insuranceChildMemDtslId'+result[i].userTypeId+''+i+'\',\'insuranceHiddenTrId'+result[i].userTypeId+''+i+'\');" >';
+			str+='<td>';
+				str+='<span class="tableCount">'+rank+'</span>';
+			str+='</td>';
+		  if(yourValues.indexOf(',') == -1){
+				//  var locationNameArr=result[i].locationName.split(" ");
+			 	var locatinName = result[i].locationName;
+                 locatinName = locatinName.substring(0, locatinName.lastIndexOf(" "));
+				str+='<td>'+result[i].userType+' (<b>'+locatinName+'</b>)</td>';
+			}else{
+				str+='<td>'+result[i].userType+'</td>';
+			}
+		    str+='<td>'+result[i].name+'</td>';
+			str+='<td style="text-align:center;">'+result[i].totalCount+'</td>';
+			 if(result[i].subList != null && result[i].subList.length > 0){
+				 var intimations=0;
+				 var forwarded = 0;
+				 var settled = 0;
+				 var rejected = 0;			
+				 for(var j in result[i].subList){
+					  if(result[i].subList[j].totalCount > 0){
+						 str+='<td>'+result[i].subList[j].totalCount+'</td>';
+					  }else{
+						  str+='<td>-</td>';
+					  }
+					 if(result[i].subList[j].subList != null && result[i].subList[j].subList.length > 0){
+						 for(var k in result[i].subList[j].subList){
+							if(result[i].subList[j].subList[k].id = 1){
+								intimations = intimations + result[i].subList[j].subList[k].totalCount;
+							}else if(result[i].subList[j].subList[k].id = 2){
+								forwarded = forwarded + result[i].subList[j].subList[k].totalCount;
+							}else if(result[i].subList[j].subList[k].id = 3){
+								settled = settled + result[i].subList[j].subList[k].totalCount;
+							}else if(result[i].subList[j].subList[k].id = 4){
+								rejected = rejected + result[i].subList[j].subList[k].totalCount;
+							}	  
+						 }
+				 }
+			   }
+			  if(intimations > 0){
+					str+='<td>'+intimations+'</td>';	  
+			   }else{
+				   str+='<td> - </td>';	  
+			   }
+			   if(forwarded > 0){
+					str+='<td>'+forwarded+'</td>';	  
+			   }else{
+				   str+='<td> - </td>';	  
+			   }
+				if(settled > 0){
+					str+='<td>'+settled+'</td>';	  
+			   }else{
+				   str+='<td> - </td>';	  
+			   }
+				if(rejected > 0){
+					str+='<td>'+rejected+'</td>';	  
+			   }else{
+				   str+='<td> - </td>';	  
+			   }
+					 }
+		 str+='</tr>';
+		str+='<tr class="showHideTr" style="display:none" id="insuranceHiddenTrId'+result[i].userTypeId+''+i+'" attr_id="insuranceChildMemDtslId'+result[i].userTypeId+''+i+'">';
+		str+='<td colspan="8"  id="insuranceChildMemDtslId'+result[i].userTypeId+''+i+'">';
+		str+='</td>';
+		 rank=rank+1;
+		 }
+		str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+	    $("#"+childActivityMemberDivId).html(str);
+	}
+function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType){
+	        var jsObj = { 
 					   activityMemberId : 5,
 					   stateId : globalStateIdForCadreInsurance,           
 					   fromDate: "",        
@@ -346,6 +636,7 @@ function getCandiateWiseCadreInsurencaeDtls(){
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#candidateWiseCadreInsuranceDtlsDivId").html(' ');
 			console.log(result);
 		});
 }  
