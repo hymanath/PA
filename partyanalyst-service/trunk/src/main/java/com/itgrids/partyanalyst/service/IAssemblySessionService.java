@@ -13,4 +13,6 @@ public interface IAssemblySessionService
 	public List<AdminHouseVO> getAllParties();
 	public List<AdminHouseVO> getSessionYears(Long termId);
 	public List<AdminHouseVO> getDates(Long termId,String sessionYear,Long sessionId);
+	public List<AdminHouseVO> getDayWiseDetails(Long adminHseSessionDayId);
+	public List<AdminHouseVO> getSpeechAspectList();
 }
