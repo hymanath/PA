@@ -4136,6 +4136,7 @@
 		<property name="insuranceStatusDAO" ref="insuranceStatusDAO" ></property>
 		<property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+		<property name="constituencyDAO" ref="constituencyDAO"></property>
 	</bean>
 	<bean name="assemblySessionService" class="com.itgrids.partyanalyst.service.impl.AssemblySessionService">
 		<property name="adminHouseTermDAO" ref="adminHouseTermDAO" ></property>
