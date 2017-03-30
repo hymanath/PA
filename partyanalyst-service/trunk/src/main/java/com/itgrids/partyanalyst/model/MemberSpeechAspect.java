@@ -28,7 +28,7 @@ public class MemberSpeechAspect extends BaseModel implements Serializable{
 	private Long adminHouseSessionDayId;
 	private Long adminHouseMemberId;
 	private Long speechAspectId;
-	private Long score;
+	private Double score;
 	private String isDeleted;
 	
 	private AdminHouseSessionDay adminHouseSessionDay;
@@ -70,10 +70,10 @@ public class MemberSpeechAspect extends BaseModel implements Serializable{
 	}
 	
 	@Column(name = "score")
-	public Long getScore() {
+	public Double getScore() {
 		return score;
 	}
-	public void setScore(Long score) {
+	public void setScore(Double score) {
 		this.score = score;
 	}
 	
