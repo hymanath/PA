@@ -4139,13 +4139,14 @@
 		<property name="constituencyDAO" ref="constituencyDAO"></property>
 	</bean>
 	<bean name="assemblySessionService" class="com.itgrids.partyanalyst.service.impl.AssemblySessionService">
-		<property name="adminHouseTermDAO" ref="adminHouseTermDAO" ></property>
-		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" ></property>
-		<property name="houseSessionDAO" ref="houseSessionDAO" ></property>
-		<property name="memberSpeechAspectDAO" ref="memberSpeechAspectDAO" ></property>
-		<property name="partyDAO" ref="partyDAO" ></property>
-		<property name="adminHouseSessionDAO" ref="adminHouseSessionDAO" ></property>
-		<property name="speechAspectDAO" ref="speechAspectDAO" ></property>
+		<property name="adminHouseTermDAO" ref="adminHouseTermDAO"></property>
+		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+		<property name="houseSessionDAO" ref="houseSessionDAO"></property>
+		<property name="memberSpeechAspectDAO" ref="memberSpeechAspectDAO"></property>
+		<property name="partyDAO" ref="partyDAO"></property>
+		<property name="adminHouseSessionDAO" ref="adminHouseSessionDAO"></property>
+		<property name="speechAspectDAO" ref="speechAspectDAO"></property>
+		<property name="adminHouseMemberDAO" ref="adminHouseMemberDAO"></property>
 	</bean>
 </beans>			
 	
