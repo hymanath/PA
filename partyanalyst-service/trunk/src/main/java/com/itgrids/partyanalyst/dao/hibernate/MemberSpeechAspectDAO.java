@@ -15,13 +15,12 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		super(MemberSpeechAspect.class);
 		
 	}
-	
 	public List<Object[]> getNoOfDaysForSession(Long termId,String sesYear,List<Long> sessionIds,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 			sb.append("select date(model.adminHouseSessionDay.adminHouseSession.fromDate)," +
 				" model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId, " +
 				" model.adminHouseSessionDay.adminHouseSession.houseSession.sessionName, " +
-				" count(model.adminHouseSessionDay.adminHouseSessionDayId)," +
+				" count(distinct model.adminHouseSessionDay.adminHouseSessionDayId)," +
 				" model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId " +
 				" from MemberSpeechAspect model " +
 				" where model.isDeleted = 'N' ");
@@ -62,10 +61,9 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	    StringBuilder str = new StringBuilder();
 	    
 	    str.append(" select count(distinct model.adminHouseMember.adminHouseMemberId),model.adminHouseMember.partyId," +
-	        " model.adminHouseSessionDay.sessionDate,model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId," +
-	        " model.adminHouseSessionDay.adminHouseSessionDayId " +
+	        " model.adminHouseSessionDay.sessionDate,model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId,model.adminHouseSessionDay.adminHouseSessionDayId " +
 	        " from MemberSpeechAspect model " +
-	        " where model.isDeleted = 'N' " );
+	        " where model.isDeleted = 'N'  and model.adminHouseSessionDay.isDeleted = 'N' " );
 	    
 	    if(termId != null && termId.longValue() >0l)
 	    {
@@ -84,7 +82,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	      str.append(" and date(model.adminHouseSessionDay.adminHouseSession.fromDate)  between :startDate and :endDate " );
 	    }
 	    
-	    str.append(" group by model.adminHouseMember.partyId,model.adminHouseSessionDay.sessionDate,model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId  " );
+	    str.append(" group by model.adminHouseMember.partyId,model.adminHouseSessionDay.sessionDate,model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId,model.adminHouseSessionDay.adminHouseSessionDayId  " );
 	    
 	    Query query = getSession().createQuery(str.toString());
 	    	if(termId != null && termId.longValue() >0l)
@@ -120,6 +118,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		return query.list();
 		
 	}
+	
 	public MemberSpeechAspect updateMemberDetails(Long adminHouseMemberId,Long adminHouseSessionDayId,Long speechAspectId){
 		StringBuilder sb = new StringBuilder();
 			sb.append("select model" +
@@ -147,6 +146,36 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 			query.setParameter("speechAspectId", speechAspectId);
 		
 		return (MemberSpeechAspect) query.uniqueResult();
+	}
+	
+	public MemberSpeechAspect getPrimaryKey(Long adminHouseSessionId,Long memberId,Long speechAspectId){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select model from MemberSpeechAspect model where model.isDeleted = 'N' ");
+		
+		if(adminHouseSessionId != null && adminHouseSessionId.longValue() > 0l){
+			sb.append(" and model.adminHouseSessionDay.adminHouseSessionDayId = :adminHouseSessionDay ");
+		}
+		if(memberId != null && memberId.longValue() > 0l){
+			sb.append(" and model.adminHouseMember.adminHouseMemberId = :memberId ");
+		}
+		if(speechAspectId != null && speechAspectId.longValue() > 0l){
+			sb.append(" and model.speechAspect.speechAspectId = :speechAspectId ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(adminHouseSessionId != null && adminHouseSessionId.longValue() > 0l){
+			query.setParameter("adminHouseSessionId", adminHouseSessionId);
+		}
+		if(memberId != null && memberId.longValue() > 0l){
+			query.setParameter("memberId", memberId);
+		}
+		
+		if(speechAspectId != null && speechAspectId.longValue() > 0l){
+			query.setParameter("speechAspectId", speechAspectId);
+		}
+		 return (MemberSpeechAspect)query.uniqueResult();
 	}
 
 }
