@@ -1566,7 +1566,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		 }
 		return query.list();  
 	}
-	public List<Object[]> getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionList,List<Long> alertStatusIds,List<Long> scopeIdList){
+	public List<Object[]> getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList,List<Long> editionList,List<Long> alertStatusIds,List<Long> scopeIdList,String type){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertCategory.alertCategoryId," +
 		  				  " model.alertCategory.category," +
@@ -1604,11 +1604,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    	queryStr.append(" and model.alertStatus.alertStatusId in (:alertStatusIds) ");
 	    }
 	    if(scopeIdList != null && scopeIdList.size() > 0){
-			if(scopeIdList.get(0).longValue() == 8l){
-				queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
-			}
 			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
 		}
+	    if(type.equalsIgnoreCase("GHMC")){
+	    	queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
+	    }
 	    queryStr.append(" group by model.alertCategory.alertCategoryId,model.alertImpactScope.alertImpactScopeId ");
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
@@ -1635,7 +1635,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		return query.list();
 	}
-	public List<Object[]> getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList, List<Long> editionList,List<Long> alertStatusIds,List<Long> scopeIdList){
+	public List<Object[]> getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(Long userAccessLevelId,Set<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> alertTypeList, List<Long> editionList,List<Long> alertStatusIds,List<Long> scopeIdList,String type){
 		StringBuilder queryStr = new StringBuilder();
 		  queryStr.append(" select model.alertCategory.alertCategoryId," +
 		  				  " model.alertCategory.category," +
@@ -1677,11 +1677,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 	    	queryStr.append(" and model.alertStatus.alertStatusId in (:alertStatusIds) ");
 	    }
 	    if(scopeIdList != null && scopeIdList.size() > 0){
-			if(scopeIdList.get(0).longValue() == 8l){
-				queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
-			}
 			queryStr.append(" and model.impactScopeId in (:scopeIdList) ");
 		}
+	    if(type.equalsIgnoreCase("GHMC")){
+	    	queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp	
+	    }
 	    queryStr.append(" group by model.alertCategory.alertCategoryId,model.alertImpactScope.alertImpactScopeId,model.alertStatus.alertStatusId ");
 	    Query query = getSession().createQuery(queryStr.toString());
 	    if(stateId != null && stateId.longValue() > 0l){
