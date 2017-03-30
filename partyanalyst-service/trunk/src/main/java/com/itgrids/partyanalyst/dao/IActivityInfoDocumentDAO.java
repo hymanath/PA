@@ -42,4 +42,8 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long muncipalityId);
 	public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> villageIdsList,List<Long> wardIdsList);
 	public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> districtIds,List<Long> constiIdsList);
+	
+	public List<Object[]>  getDistrictNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long stateId);
+	public List<Object[]>  getDistrictNamesConductedInfocoveredLocationsByScopeId(Long activityScopeId,Long stateId);
+	
 }
