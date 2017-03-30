@@ -2507,7 +2507,11 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		 }else if(locationType=="StateImpactLevel")	{
 			 scopeIdsArr = globalImpactScopeArr;
 		 }else if(locationType=="GHMCImpactLevel"){
-			 scopeIdsArr = globalCorpGhmcImpactScopeSArr; 
+			 var districtId = $("#districtSelectBoxId").val();
+			 if(districtId > 0){
+				districtIdArr.push(districtId); 
+			 }
+			  scopeIdsArr = globalCorpGhmcImpactScopeSArr; 
 		 }
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -4278,7 +4282,7 @@ function getTotalArticledetails(articleId){
 		if(loctionType=="Constituency"){
 			constituencyId = locationIdStr;  
 		}else if(loctionType=="District"){
-			  districtIdArr = locationIdStr.split(",");	
+			 districtIdArr = locationIdStr.split(",");	
 		}
 		var alertStatusId = 0;
 		var isPublication = "true";
