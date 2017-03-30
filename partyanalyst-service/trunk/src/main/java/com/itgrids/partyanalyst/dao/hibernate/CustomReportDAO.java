@@ -24,4 +24,11 @@ public class CustomReportDAO extends GenericDaoHibernate<CustomReport, Long> imp
 		return query.list();	
 }
 
+	@SuppressWarnings("unchecked")
+	public String getDescriptionForReportId(Long reportId) {
+		Query query = getSession().createQuery("select model.description " +
+				" from CustomReport model  where model.customReportId = :reportId and model.isDeleted='N' ");
+		query.setParameter("reportId", reportId);
+		return (String) query.uniqueResult();	
+	}
 }
