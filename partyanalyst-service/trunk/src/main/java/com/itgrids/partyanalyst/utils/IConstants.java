@@ -1283,4 +1283,5 @@ public interface IConstants {
 	public static final String ELECTION_TYPE_IDS="6,7";
 	
 	public static final String CORE_DASHBOARD_INSURANCE_STATUS = "INTIMATIONS,FORWARDED,SETTLED,REJECTED";
+	public static final String[] CORE_DASHBOARD_INSURANCE_STATUS_ARR = {"INTIMATIONS","FORWARDED","SETTLED","REJECTED"};
 }
