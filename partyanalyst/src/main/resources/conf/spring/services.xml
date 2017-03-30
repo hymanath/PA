@@ -4136,6 +4136,7 @@
 		<property name="memberSpeechAspectDAO" ref="memberSpeechAspectDAO" ></property>
 		<property name="partyDAO" ref="partyDAO" ></property>
 		<property name="adminHouseSessionDAO" ref="adminHouseSessionDAO" ></property>
+		<property name="speechAspectDAO" ref="speechAspectDAO" ></property>
 	</bean>
 </beans>			
 	
