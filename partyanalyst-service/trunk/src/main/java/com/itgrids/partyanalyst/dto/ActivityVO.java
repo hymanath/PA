@@ -9,6 +9,10 @@ import java.util.Map;
  * @author Administrator
  *
  */
+/**
+ * @author Administrator
+ *
+ */
 public class ActivityVO implements Comparable<ActivityVO>{
 	
 	private Long activityTypeId;
@@ -102,7 +106,14 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private String table;
 	private List<ActivityVO> attrTypeList = new ArrayList<ActivityVO>(0);
 	private String types;
+	private String isChecked;
 	
+	public String getIsChecked() {
+		return isChecked;
+	}
+	public void setIsChecked(String isChecked) {
+		this.isChecked = isChecked;
+	}
 	public Long getAttributeId() {
 		return attributeId;
 	}
