@@ -95,13 +95,14 @@
 		<div class="modal-content">
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title text-capital" id="reportheaderId"></h4>
+			<h4 class="modal-title text-capital" id="reportheaderId">UPLOAD CUSTOM REPORT DETAILS</h4>
 		  </div>
 		  <div class="modal-body">
 			<div class="row" >
 				<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-					<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD FILE</h3> 
 					<form name="customApplication" method="post" id="customApplication">
+					<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD FILE</h3> 
+					
 					<input type="file" id="update_CustomReportId" multiple="multiple"  name="files[]" class="m_top20"/>
 					<span id="errFileId" style="color:red;margin-left:470px;"></span>   
 					
