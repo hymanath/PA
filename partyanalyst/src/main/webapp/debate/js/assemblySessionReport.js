@@ -1,4 +1,7 @@
+alert(1)
+//getElectionYears();
 function getElectionYears(){
+alert(5)
 	var jObj = {
 			};		
 			$.ajax({
@@ -76,26 +79,27 @@ function getDates(){
 					}
 			 });
 }
-
+getSessionDetails();
 function getSessionDetails(){
+	alert(2)
 	
 	var startDate;
 	var endDate;
-	var termId = $("#elctonId").val();
-	var sessionyear = $('#sessionYearId').val();
-	var sessionId = $('#sessionId').val();
-	var dateStr = $('#dateId').val();
-	var dateArr = dateStr.split("-");
-	if(dateArr != null && dateArr.length > 0){
-		startDate = dateArr[0];
-		endDate =  dateArr[1]; 
-	}
+	//var termId = $("#elctonId").val();
+	//var sessionyear = $('#sessionYearId').val();
+	//var sessionId = $('#sessionId').val();
+	//var dateStr = $('#dateId').val();
+	//var dateArr = dateStr.split("-");
+	//if(dateArr != null && dateArr.length > 0){
+		//startDate = dateArr[0];
+		//endDate =  dateArr[1]; 
+	//}
 	var jObj = {
-				 elctionYearId : termId,
-				 sessionYear : sessionyear,
-				 sessionId : sessionId,
-				 startDate : startDate,
-				 endDate : endDate
+				 elctionYearId : 1,
+				 sessionYear : "2016",
+				 sessionId : 7,
+				 startDate : "23-02-2016",
+				 endDate : "11-05-2016"
 			};		
 			$.ajax({
 				  type:'POST',
