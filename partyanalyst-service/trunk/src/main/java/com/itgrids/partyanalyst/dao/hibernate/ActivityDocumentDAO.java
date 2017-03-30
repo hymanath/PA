@@ -48,7 +48,7 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 			        queryStr.append("  model.address.ward.constituencyId ,"); 
 			 }*/
 		
-		if(type != null && type.equalsIgnoreCase("panchayat")){
+		/*if(type != null && te.equalsIgnoreCase("panchayat")){
 			queryStr.append(" count(distinct panchayat.panchayatId), ");
 		}else if( type != null && type.equalsIgnoreCase("ward")){
 			queryStr.append("  count(distinct ward.constituencyId), ");
@@ -61,7 +61,8 @@ public class ActivityDocumentDAO extends GenericDaoHibernate<ActivityDocument, L
 		}else if(type != null && type.equalsIgnoreCase("district"))
 			queryStr.append(" count(distinct district.districtId)," );
 		if(type != null && type.equalsIgnoreCase("state"))
-			queryStr.append(" count(distinct model.userAddress.state.stateId)," );
+			queryStr.append(" count(distinct model.userAddress.state.stateId)," );*/
+		queryStr.append(" count(distinct model.activityLocationInfoId), ");
 		queryStr.append(" count( distinct model1.activityDocumentId) " );
 		queryStr.append(" ,model1.activityScope.activityScopeId ");
 		queryStr.append("  from ActivityDocument model1,ActivityInfoDocument model " +
