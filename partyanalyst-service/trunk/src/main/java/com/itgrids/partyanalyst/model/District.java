@@ -63,6 +63,8 @@ public class District extends BaseModel implements java.io.Serializable {
 	private Set<ElectionGoverningBody> electionGoverningBody = new HashSet<ElectionGoverningBody>(0);
 	private Set<User> users = new HashSet<User>(0);
 	private String localName;
+	private Long orderNo;
+	
 	// Constructors
 
 	/** default constructor */
@@ -279,6 +281,15 @@ public class District extends BaseModel implements java.io.Serializable {
 
 	public void setLocalName(String localName) {
 		this.localName = localName;
+	}
+
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 	

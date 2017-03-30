@@ -38,7 +38,7 @@ public class ActivityConductedInfo implements java.io.Serializable{
 	private Long updatedBy;
 	private Date plannedDate;
 	private Date conductedDate;
-	
+	private String updatedStatus;
 	
 	private ActivityScope activityScope;
 	private UserAddress address;
@@ -191,5 +191,12 @@ public class ActivityConductedInfo implements java.io.Serializable{
 		this.conductedDate = conductedDate;
 	}
 	
-				
+	@Column(name="updated_status")
+	public String getUpdatedStatus() {
+		return updatedStatus;
+	}
+	public void setUpdatedStatus(String updatedStatus) {
+		this.updatedStatus = updatedStatus;
+	}
+			
 }
