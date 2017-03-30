@@ -6224,6 +6224,22 @@ public ActivityVO getMatchQuesActivityVO(List<ActivityVO> questionList,Long queI
 public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId,Long activityMemberId,Long stateId,Long userTypeId){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	try{
+		List<Object[]> locationsInfodocsDetals = activityInfoDocumentDAO.getDistrictNamesLocationsInfocoveredLocationsByScopeId(activityScopeId,stateId);
+		Map<Long,Long> imagescoverdMap = new HashMap<Long, Long>(0);
+		
+		if(commonMethodsUtilService.isListOrSetValid(locationsInfodocsDetals)){
+			for (Object[] param : locationsInfodocsDetals) {
+				imagescoverdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+			}
+		}
+		else{
+			locationsInfodocsDetals = activityInfoDocumentDAO.getDistrictNamesConductedInfocoveredLocationsByScopeId(activityScopeId,stateId);
+			if(commonMethodsUtilService.isListOrSetValid(locationsInfodocsDetals)){
+				for (Object[] param : locationsInfodocsDetals) {
+					imagescoverdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+		}
 		List<Object[]> districtCountList = activityInfoDocumentDAO.getDistrictNamesByScopeId(activityScopeId,stateId);
 		if(districtCountList != null && districtCountList.size() > 0l){
 			for (Object[] objects : districtCountList) {
@@ -6231,6 +6247,7 @@ public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId,Long acti
 				 vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				 vo.setImagesCnt(imagescoverdMap.get(vo.getDistrictId()));
 				 returnList.add(vo);
 			}
 		}
