@@ -4542,7 +4542,7 @@ function getStateImpactandItsSubLevelAlert(){
 				},
 				 tooltip: {
 					 formatter: function() {
-                        return  (this.series.name)+" - "+(this.total);
+                        return  (this.series.name)+" - "+(this.y);
                     },
 					//headerFormat: '<b>{series.name}</b><br/>',
 					//pointFormat: '{point.y}'
