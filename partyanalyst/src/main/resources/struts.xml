@@ -16335,6 +16335,26 @@
 			<result type="json" name="success">
 				<param name="root">assemblyVOList</param>
 			</result>
-	    </action> 
+	    </action>
+	    <action name="getDistrictWiseThenCategoryWiseInsuranceMemberCountAction" class="cadreRegistrationAction" method="getDistrictWiseThenCategoryWiseInsuranceMemberCount">
+			<result type="json" name="success">
+	   			<param name="root">coreDashboardInsuranceVOs</param>    
+	   		</result>
+		</action>
+		<action name="getConstituencyWiseThenCategoryWiseInsuranceMemberCountAction" class="cadreRegistrationAction" method="getConstituencyWiseThenCategoryWiseInsuranceMemberCount">
+			<result type="json" name="success">
+	   			<param name="root">coreDashboardInsuranceVOs</param>    
+	   		</result>
+		</action>
+		<action name="getDistrictWiseThenStatusWiseInsuranceMemberCountAction" class="cadreRegistrationAction" method="getDistrictWiseThenStatusWiseInsuranceMemberCount">
+			<result type="json" name="success">
+	   			<param name="root">coreDashboardInsuranceVOs</param>    
+	   		</result>
+		</action>
+		<action name="getConstituencyWiseThenStatusWiseInsuranceMemberCountAction" class="cadreRegistrationAction" method="getConstituencyWiseThenStatusWiseInsuranceMemberCount">
+			<result type="json" name="success">
+	   			<param name="root">coreDashboardInsuranceVOs</param>    
+	   		</result>
+		</action>        
  </package>
 </struts>
