@@ -23,4 +23,12 @@ public class CustomReportFileDAO extends GenericDaoHibernate<CustomReportFile, L
 		query.setParameter("programId", programId);
 			 return query.list();
 	}	
+	@SuppressWarnings("unchecked")
+	  public List<Object[]>  getFileForAReport(Long reportId){
+	    Query query=getSession().createQuery("select  model.customReportFileId,model.fileName,model.path " 
+	        + " from CustomReportFile model"        
+	        + " where model.customReportId = :reportId and model.isDeleted = 'N' ");
+	    query.setParameter("reportId", reportId);
+	     return query.list();
+	  }
 }
