@@ -3081,12 +3081,12 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 			{
 			for(var j in result[i].subList)
 			{
-				if(parseInt(result[i].subList[j].id) != parseInt(attr_image_info_id)){
+				
 						str+='<li id="img'+result[i].subList[j].id+'">';
 						str+='<img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="margin-bottom: 10px;">';
 						str+='<i class="glyphicon glyphicon-trash removeImg" style="cursor: pointer; background: #fff; padding: 2px; float: right; top: 0px; box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.4);margin_top:15px;" title="Clicke here to remove this image." attr_image_info_id ="'+result[i].subList[j].id+'"  path="\''+path+'\'" attr_activity_scopeid="'+attr_activity_scopeid+'"  locationScope="'+locationScope+'" locationScopeValue="'+locationScopeValue+'" ></i>';
 						str+='</li>';
-				}
+				
 			}
 			}
 			  str+='</ul>';
@@ -3097,7 +3097,6 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 		{	 
 			for(var j in result[i].subList)
 			{
-				if(parseInt(result[i].subList[j].id) != parseInt(attr_image_info_id))
 					str+='<li class="img'+result[i].subList[j].id+'" ><img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'" style="cursor:pointer;"/></li>';	
 			}
 		}
