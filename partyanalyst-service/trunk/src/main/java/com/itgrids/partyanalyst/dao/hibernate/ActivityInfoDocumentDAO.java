@@ -24,7 +24,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			Long userAccessLevelId,Set<Long> userAccessLevelValues)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day" +
+		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day,model.activityInfoDocumentId" +
 				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId and model.isDeleted = 'N' " );
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
@@ -407,7 +407,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	public List<Object[]> getAvailableDates(EventDocumentVO inputVO,Date startDate,Date endDate,String type)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append(" select distinct model.day,date(model.activityDocument.activityDate) ");
+		str.append(" select distinct model.day,''  ");
 		str.append(" from ActivityInfoDocument model where model.activityDocument.activityDate is not null and model.day is not null and model.isDeleted ='N' ");
 		if(inputVO.getLocationScope().equalsIgnoreCase("state"))
 		{
@@ -594,7 +594,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 			Long userAccessLevelId,Set<Long> userAccessLevelValues)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day" +
+		str.append("select model.activityDocument.documentName,model.activityDocument.path,model.day,model.activityInfoDocumentId" +
 				"  from ActivityInfoDocument model where model.activityDocument.activityScopeId = :activityDocumentId  and model.isDeleted='N'");
 		if(inputVO.getDay() > 0)
 			str.append(" and model.day = :day");
@@ -913,6 +913,31 @@ public List<Object[]>  getDistrictNamesByScopeId(Long activityScopeId,Long state
 		}else if(stateId != null && stateId.longValue() == 0l){
 			sb.append("  and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
 		}
+		sb.append(" group by UA.district.districtId order by UA.district.orderNo asc");
+	Query query =  getSession().createQuery(sb.toString());
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+	 query.setParameter("activityScopeId", activityScopeId);
+	
+	return query.list();
+}
+
+public List<Object[]>  getDistrictNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long stateId){
+	StringBuilder sb = new StringBuilder();
+		sb.append("select UA.district.districtId,UA.district.districtName," +
+				" count(model.activityLocationInfoId) " +
+				" from ActivityInfoDocument model,UserAddress UA" +
+				" where model.isDeleted ='N'" +
+				" and model.activityAddressId = UA.userAddressId ");
+		if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+					//" and UA.state.stateId = 1 ");
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		}
 		sb.append(" group by UA.district.districtId order by UA.district.districtName asc");
 	Query query =  getSession().createQuery(sb.toString());
 	if(activityScopeId != null && activityScopeId.longValue() > 0l)
@@ -921,6 +946,30 @@ public List<Object[]>  getDistrictNamesByScopeId(Long activityScopeId,Long state
 	return query.list();
 }
 
+public List<Object[]>  getDistrictNamesConductedInfocoveredLocationsByScopeId(Long activityScopeId,Long stateId){
+	StringBuilder sb = new StringBuilder();
+		sb.append("select UA.district.districtId,UA.district.districtName," +
+				" count(model.activityConductedInfoId) " +
+				" from ActivityInfoDocument model,UserAddress UA" +
+				" where model.isDeleted ='N'" +
+				" and model.activityAddressId = UA.userAddressId ");
+		if(activityScopeId != null && activityScopeId.longValue() > 0l)
+			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+					//" and UA.state.stateId = 1 ");
+		if(stateId != null && stateId.longValue() == 1l){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && (stateId.longValue() == 2l || stateId.longValue() == 36l)){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.TS_NEW_DISTRICTS_IDS_LIST+") ");
+		}else if(stateId != null && stateId.longValue() == 0l){
+			sb.append("  and model.userAddress.district.districtId in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+","+IConstants.TS_NEW_DISTRICTS_IDS_LIST+")");
+		}
+		sb.append(" group by UA.district.districtId order by UA.district.districtName asc");
+	Query query =  getSession().createQuery(sb.toString());
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+	 query.setParameter("activityScopeId", activityScopeId);
+	
+	return query.list();
+}
 public List<Object[]>  getConstituencyNamesByDistrictId(Long activityScopeId,Long districtId){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.constituency.constituencyId,UA.constituency.name," +
