@@ -4721,11 +4721,27 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			  if(alertType > 0l){ //we are taking alert status by alert type 
 				  setAlertStatusByAlertType(rtrnAlertStatusObjLst,alertStatusIds);
 			    }
+			   
 			  prepareTemplate(rtrnAlertCategoryObjLst,implactLevelList,rtrnAlertStatusObjLst,categoryMap);////Prepare Template 
-			  List<Object[]> rtrnImpactLevelCntObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds);
-			  setAlertImpactLevelWiseAlertCnt(rtrnImpactLevelCntObjLst,categoryMap); 
-			  List<Object[]> rtrnImpctLvlSttusWsCntObjLst = alertDAO.getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds);
-			  setStatusWiseAlertCnt(rtrnImpctLvlSttusWsCntObjLst,categoryMap);
+			    boolean isGhmcImpactLeve = false;
+				if(impactScopeIds.contains(8l)){
+					impactScopeIds.remove(8l);
+					isGhmcImpactLeve = true;
+				}
+				if(impactScopeIds.size() > 0){
+					  List<Object[]> rtrnImpactLevelCntObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds,"allImpact");
+					  setAlertImpactLevelWiseAlertCnt(rtrnImpactLevelCntObjLst,categoryMap); 
+					  List<Object[]> rtrnImpctLvlSttusWsCntObjLst = alertDAO.getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds,"allImpact");
+					  setStatusWiseAlertCnt(rtrnImpctLvlSttusWsCntObjLst,categoryMap);
+				}
+				if(isGhmcImpactLeve){
+					  impactScopeIds.clear();
+					  impactScopeIds.add(8l);
+					  List<Object[]> rtrnGHMCObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds,"GHMC");
+					  setAlertImpactLevelWiseAlertCnt(rtrnGHMCObjLst,categoryMap); 
+					  List<Object[]> rtrnGHMCSttusWsCntObjLst = alertDAO.getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds,"GHMC");
+					  setStatusWiseAlertCnt(rtrnGHMCSttusWsCntObjLst,categoryMap);
+				}
 			  //remove alert category which does not contain any alert count in all impact level.
 			  if(categoryMap != null && categoryMap.size() > 0){
 				  for(Entry<Long,AlertOverviewVO> entry:categoryMap.entrySet()){
