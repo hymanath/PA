@@ -911,7 +911,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		return query.list();       
 	}  
-	public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList,String filterType,Long locationValue,Long disctrictId){
+	public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String step, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList,String filterType,Long locationValue,Long disctrictId,List<Long> alertStatusIds){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
 		if(filterType != null && filterType.equalsIgnoreCase("District")){
@@ -966,6 +966,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(editionList != null && editionList.size() > 0){
 			queryStr.append(" and model.editionType.editionTypeId in (:editionList) ");
 		}
+		if(alertStatusIds != null && alertStatusIds.size() > 0){
+			queryStr.append(" and model.alertStatus.alertStatusId in (:alertStatusIds) ");
+		}
 		if(locationValue != null && locationValue.longValue() > 0){
 			if(filterType != null && filterType.equalsIgnoreCase("District")){
 				queryStr.append(" and district.districtId =:locationValue ");
@@ -1014,6 +1017,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		if(disctrictId != null && disctrictId.longValue() > 0){
 			 query.setParameter("disctrictId", disctrictId);
+		}
+		if(alertStatusIds != null && alertStatusIds.size() > 0){
+		  query.setParameterList("alertStatusIds", alertStatusIds);
 		}
 		return query.list();   
 	}
