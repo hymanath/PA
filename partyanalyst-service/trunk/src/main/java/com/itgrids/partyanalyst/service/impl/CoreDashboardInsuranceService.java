@@ -1735,20 +1735,20 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				//CoreDashboardInsuranceVO coreDashboardInsuranceVO = null;
 				if(idAndNameMap != null && idAndNameMap.size() > 0){
 					for(Entry<Long,String> entry : idAndNameMap.entrySet()){
-						CoreDashboardInsuranceVO coreDashboardInsuranceVO = new CoreDashboardInsuranceVO();
-						coreDashboardInsuranceVO.setId(entry.getKey());
-						coreDashboardInsuranceVO.setName(entry.getValue());
+						CoreDashboardInsuranceVO insuranceVO = new CoreDashboardInsuranceVO();
+						insuranceVO.setId(entry.getKey());
+						insuranceVO.setName(entry.getValue());
 						Long totalCount = 0L;
 						if(locIdAndCategoryAndCountMap.get(entry.getKey()) != null && locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death") != null){
-							coreDashboardInsuranceVO.setDeathCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death"));
+							insuranceVO.setDeathCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death"));
 							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death");
 						}
 						if(locIdAndCategoryAndCountMap.get(entry.getKey()) != null && locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization") != null){
-							coreDashboardInsuranceVO.setHospitalizationCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization"));
+							insuranceVO.setHospitalizationCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization"));
 							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization");
 						}
 						
-						coreDashboardInsuranceVO.setTotalCategroyCount(totalCount);
+						insuranceVO.setTotalCategroyCount(totalCount);
 						
 						Long totalAmount = 0L;
 						
@@ -1758,8 +1758,8 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						if(locIdAndCategoryAndAmountMap.get(entry.getKey()) != null && locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Hospitalization") != null){
 							totalAmount+=locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Hospitalization");
 						}
-						coreDashboardInsuranceVO.setTotalAmount(totalAmount);
-						coreDashboardInsuranceVOs.add(coreDashboardInsuranceVO);
+						insuranceVO.setTotalAmount(totalAmount);
+						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
 				
@@ -1857,20 +1857,20 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				//CoreDashboardInsuranceVO coreDashboardInsuranceVO = null;
 				if(idAndNameMap != null && idAndNameMap.size() > 0){
 					for(Entry<Long,String> entry : idAndNameMap.entrySet()){
-						CoreDashboardInsuranceVO coreDashboardInsuranceVO = new CoreDashboardInsuranceVO();
-						coreDashboardInsuranceVO.setId(entry.getKey());
-						coreDashboardInsuranceVO.setName(entry.getValue());
+						CoreDashboardInsuranceVO insuranceVO = new CoreDashboardInsuranceVO();
+						insuranceVO.setId(entry.getKey());
+						insuranceVO.setName(entry.getValue());
 						Long totalCount = 0L;
 						if(locIdAndCategoryAndCountMap.get(entry.getKey()) != null && locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death") != null){
-							coreDashboardInsuranceVO.setDeathCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death"));
+							insuranceVO.setDeathCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death"));
 							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death");
 						}
 						if(locIdAndCategoryAndCountMap.get(entry.getKey()) != null && locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization") != null){
-							coreDashboardInsuranceVO.setHospitalizationCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization"));
+							insuranceVO.setHospitalizationCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization"));
 							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization");
 						}
 						
-						coreDashboardInsuranceVO.setTotalCategroyCount(totalCount);
+						insuranceVO.setTotalCategroyCount(totalCount);
 						
 						Long totalAmount = 0L;
 						
@@ -1880,8 +1880,8 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						if(locIdAndCategoryAndAmountMap.get(entry.getKey()) != null && locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Hospitalization") != null){
 							totalAmount+=locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Hospitalization");
 						}
-						coreDashboardInsuranceVO.setTotalAmount(totalAmount);
-						coreDashboardInsuranceVOs.add(coreDashboardInsuranceVO);
+						insuranceVO.setTotalAmount(totalAmount);
+						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
 				
