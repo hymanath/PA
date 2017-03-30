@@ -22,7 +22,9 @@ public class AdminHouseVO implements Serializable{
 	private Long candidateId;
 	private Long adminHouseMemberId;
 	private List<AdminHouseVO> candidateList = new ArrayList<AdminHouseVO>(0);
-	private Long total = 0l;
+	private Double total = 0.0d;
+	private Double value = 0.0d;
+	private Double score = 0.0d;
 	
 	public Long getId() {
 		return id;
@@ -120,10 +122,22 @@ public class AdminHouseVO implements Serializable{
 	public void setCandidateList(List<AdminHouseVO> candidateList) {
 		this.candidateList = candidateList;
 	}
-	public Long getTotal() {
+	public Double getTotal() {
 		return total;
 	}
-	public void setTotal(Long total) {
+	public void setTotal(Double total) {
 		this.total = total;
+	}
+	public Double getValue() {
+		return value;
+	}
+	public void setValue(Double value) {
+		this.value = value;
+	}
+	public Double getScore() {
+		return score;
+	}
+	public void setScore(Double score) {
+		this.score = score;
 	}
 }
