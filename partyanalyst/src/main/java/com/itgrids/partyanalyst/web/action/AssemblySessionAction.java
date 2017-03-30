@@ -159,5 +159,14 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			}
 		return Action.SUCCESS;
 	}
-	
+	public String getDayWiseDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			assemblyVOList = assemblySessionService.getDayWiseDetails(jObj.getLong("adminHouseSessionDayId"));
+			}catch(Exception e){
+				LOG.error("Exception occured in getDayWiseDetails() At CadreCommitteeAction",e);
+			}
+		return Action.SUCCESS;
+	}
 }
