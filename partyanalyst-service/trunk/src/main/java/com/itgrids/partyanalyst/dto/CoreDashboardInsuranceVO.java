@@ -24,13 +24,16 @@ public class CoreDashboardInsuranceVO {
 	private List<CoreDashboardInsuranceVO> subList = new ArrayList<CoreDashboardInsuranceVO>();
 	private CoreDashboardInsuranceVO coreDashboardInsuranceVO = new CoreDashboardInsuranceVO();
 	private Double percentage = 0.00;
+	private Long totalCategroyCount = 0L;//death and hospitalization
+	private Long totalStatusCount = 0L;
+	private Long totalAmount = 0L;
+	private List<InsuranceStatusVO> insuranceStatusVOs;
 	
 	private String remarks;
 	private String updatedTime;
 	private String subject;
 	private String raisedDate;
 	private String image;
-	
 	private List<CoreDashboardInsuranceVO> overViewList = new ArrayList<CoreDashboardInsuranceVO>();
 	private List<CoreDashboardInsuranceVO> deathList = new ArrayList<CoreDashboardInsuranceVO>();
 	private List<CoreDashboardInsuranceVO> hospitalizationList = new ArrayList<CoreDashboardInsuranceVO>();
@@ -92,6 +95,32 @@ public class CoreDashboardInsuranceVO {
 	public void setPercentage(Double percentage) {
 		this.percentage = percentage;
 	}
+	public Long getTotalCategroyCount() {
+		return totalCategroyCount;
+	}
+	public void setTotalCategroyCount(Long totalCategroyCount) {
+		this.totalCategroyCount = totalCategroyCount;
+	}
+	public Long getTotalAmount() {
+		return totalAmount;
+	}
+	public void setTotalAmount(Long totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+	public List<InsuranceStatusVO> getInsuranceStatusVOs() {
+		if(insuranceStatusVOs == null){
+			insuranceStatusVOs = new ArrayList<InsuranceStatusVO>();
+		}
+		return insuranceStatusVOs;
+	}
+	public Long getTotalStatusCount() {
+		return totalStatusCount;
+	}
+	public void setTotalStatusCount(Long totalStatusCount) {
+		this.totalStatusCount = totalStatusCount;
+	}
+	
+	
 	public String getRemarks() {
 		return remarks;
 	}
