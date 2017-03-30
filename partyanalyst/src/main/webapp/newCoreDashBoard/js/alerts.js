@@ -4184,7 +4184,7 @@ function getTotalArticledetails(articleId){
 						reversed: false,
 						verticalAlign:'top',
 						useHTML:true,
-						labelFormatter: function () {return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.name+'.png"  />';}
+						labelFormatter: function () {return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.name+'.png"  style="width:40px;"/>';}
 						
 						},
 				credits: {
@@ -5559,10 +5559,10 @@ function getStateImpactandItsSubLevelAlert(){
 											if(this.value=="Total"){
 												return this.value;
 											}
-											return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.value+'.png" style="vertical-align: middle;"/>';
+											return '<img src="newCoreDashBoard/img/Nes_Papers_Small LOGO/'+this.value+'.png" style="width:40px;"/>';
 											
 										},
-										rotation: -55,
+										//rotation: -55,
 										style: {
 											fontSize: '10px',
 											fontFamily: 'Verdana, sans-serif'
@@ -6258,6 +6258,34 @@ function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,s
 				 slidesToScroll: 1,
 				 infinite: false,
 				//variableWidth: true,
+				responsive: [
+						{
+						  breakpoint: 1024,
+						  settings: {
+							slidesToShow: 2,
+							slidesToScroll: 2,
+							infinite: true,
+							dots: true
+						  }
+						},
+						{
+						  breakpoint: 600,
+						  settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
+						  }
+						},
+						{
+						  breakpoint: 480,
+						  settings: {
+							slidesToShow: 1,
+							slidesToScroll: 1
+						  }
+						}
+						// You can unslick at a given breakpoint now by adding:
+						// settings: "unslick"
+						// instead of a settings object
+					  ]
 				 
 		});
 	 
