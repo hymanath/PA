@@ -3467,4 +3467,23 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   		}
   		return Action.SUCCESS;
   	}
+  	public String getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(){
+  		try{
+  			jobj = new JSONObject(getTask());
+  			Long stateId = jobj.getLong("stateId");
+  			Long cadreEnrollmentYearId = jobj.getLong("cadreEnrollmentYearId");
+  			Long locationId = jobj.getLong("locationId");
+  			String status = jobj.getString("status");
+  			String category = jobj.getString("category");
+  			String fromDateStr = jobj.getString("fromDateStr");
+  			String toDateStr = jobj.getString("toDateStr");
+  			String type = jobj.getString("type");
+  			String locationType = jobj.getString("locationType");  
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,type,locationType);
+  			
+  		}catch(Exception e){ 
+  			LOG.error("Exception raised at getDistrictWiseThenCategoryWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
+  		}
+  		return Action.SUCCESS;
+  	}
 }
