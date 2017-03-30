@@ -14,7 +14,9 @@ import com.itgrids.partyanalyst.dao.IAdminHouseTermDAO;
 import com.itgrids.partyanalyst.dao.IHouseSessionDAO;
 import com.itgrids.partyanalyst.dao.IMemberSpeechAspectDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
+import com.itgrids.partyanalyst.dao.ISpeechAspectDAO;
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
+import com.itgrids.partyanalyst.dto.NominatedPostDashboardVO;
 import com.itgrids.partyanalyst.service.IAssemblySessionService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 
@@ -28,6 +30,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 	private IMemberSpeechAspectDAO memberSpeechAspectDAO;
 	private IPartyDAO partyDAO;
 	private IAdminHouseSessionDAO adminHouseSessionDAO;
+	private ISpeechAspectDAO speechAspectDAO;
 	
 	
 	public IAdminHouseSessionDAO getAdminHouseSessionDAO() {
@@ -68,6 +71,12 @@ public class AssemblySessionService implements IAssemblySessionService{
 	}
 	
 	
+	public ISpeechAspectDAO getSpeechAspectDAO() {
+		return speechAspectDAO;
+	}
+	public void setSpeechAspectDAO(ISpeechAspectDAO speechAspectDAO) {
+		this.speechAspectDAO = speechAspectDAO;
+	}
 	public List<AdminHouseVO> getAllElecYears(){
 		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
 		try{
@@ -224,17 +233,101 @@ public class AssemblySessionService implements IAssemblySessionService{
 		try{
 			Object[] datesList = adminHouseSessionDAO.getDates(termId, sessionYear, sessionId);
 			if(datesList != null){
-				//for (Object[] objects : datesList) {
 					AdminHouseVO vo = new AdminHouseVO();
 					vo.setName(commonMethodsUtilService.getStringValueForObject(datesList[0]));
 					vo.setPartyName(commonMethodsUtilService.getStringValueForObject(datesList[1]));
 					returnList.add(vo);
-				//}
 			}
 		}catch(Exception e){
 			 LOG.error("Exception Occured in getAllSessionYears() method, Exception - ",e);
 		}
 		return returnList;
 	} 
+	public List<AdminHouseVO> getDayWiseDetails(Long adminHseSessionDayId){
+		List<AdminHouseVO> finalList = new ArrayList<AdminHouseVO>(0);
+		try{
+			Map<Long,AdminHouseVO> canDetailedMap = new LinkedHashMap<Long, AdminHouseVO>(0);
+			Map<Long,AdminHouseVO> partyDetailsMap = new LinkedHashMap<Long, AdminHouseVO>(0);
+			List<Object[]> cuntDetailsList = memberSpeechAspectDAO.getDayWiseCountDetails(adminHseSessionDayId);
+			if(cuntDetailsList != null && cuntDetailsList.size() > 0l){
+				for (Object[] objects : cuntDetailsList) {
+					AdminHouseVO partyVO = partyDetailsMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(partyVO == null){
+						partyVO = new AdminHouseVO();
+							partyVO.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							partyVO.setPartyList(getSpeechAspectList());
+							//vo.setCandidateId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+							//vo.setAdminHouseMemberId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+							//vo.setSpeechAsceptId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+							//vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[6]));
+							partyDetailsMap.put(partyVO.getPartyId(), partyVO);
+					}else{
+						AdminHouseVO candidateVO = canDetailedMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+						if(candidateVO == null){
+							candidateVO = new AdminHouseVO();
+								candidateVO.setPartyList(getSpeechAspectList());
+								candidateVO.setCandidateId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+								candidateVO.setName(commonMethodsUtilService.getStringValueForObject(objects[2]));
+								candidateVO.setAdminHouseMemberId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+								partyVO.getCandidateList().add(candidateVO);
+								canDetailedMap.put(candidateVO.getCandidateId(), candidateVO);
+						}else{
+							AdminHouseVO  speechAspectVO = getMatchedVOAspectList(candidateVO.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[5]));
+							 if(speechAspectVO != null){
+								 speechAspectVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[6]));
+								 partyVO.setTotal(partyVO.getTotal()+speechAspectVO.getCount());
+							 }
+						}
+					}
+				}
+			}
+			if(commonMethodsUtilService.isMapValid(partyDetailsMap)){
+				for (Map.Entry<Long, AdminHouseVO> entry : partyDetailsMap.entrySet()){
+					AdminHouseVO partyvo = entry.getValue();
+						List<AdminHouseVO> candidateList = partyvo.getCandidateList();
+						Long candidatesCount = (long) candidateList.size();
+						partyvo.setCount(candidatesCount);
+					finalList.add(partyvo);
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getDayWiseDetails() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	public List<AdminHouseVO> getSpeechAspectList(){
+		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
+		try{
+			List<Object[]> spechAspList = speechAspectDAO.getAllSpeechAspectNames();
+			if(spechAspList != null && spechAspList.size() > 0l){
+				for (Object[] objects : spechAspList) {
+					AdminHouseVO vo = new AdminHouseVO();
+					 vo.setSpeechAsceptId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					 vo.setAspect(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					 returnList.add(vo);
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getSpeechAspectList() method, Exception - ",e);
+		}
+		return returnList;
+	}
+	public AdminHouseVO getMatchedVOAspectList(List<AdminHouseVO> list, Long speechAspectId)
+	{
+		try {
+			if(list != null && list.size()>0)
+			{
+				for (AdminHouseVO adminHouseVO : list) {
+					if(adminHouseVO.getSpeechAsceptId().longValue() == speechAspectId.longValue())
+						return adminHouseVO;
+				}
+			}
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in getMatchedVOList() method, Exception - ",e);
+		}
+		return null;
+	}
 }
 
