@@ -19,7 +19,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	public List<Object[]> getNoOfDaysForSession(Long termId,String sesYear,List<Long> sessionIds,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 			sb.append("select date(model.adminHouseSessionDay.adminHouseSession.fromDate)," +
-				" model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId " +
+				" model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId, " +
 				" model.adminHouseSessionDay.adminHouseSession.houseSession.sessionName, " +
 				" count(model.adminHouseSessionDay.adminHouseSessionDayId)," +
 				" model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId " +
@@ -35,7 +35,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		}
 		if(sessionIds != null && sessionIds.size() > 0l)
 		{
-			sb.append(" and model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId in (:sessionId)");
+			sb.append(" and model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId in (:sessionIds)");
 		}
 		if(startDate != null && endDate != null)
 	    {
@@ -62,7 +62,8 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	    StringBuilder str = new StringBuilder();
 	    
 	    str.append(" select count(distinct model.adminHouseMember.adminHouseMemberId),model.adminHouseMember.partyId," +
-	        " model.adminHouseSessionDay.sessionDate,model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId " +
+	        " model.adminHouseSessionDay.sessionDate,model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId," +
+	        " model.adminHouseSessionDay.adminHouseSessionDayId " +
 	        " from MemberSpeechAspect model " +
 	        " where model.isDeleted = 'N' " );
 	    
@@ -76,7 +77,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		}
 	    if(sessionIds != null && sessionIds.size() >0l)
 	    {
-	      str.append(" and model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId in (:sessionId) ");
+	      str.append(" and model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId in (:sessionIds) ");
 	    }
 	    if(startDate != null && endDate != null)
 	    {
