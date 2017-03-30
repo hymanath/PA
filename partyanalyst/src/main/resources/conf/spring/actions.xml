@@ -1484,6 +1484,7 @@
 	 	<property name="paymentGatewayService" ref="paymentGatewayService" />			
 		<property name="coreDashboardCadreRegistrationService" ref="coreDashboardCadreRegistrationService" />
 		<property name="coreDashboardPartyMeetingService" ref="coreDashboardPartyMeetingService" />
+		<property name="coreDashboardInsuranceService" ref="coreDashboardInsuranceService" />
 	  </bean>
 	 
 	 <bean id="cadreDashBoardAction" class="com.itgrids.partyanalyst.web.action.CadreDashBoardAction" singleton="false">
