@@ -928,7 +928,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < jArray.length(); i++){
 				scopeIdList.add(Long.parseLong(jArray.getString(i)));
 			}
-			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusIds, alertCategoryId, activityMemberId,editionIds,isActionType,alertActionTypeId,scopeIdList);   
+			Long alertVerificationStatusId = jObj.getLong("alertVerificationStatusId");
+			alertCoreDashBoardVOs = alertService.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusIds, alertCategoryId, activityMemberId,editionIds,isActionType,alertActionTypeId,scopeIdList,alertVerificationStatusId);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getAlertDtls() of CreateAlertAction",e);
 		}
