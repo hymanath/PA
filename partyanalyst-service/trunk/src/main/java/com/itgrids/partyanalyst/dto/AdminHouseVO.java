@@ -22,6 +22,7 @@ public class AdminHouseVO implements Serializable{
 	private Long candidateId;
 	private Long adminHouseMemberId;
 	private List<AdminHouseVO> candidateList = new ArrayList<AdminHouseVO>(0);
+	private Long total = 0l;
 	
 	public Long getId() {
 		return id;
@@ -118,5 +119,11 @@ public class AdminHouseVO implements Serializable{
 	}
 	public void setCandidateList(List<AdminHouseVO> candidateList) {
 		this.candidateList = candidateList;
+	}
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
 	}
 }
