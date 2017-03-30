@@ -1659,16 +1659,16 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(disctrictId){
 								});	
 						}else{
 						 $("#groupAssign"+i).css("height","35px");
-						  $(".groupAssignCls").hide();
+						 // $(".groupAssignCls").hide();
 						}
 					}
 				}
 			}else{
 				$("#groupAssignAlertDlsDivId").html("<div class='col-md-12 col-xs-12 col-sm-12'>No Data Available</div>")
 			}
-			/* if ($('#groupAssignAlertDlsDivId').is(':empty')){ // hiding heading if highchart is not building
+			if ($('#groupAssignAlertDlsDivId').is(':empty')){ // hiding heading if highchart is not building
 				$(".groupAssignCls").hide();
-			} */
+			} 
 	}
 	
 	$(document).on("click",".alertAssignCls",function(){
@@ -6176,7 +6176,7 @@ function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,s
 	}
  function getCandidateAccessLocationAlertDtlsStatusWise(userTypeId,activityMemberId,selectedMemberName,selectedUserType){
 	    $(".impactLevelWiseComparisonBlockCls").show();
-	    $("#selectedMemberHeadingId").html('<span class="text-capital">('+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+')</span>');	 
+	   // $("#selectedMemberHeadingId").html('<span class="text-capital">('+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+')</span>');	 
 	    $("#candidateLocationAlertDtlsStatusWiseDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -6208,21 +6208,21 @@ function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,s
 		}).done(function(result){
 		  $("#candidateLocationAlertDtlsStatusWiseDivId").html(' ');
 		   if(result != null && result.length > 0){
-			buildCandidateAccessLocationAlertDtlsStatusWise(result);   
+			buildCandidateAccessLocationAlertDtlsStatusWise(result,selectedMemberName,selectedUserType);   
 		   }else{
 			  // $("#candidateLocationAlertDtlsStatusWiseDivId").html("NO DATA Available.")
 			   $(".impactLevelWiseComparisonBlockCls").hide();
 		   }
 		});
  } 
- function buildCandidateAccessLocationAlertDtlsStatusWise(result)
+ function buildCandidateAccessLocationAlertDtlsStatusWise(result,selectedMemberName,selectedUserType)
  {
 	 var isDataAvailale = false;
     var statusColorObj =  {"1":"#A27FC2","2":"#0175F3","3":"#3EC3FF","4":"#049968","5":"#F21A98","6":"#FD6E07","7":"#CF0001"};	
 	var str='';
 	 var width = 100 / result.length;
 	  str+='<div class="col-xs-12 col-sm-12 col-md-12">';
-		   str+='<h4 class="text-capital impactLevelHeadingCls" style="background-color:#ddd;padding:6px;">Impact Scope Wise Alert<span style="margin-left:12px" id="selectedMemberHeadingId"></span></h4>';
+		   str+='<h4 class="text-capital impactLevelHeadingCls" style="background-color:#ddd;padding:6px;">Impact Scope Wise Alert<span class="text-capital">&nbsp&nbsp('+selectedMemberName+'</span> - <span class="text-capitalize">'+selectedUserType+')</span></h4>';
 	  for(var i in result){
 		 str+='<h4 class="text-capital m_top10">'+result[i].name+'</h4><br>';
 		      if(result[i].subList1 != null && result[i].subList1.length > 0){
