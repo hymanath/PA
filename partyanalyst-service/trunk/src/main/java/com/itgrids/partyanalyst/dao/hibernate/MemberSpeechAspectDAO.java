@@ -99,5 +99,26 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	    	 }
 	    return query.list();
 	  }
+	
+	public List<Object[]> getDayWiseCountDetails(Long admHsSessDayId){
+		StringBuilder sb = new StringBuilder();
+			sb.append("select model.adminHouseMember.party.partyId,model.adminHouseMember.party.shortName," +
+				" model.adminHouseMember.memberName,model.adminHouseMember.candidate.candidateId," +
+				" model.adminHouseMember.adminHouseMemberId,model.speechAspect.speechAspectId," +
+				" model.score " +
+				" from MemberSpeechAspect model " +
+				" where model.isDeleted = 'N' and model.adminHouseMember.isDeleted = 'N' ");
+		if(admHsSessDayId != null && admHsSessDayId.longValue() > 0l)
+		{
+			sb.append(" and model.adminHouseSessionDay.adminHouseSessionDayId = :admHsSessDayId");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(admHsSessDayId != null && admHsSessDayId.longValue() > 0l)
+			query.setParameter("admHsSessDayId", admHsSessDayId);
+		
+		return query.list();
+		
+	}
 
 }
