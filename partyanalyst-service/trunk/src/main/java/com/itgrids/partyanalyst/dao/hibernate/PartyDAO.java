@@ -174,4 +174,11 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 	  		
 	  return query.list();
 	}
+	public List<Object[]> getAllPartyNames(){
+		Query query = getSession().createQuery("select model.partyId," +
+				" model.shortName " +
+				" from Party model " +
+				" where model.state.stateId = 1 ");
+		return query.list();
+	}
 }
