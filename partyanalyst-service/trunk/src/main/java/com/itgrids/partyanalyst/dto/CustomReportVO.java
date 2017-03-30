@@ -18,12 +18,35 @@ public class CustomReportVO implements Serializable {
 	private String scope;
 	private Long locationValue;
 	private String path;
+	private String membershipNo;
+	private String voterNum;
+	private String mobileNum;
 	
 	private List<CustomReportVO> observersList = new ArrayList<CustomReportVO>(0);
 	private List<CustomReportVO> locationsList = new ArrayList<CustomReportVO>(0);
 	private List<CustomReportVO> imagesList = new ArrayList<CustomReportVO>(0);
 	private List<CustomReportVO> fileList = new ArrayList<CustomReportVO>(0);
 		
+	
+	
+	public String getMobileNum() {
+		return mobileNum;
+	}
+	public void setMobileNum(String mobileNum) {
+		this.mobileNum = mobileNum;
+	}
+	public String getVoterNum() {
+		return voterNum;
+	}
+	public void setVoterNum(String voterNum) {
+		this.voterNum = voterNum;
+	}
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
+	}
 	public String getPath() {
 		return path;
 	}

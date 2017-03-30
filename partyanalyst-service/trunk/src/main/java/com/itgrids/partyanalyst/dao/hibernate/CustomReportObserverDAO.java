@@ -23,4 +23,14 @@ public class CustomReportObserverDAO extends GenericDaoHibernate<CustomReportObs
 	   query.setParameter("programId", programId);
 	   return query.list();
 	}
+	
+	public List<Object[]> getObserversForAReport(Long reportId){
+		Query query = getSession().createQuery(" select cro.tdpCadre.tdpCadreId,cro.tdpCadre.memberShipNo,cro.tdpCadre.firstname,cro.tdpCadre.image,voter.voterIDCardNo,cro.tdpCadre.mobileNo  "
+				+ " from CustomReportObserver cro"
+				+ " left join cro.tdpCadre.voter voter "
+				+ " where cro.customReportId=:reportId and cro.isDeleted='N' ");
+		
+		query.setParameter("reportId", reportId);
+		return query.list();
+	}
 }

@@ -433,5 +433,31 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		}
 		return null;
 	}
+	
+	public CustomReportVO getReportFullDetails(Long reportId){
+		CustomReportVO vo = new CustomReportVO();
+		try {
+			//0-tdpCadreId,1-membershipnum,2-firstname,3-image,4-voterIDCardNo,5-mobileNo
+			List<Object[]> observersObjList = customReportObserverDAO.getObserversForAReport(reportId);
+			
+			if(observersObjList != null && observersObjList.size() > 0){
+				for (Object[] objects : observersObjList) {
+					CustomReportVO observerVO = new CustomReportVO();
+					observerVO.setId((Long)objects[0]);
+					observerVO.setMembershipNo(objects[1].toString());
+					observerVO.setName(objects[2].toString());
+					observerVO.setPath("/cadreImages/"+objects[3].toString());
+					observerVO.setVoterNum(objects[4] != null ? objects[4].toString() : "");
+					observerVO.setMobileNum(objects[5].toString());
+					vo.getObserversList().add(observerVO);
+				}
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getReportFullDetails(-) method, Exception - ",e);
+		}
+		return vo;
+	}
 
 }
