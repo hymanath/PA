@@ -1,14 +1,26 @@
+var currentFromDate=moment().format("DD/MM/YYYY");
+var currentToDate=moment().format("DD/MM/YYYY");
+
+$(document).on('click','.applyBtn', function() {
+	var dates= $(".multiDateRangePicker").val();
+	 var str=dates.split("-");
+	currentFromDate = str[0];
+	currentToDate = str[1];
+	getCustomReportPrograms();
+});
+$(document).on('change','#programSelId', function() {
+	getProgramReportsDetails();
+	getRequiredDocumentsSummary();
+});
+
 getCustomReportPrograms();
 	function getCustomReportPrograms(){
 		var $list = $('#programSelId'),
 			templatess = Handlebars.compile($('#select-box').html());
-		  var date=$(".multiDateRangePicker").val();
-	      var str=date.split("-");
-	      
 	    var jsObj={
-	      startDateStr:str[0],
-	      endDateStr:str[1]
-	    }
+	      startDateStr:currentFromDate,
+	      endDateStr:currentToDate
+		}
 		
 		$.ajax({
 		  type : "GET",

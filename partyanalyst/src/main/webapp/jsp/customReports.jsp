@@ -72,13 +72,13 @@
 								<div class="col-md-5 col-xs-12 col-sm-5">
 									<ul class="list-inline border-box">
 										<li>Total Expected Reports :
-										<span id="totalExpectedReportsSpanId"></span>
+										<span id="totalExpectedReportsSpanId">0</span>
 										</li>
 										<li>Submited :
-										<span id="submittedReportsSpanId"></span>
+										<span id="submittedReportsSpanId">0</span>
 										</li>
 										<li>Not Submited :
-										<span id="notSubmittedReportsSapnId"></span>
+										<span id="notSubmittedReportsSapnId">0</span>
 										</li>
 									</ul>
 								</div>
@@ -139,13 +139,16 @@ initializeCustomReport();
 	$('select').chosen({width:'100%'});
 	$(".multiDateRangePicker").daterangepicker({
 		opens: 'left',
+		startDate: currentFromDate,
+	    endDate: currentToDate,
 	 	locale: {
-		  format: 'MM/DD/YYYY'
+		  format: 'DD/MM/YYYY'
 		}		
 	});
 /* 	
 	$(document).on('click','.uploadDivCls',function(){
 		$("#uploadModalDivId").modal("show");	
+	
 	}); */
 	
 	$(document).on("click","#uploacFilesBtnId",function(){
@@ -170,7 +173,7 @@ initializeCustomReport();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result != null){
+			if(result != null && result.length > 0){
 				var totalCount = 0;
 				for(var i in result){
 					if(result[i].name === 'Y'){
@@ -183,6 +186,10 @@ initializeCustomReport();
 					}
 				}
 				$("#totalExpectedReportsSpanId").html(" "+totalCount);
+			}else{
+				$("#totalExpectedReportsSpanId").html(0);
+				$("#submittedReportsSpanId").html(0);	
+				$("#notSubmittedReportsSapnId").html(0);
 			}
 			
 		});
