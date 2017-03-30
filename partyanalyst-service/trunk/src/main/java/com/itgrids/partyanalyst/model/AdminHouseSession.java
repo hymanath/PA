@@ -35,6 +35,8 @@ public class AdminHouseSession extends BaseModel implements Serializable{
 	
 	private AdminHouseTerm adminHouseTerm;
 	private HouseSession houseSession;
+	private String year;
+	private String yearDesc;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -107,5 +109,23 @@ public class AdminHouseSession extends BaseModel implements Serializable{
 	public void setHouseSession(HouseSession houseSession) {
 		this.houseSession = houseSession;
 	}
+	
+	@Column(name = "year")
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
+	}
+	
+	@Column(name = "year_desc")
+	public String getYearDesc() {
+		return yearDesc;
+	}
+	public void setYearDesc(String yearDesc) {
+		this.yearDesc = yearDesc;
+	}
+	
+	
 	
 }
