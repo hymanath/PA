@@ -17,6 +17,11 @@ public class AdminHouseVO implements Serializable{
 	private List<AdminHouseVO> partyList = new ArrayList<AdminHouseVO>(0); 
 	private Long adminHouseSessionId;
 	private Long adminHouseSessionDayId;
+	private Long speechAsceptId;
+	private String aspect;
+	private Long candidateId;
+	private Long adminHouseMemberId;
+	private List<AdminHouseVO> candidateList = new ArrayList<AdminHouseVO>(0);
 	
 	public Long getId() {
 		return id;
@@ -84,5 +89,34 @@ public class AdminHouseVO implements Serializable{
 	public void setAdminHouseSessionDayId(Long adminHouseSessionDayId) {
 		this.adminHouseSessionDayId = adminHouseSessionDayId;
 	}
-	
+	public Long getSpeechAsceptId() {
+		return speechAsceptId;
+	}
+	public void setSpeechAsceptId(Long speechAsceptId) {
+		this.speechAsceptId = speechAsceptId;
+	}
+	public String getAspect() {
+		return aspect;
+	}
+	public void setAspect(String aspect) {
+		this.aspect = aspect;
+	}
+	public Long getCandidateId() {
+		return candidateId;
+	}
+	public void setCandidateId(Long candidateId) {
+		this.candidateId = candidateId;
+	}
+	public Long getAdminHouseMemberId() {
+		return adminHouseMemberId;
+	}
+	public void setAdminHouseMemberId(Long adminHouseMemberId) {
+		this.adminHouseMemberId = adminHouseMemberId;
+	}
+	public List<AdminHouseVO> getCandidateList() {
+		return candidateList;
+	}
+	public void setCandidateList(List<AdminHouseVO> candidateList) {
+		this.candidateList = candidateList;
+	}
 }
