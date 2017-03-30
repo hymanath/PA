@@ -16331,7 +16331,27 @@
 		   		<param name="root">customReportVO</param>
 		   	</result>
 		</action>
-		 <action name="getDayWiseDetailsAction" class="assemblySessionAction" method="getDayWiseDetails">
+		<action name="getDayWiseDetailsAction" class="assemblySessionAction" method="getDayWiseDetails">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>
+	    <action name="updateMemberDetailsAction" class="assemblySessionAction" method="updateMemberDetails">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+	    </action>
+	    <action name="deleteMemberDetailsAction" class="assemblySessionAction" method="deleteMemberDetails">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+	    </action>
+	    <action name="getPartiesAction" class="assemblySessionAction" method="getParties">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>
+	    <action name="getcandidatesForPartyAction" class="assemblySessionAction" method="getcandidatesByPartyId">
 			<result type="json" name="success">
 				<param name="root">assemblyVOList</param>
 			</result>
@@ -16355,6 +16375,6 @@
 			<result type="json" name="success">
 	   			<param name="root">coreDashboardInsuranceVOs</param>    
 	   		</result>
-		</action>        
+		</action>  
  </package>
 </struts>
