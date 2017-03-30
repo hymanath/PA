@@ -412,11 +412,11 @@
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount,editionId,"No",0);  
+		getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount,editionId,"No",0,0);  
 		
 	});  
 	 $(document).on("click",".alertActionCls",function(){
-		var alertStatusId = $(this).attr("attr_status_id");
+		var alertVerificationStatusId = $(this).attr("attr_status_id");
 		var alertTypeId = $(this).attr("attr_alert_type_id");
 		var alertCount = $(this).attr("attr_count");
 		var editionId = $(this).attr("attr_edition_id");
@@ -424,11 +424,11 @@
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		getAlertDtls(alertStatusId,0, alertTypeId,alertCount,editionId,"Yes",actionTypeId);  
+		getAlertDtls(0,0, alertTypeId,alertCount,editionId,"Yes",actionTypeId,alertVerificationStatusId);  
 		
 	});  
 	
-	function getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount,editionId,isActionType,actionTypeId){
+	function getAlertDtls(alertStatusId, alertCategoryId, alertTypeId,alertCount,editionId,isActionType,actionTypeId,alertVerificationStatusId){
 		
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
@@ -440,6 +440,7 @@
 		 }else{
 			alertStatusArr.push(alertStatusId);
 		 }
+		 
 		var jsObj = { 
 			alertTypeId : alertTypeId,    
 			alertStatusArr : alertStatusArr,
@@ -451,7 +452,8 @@
 			editionIds : editionId,
             isActionType : isActionType,
             actionTypeId :actionTypeId,
-            scopeIdsArr : globalImpactScopeArr			
+            scopeIdsArr : globalImpactScopeArr,
+			alertVerificationStatusId:0
 		}                          
 		$.ajax({
 			type : 'POST',      
