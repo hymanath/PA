@@ -84,31 +84,31 @@
 								</div>
 								<div id="detailedReportsDivId"></div>
 							</div>
-							<button type="button" class="btn btn-success uploadDivCls">Upload</button>
+							<!--<button type="button" class="btn btn-success uploadDivCls">Upload</button>-->
 					    </div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="modal fade" id="uploadModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
+	  <div class="modal-dialog" role="document" style="width:80%">
 		<div class="modal-content">
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title text-capital" id="myModalLabel">Upload Documents</h4>
+			<h4 class="modal-title text-capital" id="reportheaderId"></h4>
 		  </div>
 		  <div class="modal-body">
 			<div class="row" >
 				<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-					<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD SCAN COPY</h3> 
+					<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD FILE</h3> 
 					<form name="customApplication" method="post" id="customApplication">
 					<input type="file" id="update_CustomReportId" multiple="multiple"  name="files[]" class="m_top20"/>
 					<span id="errFileId" style="color:red;margin-left:470px;"></span>   
 					
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="uploacFilesBtnId">Save changes</button>
 					</form>
 				</div>
+				<button type="button" class="btn btn-primary" id="uploacFilesBtnId" style="margin-left:250px;">Submit Application</button>
 			</div>  
 		  </div>
 		  <div class="modal-footer">
@@ -143,10 +143,10 @@ initializeCustomReport();
 		  format: 'MM/DD/YYYY'
 		}		
 	});
-	
+/* 	
 	$(document).on('click','.uploadDivCls',function(){
 		$("#uploadModalDivId").modal("show");	
-	});
+	}); */
 	
 	$(document).on("click","#uploacFilesBtnId",function(){
 		var uploadHandler = { 
