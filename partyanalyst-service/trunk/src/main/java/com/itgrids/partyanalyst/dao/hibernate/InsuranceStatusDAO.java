@@ -488,6 +488,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		  sqlQuery.addScalar("status",Hibernate.STRING);
 		  return sqlQuery.list();
 	 }
+	
 	 public List<Object[]> getLocationWiseComplaintAndBenefitMemberCntBasedOnUserAccessLevel(CadreInsuranceInputVO inputVO,String resultType){
 			
 		 StringBuilder queryStr = new StringBuilder();
@@ -621,4 +622,350 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }
 		 return sqlQuery.list();
 	}
+	 public List<Object[]> getDistrictWiseThenCategoryWiseInsuranceMemberCount(Long levelId, Set<Long> locationValuesSet, Long userTypeId, Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select");
+		 if(levelId.longValue() == 2L){
+			 queryStr.append(" DIST.district_id as locId, " +
+	 				 		 " DIST.district_name as locName "); 
+		 }else if(levelId.longValue() == 3L){
+			 queryStr.append(" DIST.district_id as locId, " +
+	 				 		 " DIST.district_name as locName "); 
+		 }else if(levelId.longValue() == 4L){
+			 queryStr.append(" CM.assembly_id as locId, " +
+				 		 	 " CON.name as locName "); 
+		 }else{
+			 if(userTypeId != null && userTypeId.longValue() == 3L){
+				 queryStr.append(" DIST.district_id as locId, " +
+		 				 		 " DIST.district_name as locName "); 
+			 }else{
+				 queryStr.append(" CM.assembly_id as locId, " +
+ 				 		 		 " CON.name as locName "); 
+			 }
+		 }
+		 
+		 if(type.equalsIgnoreCase("status")){
+			 queryStr.append(" ,GIS.grievance_insurance_status_id as issueType,COUNT(distinct CM.Complaint_id) as count, SUM(CM.approved_amount) as amount");
+		 }else{
+			 queryStr.append(" ,CM.issue_type as issueType ,COUNT(distinct CM.Complaint_id) as count, SUM(CM.approved_amount) as amount");
+		 }
+		 
+		 
+		 queryStr.append(" FROM complaint_master CM, grievance_insurance_status GIS, district DIST ");
+		 
+		 if(levelId.longValue() == 5L || levelId.longValue() == 4L){
+			 queryStr.append(" ,constituency CON ");
+		 }
+		 
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 queryStr.append(" ,tdp_cadre TC,tdp_cadre_enrollment_year TCEY "); 
+		 }
+		 
+		
+		 if(levelId != null && levelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			 queryStr.append(" WHERE DIST.district_id = CM.district_id ");  
+		 }else if(levelId != null && levelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			 queryStr.append(" WHERE DIST.district_id = CM.district_id ");  
+		 }else if(levelId != null && levelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.parliament_id  ");  
+		 }else if(levelId != null && levelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id ");  
+		 }
+		 
+		 //queryStr.append(" AND CM.approved_amount is not null "); 
+		 
+		 if(stateId != null && stateId.longValue() > 0L){
+			 queryStr.append(" AND state_id_cmp =:stateId ");  
+		 }
+		 
+		 queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id "+
+				 		 " AND CM.type_of_issue = 'Insurance'  " );
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 queryStr.append(" AND CM.membership_id = TC.membership_id  "+
+				 		 	 " AND TC.tdp_cadre_id = TCEY.tdp_cadre_id  " +
+				 		 	 " AND TCEY.enrollment_year_id = :cadreEnrollmentYearId ");
+		 }
+		 queryStr.append(" AND CM.delete_status IS NULL  "+
+				 		 " AND (CM.`Subject` IS NOT NULL OR CM.`Subject` != '') ");
+		
+		 if(statusIdList != null && statusIdList.size() > 0){
+			 queryStr.append(" AND GIS.grievance_insurance_status_id in (:statusIdList) ");
+		 }
+		 if(category != null && !category.trim().isEmpty() && category.trim().length() > 0){
+			 queryStr.append(" AND CM.issue_type like '%"+category+"%' ");
+		 }
+		 if(fromDate != null && toDate != null){
+			 queryStr.append(" AND date(CM.Raised_Date) between :fromDate and :toDate  ");
+		 }
+		 
+		 
+		 if(levelId != null && levelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 queryStr.append(" and CM.district_id =:locationId ");  
+			 }else{
+				 queryStr.append(" and CM.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")");  
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 queryStr.append(" and CM.district_id =:locationId "); 
+			 }else{
+				 queryStr.append(" and CM.district_id in (:locationValuesSet)");
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 queryStr.append(" and CM.parliament_id in (:locationValuesSet) and CM.assembly_id = :locationId "); 
+			 }else{
+				 queryStr.append(" and CM.parliament_id in (:locationValuesSet)");
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 if(userTypeId != null && userTypeId.longValue() == 3L){
+				 if(locationId != null && locationId.longValue() > 0L){
+					 queryStr.append(" and CM.district_id =:locationId and CM.assembly_id in (:locationValuesSet) ");  
+				 }else{
+					 queryStr.append(" and CM.assembly_id in (:locationValuesSet) ");  
+				 }
+			 }else{
+				 if(locationId != null && locationId.longValue() > 0L){
+					 queryStr.append(" and CM.assembly_id =:locationId ");  
+				 }else{
+					 queryStr.append(" and CM.assembly_id in (:locationValuesSet)");  
+				 }
+			 }
+		 }
+		 
+		 if(levelId != null && levelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			 if(type.equalsIgnoreCase("status")){
+				 queryStr.append("  group by DIST.district_id, GIS.grievance_insurance_status_id");
+			 }else{
+				 queryStr.append("  group by DIST.district_id, CM.issue_type");
+			 }
+	           
+		 }else if(levelId != null && levelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			 if(type.equalsIgnoreCase("status")){
+				 queryStr.append("  group by DIST.district_id, GIS.grievance_insurance_status_id");
+			 }else{
+				 queryStr.append(" group by DIST.district_id, CM.issue_type");  
+			 }
+		     
+		 }else if(levelId != null && levelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			 if(type.equalsIgnoreCase("status")){
+				 queryStr.append("  group by CM.assembly_id, GIS.grievance_insurance_status_id");
+			 }else{
+				 queryStr.append(" group by CM.assembly_id, CM.issue_type");  
+			 }
+		     
+		 }else if(levelId != null && levelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 if(userTypeId != null && userTypeId.longValue() == 3L){
+				 if(type.equalsIgnoreCase("status")){
+					 queryStr.append("  group by DIST.district_id, GIS.grievance_insurance_status_id");
+				 }else{
+					 queryStr.append(" group by DIST.district_id, CM.issue_type");   
+				 }
+				  
+			 }else{
+				 if(type.equalsIgnoreCase("status")){
+					 queryStr.append("  group by CM.assembly_id, GIS.grievance_insurance_status_id");
+				 }else{
+					 queryStr.append(" group by CM.assembly_id, CM.issue_type");    
+				 }
+				 
+			 }
+		 }
+		 
+		
+		 SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		 
+		 query.addScalar("locId", Hibernate.LONG);
+		 query.addScalar("locName",Hibernate.STRING);
+		 if(type.equalsIgnoreCase("status")){
+			 query.addScalar("issueType",Hibernate.LONG);
+		 }else{
+			 query.addScalar("issueType",Hibernate.STRING);
+		 }
+		 query.addScalar("count",Hibernate.LONG);
+		 query.addScalar("amount",Hibernate.LONG);
+		 
+		 if(stateId != null && stateId.longValue() > 0L){
+			 query.setParameter("stateId", stateId);
+		 }
+		 
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 query.setParameter("cadreEnrollmentYearId", cadreEnrollmentYearId);
+		 }
+		 
+		 if(statusIdList != null && statusIdList.size() > 0){
+			 query.setParameterList("statusIdList", statusIdList);
+		 }
+		 
+		 if(fromDate != null && toDate != null){
+			 query.setDate("fromDate",fromDate);
+			 query.setDate("toDate",toDate);
+		 }
+		 
+		 if(levelId != null && levelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 query.setParameter("locationId", locationId);  
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 query.setParameter("locationId", locationId); 
+			 }else{
+				 query.setParameterList("locationValuesSet", locationValuesSet);  
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 query.setParameter("locationId", locationId);
+				 query.setParameterList("locationValuesSet", locationValuesSet);
+			 }else{
+				 query.setParameterList("locationValuesSet", locationValuesSet);
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 if(userTypeId != null && userTypeId.longValue() == 3L){
+				 if(locationId != null && locationId.longValue() > 0L){
+					 query.setParameter("locationId", locationId);
+					 query.setParameterList("locationValuesSet", locationValuesSet);
+				 }else{
+					 query.setParameterList("locationValuesSet", locationValuesSet);
+				 }
+			 }else{
+				 if(locationId != null && locationId.longValue() > 0L){
+					 query.setParameter("locationId", locationId); 
+				 }else{
+					 query.setParameterList("locationValuesSet", locationValuesSet);
+				 }
+			 }
+		 }
+		 return query.list();
+	 }
+	 public List<Object[]> getConstituencyWiseThenCategoryWiseInsuranceMemberCount(Long levelId, Set<Long> locationValuesSet, Long userTypeId, Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append("select");
+		
+		 queryStr.append(" CM.assembly_id as locId, " +
+				 		 	 " CON.name as locName "); 
+		
+		 
+		 if(type.equalsIgnoreCase("status")){
+			 queryStr.append(" ,GIS.grievance_insurance_status_id as issueType ,COUNT(distinct CM.Complaint_id) as count, SUM(CM.approved_amount) as amount");
+		 }else{
+			 queryStr.append(" ,CM.issue_type as issueType ,COUNT(distinct CM.Complaint_id) as count, SUM(CM.approved_amount) as amount");
+		 }
+		 
+		 queryStr.append(" FROM complaint_master CM, grievance_insurance_status GIS, district DIST ");
+		
+		 queryStr.append(" ,constituency CON ");
+			 
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 queryStr.append(" ,tdp_cadre TC,tdp_cadre_enrollment_year TCEY "); 
+		 }
+		
+		
+		 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id "); 
+		 //queryStr.append(" AND CM.approved_amount is not null "); 
+		 
+		 if(stateId != null && stateId.longValue() > 0L){
+			 queryStr.append(" AND state_id_cmp =:stateId ");  
+		 }
+		 
+		 queryStr.append(" AND CM.grievance_insurance_status_id = GIS.grievance_insurance_status_id "+
+				 		 " AND CM.type_of_issue = 'Insurance'  " );
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 queryStr.append(" AND CM.membership_id = TC.membership_id  "+
+				 		 	 " AND TC.tdp_cadre_id = TCEY.tdp_cadre_id  " +
+				 		 	 " AND TCEY.enrollment_year_id = :cadreEnrollmentYearId ");
+		 }
+		 queryStr.append(" AND CM.delete_status IS NULL  "+
+				 		 " AND (CM.`Subject` IS NOT NULL OR CM.`Subject` != '') ");
+		
+		 if(statusIdList != null && statusIdList.size() > 0){
+			 queryStr.append(" AND GIS.grievance_insurance_status_id in (:statusIdList) ");
+		 }
+		 if(category != null && !category.trim().isEmpty() && category.trim().length() > 0){
+			 queryStr.append(" AND CM.issue_type like '%"+category+"%' ");
+		 }
+		 
+		 if(fromDate != null && toDate != null){
+			 queryStr.append(" AND date(CM.Raised_Date) between :fromDate and :toDate  ");
+		 }
+		 
+		 
+		 if(levelId != null && levelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 queryStr.append(" and CM.assembly_id =:locationId ");  
+			 }else{
+				 queryStr.append(" and CM.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+")");  
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 queryStr.append(" and CM.assembly_id =:locationId "); 
+			 }else{
+				 queryStr.append(" and CM.district_id in (:locationValuesSet)");
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 if(userTypeId != null && userTypeId.longValue() == 3L){
+				 if(locationId != null && locationId.longValue() > 0L){
+					 queryStr.append(" and CM.assembly_id =:locationId ");  
+				 }else{
+					 queryStr.append(" and CM.assembly_id in (:locationValuesSet) ");  
+				 }
+			 }
+		 }
+		 
+		 if(type.equalsIgnoreCase("status")){
+			 queryStr.append("  group by CM.assembly_id, GIS.grievance_insurance_status_id");
+		 }else{
+			 queryStr.append(" group by CM.assembly_id, CM.issue_type ");
+		 }
+		 
+		
+		 SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+				 query.addScalar("locId", Hibernate.LONG);
+				 query.addScalar("locName",Hibernate.STRING);
+				 if(type.equalsIgnoreCase("status")){
+					 query.addScalar("issueType",Hibernate.LONG);
+				 }else{
+					 query.addScalar("issueType",Hibernate.STRING);
+				 }
+				 query.addScalar("count",Hibernate.LONG);
+				 query.addScalar("amount",Hibernate.LONG);
+		 
+		 if(stateId != null && stateId.longValue() > 0L){
+			 query.setParameter("stateId", stateId);
+		 }
+		 
+		 if(cadreEnrollmentYearId != null && cadreEnrollmentYearId.longValue() > 0){
+			 query.setParameter("cadreEnrollmentYearId", cadreEnrollmentYearId);
+		 }
+		 
+		 if(statusIdList != null && statusIdList.size() > 0){
+			 query.setParameterList("statusIdList", statusIdList);
+		 }
+		 
+		 if(fromDate != null && toDate != null){
+			 query.setDate("fromDate",fromDate);
+			 query.setDate("toDate",toDate);
+		 }
+		 
+		 if(levelId != null && levelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 query.setParameter("locationId", locationId);
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			 if(locationId != null && locationId.longValue() > 0L){
+				 query.setParameter("locationId", locationId);
+			 }else{
+				 query.setParameterList("locationValuesSet", locationValuesSet); 
+			 }
+		 }else if(levelId != null && levelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			 if(userTypeId != null && userTypeId.longValue() == 3L){
+				 if(locationId != null && locationId.longValue() > 0L){
+					 query.setParameter("locationId", locationId);
+				 }else{
+					 query.setParameterList("locationValuesSet", locationValuesSet); 
+				 }
+			 }
+		 }
+		 
+		 return query.list();
+	 }
 }
