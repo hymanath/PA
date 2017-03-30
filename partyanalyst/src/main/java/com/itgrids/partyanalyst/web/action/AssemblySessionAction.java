@@ -28,6 +28,8 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 	private ResultStatus resultStatus;
 	private IAssemblySessionService assemblySessionService;
 	private List<AdminHouseVO> assemblyVOList;
+	private AdminHouseVO adminHouseVO = new AdminHouseVO();
+	private String status;
 	
 	
 	public ResultStatus getResultStatus() {
@@ -91,6 +93,23 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 		this.assemblyVOList = assemblyVOList;
 	}
 
+	public AdminHouseVO getAdminHouseVO() {
+		return adminHouseVO;
+	}
+
+
+	public void setAdminHouseVO(AdminHouseVO adminHouseVO) {
+		this.adminHouseVO = adminHouseVO;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 
 	public String execute()
 	{
@@ -115,7 +134,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			
 			assemblyVOList = assemblySessionService.getAllElecYears();
 			}catch(Exception e){
-				LOG.error("Exception occured in getNoOfDaysForSessionDetails() At CadreCommitteeAction",e);
+				LOG.error("Exception occured in getNoOfDaysForSessionDetails() At AssemblySessionAction",e);
 			}
 		return Action.SUCCESS;
 	}
@@ -125,7 +144,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			
 			assemblyVOList = assemblySessionService.getAllSessionNames(jObj.getLong("elctionYearId"),jObj.getString("sessionYear"));
 			}catch(Exception e){
-				LOG.error("Exception occured in getAllSessionNames() At CadreCommitteeAction",e);
+				LOG.error("Exception occured in getAllSessionNames() At AssemblySessionAction",e);
 			}
 		return Action.SUCCESS;
 	}
@@ -135,7 +154,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			
 			assemblyVOList = assemblySessionService.getNoOfDaysForSession(jObj.getLong("elctionYearId"),jObj.getString("sessionYear"),jObj.getLong("sessionId"),jObj.getString("startDate"),jObj.getString("endDate"));
 			}catch(Exception e){
-				LOG.error("Exception occured in getNoOfDaysForSession() At CadreCommitteeAction",e);
+				LOG.error("Exception occured in getNoOfDaysForSession() At AssemblySessionAction",e);
 			}
 		return Action.SUCCESS;
 	}
@@ -145,7 +164,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			
 			assemblyVOList = assemblySessionService.getSessionYears(jObj.getLong("elctionYearId"));
 			}catch(Exception e){
-				LOG.error("Exception occured in getSessionYears() At CadreCommitteeAction",e);
+				LOG.error("Exception occured in getSessionYears() At AssemblySessionAction",e);
 			}
 		return Action.SUCCESS;
 	}
@@ -155,7 +174,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			
 			assemblyVOList = assemblySessionService.getDates(jObj.getLong("elctionYearId"),jObj.getString("sessionYear"),jObj.getLong("sessionId"));
 			}catch(Exception e){
-				LOG.error("Exception occured in getDates() At CadreCommitteeAction",e);
+				LOG.error("Exception occured in getDates() At AssemblySessionAction",e);
 			}
 		return Action.SUCCESS;
 	}
@@ -165,8 +184,47 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			
 			assemblyVOList = assemblySessionService.getDayWiseDetails(jObj.getLong("adminHouseSessionDayId"));
 			}catch(Exception e){
-				LOG.error("Exception occured in getDayWiseDetails() At CadreCommitteeAction",e);
+				LOG.error("Exception occured in getDayWiseDetails() At AssemblySessionAction",e);
 			}
 		return Action.SUCCESS;
 	}
+	public String updateMemberDetails(){
+		try {
+				status = assemblySessionService.updateMemberSpeechAspectDetails(adminHouseVO);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in updateMemberDetails() At AssemblySessionAction",e);
+			}
+			return Action.SUCCESS;
+	}
+	public String deleteMemberDetails(){
+		try {
+				status = assemblySessionService.deleteMemberDetails(adminHouseVO);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in deleteMemberDetails() At AssemblySessionAction",e);
+			}
+		return Action.SUCCESS;
+	}
+	public String getParties(){
+	try{
+		jObj = new JSONObject(getTask());
+		
+		assemblyVOList = assemblySessionService.getAllParties();
+		}catch(Exception e){
+			LOG.error("Exception occured in getSessionYears() At AssemblySessionAction",e);
+		}
+	return Action.SUCCESS;
+	}
+	public String getcandidatesByPartyId(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			assemblyVOList = assemblySessionService.getCandidateNameForParty(jObj.getLong("partyId"));
+			}catch(Exception e){
+				LOG.error("Exception occured in getcandidatesByPartyId() At AssemblySessionAction",e);
+			}
+		return Action.SUCCESS;
+	}
+
 }
