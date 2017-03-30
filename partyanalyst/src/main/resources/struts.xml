@@ -16267,6 +16267,34 @@
 				<param name="root">customReportVOList</param>
 			</result>
 	    </action>
+	    <action name="getAllElectionYearsAction" class="assemblySessionAction" method="getAllElecYears">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>
+	    <action name="getAllSessionListAction" class="assemblySessionAction" method="getAllSessionNames">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>
+	    <action name="getSessionDetailsAction" class="assemblySessionAction" method="getSessionDetails">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>
+	    <action name="getSessionYearsAction" class="assemblySessionAction" method="getSessionYears">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>
+	    <action name="getDatesAction" class="assemblySessionAction" method="getDates">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>
+	    <action name="assemblySessionReportAction" class="assemblySessionAction">
+		    <result name="success">/jsp/assemblySessionReport.jsp</result>
+		</action>
 	     <action name="getSubDesignationOfficersInfoAction" class="cccDashboardAction" method="getSubDesignationOfficersInfo">
 			<result type="json" name="success">		   
 				<param name="root">deptList</param>
