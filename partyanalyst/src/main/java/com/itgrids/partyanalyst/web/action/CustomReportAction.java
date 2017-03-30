@@ -30,10 +30,18 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	private String 						task;
 	private JSONObject					jObj;
 	
-	 private List<CustomReportVO>                     customReportVOList;
-	    private ICustomReportService			 		customReportService;
-		private ResultStatus                         resultStatus;
+	private List<CustomReportVO>                     customReportVOList;
+	private ICustomReportService			 		customReportService;
+	private ResultStatus                         resultStatus;
+	private CustomReportVO customReportVO;
 
+	
+	public CustomReportVO getCustomReportVO() {
+		return customReportVO;
+	}
+	public void setCustomReportVO(CustomReportVO customReportVO) {
+		this.customReportVO = customReportVO;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -156,6 +164,16 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
     		customReportVOList = customReportService.getProgramReportsDetails(jObj.getLong("id"));
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getProgramReportsDetails() method, Exception - ",e); 
+		}
+    	return Action.SUCCESS;	
+    }
+    
+    public String getReportFullDetails(){
+    	try {
+    		jObj = new JSONObject(getTask());
+    		customReportVO = customReportService.getReportFullDetails(jObj.getLong("reportId"));
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getReportFullDetails() method, Exception - ",e); 
 		}
     	return Action.SUCCESS;	
     }
