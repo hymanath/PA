@@ -18056,6 +18056,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						 String planDate = locations[1] != null ? locations[1].toString():null;
 						 String conductedDate = locations[2] != null ? locations[2].toString():null;
 						 Long locationlevel = locations[3] != null ? Long.valueOf(locations[3].toString()):0L;
+						 String status = locations[4] != null ? locations[4].toString():null;
 						 
 						 Date planDateStr = planDate != null ? format1.parse(planDate):null;
 						 Date conductedDateStr = conductedDate != null ? format1.parse(conductedDate):null;
@@ -18087,6 +18088,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							 vo.setConductedDate(format.format(conductedDateStr).toString());
 						 vo.setLocationValue(finalLocationId);
 						 vo.setLocationLevel(locationlevel);
+						 vo.setStatus(status);
 						 
 						 list.add(vo);
 						 activityMap.put(locationValue, list);
@@ -18276,8 +18278,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 									for (ActivityVO activityVO : activityVOList) {
 										finalVO.setPlanedDate(activityVO.getPlannedDate());
 										finalVO.setConductedDate(activityVO.getConductedDate());
-										
-										returnList.add(finalVO);
+										if(activityVO.getStatus().equalsIgnoreCase("updated") && ( activityVO.getConductedDate() == null || activityVO.getConductedDate().length()<=0))
+											returnList.add(finalVO);
 									}
 								}else
 								{
@@ -18310,7 +18312,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 										finalVO.setPlanedDate(activityVO.getPlannedDate());
 										finalVO.setConductedDate(activityVO.getConductedDate());
 										
-										returnList.add(finalVO);
+										if(activityVO.getStatus().equalsIgnoreCase("updated") && ( activityVO.getConductedDate() != null && activityVO.getConductedDate().length()>0))
+											returnList.add(finalVO);
 									}
 								}else
 								{
@@ -20726,12 +20729,14 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 							vo.setConductedDate(commonMethodsUtilService.getStringValueForObject(objects[5]));
 							vo.setIvrStatus(commonMethodsUtilService.getStringValueForObject(objects[6]));
 							vo.setActivityLocatInfoId(commonMethodsUtilService.getLongValueForObject(objects[7]));
+							vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[12]));
 							vo.setTableName("LocationInfo");
 							returnList.add(vo);
 					}
 				}else if(levelId.longValue() == 1l || levelId.longValue() == 2l){
 					for (Object[] objects : lctWiseList) {
 						LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+						vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[12]));
 						if(commonMethodsUtilService.getLongValueForObject(objects[0]) != null && commonMethodsUtilService.getLongValueForObject(objects[0]) != 0){
 							vo.setMandalId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 							vo.setMandalName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal ");
@@ -20770,11 +20775,13 @@ public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,
 								vo.setIvrStatus(commonMethodsUtilService.getStringValueForObject(objects[6]));
 								vo.setActivityLocatInfoId(commonMethodsUtilService.getLongValueForObject(objects[7]));
 								vo.setTableName("ConductedInfo");
+								vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[12]));
 								returnList.add(vo);
 						}
 					}else if(levelId.longValue() == 1l || levelId.longValue() == 2l){
 						for (Object[] objects : lctList) {
 							LocationWiseBoothDetailsVO vo = new LocationWiseBoothDetailsVO();
+							vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[12]));
 							if(commonMethodsUtilService.getLongValueForObject(objects[0]) != null && commonMethodsUtilService.getLongValueForObject(objects[0]) != 0){
 								vo.setMandalId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 								vo.setMandalName(commonMethodsUtilService.getStringValueForObject(objects[1])+" Mandal ");
@@ -20890,25 +20897,25 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 							 if(activityLocationInfo != null){
 								 //activityLocationInfo = new ActivityLocationInfo(); 
 								 
-								 if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Conducted")){
-									 //if(typeIds1.contains(6l)){
+								 if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Conducted")){//overall vo status
+									 if(typeIds1.contains(6l)){
 										 
 										 	if(activityVO.getSelectedCnductedDate() != null && activityVO.getSelectedCnductedDate().trim().length() > 0)
 										 		activityLocationInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
 											else
 												activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
 										 	
-									// }else if(typeIds1.contains(5l)){
+									 }else if(typeIds1.contains(5l)){
 										 if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().trim().length() > 0)
 												activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
 											else
 												activityLocationInfo.setPlannedDate(sdf.parse(activityVO.getSelectedPlanedDate() != null ? activityVO.getSelectedPlanedDate().toString():""));
-									/*}else if(typeIds1.contains(7l)){
+									}else if(typeIds1.contains(7l)){
 										 if(activityvo.getIvrStatus() != null)
 												activityLocationInfo.setIvrStatus(activityvo.getIvrStatus() != null ? activityvo.getIvrStatus().toString():"");
 											else
 												activityLocationInfo.setIvrStatus(activityVO.getActalIvrStatus() != null ? activityVO.getActalIvrStatus().toString():"");
-									}*/
+									}
 									/*else if(activityVO.getAttributeId().longValue() == 0l){
 										 if(activityvo.getConductedDate() != null && activityvo.getConductedDate().trim().length() > 0)
 												activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
@@ -20920,8 +20927,55 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 												activityLocationInfo.setIvrStatus(activityVO.getActalIvrStatus() != null ? activityVO.getActalIvrStatus().toString():"");
 									 }*/
 							 	}
-								 else  if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Not Conducted")){
+								 else  if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Not Conducted") ){//main not conducted
 									 activityLocationInfo.setConductedDate(null);
+									 try {
+										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
+										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
+										 activityInfoDocumentDAO.deleteEventUploadFilebyActivityInfoId( activityInfoIdList);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								 } 
+								 else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Conducted")  ){//individual vo status
+									 if(typeIds1.contains(6l)){
+										 
+										 	if(activityVO.getSelectedCnductedDate() != null && activityVO.getSelectedCnductedDate().trim().length() > 0)
+										 		activityLocationInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
+											else
+												activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+										 	
+									 }else if(typeIds1.contains(5l)){
+										 if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().trim().length() > 0)
+												activityLocationInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+											else
+												activityLocationInfo.setPlannedDate(sdf.parse(activityVO.getSelectedPlanedDate() != null ? activityVO.getSelectedPlanedDate().toString():""));
+									}else if(typeIds1.contains(7l)){
+										 if(activityvo.getIvrStatus() != null)
+												activityLocationInfo.setIvrStatus(activityvo.getIvrStatus() != null ? activityvo.getIvrStatus().toString():"");
+											else
+												activityLocationInfo.setIvrStatus(activityVO.getActalIvrStatus() != null ? activityVO.getActalIvrStatus().toString():"");
+									}
+									/*else if(activityVO.getAttributeId().longValue() == 0l){
+										 if(activityvo.getConductedDate() != null && activityvo.getConductedDate().trim().length() > 0)
+												activityLocationInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+											else
+												activityLocationInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
+										 if(activityvo.getIvrStatus() != null)
+												activityLocationInfo.setIvrStatus(activityvo.getIvrStatus() != null ? activityvo.getIvrStatus().toString():"");
+											else
+												activityLocationInfo.setIvrStatus(activityVO.getActalIvrStatus() != null ? activityVO.getActalIvrStatus().toString():"");
+									 }*/
+							 	}
+								else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Not Conducted") ){
+									 activityLocationInfo.setConductedDate(null);
+									 try {
+										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
+										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
+										 activityInfoDocumentDAO.deleteEventUploadFilebyActivityInfoId( activityInfoIdList);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								 }
 								activityLocationInfo.setUpdatedStatus("Updated");
 								activityLocationInfo.setUpdatedBy(userId);
@@ -20934,24 +20988,24 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 						 if(activityConductedInfo != null ){
 							 
 							 if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Conducted")){
-								//if(typeIds1.contains(6l)){
-									// activityConductedInfo = new ActivityConductedInfo(); 
+								if(typeIds1.contains(6l)){
+									 activityConductedInfo = new ActivityConductedInfo(); 
 									if(activityVO.getSelectedCnductedDate() != null && activityVO.getSelectedCnductedDate().trim().length() > 0)
 										activityConductedInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
 									else
 										activityConductedInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
 								 
-								 //}else if(typeIds1.contains(5l)){
+								 }else if(typeIds1.contains(5l)){
 									 if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().trim().length() > 0)
 										 activityConductedInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
 										else
 											activityConductedInfo.setPlannedDate(sdf.parse(activityVO.getSelectedPlanedDate() != null ? activityVO.getSelectedPlanedDate().toString():""));
-								/*}/*else if(typeIds1.contains(7l)){
+								}else if(typeIds1.contains(7l)){
 									 if(activityvo.getIvrStatus() != null)
 										 activityConductedInfo.setIvrStatus(activityvo.getIvrStatus() != null ? activityvo.getIvrStatus().toString():"");
 										else
 											activityConductedInfo.setIvrStatus(activityVO.getActalIvrStatus() != null ? activityVO.getActalIvrStatus().toString():"");
-								 }*/
+								 }
 								 /*else if(activityVO.getAttributeId().longValue() == 0l){
 									 if(activityvo.getConductedDate() != null && activityvo.getConductedDate().trim().length() > 0)
 										 activityConductedInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
@@ -20962,13 +21016,61 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 										else
 											activityConductedInfo.setIvrStatus(activityVO.getActalIvrStatus() != null ? activityVO.getActalIvrStatus().toString():"");
 								 }*/
-							 } else  if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Not Conducted")){
+							 } 
+							 else  if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Not Conducted")){
 								 activityConductedInfo.setConductedDate(null);
+								 try {
+									 List<Long> activityInfoIdList = new ArrayList<Long>(0);
+									 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
+									 activityInfoDocumentDAO.deleteEventUploadFilebyActivityConductedInfoId(activityInfoIdList);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
 							 }
+							 else if( activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Conducted") ){
+									if(typeIds1.contains(6l)){
+										 activityConductedInfo = new ActivityConductedInfo(); 
+										if(activityVO.getSelectedCnductedDate() != null && activityVO.getSelectedCnductedDate().trim().length() > 0)
+											activityConductedInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
+										else
+											activityConductedInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+									 
+									 }else if(typeIds1.contains(5l)){
+										 if(activityvo.getPlannedDate() != null && activityvo.getPlannedDate().trim().length() > 0)
+											 activityConductedInfo.setPlannedDate(sdf.parse(activityvo.getPlannedDate() != null ? activityvo.getPlannedDate().toString():""));
+											else
+												activityConductedInfo.setPlannedDate(sdf.parse(activityVO.getSelectedPlanedDate() != null ? activityVO.getSelectedPlanedDate().toString():""));
+									}else if(typeIds1.contains(7l)){
+										 if(activityvo.getIvrStatus() != null)
+											 activityConductedInfo.setIvrStatus(activityvo.getIvrStatus() != null ? activityvo.getIvrStatus().toString():"");
+											else
+												activityConductedInfo.setIvrStatus(activityVO.getActalIvrStatus() != null ? activityVO.getActalIvrStatus().toString():"");
+									 }
+									 /*else if(activityVO.getAttributeId().longValue() == 0l){
+										 if(activityvo.getConductedDate() != null && activityvo.getConductedDate().trim().length() > 0)
+											 activityConductedInfo.setConductedDate(sdf.parse(activityvo.getConductedDate() != null ? activityvo.getConductedDate().toString():""));
+											else
+												activityConductedInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
+										 if(activityvo.getIvrStatus() != null)
+											 activityConductedInfo.setIvrStatus(activityvo.getIvrStatus() != null ? activityvo.getIvrStatus().toString():"");
+											else
+												activityConductedInfo.setIvrStatus(activityVO.getActalIvrStatus() != null ? activityVO.getActalIvrStatus().toString():"");
+									 }*/
+								 } 
+								else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Not Conducted") ){
+									 activityConductedInfo.setConductedDate(null);
+									 try {
+										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
+										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
+										 activityInfoDocumentDAO.deleteEventUploadFilebyActivityConductedInfoId(activityInfoIdList);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								 }
 							 
 							 activityConductedInfo.setUpdatedStatus("Updated");
-							activityConductedInfoDAO.save(activityConductedInfo);
-							status = "success";
+							 activityConductedInfoDAO.save(activityConductedInfo);
+							 status = "success";
 						 } 
 					 }
 				 }
