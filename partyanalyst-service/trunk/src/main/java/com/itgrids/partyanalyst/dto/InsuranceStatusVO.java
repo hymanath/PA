@@ -6,6 +6,7 @@ public class InsuranceStatusVO implements Serializable {
 	private Long statusId;
 	private String status;
 	private Long insuredMemberCount = 0L;
+	private Long insuredMemberCountFilter = 0L;
 	private Long insuredAmount = 0L;
 	public Long getStatusId() {
 		return statusId;
@@ -30,6 +31,12 @@ public class InsuranceStatusVO implements Serializable {
 	}
 	public void setInsuredAmount(Long insuredAmount) {
 		this.insuredAmount = insuredAmount;
+	}
+	public Long getInsuredMemberCountFilter() {
+		return insuredMemberCountFilter;
+	}
+	public void setInsuredMemberCountFilter(Long insuredMemberCountFilter) {
+		this.insuredMemberCountFilter = insuredMemberCountFilter;
 	}
 	
 	
