@@ -403,6 +403,21 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 		return query.executeUpdate();
 	}
 	
+	public Integer deleteEventUploadFilebyActivityInfoId(List<Long> activityInfoIdList)
+	{
+		Query query = getSession().createQuery(" update ActivityInfoDocument model set model.isDeleted = 'Y' where model.activityLocationInfoId in(:activityInfoIdList) ");
+		
+		query.setParameterList("activityInfoIdList", activityInfoIdList);
+		return query.executeUpdate();
+	}
+	
+	public Integer deleteEventUploadFilebyActivityConductedInfoId(List<Long> activityInfoIdList)
+	{
+		Query query = getSession().createQuery(" update ActivityInfoDocument model set model.isDeleted = 'Y' where model.activityConductedInfoId in(:activityConductedInfoId) ");
+		
+		query.setParameterList("activityConductedInfoId", activityInfoIdList);
+		return query.executeUpdate();
+	}
 	
 	public List<Object[]> getAvailableDates(EventDocumentVO inputVO,Date startDate,Date endDate,String type)
 	{

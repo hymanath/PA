@@ -1338,6 +1338,10 @@ public List<Object[]> getActivityLocationDetails(Long userAccessLevelId,Long use
    	 queryStr.append(" d.districtName ,");
    	 queryStr.append(" c.constituencyId ,"); //3
 	     queryStr.append(" c.name ,");
+	     queryStr.append("'' ,");
+	     queryStr.append("'' ,");
+	     queryStr.append("'' ,");
+	     queryStr.append("'' ,");
     }else if(userAccessLevelId.longValue() == 1l || userAccessLevelId.longValue() == 2l){
    	 queryStr.append(" t.tehsilId ,");
         queryStr.append(" t.tehsilName ,");
@@ -1349,7 +1353,7 @@ public List<Object[]> getActivityLocationDetails(Long userAccessLevelId,Long use
         queryStr.append(" w.name ,");
 	    }
    
-   queryStr.append(" date(model.plannedDate) ,date(model.conductedDate) ,model.ivrStatus,model.activityConductedInfoId ");
+   queryStr.append(" date(model.plannedDate) ,date(model.conductedDate) ,model.ivrStatus,model.activityConductedInfoId,model.updatedStatus ");
    queryStr.append(" FROM ActivityConductedInfo model " +
           // " userAddress UA " +
            " left join model.address.district d "+
@@ -1373,9 +1377,11 @@ public List<Object[]> getActivityLocationDetails(Long userAccessLevelId,Long use
 	}
 	
 	if(checkedValue.trim().equalsIgnoreCase("notConducted")){
-		queryStr.append(" and (model.infoCellCount is null or (model.ivrStatus is null and model.ivrStatus = 'N')) ");
+		queryStr.append("  and model.updatedStatus ='UPDATED' and (model.infoCellCount is null or (model.ivrStatus is null and model.ivrStatus = 'N')) ");
 	}else if(checkedValue.trim().equalsIgnoreCase("conducted")){
-		queryStr.append(" and (model.infoCellCount is not null or model.ivrStatus = 'Y') ");
+		queryStr.append("  and model.updatedStatus ='UPDATED' and (model.infoCellCount is not null or model.ivrStatus = 'Y') ");
+	}else if(checkedValue.trim().equalsIgnoreCase("notupdated")){
+		queryStr.append(" and model.updatedStatus ='NOT UPDATED' ");
 	}
 	/*queryStr.append(" and model.activityScope.activity.isActive = 'Y'" +
 			" and model.activityScope.isDeleted = 'N' ");*/
