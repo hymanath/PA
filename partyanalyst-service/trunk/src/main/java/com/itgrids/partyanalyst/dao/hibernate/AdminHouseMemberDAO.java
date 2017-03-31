@@ -16,11 +16,28 @@ public class AdminHouseMemberDAO extends GenericDaoHibernate<AdminHouseMember, L
 		
 	}
 	public List<Object[]> getcandateNameForPartyId(Long partyId){
-		Query query = getSession().createQuery("select model.adminHouseMemberId," +
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select model.adminHouseMemberId," +
 				" model.memberName " +
 				" from AdminHouseMember model" +
-				" where model.party.partyId = :partyId and model.isDeleted = 'N' ");
-		query.setParameter("partyId", partyId);
+				" where  model.isDeleted = 'N' ");
+		if(partyId != null && partyId.longValue() > 0l){
+			sb.append(" and model.party.partyId = :partyId " );
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(partyId != null && partyId.longValue() > 0l){
+			query.setParameter("partyId", partyId);
+		}
+		return query.list();
+	}
+	
+	public List<Object[]> getAllPartyNames(){
+		Query query = getSession().createQuery("select distinct model.party.partyId," +
+				" model.party.shortName " +
+				" from AdminHouseMember model  ");
 		return query.list();
 	}
 }
