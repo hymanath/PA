@@ -20,6 +20,10 @@
 	padding:1px;
 	margin-right:8px;
 }
+.form-control
+{
+	border-radius:0px;border-left:0px;
+}
 </style>
 </head>
 <body>
@@ -35,27 +39,36 @@
 					<div class="row">
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Election Year</label>
-							<div  id="electionYear"></div>
+							<select id="electionYear" class="form-control" onchange="getSessionYears();">
+								<option value="0"> Select Election Year</option>
+							</select>
+							<!--<div id="electionYear"></div>-->
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Session Year</label>
-							<div id="sessionYear"></div>
+							<select id="sessionYear" class="form-control" onchange="getAllSessions();">
+								<option value="0"> Select Session Year</option>
+							</select>
+							<!--<div id="sessionYear"></div>-->
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Assembly Session</label>
-							<div id="assemblySession"></div>
+							<select id="assemblySession" class="form-control" onchange="getDates();">
+								<option value="0"> Select Assembly Session</option>
+							</select>
+							<!--<div id="assemblySession"></div>-->
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6">
 							<label>Date Range</label>
 							<div class="input-group">
-								<input class="form-control" type="text" id="dateRange"/>
+								<input class="form-control" type="text" id="dateRange" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
 							</div>
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-							<button type="button" class="btn btn-success">VIEW</button>
+							<button type="button" class="btn btn-success" onClick="getSessionDetails();">VIEW</button>
 						</div>
 					</div>
 				</div>
