@@ -262,10 +262,8 @@
 		
 		highcharts(id,type,xAxis,yAxis,legend,data); */
 	
-      /* Comparison Block Start */
+      
 	  //getUserTypeWiseTotalCadreInsuranceComplainctCnt();
-	  //getSelectedChildMemberCadreInsuranceComplainctCnt("","");
-	  //getDirectChildMemberCadreInsuranceComplainctCnt();
 	 function getUserTypeWiseTotalCadreInsuranceComplainctCnt(){
 		  var jsObj ={ 
 		             activityMemberId : 44,//globalActivityMemberId
@@ -286,16 +284,19 @@
 		
 	} 
 	
+	/* Comparison Block Start */
+	
+	//getAllItsSubUserTypeIdsByParentUserTypeForInsurance(); default call
 	function getInsuranceChildUserType(childUserTypeId,childUserType){
 	   getSelectedChildMemberCadreInsuranceComplainctCnt(childUserTypeId,childUserType);
    }
    function getDirectChildTypeMemberDtls(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId,id){
 	 $("#"+id).show(); 
 	 if(selectedUserType != null && selectedUserType.trim()=="MLA/CI" || selectedUserType.trim()=="MLA" || selectedUserType.trim()=="CONSTITUENCY INCHARGE"){
-	  getCandiateWiseCadreInsurencaeDtls();(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  
+	  getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);			  
 	 }else{
 	 getDirectChildMemberCadreInsuranceComplainctCnt(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberId);
-	  getCandiateWiseCadreInsurencaeDtls();(userTypeId,activityMemberId,selectedMemberName,selectedUserType);	
+	  getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType);	
 	 }	
    }
    function getInsuranceChildUserTypeDls(selectedUserType,childActivityMemberId,selectedMemberName,activityMemberId,userTypeId){
@@ -315,7 +316,8 @@
 	function getAllItsSubUserTypeIdsByParentUserTypeForInsurance(){
 	     $("#childUserTypeDetailsDivForCadreInsurance").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		 $("#cadreInsuranceChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#userTypeWiseChildDtlsTabForCadreInsuranceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 $("#candidateWiseCadreInsuranceDeathDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+		 $("#candidateWiseCadreInsuranceHospDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var jsObj = {parentUserTypeId : globalUserTypeId}
 		$.ajax({
 			type : 'POST',
@@ -346,13 +348,15 @@
 		str+='</ul>';
 		$("#childUserTypeDetailsDivForCadreInsurance").html(str);
 		$(".comparisonSelect li:first-child").addClass("active")
-		
 		getSelectedChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdString,userType);
 	}
 	function getSelectedChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdString,childUserType){
+	   $("#DeathHeadingId").hide();
+	   $("#HospitalizationHeadingId").hide();
 	   $("#cadreInsuranceChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	   $("#userTypeWiseChildDtlsTabForCadreInsuranceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   $("#candidateWiseCadreInsuranceDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   $("#candidateWiseCadreInsuranceDeathDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   $("#candidateWiseCadreInsuranceHospDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
 	  var parentActivityMemberId = globalActivityMemberId;
         var jsObj = { 
@@ -532,7 +536,6 @@ function buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,
 					str+='<th>Designation</th>';
 					str+='<th>Name</th>';
 					str+='<th style="text-align:center;">Total</th>';
-					//debugger
 					var issueTypeDtls = result[0].subList;
 					var statusObj; 
 					 if(issueTypeDtls != null && issueTypeDtls.length > 0){
@@ -578,13 +581,13 @@ function buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,
 					  }
 					 if(result[i].subList[j].subList != null && result[i].subList[j].subList.length > 0){
 						 for(var k in result[i].subList[j].subList){
-							if(result[i].subList[j].subList[k].id = 1){
+							if(result[i].subList[j].subList[k].id == 1){
 								intimations = intimations + result[i].subList[j].subList[k].totalCount;
-							}else if(result[i].subList[j].subList[k].id = 2){
+							}else if(result[i].subList[j].subList[k].id == 2){
 								forwarded = forwarded + result[i].subList[j].subList[k].totalCount;
-							}else if(result[i].subList[j].subList[k].id = 3){
+							}else if(result[i].subList[j].subList[k].id == 3){
 								settled = settled + result[i].subList[j].subList[k].totalCount;
-							}else if(result[i].subList[j].subList[k].id = 4){
+							}else if(result[i].subList[j].subList[k].id == 4){
 								rejected = rejected + result[i].subList[j].subList[k].totalCount;
 							}	  
 						 }
@@ -610,10 +613,10 @@ function buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,
 			   }else{
 				   str+='<td> - </td>';	  
 			   }
-					 }
+	    }
 		 str+='</tr>';
 		str+='<tr class="showHideTr" style="display:none" id="insuranceHiddenTrId'+result[i].userTypeId+''+i+'" attr_id="insuranceChildMemDtslId'+result[i].userTypeId+''+i+'">';
-		str+='<td colspan="8"  id="insuranceChildMemDtslId'+result[i].userTypeId+''+i+'">';
+		str+='<td colspan="10"  id="insuranceChildMemDtslId'+result[i].userTypeId+''+i+'">';
 		str+='</td>';
 		 rank=rank+1;
 		 }
@@ -623,8 +626,12 @@ function buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,
 	    $("#"+childActivityMemberDivId).html(str);
 	}
 function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType){
+	        $("#DeathHeadingId").hide();
+			$("#HospitalizationHeadingId").hide();
+	        $("#candidateWiseCadreInsuranceDeathDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+			$("#candidateWiseCadreInsuranceHospDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	        var jsObj = { 
-					   activityMemberId : 5,
+					   activityMemberId : activityMemberId,
 					   stateId : globalStateIdForCadreInsurance,           
 					   fromDate: "",        
 					   toDate :	"",
@@ -636,11 +643,151 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 			dataType : 'json',
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$("#candidateWiseCadreInsuranceDtlsDivId").html(' ');
-			console.log(result);
+			$("#candidateWiseCadreInsuranceDeathDtlsDivId").html(' ');
+			$("#candidateWiseCadreInsuranceHospDtlsDivId").html(' ');
+			 if(result != null && result.length > 0){
+				 buildCandidateWiseCadreInsuranceDtls(result,"candidateWiseCadreInsuranceDeathDtlsDivId","Death","DeathHeadingId");
+				 buildCandidateWiseCadreInsuranceDtls(result,"candidateWiseCadreInsuranceHospDtlsDivId","Hospitalization","HospitalizationHeadingId");
+			 }
 		});
 }  
-
+  function buildCandidateWiseCadreInsuranceDtls(result,divId,type,headingId){
+	 		var str = '';
+			var locationName = [];
+			var totalComplaintCnt=0;
+			for(var i in result){
+				 locationName.push(result[i].name);
+			 }
+			 var intimationsArr = [];
+			 var forwardedArr = [];
+			 var settledArr = [];
+			 var rejectedArr = [];
+			 for(var i in result){
+				 if(result[i].subList != null){
+					 for(var j in result[i].subList){
+						 if(result[i].subList[j].name==type){
+							  totalComplaintCnt = totalComplaintCnt+result[i].subList[j].totalCount;
+							 for(var k in result[i].subList[j].subList){
+								if(result[i].subList[j].subList[k].id==1){
+									  intimationsArr.push({y:result[i].subList[j].subList[k].totalCount,"extra":result[i].subList[j].subList[k].id+"-"+result[i].id}); 
+								  }else if(result[i].subList[j].subList[k].id==2){
+									  forwardedArr.push({y:result[i].subList[j].subList[k].totalCount,"extra":result[i].subList[j].subList[k].id+"-"+result[i].id});
+								  }else if(result[i].subList[j].subList[k].id==3){
+									  settledArr.push({y:result[i].subList[j].subList[k].totalCount,"extra":result[i].subList[j].subList[k].id+"-"+result[i].id}); 
+								  }else if(result[i].subList[j].subList[k].id==4){
+									  rejectedArr.push({y:result[i].subList[j].subList[k].totalCount,"extra":result[i].subList[j].subList[k].id+"-"+result[i].id}); 
+								  }
+							  } 
+						 }
+				   } 
+				 }
+			 }
+		       var mainJosnObjArr = [];
+			   if(intimationsArr != null && intimationsArr.length > 0){
+				mainJosnObjArr.push({name:'INTIMATIONS',data:intimationsArr,color:"#306F8F"});  
+			  }
+			   if(forwardedArr != null && forwardedArr.length > 0){
+				mainJosnObjArr.push({name:'FORWARDED',data:forwardedArr,color:"#F39C12"});  
+			  }
+			  if(settledArr != null && settledArr.length > 0){
+				mainJosnObjArr.push({name:'SETTLED',data:settledArr,color:"#5CD48F"});  
+			  }
+			  if(rejectedArr != null && rejectedArr.length > 0){
+				mainJosnObjArr.push({name:'REJECTED',data:rejectedArr,color:"#E74B3B"});  
+			  }
+			 buildHighCandidateDtlsHighchart(mainJosnObjArr,locationName,divId,type,headingId,totalComplaintCnt);
+   }
+   function buildHighCandidateDtlsHighchart(mainJosnObjArr,locationName,divId,type,headingId,totalComplaintCnt){
+	    if(mainJosnObjArr != null && mainJosnObjArr.length > 0){
+			var str='';
+			  if(type="Death"){
+				str+='<span style="margin-left:10px">'+type+'<span style="margin-left:860px;">Total:'+totalComplaintCnt+'<span></span>';  
+			  }else{
+				str+='<span style="margin-left:10px">'+type+'<span style="margin-left:790px;">Total:'+totalComplaintCnt+'<span></span>'; 
+			  }
+			  
+			 $("#"+headingId).html(str);
+			 $("#"+headingId).show();
+					 $("#"+divId).highcharts({
+					chart: {
+						type: 'bar'
+					},
+					title: {
+						text: ''
+					},
+					subtitle: {
+						text: ''
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: locationName,
+						title: {
+							text: null
+						},
+						
+					},
+					yAxis: {
+						min: 0,
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						title: {
+							text: '',
+							align: 'high'
+						},
+						labels: {
+							overflow: 'justify'
+						},
+						 stackLabels: {
+							enabled: true,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+							},
+							formatter: function() {
+							return  (this.total);
+						},
+						}
+					},
+					tooltip: {
+						valueSuffix: ' ',
+						shared:true
+					},
+					plotOptions: {
+						bar: {
+						stacking: 'normal',
+							dataLabels: {
+								align:"center",
+								x:5,
+								y:-5,
+								enabled: false,
+								 formatter: function() {
+									if (this.y === 0) {
+										return null;
+									} else {
+										return Highcharts.numberFormat(this.y,0);      
+									}
+								}
+							}
+						},
+					},
+					legend: {
+							reversed: false,
+							verticalAlign:'top'
+							},
+					credits: {
+						enabled: false
+					},
+					series: mainJosnObjArr
+				}); 
+			  }else{
+			    $("#"+divId).html("NO DATA AVAILABLE.");
+			  }
+   }
+   /* Comparison Block End */
+   
 //getDistrictWiseThenCategoryWiseInsuranceMemberCount();    
 function getDistrictWiseThenCategoryWiseInsuranceMemberCount(){
 	var jsObj = { 
