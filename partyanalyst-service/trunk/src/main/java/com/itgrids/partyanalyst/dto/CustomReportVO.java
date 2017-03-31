@@ -29,9 +29,29 @@ public class CustomReportVO implements Serializable {
 	private List<CustomReportVO> locationsList = new ArrayList<CustomReportVO>(0);
 	private List<CustomReportVO> imagesList = new ArrayList<CustomReportVO>(0);
 	private List<CustomReportVO> fileList = new ArrayList<CustomReportVO>(0);
-		
+	private Double submitPerc = 0.0d;
+	private Double notSubmitPerc = 0.0d;
+	private Long totalCount;
 	
-	
+
+	public Double getSubmitPerc() {
+		return submitPerc;
+	}
+	public void setSubmitPerc(Double submitPerc) {
+		this.submitPerc = submitPerc;
+	}
+	public Double getNotSubmitPerc() {
+		return notSubmitPerc;
+	}
+	public void setNotSubmitPerc(Double notSubmitPerc) {
+		this.notSubmitPerc = notSubmitPerc;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public String getLocationName() {
 		return locationName;
 	}
