@@ -1253,6 +1253,14 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 					}
 				}
+				if(statusList != null && statusList.size() > 0){
+					Collections.sort(statusList, new Comparator<UserTypeVO>() {
+						@Override
+						public int compare(UserTypeVO status1, UserTypeVO status2) {
+							return status1.getId().compareTo(status2.getId());
+						}
+					});
+				}
 			}catch(Exception e){
 				LOG.error("Error occured at getStatusList() in CoreDashboardInsuranceService class",e);	
 			}
@@ -1535,7 +1543,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 	  }
 	   public static Comparator<UserTypeVO> cadreSortingByComplaintCount = new Comparator<UserTypeVO>() {
 			@Override
-			public int compare(UserTypeVO member1, UserTypeVO member2) {
+			public int compare(UserTypeVO member2, UserTypeVO member1) {
 				Long count2 = member2.getTotalCount();
 				Long count1 = member1.getTotalCount();
 				//descending order of percantages.
