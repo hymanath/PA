@@ -24,14 +24,14 @@ public class AdminHouseSessionDAO extends GenericDaoHibernate<AdminHouseSession,
 			 sb.append(" and model.adminHouseTerm.adminHouseTermId = :termId " ); 
 		 }
 		 
-		 if(sessionYr != null){
+		 if(sessionYr != null && !sessionYr.toString().isEmpty()){
 			 sb.append(" and model.year = :sessionYr " ); 
 		 }
 		 
 		 Query query = getSession().createQuery(sb.toString());
 			if(termId != null && termId.longValue() > 0l)
 				query.setParameter("termId", termId);
-			if(sessionYr != null)
+			if(sessionYr != null  && !sessionYr.toString().isEmpty())
 				query.setParameter("sessionYr", sessionYr);
 			
 			return query.list();
