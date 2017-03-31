@@ -60,9 +60,9 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	    
 	    StringBuilder str = new StringBuilder();
 	    
-	    str.append(" select count(distinct model.adminHouseMember.adminHouseMemberId),model.adminHouseMember.partyId," +
+	    str.append(" select count(distinct model.adminHouseMember.adminHouseMemberId),model.adminHouseMember.party.partyId," +
 	        " date(model.adminHouseSessionDay.sessionDate),model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId,model.adminHouseSessionDay.adminHouseSessionDayId " +
-	        " from MemberSpeechAspect model " +
+	        ",model.adminHouseMember.party.shortName from MemberSpeechAspect model " +
 	        " where model.isDeleted = 'N'  and model.adminHouseSessionDay.isDeleted = 'N' " );
 	    
 	    if(termId != null && termId.longValue() >0l)
