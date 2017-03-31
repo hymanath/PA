@@ -28,7 +28,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		{
 			sb.append(" and model.adminHouseSessionDay.adminHouseSession.adminHouseTerm.adminHouseTermId = :termId ");
 		}
-		if(sesYear != null)
+		if(sesYear != null && !sesYear.toString().isEmpty())
 		{
 			sb.append(" and model.adminHouseSessionDay.adminHouseSession.year = :sesYear");
 		}
@@ -45,7 +45,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		Query query = getSession().createQuery(sb.toString());
 			if(termId != null && termId.longValue() > 0l)
 				query.setParameter("termId", termId);
-			if(sesYear != null)
+			if(sesYear != null && !sesYear.toString().isEmpty())
 				query.setParameter("sesYear", sesYear);
 			if(sessionIds != null && sessionIds.size() > 0l)
 				query.setParameterList("sessionIds", sessionIds);
@@ -69,7 +69,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	    {
 	      str.append(" and model.adminHouseSessionDay.adminHouseSession.adminHouseTerm.adminHouseTermId = :termId ");
 	    }
-	    if(sesYear != null)
+	    if(sesYear != null && !sesYear.toString().isEmpty())
 		{
 			str.append(" and model.adminHouseSessionDay.adminHouseSession.year = :sesYear");
 		}
@@ -87,7 +87,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	    Query query = getSession().createQuery(str.toString());
 	    	if(termId != null && termId.longValue() >0l)
 	    		query.setParameter("termId", termId);
-	    	if(sesYear != null)
+	    	if(sesYear != null && !sesYear.toString().isEmpty())
 				query.setParameter("sesYear", sesYear);
 	    	if(sessionIds != null && sessionIds.size() > 0l)
 				query.setParameterList("sessionIds", sessionIds);
