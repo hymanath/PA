@@ -57,7 +57,8 @@ function getElectionYears(){
 			str+='</select>';
 		}
 		$("#electionYear").html(str);
-		//$(".chosen-select").chosen({width:'100%'});
+		$("#electionYear").trigger("chosen:updated");
+		$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
@@ -85,7 +86,8 @@ function getSessionYears(){
 			//str+='</select>';
 		}
 		$("#sessionYear").html(str);
-		//$(".chosen-select").chosen({width:'100%'});
+		$("#sessionYear").trigger("chosen:updated");
+		$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
@@ -115,7 +117,8 @@ function getAllSessions(){
 			//str+='</select>';
 		}
 		$("#assemblySession").html(str);
-		//$(".chosen-select").chosen({width:'100%'});
+		$("#assemblySession").trigger("chosen:updated");
+		$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
@@ -332,9 +335,9 @@ function getCandidates(){
 		$("#updatingClonedElements").append(c);
 		
     
-		// $("#memberNameId"+updatedCloneCount).chosen();
-		// $("#memberNameId"+updatedCloneCount).trigger("chosen:updated");
-		// $(".chosen-select").chosen({width:'100%'});
+		 $("#memberNameId"+updatedCloneCount).chosen();
+		 $("#memberNameId"+updatedCloneCount).trigger("chosen:updated");
+		
 		
 	});
 	
@@ -354,7 +357,7 @@ function getCandidates(){
 		
 		c.find(".memberNameCls").attr("id","memberNameId"+generatedId)
 		c.find(".memberNameCls").attr("attr_count",generatedId)
-		c.find("#memberNameId"+generatedId).attr("onchange","getOrganizationsForState();");
+		
 		
 		c.find(".presentationCls").attr("id","presentationId"+generatedId)
 		c.find(".presentationCls").attr("attr_count",generatedId)
@@ -371,9 +374,13 @@ function getCandidates(){
 		c.find(".totalUpdatingRemoveBtnCls").attr("attr_div_id","totalUpdateAppendHtml"+generatedId);
 		$("#totalUpdatingClonedElements").append(c);
     
-		/* $("#memberNameId"+generatedId).chosen();
-		$("#memberNameId"+generatedId).trigger("chosen:updated");
-		$(".chosen-select").chosen({width:'100%'}); */
+		 $("#memberNameId"+generatedId).chosen();
+		 $("#memberNameId"+generatedId).trigger("chosen:updated");
+		
+		
+		$("#partyId"+generatedId).chosen();
+		$("#partyId"+generatedId).trigger("chosen:updated");
+		
 		
 	});
 	
@@ -406,9 +413,9 @@ function getCandidates(){
 		c.find(".updatingRemoveBtnCls").attr("attr_div_id","updateAppendHtml"+generatedId);
 		$("#totalIndividualClonedElements").append(c);
     
-		/* $("#memberNameId"+generatedId).chosen();
+		 $("#memberNameId"+generatedId).chosen();
 		$("#memberNameId"+generatedId).trigger("chosen:updated");
-		$(".chosen-select").chosen({width:'100%'}); */
+		
 		
 	});
 	
@@ -420,8 +427,4 @@ function getCandidates(){
 		var divId = $(this).attr("attr_div_id");
 		$("#"+divId).remove();
 	});
-	
-	function getOrganizationsForState(){
-		alert(4)
-	}
 	

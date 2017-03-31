@@ -21,10 +21,7 @@
 	margin-right:8px;
 }
 .f_10{font-size:10px;}
-.form-control
-{
-	border-radius:0px;border-left:0px;
-}
+
 </style>
 </head>
 <body>
@@ -40,21 +37,21 @@
 					<div class="row">
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Election Year</label>
-							<select id="electionYear" class="form-control" onchange="getSessionYears();">
+							<select id="electionYear" class="chosen-select" onchange="getSessionYears();">
 								<option value="0"> Select Election Year</option>
 							</select>
 							<!--<div id="electionYear"></div>-->
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Session Year</label>
-							<select id="sessionYear" class="form-control" onchange="getAllSessions();">
+							<select id="sessionYear" class="chosen-select" onchange="getAllSessions();">
 								<option value="0"> Select Session Year</option>
 							</select>
 							<!--<div id="sessionYear"></div>-->
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Assembly Session</label>
-							<select id="assemblySession" class="form-control" onchange="getDates();">
+							<select id="assemblySession" class="chosen-select" onchange="getDates();">
 								<option value="0"> Select Assembly Session</option>
 							</select>
 							<!--<div id="assemblySession"></div>-->
@@ -200,7 +197,7 @@
 			
 			<div class="col-md-3 col-xs-12 col-sm-6 m_top20">
 				<label class="f_10">Member&nbsp;Name:</label>
-				<select class="chosen-select memberNameCls" >
+				<select class="memberNameCls" style="width:100%">
 					<option value="0">Select Member Name</option>
 					<option value="1">Parthipati PullaRao</option>
 					<option value="2">Parthipati PullaRao</option>
@@ -234,8 +231,8 @@
 			<hr style="border-width: 2px 0px 0px; margin-top: 15px;"/>
 			<i class="glyphicon glyphicon-remove  pull-right btn btn-default btn-xs totalUpdatingRemoveBtnCls" style="border-radius: 50%;"></i>
 			<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
-				<label >Party</label>
-				<select class="chosen-select partyCls">
+				<label>Party</label>
+				<select class="partyCls" style="width:100%">
 					<option value="0">Select Party</option>
 					<option value="1">Party</option>
 					<option value="2">YSRC</option>
@@ -245,7 +242,7 @@
 				<div class="col-md-3 col-xs-12 col-sm-6 ">
 					<label class="f_10">Member&nbsp;Name:</label>
 					<span class="glyphicon glyphicon-plus pull-right " id="totalAddMemberDetailscls" style="margin-top: -10px;cursor:pointer;"></span>
-					<select class="chosen-select memberNameCls" >
+					<select class=" memberNameCls" style="width:100%">
 						<option value="0">Select Member Name</option>
 						<option value="1">Parthipati PullaRao</option>
 						<option value="2">Parthipati PullaRao</option>
