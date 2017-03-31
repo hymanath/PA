@@ -27,7 +27,7 @@ public class ActivityLocationInfoDAO extends GenericDaoHibernate<ActivityLocatio
 	public List<Object[]> getUpdatedLocationsListForScope(Long activityScopeId,Date startDate,Date endDate)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.locationValue,date(model.plannedDate),date(model.conductedDate),model.locationLevel from ActivityLocationInfo model where " +
+		queryStr.append(" select distinct model.locationValue,date(model.plannedDate),date(model.conductedDate),model.locationLevel ,model.updatedStatus from ActivityLocationInfo model where " +
 				"model.activityScopeId =:activityScopeId ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and (date(model.plannedDate) >= :startDate and date(model.plannedDate) <= :endDate ) ");
@@ -3035,6 +3035,10 @@ public List<Object[]> getLocationWise(Long userAccessLevelId,Long userAccessLeve
     	 queryStr.append(" d.districtName ,");
     	 queryStr.append(" c.constituencyId ,"); //3
 	     queryStr.append(" c.name ,");
+	     queryStr.append("'' ,");
+	     queryStr.append("'' ,");
+	     queryStr.append("'' ,");
+	     queryStr.append("'' ,");
      }else if(userAccessLevelId.longValue() == 1l || userAccessLevelId.longValue() == 2l){
     	 queryStr.append(" t.tehsilId ,");
          queryStr.append(" t.tehsilName ,");
@@ -3046,7 +3050,7 @@ public List<Object[]> getLocationWise(Long userAccessLevelId,Long userAccessLeve
          queryStr.append(" w.name ,");
 	    }
     
-    queryStr.append(" date(model.plannedDate) ,date(model.conductedDate) ,model.ivrStatus,model.activityLocationInfoId ");
+    queryStr.append(" date(model.plannedDate) ,date(model.conductedDate) ,model.ivrStatus,model.activityLocationInfoId , model.updatedStatus");
     queryStr.append(" FROM ActivityLocationInfo model " +
            // " userAddress UA " +
             " left join model.address.district d "+
@@ -3075,9 +3079,11 @@ public List<Object[]> getLocationWise(Long userAccessLevelId,Long userAccessLeve
 	}
 	
 	if(checkedValue.trim().equalsIgnoreCase("notConducted")){
-		queryStr.append(" and ((model.conductedDate is null ) and (model.ivrStatus = 'N' or model.ivrStatus is null)) ");
+		queryStr.append(" and model.updatedStatus ='UPDATED' and ((model.conductedDate is null ) and (model.ivrStatus = 'N' or model.ivrStatus is null)) ");
 	}else if(checkedValue.trim().equalsIgnoreCase("conducted")){
-		queryStr.append(" and (model.conductedDate is not null or model.ivrStatus = 'Y') ");
+		queryStr.append(" and model.updatedStatus ='UPDATED' and (model.conductedDate is not null or model.ivrStatus = 'Y') ");
+	}else if(checkedValue.trim().equalsIgnoreCase("notupdated")){
+		queryStr.append(" and model.updatedStatus ='NOT UPDATED' ");
 	}
 	/*queryStr.append(" and model.activityScope.activity.isActive = 'Y'" +
 			" and model.activityScope.isDeleted = 'N' ");*/
