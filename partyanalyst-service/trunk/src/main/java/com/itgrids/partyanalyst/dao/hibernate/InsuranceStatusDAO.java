@@ -554,7 +554,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			 queryStr.append(" and date(CM.Raised_Date) between :startDate and :endDate  ");
 		 }
 	     if(resultType.equalsIgnoreCase("BenefitCnt")){
-	    	queryStr.append(" and CM.approved_amount is not null "); 
+	    	queryStr.append(" and CM.approved_amount > 0 "); 
 	     }
 	   
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
