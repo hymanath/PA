@@ -45,5 +45,6 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	
 	public List<Object[]>  getDistrictNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long stateId);
 	public List<Object[]>  getDistrictNamesConductedInfocoveredLocationsByScopeId(Long activityScopeId,Long stateId);
-	
+	public Integer deleteEventUploadFilebyActivityConductedInfoId(List<Long> activityInfoIdList);
+	public Integer deleteEventUploadFilebyActivityInfoId(List<Long> activityInfoIdList);
 }
