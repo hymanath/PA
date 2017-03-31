@@ -140,10 +140,10 @@
 									
 									<div class="col-md-2 col-xs-12 col-sm-6">
 										<label >Party</label>
-										<select class="chosen-select partyCls" id="partyId0" attr_count="0">
-											<option value="0">Select Party</option>
+										<select class="chosen-select partyCls" id="partyId0" attr_count="0" onchange="getCandidates('memberNameId0');">
+											<!--<option value="0">Select Party</option>
 											<option value="1">Party</option>
-											<option value="2">YSRC</option>
+											<option value="2">YSRC</option>-->
 										</select>
 									</div>
 									<div class="col-md-10 col-xs-12 col-sm-12 m_top10">
@@ -151,9 +151,9 @@
 											<label class="f_10">Member&nbsp;Name:</label>
 											<span class="glyphicon glyphicon-plus pull-right " id="addMemberDetailsId" style="margin-top: -10px;cursor:pointer;"></span>
 											<select class="chosen-select memberNameCls" id="memberNameId0" attr_count="0">
-												<option value="0">Select Member Name</option>
+												<!--<option value="0">Select Member Name</option>
 												<option value="1">Parthipati PullaRao</option>
-												<option value="2">Parthipati PullaRao</option>
+												<option value="2">Parthipati PullaRao</option>-->
 											</select>
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
