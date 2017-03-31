@@ -58,8 +58,15 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private Long activityLocatInfoId;
 	private String tableName;
 	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>();
+	private String status;
 	
 	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public List<KeyValueVO> getSubList() {
 		return subList;
 	}
