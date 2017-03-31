@@ -226,5 +226,15 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			}
 		return Action.SUCCESS;
 	}
+	public String getDatesForSaving(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			assemblyVOList = assemblySessionService.getDatesForSaving(jObj.getLong("elctionYearId"),jObj.getString("sessionYear"),jObj.getLong("sessionId"));
+			}catch(Exception e){
+				LOG.error("Exception occured in getDatesForSaving() At AssemblySessionAction",e);
+			}
+		return Action.SUCCESS;
+	}
 
 }
