@@ -235,7 +235,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 	public List<AdminHouseVO> getAllParties(){
 		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
 		try{
-			List<Object[]> partyList = partyDAO.getAllPartyNames();
+			List<Object[]> partyList = adminHouseMemberDAO.getAllPartyNames();
 			if(partyList != null && partyList.size() > 0){
 				for (Object[] objects : partyList) {
 					AdminHouseVO vo = new AdminHouseVO();
