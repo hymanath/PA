@@ -788,11 +788,11 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
    }
    /* Comparison Block End */
    
-//getDistrictWiseThenCategoryWiseInsuranceMemberCount();    
+//getDistrictWiseThenCategoryWiseInsuranceMemberCount();      
 function getDistrictWiseThenCategoryWiseInsuranceMemberCount(){
 	var jsObj = { 
-					   activityMemberId : 44,                           
-					   userTypeId : 2,              
+					   activityMemberId : 1,                           
+					   userTypeId : 3,                            
 					   stateId :globalStateIdForCadreInsurance,
 					   cadreEnrollmentYearId : 0,           
 					   locationId: 0,        
@@ -857,7 +857,7 @@ function getDistrictWiseThenStatusWiseInsuranceMemberCount(){
 			console.log(result);
 	});
 } 
-//getConstituencyWiseThenStatusWiseInsuranceMemberCount();      
+//getConstituencyWiseThenStatusWiseInsuranceMemberCount();           
 function getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
 	var jsObj = { 
 					   activityMemberId : 44,                                     
@@ -880,8 +880,8 @@ function getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
 			console.log(result);
 	});
 }
-//getLocationWiseThenCategoryWiseInsuranceMemberCountForTS();      
-function getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(){
+//getLocationWiseThenCategoryWiseInsuranceMemberCountForTS();                        
+function getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(){
 	var jsObj = { 
 					   stateId :globalStateIdForCadreInsurance,
 					   cadreEnrollmentYearId : 0,           
@@ -903,18 +903,18 @@ function getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(){
 			console.log(result);
 	});
 }   
-//getLocationWiseThenStatusWiseInsuranceMemberCountForTS();      
+//getLocationWiseThenStatusWiseInsuranceMemberCountForTS();        
 function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(){
 	var jsObj = { 
 					   stateId :globalStateIdForCadreInsurance,
 					   cadreEnrollmentYearId : 0,           
-					   locationId: 10,                                               
+					   locationId: 0,                                               
 					   status :	"",  
 					   category : "",             
-					   fromDateStr : "",
+					   fromDateStr : "",    
 					   toDateStr : "",
 					   type : "status",
-					   locationType : "constituency"      
+					   locationType : "district"          
 				  };
 	console.log(jsObj);                                
 	$.ajax({
