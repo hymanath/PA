@@ -25,6 +25,10 @@ public class AdminHouseVO implements Serializable{
 	private Double total = 0.0d;
 	private Double value = 0.0d;
 	private Double score = 0.0d;
+	private Double avgSubCount = 0.0d;
+	private Double avgPresCount = 0.0d;
+	private Double avgCunterAttCount = 0.0d;
+	private Double avgBdyLanCount = 0.0d;
 	
 	public Long getId() {
 		return id;
@@ -139,5 +143,29 @@ public class AdminHouseVO implements Serializable{
 	}
 	public void setScore(Double score) {
 		this.score = score;
+	}
+	public Double getAvgSubCount() {
+		return avgSubCount;
+	}
+	public void setAvgSubCount(Double avgSubCount) {
+		this.avgSubCount = avgSubCount;
+	}
+	public Double getAvgPresCount() {
+		return avgPresCount;
+	}
+	public void setAvgPresCount(Double avgPresCount) {
+		this.avgPresCount = avgPresCount;
+	}
+	public Double getAvgCunterAttCount() {
+		return avgCunterAttCount;
+	}
+	public void setAvgCunterAttCount(Double avgCunterAttCount) {
+		this.avgCunterAttCount = avgCunterAttCount;
+	}
+	public Double getAvgBdyLanCount() {
+		return avgBdyLanCount;
+	}
+	public void setAvgBdyLanCount(Double avgBdyLanCount) {
+		this.avgBdyLanCount = avgBdyLanCount;
 	}
 }
