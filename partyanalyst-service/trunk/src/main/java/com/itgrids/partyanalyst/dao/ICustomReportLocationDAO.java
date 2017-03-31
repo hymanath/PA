@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.CustomReportLocation;
 
 public interface ICustomReportLocationDAO extends GenericDao<CustomReportLocation, Long>{
 	public List<Object[]> getLocationDetails(Long programId);
+	public List<Object[]> getLocationDetailsForReportId(Long programId,String type);
 }
