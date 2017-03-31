@@ -129,6 +129,7 @@
 							</div>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+						<form name="submitAssemblySessionCanScore" id="submitApplication"  method="post">
 							<div class="row">
 								<div id="observerNamesId"></div>
 							</div>
@@ -140,7 +141,7 @@
 									
 									<div class="col-md-2 col-xs-12 col-sm-6">
 										<label >Party</label>
-										<select class="chosen-select partyCls" id="partyId0" attr_count="0" onchange="getCandidates('memberNameId0');">
+										<select class="chosen-select partyCls" id="partyId0" attr_count="0" onchange="getCandidates('memberNameId0','partyId0');" >
 											<!--<option value="0">Select Party</option>
 											<option value="1">Party</option>
 											<option value="2">YSRC</option>-->
@@ -150,7 +151,7 @@
 										<div class="col-md-3 col-xs-12 col-sm-6">
 											<label class="f_10">Member&nbsp;Name:</label>
 											<span class="glyphicon glyphicon-plus pull-right " id="addMemberDetailsId" style="margin-top: -10px;cursor:pointer;"></span>
-											<select class="chosen-select memberNameCls" id="memberNameId0" attr_count="0">
+											<select class="chosen-select memberNameCls" id="memberNameId0" attr_count="0" name="adminHouseVO.membersList[0].memberId">
 												<!--<option value="0">Select Member Name</option>
 												<option value="1">Parthipati PullaRao</option>
 												<option value="2">Parthipati PullaRao</option>-->
@@ -158,30 +159,34 @@
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Subject:</label>
-											<input type="text" class="form-control subjectCls" id="subjectId0" attr_count="0">
+											<input type="text" value="1" class="form-control subjectCls" id="subjectId0" attr_count="0" name="adminHouseVO.membersList[0].scalesList[0].speechAspectId">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Presentation:</label>
-											<input type="text" class="form-control presentationCls" id="presentationId0" attr_count="0">
+											<input type="text" value="2" class="form-control presentationCls" id="presentationId0" attr_count="0" name="adminHouseVO.membersList[0].scalesList[0].speechAspectId">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Counter:</label>
-											<input type="text" class="form-control counterAttackCls" id="counterAttackId0" attr_count="0">
+											<input type="text" value="3" class="form-control counterAttackCls" id="counterAttackId0" attr_count="0" name="adminHouseVO.membersList[0].scalesList[0].speechAspectId">
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-6">
 											<label class="f_10">Body&nbsp;Language:</label>
-											<input type="text" class="form-control bodyLanguageCls" id="bodyLanguageId0" attr_count="0">
+											<input type="text" value="4" class="form-control bodyLanguageCls" id="bodyLanguageId0" attr_count="0" name="adminHouseVO.membersList[0].scalesList[0].speechAspectId">
 										</div>
-										<div class="col-md-4 col-xs-12 col-sm-6">
+										<!--<div class="col-md-4 col-xs-12 col-sm-6">
 											<label class="f_10">Summary:</label>
 											<input type="text" class="form-control summaryCls" id="summaryId0" placeholder="Enter Summary" attr_count="0">
-										</div>
+										</div>-->
 										<div id="updatingClonedElements" class="col-md-12 col-xs-12 col-sm-12"></div>
 									</div>
 								</div>
+								<input type="hidden" name="adminHouseVO.membersList[0].adminHouseSessionDayId" id="adminHouseSessionDayId"/>
 								<div id="totalUpdatingClonedElements" class="col-md-12 col-xs-12 col-sm-12"></div>
 								<button type="button" class="btn btn-info  pull-right m_top10" id="addTotalOneMoreBlockId" style="border-radius: 16px;;background:#0b95de">Add More</button>
 							</div>
+							
+							<button type="button" class="btn btn-info  " id="addTotalOneMoreBlockId" style="border-radius: 16px;;background:#0b95de">SUBMIT</button>
+							</form>
 						</div>
 						
 				</div>
