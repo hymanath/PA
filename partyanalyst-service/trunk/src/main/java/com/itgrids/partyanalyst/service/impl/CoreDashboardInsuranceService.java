@@ -1776,118 +1776,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			}
 			return null;
 		}
-		/*
-		 * Swadhin K Lenka
-		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
-		 */
-		public List<CoreDashboardInsuranceVO> getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType) {
-			try{
-				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
-				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-				Date fromDate = null;
-				Date toDate = null;
-				if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && fromDateStr.length() > 0){
-					fromDate = sdf.parse(fromDateStr);
-					toDate = sdf.parse(toDateStr);
-				}
-				
-			    //create custom status list in service and send to query
-			    List<Long> statusIdList = new ArrayList<Long>();
-				if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("INTIMATIONS")){
-					statusIdList.add(1l);
-					statusIdList.add(2l);
-				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("FORWARDED")){
-					statusIdList.add(3l);
-					statusIdList.add(7l);
-				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("SETTLED")){
-					statusIdList.add(6l);
-					statusIdList.add(8l);
-				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("REJECTED")){
-					statusIdList.add(4l);
-					statusIdList.add(5l);
-				}
-				   
-				List<Object[]> list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType);
-				
-				//create map of id and name
-				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
-				//id and category and count map
-				Map<Long,Map<String,Long>> locIdAndCategoryAndCountMap = new HashMap<Long,Map<String,Long>>();
-				Map<String,Long> categoryAndCountMap = null;
-				//id and category and amount map
-				Map<Long,Map<String,Long>> locIdAndCategoryAndAmountMap = new HashMap<Long,Map<String,Long>>();
-				Map<String,Long> categoryAndAmountMap = null;
-				
-				
-				if(list1 != null && list1.size() > 0){
-					for(Object[] param : list1){
-						//create map if id and name
-						idAndNameMap.put(param[0] != null ? (Long)param[0] : 0L, param[1] != null ? param[1].toString().trim() : "");
-						
-						//id and category and count map
-						categoryAndCountMap = locIdAndCategoryAndCountMap.get(param[0] != null ? (Long)param[0] : 0L);
-						if(categoryAndCountMap ==  null){
-							categoryAndCountMap = new HashMap<String,Long>();
-							locIdAndCategoryAndCountMap.put(param[0] != null ? (Long)param[0] : 0L, categoryAndCountMap);
-						}
-						categoryAndCountMap.put(param[2] != null ? param[2].toString().trim() : "", param[3] != null ? (Long)param[3] : 0L);
-						
-						//id and category and amount map
-						categoryAndAmountMap = locIdAndCategoryAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
-						if(categoryAndAmountMap == null){
-							categoryAndAmountMap = new HashMap<String,Long>();
-							locIdAndCategoryAndAmountMap.put(param[0] != null ? (Long)param[0] : 0L, categoryAndAmountMap);
-						}
-						categoryAndAmountMap.put(param[2] != null ? param[2].toString().trim() : "", param[4] != null ? (Long)param[4] : 0L);
-					}
-				}
-				
-				
-				//prepare vo object
-				//CoreDashboardInsuranceVO coreDashboardInsuranceVO = null;
-				if(idAndNameMap != null && idAndNameMap.size() > 0){
-					for(Entry<Long,String> entry : idAndNameMap.entrySet()){
-						CoreDashboardInsuranceVO insuranceVO = new CoreDashboardInsuranceVO();
-						insuranceVO.setId(entry.getKey());
-						insuranceVO.setName(entry.getValue());
-						Long totalCount = 0L;
-						if(locIdAndCategoryAndCountMap.get(entry.getKey()) != null && locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death") != null){
-							insuranceVO.setDeathCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death"));
-							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death");
-						}
-						if(locIdAndCategoryAndCountMap.get(entry.getKey()) != null && locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization") != null){
-							insuranceVO.setHospitalizationCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization"));
-							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization");
-						}
-						
-						insuranceVO.setTotalCategroyCount(totalCount);
-						
-						Long totalAmount = 0L;  
-						
-						if(locIdAndCategoryAndAmountMap.get(entry.getKey()) != null && locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Death") != null){
-							totalAmount+=locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Death");
-						}
-						if(locIdAndCategoryAndAmountMap.get(entry.getKey()) != null && locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Hospitalization") != null){
-							totalAmount+=locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Hospitalization");
-						}
-						insuranceVO.setTotalAmount(totalAmount);
-						coreDashboardInsuranceVOs.add(insuranceVO);
-					}
-				}
-				
-				//sort list based on members
-				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
-					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountDesc);
-				}
-				
-				
-				System.out.println("hi");
-				return coreDashboardInsuranceVOs;
-			}catch(Exception e){
-				LOG.error("Error occured at getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS() in CoreDashboardInsuranceService class",e);
-			}
-			return null;
-		}
+		
 		/*
 		 * Swadhin K Lenka
 		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getConstituencyWiseThenCategoryWiseInsuranceMemberCount(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
@@ -2348,5 +2237,229 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					}
 				}
 			}
+		}
+		/*
+		 * Swadhin K Lenka
+		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
+		 */
+		public List<CoreDashboardInsuranceVO> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType) {
+			try{
+				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				Date fromDate = null;
+				Date toDate = null;
+				if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && fromDateStr.length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				
+			    //create custom status list in service and send to query
+			    List<Long> statusIdList = new ArrayList<Long>();
+				if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("INTIMATIONS")){
+					statusIdList.add(1l);
+					statusIdList.add(2l);
+				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("FORWARDED")){
+					statusIdList.add(3l);
+					statusIdList.add(7l);
+				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("SETTLED")){
+					statusIdList.add(6l);
+					statusIdList.add(8l);
+				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("REJECTED")){
+					statusIdList.add(4l);
+					statusIdList.add(5l);
+				}
+				   
+				List<Object[]> list1 = insuranceStatusDAO.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType);
+				
+				//create map of id and name
+				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
+				//id and category and count map
+				Map<Long,Map<String,Long>> locIdAndCategoryAndCountMap = new HashMap<Long,Map<String,Long>>();
+				Map<String,Long> categoryAndCountMap = null;
+				//id and category and amount map
+				Map<Long,Map<String,Long>> locIdAndCategoryAndAmountMap = new HashMap<Long,Map<String,Long>>();
+				Map<String,Long> categoryAndAmountMap = null;
+				
+				
+				if(list1 != null && list1.size() > 0){
+					for(Object[] param : list1){
+						//create map if id and name
+						idAndNameMap.put(param[0] != null ? (Long)param[0] : 0L, param[1] != null ? param[1].toString().trim() : "");
+						
+						//id and category and count map
+						categoryAndCountMap = locIdAndCategoryAndCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(categoryAndCountMap ==  null){
+							categoryAndCountMap = new HashMap<String,Long>();
+							locIdAndCategoryAndCountMap.put(param[0] != null ? (Long)param[0] : 0L, categoryAndCountMap);
+						}
+						categoryAndCountMap.put(param[2] != null ? param[2].toString().trim() : "", param[3] != null ? (Long)param[3] : 0L);
+						
+						//id and category and amount map
+						categoryAndAmountMap = locIdAndCategoryAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(categoryAndAmountMap == null){
+							categoryAndAmountMap = new HashMap<String,Long>();
+							locIdAndCategoryAndAmountMap.put(param[0] != null ? (Long)param[0] : 0L, categoryAndAmountMap);
+						}
+						categoryAndAmountMap.put(param[2] != null ? param[2].toString().trim() : "", param[4] != null ? (Long)param[4] : 0L);
+					}
+				}
+				
+				
+				//prepare vo object
+				//CoreDashboardInsuranceVO coreDashboardInsuranceVO = null;
+				if(idAndNameMap != null && idAndNameMap.size() > 0){
+					for(Entry<Long,String> entry : idAndNameMap.entrySet()){
+						CoreDashboardInsuranceVO insuranceVO = new CoreDashboardInsuranceVO();
+						insuranceVO.setId(entry.getKey());
+						insuranceVO.setName(entry.getValue());
+						Long totalCount = 0L;
+						if(locIdAndCategoryAndCountMap.get(entry.getKey()) != null && locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death") != null){
+							insuranceVO.setDeathCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death"));
+							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Death");
+						}
+						if(locIdAndCategoryAndCountMap.get(entry.getKey()) != null && locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization") != null){
+							insuranceVO.setHospitalizationCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization"));
+							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization");
+						}
+						
+						insuranceVO.setTotalCategroyCount(totalCount);
+						
+						Long totalAmount = 0L;  
+						
+						if(locIdAndCategoryAndAmountMap.get(entry.getKey()) != null && locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Death") != null){
+							totalAmount+=locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Death");
+						}
+						if(locIdAndCategoryAndAmountMap.get(entry.getKey()) != null && locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Hospitalization") != null){
+							totalAmount+=locIdAndCategoryAndAmountMap.get(entry.getKey()).get("Hospitalization");
+						}
+						insuranceVO.setTotalAmount(totalAmount);
+						coreDashboardInsuranceVOs.add(insuranceVO);
+					}
+				}
+				
+				//sort list based on members
+				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountDesc);
+				}
+				
+				
+				System.out.println("hi");
+				return coreDashboardInsuranceVOs;
+			}catch(Exception e){
+				LOG.error("Error occured at getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS() in CoreDashboardInsuranceService class",e);
+			}
+			return null;
+		}
+		public List<CoreDashboardInsuranceVO> getLocationWiseThenStatusWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType) {
+			try{
+				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				Date fromDate = null;
+				Date toDate = null;
+				if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && fromDateStr.length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				//create custom status list in service and send to query
+			    List<Long> statusIdList = new ArrayList<Long>();
+				if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("INTIMATIONS")){
+					statusIdList.add(1l);
+					statusIdList.add(2l);
+				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("FORWARDED")){
+					statusIdList.add(3l);
+					statusIdList.add(7l);
+				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("SETTLED")){
+					statusIdList.add(6l);
+					statusIdList.add(8l);
+				}else if(status != null && status.trim().length() > 0 && status.trim().equalsIgnoreCase("REJECTED")){
+					statusIdList.add(4l);
+					statusIdList.add(5l);
+				}
+				
+				List<Object[]> list1 = insuranceStatusDAO.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType);
+				
+				//create map of id and name
+				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
+				
+				//id and status and count map
+				Map<Long,Map<Long,Long>> locIdAndStatusAndCountMap = new HashMap<Long,Map<Long,Long>>();
+				Map<Long,Long> statusAndCountMap = null;
+				
+				//id and status and amount map
+				Map<Long,Map<Long,Long>> locIdAndStatusAndAmountMap = new HashMap<Long,Map<Long,Long>>();
+				Map<Long,Long> statusAndAmountMap = null;
+				
+				//location id and total member count map
+				Map<Long,Long> locationIdAndMemberCountMap = new HashMap<Long,Long>();
+				
+				//location id and total amount count map
+				Map<Long,Long> locationIdAndTotalAmountMap = new HashMap<Long,Long>();
+				
+				if(list1 != null && list1.size() > 0){
+					for(Object[] param : list1){
+						//create map if id and name
+						idAndNameMap.put(param[0] != null ? (Long)param[0] : 0L, param[1] != null ? param[1].toString().trim() : "");
+						
+						//id and status and count map
+						statusAndCountMap = locIdAndStatusAndCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(statusAndCountMap ==  null){
+							statusAndCountMap = new HashMap<Long,Long>();
+							locIdAndStatusAndCountMap.put(param[0] != null ? (Long)param[0] : 0L, statusAndCountMap);
+						}
+						statusAndCountMap.put(param[2] != null ? (Long)param[2] : 0L, param[3] != null ? (Long)param[3] : 0L);
+						
+						//id and status and amount map
+						statusAndAmountMap = locIdAndStatusAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(statusAndAmountMap == null){
+							statusAndAmountMap = new HashMap<Long,Long>();
+							locIdAndStatusAndAmountMap.put(param[0] != null ? (Long)param[0] : 0L, statusAndAmountMap);
+						}
+						statusAndAmountMap.put(param[2] != null ? (Long)param[2] : 0L, param[4] != null ? (Long)param[4] : 0L);
+						
+						//location id and total member count map
+						Long memCount = locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(memCount == null){
+							locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
+						}
+						locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
+						
+						//location id and total amount count map
+						Long totAmount = locationIdAndTotalAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(totAmount == null){
+							locationIdAndTotalAmountMap.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
+						}
+						locationIdAndTotalAmountMap.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndTotalAmountMap.get(param[0] != null ? (Long)param[0] : 0L))+(param[4] != null ? (Long)param[4] : 0L));
+						
+						
+					}
+				}
+				
+				CoreDashboardInsuranceVO insuranceVO = null;
+				if(idAndNameMap != null && idAndNameMap.size() > 0){
+					for(Entry<Long,String> entry : idAndNameMap.entrySet()){
+						insuranceVO = new CoreDashboardInsuranceVO();
+						insuranceVO.setId(entry.getKey() != null ? entry.getKey() : 0L);
+						insuranceVO.setName(entry.getValue() != null ? entry.getValue() : "");
+						insuranceVO.setTotalStatusCount(locationIdAndMemberCountMap.get(entry.getKey()) != null ? locationIdAndMemberCountMap.get(entry.getKey()) : 0L);
+						insuranceVO.setTotalAmount(locationIdAndTotalAmountMap.get(entry.getKey()) != null ? locationIdAndTotalAmountMap.get(entry.getKey()) : 0L);
+						
+						addListForAllStatus(insuranceVO);
+						
+						putValueInCorrectList(locIdAndStatusAndCountMap,locIdAndStatusAndAmountMap,insuranceVO);
+						coreDashboardInsuranceVOs.add(insuranceVO);
+					}
+				}
+				//sort list based on members
+				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusDesc);
+				}
+				
+				
+				System.out.println("hi");
+				return coreDashboardInsuranceVOs;
+			}catch(Exception e){
+				LOG.error("Error occured at getLocationWiseThenStatusWiseInsuranceMemberCountForTS() in CoreDashboardInsuranceService class",e);
+			}
+			return null;
 		}
 }

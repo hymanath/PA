@@ -968,7 +968,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 
 		 return query.list();
 	 }
-	 public List<Object[]> getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type, String locationType){
+	 public List<Object[]> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type, String locationType){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append("select");
 		 if(locationType.equalsIgnoreCase("constituency")){
@@ -999,7 +999,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 
 		
 		 if(locationType.equalsIgnoreCase("constituency")){
-			 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id ");  
+			 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id and CON.election_scope_id = 2 and CON.deform_date is null ");  
 		 }else{
 			 queryStr.append(" WHERE CM.district_id = DIST.district_id ");
 		 }
