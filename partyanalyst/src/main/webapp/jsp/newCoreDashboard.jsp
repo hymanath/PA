@@ -3511,6 +3511,82 @@
 				</div>
 			</div>
 			<!-- Training End-->
+			<!-- Custom reports start-->
+		<!--<div class="col-md-6 col-xs-12 col-sm-6">
+        	<div class="panel panel-default panelNewCustom">
+            	<div class="panel-heading">
+                	<div class="row">
+                    	<div class="col-md-8 col-sm-8 col-xs-8">
+							<h4 class="panel-title text-capital">
+								<!--<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
+								custom reports <small class="text-muted">2016-2018</small>-->
+								<!--<span class="input-group pull-right dateclsForCustomReport hide" style="width:200px;">
+								<input id="dateRangeIdForcusomReport" style="width:180px" class="form-control" type="text">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-4 col-xs-4">
+							<span class="basicCommitteesBlockDiv pull-right">
+								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							</span>
+							<span class="notesIcon pull-right">
+								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
+							</span>
+							<span class="iconExpand pull-right customExpandCls" expand-icon="CustomReports">
+								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
+							</span>
+							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="CustomReports">
+								<input type="text" id="dateRangeId"	 class="form-control" />
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</span>
+						</div>
+                    </div>
+                </div>
+                <div class="panel-body">
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6" expand-block-inner="CustomReports">
+							<h4 class="panel-title"><span class="headingColor text-capital">total custom reports</span></h4>
+							<div id="customReortsMainDiv"></div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6" expand-block-right="CustomReports">
+							
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12" expand-block-right="CustomReports">
+							<div class="panel panel-default panelNew">
+								<div class="panel-heading">
+									<div class="row">
+										<div class="col-md-9 col-xs-12 col-sm-9">
+											<h4><span class="headingColor text-capital">total custom reports</span></h4>
+										</div>
+										<div class="col-md-3 col-xs-12 col-sm-3">
+											<ul class="activeUlCls list-inline text-capital">
+												<li class="active">All</li>
+												<li>Submited</li>
+												<li>not-Submited</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<div class="panel-body">
+									<table class="table table-bordered">
+										<thead class="bg_D8">
+											<th></th>
+										</thead>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+            </div>
+        </div>-->
+			
+			<!-- Custom reports End-->
 			
 		</div>
 </div>
@@ -4285,6 +4361,20 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div>
+<div class="modal fade" id="customModalId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width:60%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="customHeadingId"></h4>
+      </div>
+      <div class="modal-body">
+        <div id="detailedReportsDivId"></div>
+        <!--<div id="commentsDivId"></div>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
 <input type="hidden" id="cmtId" attr_cmt_id="editTextId'+i+'" value=""></input>
 <input type="hidden" id="cmtTrngId" attr_cmt_id="editTextTrngId'+i+'" value=""></input>
 <input type="hidden" id="cmtDebateId" attr_cmt_id="editTextDebateId'+i+'" value=""></input>
@@ -4336,6 +4426,7 @@
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script src="newCoreDashBoard/js/customReport.js" type="text/javascript"></script>
 <script type="text/javascript">
 /* GLobal Navbar Date Change Start*/
 $(document).on("click",".globalDateChange",function(){

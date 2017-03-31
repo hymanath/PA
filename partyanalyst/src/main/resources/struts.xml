@@ -16234,7 +16234,7 @@
 	    
 	    <action name="getTotalExpectedReportsAction" class="customReportAction" method="getTotalExpectedReports">
 			<result type="json" name="success">
-   				<param name="root">customReportVOList</param>
+   				<param name="root">customReportVO</param>
    			</result>
 	    </action>
 	    <action name="saveCustomReportUploadFileAction" class="customReportAction" method="saveCustomReportUploadFile">
@@ -16386,5 +16386,11 @@
 	   			<param name="root">coreDashboardInsuranceVOs</param>        
 	   		</result>
 		</action>        
+		     
+		<action name="getCustomReportProgramForreportId" class="customReportAction" method="getCustomReportProgramForreportId">
+			<result type="json" name="success">
+	   			<param name="root">customReportVOList</param>    
+	   		</result>
+		</action>      
  </package>
 </struts>
