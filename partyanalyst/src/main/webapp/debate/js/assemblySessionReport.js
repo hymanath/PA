@@ -206,6 +206,7 @@ function buildSessionDetails(result)
 									str+='<ul class="list-inline">';
 									for(var k in result[i].candidateList[j].partyList)
 									{
+										if(result[i].candidateList[j].partyList[k].count != null && result[i].candidateList[j].partyList[k].count > 0 )
 											str+='<li>'+result[i].candidateList[j].partyList[k].partyName+'</li>';
 									}
 									str+='</ul>';
