@@ -269,11 +269,16 @@ function getPatries(id){
 					$('#'+id).trigger("chosen:updated");
 			 });
 }
-getCandidates("memberNameId0");
-function getCandidates(id){
+getCandidates("memberNameId0","");
+function getCandidates(id,partyDivId){
+	$('#'+id).empty();
 	
+	var partyId = 0;
+	if(partyDivId != ""){
+		 partyId = $("#"+partyDivId).val();
+	}
 	var jObj = {
-				partyId : 872
+				partyId : partyId
 			};		
 			$.ajax({
 				  type:'POST',
@@ -320,20 +325,30 @@ function getCandidates(id){
 			'id': 'updateAppendHtml'+updatedCloneCount
 		});
 		c.css("display","block");
-		c.find(".memberNameCls").attr("id","memberNameId"+updatedCloneCount)
-		c.find(".memberNameCls").attr("attr_count",updatedCloneCount)
+		c.find(".memberNameCls").attr("id","memberNameId"+updatedCloneCount);
+		c.find(".memberNameCls").attr("attr_count",updatedCloneCount);
+		c.find(".memberNameCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].memberId');
 		
-		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount)
-		c.find(".presentationCls").attr("attr_count",updatedCloneCount)
+		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
+		c.find(".subjectCls").attr("attr_count",updatedCloneCount);
+		c.find(".subjectCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		
+		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
+		c.find(".presentationCls").attr("attr_count",updatedCloneCount);
+		c.find(".presentationCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		
 			
-		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount)
-		c.find(".counterAttackCls").attr("attr_count",updatedCloneCount)
+		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount);
+		c.find(".counterAttackCls").attr("attr_count",updatedCloneCount);
+		c.find(".counterAttackCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
 		
-		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount)
-		c.find(".bodyLanguageCls").attr("attr_count",updatedCloneCount)
+		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount);
+		c.find(".bodyLanguageCls").attr("attr_count",updatedCloneCount);
+		c.find(".bodyLanguageCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
 		
-		c.find(".summaryCls").attr("id","summaryId"+updatedCloneCount)
-		c.find(".summaryCls").attr("attr_count",updatedCloneCount)
+		//c.find(".summaryCls").attr("id","summaryId"+updatedCloneCount);
+		//c.find(".summaryCls").attr("attr_count",updatedCloneCount);
+		
 		
 		c.find(".updatingRemoveBtnCls").attr("attr_div_id","updateAppendHtml"+updatedCloneCount);
 		$("#updatingClonedElements").append(c);
@@ -348,6 +363,7 @@ function getCandidates(id){
 	
 	//total append block
 	$(document).on("click","#addTotalOneMoreBlockId",function(){
+		updatedCloneCount = updatedCloneCount +1;
 		mainCloneCount = mainCloneCount +1;
 		var generatedId = mainCloneCount+''+toatlUpdatedCloneCount;
 		var c = $("#totalUpdateAppendHtml").clone(true);
@@ -360,19 +376,27 @@ function getCandidates(id){
 		
 		c.find(".memberNameCls").attr("id","memberNameId"+generatedId)
 		c.find(".memberNameCls").attr("attr_count",generatedId)
+		c.find(".memberNameCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].memberId');
 		
+		
+		c.find(".subjectCls").attr("id","subjectId"+generatedId);
+		c.find(".subjectCls").attr("attr_count",generatedId);
+		c.find(".subjectCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
 		
 		c.find(".presentationCls").attr("id","presentationId"+generatedId)
 		c.find(".presentationCls").attr("attr_count",generatedId)
+		c.find(".presentationCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
 			
 		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
 		c.find(".counterAttackCls").attr("attr_count",generatedId)
+		c.find(".counterAttackCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
 		c.find(".bodyLanguageCls").attr("attr_count",generatedId)
+		c.find(".bodyLanguageCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
 		
-		c.find(".summaryCls").attr("id","summaryId"+generatedId)
-		c.find(".summaryCls").attr("attr_count",generatedId)
+		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
+		//c.find(".summaryCls").attr("attr_count",generatedId)
 		
 		c.find(".totalUpdatingRemoveBtnCls").attr("attr_div_id","totalUpdateAppendHtml"+generatedId);
 		$("#totalUpdatingClonedElements").append(c);
