@@ -622,7 +622,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }
 		 return sqlQuery.list();
 	}
-	 public List<Object[]> getDistrictWiseThenCategoryWiseInsuranceMemberCount(Long levelId, Set<Long> locationValuesSet, Long userTypeId, Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type){
+	 public List<Object[]> getDistrictWiseThenCategoryWiseInsuranceMemberCount(Long levelId, Set<Long> locationValuesSet, Long userTypeId, Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type,String filter){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append("select");
 		 if(levelId.longValue() == 2L){
@@ -671,9 +671,9 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }else if(levelId != null && levelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 			 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id ");  
 		 }
-		 
-		 //queryStr.append(" AND CM.approved_amount is not null "); 
-		 
+		 if(filter.equalsIgnoreCase("filter")){
+			queryStr.append(" AND CM.approved_amount is not null "); 
+		 }
 		 if(stateId != null && stateId.longValue() > 0L){
 			 queryStr.append(" AND state_id_cmp =:stateId ");  
 		 }
@@ -837,7 +837,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }
 		 return query.list();
 	 }
-	 public List<Object[]> getConstituencyWiseThenCategoryWiseInsuranceMemberCount(Long levelId, Set<Long> locationValuesSet, Long userTypeId, Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type){
+	 public List<Object[]> getConstituencyWiseThenCategoryWiseInsuranceMemberCount(Long levelId, Set<Long> locationValuesSet, Long userTypeId, Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type,String filter){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append("select");
 		
@@ -861,7 +861,9 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		
 		
 		 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id "); 
-		 //queryStr.append(" AND CM.approved_amount is not null "); 
+		 if(filter.equalsIgnoreCase("filter")){
+				queryStr.append(" AND CM.approved_amount is not null "); 
+		 }
 		 
 		 if(stateId != null && stateId.longValue() > 0L){
 			 queryStr.append(" AND state_id_cmp =:stateId ");  
@@ -968,7 +970,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 
 		 return query.list();
 	 }
-	 public List<Object[]> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type, String locationType){
+	 public List<Object[]> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId, Long cadreEnrollmentYearId, Long locationId, List<Long> statusIdList, String category, Date fromDate, Date toDate, String type, String locationType,String filter){
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append("select");
 		 if(locationType.equalsIgnoreCase("constituency")){
@@ -1004,7 +1006,9 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			 queryStr.append(" WHERE CM.district_id = DIST.district_id ");
 		 }
 		 
-		 //queryStr.append(" AND CM.approved_amount is not null "); 
+		 if(filter.equalsIgnoreCase("filter")){
+				queryStr.append(" AND CM.approved_amount is not null "); 
+		 }
 		 
 		 if(stateId != null && stateId.longValue() > 0L){
 			 queryStr.append(" AND state_id_cmp =:stateId ");  
