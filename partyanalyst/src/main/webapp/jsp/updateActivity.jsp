@@ -3122,19 +3122,22 @@ function getLocationWiseDetailsForActivity(roundId)
 							str+='<td> ';
 							str+=' <select id="indivdualStatus" class="updateCls statusCls'+result[i].activityLocatInfoId+'" name="activityVO.activityVoList['+i+'].status" attr_id="'+result[i].activityLocatInfoId+'"> ';
 							if(result[i].conductedDate != null &&result[i].conductedDate.length>0 && result[i].status =='UPDATED'){
+								str+=' <option value="0"> Select Status </option> ';
 								str+=' <option value="Conducted" selected="true" > Conducted </option> ';
 								str+=' <option value="Not Conducted" > Not Conducted </option> ';
-								str+=' <option value="Not Updated"> Not Updated </option> ';
+								//str+=' <option value="Not Updated"> Not Updated </option> ';
 							}
 							else if((result[i].conductedDate == null || result[i].conductedDate.length<=0) && result[i].status =='UPDATED'){
+								str+=' <option value="0"> Select Status </option> ';
 								str+=' <option value="Conducted" > Conducted </option> ';
 								str+=' <option value="Not Conducted"  selected="true"> Not Conducted </option> ';
-								str+=' <option value="Not Updated"> Not Updated </option> ';
+								//str+=' <option value="Not Updated"> Not Updated </option> ';
 							}
 							else if( result[i].status =='NOT UPDATED'){
+								str+=' <option value="0"> Select Status </option> ';
 								str+=' <option value="Conducted" > Conducted </option> ';
 								str+=' <option value="Not Conducted" > Not Conducted </option> ';
-								str+=' <option value="Not Updated"  selected="true"> Not Updated </option> ';
+								//str+=' <option value="Not Updated"  selected="true"> Not Updated </option> ';
 							}
 							
 							str+='</select> <i class="glyphicon glyphicon-ok1 okcls'+result[i].activityLocatInfoId+'" attr_id="'+result[i].activityLocatInfoId+'"  style="margin-left:5px;display:none;" title="Please click here to Update details "></i> </td> ';
