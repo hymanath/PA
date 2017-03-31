@@ -117,7 +117,7 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 		try {
     		jObj=new JSONObject(getTask());
     		
-    		customReportVOList = customReportService.getTotalExpectedReports(jObj.getLong("id"));	
+    		customReportVO = customReportService.getTotalExpectedReports(jObj.getLong("id"));	
     	}catch(Exception e){
     		e.printStackTrace();
     	}
@@ -182,6 +182,15 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
     		customReportVO = customReportService.getReportFullDetails(jObj.getLong("reportId"));
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getReportFullDetails() method, Exception - ",e); 
+		}
+    	return Action.SUCCESS;	
+    }
+    public String getCustomReportProgramForreportId(){
+    	try {
+    		jObj = new JSONObject(getTask());
+    		customReportVOList = customReportService.getCustomReportProgramForreportId(jObj.getLong("reportId"),jObj.getString("type"));
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getCustomReportProgramForreportId() method, Exception - ",e); 
 		}
     	return Action.SUCCESS;	
     }
