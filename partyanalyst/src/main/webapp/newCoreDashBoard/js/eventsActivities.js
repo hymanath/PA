@@ -3103,7 +3103,7 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 			  slidesToShow: 1,
 			  slidesToScroll: 1,
 			  slide: 'li',
-			  arrows: false,
+			  arrows: true,
 			  fade: true,
 			  asNavFor: '.slider-nav'
 			});
