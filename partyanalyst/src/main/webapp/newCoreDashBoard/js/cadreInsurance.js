@@ -733,7 +733,7 @@ function getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
 			console.log(result);
 	});
 }
-//getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS();      
+//getLocationWiseThenCategoryWiseInsuranceMemberCountForTS();      
 function getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(){
 	var jsObj = { 
 					   stateId :globalStateIdForCadreInsurance,
@@ -749,10 +749,33 @@ function getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(){
 	console.log(jsObj);                                
 	$.ajax({
 			type : 'POST',
-			url : 'getDistrictWiseThenCategoryWiseInsuranceMemberCountForTSAction.action',
+			url : 'getLocationWiseThenCategoryWiseInsuranceMemberCountForTSAction.action',
 			dataType : 'json',  
 			data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){  
 			console.log(result);
 	});
-}        
+}   
+//getLocationWiseThenStatusWiseInsuranceMemberCountForTS();      
+function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(){
+	var jsObj = { 
+					   stateId :globalStateIdForCadreInsurance,
+					   cadreEnrollmentYearId : 0,           
+					   locationId: 10,                                               
+					   status :	"",  
+					   category : "",             
+					   fromDateStr : "",
+					   toDateStr : "",
+					   type : "status",
+					   locationType : "constituency"      
+				  };
+	console.log(jsObj);                                
+	$.ajax({
+			type : 'POST',
+			url : 'getLocationWiseThenStatusWiseInsuranceMemberCountForTSAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){  
+			console.log(result);
+	});
+}            
