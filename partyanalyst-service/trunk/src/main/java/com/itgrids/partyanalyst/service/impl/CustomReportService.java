@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 //import static com.itgrids.partyanalyst.service.impl.AlertService.LOG;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -195,8 +196,8 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 	}
 
 	
-	public List<CustomReportVO> getTotalExpectedReports(Long customReportProgramId) {
-		List<CustomReportVO> customReportList=new ArrayList<CustomReportVO>(0);
+	public CustomReportVO getTotalExpectedReports(Long customReportProgramId) {
+		CustomReportVO finalVo = new CustomReportVO();
 		List<Object[]> reportDetails=null;
 		
 		try{
@@ -207,17 +208,27 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 					CustomReportVO customReportVO=new CustomReportVO();
 					customReportVO.setName(objects[0] !=null ? objects[0].toString():"");
 					customReportVO.setCount(objects[1]!=null && (Long)objects[1]> 0l ?(Long)objects[1]:0l);
-					customReportList.add(customReportVO);					
+					finalVo.getLocationsList().add(customReportVO);					
 					
 				}
 			}
+			if(finalVo != null){
+				Long totalCount = 0l;
+				for (CustomReportVO vo : finalVo.getLocationsList()) {
+					totalCount = totalCount+vo.getCount();
+					finalVo.setTotalCount(totalCount);
+				}
+			}
 			
-		}
-			catch(Exception e){
+		}catch(Exception e){
 				 System.out.println("EXCEPTION RAISED IN  getTotalExpertedReports.");
 				 e.printStackTrace();
 		}
-		return customReportList;
+		return finalVo;
+	}
+	public Double caclPercantage(Long subCount,Long totalCount){
+		Double d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		return d;
 	}
 	public static String folderCreation(){
 	  	 try {
@@ -618,4 +629,217 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		}
 		return vo;
 	}
+	public List<CustomReportVO> getCustomReportProgramForreportId(Long programId,String type){
+		List<CustomReportVO> finalList = new ArrayList<CustomReportVO>(0);
+		try {
+			Map<Long,List<CustomReportVO>> observersMap = new LinkedHashMap<Long, List<CustomReportVO>>(0);
+			Map<Long,List<CustomReportVO>> locationsMap =new LinkedHashMap<Long, List<CustomReportVO>>(0);
+			Map<Long,List<CustomReportVO>> imagesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
+			Map<Long,List<CustomReportVO>> filesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
+			
+			//get observer details for program
+			//0-customReportId,1-tdpCadreId,2-firstname
+			List<Object[]> obserersObjList = customReportObserverDAO.getObserverDetailsForReportId(programId,type);
+			if(obserersObjList != null && obserersObjList.size() > 0){
+				for (Object[] objects : obserersObjList) {
+					if(observersMap.get((Long)objects[0]) == null){
+						List<CustomReportVO> newObserverVoList = new ArrayList<CustomReportVO>(0);
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setId((Long)objects[1]);
+						
+						vo.setName(objects[2].toString());
+						newObserverVoList.add(vo);
+						observersMap.put((Long)objects[0], newObserverVoList);
+					}else{
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setId((Long)objects[1]);
+						vo.setName(objects[2].toString());
+						observersMap.get((Long)objects[0]).add(vo);
+					}
+				}
+			}
+			
+			//get location details for program 
+			//0-customReportId,1-locationScopeId,2-scope,3-locationValue,4-customReportLocationId 
+			List<Object[]> locationsObjList = customReportLocationDAO.getLocationDetailsForReportId(programId,type);
+			if (locationsObjList != null && locationsObjList.size() > 0) {
+				for (Object[] objects : locationsObjList) {
+					if (locationsMap.get((Long)objects[0]) == null){
+						List<CustomReportVO> newLocationVoList = new ArrayList<CustomReportVO>(0);
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setId((Long)objects[1]);
+						vo.setScope(objects[2].toString());
+						if((Long) objects[1] == 2l){
+							State state = stateDAO.get((Long) objects[3]);
+							 vo.setLocationName(state.getStateName());
+						}else if((Long) objects[1] == 3l){
+						  District dist = districtDAO.get((Long) objects[3]);
+						    vo.setLocationName(dist.getDistrictName());
+						}else if((Long) objects[1] == 4l){
+							Constituency cons = constituencyDAO.get((Long) objects[3]);
+							vo.setLocationName(cons.getName()+" Constituency ");
+						}else if((Long) objects[1] == 5l){
+							Tehsil tehsil = tehsilDAO.get((Long) objects[3]);
+							vo.setLocationName(tehsil.getTehsilName()+" Mandal ");
+						}else if((Long) objects[1] == 6l){
+							Panchayat panc = panchayatDAO.get((Long) objects[3]);
+							 vo.setLocationName(panc.getPanchayatName()+" Panchayat ");
+						}else if((Long) objects[1] == 7l){
+							LocalElectionBody leb = localElectionBodyDAO.get((Long) objects[3]);
+							vo.setLocationName(leb.getName()+" Municipality ");
+						}else if((Long) objects[1] == 8l){
+							Constituency ward = constituencyDAO.get((Long) objects[3]);
+							 vo.setLocationName(ward.getName()+" Ward ");
+						}else if((Long) objects[1] == 9l){
+							Booth booth = boothDAO.get((Long) objects[3]);
+							  vo.setLocationName(booth.getPartName()+ " Booth ");
+						}else if((Long) objects[1] == 9l){
+							Constituency parliamentCons = constituencyDAO.get((Long) objects[3]);
+							  vo.setLocationName(parliamentCons.getName());
+						}
+						vo.setLocationValue((Long)objects[3]);
+						newLocationVoList.add(vo);
+						locationsMap.put((Long)objects[0], newLocationVoList);						
+					}else{
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setId((Long)objects[1]);
+						vo.setScope(objects[2].toString());
+						if((Long) objects[1] == 2l){
+							State state = stateDAO.get((Long) objects[3]);
+							 vo.setLocationName(state.getStateName());
+						}else if((Long) objects[1] == 3l){
+						  District dist = districtDAO.get((Long) objects[3]);
+						    vo.setLocationName(dist.getDistrictName());
+						}else if((Long) objects[1] == 4l){
+							Constituency cons = constituencyDAO.get((Long) objects[3]);
+							vo.setLocationName(cons.getName()+" Constituency ");
+						}else if((Long) objects[1] == 5l){
+							Tehsil tehsil = tehsilDAO.get((Long) objects[3]);
+							vo.setLocationName(tehsil.getTehsilName()+" Mandal ");
+						}else if((Long) objects[1] == 6l){
+							Panchayat panc = panchayatDAO.get((Long) objects[3]);
+							 vo.setLocationName(panc.getPanchayatName()+" Panchayat ");
+						}else if((Long) objects[1] == 7l){
+							LocalElectionBody leb = localElectionBodyDAO.get((Long) objects[3]);
+							vo.setLocationName(leb.getName()+" Municipality ");
+						}else if((Long) objects[1] == 8l){
+							Constituency ward = constituencyDAO.get((Long) objects[3]);
+							 vo.setLocationName(ward.getName()+" Ward ");
+						}else if((Long) objects[1] == 9l){
+							Booth booth = boothDAO.get((Long) objects[3]);
+							  vo.setLocationName(booth.getPartName()+ " Booth ");
+						}else if((Long) objects[1] == 9l){
+							Constituency parliamentCons = constituencyDAO.get((Long) objects[3]);
+							  vo.setLocationName(parliamentCons.getName());
+						}
+						vo.setLocationValue((Long)objects[3]);
+						locationsMap.get((Long)objects[0]).add(vo);
+					}
+				}				
+			}
+			/*//0-customReportId,1-imageName,2-path,3-customReportimageId
+			List<Object[]> imagesObjList = customReportImageDAO.getImageDetails(programId);
+			if (imagesObjList != null && imagesObjList.size() > 0) {
+				for (Object[] objects : imagesObjList) {
+					if (imagesMap.get((Long)objects[0]) == null){
+						List<CustomReportVO> newImageVoList = new ArrayList<CustomReportVO>(0);
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setPath(objects[2].toString());
+						newImageVoList.add(vo);
+						imagesMap.put((Long)objects[0], newImageVoList);
+					}else{
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setPath(objects[2].toString());
+						imagesMap.get((Long)objects[0]).add(vo);
+					}
+				}				
+			}
+			*/
+			//get file details for program
+			//0-customReportId,1.fileName,2.path,3-customReportFileId
+			List<Object[]> fileObjList = customReportFileDAO.getFileDetailsForReportId(programId, type);
+			if(fileObjList !=null && fileObjList.size() > 0){
+				for(Object[] objects :fileObjList){
+					if(filesMap.get((Long)objects[0]) ==null){
+						List<CustomReportVO> newFileVoList = new ArrayList<CustomReportVO>(0);
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setPath(objects[2].toString());
+						newFileVoList.add(vo);
+						filesMap.put((Long)objects[0], newFileVoList);
+					}else{
+						CustomReportVO vo = new CustomReportVO();
+						vo.setReportId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setPath(objects[2].toString());
+						filesMap.get((Long)objects[0]).add(vo);
+					}
+				}
+			}
+			
+			if(observersMap != null && observersMap.size() > 0){
+				for (Entry<Long, List<CustomReportVO>> entry : observersMap.entrySet()) {
+					CustomReportVO vo = new CustomReportVO();
+					vo.setReportId(entry.getKey());
+					vo.setObserversList(entry.getValue());
+					finalList.add(vo);
+				}
+			}
+			
+			if(locationsMap != null && locationsMap.size() > 0){
+				for (Entry<Long, List<CustomReportVO>> entry : locationsMap.entrySet()) {
+					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
+					if(matchedReportVO == null){
+						matchedReportVO = new CustomReportVO();
+						matchedReportVO.setReportId(entry.getKey());
+						matchedReportVO.setLocationsList(entry.getValue());
+						finalList.add(matchedReportVO);
+					}else{
+						matchedReportVO.setLocationsList(entry.getValue());
+					}
+				}
+			}
+			
+			if(imagesMap != null && imagesMap.size() > 0){
+				for (Entry<Long, List<CustomReportVO>> entry : imagesMap.entrySet()) {
+					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
+					if(matchedReportVO == null){
+						matchedReportVO = new CustomReportVO();
+						matchedReportVO.setReportId(entry.getKey());
+						matchedReportVO.setImagesList(entry.getValue());
+						finalList.add(matchedReportVO);
+					}else{
+						matchedReportVO.setImagesList(entry.getValue());
+					}
+				}
+			}
+			
+			if(filesMap != null && filesMap.size() > 0){
+				for (Entry<Long, List<CustomReportVO>> entry : filesMap.entrySet()) {
+					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
+					if(matchedReportVO == null){
+						matchedReportVO = new CustomReportVO();
+						matchedReportVO.setReportId(entry.getKey());
+						matchedReportVO.setFileList(entry.getValue());
+						finalList.add(matchedReportVO);
+					}else{
+						matchedReportVO.setFileList(entry.getValue());
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getCustomReportProgramForreportId() method, Exception - ",e);
+		}
+		return finalList;
+	} 
 }
