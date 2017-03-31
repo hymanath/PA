@@ -251,8 +251,8 @@ $(document).on("click",".sessionCls",function(){
 	
 	
 } */
-//getPatries();
-function getPatries(){
+getPatries("partyId0");
+function getPatries(id){
 	
 	var jObj = {
 			};		
@@ -264,12 +264,14 @@ function getPatries(){
 				 if(result != null && result.length >0)
 					{
 						for(var i in result)
-						$('#').append('<option value="'+result[i].partyId+'">'+result[i].PartyName+'</option>');
+						$('#'+id).append('<option value="'+result[i].partyId+'">'+result[i].partyName+'</option>');
 					}
+					$('#'+id).trigger("chosen:updated");
 			 });
 }
-//getCandidates();
-function getCandidates(){
+getCandidates("memberNameId0");
+function getCandidates(id){
+	
 	var jObj = {
 				partyId : 872
 			};		
@@ -278,11 +280,13 @@ function getCandidates(){
 				  url: 'getcandidatesForPartyAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
+				 $('#'+id).empty();
 				 if(result != null && result.length >0)
 					{
 						for(var i in result)
-						$('#').append('<option value="'+result[i].adminHouseMemberId+'">'+result[i].Name+'</option>');
+						$('#'+id).append('<option value="'+result[i].adminHouseMemberId+'">'+result[i].name+'</option>');
 					}
+					$('#'+id).trigger("chosen:updated");
 			 });
 }
 
@@ -337,7 +341,6 @@ function getCandidates(){
     
 		 $("#memberNameId"+updatedCloneCount).chosen();
 		 $("#memberNameId"+updatedCloneCount).trigger("chosen:updated");
-		
 		
 	});
 	
