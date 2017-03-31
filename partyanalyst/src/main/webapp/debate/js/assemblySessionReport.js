@@ -33,7 +33,17 @@ function onLoadInitialisations()
 			format: 'DD/MM/YYYY'
 		},
 	});
-	
+	$(document).on("click",".expand-Member-icon",function(){
+		var count = $(this).attr("attr_id");
+		if($(this).find("i").hasClass("glyphicon-plus"))
+		{
+			$(this).find("i").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+			$("#expandViewId"+count).show();
+		}else{
+			$(this).find("i").addClass("glyphicon-plus").removeClass("glyphicon-minus");
+			$("#expandViewId"+count).hide();
+		}
+	});
 }
 function getElectionYears(){
 	
@@ -64,7 +74,7 @@ function getElectionYears(){
 
 
 function getSessionYears(){
-	
+	$("#procesingImg1").show();
 	var electionYear = $("#electionYear").val();
 	
 	var jObj = {
@@ -75,6 +85,7 @@ function getSessionYears(){
 		  url: 'getSessionYearsAction.action',
 		 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
+		$("#procesingImg1").hide();
 		var str='';
 		if(result != null && result.length >0)
 		{
@@ -93,6 +104,7 @@ function getSessionYears(){
 
 
 function getAllSessions(){
+	$("#procesingImg2").show();
 	var electionYear = $("#electionYear").val();
 	var sessionYear = $("#sessionYear").val();
 	
@@ -105,6 +117,7 @@ function getAllSessions(){
 		url: 'getAllSessionListAction.action',
 		data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
+		$("#procesingImg2").hide();
 		var str='';
 		if(result != null && result.length >0)
 		{
@@ -153,6 +166,8 @@ function getDates(){
 }
 
 function getSessionDetails(){
+	$("#assmblySessionBlock").show();
+	$('#sessionDetails').html("<img src='images/Loading-data.gif'/>");
 	var startDate;
 	var endDate;
 	var electionYear = $("#electionYear").val();
@@ -222,7 +237,7 @@ function buildSessionDetails(result)
 									}
 									str+='</ul>';
 								str+='</td>';
-								str+='<td atr_session_day_id="'+result[i].candidateList[j].adminHouseSessionDayId+'" class="sessionCls">'+result[i].candidateList[j].count+'</td>';
+								str+='<td atr_session_day_id="'+result[i].candidateList[j].adminHouseSessionDayId+'" class="sessionCls" style="cursor:pointer;"><u>'+result[i].candidateList[j].count+'</u></td>';
 								str+='<td>'+result[i].candidateList[j].startDate+'</td>';
 							str+='</tr>';
 						}
@@ -234,7 +249,8 @@ function buildSessionDetails(result)
 	$("#sessionDetails").html(str);
 }
 $(document).on("click",".sessionCls",function(){
-	
+	$("#memberDetailsModalDiv").modal('show');
+	$('#memberDetailsId').html("<img src='images/Loading-data.gif'/>");
 	var sessionDayId = $(this).attr("atr_session_day_id");
 	
 	var jObj = {
@@ -245,12 +261,9 @@ $(document).on("click",".sessionCls",function(){
 				  url: 'getDayWiseDetailsAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
+				 buildMemberDetails(result);
 			 });
 });
-/* function getDayWiseDetails(){
-	
-	
-} */
 getPatries("partyId0");
 function getPatries(id){
 	
@@ -293,6 +306,55 @@ function getCandidates(id,partyDivId){
 					}
 					$('#'+id).trigger("chosen:updated");
 			 });
+}
+
+function buildMemberDetails(result){
+	var str='';
+	var total;
+	str+='<table class="table table-bordered ">';
+		str+='<thead>';
+			str+='<th style="background-color:#D3D3D3;">Party</th>';
+			str+='<th style="background-color:#D3D3D3;">No of Member Participated</th>';
+			//str+='<th>';
+			//str+='<ul class="list-inline">';
+				for(var k in result[0].partyList)
+				{
+					str+='<th style="background-color:#D3D3D3;">'+result[0].partyList[k].aspect+'</th>';
+				}
+				//str+='</ul>';
+			//str+='</th>';
+			str+='<th style="background-color:#D3D3D3;">total</th>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+			str+='<td>'+result[i].partyName+'</td>';
+			str+='<td>'+result[i].count+'&nbsp;&nbsp;<span class="expand-Member-icon" attr_id="'+i+'"><i class="glyphicon glyphicon-plus"></i></span></td>';
+			str+='<td>'+result[i].avgSubCount.toFixed(1)+'</td>';
+			str+='<td>'+result[i].avgPresCount.toFixed(1)+'</td>';
+			str+='<td>'+result[i].avgCunterAttCount.toFixed(1)+'</td>';
+			str+='<td>'+result[i].avgCunterAttCount.toFixed(1)+'</td>';
+			total=result[i].avgSubCount+result[i].avgPresCount+result[i].avgCunterAttCount+result[i].avgCunterAttCount;
+			str+='<td>'+total.toFixed(1)+'</td>';
+			str+='</tr>';
+			str+='<tr id="expandViewId'+i+'" style="display:none;" class="expandView"><td></td><td colspan="6">';
+					str+='<table class="table table-hover table-striped" style="border:1px solid #ddd;">';
+						for(var j in result[i].candidateList)
+						{
+							str+='<tr>';
+								str+='<td	>'+result[i].candidateList[j].name+'</td>';
+									for(var k in result[i].candidateList[j].partyList)
+										str+='<td>'+result[i].candidateList[j].partyList[k].score+'</td>';
+								str+='<td>'+result[i].candidateList[j].total+'</td>';
+							str+='</tr>';
+						}
+					str+='</table>';
+				str+='</tr>';
+			
+		}
+		str+='</tbody>';
+		str+='</table>';
+	$("#memberDetailsId").html(str);
 }
 
 	var appendId=0;
@@ -382,6 +444,7 @@ function getCandidates(id,partyDivId){
 		c.find(".subjectCls").attr("id","subjectId"+generatedId);
 		c.find(".subjectCls").attr("attr_count",generatedId);
 		c.find(".subjectCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		
 		
 		c.find(".presentationCls").attr("id","presentationId"+generatedId)
 		c.find(".presentationCls").attr("attr_count",generatedId)
