@@ -25,7 +25,9 @@ public class CoreDashboardInsuranceVO {
 	private CoreDashboardInsuranceVO coreDashboardInsuranceVO;
 	private Double percentage = 0.00;
 	private Long totalCategroyCount = 0L;//death and hospitalization
+	private Long totalCategroyCountFilter = 0L;
 	private Long totalStatusCount = 0L;
+	private Long totalStatusCountFilter = 0L;
 	private Long totalAmount = 0L;
 	private List<InsuranceStatusVO> insuranceStatusVOs;
 	
@@ -38,6 +40,8 @@ public class CoreDashboardInsuranceVO {
 	private List<CoreDashboardInsuranceVO> deathList = new ArrayList<CoreDashboardInsuranceVO>();
 	private List<CoreDashboardInsuranceVO> hospitalizationList = new ArrayList<CoreDashboardInsuranceVO>();
 	private Long amount = 0l;
+	private Long deathCountFilter = 0L;
+	private Long hospitalizationCountFilter = 0L;
 	
 	
 	public Long getId() {
@@ -178,4 +182,30 @@ public class CoreDashboardInsuranceVO {
 	public void setAmount(Long amount) {
 		this.amount = amount;
 	}
+	public Long getDeathCountFilter() {
+		return deathCountFilter;
+	}
+	public void setDeathCountFilter(Long deathCountFilter) {
+		this.deathCountFilter = deathCountFilter;
+	}
+	public Long getHospitalizationCountFilter() {
+		return hospitalizationCountFilter;
+	}
+	public void setHospitalizationCountFilter(Long hospitalizationCountFilter) {
+		this.hospitalizationCountFilter = hospitalizationCountFilter;
+	}
+	public Long getTotalCategroyCountFilter() {
+		return totalCategroyCountFilter;
+	}
+	public void setTotalCategroyCountFilter(Long totalCategroyCountFilter) {
+		this.totalCategroyCountFilter = totalCategroyCountFilter;
+	}
+	public Long getTotalStatusCountFilter() {
+		return totalStatusCountFilter;
+	}
+	public void setTotalStatusCountFilter(Long totalStatusCountFilter) {
+		this.totalStatusCountFilter = totalStatusCountFilter;
+	}
+	
+	
 }
