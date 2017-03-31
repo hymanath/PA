@@ -1683,8 +1683,10 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				  
 				   
 				List<Object[]> list1 = null;
+				List<Object[]> list2 = null;
 				if(levelId != null && levelId.longValue() == 4L){
-					list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category");
+					list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category","all");
+					list2 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category","filter");
 					if(list1 != null && list1.size() > 0){
 						List<Long> constIdList = new ArrayList<Long>();
 						for(Object[] param : list1){
@@ -1702,14 +1704,20 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						
 					}
 				}else{
-					list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category");
+					list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category","all");
+					list2 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category","filter");
 				}
 				
 				//create map of id and name
 				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
-				//id and category and count map
+				//id and category and count map all
 				Map<Long,Map<String,Long>> locIdAndCategoryAndCountMap = new HashMap<Long,Map<String,Long>>();
 				Map<String,Long> categoryAndCountMap = null;
+				
+				//id and category and count map Filter
+				Map<Long,Map<String,Long>> locIdAndCategoryAndCountMapFilter = new HashMap<Long,Map<String,Long>>();
+				Map<String,Long> categoryAndCountMapFilter = null;
+				
 				//id and category and amount map
 				Map<Long,Map<String,Long>> locIdAndCategoryAndAmountMap = new HashMap<Long,Map<String,Long>>();
 				Map<String,Long> categoryAndAmountMap = null;
@@ -1727,6 +1735,18 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 							locIdAndCategoryAndCountMap.put(param[0] != null ? (Long)param[0] : 0L, categoryAndCountMap);
 						}
 						categoryAndCountMap.put(param[2] != null ? param[2].toString().trim() : "", param[3] != null ? (Long)param[3] : 0L);
+						
+					}
+				}
+				if(list2 != null && list2.size() > 0){
+					for(Object[] param : list2){
+						//id and category and count map filter
+						categoryAndCountMapFilter = locIdAndCategoryAndCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
+						if(categoryAndCountMapFilter ==  null){
+							categoryAndCountMapFilter = new HashMap<String,Long>();
+							locIdAndCategoryAndCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, categoryAndCountMapFilter);
+						}
+						categoryAndCountMapFilter.put(param[2] != null ? param[2].toString().trim() : "", param[3] != null ? (Long)param[3] : 0L);
 						
 						//id and category and amount map
 						categoryAndAmountMap = locIdAndCategoryAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
@@ -1755,8 +1775,19 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 							insuranceVO.setHospitalizationCount(locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization"));
 							totalCount+=locIdAndCategoryAndCountMap.get(entry.getKey()).get("Hospitalization");
 						}
-						
 						insuranceVO.setTotalCategroyCount(totalCount);
+						
+						Long totalCountFilter = 0L;
+						if(locIdAndCategoryAndCountMapFilter.get(entry.getKey()) != null && locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death") != null){
+							insuranceVO.setDeathCountFilter(locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death"));
+							totalCountFilter+=locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death");
+						}
+						if(locIdAndCategoryAndCountMapFilter.get(entry.getKey()) != null && locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization") != null){
+							insuranceVO.setHospitalizationCountFilter(locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization"));
+							totalCountFilter+=locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization");
+						}
+						
+						insuranceVO.setTotalCategroyCountFilter(totalCountFilter);
 						
 						Long totalAmount = 0L;
 						
@@ -1826,13 +1857,18 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					statusIdList.add(5l);
 				}
 				   
-				List<Object[]> list1 = insuranceStatusDAO.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category");
-				
+				List<Object[]> list1 = insuranceStatusDAO.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category","all");
+				List<Object[]> list2 = insuranceStatusDAO.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"category","filter");
 				//create map of id and name
 				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
 				//id and category and count map
 				Map<Long,Map<String,Long>> locIdAndCategoryAndCountMap = new HashMap<Long,Map<String,Long>>();
 				Map<String,Long> categoryAndCountMap = null;
+				
+				//id and category and count map Filter
+				Map<Long,Map<String,Long>> locIdAndCategoryAndCountMapFilter = new HashMap<Long,Map<String,Long>>();
+				Map<String,Long> categoryAndCountMapFilter = null;
+				
 				//id and category and amount map
 				Map<Long,Map<String,Long>> locIdAndCategoryAndAmountMap = new HashMap<Long,Map<String,Long>>();
 				Map<String,Long> categoryAndAmountMap = null;
@@ -1850,6 +1886,20 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 							locIdAndCategoryAndCountMap.put(param[0] != null ? (Long)param[0] : 0L, categoryAndCountMap);
 						}
 						categoryAndCountMap.put(param[2] != null ? param[2].toString().trim() : "", param[3] != null ? (Long)param[3] : 0L);
+						
+					}
+				}
+				
+				if(list2 != null && list2.size() > 0){
+					for(Object[] param : list2){
+						
+						//id and category and count map Filter
+						categoryAndCountMapFilter = locIdAndCategoryAndCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
+						if(categoryAndCountMapFilter ==  null){
+							categoryAndCountMapFilter = new HashMap<String,Long>();
+							locIdAndCategoryAndCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, categoryAndCountMapFilter);
+						}
+						categoryAndCountMapFilter.put(param[2] != null ? param[2].toString().trim() : "", param[3] != null ? (Long)param[3] : 0L);
 						
 						//id and category and amount map
 						categoryAndAmountMap = locIdAndCategoryAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
@@ -1880,6 +1930,19 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 						
 						insuranceVO.setTotalCategroyCount(totalCount);
+						
+						
+						Long totalCountFilter = 0L;
+						if(locIdAndCategoryAndCountMapFilter.get(entry.getKey()) != null && locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death") != null){
+							insuranceVO.setDeathCountFilter(locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death"));
+							totalCountFilter+=locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death");
+						}
+						if(locIdAndCategoryAndCountMapFilter.get(entry.getKey()) != null && locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization") != null){
+							insuranceVO.setHospitalizationCountFilter(locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization"));
+							totalCountFilter+=locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization");
+						}
+						
+						insuranceVO.setTotalCategroyCountFilter(totalCountFilter);
 						
 						Long totalAmount = 0L;
 						
@@ -1956,8 +2019,10 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				}
 				
 				List<Object[]> list1 = null;
+				List<Object[]> list2 = null;
 				if(levelId != null && levelId.longValue() == 4L){
-					list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status");
+					list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status","all");
+					list2 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status","filter");
 					if(list1 != null && list1.size() > 0){
 						List<Long> constIdList = new ArrayList<Long>();
 						for(Object[] param : list1){
@@ -1975,7 +2040,8 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						
 					}
 				}else{
-					list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status");
+					list1 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status","all");
+					list2 = insuranceStatusDAO.getDistrictWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status","all");
 				}
 				
 				//create map of id and name
@@ -1985,12 +2051,20 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				Map<Long,Map<Long,Long>> locIdAndStatusAndCountMap = new HashMap<Long,Map<Long,Long>>();
 				Map<Long,Long> statusAndCountMap = null;
 				
+				//id and status and count map Filter
+				Map<Long,Map<Long,Long>> locIdAndStatusAndCountMapFilter = new HashMap<Long,Map<Long,Long>>();
+				Map<Long,Long> statusAndCountMapFilter = null;
+				
+				
 				//id and status and amount map
 				Map<Long,Map<Long,Long>> locIdAndStatusAndAmountMap = new HashMap<Long,Map<Long,Long>>();
 				Map<Long,Long> statusAndAmountMap = null;
 				
 				//location id and total member count map
 				Map<Long,Long> locationIdAndMemberCountMap = new HashMap<Long,Long>();
+				
+				//location id and total member count map Filter
+				Map<Long,Long> locationIdAndMemberCountMapFilter = new HashMap<Long,Long>();
 				
 				//location id and total amount count map
 				Map<Long,Long> locationIdAndTotalAmountMap = new HashMap<Long,Long>();
@@ -2008,6 +2082,29 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 						statusAndCountMap.put(param[2] != null ? (Long)param[2] : 0L, param[3] != null ? (Long)param[3] : 0L);
 						
+						
+						//location id and total member count map
+						Long memCount = locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(memCount == null){
+							locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
+						}
+						locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
+						
+						
+					}
+				}
+				
+				if(list2 != null && list2.size() > 0){
+					for(Object[] param : list2){
+						
+						//id and status and count map Filter
+						statusAndCountMapFilter = locIdAndStatusAndCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
+						if(statusAndCountMapFilter ==  null){
+							statusAndCountMapFilter = new HashMap<Long,Long>();
+							locIdAndStatusAndCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, statusAndCountMapFilter);
+						}
+						statusAndCountMapFilter.put(param[2] != null ? (Long)param[2] : 0L, param[3] != null ? (Long)param[3] : 0L);
+						
 						//id and status and amount map
 						statusAndAmountMap = locIdAndStatusAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
 						if(statusAndAmountMap == null){
@@ -2016,12 +2113,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 						statusAndAmountMap.put(param[2] != null ? (Long)param[2] : 0L, param[4] != null ? (Long)param[4] : 0L);
 						
-						//location id and total member count map
-						Long memCount = locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						//location id and total member count map Filter
+						Long memCount = locationIdAndMemberCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
 						if(memCount == null){
-							locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
+							locationIdAndMemberCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
 						}
-						locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
+						locationIdAndMemberCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
 						
 						//location id and total amount count map
 						Long totAmount = locationIdAndTotalAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
@@ -2041,11 +2138,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						insuranceVO.setId(entry.getKey() != null ? entry.getKey() : 0L);
 						insuranceVO.setName(entry.getValue() != null ? entry.getValue() : "");
 						insuranceVO.setTotalStatusCount(locationIdAndMemberCountMap.get(entry.getKey()) != null ? locationIdAndMemberCountMap.get(entry.getKey()) : 0L);
+						insuranceVO.setTotalStatusCountFilter(locationIdAndMemberCountMapFilter.get(entry.getKey()) != null ? locationIdAndMemberCountMapFilter.get(entry.getKey()) : 0L);
 						insuranceVO.setTotalAmount(locationIdAndTotalAmountMap.get(entry.getKey()) != null ? locationIdAndTotalAmountMap.get(entry.getKey()) : 0L);
 						
 						addListForAllStatus(insuranceVO);
 						
-						putValueInCorrectList(locIdAndStatusAndCountMap,locIdAndStatusAndAmountMap,insuranceVO);
+						putValueInCorrectList(locIdAndStatusAndCountMap,locIdAndStatusAndAmountMap,insuranceVO,locIdAndStatusAndCountMapFilter);
 						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
@@ -2099,8 +2197,8 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					statusIdList.add(5l);
 				}
 				
-				List<Object[]> list1 = insuranceStatusDAO.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status");
-				
+				List<Object[]> list1 = insuranceStatusDAO.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status","all");
+				List<Object[]> list2 = insuranceStatusDAO.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(levelId, locationValuesSet, userTypeId, stateId, cadreEnrollmentYearId, districtId, statusIdList, category, fromDate, toDate,"status","filter");
 				
 				//create map of id and name
 				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
@@ -2109,12 +2207,23 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				Map<Long,Map<Long,Long>> locIdAndStatusAndCountMap = new HashMap<Long,Map<Long,Long>>();
 				Map<Long,Long> statusAndCountMap = null;
 				
+				
+				//id and status and count map filter
+				Map<Long,Map<Long,Long>> locIdAndStatusAndCountMapFilter = new HashMap<Long,Map<Long,Long>>();
+				Map<Long,Long> statusAndCountMapFilter = null;
+				
+				
+				
 				//id and status and amount map
 				Map<Long,Map<Long,Long>> locIdAndStatusAndAmountMap = new HashMap<Long,Map<Long,Long>>();
 				Map<Long,Long> statusAndAmountMap = null;
 				
 				//location id and total member count map
 				Map<Long,Long> locationIdAndMemberCountMap = new HashMap<Long,Long>();
+				
+				
+				//location id and total member count map Filter
+				Map<Long,Long> locationIdAndMemberCountMapFilter = new HashMap<Long,Long>();
 				
 				//location id and total amount count map
 				Map<Long,Long> locationIdAndTotalAmountMap = new HashMap<Long,Long>();
@@ -2132,6 +2241,28 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 						statusAndCountMap.put(param[2] != null ? (Long)param[2] : 0L, param[3] != null ? (Long)param[3] : 0L);
 						
+						//location id and total member count map
+						Long memCount = locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(memCount == null){
+							locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
+						}
+						locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
+						
+					}
+				}
+				
+				
+				if(list2 != null && list2.size() > 0){
+					for(Object[] param : list2){
+						
+						//id and status and count map Filter
+						statusAndCountMapFilter = locIdAndStatusAndCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
+						if(statusAndCountMapFilter ==  null){
+							statusAndCountMapFilter = new HashMap<Long,Long>();
+							locIdAndStatusAndCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, statusAndCountMapFilter);
+						}
+						statusAndCountMapFilter.put(param[2] != null ? (Long)param[2] : 0L, param[3] != null ? (Long)param[3] : 0L);
+						
 						//id and status and amount map
 						statusAndAmountMap = locIdAndStatusAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
 						if(statusAndAmountMap == null){
@@ -2140,12 +2271,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 						statusAndAmountMap.put(param[2] != null ? (Long)param[2] : 0L, param[4] != null ? (Long)param[4] : 0L);
 						
-						//location id and total member count map
-						Long memCount = locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						//location id and total member count map Filter
+						Long memCount = locationIdAndMemberCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
 						if(memCount == null){
-							locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
+							locationIdAndMemberCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
 						}
-						locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
+						locationIdAndMemberCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
 						
 						//location id and total amount count map
 						Long totAmount = locationIdAndTotalAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
@@ -2165,11 +2296,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						insuranceVO.setId(entry.getKey() != null ? entry.getKey() : 0L);
 						insuranceVO.setName(entry.getValue() != null ? entry.getValue() : "");
 						insuranceVO.setTotalStatusCount(locationIdAndMemberCountMap.get(entry.getKey()) != null ? locationIdAndMemberCountMap.get(entry.getKey()) : 0L);
+						insuranceVO.setTotalStatusCountFilter(locationIdAndMemberCountMapFilter.get(entry.getKey()) != null ? locationIdAndMemberCountMapFilter.get(entry.getKey()) : 0L);
 						insuranceVO.setTotalAmount(locationIdAndTotalAmountMap.get(entry.getKey()) != null ? locationIdAndTotalAmountMap.get(entry.getKey()) : 0L);
 						
 						addListForAllStatus(insuranceVO);
 						
-						putValueInCorrectList(locIdAndStatusAndCountMap,locIdAndStatusAndAmountMap,insuranceVO);
+						putValueInCorrectList(locIdAndStatusAndCountMap,locIdAndStatusAndAmountMap,insuranceVO,locIdAndStatusAndCountMapFilter);
 						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
@@ -2208,16 +2340,21 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				e.printStackTrace();
 			}
 		}
-		public void putValueInCorrectList(Map<Long,Map<Long,Long>> locIdAndStatusAndCountMap,Map<Long,Map<Long,Long>> locIdAndStatusAndAmountMap,CoreDashboardInsuranceVO insuranceVO){
+		public void putValueInCorrectList(Map<Long,Map<Long,Long>> locIdAndStatusAndCountMap,Map<Long,Map<Long,Long>> locIdAndStatusAndAmountMap,CoreDashboardInsuranceVO insuranceVO,Map<Long,Map<Long,Long>> locIdAndStatusAndCountMapFilter){
 			if(insuranceVO.getInsuranceStatusVOs() != null && insuranceVO.getInsuranceStatusVOs().size() > 0){
-				Map<Long,Long> statusIdAndCountMap = locIdAndStatusAndCountMap.get(insuranceVO.getId());
-				Map<Long,Long> statusIdAndAmountMap = locIdAndStatusAndAmountMap.get(insuranceVO.getId());
+				Map<Long,Long> statusIdAndCountMap = (locIdAndStatusAndCountMap.get(insuranceVO.getId()) != null ? locIdAndStatusAndCountMap.get(insuranceVO.getId()) : new HashMap<Long,Long>());
+				Map<Long,Long> statusIdAndCountMapFilter = (locIdAndStatusAndCountMapFilter.get(insuranceVO.getId()) != null ? locIdAndStatusAndCountMapFilter.get(insuranceVO.getId()) : new HashMap<Long,Long>());
+				Map<Long,Long> statusIdAndAmountMap = (locIdAndStatusAndAmountMap.get(insuranceVO.getId()) != null ? locIdAndStatusAndAmountMap.get(insuranceVO.getId()) : new HashMap<Long,Long>() );
 				for(InsuranceStatusVO param : insuranceVO.getInsuranceStatusVOs()){
 					Long statusId = param.getStatusId();
 					if(statusId.longValue() == 1L){
 						//for member count
 						param.setInsuredMemberCount(param.getInsuredMemberCount()+(statusIdAndCountMap.get(1L) != null ? statusIdAndCountMap.get(1L) : 0L));
 						param.setInsuredMemberCount(param.getInsuredMemberCount()+(statusIdAndCountMap.get(2L) != null ? statusIdAndCountMap.get(2L) : 0L));
+						
+						param.setInsuredMemberCountFilter(param.getInsuredMemberCountFilter()+(statusIdAndCountMapFilter.get(1L) != null ? statusIdAndCountMapFilter.get(1L) : 0L));
+						param.setInsuredMemberCountFilter(param.getInsuredMemberCountFilter()+(statusIdAndCountMapFilter.get(2L) != null ? statusIdAndCountMapFilter.get(2L) : 0L));
+						
 						//for amount
 						param.setInsuredAmount(param.getInsuredAmount()+(statusIdAndAmountMap.get(1L) != null ? statusIdAndAmountMap.get(1L) : 0L));
 						param.setInsuredAmount(param.getInsuredAmount()+(statusIdAndAmountMap.get(2L) != null ? statusIdAndAmountMap.get(2L) : 0L));
@@ -2225,6 +2362,9 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						//for member count
 						param.setInsuredMemberCount(param.getInsuredMemberCount()+(statusIdAndCountMap.get(3L) != null ? statusIdAndCountMap.get(3L) : 0L));
 						param.setInsuredMemberCount(param.getInsuredMemberCount()+(statusIdAndCountMap.get(7L) != null ? statusIdAndCountMap.get(7L) : 0L));
+						
+						param.setInsuredMemberCountFilter(param.getInsuredMemberCountFilter()+(statusIdAndCountMapFilter.get(3L) != null ? statusIdAndCountMapFilter.get(3L) : 0L));
+						param.setInsuredMemberCountFilter(param.getInsuredMemberCountFilter()+(statusIdAndCountMapFilter.get(7L) != null ? statusIdAndCountMapFilter.get(7L) : 0L));
 						//for amount
 						param.setInsuredAmount(param.getInsuredAmount()+(statusIdAndAmountMap.get(3L) != null ? statusIdAndAmountMap.get(3L) : 0L));
 						param.setInsuredAmount(param.getInsuredAmount()+(statusIdAndAmountMap.get(7L) != null ? statusIdAndAmountMap.get(7L) : 0L));
@@ -2232,6 +2372,9 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						//for member count
 						param.setInsuredMemberCount(param.getInsuredMemberCount()+(statusIdAndCountMap.get(6L) != null ? statusIdAndCountMap.get(6L) : 0L));
 						param.setInsuredMemberCount(param.getInsuredMemberCount()+(statusIdAndCountMap.get(8L) != null ? statusIdAndCountMap.get(8L) : 0L));
+						
+						param.setInsuredMemberCountFilter(param.getInsuredMemberCountFilter()+(statusIdAndCountMapFilter.get(6L) != null ? statusIdAndCountMapFilter.get(6L) : 0L));
+						param.setInsuredMemberCountFilter(param.getInsuredMemberCountFilter()+(statusIdAndCountMapFilter.get(8L) != null ? statusIdAndCountMapFilter.get(8L) : 0L));
 						//for amount
 						param.setInsuredAmount(param.getInsuredAmount()+(statusIdAndAmountMap.get(6L) != null ? statusIdAndAmountMap.get(6L) : 0L));
 						param.setInsuredAmount(param.getInsuredAmount()+(statusIdAndAmountMap.get(8L) != null ? statusIdAndAmountMap.get(8L) : 0L));
@@ -2239,6 +2382,9 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						//for member count
 						param.setInsuredMemberCount(param.getInsuredMemberCount()+(statusIdAndCountMap.get(4L) != null ? statusIdAndCountMap.get(4L) : 0L));
 						param.setInsuredMemberCount(param.getInsuredMemberCount()+(statusIdAndCountMap.get(5L) != null ? statusIdAndCountMap.get(5L) : 0L));
+						
+						param.setInsuredMemberCountFilter(param.getInsuredMemberCountFilter()+(statusIdAndCountMapFilter.get(4L) != null ? statusIdAndCountMapFilter.get(4L) : 0L));
+						param.setInsuredMemberCountFilter(param.getInsuredMemberCountFilter()+(statusIdAndCountMapFilter.get(5L) != null ? statusIdAndCountMapFilter.get(5L) : 0L));
 						//for amount
 						param.setInsuredAmount(param.getInsuredAmount()+(statusIdAndAmountMap.get(4L) != null ? statusIdAndAmountMap.get(4L) : 0L));
 						param.setInsuredAmount(param.getInsuredAmount()+(statusIdAndAmountMap.get(5L) != null ? statusIdAndAmountMap.get(5L) : 0L));
@@ -2277,13 +2423,19 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					statusIdList.add(5l);
 				}
 				   
-				List<Object[]> list1 = insuranceStatusDAO.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType);
+				List<Object[]> list1 = insuranceStatusDAO.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType,"all");
+				List<Object[]> list2 = insuranceStatusDAO.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType,"filter");
 				
 				//create map of id and name
 				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
 				//id and category and count map
 				Map<Long,Map<String,Long>> locIdAndCategoryAndCountMap = new HashMap<Long,Map<String,Long>>();
 				Map<String,Long> categoryAndCountMap = null;
+				
+				//id and category and count map Filter
+				Map<Long,Map<String,Long>> locIdAndCategoryAndCountMapFilter = new HashMap<Long,Map<String,Long>>();
+				Map<String,Long> categoryAndCountMapFilter = null;
+				
 				//id and category and amount map
 				Map<Long,Map<String,Long>> locIdAndCategoryAndAmountMap = new HashMap<Long,Map<String,Long>>();
 				Map<String,Long> categoryAndAmountMap = null;
@@ -2301,6 +2453,21 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 							locIdAndCategoryAndCountMap.put(param[0] != null ? (Long)param[0] : 0L, categoryAndCountMap);
 						}
 						categoryAndCountMap.put(param[2] != null ? param[2].toString().trim() : "", param[3] != null ? (Long)param[3] : 0L);
+					
+					}
+				}
+				
+				
+				if(list2 != null && list2.size() > 0){
+					for(Object[] param : list2){
+						
+						//id and category and count map Filter
+						categoryAndCountMapFilter = locIdAndCategoryAndCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
+						if(categoryAndCountMapFilter ==  null){
+							categoryAndCountMapFilter = new HashMap<String,Long>();
+							locIdAndCategoryAndCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, categoryAndCountMapFilter);
+						}
+						categoryAndCountMapFilter.put(param[2] != null ? param[2].toString().trim() : "", param[3] != null ? (Long)param[3] : 0L);
 						
 						//id and category and amount map
 						categoryAndAmountMap = locIdAndCategoryAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
@@ -2331,6 +2498,19 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 						
 						insuranceVO.setTotalCategroyCount(totalCount);
+						
+						Long totalCountFilter = 0L;
+						if(locIdAndCategoryAndCountMapFilter.get(entry.getKey()) != null && locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death") != null){
+							insuranceVO.setDeathCountFilter(locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death"));
+							totalCountFilter+=locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Death");
+						}
+						if(locIdAndCategoryAndCountMapFilter.get(entry.getKey()) != null && locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization") != null){
+							insuranceVO.setHospitalizationCountFilter(locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization"));
+							totalCountFilter+=locIdAndCategoryAndCountMapFilter.get(entry.getKey()).get("Hospitalization");
+						}
+						
+						insuranceVO.setTotalCategroyCountFilter(totalCountFilter);
+						
 						
 						Long totalAmount = 0L;  
 						
@@ -2384,8 +2564,8 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					statusIdList.add(5l);
 				}
 				
-				List<Object[]> list1 = insuranceStatusDAO.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType);
-				
+				List<Object[]> list1 = insuranceStatusDAO.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType,"all");
+				List<Object[]> list2 = insuranceStatusDAO.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId, cadreEnrollmentYearId, locationId, statusIdList, category, fromDate, toDate,type,locationType,"filter");
 				//create map of id and name
 				Map<Long,String> idAndNameMap = new HashMap<Long,String>();
 				
@@ -2393,12 +2573,20 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				Map<Long,Map<Long,Long>> locIdAndStatusAndCountMap = new HashMap<Long,Map<Long,Long>>();
 				Map<Long,Long> statusAndCountMap = null;
 				
+				//id and status and count map Filter
+				Map<Long,Map<Long,Long>> locIdAndStatusAndCountMapFilter = new HashMap<Long,Map<Long,Long>>();
+				Map<Long,Long> statusAndCountMapFilter = null;
+				
+				
 				//id and status and amount map
 				Map<Long,Map<Long,Long>> locIdAndStatusAndAmountMap = new HashMap<Long,Map<Long,Long>>();
 				Map<Long,Long> statusAndAmountMap = null;
 				
 				//location id and total member count map
 				Map<Long,Long> locationIdAndMemberCountMap = new HashMap<Long,Long>();
+				
+				//location id and total member count map Filter
+				Map<Long,Long> locationIdAndMemberCountMapFilter = new HashMap<Long,Long>();
 				
 				//location id and total amount count map
 				Map<Long,Long> locationIdAndTotalAmountMap = new HashMap<Long,Long>();
@@ -2416,6 +2604,30 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 						statusAndCountMap.put(param[2] != null ? (Long)param[2] : 0L, param[3] != null ? (Long)param[3] : 0L);
 						
+						
+						//location id and total member count map
+						Long memCount = locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						if(memCount == null){
+							locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
+						}
+						locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
+						
+					}
+				}
+				
+				
+				if(list2 != null && list2.size() > 0){
+					for(Object[] param : list2){
+						
+						
+						//id and status and count map Filter
+						statusAndCountMapFilter = locIdAndStatusAndCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
+						if(statusAndCountMapFilter ==  null){
+							statusAndCountMapFilter = new HashMap<Long,Long>();
+							locIdAndStatusAndCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, statusAndCountMapFilter);
+						}
+						statusAndCountMapFilter.put(param[2] != null ? (Long)param[2] : 0L, param[3] != null ? (Long)param[3] : 0L);
+						
 						//id and status and amount map
 						statusAndAmountMap = locIdAndStatusAndAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
 						if(statusAndAmountMap == null){
@@ -2424,12 +2636,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}
 						statusAndAmountMap.put(param[2] != null ? (Long)param[2] : 0L, param[4] != null ? (Long)param[4] : 0L);
 						
-						//location id and total member count map
-						Long memCount = locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L);
+						//location id and total member count map Filter
+						Long memCount = locationIdAndMemberCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L);
 						if(memCount == null){
-							locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
+							locationIdAndMemberCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, new Long(0));
 						}
-						locationIdAndMemberCountMap.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMap.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
+						locationIdAndMemberCountMapFilter.put(param[0] != null ? (Long)param[0] : 0L, (locationIdAndMemberCountMapFilter.get(param[0] != null ? (Long)param[0] : 0L))+(param[3] != null ? (Long)param[3] : 0L));
 						
 						//location id and total amount count map
 						Long totAmount = locationIdAndTotalAmountMap.get(param[0] != null ? (Long)param[0] : 0L);
@@ -2449,11 +2661,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						insuranceVO.setId(entry.getKey() != null ? entry.getKey() : 0L);
 						insuranceVO.setName(entry.getValue() != null ? entry.getValue() : "");
 						insuranceVO.setTotalStatusCount(locationIdAndMemberCountMap.get(entry.getKey()) != null ? locationIdAndMemberCountMap.get(entry.getKey()) : 0L);
+						insuranceVO.setTotalStatusCountFilter(locationIdAndMemberCountMapFilter.get(entry.getKey()) != null ? locationIdAndMemberCountMapFilter.get(entry.getKey()) : 0L);
 						insuranceVO.setTotalAmount(locationIdAndTotalAmountMap.get(entry.getKey()) != null ? locationIdAndTotalAmountMap.get(entry.getKey()) : 0L);
 						
 						addListForAllStatus(insuranceVO);
 						
-						putValueInCorrectList(locIdAndStatusAndCountMap,locIdAndStatusAndAmountMap,insuranceVO);
+						putValueInCorrectList(locIdAndStatusAndCountMap,locIdAndStatusAndAmountMap,insuranceVO,locIdAndStatusAndCountMapFilter);
 						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
@@ -2463,7 +2676,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				}
 				
 				
-				System.out.println("hi");
+				System.out.println("hi");  
 				return coreDashboardInsuranceVOs;
 			}catch(Exception e){
 				LOG.error("Error occured at getLocationWiseThenStatusWiseInsuranceMemberCountForTS() in CoreDashboardInsuranceService class",e);
