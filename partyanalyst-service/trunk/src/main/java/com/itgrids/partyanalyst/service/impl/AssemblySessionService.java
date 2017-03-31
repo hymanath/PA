@@ -15,11 +15,13 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAdminHouseMemberDAO;
 import com.itgrids.partyanalyst.dao.IAdminHouseSessionDAO;
+import com.itgrids.partyanalyst.dao.IAdminHouseSessionDayDAO;
 import com.itgrids.partyanalyst.dao.IAdminHouseTermDAO;
 import com.itgrids.partyanalyst.dao.IHouseSessionDAO;
 import com.itgrids.partyanalyst.dao.IMemberSpeechAspectDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ISpeechAspectDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AdminHouseSessionDayDAO;
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
 import com.itgrids.partyanalyst.dto.AssemblySessionReportVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -44,6 +46,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 	private IMemberSpeechAspectDAO 				memberSpeechAspectDAO;
 	private IPartyDAO 							partyDAO;
 	private IAdminHouseSessionDAO 				adminHouseSessionDAO;
+	private IAdminHouseSessionDayDAO            adminHouseSessionDayDAO;
 	
 	
 	
@@ -101,6 +104,12 @@ public class AssemblySessionService implements IAssemblySessionService{
 	}
 	public void setAdminHouseMemberDAO(IAdminHouseMemberDAO adminHouseMemberDAO) {
 		this.adminHouseMemberDAO = adminHouseMemberDAO;
+	}
+	public IAdminHouseSessionDayDAO getAdminHouseSessionDayDAO() {
+		return adminHouseSessionDayDAO;
+	}
+	public void setAdminHouseSessionDayDAO(IAdminHouseSessionDayDAO adminHouseSessionDayDAO) {
+		this.adminHouseSessionDayDAO = adminHouseSessionDayDAO;
 	}
 	
 	
@@ -338,9 +347,38 @@ public class AssemblySessionService implements IAssemblySessionService{
 			if(commonMethodsUtilService.isMapValid(partyDetailsMap)){
 				for (Map.Entry<Long, AdminHouseVO> entry : partyDetailsMap.entrySet()){
 					AdminHouseVO partyvo = entry.getValue();
+					Double subCount = 0.0d;
+					Double presCnt = 0.0d;
+					Double countrAttckCnt = 0.0d;
+					Double bodyLangCnt = 0.0d;
 						List<AdminHouseVO> candidateList = partyvo.getCandidateList();
+						if(commonMethodsUtilService.isListOrSetValid(candidateList)){
+							for(AdminHouseVO candVO : candidateList){
+								List<AdminHouseVO> astectList = candVO.getPartyList();
+								if(commonMethodsUtilService.isListOrSetValid(astectList)){
+										for(AdminHouseVO aspectVO : astectList){
+											if(aspectVO.getSpeechAsceptId().longValue() == 1l){
+												subCount = subCount+aspectVO.getScore();
+											}
+											if(aspectVO.getSpeechAsceptId().longValue() == 2l){
+												presCnt = presCnt+aspectVO.getScore();
+											}
+											if(aspectVO.getSpeechAsceptId().longValue() == 3l){
+												countrAttckCnt = countrAttckCnt+aspectVO.getScore();
+											}
+											if(aspectVO.getSpeechAsceptId().longValue() == 4l){
+												bodyLangCnt = bodyLangCnt+aspectVO.getScore();
+											}
+										}
+									}
+								}
+							}
 						Long candidatesCount = (long) candidateList.size();
 						partyvo.setCount(candidatesCount);
+						partyvo.setAvgSubCount(subCount/partyvo.getCount());
+						partyvo.setAvgPresCount(presCnt/partyvo.getCount());
+						partyvo.setAvgCunterAttCount(countrAttckCnt/partyvo.getCount());
+						partyvo.setAvgBdyLanCount(bodyLangCnt/partyvo.getCount());
 					finalList.add(partyvo);
 				}
 			}
@@ -484,6 +522,25 @@ public class AssemblySessionService implements IAssemblySessionService{
 		}
 		return resultStatus;
 	}
+	
+	public List<AdminHouseVO> getDatesForSaving(Long termId,String sessionYear,Long sessionId){
+		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
+		try{
+			List<Object[]> datesList = adminHouseSessionDayDAO.getSingleDate(termId, sessionYear, sessionId);
+			if(datesList != null && datesList.size() > 0l){
+				for (Object[] objects : datesList) {
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setDate(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					returnList.add(vo);
+				}
+					
+			}
+		}catch(Exception e){
+			 LOG.error("Exception Occured in getDatesForSaving() method, Exception - ",e);
+		}
+		return returnList;
+	} 
 	
 }
 
