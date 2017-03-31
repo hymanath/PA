@@ -672,7 +672,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id ");  
 		 }
 		 if(filter.equalsIgnoreCase("filter")){
-			queryStr.append(" AND CM.approved_amount is not null "); 
+			queryStr.append(" AND CM.approved_amount > 0 "); 
 		 }
 		 if(stateId != null && stateId.longValue() > 0L){
 			 queryStr.append(" AND state_id_cmp =:stateId ");  
@@ -862,7 +862,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		
 		 queryStr.append(" WHERE CM.district_id = DIST.district_id AND CON.constituency_id = CM.assembly_id "); 
 		 if(filter.equalsIgnoreCase("filter")){
-				queryStr.append(" AND CM.approved_amount is not null "); 
+				queryStr.append(" AND CM.approved_amount > 0 "); 
 		 }
 		 
 		 if(stateId != null && stateId.longValue() > 0L){
@@ -1007,7 +1007,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		 }
 		 
 		 if(filter.equalsIgnoreCase("filter")){
-				queryStr.append(" AND CM.approved_amount is not null "); 
+				queryStr.append(" AND CM.approved_amount > 0 "); 
 		 }
 		 
 		 if(stateId != null && stateId.longValue() > 0L){
