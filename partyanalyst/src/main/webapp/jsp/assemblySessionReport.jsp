@@ -47,6 +47,7 @@
 							<select id="sessionYear" class="chosen-select" onchange="getAllSessions();">
 								<option value="0"> Select Session Year</option>
 							</select>
+							<span ><img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg1"></span>
 							<!--<div id="sessionYear"></div>-->
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-6">
@@ -54,6 +55,7 @@
 							<select id="assemblySession" class="chosen-select" onchange="getDates();">
 								<option value="0"> Select Assembly Session</option>
 							</select>
+							<span ><img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg2"></span>
 							<!--<div id="assemblySession"></div>-->
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6">
@@ -72,7 +74,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-12 col-xs-12 col-sm-12">
+		<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;" id="assmblySessionBlock">
 			<div class="panel panel-default panelNew">
 				<div class="panel-heading">
 					<h4 class="panel-title">Assembly Session View</h4>
@@ -193,6 +195,20 @@
 			</div>
 		</div>
 	</div>
+</div>
+<!-- PopUp -->
+<div class="modal fade" id="memberDetailsModalDiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalSLabel"></h4>
+      </div>
+      <div class="modal-body" style="padding:0px 15px;">
+       <div id="memberDetailsId"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
