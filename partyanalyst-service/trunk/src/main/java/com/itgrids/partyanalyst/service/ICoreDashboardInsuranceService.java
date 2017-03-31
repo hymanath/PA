@@ -30,5 +30,6 @@ public interface ICoreDashboardInsuranceService {
 	public List<UserTypeVO> getCandiateWiseCadreInsurencaeDtls(Long activityMemberId,Long stateId,Long cadreEnrollmentYearId,String fromDateStr,String toDateStr);
 	
 	public List<CoreDashboardInsuranceVO> getInsuranceCompanyWiseOverviewAndStatusDetails(Long activityMemberId,Long cadreYearId,String fromDateStr,String toDateStr);
-	public List<CoreDashboardInsuranceVO> getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType);
+	public List<CoreDashboardInsuranceVO> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType);
+	public List<CoreDashboardInsuranceVO> getLocationWiseThenStatusWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType);
 }
