@@ -1,11 +1,11 @@
 function globalOnLoadCalls()
 {
 	getElectionYears();
-	getSessionYears();
-	getAllSessions();
-	getDates();
-	getSessionDetails();
-	getDayWiseDetails();
+	//getSessionYears();
+	//getAllSessions();
+	//getDates();
+	//getSessionDetails();
+	//getDayWiseDetails();
 }
 function onLoadInitialisations()
 {
@@ -28,6 +28,7 @@ function onLoadInitialisations()
 	});
 }
 function getElectionYears(){
+	
 	var jObj = {
 	};		
 	$.ajax({
@@ -38,7 +39,9 @@ function getElectionYears(){
 		var str='';
 		if(result != null && result.length >0)
 		{
-			str+='<select class="chosen-select">';
+			
+			//str+='<select class="chosen-select" onchange="getSessionYears();">';
+			str+='<option value="0">Select Election Year</option>';
 			for(var i in result)
 			{
 				str+='<option value="'+result[i].id+'">'+result[i].date+'</option>';
@@ -46,14 +49,17 @@ function getElectionYears(){
 			str+='</select>';
 		}
 		$("#electionYear").html(str);
-		$(".chosen-select").chosen({width:'100%'});
+		//$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
 
 function getSessionYears(){
+	
+	var electionYear = $("#electionYear").val();
+	
 	var jObj = {
-		elctionYearId : 3
+		elctionYearId : electionYear
 	};		
 	$.ajax({
 		  type:'POST',
@@ -63,23 +69,26 @@ function getSessionYears(){
 		var str='';
 		if(result != null && result.length >0)
 		{
-			str+='<select class="chosen-select">';
+			str+='<option value="">All</option>';
 			for(var i in result)
 			{
 				str+='<option value="'+result[i].name+'">'+result[i].partyName+'</option>';
 			}
-			str+='</select>';
+			//str+='</select>';
 		}
 		$("#sessionYear").html(str);
-		$(".chosen-select").chosen({width:'100%'});
+		//$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
 
 function getAllSessions(){
+	var electionYear = $("#electionYear").val();
+	var sessionYear = $("#sessionYear").val();
+	
 	var jObj = {
-		elctionYearId : 3,
-		sessionYear : "2017"
+		elctionYearId : electionYear,
+		sessionYear : sessionYear //"2017"
 	};		
 	$.ajax({
 		type:'POST',
@@ -89,24 +98,30 @@ function getAllSessions(){
 		var str='';
 		if(result != null && result.length >0)
 		{
-			str+='<select class="chosen-select">';
+			//str+='<select class="chosen-select">';
+			str+='<option value="0">All</option>';
 			for(var i in result)
 			{
 				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 			}
-			str+='</select>';
+			//str+='</select>';
 		}
 		$("#assemblySession").html(str);
-		$(".chosen-select").chosen({width:'100%'});
+		//$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
 
 function getDates(){
+	
+	var electionYear = $("#electionYear").val();
+	var sessionYear = $("#sessionYear").val();
+	var sessionId = $("#assemblySession").val();
+	
 	var jObj = {
-		elctionYearId : 3,
-		sessionYear : "2017",
-		sessionId : 21
+		elctionYearId : electionYear,
+		sessionYear : sessionYear,//"2017",
+		sessionId : sessionId
 	};		
 	$.ajax({
 		  type:'POST',
@@ -129,19 +144,19 @@ function getDates(){
 function getSessionDetails(){
 	var startDate;
 	var endDate;
-	//var termId = $("#elctonId").val();
-	//var sessionyear = $('#sessionYearId').val();
-	//var sessionId = $('#sessionId').val();
-	//var dateStr = $('#dateId').val();
-	//var dateArr = dateStr.split("-");
-	//if(dateArr != null && dateArr.length > 0){
-		//startDate = dateArr[0];
-		//endDate =  dateArr[1]; 
-	//}
+	var electionYear = $("#electionYear").val();
+	var sessionYear = $("#sessionYear").val();
+	var sessionId = $("#assemblySession").val();
+	var dateStr = $('#dateRange').val();
+	var dateArr = dateStr.split("-");
+	if(dateArr != null && dateArr.length > 0){
+		startDate = dateArr[0];
+		endDate =  dateArr[1]; 
+	}
 	var jObj = {
-		elctionYearId : 3,
-		sessionYear : "2017",
-		sessionId : 21,
+		elctionYearId : electionYear,
+		sessionYear : sessionYear,//"2017",
+		sessionId : sessionId,
 		startDate : "",//23-02-2016
 		endDate : ""//11-05-2016
 	};		
@@ -191,11 +206,11 @@ function buildSessionDetails(result)
 									str+='<ul class="list-inline">';
 									for(var k in result[i].candidateList[j].partyList)
 									{
-										str+='<li>'+result[i].candidateList[j].partyList[k].partyName+'</li>';
+											str+='<li>'+result[i].candidateList[j].partyList[k].partyName+'</li>';
 									}
 									str+='</ul>';
 								str+='</td>';
-								str+='<td>'+result[i].candidateList[j].count+'</td>';
+								str+='<td atr_session_day_id="'+result[i].candidateList[j].adminHouseSessionDayId+'" class="sessionCls">'+result[i].candidateList[j].count+'</td>';
 								str+='<td>'+result[i].candidateList[j].startDate+'</td>';
 							str+='</tr>';
 						}
@@ -206,10 +221,12 @@ function buildSessionDetails(result)
 	str+='</table>';
 	$("#sessionDetails").html(str);
 }
-
-function getDayWiseDetails(){
+$(document).on("click",".sessionCls",function(){
+	
+	var sessionDayId = $(this).attr("atr_session_day_id");
+	
 	var jObj = {
-				 adminHouseSessionDayId : 145
+				 adminHouseSessionDayId : sessionDayId
 			};		
 			$.ajax({
 				  type:'POST',
@@ -217,7 +234,11 @@ function getDayWiseDetails(){
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
 			 });
-}
+});
+/* function getDayWiseDetails(){
+	
+	
+} */
 //getPatries();
 function getPatries(){
 	
