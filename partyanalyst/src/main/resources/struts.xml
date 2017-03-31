@@ -16380,7 +16380,7 @@
 			<result type="json" name="success">
 	   			<param name="root">coreDashboardInsuranceVOs</param>    
 	   		</result>
-		</action> 
+		</action>
 		<action name="getLocationWiseThenStatusWiseInsuranceMemberCountForTSAction" class="cadreRegistrationAction" method="getLocationWiseThenStatusWiseInsuranceMemberCountForTS">
 			<result type="json" name="success">
 	   			<param name="root">coreDashboardInsuranceVOs</param>        
@@ -16391,6 +16391,11 @@
 			<result type="json" name="success">
 	   			<param name="root">customReportVOList</param>    
 	   		</result>
-		</action>      
+		</action>
+		<action name="getDatesForSavingAction" class="assemblySessionAction" method="getDatesForSaving">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>         
  </package>
 </struts>
