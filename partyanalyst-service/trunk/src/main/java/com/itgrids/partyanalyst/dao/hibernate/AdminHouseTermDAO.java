@@ -18,8 +18,8 @@ public class AdminHouseTermDAO extends GenericDaoHibernate<AdminHouseTerm, Long>
 		Query query = getSession().createQuery("select model.adminHouseTermId, " +
 				" year(model.fromDate),year(model.toDate) " +
 				" from AdminHouseTerm model " +
-				" where model.adminHouse.adminHouseId = 1" +
-				" and model.isActive = 'Y' and model.isDeleted = 'N' ");
+				" where model.adminHouse.adminHouseId = 3" +
+				" and model.isActive = 'Y' and model.isDeleted = 'N' and model.adminHouse.electionScope.electionScopeId = 2");
 		return query.list();
 	}
 
