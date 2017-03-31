@@ -188,16 +188,34 @@ public class AssemblySessionService implements IAssemblySessionService{
 						AdminHouseVO  partyVO = getMatchedVOList(dayVO.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[1]));
 							 if(partyVO != null){
 								 partyVO.setCount(partyVO.getCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
-								 partyVO.setPartyName(partyVO.getPartyName() + "-" +partyVO.getCount());
+								 partyVO.setPartyName(partyVO.getName() + "-" +partyVO.getCount());
 								 dayVO.setCount(dayVO.getCount()+partyVO.getCount());//Day Wise total Members Count
 								// partyVO.setPartyId(vo.getPartyId());
+							 }else{
+								 partyVO = new AdminHouseVO();
+								 partyVO.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+								 partyVO.setName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+								 partyVO.setCount(partyVO.getCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+								 partyVO.setPartyName(partyVO.getName() + "-" +partyVO.getCount());
+								 dayVO.setCount(dayVO.getCount()+partyVO.getCount());//Day Wise total Members Count
+								dayVO.getPartyList().add(partyVO);
 							 }
 						   }else{
 							   dayVO = new AdminHouseVO();
 							   dayVO.setDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
 							   dayVO.setStartDate(commonMethodsUtilService.getStringValueForObject(objects[2]));
 								dayVO.setAdminHouseSessionDayId(commonMethodsUtilService.getLongValueForObject(objects[4]));
-								dayVO.setPartyList(getAllParties());
+								
+								if(commonMethodsUtilService.getLongValueForObject(objects[1]) != null && commonMethodsUtilService.getLongValueForObject(objects[1]) > 0l){
+									AdminHouseVO  partyVO1 = new AdminHouseVO();
+									partyVO1.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[1]));
+									 partyVO1.setName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+									 partyVO1.setCount(partyVO1.getCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+									 partyVO1.setPartyName(partyVO1.getName() + "-" +partyVO1.getCount());
+									 dayVO.setCount(dayVO.getCount()+partyVO1.getCount());
+									dayVO.getPartyList().add(partyVO1);
+								}
+								
 								vo.getCandidateList().add(dayVO);
 							   dayMap.put(commonMethodsUtilService.getLongValueForObject(objects[4]), dayVO);
 						   }
