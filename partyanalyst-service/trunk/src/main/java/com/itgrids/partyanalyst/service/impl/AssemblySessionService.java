@@ -144,7 +144,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 		try{
 			Map<Long,AdminHouseVO> sessionListtMap = new LinkedHashMap<Long,AdminHouseVO>();
 			List<Long> sessionIds = new ArrayList<Long>(0);
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date startDate = null;
 			Date endDate = null;
 			if(startDateStr != null && endDateStr != null && !startDateStr.toString().isEmpty() && !endDateStr.toString().isEmpty() ){
