@@ -21,4 +21,5 @@ public interface IAssemblySessionService
 	public String updateMemberSpeechAspectDetails(final AdminHouseVO adminHouseVO);
 	public List<AdminHouseVO> getCandidateNameForParty(Long partyId);
 	public ResultStatus saveMemberSpeechAspect(final AssemblySessionReportVO vo);
+	public List<AdminHouseVO> getDatesForSaving(Long termId,String sessionYear,Long sessionId);
 }
