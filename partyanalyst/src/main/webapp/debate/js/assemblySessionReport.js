@@ -26,6 +26,14 @@ function onLoadInitialisations()
 			$("#expandView"+count).hide();
 		}
 	});
+	
+	$("#UpdateStartdateRange").daterangepicker({
+		 singleDatePicker: true,
+		locale:{
+			format: 'DD/MM/YYYY'
+		},
+	});
+	
 }
 function getElectionYears(){
 	
@@ -274,3 +282,146 @@ function getCandidates(){
 					}
 			 });
 }
+
+	var appendId=0;
+	$(document).on("click",".addObserversCls",function(){
+		appendId=appendId+1;
+		var str='';
+		str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+		str+='<label>Observer - '+appendId+'</label>';
+			str+='<select class="chosen-select">';
+				str+='<option value="1">2014-2019</option>';
+				str+='<option value="1">2014-2019</option>';
+				str+='<option value="1">2014-2019</option>';
+			str+='</select>';
+			str+='</div>';
+			$("#observerNamesId").append(str);
+			$(".chosen-select").chosen({width:'100%'});
+			
+		
+	});
+	var toatlUpdatedCloneCount =0;
+	var mainCloneCount =0;	
+	var updatedCloneCount =0;  
+	var totalIndividualCloneCount =1;  
+	
+	//add individual for default append
+	$(document).on("click","#addMemberDetailsId",function(){
+		updatedCloneCount = updatedCloneCount +1;
+		var c = $("#updateAppendHtml").clone(true);
+		c.attr({
+			'id': 'updateAppendHtml'+updatedCloneCount
+		});
+		c.css("display","block");
+		c.find(".memberNameCls").attr("id","memberNameId"+updatedCloneCount)
+		c.find(".memberNameCls").attr("attr_count",updatedCloneCount)
+		
+		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount)
+		c.find(".presentationCls").attr("attr_count",updatedCloneCount)
+			
+		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount)
+		c.find(".counterAttackCls").attr("attr_count",updatedCloneCount)
+		
+		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount)
+		c.find(".bodyLanguageCls").attr("attr_count",updatedCloneCount)
+		
+		c.find(".summaryCls").attr("id","summaryId"+updatedCloneCount)
+		c.find(".summaryCls").attr("attr_count",updatedCloneCount)
+		
+		c.find(".updatingRemoveBtnCls").attr("attr_div_id","updateAppendHtml"+updatedCloneCount);
+		$("#updatingClonedElements").append(c);
+		
+    
+		// $("#memberNameId"+updatedCloneCount).chosen();
+		// $("#memberNameId"+updatedCloneCount).trigger("chosen:updated");
+		// $(".chosen-select").chosen({width:'100%'});
+		
+	});
+	
+	
+	
+	//total append block
+	$(document).on("click","#addTotalOneMoreBlockId",function(){
+		mainCloneCount = mainCloneCount +1;
+		var generatedId = mainCloneCount+''+toatlUpdatedCloneCount;
+		var c = $("#totalUpdateAppendHtml").clone(true);
+		c.attr({
+			'id': 'totalUpdateAppendHtml'+generatedId
+		});
+		c.css("display","block");
+		c.find(".partyCls").attr("id","partyId"+generatedId)
+		c.find(".partyCls").attr("attr_count",generatedId)
+		
+		c.find(".memberNameCls").attr("id","memberNameId"+generatedId)
+		c.find(".memberNameCls").attr("attr_count",generatedId)
+		c.find("#memberNameId"+generatedId).attr("onchange","getOrganizationsForState();");
+		
+		c.find(".presentationCls").attr("id","presentationId"+generatedId)
+		c.find(".presentationCls").attr("attr_count",generatedId)
+			
+		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
+		c.find(".counterAttackCls").attr("attr_count",generatedId)
+		
+		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
+		c.find(".bodyLanguageCls").attr("attr_count",generatedId)
+		
+		c.find(".summaryCls").attr("id","summaryId"+generatedId)
+		c.find(".summaryCls").attr("attr_count",generatedId)
+		
+		c.find(".totalUpdatingRemoveBtnCls").attr("attr_div_id","totalUpdateAppendHtml"+generatedId);
+		$("#totalUpdatingClonedElements").append(c);
+    
+		/* $("#memberNameId"+generatedId).chosen();
+		$("#memberNameId"+generatedId).trigger("chosen:updated");
+		$(".chosen-select").chosen({width:'100%'}); */
+		
+	});
+	
+	//total block for individual append
+	$(document).on("click","#totalAddMemberDetailscls",function(){
+		
+		totalIndividualCloneCount = totalIndividualCloneCount+1;
+		var generatedId = mainCloneCount+''+toatlUpdatedCloneCount+''+totalIndividualCloneCount;
+		var c = $("#updateAppendHtml").clone(true);
+		c.attr({
+			'id': 'updateAppendHtml'+generatedId
+		});
+		c.css("display","block");
+		
+		c.find(".memberNameCls").attr("id","memberNameId"+generatedId)
+		c.find(".memberNameCls").attr("attr_count",generatedId)
+		
+		c.find(".presentationCls").attr("id","presentationId"+generatedId)
+		c.find(".presentationCls").attr("attr_count",generatedId)
+			
+		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
+		c.find(".counterAttackCls").attr("attr_count",generatedId)
+		
+		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
+		c.find(".bodyLanguageCls").attr("attr_count",generatedId)
+		
+		c.find(".summaryCls").attr("id","summaryId"+generatedId)
+		c.find(".summaryCls").attr("attr_count",generatedId)
+		
+		c.find(".updatingRemoveBtnCls").attr("attr_div_id","updateAppendHtml"+generatedId);
+		$("#totalIndividualClonedElements").append(c);
+    
+		/* $("#memberNameId"+generatedId).chosen();
+		$("#memberNameId"+generatedId).trigger("chosen:updated");
+		$(".chosen-select").chosen({width:'100%'}); */
+		
+	});
+	
+	$(document).on("click",".updatingRemoveBtnCls",function(){
+		var divId = $(this).attr("attr_div_id");
+		$("#"+divId).remove();
+	});
+	$(document).on("click",".totalUpdatingRemoveBtnCls",function(){
+		var divId = $(this).attr("attr_div_id");
+		$("#"+divId).remove();
+	});
+	
+	function getOrganizationsForState(){
+		alert(4)
+	}
+	
