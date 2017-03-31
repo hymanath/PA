@@ -16376,10 +16376,15 @@
 	   			<param name="root">coreDashboardInsuranceVOs</param>    
 	   		</result>
 		</action>
-		<action name="getDistrictWiseThenCategoryWiseInsuranceMemberCountForTSAction" class="cadreRegistrationAction" method="getDistrictWiseThenCategoryWiseInsuranceMemberCountForTS">
+		<action name="getLocationWiseThenCategoryWiseInsuranceMemberCountForTSAction" class="cadreRegistrationAction" method="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS">
 			<result type="json" name="success">
 	   			<param name="root">coreDashboardInsuranceVOs</param>    
 	   		</result>
-		</action>         
+		</action> 
+		<action name="getLocationWiseThenStatusWiseInsuranceMemberCountForTSAction" class="cadreRegistrationAction" method="getLocationWiseThenStatusWiseInsuranceMemberCountForTS">
+			<result type="json" name="success">
+	   			<param name="root">coreDashboardInsuranceVOs</param>        
+	   		</result>
+		</action>        
  </package>
 </struts>
