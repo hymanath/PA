@@ -2643,7 +2643,10 @@ $(document).on('change','#districtSelectBoxId',function(){
 	getConstituenciesForDistricts(distIdArr);
 });  
 	$(document).on("click",".geoLevlCheckedCls",function(){
+		
 		var efectiveId= $(this).attr('efectiveId');
+		$('#detailsBtn').show();
+		$('#ErrorsrDiv').html('');
 		if(efectiveId == 'genderId'){
 			$("#"+efectiveId+"").val(0);
 			if($(this).is(":checked") ){
@@ -2659,7 +2662,31 @@ $(document).on('change','#districtSelectBoxId',function(){
 				$("#"+efectiveId+"_chosen").hide();
 			}
 		}
+		
+		$(".geoLevlCheckedCls").each(function(){
+			if($(this).is(':checked')){
+				var efectiveId= $(this).attr('efectiveId');
+				if(efectiveId=='casteId'){
+					var value= $('#'+efectiveId+'').val();
+					//alert(value);
+					if(value == null || value == 0 ){
+						$('#detailsBtn').hide();
+						$('#ErrorsrDiv').html('<b style="color:red;">Note :</b> Please select atleast one caste name.');
+					}
+				}
+			}
+		});
 });	
+
+function buildDetails(id){
+	$('#detailsBtn').show();
+	$('#ErrorsrDiv').html('');
+	if(id == null || id == 0 ){
+		$('#ErrorsrDiv').html('<b style="color:red;"> Note :</b> Please select atleast one caste name.');
+		$('#detailsBtn').hide();	
+	}
+}
+
 //getGeoLevelReportDetails();
 function  getGeoLevelReportDetails(){
 	$("#errMsgId").html("");
