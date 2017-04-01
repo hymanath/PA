@@ -582,17 +582,30 @@ function buildMemberDetails(result,sessionDayId){
 	
 	function savingApplication(){
 		$("#adminHouseSessionDayId").val(154);
-		alert($("#adminHouseSessionDayId").val());
+		//alert($("#adminHouseSessionDayId").val());
 		var uploadHandler = {
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
 					uploadResult = o.responseText;
-					//showSbmitStatus(uploadResult);
+					
+					showSbmitStatus(uploadResult);
 				}
 			};
 			YAHOO.util.Connect.setForm('submitAssemblySessionCanScore',true);
 			YAHOO.util.Connect.asyncRequest('POST','submitAssemblySessionCanScoreDetailsAction.action',uploadHandler);
 		
+	}
+	
+	function showSbmitStatus(uploadResult){
+		var stringext = uploadResult.substr(6,7);
+		
+		if(stringext == "SUCCESS"){
+			
+		}
+	}
+	
+	function clearFields(){
+		$("#updateAppendHtml").empty();
 	}
 
 function getDatesForSaving(){
