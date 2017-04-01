@@ -453,7 +453,7 @@
             isActionType : isActionType,
             actionTypeId :actionTypeId,
             scopeIdsArr : globalImpactScopeArr,
-			alertVerificationStatusId:0
+			alertVerificationStatusId:alertVerificationStatusId
 		}                          
 		$.ajax({
 			type : 'POST',      
@@ -3632,12 +3632,20 @@ function getTotalArticledetails(articleId){
 		var locationLevel = "";
 		var districtIdArr =[];
 		var constituencyId = 0;
+		var locationLevel = "";
 		var locationElectionBodyId = 0;
 		 if(loctionType=="Constituency"){
 			constituencyId = locationIdStr;  
 		}else if(loctionType=="District"){
 			districtIdArr = locationIdStr.split(",");	
 		}else if(loctionType == "localElectionBody"){
+			if(locationIdStr ==0){
+				var districtId = $("#districtSelectBoxId").val();
+				   if(districtId > 0){
+					 districtIdArr.push(districtId);  
+				   }
+				   locationLevel="OtherLocations";
+			}
 			locationElectionBodyId = locationIdStr;
 		} 
 	
@@ -3665,10 +3673,10 @@ function getTotalArticledetails(articleId){
 		 impactLevel = impactLevelObj[impactLevelId]+" Impact Alerts";	
 		}
 		
-		getLcatnWiseAlertDtls(impactLevel.toUpperCase(),districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId);
+		getLcatnWiseAlertDtls(locationLevel,impactLevel.toUpperCase(),districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId);
 	}
 
-	function getLcatnWiseAlertDtls(impactLevel,districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId){
+	function getLcatnWiseAlertDtls(locationLevel,impactLevel,districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId){
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
 		$("#alertCntTitId").html(impactLevel+" - "+totalAlertCnt);        
@@ -3694,7 +3702,7 @@ function getTotalArticledetails(articleId){
 			editionId : editionIds,
 			constituencyId:constituencyId,
 			alertStatusArr : globalAlertStatusArr,
-			locationLevel : "",
+			locationLevel : locationLevel,
 			isPublication:false,
 			publicationId:0,
 			locationElectionBodyId:locationElectionBodyId
@@ -4495,7 +4503,7 @@ function getStateImpactandItsSubLevelAlert(){
 	
 	function buildStateImpactLevelHighChartRslt(result){
 		if(result.subList1 != null && result.subList1.length > 0){
-			var impactLevelColorObj =  {"1":"#967BDC","2":"#4FDAB1","3":"#0267FE","8":"#32CCFE","5":"#019966","7":"#FF6600"};	
+			var impactLevelColorObj =  {"1":"#967BDC","2":"#51D9B1","3":"#34CCFD","8":"#1062FB","5":"#009662","7":"#FC690D"};	
 			var jsonObjArr = [];
 			var colorArr = [];
 			
@@ -4694,6 +4702,7 @@ function getStateImpactandItsSubLevelAlert(){
 					  }
 				 }
 			 }
+			 	
 			 //santosh
 		       var mainJosnObjArr = [];
 			  if(districtImpactArr != null && districtImpactArr.length > 0){
@@ -4711,6 +4720,7 @@ function getStateImpactandItsSubLevelAlert(){
 			   if(vllgWrdPnchytImpctArr != null && vllgWrdPnchytImpctArr.length > 0){
 				mainJosnObjArr.push({name:'VILLAGE/WARD/PANCHAYAT',data:vllgWrdPnchytImpctArr,color:"#FC690D"});  
 			  } 
+			  
 			  var getWidth = $("#districtOvervwGraph").width();
 			  $("#districtImpactLevelHighChartDivId").height(650);	
 			  $("#districtImpactLevelHighChartDivId").css("width",getWidth);	
@@ -4921,8 +4931,15 @@ function getStateImpactandItsSubLevelAlert(){
 	
 	function buildCorpGmcImpactLevelHighChartRslt(result){  
 		var corpGmcImparArr = [];
+		 if(result.subList1.length ==1){
+			 if(result.subList1[0].id==0){
+				$(".gmcImpactLevelBlockCls").hide(); 
+			 }
+		 }
 	  	if(result.subList1 != null && result.subList1.length > 0){
 			for(var i in result.subList1){
+				if(result.subList1[i].id ==0)
+					continue;
 				var obj1 = {
 					name: result.subList1[i].name,
 					y: result.subList1[i].alertCount,
@@ -5036,12 +5053,14 @@ function getStateImpactandItsSubLevelAlert(){
 		   var impactLevelObj = result.subList1[0].subList1;
 		   str+='<div class="table-responsive">';
 			str+='<table class="table table-bordered text_align_center">';
-				str+='<thead class="bg_ED">';
+				str+='<thead class="bg_ED text-capital">';
 				str+='<th style="text-align:center;">CORP-GMC</th>';
 				str+='<th style="text-align:center;">Total</th>';
 				str+='</thead>';
 				str+='<tbody>';
 				 for(var i in result.subList1){
+				  if(result.subList1[i].id ==0)
+					continue;
 				  str+='<tr>';
 				  str+='<td style="text-align:center;">'+result.subList1[i].name+'</td>';
 				  if(result.subList1[i].alertCount > 0){
@@ -5523,7 +5542,6 @@ function getStateImpactandItsSubLevelAlert(){
 			
 		});  
 	}
-	//sanjeet
 	function buildStateOrGhmcImpactLevelHighChartRsltPublicationWise(result,divId,impactLevel){
 		
 		var publicationNameArr =[];
