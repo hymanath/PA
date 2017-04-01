@@ -368,9 +368,9 @@
                 </div>
             </div>
         </div>
-		<div class="col-md-12 col-xs-12 col-sm-12 loctnLvlCntDivCls" style="display:none;">
-        	<div class="row m_top10">
-            	<div class="col-md-12 col-xs-12 col-sm-12">
+		<div class="col-md-12 col-xs-12 col-sm-12 loctnLvlCntDivCls m_top20" style="display:none;">
+		 <div class="row m_top10">
+        		<!--<div class="col-md-12 col-xs-12 col-sm-12">
                 	<h3 class="headingColor text-capitalize">Geographic Positions Overview (Candidates Location Wise)<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
 					<div style="margin-top:25px">
                     <h4 class="showingResult geoGraphicOverHideShow m_top10">showing results</h4></div>
@@ -382,7 +382,7 @@
                         <li><span class="casteGroupsCls">All caste groups</span></li>
                         <li><span class="gOssuedCls">G.O Issued</span></li>
                     </ul>-->	
-					<div class="col-md-3 col-sm-4 col-xs-12 geoGraphicOverHideShow">
+					<!--<div class="col-md-3 col-sm-4 col-xs-12 geoGraphicOverHideShow">
                     	<input  type="radio" name="checkBoxName1" checked="true"  style="" value="1" class="radioBtnCls1 hideshowchkbxCls"/><span> Overall View </span>
                        <input  type="radio" name="checkBoxName1"   style="" value="2" class="radioBtnCls1" /><span> Demographical View </span>  
                    </div>	
@@ -430,15 +430,104 @@
                     	<button type="button" value="getDetailsVal" class="btn btn-success m_top10" onclick="getLocationAndBoardLevelWiseCasteCatgryPostsData();" id="">SUBMIT</button>
 					</div>
 					</div>
+                </div>-->
+				<!--srujana-->
+			<h3 class="headingColor text-capitalize">Geographic Positions Overview (Candidates Location Wise)<span class="pull-right plusIconCircle geoGraphicOver"><i class="glyphicon glyphicon-minus "></i></span></h3>
+			<div class ="row loctnLvlCntDivBlockCls collapse in">
+				<div class="col-md-3 col-sm-4 col-xs-12 geoGraphicOverHideShow" style="display :none;">
+                    <input  type="radio" name="checkBoxName1"   style="" value="1" class="radioBtnCls1 hideshowchkbxCls" style="display :none;"/><span> Overall View </span>
+                    <input  type="radio" name="checkBoxName1"  checked="true" style="" value="2" class="radioBtnCls1" style="display:none;" /><span> Demographical View </span>  
                 </div>
-                <div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
+				<div class="col-md-9 col-sm-8 col-xs-12 geoGraphicOverHideShow">					
+					<div>
+						<label><b> GEO-LEVEL-REPORT : </b></label>
+						<span class="form-inline" style="margin-left:10px;">
+							<label>
+								<input  type="radio" name="checkBoxName" checked="true" style="" value="district" class="radioBtnCls radioBtnClsDist"/><span>District</span>
+							</label>
+							<label style="margin-left:10px;">
+								<input  type="radio" name="checkBoxName" style="" value="constituency" class="radioBtnCls"/><span> Constituency</span>
+							</label>
+						</span>
+					</div>
+				</div>
+				<div class="col-md-3 col-sm-4 col-xs-12 m_top10 districtLvlCls" style=" margin-right: 10px;">
+				<div id="errMsgId" style="color:red;"></div>
+					<label>
+					District: </label>
+					<!--<div id="errMsgId" style="color:red;"></div>-->
+					<div id="distcsLevelId"></div> 
+				</div>
+				<div class="col-md-2 col-sm-4 col-xs-12 m_top10 constituenyCls">
+					<label>
+					Constituency: </label>
+					<!--<div id="errMsgId" style="color:red;"></div>-->
+					<div>
+						<select  id="consLevelId" class="chosenSelect form-control" multiple></select>
+					</div> 
+				</div>
+			</div>
+			<div class="row loctnLvlCntDivBlockCls collapse in">
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+					<div class="bg_cc" style="padding:10px;">
+						<div class="row">
+							<div class="col-md-2 col-xs-12 col-sm-6">
+								<label>Position</label>
+								<input id="" class="checkboxCls geoLevlCheckedCls"  efectiveId="PostnId" name="checkbox"  type="checkbox" value="positionVal">
+								<select attr_no="" multiple class="chosenSelect deptBoardPostnCls" id="PostnId" name="" data-placeholder ="ALL">
+									<option value="0">ALL</option>
+								</select>
+							</div>
+							<div class="col-md-2 col-xs-12 col-sm-6">
+								<label>Caste Group</label>
+								<input id="" class=" checkboxCls geoLevlCheckedCls"  name="checkbox" efectiveId="casteGroupId1" type="checkbox" value="casteGroupVal" >
+								<select attr_no="" multiple class="chosenSelect " id="casteGroupId1" name="" data-placeholder ="ALL" onchange="getCastListByCasteCatgryId(this.id);">
+									<option value="0">ALL</option>
+								</select>
+						   </div>
+							<div class="col-md-2 col-xs-12 col-sm-6">
+								<label>Caste</label>
+								<input id="" class=" checkboxCls geoLevlCheckedCls"  name="checkbox"  efectiveId ="casteId" type="checkbox" value="casteVal" />
+								<select attr_no="" multiple class="chosenSelect " id="casteId" name="" data-placeholder ="ALL" onchange="buildDetails(this.value)">
+									<option value="0">ALL</option>
+								</select>
+							</div>
+							<div class="col-md-2 col-xs-12 col-sm-6">
+								<label>Gender</label>
+								<input id="" class=" checkboxCls geoLevlCheckedCls"  name="checkbox"  type="checkbox" value="genderVal" efectiveId ="genderId"> 
+								<select class="form-control" id="genderId" name="" data-placeholder ="ALL"  style="display:none;height: 30px;">
+									<option value="0">ALL</option>
+									<option value="M">Male</option>
+									<option value="F">FeMale</option>
+								</select>
+							</div>
+							<div class="col-md-2 col-xs-12 col-sm-6">
+								<label>Age</label>
+								<input id="" class=" checkboxCls geoLevlCheckedCls"  name="checkbox"  type="checkbox" value="ageVal" efectiveId ="ageId" >
+								<select attr_no="" multiple class="chosenSelect " id="ageId" name="" data-placeholder ="ALL">
+									<option value="0">ALL</option>
+								</select>
+							</div>
+							<div class="col-md-2 col-xs-12 col-sm-6">
+								<button class="btn btn-success" onclick="getGeoLevelReportDetails();" id="detailsBtn"> Get Details </button>
+							</div>
+						</div>
+						<div class="row">
+							<div class="" style="margin-left: 15px;" id="ErrorsrDiv">
+							
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-12 col-xs-12 col-sm-12 m_top10 geoGraphicOverHideShow">
                 	<div class="pad_10 bg_ff" id="">
-                    	<div class="table-responsive" id="loctnLvlCntId"></div>
-                    	<div class="table-responsive" id="loctnLvlCntId1"></div>
+                    	<div class="table-responsive" id="loctnLvlCntId" style="display : none;"></div>
+                    	<div class="table-responsive" id="loctnLvlCntId1" style="display : none;"></div>
 						<div class="table-responsive" id="totalReportDiv"></div>
                     </div>
                 </div>
-            </div>
+			</div>
         </div>
     </div>
 </div>
@@ -499,8 +588,28 @@ $(document).on("click",".demoGraphicsCls",function(){
 $(document).on("click",".geoGraphicOver",function(){
 	$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");
 	$(".hideshowchkbxCls,.radioBtnClsDist").trigger('click');
-	$(".geoGraphicOverHideShow").toggle();
+	$(".loctnLvlCntDivBlockCls").collapse('toggle');
 	$(".constituenyCls,.districtLvlCls,#getDetailsId").hide();
+	$("#totalReportDiv").html('');
+	$("#errMsgId").html('');
+	$(".radioBtnCls1").trigger('click');
+	$(".districtLvlCls").show();
+	$(".geoLevlCheckedCls").each(function(){
+		var efectiveId= $(this).attr('efectiveId');
+		if(efectiveId == 'genderId'){
+			if($(this).is(":checked") ){
+				$(this).prop('checked',false);
+				$("#"+efectiveId+"").hide();
+			}
+		}else{
+			if($(this).is(":checked") ){
+				$(this).prop('checked',false);
+				$("#"+efectiveId+"_chosen").hide();
+			}
+		}
+		
+		
+	});
 });
 $(document).on("click",".geoGraphicOver2",function(){
 	$(this).find("i").toggleClass("glyphicon-plus").toggleClass("glyphicon-minus");

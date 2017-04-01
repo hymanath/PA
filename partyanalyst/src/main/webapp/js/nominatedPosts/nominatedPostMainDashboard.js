@@ -245,6 +245,7 @@ $(document).on("click",".casteGroupCls",function(){
 		var boardLevelId = $("#locationLevelId").val();
 		 getBoardList(departmentId,boardLevelId);
 	});
+	//getCastGroupList();
 	function getCastGroupList(){
 		var jsObj={}
 		$.ajax({   
@@ -256,8 +257,11 @@ $(document).on("click",".casteGroupCls",function(){
 			if(result != null && result.length > 0){
 				for(var i in result){
 					$('#casteGroupId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					$('#casteGroupId1').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				}
-				$('#casteGroupId').trigger("chosen:updated");  
+				$('#casteGroupId').trigger("chosen:updated"); 
+                $('#casteGroupId1').trigger("chosen:updated"); 	
+				$("#casteGroupId1_chosen").hide();				
 			}
 		});
 	}
@@ -290,9 +294,13 @@ $(document).on("click",".casteGroupCls",function(){
 				for(var i in result){
 					$('#candPositonId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 					$('#positonId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					$('#PostnId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				}
 				$("#candPositonId").trigger("chosen:updated");
 				$("#positonId").trigger("chosen:updated");
+				$("#PostnId").trigger("chosen:updated");
+				$("#PostnId_chosen").hide();
+				
 			}
 		});
 	}
@@ -2474,12 +2482,14 @@ $(document).on("click",".radioBtnCls",function(){
 	  if(result != null){
 		var str='';
 		str+='<select class="multiSel distIdsCls" multiple id="districtSelectBoxId">';
-		//str+='<option value="0">All</option>';
+		str+='<option value="0">All</option>';
 		for(var i in result)
 		{
-			
+			if(result[i].id >0){
+				if(result[i].id != 517)
 			str+='<option value="'+result[i].id+'"  >'+result[i].name+'</option>';
 			distIdArr.push(result[i].id);
+			}
 		}
 		str+='</select>';
 		$("#distcsLevelId").html(str)
@@ -2511,11 +2521,11 @@ $(document).on("click",".radioBtnCls",function(){
 	   if(result != null){
 		var str='';
 		str+='<select class="multiSelect " multiple id="allConstituencySelectBoxId">';
-		//str+='<option value="0">All</option>';
+		str+='<option value="0">All</option>';
 		for(var i in result)
 		{
+			if(result[i].id >0)
 			str+='<option value="'+result[i].id+'" >'+result[i].name+'</option>';
-			//alert('+result[i].id+');
 		}
 		str+='<select>';
 		$("#consLevelId").html(str)
@@ -2537,10 +2547,13 @@ $(document).on("click",".radioBtnCls",function(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   if(distIdArr == "0"){
+		getConstituenciesForAllDistricts();
+	  }
 	   if(result.surveyTransactionVOList != null){
 		var str='';
 		str+='<select class="multiSelect " multiple id="constituencySelectBoxId">';
-		//str+='<option value="0">All</option>';
+		str+='<option value="0">All</option>';
 		for(var i in result.surveyTransactionVOList)
 		{
 			str+='<option value="'+result.surveyTransactionVOList[i].id+'" >'+result.surveyTransactionVOList[i].name+'</option>';
@@ -2629,40 +2642,159 @@ $(document).on('change','#districtSelectBoxId',function(){
     });
 	getConstituenciesForDistricts(distIdArr);
 });  
+	$(document).on("click",".geoLevlCheckedCls",function(){
+		var efectiveId= $(this).attr('efectiveId');
+		if(efectiveId == 'genderId'){
+			$("#"+efectiveId+"").val(0);
+			if($(this).is(":checked") ){
+				$("#"+efectiveId+"").show();
+			}else{
+				$("#"+efectiveId+"").hide();
+			}
+		}else{
+			$("#"+efectiveId+"").val("").trigger("chosen:updated");
+			if($(this).is(":checked") ){
+				$("#"+efectiveId+"_chosen").show();
+			}else{
+				$("#"+efectiveId+"_chosen").hide();
+			}
+		}
+});	
 //getGeoLevelReportDetails();
 function  getGeoLevelReportDetails(){
-	$("#totalReportDiv").html("<img style='margin-left: 85px;widht:30px;height:30px;display:none;' src='images/icons/loading.gif'>");
-	var statusIds = [];
-	//statusIds.push(3);
-	var casteIds = [];
-	//casteIds.push(1);
-	var casteCategoryIds = [];
-	//casteCategoryIds.push(1);
-	var ageRangeIds = [];
-	//ageRangeIds.push(2);
-	//var positionIds = [];
-	//positionIds.push(1);
-	var locationIds = [];
-	locationIds.push(19);
-	//locationIds.push(23);
+	$("#errMsgId").html("");
+	var isCasteChkd = "false";
+	var isPositionChkd = "true";
+	var	 isCasteGrpChkd = "false";
+	var	 isGenderChkd = "true";
+	var	 isAgeRngeChkd = "false";
 	var positionIds = [];
-	//positionIds.push(1);
-	
+	var posIds =$("#PostnId").val();
+	var casteCategoryIds = [];
+	var casteGrupId =$("#casteGroupId1").val();
+	var casteIds = [];
+	var casteId =$("#casteId").val();
+	var gender = [];
+	var genderId =$("#genderId").val();
+	var ageRangeIds = [];
+	var ageId =$("#ageId").val();
+	var distIdArr =[];
+	//var searchType1  = $('input[name=checkBoxName1]:checked').val();
+	 
+		 var subType  = $('input[name=checkBoxName]:checked').val();	     
+		   if(subType == "district"){
+		 if($("#districtSelectBoxId").val() == null || $("#districtSelectBoxId").val() == ""){
+			  $("#errMsgId").html("Please select district");
+			  return;
+		   }
+		   } else if(subType == "constituency"){
+			   if($("#districtSelectBoxId").val() == null || $("#districtSelectBoxId").val() == ""){
+			   $("#errMsgId").html("Please select district");
+			   return;
+		   }
+		   }
+		   /* else {
+			   if($("#consLevelId").val() == null || $("#consLevelId").val() == ""){
+			 $("#errMsgId").html("Please select constituency");
+			 return;
+			   }
+		 } */
+	$(".geoLevlCheckedCls").each(function(){
+				if($(this).prop('checked')==true && $(this).val() == "positionVal"){
+				    isPositionChkd = "true";
+				if(posIds == "" || posIds== 0 || posIds== null){
+						 positionIds = [];
+				}else{
+					positionIds = "";
+					positionIds = $("#PostnId").val();
+				 }
+				}else if($(this).prop('checked')==true && $(this).val() == "casteGroupVal"){
+				    isCasteGrpChkd = "true";
+					if(casteGrupId == "" || casteGrupId == 0 || casteGrupId == null){
+						casteCategoryIds = [];
+					}
+					else{
+						casteCategoryIds = "";
+						casteCategoryIds = $("#casteGroupId1").val();
+					}
+				}else if($(this).prop('checked')==true && $(this).val() == "casteVal"){
+					isCasteChkd = "true";
+					if(casteId == "" || casteId == 0 || casteId == null){
+						casteIds = [];
+					}
+					else{
+						casteIds = "";
+						casteIds = $("#casteId").val();
+					}
+				}else if($(this).prop('checked')==true && $(this).val() == "genderVal"){
+					isGenderChkd = "true";
+					if(genderId == "" || genderId == 0 || genderId == null){
+						gender ="";
+					}
+					else{
+						gender =$("#genderId").val();
+					}
+				}else if($(this).prop('checked')==true && $(this).val() == "ageVal"){
+					 isAgeRngeChkd = "true";
+					 if(ageId == "" || ageId == 0 || ageId == null){
+						ageRangeIds = [];
+					 }
+					else{
+						ageRangeIds = "";
+						ageRangeIds = $("#ageId").val();
+					}
+				}
+				
+			});
+	var locationType = "district";
+	var locationIds = [];
+$(".radioBtnCls").each(function(){
+	if($(this).prop('checked')==true){
+	  var locationId  = $('input[name=checkBoxName]:checked').val();
+	  if(locationId == "district"){
+		 locationType = "district";
+		 locationIds =$("#districtSelectBoxId").val();
+		 if(locationIds == "0")
+			 locationIds = [];
+	  }else if(locationId == "constituency"){
+		   locationType = "constituency"; 
+		  locationIds=$("#consLevelId").val();
+		  distIdArr =$("#districtSelectBoxId").val();
+		  if(distIdArr == "0"){
+			 distIdArr =[]; 
+		  }
+		  if(locationIds == "0"){
+			 locationIds = []; 
+		  }
+		  
+	  }
+	}
+ });
+	var statusIds = [];
+	if(locationIds == null){
+		locationIds = [];
+	}
+	if(distIdArr == null){
+		distIdArr =[];
+	}
+  $("#totalReportDiv").html("<img style='margin-left: 85px;widht:30px;height:30px;' src='images/icons/loading.gif'>");
 	var jObj ={
           levelId :0,
 		 statusIds :statusIds,
-		 casteIds     :casteIds,
+		 casteIds:casteIds,
 		 casteCategoryIds:casteCategoryIds,
 		 ageRangeIds:ageRangeIds,
 		 positionIds:positionIds,
 		 locationIds:locationIds,
-		 gender:"",
-		 locationType :"district",
-		 isCasteChkd :"true",
-		 isPositionChkd:"true",
-		 isCasteGrpChkd :"true",
-		 isGenderChkd:"true",
-		 isAgeRngeChkd:"true"
+		 gender:gender,
+		 locationType :locationType,
+		 isCasteChkd : isCasteChkd,
+		 isPositionChkd:isPositionChkd,
+		 isCasteGrpChkd :isCasteGrpChkd,
+		 isGenderChkd:isGenderChkd,
+		 isAgeRngeChkd:isAgeRngeChkd,
+		 stateId :globalStateId,
+		 distIdArr:distIdArr
 		 
 	};
 	 $.ajax({
@@ -2671,15 +2803,16 @@ function  getGeoLevelReportDetails(){
           dataType: 'json',
 		  data: {task:JSON.stringify(jObj)}
    }).done(function(result){
-	   if(result != null && result.length >0)
+	   if(result != null && result.length >0){
 	  buildGeoLevelReportDetails(result,jObj);
+	  }else{
+		  $("#totalReportDiv").html(" No DATA AVAILABLE "); 
+	   }
    });
 }
 
 function buildGeoLevelReportDetails(result,jObj)
 {
-	
-	
 	var str='';
 	str+='<table class="table table-condensed table-bordered" id="totalReportTab">';
 	str+='<thead>';
@@ -2812,4 +2945,57 @@ function buildGeoLevelReportDetails(result,jObj)
 	$('#totalReportDiv').html(str);
 	//$("#totalReportTab").dataTable();
 }
- 
+getCastListByCasteCatgryId(0);
+function getCastListByCasteCatgryId(id){
+	var casteCatgryId =$("#casteGroupId1").val();
+	if(casteCatgryId = "" || casteCatgryId == null || casteCatgryId == 0){
+		casteCatgryId =[];
+	}else{
+		casteCatgryId =$("#casteGroupId1").val();
+	}
+		var jsObj={
+			stateId : globalStateId,
+			casteCatgryId:casteCatgryId
+		}
+		$.ajax({   
+			type:'GET',
+			url:'getCastListByCasteCatgryIdAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$('#casteId').empty();
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$('#casteId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');	
+				}
+				$('#casteId').trigger("chosen:updated");
+           if(id == 0)
+	       $("#casteId_chosen").hide();	
+	   				
+			}
+		});
+	}
+	getAllAgeRangesList();
+	function getAllAgeRangesList(){
+		var jsObj={
+			
+		}
+		$.ajax({   
+			type:'GET',
+			url:'getAllAgeRangesListAction.action',  
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$('#ageId').empty();
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$('#ageId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');		
+				}
+				$('#ageId').trigger("chosen:updated");   
+			    $("#ageId_chosen").hide();				
+			}
+		});
+	}
+ $( document ).ready(function() {
+	  $(".districtLvlCls").show();
+});
