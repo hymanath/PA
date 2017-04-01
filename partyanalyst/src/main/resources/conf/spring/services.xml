@@ -652,6 +652,7 @@
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />	
 		<property name="locationInfoDAO" ref="locationInfoDAO" />
 		<property name="activityLocationInfoDAO" ref="activityLocationInfoDAO" />
+		<property name="districtConstituenciesDAO" ref="districtConstituenciesDAO" />
 	</bean>
 	
 	<bean name="partyBoothWiseResultsService" class="com.itgrids.partyanalyst.service.impl.PartyBoothWiseResultsService" >		

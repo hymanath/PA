@@ -640,9 +640,26 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		try{
 			
 			jObj = new JSONObject(getTask());
-			partyMeetingVOList = partyMeetingService.getUpdateDetails(jObj.getLong("levelId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("status"));
+			JSONArray distIdsListsArr = jObj.getJSONArray("distIdsList");
+			List<Long> distIds = new ArrayList<Long>(0);
+			if(distIdsListsArr != null && distIdsListsArr.length()>0){
+				for (int i=0;i<distIdsListsArr.length();i++) {
+					distIds.add(Long.parseLong(distIdsListsArr.get(i).toString()));
+				}
+			}
+			JSONArray constIdsListsArr = jObj.getJSONArray("constIdsList");
+			List<Long> constIds = new ArrayList<Long>(0);
+			if(constIdsListsArr != null && constIdsListsArr.length()>0){
+				for (int i=0;i<constIdsListsArr.length();i++) {
+					constIds.add(Long.parseLong(constIdsListsArr.get(i).toString()));
+				}
+			}
+			String locationType = jObj.getString("locationType");
+			String thridPartyStatus =jObj.getString("thridPartyStatus");
+			
+			partyMeetingVOList = partyMeetingService.getUpdateDetails(jObj.getLong("levelId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getString("status"),distIds,constIds,locationType,thridPartyStatus);
 		}catch(Exception e){
-			LOG.error("Entered into getUpdationDetails Action",e);
+			LOG.error("Entered into  Action",e);
 		}
 		return Action.SUCCESS;
 	}
