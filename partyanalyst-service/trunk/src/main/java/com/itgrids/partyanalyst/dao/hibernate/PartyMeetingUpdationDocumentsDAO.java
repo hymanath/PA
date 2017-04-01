@@ -28,7 +28,7 @@ public class PartyMeetingUpdationDocumentsDAO extends GenericDaoHibernate<PartyM
 	public List<Object[]> getDocumentsForUpdationDetsId(List<Long> meetingDetailsId){
 		Query query = getSession().createQuery("select model.partyMeetingUpdationDetails.partyMeetingUpdationDetailsId," +
 				" model.partyMeetingUpdationDocumentsId," +
-				" model.documentPath " +
+				" model.documentPath,model.partyMeetingUpdationDetails.partyMeetingId " +
 				" from PartyMeetingUpdationDocuments model" +
 				" where model.partyMeetingUpdationDetails.partyMeetingUpdationDetailsId in (:meetingDetailsId)" +
 				" and model.isDeleted = 'N'");

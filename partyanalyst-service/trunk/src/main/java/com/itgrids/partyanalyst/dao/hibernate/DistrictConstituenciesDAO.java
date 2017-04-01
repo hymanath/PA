@@ -34,7 +34,7 @@ public class DistrictConstituenciesDAO extends GenericDaoHibernate<DistrictConst
 		return query.list();
 	}
 	public List<Long> getConstituenciesOfDistrictById(Long districtId){
-		Query query = getSession().createQuery(" select distinct model.constituencyId  from DistrictConstituencies model where model.districtId = :districtId ");
+		Query query = getSession().createQuery(" select distinct model.constituencyId from DistrictConstituencies model where model.districtId = :districtId ");
 		query.setParameter("districtId", districtId);
 		return query.list();
 	}

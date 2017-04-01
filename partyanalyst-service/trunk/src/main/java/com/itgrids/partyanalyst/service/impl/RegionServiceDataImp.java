@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDistrictConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -80,6 +81,7 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private ILocationInfoDAO locationInfoDAO;
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	private IActivityLocationInfoDAO activityLocationInfoDAO;
+	private IDistrictConstituenciesDAO districtConstituenciesDAO;
 	
 	
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
@@ -257,6 +259,15 @@ public class RegionServiceDataImp implements IRegionServiceData {
 
 	public void setActivityLocationInfoDAO(IActivityLocationInfoDAO activityLocationInfoDAO) {
 		this.activityLocationInfoDAO = activityLocationInfoDAO;
+	}
+   
+	public IDistrictConstituenciesDAO getDistrictConstituenciesDAO() {
+		return districtConstituenciesDAO;
+	}
+
+	public void setDistrictConstituenciesDAO(
+			IDistrictConstituenciesDAO districtConstituenciesDAO) {
+		this.districtConstituenciesDAO = districtConstituenciesDAO;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1919,7 +1930,21 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	{
 		List<SelectOptionVO> returnList = null;
 		try {
-			List<Object[]> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict1(districtID);
+			Long tempDistrictId = districtID;
+			List<Object[]> constituences = districtConstituenciesDAO.getConstituenciesOfDistrict();
+			List<Long> existingAsemblyIdsList = new ArrayList<Long>(0);
+			if(constituences != null && constituences.size()>0)
+			{
+				for (Object[] param : constituences) {
+					existingAsemblyIdsList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+				}
+			}
+			
+			if(tempDistrictId != null && tempDistrictId.longValue()==517L){
+				tempDistrictId =13L;
+			}
+			
+			List<Object[]> constituencies = delimitationConstituencyDAO.getLatestConstituenciesForDistrict1(tempDistrictId);
 			if(constituencies != null && constituencies.size()>0)
 			{
 				returnList = new ArrayList<SelectOptionVO>(0);
@@ -1927,9 +1952,17 @@ public class RegionServiceDataImp implements IRegionServiceData {
 					SelectOptionVO vo = new SelectOptionVO();
 					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));				
 					vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					returnList.add(vo);
+					if(districtID.longValue() == 517L || districtID.longValue() == 13L){
+						if(districtID.longValue() == 517L  && existingAsemblyIdsList.contains(vo.getId())) // vishakapattanam-rural
+							returnList.add(vo);
+						else if(districtID.longValue() == 13L  && !existingAsemblyIdsList.contains(vo.getId())) // vishakapattanam
+							returnList.add(vo);
+					}
+					else
+						returnList.add(vo);
 				}
 			}
+			
 		} catch (Exception e) {
 			log.error("error Occured while executing areaCountListByAreaIdsOnScope in RegionServiceDataImp Service...",e);
 		}
