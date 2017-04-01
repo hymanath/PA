@@ -2013,7 +2013,6 @@ $(document).on("click","#saveDetailsBtnId",function(){
   if (r)	
   {
 	  $("#searchDataImgForUpdateMeetings").show();
-	  return;
 	  var uploadHandler = {
 		upload: function(o) {
 		    uploadResult = o.responseText;
