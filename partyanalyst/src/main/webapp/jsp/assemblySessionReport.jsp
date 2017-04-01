@@ -157,8 +157,7 @@
 									
 									<div class="col-md-2 col-xs-12 col-sm-6">
 										<label >Party</label>
-										<select class="chosen-select partyCls" id="partyId00" attr_count="0" onchange="getCandidates('memberNameCls','partyCls');" >
-											<option value="0">All</option>
+										<select class="chosen-select partyCls partyCls0"  onchange="getCandidates('memberNameValApp0','partyCls');" >
 											<!--<option value="1">Party</option>
 											<option value="2">YSRC</option>-->
 										</select>
@@ -166,8 +165,8 @@
 									<div class="col-md-10 col-xs-12 col-sm-12 m_top10">
 										<div class="col-md-3 col-xs-12 col-sm-6">
 											<label class="f_10">Member&nbsp;Name:</label>
-											<span class="glyphicon glyphicon-plus pull-right " id="addMemberDetailsId" style="margin-top: -10px;cursor:pointer;"></span>
-											<select class="chosen-select memberNameCls" id="memberNameId0" attr_count="0" name="assemblySessionReportVO.membersList[0].memberId">
+											<span class="glyphicon glyphicon-plus pull-right addMemberDetailsCls" id="addMemberDetailsId" style="margin-top: -10px;cursor:pointer;"></span>
+											<select class="chosen-select memberNameCls memberNameValApp0" id="" name="assemblySessionReportVO.membersList[0].memberId">
 												<option value="0">All</option>
 												<!--<option value="1">Parthipati PullaRao</option>
 												<option value="2">Parthipati PullaRao</option>-->
@@ -175,25 +174,26 @@
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Subject:</label>
-											<input type="text"  class="form-control subjectCls" id="subjectId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
+											<input type="text"  class="form-control subjectCls" id="subjectId0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Presentation:</label>
-											<input type="text"  class="form-control presentationCls" id="presentationId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[1].score">
+											<input type="text"  class="form-control presentationCls" id="presentationId0"  name="assemblySessionReportVO.membersList[0].scalesList[1].score">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Counter:</label>
-											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[2].score">
+											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0"  name="assemblySessionReportVO.membersList[0].scalesList[2].score">
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-6">
 											<label class="f_10">Body&nbsp;Language:</label>
-											<input type="text"  class="form-control bodyLanguageCls" id="bodyLanguageId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[3].score">
+											<input type="text"  class="form-control bodyLanguageCls" id="bodyLanguageId0" name="assemblySessionReportVO.membersList[0].scalesList[3].score">
 										</div>
 										<!--<div class="col-md-4 col-xs-12 col-sm-6">
 											<label class="f_10">Summary:</label>
 											<input type="text" class="form-control summaryCls" id="summaryId0" placeholder="Enter Summary" attr_count="0">
 										</div>-->
 										<div id="updatingClonedElements" class="col-md-12 col-xs-12 col-sm-12"></div>
+										<div id="" class="col-md-12 col-xs-12 col-sm-12 totalIndividualClonedElements"></div>
 									</div>
 								</div>
 								<input type="hidden"  name="assemblySessionReportVO.membersList[0].adminHouseSessionDayId" id="adminHouseSessionDayId"/>
@@ -268,7 +268,7 @@
 			<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
 				<label>Party</label>
 				<select class="partyCls" style="width:100%">
-					<option value="0">All</option>
+					
 					<!--<option value="1">Party</option>
 					<option value="2">YSRC</option>-->
 				</select>
@@ -276,7 +276,7 @@
 			<div class="col-md-10 col-xs-12 col-sm-12">
 				<div class="col-md-3 col-xs-12 col-sm-6 ">
 					<label class="f_10">Member&nbsp;Name:</label>
-					<span class="glyphicon glyphicon-plus pull-right " id="totalAddMemberDetailscls" style="margin-top: -10px;cursor:pointer;"></span>
+					<span class="glyphicon glyphicon-plus pull-right addMemberDetailsCls" id="" style="margin-top: -10px;cursor:pointer;"></span>
 					<select class=" memberNameCls" style="width:100%">
 						<option value="0">All</option>
 						<!--<option value="1">Parthipati PullaRao</option>
@@ -303,7 +303,7 @@
 					<label class="f_10">Summary:</label>
 					<input type="text" class="form-control summaryCls" placeholder="Enter Summary">
 				</div>-->
-				<div id="totalIndividualClonedElements" class="col-md-12 col-xs-12 col-sm-12"></div>
+				<div id="" class="col-md-12 col-xs-12 col-sm-12 totalIndividualClonedElements"></div>
 			</div>
 		</div>
 	</div>

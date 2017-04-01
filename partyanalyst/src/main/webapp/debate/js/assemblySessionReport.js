@@ -298,54 +298,7 @@ $(document).on("click",".sessionCls",function(){
 				 buildMemberDetails(result,sessionDayId);
 			 });
 });
-getPatries("partyId00");
-function getPatries(id){
-	//alert(id)
-	var jObj = {
-			};		
-			$.ajax({
-				  type:'POST',
-				  url: 'getPartiesAction.action',
-				 data : {task:JSON.stringify(jObj)} ,
-			 }).done(function(result){
-				 $('#'+id).empty();
-				 $('#'+id).append('<option value="0">All</option>');
-				 if(result != null && result.length >0)
-					{
-						for(var i in result)
-						$('#'+id).append('<option value="'+result[i].partyId+'">'+result[i].partyName+'</option>');
-					}
-					$('#'+id).trigger("chosen:updated");
-			 });
-}
-getCandidates("memberNameCls","");
-function getCandidates(id,partyDivId){
-	$('.'+id).empty();
-	//alert(id)
-	//alert(partyDivId)
-	var partyId = 0;
-	if(partyDivId != ""){
-		 partyId = $("."+partyDivId).val();
-	}
-	//alert(partyId)
-	var jObj = {
-				partyId : partyId
-			};		
-			$.ajax({
-				  type:'POST',
-				  url: 'getcandidatesForPartyAction.action',
-				 data : {task:JSON.stringify(jObj)} ,
-			 }).done(function(result){
-				 $('.'+id).empty();
-				 $('.'+id).append('<option value="0">All</option>');
-				 if(result != null && result.length >0)
-					{
-						for(var i in result)
-						$('.'+id).append('<option value="'+result[i].adminHouseMemberId+'">'+result[i].name+'</option>');
-					}
-					$('.'+id).trigger("chosen:updated");
-			 });
-}
+
 
 function buildMemberDetails(result,sessionDayId){
 	var str='';
@@ -421,6 +374,8 @@ function buildMemberDetails(result,sessionDayId){
 			
 		
 	});
+	
+	
 	var toatlUpdatedCloneCount =0;
 	var mainCloneCount =0;	
 	var updatedCloneCount =0;  
@@ -429,35 +384,30 @@ function buildMemberDetails(result,sessionDayId){
 	//add individual for default append
 	$(document).on("click","#addMemberDetailsId",function(){
 		updatedCloneCount = updatedCloneCount +1;
+		var memberNameCountId =0;
+		
 		var c = $("#updateAppendHtml").clone(true);
 		c.attr({
 			'id': 'updateAppendHtml'+updatedCloneCount
 		});
 		
-		//getCandidates('memberNameId'+updatedCloneCount,'partyId'+mainCloneCount+''+toatlUpdatedCloneCount);
-		//getCandidates('memberNameId'+updatedCloneCount,'partyId'+mainCloneCount+''+toatlUpdatedCloneCount);
-		
 		c.css("display","block");
-		c.find(".memberNameCls").attr("id","memberNameId"+updatedCloneCount);
-		c.find(".memberNameCls").attr("attr_count",updatedCloneCount);
-		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
+		c.find(".memberNameCls").attr("class","memberNameValApp"+memberNameCountId);
 		
+		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
+		getCandidates('memberNameValApp'+memberNameCountId,'partyCls')
 		
 		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
-		c.find(".subjectCls").attr("attr_count",updatedCloneCount);
 		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
 		
 		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
-		c.find(".presentationCls").attr("attr_count",updatedCloneCount);
 		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
 		
 			
 		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount);
-		c.find(".counterAttackCls").attr("attr_count",updatedCloneCount);
 		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount);
-		c.find(".bodyLanguageCls").attr("attr_count",updatedCloneCount);
 		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+updatedCloneCount);
@@ -468,12 +418,14 @@ function buildMemberDetails(result,sessionDayId){
 		$("#updatingClonedElements").append(c);
 		
     
-		 $("#memberNameId"+updatedCloneCount).chosen();
-		 $("#memberNameId"+updatedCloneCount).trigger("chosen:updated");
+		 $(".memberNameValApp"+memberNameCountId).chosen();
+		 $(".memberNameValApp"+memberNameCountId).trigger("chosen:updated");
 		
 	});
 	
 	
+
+
 	
 	//total append block
 	$(document).on("click","#addTotalOneMoreBlockId",function(){
@@ -482,54 +434,53 @@ function buildMemberDetails(result,sessionDayId){
 		var generatedId = mainCloneCount+''+toatlUpdatedCloneCount;
 		var c = $("#totalUpdateAppendHtml").clone(true);
 		c.attr({
-			'id': 'totalUpdateAppendHtml'+generatedId
+			'id': 'totalUpdateAppendHtml'+updatedCloneCount
 		});
+		c.find(".totalIndividualClonedElements").addClass("totalIndividualClonedElementId"+updatedCloneCount);
+		c.find(".addMemberDetailsCls").addClass("addMemberDetailsId"+updatedCloneCount);
+		c.find(".addMemberDetailsCls").removeClass("addMemberDetailsCls");
+	
+		c.find(".addMemberDetailsId"+updatedCloneCount).attr("onclick","getTotIndividuaAppBlock("+updatedCloneCount+");")
 		c.css("display","block");
-		c.find(".partyCls").attr("id","partyId"+generatedId)
-		c.find(".partyCls").attr("attr_count",generatedId);
-		getPatries("partyId"+generatedId);
-		c.find(".partyCls").attr("onchange","getCandidates('memberNameCls','partyCls');");
+		c.find(".partyCls").attr("class","partycls"+updatedCloneCount)
+		c.find(".partycls"+updatedCloneCount).addClass("partyclsAppendCls")
+		c.find(".partycls"+updatedCloneCount).attr("attr_partyCls",updatedCloneCount);
+		getPatries("partycls"+updatedCloneCount);
+		c.find(".partycls"+updatedCloneCount).attr("onchange","getCandidates('memberNameValApp"+updatedCloneCount+"','partycls"+updatedCloneCount+"')");
 		
-		c.find(".memberNameCls").attr("id","memberNameId"+generatedId)
-		c.find(".memberNameCls").attr("attr_count",generatedId)
+		c.find(".memberNameCls").attr("class","memberNameValApp"+updatedCloneCount)
+		
 		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
 		
-		getCandidates('memberNameId'+generatedId,"");
-		c.find(".subjectCls").attr("id","subjectId"+generatedId);
-		c.find(".subjectCls").attr("attr_count",generatedId);
+		getCandidates('memberNameValApp'+updatedCloneCount,'');
+		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
 		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
 		
-		c.find(".presentationCls").attr("id","presentationId"+generatedId)
-		c.find(".presentationCls").attr("attr_count",generatedId)
+		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount)
 		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
 			
-		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
-		c.find(".counterAttackCls").attr("attr_count",generatedId)
+		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount)
 		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
 		
-		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
-		c.find(".bodyLanguageCls").attr("attr_count",generatedId)
+		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount)
 		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
 		//c.find(".summaryCls").attr("attr_count",generatedId)
 		
-		c.find(".totalUpdatingRemoveBtnCls").attr("attr_div_id","totalUpdateAppendHtml"+generatedId);
+		c.find(".totalUpdatingRemoveBtnCls").attr("attr_div_id","totalUpdateAppendHtml"+updatedCloneCount);
 		$("#totalUpdatingClonedElements").append(c);
     
-		 $("#memberNameId"+generatedId).chosen();
-		 $("#memberNameId"+generatedId).trigger("chosen:updated");
+		 $(".memberNameValApp"+updatedCloneCount).chosen();
+		 $(".memberNameValApp"+updatedCloneCount).trigger("chosen:updated");
 		
 		
-		$("#partyId"+generatedId).chosen();
-		$("#partyId"+generatedId).trigger("chosen:updated");
+		$(".partycls"+updatedCloneCount).chosen();
+		$(".partycls"+updatedCloneCount).trigger("chosen:updated");
 		
 		
 	});
-	
-	//total block for individual append
-	$(document).on("click","#totalAddMemberDetailscls",function(){
-		
+	function getTotIndividuaAppBlock(count){
 		totalIndividualCloneCount = totalIndividualCloneCount+1;
 		var generatedId = mainCloneCount+''+toatlUpdatedCloneCount+''+totalIndividualCloneCount;
 		var c = $("#updateAppendHtml").clone(true);
@@ -537,39 +488,33 @@ function buildMemberDetails(result,sessionDayId){
 			'id': 'updateAppendHtml'+generatedId
 		});
 		c.css("display","block");
+		c.find(".memberNameCls").attr("class","memberNameValApp"+count)
+		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+count+'].memberId');
+		getCandidates('memberNameValApp'+count,'partycls'+count);
 		
-		c.find(".memberNameCls").attr("id","memberNameId"+generatedId)
-		c.find(".memberNameCls").attr("attr_count",generatedId)
-		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
-		//getCandidates('memberNameId'+generatedId,'partyId'+mainCloneCount+''+toatlUpdatedCloneCount);
+		c.find(".subjectCls").attr("id","subjectId"+count);
+		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+count+'].scalesList[0].score');
 		
-		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
-		c.find(".subjectCls").attr("attr_count",updatedCloneCount);
-		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
+		c.find(".presentationCls").attr("id","presentationId"+count)
+		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+count+'].scalesList[1].score');
 		
-		c.find(".presentationCls").attr("id","presentationId"+generatedId)
-		c.find(".presentationCls").attr("attr_count",generatedId)
-		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
+		c.find(".counterAttackCls").attr("id","counterAttackId"+count)
+		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+count+'].scalesList[2].score');
 		
-		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
-		c.find(".counterAttackCls").attr("attr_count",generatedId);
-		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
-		
-		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
-		c.find(".bodyLanguageCls").attr("attr_count",generatedId);
-		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
+		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+count)
+		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+count+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
 		//c.find(".summaryCls").attr("attr_count",generatedId)
 		
 		c.find(".updatingRemoveBtnCls").attr("attr_div_id","updateAppendHtml"+generatedId);
-		$("#totalIndividualClonedElements").append(c);
-    
-		 $("#memberNameId"+generatedId).chosen();
-		$("#memberNameId"+generatedId).trigger("chosen:updated");
 		
+		$(".totalIndividualClonedElementId"+count).append(c);
+		$(".memberNameValApp"+count).chosen();
+		$(".memberNameValApp"+count).trigger("chosen:updated");
 		
-	});
+	}
+	
 	
 	$(document).on("click",".updatingRemoveBtnCls",function(){
 		var divId = $(this).attr("attr_div_id");
@@ -580,6 +525,72 @@ function buildMemberDetails(result,sessionDayId){
 		$("#"+divId).remove();
 	});
 	
+getCandidates("memberNameValApp0","");
+function getCandidates(classVal,partyDivId){
+	$('.'+classVal).html('');
+	var partyId = 0;
+	
+	if(partyDivId != ""){
+		 partyId = $("."+partyDivId).val();
+		
+	}
+	
+	var jObj = {
+				partyId : partyId
+			};		
+			$.ajax({
+				  type:'POST',
+				  url: 'getcandidatesForPartyAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){
+				var str='';
+				 
+				 if(result != null && result.length >0)
+					{
+						str+='<option value="0">All</option>';
+						
+						for(var i in result){
+							str+='<option value="'+result[i].adminHouseMemberId+'">'+result[i].name+'</option>';
+							
+						}
+						
+					}
+					setTimeout(function() {
+						$('.'+classVal).html(str);
+						$('.'+classVal).trigger("chosen:updated");
+					},500);
+			 });
+}
+	
+getPatries("partyCls0");
+function getPatries(id){
+	 $('.'+id).html('');
+	var jObj = {
+			};		
+			$.ajax({
+				  type:'POST',
+				  url: 'getPartiesAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){
+				
+				
+				 var str='';
+				 str+='<option value="0">All</option>';
+				 if(result != null && result.length >0)
+					{
+						for(var i in result){
+							str+='<option value="'+result[i].partyId+'">'+result[i].partyName+'</option>';
+						
+						}
+						
+					}
+					setTimeout(function() {
+						$('.'+id).html(str);
+						$('.'+id).trigger("chosen:updated");
+					},500);
+			 });
+}
+
 	function savingApplication(){
 		$("#adminHouseSessionDayId").val(154);
 		//alert($("#adminHouseSessionDayId").val());
