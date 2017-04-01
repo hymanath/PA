@@ -222,9 +222,9 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			    queryStr.append(" and model.alert.alertType.alertTypeId in (:alertType)");	
 			}
 			if(scopeIds != null && scopeIds.size() > 0L){
-				 if(scopeIds.get(0).longValue() == 8l){
+				/* if(scopeIds.get(0).longValue() == 8l){
 						queryStr.append(" and model.alert.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+") ");//CORPORATION & Greater Municipal Corp
-				 }
+				 }*/
 			 queryStr.append(" and model.alert.alertImpactScope.alertImpactScopeId in (:scopeIds)");	
 			}
 			if(alertStatusIds != null && alertStatusIds.size() > 0L){
@@ -338,9 +338,9 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			queryStr.append(" and editionType.editionTypeId in (:editionList) ");
 		}
 		if(impactScopeIds != null && impactScopeIds.size() > 0){
-			if(impactScopeIds.get(0).longValue() == 8l){//ghmc
+			/*if(impactScopeIds.get(0).longValue() == 8l){//ghmc
 	    		queryStr.append(" and model.userAddress.localElectionBody.electionType.electionTypeId in ("+IConstants.ELECTION_TYPE_IDS+")");//election type
-	    	}
+	    	}*/
 			queryStr.append(" and alertImpactScope.alertImpactScopeId in (:impactScopeIds) ");
 		}
 		
