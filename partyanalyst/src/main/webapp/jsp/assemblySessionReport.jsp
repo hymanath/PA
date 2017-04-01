@@ -37,17 +37,17 @@
 					<div class="row">
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Election Year</label>
-							<select id="electionYear" class="chosen-select" onchange="getSessionYears();">
+							<select id="electionYear" class="chosen-select" onchange="getSessionYears(1);">
 								<option value="0"> Select Election Year</option>
 							</select>
 							<!--<div id="electionYear"></div>-->
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Session Year</label>
-							<select id="sessionYear" class="chosen-select" onchange="getAllSessions();">
+							<select id="sessionYear" class="chosen-select" onchange="getAllSessions(1);">
 								<option value="0"> Select Session Year</option>
 							</select>
-							<span ><img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg1"></span>
+							<span ><img src="images/ajaxImg2.gif" style="width:20px;display:none;" id="procesingImg1"></span>
 							<!--<div id="sessionYear"></div>-->
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-6">
@@ -55,7 +55,7 @@
 							<select id="assemblySession" class="chosen-select" onchange="getDates();">
 								<option value="0"> Select Assembly Session</option>
 							</select>
-							<span ><img src="images/ajaxImg2.gif" style="width:20px;margin-top:-20px;margin-left:-25px;display:none;" id="procesingImg2"></span>
+							<span ><img src="images/ajaxImg2.gif" style="width:20px;display:none;" id="procesingImg2"></span>
 							<!--<div id="assemblySession"></div>-->
 						</div>
 						<div class="col-md-3 col-xs-12 col-sm-6">
@@ -98,23 +98,34 @@
 							<div class="row">
 								<div class="col-md-2 col-xs-12 col-sm-6">
 									<label>Election Year</label>
-									<select class="chosen-select">
-										<option value="1">2014-2019</option>
+									<select id="electionYearId" class="chosen-select" onchange="getSessionYears(2);">
+										<option value="0"> Select Election Year</option>
 									</select>
+									<!--<select class="chosen-select">
+										<option value="1">2014-2019</option>
+									</select>-->
 								</div>
 								<div class="col-md-2 col-xs-12 col-sm-6">
 									<label>Session Year</label>
-									<select class="chosen-select">
-										<option value="2017">2017-2018</option>
+									<select id="sessionYearId" class="chosen-select" onchange="getAllSessions(2);">
+										<option value="0"> Select Session Year</option>
 									</select>
+									<span ><img src="images/ajaxImg2.gif" style="width:20px;display:none;" id="procesingImg3"></span>
+									<!--<select class="chosen-select">
+										<option value="2017">2017-2018</option>
+									</select>-->
 								</div>
 								<div class="col-md-2 col-xs-12 col-sm-6">
 									<label>Assembly Session</label>
-									<select class="chosen-select" >
+									<select id="assemblySessionId" class="chosen-select" onChange="getDatesForSaving();">
+										<option value="0"> Select Assembly Session</option>
+									</select>
+									<span ><img src="images/ajaxImg2.gif" style="width:20px;display:none;" id="procesingImg4"></span>
+									<!--<select class="chosen-select" >
 										<option value="21">Budget Session</option>
 										<option value="22">Winter Session</option>
 										<option value="23">Summer Session</option>
-									</select>
+									</select>-->
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-6">
 									<label>Date Range</label>
