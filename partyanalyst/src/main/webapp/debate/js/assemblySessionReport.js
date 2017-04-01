@@ -1,6 +1,8 @@
 function globalOnLoadCalls()
 {
-	getElectionYears();
+	getElectionYears(1);
+	getElectionYears(2);
+	//getElectionYears1();
 	//getSessionYears();
 	//getAllSessions();
 	//getDates();
@@ -38,14 +40,14 @@ function onLoadInitialisations()
 		if($(this).find("i").hasClass("glyphicon-plus"))
 		{
 			$(this).find("i").removeClass("glyphicon-plus").addClass("glyphicon-minus");
-			$("#expandViewId"+count).show();
+			$(".expandViewModal"+count).show();
 		}else{
 			$(this).find("i").addClass("glyphicon-plus").removeClass("glyphicon-minus");
-			$("#expandViewId"+count).hide();
+			$(".expandViewModal"+count).hide();
 		}
 	});
 }
-function getElectionYears(){
+function getElectionYears(id){
 	
 	var jObj = {
 	};		
@@ -66,16 +68,27 @@ function getElectionYears(){
 			}
 			str+='</select>';
 		}
-		$("#electionYear").html(str);
-		$("#electionYear").trigger("chosen:updated");
+		if(id == 1){
+			$("#electionYear").html(str);
+			$("#electionYear").trigger("chosen:updated");
+		}if(id == 2){
+			$("#electionYearId").html(str);
+			$("#electionYearId").trigger("chosen:updated");
+		}
 		$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
 
-function getSessionYears(){
-	$("#procesingImg1").show();
-	var electionYear = $("#electionYear").val();
+function getSessionYears(id){
+	var electionYear;
+	if(id == 1){
+		$("#procesingImg1").show();
+		 electionYear = $("#electionYear").val();
+	}else if(id == 2){
+		$("#procesingImg3").show();
+		electionYear = $("#electionYearId").val();
+	}
 	
 	var jObj = {
 		elctionYearId : electionYear
@@ -86,6 +99,7 @@ function getSessionYears(){
 		 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 		$("#procesingImg1").hide();
+		$("#procesingImg3").hide();
 		var str='';
 		if(result != null && result.length >0)
 		{
@@ -96,18 +110,31 @@ function getSessionYears(){
 			}
 			//str+='</select>';
 		}
-		$("#sessionYear").html(str);
-		$("#sessionYear").trigger("chosen:updated");
+		if(id == 1){
+			$("#sessionYear").html(str);
+			$("#sessionYear").trigger("chosen:updated");
+		}else if(id == 2){
+			$("#sessionYearId").html(str);
+			$("#sessionYearId").trigger("chosen:updated");
+		}
 		$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
 
-function getAllSessions(){
-	$("#procesingImg2").show();
-	var electionYear = $("#electionYear").val();
-	var sessionYear = $("#sessionYear").val();
-	
+function getAllSessions(id){
+	var electionYear;
+	var sessionYear
+	if(id == 1){
+		$("#procesingImg2").show();
+		 electionYear = $("#electionYear").val();
+		 sessionYear = $("#sessionYear").val();
+	}else if(id == 2){
+		$("#procesingImg4").show();
+		electionYear = $("#electionYearId").val();
+		sessionYear = $("#sessionYearId").val();
+	}
+		
 	var jObj = {
 		elctionYearId : electionYear,
 		sessionYear : sessionYear //"2017"
@@ -118,6 +145,7 @@ function getAllSessions(){
 		data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 		$("#procesingImg2").hide();
+		$("#procesingImg4").hide();
 		var str='';
 		if(result != null && result.length >0)
 		{
@@ -129,8 +157,14 @@ function getAllSessions(){
 			}
 			//str+='</select>';
 		}
-		$("#assemblySession").html(str);
-		$("#assemblySession").trigger("chosen:updated");
+		if(id == 1){
+			$("#assemblySession").html(str);
+			$("#assemblySession").trigger("chosen:updated");
+		}else if(id == 2){
+			alert(32)
+			$("#assemblySessionId").html(str);
+			$("#assemblySessionId").trigger("chosen:updated");
+		}
 		$(".chosen-select").chosen({width:'100%'});
 	});
 }
@@ -261,7 +295,7 @@ $(document).on("click",".sessionCls",function(){
 				  url: 'getDayWiseDetailsAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
-				 buildMemberDetails(result);
+				 buildMemberDetails(result,sessionDayId);
 			 });
 });
 getPatries("partyId00");
@@ -313,9 +347,10 @@ function getCandidates(id,partyDivId){
 			 });
 }
 
-function buildMemberDetails(result){
+function buildMemberDetails(result,sessionDayId){
 	var str='';
 	var total;
+	str+='<form name="submitAssemblySessionCanScoreByEdit" id="submitApplicationId"  method="post">';
 	str+='<table class="table table-bordered ">';
 		str+='<thead>';
 			str+='<th style="background-color:#D3D3D3;">Party</th>';
@@ -329,6 +364,8 @@ function buildMemberDetails(result){
 				//str+='</ul>';
 			//str+='</th>';
 			str+='<th style="background-color:#D3D3D3;">total</th>';
+			str+='<th style="background-color:#D3D3D3;">Edit</th>'; 
+			str+='<th style="background-color:#D3D3D3;">Delete</th>'; 
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
@@ -341,24 +378,29 @@ function buildMemberDetails(result){
 			str+='<td>'+result[i].avgCunterAttCount.toFixed(1)+'</td>';
 			total=result[i].avgSubCount+result[i].avgPresCount+result[i].avgCunterAttCount+result[i].avgCunterAttCount;
 			str+='<td>'+total.toFixed(1)+'</td>';
+			str+='<td><span class="glyphicon glyphicon-edit"></span></td>';
+			str+='<td><span class="glyphicon glyphicon-trash"></span></td>';
+			//str+='<button type="button"  class="btn btn-custom btn-success" onClick="saveCandDetails();">Edit</button>';
 			str+='</tr>';
-			str+='<tr id="expandViewId'+i+'" style="display:none;" class="expandView"><td></td><td colspan="6">';
-					str+='<table class="table table-hover table-striped" style="border:1px solid #ddd;">';
-						for(var j in result[i].candidateList)
-						{
-							str+='<tr>';
-								str+='<td	>'+result[i].candidateList[j].name+'</td>';
-									for(var k in result[i].candidateList[j].partyList)
-										str+='<td>'+result[i].candidateList[j].partyList[k].score+'</td>';
-								str+='<td>'+result[i].candidateList[j].total+'</td>';
-							str+='</tr>';
+			
+			for(var j in result[i].candidateList)
+			{
+				str+='<tr id="expandViewId" style="display:none;" class="expandViewModal'+i+'">';
+					str+='<td ></td>';
+					str+='<td >'+result[i].candidateList[j].name+'</td>';
+						for(var k in result[i].candidateList[j].partyList){
+							str+='<td>'+result[i].candidateList[j].partyList[k].score+'</td>';
 						}
-					str+='</table>';
+					str+='<td>'+result[i].candidateList[j].total+'</td>';
+					str+='<td><span class="glyphicon glyphicon-edit"></span></td>';
+					str+='<td><span class="glyphicon glyphicon-trash"></span></td>';
 				str+='</tr>';
+			}
 			
 		}
 		str+='</tbody>';
 		str+='</table>';
+		str+='</form>';
 	$("#memberDetailsId").html(str);
 }
 
@@ -552,4 +594,49 @@ function buildMemberDetails(result){
 			YAHOO.util.Connect.asyncRequest('POST','submitAssemblySessionCanScoreDetailsAction.action',uploadHandler);
 		
 	}
+
+function getDatesForSaving(){
 	
+	var electionYear = $("#electionYearId").val();
+	var sessionYear = $("#sessionYearId").val();
+	var sessionId = $("#assemblySessionId").val();
+	
+	var jObj = {
+		elctionYearId : electionYear,
+		sessionYear : sessionYear,//"2017",
+		sessionId : sessionId
+	};		
+	$.ajax({
+		  type:'POST',
+		  url: 'getDatesForSavingAction.action',
+		 data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		if(result != null){
+			/*for(var i in result){
+				var fYear = result[i].date.split('-')[0];
+				var fMonth = result[i].date.split('-')[1];
+				var fDate = result[i].date.split('-')[2];
+				//var tYear = result[0].partyName.split('-')[0];
+				//var tMonth = result[0].partyName.split('-')[1];
+				//var tDate = result[0].partyName.split('-')[2].substring(0,2);
+				
+				$('#UpdateStartdateRange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
+				//$('#dateRange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+			}*/
+		}
+		
+	});
+}
+
+function saveCandDetails(){
+	var uploadHandler = {
+		 upload: function(result) {
+			//console.log(result);
+			uploadResult = result.responseText; 
+			var stringext = uploadResult.substr(6,7);
+			//$("#errorModalId").modal("hide");
+		}
+	};
+		YAHOO.util.Connect.setForm('submitAssemblySessionCanScoreByEdit',true);
+		YAHOO.util.Connect.asyncRequest('POST','updateMemberDetailsAction.action',uploadHandler);
+}
