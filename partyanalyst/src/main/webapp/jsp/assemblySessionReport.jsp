@@ -144,8 +144,8 @@
 									<div class="col-md-2 col-xs-12 col-sm-6">
 										<label >Party</label>
 										<select class="chosen-select partyCls" id="partyId00" attr_count="0" onchange="getCandidates('memberNameCls','partyCls');" >
-											<!--<option value="0">Select Party</option>
-											<option value="1">Party</option>
+											<option value="0">All</option>
+											<!--<option value="1">Party</option>
 											<option value="2">YSRC</option>-->
 										</select>
 									</div>
@@ -154,26 +154,26 @@
 											<label class="f_10">Member&nbsp;Name:</label>
 											<span class="glyphicon glyphicon-plus pull-right " id="addMemberDetailsId" style="margin-top: -10px;cursor:pointer;"></span>
 											<select class="chosen-select memberNameCls" id="memberNameId0" attr_count="0" name="assemblySessionReportVO.membersList[0].memberId">
-												<!--<option value="0">Select Member Name</option>
-												<option value="1">Parthipati PullaRao</option>
+												<option value="0">All</option>
+												<!--<option value="1">Parthipati PullaRao</option>
 												<option value="2">Parthipati PullaRao</option>-->
 											</select>
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Subject:</label>
-											<input type="text"  class="form-control subjectCls" id="subjectId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].speechAspectId">
+											<input type="text"  class="form-control subjectCls" id="subjectId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Presentation:</label>
-											<input type="text"  class="form-control presentationCls" id="presentationId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].speechAspectId">
+											<input type="text"  class="form-control presentationCls" id="presentationId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Counter:</label>
-											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].speechAspectId">
+											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-6">
 											<label class="f_10">Body&nbsp;Language:</label>
-											<input type="text"  class="form-control bodyLanguageCls" id="bodyLanguageId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].speechAspectId">
+											<input type="text"  class="form-control bodyLanguageCls" id="bodyLanguageId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
 										</div>
 										<!--<div class="col-md-4 col-xs-12 col-sm-6">
 											<label class="f_10">Summary:</label>
