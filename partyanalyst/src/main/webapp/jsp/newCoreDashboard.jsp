@@ -4317,8 +4317,8 @@
 </div>
 
 <!-------start popup build------------>
-<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:85%">
     <div class="modal-content customModal">
       <div class="modal-header">
         <button type="button" class="close imageCloseBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -4348,14 +4348,37 @@
 </div>
 <!-- Modal For UpdationDetails -->
 <div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document" style="width:60%">
+  <div class="modal-dialog" role="document" style="width:80%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="mdlHeadingId"></h4>
+        <h4 class="modal-title" id="mdlHeadingId" style="text-transform: uppercase;"></h4>
       </div>
       <div class="modal-body">
-        <div id="commentsBlock"></div>
+	  <div class="row">
+	  <div class="col-md-3 col-xs-12 col-sm-6">
+	  <label>District</label>
+	  <select class="form-control selectCls" id="distId" attr_value="district" onchange="getConstituenciesForDistricts(this.value);" name=""    data-placeholder ="ALL" >	  
+	    </select>
+		</div>
+		<div class="col-md-3 col-xs-12 col-sm-6">
+		<label>Constituency</label>
+		<select class="form-control selectCls" id="constId" attr_value="constituency" name="" onchange="onchangeFunction();" data-placeholder ="ALL">
+		</select>
+		</div>
+		<div class="col-md-3 col-xs-12 col-sm-6">
+		<label>Status</label>
+		<select class="form-control" id="thirdPartyStatusId" name="" data-placeholder ="ALL" onchange="onchangeFunction();">
+			   <option value="ALL">ALL</option>
+			   <option value="Yes">Yes</option>
+			   <option value="No">No</option>
+		</select>
+		</div>
+		<div class="col-md-2 col-xs-12 col-sm-6">
+             <button class="btn btn-success"  id="levelTypeId" onclick="getupdationDetailsConflicts();" style="margin-top: 19px;"> Get Details </button>
+           </div>
+		</div>
+        <div id="commentsBlock" class="m_top10"></div>		
         <!--<div id="commentsDivId"></div>-->
       </div>
     </div><!-- /.modal-content -->
