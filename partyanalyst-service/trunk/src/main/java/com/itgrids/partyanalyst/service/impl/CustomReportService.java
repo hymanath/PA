@@ -371,7 +371,6 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						CustomReportVO vo = new CustomReportVO();
 						vo.setReportId((Long)objects[0]);
 						vo.setId((Long)objects[1]);
-						
 						vo.setName(objects[2].toString());
 						newObserverVoList.add(vo);
 						observersMap.put((Long)objects[0], newObserverVoList);
@@ -475,14 +474,14 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						CustomReportVO vo = new CustomReportVO();
 						vo.setReportId((Long)objects[0]);
 						vo.setName(objects[1].toString());
-						vo.setPath(objects[2].toString());
+						vo.setPath(objects[2] != null ? "mytdp.com/images/cadre_images/"+objects[2].toString():"");
 						newImageVoList.add(vo);
 						imagesMap.put((Long)objects[0], newImageVoList);
 					}else{
 						CustomReportVO vo = new CustomReportVO();
 						vo.setReportId((Long)objects[0]);
 						vo.setName(objects[1].toString());
-						vo.setPath(objects[2].toString());
+						vo.setPath(objects[2] != null ? "mytdp.com/images/cadre_images/"+objects[2].toString():"");
 						imagesMap.get((Long)objects[0]).add(vo);
 					}
 				}				
@@ -590,7 +589,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 					observerVO.setId((Long)objects[0]);
 					observerVO.setMembershipNo(objects[1].toString());
 					observerVO.setName(objects[2].toString());
-					observerVO.setPath("/cadreImages/"+objects[3].toString());
+					observerVO.setPath("/cadre_images/"+objects[3].toString());
 					observerVO.setVoterNum(objects[4] != null ? objects[4].toString() : "");
 					observerVO.setMobileNum(objects[5].toString());
 					vo.getObserversList().add(observerVO);
