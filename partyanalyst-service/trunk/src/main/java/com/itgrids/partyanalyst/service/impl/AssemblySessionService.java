@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAdminHouseMemberDAO;
@@ -21,11 +19,8 @@ import com.itgrids.partyanalyst.dao.IHouseSessionDAO;
 import com.itgrids.partyanalyst.dao.IMemberSpeechAspectDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ISpeechAspectDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AdminHouseSessionDayDAO;
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
 import com.itgrids.partyanalyst.dto.AssemblySessionReportVO;
-import com.itgrids.partyanalyst.dto.ResultCodeMapper;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.MemberSpeechAspect;
 import com.itgrids.partyanalyst.model.SpeechAspect;
 import com.itgrids.partyanalyst.service.IAssemblySessionService;
@@ -482,43 +477,42 @@ public class AssemblySessionService implements IAssemblySessionService{
 		}
 		return returnList;
 	}
-	public ResultStatus saveMemberSpeechAspect(final AssemblySessionReportVO vo){
-		final ResultStatus resultStatus = new ResultStatus();
+	public String saveAssemblySessionCanScoreDetails( AssemblySessionReportVO vo){
+		 String resultStatus = new String();
 		try{
 			LOG.info("Enterd into saveMemberSpeechAspect method in AssemblySessionService class");
-			 transactionTemplate.execute(new TransactionCallback() {
-				  public Object doInTransaction(TransactionStatus status) {
+			 
 			if(vo != null && vo.getMembersList() != null && vo.getMembersList().size() > 0){
 				for(AssemblySessionReportVO memberVO : vo.getMembersList() ){
 					
 					if(memberVO.getScalesList() != null && memberVO.getScalesList().size() > 0){
+						Long aspectId = 0l;
 						for(AssemblySessionReportVO scaleVO : memberVO.getScalesList()){
-							MemberSpeechAspect memberSpeechAspect  = memberSpeechAspectDAO.getPrimaryKey(memberVO.getAdminHouseSessionDayId(),memberVO.getMemberId(),scaleVO.getSpeechAspectId());
+							aspectId = aspectId+1;
+							MemberSpeechAspect memberSpeechAspect  = memberSpeechAspectDAO.getPrimaryKey(vo.getMembersList().get(0).getAdminHouseSessionDayId(),memberVO.getMemberId(),aspectId);
 							if(memberSpeechAspect == null){
 								memberSpeechAspect = new MemberSpeechAspect();
 							}
 							
-							SpeechAspect  speechAspect = speechAspectDAO.get(scaleVO.getSpeechAspectId());
+							SpeechAspect  speechAspect = speechAspectDAO.get(aspectId);
 							if(speechAspect != null){
 								memberSpeechAspect.setSpeechAspectId(speechAspect.getSpeechAspectId());
 							}
 							memberSpeechAspect.setIsDeleted("N");
-							memberSpeechAspect.setAdminHouseSessionDayId(memberVO.getAdminHouseSessionDayId());
-							memberSpeechAspect.setScore(scaleVO.getScore());
+							memberSpeechAspect.setAdminHouseSessionDayId(vo.getMembersList().get(0).getAdminHouseSessionDayId());
+							memberSpeechAspect.setScore(Double.valueOf(scaleVO.getScore()));
 							memberSpeechAspect.setAdminHouseMemberId(memberVO.getMemberId());
 							memberSpeechAspectDAO.save(memberSpeechAspect);
 						}
 					}
 				}
 			}
-			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			 resultStatus = "SUCCESS";
 			  return resultStatus;
-		}
-			 
-	});
+		
 }catch(Exception e){
-	LOG.error("Error occured in saveMemberSpeechAspect method in AssemblySessionService class",e);
-	resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	LOG.error("Error occured in saveAssemblySessionCanScoreDetails method in AssemblySessionService class",e);
+	 resultStatus = "FAILURE";
 		}
 		return resultStatus;
 	}

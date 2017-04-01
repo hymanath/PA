@@ -20,6 +20,6 @@ public interface IAssemblySessionService
 	public String deleteMemberDetails(final AdminHouseVO adminHouseVO);
 	public String updateMemberSpeechAspectDetails(final AdminHouseVO adminHouseVO);
 	public List<AdminHouseVO> getCandidateNameForParty(Long partyId);
-	public ResultStatus saveMemberSpeechAspect(final AssemblySessionReportVO vo);
+	public String saveAssemblySessionCanScoreDetails( AssemblySessionReportVO vo);
 	public List<AdminHouseVO> getDatesForSaving(Long termId,String sessionYear,Long sessionId);
 }

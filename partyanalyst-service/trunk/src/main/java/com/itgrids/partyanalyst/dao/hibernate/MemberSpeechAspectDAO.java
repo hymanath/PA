@@ -166,7 +166,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		Query query = getSession().createQuery(sb.toString());
 		
 		if(adminHouseSessionId != null && adminHouseSessionId.longValue() > 0l){
-			query.setParameter("adminHouseSessionId", adminHouseSessionId);
+			query.setParameter("adminHouseSessionDay", adminHouseSessionId);
 		}
 		if(memberId != null && memberId.longValue() > 0l){
 			query.setParameter("memberId", memberId);
