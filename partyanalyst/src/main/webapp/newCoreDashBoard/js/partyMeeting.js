@@ -6725,7 +6725,7 @@ function buildCommentsMeetingDetailsAction1(result){
 			 str+='<li>';
 	         //str+='<img src="https://www.mytdp.com/'+result[i].docmentsList[0]+'"/>';
 			 str+='<iframe src="http://mytdp.com/'+result[i].docmentsList[0]+'"></iframe>';
-			 str+='</li>';
+			 str+='</li>'; 
 			}else{
 				 str+='<li>';
 				 str+='<img src="https://www.mytdp.com/'+result[i].docmentsList[0]+'"/>';
@@ -6908,3 +6908,4 @@ function getExtension(path) {
 function onchangeFunction(){
 	 $("#commentsBlock").html('');
 }
+
