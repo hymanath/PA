@@ -1970,8 +1970,18 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	var name = $("#nameId").val();
 	var mobileNo = $("#mobileNoId").val();
 	var remark = $("#remarkId").val();
-	var updateStatus = $("#statusId").val();
+	var updateStatus = $("#statusId").val().trim();
 	var upladFile = $("#uploadFileId0").val();
+
+	if(updateStatus == "Y"){
+		if(upladFile == null || upladFile.trim().length == 0)
+				errorStr += "Attachment is Required.<br>";
+		/*$('.cloneFileCls').each(function(){
+			var uploadFile = $(this).val();
+			if(uploadFile == null || uploadFile.trim().length == 0)
+				errorStr += "Attachment is Required.<br>";
+		});*/
+	}
 	
 	if(name ==0){
 	  	  errorStr += "Name is required<br>";
@@ -1987,21 +1997,12 @@ $(document).on("click","#saveDetailsBtnId",function(){
 	}
 	if(status != null && status == "maybe"){
 			if(updateStatus ==0){
-		  errorStr += "Status is required<br>";
+				errorStr += "Status is required<br>";
 		}
 	}else{
 		updateStatus = 0;
 	}
 	
-	if(updateStatus == "Y"){
-		//if(upladFile == null || upladFile.trim().length == 0)
-				//errorStr += "Attachment is Required.<br>";
-		$('.cloneFileCls').each(function(){
-			var uploadFile = $(this).val();
-			if(uploadFile == null || uploadFile.trim().length == 0)
-				errorStr += "Attachment is Required.<br>";
-		});
-	}
 	
 	if(errorStr.length >0)
 	{
@@ -2012,6 +2013,7 @@ $(document).on("click","#saveDetailsBtnId",function(){
   if (r)	
   {
 	  $("#searchDataImgForUpdateMeetings").show();
+	  return;
 	  var uploadHandler = {
 		upload: function(o) {
 		    uploadResult = o.responseText;
