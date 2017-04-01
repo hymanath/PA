@@ -136,9 +136,9 @@
 										</span>
 									</div>
 								</div>
-								<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
+								<!--<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
 									<button type="button" class="btn btn-info addObserversCls" style="border-radius: 16px;background:#0b95de;">Add Observer</button>
-								</div>
+								</div>-->
 							</div>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -176,15 +176,15 @@
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Presentation:</label>
-											<input type="text"  class="form-control presentationCls" id="presentationId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
+											<input type="text"  class="form-control presentationCls" id="presentationId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[1].score">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Counter:</label>
-											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
+											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[2].score">
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-6">
 											<label class="f_10">Body&nbsp;Language:</label>
-											<input type="text"  class="form-control bodyLanguageCls" id="bodyLanguageId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
+											<input type="text"  class="form-control bodyLanguageCls" id="bodyLanguageId0" attr_count="0" name="assemblySessionReportVO.membersList[0].scalesList[3].score">
 										</div>
 										<!--<div class="col-md-4 col-xs-12 col-sm-6">
 											<label class="f_10">Summary:</label>
@@ -193,11 +193,11 @@
 										<div id="updatingClonedElements" class="col-md-12 col-xs-12 col-sm-12"></div>
 									</div>
 								</div>
-								<input type="hidden" name="assemblySessionReportVO.membersList[0].adminHouseSessionDayId" id="adminHouseSessionDayId"/>
+								<input type="hidden"  name="assemblySessionReportVO.membersList[0].adminHouseSessionDayId" id="adminHouseSessionDayId"/>
 								<div id="totalUpdatingClonedElements" class="col-md-12 col-xs-12 col-sm-12"></div>
 								<button type="button" class="btn btn-info  pull-right m_top10" id="addTotalOneMoreBlockId" style="border-radius: 16px;;background:#0b95de">Add More</button>
 							</div>
-							
+							<div id="errMsg" style="color:red;"></div>
 							<button type="button" class="btn btn-info  " id="submitBtnId" style="border-radius: 16px;;background:#0b95de" onclick="savingApplication();">SUBMIT</button>
 							</form>
 						</div>
