@@ -13,15 +13,15 @@ public class AssemblySessionReportVO {
 	private Long adminHouseSessionDayId;
 	private Long memberId;
 	private Long speechAspectId; 
-	private Double score = 0.0d;
+	private String score ;
 	//private List<AssemblySessionReportVO> partyList = new ArrayList<AssemblySessionReportVO>(0);
 	private List<AssemblySessionReportVO> membersList = new ArrayList<AssemblySessionReportVO>(0);
 	private List<AssemblySessionReportVO> scalesList = new ArrayList<AssemblySessionReportVO>(0);
 	
-	public Double getScore() {
+	public String getScore() {
 		return score;
 	}
-	public void setScore(Double score) {
+	public void setScore(String score) {
 		this.score = score;
 	}
 	public Long getSpeechAspectId() {
