@@ -129,12 +129,15 @@
 								</div>
 								<div class="col-md-3 col-xs-12 col-sm-6">
 									<label>Date Range</label>
-									<div class="input-group">
+									<select id="UpdateStartdateRange" class="chosen-select">
+										<option value="0"> Select Session Dates</option>
+									</select>
+									<!--<div class="input-group">
 										<input class="form-control" type="text" id="UpdateStartdateRange"/>
 										<span class="input-group-addon">
 											<i class="glyphicon glyphicon-calendar"></i>
 										</span>
-									</div>
+									</div>-->
 								</div>
 								<!--<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
 									<button type="button" class="btn btn-info addObserversCls" style="border-radius: 16px;background:#0b95de;">Add Observer</button>

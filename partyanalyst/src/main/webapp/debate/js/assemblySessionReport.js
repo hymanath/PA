@@ -610,34 +610,33 @@ function buildMemberDetails(result,sessionDayId){
 
 function getDatesForSaving(){
 	
-	var electionYear = $("#electionYearId").val();
-	var sessionYear = $("#sessionYearId").val();
+	//var electionYear = $("#electionYearId").val();
+	//var sessionYear = $("#sessionYearId").val();
 	var sessionId = $("#assemblySessionId").val();
 	
 	var jObj = {
-		elctionYearId : electionYear,
-		sessionYear : sessionYear,//"2017",
-		sessionId : sessionId
+		//elctionYearId : electionYear,
+		//sessionYear : sessionYear,//"2017",
+		adminHuSessionId : sessionId
 	};		
 	$.ajax({
 		  type:'POST',
 		  url: 'getDatesForSavingAction.action',
 		 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
-		if(result != null){
-			/*for(var i in result){
-				var fYear = result[i].date.split('-')[0];
-				var fMonth = result[i].date.split('-')[1];
-				var fDate = result[i].date.split('-')[2];
-				//var tYear = result[0].partyName.split('-')[0];
-				//var tMonth = result[0].partyName.split('-')[1];
-				//var tDate = result[0].partyName.split('-')[2].substring(0,2);
-				
-				$('#UpdateStartdateRange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
-				//$('#dateRange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
-			}*/
+		var str='';
+		if(result != null && result.length >0)
+		{
+			str+='<option value="0">Select Session Dates</option>';
+			for(var i in result)
+			{
+				str+='<option value="'+result[i].id+'">'+result[i].date+'</option>';
+			}
+			str+='</select>';
 		}
-		
+			$("#UpdateStartdateRange").html(str);
+			$("#UpdateStartdateRange").trigger("chosen:updated");
+			$(".chosen-select").chosen({width:'100%'});
 	});
 }
 
