@@ -3252,11 +3252,11 @@ function buildDistrictNames(result,activityLevelId)
 		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingOneModal'+i+'">';
 		if(activityLevelId == 1 || activityLevelId == 2 || activityLevelId == 5){
 			str+='<a role="button" class="constituencyPopups accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModal" attr_distId="'+result[i].districtId+'" href="#collapseOneModal'+i+'" aria-expanded="true" attr_activity_level_id="'+activityLevelId+'" aria-controls="collapseOneModal'+i+'">';
-			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
+			str+='<h4 class="panel-title">'+result[i].name+'( <span title="Total Uploaded Images ">'+result[i].count+' </span>/<span title="Images Covered Locations ">'+result[i].imagesCnt+')</h4>';
 		  str+='</a>';
 		}else{
 			 str+='<a role="button" class="constituencyPopups"  data-parent="#accordionModal" attr_distId="'+result[i].districtId+'" href="#collapseOneModal'+i+'" aria-expanded="true" aria-controls="collapseOneModal'+i+'">'; 
-			str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
+			str+='<h4 class="panel-title">'+result[i].name+'( <span title="Total Uploaded Images ">'+result[i].count+' </span>/<span title="Images Covered Locations ">'+result[i].imagesCnt+')</h4>';
 		  str+='</a>';
 		}
 		str+='</div>';
