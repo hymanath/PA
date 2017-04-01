@@ -20,7 +20,7 @@ public class AdminHouseSessionDayDAO extends GenericDaoHibernate<AdminHouseSessi
 			sb.append("select model.adminHouseSessionDayId," +
 					" date(model.sessionDate)" +
 					" from AdminHouseSessionDay model " +
-					" where model.isDeleted = 'N' and model.adminHouseSession.isActive ='Y' and model.adminHouseSession.isDeleted = 'N' ");
+					" where model.isDeleted = 'N' and model.adminHouseSession.isActive ='Y' and model.adminHouseSession.isDeleted = 'N' " );
 		if(termId != null && termId.longValue() > 0l)
 		{
 			sb.append(" and model.adminHouseSession.adminHouseTerm.adminHouseTermId = :termId");
@@ -33,6 +33,8 @@ public class AdminHouseSessionDayDAO extends GenericDaoHibernate<AdminHouseSessi
 		{
 			sb.append(" and model.adminHouseSession.houseSession.houseSessionId = :sessionId");
 		}
+			sb.append(" order by model.sessionDate ");
+			
 		Query query = getSession().createQuery(sb.toString());
 		if(termId != null && termId.longValue() > 0l)
 			query.setParameter("termId", termId);
