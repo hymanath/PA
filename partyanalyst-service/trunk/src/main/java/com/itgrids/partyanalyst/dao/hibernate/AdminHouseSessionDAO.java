@@ -17,7 +17,7 @@ public class AdminHouseSessionDAO extends GenericDaoHibernate<AdminHouseSession,
 	public List<Object[]> getAllSessions(Long termId,String sessionYr){
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(" select model.houseSession.houseSessionId,model.houseSession.sessionName from AdminHouseSession model where " +
+		sb.append(" select model.adminHouseSessionId,model.houseSession.sessionName from AdminHouseSession model where " +
 				" model.houseSession.isDeleted = 'N' and model.houseSession.isActive = 'Y' and " +
 				"model.houseSession.adminHouse.adminHouseId = 3 and model.adminHouseTerm.isDeleted = 'N' and model.adminHouseTerm.isActive = 'Y' " );
 		 if(termId != null && termId.longValue() > 0l){

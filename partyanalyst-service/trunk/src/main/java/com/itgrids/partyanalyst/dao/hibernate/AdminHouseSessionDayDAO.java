@@ -15,34 +15,21 @@ public class AdminHouseSessionDayDAO extends GenericDaoHibernate<AdminHouseSessi
 		
 	}
 
-	public List<Object[]> getSingleDate(Long termId,String sessionYear,Long sessionId){
+	public List<Object[]> getSingleDate(Long adminHuSessionId){
 		StringBuilder sb = new StringBuilder();
 			sb.append("select model.adminHouseSessionDayId," +
 					" date(model.sessionDate)" +
 					" from AdminHouseSessionDay model " +
 					" where model.isDeleted = 'N' and model.adminHouseSession.isActive ='Y' and model.adminHouseSession.isDeleted = 'N' " );
-		if(termId != null && termId.longValue() > 0l)
+		if(adminHuSessionId != null && adminHuSessionId.longValue() > 0l)
 		{
-			sb.append(" and model.adminHouseSession.adminHouseTerm.adminHouseTermId = :termId");
-		}
-		if(sessionYear != null && !sessionYear.toString().isEmpty())
-		{
-			sb.append(" and model.adminHouseSession.year = :sessionYear");
-		}
-		if(sessionId != null && sessionId.longValue() > 0l)
-		{
-			sb.append(" and model.adminHouseSession.houseSession.houseSessionId = :sessionId");
+			sb.append(" and model.adminHouseSession.adminHouseSessionId = :adminHuSessionId");
 		}
 			sb.append(" order by model.sessionDate ");
 			
 		Query query = getSession().createQuery(sb.toString());
-		if(termId != null && termId.longValue() > 0l)
-			query.setParameter("termId", termId);
-		if(sessionYear != null && !sessionYear.toString().isEmpty())
-			query.setParameter("sessionYear", sessionYear);
-		if(sessionId != null && sessionId.longValue() > 0l)
-			query.setParameter("sessionId", sessionId);
-		
+		if(adminHuSessionId != null && adminHuSessionId.longValue() > 0l)
+			query.setParameter("adminHuSessionId", adminHuSessionId);
 		return query.list();
 		
 		
