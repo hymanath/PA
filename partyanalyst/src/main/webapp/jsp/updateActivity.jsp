@@ -3300,7 +3300,7 @@ function getLocationWiseDetailsForActivity(roundId)
 					str+='<div class="col-md-2"  style=""> ';
 					str+='';
 					*/
-					str+='<input style="margin-top:25px" type="button" value="UPDATE DETAILS" class="btn btn-custom btn-success" onclick="saveActyDetails(1,\'\');"/></div>';
+					//str+='<input style="margin-top:25px" type="button" value="UPDATE DETAILS" class="btn btn-custom btn-success" onclick="saveActyDetails(1,\'\');"/></div>';
 				str+='</div>';
 					$('#home').html(str);
 					$('#loadingsymbl').html("");
