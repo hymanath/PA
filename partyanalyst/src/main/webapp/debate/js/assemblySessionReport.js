@@ -264,9 +264,9 @@ $(document).on("click",".sessionCls",function(){
 				 buildMemberDetails(result);
 			 });
 });
-getPatries("partyId0");
+getPatries("partyId00");
 function getPatries(id){
-	
+	//alert(id)
 	var jObj = {
 			};		
 			$.ajax({
@@ -282,14 +282,16 @@ function getPatries(id){
 					$('#'+id).trigger("chosen:updated");
 			 });
 }
-getCandidates("memberNameId0","");
+getCandidates("memberNameCls","partyCls");
 function getCandidates(id,partyDivId){
-	$('#'+id).empty();
-	
+	$('.'+id).empty();
+	//alert(id)
+	//alert(partyDivId)
 	var partyId = 0;
 	if(partyDivId != ""){
-		 partyId = $("#"+partyDivId).val();
+		 partyId = $("."+partyDivId).val();
 	}
+	//alert(partyId)
 	var jObj = {
 				partyId : partyId
 			};		
@@ -298,13 +300,13 @@ function getCandidates(id,partyDivId){
 				  url: 'getcandidatesForPartyAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
-				 $('#'+id).empty();
+				 $('.'+id).empty();
 				 if(result != null && result.length >0)
 					{
 						for(var i in result)
-						$('#'+id).append('<option value="'+result[i].adminHouseMemberId+'">'+result[i].name+'</option>');
+						$('.'+id).append('<option value="'+result[i].adminHouseMemberId+'">'+result[i].name+'</option>');
 					}
-					$('#'+id).trigger("chosen:updated");
+					$('.'+id).trigger("chosen:updated");
 			 });
 }
 
@@ -386,27 +388,32 @@ function buildMemberDetails(result){
 		c.attr({
 			'id': 'updateAppendHtml'+updatedCloneCount
 		});
+		
+		//getCandidates('memberNameId'+updatedCloneCount,'partyId'+mainCloneCount+''+toatlUpdatedCloneCount);
+		//getCandidates('memberNameId'+updatedCloneCount,'partyId'+mainCloneCount+''+toatlUpdatedCloneCount);
+		
 		c.css("display","block");
 		c.find(".memberNameCls").attr("id","memberNameId"+updatedCloneCount);
 		c.find(".memberNameCls").attr("attr_count",updatedCloneCount);
-		c.find(".memberNameCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].memberId');
+		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
+		
 		
 		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
 		c.find(".subjectCls").attr("attr_count",updatedCloneCount);
-		c.find(".subjectCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].speechAspectId');
 		
 		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
 		c.find(".presentationCls").attr("attr_count",updatedCloneCount);
-		c.find(".presentationCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].speechAspectId');
 		
 			
 		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount);
 		c.find(".counterAttackCls").attr("attr_count",updatedCloneCount);
-		c.find(".counterAttackCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].speechAspectId');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount);
 		c.find(".bodyLanguageCls").attr("attr_count",updatedCloneCount);
-		c.find(".bodyLanguageCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].speechAspectId');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+updatedCloneCount);
 		//c.find(".summaryCls").attr("attr_count",updatedCloneCount);
@@ -434,29 +441,30 @@ function buildMemberDetails(result){
 		});
 		c.css("display","block");
 		c.find(".partyCls").attr("id","partyId"+generatedId)
-		c.find(".partyCls").attr("attr_count",generatedId)
+		c.find(".partyCls").attr("attr_count",generatedId);
+		getPatries("partyId"+generatedId);
+		c.find(".partyCls").attr("onchange","getCandidates('memberNameCls','partyCls');");
 		
 		c.find(".memberNameCls").attr("id","memberNameId"+generatedId)
 		c.find(".memberNameCls").attr("attr_count",generatedId)
-		c.find(".memberNameCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].memberId');
+		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
 		
-		
+		getCandidates('memberNameId'+generatedId,"");
 		c.find(".subjectCls").attr("id","subjectId"+generatedId);
 		c.find(".subjectCls").attr("attr_count",generatedId);
-		c.find(".subjectCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
-		
+		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].speechAspectId');
 		
 		c.find(".presentationCls").attr("id","presentationId"+generatedId)
 		c.find(".presentationCls").attr("attr_count",generatedId)
-		c.find(".presentationCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].speechAspectId');
 			
 		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
 		c.find(".counterAttackCls").attr("attr_count",generatedId)
-		c.find(".counterAttackCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].speechAspectId');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
 		c.find(".bodyLanguageCls").attr("attr_count",generatedId)
-		c.find(".bodyLanguageCls").attr("name",'adminHouseVO.membersList['+updatedCloneCount+'].scalesList['+updatedCloneCount+'].speechAspectId');
+		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].speechAspectId');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
 		//c.find(".summaryCls").attr("attr_count",generatedId)
@@ -487,18 +495,27 @@ function buildMemberDetails(result){
 		
 		c.find(".memberNameCls").attr("id","memberNameId"+generatedId)
 		c.find(".memberNameCls").attr("attr_count",generatedId)
+		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
+		//getCandidates('memberNameId'+generatedId,'partyId'+mainCloneCount+''+toatlUpdatedCloneCount);
+		
+		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
+		c.find(".subjectCls").attr("attr_count",updatedCloneCount);
+		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].speechAspectId');
 		
 		c.find(".presentationCls").attr("id","presentationId"+generatedId)
 		c.find(".presentationCls").attr("attr_count",generatedId)
-			
+		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].speechAspectId');
+		
 		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
-		c.find(".counterAttackCls").attr("attr_count",generatedId)
+		c.find(".counterAttackCls").attr("attr_count",generatedId);
+		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].speechAspectId');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
-		c.find(".bodyLanguageCls").attr("attr_count",generatedId)
+		c.find(".bodyLanguageCls").attr("attr_count",generatedId);
+		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].speechAspectId');
 		
-		c.find(".summaryCls").attr("id","summaryId"+generatedId)
-		c.find(".summaryCls").attr("attr_count",generatedId)
+		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
+		//c.find(".summaryCls").attr("attr_count",generatedId)
 		
 		c.find(".updatingRemoveBtnCls").attr("attr_div_id","updateAppendHtml"+generatedId);
 		$("#totalIndividualClonedElements").append(c);
@@ -517,4 +534,19 @@ function buildMemberDetails(result){
 		var divId = $(this).attr("attr_div_id");
 		$("#"+divId).remove();
 	});
+	
+	function savingApplication(){
+		$("#adminHouseSessionDayId").val(154);
+		alert($("#adminHouseSessionDayId").val());
+		var uploadHandler = {
+				upload: function(o) {
+					$("#savingAjaxImg").css("display","none");
+					uploadResult = o.responseText;
+					showSbmitStatus(uploadResult);
+				}
+			};
+			YAHOO.util.Connect.setForm('submitAssemblySessionCanScore',true);
+			YAHOO.util.Connect.asyncRequest('POST','submitAssemblySessionCanScoreDetailsAction.action',uploadHandler);
+		
+	}
 	
