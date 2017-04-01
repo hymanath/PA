@@ -67,8 +67,16 @@ public class PartyMeetingsVO implements Serializable{
 	private Long absentCount =0L;
 	private List<SessionVO> imagesList = new ArrayList<SessionVO>();
 	private Long imagesCount = 0l;
+	private Long yesCount =0l;
+	private Long noCount =0l;
+	private Long changedCount=0L;
 	
-	
+	public Long getChangedCount() {
+		return changedCount;
+	}
+	public void setChangedCount(Long changedCount) {
+		this.changedCount = changedCount;
+	}
 	public Long getImagesCount() {
 		return imagesCount;
 	}
@@ -378,6 +386,18 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setUpdationCount(Long updationCount) {
 		this.updationCount = updationCount;
+	}
+	public Long getYesCount() {
+		return yesCount;
+	}
+	public void setYesCount(Long yesCount) {
+		this.yesCount = yesCount;
+	}
+	public Long getNoCount() {
+		return noCount;
+	}
+	public void setNoCount(Long noCount) {
+		this.noCount = noCount;
 	}
 	
 }

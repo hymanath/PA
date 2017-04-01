@@ -4516,8 +4516,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 	   return finalList;
 	}
 	
-	public List<PartyMeetingVO> getUpdateDetails(Long locationLvlId,String startDateStr,String endDateStr,String status){
+	public List<PartyMeetingVO> getUpdateDetails(Long locationLvlId,String startDateStr,String endDateStr,String status,List<Long> distIds,List<Long> constIds,String locationType,String thridPartyStatus){
 		List<PartyMeetingVO> returnList = new ArrayList<PartyMeetingVO>();
+		List<Long> updationDetIdList = new ArrayList<Long>();
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			Date startDate = null;
@@ -4527,21 +4528,80 @@ public class PartyMeetingService implements IPartyMeetingService{
 			if(endDateStr != null && !endDateStr.isEmpty())
 				endDate = sdf.parse(endDateStr);
 			
+			 if(thridPartyStatus != null && thridPartyStatus.equalsIgnoreCase("Yes")){
+				 thridPartyStatus = "Y";
+			 }else  if(thridPartyStatus != null && thridPartyStatus.equalsIgnoreCase("No")){
+				 thridPartyStatus = "N";
+			 }
+			List<Object[]>  updationList = partyMeetingUpdationDetailsDAO.getUpdatedDetails(locationLvlId, startDate, endDate, status,distIds,constIds,locationType,thridPartyStatus);
 			
-			List<Object[]>  updationList = partyMeetingUpdationDetailsDAO.getUpdatedDetails(locationLvlId, startDate, endDate, status);
 			if(updationList != null && updationList.size() > 0l){
 				for (Object[] objects : updationList) {
 					PartyMeetingVO vo = new PartyMeetingVO();
 					vo.setPartyMeetingId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					vo.setPartyMeetingName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[2]));//Username
+					vo.setDistName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					vo.setConstNmae(commonMethodsUtilService.getStringValueForObject(objects[4]));
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+					updationDetIdList.add(commonMethodsUtilService.getLongValueForObject(objects[5]));				
 					returnList.add(vo);
 				}
 			}
+			//List<PartyMeetingVO> finalList = new ArrayList<PartyMeetingVO>(0);
+			//List<Long> hasImagesIdsList = new ArrayList<Long>(0);
+			if(updationDetIdList != null && updationDetIdList.size() > 0l){
+				List<Object[]> filePathList = partyMeetingUpdationDocumentsDAO.getDocumentsForUpdationDetsId(updationDetIdList);
+				if(filePathList != null && filePathList.size() > 0l){
+					for (Object[] objects : filePathList) {
+						Long detailsId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+						String filepath = commonMethodsUtilService.getStringValueForObject(objects[2]);
+						PartyMeetingVO vo = getMatchedVO(commonMethodsUtilService.getLongValueForObject(objects[3]),returnList);
+						if(vo != null){
+							vo.getDocmentsList().add(filepath);
+							
+						}
+					//	hasImagesIdsList.add(detailsId);
+						}
+					}
+				}
+			
+			/*if(thridPartyStatus.equalsIgnoreCase("Y") && commonMethodsUtilService.isListOrSetValid(hasImagesIdsList)){
+				for (PartyMeetingVO vo : returnList) {
+					if(vo.getId() != null && hasImagesIdsList.contains(vo.getId().longValue()))
+						finalList.add(vo);
+				}
+			}
+			else if(thridPartyStatus.equalsIgnoreCase("N")){
+				for (PartyMeetingVO vo : returnList) {
+					if(vo.getId() != null && !hasImagesIdsList.contains(vo.getId().longValue()))
+						finalList.add(vo);
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(finalList)){
+				returnList.clear();
+				returnList.addAll(finalList);
+			}*/
 		}catch(Exception e){
 			LOG.error("Exception raised at getUpdateDetails", e);
 		}
 		return returnList;
+	}
+	public PartyMeetingVO getMatchedVO(Long partyMetngId,List<PartyMeetingVO> returnList){
+		PartyMeetingVO returnVo = null;
+		try{
+		if(commonMethodsUtilService.isListOrSetValid(returnList)){
+			for(PartyMeetingVO vo : returnList){
+				if(partyMetngId != null && partyMetngId.longValue()== vo.getPartyMeetingId()){
+					return vo;
+				}
+			}
+		}
+		}catch(Exception e){
+			LOG.error("Exception raised at getUpdateDetails", e);
+		}
+		return returnVo;
 	}
 	public PartyMeetingVO getDocumentsForMeetingId(Long partyMeetingId){
 		PartyMeetingVO returnVO = new PartyMeetingVO();
@@ -4590,7 +4650,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 			if(returnList!= null && !returnList.isEmpty()){
 				if(filePathMap != null && filePathMap.size() > 0l ){
 				for (PartyMeetingVO vo : returnList) {
-					vo.getDocmentsList().addAll(filePathMap.get(vo.getId()));
+					if(commonMethodsUtilService.isListOrSetValid(filePathMap.get(vo.getId())))
+						vo.getDocmentsList().addAll(filePathMap.get(vo.getId()));
 					}
 				}
 			}
