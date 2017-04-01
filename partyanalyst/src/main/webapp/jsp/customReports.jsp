@@ -29,6 +29,19 @@
 <script src="http://www.google.com/jsapi" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 <style type="text/css">
+.observerList li , .block
+{
+	padding:10px;
+	border:1px solid #ddd;
+	border-radius:4px;
+	list-style:none;
+	margin:5px;	
+}
+.observerList li img
+{
+	display:block;
+	margin:auto;
+}
 .text-capital{
 	
 	text-transform:uppercase;
@@ -99,21 +112,25 @@
 		  </div>
 		  <div class="modal-body">
 			<div class="row" >
-				<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-					<form name="customApplication" method="post" id="customApplication">
-					<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD FILE</h3> 
-					
-					<input type="file" id="update_CustomReportId" multiple="multiple"  name="files[]" class="m_top20"/>
-					<span id="errFileId" style="color:red;margin-left:470px;"></span>   
-					
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</form>
+				<div class="col-md-12 col-xs-12 col-sm-12">
+					<div id="reportFullDetails"></div>
 				</div>
-				<button type="button" class="btn btn-primary" id="uploacFilesBtnId" style="margin-left:250px;">Submit Application</button>
+			</div>
+			<div class="row" >
+				<form name="customApplication" method="post" id="customApplication">
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+						<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD FILE</h3> 
+						<input type="file" id="update_CustomReportId" multiple="multiple"  name="files[]" class="m_top20"/>
+						<span id="errFileId" style="color:red;margin-left:470px;"></span>   
+					</div>
+					<div class="col-md-4 col-md-offset-4 col-xs-12 col-sm-4 col-sm-offset-4">
+						<button type="button" class="btn btn-primary btn-block" id="uploacFilesBtnId">Submit Application</button>
+					</div>
+				</form>
 			</div>  
 		  </div>
 		  <div class="modal-footer">
-			
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		  </div>
 		</div>
 	  </div>
@@ -164,6 +181,9 @@ initializeCustomReport();
 	});
 	
 	function getRequiredDocumentsSummary(){
+		$("#submittedReportsSpanId").html("");	
+		$("#notSubmittedReportsSapnId").html("");
+		$("#totalExpectedReportsSpanId").html("");
 		var jsObj={
 			id:$("#programSelId").val()
 		}
@@ -174,25 +194,29 @@ initializeCustomReport();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result != null && result.length > 0){
-				var totalCount = 0;
-				for(var i in result){
-					if(result[i].name === 'Y'){
-						totalCount = totalCount+result[i].count;
-						$("#submittedReportsSpanId").html(" "+result[i].count);	
-					} 
-					 if(result[i].name === 'N'){
-						 totalCount = totalCount+result[i].count;
-						$("#notSubmittedReportsSapnId").html(" "+result[i].count);
+				for(var i in result.locationsList){
+					if(result.locationsList[i].name == "Y"){
+						if(result.locationsList[i].count != null || result.locationsList != ""){
+							$("#submittedReportsSpanId").html(" "+result.locationsList[i].count);	
+						}else{
+							$("#submittedReportsSpanId").html(0);	
+						}
+						
+					}else if(result.locationsList[i].name == "N"){
+						if(result.locationsList[i].count != null){
+							$("#notSubmittedReportsSapnId").html(" "+result.locationsList[i].count);
+						}else{
+							$("#notSubmittedReportsSapnId").html(0);
+						}
+						
 					}
 				}
-				$("#totalExpectedReportsSpanId").html(" "+totalCount);
-			}else{
-				$("#totalExpectedReportsSpanId").html(0);
-				$("#submittedReportsSpanId").html(0);	
-				$("#notSubmittedReportsSapnId").html(0);
-			}
-			
+				if(result.totalCount != null){
+					$("#totalExpectedReportsSpanId").html(result.totalCount);
+				}else{
+					$("#totalExpectedReportsSpanId").html(0);
+				}
+				
 		});
 	}
 </script>

@@ -1,6 +1,5 @@
-var currentFromDate=moment().format("DD/MM/YYYY");
-var currentToDate=moment().format("DD/MM/YYYY");
-
+var currentFromDate=moment().startOf('month').format("DD/MM/YYYY");
+var currentToDate=moment().endOf('month').format("DD/MM/YYYY");
 $(document).on('click','.applyBtn', function() {
 	var dates= $(".multiDateRangePicker").val();
 	 var str=dates.split("-");
@@ -38,8 +37,9 @@ getCustomReportPrograms();
 	}
 	
 	function getProgramReportsDetails(){
+		var id = $("#programSelId").val();
 		var jsObj={
-			id:$("#programSelId").val()
+			id:id
 		}
 		
 		$.ajax({
@@ -48,16 +48,24 @@ getCustomReportPrograms();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			var str='';
-			
-			str+='<table class="table table-bordered">';
+			buildProgramReportDetails(result,id);
+		});
+	}
+	function buildProgramReportDetails(result,id){
+					var str='';
+			str+='<ul class="activeUlCls alertFilterCls list-inline pull-right">'
+            str+='<li class="optionsCls " attr_id="'+id+'" attr_type="" style="background:#ddd;margin-right: 15px;">ALL</li>'
+           str+='<li class="optionsCls" attr_id="'+id+'" attr_type="Y" style="margin-left: -7px;margin-right: 15px;">Submited</li>'
+           str+='<li class="optionsCls" attr_id="'+id+'" attr_type="N" style="margin-left: -5px;margin-right: 10px;">NotSubmited</li>' 
+            str+='</ul>'
+			str+='<table class="table table-bordered" id="detailedReportsTableId">';
 				str+='<thead>';
-					str+='<tr>';
-						str+='<th>Location</th>';
-						str+='<th>Observer Name</th>';
-						//str+='<th>Images</th>';
-						str+='<th>Files</th>';
-						str+='<th>Edit</th>';
+					str+='<tr style="background-color:#EDEEF0;border:1px solid #ddd">';
+						str+='<th>LOCATION</th>';
+						str+='<th>OBSERVER NAME</th>';
+						//str+='<th>IMAGES</th>';
+						str+='<th>FILES</th>';
+						str+='<th>EDIT</th>';
 					str+='</tr>';
 				str+='</thead>';
 				str+='<tbody>';
@@ -79,7 +87,7 @@ getCustomReportPrograms();
 									observers = observers==""?result[i].observersList[t].name:observers+", "+result[i].observersList[t].name;
 								}
 							}
-							str+='<td>'+observers+'</td>';
+							str+='<td style="color:#3C81BC;">'+observers+'</td>';
 							
 							/* if(result[i].imagesList != null && result[i].imagesList.length > 0){
 								str+='<td><i class="glyphicon glyphicon-picture"></i></td>';
@@ -98,15 +106,14 @@ getCustomReportPrograms();
 							str+='</tr>';
 						}
 					}else{
-						str+='<tr><td rowspan="5"></h5>No Reports Available For this Program.<h5></td></tr>'
+						$("#detailedReportsDivId").html("No reports available for this program");
 					}
 				str+='</tbody>';
 			str+='</table>';
 			
 			$("#detailedReportsDivId").html(str);
-		});
+			$("#detailedReportsTableId").dataTable();
 	}
-	
 	$(document).on("click",".editReportCls",function(){
 		$("#uploadModalDivId").modal("show");
 		var jsObj={
@@ -119,6 +126,58 @@ getCustomReportPrograms();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			
+			buildReportFullDetails(result);
 		});
 	});
+	function buildReportFullDetails(result){
+		var str='';
+		
+		if(result.observersList != null && result.observersList.length > 0)
+		{
+			str+='<ul class="list-inline observerList">';
+			for(var i in result.observersList)
+			{
+				str+='<li>';
+					str+='<img src="https://mytdp.com/images/'+result.observersList[i].path+'" class="img-responsive"/>';
+					str+='<p>Name : '+result.observersList[i].name+'</p>';
+					str+='<p>Voter No : '+result.observersList[i].voterNum+'</p>';
+					str+='<p>Mobile No : '+result.observersList[i].mobileNum+'</p>';
+					str+='<p>Membership No : '+result.observersList[i].membershipNo+'</p>';
+				str+='</li>';
+			}
+			str+='</ul>';
+		}
+			
+		
+		str+='<div class="block">'+result.name+'</div>';
+		
+		if(result.fileList != null && result.fileList.length > 0)
+		{
+			str+='<ul class="observerList list-inline">';
+			for(var i in result.fileList)
+			{
+				str+='<li>';
+					str+='<a href="'+result.fileList[i].path+'"><i class="fa fa-file-pdf-o text-danger"></i>&nbsp;&nbsp;'+result.fileList[i].name+'</a>';
+				str+='</li>';
+			}
+			str+='</ul>';
+		}
+		
+		$("#reportFullDetails").html(str);
+	}
+   $(document).on("click",".optionsCls",function(){
+	   var id = $(this).attr("attr_id");
+	   var type = $(this).attr("attr_type");
+	   var jsObj={
+			reportId:$(this).attr("attr_id"),
+			type:type
+		}
+		$.ajax({
+		  type : "GET",
+		  url : "getCustomReportProgramForreportId.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			buildProgramReportDetails(result);
+		});
+   });
