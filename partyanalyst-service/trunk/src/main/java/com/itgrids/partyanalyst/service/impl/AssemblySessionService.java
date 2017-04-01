@@ -517,10 +517,10 @@ public class AssemblySessionService implements IAssemblySessionService{
 		return resultStatus;
 	}
 	
-	public List<AdminHouseVO> getDatesForSaving(Long termId,String sessionYear,Long sessionId){
+	public List<AdminHouseVO> getDatesForSaving(Long adminHuSessionId){
 		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
 		try{
-			List<Object[]> datesList = adminHouseSessionDayDAO.getSingleDate(termId, sessionYear, sessionId);
+			List<Object[]> datesList = adminHouseSessionDayDAO.getSingleDate(adminHuSessionId);
 			if(datesList != null && datesList.size() > 0l){
 				for (Object[] objects : datesList) {
 					AdminHouseVO vo = new AdminHouseVO();
