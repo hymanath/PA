@@ -299,7 +299,7 @@ $(document).on("click",".sessionCls",function(){
 			 });
 });
 
-
+var candidateArr=[];
 function buildMemberDetails(result,sessionDayId){
 	var str='';
 	var total;
@@ -325,27 +325,62 @@ function buildMemberDetails(result,sessionDayId){
 			str+='<tr>';
 			str+='<td>'+result[i].partyName+'</td>';
 			str+='<td>'+result[i].count+'&nbsp;&nbsp;<span class="expand-Member-icon" attr_id="'+i+'"><i class="glyphicon glyphicon-plus"></i></span></td>';
-			str+='<td>'+result[i].avgSubCount.toFixed(1)+'</td>';
-			str+='<td>'+result[i].avgPresCount.toFixed(1)+'</td>';
-			str+='<td>'+result[i].avgCunterAttCount.toFixed(1)+'</td>';
-			str+='<td>'+result[i].avgCunterAttCount.toFixed(1)+'</td>';
-			total=result[i].avgSubCount+result[i].avgPresCount+result[i].avgCunterAttCount+result[i].avgCunterAttCount;
-			str+='<td>'+total.toFixed(1)+'</td>';
-			str+='<td><span class="glyphicon glyphicon-edit"></span></td>';
+			str+='<td> <span  class="constantClsd'+(i+1)+'"> '+result[i].avgSubCount.toFixed(1)+'</span>';
+			str+='<input type="text" value="'+result[i].avgSubCount.toFixed(1)+'"  class="editClassd'+(i+1)+'" style="display:none;"/>';
+			str+='</td>';
+			str+='<td> <span  class="constantClsd'+(i+1)+'"> '+result[i].avgPresCount.toFixed(1)+'</span>';
+			str+='<input type="text" value="'+result[i].avgPresCount.toFixed(1)+'"  class="editClassd'+(i+1)+'" style="display:none;"/>';
+			str+='</td>';
+			str+='<td> <span  class="constantClsd'+(i+1)+'"> '+result[i].avgCunterAttCount.toFixed(1)+'</span>';
+			str+='<input type="text" value="'+result[i].avgCunterAttCount.toFixed(1)+'"  class="editClassd'+(i+1)+'" style="display:none;"/>';
+			str+='</td>';
+			str+='<td> <span  class="constantClsd'+(i+1)+'"> '+result[i].avgBdyLanCount.toFixed(1)+'</span>';
+			str+='<input type="text" value="'+result[i].avgBdyLanCount.toFixed(1)+'"  class="editClassd'+(i+1)+'" style="display:none;"/>';
+			str+='</td>';
+			
+			total=result[i].avgSubCount+result[i].avgPresCount+result[i].avgCunterAttCount+result[i].avgBdyLanCount;
+			str+='<td> <span  class="constantClsd'+(i+1)+'"> '+total.toFixed(1)+'</span>';
+			str+='<input type="text" value="'+total.toFixed(1)+'"  class="editClassd'+(i+1)+'" style="display:none;"/>';
+			str+='</td>';
+			
+			
+			str+='<td class=" " ><span class="glyphicon glyphicon-edit updateSessionDetailsd constantClsd'+(i+1)+'" attr_constant_cls="constantClsd'+(i+1)+'" attr_edit_cls="editClassd'+(i+1)+'" style="cursor:pointer;"></span>';
+			str+='<span class="glyphicon glyphicon-save saveSessionDetailsd editClassd'+(i+1)+'" attr_constant_cls="constantClsd'+(i+1)+'" attr_edit_cls="editClassd'+(i+1)+'" style="display:none;cursor:pointer;" ></span>';
+			str+='</td>';
 			str+='<td><span class="glyphicon glyphicon-trash"></span></td>';
 			//str+='<button type="button"  class="btn btn-custom btn-success" onClick="saveCandDetails();">Edit</button>';
 			str+='</tr>';
 			
 			for(var j in result[i].candidateList)
 			{
+					
 				str+='<tr id="expandViewId" style="display:none;" class="expandViewModal'+i+'">';
 					str+='<td ></td>';
-					str+='<td >'+result[i].candidateList[j].name+'</td>';
-						for(var k in result[i].candidateList[j].partyList){
-							str+='<td>'+result[i].candidateList[j].partyList[k].score+'</td>';
+					str+='<td> <span  class="constantCls'+(i+j+1)+'"> '+result[i].candidateList[j].name+' </span> ';
+						str+='<select class="form-control editClass'+(i+j+1)+'" style="display:none;" >';
+						if(candidateArr !=null && candidateArr.length>0){
+							for(var ca in candidateArr){
+								
+								str+='<option value="'+candidateArr[ca].adminHouseMemberId+'">'+candidateArr[ca].name+'</option>';
+							}
 						}
-					str+='<td>'+result[i].candidateList[j].total+'</td>';
-					str+='<td><span class="glyphicon glyphicon-edit"></span></td>';
+							
+						str+='</select>';
+					str+='</td>';
+						for(var k in result[i].candidateList[j].partyList){
+							str+='<td> <span class="constantCls'+(i+j+1)+'"> '+result[i].candidateList[j].partyList[k].score+'</span> ';
+							str+='<input type="text"  value="'+result[i].candidateList[j].partyList[k].score+'" class="editClass'+(i+j+1)+'" style="display:none;"/>';
+							str+='</td>';
+						}
+					
+					str+='<td> <span  class="constantCls'+(i+j+1)+'"> '+result[i].candidateList[j].total+'</span>';
+					str+='<input type="text" value="'+result[i].candidateList[j].total+'"  class="editClass'+(i+j+1)+'" style="display:none;"/>';
+					str+='</td>';
+					
+					str+='<td class=" " ><span class="glyphicon glyphicon-edit updateSessionDetails constantCls'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="cursor:pointer;"></span>';
+					str+='<span class="glyphicon glyphicon-save saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" ></span>';
+					str+='</td>';
+					
 					str+='<td><span class="glyphicon glyphicon-trash"></span></td>';
 				str+='</tr>';
 			}
@@ -356,6 +391,48 @@ function buildMemberDetails(result,sessionDayId){
 		str+='</form>';
 	$("#memberDetailsId").html(str);
 }
+
+$(document).on("click",".updateSessionDetails",function(){
+	var constantCls = $(this).attr('attr_constant_cls');
+	var editClass = $(this).attr('attr_edit_cls');
+	
+	
+	$("."+constantCls+"").hide();
+	$("."+editClass+"").show();
+	//$("."+editClass+"").val(0);
+	//$("."+editClass+"").val('');
+	
+	});	
+$(document).on("click",".saveSessionDetails",function(){
+	var constantCls = $(this).attr('attr_constant_cls');
+	var editClass = $(this).attr('attr_edit_cls');
+	
+	$("."+constantCls+"").show();
+	$("."+editClass+"").hide();
+	//$("."+editClass+"").val(0);
+	//$("."+editClass+"").val('');
+});	
+
+$(document).on("click",".updateSessionDetailsd",function(){
+	var constantCls = $(this).attr('attr_constant_cls');
+	var editClass = $(this).attr('attr_edit_cls');
+	
+	
+	$("."+constantCls+"").hide();
+	$("."+editClass+"").show();
+	//$("."+editClass+"").val(0);
+	//$("."+editClass+"").val('');
+	
+	});	
+$(document).on("click",".saveSessionDetailsd",function(){
+	var constantCls = $(this).attr('attr_constant_cls');
+	var editClass = $(this).attr('attr_edit_cls');
+	
+	$("."+constantCls+"").show();
+	$("."+editClass+"").hide();
+	//$("."+editClass+"").val(0);
+	//$("."+editClass+"").val('');
+});	
 
 	var appendId=0;
 	$(document).on("click",".addObserversCls",function(){
@@ -550,6 +627,7 @@ function getCandidates(classVal,partyDivId){
 						str+='<option value="0">All</option>';
 						
 						for(var i in result){
+							candidateArr =result; 
 							str+='<option value="'+result[i].adminHouseMemberId+'">'+result[i].name+'</option>';
 							
 						}
