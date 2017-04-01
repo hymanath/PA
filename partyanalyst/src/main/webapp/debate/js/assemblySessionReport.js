@@ -274,6 +274,8 @@ function getPatries(id){
 				  url: 'getPartiesAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
+				 $('#'+id).empty();
+				 $('#'+id).append('<option value="0">All</option>');
 				 if(result != null && result.length >0)
 					{
 						for(var i in result)
@@ -282,7 +284,7 @@ function getPatries(id){
 					$('#'+id).trigger("chosen:updated");
 			 });
 }
-getCandidates("memberNameCls","partyCls");
+getCandidates("memberNameCls","");
 function getCandidates(id,partyDivId){
 	$('.'+id).empty();
 	//alert(id)
@@ -301,6 +303,7 @@ function getCandidates(id,partyDivId){
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
 				 $('.'+id).empty();
+				 $('.'+id).append('<option value="0">All</option>');
 				 if(result != null && result.length >0)
 					{
 						for(var i in result)
@@ -400,20 +403,20 @@ function buildMemberDetails(result){
 		
 		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
 		c.find(".subjectCls").attr("attr_count",updatedCloneCount);
-		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].speechAspectId');
+		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
 		
 		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
 		c.find(".presentationCls").attr("attr_count",updatedCloneCount);
-		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].speechAspectId');
+		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
 		
 			
 		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount);
 		c.find(".counterAttackCls").attr("attr_count",updatedCloneCount);
-		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].speechAspectId');
+		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount);
 		c.find(".bodyLanguageCls").attr("attr_count",updatedCloneCount);
-		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].speechAspectId');
+		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+updatedCloneCount);
 		//c.find(".summaryCls").attr("attr_count",updatedCloneCount);
@@ -452,19 +455,19 @@ function buildMemberDetails(result){
 		getCandidates('memberNameId'+generatedId,"");
 		c.find(".subjectCls").attr("id","subjectId"+generatedId);
 		c.find(".subjectCls").attr("attr_count",generatedId);
-		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].speechAspectId');
+		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
 		
 		c.find(".presentationCls").attr("id","presentationId"+generatedId)
 		c.find(".presentationCls").attr("attr_count",generatedId)
-		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].speechAspectId');
+		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
 			
 		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
 		c.find(".counterAttackCls").attr("attr_count",generatedId)
-		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].speechAspectId');
+		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
 		c.find(".bodyLanguageCls").attr("attr_count",generatedId)
-		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].speechAspectId');
+		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
 		//c.find(".summaryCls").attr("attr_count",generatedId)
@@ -500,19 +503,19 @@ function buildMemberDetails(result){
 		
 		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
 		c.find(".subjectCls").attr("attr_count",updatedCloneCount);
-		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].speechAspectId');
+		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
 		
 		c.find(".presentationCls").attr("id","presentationId"+generatedId)
 		c.find(".presentationCls").attr("attr_count",generatedId)
-		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].speechAspectId');
+		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
 		
 		c.find(".counterAttackCls").attr("id","counterAttackId"+generatedId)
 		c.find(".counterAttackCls").attr("attr_count",generatedId);
-		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].speechAspectId');
+		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+generatedId)
 		c.find(".bodyLanguageCls").attr("attr_count",generatedId);
-		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].speechAspectId');
+		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
 		//c.find(".summaryCls").attr("attr_count",generatedId)
@@ -542,7 +545,7 @@ function buildMemberDetails(result){
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
 					uploadResult = o.responseText;
-					showSbmitStatus(uploadResult);
+					//showSbmitStatus(uploadResult);
 				}
 			};
 			YAHOO.util.Connect.setForm('submitAssemblySessionCanScore',true);
