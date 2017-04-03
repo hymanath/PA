@@ -3403,7 +3403,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   			String category = jobj.getString("category");
   			String fromDateStr = jobj.getString("fromDateStr");
   			String toDateStr = jobj.getString("toDateStr");
-  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getDistrictWiseThenCategoryWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr);
+  			String sortingCondition = jobj.getString("sortingCondition");
+  			String order = jobj.getString("order");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getDistrictWiseThenCategoryWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,sortingCondition,order);
   			
   		}catch(Exception e){
   			LOG.error("Exception raised at getDistrictWiseThenCategoryWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
@@ -3422,7 +3424,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   			String category = jobj.getString("category");
   			String fromDateStr = jobj.getString("fromDateStr");
   			String toDateStr = jobj.getString("toDateStr");
-  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr);
+  			String sortingCondition = jobj.getString("sortingCondition");
+  			String order = jobj.getString("order");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getConstituencyWiseThenCategoryWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,sortingCondition,order);
   			
   		}catch(Exception e){
   			LOG.error("Exception raised at getConstituencyWiseThenCategoryWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
@@ -3441,7 +3445,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   			String category = jobj.getString("category");
   			String fromDateStr = jobj.getString("fromDateStr");
   			String toDateStr = jobj.getString("toDateStr");
-  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getDistrictWiseThenStatusWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr);
+  			String sortingCondition = jobj.getString("sortingCondition");
+  			String order = jobj.getString("order");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getDistrictWiseThenStatusWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,sortingCondition,order);
   			
   		}catch(Exception e){
   			LOG.error("Exception raised at getDistrictWiseThenStatusWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
@@ -3460,7 +3466,9 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   			String category = jobj.getString("category");
   			String fromDateStr = jobj.getString("fromDateStr");
   			String toDateStr = jobj.getString("toDateStr");
-  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getConstituencyWiseThenStatusWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr);
+  			String sortingCondition = jobj.getString("sortingCondition");
+  			String order = jobj.getString("order");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getConstituencyWiseThenStatusWiseInsuranceMemberCount(activityMemberId,userTypeId,stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,sortingCondition,order);
   			
   		}catch(Exception e){ 
   			LOG.error("Exception raised at getConstituencyWiseThenStatusWiseInsuranceMemberCount() method of CadreRegistrationAction", e);
@@ -3478,8 +3486,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   			String fromDateStr = jobj.getString("fromDateStr");
   			String toDateStr = jobj.getString("toDateStr");
   			String type = jobj.getString("type");
-  			String locationType = jobj.getString("locationType");  
-  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,type,locationType);
+  			String locationType = jobj.getString("locationType");
+  			String sortingCondition = jobj.getString("sortingCondition");
+  			String order = jobj.getString("order");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,type,locationType,sortingCondition,order);
   			
   		}catch(Exception e){ 
   			LOG.error("Exception raised at getLocationWiseThenCategoryWiseInsuranceMemberCountForTS() method of CadreRegistrationAction", e);
@@ -3497,8 +3507,10 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
   			String fromDateStr = jobj.getString("fromDateStr");
   			String toDateStr = jobj.getString("toDateStr");
   			String type = jobj.getString("type");
-  			String locationType = jobj.getString("locationType");  
-  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getLocationWiseThenStatusWiseInsuranceMemberCountForTS(stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,type,locationType);
+  			String locationType = jobj.getString("locationType"); 
+  			String sortingCondition = jobj.getString("sortingCondition");
+  			String order = jobj.getString("order");
+  			coreDashboardInsuranceVOs = coreDashboardInsuranceService.getLocationWiseThenStatusWiseInsuranceMemberCountForTS(stateId,cadreEnrollmentYearId,locationId,status,category,fromDateStr,toDateStr,type,locationType,sortingCondition,order);
   			
   		}catch(Exception e){ 
   			LOG.error("Exception raised at getLocationWiseThenStatusWiseInsuranceMemberCountForTS() method of CadreRegistrationAction", e);
