@@ -16,6 +16,7 @@ import java.util.List;
 public class CoreDashboardInsuranceVO {
 
 	private Long id;
+	private Long constituencyNo;
 	private String name;
 	private Long count = 0l;
 	private Long totalCount = 0l;
@@ -205,6 +206,12 @@ public class CoreDashboardInsuranceVO {
 	}
 	public void setTotalStatusCountFilter(Long totalStatusCountFilter) {
 		this.totalStatusCountFilter = totalStatusCountFilter;
+	}
+	public Long getConstituencyNo() {
+		return constituencyNo;
+	}
+	public void setConstituencyNo(Long constituencyNo) {
+		this.constituencyNo = constituencyNo;
 	}
 	
 	
