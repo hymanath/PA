@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.record.formula.functions.Dmin;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
@@ -196,7 +198,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 		try{
 			jObj = new JSONObject(getTask());
 			
-			assemblyVOList = assemblySessionService.getDayWiseDetails(jObj.getLong("adminHouseSessionDayId"));
+			assemblyVOList = assemblySessionService.getDayWiseDetails(jObj.getLong("adminHouseSessionDayId"),jObj.getLong("partyId"));
 			}catch(Exception e){
 				LOG.error("Exception occured in getDayWiseDetails() At AssemblySessionAction",e);
 			}
@@ -204,7 +206,49 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 	}
 	public String updateMemberDetails(){
 		try {
-				status = assemblySessionService.updateMemberSpeechAspectDetails(adminHouseVO);
+				
+			jObj = new JSONObject(getTask());
+			 Long adminMemberId = jObj.getLong("adminHouseMemId");
+			 Long sessionDayId = jObj.getLong("adminHsesesnDayId");
+			 String subScore = jObj.getString("subScore");
+			 String presScore = jObj.getString("presScore");
+			 String cunAttScore = jObj.getString("countrScore");
+			 String bdyLangScore = jObj.getString("bdyLangScore");
+			 
+			 
+			 if(adminMemberId != null && adminMemberId.longValue() > 0l){
+				 adminHouseVO.setAdminHouseMemberId(adminMemberId);
+			 }
+			 if(sessionDayId != null && sessionDayId.longValue() > 0l){
+				 adminHouseVO.setAdminHouseSessionDayId(sessionDayId);
+			 }
+				List<AdminHouseVO> aspectList = new ArrayList<AdminHouseVO>();
+			for(int i=1;i<=4;i++){
+				if(i == 1){
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setSpeechAsceptId(1l);
+					vo.setValue(subScore);
+					aspectList.add(vo);
+				}else if(i == 2){
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setSpeechAsceptId(2l);
+					vo.setValue(presScore);
+					aspectList.add(vo);
+				}else if( i == 3){
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setSpeechAsceptId(3l);
+					vo.setValue(cunAttScore);
+					aspectList.add(vo);
+				}else if(i == 4){
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setSpeechAsceptId(4l);
+					vo.setValue(bdyLangScore);
+					aspectList.add(vo);
+				}
+				adminHouseVO.getCandidateList().addAll(aspectList);
+			}
+				
+			status = assemblySessionService.updateMemberSpeechAspectDetails(adminHouseVO);
 				
 			} catch (Exception e) {
 				LOG.error("Exception occured in updateMemberDetails() At AssemblySessionAction",e);
@@ -213,6 +257,47 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 	}
 	public String deleteMemberDetails(){
 		try {
+			jObj = new JSONObject(getTask());
+			 Long adminMemberId = jObj.getLong("adminHouseMemId");
+			 Long sessionDayId = jObj.getLong("adminHsesesnDayId");
+			 String subScore = jObj.getString("subScore");
+			 String presScore = jObj.getString("presScore");
+			 String cunAttScore = jObj.getString("countrScore");
+			 String bdyLangScore = jObj.getString("bdyLangScore");
+			 
+			 
+			 if(adminMemberId != null && adminMemberId.longValue() > 0l){
+				 adminHouseVO.setAdminHouseMemberId(adminMemberId);
+			 }
+			 if(sessionDayId != null && sessionDayId.longValue() > 0l){
+				 adminHouseVO.setAdminHouseSessionDayId(sessionDayId);
+			 }
+				List<AdminHouseVO> aspectList = new ArrayList<AdminHouseVO>();
+			for(int i=1;i<=4;i++){
+				if(i == 1){
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setSpeechAsceptId(1l);
+					vo.setValue(subScore);
+					aspectList.add(vo);
+				}else if(i == 2){
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setSpeechAsceptId(2l);
+					vo.setValue(presScore);
+					aspectList.add(vo);
+				}else if( i == 3){
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setSpeechAsceptId(3l);
+					vo.setValue(cunAttScore);
+					aspectList.add(vo);
+				}else if(i == 4){
+					AdminHouseVO vo = new AdminHouseVO();
+					vo.setSpeechAsceptId(4l);
+					vo.setValue(bdyLangScore);
+					aspectList.add(vo);
+				}
+				adminHouseVO.getCandidateList().addAll(aspectList);
+			}
+			
 				status = assemblySessionService.deleteMemberDetails(adminHouseVO);
 				
 			} catch (Exception e) {
