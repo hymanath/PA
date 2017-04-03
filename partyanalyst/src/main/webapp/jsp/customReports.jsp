@@ -36,6 +36,19 @@
 	border-radius:4px;
 	list-style:none;
 	margin:5px;	
+	position:relative;
+}
+.observerList li .removeCls
+{
+	position:absolute;
+	top:-5px;
+	right:-5px;
+	background-color:#ddd;
+	color:#333;
+	border-radius:50%;
+	padding:2px;
+	font-size:10px;
+	cursor:pointer;
 }
 .observerList li img
 {
@@ -51,7 +64,7 @@
 }
 .border-box{
 	padding:10px 20px;
-    border: 1px dotted black;
+    border: 1px solid #ddd;
 }
 </style>
 </head>
@@ -95,7 +108,16 @@
 										</li>
 									</ul>
 								</div>
-								<div id="detailedReportsDivId"></div>
+								<div class="col-md-3 col-xs-12 col-sm-3">
+									<ul class="activeUlCls alertFilterCls list-inline pull-right">
+										<li class="optionCls active" attr_type="">ALL</li>
+										<li class="optionCls" attr_type="Y">Submited</li>
+										<li class="optionCls" attr_type="N">NotSubmited</li>
+									</ul>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div id="detailedReportsDivId"></div>
+								</div>
 							</div>
 							<!--<button type="button" class="btn btn-success uploadDivCls">Upload</button>-->
 					    </div>
@@ -111,13 +133,13 @@
 			<h4 class="modal-title text-capital" id="reportheaderId">UPLOAD CUSTOM REPORT DETAILS</h4>
 		  </div>
 		  <div class="modal-body">
+		  <form name="customApplication" method="post" id="customApplication">
 			<div class="row" >
 				<div class="col-md-12 col-xs-12 col-sm-12">
 					<div id="reportFullDetails"></div>
 				</div>
 			</div>
 			<div class="row" >
-				<form name="customApplication" method="post" id="customApplication">
 					<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 						<h3 class="m_0 text-success font_weight" style="margin-left:425px;">UPLOAD FILE</h3> 
 						<input type="file" id="update_CustomReportId" multiple="multiple"  name="files[]" class="m_top20"/>
@@ -178,6 +200,8 @@ initializeCustomReport();
 		};
 		YAHOO.util.Connect.setForm('customApplication',true);  
 		YAHOO.util.Connect.asyncRequest('POST','saveCustomReportUploadFileAction.action',uploadHandler);
+		 $("#uploacFilesBtnId").attr("disabled","disabled");
+		//location.reload();
 	});
 	
 	function getRequiredDocumentsSummary(){
@@ -194,23 +218,23 @@ initializeCustomReport();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
+			if(result.locationsList != null && result.locationsList.length > 0){
 				for(var i in result.locationsList){
 					if(result.locationsList[i].name == "Y"){
-						if(result.locationsList[i].count != null || result.locationsList != ""){
+						if(result.locationsList[i].count != null){
 							$("#submittedReportsSpanId").html(" "+result.locationsList[i].count);	
-						}else{
-							$("#submittedReportsSpanId").html(0);	
-						}
-						
+						}	
 					}else if(result.locationsList[i].name == "N"){
 						if(result.locationsList[i].count != null){
 							$("#notSubmittedReportsSapnId").html(" "+result.locationsList[i].count);
-						}else{
-							$("#notSubmittedReportsSapnId").html(0);
 						}
-						
 					}
 				}
+			}else{
+				$("#submittedReportsSpanId").html(0);	
+				$("#notSubmittedReportsSapnId").html(0);
+			}
+				
 				if(result.totalCount != null){
 					$("#totalExpectedReportsSpanId").html(result.totalCount);
 				}else{

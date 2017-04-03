@@ -35,9 +35,22 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 	private ResultStatus                         resultStatus;
 	private CustomReportVO customReportVO;
 	private String description;
+	private Long reportId;
+	private Long programId;
 	
 	
-
+	public Long getProgramId() {
+		return programId;
+	}
+	public void setProgramId(Long programId) {
+		this.programId = programId;
+	}
+	public Long getReportId() {
+		return reportId;
+	}
+	public void setReportId(Long reportId) {
+		this.reportId = reportId;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -158,7 +171,7 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
 				   			}	
 		   		}
 		     
-		   		resultStatus = customReportService.saveCustomReportUploadFile(mapfiles, userId,description);
+		   		resultStatus = customReportService.saveCustomReportUploadFile(mapfiles, userId,description,reportId,programId);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in reportUploadForm() method, Exception - ",e); 
@@ -191,6 +204,15 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
     		customReportVOList = customReportService.getCustomReportProgramForreportId(jObj.getLong("reportId"),jObj.getString("type"));
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getCustomReportProgramForreportId() method, Exception - ",e); 
+		}
+    	return Action.SUCCESS;	
+    }
+    public String deleteCustomReportFileDetails(){
+    	try {
+    		jObj = new JSONObject(getTask());
+    		resultStatus = customReportService.deleteCustomReportFileDetails(jObj.getLong("reportId"));
+		} catch (Exception e) {
+			LOG.error("Exception Occured in deleteCustomReportFileDetails() method, Exception - ",e); 
 		}
     	return Action.SUCCESS;	
     }
