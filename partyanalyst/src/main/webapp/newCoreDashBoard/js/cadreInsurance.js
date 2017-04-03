@@ -788,141 +788,153 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
    }
    /* Comparison Block End */
    
-//getDistrictWiseThenCategoryWiseInsuranceMemberCount();      
-function getDistrictWiseThenCategoryWiseInsuranceMemberCount(){
-	var jsObj = { 
-					   activityMemberId : 1,                           
-					   userTypeId : 3,                            
-					   stateId :globalStateIdForCadreInsurance,
-					   cadreEnrollmentYearId : 0,           
-					   locationId: 0,        
-					   status :	"",
-					   category : "", 
-					   fromDateStr : "",
-					   toDateStr : ""        
-				  };
-	console.log(jsObj);    
-	$.ajax({
-			type : 'POST',
-			url : 'getDistrictWiseThenCategoryWiseInsuranceMemberCountAction.action',
-			dataType : 'json',  
-			data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-			console.log(result);
-	});
-}
-//getConstituencyWiseThenCategoryWiseInsuranceMemberCount();     
-function getConstituencyWiseThenCategoryWiseInsuranceMemberCount(){
-	var jsObj = { 
-					   activityMemberId : 44,                                       
-					   userTypeId : 2,                
-					   stateId :globalStateIdForCadreInsurance,
-					   cadreEnrollmentYearId : 0,           
-					   locationId: 0,                               
-					   status :	"",
-					   category : "", 
-					   fromDateStr : "",
-					   toDateStr : ""        
-				  };
-	console.log(jsObj);                                    
-	$.ajax({
-			type : 'POST',
-			url : 'getConstituencyWiseThenCategoryWiseInsuranceMemberCountAction.action',
-			dataType : 'json',  
-			data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-			console.log(result);
-	});
-} 
-//getDistrictWiseThenStatusWiseInsuranceMemberCount();      
-function getDistrictWiseThenStatusWiseInsuranceMemberCount(){
-	var jsObj = { 
-					   activityMemberId : 44,                                     
-					   userTypeId : 2,                         
-					   stateId :globalStateIdForCadreInsurance,
-					   cadreEnrollmentYearId : 0,           
-					   locationId: 0,                                       
-					   status :	"",  
-					   category : "",             
-					   fromDateStr : "",
-					   toDateStr : ""                    
-				  };
-	console.log(jsObj);                                
-	$.ajax({
-			type : 'POST',
-			url : 'getDistrictWiseThenStatusWiseInsuranceMemberCountAction.action',
-			dataType : 'json',  
-			data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-			console.log(result);
-	});
-} 
-//getConstituencyWiseThenStatusWiseInsuranceMemberCount();           
-function getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
-	var jsObj = { 
-					   activityMemberId : 44,                                     
-					   userTypeId : 2,                         
-					   stateId :globalStateIdForCadreInsurance,
-					   cadreEnrollmentYearId : 0,           
-					   locationId: 0,                                       
-					   status :	"",  
-					   category : "",             
-					   fromDateStr : "",
-					   toDateStr : ""                       
-				  };
-	console.log(jsObj);                                
-	$.ajax({
-			type : 'POST',
-			url : 'getConstituencyWiseThenStatusWiseInsuranceMemberCountAction.action',
-			dataType : 'json',  
-			data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){  
-			console.log(result);
-	});
-}
-//getLocationWiseThenCategoryWiseInsuranceMemberCountForTS();                        
-function getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(){
-	var jsObj = { 
-					   stateId :globalStateIdForCadreInsurance,
-					   cadreEnrollmentYearId : 0,           
-					   locationId: 0,                                       
-					   status :	"",  
-					   category : "",             
-					   fromDateStr : "",
-					   toDateStr : "",
-					   type : "category",
-					   locationType : "constituency"   
-				  };
-	console.log(jsObj);                                
-	$.ajax({
-			type : 'POST',
-			url : 'getLocationWiseThenCategoryWiseInsuranceMemberCountForTSAction.action',
-			dataType : 'json',  
-			data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){  
-			console.log(result);
-	});
-}   
-//getLocationWiseThenStatusWiseInsuranceMemberCountForTS();        
-function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(){
-	var jsObj = { 
-					   stateId :globalStateIdForCadreInsurance,
-					   cadreEnrollmentYearId : 0,           
-					   locationId: 0,                                               
-					   status :	"",  
-					   category : "",             
-					   fromDateStr : "",    
-					   toDateStr : "",
-					   type : "status",
-					   locationType : "district"          
-				  };
-	console.log(jsObj);                                
-	$.ajax({
-			type : 'POST',
-			url : 'getLocationWiseThenStatusWiseInsuranceMemberCountForTSAction.action',
-			dataType : 'json',  
-			data : {task:JSON.stringify(jsObj)}
-	}).done(function(result){  
-			console.log(result);
-	});
-}            
+ //getDistrictWiseThenCategoryWiseInsuranceMemberCount();      
+   function getDistrictWiseThenCategoryWiseInsuranceMemberCount(){
+   	var jsObj = { 
+   					   activityMemberId : 59,                               
+   					   userTypeId : 6,                                   
+   					   stateId :globalStateIdForCadreInsurance,
+   					   cadreEnrollmentYearId : 0,           
+   					   locationId: 0,        
+   					   status :	"",
+   					   category : "", 
+   					   fromDateStr : "",
+   					   toDateStr : "",
+   					   sortingCondition : "name",  
+   					   order : "asc"                  
+   				  };
+   	console.log(jsObj);    
+   	$.ajax({
+   			type : 'POST',
+   			url : 'getDistrictWiseThenCategoryWiseInsuranceMemberCountAction.action',
+   			dataType : 'json',  
+   			data : {task:JSON.stringify(jsObj)}
+   	}).done(function(result){
+   			console.log(result);
+   	});
+   }
+   //getConstituencyWiseThenCategoryWiseInsuranceMemberCount();     
+   function getConstituencyWiseThenCategoryWiseInsuranceMemberCount(){
+   	var jsObj = { 
+   					   activityMemberId : 44,                                       
+   					   userTypeId : 2,                
+   					   stateId :globalStateIdForCadreInsurance,
+   					   cadreEnrollmentYearId : 0,           
+   					   locationId: 0,                               
+   					   status :	"",
+   					   category : "", 
+   					   fromDateStr : "",
+   					   toDateStr : "",
+   					   sortingCondition : "insuredMember",
+   					   order : "desc"
+   				  };
+   	console.log(jsObj);                                    
+   	$.ajax({
+   			type : 'POST',
+   			url : 'getConstituencyWiseThenCategoryWiseInsuranceMemberCountAction.action',
+   			dataType : 'json',  
+   			data : {task:JSON.stringify(jsObj)}
+   	}).done(function(result){
+   			console.log(result);
+   	});
+   } 
+   //getDistrictWiseThenStatusWiseInsuranceMemberCount();      
+   function getDistrictWiseThenStatusWiseInsuranceMemberCount(){
+   	var jsObj = { 
+   					   activityMemberId : 44,                                     
+   					   userTypeId : 2,                         
+   					   stateId :globalStateIdForCadreInsurance,
+   					   cadreEnrollmentYearId : 0,           
+   					   locationId: 0,                                       
+   					   status :	"",  
+   					   category : "",             
+   					   fromDateStr : "",
+   					   toDateStr : "",
+   					   sortingCondition : "insuredMember",
+   					   order : "desc"
+   				  };
+   	console.log(jsObj);                                
+   	$.ajax({
+   			type : 'POST',
+   			url : 'getDistrictWiseThenStatusWiseInsuranceMemberCountAction.action',
+   			dataType : 'json',  
+   			data : {task:JSON.stringify(jsObj)}
+   	}).done(function(result){
+   			console.log(result);
+   	});
+   } 
+   //getConstituencyWiseThenStatusWiseInsuranceMemberCount();           
+   function getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
+   	var jsObj = { 
+   					   activityMemberId : 44,                                     
+   					   userTypeId : 2,                         
+   					   stateId :globalStateIdForCadreInsurance,
+   					   cadreEnrollmentYearId : 0,           
+   					   locationId: 0,                                       
+   					   status :	"",  
+   					   category : "",             
+   					   fromDateStr : "",
+   					   toDateStr : "",
+   					   sortingCondition : "insuredMember",
+   					   order : "desc"
+   				  };
+   	console.log(jsObj);                                
+   	$.ajax({
+   			type : 'POST',
+   			url : 'getConstituencyWiseThenStatusWiseInsuranceMemberCountAction.action',
+   			dataType : 'json',  
+   			data : {task:JSON.stringify(jsObj)}
+   	}).done(function(result){  
+   			console.log(result);
+   	});
+   }
+   //getLocationWiseThenCategoryWiseInsuranceMemberCountForTS();                        
+   function getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(){
+   	var jsObj = { 
+   					   stateId :globalStateIdForCadreInsurance,
+   					   cadreEnrollmentYearId : 0,           
+   					   locationId: 0,                                       
+   					   status :	"",  
+   					   category : "",             
+   					   fromDateStr : "",
+   					   toDateStr : "",
+   					   type : "category",
+   					   locationType : "constituency",
+   					   sortingCondition : "insuredMember",
+   					   order : "desc"
+   				  };
+   	console.log(jsObj);                                
+   	$.ajax({
+   			type : 'POST',
+   			url : 'getLocationWiseThenCategoryWiseInsuranceMemberCountForTSAction.action',
+   			dataType : 'json',  
+   			data : {task:JSON.stringify(jsObj)}
+   	}).done(function(result){  
+   			console.log(result);
+   	});
+   }   
+   //getLocationWiseThenStatusWiseInsuranceMemberCountForTS();        
+   function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(){
+   	var jsObj = { 
+   					   stateId :globalStateIdForCadreInsurance,
+   					   cadreEnrollmentYearId : 0,           
+   					   locationId: 0,                                               
+   					   status :	"",  
+   					   category : "",             
+   					   fromDateStr : "",    
+   					   toDateStr : "",
+   					   type : "status",
+   					   locationType : "district",
+   					   sortingCondition : "insuredMember",
+   					   order : "desc"
+   				  };
+   	console.log(jsObj);                                
+   	$.ajax({
+   			type : 'POST',
+   			url : 'getLocationWiseThenStatusWiseInsuranceMemberCountForTSAction.action',
+   			dataType : 'json',  
+   			data : {task:JSON.stringify(jsObj)}
+   	}).done(function(result){  
+   			console.log(result);
+   	});
+   }            
