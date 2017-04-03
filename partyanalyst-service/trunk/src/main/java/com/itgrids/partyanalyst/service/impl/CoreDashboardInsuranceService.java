@@ -19,6 +19,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IInsuranceStatusDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
@@ -46,8 +47,16 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 	private ICoreDashboardGenericService coreDashboardGenericService;
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private IConstituencyDAO constituencyDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
 	
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
@@ -1202,14 +1211,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 		 }
 		  return resultList;
 	  }
-	   public static Comparator<UserTypeVO> complaintCountDesc = new Comparator<UserTypeVO>() {
-			public int compare(UserTypeVO member2, UserTypeVO member1) {
-			Long count2 = member2.getTotalCount();
-			Long count1 = member1.getTotalCount();
-			//descending order of percantages.
-			 return count1.compareTo(count2);
-			}
-		}; 
+	  
 		public void prepareTemplate(List<String> issueTypeLst,List<Object[]> statusLst,List<UserTypeVO> issueTypeList){
 			try{
 				if(issueTypeLst != null && issueTypeLst.size() > 0){
@@ -1645,7 +1647,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 		 * Swadhin K Lenka
 		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getDistrictWiseThenCategoryWiseInsuranceMemberCount(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
 		 */
-		public List<CoreDashboardInsuranceVO> getDistrictWiseThenCategoryWiseInsuranceMemberCount(Long activityMemberId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,Long districtId, String status, String category, String fromDateStr,String toDateStr) {
+		public List<CoreDashboardInsuranceVO> getDistrictWiseThenCategoryWiseInsuranceMemberCount(Long activityMemberId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,Long districtId, String status, String category, String fromDateStr,String toDateStr,String sortingCondition,String order) {
 			try{
 				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -1801,15 +1803,85 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
+				//push const no.
+				if(levelId.longValue() == 4L || levelId.longValue() == 5L){
+					List<Long> locaionIds = new ArrayList<Long>();
+					if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+						for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+							locaionIds.add(coreDashboardInsuranceVO.getId());
+						}
+					}
+					
+					Map<Long,Long> constIdAndNoMap = new HashMap<Long,Long>();
+					List<Object[]> constOrderList = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locaionIds);
+					if(constOrderList != null && constOrderList.size() > 0){
+						for(Object[] param : constOrderList){
+							constIdAndNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+					
+					if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+						for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+							coreDashboardInsuranceVO.setConstituencyNo(constIdAndNoMap.get(coreDashboardInsuranceVO.getId()));
+						}
+					}
+				}
 				
 				//sort list based on members
-				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
-					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountDesc);
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("insuredMember")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountAsc);
+						}
+					}
+				}
+				
+				//sort list based on name
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("name")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameAsc);
+						}
+					}
+				}
+				
+				//sort list based on amount
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("amount")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountAsc);
+						}
+					}
+				}
+				
+				//sort list based on constituency no
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("constituencyNo")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoAsc);
+						}
+					}
 				}
 				
 				
 				System.out.println("hi");
-				return coreDashboardInsuranceVOs;
+				return coreDashboardInsuranceVOs;      
 			}catch(Exception e){
 				LOG.error("Error occured at getDistrictWiseThenCategoryWiseInsuranceMemberCount() in CoreDashboardInsuranceService class",e);
 			}
@@ -1820,7 +1892,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 		 * Swadhin K Lenka
 		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getConstituencyWiseThenCategoryWiseInsuranceMemberCount(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
 		 */
-		public List<CoreDashboardInsuranceVO> getConstituencyWiseThenCategoryWiseInsuranceMemberCount(Long activityMemberId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,Long districtId, String status, String category, String fromDateStr,String toDateStr) {
+		public List<CoreDashboardInsuranceVO> getConstituencyWiseThenCategoryWiseInsuranceMemberCount(Long activityMemberId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,Long districtId, String status, String category, String fromDateStr,String toDateStr,String sortingCondition,String order) {
 			try{
 				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -1957,10 +2029,80 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					}
 				}
 				
-				//sort list based on members
+				//push const no.
 				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
-					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountDesc);
+					List<Long> locaionIds = new ArrayList<Long>();
+					for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+						locaionIds.add(coreDashboardInsuranceVO.getId());
+					}
+					
+					Map<Long,Long> constIdAndNoMap = new HashMap<Long,Long>();
+					List<Object[]> constOrderList = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locaionIds);
+					
+					for(Object[] param : constOrderList){
+						constIdAndNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+					
+					for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+						coreDashboardInsuranceVO.setConstituencyNo(constIdAndNoMap.get(coreDashboardInsuranceVO.getId()));
+					}
+				
 				}
+				
+		
+				
+				//sort list based on members
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("insuredMember")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountAsc);
+						}
+					}
+				}
+				
+				//sort list based on name
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("name")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameAsc);
+						}
+					}
+				}
+				
+				//sort list based on amount
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("amount")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountAsc);
+						}
+					}
+				}
+				
+				//sort list based on constituency no
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("constituencyNo")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoAsc);
+						}
+					}
+				}
+				
 				
 				
 				System.out.println("hi");
@@ -1970,20 +2112,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			}
 			return null;
 		}
-		public static Comparator<CoreDashboardInsuranceVO> benefitedMemberCountDesc = new Comparator<CoreDashboardInsuranceVO>() {
-			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
-
-				Long perc2 = member2.getTotalCategroyCount();
-				Long perc1 = member1.getTotalCategroyCount();
-				//descending order of count.
-				return perc1.compareTo(perc2);
-			}
-		};
+		
 		/*
 		 * Swadhin K Lenka
 		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getDistrictWiseThenStatusWiseInsuranceMemberCount(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
 		 */
-		public List<CoreDashboardInsuranceVO> getDistrictWiseThenStatusWiseInsuranceMemberCount(Long activityMemberId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,Long districtId, String status, String category, String fromDateStr,String toDateStr) {
+		public List<CoreDashboardInsuranceVO> getDistrictWiseThenStatusWiseInsuranceMemberCount(Long activityMemberId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,Long districtId, String status, String category, String fromDateStr,String toDateStr,String sortingCondition,String order) {
 			try{
 				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -2147,10 +2281,87 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
-				//sort list based on members          
-				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
-					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusDesc);
-				}  
+				
+				
+				//push const no.
+				if(levelId.longValue() == 4L || levelId.longValue() == 5L){
+					List<Long> locaionIds = new ArrayList<Long>();
+					if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+						for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+							locaionIds.add(coreDashboardInsuranceVO.getId());
+						}
+					}
+					
+					Map<Long,Long> constIdAndNoMap = new HashMap<Long,Long>();
+					List<Object[]> constOrderList = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locaionIds);
+					if(constOrderList != null && constOrderList.size() > 0){
+						for(Object[] param : constOrderList){
+							constIdAndNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+						}
+					}
+					
+					if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+						for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+							coreDashboardInsuranceVO.setConstituencyNo(constIdAndNoMap.get(coreDashboardInsuranceVO.getId()));
+						}
+					}
+				}
+				
+				
+				
+				//sort list based on members
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("insuredMember")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusAsc);
+						}
+					}
+				}
+				
+				//sort list based on name
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("name")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameAsc);
+						}
+					}
+				}
+				
+				//sort list based on amount
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("amount")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountAsc);
+						}
+					}
+				}
+				
+				//sort list based on constituency no
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("constituencyNo")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoAsc);
+						}
+					}
+				}
+				
+				
 				System.out.println("hi");
 				return coreDashboardInsuranceVOs;
 			}catch(Exception e){
@@ -2162,7 +2373,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 		 * Swadhin K Lenka
 		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getConstituencyWiseThenStatusWiseInsuranceMemberCount(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
 		 */
-		public List<CoreDashboardInsuranceVO> getConstituencyWiseThenStatusWiseInsuranceMemberCount(Long activityMemberId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,Long districtId, String status, String category, String fromDateStr,String toDateStr) {
+		public List<CoreDashboardInsuranceVO> getConstituencyWiseThenStatusWiseInsuranceMemberCount(Long activityMemberId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,Long districtId, String status, String category, String fromDateStr,String toDateStr,String sortingCondition,String order) {
 			try{
 				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -2305,10 +2516,79 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
-				//sort list based on members
+				
+				
+				//push const no.
 				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
-					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusDesc);
+					List<Long> locaionIds = new ArrayList<Long>();
+					for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+						locaionIds.add(coreDashboardInsuranceVO.getId());
+					}
+					
+					Map<Long,Long> constIdAndNoMap = new HashMap<Long,Long>();
+					List<Object[]> constOrderList = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locaionIds);
+					
+					for(Object[] param : constOrderList){
+						constIdAndNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+					
+					for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+						coreDashboardInsuranceVO.setConstituencyNo(constIdAndNoMap.get(coreDashboardInsuranceVO.getId()));
+					}
 				}
+				
+				//sort list based on members
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("insuredMember")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusAsc);
+						}
+					}
+				}
+				
+				//sort list based on name
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("name")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameAsc);
+						}
+					}
+				}
+				
+				//sort list based on amount
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("amount")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountAsc);
+						}
+					}
+				}
+				
+				//sort list based on constituency no
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("constituencyNo")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoAsc);
+						}
+					}
+				}
+				
 				
 				
 				System.out.println("hi");
@@ -2318,15 +2598,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			}
 			return null;
 		}
-		public static Comparator<CoreDashboardInsuranceVO> benefitedMemberCountForStatusDesc = new Comparator<CoreDashboardInsuranceVO>() {
-			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
-
-				Long perc2 = member2.getTotalStatusCount();
-				Long perc1 = member1.getTotalStatusCount();
-				//descending order of count.
-				return perc1.compareTo(perc2);
-			}
-		};
+		
 		public void addListForAllStatus(CoreDashboardInsuranceVO insuranceVO){
 			try{
 				InsuranceStatusVO insuranceStatusVO = null;
@@ -2396,7 +2668,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 		 * Swadhin K Lenka
 		 * @see com.itgrids.partyanalyst.service.ICoreDashboardInsuranceService#getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
 		 */
-		public List<CoreDashboardInsuranceVO> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType) {
+		public List<CoreDashboardInsuranceVO> getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType,String sortingCondition,String order) {
 			try{
 				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -2525,10 +2797,81 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					}
 				}
 				
-				//sort list based on members
+				
+				
+				//push const no.
 				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
-					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountDesc);
+					List<Long> locaionIds = new ArrayList<Long>();
+					for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+						locaionIds.add(coreDashboardInsuranceVO.getId());
+					}
+					
+					Map<Long,Long> constIdAndNoMap = new HashMap<Long,Long>();
+					List<Object[]> constOrderList = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locaionIds);
+					
+					for(Object[] param : constOrderList){
+						constIdAndNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+					
+					for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+						coreDashboardInsuranceVO.setConstituencyNo(constIdAndNoMap.get(coreDashboardInsuranceVO.getId()));
+					}
 				}
+				
+				//sort list based on members
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("insuredMember")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountAsc);
+						}
+					}
+				}
+				
+				//sort list based on name
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("name")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameAsc);
+						}
+					}
+				}
+				
+				//sort list based on amount
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("amount")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountAsc);
+						}
+					}
+				}
+				
+				//sort list based on constituency no
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("constituencyNo")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoAsc);
+						}
+					}
+				}
+				
+				
+				
 				
 				
 				System.out.println("hi");
@@ -2538,7 +2881,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			}
 			return null;
 		}
-		public List<CoreDashboardInsuranceVO> getLocationWiseThenStatusWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType) {
+		public List<CoreDashboardInsuranceVO> getLocationWiseThenStatusWiseInsuranceMemberCountForTS(Long stateId,Long cadreEnrollmentYearId,Long locationId, String status, String category, String fromDateStr,String toDateStr,String type, String locationType,String sortingCondition,String order) {
 			try{
 				List<CoreDashboardInsuranceVO> coreDashboardInsuranceVOs = new ArrayList<CoreDashboardInsuranceVO>();
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -2670,10 +3013,79 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						coreDashboardInsuranceVOs.add(insuranceVO);
 					}
 				}
-				//sort list based on members
+				
+				
+				//push const no.
 				if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
-					Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusDesc);
+					List<Long> locaionIds = new ArrayList<Long>();
+					for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+						locaionIds.add(coreDashboardInsuranceVO.getId());
+					}
+					
+					Map<Long,Long> constIdAndNoMap = new HashMap<Long,Long>();
+					List<Object[]> constOrderList = delimitationConstituencyDAO.getConstituencyNumbersForConstituenctIds(locaionIds);
+					
+					for(Object[] param : constOrderList){
+						constIdAndNoMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+					
+					for(CoreDashboardInsuranceVO coreDashboardInsuranceVO : coreDashboardInsuranceVOs){
+						coreDashboardInsuranceVO.setConstituencyNo(constIdAndNoMap.get(coreDashboardInsuranceVO.getId()));
+					}
 				}
+				
+				//sort list based on members
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("insuredMember")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedMemberCountForStatusAsc);
+						}
+					}
+				}
+				
+				//sort list based on name
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("name")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedLocationNameAsc);
+						}
+					}
+				}
+				
+				//sort list based on amount
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("amount")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, benefitedAmountAsc);
+						}
+					}
+				}
+				
+				//sort list based on constituency no
+				if(sortingCondition != null && sortingCondition.equalsIgnoreCase("constituencyNo")){
+					if(order != null && order.equalsIgnoreCase("desc")){
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoDesc);
+						}
+					}else{
+						if(coreDashboardInsuranceVOs != null && coreDashboardInsuranceVOs.size() > 0){
+							Collections.sort(coreDashboardInsuranceVOs, constituencyNoAsc);
+						}
+					}
+				}
+				
 				
 				
 				System.out.println("hi");  
@@ -2683,4 +3095,114 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 			}
 			return null;
 		}
+		public static Comparator<CoreDashboardInsuranceVO> benefitedMemberCountDesc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				Long perc2 = member2.getTotalCategroyCount();
+				Long perc1 = member1.getTotalCategroyCount();
+				//descending order of count.
+				return perc1.compareTo(perc2);  
+			}
+		};
+		public static Comparator<CoreDashboardInsuranceVO> benefitedMemberCountAsc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				Long perc2 = member2.getTotalCategroyCount();
+				Long perc1 = member1.getTotalCategroyCount();
+				//descending order of count.
+				return perc2.compareTo(perc1);
+			}
+		};
+		public static Comparator<UserTypeVO> complaintCountDesc = new Comparator<UserTypeVO>() {
+			public int compare(UserTypeVO member2, UserTypeVO member1) {
+			Long count2 = member2.getTotalCount();
+			Long count1 = member1.getTotalCount();
+			//descending order of percantages.
+			 return count1.compareTo(count2);
+			}
+		}; 
+		public static Comparator<UserTypeVO> complaintCountAsc = new Comparator<UserTypeVO>() {
+			public int compare(UserTypeVO member2, UserTypeVO member1) {
+			Long count2 = member2.getTotalCount();
+			Long count1 = member1.getTotalCount();
+			//descending order of percantages.
+			 return count2.compareTo(count1);
+			}
+		}; 
+		
+		public static Comparator<CoreDashboardInsuranceVO> benefitedLocationNameDesc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				String name2 = member2.getName();
+				String name1 = member1.getName();
+				//descending order of count.
+				return name1.compareTo(name2);
+			}
+		};
+		public static Comparator<CoreDashboardInsuranceVO> benefitedLocationNameAsc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				String name2 = member2.getName();
+				String name1 = member1.getName();
+				//descending order of count.
+				return name2.compareTo(name1);
+			}
+		};
+		public static Comparator<CoreDashboardInsuranceVO> benefitedAmountDesc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				Long amount2 = member2.getTotalAmount();
+				Long amount1 = member1.getTotalAmount();
+				//descending order of count.
+				return amount1.compareTo(amount2);
+			}
+		};
+		public static Comparator<CoreDashboardInsuranceVO> benefitedAmountAsc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				Long amount2 = member2.getTotalAmount();
+				Long amount1 = member1.getTotalAmount();
+				//descending order of count.
+				return amount2.compareTo(amount1);
+			}
+		};
+		public static Comparator<CoreDashboardInsuranceVO> constituencyNoDesc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				Long amount2 = member2.getConstituencyNo();
+				Long amount1 = member1.getConstituencyNo();
+				//descending order of count.
+				return amount1.compareTo(amount2);
+			}
+		};
+		public static Comparator<CoreDashboardInsuranceVO> constituencyNoAsc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				Long amount2 = member2.getConstituencyNo();
+				Long amount1 = member1.getConstituencyNo();
+				//descending order of count.
+				return amount1.compareTo(amount2);
+			}
+		};
+		
+		public static Comparator<CoreDashboardInsuranceVO> benefitedMemberCountForStatusDesc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				Long perc2 = member2.getTotalStatusCount();
+				Long perc1 = member1.getTotalStatusCount();
+				//descending order of count.
+				return perc1.compareTo(perc2);
+			}
+		};
+		
+		public static Comparator<CoreDashboardInsuranceVO> benefitedMemberCountForStatusAsc = new Comparator<CoreDashboardInsuranceVO>() {
+			public int compare(CoreDashboardInsuranceVO member2, CoreDashboardInsuranceVO member1) {
+
+				Long perc2 = member2.getTotalStatusCount();
+				Long perc1 = member1.getTotalStatusCount();
+				//descending order of count.
+				return perc2.compareTo(perc1);
+			}
+		};
+		
 }
