@@ -3092,7 +3092,16 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    }
 		    else
 		    {
-		      activityInfoDocument.setDay(eventFileUploadVO.getDay());
+		    	ActivityScope activityScope = activityScopeDAO.get(eventFileUploadVO.getActivityScopeId());
+				List<Date> betweenDatesList = null;
+				Date startDate = activityScope.getStartDate();
+				Date activitDate = activityDocument.getActivityDate();
+		    	try {
+						betweenDatesList = commonMethodsUtilService.getBetweenDates(startDate, activitDate);
+						activityInfoDocument.setDay(Long.valueOf(String.valueOf(betweenDatesList.size())));
+				} catch (Exception e) {
+					activityInfoDocument.setDay(eventFileUploadVO.getDay());
+				}
 		    }
 		    
 		    
