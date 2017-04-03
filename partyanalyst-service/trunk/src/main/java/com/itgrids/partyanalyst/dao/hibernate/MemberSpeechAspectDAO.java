@@ -98,7 +98,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 	    return query.list();
 	  }
 	
-	public List<Object[]> getDayWiseCountDetails(Long admHsSessDayId){
+	public List<Object[]> getDayWiseCountDetails(Long admHsSessDayId,Long partyId){
 		StringBuilder sb = new StringBuilder();
 			sb.append("select model.adminHouseMember.party.partyId,model.adminHouseMember.party.shortName," +
 				" model.adminHouseMember.memberName,model.adminHouseMember.candidate.candidateId," +
@@ -110,10 +110,15 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		{
 			sb.append(" and model.adminHouseSessionDay.adminHouseSessionDayId = :admHsSessDayId");
 		}
-		
+		if(partyId != null && partyId.longValue() > 0l)
+		{
+			sb.append(" and model.adminHouseMember.party.partyId = :partyId");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(admHsSessDayId != null && admHsSessDayId.longValue() > 0l)
 			query.setParameter("admHsSessDayId", admHsSessDayId);
+		if(partyId != null && partyId.longValue() > 0l)
+			query.setParameter("partyId", partyId);
 		
 		return query.list();
 		

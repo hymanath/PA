@@ -304,41 +304,55 @@ public class AssemblySessionService implements IAssemblySessionService{
 		return returnList;
 	} 
 	
-	public List<AdminHouseVO> getDayWiseDetails(Long adminHseSessionDayId){
+	public List<AdminHouseVO> getDayWiseDetails(Long adminHseSessionDayId,Long partyId){
 		List<AdminHouseVO> finalList = new ArrayList<AdminHouseVO>(0);
 		try{
 			Map<Long,AdminHouseVO> canDetailedMap = new LinkedHashMap<Long, AdminHouseVO>(0);
 			Map<Long,AdminHouseVO> partyDetailsMap = new LinkedHashMap<Long, AdminHouseVO>(0);
-			List<Object[]> cuntDetailsList = memberSpeechAspectDAO.getDayWiseCountDetails(adminHseSessionDayId);
+			List<Object[]> cuntDetailsList = memberSpeechAspectDAO.getDayWiseCountDetails(adminHseSessionDayId,partyId);
 			if(cuntDetailsList != null && cuntDetailsList.size() > 0l){
 				for (Object[] objects : cuntDetailsList) {
 					AdminHouseVO partyVO = partyDetailsMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					if(partyVO == null){
 						partyVO = new AdminHouseVO();
-							partyVO.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-							partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-							partyVO.setPartyList(getSpeechAspectList());
-							partyDetailsMap.put(partyVO.getPartyId(), partyVO);
-					}else{
+						partyVO.setPartyList(getSpeechAspectList());
+						partyVO.setPartyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						partyVO.setPartyName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						partyDetailsMap.put(partyVO.getPartyId(), partyVO);
+					}
+							
+							
+							
+							
+					//}else{
 						AdminHouseVO candidateVO = canDetailedMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
 						if(candidateVO == null){
 							candidateVO = new AdminHouseVO();
-								candidateVO.setPartyList(getSpeechAspectList());
-								candidateVO.setCandidateId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+							candidateVO.setPartyList(getSpeechAspectList());
+							candidateVO.setCandidateId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+							partyVO.getCandidateList().add(candidateVO);
+							canDetailedMap.put(candidateVO.getCandidateId(), candidateVO);
+						}
+								
+								//candidateVO.setCandidateId(commonMethodsUtilService.getLongValueForObject(objects[3]));
 								candidateVO.setName(commonMethodsUtilService.getStringValueForObject(objects[2]));
 								candidateVO.setAdminHouseMemberId(commonMethodsUtilService.getLongValueForObject(objects[4]));
-								partyVO.getCandidateList().add(candidateVO);
-								canDetailedMap.put(candidateVO.getCandidateId(), candidateVO);
-						}else{
+								AdminHouseVO  speechAspectVO = getMatchedVOAspectList(candidateVO.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[5]));
+								 if(speechAspectVO != null){
+									 speechAspectVO.setScore(speechAspectVO.getScore()+Double.valueOf(objects[6] != null ? objects[6].toString():"0.0"));
+									 candidateVO.setTotal(candidateVO.getTotal()+speechAspectVO.getScore());
+								 }
+								
+								
+						/*}else{
 							AdminHouseVO  speechAspectVO = getMatchedVOAspectList(candidateVO.getPartyList(), commonMethodsUtilService.getLongValueForObject(objects[5]));
 							 if(speechAspectVO != null){
 								 speechAspectVO.setScore(speechAspectVO.getScore()+Double.valueOf(objects[6] != null ? objects[6].toString():"0.0"));
 								 candidateVO.setTotal(candidateVO.getTotal()+speechAspectVO.getScore());
-							 }
+							 }*/
 						}
 					}
-				}
-			}
+			
 			if(commonMethodsUtilService.isMapValid(partyDetailsMap)){
 				for (Map.Entry<Long, AdminHouseVO> entry : partyDetailsMap.entrySet()){
 					AdminHouseVO partyvo = entry.getValue();
@@ -425,7 +439,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 					for (AdminHouseVO  adminHousevo: speechAspectList) {
 							MemberSpeechAspect memberSpeechAspect = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
 							if(memberSpeechAspect != null){
-								memberSpeechAspect.setScore(adminHousevo.getValue());
+								memberSpeechAspect.setScore(Double.valueOf(adminHousevo.getValue()));
 								memberSpeechAspectDAO.save(memberSpeechAspect);
 								status = "success";
 							}

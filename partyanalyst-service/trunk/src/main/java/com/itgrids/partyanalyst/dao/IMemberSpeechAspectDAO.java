@@ -11,7 +11,7 @@ import com.itgrids.partyanalyst.model.MemberSpeechAspect;
 public interface IMemberSpeechAspectDAO extends GenericDao<MemberSpeechAspect, Long>{
 	public List<Object[]> getNoOfDaysForSession(Long termId,String sesYear,List<Long> sessionIds,Date startDate,Date endDate);
 	public List<Object[]> getDayWisePartyWiseCount(Long termId,String sesYear,List<Long> sessionIds,Date startDate,Date endDate);
-	public List<Object[]> getDayWiseCountDetails(Long admHsSessDayId);
+	public List<Object[]> getDayWiseCountDetails(Long admHsSessDayId,Long partyId);
 	public MemberSpeechAspect updateMemberDetails(Long adminHouseMemberId,Long adminHouseSessionDayId,Long speechAspectId);
 	public MemberSpeechAspect getPrimaryKey(Long adminHouseSessionId,Long memberId,Long speechAspectId);
 
