@@ -103,7 +103,7 @@ function getSessionYears(id){
 		var str='';
 		if(result != null && result.length >0)
 		{
-			str+='<option value="">All</option>';
+			str+='<option value="0">Select Session Year</option>';
 			for(var i in result)
 			{
 				str+='<option value="'+result[i].name+'">'+result[i].partyName+'</option>';
@@ -150,7 +150,7 @@ function getAllSessions(id){
 		if(result != null && result.length >0)
 		{
 			//str+='<select class="chosen-select">';
-			str+='<option value="0">All</option>';
+			str+='<option value="0">Select Assembly Session</option>';
 			for(var i in result)
 			{
 				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
@@ -161,7 +161,6 @@ function getAllSessions(id){
 			$("#assemblySession").html(str);
 			$("#assemblySession").trigger("chosen:updated");
 		}else if(id == 2){
-			alert(32)
 			$("#assemblySessionId").html(str);
 			$("#assemblySessionId").trigger("chosen:updated");
 		}
@@ -470,21 +469,25 @@ $(document).on("click",".saveSessionDetailsd",function(){
 		
 		c.css("display","block");
 		c.find(".memberNameCls").attr("class","memberNameValApp"+memberNameCountId);
-		
-		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
+		c.find(".memberNameCls").attr("attr_no",updatedCloneCount);
+		c.find(".memberNameValApp"+memberNameCountId).attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
 		getCandidates('memberNameValApp'+memberNameCountId,'partyCls')
 		
 		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
+		c.find(".subjectCls").attr("attr_no",updatedCloneCount);
 		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
 		
 		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
+		c.find(".presentationCls").attr("attr_no",updatedCloneCount);
 		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
 		
 			
 		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount);
+		c.find(".counterAttackCls").attr("attr_no",updatedCloneCount);
 		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
 		
 		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount);
+		c.find(".bodyLanguageCls").attr("attr_no",updatedCloneCount);
 		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+updatedCloneCount);
@@ -526,20 +529,24 @@ $(document).on("click",".saveSessionDetailsd",function(){
 		c.find(".partycls"+updatedCloneCount).attr("onchange","getCandidates('memberNameValApp"+updatedCloneCount+"','partycls"+updatedCloneCount+"')");
 		
 		c.find(".memberNameCls").attr("class","memberNameValApp"+updatedCloneCount)
-		
-		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
+		c.find(".memberNameCls").attr("attr_no",updatedCloneCount);
+		c.find(".memberNameValApp"+updatedCloneCount).attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
 		
 		getCandidates('memberNameValApp'+updatedCloneCount,'');
 		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
+		c.find(".subjectCls").attr("attr_no",updatedCloneCount);
 		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
 		
-		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount)
+		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
+		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
 		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
 			
-		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount)
+		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount);
+		c.find(".counterAttackCls").attr("id","presentationId"+updatedCloneCount);
 		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
 		
-		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount)
+		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount);
+		c.find(".bodyLanguageCls").attr("id","presentationId"+updatedCloneCount);
 		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
@@ -565,20 +572,25 @@ $(document).on("click",".saveSessionDetailsd",function(){
 			'id': 'updateAppendHtml'+generatedId
 		});
 		c.css("display","block");
-		c.find(".memberNameCls").attr("class","memberNameValApp"+count)
-		c.find(".memberNameCls").attr("name",'assemblySessionReportVO.membersList['+count+'].memberId');
+		c.find(".memberNameCls").attr("class","memberNameValApp"+count);
+		c.find(".memberNameCls").attr("attr_no",count);
+		c.find(".memberNameValApp"+count).attr("name",'assemblySessionReportVO.membersList['+count+'].memberId');
 		getCandidates('memberNameValApp'+count,'partycls'+count);
 		
 		c.find(".subjectCls").attr("id","subjectId"+count);
+		c.find(".subjectCls").attr("attr_no",count);
 		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+count+'].scalesList[0].score');
 		
-		c.find(".presentationCls").attr("id","presentationId"+count)
+		c.find(".presentationCls").attr("id","presentationId"+count);
+		c.find(".presentationCls").attr("id","presentationId"+count);
 		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+count+'].scalesList[1].score');
 		
-		c.find(".counterAttackCls").attr("id","counterAttackId"+count)
+		c.find(".counterAttackCls").attr("id","counterAttackId"+count);
+		c.find(".counterAttackCls").attr("id","presentationId"+count);
 		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+count+'].scalesList[2].score');
 		
-		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+count)
+		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+count);
+		c.find(".bodyLanguageCls").attr("id","presentationId"+count);
 		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+count+'].scalesList[3].score');
 		
 		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
@@ -670,8 +682,12 @@ function getPatries(id){
 }
 
 	function savingApplication(){
-		$("#adminHouseSessionDayId").val(154);
-		//alert($("#adminHouseSessionDayId").val());
+		if($("#UpdateStartdateRange").val() > 0){
+			$("#adminHouseSessionDayId").val($("#UpdateStartdateRange").val());
+		}
+		if(!validatingFields()){
+			return;
+		}
 		var uploadHandler = {
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
@@ -689,10 +705,116 @@ function getPatries(id){
 		var stringext = uploadResult.substr(6,7);
 		
 		if(stringext == "SUCCESS"){
-			
+			$("#errMsg").html("Application Saved Successfully").css("style","color:red");
+		}else{
+			$("#errMsg").html("Application not saved successfully").css("style","color:red");
 		}
 	}
-	
+	function validatingFields(){
+		$("#errMsg").html("");
+		$("#errMsg").attr("style","color:red;");
+		var flag =  true;
+		var electionYearId = $("#electionYearId").val();
+		var sessionYearId = $("#sessionYearId").val();
+		var assemblySessionId = $("#assemblySessionId").val();
+		var dateId = $("#UpdateStartdateRange").val();
+		
+		 if(electionYearId != null && electionYearId > 0){
+			 flag =  true;
+		}else{
+			$("#errMsg").html("Please select election year");
+			return flag =  false;
+		}
+		if(sessionYearId != null && sessionYearId > 0){
+			 flag =  true;
+		}else{
+			$("#errMsg").html("Please select session year");
+			return flag =  false;
+		}
+		
+		if(assemblySessionId != null && assemblySessionId > 0){
+			 flag =  true;
+		}else{
+			$("#errMsg").html("Please select assembly session ");
+			return flag =  false;
+		}
+		
+		if(assemblySessionId != null && assemblySessionId > 0){
+			 flag =  true;
+		}else{
+			$("#errMsg").html("Please select assembly session ");
+			return flag =  false;
+		}
+		
+		if(dateId != null && dateId > 0){
+			 flag =  true;
+		}else{
+			$("#errMsg").html("Please select date range ");
+			return flag =  false;
+		}  
+		 $(".memberNameCls").each(function(){
+			var num = $(this).attr("attr_no");
+			if(num != "" ){
+					if($(this).val() != null && $(this).val() >0){
+						$("#errMsg").html("");
+						flag =  true;
+						$(".subjectCls").each(function(){
+							var num = $(this).attr("attr_no");
+							if(num != ""){
+								if($(this).val() != "" && $(this).val().length >0){
+									$("#errMsg").html("");
+									flag =  true;
+									$(".presentationCls").each(function(){
+									var num = $(this).attr("attr_no");
+										if(num != ""){
+											if($(this).val() != "" && $(this).val().length >0){
+												$("#errMsg").html("");
+												flag =  true;
+												$(".counterAttackCls").each(function(){
+													var num = $(this).attr("attr_no");
+													if(num != ""){
+														if($(this).val() != "" && $(this).val().length >0){
+															$("#errMsg").html("");
+															flag =  true;
+															$(".bodyLanguageCls").each(function(){
+																var num = $(this).attr("attr_no");
+																if(num != ""){
+																	if($(this).val() != "" && $(this).val().length >0){
+																		$("#errMsg").html("");
+																		flag =  true;
+																	}else{
+																		$("#errMsg").html("Please enter body language score");
+																		return flag =  false;
+																	}
+																}
+															}); 
+														}else{
+															$("#errMsg").html("Please enter counter attack score");
+															return flag =  false;
+														}
+													}
+												}); 
+											}else{
+												$("#errMsg").html("Please enter presentation score ");
+												return flag =  false;
+											}
+										}
+									}); 
+								}else{
+									$("#errMsg").html("Please enter subject score");
+									return flag =  false;
+								}
+							}
+						});
+					}else{
+						$("#errMsg").html("Please select  member");
+						return flag =  false;
+					}
+					return flag =  false;
+				}
+			});  
+		  
+		}
 	function clearFields(){
 		$("#updateAppendHtml").empty();
 	}

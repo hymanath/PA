@@ -10,6 +10,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
+import com.itgrids.partyanalyst.dto.AssemblySessionReportVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAssemblySessionService;
 import com.opensymphony.xwork2.Action;
@@ -30,8 +31,21 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 	private List<AdminHouseVO> assemblyVOList;
 	private AdminHouseVO adminHouseVO = new AdminHouseVO();
 	private String status;
+	private AssemblySessionReportVO assemblySessionReportVO;
 	
 	
+	
+	public AssemblySessionReportVO getAssemblySessionReportVO() {
+		return assemblySessionReportVO;
+	}
+
+
+	public void setAssemblySessionReportVO(
+			AssemblySessionReportVO assemblySessionReportVO) {
+		this.assemblySessionReportVO = assemblySessionReportVO;
+	}
+
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -226,6 +240,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			}
 		return Action.SUCCESS;
 	}
+	
 	public String getDatesForSaving(){
 		try{
 			jObj = new JSONObject(getTask());
@@ -235,6 +250,16 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 				LOG.error("Exception occured in getDatesForSaving() At AssemblySessionAction",e);
 			}
 		return Action.SUCCESS;
+	}
+	
+	public String submitAssemblySessionCanScoreDetails(){
+		try {
+				status = assemblySessionService.saveAssemblySessionCanScoreDetails(assemblySessionReportVO);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in updateMemberDetails() At AssemblySessionAction",e);
+			}
+			return Action.SUCCESS;
 	}
 
 }

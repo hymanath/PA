@@ -166,7 +166,7 @@
 										<div class="col-md-3 col-xs-12 col-sm-6">
 											<label class="f_10">Member&nbsp;Name:</label>
 											<span class="glyphicon glyphicon-plus pull-right addMemberDetailsCls" id="addMemberDetailsId" style="margin-top: -10px;cursor:pointer;"></span>
-											<select class="chosen-select memberNameCls memberNameValApp0" id="" name="assemblySessionReportVO.membersList[0].memberId">
+											<select class="chosen-select memberNameCls memberNameValApp0" id="memberNameId" name="assemblySessionReportVO.membersList[0].memberId" attr_no="0">
 												<option value="0">All</option>
 												<!--<option value="1">Parthipati PullaRao</option>
 												<option value="2">Parthipati PullaRao</option>-->
@@ -174,19 +174,19 @@
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Subject:</label>
-											<input type="text"  class="form-control subjectCls" id="subjectId0" name="assemblySessionReportVO.membersList[0].scalesList[0].score">
+											<input type="text"  class="form-control subjectCls" id="subjectId0" name="assemblySessionReportVO.membersList[0].scalesList[0].score" attr_no="0">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Presentation:</label>
-											<input type="text"  class="form-control presentationCls" id="presentationId0"  name="assemblySessionReportVO.membersList[0].scalesList[1].score">
+											<input type="text"  class="form-control presentationCls" id="presentationId0"  name="assemblySessionReportVO.membersList[0].scalesList[1].score" attr_no="0">
 										</div>
 										<div class="col-md-1 col-xs-12 col-sm-6">
 											<label class="f_10">Counter:</label>
-											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0"  name="assemblySessionReportVO.membersList[0].scalesList[2].score">
+											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0"  name="assemblySessionReportVO.membersList[0].scalesList[2].score" attr_no="0">
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-6">
 											<label class="f_10">Body&nbsp;Language:</label>
-											<input type="text"  class="form-control bodyLanguageCls" id="bodyLanguageId0" name="assemblySessionReportVO.membersList[0].scalesList[3].score">
+											<input type="text"  class="form-control bodyLanguageCls" id="bodyLanguageId0" name="assemblySessionReportVO.membersList[0].scalesList[3].score" attr_no="0">
 										</div>
 										<!--<div class="col-md-4 col-xs-12 col-sm-6">
 											<label class="f_10">Summary:</label>
@@ -200,7 +200,7 @@
 								<div id="totalUpdatingClonedElements" class="col-md-12 col-xs-12 col-sm-12"></div>
 								<button type="button" class="btn btn-info  pull-right m_top10" id="addTotalOneMoreBlockId" style="border-radius: 16px;;background:#0b95de">Add More</button>
 							</div>
-							<div id="errMsg" style="color:red;"></div>
+							<div id="errMsg" ></div>
 							<button type="button" class="btn btn-info  " id="submitBtnId" style="border-radius: 16px;;background:#0b95de" onclick="savingApplication();">SUBMIT</button>
 							</form>
 						</div>
@@ -227,12 +227,12 @@
 
 
 	<div id="updateAppendHtml" class="m_top10" style="display:none;">
-		<div class="row">
+		<div class="row" class="memberRowCls">
 		<i class="glyphicon glyphicon-remove  pull-right btn btn-default btn-xs updatingRemoveBtnCls" style="border-radius: 50%;"></i>
 			
 			<div class="col-md-3 col-xs-12 col-sm-6 m_top20">
 				<label class="f_10">Member&nbsp;Name:</label>
-				<select class="memberNameCls" style="width:100%">
+				<select class="memberNameCls" style="width:100%" attr_no="">
 					<option value="0">All</option>
 					<!--<option value="1">Parthipati PullaRao</option>
 					<option value="2">Parthipati PullaRao</option>-->
@@ -240,19 +240,19 @@
 			</div>
 			<div class="col-md-1 col-xs-12 col-sm-6 m_top20">
 				<label class="f_10">Subject:</label>
-				<input type="text" class="form-control subjectCls"  >
+				<input type="text" class="form-control subjectCls"  attr_no="">
 			</div>
 			<div class="col-md-1 col-xs-12 col-sm-6 m_top20">
 				<label class="f_10">Presentation:</label>
-				<input type="text" class="form-control presentationCls" >
+				<input type="text" class="form-control presentationCls" attr_no="" >
 			</div>
 			<div class="col-md-1 col-xs-12 col-sm-6 m_top20">
 				<label class="f_10">Counter:</label>
-				<input type="text" class="form-control counterAttackCls">
+				<input type="text" class="form-control counterAttackCls" attr_no="">
 			</div>
 			<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
 				<label class="f_10">Body&nbsp;Language:</label>
-				<input type="text" class="form-control bodyLanguageCls">
+				<input type="text" class="form-control bodyLanguageCls" attr_no="">
 			</div>
 			<!--<div class="col-md-4 col-xs-12 col-sm-6 ">
 				<label class="f_10">Summary:</label>
@@ -277,7 +277,7 @@
 				<div class="col-md-3 col-xs-12 col-sm-6 ">
 					<label class="f_10">Member&nbsp;Name:</label>
 					<span class="glyphicon glyphicon-plus pull-right addMemberDetailsCls" id="" style="margin-top: -10px;cursor:pointer;"></span>
-					<select class=" memberNameCls" style="width:100%">
+					<select class=" memberNameCls" style="width:100%" attr_no="">
 						<option value="0">All</option>
 						<!--<option value="1">Parthipati PullaRao</option>
 						<option value="2">Parthipati PullaRao</option>-->
@@ -285,19 +285,19 @@
 				</div>
 				<div class="col-md-1 col-xs-12 col-sm-6 ">
 					<label class="f_10">Subject:</label>
-					<input type="text" class="form-control subjectCls"  >
+					<input type="text" class="form-control subjectCls" attr_no="" >
 				</div>
 				<div class="col-md-1 col-xs-12 col-sm-6 ">
 					<label class="f_10">Presentation:</label>
-					<input type="text" class="form-control presentationCls" >
+					<input type="text" class="form-control presentationCls" attr_no="">
 				</div>
 				<div class="col-md-1 col-xs-12 col-sm-6 ">
 					<label class="f_10">Counter:</label>
-					<input type="text" class="form-control counterAttackCls">
+					<input type="text" class="form-control counterAttackCls" attr_no="">
 				</div>
 				<div class="col-md-2 col-xs-12 col-sm-6 ">
 					<label class="f_10">Body&nbsp;Language:</label>
-					<input type="text" class="form-control bodyLanguageCls">
+					<input type="text" class="form-control bodyLanguageCls" attr_no="">
 				</div>
 				<!--<div class="col-md-4 col-xs-12 col-sm-6 ">
 					<label class="f_10">Summary:</label>

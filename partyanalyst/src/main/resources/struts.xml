@@ -16391,16 +16391,22 @@
 			<result type="json" name="success">
 	   			<param name="root">customReportVOList</param>    
 	   		</result>
-		</action>
+		</action> 
+		
 		<action name="getDatesForSavingAction" class="assemblySessionAction" method="getDatesForSaving">
 			<result type="json" name="success">
 				<param name="root">assemblyVOList</param>
 			</result>
-	    </action>   
+	    </action> 
 	    <action name="deleteCustomReportFileDetailsAction" class="customReportAction" method="deleteCustomReportFileDetails">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>
 			</result>
-	    </action>      
+	    </action>
+		<action name="submitAssemblySessionCanScoreDetailsAction" class="assemblySessionAction" method="submitAssemblySessionCanScoreDetails">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+	    </action>     
  </package>
 </struts>
