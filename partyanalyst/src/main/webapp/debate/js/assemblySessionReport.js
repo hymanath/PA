@@ -200,6 +200,7 @@ function getDates(){
 
 function getSessionDetails(){
 	$("#assmblySessionBlock").show();
+	$("#errElecMsgId").html("");
 	$('#sessionDetails').html("<img src='images/Loading-data.gif'/>");
 	var startDate;
 	var endDate;
@@ -212,6 +213,18 @@ function getSessionDetails(){
 		startDate = dateArr[0];
 		endDate =  dateArr[1]; 
 	}
+	if(electionYear == null || electionYear == 0){
+		$("#errElecMsgId").html("Select Election Year.");
+		return;
+	}
+	/* if(sessionYear == "" || sessionYear == 0){
+		$("#errSesMsgId").html("Select Election Year.");
+		return;
+	} */
+	/* if(sessionId == null || sessionId == 0){
+		$("#errSesMsgId").html("Select Election Year.");
+		return;
+	} */
 	var jObj = {
 		elctionYearId : electionYear,
 		sessionYear : sessionYear,//"2017",
@@ -282,28 +295,47 @@ function buildSessionDetails(result)
 	$("#sessionDetails").html(str);
 }
 $(document).on("click",".sessionCls",function(){
+	var sessionDayId = $(this).attr("atr_session_day_id");
+	$("#sessionDayId").val(sessionDayId);
+	updateMemberDetials(0);
+});
+
+function updateMemberDetials(partyId){
+	 
 	$("#memberDetailsModalDiv").modal('show');
 	$('#memberDetailsId').html("<img src='images/Loading-data.gif'/>");
-	var sessionDayId = $(this).attr("atr_session_day_id");
+	var sessionDayId = $("#sessionDayId").val();
+	var partyId;
+	if(partyId == 0){
+		partyId = 0;
+	}else{
+		partyId = partyId;
+	}
 	
 	var jObj = {
-				 adminHouseSessionDayId : sessionDayId
+				 adminHouseSessionDayId : sessionDayId,
+				 partyId : partyId
 			};		
 			$.ajax({
 				  type:'POST',
 				  url: 'getDayWiseDetailsAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
-				 buildMemberDetails(result,sessionDayId);
+				 if(result!= null && result.length > 0){
+					buildMemberDetails(result,sessionDayId);
+				 }else{
+					$("#memberDetailsId").html("NO DATA AVAILABLE."); 
+				 }
 			 });
-});
+}
 
 var candidateArr=[];
 function buildMemberDetails(result,sessionDayId){
+	$("#partyListDivId").show();
 	var str='';
 	var total;
-	str+='<form name="submitAssemblySessionCanScoreByEdit" id="submitApplicationId"  method="post">';
-	str+='<table class="table table-bordered ">';
+	//str+='<form name="submitAssemblySessionCanScoreByEdit" id="submitApplicationId"  method="post">';
+	str+='<table class="table table-bordered memberDataTableCls">';
 		str+='<thead>';
 			str+='<th style="background-color:#D3D3D3;">Party</th>';
 			str+='<th style="background-color:#D3D3D3;">No of Member Participated</th>';
@@ -323,7 +355,7 @@ function buildMemberDetails(result,sessionDayId){
 		for(var i in result){
 			str+='<tr>';
 			str+='<td>'+result[i].partyName+'</td>';
-			str+='<td>'+result[i].count+'&nbsp;&nbsp;<span class="expand-Member-icon" attr_id="'+i+'"><i class="glyphicon glyphicon-plus"></i></span></td>';
+			str+='<td>'+result[i].count+'&nbsp;&nbsp;<span class="expand-Member-icon" attr_id="'+i+'"><i class="glyphicon glyphicon-plus" style="cursor:pointer;" title="Click Here to View Member Details."></i></span></td>';
 			str+='<td> <span  class="constantClsd'+(i+1)+'"> '+result[i].avgSubCount.toFixed(1)+'</span>';
 			str+='<input type="text" value="'+result[i].avgSubCount.toFixed(1)+'"  class="editClassd'+(i+1)+'" style="display:none;"/>';
 			str+='</td>';
@@ -355,8 +387,10 @@ function buildMemberDetails(result,sessionDayId){
 					
 				str+='<tr id="expandViewId" style="display:none;" class="expandViewModal'+i+'">';
 					str+='<td ></td>';
-					str+='<td> <span  class="constantCls'+(i+j+1)+'"> '+result[i].candidateList[j].name+' </span> ';
-						str+='<select class="form-control editClass'+(i+j+1)+'" style="display:none;" >';
+					str+='<td><span> '+result[i].candidateList[j].name+' </span> ';
+					str+='<input type="hidden" id="adminHseMemId'+i+j+'" value="'+result[i].candidateList[j].adminHouseMemberId+'"/>';
+					str+='<input type="hidden" value="'+sessionDayId+'" id="adminHsesesnDayId'+i+j+'"/>';
+						/* str+='<select class="form-control editClass'+(i+j+1)+'" style="display:none;" >';
 						if(candidateArr !=null && candidateArr.length>0){
 							for(var ca in candidateArr){
 								
@@ -364,31 +398,38 @@ function buildMemberDetails(result,sessionDayId){
 							}
 						}
 							
-						str+='</select>';
+						str+='</select>'; */
 					str+='</td>';
+					str+='<span id="errMsgFrScre"></span>';
 						for(var k in result[i].candidateList[j].partyList){
 							str+='<td> <span class="constantCls'+(i+j+1)+'"> '+result[i].candidateList[j].partyList[k].score+'</span> ';
-							str+='<input type="text"  value="'+result[i].candidateList[j].partyList[k].score+'" class="editClass'+(i+j+1)+'" style="display:none;"/>';
+							str+='<input type="text"  value="'+result[i].candidateList[j].partyList[k].score+'" class="editClass'+(i+j+1)+'" style="display:none;" id="editAspectScore'+i+j+k+'" />';
+							str+='<input type="hidden" id="editAspectId'+i+j+k+'"  value="'+result[i].candidateList[j].partyList[k].speechAsceptId+'"/>';
 							str+='</td>';
 						}
 					
-					str+='<td> <span  class="constantCls'+(i+j+1)+'"> '+result[i].candidateList[j].total+'</span>';
-					str+='<input type="text" value="'+result[i].candidateList[j].total+'"  class="editClass'+(i+j+1)+'" style="display:none;"/>';
+					str+='<td>'+result[i].candidateList[j].total+'</td>';
+					/* str+='<input type="text" value="'+result[i].candidateList[j].total+'"  class="editClass'+(i+j+1)+'" style="display:none;"/>'; */
+					//str+='</td>';
+					
+					str+='<td class=" " ><span class="glyphicon glyphicon-edit updateSessionDetails constantCls'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="cursor:pointer;" title="Click Here to Edit Member Details."></span>';
+					str+='<span class="glyphicon glyphicon-save saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" attr_no="'+i+j+'" title="Click Here to update Member Details." attr_admin_hose_mem_id=""></span><span id="errMsgFrSaveId"></span>';
 					str+='</td>';
 					
-					str+='<td class=" " ><span class="glyphicon glyphicon-edit updateSessionDetails constantCls'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="cursor:pointer;"></span>';
-					str+='<span class="glyphicon glyphicon-save saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" ></span>';
-					str+='</td>';
-					
-					str+='<td><span class="glyphicon glyphicon-trash"></span></td>';
+					str+='<td><span class="glyphicon glyphicon-trash deleteMemberDetaCls" attr_no="'+i+j+'" style="cursor:pointer;" title="Click Here to delete a member"></span><span id="errMsgFrDelId"></span></td>';
 				str+='</tr>';
 			}
 			
 		}
 		str+='</tbody>';
 		str+='</table>';
-		str+='</form>';
+		//str+='</form>';
 	$("#memberDetailsId").html(str);
+	/* $(".memberDataTableCls").dataTable({
+		"iDisplayLength": 10,
+		"aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]]
+	 });
+	  $(".memberDataTableCls").removeClass("dataTable"); */
 }
 
 $(document).on("click",".updateSessionDetails",function(){
@@ -400,14 +441,15 @@ $(document).on("click",".updateSessionDetails",function(){
 	$("."+editClass+"").show();
 	//$("."+editClass+"").val(0);
 	//$("."+editClass+"").val('');
-	
 	});	
 $(document).on("click",".saveSessionDetails",function(){
 	var constantCls = $(this).attr('attr_constant_cls');
 	var editClass = $(this).attr('attr_edit_cls');
+	var num  = $(this).attr('attr_no');
 	
-	$("."+constantCls+"").show();
-	$("."+editClass+"").hide();
+	saveCandDetails(num);
+	//$("."+constantCls+"").show();
+	//$("."+editClass+"").hide();
 	//$("."+editClass+"").val(0);
 	//$("."+editClass+"").val('');
 });	
@@ -820,14 +862,9 @@ function getPatries(id){
 	}
 
 function getDatesForSaving(){
-	
-	//var electionYear = $("#electionYearId").val();
-	//var sessionYear = $("#sessionYearId").val();
 	var sessionId = $("#assemblySessionId").val();
 	
 	var jObj = {
-		//elctionYearId : electionYear,
-		//sessionYear : sessionYear,//"2017",
 		adminHuSessionId : sessionId
 	};		
 	$.ajax({
@@ -851,15 +888,85 @@ function getDatesForSaving(){
 	});
 }
 
-function saveCandDetails(){
-	var uploadHandler = {
-		 upload: function(result) {
-			//console.log(result);
-			uploadResult = result.responseText; 
-			var stringext = uploadResult.substr(6,7);
-			//$("#errorModalId").modal("hide");
+function saveCandDetails(num){
+	 var value;
+	var indexArr = ["0","1","2","3"];
+	for(var i in indexArr){
+		var id = indexArr[i];
+		value = $("#editAspectScore"+num+id+'').val();
+		if(value == "" || value == 0){
+			$("#errMsgFrScre").html("<span style='color:red'>Please Enter Score.");
+			return;
 		}
-	};
-		YAHOO.util.Connect.setForm('submitAssemblySessionCanScoreByEdit',true);
-		YAHOO.util.Connect.asyncRequest('POST','updateMemberDetailsAction.action',uploadHandler);
+	} 
+	
+	var subjScore = $("#editAspectScore"+num+0).val();
+	var presScore = $("#editAspectScore"+num+1).val();
+	var countrScore = $("#editAspectScore"+num+2).val();
+	var bdyLangScore = $("#editAspectScore"+num+3).val();
+	var adminHouseMemId=$("#adminHseMemId"+num).val();
+	var adminHsesesnDayId = $("#adminHsesesnDayId"+num).val();
+	
+	var jObj = {
+		subScore : subjScore,
+		presScore : presScore,
+		countrScore : countrScore,
+		bdyLangScore : bdyLangScore,
+		adminHouseMemId : adminHouseMemId,
+		adminHsesesnDayId : adminHsesesnDayId
+		
+		
+	}
+	$.ajax({
+				  type:'POST',
+				  url: 'updateMemberDetailsAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){
+				if(result == "success"){
+					$("#errMsgFrSaveId").html("<span style='color:green'>Updated Successfully..</span>");
+					setTimeout(function(){ 
+						updateMemberDetials(0); 
+					},1500);
+				}else{
+					$("#errMsgFrSaveId").html("<span style='color:green'>Updation Failed.Please Try Again.</span>");
+				}
+			 });
 }
+$(document).on("click",".deleteMemberDetaCls",function(){
+	var num = $(this).attr("attr_no");
+	deleteCandDetails(num);
+});
+function deleteCandDetails(num){
+	var subjScore = $("#editAspectScore"+num+0).val();
+	var presScore = $("#editAspectScore"+num+1).val();
+	var countrScore = $("#editAspectScore"+num+2).val();
+	var bdyLangScore = $("#editAspectScore"+num+3).val();
+	var adminHouseMemId=$("#adminHseMemId"+num).val();
+	var adminHsesesnDayId = $("#adminHsesesnDayId"+num).val();
+	
+	var jObj = {
+		subScore : subjScore,
+		presScore : presScore,
+		countrScore : countrScore,
+		bdyLangScore : bdyLangScore,
+		adminHouseMemId : adminHouseMemId,
+		adminHsesesnDayId : adminHsesesnDayId
+		
+		
+	}
+	$.ajax({
+				  type:'POST',
+				  url: 'deleteMemberDetailsAction.action',
+				 data : {task:JSON.stringify(jObj)} ,
+			 }).done(function(result){
+				 if(result == "success"){
+					$("#errMsgFrDelId").html("<span style='color:green'>Deleted Successfully..</span>");
+					setTimeout(function(){ 
+						updateMemberDetials(0); 
+					},1500);
+				}else{
+					$("#errMsgFrDelId").html("<span style='color:green'>Deleted failed..Please try Again.</span>");
+				}
+			 });
+}
+
