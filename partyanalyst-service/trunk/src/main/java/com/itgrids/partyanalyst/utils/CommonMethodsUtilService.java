@@ -136,7 +136,7 @@ public class CommonMethodsUtilService {
 				return format.format(date);
 			}
 		} catch (Exception e) {
-			LOG.error("Exception occured at dateTOStringConvertion() in CommonUtilService class .",e);
+			LOG.error("Exception occured at dateTOStringConvertion() in CommonMethodsUtilService class .",e);
 		}
 		return null;
 	}
@@ -179,7 +179,7 @@ public class CommonMethodsUtilService {
 			result =  f.format(number);
 		  }catch(Exception e)
 		  {
-			  Log.error("Exception raised in roundTo2DigitsFloatValue service method");
+			  Log.error("Exception raised in roundTo2DigitsFloatValue in CommonMethodsUtilService service method");
 			  e.printStackTrace();
 		  }
 		  return result;
@@ -290,7 +290,7 @@ public class CommonMethodsUtilService {
 			}
 			catch(Exception e)
 			{
-				LOG.error("Exception raised in uploadCadreImage in CadreRegistrationService service", e);
+				LOG.error("Exception raised in uploadCadreImage in CommonMethodsUtilService service", e);
 				return null;
 				
 			}
@@ -321,7 +321,7 @@ public class CommonMethodsUtilService {
 					}
 				}
 			} catch (Exception e) {
-				LOG.error("Exception raised in getDatesWiseCounts in ActivityService service", e);
+				LOG.error("Exception raised in getDatesWiseCounts in CommonMethodsUtilService service", e);
 			}
 			return returnMap;
 		}
@@ -341,7 +341,38 @@ public class CommonMethodsUtilService {
 			return dateStr;
 		}
 		
-		
+		public List<String> getBetweenWeeks(Date fromDate,Date toDate,String formatStr){
+			List<String> datesBetween = new ArrayList<String>();
+			try {
+				SimpleDateFormat format = new SimpleDateFormat(formatStr);
+	        	Calendar startDateCal = Calendar.getInstance() ;
+	    		startDateCal.setTime(fromDate);
+	    			
+	    		Calendar toDateCal =Calendar.getInstance() ;
+	    		toDateCal.setTime(toDate);
+	    		
+    			int i=0;
+    			while(startDateCal.getTime().before(toDateCal.getTime())){
+    				String dateStr = format.format(startDateCal.getTime());
+    				if(i>0){
+    					startDateCal.add(Calendar.DATE, 1);
+    					dateStr = format.format(startDateCal.getTime());
+    				}
+    				startDateCal.add(Calendar.DATE, 6);
+    				if(startDateCal.getTime().before(toDateCal.getTime()))
+    					dateStr = dateStr+" to "+format.format(startDateCal.getTime());
+    				else
+    					dateStr = dateStr+" to "+format.format(toDateCal.getTime());
+    				
+    				datesBetween.add(dateStr);
+    				//System.out.println(dateStr);
+    				i=i+1;
+    			}
+			} catch (Exception e) {
+				LOG.error("Exception raised in getBetweenWeeks in CommonMethodsUtilService service", e);
+			}
+			return datesBetween;
+		}
 	public Map<String,ActivityAttendanceInfoVO> getDatesWiseCountsForAttendance(Date startDate,Date endDate,String name){
 			
 			Map<String,ActivityAttendanceInfoVO> returnMap = new LinkedHashMap<String,ActivityAttendanceInfoVO>();
