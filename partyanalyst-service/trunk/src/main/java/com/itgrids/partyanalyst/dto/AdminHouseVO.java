@@ -23,7 +23,7 @@ public class AdminHouseVO implements Serializable{
 	private Long adminHouseMemberId;
 	private List<AdminHouseVO> candidateList = new ArrayList<AdminHouseVO>(0);
 	private Double total = 0.0d;
-	private Double value = 0.0d;
+	private String value;
 	private Double score = 0.0d;
 	private Double avgSubCount = 0.0d;
 	private Double avgPresCount = 0.0d;
@@ -132,10 +132,10 @@ public class AdminHouseVO implements Serializable{
 	public void setTotal(Double total) {
 		this.total = total;
 	}
-	public Double getValue() {
+	public String getValue() {
 		return value;
 	}
-	public void setValue(Double value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 	public Double getScore() {
