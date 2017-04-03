@@ -9,5 +9,6 @@ import com.itgrids.partyanalyst.model.CustomReport;
 public interface ICustomReportDAO extends GenericDao<CustomReport, Long> {
 	public List<Object[]> getTotalExpectedReports(Long customReportProgramId);
 	public String getDescriptionForReportId(Long reportId);
+	public CustomReport getmodelForCustomreportId(Long reportId) ;
 	
 }
