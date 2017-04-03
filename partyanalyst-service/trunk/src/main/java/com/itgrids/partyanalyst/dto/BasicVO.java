@@ -6,6 +6,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Administrator
+ *
+ */
 @SuppressWarnings("serial")
 public class BasicVO implements Serializable{
 
@@ -47,6 +51,11 @@ public class BasicVO implements Serializable{
 	private Long		  locationInfoId;
 	private ActivityAttendanceInfoVO activityAttendanceInfoVO = new ActivityAttendanceInfoVO();
 	private Map<String,Long> dayWiseMap = new LinkedHashMap<String, Long>();
+	private Long coveredCount;
+	private Long day;
+	private Long totalResult;
+	private String date;
+	private List<EventDocumentVO> documentsVOList = new ArrayList<EventDocumentVO>(0);
 	
 	public BasicVO(){}
 	
@@ -315,6 +324,45 @@ public class BasicVO implements Serializable{
 			ActivityAttendanceInfoVO activityAttendanceInfoVO) {
 		this.activityAttendanceInfoVO = activityAttendanceInfoVO;
 	}
-	
+
+	public Long getCoveredCount() {
+		return coveredCount;
+	}
+
+	public void setCoveredCount(Long coveredCount) {
+		this.coveredCount = coveredCount;
+	}
+
+	public Long getDay() {
+		return day;
+	}
+
+	public void setDay(Long day) {
+		this.day = day;
+	}
+
+	public Long getTotalResult() {
+		return totalResult;
+	}
+
+	public void setTotalResult(Long totalResult) {
+		this.totalResult = totalResult;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public List<EventDocumentVO> getDocumentsVOList() {
+		return documentsVOList;
+	}
+
+	public void setDocumentsVOList(List<EventDocumentVO> documentsVOList) {
+		this.documentsVOList = documentsVOList;
+	}
 	
 }

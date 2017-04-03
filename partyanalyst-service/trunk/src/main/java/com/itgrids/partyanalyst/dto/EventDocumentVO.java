@@ -14,7 +14,7 @@ public class EventDocumentVO {
 	private Long activityLevel;
 	private Long activityId;
 	private List<EventDocumentVO> subList = new ArrayList<EventDocumentVO>();
-	
+	private List<EventDocumentVO> subList2 = new ArrayList<EventDocumentVO>();
 	private String locationScope;
 	private String strDate;
 	private String endDate;
@@ -23,9 +23,27 @@ public class EventDocumentVO {
 	private Long totalResult;
 	private String callFrom;
 	private Long typeId;
+	private Long coveredCount;
+	private AddressVO address;
 	
-	
-	
+	public AddressVO getAddress() {
+		return address;
+	}
+	public void setAddress(AddressVO address) {
+		this.address = address;
+	}
+	public List<EventDocumentVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<EventDocumentVO> subList2) {
+		this.subList2 = subList2;
+	}
+	public Long getCoveredCount() {
+		return coveredCount;
+	}
+	public void setCoveredCount(Long coveredCount) {
+		this.coveredCount = coveredCount;
+	}
 	public Long getTypeId() {
 		return typeId;
 	}
