@@ -264,7 +264,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 	}
 
 	
-	public ResultStatus saveCustomReportUploadFile(final Map<File, String> mapfiles, final Long userId,final String description) {
+	public ResultStatus saveCustomReportUploadFile(final Map<File, String> mapfiles, final Long userId,final String description,final Long reportId,final Long programId) {
 		final ResultStatus resultStatus = new ResultStatus();
 		try {
 			
@@ -284,11 +284,13 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		
 		 StringBuilder pathBuilder = new StringBuilder();
 		 StringBuilder str ;
-		 customReport = new CustomReport();
-		   customReport.setDescription(description);
-		   customReport.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-		   customReport.setUpdatedBy(userId);
-		   customReport = customReportDAO.save(customReport);
+		 CustomReport cusReport = customReportDAO.getmodelForCustomreportId(reportId);
+		 cusReport.setDescription(description);
+		 cusReport.setCustomReportProgramId(programId);
+		 cusReport.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		 cusReport.setUpdatedBy(userId);
+		 cusReport.setIsDeleted("N");
+		 cusReport = customReportDAO.save(cusReport);
 			
 		 for (Map.Entry<File, String> entry : mapfiles.entrySet())
 		 {
@@ -309,8 +311,10 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 				}
 				
 				customReportFile = new CustomReportFile();
-				customReportFile.setPath(pathBuilder.toString());
+				customReportFile.setFileName(pathBuilder.toString());
+				customReportFile.setPath("/nominated_post_documents/"+pathBuilder.toString());
 				customReportFile.setIsDeleted("N");
+				customReportFile.setCustomReportId(reportId);
 				customReportFile = customReportFileDAO.save(customReportFile);
 				
 		 }
@@ -841,4 +845,18 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		}
 		return finalList;
 	} 
+	public ResultStatus deleteCustomReportFileDetails(Long reportId){
+		ResultStatus  resultStatus = new ResultStatus();
+		try {
+			CustomReportFile customRprtFile = customReportFileDAO.deleteCustomReportFileDetails(reportId);
+			     customRprtFile.setIsDeleted("Y");
+			 resultStatus.setResultCode(0);
+			 resultStatus.setMessage("Success");
+		} catch (Exception e) {
+			 resultStatus.setResultCode(0);
+			 resultStatus.setMessage("Failed");
+			LOG.error("Exception Occured in deleteCustomReportFileDetails() method, Exception - ",e);
+		}
+		return resultStatus;
+	}
 }
