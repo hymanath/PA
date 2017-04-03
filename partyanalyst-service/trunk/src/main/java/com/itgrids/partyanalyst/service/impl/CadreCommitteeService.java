@@ -158,6 +158,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.ActivityConductedInfo;
 import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.ActivityLocationInfoDates;
+import com.itgrids.partyanalyst.model.ActivityScope;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
@@ -18878,61 +18879,138 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 			Set<Long> locationValues = new HashSet<Long>(0);
 			//Long stateId = 1L; 
 			 List<Object[]> userAccLvlANdVals=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
-				if(userAccLvlANdVals != null && userAccLvlANdVals.size() > 0){
-					 locationAccessLevelId=(Long) userAccLvlANdVals.get(0)[0];
-					 for(Object[] param:userAccLvlANdVals){
-						 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-					 }
-			   }
-			if(inputVo.getStrDate() != null && !inputVo.getStrDate().trim().isEmpty())
-			{
-				startDate = format.parse(inputVo.getStrDate().toString().trim());
-				toDate = format.parse(inputVo.getEndDate().toString().trim());
-			}
-			
-			List<Object[]> list = null;
-			Long totalCount = null;
-			
-			if(inputVo.getCallFrom().equalsIgnoreCase("BD")){
-				list = activityInfoDocumentDAO.getEventDocumentsByLocationInfo(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
-				totalCount = activityInfoDocumentDAO.getEventDocumentsCountByLocationInbfo(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
-			}else{
-				list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
-				totalCount = activityInfoDocumentDAO.getEventDocumentsCount(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
-			}
-			
-			if(list != null && list.size() > 0)
-			{
-				returnList = new ArrayList<EventDocumentVO>();
-				for(Object[] params : list)
+			 if(userAccLvlANdVals != null && userAccLvlANdVals.size() > 0){
+				 locationAccessLevelId=(Long) userAccLvlANdVals.get(0)[0];
+				 for(Object[] param:userAccLvlANdVals){
+					 locationValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				 }
+		    }
+			ActivityScope activityScope = activityScopeDAO.get(inputVo.getActivityId());
+			if(activityScope != null && activityScope.getIsDeleted().equalsIgnoreCase("N")){
+				List<String> weeksList = commonMethodsUtilService.getBetweenWeeks(activityScope.getStartDate(),activityScope.getEndDate(),"dd-MM-yyyy");
+				
+				if(inputVo.getStrDate() != null && !inputVo.getStrDate().trim().isEmpty())
 				{
-					try {
-						EventDocumentVO vo = null;
-						if(!days.contains((Long)params[2]))
-						{
-						 vo = new EventDocumentVO();
-						 vo.setDay(commonMethodsUtilService.getLongValueForObject(params[2]));
-						 vo.setId(commonMethodsUtilService.getStringValueForObject(params[3]));
-						 returnList.add(vo);
-						 days.add(commonMethodsUtilService.getLongValueForObject(params[2]));
+					startDate = format.parse(inputVo.getStrDate().toString().trim());
+					toDate = format.parse(inputVo.getEndDate().toString().trim());
+				}
+				
+				
+				
+				List<Object[]> list = null;
+				Long totalCount = 0L;
+				List<Object[]> counstList = null;
+				if(inputVo.getCallFrom().equalsIgnoreCase("BD")){
+					list = activityInfoDocumentDAO.getEventDocumentsByLocationInfo(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
+					//totalCount = activityInfoDocumentDAO.getEventDocumentsCountByLocationInbfo(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
+					counstList = activityInfoDocumentDAO.getEventsDocumentsCountByLocationInbfo(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
+				}else{
+					list = activityInfoDocumentDAO.getEventDocuments(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
+					//totalCount = activityInfoDocumentDAO.getEventDocumentsCount(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
+					counstList = activityInfoDocumentDAO.getEventsDocumentsCountByLocationInbfo(inputVo,startDate,toDate,locationAccessLevelId,locationValues);
+				}
+				
+				Map<String,EventDocumentVO> documentsMap = new TreeMap<String, EventDocumentVO>();
+				if(commonMethodsUtilService.isListOrSetValid(counstList)){
+					for (Object[] params : counstList) {
+						Long day = commonMethodsUtilService.getLongValueForObject(params[1]);
+						String date =commonMethodsUtilService.getStringValueForObject(params[0]);
+						Long documentsCount =commonMethodsUtilService.getLongValueForObject(params[2]);
+						Long locationsCount =commonMethodsUtilService.getLongValueForObject(params[3]);
+						Long conductedCount =commonMethodsUtilService.getLongValueForObject(params[4]);
+						
+						EventDocumentVO dayWiseVO = new EventDocumentVO();
+						dayWiseVO.setDay(day);
+						dayWiseVO.setStrDate(date);
+						dayWiseVO.setTotalResult(documentsCount);
+						dayWiseVO.setCoveredCount(locationsCount);
+						if(conductedCount != null && conductedCount.longValue()>0L)
+							dayWiseVO.setCoveredCount(conductedCount);
+						
+						documentsMap.put(day.toString(), dayWiseVO);
+						
+						totalCount = totalCount+documentsCount;
+					}
+					
+				}
+				if(list != null && list.size() > 0)
+				{
+					returnList = new ArrayList<EventDocumentVO>();
+					for(Object[] params : list)
+					{
+						try {
+							EventDocumentVO vo = null;
+							if(!days.contains((Long)params[2]))
+							{
+							 vo = new EventDocumentVO();
+							 vo.setDay(commonMethodsUtilService.getLongValueForObject(params[2]));
+							 vo.setId(commonMethodsUtilService.getStringValueForObject(params[3]));
+							 returnList.add(vo);
+							 days.add(commonMethodsUtilService.getLongValueForObject(params[2]));
+							 
+							 EventDocumentVO dtlsVO = documentsMap.get(vo.getDay().toString());
+							 if(dtlsVO != null){
+								 vo.setStrDate(dtlsVO.getStrDate());
+								 vo.setTotalResult(dtlsVO.getTotalResult());
+								 vo.setCoveredCount(dtlsVO.getCoveredCount());
+							 } 
+							}
+							vo=getMatchedVO(returnList,(Long)params[2]);
+							if(vo != null)
+							{
+								
+								EventDocumentVO subVo = new EventDocumentVO();
+								subVo.setName(commonMethodsUtilService.getStringValueForObject(params[0]));
+								subVo.setPath(commonMethodsUtilService.getStringValueForObject(params[1]));
+								subVo.setId(commonMethodsUtilService.getStringValueForObject(params[3]));
+								
+								AddressVO addressVO = new AddressVO();
+								addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(params[5]));
+								addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(params[4]));
+								
+								addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(params[7]));
+								addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(params[6]));
+								
+								addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(params[9]));
+								addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(params[8]));
+								
+								addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(params[11]));
+								addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(params[10]));
+								
+								addressVO.setTownshipName(commonMethodsUtilService.getStringValueForObject(params[13])+" "+commonMethodsUtilService.getStringValueForObject(params[14]) );
+								addressVO.setTownshipId(commonMethodsUtilService.getStringValueForObject(params[12]));
+								
+								addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(params[15]));
+								addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(params[16]));
+								addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(params[20]));
+								addressVO.setWardName(commonMethodsUtilService.getStringValueForObject(params[18]));
+								
+								subVo.setAddress(addressVO);
+								vo.getSubList().add(subVo);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-						vo=getMatchedVO(returnList,(Long)params[2]);
-						if(vo != null)
-						{
-							EventDocumentVO subVo = new EventDocumentVO();
-							subVo.setName(commonMethodsUtilService.getStringValueForObject(params[0]));
-							subVo.setPath(commonMethodsUtilService.getStringValueForObject(params[1]));
-							subVo.setId(commonMethodsUtilService.getStringValueForObject(params[3]));
-							vo.getSubList().add(subVo);
+					}
+					if(totalCount != null && commonMethodsUtilService.isListOrSetValid(returnList)){
+						EventDocumentVO vo = returnList.get(0);
+						if(vo != null){
+							vo.setTotalResult(totalCount);
+							if(commonMethodsUtilService.isListOrSetValid(weeksList)){
+								for (int j = 0 ;j<weeksList.size();j++) {
+									EventDocumentVO weekVO = new EventDocumentVO();
+									Calendar cal = Calendar.getInstance();
+									Date date= format.parse(weeksList.get(j).split("to")[0].toString().trim());
+									cal.setTime(date);
+									weekVO.setName(IConstants.MONTH_NAMES[cal.get(Calendar.MONTH)]);
+									weekVO.setStrDate(weeksList.get(j));
+									vo.getSubList2().add(weekVO);
+								}
+							}
 						}
-					} catch (Exception e) {
-						e.printStackTrace();
 					}
 				}
-				if(totalCount != null)
-					returnList.get(0).setTotalResult(totalCount);
 			}
-			
 		}
 		catch(Exception e){
 			LOG.error("Exception raised in getEventDocumentsForLocation", e);
@@ -18940,6 +19018,53 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 		return returnList;
 	}
 	
+	public AddressVO getLocationNamesByUserAddressObj(UserAddress userAddress){
+		AddressVO addressVO = null;
+		try {
+			if(userAddress != null){
+				addressVO = new AddressVO();
+				if(userAddress.getState() != null){
+					State state = userAddress.getState();
+					addressVO.setStateName(state.getStateName());
+					addressVO.setStateId(state.getStateId());
+				}
+				if(userAddress.getDistrict() != null){
+					District district = userAddress.getDistrict();
+					addressVO.setDistrictName(district.getDistrictName());
+					addressVO.setDistrictId(district.getDistrictId());
+				}
+				if(userAddress.getParliamentConstituency() != null){
+					Constituency pConstituency = userAddress.getParliamentConstituency();
+					addressVO.setParliamentName(pConstituency.getName());
+					addressVO.setParliamentId(pConstituency.getConstituencyId());
+				}
+				if(userAddress.getConstituency() != null){
+					Constituency assembly = userAddress.getConstituency();
+					addressVO.setConstituencyName(assembly.getName());
+					addressVO.setConstituencyId(assembly.getConstituencyId());
+				}
+				if(userAddress.getTehsil() != null){
+					Tehsil tehil =userAddress.getTehsil();
+					addressVO.setTehsilName(tehil.getTehsilName()+" Mandal" );
+					addressVO.setTehsilId(tehil.getTehsilId() );
+				}
+				if(userAddress.getLocalElectionBody() != null){
+					LocalElectionBody leb = userAddress.getLocalElectionBody();
+					addressVO.setTehsilName(leb.getName()+" "+leb.getElectionType().getElectionType());
+					addressVO.setTehsilId(leb.getLocalElectionBodyId());
+				}
+				if(userAddress.getPanchayat() != null){
+					addressVO.setPanchayatName(userAddress.getPanchayat().getPanchayatName());
+				}
+				if(userAddress.getWard() != null){
+					addressVO.setWardName(userAddress.getWard().getName());
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getLocationNamesByUserAddressObj() method in CadreCommitteeService service class. ", e);
+		}
+		return addressVO;
+	}
 	public EventDocumentVO getMatchedVO(List<EventDocumentVO> returnList,Long id)
 	{
 		if(returnList == null || returnList.size() == 0)
@@ -19130,20 +19255,89 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				startDate = format.parse(inputVo.getStrDate().trim().toString());
 				toDate = format.parse(inputVo.getEndDate().trim().toString());
 			}
+			
+			 List<Object[]> counstList = activityInfoDocumentDAO.getEventsDocumentsCountByLocationInbfo(inputVo,startDate,toDate,null,null);
+		Map<String , EventDocumentVO> datesMap = new LinkedHashMap<String, EventDocumentVO>();
+		Map<String,EventDocumentVO> documentsMap = new TreeMap<String, EventDocumentVO>();
+		if(commonMethodsUtilService.isListOrSetValid(counstList)){
+			for (Object[] params : counstList) {
+				Long day = commonMethodsUtilService.getLongValueForObject(params[1]);
+				String date =commonMethodsUtilService.getStringValueForObject(params[0]);
+				Long documentsCount =commonMethodsUtilService.getLongValueForObject(params[2]);
+				Long locationsCount =commonMethodsUtilService.getLongValueForObject(params[3]);
+				Long conductedCount =commonMethodsUtilService.getLongValueForObject(params[4]);
+				
+			
+				EventDocumentVO dayWiseVO1 = documentsMap.get(day.toString());
+				 if(dayWiseVO1 != null){
+					 	dayWiseVO1.setDay(day);
+						dayWiseVO1.setStrDate(date);
+						dayWiseVO1.setTotalResult(documentsCount+dayWiseVO1.getTotalResult());
+						dayWiseVO1.setCoveredCount(locationsCount+dayWiseVO1.getCoveredCount());
+						if(conductedCount != null && conductedCount.longValue()>0L)
+							dayWiseVO1.setCoveredCount(conductedCount+dayWiseVO1.getCoveredCount());
+				 }else{
+					 	dayWiseVO1 = new EventDocumentVO();
+					 	dayWiseVO1.setDay(day);
+						dayWiseVO1.setStrDate(date);
+						dayWiseVO1.setTotalResult(documentsCount);
+						dayWiseVO1.setCoveredCount(locationsCount);
+						if(conductedCount != null && conductedCount.longValue()>0L)
+							dayWiseVO1.setCoveredCount(conductedCount);
+				 }
+				
+				documentsMap.put(day.toString(), dayWiseVO1);
+				
+				EventDocumentVO dayWiseVO = datesMap.get(date);
+				 if(dayWiseVO != null){
+					 	dayWiseVO.setDay(day);
+						dayWiseVO.setStrDate(date);
+						dayWiseVO.setTotalResult(documentsCount+dayWiseVO.getTotalResult());
+						dayWiseVO.setCoveredCount(locationsCount+dayWiseVO.getCoveredCount());
+						if(conductedCount != null && conductedCount.longValue()>0L)
+							dayWiseVO.setCoveredCount(conductedCount+dayWiseVO.getCoveredCount());
+				 }else{
+					 	dayWiseVO = new EventDocumentVO();
+					 	dayWiseVO.setDay(day);
+						dayWiseVO.setStrDate(date);
+						dayWiseVO.setTotalResult(documentsCount);
+						dayWiseVO.setCoveredCount(locationsCount);
+						if(conductedCount != null && conductedCount.longValue()>0L)
+							dayWiseVO.setCoveredCount(conductedCount);
+				 }
+				
+				 datesMap.put(date.toString(), dayWiseVO);
+			}
+		}
+		
 		 List<Object[]> list  = null;
 			
 				list = activityInfoDocumentDAO.getAvailableDates(inputVo,startDate,toDate,null);
 			
 			if(list != null && list.size() > 0)
 			{
-			for(Object[] params : list)
-			{
-				BasicVO vo = new BasicVO();
-				vo.setId((Long)params[0]);
-				vo.setName(params[1].toString());
-				returnList.add(vo);
-			}
-			Collections.sort(returnList,sortDays);
+				int i=0;
+				for(Object[] params : list)
+				{
+					BasicVO vo = new BasicVO();
+					vo.setId((Long)params[0]);
+					vo.setName(params[1].toString());
+					
+					 EventDocumentVO dtlsVO = documentsMap.get(vo.getId().toString());
+					 if(dtlsVO != null){
+						 vo.setDate(dtlsVO.getStrDate());
+						 vo.setTotalResult(dtlsVO.getTotalResult());
+						 vo.setCoveredCount(dtlsVO.getCoveredCount());
+					 } 
+					 
+					
+					if(i==0 && commonMethodsUtilService.isMapValid(datesMap)){
+						vo.getDocumentsVOList().addAll(datesMap.values());
+					}
+					returnList.add(vo);
+					i=i+1;
+				}
+				Collections.sort(returnList,sortDays);
 		}
 		}
 		catch (Exception e) {
