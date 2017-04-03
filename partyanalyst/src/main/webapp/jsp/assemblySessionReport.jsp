@@ -9,6 +9,8 @@
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css"/>
 <link href="newCoreDashBoard/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
 <link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="styles/jQ_datatables/css/jquery.dataTables.css"/>
 <style type="text/css">
 .expand-icon
 {
@@ -34,6 +36,7 @@
 					<h4 class="panel-title">Assembly Session View</h4>
 				</div>
 				<div class="panel-body">
+				<span id="errElecMsgId" style="color:red;"></span>
 					<div class="row">
 						<div class="col-md-2 col-xs-12 col-sm-6">
 							<label>Election Year</label>
@@ -216,9 +219,21 @@
     <div class="modal-content customModal">
       <div class="modal-header">
         <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalSLabel"></h4>
+        <h4 class="modal-title">Party Wise Member Details</h4>
       </div>
-      <div class="modal-body" style="padding:0px 15px;">
+	  <div class="row">
+	  <div class="col-md-2 col-xs-12 col-sm-6" style="margin-left:942px;display:none;" id="partyListDivId">
+				<label>Select Party:</label>
+				<select id="partyId" class="chosen-select" onChange="updateMemberDetials(this.value);">
+					<option value="0">All</option>
+					<option value="872">TDP</option>
+					<option value="1117">YSRC</option>
+					<option value="163">BJP</option>
+					<option value="886">TRS</option>
+				</select> 
+			</div>
+		</div>
+      <div class="modal-body m_top10" style="padding:0px 15px;">
        <div id="memberDetailsId"></div>
       </div>
     </div>
@@ -307,12 +322,15 @@
 			</div>
 		</div>
 	</div>
-							
+
+<input type="hidden" id="sessionDayId"></input>
+
 <script src="newCoreDashBoard/js/jquery-1.11.3" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script src="debate/js/assemblySessionReport.js" type="text/javascript"></script>
 <script type="text/javascript">
 	globalOnLoadCalls();
