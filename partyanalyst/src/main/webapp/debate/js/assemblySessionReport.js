@@ -251,6 +251,7 @@ function getSessionDetails(){
 	var dateStr = $('#dateRange').val();
 	var dateArr = dateStr.split("-");
 	if(dateArr != null && dateArr.length > 0){
+		
 		startDate = dateArr[0];
 		endDate =  dateArr[1]; 
 	}
@@ -274,8 +275,8 @@ function getSessionDetails(){
 		elctionYearId : electionYear,
 		sessionYear : sessionYear,//"2017",
 		sessionId : sessionId,
-		startDate : "",//23/02/2016
-		endDate : ""//11/05/2016
+		startDate : startDate,//23/02/2016
+		endDate : endDate//11/05/2016
 	};		
 	$.ajax({
 		type:'POST',
@@ -560,7 +561,7 @@ $(document).on("click",".saveSessionDetails",function(){
 		
 		c.css("display","block");
 		c.find(".memberNameCls").attr("class","memberNameValApp"+memberNameCountId);
-		c.find(".memberNameCls").attr("attr_no",updatedCloneCount);
+		c.find(".memberNameCls").attr("attr_no","");
 		c.find(".memberNameValApp"+memberNameCountId).attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
 		getCandidates('memberNameValApp'+memberNameCountId,'partyCls')
 		
@@ -600,58 +601,58 @@ $(document).on("click",".saveSessionDetails",function(){
 	
 	//total append block
 	$(document).on("click","#addTotalOneMoreBlockId",function(){
-		updatedCloneCount = updatedCloneCount +1;
-		mainCloneCount = mainCloneCount +1;
-		var generatedId = mainCloneCount+''+toatlUpdatedCloneCount;
-		var c = $("#totalUpdateAppendHtml").clone(true);
-		c.attr({
-			'id': 'totalUpdateAppendHtml'+updatedCloneCount
-		});
-		c.find(".totalIndividualClonedElements").addClass("totalIndividualClonedElementId"+updatedCloneCount);
-		c.find(".addMemberDetailsCls").addClass("addMemberDetailsId"+updatedCloneCount);
-		c.find(".addMemberDetailsCls").removeClass("addMemberDetailsCls");
-	
-		c.find(".addMemberDetailsId"+updatedCloneCount).attr("onclick","getTotIndividuaAppBlock("+updatedCloneCount+");")
-		c.css("display","block");
-		c.find(".partyCls").attr("class","partycls"+updatedCloneCount)
-		c.find(".partycls"+updatedCloneCount).addClass("partyclsAppendCls")
-		c.find(".partycls"+updatedCloneCount).attr("attr_partyCls",updatedCloneCount);
-		getPatries("partycls"+updatedCloneCount);
-		c.find(".partycls"+updatedCloneCount).attr("onchange","getCandidates('memberNameValApp"+updatedCloneCount+"','partycls"+updatedCloneCount+"')");
-		
-		c.find(".memberNameCls").attr("class","memberNameValApp"+updatedCloneCount)
-		c.find(".memberNameCls").attr("attr_no",updatedCloneCount);
-		c.find(".memberNameValApp"+updatedCloneCount).attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
-		
-		getCandidates('memberNameValApp'+updatedCloneCount,'');
-		c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
-		c.find(".subjectCls").attr("attr_no",updatedCloneCount);
-		c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
-		
-		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
-		c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
-		c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
-			
-		c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount);
-		c.find(".counterAttackCls").attr("id","presentationId"+updatedCloneCount);
-		c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
-		
-		c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount);
-		c.find(".bodyLanguageCls").attr("id","presentationId"+updatedCloneCount);
-		c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
-		
-		//c.find(".summaryCls").attr("id","summaryId"+generatedId)
-		//c.find(".summaryCls").attr("attr_count",generatedId)
-		
-		c.find(".totalUpdatingRemoveBtnCls").attr("attr_div_id","totalUpdateAppendHtml"+updatedCloneCount);
-		$("#totalUpdatingClonedElements").append(c);
-    
-		 $(".memberNameValApp"+updatedCloneCount).chosen();
-		 $(".memberNameValApp"+updatedCloneCount).trigger("chosen:updated");
-		
-		
-		$(".partycls"+updatedCloneCount).chosen();
-		$(".partycls"+updatedCloneCount).trigger("chosen:updated");
+		       updatedCloneCount = updatedCloneCount +1;
+		       mainCloneCount = mainCloneCount +1;
+		       var generatedId = mainCloneCount+''+toatlUpdatedCloneCount;
+		       var c = $("#totalUpdateAppendHtml").clone(true);
+		       c.attr({
+		       	'id': 'totalUpdateAppendHtml'+updatedCloneCount
+		       });
+		       c.find(".totalIndividualClonedElements").addClass("totalIndividualClonedElementId"+updatedCloneCount);
+		       c.find(".addMemberDetailsCls").addClass("addMemberDetailsId"+updatedCloneCount);
+		       c.find(".addMemberDetailsCls").removeClass("addMemberDetailsCls");
+	           
+		       c.find(".addMemberDetailsId"+updatedCloneCount).attr("onclick","getTotIndividuaAppBlock("+updatedCloneCount+");")
+		       c.css("display","block");
+		       c.find(".partyCls").attr("class","partycls"+updatedCloneCount)
+		       c.find(".partycls"+updatedCloneCount).addClass("partyclsAppendCls")
+		       c.find(".partycls"+updatedCloneCount).attr("attr_partyCls",updatedCloneCount);
+		       getPatries("partycls"+updatedCloneCount);
+		       c.find(".partycls"+updatedCloneCount).attr("onchange","getCandidates('memberNameValApp"+updatedCloneCount+"','partycls"+updatedCloneCount+"')");
+		       
+		       c.find(".memberNameCls").attr("class","memberNameValApp"+updatedCloneCount)
+		       c.find(".memberNameCls").attr("attr_no","");
+		       c.find(".memberNameValApp"+updatedCloneCount).attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].memberId');
+		       
+		       getCandidates('memberNameValApp'+updatedCloneCount,'');
+		       c.find(".subjectCls").attr("id","subjectId"+updatedCloneCount);
+		       c.find(".subjectCls").attr("attr_no",updatedCloneCount);
+		       c.find(".subjectCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[0].score');
+		       
+		       c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
+		       c.find(".presentationCls").attr("id","presentationId"+updatedCloneCount);
+		       c.find(".presentationCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[1].score');
+		       	
+		       c.find(".counterAttackCls").attr("id","counterAttackId"+updatedCloneCount);
+		       c.find(".counterAttackCls").attr("id","presentationId"+updatedCloneCount);
+		       c.find(".counterAttackCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[2].score');
+		       
+		       c.find(".bodyLanguageCls").attr("id","bodyLanguageId"+updatedCloneCount);
+		       c.find(".bodyLanguageCls").attr("id","presentationId"+updatedCloneCount);
+		       c.find(".bodyLanguageCls").attr("name",'assemblySessionReportVO.membersList['+updatedCloneCount+'].scalesList[3].score');
+		       
+		       //c.find(".summaryCls").attr("id","summaryId"+generatedId)
+		       //c.find(".summaryCls").attr("attr_count",generatedId)
+		       
+		       c.find(".totalUpdatingRemoveBtnCls").attr("attr_div_id","totalUpdateAppendHtml"+updatedCloneCount);
+		       $("#totalUpdatingClonedElements").append(c);
+               
+		        $(".memberNameValApp"+updatedCloneCount).chosen();
+		        $(".memberNameValApp"+updatedCloneCount).trigger("chosen:updated");
+		       
+		       
+		       $(".partycls"+updatedCloneCount).chosen();
+		       $(".partycls"+updatedCloneCount).trigger("chosen:updated");
 		
 		
 	});
@@ -664,7 +665,7 @@ $(document).on("click",".saveSessionDetails",function(){
 		});
 		c.css("display","block");
 		c.find(".memberNameCls").attr("class","memberNameValApp"+count);
-		c.find(".memberNameCls").attr("attr_no",count);
+		c.find(".memberNameCls").attr("attr_no","");
 		c.find(".memberNameValApp"+count).attr("name",'assemblySessionReportVO.membersList['+count+'].memberId');
 		getCandidates('memberNameValApp'+count,'partycls'+count);
 		
@@ -793,7 +794,7 @@ function getPatries(id){
 	
 	function showSbmitStatus(uploadResult){
 		var stringext = uploadResult.substr(6,7);
-		
+		$("#errMsg").attr("style","color:green;");
 		if(stringext == "SUCCESS"){
 			$("#errMsg").html("Application Saved Successfully").css("style","color:red");
 		}else{
@@ -842,7 +843,7 @@ function getPatries(id){
 			$("#errMsg").html("Please select date range ");
 			return flag =  false;
 		}  
-		 $(".memberNameCls").each(function(){
+		 $(".memberNameValApp0").each(function(){
 			var num = $(this).attr("attr_no");
 			if(num != "" ){
 					if($(this).val() != null && $(this).val() >0){
