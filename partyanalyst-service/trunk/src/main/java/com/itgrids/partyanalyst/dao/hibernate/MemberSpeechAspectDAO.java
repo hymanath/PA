@@ -34,7 +34,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		}
 		if(sessionIds != null && sessionIds.size() > 0l)
 		{
-			sb.append(" and model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId in (:sessionIds)");
+			sb.append(" and model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId in (:sessionIds)");
 		}
 		if(startDate != null && endDate != null)
 	    {
