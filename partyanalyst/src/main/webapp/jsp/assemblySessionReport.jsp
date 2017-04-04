@@ -163,7 +163,7 @@
 							<hr style="margin-left:10px;margin-right:10px;border-width: 2px 0 0;margin-bottom: 0px;"/>
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 								<div class="row">
-									<h4>Participant Details and performance</h4>
+									<h4>Participant Details and Performance</h4>
 									<hr style="border-width: 2px 0px 0px; margin-top: 15px;"/>
 									
 									<div class="col-md-2 col-xs-12 col-sm-6">
