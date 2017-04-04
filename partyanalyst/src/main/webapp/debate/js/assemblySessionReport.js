@@ -103,7 +103,7 @@ function getSessionYears(id){
 		var str='';
 		if(result != null && result.length >0)
 		{
-			str+='<option value="0">Select Session Year</option>';
+			str+='<option value="">Select Session Year</option>';
 			for(var i in result)
 			{
 				str+='<option value="'+result[i].name+'">'+result[i].partyName+'</option>';
@@ -185,16 +185,17 @@ function getDates(){
 		  url: 'getDatesAction.action',
 		 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
-		
-		var fYear = result[0].name.split('-')[0];
-		var fMonth = result[0].name.split('-')[1];
-		var fDate = result[0].name.split('-')[2].substring(0,2);
-		var tYear = result[0].partyName.split('-')[0];
-		var tMonth = result[0].partyName.split('-')[1];
-		var tDate = result[0].partyName.split('-')[2].substring(0,2);
-		
-		$('#dateRange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
-		$('#dateRange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+		if(result[0].name != null && result[0].name != ""){
+			var fYear = result[0].name.split('-')[0];
+			var fMonth = result[0].name.split('-')[1];
+			var fDate = result[0].name.split('-')[2].substring(0,2);
+			var tYear = result[0].partyName.split('-')[0];
+			var tMonth = result[0].partyName.split('-')[1];
+			var tDate = result[0].partyName.split('-')[2].substring(0,2);
+			
+			$('#dateRange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
+			$('#dateRange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+		}
 	});
 }
 
@@ -229,8 +230,8 @@ function getSessionDetails(){
 		elctionYearId : electionYear,
 		sessionYear : sessionYear,//"2017",
 		sessionId : sessionId,
-		startDate : "",//23-02-2016
-		endDate : ""//11-05-2016
+		startDate : "",//23/02/2016
+		endDate : ""//11/05/2016
 	};		
 	$.ajax({
 		type:'POST',
@@ -852,10 +853,10 @@ function getPatries(id){
 						$("#errMsg").html("Please select  member");
 						return flag =  false;
 					}
-					return flag =  false;
+					
 				}
 			});  
-		  
+		  return flag;
 		}
 	function clearFields(){
 		$("#updateAppendHtml").empty();
