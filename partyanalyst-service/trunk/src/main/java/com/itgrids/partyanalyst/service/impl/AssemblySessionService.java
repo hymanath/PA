@@ -288,10 +288,10 @@ public class AssemblySessionService implements IAssemblySessionService{
 		return returnList;
 	}
 	
-	public List<AdminHouseVO> getDates(Long termId,String sessionYear,Long sessionId){
+	public List<AdminHouseVO> getDates(Long adminSessionId){
 		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
 		try{
-			Object[] datesList = adminHouseSessionDAO.getDates(termId, sessionYear, sessionId);
+			Object[] datesList = adminHouseSessionDayDAO.getDates(adminSessionId);
 			if(datesList != null){
 					AdminHouseVO vo = new AdminHouseVO();
 					vo.setName(commonMethodsUtilService.getStringValueForObject(datesList[0]));

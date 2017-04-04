@@ -31,8 +31,23 @@ public class AdminHouseSessionDayDAO extends GenericDaoHibernate<AdminHouseSessi
 		if(adminHuSessionId != null && adminHuSessionId.longValue() > 0l)
 			query.setParameter("adminHuSessionId", adminHuSessionId);
 		return query.list();
-		
-		
-		
+	}
+	
+	public Object[] getDates(Long adminHuSessionId){
+		StringBuilder sb = new StringBuilder();
+			sb.append("select min(model.adminHouseSession.fromDate)," +
+					" max(model.adminHouseSession.toDate)" +
+					" from AdminHouseSessionDay model " +
+					" where model.isDeleted = 'N' and model.adminHouseSession.isActive ='Y' and model.adminHouseSession.isDeleted = 'N' " );
+		if(adminHuSessionId != null && adminHuSessionId.longValue() > 0l)
+		{
+			sb.append(" and model.adminHouseSession.adminHouseSessionId = :adminHuSessionId");
+		}
+			sb.append(" order by model.sessionDate ");
+			
+		Query query = getSession().createQuery(sb.toString());
+		if(adminHuSessionId != null && adminHuSessionId.longValue() > 0l)
+			query.setParameter("adminHuSessionId", adminHuSessionId);
+		return (Object[]) query.uniqueResult();
 	}
 }
