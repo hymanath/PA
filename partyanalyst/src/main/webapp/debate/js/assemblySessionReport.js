@@ -46,6 +46,17 @@ function onLoadInitialisations()
 			$(".expandViewModal"+count).hide();
 		}
 	});
+	$(document).on("click",".panelCollapse",function(){
+		$(".panelCollapse").find(".glyphicon-chevron-down").addClass("glyphicon-chevron-down").removeClass("glyphicon-chevron-up");
+		if($(this).find("i").hasClass("glyphicon-chevron-down"))
+		{
+			$(this).find("i").removeClass("glyphicon-chevron-down").addClass("glyphicon-chevron-up");
+		}else{
+			$(this).find("i").addClass("glyphicon-chevron-down").removeClass("glyphicon-chevron-up");
+		}
+		
+		$(this).closest(".panel").find(".panel-body").collapse('toggle');
+	});
 }
 function getElectionYears(id){
 	
@@ -71,10 +82,12 @@ function getElectionYears(id){
 		if(id == 1){
 			$("#electionYear").html(str);
 			$("#electionYear").trigger("chosen:updated");
+			
 		}if(id == 2){
 			$("#electionYearId").html(str);
 			$("#electionYearId").trigger("chosen:updated");
 		}
+		
 		$(".chosen-select").chosen({width:'100%'});
 	});
 }
@@ -113,6 +126,18 @@ function getSessionYears(id){
 		if(id == 1){
 			$("#sessionYear").html(str);
 			$("#sessionYear").trigger("chosen:updated");
+			var electinDate = $("#electionYear_chosen").find(".chosen-single span").html();
+			var fYear = electinDate.split('-')[0];
+			var tYear = electinDate.split('-')[1];
+			$("#dateRange").daterangepicker({
+				startDate : '01/01'+fYear,
+				minDate : '01/01'+fYear,
+				endDate : '31/12'+tYear,
+				maxDate : '31/12'+tYear,
+				locale:{
+					format: 'DD/MM/YYYY'
+				},
+			});
 		}else if(id == 2){
 			$("#sessionYearId").html(str);
 			$("#sessionYearId").trigger("chosen:updated");
@@ -160,6 +185,18 @@ function getAllSessions(id){
 		if(id == 1){
 			$("#assemblySession").html(str);
 			$("#assemblySession").trigger("chosen:updated");
+			var electinDate = $("#sessionYear_chosen").find(".chosen-single span").html();
+			var fYear = electinDate.split('-')[0];
+			var tYear = electinDate.split('-')[1];
+			$("#dateRange").daterangepicker({
+				startDate : '01/01'+fYear,
+				minDate : '01/01'+fYear,
+				endDate : '31/12'+tYear,
+				maxDate : '31/12'+tYear,
+				locale:{
+					format: 'DD/MM/YYYY'
+				},
+			});
 		}else if(id == 2){
 			$("#assemblySessionId").html(str);
 			$("#assemblySessionId").trigger("chosen:updated");
@@ -171,14 +208,14 @@ function getAllSessions(id){
 
 function getDates(){
 	
-	var electionYear = $("#electionYear").val();
-	var sessionYear = $("#sessionYear").val();
+	//var electionYear = $("#electionYear").val();
+	//var sessionYear = $("#sessionYear").val();
 	var sessionId = $("#assemblySession").val();
 	
 	var jObj = {
-		elctionYearId : electionYear,
-		sessionYear : sessionYear,//"2017",
-		sessionId : sessionId
+		//elctionYearId : electionYear,
+		//sessionYear : sessionYear,//"2017",
+		adminHusseSessionId : sessionId
 	};		
 	$.ajax({
 		  type:'POST',
@@ -186,23 +223,26 @@ function getDates(){
 		 data : {task:JSON.stringify(jObj)} ,
 	}).done(function(result){
 		if(result[0].name != null && result[0].name != ""){
-			var fYear = result[0].name.split('-')[0];
-			var fMonth = result[0].name.split('-')[1];
-			var fDate = result[0].name.split('-')[2].substring(0,2);
-			var tYear = result[0].partyName.split('-')[0];
-			var tMonth = result[0].partyName.split('-')[1];
-			var tDate = result[0].partyName.split('-')[2].substring(0,2);
-			
-			$('#dateRange').data('daterangepicker').setStartDate(fDate+'/'+fMonth+'/'+fYear);
-			$('#dateRange').data('daterangepicker').setEndDate(tDate+'/'+tMonth+'/'+tYear);
+		var fYear = result[0].name.split('-')[0];
+		var fMonth = result[0].name.split('-')[1];
+		var fDate = result[0].name.split('-')[2].substring(0,2);
+		var tYear = result[0].partyName.split('-')[0];
+		var tMonth = result[0].partyName.split('-')[1];
+		var tDate = result[0].partyName.split('-')[2].substring(0,2);
+		$("#dateRange").daterangepicker({
+			startDate : fDate+'/'+fMonth+'/'+fYear,
+			minDate : fDate+'/'+fMonth+'/'+fYear,
+			endDate : tDate+'/'+tMonth+'/'+tYear,
+			maxDate : tDate+'/'+tMonth+'/'+tYear,
+			locale:{
+				format: 'DD/MM/YYYY'
+			},
+		});
 		}
 	});
 }
 
 function getSessionDetails(){
-	$("#assmblySessionBlock").show();
-	$("#errElecMsgId").html("");
-	$('#sessionDetails').html("<img src='images/Loading-data.gif'/>");
 	var startDate;
 	var endDate;
 	var electionYear = $("#electionYear").val();
@@ -226,6 +266,10 @@ function getSessionDetails(){
 		$("#errSesMsgId").html("Select Election Year.");
 		return;
 	} */
+	
+	$("#assmblySessionBlock").show();
+	$("#errElecMsgId").html("");
+	$('#sessionDetails').html("<img src='images/Loading-data.gif'/>");
 	var jObj = {
 		elctionYearId : electionYear,
 		sessionYear : sessionYear,//"2017",
@@ -298,21 +342,27 @@ function buildSessionDetails(result)
 $(document).on("click",".sessionCls",function(){
 	var sessionDayId = $(this).attr("atr_session_day_id");
 	$("#sessionDayId").val(sessionDayId);
-	updateMemberDetials(0);
+	updateMemberDetials(0,0);
 });
 
-function updateMemberDetials(partyId){
+function updateMemberDetials(partyValue,number){
 	 
+	$("#partyListDivId").hide();
+	 //$("#partyId").val('');
+	 //$("#partyId").trigger("chosen:updated");
 	$("#memberDetailsModalDiv").modal('show');
 	$('#memberDetailsId').html("<img src='images/Loading-data.gif'/>");
 	var sessionDayId = $("#sessionDayId").val();
 	var partyId;
-	if(partyId == 0){
+	if(partyValue == 0){
 		partyId = 0;
 	}else{
-		partyId = partyId;
+		partyId = partyValue;
 	}
-	
+	if(number == 0){
+		$("#partyId").val('0');
+		$("#partyId").trigger("chosen:updated");
+	}
 	var jObj = {
 				 adminHouseSessionDayId : sessionDayId,
 				 partyId : partyId
@@ -323,6 +373,7 @@ function updateMemberDetials(partyId){
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
 				 if(result!= null && result.length > 0){
+					 $("#partyListDivId").show();
 					buildMemberDetails(result,sessionDayId);
 				 }else{
 					$("#memberDetailsId").html("NO DATA AVAILABLE."); 
@@ -332,7 +383,6 @@ function updateMemberDetials(partyId){
 
 var candidateArr=[];
 function buildMemberDetails(result,sessionDayId){
-	$("#partyListDivId").show();
 	var str='';
 	var total;
 	//str+='<form name="submitAssemblySessionCanScoreByEdit" id="submitApplicationId"  method="post">';
@@ -374,8 +424,6 @@ function buildMemberDetails(result,sessionDayId){
 			str+='<td> <span  class="constantClsd'+(i+1)+'"> '+total.toFixed(1)+'</span>';
 			str+='<input type="text" value="'+total.toFixed(1)+'"  class="editClassd'+(i+1)+'" style="display:none;"/>';
 			str+='</td>';
-			
-			
 			str+='<td class=" " ><span class="glyphicon glyphicon-edit updateSessionDetailsd constantClsd'+(i+1)+'" attr_constant_cls="constantClsd'+(i+1)+'" attr_edit_cls="editClassd'+(i+1)+'" style="cursor:pointer;"></span>';
 			str+='<span class="glyphicon glyphicon-save saveSessionDetailsd editClassd'+(i+1)+'" attr_constant_cls="constantClsd'+(i+1)+'" attr_edit_cls="editClassd'+(i+1)+'" style="display:none;cursor:pointer;" ></span>';
 			str+='</td>';
@@ -414,7 +462,7 @@ function buildMemberDetails(result,sessionDayId){
 					//str+='</td>';
 					
 					str+='<td class=" " ><span class="glyphicon glyphicon-edit updateSessionDetails constantCls'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="cursor:pointer;" title="Click Here to Edit Member Details."></span>';
-					str+='<span class="glyphicon glyphicon-save saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" attr_no="'+i+j+'" title="Click Here to update Member Details." attr_admin_hose_mem_id=""></span><span id="errMsgFrSaveId"></span>';
+					str+='<span class="glyphicon glyphicon-floppy-disk saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" attr_no="'+i+j+'" title="Click Here to update Member Details." attr_admin_hose_mem_id=""></span><span id="errMsgFrSaveId"></span>';
 					str+='</td>';
 					
 					str+='<td><span class="glyphicon glyphicon-trash deleteMemberDetaCls" attr_no="'+i+j+'" style="cursor:pointer;" title="Click Here to delete a member"></span><span id="errMsgFrDelId"></span></td>';
@@ -455,7 +503,7 @@ $(document).on("click",".saveSessionDetails",function(){
 	//$("."+editClass+"").val('');
 });	
 
-$(document).on("click",".updateSessionDetailsd",function(){
+/*$(document).on("click",".updateSessionDetailsd",function(){
 	var constantCls = $(this).attr('attr_constant_cls');
 	var editClass = $(this).attr('attr_edit_cls');
 	
@@ -465,8 +513,8 @@ $(document).on("click",".updateSessionDetailsd",function(){
 	//$("."+editClass+"").val(0);
 	//$("."+editClass+"").val('');
 	
-	});	
-$(document).on("click",".saveSessionDetailsd",function(){
+	});	*/
+/*$(document).on("click",".saveSessionDetailsd",function(){
 	var constantCls = $(this).attr('attr_constant_cls');
 	var editClass = $(this).attr('attr_edit_cls');
 	
@@ -474,7 +522,7 @@ $(document).on("click",".saveSessionDetailsd",function(){
 	$("."+editClass+"").hide();
 	//$("."+editClass+"").val(0);
 	//$("."+editClass+"").val('');
-});	
+});*/
 
 	var appendId=0;
 	$(document).on("click",".addObserversCls",function(){
@@ -715,7 +763,6 @@ function getPatries(id){
 							str+='<option value="'+result[i].partyId+'">'+result[i].partyName+'</option>';
 						
 						}
-						
 					}
 					setTimeout(function() {
 						$('.'+id).html(str);
@@ -926,7 +973,7 @@ function saveCandDetails(num){
 				if(result == "success"){
 					$("#errMsgFrSaveId").html("<span style='color:green'>Updated Successfully..</span>");
 					setTimeout(function(){ 
-						updateMemberDetials(0); 
+						updateMemberDetials(0,0); 
 					},1500);
 				}else{
 					$("#errMsgFrSaveId").html("<span style='color:green'>Updation Failed.Please Try Again.</span>");
@@ -963,7 +1010,7 @@ function deleteCandDetails(num){
 				 if(result == "success"){
 					$("#errMsgFrDelId").html("<span style='color:green'>Deleted Successfully..</span>");
 					setTimeout(function(){ 
-						updateMemberDetials(0); 
+						updateMemberDetials(0,0); 
 					},1500);
 				}else{
 					$("#errMsgFrDelId").html("<span style='color:green'>Deleted failed..Please try Again.</span>");
