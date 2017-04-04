@@ -188,7 +188,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 		try{
 			jObj = new JSONObject(getTask());
 			
-			assemblyVOList = assemblySessionService.getDates(jObj.getLong("elctionYearId"),jObj.getString("sessionYear"),jObj.getLong("sessionId"));
+			assemblyVOList = assemblySessionService.getDates(jObj.getLong("adminHusseSessionId"));
 			}catch(Exception e){
 				LOG.error("Exception occured in getDates() At AssemblySessionAction",e);
 			}

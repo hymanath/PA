@@ -23,7 +23,9 @@
 	margin-right:8px;
 }
 .f_10{font-size:10px;}
-
+.panelCollapse{
+	cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -32,10 +34,12 @@
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default panelNew">
-				<div class="panel-heading">
-					<h4 class="panel-title">Assembly Session View</h4>
+				<div class="panel-heading panelCollapse">
+					<h4 class="panel-title">Assembly Session View
+						<i class="glyphicon glyphicon-chevron-down pull-right f_10"></i>
+					</h4>
 				</div>
-				<div class="panel-body">
+				<div class="panel-body collapse in">
 				<span id="errElecMsgId" style="color:red;"></span>
 					<div class="row">
 						<div class="col-md-2 col-xs-12 col-sm-6">
@@ -79,10 +83,12 @@
 		</div>
 		<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;" id="assmblySessionBlock">
 			<div class="panel panel-default panelNew">
-				<div class="panel-heading">
-					<h4 class="panel-title">Assembly Session View</h4>
+				<div class="panel-heading panelCollapse">
+					<h4 class="panel-title">Assembly Session View
+						<i class="glyphicon glyphicon-chevron-down pull-right f_10"></i>
+					</h4>
 				</div>
-				<div class="panel-body pad_0">
+				<div class="panel-body collapse in pad_0">
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div id="sessionDetails"></div>
@@ -93,10 +99,12 @@
 		</div>
 		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default panelNew">
-				<div class="panel-heading">
-					<h4 class="panel-title">Update Assembly Session Information</h4>
+				<div class="panel-heading panelCollapse">
+					<h4 class="panel-title">Update Assembly Session Information
+						<i class="glyphicon glyphicon-chevron-down pull-right f_10"></i>
+					</h4>
 				</div>
-				<div class="panel-body pad_0">
+				<div class="panel-body collapse in pad_0">
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="row">
 								<div class="col-md-2 col-xs-12 col-sm-6">
@@ -224,7 +232,7 @@
 	  <div class="row">
 	  <div class="col-md-2 col-xs-12 col-sm-6" style="margin-left:942px;display:none;" id="partyListDivId">
 				<label>Select Party:</label>
-				<select id="partyId" class="chosen-select" onChange="updateMemberDetials(this.value);">
+				<select id="partyId" class="chosen-select" onChange="updateMemberDetials(this.value,1);">
 					<option value="0">All</option>
 					<option value="872">TDP</option>
 					<option value="1117">YSRC</option>
