@@ -38,7 +38,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		}
 		if(startDate != null && endDate != null)
 	    {
-			sb.append(" and date(model.adminHouseSessionDay.adminHouseSession.fromDate)  between :startDate and :endDate and date(model.adminHouseSessionDay.adminHouseSession.toDate)  between :startDate and :endDate " );
+			sb.append(" and date(model.adminHouseSessionDay.sessionDate)  between :startDate and :endDate  " );
 	    }
 		sb.append(" group by model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId,model.adminHouseSessionDay.adminHouseSession.fromDate");
 		
@@ -75,7 +75,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		}
 	    if(sessionIds != null && sessionIds.size() >0l)
 	    {
-	      str.append(" and model.adminHouseSessionDay.adminHouseSession.houseSession.houseSessionId in (:sessionIds) ");
+	      str.append(" and model.adminHouseSessionDay.adminHouseSession.adminHouseSessionId in (:sessionIds) ");
 	    }
 	    if(startDate != null && endDate != null)
 	    {

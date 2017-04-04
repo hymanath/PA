@@ -152,7 +152,7 @@ public class AssemblySessionService implements IAssemblySessionService{
 			Date startDate = null;
 			Date endDate = null;
 			if(startDateStr != null && endDateStr != null && !startDateStr.toString().isEmpty() && !endDateStr.toString().isEmpty() ){
-				startDate = sdf.parse(endDateStr);
+				startDate = sdf.parse(startDateStr);
 				endDate = sdf.parse(endDateStr);
 			}
 			if(sessionId == null || sessionId.longValue() == 0l){
