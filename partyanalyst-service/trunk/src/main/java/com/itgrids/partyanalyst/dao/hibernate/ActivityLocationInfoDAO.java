@@ -3162,4 +3162,117 @@ public List<Object[]> getConstituenciesByDistricts(Long districtId,Long activity
 	query.setParameter("activityScopeId", activityScopeId);
 	return query.list();
 }
+
+public List<Object[]> getConductedForAssemblyConstWise(Long activityScopeId,List<Long> constIds){
+	
+	StringBuilder sb=new StringBuilder();
+	
+	sb.append("" +
+		" select   model.address.constituency.constituencyId,count(model.activityLocationInfoId) " +
+		" from  ActivityLocationInfo model " +
+		" where model.activityScope.activityScopeId =:activityScopeId and model.address.constituency.constituencyId in (:constIds) " +
+		" and  model.updatedStatus ='UPDATED' and (model.conductedDate is not null or model.ivrStatus = 'Y') ");
+	
+	sb.append(" group by model.address.constituency.constituencyId ");
+	
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameter("activityScopeId", activityScopeId);
+	query.setParameterList("constIds",constIds);
+	
+	return query.list();
+}
+
+public List<Object[]> getNotConductedForAssemblyConstWise(Long activityScopeId,List<Long> constIds){
+	
+	StringBuilder sb=new StringBuilder();
+	
+	sb.append("" +
+		" select   model.address.constituency.constituencyId,count(model.activityLocationInfoId) " +
+		" from  ActivityLocationInfo model " +
+		" where model.activityScope.activityScopeId =:activityScopeId and model.address.constituency.constituencyId in (:constIds) " +
+		" and  model.updatedStatus ='UPDATED' and ((model.conductedDate is null ) and (model.ivrStatus = 'N' or model.ivrStatus is null)) ");
+	
+	sb.append(" group by model.address.constituency.constituencyId ");
+	
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameter("activityScopeId", activityScopeId);
+	query.setParameterList("constIds",constIds);
+	
+	return query.list();
+}
+
+public List<Object[]> getNotUpdatedCuntForAssemblyConstWise(Long activityScopeId,List<Long> constIds){
+	
+	StringBuilder sb=new StringBuilder();
+	
+	sb.append("" +
+		" select   model.address.constituency.constituencyId,count(model.activityLocationInfoId) " +
+		" from  ActivityLocationInfo model " +
+		" where model.activityScope.activityScopeId =:activityScopeId and model.address.constituency.constituencyId in (:constIds) " +
+		" and model.updatedStatus ='NOT UPDATED' ");
+	
+	sb.append(" group by model.address.constituency.constituencyId ");
+	
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameter("activityScopeId", activityScopeId);
+	query.setParameterList("constIds",constIds);
+	
+	return query.list();
+}
+public List<Object[]> getConductedCountForDistrict(Long activityScopeId,List<Long> distIds){
+	
+	StringBuilder sb=new StringBuilder();
+	
+	sb.append("" +
+		" select   model.address.district.districtId,count(model.activityLocationInfoId) " +
+		" from  ActivityLocationInfo model " +
+		" where model.activityScope.activityScopeId =:activityScopeId and model.address.district.districtId in (:distIds) " +
+		" and  model.updatedStatus ='UPDATED' and (model.conductedDate is not null or model.ivrStatus = 'Y') ");
+	
+	sb.append(" group by model.address.district.districtId ");
+	
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameter("activityScopeId", activityScopeId);
+	query.setParameterList("distIds",distIds);
+	
+	return query.list();
+}
+
+public List<Object[]> getNotConductedCountForDistrict(Long activityScopeId,List<Long> distIds){
+	
+	StringBuilder sb=new StringBuilder();
+	
+	sb.append("" +
+		" select   model.address.district.districtId,count(model.activityLocationInfoId) " +
+		" from  ActivityLocationInfo model " +
+		" where model.activityScope.activityScopeId =:activityScopeId and model.address.district.districtId in (:distIds) " +
+		" and  model.updatedStatus ='UPDATED' and ((model.conductedDate is null ) and (model.ivrStatus = 'N' or model.ivrStatus is null)) ");
+	
+	sb.append(" group by model.address.district.districtId ");
+	
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameter("activityScopeId", activityScopeId);
+	query.setParameterList("distIds",distIds);
+	
+	return query.list();
+}
+
+public List<Object[]> getNotUpdatedForDistrict(Long activityScopeId,List<Long> distIds){
+	
+	StringBuilder sb=new StringBuilder();
+	
+	sb.append("" +
+		" select   model.address.district.districtId,count(model.activityLocationInfoId) " +
+		" from  ActivityLocationInfo model " +
+		" where model.activityScope.activityScopeId =:activityScopeId and model.address.district.districtId in (:distIds) " +
+		" and model.updatedStatus ='NOT UPDATED' ");
+	
+	sb.append(" group by model.address.district.districtId ");
+	
+	Query query=getSession().createQuery(sb.toString());
+	query.setParameter("activityScopeId", activityScopeId);
+	query.setParameterList("distIds",distIds);
+	
+	return query.list();
+}
 }

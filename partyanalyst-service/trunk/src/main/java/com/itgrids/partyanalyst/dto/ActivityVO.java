@@ -107,6 +107,7 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	private List<ActivityVO> attrTypeList = new ArrayList<ActivityVO>(0);
 	private String types;
 	private String isChecked;
+	private Long notUpdatedCount = 0l;
 	
 	public String getIsChecked() {
 		return isChecked;
@@ -629,6 +630,12 @@ public class ActivityVO implements Comparable<ActivityVO>{
 	}
 	public void setTypes(String types) {
 		this.types = types;
+	}
+	public Long getNotUpdatedCount() {
+		return notUpdatedCount;
+	}
+	public void setNotUpdatedCount(Long notUpdatedCount) {
+		this.notUpdatedCount = notUpdatedCount;
 	}
 	
 }
