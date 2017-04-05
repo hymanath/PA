@@ -198,4 +198,6 @@ public interface ICadreCommitteeService {
 	 public List<LocationWiseBoothDetailsVO> getActivityLocationDetails(Long levelId,Long locationId,Long activityScopeId,String searchType,String checkedValue);
 	 public List<IdNameVO> getDistrictsByActivityId(Long activityId);
 	 public String saveActivityLocationDetails(final ActivityVO activityVO,final Long userId);
+	 public List<ActivityVO> asemblyConstWiseActivitiesCount(Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
+	 public List<ActivityVO> getDistrictWiseActivitiesCount(Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
 }

@@ -62,4 +62,10 @@ public interface IActivityLocationInfoDAO extends GenericDao<ActivityLocationInf
 	public List<Object[]> getPanchayatByTehsil(Long tehsilId,Long activityScopeId );
 	public List<Object[]> getWardsByMun(Long muncipId,Long activityScopeId );
 	public List<Object[]> getConstituenciesByDistricts(Long districtId,Long activityScopeId );
+	public List<Object[]> getConductedForAssemblyConstWise(Long activityScopeId,List<Long> constIds);
+	public List<Object[]> getNotConductedForAssemblyConstWise(Long activityScopeId,List<Long> constIds);
+	public List<Object[]> getNotUpdatedCuntForAssemblyConstWise(Long activityScopeId,List<Long> constIds);
+	public List<Object[]> getConductedCountForDistrict(Long activityScopeId,List<Long> distIds);
+	public List<Object[]> getNotConductedCountForDistrict(Long activityScopeId,List<Long> distIds);
+	public List<Object[]> getNotUpdatedForDistrict(Long activityScopeId,List<Long> distIds);
 }

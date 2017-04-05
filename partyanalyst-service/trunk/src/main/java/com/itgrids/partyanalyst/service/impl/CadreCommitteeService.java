@@ -21113,6 +21113,7 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 								 //activityLocationInfo = new ActivityLocationInfo(); 
 								 
 								 if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Conducted")){//overall vo status
+									 activityLocationInfo.setUpdatedStatus("Updated");
 									 if(typeIds1.contains(6l)){
 										 
 										 	if(activityVO.getSelectedCnductedDate() != null && activityVO.getSelectedCnductedDate().trim().length() > 0)
@@ -21144,6 +21145,7 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 							 	}
 								 else  if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Not Conducted") ){//main not conducted
 									 activityLocationInfo.setConductedDate(null);
+									 activityLocationInfo.setUpdatedStatus("Updated");
 									 try {
 										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
 										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
@@ -21151,10 +21153,22 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
-								 } 
-								 else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Conducted")  ){//individual vo status
-									 if(typeIds1.contains(6l)){
+								 }
+								 else  if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Not Updated") ){
+									 activityLocationInfo.setConductedDate(null);
+									 activityLocationInfo.setUpdatedStatus("Not Updated");
+									 try {
+										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
+										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
+										 activityInfoDocumentDAO.deleteEventUploadFilebyActivityInfoId( activityInfoIdList);
 										 
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								 }
+								 else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Conducted")  ){//individual vo status
+									 activityLocationInfo.setUpdatedStatus("Updated");
+									 if(typeIds1.contains(6l)){
 										 	if(activityVO.getSelectedCnductedDate() != null && activityVO.getSelectedCnductedDate().trim().length() > 0)
 										 		activityLocationInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
 											else
@@ -21184,6 +21198,7 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 							 	}
 								else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Not Conducted") ){
 									 activityLocationInfo.setConductedDate(null);
+									 activityLocationInfo.setUpdatedStatus("Updated");
 									 try {
 										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
 										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
@@ -21192,7 +21207,18 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 										e.printStackTrace();
 									}
 								 }
-								activityLocationInfo.setUpdatedStatus("Updated");
+								else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Not Updated") ){
+									 activityLocationInfo.setConductedDate(null);
+									 activityLocationInfo.setUpdatedStatus("Not Updated");
+									 try {
+										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
+										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
+										 activityInfoDocumentDAO.deleteEventUploadFilebyActivityInfoId( activityInfoIdList);
+										 
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								 }
 								activityLocationInfo.setUpdatedBy(userId);
 								activityLocationInfo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								activityLocationInfoDAO.save(activityLocationInfo);
@@ -21203,7 +21229,8 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 						 if(activityConductedInfo != null ){
 							 
 							 if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Conducted")){
-								if(typeIds1.contains(6l)){
+								 activityConductedInfo.setUpdatedStatus("Updated");
+								 if(typeIds1.contains(6l)){
 									 activityConductedInfo = new ActivityConductedInfo(); 
 									if(activityVO.getSelectedCnductedDate() != null && activityVO.getSelectedCnductedDate().trim().length() > 0)
 										activityConductedInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
@@ -21234,6 +21261,18 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 							 } 
 							 else  if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Not Conducted")){
 								 activityConductedInfo.setConductedDate(null);
+								 activityConductedInfo.setUpdatedStatus("Updated");
+								 try {
+									 List<Long> activityInfoIdList = new ArrayList<Long>(0);
+									 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
+									 activityInfoDocumentDAO.deleteEventUploadFilebyActivityConductedInfoId(activityInfoIdList);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							 }
+							 else  if(activityVO.getStatus() != null && activityVO.getStatus().equalsIgnoreCase("Not Updated") ){
+								  activityConductedInfo.setConductedDate(null);
+								  activityConductedInfo.setUpdatedStatus("Not Updated");
 								 try {
 									 List<Long> activityInfoIdList = new ArrayList<Long>(0);
 									 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
@@ -21243,7 +21282,8 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 								}
 							 }
 							 else if( activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Conducted") ){
-									if(typeIds1.contains(6l)){
+								 activityConductedInfo.setUpdatedStatus("Updated");	
+								 if(typeIds1.contains(6l)){
 										 activityConductedInfo = new ActivityConductedInfo(); 
 										if(activityVO.getSelectedCnductedDate() != null && activityVO.getSelectedCnductedDate().trim().length() > 0)
 											activityConductedInfo.setConductedDate(sdf.parse(activityVO.getSelectedCnductedDate() != null ? activityVO.getSelectedCnductedDate().toString():""));
@@ -21273,7 +21313,19 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 									 }*/
 								 } 
 								else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Not Conducted") ){
-									 activityConductedInfo.setConductedDate(null);
+									activityConductedInfo.setUpdatedStatus("Updated");
+									activityConductedInfo.setConductedDate(null);
+									 try {
+										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
+										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
+										 activityInfoDocumentDAO.deleteEventUploadFilebyActivityConductedInfoId(activityInfoIdList);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								 }
+								else  if(activityvo.getStatus() != null && activityvo.getStatus().equalsIgnoreCase("Not Updated") ){
+									  activityConductedInfo.setConductedDate(null);
+									  activityConductedInfo.setUpdatedStatus("Not Updated");
 									 try {
 										 List<Long> activityInfoIdList = new ArrayList<Long>(0);
 										 activityInfoIdList.add(activityvo.getActivityLocationInfoId());
@@ -21283,7 +21335,7 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 									}
 								 }
 							 
-							 activityConductedInfo.setUpdatedStatus("Updated");
+							
 							 activityConductedInfoDAO.save(activityConductedInfo);
 							 status = "success";
 						 } 
@@ -21297,5 +21349,130 @@ public String saveActivityLocationDetails(final ActivityVO activityVO,final Long
 		LOG.error("Exception Occured in saveActivityLocationDetails() method, Exception - ",e);
 	}
 	return status;
+}
+
+public List<ActivityVO> asemblyConstWiseActivitiesCount(Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId){
+	List<ActivityVO> finalList = null;
+	
+	try{    
+		 //get Constituencies.
+		 List<Long> constIds=new ArrayList<Long>(0);
+		 List<IdNameVO> constiList =getConstituenciesByActivityId(activityScopeId);
+		 if(constiList != null && constiList.size() > 0){
+			 finalList = new ArrayList<ActivityVO>(0);
+			 for(IdNameVO vo : constiList){
+				 ActivityVO conVO = new ActivityVO();
+				 conVO.setId(vo.getId());
+				 conVO.setName(vo.getName());
+				 conVO.setConductedCount(0l);
+				 conVO.setNonConductedCount(0l);
+				 conVO.setNotUpdatedCount(0l);
+				 finalList.add(conVO);
+				 constIds.add(conVO.getId());
+			 }
+			 
+			//ConductedCount
+			 List<Object[]> conductedlist = activityLocationInfoDAO.getConductedForAssemblyConstWise(activityScopeId,constIds);
+			 if(conductedlist != null && conductedlist.size()>0){
+				 for(Object[] obj:conductedlist){
+					 Long constId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					 ActivityVO convo = getMatchedConstVO(constId,finalList);
+					 if(convo != null){
+						 convo.setConductedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					 }
+				 }
+			 }
+			 
+			 //NotConductedCount
+			List<Object[]> NotConduCounts = activityLocationInfoDAO.getNotConductedForAssemblyConstWise(activityScopeId, constIds);
+			 if(NotConduCounts != null && NotConduCounts.size()>0){
+				 for(Object[] obj : NotConduCounts){
+					 Long constId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					 ActivityVO convo=getMatchedConstVO(constId,finalList);
+					 if(convo != null){
+						convo.setNonConductedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					 }
+				 }
+			 }
+			 
+			 //NotUpdatedCount
+			 List<Object[]> notUpdatedlist=activityLocationInfoDAO.getNotUpdatedCuntForAssemblyConstWise(activityScopeId, constIds);
+			 if(notUpdatedlist != null && notUpdatedlist.size()>0){
+				 for(Object[] obj : notUpdatedlist){
+					 Long constId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					 ActivityVO convo = getMatchedConstVO(constId,finalList);
+					 if(convo != null){
+						 convo.setNotUpdatedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					 }
+				 }
+			 }
+			
+		 }
+	}catch(Exception e){
+		LOG.error("Exception raised in asemblyConstWiseActivitiesCount", e);
+	}
+	return finalList;
+}
+
+public List<ActivityVO> getDistrictWiseActivitiesCount(Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId){
+	List<ActivityVO> finalList = null;
+	try{
+		 
+		List<Long> distIds = new ArrayList<Long>(0);
+		List<IdNameVO> districtList = getDistrictsByActivityId(activityScopeId);
+		 if(districtList != null && districtList.size()>0){
+			 
+			 finalList = new ArrayList<ActivityVO>(0);
+			 for(IdNameVO vo:districtList){
+				 ActivityVO distVO = new ActivityVO();
+				 distVO.setId(vo.getId());
+				 distVO.setName(vo.getName());
+				 distVO.setConductedCount(0l);
+				 distVO.setNonConductedCount(0l);
+				 distVO.setNotUpdatedCount(0l);
+				 finalList.add(distVO);
+				 distIds.add(distVO.getId());
+			 }
+			 
+			
+			 List<Object[]> conductedlist = activityLocationInfoDAO.getConductedCountForDistrict(activityScopeId,distIds);
+			 if(conductedlist != null && conductedlist.size()>0){
+				 for(Object[] obj:conductedlist){
+					 Long distId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					 ActivityVO convo = getMatchedConstVO(distId,finalList);
+					 if(convo != null){
+						 convo.setConductedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					 }
+				 }
+			 }
+			 
+			 //NotConductedCount
+			List<Object[]> NotConduCounts = activityLocationInfoDAO.getNotConductedCountForDistrict(activityScopeId, distIds);
+			 if(NotConduCounts != null && NotConduCounts.size()>0){
+				 for(Object[] obj : NotConduCounts){
+					 Long distId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					 ActivityVO convo=getMatchedConstVO(distId,finalList);
+					 if(convo != null){
+						convo.setNonConductedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					 }
+				 }
+			 }
+			 
+			 //NotUpdatedCount
+			 List<Object[]> notUpdatedlist=activityLocationInfoDAO.getNotUpdatedForDistrict(activityScopeId, distIds);
+			 if(notUpdatedlist != null && notUpdatedlist.size()>0){
+				 for(Object[] obj : notUpdatedlist){
+					 Long distId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+					 ActivityVO convo = getMatchedConstVO(distId,finalList);
+					 if(convo != null){
+						 convo.setNotUpdatedCount(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					 }
+				 }
+			 }
+		 }
+	}catch(Exception e){
+		LOG.error("Exception raised in getDistrictWiseActivitiesCount", e);
+	}
+	return finalList;
 }
 }
