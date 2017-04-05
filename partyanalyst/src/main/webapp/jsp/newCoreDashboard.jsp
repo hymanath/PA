@@ -3288,18 +3288,36 @@
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<label class="radio-inline">
-											<input checked type="radio" attr_status="category" class="cadeInsuranceCat" name="cadeInsuranceCat"/>Show Category Wise (Death & Hospital)
+											<input checked type="radio" attr_status="category" class="cadeInsuranceCat" name="cadeInsuranceCat" value="category"/>Show Category Wise (Death & Hospital)
 										</label>
 										<label class="radio-inline">
-											<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCat" name="cadeInsuranceCat"/>Show Status Wise
+											<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCat" name="cadeInsuranceCat" value="status"/>Show Status Wise
 										</label>      
 									</div>
 									<div class="panel-heading">
 										<div class="row">
-											<div class="col-md-9 col-xs-12 col-sm-9">
+											<div class="col-md-6 col-xs-12 col-sm-6">
 												<h4 class="m_top10"><span class="headingColor text-capital" id="distGraphHeadingId">andhra pradesh district wise - categories overview</span></h4>         
 											</div>
-											
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<select class="form-control" id="apCategoryId">
+													<option value=" ">ALL</option>
+													<option value="Death">Death</option>
+													<option value="Hospitalization">Hospitalization</option>
+												</select>
+											</div> 
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<select class="form-control" id="apStatusId">
+													<option value=" ">ALL</option>   
+													<option value="INTIMATIONS">INTIMATIONS</option>
+													<option value="FORWARDED">FORWARDED</option>
+													<option value="SETTLED">SETTLED</option>
+													<option value="REJECTED">REJECTED</option>
+												</select>
+											</div>
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<input type="submit" value="SUBMIT" onclick="getInsuranceData();" class="btn-primary btn-sm btn"/>
+											</div>    
 										</div>
 									</div>
 									<div class="panel-body">
@@ -3362,7 +3380,7 @@
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">     
 										<div class="row">
-											<div class="col-md-9 col-xs-12 col-sm-9">
+											<div class="col-md-12 col-xs-12 col-sm-12">  
 												<h4 class="m_top10"><span class="headingColor text-capital" id="constGraphHeadingId">andhra pradesh constituency wise - categories overview</span></h4>            
 											</div>
 											
@@ -3428,21 +3446,37 @@
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<label class="radio-inline">
-											<input checked type="radio" attr_status="category" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Category Wise (Death & Hospital)
+											<input checked type="radio" attr_status="category" value="category" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Category Wise (Death & Hospital)
 										</label>
 										<label class="radio-inline">
-											<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Status Wise
+											<input type="radio" attr_status="categoryStatus" value="categoryStatus" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Status Wise
 										</label>  
 									</div>
 									<div class="panel-heading">
 										<div class="row">
-											<div class="col-md-9 col-xs-12 col-sm-9">
+											<div class="col-md-6 col-xs-12 col-sm-6">
 												<h4 class="m_top10"><span class="headingColor text-capital">telangana district wise - categories overview</span></h4>
 											</div>
-											<div class="col-md-3 col-xs-12 col-sm-3">
-												<select class="form-control"></select>
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<select class="form-control" id="tsCategoryId">
+													<option value=" ">ALL</option>
+													<option value="Death">Death</option>
+													<option value="Hospitalization">Hospitalization</option>
+												</select>
+											</div> 
+											<div class="col-md-2 col-xs-12 col-sm-2">
+												<select class="form-control" id="tsStatusId">
+													<option value=" ">ALL</option>
+													<option value="INTIMATIONS">INTIMATIONS</option>
+													<option value="FORWARDED">FORWARDED</option>
+													<option value="SETTLED">SETTLED</option>
+													<option value="REJECTED">REJECTED</option>
+												</select>
 											</div>
-										</div>
+											<div class="col-md-2 col-xs-12 col-sm-2">  
+												<input type="submit" value="SUBMIT" onclick="getInsuranceDataForTs();" class="btn-primary btn-sm btn"/>
+											</div> 
+										</div>      
 									</div>
 									<div class="panel-body">
 										<div class="cadreInsuranceCategoryTs">
@@ -3492,12 +3526,10 @@
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
-											<div class="col-md-9 col-xs-12 col-sm-9">
+											<div class="col-md-12 col-xs-12 col-sm-12">  
 												<h4 class="m_top10"><span class="headingColor text-capital">telangana constituency wise - categories overview</span></h4>
 											</div>   
-											<div class="col-md-3 col-xs-12 col-sm-3">
-												<select class="form-control"></select>
-											</div>
+											
 										</div>
 									</div>
 									<div class="panel-body">
