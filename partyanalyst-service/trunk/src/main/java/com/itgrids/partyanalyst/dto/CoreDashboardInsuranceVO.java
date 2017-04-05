@@ -37,9 +37,9 @@ public class CoreDashboardInsuranceVO {
 	private String subject;
 	private String raisedDate;
 	private String image;
-	private List<CoreDashboardInsuranceVO> overViewList = new ArrayList<CoreDashboardInsuranceVO>();
-	private List<CoreDashboardInsuranceVO> deathList = new ArrayList<CoreDashboardInsuranceVO>();
-	private List<CoreDashboardInsuranceVO> hospitalizationList = new ArrayList<CoreDashboardInsuranceVO>();
+	private List<CoreDashboardInsuranceVO> overViewList = new ArrayList<CoreDashboardInsuranceVO>(0);
+	private List<CoreDashboardInsuranceVO> deathList = new ArrayList<CoreDashboardInsuranceVO>(0);
+	private List<CoreDashboardInsuranceVO> hospitalizationList = new ArrayList<CoreDashboardInsuranceVO>(0);
 	private Long amount = 0l;
 	private Long deathCountFilter = 0L;
 	private Long hospitalizationCountFilter = 0L;

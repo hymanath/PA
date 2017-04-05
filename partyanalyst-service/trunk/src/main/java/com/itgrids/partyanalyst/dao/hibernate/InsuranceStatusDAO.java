@@ -289,7 +289,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	public List<Object[]> getComplaintScanCopies(Long complaintId){
 		Query query = getSession().createSQLQuery(" select sc.scanned_copy_id as copyId," +
 										" sc.scanned_copy_path as path," +
-										" sc.inserted_time as insertedTime" +
+										" csc.inserted_time as insertedTime" +
 									" from complaint_scanned_copy csc,scanned_copy sc,complaint_master cm " +
 									" where csc.scanned_copy_id = sc.scanned_copy_id" +
 										" and csc.complaint_id = cm.Complaint_id" +
