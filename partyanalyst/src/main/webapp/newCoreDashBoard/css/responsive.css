@@ -138,7 +138,6 @@
 		padding-right:15px;
 	}
 	.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh{
-	{
 		font-size:10px;
 		padding:2px;
 		top:-1px;
@@ -176,8 +175,108 @@
 		padding:2px 3px;
 		width:20px;
 	}
+	.rightNavigationMenu ul
+	{
+		padding-left:0px;
+	}
+	.rightNavigationMenu ul li
+	{
+		list-style:none;
+		position:relative;
+		padding-right:7px;
+		padding-top:10px;
+		font-size:12px;
+		text-align:right;
+		cursor:pointer;
+		color:#fff;
+		text-transform:capitalize;
+	}
+	.rightNavigationMenu ul li:before
+	{
+		position:absolute;
+		right:-10px;
+		content:'';
+		display:block;
+		height:15px;
+		width:15px;
+		border-radius:50%;
+		background-color:#ECF0F1;
+		border:2px solid #D3B783;
+		top:15px;
+	}
+	.rightNavigationMenu ul li:after
+	{
+		height:100%;
+		border-right:2px solid #D3B783;
+		content:'';
+		display:block;
+		position:absolute;
+		right:-4px;
+		top:28px;
+	}
+	.rightNavigationMenu ul li.active
+	{
+		color:#ED8362
+	}
+	.rightNavigationMenu ul li.active:before
+	{
+		position:absolute;
+		right:-10px;
+		content:'';
+		display:block;
+		height:15px;
+		width:15px;
+		border-radius:50%;
+		background-color:#ED8362;
+		border:2px solid #ED8362;
+		top:15px;
+	}
+	.rightNavigationMenu ul li.active:after
+	{
+		height:100%;
+		border-right:1px solid #ED8362;
+		content:'';
+		display:block;
+		position:absolute;
+		right:-3px;
+		top:28px;
+	}
+	.rightNavigationMenu ul li:last-child:after
+	{
+		height:0%;
+	}
+	.panelBlockCollapseIcon , .panelBlockCollapseIcon:active ,.panelBlockCollapseIcon:hover
+	{
+	  color:#666 !important;
+	  display:block;
+	}
+	.panelBlockCollapseIcon:before {
+		/* symbol for "opening" panels */
+		font-family:'Glyphicons Halflings';
+		content:"\2212";
+		float: right;
+		font-size:12px;
+		margin-top:0px;
+		font-weight:400 !important;
+		margin-left:-4px;
+		color:#333;
+		border:1px solid #333;
+		padding:2px 4px;
+	}
+	.panelBlockCollapseIcon.collapsed:before {
+		/* symbol for "collapsed" panels */
+		content:"\002b";
+	}
+	.backgroundBlock
+	{
+		display:block;
+	}
 }
 @media (min-width: 500px) and (max-width:767px) {
+	.rightNavigationMenuRes
+	{
+		display:block;
+	}
 	.committesBlockUl li
 	{
 		width:100%;
@@ -219,6 +318,76 @@
 }
 /* Ipad Only STYLES START*/
 @media only screen and (device-width: 768px) {
+	.rightNavigationMenu ul
+	{
+		padding-left:0px;
+	}
+	.rightNavigationMenu ul li
+	{
+		list-style:none;
+		position:relative;
+		padding-right:7px;
+		padding-top:10px;
+		font-size:12px;
+		text-align:right;
+		cursor:pointer;
+		color:#fff;
+		text-transform:capitalize;
+	}
+	.rightNavigationMenu ul li:before
+	{
+		position:absolute;
+		right:-10px;
+		content:'';
+		display:block;
+		height:15px;
+		width:15px;
+		border-radius:50%;
+		background-color:#ECF0F1;
+		border:2px solid #D3B783;
+		top:15px;
+	}
+	.rightNavigationMenu ul li:after
+	{
+		height:100%;
+		border-right:2px solid #D3B783;
+		content:'';
+		display:block;
+		position:absolute;
+		right:-4px;
+		top:28px;
+	}
+	.rightNavigationMenu ul li.active
+	{
+		color:#ED8362
+	}
+	.rightNavigationMenu ul li.active:before
+	{
+		position:absolute;
+		right:-10px;
+		content:'';
+		display:block;
+		height:15px;
+		width:15px;
+		border-radius:50%;
+		background-color:#ED8362;
+		border:2px solid #ED8362;
+		top:15px;
+	}
+	.rightNavigationMenu ul li.active:after
+	{
+		height:100%;
+		border-right:1px solid #ED8362;
+		content:'';
+		display:block;
+		position:absolute;
+		right:-3px;
+		top:28px;
+	}
+	.rightNavigationMenu ul li:last-child:after
+	{
+		height:0%;
+	}
 	.pad_left0
 	{
 		padding-left:15px;

@@ -82,6 +82,11 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 			globalFormTourDate = datesArr[0]; 
 			glovalToTourDate = datesArr[1]; 
 		}
+		if($(".NewTourExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+			getDesignationWiseMembersDtls();
+		}
+		
 		 getToursBasicOverviewDtls();
 	 });
 	 
@@ -111,7 +116,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
     }
   }); 
   
-	$(document).on("click",".NewTourExpand",function(){
+	/* $(document).on("click",".NewTourExpand",function(){
 		$(this).attr("isExpand","true");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -196,7 +201,7 @@ var customEndToursDate = moment().format('DD/MM/YYYY');
 				$(".moreBlockEMN ,.newEmnHideCls,.dateRangePickerClsForEmn,.newsComparisonUl").hide();
 				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}
-	});
+	}); */
 	$(document).on("click",".moreNewToursBlocksIcon",function(){	
 		$(".moreNewToursBlocks,.moreNewToursBlocksDetailed").toggle(); 
 		//$(".moreNewToursBlocksDetailed").toggle(); 

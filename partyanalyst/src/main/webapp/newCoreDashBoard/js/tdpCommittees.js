@@ -1965,7 +1965,7 @@
 		$(".committeesDate").html("( "+customStartDatemMeetings+" )");
 	});
 	 
-	 $(document).on("click",".iconExpand",function(){
+	 /* $(document).on("click",".iconExpand",function(){
 			$(".dateRangePickerCls").toggleClass("hide");
 			$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 			$(".committeesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -2053,7 +2053,7 @@
 				$(".committeesHiddenBlock,.moreBlocksIcon").toggle();
 				//initialiseGraph();
 			},500); 
-		});
+		}); */
 		
 		function getCadreEnrolmentYears(){
 			 var jsObj={

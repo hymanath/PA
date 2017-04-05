@@ -60,7 +60,7 @@ $(document).ready(function(){
 		}
 });
 
-
+/* 
 $(document).on("click",".emnIconExpand",function(){
 	$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".electronicMediaBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
@@ -140,7 +140,7 @@ $(document).on("click",".emnIconExpand",function(){
 				$(".tourExpandCls ,.toursHiddenBlock,.moreToursBlocks1,.moreToursBlocksDetailed ,.comparisonBlockTours ,.toursDateRangePickerCls").hide();
 				$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}
-});
+}); */
 $(document).on("click",".moreEmnBlocksIcon",function(){
 	
 	//$(".newEmnHideCls").hide();
@@ -4308,4 +4308,4 @@ function buildEMMDetailedGovtStateWiseProgramsOverview(result)
 		var channelIds = $(this).attr("attr_channelIds");
 		
 		window.open('showElectronicBulletinsAction.action?levelId='+locationLevelIdGlb+'&temp='+locationValueArrGlb+'&state='+globalState+'&sdat='+currentFromDateEmn+'&edat='+currentToDateEmn+'&npsStr='+channelIds+'&scops='+impactScopeIds+'&orgIdStr='+orgId+'&orgType=Y&stIdx=0&edIdx=6&callFrom=dgpdwp');
-	});
+	});	

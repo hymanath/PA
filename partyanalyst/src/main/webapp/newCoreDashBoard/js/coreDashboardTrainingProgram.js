@@ -60,7 +60,7 @@ var getDocumentWidth = $(document).width();
 			 lastUPdatedTime= programList[0].lastUpdatedTime;
 	       str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 			 str+='<h4 class="text-capital " attr_program_id='+programList[i].id+'><span class="bg_49 pad_custom">'+programList[i].name+'</span>';
-			 str+='<span class="programSkillsCls" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
+			 str+='<span class="programSkillsCls"  state-level="false" expand-icon-inner="training" style="background-color:#fff;margin-left:5px;color:#555;font-size:14px;cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to expand">';
 				str+='<i class="glyphicon glyphicon-fullscreen"></i>';
 			str+='</span></h4>';  
 			str+='<table class="table tableTraining">';
@@ -597,7 +597,7 @@ function stateLevelCampDetails(){
 		}else{
 			var str = '';
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-			str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';    
+			str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" class="stateLevelTraining" expand-icon-inner="training" state-level="true" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';    
 			str+='No Data Available';
 			$("#stateLevelCampId").html(str);
 		}
@@ -610,9 +610,9 @@ function buildStateLevelCampAttendedDetails(result){
 	}      
 	var str = '';
 	str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" attr_program_id="'+programIdsStr+'" class="stateLevelTraining" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
+		str+='<h4 class="text-capital"><span class="headingColor">state level training program</span><span style="background-color:#fff;margin-left:5px;" attr_program_id="'+programIdsStr+'" class="stateLevelTraining" expand-icon-inner="training" state-level="true" attr_location="State Level Training Program"><i class="glyphicon glyphicon-fullscreen" ></i></span></h4>';
 		for(var i in result){    
-		str+='<h5 class="text-capital m_top10">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" class="stateLevelTrainingInd" attr_program_id="'+result[i].id+'" attr_location="'+result[i].name+'"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';  
+		str+='<h5 class="text-capital m_top10">'+result[i].name+'<span style="background-color:#fff;margin-left:5px;border:0px;padding:2px;" state-level="true" expand-icon-inner="training" class="stateLevelTrainingInd" attr_program_id="'+result[i].id+'" attr_location="'+result[i].name+'"><i class="glyphicon glyphicon-fullscreen"></i></span></h5>';  
 		if($(window).width() < 300)
 		{
 			str+='<div class="table-responsive">';
@@ -661,7 +661,7 @@ $(document).on("click",".liCls",function(){
 });
 
 /* Training Funcitons Start*/
-$(document).on("click",".stateLevelTrainingInd",function(){
+/* $(document).on("click",".stateLevelTrainingInd",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".stateLevelTraining,.programSkillsCls").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 	$(".trainingIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
@@ -711,8 +711,8 @@ $(document).on("click",".stateLevelTrainingInd",function(){
 		$(".trainingCampDetailed").attr("attr_program_id",$(this).attr("attr_program_id"));  
 	}
 	
-});
-$(document).on("click",".programSkillsCls",function(){
+}); */
+/* $(document).on("click",".programSkillsCls",function(){
 	$(".dateRangePickerClsForTraining").toggleClass("hide");	
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".trainingIconExpand").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
@@ -806,8 +806,8 @@ $(document).on("click",".programSkillsCls",function(){
 	 setTimeout(function(){
 		$(".trainingsHiddenBlock,.moreTrainingBlocksIcon").toggle();
 	},800); 
-});
-$(document).on("click",".trainingIconExpand",function(){
+}); */
+/* $(document).on("click",".trainingIconExpand",function(){
 	$(".dateRangePickerClsForTraining").toggleClass("hide");	
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".programSkillsCls").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
@@ -895,8 +895,8 @@ $(document).on("click",".trainingIconExpand",function(){
 	 setTimeout(function(){
 		$(".trainingsHiddenBlock,.moreTrainingBlocksIcon").toggle();
 	},800); 
-});
-$(document).on("click",".stateLevelTraining",function(){
+}); */
+/* $(document).on("click",".stateLevelTraining",function(){
 	$(".trainingIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 	$(".stateLevelTrainingInd").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 	$(this).find("i").toggleClass("glyphicon-resize-small").toggleClass("glyphicon-fullscreen");
@@ -941,7 +941,7 @@ $(document).on("click",".stateLevelTraining",function(){
 	
 	
 	
-});
+}); */
 $(document).on("click",".moreTrainingBlocksIcon",function(){
 	$(this).addClass("unExpandTrainingBlock");
 	$(".moreTrainingBlocks").toggle();

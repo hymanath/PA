@@ -602,7 +602,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     font-weight: bold;
     text-transform: uppercase;
 }
-.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh,.mainMeetingsIcon,.alertSettingBlock, #multicLocationMeetingId{
+.iconExpand, .notesIcon, .settingsIcon, .trainingIconExpand, .meetingsIconExpand, .debatesIconExpand, .stateLevelTraining, .stateLevelTrainingInd, .notesIconTraining, .newsIconExpand, .committeeMeetingsSettings, .notesIconDebates, .notesIconNews, .notesIconMeeting, .stateLevelMeetingSeeting, .specialMeetingSeeting, .stateLevelMeetingsExpand, .stateGeneralMeeting, .specialMeetings, .eventsIconExpand, .notesIconEvents, .eventsListExpandIcon, .attendaceIconExpand, .notesIconattendance, .attendanceSetIcon, .cadreExpand, .cadreNotes, .cadreSettings, .emnSetIcon, .notesIconEmn, .emnIconExpand  , .tourExpand , .alertsIconExpand,.statelevelSessionMeeting,.refreshButtonUcon,.NewTourExpand , .alertsIconRefresh,.debatesRefresh,.newsRefresh,.emnRefresh,.toursRefresh,.meetingsRefresh,.mainMeetingsIcon,.alertSettingBlock, .multicLocationMeetingCls{
     background-color: rgb(254, 203, 0);
     border: 1px solid rgb(153, 153, 153);
     border-radius: 5px;
@@ -613,11 +613,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     position: relative;
     top: -3px;
 }
-.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i , .alertsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand ,.statelevelSessionMeeting,.refreshButtonUcon i , .NewTourExpand i , .alertsIconRefresh i,.debatesRefresh i,.newsRefresh i,.emnRefresh i,.toursRefresh i,.meetingsRefresh i,.mainMeetingsIcon i,.alertSettingBlock i,#multicLocationMeetingId i{
+.iconExpand i, .notesIcon i, .settingsIcon i, .trainingIconExpand i, .meetingsIconExpand i , .alertsIconExpand i, .debatesIconExpand i, .stateLevelTraining i, .stateLevelTrainingInd i, .newsIconExpand i, .committeeMeetingsSettings i, .notesIconDebates i, .notesIconNews i, .stateLevelMeetingSeeting i, .specialMeetingSeeting i, .stateLevelMeetingsExpand i, .stateGeneralMeeting i, .specialMeetings i, .eventsIconExpand i, .notesIconEvents i, .eventsListExpandIcon i, .attendaceIconExpand i, .notesIconattendance i, .attendanceSetIcon i, .cadreExpand i, .cadreNotes i, .cadreSettings i, .emnSetIcon i, .notesIconEmn i, .emnIconExpand i  , .tourExpand ,.statelevelSessionMeeting,.refreshButtonUcon i , .NewTourExpand i , .alertsIconRefresh i,.debatesRefresh i,.newsRefresh i,.emnRefresh i,.toursRefresh i,.meetingsRefresh i,.mainMeetingsIcon i,.alertSettingBlock i, .multicLocationMeetingCls i{
     transition: all 0.2s ease-in-out 0s;
 }
 .iconExpand i:hover, .notesIcon i:hover, .settingsIcon i:hover, .trainingIconExpand i:hover, .alertsIconExpand i:hover ,  .meetingsIconExpand i:hover, .debatesIconExpand i:hover, .stateLevelTraining i:hover, .stateLevelTrainingInd i:hover, .newsIconExpand i:hover, .committeeMeetingsSettings i:hover, .notesIconDebates i:hover, .notesIconNews i:hover, .stateLevelMeetingSeeting i:hover, .specialMeetingSeeting i:hover, .stateLevelMeetingsExpand i:hover, .stateGeneralMeeting i:hover, .specialMeetings i:hover, .eventsIconExpand i:hover, .notesIconEvents i:hover, .eventsListExpandIcon i:hover, .attendaceIconExpand i:hover, .notesIconattendance i:hover, .attendanceSetIcon i:hover, .cadreExpand i:hover, .cadreNotes i:hover, .cadreSettings i:hover, .emnSetIcon i:hover, .notesIconEmn i:hover, .emnIconExpand i:hover , .tourExpand i:hover, .statelevelSessionMeeting i:hover, .refreshButtonUcon i:hover ,
-.NewTourExpand i:hover,.alertsIconRefresh i:hover,.debatesRefresh i:hover,.newsRefresh i:hover,.emnRefresh i:hover,.toursRefresh i:hover,.meetingsRefresh i:hover,.mainMeetingsIcon i:hover,.alertSettingBlock i:hover,#multicLocationMeetingId i:hover{
+.NewTourExpand i:hover,.alertsIconRefresh i:hover,.debatesRefresh i:hover,.newsRefresh i:hover,.emnRefresh i:hover,.toursRefresh i:hover,.meetingsRefresh i:hover,.mainMeetingsIcon i:hover,.alertSettingBlock i:hover, .multicLocationMeetingCls i:hover{
     transform: scale(1.4);
 }
 .text-capital {
@@ -658,7 +658,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .text-pink {
     color: rgb(194, 134, 188);
 }
-.committeesHiddenBlock, .moreBlocks, .moreBlocksIcon, .trainingsHiddenBlock, .moreTrainingBlocksIcon, .moreTrainingBlocks, .meetingsHiddenBlock, .moreMeetingsBlocksIcon, .moreMeetingsBlocks, .debatesHiddenBlock, .debatesMoreHiddenBlock, .newsHiddenBlock, .morenewsBlocksIcon, .newsHiddenMoreBlock, .eventsHiddenBlock, .moreEventsBlocks, .moreAttBlocksIcon, .attendanceBlockMore, .moreAttBlocks, .moreCadreBlock, .moreBlocksCadre, .moreBlocksCadreIcon, .moreBlockEMN, .moreEmnBlocks, .detailedPartyEmn, .detailedGovtEmn, .compGovtEmn, .compPartyEmn, .selectEmnCate , .toursHiddenBlock ,.moreMeetingsBlocksIconMulti{
+.committeesHiddenBlock, .moreBlocks, .moreBlocksIcon, .trainingsHiddenBlock, .moreTrainingBlocksIcon, .moreTrainingBlocks, .meetingsHiddenBlock, .moreMeetingsBlocksIcon, .moreMeetingsBlocks, .debatesHiddenBlock, .debatesMoreHiddenBlock, .newsHiddenBlock, .morenewsBlocksIcon, .newsHiddenMoreBlock, .eventsHiddenBlock, .moreEventsBlocks, .moreAttBlocksIcon, .attendanceBlockMore, .moreAttBlocks, .moreCadreBlock, .moreBlocksCadre, .moreBlocksCadreIcon, .moreBlockEMN, .moreEmnBlocks, .detailedPartyEmn, .detailedGovtEmn, .compGovtEmn, .compPartyEmn, .selectEmnCate , .toursHiddenBlock ,.moreMeetingsBlocksIconMulti , .moreCadreInsuranceIcon{
     display: none;
 }
 .panelNewCustom .panel-heading {
@@ -831,7 +831,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin: auto;
     width: 100%;
 }
-.moreBlocksIcon, .moreTrainingBlocksIcon, .moreMeetingsBlocksIcon, .moreDebatesBlocksIcon, .morenewsBlocksIcon, .moreTrainingCampBlocksIcon, .moreEventsBlocksIcon, .moreAttBlocksIcon, .moreBlocksCadreIcon, .moreEmnBlocksIcon ,.moreToursBlocksIcon ,.moreNewToursBlocksIcon,.moreMeetingsBlocksIconMulti{
+.moreBlocksIcon, .moreTrainingBlocksIcon, .moreMeetingsBlocksIcon, .moreDebatesBlocksIcon, .morenewsBlocksIcon, .moreTrainingCampBlocksIcon, .moreEventsBlocksIcon, .moreAttBlocksIcon, .moreBlocksCadreIcon, .moreEmnBlocksIcon ,.moreToursBlocksIcon ,.moreNewToursBlocksIcon,.moreMeetingsBlocksIconMulti,.moreCadreInsuranceIcon{
     cursor: pointer;
     font-size: 22px;
 }
@@ -1158,13 +1158,13 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     height: 25px;
     width: 25px;
 }
-.dateRangePickerCls, .dateRangePickerClsForTraining, .dateRangePickerClsForDebates, .dateRangePickerClsForNews, .dateRangePickerClsForMeetings, .dateRangePickerClsForEvents, .dateRangePickerClsForAttendance  , .dateRangePickerClsForEmn , .toursDateRangePickerCls , .hideShowNewToursDateRangeCls, .dateRangePickerClsForAlert{
+.dateRangePickerCls, .dateRangePickerClsForTraining, .dateRangePickerClsForDebates, .dateRangePickerClsForNews, .dateRangePickerClsForMeetings, .dateRangePickerClsForEvents, .dateRangePickerClsForAttendance  , .dateRangePickerClsForEmn , .toursDateRangePickerCls , .hideShowNewToursDateRangeCls , .dateRangeClsForCadre{
     margin-right: 5px;
     position: relative;
     top: -3px;
     width: 100px;
 }
-.dateRangePickerCls .form-control, .dateRangePickerClsForTraining .form-control, .dateRangePickerClsForDebates .form-control, .dateRangePickerClsForNews .form-control, .dateRangePickerClsForMeetings .form-control, .dateRangePickerClsForEvents .form-control, .dateRangePickerClsForAttendance .form-control , .dateRangePickerClsForEmn .form-control , .toursDateRangePickerCls .form-control , .hideShowNewToursDateRangeCls .form-control , .dateRangePickerClsForAlert .form-control{
+.dateRangePickerCls .form-control, .dateRangePickerClsForTraining .form-control, .dateRangePickerClsForDebates .form-control, .dateRangePickerClsForNews .form-control, .dateRangePickerClsForMeetings .form-control, .dateRangePickerClsForEvents .form-control, .dateRangePickerClsForAttendance .form-control , .dateRangePickerClsForEmn .form-control , .toursDateRangePickerCls .form-control , .hideShowNewToursDateRangeCls .form-control , .dateRangePickerClsForAlert .form-control, .dateRangeClsForCadre .form-control{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -1177,7 +1177,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 6px;
     width: 100px;
 }
-.dateRangePickerCls .input-group-addon, .dateRangePickerClsForTraining .input-group-addon, .dateRangePickerClsForDebates .input-group-addon, .dateRangePickerClsForNews .input-group-addon, .dateRangePickerClsForMeetings .input-group-addon, .dateRangePickerClsForEvents .input-group-addon, .dateRangePickerClsForAttendance .input-group-addon , .dateRangePickerClsForEmn .input-group-addon , .toursDateRangePickerCls .input-group-addon , .hideShowNewToursDateRangeCls .input-group-addon , .dateRangePickerClsForAlert .input-group-addon{
+.dateRangePickerCls .input-group-addon, .dateRangePickerClsForTraining .input-group-addon, .dateRangePickerClsForDebates .input-group-addon, .dateRangePickerClsForNews .input-group-addon, .dateRangePickerClsForMeetings .input-group-addon, .dateRangePickerClsForEvents .input-group-addon, .dateRangePickerClsForAttendance .input-group-addon , .dateRangePickerClsForEmn .input-group-addon , .toursDateRangePickerCls .input-group-addon , .hideShowNewToursDateRangeCls .input-group-addon , .dateRangePickerClsForAlert .input-group-addon, .dateRangeClsForCadre .input-group-addon{
     -moz-border-bottom-colors: none;
     -moz-border-left-colors: none;
     -moz-border-right-colors: none;
@@ -2519,6 +2519,7 @@ color: rgb(51, 122, 183);
 	cursor:pointer;
 	font-size:16px;
 	text-align:center;
+	z-index:999;
 }
 .scrollTopHtml i
 {
@@ -2532,8 +2533,8 @@ color: rgb(51, 122, 183);
 {
 	position:fixed;
 	right:10px;
-	top:120px;
-	z-index:99;
+	top:90px;
+	z-index:999;
 }
 .rightNavigationMenu ul
 {
@@ -2544,7 +2545,7 @@ color: rgb(51, 122, 183);
 	list-style:none;
 	position:relative;
 	padding-right:7px;
-	padding-top:20px;
+	padding-top:15px;
 	font-size:14px;
 	text-align:right;
 	cursor:pointer;
@@ -2562,7 +2563,7 @@ color: rgb(51, 122, 183);
 	border-radius:50%;
 	background-color:#ECF0F1;
 	border:2px solid #D3B783;
-	top:25px;
+	top:17px;
 }
 .rightNavigationMenu ul li:after
 {
@@ -2572,7 +2573,7 @@ color: rgb(51, 122, 183);
 	display:block;
 	position:absolute;
 	right:-4px;
-	top:38px;
+	top:30px;
 }
 .rightNavigationMenu ul li.active
 {
@@ -2589,7 +2590,7 @@ color: rgb(51, 122, 183);
 	border-radius:50%;
 	background-color:#ED8362;
 	border:2px solid #ED8362;
-	top:25px;
+	top:17px;
 }
 .rightNavigationMenu ul li.active:after
 {
@@ -2599,7 +2600,7 @@ color: rgb(51, 122, 183);
 	display:block;
 	position:absolute;
 	right:-3px;
-	top:38px;
+	top:30px;
 }
 .rightNavigationMenu ul li:last-child:after
 {
@@ -2694,7 +2695,65 @@ color: rgb(51, 122, 183);
 	width: 100%;
 	background-color: #E0E0E0;
 	bottom: 0px;
+}
+.rightNavigationMenuRes
+{
+	border-radius:50%;
+	border:1px solid;
+	font-size:16px;
+	padding:11px 7px;
+	background-color:#fff;
+	z-index:99999;
+	position:fixed;
+	right:20px;
+	top:20px;
+}
+.blockActive
+{
+	box-shadow:0px 0px 30px 30px rgba(0,0,0,0.4)
+}
+.backgroundBlock
+{
+	display:none;
+	position:fixed;
+	top:0px;
+	right:0px;
+	bottom:0px;
 	left:0px;
+	width:100%;
+	background-color:rgba(0,0,0,0.4);
+}
+
+.rightNavigationMenuRes .icon-bar
+{
+	display:block;
+	width:22px;
+	height:2px;
+	border-radius:1px;
+	background-color: #333;
+	margin-top: 4px;
+}
+.rightNavigationMenuRes .icon-bar:first-of-type
+{
+	margin-top: 0px;
+}
+.rightNavigationMenuRes.active .icon-bar:nth-of-type(2), .rightNavigationMenuRes:hover .icon-bar:nth-of-type(2)
+{
+	transform:rotate(40deg);
+	transition: all 0.4s ease-in-out 0s;
+	top: 2px;
+	position: relative;
+}
+.rightNavigationMenuRes.active .icon-bar:nth-of-type(3),.rightNavigationMenuRes:hover .icon-bar:nth-of-type(3)
+{
+	transform:rotate(-40deg);
+	top: -4px;
+	position: relative;
+	transition: all 0.4s ease-in-out 0s;
+}
+.rightNavigationMenuRes.active .icon-bar:nth-of-type(1) ,.rightNavigationMenuRes:hover .icon-bar:first-of-type
+{
+	display:none;
 }
 .modalImagesUl li
 {
@@ -2722,6 +2781,7 @@ color: rgb(51, 122, 183);
 .meetingsHeadingExpandIcon
 {
 	cursor:pointer;
+	left:0px;
 }
 .navTabsAlerts li , .navTabsAlerts li a
 {
@@ -2767,5 +2827,84 @@ color: rgb(51, 122, 183);
 {
 	border-right:0px;
 }
-.text_align_center thead  th{text-align:center};
-.text_align_center tbody tr td{text-align:center};
+.text_align_center thead  th{text-align:center}
+.text_align_center tbody tr td{text-align:center}
+.insuraceStatusWiseComplaints{cursor:pointer;text-decoration:underline}
+.modalImagesUl li
+{
+	background-color: #672f0a;
+    border: 2px solid;
+    color: #fff;
+    display: table-cell;
+    height: 60px;
+    margin: 0 3px !important;
+    padding: 3px;
+    text-align: center;
+    vertical-align: middle;
+}
+.modalImagesUl li img
+{
+	height:40px;
+	width:60px;
+	display:block;
+	margin:auto;
+}
+.debateModelCls table tr td:last-child
+{
+	min-width:200px;
+}
+.meetingsHeadingExpandIcon
+{
+	cursor:pointer;
+}
+.cadreInsurancePanel .panel
+{
+	border:0px;
+}
+.cadreInsurancePanel .panel-collapse
+{
+	position:relative;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow
+{
+	margin-top:0px;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow:after , .cadreInsurancePanel .panel-collapse .notesArrow:before
+{
+	left:30px;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow:after
+{
+	border-color:rgba(194, 225, 245, 0) rgba(194, 225, 245, 0) #EDEDED;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow
+{
+	border: 1px solid #c2e1f5;
+}
+.cadreInsurancePanel .panel-collapse .notesArrow:before
+{
+	border-color:rgba(194, 225, 245, 0) rgba(194, 225, 245, 0) #CCC;
+}
+.cadreInsurancePanel .panel-heading
+{
+	background-color:#EDEDED !important;
+}
+.cadreInsurancePanel .collapseDebatesIcon::before {
+	background-color:#fff;
+	border-color:#ccc;
+}
+.label-white
+{
+	background-color:#fff;
+	border-radius:10px;
+	color:#4A5863;
+	padding:4px 8px;
+}
+.cadreInsurancePanel .table th
+{
+	border-bottom:0px;
+}
+.cadreInsurancePanel .table tr:first-child td
+{
+	border-top:0px;
+}

@@ -28,12 +28,16 @@ import com.itgrids.partyanalyst.dto.ChildUserTypeVO;
 import com.itgrids.partyanalyst.dto.CommitteeBasicVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeVO;
+import com.itgrids.partyanalyst.dto.ComplaintMasterVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardInsuranceVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.HolidayListVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.InsuranceLagDaysVO;
+import com.itgrids.partyanalyst.dto.InsuranceSimpleVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
@@ -174,12 +178,78 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	 * 
 	 */
 	
+	private List<CoreDashboardInsuranceVO> coreDashboardInsurancevoList = new ArrayList<CoreDashboardInsuranceVO>();
+	private List<ComplaintMasterVO> complaintMastervoList = new ArrayList<ComplaintMasterVO>();
+	private InsuranceLagDaysVO insuranceLagDaysVO;
+	private InsuranceSimpleVO insuranceSimpleVO;
+	private ComplaintMasterVO complaintMasterVO;
+	private CoreDashboardInsuranceVO coreDashboardInsuranceVO;
 	
 	//setters And Getters
 	
 	
 	public List<List<ToursBasicVO>> getMemberList() {
 		return memberList;
+	}
+
+	public CoreDashboardInsuranceVO getCoreDashboardInsuranceVO() {
+		return coreDashboardInsuranceVO;
+	}
+
+	public void setCoreDashboardInsuranceVO(
+			CoreDashboardInsuranceVO coreDashboardInsuranceVO) {
+		this.coreDashboardInsuranceVO = coreDashboardInsuranceVO;
+	}
+
+	public ComplaintMasterVO getComplaintMasterVO() {
+		return complaintMasterVO;
+	}
+
+	public void setComplaintMasterVO(ComplaintMasterVO complaintMasterVO) {
+		this.complaintMasterVO = complaintMasterVO;
+	}
+
+	public InsuranceSimpleVO getInsuranceSimpleVO() {
+		return insuranceSimpleVO;
+	}
+
+	public void setInsuranceSimpleVO(InsuranceSimpleVO insuranceSimpleVO) {
+		this.insuranceSimpleVO = insuranceSimpleVO;
+	}
+
+	public InsuranceLagDaysVO getInsuranceLagDaysVO() {
+		return insuranceLagDaysVO;
+	}
+
+	public void setInsuranceLagDaysVO(InsuranceLagDaysVO insuranceLagDaysVO) {
+		this.insuranceLagDaysVO = insuranceLagDaysVO;
+	}
+
+	public List<ComplaintMasterVO> getComplaintMastervoList() {
+		return complaintMastervoList;
+	}
+
+	public void setComplaintMastervoList(
+			List<ComplaintMasterVO> complaintMastervoList) {
+		this.complaintMastervoList = complaintMastervoList;
+	}
+
+	public List<CoreDashboardInsuranceVO> getCoreDashboardInsurancevoList() {
+		return coreDashboardInsurancevoList;
+	}
+
+	public void setCoreDashboardInsurancevoList(
+			List<CoreDashboardInsuranceVO> coreDashboardInsurancevoList) {
+		this.coreDashboardInsurancevoList = coreDashboardInsurancevoList;
+	}
+
+	public ICoreDashboardInsuranceService getCoreDashboardInsuranceService() {
+		return coreDashboardInsuranceService;
+	}
+
+	public void setCoreDashboardInsuranceService(
+			ICoreDashboardInsuranceService coreDashboardInsuranceService) {
+		this.coreDashboardInsuranceService = coreDashboardInsuranceService;
 	}
 
 	public List<SessionVO> getSessionVOList() {
@@ -845,11 +915,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setAlertService(IAlertService alertService) {
 		this.alertService = alertService;
 	}
-   public void setCoreDashboardInsuranceService(
-			ICoreDashboardInsuranceService coreDashboardInsuranceService) {
-		this.coreDashboardInsuranceService = coreDashboardInsuranceService;
-	}
-
+   
 	//business methods
 	public String execute(){
 		try {
@@ -4083,6 +4149,52 @@ public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
 	}
 	return Action.SUCCESS;
 }
+public String getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails()
+{
+	try {
+		
+		HttpSession session = request.getSession();
+		RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+		jObj = new JSONObject(getTask());
+		
+		String fromDateStr = jObj.getString("fromDateStr");	
+		String toDateStr = jObj.getString("toDateStr");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long cadreYearId = jObj.getLong("cadreYearId");
+		
+		coreDashboardInsurancevoList = coreDashboardInsuranceService.getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails(activityMemberId, cadreYearId, stateId, fromDateStr, toDateStr);
+		
+	} catch (Exception e) {
+		LOG.error("Exception occured in getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails ",e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getInsuraceStatusWiseComplaintsDetails()
+{
+	try {
+		
+		HttpSession session = request.getSession();
+		RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+		jObj = new JSONObject(getTask());
+		
+		String fromDateStr = jObj.getString("fromDateStr");	
+		String toDateStr = jObj.getString("toDateStr");
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		Long cadreYearId = jObj.getLong("cadreYearId");
+		String status = jObj.getString("statusStr");	
+		String issueType = jObj.getString("issueType");
+		Long companyId = jObj.getLong("companyId");
+		
+		complaintMastervoList = coreDashboardInsuranceService.getInsuraceStatusWiseComplaintsDetails(activityMemberId, cadreYearId, stateId, fromDateStr, toDateStr, status, companyId, issueType);
+		
+	} catch (Exception e) {
+		LOG.error("Exception occured in getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails ",e);
+	}
+	return Action.SUCCESS;
+}
 
 	public String getUserTypeWiseTotalCadreInsuranceComplainctCnt(){
 		  try{
@@ -4171,4 +4283,149 @@ public String getPartyLevelIdWiseMeetingsAttendanceDetails(){
 	 return Action.SUCCESS;
 	}
 	
+	public String getLagDaysInsuranceComplaintsCounts()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			//String fromDateStr = jObj.getString("fromDateStr");	
+			//String toDateStr = jObj.getString("toDateStr");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			Long cadreYearId = jObj.getLong("cadreYearId");
+			String status = jObj.getString("statusStr");	
+			String issueType = jObj.getString("issueType");
+			Long companyId = jObj.getLong("companyId");
+			
+			insuranceLagDaysVO = coreDashboardInsuranceService.getLagDaysInsuranceComplaintsCounts(activityMemberId, cadreYearId, stateId, status, companyId, issueType);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getLagDaysInsuranceComplaintsCounts ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getStatusTrackingDetailsOfInsuranceByComplaint()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			//String fromDateStr = jObj.getString("fromDateStr");	
+			//String toDateStr = jObj.getString("toDateStr");
+			Long complaintId = jObj.getLong("complaintId");
+			/*Long stateId = jObj.getLong("stateId");
+			Long cadreYearId = jObj.getLong("cadreYearId");
+			String status = jObj.getString("statusStr");	
+			String issueType = jObj.getString("issueType");
+			Long companyId = jObj.getLong("companyId");*/
+			
+			insuranceSimpleVO = coreDashboardInsuranceService.getStatusTrackingDetailsOfInsuranceByComplaint(complaintId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getStatusTrackingDetailsOfInsuranceByComplaint ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getComplaintScanCopyDetails()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			//String fromDateStr = jObj.getString("fromDateStr");	
+			//String toDateStr = jObj.getString("toDateStr");
+			Long complaintId = jObj.getLong("complaintId");
+			/*Long stateId = jObj.getLong("stateId");
+			Long cadreYearId = jObj.getLong("cadreYearId");
+			String status = jObj.getString("statusStr");	
+			String issueType = jObj.getString("issueType");
+			Long companyId = jObj.getLong("companyId");*/
+			
+			complaintMasterVO = coreDashboardInsuranceService.getComplaintScanCopyDetails(complaintId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getComplaintScanCopyDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRemarksByComplaint()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			//String fromDateStr = jObj.getString("fromDateStr");	
+			//String toDateStr = jObj.getString("toDateStr");
+			Long complaintId = jObj.getLong("complaintId");
+			/*Long stateId = jObj.getLong("stateId");
+			Long cadreYearId = jObj.getLong("cadreYearId");
+			String status = jObj.getString("statusStr");	
+			String issueType = jObj.getString("issueType");
+			Long companyId = jObj.getLong("companyId");*/
+			
+			coreDashboardInsuranceVO = coreDashboardInsuranceService.getRemarksByComplaint(complaintId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getRemarksByComplaint ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getComplaintResponsesByComplaint()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			//String fromDateStr = jObj.getString("fromDateStr");	
+			//String toDateStr = jObj.getString("toDateStr");
+			Long complaintId = jObj.getLong("complaintId");
+			/*Long stateId = jObj.getLong("stateId");
+			Long cadreYearId = jObj.getLong("cadreYearId");
+			String status = jObj.getString("statusStr");	
+			String issueType = jObj.getString("issueType");
+			Long companyId = jObj.getLong("companyId");*/
+			
+			coreDashboardInsuranceVO = coreDashboardInsuranceService.getComplaintResponsesByComplaint(complaintId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getComplaintResponsesByComplaint ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getInsuranceCompanyWiseOverviewAndStatusDetails()
+	{
+		try {
+			
+			HttpSession session = request.getSession();
+			RegistrationVO  user= (RegistrationVO) session.getAttribute("USER");
+			jObj = new JSONObject(getTask());
+			
+			String fromDateStr = jObj.getString("fromDateStr");	
+			String toDateStr = jObj.getString("toDateStr");
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long cadreYearId = jObj.getLong("cadreYearId");
+			
+			coreDashboardInsurancevoList = coreDashboardInsuranceService.getInsuranceCompanyWiseOverviewAndStatusDetails(activityMemberId, cadreYearId, fromDateStr, toDateStr);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getInsuranceCompanyWiseOverviewAndStatusDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

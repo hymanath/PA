@@ -16087,7 +16087,7 @@
 				<param name="root">partyMeetingDataVOList</param>     
 			</result>
 		</action>
-	<action name="getMultiLocationWiseMeetingGroupsDataAction" class="coreDashboardAction" method="getMultiLocationWiseMeetingGroupsData">
+		<action name="getMultiLocationWiseMeetingGroupsDataAction" class="coreDashboardAction" method="getMultiLocationWiseMeetingGroupsData">
 			<result type="json" name="success">
 				<param name="root">meetingVO</param>     
 			</result>
@@ -16097,7 +16097,7 @@
 				<param name="root">meetingBasicDetailsVO</param>     
 			</result>
 		</action>
-
+		
 		<action name="getPartyLevelIdWiseMeetingsAttendanceDetails" class="coreDashboardAction" method="getPartyLevelIdWiseMeetingsAttendanceDetails">
 			<result type="json" name="success">
 				<param name="root">idNameVO</param>     
@@ -16242,6 +16242,16 @@
 				<param name="root">resultStatus</param>
 			</result>
 	    </action>
+	    <action name="getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetailsAction" class="coreDashboardAction" method="getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails">
+			<result type="json" name="success">
+				<param name="root">coreDashboardInsurancevoList</param>     
+			</result>
+		</action>
+		<action name="getInsuraceStatusWiseComplaintsDetailsAction" class="coreDashboardAction" method="getInsuraceStatusWiseComplaintsDetails">
+			<result type="json" name="success">
+				<param name="root">complaintMastervoList</param>     
+			</result>
+		</action>
 		<action name="getCustomReportProgramAction" class="customReportAction" method="getCustomReportProgram">
 		    <result type="json" name="success">		   
 			    <param name="root">customReportVOList</param>
@@ -16408,5 +16418,36 @@
 				<param name="root">status</param>
 			</result>
 	    </action>     
+		
+		<action name="getLagDaysInsuranceComplaintsCountsAction" class="coreDashboardAction" method="getLagDaysInsuranceComplaintsCounts">
+			<result type="json" name="success">
+	   			<param name="root">insuranceLagDaysVO</param>
+	   		</result>
+		 </action>
+		 <action name="getStatusTrackingDetailsOfInsuranceByComplaintAction" class="coreDashboardAction" method="getStatusTrackingDetailsOfInsuranceByComplaint">
+			<result type="json" name="success">
+	   			<param name="root">insuranceSimpleVO</param>
+	   		</result>
+		 </action>
+		 <action name="getComplaintScanCopyDetailsAction" class="coreDashboardAction" method="getComplaintScanCopyDetails">
+			<result type="json" name="success">
+	   			<param name="root">complaintMasterVO</param>
+	   		</result>
+		 </action>
+		 <action name="getRemarksByComplaintAction" class="coreDashboardAction" method="getRemarksByComplaint">
+			<result type="json" name="success">
+	   			<param name="root">coreDashboardInsuranceVO</param>
+	   		</result>
+		 </action>
+		 <action name="getComplaintResponsesByComplaintAction" class="coreDashboardAction" method="getComplaintResponsesByComplaint">
+			<result type="json" name="success">
+	   			<param name="root">coreDashboardInsuranceVO</param>
+	   		</result>
+		 </action>
+		 <action name="getInsuranceCompanyWiseOverviewAndStatusDetailsAction" class="coreDashboardAction" method="getInsuranceCompanyWiseOverviewAndStatusDetails">
+			<result type="json" name="success">
+	   			<param name="root">coreDashboardInsurancevoList</param>
+	   		</result>
+		 </action>
  </package>
 </struts>

@@ -35,7 +35,7 @@
       <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <button type="button" class="navbar-toggle collapsed hidden-xs" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -48,19 +48,9 @@
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse hidden-xs" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
           	<li><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i><span class="birthdayCount" style="top:3px;left:31px"> <b> ${sessionScope.birthDayCount} </b></span></a></li>
-            <li><a href="#"><i class="glyphicon glyphicon-bell"></i></a></li>
-            <li class="dropdown profileDropDown">
-              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="dist/coreDashboard/img/logo.png" class="profileImage"/> <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">My Profile</a></li>
-                <li><a href="#">Change Password</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Sign Out</a></li>
-              </ul>
-            </li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
@@ -110,20 +100,27 @@
         </div>
     </div>
 </header>
-<div class="rightNavigationMenu" style="display:none">
-	<ul>
-		<li class="active">Alerts</li>
-		<li>debates</li>
-		<li>Print Media</li>
-		<li>electronic media</li>
-		<li>Tours</li>
-		<li>meetings</li>
-		<li>cadre reg</li>
-		<li>committees</li>
-		<li>events & activities</li>
-		<li>attendance</li>
-		<li>training</li>
+<div class="rightNavigationMenu">
+	<div class="backgroundBlock hidden-xs"></div>
+	<ul class="hidden-xs">
+		<li expand-icon="alerts" right-nav="true">Alerts</li>
+		<li expand-icon="debates" right-nav="true">debates</li>
+		<li expand-icon="news" right-nav="true">News - Print Media</li>
+		<li expand-icon="electronic" right-nav="true">News - electronic media</li>
+		<li expand-icon="tours" right-nav="true">Tours</li>
+		<li expand-icon="meetings" right-nav="true">meetings</li>
+		<li expand-icon="cadre" right-nav="true">membership</li>
+		<li expand-icon="committees" right-nav="true">committees</li>
+		<li expand-icon="events" right-nav="true">events & activities</li>
+		<li expand-icon="attendance" right-nav="true">emp attendance</li>
+		<li expand-icon="training" right-nav="true">training</li>
+		<li expand-icon="cadreInsurance" right-nav="true">Insurance</li>
 	</ul>
+	<button class="rightNavigationMenuRes visible-xs">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</button>
 </div>
 <div class="scrollTopHtml hide">
 	<i class="glyphicon glyphicon-chevron-up"></i>
@@ -151,27 +148,27 @@
 
 	<div class="row">
 		<!-- Alerts Start -->
-	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock">
+	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock" expand-block="alerts">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-7 col-sm-7 col-xs-12" style="padding-right:0px">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="alerts">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
 								Alerts <small class="text-muted"> - <span id="alertDateHeadingId">  </span></small>
 							</h4>
 						</div>
-						<div class="col-md-5 col-sm-5 col-xs-12" style="padding-left: 0px; padding-right: 0px;">
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="alerts">
 							<span class="alertSettingBlock pull-right">
 							 <i title="" data-placement="top" data-toggle="tooltip" class="fa fa-gears" data-original-title="Settings"></i>
 							</span>
-							<span class="alertsIconExpand pull-right">
+							<span class="alertsIconExpand pull-right" expand-icon="alerts">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
 							<span class="alertsIconRefresh pull-right">
 								<i class="glyphicon glyphicon-refresh"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForAlert hide" style="width:200px;">
+							<span class="input-group pull-right dateRangePickerClsForAlert hide" expand-block-date="alerts" style="width:200px;">
 								<input type="text" id="dateRangeIdForAlert" style="width:180px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -181,13 +178,15 @@
 						</div>     
 					</div>
 					<div class="basicAlertBlockDropDown documentCloseClass" style="z-index:999;margin-top: -3px;" >
-					<i class="glyphicon glyphicon-remove basicAlertSetClose pull-right" style="cursor:pointer;"></i>
+						<i class="glyphicon glyphicon-remove basicAlertSetClose pull-right" style="cursor:pointer;"></i>
 						<div class="row">
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_right0 m_top20">
 							  <ul class="nav nav-tabs navTabsSettings" role="tablist">
 								<li role="presentation" class="text-capital active"><a href="#impactScope" aria-controls="impactScope" role="tab" data-toggle="tab">Impact Scope </a></li>
 								<li role="presentation"   class="text-capital"><a href="#alertStatus" aria-controls="alertStatus" role="tab" data-toggle="tab">Alert Status</a></li>
 							  </ul>
+								<button type="button" class="btn btn-success getAlertDetailsCls" onClick="getAlertDtlsBasedOnSelection('click');">Get Details</button>
+							  </div>
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
 							  <div class="tab-content navTabsSettingsContent">
@@ -262,7 +261,7 @@
 							  </div>
 							</div>
 						</div>
-					</div>
+					
 				</div>
 				<div class="panel-body">
 				    
@@ -270,17 +269,17 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 								<h6 id="lastAlertUpdatedTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock">
+						<div class="col-md-12 col-xs-12 col-sm-12 alertsBlock" expand-block-inner="alerts">
 							<h4><span class="headingColor text-capital">overall alerts</span></h4>
 							<div id="alertOverview" class="m_top10"></div>
 							<div id="alertOverviewDetails" class="m_top10"></div>
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 alertLocationDiv m_top10" style="display:none;">
+						<div class="col-md-6 col-xs-12 col-sm-12 alertLocationDiv m_top10"  expand-block-right="alerts" style="display:none;">
 							<h4><span class="headingColor text-capital">Impact Scope Level</span></h4>
 							<div id="locationWiseAlertDivId" class="row"></div>
 						</div>    
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" style="display:none;">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10 districtAltCtnCls" expand-block-right="alerts" style="display:none;">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<div class="row">
@@ -480,7 +479,7 @@
 								</div>
 							</div>
 						</div> 
-						<div class="col-md-12 col-xs-12 col-sm-12  alertComparisonblock" style="display:none;">
+						<div class="col-md-12 col-xs-12 col-sm-12  alertComparisonblock" expand-block-right="alerts" style="display:none;">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -512,30 +511,30 @@
 			</div>
 	 <!--Alerts End -->
 	 <!-- DEBATES PROGRAM BLOCK -->
-			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock">
+			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock" expand-block="debates">
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-7 debatesHead">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="debates">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/debates.png" class="iconClass"/>
 									debates - <small class="text-muted debatesDate">today</small>
 								</h4>
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-5 debatesHead1">
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="debates">
 								<span class="settingsIcon pull-right">
 								   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								 </span>
 								<span class="notesIconDebates pull-right">
 									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForDebates(3);"></i>
 								</span>
-								<span class="debatesIconExpand pull-right">
+								<span class="debatesIconExpand pull-right" expand-icon="debates">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
 								<span class="debatesRefresh pull-right">
 								   <i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								</span>
-								<span class="input-group pull-right dateRangePickerClsForDebates hide" style="width:200px;">
+								<span class="input-group pull-right dateRangePickerClsForDebates hide" expand-block-date="debates" style="width:200px;">
 									<input type="text" id="dateRangeIdForDebates" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
@@ -544,7 +543,7 @@
 								
 							</div>
 						</div>
-					   <div class="notesDropDown notesArrow " >
+					   <div class="notesDropDown notesArrow">
 							<h4 class="text-capital">notes
 								<span class="pull-right">
 									<i class="glyphicon glyphicon-list-alt"></i>
@@ -564,14 +563,14 @@
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<h5 id="lastUpdatedDebateId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right"></h5>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 debatesBlock" expand-block-inner="debates">
 								
 								
 								<div class="row">
 									<div id="partyWiseTotalDebateDetails"></div>
 								</div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock">
+							<div class="col-md-6 col-xs-12 col-sm-12 debatesHiddenBlock" expand-block-right="debates">
 								<div class="row">
 									<div class="col-md-6 col-xs-12 col-sm-6 m_top10">
 										<h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
@@ -590,7 +589,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row debatesMoreHiddenBlock">
+						<div class="row debatesMoreHiddenBlock" expand-block-more="debates">
 							<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 								<div class="panel-group" id="debatesCollapse" role="tablist" aria-multiselectable="true">
 									<div class="panel panel-default panelNew">
@@ -783,31 +782,31 @@
 		</div>
 		<div class="row">
 	 		<!--  NEWS BLOCK START-->
-			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock">
+			<div class="col-md-6 col-xs-12 col-sm-12 newsBlock" expand-block="news">
 				<div class="panel panel-default panelNewCustom panel2">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12 newsHead">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="news">
 								<h4 class="panel-title text-capital" style="width:440px;">    
 									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
 									Print Media News - <small class="text-muted" id="currentViewing"></small>  
 								</h4>  
 								
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12 newsHead1 m_XsTop10">
+							<div class="col-md-3 col-sm-3 col-xs-12 m_XsTop10" expand-block-heading1="news">
 								<span class="settingsIcon settingsIconNews pull-right">
 									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								</span>
 								<span class="notesIconNews pull-right">
 									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForNews(5);"></i>
 								</span>   
-								<span class="newsIconExpand pull-right">
+								<span class="newsIconExpand pull-right" expand-icon="news">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
 								<span class="newsRefresh pull-right">
 									<i class="glyphicon glyphicon-refresh"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 								</span>
-								<span class="input-group pull-right dateRangePickerClsForNews hide" style="width:200px;">
+								<span class="input-group pull-right dateRangePickerClsForNews hide" expand-block-date="news" style="width:200px;">
 									<input type="text" id="dateRangeIdForNews" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
@@ -921,191 +920,8 @@
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<h5 class="updatedDate pull-right" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" id="lastUpdatedId"></h5>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 newsBlock" expand-block-inner="news">
 								<div id="newsBlockMainId"></div>
-								<!--<h4 class="text-capital"><span class="headingColor" style="margin-right:5px"><img src="newCoreDashBoard/img/TDP.png" alt="tdp icon" class="newsIcon"/>Telugu Desam Party</span><div class="spinner" id="spinnerStatic" style="margin-top: 0px; margin-bottom: 0px;width:20px;height:20px;display:none"><div class="dot1"></div><div class="dot2"></div></div></h4>
-								<div class="row">
-									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
-										<table class="table table-condensed tableNews bg_ED">
-											<tr>
-												<td>
-													<p class="text-capital responsiveFont">Main Edition</p>
-													<p id="tdpMainTotal">0</p>
-												</td>
-												<td>
-													<p class="text-capital text-muted responsiveFont">Positive</p>
-													<span id="tdpMainPositive">0</span><small id="tdpMainPositivePercent" class="text-success"> 0%</small>
-												</td>
-												<td>
-													<p class="text-capital text-muted responsiveFont">Negative</p>
-													<span id="tdpMainNegative">0</span><small id="tdpMainNegativePercent" class="text-danger"> 0%</small>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
-										<table class="table table-condensed tableNews bg_ED">
-											<tr>
-												<td>
-													<p class="text-capital">Dist edition</p>
-													<p id="tdpDistTotal">0</p>
-												</td>
-												<td>
-													<p class="text-capital text-muted">Positive</p>
-													<span id="tdpDistPositive">0</span><small class="text-success" id="tdpDistPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<p class="text-capital text-muted">Negative</p>
-													<span id="tdpDistNegative">0</span><small class="text-danger" id="tdpDistNegativePercent"> 0%</small>
-												</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/opp.png" style="width:25px;" alt="tdp icon" class="debatesPartyIcon"/>Opposition Parties</span></h4>
-								<div class="row">
-									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
-										<table class="table table-condensed tableNews ">
-											<tr class="bg_ED">
-												<td>
-													<p class="text-capital">Main Edition</p>
-													<p id="oppMainTotal">0</p>
-												</td>
-												<td>
-													<p class="text-capital text-muted">Positive</p>
-													<span id="oppPositiveTotal">0</span><small class="text-success" id="oppPositiveTotalPercent"> 0%</small>
-												</td>
-												<td>
-													<p class="text-capital text-muted">Negative</p>
-													<span id="oppNegativeTotal">0</span><small class="text-danger" id="oppNegativeTotalPercent"> 0%</small>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcMainTotal">0</span>
-												</td>
-												<td>
-													<span id="ysrcMainPositive">0</span><small class="text-success" id="ysrcMainPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<span id="ysrcMainNegative">0</span><small class="text-danger" id="ysrcMainNegativePercent"> 0%</small>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incMainTotal">0</span>
-												</td>
-												<td>
-													<span id="incMainPositive">0</span><small class="text-success" id="incMainPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<span id="incMainNegative">0</span><small class="text-danger" id="incMainNegativePercent"> 0%</small>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpMainTotal">0</span>
-												</td>
-												<td>
-													<span id="bjpMainPositive">0</span><small class="text-success" id="bjpMainPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<span id="bjpMainNegative">0</span><small class="text-danger" id="bjpMainNegativePercent"> 0%</small>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
-										<table class="table table-condensed tableNews ">
-											<tr class="bg_ED">
-												<td>
-													<p class="text-capital">Dist Edition</p>
-													<p id="oppDistTotal">0</p>
-												</td>
-												<td>
-													<p class="text-capital text-muted">Positive</p>
-													<span id="oppDistPositive">0</span><small class="text-success" id="oppDistPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<p class="text-capital text-muted">Negative</p>
-													<span id="oppDistNegative">0</span><small class="text-danger" id="oppDistNegativePercent"> 0%</small>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="newCoreDashBoard/img/YSRC.png" alt="cong logo" class="debatesPartyIcon"/><span id="ysrcDistTotal">0</span>
-												</td>
-												<td>
-													<span id="ysrcDistPositive">0</span><small class="text-success" id="ysrcDistPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<span id="ysrcDistNegative">0</span><small class="text-danger" id="ysrcDistNegativePercent"> 0%</small>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="newCoreDashBoard/img/INC.png" alt="cong logo" class="debatesPartyIcon"/><span id="incDistTotal">0</span>
-												</td>
-												<td>
-													<span id="incDistPositive">0</span><small class="text-success" id="incDistPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<span id="incDistNegative">0</span><small class="text-danger" id="incDistNegativePercent"> 0%</small>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<img src="newCoreDashBoard/img/BJP.png" alt="cong logo" class="debatesPartyIcon"/><span id="bjpDistTotal">0</span>
-												</td>
-												<td>
-													<span id="bjpDistPositive">0</span><small class="text-success" id="bjpDistPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<span id="bjpDistNegative">0</span><small class="text-danger" id="bjpDistNegativePercent"> 0%</small>
-												</td>
-											</tr>
-										</table>
-									</div>
-								</div>
-								<h4 class="text-capital m_top10"><span class="headingColor"><img src="newCoreDashBoard/img/GOVT.png" style="width:25px;" alt="government icon" class="newsIcon"/>Government</span></h4>
-								<div class="row">
-									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 ">
-										<table class="table table-condensed tableNews bg_ED">
-											<tr>
-												<td>
-													<p class="text-capital">Main Edition</p>
-													<p id="govtMainTotal">0</p>
-												</td>
-												<td>
-													<p class="text-capital text-muted">Positive</p>
-													<span id="govtMainPositive">0</span><small class="text-success" id="govtMainPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<p class="text-capital text-muted">Negative</p>
-													<span id="govtMainNegative">0</span><small class="text-danger" id="govtMainNegativePercent"> 0%</small>
-												</td>
-											</tr>
-										</table>
-									</div>
-									<div class="col-md-6 col-xs-12 col-sm-12 m_top10 pad_left0">
-										<table class="table table-condensed tableNews bg_ED">
-											<tr>
-												<td>
-													<p class="text-capital">Dist Edition</p>
-													<p id="govtDistTotal">0</p>
-												</td>
-												<td>
-													<p class="text-capital text-muted">positive</p>
-													<span id="govtDistPositive">0</span><small class="text-success" id="govtDistPositivePercent"> 0%</small>
-												</td>
-												<td>
-													<p class="text-capital text-muted">negative</p>
-													<span id="govtDistNegative">0</span><small class="text-danger" id="govtDistNegativePercent"> 0%</small>
-												</td>
-											</tr>
-										</table>
-									</div>
-								</div>-->
 								<div class="editionWiseBlock" style="display:none;">
 								<h4 class="text-capital m_top10"><span class="headingColor" style="margin-right:5px">Edition Wise Unique Counts</span></h4>
 								<div class="row" id="PaperWiseBlockInDivId"></div>
@@ -1122,7 +938,7 @@
 							
 							</div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock">
+							<div class="col-md-6 col-xs-12 col-sm-12 newsHiddenBlock" expand-block-right="news">
 								<div class="row">
 									<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-6 col-sm-offset-6">
 										<ul class="activeUlCls list-inline pull-right">
@@ -1137,9 +953,9 @@
 								
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12">
-								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
+								<i data-placement="top" data-toggle="tooltip" expand-block-right="news" class="glyphicon glyphicon-option-horizontal pull-right morenewsBlocksIcon" title="Click here for more"></i>
 							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 newsHiddenMoreBlock" expand-block-more="news">
 								<div class="row">
 									<div class="col-md-12 col-xs-12 col-sm-12">
 										<ul class="newsComparisonUl list-inline" style="margin-right: 12px !important;">
@@ -1496,30 +1312,30 @@
 			</div>
 			<!-- NEWS BLOCK END-->
 			<!-- Electronic Media Start -->
-		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock">
+		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock" expand-block="electronic">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12 emnHead">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="electronic">
 							<h4 class="panel-title text-capital" style="width: 470px;">
 								<img src="newCoreDashBoard/img/electronicMediaIcon.png" class="iconClass">
 								electronic media news-<small id="emnHeadDate" class="text-muted">TODAY (28-10-2016)</small>
 							</h4>    
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12 emnHead1 m_XsTop10" style="padding-left: 0px; padding-right: 0px;">
+						<div class="col-md-3 col-sm-3 col-xs-12 m_XsTop10" expand-block-heading1="electronic">
 							<span class="emnSetIcon pull-right">
 								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 							</span>
 							<span class="notesIconEmn pull-right">
 								<i class="glyphicon glyphicon-list-alt" data-toggle="tooltip" data-placement="top" title="" onclick="displayDashboardCommentsForAttendance(7);" data-original-title="Notes"></i>
 							</span>
-							<span class="emnIconExpand pull-right">
+							<span class="emnIconExpand pull-right" expand-icon="electronic">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
 							<span class="emnRefresh pull-right">
 								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForEmn hide" style="width:200px;">
+							<span class="input-group pull-right dateRangePickerClsForEmn hide" expand-block-date="electronic" style="width:200px;">
 								<input id="dateRangeIdForEmn" style="width:180px" class="form-control" type="text">
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -1616,14 +1432,14 @@
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<h6 id="lastUpdatedTimeElecId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 electronicMediaBlock">
+						<div class="col-md-12 col-xs-12 col-sm-12 electronicMediaBlock" expand-block-inner="electronic">
 							<div class="row">
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div id="electronicMediaChannelCountId"></div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 moreBlockEMN" style="display:none;">
+						<div class="col-md-6 col-xs-12 col-sm-12 moreBlockEMN" expand-block-right="electronic" style="display:none;">
 							<div class="row">
 								<div class="col-md-7 col-xs-12 col-sm-7">
 									<h4 class="panel-title">
@@ -1649,10 +1465,10 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-12 col-md-12 moreBlockEMN">
+						<div class="col-xs-12 col-sm-12 col-md-12 moreBlockEMN" expand-block-right="electronic">
 							<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreEmnBlocksIcon showHideEmn" title="Click here for more" style="display: inline;"></i>
 						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 selectEmnCate">
+						<div class="col-md-12 col-xs-12 col-sm-12 selectEmnCate" expand-block-more="electronic">
 							<ul class="newsComparisonUl list-inline">
 								<li class="text-capital newsComparisonHeading">Comparison</li>
 								<li class="text-capital a viewsLiClassEmn" id="comparisonPartyLiIdEmn" attr_div_id="comparisonPartyMainDivId">Party</li>
@@ -1666,7 +1482,7 @@
 							</ul>
 						</div>
 					</div>
-					<div class="row m_top20 detailedPartyEmn newEmnHideCls">
+					<div class="row m_top20 detailedPartyEmn newEmnHideCls"  expand-block-more="electronic">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading">
@@ -1708,7 +1524,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row m_top20 detailedGovtEmn newEmnHideCls">
+					<div class="row m_top20 detailedGovtEmn newEmnHideCls" expand-block-more="electronic">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading">
@@ -1733,7 +1549,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row m_top20 compPartyEmn newEmnHideCls">
+					<div class="row m_top20 compPartyEmn newEmnHideCls" expand-block-more="electronic">
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default panelNew">
 								<div class="panel-body">
@@ -1748,7 +1564,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="row m_top20 compGovtEmn newEmnHideCls" >
+					<div class="row m_top20 compGovtEmn newEmnHideCls" expand-block-more="electronic" >
 						<div class="col-md-12 col-xs-12 col-sm-12">
 							<div class="panel panel-default panelNew">
 								<div class="panel-body">
@@ -1772,131 +1588,22 @@
 	<div class="row">
 		
 	<!-- TOURS START -->
-	        <!-- Tour Old Code start -->
-			<!--<div class="col-md-6 col-xs-12 col-sm-12 toursBlock">
-				<div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-8 col-sm-8 col-xs-8">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
-									Tours - <small class="text-muted" id="toursHeadingId"> This Month() </small>
-								</h4>
-							</div>
-							<div class="col-md-4 col-sm-4 col-xs-4">
-								<span class="cadreSettings pull-right">
-									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-								</span>
-								<span class="cadreNotes pull-right">
-									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes"></i>
-								</span>
-								 <span class="tourExpand pull-right">  
-									<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-								</span>
-								<span class="input-group pull-right toursDateRangePickerCls hideShowToursDateRangeCls" style="width:200px;display:none;">
-									<input type="text" id="tourDateRangePickerId" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>  
-						</div>        
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 toursBlock">
-								<div class="row">
-									<div id="tourOverviewDivId"></div>
-								</div>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 tourExpandCls" style="display:none;">
-								<div class="row">
-									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
-										<ul class="activeUlCls list-inline ">
-											<li class="toursCls active" attr_value="strong">top 5 strong</li>
-											<li class="toursCls" attr_value="poor">last 5 poor</li>
-										</ul>
-									</div>
-									<div id="userTypeWiseTopFiveStrongAndPoorToursMemsDivId"></div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 toursHiddenBlock">
-								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreToursBlocksIcon" title="Click here for more"></i>
-							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreToursBlocks1" style="display:none;">
-								<ul class="list-inline pull-right activeUlCls">
-									<li class="active toursDetailedBlock">Detailed</li>
-									<li class="toursComparisionBlock">Comparison</li>
-								</ul>
-							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreToursBlocksDetailed" style="display:none">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-8 col-xs-12 col-sm-6">
-												<span class="headingColor text-capitalize">District Wise Average Tours Performers</span>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div id="districtWiseLeaderDiv"></div>
-									</div>
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockTours m_top10" style="display:none">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="designationListForTourId"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">    
-												 <div id="totalOverviewOfDesigId"> </div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">    
-												 <div id="childToursMemberDivId"> </div>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">    
-												 <div id="directChildMemberForToursDivId"> </div>
-											</div>  
-										</div>
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">    
-												 <div id="topPoorLocationsToursDivId"> </div>
-											</div>     
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>-->
-			<!-- end -->
-			  <!-- tour New Jsp Code -->
-					<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock">
+	        <!-- tour New Jsp Code -->
+					<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="tours">
 						<div class="panel panel-default panelNewCustom">
 							<div class="panel-heading">
 								<div class="row">
-									<div class="col-md-8 col-sm-8 col-xs-7">
+									<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="tours">
 										<h4 class="panel-title text-capital">
 											<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
 											TOURS <small class="text-muted"><span id="toursNewHeadingId">  </span></small>
 										</h4>
 									</div>
-									<div class="col-md-4 col-sm-4 col-xs-5">
-										<span class="NewTourExpand pull-right">
+									<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="tours">
+										<span class="NewTourExpand pull-right" expand-icon="tours">
 											<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
 										</span>
-										<span class="input-group pull-right hideShowNewToursDateRangeCls" style="width:200px;display:none;">
+										<span class="input-group pull-right hideShowNewToursDateRangeCls hide" expand-block-date="tours" style="width:200px;">
 												<input type="text" id="tourNewDateRangePickerId" style="width:180px" class="form-control" />
 												<span class="input-group-addon">
 													<i class="glyphicon glyphicon-calendar"></i>
@@ -1910,12 +1617,12 @@
 							</div>
 							<div class="panel-body">
 							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock">
+								<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock" expand-block-inner="tours">
 									<div class="row">
 										<div id="tourOverviewNewDivId"></div>
 									</div>
 								</div>
-								<div class="col-md-6 col-xs-12 col-sm-12 NewTourExpandCls m_top10" style="display:none;" >
+								<div class="col-md-6 col-xs-12 col-sm-12 NewTourExpandCls m_top10"  expand-block-right="tours" style="display:none;" >
 									<div class="row">
 										 <h4><span class="headingColor text-capital">TOUR COMPLAINCE</span></h4>
 											<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
@@ -1928,7 +1635,7 @@
 									</div>
 									
 								</div>
-								<div class="col-xs-12 col-sm-12 col-md-12 NewToursHiddenBlock" style="display: none;">
+								<div class="col-xs-12 col-sm-12 col-md-12 NewToursHiddenBlock"  expand-block-right="tours" style="display: none;">
 									<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right moreNewToursBlocksIcon" title="Click here for more"></i>
 								</div>	
 								<!--<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreNewToursBlocks" style="display:none;">
@@ -1936,7 +1643,7 @@
 										<li class="active toursNewDetailedBlock">Detailed</li>
 									</ul>
 								</div>!-->
-							<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10" style="display:none;">
+								<div class="col-md-12 col-xs-12 col-sm-12 moreNewToursBlocksDetailed m_top10"  expand-block-more="tours" style="display:none;">
 									<h4 class="panel-title"><span class="headingColor text-capital"> Average Tour Performance - leaders</h4><br><br>	
 									<div id="toursPerformanceDivId"></div>
 								</div>
@@ -1948,30 +1655,30 @@
 			<!-- TOURS END -->  
 		
 			<!--Meetings Start -->
-			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock">
+			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock" expand-block="meetings">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12 meetingHead">
+							<div class="col-md-9 col-sm-9 col-xs-12 meetingHead"  expand-block-heading="meetings">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings - <small class="text-muted" id="dateMeetingHeadingId"> this month</small>
 								</h4>
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12 meetingHead1">
+							<div class="col-md-3 col-sm-3 col-xs-12 meetingHead1" expand-block-heading1="meetings">
 								<!--<span class="settingsIcon pull-right">
 									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							    </span>-->
 								<span class="notesIconMeeting pull-right">
 									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
 								</span>
-								<span class="meetingsIconExpand pull-right">
+								<span class="meetingsIconExpand pull-right" expand-icon="meetings">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
 								<span class="meetingsRefresh pull-right" attr_meeting_type="committeeMeeting" attr_refresh_status="false">
 									<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 							    </span>
-								<span class="input-group pull-right dateRangePickerClsForMeetings hide" style="width:200px;">
+								<span class="input-group pull-right dateRangePickerClsForMeetings hide" expand-block-date="meetings" style="width:200px;">
 									<input type="text" id="dateRangeIdForMeetings" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
@@ -1998,7 +1705,7 @@
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB">
+							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB" expand-block-inner="meetings">
 								<div class="panelBlock">
 									<h4>
 										<span class="headingColor text-capital">committee meetings</span>
@@ -2034,10 +1741,11 @@
 										<div id="stateLevelMeetingDivId"></div>
 										<button type="button" attr_main_type_meeting_id="2"  class="btn btn-success stateLevelMeetingBtnCls">Get Details</button>
 									</div>
-									 <div class="row">
-										<div id="stateLevelMeetingBasicCnt"></div>
-									 </div>
+									 
 								  </div>
+									<div class="row">
+										<div id="stateLevelMeetingBasicCnt"></div>
+									</div>
 								  <div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="margin-top: 25px;">
 											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
 										<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
@@ -2108,7 +1816,7 @@
 									
 								</div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock">
+							<div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock" expand-block-right="meetings">
 								<div class="row">
 									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 										<ul class="activeUlCls list-inline ">
@@ -2119,30 +1827,30 @@
 									<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
 								</div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 stateLevelMeetingBlock1">
+							<div class="col-md-6 col-xs-12 col-sm-12 stateLevelMeetingBlock1" expand-block-right="meetings">
 								<div id="stateLevelMeetingBlockId"></div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 stateGeneralMeetBlock1">
+							<div class="col-md-6 col-xs-12 col-sm-12 stateGeneralMeetBlock1" expand-block-right="meetings">
 								
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock showMoreBlockCls ">
+							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock showMoreBlockCls " expand-block-right="meetings">
 										<i data-placement="top" data-toggle="tooltip"  party_meetingId="0" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
 							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocksList" style="display:none">
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocksList" style="display:none" expand-block-more="meetings">
 								<ul class="list-inline pull-right activeUlCls">
 									<li class="active multiMetingDetailedBlock" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Detailed</li>
 									<li class="multiLocation">Comparison</li>
 									<!--<li class="multiLocation">multiLocation</li>-->
 								</ul>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none">
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none" expand-block-more="meetings">
 										<ul class="list-inline pull-right activeUlCls">
 											<li class="active attendedMetngs" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Attended</li>
 											<li class="meetingBased" attr_levelId="0" attr_group_id="1"  attr_sessionId="0">Meetings Based</li>
 											<!--<li class="multiLocation">multiLocation</li>-->
 										</ul>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMultiMeetingsBlocksDetailed multiMeetingChortCls " style="display:none">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMultiMeetingsBlocksDetailed multiMeetingChortCls " style="display:none" expand-block-more="meetings">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -2170,8 +1878,8 @@
 							</div>    
 							
 							
-							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"></div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 meetingPerformancCls moreMeetingsBlocksDetailed" style="display:none">
+							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed" expand-block-more="meetings"></div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 meetingPerformancCls moreMeetingsBlocksDetailed" style="display:none" expand-block-more="meetings">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -2186,7 +1894,7 @@
 									</div>
 								</div>
 							</div>
-							 <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksComparision" style="display:none;">
+							 <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksComparision" style="display:none;" expand-block-more="meetings">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -2220,7 +1928,7 @@
 							</div>
 							
 							<!--multiLocation-->
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksMultiLocationComparision" style="display:none;">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksMultiLocationComparision" style="display:none;" expand-block-more="meetings">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -2277,33 +1985,31 @@
 											</div>
 										</div>
 									</div>
-									
 								</div>                       	
 							</div>
-							
-							
 						</div>
 					</div>
 				</div>
 			</div>	
 		
+			
 			<!--Meetings End-->
-			</div>	
+		</div>	
 		
 		<div class="row">
 		
 			<!--Cadre Registration -->
-		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock">  
+		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock" expand-block="cadre">  
         	<div class="panel panel-default panelNewCustom">
             	<div class="panel-heading">
                 	<div class="row">
-                    	<div class="col-md-8 col-sm-8 col-xs-8">
+                    	<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="cadre">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/cadreRegistration.png" class="iconClass"/>
 								cadre registration <small class="text-muted"> - OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4"> 
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="cadre">
 							   
 							<span class="cadreSettings pull-right" id="cadreSettingsId">
 								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="Settings"></i>
@@ -2314,11 +2020,11 @@
 							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshCadre();">
 								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
 							</span> 
-							 <span class="cadreExpand pull-right">  
+							 <span class="cadreExpand pull-right" expand-icon="cadre">  
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span> 
-							<span class="input-group pull-right  m_XsTop10 hide">  
-								<input type="text" id="dateRangeIdForCadre"	 class="form-control" />
+							<span class="input-group pull-right dateRangeClsForCadre  m_XsTop10 hide" expand-block-date="cadre" style="width:210px">
+								<input type="text" id="dateRangeIdForCadre" style="width:190px"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
@@ -2343,7 +2049,7 @@
 							<h6 id="lastUpdatedTimeCadreId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold">Last Updated : </h6>
 						</div>
 						
-                        <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock">
+                        <div class="col-md-12 col-xs-12 col-sm-12 cadreBlock" expand-block-inner="cadre">
 						    <div class="row">
 							 <div class="col-md-12 col-xs-12 col-sm-12  showCadrecls" style="display:none;">
 								<h4 class="text-capital m_top10"><span class="headingColor">OVERALL REGISTRATIONS</span></h4>
@@ -2389,14 +2095,14 @@
                             </div>
                         </div>
 						
-						<div class="col-md-6 col-xs-12 col-sm-12 moreCadreBlock">
+						<div class="col-md-6 col-xs-12 col-sm-12 moreCadreBlock" expand-block-right="cadre">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
 									<div id="constituenctDetailedReport"></div>	     
                                 </div>
                             </div>
 					     </div>
-					    <div class="col-md-6 col-xs-12 col-sm-12 moreCadreBlock">
+					    <div class="col-md-6 col-xs-12 col-sm-12 moreCadreBlock" expand-block-right="cadre">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
@@ -2411,9 +2117,9 @@
                         </div>
 						
 						<div class="col-xs-12 col-sm-12 col-md-12">      
-                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksCadreIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksCadreIcon"  expand-block-right="cadre" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre">   
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre" expand-block-more="cadre">   
                         	<ul class="activeUlCls list-inline pull-right" style="margin-right: 12px !important;display:inline-block">
                                 <li class="text-capital"><i class="fa fa-gears"></i></li>
                             </ul>    
@@ -2423,7 +2129,7 @@
                             </ul>
                             
                         </div> 
-						<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls m_top20">        
+						<div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls m_top20" expand-block-more="cadre">        
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading">
 									<span class="headingColor">State Wise Overview</span>
@@ -2439,7 +2145,7 @@
 								</div>
 							</div>
 						</div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls" expand-block-more="cadre">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	<div class="row">
@@ -2475,7 +2181,7 @@
                                 </div>
                             </div>
                         </div>
-					    <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls">         
+					    <div class="col-md-12 col-xs-12 col-sm-12 moreBlocksCadre detailsCls" expand-block-more="cadre">         
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	<div class="row">
@@ -2605,7 +2311,7 @@
                                 </div>
                             </div>
                         </div>                   
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocksCadre compareCls">                
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocksCadre compareCls" expand-block-more="cadre">                
 							<div class="panel panel-default panelNew">   <!--swadhin-->
 								<div class="panel-heading">
 									<div id="designationListId"></div>
@@ -2656,29 +2362,29 @@
         </div>
 		<!--Cadre Registration ENd -->
 			<!-- Committees Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock">
+		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock" expand-block="committees">
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
                 	<div class="row">
-						<div class="col-md-7 col-sm-8 col-xs-8">
+						<div class="col-md-7 col-sm-7 col-xs-12">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
 								committees - <small class="text-muted committeesDate">OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
-						<div class="col-md-5 col-sm-4 col-xs-4">
+						<div class="col-md-5 col-sm-5 col-xs-12">
 							<span class="basicCommitteesBlockDiv pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
 							<span class="notesIcon pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
 							</span>
-							<span class="iconExpand pull-right">
+							<span class="iconExpand pull-right" expand-icon="committees">
 								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 							</span>
 							<span class="cadreSettings pull-right refreshCadreCls" onClick="getCommitteesBasicCountReport();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
 							<span><select id="tdpCommitteeYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;"></select></span>
-							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide">
+							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="committees">
 								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px"/>
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -2851,10 +2557,10 @@
 					<div class="col-xs-12 col-sm-4 col-md-2 pull-right showDatePicker" style="display:none;">
 						
 					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock">
+					<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 basicCommitteesBlock" expand-block-inner="committees">
 						<div id="basicCommitteeCountsDiv"></div>
 					</div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock">
+                        <div class="col-md-6 col-xs-12 col-sm-6 col-md-offset-0 userTypeCommitteesBlock committeesHiddenBlock" expand-block-right="committees">
                         	<div class="row">
                             	<div class="col-md-12 col-xs-12 col-sm-12">
                                 	<ul class="activeUlCls list-inline pull-right">
@@ -2868,17 +2574,17 @@
                                <!-- <div id="userTypeWiseCommitteesForTopFivePoorDiv" style ="display:none"></div>-->
 						    </div>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        <div class="col-xs-12 col-sm-12 col-md-12" expand-block-right="committees">
+                        	<i class="glyphicon glyphicon-option-horizontal pull-right moreBlocksIcon" expand-block-right="committees" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocksDetailAndComp" style="display:none;" expand-block-more="committees">
                         	
 							<ul class="list-inline pull-right activeUlCls">
                             	<li class="active detailedBlock">Detailed</li>
                                 <li class="comparisionBlock">Comparison</li>
                             </ul>
 					    </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreBlocks" expand-block-more="committees">
                         	<div class="panel panel-default m_top10">
                             	<div class="panel-body ">
 									<div id="levelWiseBasicCommittees"></div>
@@ -2886,7 +2592,7 @@
                             </div>
                         </div>
                        
-                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevel" style="display:none">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 m_top20 moreBlocksDistrictlevel" style="display:none" expand-block-more="committees">
                         	<div class="panel panel-default panelNew">
                                 <div class="panel-heading">
                                     <div class="row">
@@ -2901,7 +2607,7 @@
 								</div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks1" style="display:none;" >
+                        <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreBlocks1" style="display:none;"  expand-block-more="committees">
                             <!--<p><i>Selected:</i> <b>Main Committee</b></p>-->
                             <div class="panel panel-default panelNew">
                                 <div class="panel-heading">
@@ -2945,25 +2651,25 @@
 		
 		<div class="row">
 		<!--Events Start -->
-			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock">
+			<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-8 col-sm-8 col-xs-7">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="events">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/events.png" class="iconClass"/>
 									events and activities <small class="text-muted"><span id="dateEventsHeadingId">  - OVERALL (TILL NOW) </span></small>
 								</h4>
 							</div>
-							<div class="col-md-4 col-sm-4 col-xs-5">
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="events">
 								<span class="notesIconEvents pull-right">
 									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForEvents(6);"></i>
 								</span>
-								<span class="eventsIconExpand pull-right">
+								<span class="eventsIconExpand pull-right" expand-icon="events">
 									<i class="glyphicon glyphicon-fullscreen"></i>
 								</span>
 							<span class="cadreSettings pull-right refreshCadreCls" onClick="refreshEventsActivities();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
-								<span class="input-group pull-right dateRangePickerClsForEvents hide" style="width:200px;">
+								<span class="input-group pull-right dateRangePickerClsForEvents hide" expand-block-date="events" style="width:200px;">
 									<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
@@ -2987,12 +2693,12 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 eventsBlock" expand-block-inner="events">
 								<h6 id="lastUpdatedIdEvents" class="updatedDate"></h6>
 								<h4><span class="headingColor text-capital">events</span>
-								<span id="eventIds" class="eventsListExpandIcon eventCls" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
+								<span id="eventIds" class="eventsListExpandIcon eventCls" expand-icon-inner="events" expand_event_name="events" attr_event_name="Events" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getEventBasicCntDtls();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 								<div id="mainEventsList" class="m_top20"></div>
-								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
+								<h4 style="margin-top:30px;"><span class="headingColor text-capital">activities</span> <span attr_activity_name="activities" expand-icon-inner="events" expand_event_name="overallActivity" attr_search_type="activities" class="activitesExpandIcon activityCls overAllActivityCls"><i class="glyphicon glyphicon-fullscreen"></i></span> <span style="background-color:#fff;margin-left:5px;" class="refreshButtonUcon" id="" onclick="getActivitiesDetails();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span></h4>
 									<div id="activityEventsListNew" class="m_top20"></div>				
 				
 								<!--<div style="border : 1px solid #333; padding : 5px">-->
@@ -3009,7 +2715,7 @@
 								<div id="activityEventsListNew" class="m_top20"></div>
 							<!--</div>
 							</div>-->
-							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock">
+							<div class="col-md-6 col-xs-12 col-sm-12 eventsHiddenBlock" expand-block-right="events">
 								<h4><span class="headingColor eventAndActivityCls text-capital">events</span></h4>
 								<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
 										<ul class="activeUlCls list-inline hideCls">
@@ -3019,17 +2725,17 @@
 								</div> 
 								<div id="UserTypeWiseEventMemberDtslDivId" class="m_top20"></div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" style="display: none;">
+							<div class="col-xs-12 col-sm-12 col-md-12 eventsHiddenBlock" expand-block-right="events" style="display: none;">
 								<i class="glyphicon glyphicon-option-horizontal pull-right moreEventsBlocksIcon" data-toggle="tooltip" data-placement="top" ></i>
 							</div>
-							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId">
+							<div class="col-md-11 col-xs-12 col-sm-11 moreEventsBlocks" id="eventsCmpBlckDivId" expand-block-more="events">
 								
 								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
 									<li class="text-capital activeLICls" attr_typeId="1">Detailed </li>
 									<li class="text-capital activeLICls" attr_typeId="2">Comparison</li>
 								</ul>
 							</div>
-							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks">
+							<div class="col-md-1 col-xs-12 col-sm-1 moreEventsBlocks" expand-block-more="events">
 							
 								<ul class="list-inline pull-right activeUlCls" style="margin-right: 12px !important;">
 									<li class="text-capital settingsIconAct">
@@ -3116,7 +2822,7 @@
 									<li class="text-capital comparisonActivity">Comparison</li>
 								</ul>
 							</div> -->
-							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10">
+							<div class="col-xs-12 col-sm-12 col-md-12 moreEventsBlocks detailedBlockEvents m_top10" expand-block-more="events">
 								<div class="panel panel-default panelNew">
 									<div class="panel-body">
 										<div id="eventsGraphBlock"></div>
@@ -3136,7 +2842,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" style="display:none" id="evntCmpBLockId">
+							<div class="col-xs-12 col-sm-12 col-md-12 comparisonBlockEvents m_top10" expand-block-more="events" style="display:none" id="evntCmpBLockId">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -3166,7 +2872,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" style="display:none" id="activtyBlckDivId">
+							<div class="col-xs-12 col-sm-12 col-md-12  comparisonBlockActivities m_top10" expand-block-more="events" style="display:none" id="activtyBlckDivId">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -3203,27 +2909,27 @@
 	
 		<!--Events End -->
 		<!-- Attendance Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock">
+		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
             <div class="panel panel-default panelNewCustom">
                 <div class="panel-heading">
 					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-7">
+						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="attendance">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/attendance.png" class="iconClass"/>
 								emp attendance - <small id="attendanceId" class="text-muted"></small>
 							</h4>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-5">
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="attendance">
 							<span class="attendanceSetIcon pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>
 							<span class="notesIconattendance pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForAttendance(7);"></i>
 							</span>
-							<span class="attendaceIconExpand pull-right mainExpandCls">
+							<span class="attendaceIconExpand pull-right mainExpandCls" expand-icon="attendance">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:110px;">
+							<span class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:110px;">
 								<input type="text" id="dateRangeIdForAttendance" style="width:90px" class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -3250,7 +2956,7 @@
 						<!--<div class="col-md-12 col-xs-12 col-sm-12">
 							<h5 id="lastUpdatedIdAtt" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold" class="updatedDate pull-right">Last updated : - </h5>
 						</div>-->  
-                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock">
+                        <div class="col-md-12 col-xs-12 col-sm-12 attendanceBlock" expand-block-inner="attendance">
 							<div id="officeAttendanceTdlsId">
 							</div>
 							<div id="officeAttendanceTdlsDeptWiseId"> 
@@ -3258,14 +2964,14 @@
                             <!-- <h4 class="m_top20"><span class="headingColor text-capital">month wise total employees</span></h4>
                             <div id="attendance" style="height:150px;"></div>-->
                         </div>
-                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore">
+                        <div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore" expand-block-right="attendance">
 							<div id="deptWiseAttendanceDtlsId">
 							</div>
                         </div>
 						<div class="col-xs-12 col-sm-12 col-md-12">
-                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+                        	<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttBlocksIcon"  expand-block-right="attendance" data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
                         </div>
-                        <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks">
+                        <div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" expand-block-more="attendance">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	  
@@ -3275,7 +2981,7 @@
 											<h4><span class="headingColor">Hyderabad Party Office</span></h4>
 											</div>
 											<div class="col-md-6 col-xs-12 col-sm-4">
-												<div class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:210px;">
+												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
 													<input type="text" id="dateRangeIdForAttendance1" style="width:180px" class="form-control" />
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
@@ -3290,10 +2996,10 @@
                                 </div>  
                             </div>
                         </div>
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="hydTopId">
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="hydTopId"  expand-block-more="attendance">
 							
 						</div> 
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks">
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks"  expand-block-more="attendance">
                         	<div class="panel panel-default panelNew">
                             	<div class="panel-heading">
                                 	  
@@ -3303,7 +3009,7 @@
 											<h4><span class="headingColor">Guntur Party Office</span></h4>
 											</div>
 											<div class="col-md-6 col-xs-12 col-sm-4">
-												<div class="input-group pull-right dateRangePickerClsForAttendance hide" style="width:210px;">
+												<div class="input-group pull-right dateRangePickerClsForAttendance hide" expand-block-date="attendance" style="width:210px;">
 													<input type="text" id="dateRangeIdForAttendance2" style="width:180px" class="form-control" />
 													<span class="input-group-addon">
 														<i class="glyphicon glyphicon-calendar"></i>
@@ -3318,7 +3024,7 @@
                                 </div>  
                             </div>
                         </div>
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="gunTopId">
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttBlocks" id="gunTopId"  expand-block-more="attendance">
 							
 						</div>
 						
@@ -3331,27 +3037,27 @@
 	</div>
 	<div class="row">
 			<!-- Training Start -->
-		<div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock">
+		<div class="col-md-6 col-xs-12 col-sm-12 trainingsBlock" expand-block="training">
 			<div class="panel panel-default panelNewCustom panel1">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-md-8 col-sm-8 col-xs-7">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="training">
 							<h4 class="panel-title text-capital">
 								<img src="newCoreDashBoard/img/training.png" class="iconClass"/>
 								training  <small class="text-muted trainingDate">- OVERALL (TILL NOW)</small>
 							</h4>
 						</div>
-						<div class="col-md-4 col-sm-4 col-xs-5">
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="training">
 							<!--<span class="settingsIcon pull-right">
 								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
 							</span>-->
 							<span class="notesIconTraining pull-right">
 								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForTraining(4);"></i>
 							</span>
-							<span class="trainingIconExpand pull-right">
+							<span class="trainingIconExpand pull-right" expand-icon="training">
 								<i class="glyphicon glyphicon-fullscreen"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerClsForTraining hide" style="display:none;">
+							<span class="input-group pull-right dateRangePickerClsForTraining hide" expand-block-date="training" style="display:none;">
 								<input type="text" id="dateRangeIdForTrainingCamp"	 class="form-control" />
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
@@ -3373,13 +3079,13 @@
 						<div id="id2" style="color:red;"></div>
 						<label>Create Notes</label>
 						<textarea class="form-control notesAreaTraining"></textarea>
-						<button class="btn btn-default btnCustomCreateTraining btn-sm " id=buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>
+						<button class="btn btn-default btnCustomCreateTraining btn-sm " id="buttonId" onClick="savingDashboardCommentForTraing(4);">create</button>
 					</div>  
 				</div>
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;"><h6 id="lastUpdatedTimeTrainingCampId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6></div>
-						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand">
+						<div class="col-md-12 col-xs-12 col-sm-12 trainingsBlock trainingsBlockExpand" expand-block-inner="training">
 							<div class="row">
 							   <div id="programsDtlsCntTableId"></div>
 								<div class="col-md-12 col-xs-12 col-sm-12">
@@ -3398,7 +3104,7 @@
 								</div>-->
 							</div>
 						</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock">
+							<div class="col-md-6 col-xs-12 col-sm-12 col-md-offset-0 trainingsHiddenBlock" expand-block-right="training">
 								<div class="row">
 									<div class="col-md-12 col-xs-12 col-sm-12">
 										<h4><span id="clickInfoId" class="text-capital headingColor pad_custom" style="font-size:18px;display:none;"></span> </h4>  
@@ -3413,16 +3119,16 @@
 								<div id="userTypeWiseTrainingProgramTopFiveStrongAndPoorMemsDivId" class="m_top20"></div>     
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-12">
-									<i data-placement="top" data-toggle="tooltip" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
+									<i data-placement="top" data-toggle="tooltip"  expand-block-right="training" id="switchButtonId" class="glyphicon glyphicon-option-horizontal pull-right moreTrainingBlocksIcon" title="Click here for more" style="cursor:pointer;"></i>  
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks trainingDetailedBlock hdCls">
+							<div class="col-xs-12 col-sm-12 col-md-12 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
 									<ul class="list-inline pull-right activeUlCls">
 										<li id="detailedId" class="trainingDetailed">Detailed</li>
 										<li class="trainingComparison">Comparison</li>
 										<!--<li class="basicCommitteesBlockDiv"><i class="fa fa-gears"></i></li>-->
 									</ul>
 							</div> 
-							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls">
+							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
 								<div class="panel panel-default">
 									<div class="panel-body">
 										<h4 class="text-capitalize text-muted">training programs</h4>
@@ -3439,7 +3145,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls">
+							<div class="col-md-12 col-xs-12 col-sm-12 col-md-offset-0 moreTrainingBlocks trainingDetailedBlock hdCls"  expand-block-more="training">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -3475,7 +3181,7 @@
 								</div>
 							</div>
 						
-							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingComparisonBlock">
+							<div class="col-md-12 col-xs-12 col-sm-12 moreTrainingBlocks trainingComparisonBlock"  expand-block-more="training">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -3511,83 +3217,389 @@
 				</div>
 			</div>
 			<!-- Training End-->
-			<!-- Custom reports start-->
-		<!--<div class="col-md-6 col-xs-12 col-sm-6">
-        	<div class="panel panel-default panelNewCustom">
-            	<div class="panel-heading">
-                	<div class="row">
-                    	<div class="col-md-8 col-sm-8 col-xs-8">
-							<h4 class="panel-title text-capital">
-								<!--<img src="newCoreDashBoard/img/committees.png" class="iconClass"/>
-								custom reports <small class="text-muted">2016-2018</small>-->
-								<!--<span class="input-group pull-right dateclsForCustomReport hide" style="width:200px;">
-								<input id="dateRangeIdForcusomReport" style="width:180px" class="form-control" type="text">
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
+			
+			<!-- Cadre Insurance Start-->
+			<div class="col-md-6 col-xs-12 col-sm-6" expand-block="cadreInsurance">
+				<div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-8 col-sm-8 col-xs-8">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/cadreInsurance.png" class="iconClass"/>
+									cadre insurance <small class="text-muted">2016-2018</small>
+								</h4>
+							</div>
+							<div class="col-md-4 col-sm-4 col-xs-4">
+								<span class="notesIcon pull-right">
+									<i class="glyphicon glyphicon-refresh insuranceRefresh" data-toggle="tooltip" data-placement="top" title="Refresh"></i>
 								</span>
-							</span>
-							</h4>
-						</div>
-						<div class="col-md-4 col-sm-4 col-xs-4">
-							<span class="basicCommitteesBlockDiv pull-right">
-								<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							</span>
-							<span class="notesIcon pull-right">
-								<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardComments(1);"></i>
-							</span>
-							<span class="iconExpand pull-right customExpandCls" expand-icon="CustomReports">
-								<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
-							</span>
-							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="CustomReports">
-								<input type="text" id="dateRangeId"	 class="form-control" />
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
+								<span class="iconExpand pull-right" expand-icon="cadreInsurance">
+									<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 								</span>
-							</span>
+								<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="cadreInsurance">
+									<input type="text" id="dateRangeIdCadreInsurance"	 class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
 						</div>
-                    </div>
-                </div>
-                <div class="panel-body">
-					<div class="row">
-						<div class="col-md-6 col-xs-12 col-sm-6" expand-block-inner="CustomReports">
-							<h4 class="panel-title"><span class="headingColor text-capital">total custom reports</span></h4>
-							<div id="customReortsMainDiv"></div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-6" expand-block-right="CustomReports">
-							
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12" expand-block-right="CustomReports">
-							<div class="panel panel-default panelNew">
-								<div class="panel-heading">
-									<div class="row">
-										<div class="col-md-9 col-xs-12 col-sm-9">
-											<h4><span class="headingColor text-capital">total custom reports</span></h4>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="cadreInsurance">
+								<ul class="activeUlCls list-inline cadreInsuranceCDate">
+									<li>Today</li>
+									<li>Week</li>
+									<li>Month</li>
+									<li>3 Month</li>
+									<li>6 Month</li>
+									<li>9 Month</li>
+									<li class="active">All Time</li>
+								</ul>
+								<div id="insuraceCompanyAndTypeOfIssueWiseComplaintsDetails" class="m_top20"></div>
+								
+							</div>
+							<div class="col-md-6 col-xs-12 col-sm-6" expand-block-right="cadreInsurance" style="display:none">
+								<ul class="list-inline activeUlCls pull-right">
+									<li class="active">Top 5 Strong</li>
+									<li>Top 5 Poor</li>
+								</ul>
+								<div id="userTypeWiseTotalCadreInsuranceComplainctCnt"></div>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12">
+								<i data-placement="top" data-toggle="tooltip" expand-block-right="cadreInsurance" class="glyphicon glyphicon-option-horizontal pull-right moreCadreInsuranceIcon" title="Click here for more" style="display:none"></i>
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12">
+								<ul class="list-inline activeUlCls cadreInsuranceLi pull-right" expand-block-more="cadreInsurance" style="display:none">
+									<li class="active">Detailed</li>
+									<li>Comparison</li>
+								</ul>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 cadreInsuranceDetailedblock" expand-block-more="cadreInsurance" style="display:none">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<h4><span class="headingColor text-capital">insurance company wise - overview & status details</span></h4>
+									</div>
+									<div class="panel-body">
+										<div id="insuranceCompanyWiseOverviewAndStatusDetails"></div>
+									</div>
+								</div>
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<label class="radio-inline">
+											<input checked type="radio" attr_status="category" class="cadeInsuranceCat" name="cadeInsuranceCat"/>Show Category Wise (Death & Hospital)
+										</label>
+										<label class="radio-inline">
+											<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCat" name="cadeInsuranceCat"/>Show Status Wise
+										</label>      
+									</div>
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-9 col-xs-12 col-sm-9">
+												<h4 class="m_top10"><span class="headingColor text-capital" id="distGraphHeadingId">andhra pradesh district wise - categories overview</span></h4>         
+											</div>
+											<div class="col-md-3 col-xs-12 col-sm-3">
+												<select class="form-control"></select>
+											</div>  
 										</div>
-										<div class="col-md-3 col-xs-12 col-sm-3">
-											<ul class="activeUlCls list-inline text-capital">
-												<li class="active">All</li>
-												<li>Submited</li>
-												<li>not-Submited</li>
+									</div>
+									<div class="panel-body">
+										<div class="cadreInsuranceCategory">
+											<ul class="list-inline activeUlCls  constituencyUl">
+												<li class="active" onclick="getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);">
+													<i class="glyphicon glyphicon-sort-by-attributes"></i>
+												</li>
+												<li onclick="getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','asc',0);">
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li onclick="getDistrictWiseThenCategoryWiseInsuranceMemberCount('name','asc',0);">   
+													A-Z
+												</li>
+												<li onclick="getDistrictWiseThenCategoryWiseInsuranceMemberCount('name','desc',0);">
+													Z-A
+												</li>
+												<li onclick="getDistrictWiseThenCategoryWiseInsuranceMemberCount('constituencyNo','desc',0);" class="showHideConstNoCls">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+												</li>
+												<li onclick="getDistrictWiseThenCategoryWiseInsuranceMemberCount('constituencyNo','asc',0);" class="showHideConstNoCls">   
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+												</li>
+												<li>
+													<select class="form-control" id="locationListForCategoryId">
+													</select>  
+												</li>
 											</ul>
+											<div id="districtWiseThenCategoryWiseInsuranceMemberCount"></div>
+										</div>
+										<div class="cadreInsuranceCategoryStatus">
+											<ul class="list-inline activeUlCls  constituencyUl">
+												<li class="active" onclick="getDistrictWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',0);">
+													<i class="glyphicon glyphicon-sort-by-attributes"></i>
+												</li>
+												<li onclick="getDistrictWiseThenStatusWiseInsuranceMemberCount('insuredMember','asc',0);">
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li onclick="getDistrictWiseThenStatusWiseInsuranceMemberCount('name','asc',0);">  
+													A-Z
+												</li>
+												<li onclick="getDistrictWiseThenStatusWiseInsuranceMemberCount('name','desc',0);">
+													Z-A
+												</li>
+												<li onclick="getDistrictWiseThenStatusWiseInsuranceMemberCount('constituencyNo','desc',0);" class="showHideConstNoCls">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+												</li>
+												<li onclick="getDistrictWiseThenStatusWiseInsuranceMemberCount('constituencyNo','asc',0);" class="showHideConstNoCls">   
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+												</li>
+												<li>
+													<select class="form-control" id="locationListForStatusId">
+													</select>
+												</li>
+											</ul>
+											<div id="districtWiseThenStatusWiseInsuranceMemberCount"></div>  
+										</div>  
+									</div>
+								</div>
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">     
+										<div class="row">
+											<div class="col-md-9 col-xs-12 col-sm-9">
+												<h4 class="m_top10"><span class="headingColor text-capital" id="constGraphHeadingId">andhra pradesh constituency wise - categories overview</span></h4>            
+											</div>
+											<div class="col-md-3 col-xs-12 col-sm-3">
+												<select class="form-control"></select>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="cadreInsuranceCategory">  
+											<ul class="list-inline activeUlCls  constituencyUl">
+												<li class="active" onclick="getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);">
+													<i class="glyphicon glyphicon-sort-by-attributes"></i>
+												</li>
+												<li onclick="getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','asc',0);">   
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li onclick="getConstituencyWiseThenCategoryWiseInsuranceMemberCount('name','asc',0);">   
+													A-Z
+												</li>
+												<li onclick="getConstituencyWiseThenCategoryWiseInsuranceMemberCount('name','desc',0);">
+													Z-A  
+												</li>
+												<li onclick="getConstituencyWiseThenCategoryWiseInsuranceMemberCount('constituencyNo','desc',0);">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+												</li>
+												<li onclick="getConstituencyWiseThenCategoryWiseInsuranceMemberCount('constituencyNo','asc',0);">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+												</li>  
+												<li>
+													<select class="form-control" id="constListForCategoryId">
+													</select>
+												</li>
+											</ul>
+											<div id="constituencyWiseThenCategoryWiseInsuranceMemberCount"></div>
+										</div>
+										<div class="cadreInsuranceCategoryStatus">
+											<ul class="list-inline activeUlCls  constituencyUl">
+												<li class="active" onclick="getConstituencyWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',0);">
+													<i class="glyphicon glyphicon-sort-by-attributes"></i>
+												</li>
+												<li onclick="getConstituencyWiseThenStatusWiseInsuranceMemberCount('insuredMember','asc',0);">
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li onclick="getConstituencyWiseThenStatusWiseInsuranceMemberCount('name','asc',0);">
+													A-Z
+												</li>
+												<li onclick="getConstituencyWiseThenStatusWiseInsuranceMemberCount('name','desc',0);">
+													Z-A
+												</li>            
+												<li onclick="getConstituencyWiseThenStatusWiseInsuranceMemberCount('constituencyNo','desc',0);">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+												</li>
+												<li onclick="getConstituencyWiseThenStatusWiseInsuranceMemberCount('constituencyNo','asc',0);">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+												</li>  
+												<li>
+													<select class="form-control" id="constListForStatusId">
+													</select>
+												</li>  
+											</ul>
+											<div id="constituencyWiseThenStatusWiseInsuranceMemberCount"></div>
 										</div>
 									</div>
 								</div>
-								<div class="panel-body">
-									<table class="table table-bordered">
-										<thead class="bg_D8">
-											<th></th>
-										</thead>
-									</table>
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<label class="radio-inline">
+											<input checked type="radio" attr_status="category" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Category Wise (Death & Hospital)
+										</label>
+										<label class="radio-inline">
+											<input type="radio" attr_status="categoryStatus" class="cadeInsuranceCatTs" name="cadeInsuranceCatTs"/>Show Status Wise
+										</label>  
+									</div>
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-9 col-xs-12 col-sm-9">
+												<h4 class="m_top10"><span class="headingColor text-capital">telangana district wise - categories overview</span></h4>
+											</div>
+											<div class="col-md-3 col-xs-12 col-sm-3">
+												<select class="form-control"></select>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="cadreInsuranceCategoryTs">
+											<ul class="list-inline activeUlCls  constituencyUl">
+												<li class="active" onclick="">
+													<i class="glyphicon glyphicon-sort-by-attributes"></i>
+												</li>
+												<li onclick="">   
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li onclick="">
+													A-Z
+												</li>
+												<li onclick="">
+													Z-A
+												</li>
+												<li onclick="">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+												</li>
+												<li onclick="">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+												</li>
+												<li>
+													<select class="form-control"></select>
+												</li>
+											</ul>
+											<div id="locationWiseThenCategoryWiseInsuranceMemberCountForTS"></div>
+										</div>
+										<div class="cadreInsuranceCategoryStatusTs">
+											<ul class="list-inline activeUlCls  constituencyUl">
+												<li class="active" onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','desc');">
+													<i class="glyphicon glyphicon-sort-by-attributes"></i>
+												</li>
+												<li onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','asc')">
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li onclick="">
+													A-Z
+												</li>
+												<li onclick="">
+													Z-A
+												</li>
+												<li onclick="">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+												</li>
+												<li onclick="">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+												</li>
+												<li>
+													<select class="form-control"></select>
+												</li>
+											</ul>
+											<div id="locationWiseThenStatusWiseInsuranceMemberCountForTS"></div>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-md-9 col-xs-12 col-sm-9">
+												<h4 class="m_top10"><span class="headingColor text-capital">telangana constituency wise - categories overview</span></h4>
+											</div>   
+											<div class="col-md-3 col-xs-12 col-sm-3">
+												<select class="form-control"></select>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="cadreInsuranceCategoryTs">
+											<ul class="list-inline activeUlCls  constituencyUl">
+												<li class="active" onclick="">
+													<i class="glyphicon glyphicon-sort-by-attributes"></i>
+												</li>
+												<li onclick="">          
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li onclick="">
+													A-Z
+												</li>
+												<li onclick="">
+													Z-A
+												</li>
+												<li onclick="">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+												</li>
+												<li onclick="">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+												</li>
+												<li>
+													<select class="form-control"></select>
+												</li>
+											</ul>
+											<div id="locationWiseThenCategoryWiseInsuranceMemberCountForTSCons"></div>
+										</div>
+										<div class="cadreInsuranceCategoryStatusTs">
+											<ul class="list-inline activeUlCls  constituencyUl">
+												<li class="active" onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','desc')">
+													<i class="glyphicon glyphicon-sort-by-attributes"></i>
+												</li>
+												<li onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','asc')">
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li onclick="">
+													A-Z
+												</li>
+												<li onclick="">
+													Z-A
+												</li>
+												<li onclick="">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
+												</li>
+												<li onclick="">
+													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
+												</li>
+												<li>
+													<select class="form-control"></select>
+												</li>
+											</ul>
+											<div id="locationWiseThenStatusWiseInsuranceMemberCountForTSCons"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12  cadreInsuranceComparisonblock" expand-block-more="cadreInsurance" style="display:none">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading">
+										<div class="row">
+											<div class="col-xs-12 col-sm-12 col-md-12">
+												<div id="childUserTypeDetailsDivForCadreInsurance"></div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+												<div class="bg_ED pad_15 m_top20"> 
+													<div id="cadreInsuranceChildActivityMemberDivId"> </div>
+													<div id="userTypeWiseChildDtlsTabForCadreInsuranceDivId"></div>
+													<h4 class="text-capital" style="background-color:#ddd;padding:6px;display:none;" id="DeathHeadingId"></h4>
+													<div id="candidateWiseCadreInsuranceDeathDtlsDivId" class="m_top20"></div>
+													<h4 class="text-capital" style="background-color:#ddd;padding:6px;display:none;" id="HospitalizationHeadingId"></h4>
+													<div id="candidateWiseCadreInsuranceHospDtlsDivId" class="m_top20"></div>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-                </div>
-            </div>
-        </div>-->
-			
-			<!-- Custom reports End-->
-			
+				</div>
+			</div>
+			<!-- Cadre Insurance End-->
 		</div>
 </div>
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -4049,15 +4061,15 @@
 <div class="modal fade" tabindex="-1" id="meetingMemDetailsId" role="dialog">
  <div class="modal-dialog" role="document" style="width:85%;">   
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close closeBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="">Member Details</h4>      
-      </div>
-      <div class="modal-body" id="">   
+		<div class="modal-header">
+			<button type="button" class="close closeBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title" id="">Member Details</h4>      
+		</div>
+		<div class="modal-body" id="">   
       
           <div id="meetingMemDetailsBodyId"></div>
        
-      </div>
+		</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default closeBtnCls" data-dismiss="modal">Close</button>
       </div>
@@ -4317,8 +4329,8 @@
 </div>
 
 <!-------start popup build------------>
-<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
-  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:85%">
+<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
     <div class="modal-content customModal">
       <div class="modal-header">
         <button type="button" class="close imageCloseBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -4348,51 +4360,14 @@
 </div>
 <!-- Modal For UpdationDetails -->
 <div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document" style="width:80%">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="mdlHeadingId" style="text-transform: uppercase;"></h4>
-      </div>
-      <div class="modal-body">
-	  <div class="row">
-	  <div class="col-md-3 col-xs-12 col-sm-6">
-	  <label>District</label>
-	  <select class="form-control selectCls" id="distId" attr_value="district" onchange="getConstituenciesForDistricts(this.value);" name=""    data-placeholder ="ALL" >	  
-	    </select>
-		</div>
-		<div class="col-md-3 col-xs-12 col-sm-6">
-		<label>Constituency</label>
-		<select class="form-control selectCls" id="constId" attr_value="constituency" name="" onchange="onchangeFunction();" data-placeholder ="ALL">
-		</select>
-		</div>
-		<div class="col-md-3 col-xs-12 col-sm-6">
-		<label>Status</label>
-		<select class="form-control" id="thirdPartyStatusId" name="" data-placeholder ="ALL" onchange="onchangeFunction();">
-			   <option value="ALL">ALL</option>
-			   <option value="Yes">Yes</option>
-			   <option value="No">No</option>
-		</select>
-		</div>
-		<div class="col-md-2 col-xs-12 col-sm-6">
-             <button class="btn btn-success"  id="levelTypeId" onclick="getupdationDetailsConflicts();" style="margin-top: 19px;"> Get Details </button>
-           </div>
-		</div>
-        <div id="commentsBlock" class="m_top10"></div>		
-        <!--<div id="commentsDivId"></div>-->
-      </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div>
-<div class="modal fade" id="customModalId" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width:60%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="customHeadingId"></h4>
+        <h4 class="modal-title" id="mdlHeadingId"></h4>
       </div>
       <div class="modal-body">
-        <div id="detailedReportsDivId"></div>
+        <div id="commentsBlock"></div>
         <!--<div id="commentsDivId"></div>-->
       </div>
     </div><!-- /.modal-content -->
@@ -4434,14 +4409,14 @@
 <script src="newCoreDashBoard/js/newsCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/coreDashboardTrainingProgram.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tdpCommittees.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/statusColorCodesForNews.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/eventsActivities.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/attendanceCoreDashBoard.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
@@ -4449,8 +4424,318 @@
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-<script src="newCoreDashBoard/js/customReport.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(document).on("click",".rightNavigationMenuRes",function(){
+	$(this).toggleClass("active");
+	$(".rightNavigationMenu ul,.backgroundBlock").toggleClass("hidden-xs");
+});
+//$(document).on("click","[expand-icon]",function(){
+$("[expand-icon]").click(function(){
+	var $this = $(this);
+	var blockName = $this.attr("expand-icon");
+	var iconClass = $("[expand-icon="+blockName+"]").find("i").attr("class");
+	var rightNav = $this.attr("right-nav");
+	$(".rightNavigationMenu ul,.backgroundBlock").addClass("hidden-xs");
+	$(".rightNavigationMenuRes").removeClass("active");
+	if(iconClass == 'glyphicon glyphicon-fullscreen' || rightNav == true)
+	{
+		closeBlocks();
+		$("[right-nav]").removeClass("active");
+		$("[expand-icon="+blockName+"]").addClass("active");
+		$("[expand-icon="+blockName+"]").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+		$("[expand-block="+blockName+"]").removeClass("col-md-6").addClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$("[expand-block-inner="+blockName+"]").addClass("col-md-6").removeClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$("[expand-block-right="+blockName+"]").show();
+		$("[expand-block-date="+blockName+"]").removeClass("hide");
+		$("[expand-icon-inner="+blockName+"],[expand-icon-inner]").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+		datePickerAlignment(blockName);
+		if($this.attr("expand-icon-inner") == blockName)
+		{
+			$this.find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+		}
+		setTimeout(function(){
+		$('html,body').animate({
+			scrollTop: $("[expand-block="+blockName+"]").offset().top},
+		'slow');
+		},1000);
+		if(blockName == 'alerts')
+		{
+			defaultAlertCalls();
+		}else if(blockName == 'debates')
+		{
+			globalDebateCalls();
+		}else if(blockName == 'news')
+		{
+			commonNewsBasicCalls();
+		}else if(blockName == 'electronic')
+		{
+			globalElectronicMediaCalls('');
+		}else if(blockName == 'tours')
+		{
+			globalToursCalls('');
+		}else if(blockName == 'meetings')
+		{
+			getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+			$(".showMoreBlockCls").attr("attr_main_type_meeting_id",1);//committee meeting
+			//$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").toggle();
+			$(".meetingsHiddenBlock").find("i").show();
+			$(".moreMeetingsBlocks1,.stateLevelMeetingBlock,.stateGeneralMeetBlock").hide();
+		}else if(blockName == 'cadre')
+		{
+			getUserTypeWiseTotalCadreRegistrationCount();
+		}else if(blockName == 'committees')
+		{
+			getUserTypeWiseCommitteesCompletedCounts1();
+		}else if(blockName == 'events')
+		{
+			$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events");
+			var eventIdsString="7,30";
+			
+			$(".moreEventsBlocksIcon").attr("attr_type","event");
+			$(".moreEventsBlocksIcon").attr("attr_event_idsString",eventIdsString);
+			$(".detailedEvent").attr("attr_type","event");
+			$(".detailedEvent").attr("attr_event_idsString",eventIdsString);
+			$(".comparisonEvent").attr("attr_type","event");
+			$(".comparisonEvent").attr("attr_event_idsString",eventIdsString);
+			
+			getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);
+		}else if(blockName == 'attendance')
+		{
+			getAttendanceOverViewForPartyOfficeDeptWise();
+		}else if(blockName == 'training')
+		{
+			getUserTypeWiseTotalEligibleAndAttendedCnt();
+		}else if(blockName == 'cadreInsurance')
+		{
+			getUserTypeWiseTotalCadreInsuranceComplainctCnt();
+		}
+	}else if(iconClass == 'glyphicon glyphicon-resize-small')
+	{
+		closeBlocks();
+		$("[expand-icon="+blockName+"]").removeClass("active");
+		$("[expand-icon-inner="+blockName+"],[expand-icon-inner]").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+	}
+});
+$(document).on("click","[expand-icon-inner]",function(){
+	var $this = $(this);
+	var blockName = $this.attr("expand-icon-inner");
+	var iconClass = $this.find("i").attr("class");
+	var rightNav = $this.attr("right-nav");
+	
+	//alert($this.find("i").attr("class"));
+	if($this.find("i").hasClass("glyphicon-fullscreen"))
+	{
+		$("[expand-icon-inner").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+		closeBlocks();
+		setTimeout(function(){
+			$('html,body').animate({
+				scrollTop: $("[expand-block="+blockName+"]").offset().top},
+			'slow');
+		},1000);
+		$("[right-nav]").removeClass("active");
+		$("[expand-icon="+blockName+"]").addClass("active");
+		$("[expand-icon="+blockName+"]").find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+		$("[expand-block="+blockName+"]").removeClass("col-md-6").addClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");;
+		$("[expand-block-inner="+blockName+"]").addClass("col-md-6").removeClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");;
+		$("[expand-block-right="+blockName+"]").show();
+		$("[expand-block-date="+blockName+"]").removeClass("hide");
+		datePickerAlignment(blockName);
+		$this.find("i").removeClass("glyphicon-fullscreen").addClass("glyphicon-resize-small");
+		var expandName = $this.attr("expand_event_name");
+		if(blockName == 'events')
+		{
+			
+			if(expandName == "events")
+			{
+				$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events");	
+				$("#eventsCmpBlckDivId").find("ul li:nth-child(2)").removeClass("active")	
+				$(".moreEventsBlocksIcon").removeClass("acitivitiesMoreExpand");
+				$("#eventsDistWiseCohort1,#eventsGraphBlock1").html(' ');
+				$(".activitiesH4").html("Cohort")
+				var eventIdsString = $(this).attr("attr_event_idsString");
+				var eventName = $(this).attr("attr_event_name");
+				$(".eventAndActivityCls").html(eventName);
+				$(".moreEventsBlocksIcon").attr("attr_type","event");
+				$(".moreEventsBlocksIcon").attr("attr_event_idsString",eventIdsString);
+				$(".detailedEvent").attr("attr_type","event");
+				$(".detailedEvent").attr("attr_event_idsString",eventIdsString);
+				$(".comparisonEvent").attr("attr_type","event");
+				$(".comparisonEvent").attr("attr_event_idsString",eventIdsString);
+				$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+				
+				$("#eventsDistWiseCohort1,#eventsGraphBlock1").html(' ');
+				$(".activitiesH4").html("Cohort")
+				var eventIdsString = $(this).attr("attr_event_idsString");
+				var eventName = $(this).attr("attr_event_name");
+				$(".eventAndActivityCls").html(eventName);
+				$(".detailedEvent").attr("attr_type","event");
+				$(".detailedEvent").attr("attr_event_idsString",eventIdsString);
+				$(".comparisonEvent").attr("attr_type","event");
+				$(".comparisonEvent").attr("attr_event_idsString",eventIdsString);
+				getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);	
+				//getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);
+			}else if(expandName == "activities")
+			{
+				var searchType = $(this).attr("attr_search_type");
+				$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","activities");
+				$("#eventsCmpBlckDivId ul li:nth-child(2)").attr("attr_search_type",searchType);
+				$("#eventsCmpBlckDivId ul li:nth-child(2)").attr("attr_event_idsstring",activityId);
+				var activityLevelIds=[];
+				var activityId = $(this).attr("attr_id");
+				var activityName = $(this).attr("attr_activity_name");
+				var activityLevelId = $(this).attr("attr_level_id");
+				 if(activityLevelId != null && activityLevelId > 0){
+					activityLevelIds.push(activityLevelId); 
+				 }
+				 getUserTypeActivityConductedCnt(activityId,activityLevelIds);
+				 activityName = activityName.replace("'","");
+				 activityName = activityName.replace("\'","");
+				 $(".eventAndActivityCls").html(activityName);
+				$(".moreEventsBlocksIcon").addClass("acitivitiesMoreExpand");
+				$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+				var eventIdsString = $(this).attr("attr_event_idsString");
+				if($(".detailedBlockEvents").is(":visible"))
+				{
+					var activityId = $("#hiddenActivityId").val();
+					stateWiseCohort(activityId);
+					districtWiseCohort(activityId);
+				}
+				if($(".comparisonBlockActivities").is(":visible")){
+					$('#eventsCmpBlckDivId ul li').trigger('click');
+				}
+				
+					$(".acitivitiesMoreExpand").removeAttr("attr_type");
+					$(".acitivitiesMoreExpand").removeAttr("attr_event_idsString");
+					$(".acitivitiesMoreExpand").attr("attr_type","activity");
+					$(".acitivitiesMoreExpand").attr("attr_event_idsString",activityId);
+			}else if(expandName == "overallActivity")
+			{
+				var activityLevelIds=[];
+				var activityId = $(this).attr("attr_id");
+				var activityName = $(this).attr("attr_activity_name");
+				var activityLevelId = $(this).attr("attr_level_id");
+				 if(activityLevelId != null && activityLevelId > 0){
+					activityLevelIds.push(activityLevelId); 
+				 }
+				 getUserTypeActivityConductedCnt(activityId,activityLevelIds);
+				 activityName = activityName.replace("'","");
+				 activityName = activityName.replace("\'","");
+				 $(".eventAndActivityCls").html(activityName);
+			}
+			
+		}else if(blockName == 'training'){
+			stateLevel = $this.attr("state-level");
+			if(stateLevel == 'true')
+			{
+				var val = $(this).attr("attr_location");
+				$("#clickInfoId").html(val); 
+				$("#switchButtonId").removeClass("moreTrainingBlocksIcon");
+				$("#switchButtonId").addClass("moreTrainingCampBlocksIcon");   
+				$("#detailedId").removeClass("trainingDetailed");
+				$("#detailedId").addClass("trainingCampDetailed");
+				$("#clickInfoId").show();
+				$(".trainingComparison").hide();
+				$(".trainingCampDetailed").attr("attr_program_id",$(this).attr("attr_program_id"));  
+				var programId = [];
+				programId.push($(this).attr("attr_program_id"));
+				getStateLevelCampCount(programId);         
+				stateLevelCampMembersDistWise(programId); 
+				stateLevelCampDetailsRepresentativeWise(programId);
+			}else{
+				getUserTypeWiseTotalEligibleAndAttendedCnt();
+			}
+		}else if(blockName == 'meetings'){
+			$(".moreMeetingsBlocksIcon").attr("expand_event_name",expandName)
+			if(expandName == "statelevelmeeting")
+			{
+				
+			}else if(expandName == "mainMeetings")
+			{
+				$(".stateLevelMeetingBlock").show();
+				$(".showMoreBlockCls").show();
+				$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
+				$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
+				$(".showMoreBlockCls").attr("attr_selected_type","stateLevel");
+				$(".meetingsRefresh").attr("attr_refresh_status","true");
+				$(".meetingsRefresh").attr("attr_meeting_type","committeeMeeting");
+				getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
+			}else if(expandName == "multiLocation")
+			{
+				var locLevelId = $(this).attr('attr_levelId'); 
+				var partyMeetingGroupId = $(this).attr('attr_group_id');
+				var sessionId= $(this).attr('attr_sessionId');
+				$(".moreMeetingsBlocksIcon").attr('attr_levelId',locLevelId).attr('attr_group_id',partyMeetingGroupId).attr('attr_sessionId',sessionId); 
+				getCmmttsAndPblcRprsnttvMembersInvitedAndAttendedToSeeionWiseMultiLocationMeetingDtls(locLevelId,partyMeetingGroupId);
+				setTimeout(function(){
+					$('html,body').animate({
+						scrollTop: $(".meetingsBlock").offset().top},
+					'slow');
+				},500);
+			}else if(expandName == "specialMeetings")
+			{
+				var partyMeetingId = $(this).attr("party_meetingId");
+				var partyMeetingTypeId = $(this).attr("party_meeting_type_id");
+				var partyMeetingMainTypeId = 3;
+				var partyMeetingIdArr = [];
+				partyMeetingIdArr.push(partyMeetingId);
+				$(".showMoreBlockCls").attr("attr_selected_type","sessionMeeting");
+				$(".meetingsRefresh").attr("attr_refresh_status","true");
+				$(".meetingsRefresh").attr("attr_main_type_meeting_id",partyMeetingMainTypeId);
+				$(".meetingsRefresh").attr("attr_partymeetingtypeidsstring",partyMeetingTypeId);
+				$(".meetingsRefresh").attr("attr_special_meeting_id",partyMeetingId);
+				$(".moreMeetingsBlocksIcon").attr("party_meeting_id",partyMeetingId);
+				$(".moreMeetingsBlocksIcon").attr("party_meeting_type_id",partyMeetingTypeId);
+				$(".meetingsRefresh").attr("attr_meeting_type","specailSessionTypeMeeting");
+				$(".stateLevelMeetingBlock").show();
+				$(".showMoreBlockCls").show();
+				setSessioncolorsForStatus();
+				getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingIdArr);
+			}
+		}
+	}else{
+		closeBlocks();
+		$("[expand-icon-inner="+blockName+"]").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+	}
+});
+function datePickerAlignment(blockName)
+{
+	$("[expand-block-heading]").addClass("col-md-9 col-sm-9").removeClass("col-md-8 col-sm-8");
+	$("[expand-block-heading1]").addClass("col-md-3 col-sm-3").removeClass("col-md-4 col-sm-4");
+	$("[expand-block-heading="+blockName+"]").removeClass("col-md-9 col-sm-9").addClass("col-md-8 col-sm-8");
+	$("[expand-block-heading1="+blockName+"]").removeClass("col-md-3 col-sm-3").addClass("col-md-4 col-sm-4");
+}
+function closeBlocks()
+{
+	$("[expand-icon]").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
+	$("[expand-block]").addClass("col-md-6").removeClass("col-md-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	$("[expand-block-inner]").removeClass("col-md-6").addClass("col-md-12");
+	$("[expand-block-right],[expand-block-more]").hide();
+	$("[expand-block-date]").addClass("hide");
+}
+minimise(".rightNavigationMenu li")
+function minimise(Id)
+{
+	var id = Id;
+	var minimized_elements = $(id);
+	minimized_elements.each(function(){    
+		var t = $(this).text();        
+		if(t.length < 8) return;
+
+		$(this).html(
+			'<span class="less">'+t.slice(0,8)+'..</span>'+
+			'<span style="display:none;" class="more text-capitalize">'+t+'</span>'
+		);
+
+	}); 
+	$(document).on("mouseover",id,function(){
+		$(this).find('span').hide();
+		$(this).find('span.more').show();
+	});
+	$(document).on("mouseout",id,function(){
+		$(this).find('span.less').show();
+		$(this).find('span.more').hide();
+	});	
+}
 /* GLobal Navbar Date Change Start*/
 $(document).on("click",".globalDateChange",function(){
 	var type = $(this).attr("attr_type");
@@ -4592,9 +4877,8 @@ var globalImages;
 		getCadreEnrolmentYears();
 	});
 	getLoggedInUserStructure();
-
-	onLoadCalls()
 	
+	onLoadCalls()
 	function onLoadCalls(){
 		
 		//news please dont remove
@@ -4627,7 +4911,7 @@ var globalImages;
 		getPartyMeetingTypeByPartyMeetingMainType();
 		getStateLevelMeetingsByMeetingType();
 		getSpecialMeetingsByMeetingType();
-		//getMultiLocationWiseMeetingGroupsData();
+		getMultiLocationWiseMeetingGroupsData();
 		//events
 		getEventBasicCntDtls();
 		//news please dont remove
@@ -4661,6 +4945,7 @@ var globalImages;
 		//getSettingEvents();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
+		globalInsuranceCalls();
 	  }
 	  else  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking")
 	  {
