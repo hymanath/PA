@@ -3850,6 +3850,18 @@
 	 <bean id="memberSpeechCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.MemberSpeechCategoryDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 <!--  ASSEMBLY SESSION DAO'S END -->	
-    
+	 <!--  ASSEMBLY SESSION DAO'S END -->
+	 
+	 	
+     <!-- Govt Alert DAO'S -->
+     <bean id="alertGovtOfficerSmsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertGovtOfficerSmsDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentDesignationHierarchyDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentDesignationHierarchyDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentScopeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <!--  Govt Alert DAO'S END -->
 </beans>		
