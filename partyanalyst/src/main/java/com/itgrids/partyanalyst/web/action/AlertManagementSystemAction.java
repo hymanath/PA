@@ -11,7 +11,7 @@ import com.opensymphony.xwork2.Action;
 
 public class AlertManagementSystemAction {
 
-	private final static Logger LOG = Logger.getLogger(CccDashboardAction.class);
+	private final static Logger LOG = Logger.getLogger(AlertManagementSystemAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
 	private JSONObject jObj;
