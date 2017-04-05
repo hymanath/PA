@@ -1,7 +1,7 @@
  var globalStateId=1; //default AP
  var globalUserWiseEventMemberRslt;
  /* EVENT FUNCTIONALITY START*/  
-  /* $(document).on("click",".eventsIconExpand",function(){
+  $(document).on("click",".eventsIconExpand",function(){
 	$(".dateRangePickerClsForEvents").toggleClass("hide");
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".eventYearExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
@@ -29,12 +29,66 @@
 		$("#activtyBlckDivId").hide();
 		$(".activitesExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
 		$(".eventsHiddenBlock,.moreEventsBlocks,.comparisonBlockEvents").hide();
-		closeBlocks();
+	}
+	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".dateRangePickerClsForTraining").addClass("hide");
+		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
+		$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
+		$(".dateRangePickerClsForAttendance").toggleClass('hide');
+		$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".NewTourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".NewTourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".NewTourExpandCls,.NewToursHiddenBlock,.moreNewToursBlocksDetailed").hide();
+			$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".alertsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert").hide();
+			$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".tourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".tourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+				$(".tourExpandCls ,.toursHiddenBlock,.moreToursBlocks1,.moreToursBlocksDetailed ,.comparisonBlockTours ,.toursDateRangePickerCls").hide();
+				$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".emnIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".emnIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+				$(".moreBlockEMN ,.newEmnHideCls,.dateRangePickerClsForEmn,.newsComparisonUl").hide();
+				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}
 	
-	
 });
- */
+
 $(document).on("click",".moreEventsBlocksIcon",function(){
 	//$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events")	
 	$("#eventsCmpBlckDivId").find("ul li:first-child").addClass("active");
@@ -114,7 +168,7 @@ $(document).on("click","#eventsCmpBlckDivId ul li",function(){
 		}
 	}
 });
-/* $(document).on("click",".activitesExpandIcon",function(){
+$(document).on("click",".activitesExpandIcon",function(){
 	
 	$("#eventsDistWiseCohort,#eventsGraphBlock").html(' ');
 	$(".eventsListExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
@@ -182,11 +236,65 @@ $(document).on("click","#eventsCmpBlckDivId ul li",function(){
 		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		closeBlocks();
 	}
 	
-	
-}); */
+	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".dateRangePickerClsForTraining").addClass("hide");
+		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}else if( $(".cadreExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".cadreExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".moreCadreBlock,.moreBlocksCadre,.moreBlocksCadreIcon").hide();
+		$(".cadreBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".attendaceIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".attendaceIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".attendanceBlockMore,.moreAttBlocks,.moreAttBlocksIcon").hide();
+		$(".dateRangePickerClsForAttendance").toggleClass('hide');
+		$(".attendanceBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".NewTourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".NewTourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".NewTourExpandCls,.NewToursHiddenBlock,.moreNewToursBlocksDetailed").hide();
+			$(".NewToursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+			$(".alertsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+			$(".districtAltCtnCls ,.alertLocationDiv,.dateRangePickerClsForAlert,.alertComparisonblock").hide();
+			$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".tourExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".tourExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+				$(".tourExpandCls ,.toursHiddenBlock,.moreToursBlocks1,.moreToursBlocksDetailed ,.comparisonBlockTours ,.toursDateRangePickerCls").hide();
+				$(".toursBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".emnIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+				$(".emnIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+				$(".moreBlockEMN ,.newEmnHideCls,.dateRangePickerClsForEmn,.newsComparisonUl").hide();
+				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}
+});
 /* $(document).on("click",".detailedEvent",function(){
 	$(".detailedBlockEvents").show();
 	$(".comparisonBlockEvents").hide();
@@ -221,7 +329,7 @@ $(document).on("click",".eventStrngPrCls",function(){
 	}
 });
 
-/* $(document).on("click",".eventsListExpandIcon",function(){
+$(document).on("click",".eventsListExpandIcon",function(){
 	$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events");	
 	$("#eventsCmpBlckDivId").find("ul li:nth-child(2)").removeClass("active")	
 	$(".moreEventsBlocksIcon").removeClass("acitivitiesMoreExpand");
@@ -256,7 +364,6 @@ $(document).on("click",".eventStrngPrCls",function(){
 		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 		$("#activtyBlckDivId").hide();
-		closeBlocks();
 	}else{
 		$(".eventsListExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -265,7 +372,39 @@ $(document).on("click",".eventStrngPrCls",function(){
 		$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
 		getUserTypeWiseTotalInviteeAndInviteeAttendedCnt(eventIdsString);	
 	}
-}); */
+	
+	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".dateRangePickerClsForTraining").addClass("hide");
+		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}
+});
 //var customStartDateActivities = moment().subtract(2,"year").format('DD/MM/YYYY');
 //var customEndDateActivities = moment().format('DD/MM/YYYY');  
 $("#dateRangeIdForEvents").daterangepicker({
@@ -343,7 +482,7 @@ function buildEventBasicCntDtls(result)
 			str+='<div class="panel panel-default panelNewEvents">';
 				str+='<div class="panel-heading" role="tab" id="headingEvents'+i+'">';
 					str+='<h4 class="panel-title">'+result[i].name+'';
-						str+='<span attr_event_idsString='+result[i].id+' attr_event_name="'+result[i].name+'" expand-icon-inner="events" attr_event_name="events" expand_event_name="events" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
+						str+='<span attr_event_idsString='+result[i].id+' attr_event_name="'+result[i].name+'" class="eventsListExpandIcon eventCls" style="background-color:#fff;font-size:10px;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>';
 					str+='</h4>';
 					
 				
@@ -1640,7 +1779,7 @@ function buildActivityEventBasicCntDtlsNew(result)
 					str+='<div class="panel panel-default">';
 						str+='<div class="panel-heading" role="tab" id="headingOneAct'+i+'">';
 							str+='<h4 class="text-capital" style="color:#4a5863;display:inline-block;">'+result[i].name+'';
-							str+='<span class="activitesExpandIcon" expand-icon-inner="events" expand_event_name="activities" attr_search_type="singleActivity"  attr_level_id="0" attr_activity_name="\''+result[i].name+'\'" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen"></i></span></h4>';
+							str+='<span class="activitesExpandIcon" attr_search_type="singleActivity"  attr_level_id="0" attr_activity_name="\''+result[i].name+'\'" attr_id="'+result[i].id+'"><i class="glyphicon glyphicon-fullscreen text-center"></i></span></h4>';
 							str+='<a role="button" style="display:inline-block;float:right"	class="panelBlockCollapseIcon collapsed activitiesClass" attr_activity_name="\''+result[i].name+'\'" data-toggle="collapse" data-parent="#accordionAct" href="#collapseOneAct'+i+'" aria-expanded="true" aria-controls="collapseOneAct'+i+'" attr_id="'+result[i].id+'" attr_divId="activityBodyId'+i+'">';
 							str+='</a>';
 						str+='</div>';
@@ -1694,8 +1833,8 @@ function buildActivityCounts(result,divId,activityName,activityId)
 		var notUpdatedCount = parseInt(totalCount)-parseInt(updatedCount);
 		
 		
-		str+='<div class="">';
-			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon" expand-icon-inner="events" expand_event_name="activities"  attr_search_type="scopeId" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
+		str+='<div class="m_top20">';
+			str+='<h5 class="text-capital">'+result[i].name+' <span class="activitesExpandIcon" attr_search_type="scopeId" attr_level_id="'+result[i].id+'"  attr_activity_name='+activityName+' attr_id="'+activityId+'"><i class="glyphicon glyphicon-fullscreen"></i> </span></h5>';
 			str+='<table class="table bg_ED tablePaddingSyle">';
 				str+='<tbody>';
 					str+='<tr>';
@@ -1786,7 +1925,7 @@ function buildActivityCounts(result,divId,activityName,activityId)
 						str+='<td>';
 							str+='<p class="text-muted text-capital">Images Covered</p>';
 							if(result[i].totalImages != null && result[i].totalImages>0)
-								str+='<u><h5 style="cursor:pointer;" class="getImageCls"  type="dayswise"  activity_name="'+activityName+'" attr_activity_scopeid="'+result[i].tdpcadreId+'" attr_level_id="'+result[i].id+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images." >'+result[i].imagesCovered+' <small><span class="text-success" >'+result[i].totalImages+' images covered</span></small></h5></u>';
+								str+='<u><h5 style="cursor:pointer;" class="getImageCls"  type="overAll"  activity_name="'+activityName+'" attr_activity_scopeid="'+result[i].tdpcadreId+'" attr_level_id="'+result[i].id+'" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="Click here to view images." >'+result[i].imagesCovered+' <small><span class="text-success" >'+result[i].totalImages+' images covered</span></small></h5></u>';
 							else
 								str+='<h5 style="cursor:pointer;" class="" attr_activity_scopeid="'+result[i].tdpcadreId+'" attr_level_id="'+result[i].id+'" data-toggle="tooltip" data-placement="top"  >'+result[i].imagesCovered+' <small><span class="text-success">'+result[i].totalImages+' images covered</span></small></h5>';
 						str+='</td>';
@@ -2104,7 +2243,126 @@ $(document).on("click",".activityCountCls",function(){
 });
 
 
-
+/*$(document).on("click",".activitesExpandIcon",function(){
+	$("#eventsDistWiseCohort,#eventsGraphBlock").html(' ');
+	$(".eventsListExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass(".glyphicon-resize-small");
+    var activityId = $(this).attr("attr_id");
+	$("#hiddenActivityId").val(activityId);	
+	if($(this).find("i").hasClass("glyphicon-fullscreen"))
+	{
+		if($(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+		{
+			//block opened
+			//alert("block open")	
+		}else{
+			//block closed
+			$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
+			$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+			$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+		//alert("open"); 
+		$("#accordionAct").find(".panel-collapse").removeClass("in");
+		$("#accordionAct").find(".panelBlockCollapseIcon").addClass("collapsed");
+		//$(this).closest(".panel").find(".panel-collapse").addClass("in");
+		//$(this).closest(".panel").find(".panelBlockCollapseIcon").removeClass("collapsed");
+		var activityLevelIds=[];
+		var activityId = $(this).attr("attr_id");
+		var activityName = $(this).attr("attr_activity_name");
+		var activityLevelId = $(this).attr("attr_level_id");
+		 if(activityLevelId != null && activityLevelId > 0){
+			activityLevelIds.push(activityLevelId); 
+		 }
+		 getUserTypeActivityConductedCnt(activityId,activityLevelIds);
+		 activityName = activityName.replace("'","");
+		 activityName = activityName.replace("\'","");
+		 $(".eventAndActivityCls").html(activityName);
+		$(".moreEventsBlocksIcon").addClass("acitivitiesMoreExpand");
+		$(".dateRangePickerClsForEvents").removeClass("hide");
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+		var eventIdsString = $(this).attr("attr_event_idsString");
+		$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		if($(".detailedBlockEvents").is(":visible"))
+		{
+			//alert("already opened");
+			var activityId = $("#hiddenActivityId").val();
+			districtWiseCohort(activityId);
+		}
+			
+	}else{
+		//alert("close")
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").hide();
+		$(".dateRangePickerClsForEvents").addClass("hide");
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon,.comparisonBlockEvents,.moreEventsBlocks").hide();
+		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	}
+});*/
+/* $(document).on("click",".activitesExpandIcon",function(){
+	$(".activitesExpandIcon").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".moreEventsBlocksIcon").addClass("acitivitiesMoreExpand");
+	$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	$(".dateRangePickerClsForEvents").removeClass("hide");
+	$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	//$("#hiddenActivityId").val(activityId);
+	var eventIdsString = $(this).attr("attr_event_idsString");
+	//$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+	$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+	
+	if(!$(".eventsIconExpand").find("i").hasClass("glyphicon-resize-small"))
+	{
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	}
+	$(".eventsHiddenBlock,.moreEventsBlocksIcon,.comparisonBlockEvents,.moreEventsBlocks").hide();
+	
+	if(!$(this).find("i").hasClass("glyphicon-resize-small"))
+	{
+		$(".eventsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".eventsBlock").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		$(".eventsIconExpand").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen")
+	}else{
+		
+		$(".stateLevelMeetingBlock").show();
+		$(".eventsHiddenBlock,.moreEventsBlocksIcon").show();
+		$(".eventsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen")
+	}
+	
+	if( $(".trainingIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".dateRangePickerClsForTraining").addClass("hide");
+		$(".trainingIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".trainingsHiddenBlock,.moreTrainingBlocks,.moreTrainingBlocksIcon").hide();
+		$(".moreTrainingBlocksIcon").removeClass("unExpandTrainingBlock");
+		$(".trainingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".debatesIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".debatesIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".debatesMoreHiddenBlock,.debatesHiddenBlock,.dateRangePickerClsForDebates").hide();
+		$(".moreDebatesBlocksIcon").removeClass("unExpandDebatesBlock");
+		$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+	}else if( $(".iconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".iconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".committeesHiddenBlock,.moreBlocks,.moreBlocks1,.moreBlocksDetailAndComp,.moreBlocksIcon,.moreBlocksDistrictlevel").hide();
+		$(".committeesBlock,.basicCommitteesBlock,.userTypeCommitteesBlock,.committeesBlock1").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerCls").toggleClass("hide");
+		$(".moreBlocksIcon").removeClass("unExpandBlock");
+	}else if( $(".meetingsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".meetingsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").hide();
+		$(".meetingsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForMeetings").toggleClass("hide");
+		$(".moreMeetingsBlocks1").hide();
+		$(".moreMeetingsBlocksDetailed").hide();
+		$(".moreMeetingsBlocksComparision").hide();
+	}else if( $(".newsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.newsHiddenMoreBlock").hide();
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+	}
+}); */
 $(document).on("click",".acitivitiesMoreExpand",function(){
 	$("#eventsCmpBlckDivId").find("ul li:first-child").addClass("active");
 	$("#activitesCmpBlockDivId").show();
@@ -2589,18 +2847,29 @@ $(document).on("click",".getImageCls",function(){
 	
 	if(!isBuildDate){
 		isBuildDate = true;
+		isWeeksBuild = false;
 			$("#buildPoupupImage").html('');
 		if($(this).attr('activity_name') != null && $(this).attr('activity_name').length>0){
 		   $('#myModalLabelId').html($(this).attr('activity_name').replace("\'","").replace("\'",""));		
-			getDistrictNames($(this).attr('activity_name').replace("\'","").replace("\'",""));
+			getDistrictNames($(this).attr('activity_name').replace("\'","").replace("\'",""),'','');
 		}else{
-			getDistrictNames($(this).attr('activity_name').replace("\'","").replace("\'",""));
+			getDistrictNames($(this).attr('activity_name').replace("\'","").replace("\'",""),'','');
 		}
 				var str='';
 					str+='<div class="row">';
 						str+='<div class="col-md-9">';
 							str+='<nav class="navbar navbar-default navbarCollapseCustom">';
 								str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
+								
+								 str+='<div class="row"  style="margin-top:5px;margin-bottom:5px;margin-left: 600px;">';
+									 str+='<select id="daysListId">';
+									 //  str+='<option value="2017-03-31 to 2017-04-06"> March: Week-1 (2017-03-31 to 2017-04-06) </option>';
+									  // str+='<option value="2017-03-31 to 2017-04-06"> March: Week-2 (2017-03-31 to 2017-04-06) </option>';
+									   //str+='<option value="2017-03-31 to 2017-04-06"> March: Week-3 (2017-03-31 to 2017-04-06) </option>';
+									  //str+=' <option value="2017-03-31 to 2017-04-06"> March: Week-4 (2017-03-31 to 2017-04-06) </option>';
+									 str+='</select>';
+								 str+='</div>';
+								  
 								  str+='<ul class="nav navbar-nav" id="popupDaysDiv1">';
 								  
 								  str+='</ul>';
@@ -2628,8 +2897,11 @@ getAvailablDates('state',1,1,'',attr_activity_scopeid)
 buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 //getEventsDocuments("","",attr_activity_scopeid);
 getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"state",1,"firstClick");
+
+	 
 });
 //var globallocationValue = 0;
+
  $(document).on('click','.dayssCls',function(){
 	 $(".dayssCls").removeClass("active" )
 	 $(this).addClass("active");
@@ -2638,7 +2910,8 @@ getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"state",1,"fi
 	 var locationScopeValue = $(this).attr("locationScopeValue");
 	 var attr_activity_scopeid = $(this).attr("attr_activity_scopeid");
 	 var path = $(this).attr("path");
-	 
+
+
 		getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,day,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
   });
   /* not using updated by srishailam */
@@ -2691,7 +2964,7 @@ function getEventsDocuments(divId,Obj,attr_activity_scopeid)
 			globallocationValue = jObj.locationValue;
 			globallocationName = jObj.locationName;
 			globalActivityScope = jObj.activityId;
-			buildDayWiseImages(result,divId);
+			//buildDayWiseImages(result,divId);
 			
 			});
 }
@@ -2699,13 +2972,14 @@ function getEventsDocuments(divId,Obj,attr_activity_scopeid)
 function getAvailablDates(locationScope,locationValue,day,path,attr_activity_scopeid)
 	{
 		
-	  $("#popupDaysDiv").html('<img src="./images/Loading-data.gif" />');
+	  $("#popupDaysDiv1").html('');
 	 /* var dates = $('.dateRangeIdForEvents').val();
 	  var dateArray = dates.split("/");
 	  var fromDateStr=dateArray[0];
 	  var toDateStr=dateArray[1];*/
 	  var activityScopeId = $("#ActivityList").val();
-	
+		globallocationScope=locationScope;
+		globallocationValue=locationValue
 		var jObj = {
 		activityId:attr_activity_scopeid,
 		locationScope:locationScope,
@@ -2724,15 +2998,29 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
         }).done(function(result){
 				var str ='';
 			
+				var totalImagesCount=0;
+				var coveredLocations=0;
+				
+				for(var i in result)
+				{
+					totalImagesCount=totalImagesCount+parseInt(result[i].totalResult);
+					coveredLocations=coveredLocations+parseInt(result[i].coveredCount);
+				}
+				
 				for(var i in result)
 				{ 
-					if(i==0 && (globlbuildType =='dayswise')){
+					/*if(i==0 && (globlbuildType =='dayswise')){
 						str+='<li class="" ><a href="javascript:{};" class="getImageCls" activity_name=""  type="overAll" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'"  > OVER ALL <span class="sr-only">(current)</span></a></li>';
 					}
 					else if(i==0 && globlbuildType =='overAll'){
 						str+='<li class=" " ><a href="javascript:{};" class="getImageCls"   activity_name=""   type="dayswise" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" > DAY WISE <span class="sr-only">(current)</span></a></li>';
 					}
+					*/
 					
+					if(i==0 && globlbuildType =='overAll'){
+						str+='<li class="dayssCls" ><a href="javascript:{};" class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0" > OVER ALL <br> (<span title="Total Images ">'+totalImagesCount+'</span> / <span title="Total Images Covered Locations ">'+coveredLocations+'</span>) <span class="sr-only">(current)</span><span class="sr-only">(current)</span></a></li>';
+					}
+						
 					if(globlbuildType =='dayswise'){						
 						if(result[i].id==day)
 						{//attr_activity_scopeid,locationScope,locationScopeValue
@@ -2750,13 +3038,13 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 						{
 							if(result[i].documentsVOList[j].strDate==day)
 							{//attr_activity_scopeid,locationScope,locationScopeValue
-								str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};">'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+								str+='<li class="active dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>  '+result[i].documentsVOList[j].strDate+'  (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 								/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */
 							}else if (j==0){
-								str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};">'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+								str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+'  (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 								/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */ 
 							}else{
-								str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};">'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+								str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};">Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
 							 }
 						}
 					
@@ -2827,6 +3115,9 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 				fromDateStr=" ";
 				toDateStr=" ";
 			} */
+		globallocationScope=locationScope;
+		globallocationValue=locationScopeValue;
+		
 		
 		var jObj = {
 		activityId:globalActivityScope,
@@ -2856,7 +3147,7 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 			});
 }
 
-
+var isWeeksBuild=false;
 function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locationScope,locationScopeValue)
 {
 	$("#popupImages").html('');
@@ -2869,58 +3160,68 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 			//str+='<li><img src="https://mytdp.com/activity_documents/' +path+'"></li>';
 			for(var i in result)
 			{
-			for(var j in result[i].subList)
-			{
-				
-				str+='<li> ';
-				if(result[i].subList[j].address != null)
-				str+='<div class="" style="margin-bottom: 5px;margin-left: -7px;margin-top: -8px;">';
-					str+='<ul class="breadcrumb">';
-					//if(result[i].subList[j].address.stateName != null && result[i].subList[j].address.stateName.trim().length>0)
-					//	str+='<li>'+result[i].subList[j].address.stateName+'</li>';
-					if(result[i].subList[j].address.districtName != null && result[i].subList[j].address.districtName.trim().length>0 ){
-						if(locationScope=='district')
-							str+='<li  class="text-primary"  title="'+result[i].subList[j].address.districtName+' District ">'+result[i].subList[j].address.districtName+' </li>';
-						else
-							str+='<li title="'+result[i].subList[j].address.districtName+' District ">'+result[i].subList[j].address.districtName+' </li>';
-					}
-					//if(result[i].subList[j].address.parliamentName != null && result[i].subList[j].address.parliamentName.trim().length>0 )
-					//	str+='<li>'+result[i].subList[j].address.parliamentName+' Parliament </li>';
-					if(result[i].subList[j].address.constituencyName != null && result[i].subList[j].address.constituencyName.trim().length>0 ){
-						if(locationScope=='constituency')
-							str+='<li  class="text-primary"  title="'+result[i].subList[j].address.constituencyName+' Assembly ">'+result[i].subList[j].address.constituencyName+' </li>';
-						else
-							str+='<li  title="'+result[i].subList[j].address.constituencyName+' Assembly ">'+result[i].subList[j].address.constituencyName+' </li>';
-					}					
-					if(result[i].subList[j].address.tehsilName != null && result[i].subList[j].address.tehsilName.trim().length>0 ){
-						if(locationScope=='mandal')
-							str+='<li  class="text-primary"  title="'+result[i].subList[j].address.tehsilName+' Mandal ">'+result[i].subList[j].address.tehsilName+' Mandal  </li>';
-						else
-							str+='<li  title="'+result[i].subList[j].address.tehsilName+' Mandal ">'+result[i].subList[j].address.tehsilName+' Mandal </li>';
-					}					
-					if(result[i].subList[j].address.townshipName != null && result[i].subList[j].address.townshipName.trim().length>0 ){
-						if(locationScope=='mandal')
-							str+='<li  class="text-primary"  title="'+result[i].subList[j].address.townshipName+' Mandal/Munci/Greater City " >'+result[i].subList[j].address.townshipName+' </li>';
-						else
-							str+='<li  title="'+result[i].subList[j].address.townshipName+' Mandal/Munci/Greater City  ">'+result[i].subList[j].address.townshipName+' </li>';
-					}
-					if(result[i].subList[j].address.panchayatName != null && result[i].subList[j].address.panchayatName.trim().length>0 ){
-						if(locationScope=='village')
-							str+='<li  class="text-primary"   title="'+result[i].subList[j].address.panchayatName+' Village  " >'+result[i].subList[j].address.panchayatName+' Village </li>';
-						else
-							str+='<li   title="'+result[i].subList[j].address.panchayatName+' Village  " >'+result[i].subList[j].address.panchayatName+' Village </li>';
-					}
-					if(result[i].subList[j].address.wardName != null && result[i].subList[j].address.wardName.trim().length>0 ){
-						if(locationScope=='village')
-							str+='<li  class="text-primary">'+result[i].subList[j].address.wardName+' </li>';
-						else
-							str+='<li>'+result[i].subList[j].address.wardName+' </li>';
-					}
+				for(var j in result[i].subList)
+				{
 					
-				str+='</ul>';
-				str+='</div>';
-				str+='<img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
-			}
+					str+='<li> ';
+					if(result[i].subList[j].address != null)
+					str+='<div class="" style="margin-bottom: 5px;margin-left: -7px;margin-top: -8px;">';
+						str+='<ul class="breadcrumb">';
+						//if(result[i].subList[j].address.stateName != null && result[i].subList[j].address.stateName.trim().length>0)
+						//	str+='<li>'+result[i].subList[j].address.stateName+'</li>';
+						if(result[i].subList[j].address.districtName != null && result[i].subList[j].address.districtName.trim().length>0 ){
+							if(locationScope=='district')
+								str+='<li  class="text-primary"  title="'+result[i].subList[j].address.districtName+' District ">'+result[i].subList[j].address.districtName+' </li>';
+							else
+								str+='<li title="'+result[i].subList[j].address.districtName+' District ">'+result[i].subList[j].address.districtName+' </li>';
+						}
+						//if(result[i].subList[j].address.parliamentName != null && result[i].subList[j].address.parliamentName.trim().length>0 )
+						//	str+='<li>'+result[i].subList[j].address.parliamentName+' Parliament </li>';
+						if(result[i].subList[j].address.constituencyName != null && result[i].subList[j].address.constituencyName.trim().length>0 ){
+							if(locationScope=='constituency')
+								str+='<li  class="text-primary"  title="'+result[i].subList[j].address.constituencyName+' Assembly ">'+result[i].subList[j].address.constituencyName+' </li>';
+							else
+								str+='<li  title="'+result[i].subList[j].address.constituencyName+' Assembly ">'+result[i].subList[j].address.constituencyName+' </li>';
+						}					
+						if(result[i].subList[j].address.tehsilName != null && result[i].subList[j].address.tehsilName.trim().length>0 ){
+							if(locationScope=='mandal')
+								str+='<li  class="text-primary"  title="'+result[i].subList[j].address.tehsilName+' Mandal ">'+result[i].subList[j].address.tehsilName+' Mandal  </li>';
+							else
+								str+='<li  title="'+result[i].subList[j].address.tehsilName+' Mandal ">'+result[i].subList[j].address.tehsilName+' Mandal </li>';
+						}					
+						if(result[i].subList[j].address.townshipName != null && result[i].subList[j].address.townshipName.trim().length>0 ){
+							if(locationScope=='mandal')
+								str+='<li  class="text-primary"  title="'+result[i].subList[j].address.townshipName+' Mandal/Munci/Greater City " >'+result[i].subList[j].address.townshipName+' </li>';
+							else
+								str+='<li  title="'+result[i].subList[j].address.townshipName+' Mandal/Munci/Greater City  ">'+result[i].subList[j].address.townshipName+' </li>';
+						}
+						if(result[i].subList[j].address.panchayatName != null && result[i].subList[j].address.panchayatName.trim().length>0 ){
+							if(locationScope=='village')
+								str+='<li  class="text-primary"   title="'+result[i].subList[j].address.panchayatName+' Village  " >'+result[i].subList[j].address.panchayatName+' Village </li>';
+							else
+								str+='<li   title="'+result[i].subList[j].address.panchayatName+' Village  " >'+result[i].subList[j].address.panchayatName+' Village </li>';
+						}
+						if(result[i].subList[j].address.wardName != null && result[i].subList[j].address.wardName.trim().length>0 ){
+							if(locationScope=='village')
+								str+='<li  class="text-primary">'+result[i].subList[j].address.wardName+' </li>';
+							else
+								str+='<li>'+result[i].subList[j].address.wardName+' </li>';
+						}
+						
+					str+='</ul>';
+					str+='</div>';
+					str+='<img src="https://mytdp.com/activity_documents/' +result[i].subList[j].path+'"></li>';
+				}
+				
+				if(!isWeeksBuild){
+					isWeeksBuild= true;
+					$('#daysListId').find('option').remove();  	
+					//$("#daysListId").append('<option value="0" attr_scope_id="'+globalActivityScope+'" > Select Week </option>');
+					for(var j in result[i].subList2){
+						$("#daysListId").append('<option value="'+result[i].subList2[j].strDate+'" attr_scope_id="'+globalActivityScope+'" attr_location_scope_id="'+locationScope+'" attr_location_value="'+locationScopeValue+'"> Week-'+(parseInt(j)+1)+' ('+result[i].subList2[j].strDate+' ) </option>');
+					}
+				}
+			  
 			}
 			  str+='</ul>';
 		str+='<ul class="slider-nav m_top20">';	
@@ -2982,11 +3283,148 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 			$("#paginationDivId").find("ul").addClass("pagination");
 		}
 		
-	GlobalPopupScope = globallocationScope;
-	GlobalPopuplocation =globallocationValue;
+	//GlobalPopupScope = globallocationScope;
+	//GlobalPopuplocation =globallocationValue;
 	
 	}
 }
+
+$(document).on("change","#daysListId",function(){
+	
+	var weekDays = $(this).val();
+	var datesArr = [];
+	if(weekDays != null){
+		datesArr = weekDays.split('to');
+	}
+	$("#paginationDivId").html('');
+	getTempEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,'',globalActivityScope,globallocationScope,globallocationValue,"",datesArr[0].trim(),datesArr[1].trim());
+	getTempAvailablDates(globallocationScope,globallocationValue,0,'',globalActivityScope,datesArr[0].trim(),datesArr[1].trim());
+	getDistrictNames('',datesArr[0].trim(),datesArr[1].trim());	
+});
+
+
+function getTempEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid,locationScope,locationScopeValue,calFrom,fromDateStr,toDateStr)
+{
+	
+	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
+	 var dates=$('.searchDateCls ').val();
+/* 	  var dateArray=dates.split("/");
+	  var fromDateStr=dateArray[0];
+	  var toDateStr=dateArray[1];
+	  if(dateArray.length == 1)
+			{
+				fromDateStr=" ";
+				toDateStr=" ";
+			} */
+		
+		var jObj = {
+		activityId:globalActivityScope,
+		locationScope:locationScope,
+		locationValue:locationScopeValue,		
+		day:day,
+		//fromDateStr:"01-01-2015",
+		//toDateStr:"22-01-2017",
+		fromDateStr : fromDateStr,
+	    toDateStr :toDateStr,
+		type:"popup",
+		startIndex:num,
+		maxIndex:10,
+		callFrom:calFrom,
+		//locationName:obj.locationName,
+		activityMemberId : globalActivityMemberId,
+	    stateId : globalStateId,
+	    userTypeId : globalUserTypeId,
+		 task:"popupdaywise"
+		};
+				$.ajax({
+          type:'GET',
+          url: 'getEventDocumentsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locationScope,locationScopeValue);
+			});
+}
+
+function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity_scopeid,fromDateStr,toDateStr)
+	{
+		
+	  $("#popupDaysDiv1").html('');
+	  var activityScopeId = $("#ActivityList").val();
+	
+		var jObj = {
+		activityId:attr_activity_scopeid,
+		locationScope:locationScope,
+		locationValue:locationValue,	
+		fromDateStr:fromDateStr,
+		toDateStr:toDateStr,
+		activityMemberId : globalActivityMemberId,
+	    stateId : globalStateId,
+	    userTypeId : globalUserTypeId,
+		task:""
+		};
+		$.ajax({
+          type:'GET',
+          url: 'getAvailableDatesForActivitiesAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+				var str ='';
+				for(var i in result)
+				{ 
+					/*if(i==0 && (globlbuildType =='dayswise')){
+						str+='<li class="" ><a href="javascript:{};" class="getImageCls" activity_name=""  type="overAll" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'"  > OVER ALL <span class="sr-only">(current)</span></a></li>';
+					}
+					else if(i==0 && globlbuildType =='overAll'){
+						str+='<li class=" " ><a href="javascript:{};" class="getImageCls"   activity_name=""   type="dayswise" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" > DAY WISE <span class="sr-only">(current)</span></a></li>';
+					}
+					*/
+					
+					if(i==0 && globlbuildType =='overAll'){
+						str+='<li class="" ><a href="javascript:{};" class="dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="0" > OVER ALL <span class="sr-only">(current)</span></a></li>';
+					}
+						
+					if(globlbuildType =='dayswise'){						
+						if(result[i].id==day)
+						{//attr_activity_scopeid,locationScope,locationScopeValue
+							str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+							/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */
+						}else if (i==0){
+							str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+							/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */ 
+						}else{
+							str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="javascript:{};">Day '+result[i].id+' (<span title="Total Images ">'+result[i].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+						 }
+					}
+					else if(globlbuildType =='overAll' && i == 0 ){
+						for(var j in result[i].documentsVOList)
+						{
+							if(result[i].documentsVOList[j].strDate==day)
+							{//attr_activity_scopeid,locationScope,locationScopeValue
+								str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>  '+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+								/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */
+							}else if (j==0){
+								str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};"> Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+								/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */ 
+							}else{
+								str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].documentsVOList[j].day+'"><a href="javascript:{};">Day '+result[i].documentsVOList[j].day+' <br>'+result[i].documentsVOList[j].strDate+' (<span title="Total Images ">'+result[i].documentsVOList[j].totalResult+'</span> / <span title="Total Images Covered Locations ">'+result[i].documentsVOList[j].coveredCount+'</span>) <span class="sr-only">(current)</span></a></li>';
+							 }
+						}
+					
+					}
+				}
+				$("#popupDaysDiv1").html(str);
+				/* $('#popupDaysDiv1').slick({
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					slide: 'li',
+					arrows: true,
+					fade: true,
+				}); */
+				GlobalPopupScope = jObj.locationScope;
+				GlobalPopuplocation =jObj.locationValue;
+				
+		});
+}
+
 function getConstituenciesForDistrict(districtId){
 	$("#constituencyId").empty();
 	
@@ -3060,7 +3498,7 @@ function buildVillageWardByMandal(result){
 $(document).on("click","#paginationDivId ul li",function(){
 	$("#paginationDivId").find("ul").addClass("pagination");
 });
-function getDistrictNames(activity_name){
+function getDistrictNames(activity_name,startDate,endDate){
 	
 	$("#districtsUlId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	var scopeId = $("#hiddenActivityScopeId").val();
@@ -3068,6 +3506,8 @@ function getDistrictNames(activity_name){
 	var jObj = {
 		activityScopeId:scopeId,
 		activityMemberId : globalActivityMemberId,
+		startDate:startDate,
+		endDate:endDate,
 	    stateId : globalStateId,
 	    userTypeId : globalUserTypeId
 	};
@@ -3100,19 +3540,20 @@ function buildDistrictNames(result,activityLevelId,scopeId,activity_name)
 		
 	
 		if(i==0){
-			str+='<div class="panel panel-default panel-custommodal">';
-			str+='<div class="panel-heading panel-headingModal" role="tab"  id="headingOneModa1l'+i+'" >';
-				str+='<a role="button" class="getImageCls"  type="dayswise"   activity_name="'+activity_name+'" attr_activity_scopeid="'+scopeId+'" attr_level_id="'+activityLevelId+'" aria-controls="collapseOneModa1l'+i+'"data-toggle="collapse" data-parent="#accordionModal"  aria-expanded="true" attr_activity_level_id="'+activityLevelId+'" >';
-				str+='<h4 class="panel-title"> Andhra Pradesh ( <span title="Total Uploaded Images ">'+imagesCount+' </span>/<span title="Images Covered Locations ">'+coveredCount+')</h4>';
+			str+='<div style="text-align:right;margin:10px ">';
+			//str+='<div class="panel-heading panel-headingModal" role="tab"  id="headingOneModa1l'+i+'" >';
+				str+='<a role="button" class="getImageCls"  type="overAll"   activity_name="'+activity_name+'" attr_activity_scopeid="'+scopeId+'" attr_level_id="'+activityLevelId+'" aria-controls="collapseOneModa1l'+i+'"data-toggle="collapse" data-parent="#accordionModal"  aria-expanded="true" attr_activity_level_id="'+activityLevelId+'" >';
+				/*str+='<h4 class="panel-title"> Andhra Pradesh ( <span title="Total Uploaded Images ">'+imagesCount+' </span>/<span title="Images Covered Locations ">'+coveredCount+')</h4>';*/
+				str+='<i class="glyphicon glyphicon-refresh" title="click here to refresh"></i>';
 				str+='</a>';
 				
 				str+='</div>';
-		str+='<div id="collapseOneModa1l'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneModa1l'+i+'">';
-		  str+='<div class="panel-body pad_0">';
-			str+='<div id="constituenciesBlocks'+result[i].districtId+'"></div>';
-		  str+='</div>';
-		str+='</div>';
-	  str+='</div>';
+		//str+='<div id="collapseOneModa1l'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOneModa1l'+i+'">';
+		//  str+='<div class="panel-body pad_0">';
+		//	str+='<div id="constituenciesBlocks'+result[i].districtId+'"></div>';
+		//  str+='</div>';
+		//str+='</div>';
+	 // str+='</div>';
 		
 		}
 		
@@ -3160,6 +3601,7 @@ function getConstituencyList(distId,activityLevelId){
 			var path = $(this).attr("path");
 			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
+
 		}
 	});
 	
@@ -3229,6 +3671,7 @@ function getMandalOrMuncList(constituencyId,activityLevelId,value,scopeId){
 			var path = $(this).attr("path");
 			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
+
 		}
 	});
 	
@@ -3306,6 +3749,7 @@ function getPanchayatList(mandalId,scopeId,value){
 			var path = $(this).attr("path");
 			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
+
 		}
 	});
 	
@@ -3363,11 +3807,12 @@ $(document).on("click",".villagePopup",function(){
 			var path = $(this).attr("path");
 			getEventDocumentForPopup(GlobalPopupScope,GlobalPopuplocation,0,0,path,attr_activity_scopeid,locationScope,locationScopeValue,"");
 			getAvailablDates(locationScope,locationScopeValue,0,path,attr_activity_scopeid);
+
 		}
 	});
 });
 
-/* $(document).on("click",".activityCls",function(){
+$(document).on("click",".activityCls",function(){
 	var activityLevelIds=[];
 	var activityId = $(this).attr("attr_id");
 	var activityName = $(this).attr("attr_activity_name");
@@ -3379,7 +3824,7 @@ $(document).on("click",".villagePopup",function(){
 	 activityName = activityName.replace("'","");
 	 activityName = activityName.replace("\'","");
 	 $(".eventAndActivityCls").html(activityName);
-}); */
+});
 var globalUserWiseConductedRslt;
 function getUserTypeActivityConductedCnt(activityIdsString,activityLevelIds){
 	$("#UserTypeWiseEventMemberDtslDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -4206,23 +4651,24 @@ $(document).on("click",".getPopUpImagesCls",function(){
 		
 //buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
 //getAvailableDates(globallocationScope,globallocationValue,day,path);
+
 if(searchType == "constituency"){
 	globalActivityScope = attr_activity_scopeid;
 	getAvailablDates('constituency',cnstitncyId,1,'',attr_activity_scopeid)
 	buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
-	//getEventsDocuments("","",attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
 	getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId,"");
 }else if(searchType == "mandal"){
 	globalActivityScope = attr_activity_scopeid;
 	getAvailablDates('mandal',cnstitncyId,1,'',attr_activity_scopeid)
 	buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
-	//getEventsDocuments("","",attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
 	getEventDocumentForPopup("mandal",1,0,0,'',attr_activity_scopeid,"mandal",cnstitncyId,"");
 }else if(searchType == "villageWard" ||  searchType == "onlyvillage"){
 	globalActivityScope = attr_activity_scopeid;
 	getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
 	buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
-	//getEventsDocuments("","",attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
 	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
 }
 
