@@ -1806,7 +1806,34 @@
 											<div id="customMeetingsDiv"></div>
 										</div>
 									 </div>
-								   </div>								
+								   </div>
+									<div class="row"  style="display: none;">
+										<div class="col-md-12 col-xs-12 col-sm-12">
+											<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
+											  <div class="panel panel-default panelNew">
+												<div class="panel-heading pad_10" role="tab" id="headingMultiLocation">
+													<h4 class="panel-title" style="display: inline-block">
+														<span class="headingColor text-capital">multi Location meetings</span>
+														<span  id="multicLocationMeetingId" style="background-color: #fff;" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" class="multicLocationMeetingCls" >
+															<i class="glyphicon glyphicon-fullscreen"></i>
+														</span>
+														<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="getMultiLocationWiseMeetingGroupsData();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
+														<!--<button class="btn btn-xs btn-mini btn-success getModalImagesCls" attr_Meeting_level_id="3" attr_Meeting_id="513359"> view </button>-->
+													</h4>  
+													<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionMultiLocation" href="#collapseMultiLocation" aria-expanded="true" aria-controls="collapseMultiLocation">
+													</a>
+												</div>
+												<div id="collapseMultiLocation" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingMultiLocation">
+												  <div class="panel-body b_top0 pad_5">
+													<div id="MultiLocationWiseMeetingGroupsData"></div>  
+												  </div>
+												</div>
+											  </div>
+											</div>
+										</div>
+									</div>
+									
+								
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock" expand-block-right="meetings">
 								<div class="row">
@@ -1825,11 +1852,9 @@
 							<div class="col-md-6 col-xs-12 col-sm-12 stateGeneralMeetBlock1" expand-block-right="meetings">
 								
 							</div>
-							
 							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock showMoreBlockCls " expand-block-right="meetings">
 										<i data-placement="top" data-toggle="tooltip"  party_meetingId="0" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
 							</div>	
-							
 							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocksList" style="display:none" expand-block-more="meetings">
 								<ul class="list-inline pull-right activeUlCls">
 									<li class="active multiMetingDetailedBlock" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Detailed</li>
@@ -1837,33 +1862,39 @@
 									<!--<li class="multiLocation">multiLocation</li>-->
 								</ul>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksDetailed meetingChortCls" style="display:none">
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none" expand-block-more="meetings">
+										<ul class="list-inline pull-right activeUlCls">
+											<li class="active attendedMetngs" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Attended</li>
+											<li class="meetingBased" attr_levelId="0" attr_group_id="1"  attr_sessionId="0">Meetings Based</li>
+											<!--<li class="multiLocation">multiLocation</li>-->
+										</ul>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMultiMeetingsBlocksDetailed multiMeetingChortCls " style="display:none" expand-block-more="meetings">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
 											<div class="col-md-6 col-xs-12 col-sm-6">
-												<!--<span class="headingColor text-capitalize">Special meetings performance cohort</span>-->
+												<span class="headingColor text-capitalize">Multi Locations meetings performance cohort</span>
 											</div>
 										</div>
 									</div>
 									<div class="panel-body ">
-									<div class="row">
-									<div class="col-md-12 col-xs-12 col-sm-12  specialMeetingCls" style="display:none;">
-											<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 6px;">
-												<h4 id="partyMeetingHeadingId"></h4>
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12  specialMeetingCls" style="display:none;">
+													<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 6px;">
+														<h4 id="partyMeetingHeadingId"></h4>
+													</div>
+													<div class="col-md-6 col-xs-12 col-sm-6">
+														<div id="sessionBtnDivId"></div>
+													</div>
 											</div>
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<!--<div id="sessionBtnDivId"></div>-->
-											</div>
-									</div>
 										</div>
 										<div id="districtWiseSpecialMeetingsGraph"></div>
 										<div id="partyMeetingOverviewTabDiv" class=""></div>
 										<div id="meetingMemberDtlsDivId" class=""></div>   
 									</div>
 								</div>
-							</div> 
-							
+							</div>    
 							
 							
 							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed" expand-block-more="meetings"></div>
