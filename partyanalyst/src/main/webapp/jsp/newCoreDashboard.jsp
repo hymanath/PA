@@ -1713,7 +1713,7 @@
 										<span class="mainMeetingsIcon" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>
 										<span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
 									<!--<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh"></i></span>-->
-									<span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span></h4>
+									<span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span></div></h4>
 									<div class="settingsDropDown notesArrow" style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAll"/>&nbsp&nbspSelect All</label></li>
@@ -1725,7 +1725,7 @@
 									 <div class="row">
 										<div id="meetingBasicCountDivId"></div>
 									 </div>
-									 
+								</div>	 
 									 
 								  <div class="panelBlock m_top20" >
 									<h4>
@@ -1814,7 +1814,7 @@
 										</div>
 									</div>
 									
-								</div>
+								
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock" expand-block-right="meetings">
 								<div class="row">
@@ -3236,8 +3236,8 @@
 								<span class="iconExpand pull-right" expand-icon="cadreInsurance">
 									<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 								</span>
-								<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="cadreInsurance">
-									<input type="text" id="dateRangeIdCadreInsurance"	 class="form-control" />
+								<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" style="width:210px" expand-block-date="cadreInsurance">
+									<input type="text" id="dateRangeIdCadreInsurance" style="width:190px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
 									</span>
@@ -3299,9 +3299,7 @@
 											<div class="col-md-9 col-xs-12 col-sm-9">
 												<h4 class="m_top10"><span class="headingColor text-capital" id="distGraphHeadingId">andhra pradesh district wise - categories overview</span></h4>         
 											</div>
-											<div class="col-md-3 col-xs-12 col-sm-3">
-												<select class="form-control"></select>
-											</div>  
+											
 										</div>
 									</div>
 									<div class="panel-body">
@@ -3367,9 +3365,7 @@
 											<div class="col-md-9 col-xs-12 col-sm-9">
 												<h4 class="m_top10"><span class="headingColor text-capital" id="constGraphHeadingId">andhra pradesh constituency wise - categories overview</span></h4>            
 											</div>
-											<div class="col-md-3 col-xs-12 col-sm-3">
-												<select class="form-control"></select>
-											</div>
+											
 										</div>
 									</div>
 									<div class="panel-body">
@@ -3631,10 +3627,31 @@
 </div>
 
 <!--model end -->
+<!-- Insurance Modal -->
 
-<!-- Modal -->
+<div class="modal fade" id="insuranceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:75%"> 
+		<div class="modal-content" style="border-radius:0px">
+			<div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="insuranceHeadingId">Insurance Details</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div id="lagDaysInsuranceComplaintsCounts"></div>
+						<div id="insuraceStatusWiseComplaintsDetails"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
-<!--model end -->
+<!--Insurance model end -->
 
 <!-- Modal -->
 <div class="modal fade" id="cadreModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
