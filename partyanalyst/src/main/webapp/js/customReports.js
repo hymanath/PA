@@ -11,7 +11,10 @@ $(document).on('change','#programSelId', function() {
 	getProgramReportsDetails();
 	getRequiredDocumentsSummary();
 });
-
+$(document).on("click",".activeUlCls li",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+});
 getCustomReportPrograms();
 	function getCustomReportPrograms(){
 		var $list = $('#programSelId'),
@@ -37,7 +40,9 @@ getCustomReportPrograms();
 	}
 	
 	function getProgramReportsDetails(){
+		$("#detailedReportsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var id = $("#programSelId").val();
+		$(".alertFilterCls li").attr("attr_id",id);
 		var jsObj={
 			id:id
 		}
@@ -48,16 +53,18 @@ getCustomReportPrograms();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildProgramReportDetails(result,id);
+			if(result != null && result.length > 0)
+			{
+				buildProgramReportDetails(result,id);
+			}else{
+				$("#detailedReportsDivId").html("NO DATA AVAILABLE...")
+			}
+			
 		});
 	}
 	function buildProgramReportDetails(result,id){
-					var str='';
-			str+='<ul class="activeUlCls alertFilterCls list-inline pull-right">'
-            str+='<li class="optionsCls " attr_id="'+id+'" attr_type="" style="background:#ddd;margin-right: 15px;">ALL</li>'
-           str+='<li class="optionsCls" attr_id="'+id+'" attr_type="Y" style="margin-left: -7px;margin-right: 15px;">Submited</li>'
-           str+='<li class="optionsCls" attr_id="'+id+'" attr_type="N" style="margin-left: -5px;margin-right: 10px;">NotSubmited</li>' 
-            str+='</ul>'
+		var str='';
+			
 			str+='<table class="table table-bordered" id="detailedReportsTableId">';
 				str+='<thead>';
 					str+='<tr style="background-color:#EDEEF0;border:1px solid #ddd">';
@@ -96,6 +103,7 @@ getCustomReportPrograms();
 							} */
 							
 							if(result[i].fileList != null && result[i].fileList.length > 0){
+									//str+='<a href="'+result[i].fileList[k].path+'"><i class="fa fa-file-pdf-o text-danger"></i>&nbsp;&nbsp;'+result[i].fileList[k].name+'</a>';
 								str+='<td><i class="glyphicon glyphicon-file"></i></td>';
 							}else{
 								str+='<td>Not Submitted</td>';
@@ -115,9 +123,13 @@ getCustomReportPrograms();
 			$("#detailedReportsTableId").dataTable();
 	}
 	$(document).on("click",".editReportCls",function(){
+		$(".jFiler-item").html(' ');
 		$("#uploadModalDivId").modal("show");
+		 $("#uploacFilesBtnId").removeAttr("disabled");
+		var reportId = $(this).attr("attr_report_id");
+		var programId = $("#programSelId").val();
 		var jsObj={
-			reportId:$(this).attr("attr_report_id")
+			reportId:reportId
 		}
 		
 		$.ajax({
@@ -126,10 +138,20 @@ getCustomReportPrograms();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildReportFullDetails(result);
+			buildReportFullDetails(result,reportId,programId);
 		});
 	});
-	function buildReportFullDetails(result){
+	function getExtension(path) {
+		var basename = path.split(/[\\/]/).pop(),  // extract file name from full path ...
+												   // (supports \\ and / separators)
+			pos = basename.lastIndexOf(".");       // get last position of .
+
+		if (basename === "" || pos < 1)            // if file name is empty or ...
+			return "";                             //  . not found (-1) or comes first (0)
+
+		return basename.slice(pos + 1);            // extract extension ignoring .
+	}
+	function buildReportFullDetails(result,reportId,programId){
 		var str='';
 		
 		if(result.observersList != null && result.observersList.length > 0)
@@ -149,27 +171,129 @@ getCustomReportPrograms();
 		}
 			
 		
-		str+='<div class="block">'+result.name+'</div>';
+		str+='<textarea style="width: 919px; height: 146px;" name="description">'+result.name+'</textarea>';
+		str+='<input type="hidden" name="reportId" value="'+reportId+'"></input>';
+		str+='<input type="hidden" name="programId" value="'+programId+'"></input>';
 		
-		if(result.fileList != null && result.fileList.length > 0)
-		{
-			str+='<ul class="observerList list-inline">';
-			for(var i in result.fileList)
+		str+='<div class="row">';
+			if(result.fileList != null && result.fileList.length > 0)
 			{
-				str+='<li>';
-					str+='<a href="'+result.fileList[i].path+'"><i class="fa fa-file-pdf-o text-danger"></i>&nbsp;&nbsp;'+result.fileList[i].name+'</a>';
-				str+='</li>';
+				var extension = ''
+				str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+					/* str+='<div class="row">';	
+						str+='<div class="col-md-12 col-xs-12 col-sm-12">';	
+							str+='<ul class="slider-forparty_meeting slider-for">';
+								for(var i in result.fileList)
+								{
+									extension = getExtension(result.fileList[i].path);
+									if(extension == 'jpg' || extension == 'png' || extension == 'jpeg')
+									{
+									str+='<li class="text-center">';
+										str+='<img src="'+result.fileList[i].path+'" class="img-responsive"/>';
+									str+='</li>';
+									}
+								}
+							str+='</ul>';
+							str+='<ul class="slider-nav m_top20">';	
+								for(var i in result.fileList)
+								{
+									extension = getExtension(result.fileList[i].path);
+									if(extension == 'jpg' || extension == 'png' || extension == 'jpeg')
+									{
+									str+='<li class="text-center">';
+										str+='<img src="'+result.fileList[i].path+'" class="img-responsive"/>';
+									str+='</li>';
+									slickInitialisation();
+									}
+								}
+							str+='</ul>';
+						str+='</div>';
+					str+='</div>'; */
+					str+='<ul class="observerList list-inline">';
+					for(var i in result.fileList)
+					{
+						extension = getExtension(result.fileList[i].path);
+						if(extension == 'jpg' || extension == 'jpeg' || extension == 'png')
+						{
+							str+='<li class="text-center">';
+								str+='<i class="removeCls glyphicon glyphicon-trash" id="removeId'+i+'" attr_report_id ="'+result.fileList[i].id+'"></i>';
+								str+='<img src="'+result.fileList[i].path+'" class="img-responsive" style="height: 100px;width: 100px;"/>';
+							str+='</li>';
+						}
+					}
+					str+='</ul>';
+				str+='</div>';
+				str+='<div class="col-md-6 col-xs-12 col-sm-12">';
+					str+='<ul class="observerList list-inline">';
+					for(var i in result.fileList)
+					{
+						extension = getExtension(result.fileList[i].path);
+						if(extension == 'pdf' || extension == 'docx' || extension == 'xls')
+						{
+							str+='<li class="text-center">';
+								str+='<i class="removeCls glyphicon glyphicon-trash" id="removeId'+i+'" attr_report_id ="'+result.fileList[i].id+'"></i>';
+								str+='<a href="'+result.fileList[i].path+'">';
+									str+='<i class="fa fa-file-pdf-o text-danger" style="display:block;font-size:90px;"></i>&nbsp;&nbsp;';
+								str+=''+result.fileList[i].name+'</a>';
+							str+='</li>';
+						}
+					}
+					str+='</ul>';
+				str+='</div>';
 			}
-			str+='</ul>';
-		}
-		
+		str+='</div>';
 		$("#reportFullDetails").html(str);
+		
 	}
-   $(document).on("click",".optionsCls",function(){
+	function slickInitialisation()
+	{
+		$('.slider-for').slick({
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			slide: 'li',
+			arrows: false,
+			fade: true,
+			asNavFor: '.slider-nav'
+		});
+		$('.slider-nav').slick({
+			slidesToShow: 11,
+			slidesToScroll: 0,
+			slide: 'li',
+			asNavFor: '.slider-for',
+			dots: false,
+			focusOnSelect: true,
+			variableWidth: true
+		})
+	}
+   $(document).on("click",".removeCls",function(){
+	   var reportId = $(this).attr("attr_report_id");
+	   var id = $(this).attr("id");
+	   var jsObj={
+			reportId:reportId
+		}
+	   
+		$.ajax({
+		  type : "GET",
+		  url : "deleteCustomReportFileDetailsAction.action",
+		  dataType : 'json',
+		  data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				if(result.message == "Success"){
+					$("#"+id).closest("li").remove();
+					setTimeout(function(){
+						$("#successSpanModalId").html("<center style='color: green; font-size: 16px;'>File deleted successfully...</center>").fadeOut(3000);			
+					}, 500);
+				}	
+			}
+		});
+   });
+   $(document).on("click",".optionCls",function(){
+	   $("#detailedReportsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	   var id = $(this).attr("attr_id");
 	   var type = $(this).attr("attr_type");
 	   var jsObj={
-			reportId:$(this).attr("attr_id"),
+			reportId:id,
 			type:type
 		}
 		$.ajax({
@@ -178,6 +302,11 @@ getCustomReportPrograms();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			buildProgramReportDetails(result);
+			if(result != null && result.length > 0)
+			{
+				buildProgramReportDetails(result);
+			}else{
+				$("#detailedReportsDivId").html("NO DATA AVAILABLE...");
+			}
 		});
    });
