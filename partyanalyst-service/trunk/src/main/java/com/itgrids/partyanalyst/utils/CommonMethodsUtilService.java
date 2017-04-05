@@ -26,6 +26,7 @@ import javax.imageio.stream.FileImageOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.log4j.Logger;
 import org.jfree.util.Log;
 
@@ -350,24 +351,27 @@ public class CommonMethodsUtilService {
 	    			
 	    		Calendar toDateCal =Calendar.getInstance() ;
 	    		toDateCal.setTime(toDate);
-	    		
-    			int i=0;
-    			while(startDateCal.getTime().before(toDateCal.getTime())){
-    				String dateStr = format.format(startDateCal.getTime());
-    				if(i>0){
-    					startDateCal.add(Calendar.DATE, 1);
-    					dateStr = format.format(startDateCal.getTime());
-    				}
-    				startDateCal.add(Calendar.DATE, 6);
-    				if(startDateCal.getTime().before(toDateCal.getTime()))
-    					dateStr = dateStr+" to "+format.format(startDateCal.getTime());
-    				else
-    					dateStr = dateStr+" to "+format.format(toDateCal.getTime());
-    				
-    				datesBetween.add(dateStr);
-    				//System.out.println(dateStr);
-    				i=i+1;
-    			}
+	    		if(DateUtils.isSameDay(startDateCal, toDateCal)){
+    				datesBetween.add(format.format(startDateCal.getTime())+" to "+format.format(toDateCal.getTime()));
+	    		}else{
+	    			int i=0;
+	    			while(startDateCal.getTime().before(toDateCal.getTime())){
+	    				String dateStr = format.format(startDateCal.getTime());
+	    				if(i>0){
+	    					startDateCal.add(Calendar.DATE, 1);
+	    					dateStr = format.format(startDateCal.getTime());
+	    				}
+	    				startDateCal.add(Calendar.DATE, 6);
+	    				if(startDateCal.getTime().before(toDateCal.getTime()))
+	    					dateStr = dateStr+" to "+format.format(startDateCal.getTime());
+	    				else
+	    					dateStr = dateStr+" to "+format.format(toDateCal.getTime());
+	    				
+	    				datesBetween.add(dateStr);
+	    				//System.out.println(dateStr);
+	    				i=i+1;
+	    			}
+	    		}
 			} catch (Exception e) {
 				LOG.error("Exception raised in getBetweenWeeks in CommonMethodsUtilService service", e);
 			}
