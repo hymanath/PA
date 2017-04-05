@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,7 +36,7 @@ public class AlertGovtOfficerSmsDetails extends BaseModel implements Serializabl
 	private Long alertId;
 	private Long alertStatusId;
 	private String smsText;
-	private String insertTime;
+	private Date insertTime;
 	private Alert alert;
 	
 	
@@ -98,10 +99,10 @@ public class AlertGovtOfficerSmsDetails extends BaseModel implements Serializabl
 	}
 	
 	@Column(name="insert_time")
-	public String getInsertTime() {
+	public Date getInsertTime() {
 		return insertTime;
 	}
-	public void setInsertTime(String insertTime) {
+	public void setInsertTime(Date insertTime) {
 		this.insertTime = insertTime;
 	}
 	
