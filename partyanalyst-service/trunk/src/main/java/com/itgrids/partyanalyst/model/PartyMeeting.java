@@ -59,6 +59,7 @@ public class PartyMeeting extends BaseModel implements Serializable{
 	private String isConductedByIvr;
 	
 	private String thirdPartyStatus;
+	private String attendanceEnrolmentYear;
 	
 	public PartyMeeting(){}
 
@@ -341,6 +342,15 @@ public class PartyMeeting extends BaseModel implements Serializable{
 
 	public void setIsConductedByIvr(String isConductedByIvr) {
 		this.isConductedByIvr = isConductedByIvr;
+	}
+
+	@Column(name="attendance_enrolment_year")
+	public String getAttendanceEnrolmentYear() {
+		return attendanceEnrolmentYear;
+	}
+
+	public void setAttendanceEnrolmentYear(String attendanceEnrolmentYear) {
+		this.attendanceEnrolmentYear = attendanceEnrolmentYear;
 	}
 	
 	

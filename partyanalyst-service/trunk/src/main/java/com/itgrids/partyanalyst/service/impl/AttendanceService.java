@@ -467,7 +467,12 @@ public class AttendanceService implements IAttendanceService{
 						userPartyMeetingVO.setPartyMeetingStatusId(1l);
 						userPartyMeetingVO.setIsSessionsAvailable("false");//default no sessions available
 						
-						userPartyMeetingVO.setCardsYear(IConstants.TAB_ATTENDANCE_ACCEPT_CARDS_YEAR);
+						if(partyMeeting.getAttendanceEnrolmentYear() != null){
+							userPartyMeetingVO.setCardsYear(partyMeeting.getAttendanceEnrolmentYear());
+						}else{
+							userPartyMeetingVO.setCardsYear(IConstants.TAB_ATTENDANCE_ACCEPT_CARDS_YEAR);
+						}
+						
 						
 						if(partyMeeting.getMeetingAddress() != null)
 						{
