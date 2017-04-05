@@ -1210,6 +1210,12 @@
 	                  	 <value>com.itgrids.partyanalyst.model.MemberSpeechCategory</value>
 	                   <!--  Assembly Session End -->
 	                   
+	                   <!--  Govt Alert module start -->
+	                    <value>com.itgrids.partyanalyst.model.AlertGovtOfficerSmsDetails</value>
+	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationHierarchy</value>
+	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentScope</value>
+	                   <!--  Govt Alert module end-->
+	                   
 	              </list>
 			
 		</property>
