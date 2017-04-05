@@ -1354,10 +1354,14 @@ public String getAllConstituencysForADistrict(){
 			Long activityLevelId =jObj.getLong("activityLevelId");	
 			Long levelId = jObj.getLong("levelId");
 			Long stateId=jObj.getLong("stateId");
-			if(levelId == 3l)
-				activitiesVOList=cadreCommitteeService.getDistrictWiseActivities(startDateString,endDateString,activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
-			else
-				activitiesVOList=cadreCommitteeService.asemblyConstWiseActivities(startDateString,endDateString,activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
+			if(levelId == 3l){
+				//activitiesVOList=cadreCommitteeService.getDistrictWiseActivities(startDateString,endDateString,activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
+				activitiesVOList=cadreCommitteeService.getDistrictWiseActivitiesCount(activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
+			}else{
+				//activitiesVOList=cadreCommitteeService.asemblyConstWiseActivities(startDateString,endDateString,activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
+				activitiesVOList=cadreCommitteeService.asemblyConstWiseActivitiesCount(activityScopeId,activityLevelId,user.getAccessType(),Long.valueOf(user.getAccessValue()),stateId,user.getRegistrationID());
+			}
+				
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationDetailsForActivity ",e);

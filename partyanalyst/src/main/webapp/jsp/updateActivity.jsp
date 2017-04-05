@@ -215,14 +215,14 @@
 		
 		
         
-		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none">
+		<div class="panel panel-default panel-custom" id="assemblydivId" style="display:none;">
 		  <div class="panel-heading">
 			<!--<h4 class="panel-title">ASSEMBLY CONSTITUENCY WISE ACTIVITIES -  <small style="text-transform: uppercase;"><b>${sessionScope.UserName}</b></small></h4> -->
-			<h4 class="panel-title"><span  id="constituencyHeadingId"  style="display:none">  CONSTITUENCY WISE ACTIVITIES</span>
+			<h4 class="panel-title"><span  id="constituencyHeadingId" style="display:none;" >  CONSTITUENCY WISE ACTIVITIES</span>
+			<span id="districtHeadingId" style="display:none;">DISTRICT WISE ACTIVITIES</span>
+			<span class="pull-right"><a href="javascript:{}" class="btn btn-success btn-xs" id="hideAsmblyData" style="display:none">Hide Data</a></span>
+			<span class="pull-right"><a href="javascript:{}" class="btn btn-success btn-xs" id="showAsmblyData" style="display:none" >Show Data</a></span>
 			</h4>
-			<h4 class="panel-title" id="districtHeadingId" style="display:none"> DISTRICT WISE ACTIVITIES </h4>
-			<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="showAsmblyData" style="display:none" >Show Data</a></span> 
-			<span class="pull-right" style="margin-top: -20px;"><a href="javascript:{}" class="btn btn-success btn-xs" id="hideAsmblyData" style="display:none" >Hide Data</a></span>
 		  </div>
 		   <div class="panel-body" id="assblyBody">
 		   <div id="bloodDonationDetails"></div>
@@ -1518,8 +1518,9 @@ function gettingCadreDetails(locationId,locationName,constituencyId){
 getUserAccessConstituencyList();
 
  
- $("#ActivityListTest").change(function(){
- 
+ //$("#ActivityListTest").change(function(){
+ function assemblyConsWiseActivitiesCount(){
+	
 	var activityTypeId =$('#activityTypeList').val();
 	var activityLevelId =$('#activityLevelList').val();
 	var ActivityId =$('#ActivityList').val();
@@ -1615,21 +1616,25 @@ getUserAccessConstituencyList();
 				$("#buildAssConsActivity").show();
 			}
     });   
-   });
+ }
    
-$("#showAsmblyData").click(function(){
+$(document).on("click","#showAsmblyData",function(){
 	 $("#buildAssConsActivity").show();
 	 $("#assblyBody").show();
 	 $("#showAsmblyData").hide();
 	 $("#hideAsmblyData").show();
 });
-$("#hideAsmblyData").click(function(){
+$(document).on("click","#hideAsmblyData",function(){
 	 $("#buildAssConsActivity").hide();
 	 $("#assblyBody").hide();
 	 $("#showAsmblyData").show();
 	 $("#hideAsmblyData").hide();
 });
   function buildAsemblyConstWiseActivities(result,levelId){
+	$("#buildAssConsActivity").hide();
+	$("#assblyBody").hide();
+	$("#hideAsmblyData").hide();
+	$("#showAsmblyData").show();
    
 	if(levelId == 3){
 		$("#districtHeadingId").show();
@@ -1640,6 +1645,7 @@ $("#hideAsmblyData").click(function(){
 	}
 	 
     var str ='';
+	var totalCount;
     str+='<table class="table table-bordered table-responsive bg_ff dataTableDiv">';
           str+='<thead>';
             str+='<tr role="row">';
@@ -1648,11 +1654,12 @@ $("#hideAsmblyData").click(function(){
 			else
 				str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">ASSEMBLY CONSTITUENCY </th>';
               //str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">ASSEMBLY CONSTITUENCY </th>';
-              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">TOTAL ACTIVITIES</th>';
-              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >PLANNED ACTIVITIES</th>';
-			  str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center">NOT PLANNED ACTIVITIES</th>';
-              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center"> CONDUCTED ACTIVITIES</th>';
-			  str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >NOT EXECUTED ACTIVITIES</th>';
+             // str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >PLANNED ACTIVITIES</th>';
+			  //str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center">NOT PLANNED ACTIVITIES</th>';
+			   str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center">TOTAL </th>';
+              str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;"  class="text_center"> CONDUCTED </th>';
+			  str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >NOT CONDUCTED </th>';
+			  str+='<th style="background-color: rgb(0, 177, 125); color:#fff;cursor:pointer;" class="text_center" >NOT UPDATED </th>';
             str+='</tr>';
           str+='</thead>';
         str+='<tbody>';
@@ -1660,31 +1667,26 @@ $("#hideAsmblyData").click(function(){
             str+='<tr class="text_center">';
               
                 str+='<td >'+result[i].name+'</td>';
-             
-              if(result[i].totalCount !=null){
-                str+='<td >'+result[i].totalCount+'</td>';
+              total = result[i].conductedCount+result[i].nonConductedCount+result[i].notUpdatedCount;
+             if(total != null && total !=0){
+                str+='<td >'+total+'</td>';
               }else{
-                str+='<td> 0 </td>';
+                str+='<td>'+total+'</td>';
               }
-              if(result[i].plannedCount !=null){
-                str+='<td >'+result[i].plannedCount+'</td>';
-              }else{
-                str+='<td > 0 </td>';
-              }
-			  if(result[i].notPlannedCount !=null){
-                str+='<td >'+result[i].notPlannedCount+'</td>';
-              }else{
-                str+='<td > 0 </td>';
-              }
-              if(result[i].conductedCount !=null){
+              if(result[i].conductedCount != null && result[i].conductedCount != 0){
                 str+='<td >'+result[i].conductedCount+'</td>';
               }else{
-                str+='<td > 0 </td>';
+                str+='<td >'+result[i].conductedCount+'</td>';
               }
-			  if(result[i].nonConductedCount !=null){
+			  if(result[i].nonConductedCount !=null && result[i].nonConductedCount != 0){
                 str+='<td >'+result[i].nonConductedCount+'</td>';
               }else{
-                str+='<td > 0 </td>';
+                str+='<td >'+result[i].nonConductedCount+'</td>';
+              }
+              if(result[i].notUpdatedCount !=null && result[i].notUpdatedCount != 0){
+                str+='<td >'+result[i].notUpdatedCount+'</td>';
+              }else{
+                str+='<td>'+result[i].notUpdatedCount+'</td>';
               }
               str+='</tr>';
           }
@@ -2894,6 +2896,8 @@ var round=0;
 var attributesArr=[];
 function getLocationWiseDetailsForActivity(roundId)
 {
+	assemblyConsWiseActivitiesCount();
+	
 	 $('#conductedDateId,#conductedStatus').css("border-color","grey");
 	$("#chCkBxErrMsgId").html('');
 	if(roundId==0){
@@ -2998,11 +3002,6 @@ function getLocationWiseDetailsForActivity(roundId)
 				 var str='';
 				 	if( result!= null)
 					{
-						$("#buildAssConsActivity").hide();
-						$("#hideAsmblyData").hide();
-						$("#showAsmblyData").show();
-						
-						
 						$("#attributeTypeId").show();
 					
 					if(round==0){
@@ -3122,19 +3121,19 @@ function getLocationWiseDetailsForActivity(roundId)
 							str+='<td> ';
 							str+=' <select id="indivdualStatus" class="updateCls statusCls'+result[i].activityLocatInfoId+'" name="activityVO.activityVoList['+i+'].status" attr_id="'+result[i].activityLocatInfoId+'"> ';
 							if(result[i].conductedDate != null &&result[i].conductedDate.length>0 && result[i].status =='UPDATED'){
-								str+=' <option value="0"> Select Status </option> ';
+								str+=' <option value="Not Updated"> Not Updated </option>'; 
 								str+=' <option value="Conducted" selected="true" > Conducted </option> ';
 								str+=' <option value="Not Conducted" > Not Conducted </option> ';
 								//str+=' <option value="Not Updated"> Not Updated </option> ';
 							}
 							else if((result[i].conductedDate == null || result[i].conductedDate.length<=0) && result[i].status =='UPDATED'){
-								str+=' <option value="0"> Select Status </option> ';
+								str+=' <option value="Not Updated"> Not Updated </option>  ';
 								str+=' <option value="Conducted" > Conducted </option> ';
 								str+=' <option value="Not Conducted"  selected="true"> Not Conducted </option> ';
 								//str+=' <option value="Not Updated"> Not Updated </option> ';
 							}
 							else if( result[i].status =='NOT UPDATED'){
-								str+=' <option value="0"> Select Status </option> ';
+								str+=' <option value="Not Updated"> Not Updated </option>';
 								str+=' <option value="Conducted" > Conducted </option> ';
 								str+=' <option value="Not Conducted" > Not Conducted </option> ';
 								//str+=' <option value="Not Updated"  selected="true"> Not Updated </option> ';
@@ -3482,6 +3481,12 @@ $(document).on("change","#attributeTypeList",function(){
 		 $('#date'+id+'').removeAttr('disabled');
 		setTimeout(function(){ saveActyDetails(id,selectedVal); }, 1000);
 	 }else if(selectedVal=='Not Conducted'){
+		  $('#date'+id+'').val('');
+		  $('#imageCls'+id+'').hide();
+		  $('#date'+id+'').attr('disabled','disabled');
+		 setTimeout(function(){ saveActyDetails(id,selectedVal); }, 1000);
+	 }
+	 else if(selectedVal=='Not Updated'){
 		  $('#date'+id+'').val('');
 		  $('#imageCls'+id+'').hide();
 		  $('#date'+id+'').attr('disabled','disabled');
