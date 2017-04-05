@@ -680,14 +680,16 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		return query.list();       
 	}  
 	
-	public List<Alert> getAlertDetailsOfNewstype(Long alertCategoryType){
+	public List<Alert> getAlertDetailsOfNewstype(Long alertCategoryType,Long alertTypeId){
 		
 		Query query = getSession().createQuery(" select model from Alert model " +
 				"  where " +
-				" model.alertCategoryTypeId = :alertCategoryType " +
+				" model.alertCategoryTypeId = :alertCategoryType" +
+				" and model.alertTypeId = :alertTypeId " +
 				" order by model.updatedTime desc ");
 		
 		query.setParameter("alertCategoryType", alertCategoryType);
+		query.setParameter("alertTypeId", alertTypeId);
 		
 		return query.list();
 		
@@ -4859,7 +4861,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        " EDS.edition_id as edition_id, " +//16
 				        " EDS.edition_alias as edition_alias, " +//17
 				        " A.tv_news_channel_id as tv_news_channel_id, " +//18
-				        " TNC.channel_name as channel_name "); //19
+				        " TNC.channel_name as channel_name," +
+				        " S.state_name  as stateName "); //19
 		queryStr.append(" from alert A ");
 		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N') ");
 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");
@@ -4922,7 +4925,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("edition_id", Hibernate.LONG)//16
 				.addScalar("edition_alias", Hibernate.STRING)//17
 				.addScalar("tv_news_channel_id", Hibernate.LONG)//18
-				.addScalar("channel_name", Hibernate.STRING);//19
+				.addScalar("channel_name", Hibernate.STRING)//19
+				.addScalar("stateName", Hibernate.STRING);//20
 				
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
@@ -5300,7 +5304,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        " EDS.edition_id as edition_id, " +//16
 				        " EDS.edition_alias as edition_alias, " +//17
 				        " A.tv_news_channel_id as tv_news_channel_id, " +//18
-				        " TNC.channel_name as channel_name "); //19
+				        " TNC.channel_name as channel_name," + //19
+				        " S.state_name "); //20
 		queryStr.append(" from alert A ");  
 		queryStr.append(" left outer join tv_news_channel TNC on A.tv_news_channel_id = TNC.tv_news_channel_id ");//
 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");//
@@ -5335,7 +5340,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("edition_id", Hibernate.LONG)//16
 				.addScalar("edition_alias", Hibernate.STRING)//17
 				.addScalar("tv_news_channel_id", Hibernate.LONG)//18
-				.addScalar("channel_name", Hibernate.STRING);//19
+				.addScalar("channel_name", Hibernate.STRING) // 19
+				.addScalar("state_name", Hibernate.STRING);//20
 				
 		
 		if(alertSet != null && alertSet.size() > 0){

@@ -2196,7 +2196,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 							AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
 							alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
 							alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-							//alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+							alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
 							alertAssignedOfficerAction.setAlertStatusId(inputvo.getStatusId());
 							if(i == 0)
 								alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
@@ -2213,7 +2213,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 						AlertAssignedOfficerAction alertAssignedOfficerAction = new AlertAssignedOfficerAction();
 						alertAssignedOfficerAction.setAlertId(inputvo.getAlertId());
 						alertAssignedOfficerAction.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-						//alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
+						alertAssignedOfficerAction.setGovtOfficerId(inputvo.getGovtOfficerId());
 						alertAssignedOfficerAction.setAlertStatusId(inputvo.getStatusId());
 						alertAssignedOfficerAction.setAlertDepartmentCommentId(alertDepartmentComment.getAlertDepartmentCommentId());
 							
