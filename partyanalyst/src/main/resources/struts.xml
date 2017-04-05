@@ -248,6 +248,9 @@
 			
 			<result type="redirect" name="cccDashboardAction">cccDashboardAction.action</result>
       		<result type="redirect" name="departmentDetailsAction">departmentDetailsAction.action</result>
+      		
+      		<result type="redirect" name="alertManagementAction">alertManagementAction.action</result>
+      		<result type="redirect" name="alertUserManagementAction">alertUserManagementAction.action</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
@@ -5716,6 +5719,9 @@
 
       <result type="redirect" name="cccDashboardAction">cccDashboardAction.action</result>
       <result type="redirect" name="departmentDetailsAction">departmentDetailsAction.action</result>
+      
+      <result type="redirect" name="alertManagementAction">alertManagementAction.action</result>
+      <result type="redirect" name="alertUserManagementAction">alertUserManagementAction.action</result>
       
     </action>
 		
@@ -16417,7 +16423,13 @@
 			<result type="json" name="success">
 				<param name="root">status</param>
 			</result>
-	    </action>     
+	    </action>    
+	    <action name="alertManagementAction" class="alertManagementSystemAction">
+	  		<result name="success">/jsp/newAlertManagementSystem.jsp</result>
+		</action> 
+		<action name="alertUserManagementAction" class="alertManagementSystemAction" method="getDepartmentDetails">
+	  		<result name="success">/jsp/newAlertUserManagement.jsp</result>
+		</action> 
 		
 		<action name="getLagDaysInsuranceComplaintsCountsAction" class="coreDashboardAction" method="getLagDaysInsuranceComplaintsCounts">
 			<result type="json" name="success">

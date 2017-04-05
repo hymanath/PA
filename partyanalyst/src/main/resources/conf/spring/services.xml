@@ -4151,5 +4151,7 @@
 		<property name="adminHouseMemberDAO" ref="adminHouseMemberDAO"></property>
 		<property name="adminHouseSessionDayDAO" ref="adminHouseSessionDayDAO"></property>
 	</bean>
+	<bean name="alertManagementSystemService" class="com.itgrids.partyanalyst.service.impl.AlertManagementSystemService">
+	</bean>
 </beans>			
 	
