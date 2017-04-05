@@ -723,7 +723,7 @@ $(document).on("click",".meetingLiCls",function(){
 			},500);
 		}
 	});
-	$(document).on("click",".meetingsIconExpand",function(){
+	/* $(document).on("click",".meetingsIconExpand",function(){
 		$(".dateRangePickerClsForMeetings").toggleClass("hide");
 		getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
 		$(".meetingHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
@@ -822,7 +822,7 @@ $(document).on("click",".meetingLiCls",function(){
 		}
 	
 		
-	});
+	}); */
 	$(document).on("click",".stateLevelMeetingsExpand",function(){
 		$(".stateGeneralMeeting").find("i").removeClass("glyphicon-resize-small").addClass("glyphicon-fullscreen");
 		var mainMeetingTypeId = $(this).attr("attr_main_type_meeting_id");
@@ -6908,4 +6908,3 @@ function getExtension(path) {
 function onchangeFunction(){
 	 $("#commentsBlock").html('');
 }
-

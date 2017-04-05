@@ -239,7 +239,7 @@
 			getConstituencyImpactandItsSubLevelAlert("Decending","0","0");
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 	}
-	$(document).on("click",".alertsIconExpand",function(){
+	/* $(document).on("click",".alertsIconExpand",function(){
 		$(".dateRangePickerClsForAlert").toggleClass("hide");
 		$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".alertsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
@@ -317,7 +317,7 @@
 				$(".moreBlockEMN ,.newEmnHideCls,.dateRangePickerClsForEmn,.newsComparisonUl").hide();
 				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}
-		});
+		}); */
 	$(document).on("click",".alertSettingCloseCls",function(){      
 		$(".specialAlertDropDown").toggle();                    
 	});

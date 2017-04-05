@@ -104,7 +104,7 @@
 		$(this).closest(".newsBlockDropDown").hide();
 	});
 	
-	$(document).on("click",".newsIconExpand",function(){
+	/* $(document).on("click",".newsIconExpand",function(){
 		$(".dateRangePickerClsForNews").toggleClass("hide");
 		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
 		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
@@ -185,7 +185,7 @@
 				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		}
 	
-	});
+	}); */
 	
 	//More Block Icon Click
 	$(document).on("click",".morenewsBlocksIcon",function(){

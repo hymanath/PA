@@ -8,7 +8,7 @@
 		cadreInsuranceClickActions();
 		if($("[expand-icon='cadreInsurance']").hasClass("glyphicon-resize-small"))
 		{
-			alert(1)
+			//alert(1)
 		}
 	}
 	function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions)
@@ -16,6 +16,7 @@
 		'use strict';
 		
 		$('#'+id).highcharts({
+			colors:['#8D8057','#00B17D'],
 			chart: type,
 			title: {
 				text: null
@@ -27,15 +28,35 @@
 			yAxis: yAxis,
 			tooltip: {
 				enabled:true,
-				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.2f}%</b><br/>'
+				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>'
 			},
 			plotOptions: plotOptions,
 			legend: legend,
 			series: data
 		});
 	}
+	
 	function cadreInsuranceClickActions()
 	{
+		$(".cadreInsuranceCategoryStatus,.cadreInsuranceCategoryStatusTs").hide();
+		$("#dateRangeIdCadreInsurance").daterangepicker({
+			opens: 'left',
+			startDate: cadreInsuranceFDate,
+			endDate: cadreInsuranceTDate,
+			locale: {
+			  format: 'DD/MM/YYYY'
+			},
+			ranges: {
+			   'Today' : [moment(), moment()],
+			   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+			   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+			   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+			   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+			   'This Month': [moment().startOf('month'), moment()],
+			   'This Year': [moment().startOf('Year'), moment()]
+			}
+		});
 		$(document).on("click",".cadreInsuranceCDate li",function(){
 			var date = $(this).html();
 			var momentDate = '';
@@ -72,7 +93,104 @@
 			var status = $this.attr("attr_status");
 			var issueType = $this.attr("attr_issueType");
 			var companyid = $this.attr("attr_companyId");
+			var statusName = $this.attr("attr_name");
+			$("#insuranceHeadingId").html(statusName);
+			$('#insuranceModal').modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
 			getInsuraceStatusWiseComplaintsDetails(status,issueType,companyid);
+			getLagDaysInsuranceComplaintsCounts(status,issueType,companyid);
+			
+			getStatusTrackingDetailsOfInsuranceByComplaint(41635);
+			getRemarksByComplaint(41635);
+			getComplaintScanCopyDetails(41635);
+			getComplaintResponsesByComplaint(41635);
+		});
+		$(document).on("click",".moreCadreInsuranceIcon",function(){
+			$(".cadreInsuranceDetailedblock,.cadreInsuranceLi").show();
+			$(".cadreInsuranceComparisonblock").hide();
+			getInsuranceCompanyWiseOverviewAndStatusDetails();
+			getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
+			getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
+			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','desc');
+			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','desc');
+		});
+		$(document).on("click",".cadreInsuranceLi li",function(){
+			var blockName = $(this).html();
+			if(blockName == "Detailed")
+			{
+				getInsuranceCompanyWiseOverviewAndStatusDetails();
+				getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
+				getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
+				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','desc');
+				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','desc');
+				$(".cadreInsuranceDetailedblock").show();
+				$(".cadreInsuranceComparisonblock").hide();
+			}else if(blockName == "Comparison")
+			{
+				getAllItsSubUserTypeIdsByParentUserTypeForInsurance();
+				$(".cadreInsuranceComparisonblock").show();
+				$(".cadreInsuranceDetailedblock").hide();
+			}
+		});
+		$(document).on("click",".cadeInsuranceCat",function(){
+			var status = $(this).attr("attr_status");
+			if(status == 'categoryStatus')
+			{
+				$(".cadreInsuranceCategory").hide();
+				$(".cadreInsuranceCategoryStatus").show();
+				$("#distGraphHeadingId").html("andhra pradesh district wise - status overview");
+				$("#constGraphHeadingId").html("andhra pradesh constituency wise - status overview");
+				getDistrictWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',0)
+				getConstituencyWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',0);
+			}else if(status == 'category')    
+			{
+				$(".cadreInsuranceCategory").show();
+				$(".cadreInsuranceCategoryStatus").hide();
+				$("#distGraphHeadingId").html("andhra pradesh district wise - category overview");
+				$("#constGraphHeadingId").html("andhra pradesh constituency wise - category overview");
+				getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
+				getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
+			}
+		});
+		$(document).on("click",".cadeInsuranceCatTs",function(){
+			var status = $(this).attr("attr_status");
+			if(status == 'category')
+			{
+				$(".cadreInsuranceCategoryTs").show();
+				$(".cadreInsuranceCategoryStatusTs").hide();
+				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','asc');
+				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','asc');
+			}else if(status == 'categoryStatus')
+			{
+				$(".cadreInsuranceCategoryTs").hide();
+				$(".cadreInsuranceCategoryStatusTs").show();
+				getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','asc');
+				getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','asc');
+			}
+		});
+		/*swadhin*/
+		$(".showHideConstNoCls").hide(); 
+		$(document).on("change","#locationListForCategoryId",function(){
+			var locationId = $("#locationListForCategoryId").val();
+			getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',locationId);
+		});
+
+		$(document).on("change","#locationListForStatusId",function(){
+			var locationId = $("#locationListForStatusId").val();
+			getDistrictWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',locationId);    
+		});
+
+		$(document).on("change","#constListForCategoryId",function(){
+			var locationId = $("#constListForCategoryId").val();
+			getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',locationId);
+		});
+
+		$(document).on("change","#constListForStatusId",function(){
+			var locationId = $("#constListForStatusId").val();
+			getConstituencyWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',locationId);
 		});
 	}
 	function getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails()
@@ -208,29 +326,240 @@
 	}
 	function buildInsuraceStatusWiseComplaintsDetails(result)
 	{
-		
+		var str='';
+		str+='<table class="table" style="border:1px solid #ddd" id="InsuraceStatusWiseComplaintsDetailsDataTab">';
+			str+='<thead class="text-capital">';
+				str+='<th>cid</th>';
+				str+='<th>person details</th>';
+				str+='<th>subject</th>';
+				str+='<th>description</th>';
+				str+='<th>type of issue</th>';
+				str+='<th>status</th>';
+				str+='<th>posted date</th>';
+				str+='<th>last updated date</th>';
+				str+='<th>last comment</th>';
+			str+='</thead>';
+			for(var i in result)
+			{
+				str+='<tr>';
+					if(result != null)
+					{
+						str+='<td>'+result[i].complaintId+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}
+					
+					str+='<td>';
+						if(result != null)
+						{
+							str+='<p>N:'+result[i].name+'</p>';
+						}else{
+							str+='<p>N: -</p>';
+						}
+						if(result != null)
+						{
+							str+='<p>M: '+result[i].mobileNo+'</p>';
+						}else{
+							str+='<p>M: -</p>';
+						}
+						if(result != null)
+						{
+							str+='<p>D: '+result[i].districtName+'</p>';
+						}else{
+							str+='<p>D: -</p>';
+						}
+						if(result != null)
+						{
+							str+='<p>C: '+result[i].constituencyName+'</p>';
+						}else{
+							str+='<p>C: -</p>';
+						}
+						if(result != null)
+						{
+							str+='<p>M: '+result[i].mandalName+'</p>';
+						}else{
+							str+='<p>M: -</p>';
+						}
+						if(result != null)
+						{
+							str+='<p>V: '+result[i].villageName+'</p>';
+						}else{
+							str+='<p>V: -</p>';
+						}
+						
+						
+					str+='</td>';
+						if(result != null)
+						{
+							str+='<td>'+result[i].subject+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result != null)
+						{
+							str+='<td>'+result[i].description+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result != null)
+						{
+							str+='<td>'+result[i].typeOfIssue+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result != null)
+						{
+							str+='<td>'+result[i].status+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result != null)
+						{
+							str+='<td>'+result[i].postedDate+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result != null)
+						{
+							str+='<td>'+result[i].updatedDate+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result != null)
+						{
+							str+='<td>'+result[i].comment+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+				str+='</tr>';
+			}
+		str+='</table>';
 		$("#insuraceStatusWiseComplaintsDetails").html(str);
-		
+		$("#InsuraceStatusWiseComplaintsDetailsDataTab").dataTable();
+	}
+	function getLagDaysInsuranceComplaintsCounts(status,issueType,companyid)
+	{
+		$("#lagDaysInsuranceComplaintsCounts").html(spinner);
+		var jsObj={ 
+			activityMemberId: 44, 
+			cadreYearId		: 4, 
+			stateId 		: 1, 
+			statusStr		: status, 
+			companyId		: companyid, 
+			issueType		: issueType
+		};
+		$.ajax({  
+			type : 'GET',
+			url : 'getLagDaysInsuranceComplaintsCountsAction.action',  
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)} 
+		}).done(function(result){
+			console.log(result)
+			if(result != null)
+			{
+				buildInsuraceStatusWiseComplaintsDetails(result);
+			}else{
+				$("#lagDaysInsuranceComplaintsCounts").html('NO DATA');
+			}
+		});
+	}
+	function buildInsuraceStatusWiseComplaintsDetails(result)
+	{
+		var str='';
+		str+='<table class="table" style="background-color:#F2F2F2">';
+			str+='<tr>';
+				str+='<td>';
+					str+='<h3>'+result.todayCount+'</h3>';
+					str+='<p class="text-capitalize">today</p>';
+				str+='</td>';
+				str+='<td>';
+					str+='<h3>'+result.weekCount+'</h3>';
+					str+='<p class="text-capitalize">week</p>';
+				str+='</td>';
+				str+='<td>';
+					str+='<h3>'+result.monthCount+'</h3>';
+					str+='<p class="text-capitalize">month</p>';
+				str+='</td>';
+				str+='<td>';
+					str+='<h3>'+result.threeMnthsCount+'</h3>';
+					str+='<p class="text-capitalize">3 month</p>';
+				str+='</td>';
+				str+='<td>';
+					str+='<h3>'+result.sixMnthsCount+'</h3>';
+					str+='<p class="text-capitalize">6 month</p>';
+				str+='</td>';
+				str+='<td>';
+					str+='<h3>'+result.nineMonthsCount+'</h3>';
+					str+='<p class="text-capitalize">9 month</p>';
+				str+='</td>';
+				str+='<td>';
+					str+='<h3>'+result.overAllCount+'</h3>';
+					str+='<p class="text-capitalize">all time</p>';
+				str+='</td>';
+			str+='</tr>';
+		str+='</table>';
+		$("#lagDaysInsuranceComplaintsCounts").html(str);
 	}
 	
-	/* 2nd block graph code 
-	/* var data = 
-			series: [{
-				name: 'Intimations',
-				data: [5, 3]
-			}, {
-				name: 'Forwarded',
-				data: [2, 2]
-			}, {
-				name: 'settled',
-				data: [3, 4]
-			}, {
-				name: 'rejected',
-				data: [3, 4]
-			}] 
-			
-			
-		var id = '';
+	
+	  //getUserTypeWiseTotalCadreInsuranceComplainctCnt();
+	function getUserTypeWiseTotalCadreInsuranceComplainctCnt(){
+		$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html(spinner);
+		var jsObj ={ 
+				activityMemberId : 44,//globalActivityMemberId
+				userTypeId : 2,//globalUserTypeId
+				stateId : globalStateIdForCadreInsurance,
+				fromDate : "",
+				toDate : "",
+				cadreEnrollmentYearId :0
+			}
+		$.ajax({
+			type : 'POST',
+			url : 'getUserTypeWiseTotalCadreInsuranceComplainctCntAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0)
+			{
+				buildUserTypeWiseTotalCadreInsuranceComplainctCnt(result);
+			}else{
+				$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html("NO DATA AVAILABLE");
+			}
+		});
+		
+	} 
+	function buildUserTypeWiseTotalCadreInsuranceComplainctCnt(result)
+	{
+		var str='';
+		str+='<div class="row">';
+		for(var i in result){
+			var candidateList = result[i];
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<h4 class="panel-title">'+candidateList[0].userType+'</h4>';
+			str+='<ul class="list-inline">';
+			for(var j in candidateList)
+			{
+				if(j != 4)
+				{
+					str+='<li style="width:20%;border-right:1px solid #ddd;">';
+				}else{
+					str+='<li style="width:20%;">';
+				}
+				
+					str+='<p style="font-size:10px">'+candidateList[j].name+'</p>';
+					str+='<div id="userTypeWiseTotalCadreInsuranceComplainctCntGraph'+i+''+j+'" style="height:200px;"></div>';
+				str+='</li>';
+				if(j == 4)
+				{
+					break;
+				}
+			}
+			str+='</ul>';
+			str+='</div>';
+		}
+		str+='</div>';
+		$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html(str);
+		
 		var type = {
 			type: 'column',
 			backgroundColor:'transparent'
@@ -246,7 +575,7 @@
 				text: null
 			},
 			stackLabels: {
-					enabled: true,
+				enabled: false,
 				style: {
 					fontWeight: 'bold',
 					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
@@ -260,30 +589,324 @@
 			categories: ['Death', 'Hospital']
 		}
 		
-		highcharts(id,type,xAxis,yAxis,legend,data); */
-	
-      
-	  //getUserTypeWiseTotalCadreInsuranceComplainctCnt();
-	 function getUserTypeWiseTotalCadreInsuranceComplainctCnt(){
-		  var jsObj ={ 
-		             activityMemberId : 44,//globalActivityMemberId
-					 userTypeId : 2,//globalUserTypeId
-					 stateId : globalStateIdForCadreInsurance,
-					 fromDate : "",
-					 toDate : "",
-					 cadreEnrollmentYearId :0
-				  }
-		$.ajax({
-			type : 'POST',
-			url : 'getUserTypeWiseTotalCadreInsuranceComplainctCntAction.action',
-			dataType : 'json',
-			data : {task:JSON.stringify(jsObj)}
-		}).done(function(result){
-		   console.log(result);
-		});
+		var plotOptions =  {
+             series: {
+				stacking: 'normal'
+			}
+        }
 		
-	} 
-	
+		
+		for(var i in result){
+			var candidateList = result[i];
+			for(var j in candidateList)
+			{	
+				var mainJosnObjArr = [];
+				for(var k in candidateList[j].subList)
+				{
+					var intimationsArr = [];
+					var forwardedArr = [];
+					var settledArr = [];
+					var rejectedArr = [];
+					for(var l in candidateList[j].subList[k].subList)
+					{
+						
+						if(candidateList[j].subList[k].subList[l].id == 1 )
+						{
+							intimationsArr.push({y:candidateList[j].subList[0].subList[l].totalCount});
+							intimationsArr.push({y:candidateList[j].subList[1].subList[l].totalCount});
+						}else if(candidateList[j].subList[k].subList[l].id == 2 )
+						{
+							forwardedArr.push({y:candidateList[j].subList[0].subList[l].totalCount});
+							forwardedArr.push({y:candidateList[j].subList[1].subList[l].totalCount});
+						}else if(candidateList[j].subList[k].subList[l].id == 3 )
+						{
+							settledArr.push({y:candidateList[j].subList[0].subList[l].totalCount});
+							settledArr.push({y:candidateList[j].subList[1].subList[l].totalCount});
+						}else if(candidateList[j].subList[k].subList[l].id == 4 )
+						{
+							rejectedArr.push({y:candidateList[j].subList[0].subList[l].totalCount});
+							rejectedArr.push({y:candidateList[j].subList[1].subList[l].totalCount});
+						}
+					}
+					
+					 
+				}
+				mainJosnObjArr.push({name:'Intimation',data:intimationsArr,color:"#306F8F"});  
+				mainJosnObjArr.push({name:'Forwarded',data:forwardedArr,color:"#F39C12"});  
+				mainJosnObjArr.push({name:'Settled',data:settledArr,color:"#2DCC70"});  
+				mainJosnObjArr.push({name:'Rejected',data:rejectedArr ,color:"#E74B3B"});  
+				var id = 'userTypeWiseTotalCadreInsuranceComplainctCntGraph'+i+''+j+'';
+				highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+				if(j == 4)
+				{
+					break;
+				}
+			}
+			
+		}
+	}
+	 function getStatusTrackingDetailsOfInsuranceByComplaint(complaintId)
+		{
+			var jsObj={ 
+				complaintId		: complaintId
+			};
+			$.ajax({  
+				type : 'GET',
+				url : 'getStatusTrackingDetailsOfInsuranceByComplaintAction.action',  
+				dataType : 'json',
+				data : {task :JSON.stringify(jsObj)} 
+			}).done(function(result){
+				console.log(result)
+				
+			});
+		}
+		
+		function getComplaintScanCopyDetails(complaintId)
+		{
+			var jsObj={ 
+				complaintId		: complaintId
+			};
+			$.ajax({  
+				type : 'GET',
+				url : 'getComplaintScanCopyDetailsAction.action',  
+				dataType : 'json',
+				data : {task :JSON.stringify(jsObj)} 
+			}).done(function(result){
+				console.log(result)
+				
+			});
+		}
+		
+		function getRemarksByComplaint(complaintId)
+		{
+			var jsObj={ 
+				complaintId		: complaintId
+			};
+			$.ajax({  
+				type : 'GET',
+				url : 'getRemarksByComplaintAction.action',  
+				dataType : 'json',
+				data : {task :JSON.stringify(jsObj)} 
+			}).done(function(result){
+				console.log(result)
+				
+			});
+		}
+		
+		function getComplaintResponsesByComplaint(complaintId)
+		{
+			var jsObj={ 
+				complaintId		: complaintId
+			};
+			$.ajax({  
+				type : 'GET',
+				url : 'getComplaintResponsesByComplaintAction.action',  
+				dataType : 'json',
+				data : {task :JSON.stringify(jsObj)} 
+			}).done(function(result){
+				console.log(result)
+				
+			});
+		}
+		
+		function getInsuranceCompanyWiseOverviewAndStatusDetails()
+		{
+			$("#insuranceCompanyWiseOverviewAndStatusDetails").html(spinner);
+			var jsObj={ 
+				activityMemberId: 44, 
+				cadreYearId		: 4, 
+				fromDateStr 	: cadreInsuranceFDate, 
+				toDateStr		: cadreInsuranceTDate
+			};
+			$.ajax({  
+				type : 'GET',
+				url : 'getInsuranceCompanyWiseOverviewAndStatusDetailsAction.action',  
+				dataType : 'json',
+				data : {task :JSON.stringify(jsObj)} 
+			}).done(function(result){
+				if(result != null && result.length > 0)
+				{
+					buildInsuranceCompanyWiseOverviewAndStatusDetails(result);
+				}else{
+					$("#insuranceCompanyWiseOverviewAndStatusDetails").html("NO DATA AVAILABLE");
+				}
+				
+			});
+		}
+		function buildInsuranceCompanyWiseOverviewAndStatusDetails(result)
+		{
+			var str='';
+			str+='<div class="row">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+					str+='<h4 class="panel-title text-capital">overview</h4>';
+					str+='<div id="overviewInsurance" style="height:300px"></div>';
+				str+='</div>';
+				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+					str+='<h4 class="panel-title text-capital">hospitalization</h4>';
+					str+='<div id="hospitalizationInsurance" style="height:300px"></div>';
+				str+='</div>';
+				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+					str+='<h4 class="panel-title text-capital">death</h4>';
+					str+='<div id="deathInsurance" style="height:300px"></div>';
+				str+='</div>';
+			str+='</div>';
+			
+			$("#insuranceCompanyWiseOverviewAndStatusDetails").html(str);
+			
+			var overviewList = []
+			var namesArr = [];
+			var deathArray = []
+			var hospitalArray = []
+			if(result[0].overViewList != null && result[0].overViewList.length > 0)
+			{
+				for(var i in result[0].overViewList)
+				{
+					
+					hospitalArray.push({"y":result[0].overViewList[i].hospitalizationCount})
+					deathArray.push({"y":result[0].overViewList[i].deathCount})
+					var Obj = {
+						name: 'Death',
+						data: deathArray
+					}
+					var Obj1 = {
+						name: 'Hospitalization',
+						data: hospitalArray
+					}
+					namesArr.push(result[0].overViewList[i].name);
+				}
+				overviewList.push(Obj);
+				overviewList.push(Obj1);
+			}
+			
+			/* Overview Insurance*/
+			var data = overviewList
+			var id = 'overviewInsurance';
+			var type = {
+				type: 'bar',
+				backgroundColor:'transparent'
+			}
+			var legend = {
+				enabled: false,
+			}
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				stackLabels: {
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					formatter: function() {
+						return  (this.total)+'-'+(this.extra);
+					}
+				}
+			}
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: namesArr
+			}
+			var plotOptions =  {
+	             series: {
+					stacking: 'normal'
+				}
+	        }
+			
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions); 
+			/* Deaths Insurance*/
+			var deathList = []
+			var namesArr1 = [];
+			var intimationsArr = []
+			var forwardedArr = []
+			var settledArr = []
+			var rejectedArr = []
+			if(result[0].deathList != null && result[0].deathList.length > 0)
+			{
+				for(var i in result[0].deathList)
+				{
+					
+					intimationsArr.push({"y":result[0].deathList[i].subList[0].count,color:"#306F8F"})
+					forwardedArr.push({"y":result[0].deathList[i].subList[1].count,color:"#F39C12"})
+					settledArr.push({"y":result[0].deathList[i].subList[2].count,color:"#2DCC70"})
+					rejectedArr.push({"y":result[0].deathList[i].subList[3].count,color:"#E74B3B"})
+					var Obj = {
+						name: 'Intimation',
+						data: intimationsArr
+					}
+					var Obj1 = {
+						name: 'Forwarded',
+						data: forwardedArr
+					}
+					var Obj2 = {
+						name: 'Settled',
+						data: settledArr
+					}
+					var Obj3 = {
+						name: 'Rejected',
+						data: rejectedArr
+					}
+					namesArr1.push(result[0].deathList[i].name);
+				}
+				deathList.push(Obj);
+				deathList.push(Obj1);
+				deathList.push(Obj2);
+				deathList.push(Obj3);
+			}
+			
+			var data1 = deathList;
+			var id1 = 'deathInsurance';
+			
+			highcharts(id1,type,xAxis,yAxis,legend,data1,plotOptions); 
+			
+			/* Hospitalization Insurance*/
+			var hospitalizationList = []
+			var intimationsArr1 = []
+			var forwardedArr1 = []
+			var settledArr1 = []
+			var rejectedArr1 = []
+			if(result[0].hospitalizationList != null && result[0].hospitalizationList.length > 0)
+			{
+				for(var i in result[0].hospitalizationList)
+				{
+					intimationsArr1.push({"y":result[0].hospitalizationList[i].subList[0].count,color:"#306F8F"})
+					forwardedArr1.push({"y":result[0].hospitalizationList[i].subList[1].count,color:"#F39C12"})
+					settledArr1.push({"y":result[0].hospitalizationList[i].subList[2].count,color:"#2DCC70"})
+					rejectedArr1.push({"y":result[0].hospitalizationList[i].subList[3].count,color:"#E74B3B"})
+					var Obj = {
+						name: 'Intimation',
+						data: intimationsArr1
+					}
+					var Obj1 = {
+						name: 'Forwarded',
+						data: forwardedArr1
+					}
+					var Obj2 = {
+						name: 'Settled',
+						data: settledArr1
+					}
+					var Obj3 = {
+						name: 'Rejected',
+						data: rejectedArr1
+					}
+					namesArr1.push(result[0].hospitalizationList[i].name);
+				}
+				hospitalizationList.push(Obj);
+				hospitalizationList.push(Obj1);
+				hospitalizationList.push(Obj2);
+				hospitalizationList.push(Obj3);
+			}
+			
+			var data2 = hospitalizationList;
+			var id2 = 'hospitalizationInsurance';
+			
+			highcharts(id2,type,xAxis,yAxis,legend,data2,plotOptions); 
+		}
 	/* Comparison Block Start */
 	
 	//getAllItsSubUserTypeIdsByParentUserTypeForInsurance(); default call
@@ -314,10 +937,10 @@
 		$("#"+removeSelected).closest('.showHideTr').hide();
 	}
 	function getAllItsSubUserTypeIdsByParentUserTypeForInsurance(){
-	     $("#childUserTypeDetailsDivForCadreInsurance").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#cadreInsuranceChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#candidateWiseCadreInsuranceDeathDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-		 $("#candidateWiseCadreInsuranceHospDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	     $("#childUserTypeDetailsDivForCadreInsurance").html(spinner);
+		 $("#cadreInsuranceChildActivityMemberDivId").html(spinner);
+		 $("#candidateWiseCadreInsuranceDeathDtlsDivId").html(spinner);
+		 $("#candidateWiseCadreInsuranceHospDtlsDivId").html(spinner);
 		var jsObj = {parentUserTypeId : globalUserTypeId}
 		$.ajax({
 			type : 'POST',
@@ -353,10 +976,10 @@
 	function getSelectedChildMemberCadreInsuranceComplainctCnt(firstChildUserTypeIdString,childUserType){
 	   $("#DeathHeadingId").hide();
 	   $("#HospitalizationHeadingId").hide();
-	   $("#cadreInsuranceChildActivityMemberDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   $("#userTypeWiseChildDtlsTabForCadreInsuranceDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   $("#candidateWiseCadreInsuranceDeathDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-	   $("#candidateWiseCadreInsuranceHospDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	   $("#cadreInsuranceChildActivityMemberDivId").html(spinner);
+	   $("#userTypeWiseChildDtlsTabForCadreInsuranceDivId").html(spinner);
+	   $("#candidateWiseCadreInsuranceDeathDtlsDivId").html(spinner);
+	   $("#candidateWiseCadreInsuranceHospDtlsDivId").html(spinner);
 	  var childUserTypeIdsArray = firstChildUserTypeIdString.split(",");
 	  var parentActivityMemberId = globalActivityMemberId;
         var jsObj = { 
@@ -440,7 +1063,7 @@ function buildChildTypeMembersForInsuranceReslt(result,childUserType){
 	 str+='</div> ';
     str+=' </li> ';  
 	rank=rank+1;
-   }
+   }     
    $("#cadreInsuranceChildActivityMemberDivId").html(str);
    $(".insuranceSlickPanelSlider").slick({
 			 slide: 'li',
@@ -488,7 +1111,7 @@ function buildChildTypeMembersForInsuranceReslt(result,childUserType){
  }
 function getDirectChildMemberCadreInsuranceComplainctCnt(activityMemberId,userTypeId,selectedMemberName,selectedUserType,childActivityMemberDivId){
       $("#"+childActivityMemberDivId).show();
-      $("#"+childActivityMemberDivId).html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+      $("#"+childActivityMemberDivId).html(spinner);
 	  var childUserTypeIdsArray = [];
 	   childUserTypeIdsArray.push(userTypeId);
 	   var parentActivityMemberId = activityMemberId;
@@ -628,8 +1251,8 @@ function buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,
 function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType){
 	        $("#DeathHeadingId").hide();
 			$("#HospitalizationHeadingId").hide();
-	        $("#candidateWiseCadreInsuranceDeathDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
-			$("#candidateWiseCadreInsuranceHospDtlsDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
+	        $("#candidateWiseCadreInsuranceDeathDtlsDivId").html(spinner);
+			$("#candidateWiseCadreInsuranceHospDtlsDivId").html(spinner);
 	        var jsObj = { 
 					   activityMemberId : activityMemberId,
 					   stateId : globalStateIdForCadreInsurance,           
@@ -681,7 +1304,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 						 }
 				   } 
 				 }
-			 }
+			 } 
 		       var mainJosnObjArr = [];
 			   if(intimationsArr != null && intimationsArr.length > 0){
 				mainJosnObjArr.push({name:'INTIMATIONS',data:intimationsArr,color:"#306F8F"});  
@@ -690,14 +1313,14 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				mainJosnObjArr.push({name:'FORWARDED',data:forwardedArr,color:"#F39C12"});  
 			  }
 			  if(settledArr != null && settledArr.length > 0){
-				mainJosnObjArr.push({name:'SETTLED',data:settledArr,color:"#5CD48F"});  
+				mainJosnObjArr.push({name:'SETTLED',data:settledArr,color:"#2DCC70"});  
 			  }
 			  if(rejectedArr != null && rejectedArr.length > 0){
 				mainJosnObjArr.push({name:'REJECTED',data:rejectedArr,color:"#E74B3B"});  
 			  }
 			 buildHighCandidateDtlsHighchart(mainJosnObjArr,locationName,divId,type,headingId,totalComplaintCnt);
    }
-   function buildHighCandidateDtlsHighchart(mainJosnObjArr,locationName,divId,type,headingId,totalComplaintCnt){
+	function buildHighCandidateDtlsHighchart(mainJosnObjArr,locationName,divId,type,headingId,totalComplaintCnt){
 	    if(mainJosnObjArr != null && mainJosnObjArr.length > 0){
 			var str='';
 			  if(type="Death"){
@@ -708,9 +1331,11 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 			  
 			 $("#"+headingId).html(str);
 			 $("#"+headingId).show();
-					 $("#"+divId).highcharts({
+			 
+				$("#"+divId).highcharts({
 					chart: {
-						type: 'bar'
+						type: 'bar',
+						backgroundColor:'transparent'
 					},
 					title: {
 						text: ''
@@ -788,153 +1413,777 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
    }
    /* Comparison Block End */
    
- //getDistrictWiseThenCategoryWiseInsuranceMemberCount();      
-   function getDistrictWiseThenCategoryWiseInsuranceMemberCount(){
-   	var jsObj = { 
-   					   activityMemberId : 59,                               
-   					   userTypeId : 6,                                   
-   					   stateId :globalStateIdForCadreInsurance,
-   					   cadreEnrollmentYearId : 0,           
-   					   locationId: 0,        
-   					   status :	"",
-   					   category : "", 
-   					   fromDateStr : "",
-   					   toDateStr : "",
-   					   sortingCondition : "name",  
-   					   order : "asc"                  
-   				  };
-   	console.log(jsObj);    
-   	$.ajax({
+	
+   function getDistrictWiseThenCategoryWiseInsuranceMemberCount(sortingCondition,order,locationId){
+		$("#districtWiseThenCategoryWiseInsuranceMemberCount").html(spinner);
+		var jsObj = {
+			activityMemberId : 59,                               
+			userTypeId : 6,                                   
+			stateId :globalStateIdForCadreInsurance,
+			cadreEnrollmentYearId : 0,           
+			locationId: locationId,        
+			status :	"",
+			category : "", 
+			fromDateStr : "",
+			toDateStr : "",
+			sortingCondition : sortingCondition,  
+			order : order                  
+		};
+		$.ajax({
    			type : 'POST',
    			url : 'getDistrictWiseThenCategoryWiseInsuranceMemberCountAction.action',
    			dataType : 'json',  
-   			data : {task:JSON.stringify(jsObj)}
-   	}).done(function(result){
-   			console.log(result);
-   	});
+   			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){
+			if(result != null && result.length > 0)
+			{
+				$("#locationListForCategoryId").empty();           
+				$("#locationListForCategoryId").append('<option value="-1">Select Location</option>'); 
+				$("#locationListForCategoryId").append('<option value="0">All</option>');				
+				$.each(result, function(index) {     
+					$("#locationListForCategoryId").append('<option value="'+result[index].id+'">'+result[index].name+'</option>');  
+				});
+				buildDistrictWiseThenCategoryWiseInsuranceMemberCount(result);
+				   
+			}else{
+				$("#districtWiseThenCategoryWiseInsuranceMemberCount").html("NO DATA Available");
+			}
+		});
    }
-   //getConstituencyWiseThenCategoryWiseInsuranceMemberCount();     
-   function getConstituencyWiseThenCategoryWiseInsuranceMemberCount(){
-   	var jsObj = { 
-   					   activityMemberId : 44,                                       
-   					   userTypeId : 2,                
-   					   stateId :globalStateIdForCadreInsurance,
-   					   cadreEnrollmentYearId : 0,           
-   					   locationId: 0,                               
-   					   status :	"",
-   					   category : "", 
-   					   fromDateStr : "",
-   					   toDateStr : "",
-   					   sortingCondition : "insuredMember",
-   					   order : "desc"
-   				  };
-   	console.log(jsObj);                                    
-   	$.ajax({
+   function buildDistrictWiseThenCategoryWiseInsuranceMemberCount(result)
+   {
+		var overviewList = []
+		var namesArr = [];
+		var deathArray = []
+		var hospitalArray = []
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+			{
+				
+				hospitalArray.push({"y":result[i].hospitalizationCount})
+				deathArray.push({"y":result[i].deathCount})
+				var Obj = {
+					name: 'Death',
+					data: deathArray
+				}
+				var Obj1 = {
+					name: 'Hospitalization',
+					data: hospitalArray
+				}
+				namesArr.push(result[i].name);
+			}
+			overviewList.push(Obj);
+			overviewList.push(Obj1);
+		}
+		
+		var data = overviewList
+		var id = 'districtWiseThenCategoryWiseInsuranceMemberCount';
+		var type = {
+			type: 'bar',
+			backgroundColor:'transparent'
+		}
+		var legend = {
+			enabled: false,
+		}
+		var yAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: null
+			},
+			stackLabels: {
+				enabled: true,
+				style: {
+					fontWeight: 'bold',
+					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+				},
+				formatter: function() {
+					return  (this.total)+'-'+(this.extra);
+				}
+			}
+		}
+		var xAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: namesArr
+		}
+		var plotOptions =  {
+			 series: {
+				stacking: 'normal'
+			}
+		}
+		
+		highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
+   }
+   function getConstituencyWiseThenCategoryWiseInsuranceMemberCount(sortingCondition,order,locationId)
+   {
+		$("#constituencyWiseThenCategoryWiseInsuranceMemberCount").html(spinner);
+		var jsObj = { 
+			activityMemberId : 44,                                       
+			userTypeId : 2,                
+			stateId :globalStateIdForCadreInsurance,
+			cadreEnrollmentYearId : 0,           
+			locationId: locationId,                               
+			status :	"",
+			category : "", 
+			fromDateStr : "",
+			toDateStr : "",
+			sortingCondition : sortingCondition,
+			order : order
+		};
+		$.ajax({
    			type : 'POST',
    			url : 'getConstituencyWiseThenCategoryWiseInsuranceMemberCountAction.action',
    			dataType : 'json',  
    			data : {task:JSON.stringify(jsObj)}
-   	}).done(function(result){
-   			console.log(result);
-   	});
-   } 
-   //getDistrictWiseThenStatusWiseInsuranceMemberCount();      
-   function getDistrictWiseThenStatusWiseInsuranceMemberCount(){
-   	var jsObj = { 
-   					   activityMemberId : 44,                                     
-   					   userTypeId : 2,                         
-   					   stateId :globalStateIdForCadreInsurance,
-   					   cadreEnrollmentYearId : 0,           
-   					   locationId: 0,                                       
-   					   status :	"",  
-   					   category : "",             
-   					   fromDateStr : "",
-   					   toDateStr : "",
-   					   sortingCondition : "insuredMember",
-   					   order : "desc"
-   				  };
-   	console.log(jsObj);                                
-   	$.ajax({
+		}).done(function(result){
+			if(result != null && result.length > 0)
+			{	
+				$("#constListForCategoryId").empty();           
+				$("#constListForCategoryId").append('<option value="-1">Select Location</option>'); 
+				$("#constListForCategoryId").append('<option value="0">All</option>');
+				$.each(result, function(index) {     
+					$("#constListForCategoryId").append('<option value="'+result[index].id+'">'+result[index].name+'</option>');  
+				});
+				buildConstituencyWiseThenCategoryWiseInsuranceMemberCount(result)
+			}else{
+				$("#constituencyWiseThenCategoryWiseInsuranceMemberCount").html("NO DATA AVAILABLE");
+			}
+		});
+   }
+   function buildConstituencyWiseThenCategoryWiseInsuranceMemberCount(result)
+   {
+		var str='';
+		str+='<div class="row">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="scroller">';
+					str+='<div id="constituencyWiseThenCategoryWiseInsuranceMemberCountGraph">';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#constituencyWiseThenCategoryWiseInsuranceMemberCount").html(str);
+		$(".scroller").mCustomScrollbar({
+			setHeight:'450px'
+		});
+		var height = result.length;
+		height = height * 30
+		$("#constituencyWiseThenCategoryWiseInsuranceMemberCountGraph").css("height",height);
+		var overviewList = []
+		var namesArr = [];
+		var deathArray = []
+		var hospitalArray = []
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+			{
+				
+				hospitalArray.push({"y":result[i].hospitalizationCount})
+				deathArray.push({"y":result[i].deathCount})
+				var Obj = {
+					name: 'Death',
+					data: deathArray
+				}
+				var Obj1 = {
+					name: 'Hospitalization',
+					data: hospitalArray
+				}
+				namesArr.push(result[i].name);
+			}
+			overviewList.push(Obj);
+			overviewList.push(Obj1);
+		}
+		
+		var data = overviewList
+		var id = 'constituencyWiseThenCategoryWiseInsuranceMemberCountGraph';
+		var type = {
+			type: 'bar',
+			backgroundColor:'transparent'
+		}
+		var legend = {
+			enabled: false,
+		}
+		var yAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: null
+			},
+			stackLabels: {
+				enabled: true,
+				style: {
+					fontWeight: 'bold',
+					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+				},
+				formatter: function() {
+					return  (this.total)+'-'+(this.extra);
+				}
+			}
+		}
+		var xAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: namesArr
+		}
+		var plotOptions =  {
+			 series: {
+				stacking: 'normal'
+			}
+		}
+		
+		highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
+   }
+   
+   function getDistrictWiseThenStatusWiseInsuranceMemberCount(sortingCondition,order,locationId){
+		$("#districtWiseThenStatusWiseInsuranceMemberCount").html(spinner);
+		var jsObj = { 
+		   activityMemberId : 44,                                     
+		   userTypeId : 2,                         
+		   stateId :globalStateIdForCadreInsurance,
+		   cadreEnrollmentYearId : 0,           
+		   locationId: locationId,                                       
+		   status :	"",  
+		   category : "",             
+		   fromDateStr : "",
+		   toDateStr : "",
+		   sortingCondition : sortingCondition,
+		   order : order
+	  };
+		$.ajax({
    			type : 'POST',
    			url : 'getDistrictWiseThenStatusWiseInsuranceMemberCountAction.action',
    			dataType : 'json',  
    			data : {task:JSON.stringify(jsObj)}
-   	}).done(function(result){
-   			console.log(result);
-   	});
+		}).done(function(result){
+			if(result != null && result.length > 0)
+			{
+				$("#locationListForStatusId").empty();           
+				$("#locationListForStatusId").append('<option value="-1">Select Location</option>');
+				$("#locationListForStatusId").append('<option value="0">All</option>');
+				$.each(result, function(index) {     
+					$("#locationListForStatusId").append('<option value="'+result[index].id+'">'+result[index].name+'</option>');  
+				});
+				buildDistrictWiseThenStatusWiseInsuranceMemberCount(result);
+			}else{
+				$("#districtWiseThenStatusWiseInsuranceMemberCount").html("NO DATA AVAILABLE");
+			}
+		});
    } 
-   //getConstituencyWiseThenStatusWiseInsuranceMemberCount();           
-   function getConstituencyWiseThenStatusWiseInsuranceMemberCount(){
-   	var jsObj = { 
-   					   activityMemberId : 44,                                     
-   					   userTypeId : 2,                         
-   					   stateId :globalStateIdForCadreInsurance,
-   					   cadreEnrollmentYearId : 0,           
-   					   locationId: 0,                                       
-   					   status :	"",  
-   					   category : "",             
-   					   fromDateStr : "",
-   					   toDateStr : "",
-   					   sortingCondition : "insuredMember",
-   					   order : "desc"
-   				  };
-   	console.log(jsObj);                                
-   	$.ajax({
-   			type : 'POST',
-   			url : 'getConstituencyWiseThenStatusWiseInsuranceMemberCountAction.action',
-   			dataType : 'json',  
-   			data : {task:JSON.stringify(jsObj)}
-   	}).done(function(result){  
-   			console.log(result);
-   	});
+   function buildDistrictWiseThenStatusWiseInsuranceMemberCount(result)
+   {
+		var intimationsArr = [];
+		var forwardedArr = [];
+		var settledArr = [];
+		var rejectedArr = [];
+		var namesArr = [];
+		for(var i in result){
+			intimationsArr.push({y:result[i].insuranceStatusVOs[0].insuredMemberCount}); 
+			forwardedArr.push({y:result[i].insuranceStatusVOs[1].insuredMemberCount});
+			settledArr.push({y:result[i].insuranceStatusVOs[2].insuredMemberCount}); 
+			rejectedArr.push({y:result[i].insuranceStatusVOs[3].insuredMemberCount}); 
+			namesArr.push(result[i].name);
+		}
+		var mainJosnObjArr = [];
+		if(intimationsArr != null && intimationsArr.length > 0){
+			mainJosnObjArr.push({name:'Intimation',data:intimationsArr,color:"#306F8F"});  
+		}
+		if(forwardedArr != null && forwardedArr.length > 0){
+			mainJosnObjArr.push({name:'Forwarded',data:forwardedArr,color:"#F39C12"});  
+		}
+		if(settledArr != null && settledArr.length > 0){
+			mainJosnObjArr.push({name:'Settled',data:settledArr,color:"#2DCC70"});  
+		}
+		if(rejectedArr != null && rejectedArr.length > 0){
+			mainJosnObjArr.push({name:'Rejected',data:rejectedArr,color:"#E74B3B"});  
+		}
+		
+		
+		var id = 'districtWiseThenStatusWiseInsuranceMemberCount';
+		var type = {
+			type: 'bar',
+			backgroundColor:'transparent'
+		}
+		var legend = {
+			enabled: false,
+		}
+		var yAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: null
+			},
+			stackLabels: {
+				enabled: true,
+				style: {
+					fontWeight: 'bold',
+					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+				},
+				formatter: function() {
+					return  (this.total)+'-'+(this.extra);
+				}
+			}
+		}
+		var xAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: namesArr
+		}
+		var plotOptions =  {
+			 series: {
+				stacking: 'normal'
+			}
+		}
+		
+		highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
    }
-   //getLocationWiseThenCategoryWiseInsuranceMemberCountForTS();                        
-   function getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(){
-   	var jsObj = { 
-   					   stateId :globalStateIdForCadreInsurance,
-   					   cadreEnrollmentYearId : 0,           
-   					   locationId: 0,                                       
-   					   status :	"",  
-   					   category : "",             
-   					   fromDateStr : "",
-   					   toDateStr : "",
-   					   type : "category",
-   					   locationType : "constituency",
-   					   sortingCondition : "insuredMember",
-   					   order : "desc"
-   				  };
-   	console.log(jsObj);                                
-   	$.ajax({
+   function getConstituencyWiseThenStatusWiseInsuranceMemberCount(sortingCondition,order,locationId){
+	   $("#constituencyWiseThenStatusWiseInsuranceMemberCount").html(spinner);  
+		var jsObj = { 
+			activityMemberId : 44,                                     
+			userTypeId : 2,                         
+			stateId :globalStateIdForCadreInsurance,  
+			cadreEnrollmentYearId : 0,           
+			locationId: locationId,                                       
+			status :	"",  
+			category : "",             
+			fromDateStr : "",
+			toDateStr : "",
+			sortingCondition : sortingCondition,
+			order : order
+		};
+		$.ajax({
+			type : 'POST',
+			url : 'getConstituencyWiseThenStatusWiseInsuranceMemberCountAction.action',
+			dataType : 'json',  
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){  
+   			console.log(result);
+			if(result != null && result.length > 0)
+			{
+				$("#constListForStatusId").empty();           
+				$("#constListForStatusId").append('<option value="-1">Select Location</option>');  
+				$("#constListForStatusId").append('<option value="0">All</option>');
+				$.each(result, function(index) {     
+					$("#constListForStatusId").append('<option value="'+result[index].id+'">'+result[index].name+'</option>');  
+				});
+				buildConstituencyWiseThenStatusWiseInsuranceMemberCount(result)
+			}else{
+				$("#constituencyWiseThenStatusWiseInsuranceMemberCount").html("NO DATA AVAILABLE");
+			}
+			
+		});
+   }
+   function buildConstituencyWiseThenStatusWiseInsuranceMemberCount(result)
+   {
+		var str='';
+		str+='<div class="row">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="scroller">';
+					str+='<div id="constituencyWiseThenStatusWiseInsuranceMemberCountGraph">';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#constituencyWiseThenStatusWiseInsuranceMemberCount").html(str);
+		$(".scroller").mCustomScrollbar({
+			setHeight:'450px'
+		});
+		var height = result.length;
+		height = height * 30
+		$("#constituencyWiseThenStatusWiseInsuranceMemberCountGraph").css("height",height);
+		var intimationsArr = [];
+		var forwardedArr = [];
+		var settledArr = [];
+		var rejectedArr = [];
+		var namesArr = [];
+		for(var i in result){
+			intimationsArr.push({y:result[i].insuranceStatusVOs[0].insuredMemberCount}); 
+			forwardedArr.push({y:result[i].insuranceStatusVOs[1].insuredMemberCount});
+			settledArr.push({y:result[i].insuranceStatusVOs[2].insuredMemberCount}); 
+			rejectedArr.push({y:result[i].insuranceStatusVOs[3].insuredMemberCount}); 
+			namesArr.push(result[i].name);
+		}
+		var mainJosnObjArr = [];
+		if(intimationsArr != null && intimationsArr.length > 0){
+			mainJosnObjArr.push({name:'Intimation',data:intimationsArr,color:"#306F8F"});  
+		}
+		if(forwardedArr != null && forwardedArr.length > 0){
+			mainJosnObjArr.push({name:'Forwarded',data:forwardedArr,color:"#F39C12"});  
+		}
+		if(settledArr != null && settledArr.length > 0){
+			mainJosnObjArr.push({name:'Settled',data:settledArr,color:"#2DCC70"});  
+		}
+		if(rejectedArr != null && rejectedArr.length > 0){
+			mainJosnObjArr.push({name:'Rejected',data:rejectedArr,color:"#E74B3B"});  
+		}
+		
+		
+		var id = 'constituencyWiseThenStatusWiseInsuranceMemberCountGraph';
+		var type = {
+			type: 'bar',
+			backgroundColor:'transparent'
+		}
+		var legend = {
+			enabled: false,
+		}
+		var yAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: null
+			},
+			stackLabels: {
+				enabled: true,
+				style: {
+					fontWeight: 'bold',
+					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+				},
+				formatter: function() {
+					return  (this.total)+'-'+(this.extra);
+				}
+			}
+		}
+		var xAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: namesArr
+		}
+		var plotOptions =  {
+			 series: {
+				stacking: 'normal'
+			}
+		}
+		
+		highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+   }
+   
+   function getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(locationType,order){
+		if(locationType == 'district')
+		{
+			$("#locationWiseThenCategoryWiseInsuranceMemberCountForTS").html(spinner);
+		}else{
+			$("#locationWiseThenCategoryWiseInsuranceMemberCountForTSCons").html(spinner);
+		}
+		
+		var jsObj = { 
+			stateId :globalStateIdForCadreInsurance,
+			cadreEnrollmentYearId : 0,           
+			locationId: 0,                                       
+			status :	"",  
+			category : "",             
+			fromDateStr : "",
+			toDateStr : "",
+			type : "category",
+			locationType : locationType,
+			sortingCondition : "insuredMember",
+			order : order
+		};
+		$.ajax({
    			type : 'POST',
    			url : 'getLocationWiseThenCategoryWiseInsuranceMemberCountForTSAction.action',
    			dataType : 'json',  
    			data : {task:JSON.stringify(jsObj)}
-   	}).done(function(result){  
-   			console.log(result);
-   	});
-   }   
-   //getLocationWiseThenStatusWiseInsuranceMemberCountForTS();        
-   function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(){
-   	var jsObj = { 
-   					   stateId :globalStateIdForCadreInsurance,
-   					   cadreEnrollmentYearId : 0,           
-   					   locationId: 0,                                               
-   					   status :	"",  
-   					   category : "",             
-   					   fromDateStr : "",    
-   					   toDateStr : "",
-   					   type : "status",
-   					   locationType : "district",
-   					   sortingCondition : "insuredMember",
-   					   order : "desc"
-   				  };
-   	console.log(jsObj);                                
-   	$.ajax({
+		}).done(function(result){ 
+			
+			if(result != null && result.length > 0)
+			{
+				buildLocationWiseThenCategoryWiseInsuranceMemberCountForTS(locationType,result);
+			}else{
+				$("#locationWiseThenCategoryWiseInsuranceMemberCountForTS").html("NO DATA AVAILABLE");
+			}
+			
+		});
+	}   
+    function buildLocationWiseThenCategoryWiseInsuranceMemberCountForTS(locationType,result)
+	{
+		var type = {
+			type: 'bar',
+			backgroundColor:'transparent'
+		}
+		var legend = {
+			enabled: false,
+		}
+		var yAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: null
+			},
+			stackLabels: {
+				enabled: true,
+				style: {
+					fontWeight: 'bold',
+					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+				},
+				formatter: function() {
+					return  (this.total)+'-'+(this.extra);
+				}
+			}
+		}
+		var plotOptions =  {
+			 series: {
+				stacking: 'normal'
+			}
+		}
+		if(locationType == 'district')
+		{
+			var overviewList = []
+			var namesArr = [];
+			var deathArray = []
+			var hospitalArray = []
+			
+			for(var i in result)
+			{
+				
+				hospitalArray.push({"y":result[i].hospitalizationCount})
+				deathArray.push({"y":result[i].deathCount})
+				var Obj = {
+					name: 'Death',
+					data: deathArray
+				}
+				var Obj1 = {
+					name: 'Hospitalization',
+					data: hospitalArray
+				}
+				namesArr.push(result[i].name);
+			}
+			overviewList.push(Obj);
+			overviewList.push(Obj1);
+			
+			var data = overviewList
+			var id = 'locationWiseThenCategoryWiseInsuranceMemberCountForTS';
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: namesArr
+			}
+			
+			
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
+		}else if(locationType == 'constituency'){
+			var str='';
+			str+='<div class="row">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<div class="scroller">';
+						str+='<div id="locationWiseThenCategoryWiseInsuranceMemberCountForTSConsGraph">';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			$("#locationWiseThenCategoryWiseInsuranceMemberCountForTSCons").html(str);
+			$(".scroller").mCustomScrollbar({
+				setHeight:'450px'
+			});
+			var height = result.length;
+			height = height * 30
+			$("#locationWiseThenCategoryWiseInsuranceMemberCountForTSConsGraph").css("height",height);
+			var overviewList = []
+			var namesArr = [];
+			var deathArray = []
+			var hospitalArray = []
+			for(var i in result)
+			{
+				
+				hospitalArray.push({"y":result[i].hospitalizationCount})
+				deathArray.push({"y":result[i].deathCount})
+				var Obj = {
+					name: 'Death',
+					data: deathArray
+				}
+				var Obj1 = {
+					name: 'Hospitalization',
+					data: hospitalArray
+				}
+				namesArr.push(result[i].name);
+			}
+			overviewList.push(Obj);
+			overviewList.push(Obj1);
+			
+			var data = overviewList
+			var id = 'locationWiseThenCategoryWiseInsuranceMemberCountForTSConsGraph';
+			
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: namesArr
+			}
+			
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
+		}
+	}
+   function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(locationType,order){
+		if(locationType == 'district')
+		{
+			$("#locationWiseThenStatusWiseInsuranceMemberCountForTS").html(spinner);
+		}else{
+			$("#locationWiseThenStatusWiseInsuranceMemberCountForTSCons").html(spinner);
+		}
+		
+		var jsObj = { 
+			stateId :globalStateIdForCadreInsurance,
+			cadreEnrollmentYearId : 0,           
+			locationId: 0,                                               
+			status :	"",  
+			category : "",             
+			fromDateStr : "",    
+			toDateStr : "",
+			type : "status",
+			locationType : locationType,
+			sortingCondition : "insuredMember",
+			order : order
+   		};
+		$.ajax({
    			type : 'POST',
    			url : 'getLocationWiseThenStatusWiseInsuranceMemberCountForTSAction.action',
    			dataType : 'json',  
    			data : {task:JSON.stringify(jsObj)}
-   	}).done(function(result){  
-   			console.log(result);
-   	});
-   }            
+		}).done(function(result){
+			console.log(result);
+			if(result != null && result.length > 0)
+			{
+				buildLocationWiseThenStatusWiseInsuranceMemberCountForTS(locationType,result);
+			}else{
+				$("#locationWiseThenStatusWiseInsuranceMemberCountForTS").html("NO DATA AVAILABLE");
+			}
+		});
+   }
+   function buildLocationWiseThenStatusWiseInsuranceMemberCountForTS(locationType,result)
+   {
+		var type = {
+			type: 'bar',
+			backgroundColor:'transparent'
+		}
+		var legend = {
+			enabled: false,
+		}
+		var yAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: null
+			},
+			stackLabels: {
+				enabled: true,
+				style: {
+					fontWeight: 'bold',
+					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+				},
+				formatter: function() {
+					return  (this.total)+'-'+(this.extra);
+				}
+			}
+		}
+		var plotOptions =  {
+			 series: {
+				stacking: 'normal'
+			}
+		}
+		if(locationType == 'district')
+		{
+			var intimationsArr = [];
+			var forwardedArr = [];
+			var settledArr = [];
+			var rejectedArr = [];
+			var namesArr = [];
+			for(var i in result){
+				intimationsArr.push({y:result[i].insuranceStatusVOs[0].insuredMemberCount}); 
+				forwardedArr.push({y:result[i].insuranceStatusVOs[1].insuredMemberCount});
+				settledArr.push({y:result[i].insuranceStatusVOs[2].insuredMemberCount}); 
+				rejectedArr.push({y:result[i].insuranceStatusVOs[3].insuredMemberCount}); 
+				namesArr.push(result[i].name);
+			}
+			var mainJosnObjArr = [];
+			if(intimationsArr != null && intimationsArr.length > 0){
+				mainJosnObjArr.push({name:'Intimation',data:intimationsArr,color:"#306F8F"});  
+			}
+			if(forwardedArr != null && forwardedArr.length > 0){
+				mainJosnObjArr.push({name:'Forwarded',data:forwardedArr,color:"#F39C12"});  
+			}
+			if(settledArr != null && settledArr.length > 0){
+				mainJosnObjArr.push({name:'Settled',data:settledArr,color:"#2DCC70"});  
+			}
+			if(rejectedArr != null && rejectedArr.length > 0){
+				mainJosnObjArr.push({name:'Rejected',data:rejectedArr,color:"#E74B3B"});  
+			}
+			
+			
+			var id = 'locationWiseThenStatusWiseInsuranceMemberCountForTS';
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: namesArr
+			}
+			
+			highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+		}else if(locationType == 'constituency'){
+			var str='';
+			str+='<div class="row">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<div class="scroller">';
+						str+='<div id="locationWiseThenStatusWiseInsuranceMemberCountForTSConsGraph">';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			$("#locationWiseThenStatusWiseInsuranceMemberCountForTSCons").html(str);
+			$(".scroller").mCustomScrollbar({
+				setHeight:'450px'
+			});
+			var height = result.length;
+			height = height * 30
+			$("#locationWiseThenStatusWiseInsuranceMemberCountForTSConsGraph").css("height",height);
+			var intimationsArr = [];
+			var forwardedArr = [];
+			var settledArr = [];
+			var rejectedArr = [];
+			var namesArr = [];
+			for(var i in result){
+				intimationsArr.push({y:result[i].insuranceStatusVOs[0].insuredMemberCount}); 
+				forwardedArr.push({y:result[i].insuranceStatusVOs[1].insuredMemberCount});
+				settledArr.push({y:result[i].insuranceStatusVOs[2].insuredMemberCount}); 
+				rejectedArr.push({y:result[i].insuranceStatusVOs[3].insuredMemberCount}); 
+				namesArr.push(result[i].name);
+			}
+			var mainJosnObjArr = [];
+			if(intimationsArr != null && intimationsArr.length > 0){
+				mainJosnObjArr.push({name:'Intimation',data:intimationsArr,color:"#306F8F"});  
+			}
+			if(forwardedArr != null && forwardedArr.length > 0){
+				mainJosnObjArr.push({name:'Forwarded',data:forwardedArr,color:"#F39C12"});  
+			}
+			if(settledArr != null && settledArr.length > 0){
+				mainJosnObjArr.push({name:'Settled',data:settledArr,color:"#2DCC70"});  
+			}
+			if(rejectedArr != null && rejectedArr.length > 0){
+				mainJosnObjArr.push({name:'Rejected',data:rejectedArr,color:"#E74B3B"});  
+			}
+			
+			
+			var id = 'locationWiseThenStatusWiseInsuranceMemberCountForTSConsGraph';
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: namesArr
+			}
+			
+			highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+		}
+   }
+	
+	
+	

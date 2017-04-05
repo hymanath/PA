@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-				
-<style>
+<html>
+<head>
+	<style>
 	body{background:#f0f0f0;}
 	.m_top10{margin-top:10px;}
 	.m_top20{margin-top:20px;}
@@ -38,6 +38,12 @@
 	
 </style>	
 	
+</head>
+<body>
+
+
+				
+
 	<div class="container">
 		<!-------->		
 		<div class="row">
@@ -436,4 +442,5 @@ var jObj =
 <script>
 getTotalCasteCounts();
 </script>
-  
+  </body>
+</html>

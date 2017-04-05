@@ -689,7 +689,7 @@ function buildRoleBasedPerformanceCohort(result)
 }
 /* General Click FUnctionalities*/
 
-$(document).on("click",".debatesIconExpand",function(){
+/* $(document).on("click",".debatesIconExpand",function(){
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".debatesBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	$(".debatesHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
@@ -767,7 +767,7 @@ $(document).on("click",".debatesIconExpand",function(){
 				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}
 	
-});
+}); */
 $(document).on("click",".moreDebatesBlocksIcon",function(){
 	$(this).addClass("unExpandDebatesBlock")
 	$(".debatesMoreHiddenBlock").toggle();
