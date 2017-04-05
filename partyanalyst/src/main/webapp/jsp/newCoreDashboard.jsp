@@ -3451,52 +3451,42 @@
 									<div class="panel-body">
 										<div class="cadreInsuranceCategoryTs">
 											<ul class="list-inline activeUlCls  constituencyUl">
-												<li class="active" onclick="">
+												<li class="active" onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);">
 													<i class="glyphicon glyphicon-sort-by-attributes"></i>
 												</li>
-												<li onclick="">   
+												<li onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','asc',0);">    
 													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
 												</li>
-												<li onclick="">
+												<li onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','name','asc',0);">
 													A-Z
 												</li>
-												<li onclick="">
+												<li onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','name','desc',0);">
 													Z-A
 												</li>
-												<li onclick="">
-													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
-												</li>
-												<li onclick="">
-													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
-												</li>
-												<li>
-													<select class="form-control"></select>
+												
+												<li>    
+													<select class="form-control" id="locationIdForCategoryDist"></select>
 												</li>
 											</ul>
 											<div id="locationWiseThenCategoryWiseInsuranceMemberCountForTS"></div>
 										</div>
 										<div class="cadreInsuranceCategoryStatusTs">
 											<ul class="list-inline activeUlCls  constituencyUl">
-												<li class="active" onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','desc');">
+												<li class="active" onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);">
 													<i class="glyphicon glyphicon-sort-by-attributes"></i>
 												</li>
-												<li onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','asc')">
+												<li onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','insuredMember','asc',0)">
 													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
 												</li>
-												<li onclick="">
+												<li onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','insuredMember','asc',0);">  
 													A-Z
 												</li>
-												<li onclick="">
+												<li onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);">
 													Z-A
 												</li>
-												<li onclick="">
-													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
-												</li>
-												<li onclick="">
-													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
-												</li>
+												
 												<li>
-													<select class="form-control"></select>
+													<select class="form-control" id="locationIdForStatusDist"></select>
 												</li>
 											</ul>
 											<div id="locationWiseThenStatusWiseInsuranceMemberCountForTS"></div>
@@ -3517,36 +3507,36 @@
 									<div class="panel-body">
 										<div class="cadreInsuranceCategoryTs">
 											<ul class="list-inline activeUlCls  constituencyUl">
-												<li class="active" onclick="">
+												<li class="active" onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','insuredMember','desc',0);">
 													<i class="glyphicon glyphicon-sort-by-attributes"></i>
 												</li>
-												<li onclick="">          
+												<li onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','insuredMember','asc',0);">          
 													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
 												</li>
-												<li onclick="">
+												<li onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','name','asc',0);">  
 													A-Z
 												</li>
-												<li onclick="">
+												<li onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','name','desc',0);">
 													Z-A
 												</li>
-												<li onclick="">
+												<li onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','constituencyNo','desc',0);">
 													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-up"></i>
 												</li>
-												<li onclick="">
+												<li onclick="getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','constituencyNo','asc',0);">
 													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
-												</li>
+												</li>  
 												<li>
-													<select class="form-control"></select>
+													<select class="form-control" id="locationIdForCategoryCons"></select>
 												</li>
 											</ul>
 											<div id="locationWiseThenCategoryWiseInsuranceMemberCountForTSCons"></div>
 										</div>
 										<div class="cadreInsuranceCategoryStatusTs">
 											<ul class="list-inline activeUlCls  constituencyUl">
-												<li class="active" onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','desc')">
+												<li class="active" onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','insuredMember','desc',0)">
 													<i class="glyphicon glyphicon-sort-by-attributes"></i>
 												</li>
-												<li onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','asc')">
+												<li onclick="getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','insuredMember','asc',0)">
 													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
 												</li>
 												<li onclick="">
@@ -3562,8 +3552,8 @@
 													constituency id&nbsp;&nbsp;<i class="fa fa-long-arrow-down"></i>
 												</li>
 												<li>
-													<select class="form-control"></select>
-												</li>
+													<select class="form-control" id="locationIdForStatusCons"></select>
+												</li>  
 											</ul>
 											<div id="locationWiseThenStatusWiseInsuranceMemberCountForTSCons"></div>
 										</div>
