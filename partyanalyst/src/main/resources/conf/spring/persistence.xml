@@ -1203,6 +1203,7 @@
 	               	 	 <value>com.itgrids.partyanalyst.model.ActivityRequiredAttribute</value>
 	                   <!--  CUSTOM REPORT END -->
 	                   
+	                   <value>com.itgrids.partyanalyst.model.GovtAlertSubTask</value>
 	                   <!--  Assembly Session  -->
 	                     <value>com.itgrids.partyanalyst.model.SpeechAspect</value>
 	                  	 <value>com.itgrids.partyanalyst.model.MemberSpeechAspect</value>
@@ -1218,10 +1219,17 @@
 	                    <value>com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking</value>
 	                    <value>com.itgrids.partyanalyst.model.GovtSubTaskActionType</value>
 	                    <value>com.itgrids.partyanalyst.model.GovtOfficerSubTaskAction</value>
-	                     <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeRelation</value>
-	                      <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeDetails</value>
-	                      <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeLocation</value>
+	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeRelation</value>
+	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeDetails</value>
+	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeLocation</value>
 	                    
+	                   <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationNew</value>
+					   <value>com.itgrids.partyanalyst.model.GovtOfficerNew</value>
+					   <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew</value>
+					   <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerDetailsNew</value>
+					   <value>com.itgrids.partyanalyst.model.GovtAlertDepartmentLocationNew</value>
+					   <value>com.itgrids.partyanalyst.model.AlertAssignedOfficerNew</value>
+					   <value>com.itgrids.partyanalyst.model.GovtAlertSubTask</value>
 	                   <!--  Govt Alert module end-->
 	                   
 	              </list>
