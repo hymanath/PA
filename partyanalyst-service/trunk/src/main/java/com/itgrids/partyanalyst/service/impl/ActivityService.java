@@ -3097,14 +3097,25 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 				Date startDate = activityScope.getStartDate();
 				Date activitDate = activityDocument.getActivityDate();
 		    	try {
-						betweenDatesList = commonMethodsUtilService.getBetweenDates(startDate, activitDate);
-						activityInfoDocument.setDay(Long.valueOf(String.valueOf(betweenDatesList.size())));
+		    		if(activitDate.equals(startDate) || (activitDate.after(startDate) && activitDate.before(activityScope.getEndDate()))
+		    				 || activitDate.equals(activityScope.getEndDate())){
+		    			betweenDatesList = commonMethodsUtilService.getBetweenDates(startDate, activitDate);
+						List<Date>  activityRunningDatesList = commonMethodsUtilService.getBetweenDates(startDate, activityScope.getEndDate());
+						
+						if(commonMethodsUtilService.isListOrSetValid(activityRunningDatesList)){
+							if(activityRunningDatesList.size()>=betweenDatesList.size())//no of activityRunningDatesList  count >= selected uploading images betweenDatesList  
+								activityInfoDocument.setDay(Long.valueOf(String.valueOf(betweenDatesList.size())));
+							else if(activityRunningDatesList.size()<betweenDatesList.size())// never no of activityRunningDatesList count < selected uploading images betweenDatesList
+								activityInfoDocument.setDay(Long.valueOf(String.valueOf(activityRunningDatesList.size())));
+						}
+		    		}
 				} catch (Exception e) {
 					activityInfoDocument.setDay(eventFileUploadVO.getDay());
 				}
 		    }
 		    
-		    
+		    if(activityInfoDocument.getDay() == null || activityInfoDocument.getDay().longValue()==0L)// setting default day
+		    	activityInfoDocument.setDay(eventFileUploadVO.getDay());
 		    
 		    activityInfoDocument.setIsDeleted("N");
 		    activityInfoDocument.setInsertType(eventFileUploadVO.getInsertType());
@@ -6230,10 +6241,19 @@ public ActivityVO getMatchQuesActivityVO(List<ActivityVO> questionList,Long queI
 	return returnVO;
 }
 
-public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId,Long activityMemberId,Long stateId,Long userTypeId){
+public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId,Long activityMemberId,Long stateId,Long userTypeId,String startDate, String endDate){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	try{
-		List<Object[]> locationsInfodocsDetals = activityInfoDocumentDAO.getDistrictNamesLocationsInfocoveredLocationsByScopeId(activityScopeId,stateId);
+		SimpleDateFormat format =  new SimpleDateFormat("dd-MM-yyyy");
+		Date stDate = null;
+		Date edDate = null;
+		if(startDate != null && endDate != null && !startDate.isEmpty() && !endDate.isEmpty()  ){
+			stDate = format.parse(startDate);
+			edDate = (Date)format.parse(endDate);
+		}
+		
+		
+		List<Object[]> locationsInfodocsDetals = activityInfoDocumentDAO.getDistrictNamesLocationsInfocoveredLocationsByScopeId(activityScopeId,stateId,stDate,edDate);
 		Map<Long,Long> imagescoverdMap = new HashMap<Long, Long>(0);
 		
 		if(commonMethodsUtilService.isListOrSetValid(locationsInfodocsDetals)){
@@ -6242,14 +6262,14 @@ public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId,Long acti
 			}
 		}
 		else{
-			locationsInfodocsDetals = activityInfoDocumentDAO.getDistrictNamesConductedInfocoveredLocationsByScopeId(activityScopeId,stateId);
+			locationsInfodocsDetals = activityInfoDocumentDAO.getDistrictNamesConductedInfocoveredLocationsByScopeId(activityScopeId,stateId,stDate,edDate);
 			if(commonMethodsUtilService.isListOrSetValid(locationsInfodocsDetals)){
 				for (Object[] param : locationsInfodocsDetals) {
 					imagescoverdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
 			}
 		}
-		List<Object[]> districtCountList = activityInfoDocumentDAO.getDistrictNamesByScopeId(activityScopeId,stateId);
+		List<Object[]> districtCountList = activityInfoDocumentDAO.getDistrictNamesByScopeId(activityScopeId,stateId,stDate,edDate);
 		if(districtCountList != null && districtCountList.size() > 0l){
 			for (Object[] objects : districtCountList) {
 				ActivityVO vo = new ActivityVO();
