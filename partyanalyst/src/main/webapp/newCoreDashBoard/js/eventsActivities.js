@@ -2870,7 +2870,7 @@ $(document).on("click",".getImageCls",function(){
 									 str+='</select>';
 								 str+='</div>';
 								  
-								  str+='<ul class="nav navbar-nav" id="popupDaysDiv1">';
+								  str+='<ul class="nav navbar-nav" id="popupDaysDiv1" style="width:900px;">';
 								  
 								  str+='</ul>';
 								str+='</div>';
