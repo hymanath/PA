@@ -1214,6 +1214,14 @@
 	                    <value>com.itgrids.partyanalyst.model.AlertGovtOfficerSmsDetails</value>
 	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentDesignationHierarchy</value>
 	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentScope</value>
+	                    <value>com.itgrids.partyanalyst.model.AlertSubTaskStatus</value>
+	                    <value>com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking</value>
+	                    <value>com.itgrids.partyanalyst.model.GovtSubTaskActionType</value>
+	                    <value>com.itgrids.partyanalyst.model.GovtOfficerSubTaskAction</value>
+	                     <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeRelation</value>
+	                      <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeDetails</value>
+	                      <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeLocation</value>
+	                    
 	                   <!--  Govt Alert module end-->
 	                   
 	              </list>
