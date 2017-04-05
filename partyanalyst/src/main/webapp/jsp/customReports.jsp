@@ -12,6 +12,8 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <!-- for file uploader -->
 <link href="dragAndDropPhoto/css/jquery.filer.css" type="text/css" rel="stylesheet" />
@@ -46,7 +48,7 @@
 	background-color:#ddd;
 	color:#333;
 	border-radius:50%;
-	padding:2px;
+	padding:4px;
 	font-size:10px;
 	cursor:pointer;
 }
@@ -130,7 +132,7 @@
 		<div class="modal-content">
 		  <div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title text-capital" id="reportheaderId">UPLOAD CUSTOM REPORT DETAILS</h4>
+			<h4 class="modal-title text-capital" id="reportheaderId">CUSTOM REPORT DETAILS</h4>
 		  </div>
 		  <div class="modal-body">
 		  <form name="customApplication" method="post" id="customApplication">
@@ -147,6 +149,7 @@
 					</div>
 					<div class="col-md-4 col-md-offset-4 col-xs-12 col-sm-4 col-sm-offset-4">
 						<button type="button" class="btn btn-primary btn-block" id="uploacFilesBtnId">Submit Application</button>
+						<span id="successSpanModalId"></span> 
 					</div>
 				</form>
 			</div>  
@@ -164,7 +167,7 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/updateCustomReorts.js?v=1.0.5"></script>
 <script id="select-box" type="text/x-handlebars">
@@ -195,7 +198,7 @@ initializeCustomReport();
 		var uploadHandler = { 
 			upload: function(o) {
 				uploadResult = o.responseText;
-				//showSbmitStatusNew(uploadResult);
+				showSbmitStatusNew(uploadResult);
 			}
 		};
 		YAHOO.util.Connect.setForm('customApplication',true);  
@@ -203,6 +206,14 @@ initializeCustomReport();
 		 $("#uploacFilesBtnId").attr("disabled","disabled");
 		//location.reload();
 	});
+	function showSbmitStatusNew(uploadResult){
+		if(uploadResult !=null && uploadResult.search("success") != -1){
+			setTimeout(function(){
+				$("#successSpanModalId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
+				location.reload(true);				
+			}, 500);
+		}
+	}
 	
 	function getRequiredDocumentsSummary(){
 		$("#submittedReportsSpanId").html("");	
@@ -223,10 +234,14 @@ initializeCustomReport();
 					if(result.locationsList[i].name == "Y"){
 						if(result.locationsList[i].count != null){
 							$("#submittedReportsSpanId").html(" "+result.locationsList[i].count);	
+						}else{
+							$("#submittedReportsSpanId").html(0);	
 						}	
 					}else if(result.locationsList[i].name == "N"){
 						if(result.locationsList[i].count != null){
 							$("#notSubmittedReportsSapnId").html(" "+result.locationsList[i].count);
+						}else{
+							$("#notSubmittedReportsSapnId").html(0);
 						}
 					}
 				}
