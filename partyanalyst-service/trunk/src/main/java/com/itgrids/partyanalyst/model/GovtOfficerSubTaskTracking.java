@@ -28,7 +28,7 @@ public class GovtOfficerSubTaskTracking {
 	private Long alertSubTaskStatusId;
 	private AlertSeverity alertSeverity;
 	private Date dueDate;
-	private Date insertedTime;//inserted_by
+	private Date insertedTime;
 	private String isDeleted;
 	private Long alertSeverityId;
 	
@@ -74,14 +74,13 @@ public class GovtOfficerSubTaskTracking {
 		this.alertSubTaskStatusId = alertSubTaskStatusId;
 	}
 	
-	@Column(name="alert_severity")
+	@Column(name="alert_severity_id")
 	public Long getAlertSeverityId() {
 		return alertSeverityId;
 	}
-	public void setAlertSeverity(Long alertSeverityId) {
+	public void setAlertSeverityId(Long alertSeverityId) {
 		this.alertSeverityId = alertSeverityId;
 	}
-	
 	@Column(name="due_date")
 	public Date getDueDate() {
 		return dueDate;
@@ -107,7 +106,7 @@ public class GovtOfficerSubTaskTracking {
 	}
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "alert_severity" ,insertable = false ,updatable = false)
+	@JoinColumn(name = "alert_severity_id" ,insertable = false ,updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public AlertSeverity getAlertSeverity() {
