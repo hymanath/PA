@@ -2,12 +2,20 @@ package com.itgrids.partyanalyst.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "govt_officer_sub_task_tracking")
@@ -18,10 +26,11 @@ public class GovtOfficerSubTaskTracking {
 	private Long govtOfficerSubTaskId;
 	private Long govtSubTaskActionTypeId;
 	private Long alertSubTaskStatusId;
-	private Long alertSeverity;
+	private AlertSeverity alertSeverity;
 	private Date dueDate;
 	private Date insertedTime;//inserted_by
 	private String isDeleted;
+	private Long alertSeverityId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,11 +75,11 @@ public class GovtOfficerSubTaskTracking {
 	}
 	
 	@Column(name="alert_severity")
-	public Long getAlertSeverity() {
-		return alertSeverity;
+	public Long getAlertSeverityId() {
+		return alertSeverityId;
 	}
-	public void setAlertSeverity(Long alertSeverity) {
-		this.alertSeverity = alertSeverity;
+	public void setAlertSeverity(Long alertSeverityId) {
+		this.alertSeverityId = alertSeverityId;
 	}
 	
 	@Column(name="due_date")
@@ -97,5 +106,17 @@ public class GovtOfficerSubTaskTracking {
 		this.isDeleted = isDeleted;
 	}
 	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_severity" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertSeverity getAlertSeverity() {
+		return alertSeverity;
+	}
+	public void setAlertSeverity(AlertSeverity alertSeverity) {
+		this.alertSeverity = alertSeverity;
+	}
+	
 
+	
 }
