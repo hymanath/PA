@@ -3181,7 +3181,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				Long amount2 = member2.getConstituencyNo();
 				Long amount1 = member1.getConstituencyNo();
 				//descending order of count.
-				return amount1.compareTo(amount2);
+				return amount2.compareTo(amount1);
 			}
 		};
 		
