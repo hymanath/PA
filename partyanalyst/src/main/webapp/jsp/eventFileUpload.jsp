@@ -230,7 +230,6 @@ else
 	  }
 	}
 	
-	window.onunload = function(){alert("Bye now!");}
 	
   function getDistrictsForStates(state)
   {
