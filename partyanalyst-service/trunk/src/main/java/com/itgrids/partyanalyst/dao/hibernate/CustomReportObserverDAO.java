@@ -39,12 +39,12 @@ public class CustomReportObserverDAO extends GenericDaoHibernate<CustomReportObs
 		queryStr.append(" select model.customReportId,model.tdpCadre.tdpCadreId,model.tdpCadre.firstname " +
 				" from CustomReportObserver model " +
 				" where model.customReport.customReportProgramId = :programId and model.isDeleted='N'");
-		if(type != null && type.length() > 0){
+		if(type != null && !type.trim().isEmpty()){
 			queryStr.append(" and model.customReport.isSubmitted =:type ");
 		}
 		Query query = getSession().createQuery(queryStr.toString());
 			  query.setParameter("programId", programId);
-		if(type != null && type.length() > 0){
+		if(type != null && !type.trim().isEmpty()){
 			query.setParameter("type", type);
 		}
 	   return query.list();

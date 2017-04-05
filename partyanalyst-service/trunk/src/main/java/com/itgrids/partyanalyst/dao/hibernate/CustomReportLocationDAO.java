@@ -29,12 +29,12 @@ public class CustomReportLocationDAO extends GenericDaoHibernate<CustomReportLoc
 			"model.locationScopeId," +
 			" model.locationScope.scope,model.locationValue,model.customReportLocationId " +
 			" from CustomReportLocation model where model.customReport.customReportProgramId = :programId and model.isDeleted='N'");
-		if(type != null && type.length() > 0){
+		if(type != null && !type.trim().isEmpty()){
 			queryStr.append(" and model.customReport.isSubmitted =:type ");
 		}
 		Query query = getSession().createQuery(queryStr.toString());
 		  query.setParameter("programId", programId);
-		 if(type != null && type.length() > 0){
+		 if(type != null && !type.trim().isEmpty()){
 			query.setParameter("type", type);
 		}
 		return query.list();
