@@ -273,7 +273,8 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 	public List<ComplaintMasterVO> getComplaintDetailsByComplaintIds(List<Long> complaintIds){
 		List<ComplaintMasterVO> returnList = new ArrayList<ComplaintMasterVO>();
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("MMM dd,yyyy hh:mm:ss a");
 			
 			List<Object[]> list = insuranceStatusDAO.getStatusAndInsuranceCompanyWiseComplaintDetails(complaintIds);
 			if(list != null && !list.isEmpty()){
@@ -293,7 +294,11 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					vo.setTypeOfIssue(obj[10] != null ? obj[10].toString():"");
 					vo.setStatusId(Long.valueOf(obj[11] != null ? obj[11].toString():""));
 					vo.setStatus(obj[12] != null ? obj[12].toString():"");
-					vo.setPostedDate(obj[13] != null ? sdf.format((Date)obj[13]) :null);
+					vo.setPostedDate(obj[13] != null ? obj[13].toString() :null);
+					if(vo.getPostedDate() != null){
+						Date dated = sdf.parse(vo.getPostedDate());
+						vo.setPostedDate(sdf1.format(dated));
+					}
 					vo.setMadalId(Long.valueOf(obj[14] != null ? obj[14].toString():"0"));
 					vo.setMandalName(obj[15] != null ? obj[15].toString()+" Mandal":"");
 					vo.setVillageId(Long.valueOf(obj[18] != null ? obj[18].toString():"0"));
@@ -314,12 +319,16 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				for (Object[] obj : commentList) {
 					Long complaintId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
 					String comment = obj[1] != null ? obj[1].toString():"";
-					String updatedDate = obj[2] != null ? sdf.format((Date)obj[2]):null;
+					String updatedDate = obj[2] != null ? obj[2].toString():null;
 					
 					ComplaintMasterVO vo = getComplaintMasterMatchedVO(returnList, complaintId);
 					if(vo != null){
 						vo.setComment(comment);
 						vo.setUpdatedDate(updatedDate);
+						if(vo.getUpdatedDate() != null){
+							Date dated = sdf.parse(vo.getUpdatedDate());
+							vo.setUpdatedDate(sdf1.format(dated));
+						}
 					}
 				}
 			}
@@ -452,7 +461,9 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 		try{
 			//Long complaintId =21337l;
 			
-			SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
+			
 			Map<String,InsuranceSimpleVO> firstMap = new LinkedHashMap<String, InsuranceSimpleVO>(); 
 			List<InsuranceSimpleVO> statusList=getGrievanceInsuranceStatusList(firstMap);
 			
@@ -475,15 +486,18 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 							String dateString = "";
 							//SimpleVO notVerifiedVO=firstMap.get("Applied");
 							InsuranceSimpleVO notVerifiedVO=firstMap.get("Waiting For Documents");
-							if(obj[3] != null && !obj[3].toString().isEmpty())
-							 dateString=sdf.format((Date)obj[3]);
-							notVerifiedVO.setDateString(dateString);
-							notVerifiedVO.setDate((Date)obj[3]);
+							if(obj[3] != null && !obj[3].toString().isEmpty()){
+								Date datte =  sdf.parse(obj[3].toString());
+								notVerifiedVO.setDateString(sdf1.format(datte));
+								dateString = notVerifiedVO.getDateString();
+							}
+							//notVerifiedVO.setDateString(dateString);
+							notVerifiedVO.setDate(obj[3] != null ? sdf.parse(obj[3].toString()):null);
 							//total list
 							InsuranceSimpleVO simpleVO=new InsuranceSimpleVO();
 							//simpleVO.setName("Applied");
 							simpleVO.setName("Waiting For Documents");
-							simpleVO.setDate((Date)obj[3]);
+							simpleVO.setDate(obj[3] != null ? sdf.parse(obj[3].toString()):null);
 							simpleVO.setDateString(dateString);
 							simpleVO.setUsername(obj[4] !=null ? obj[4].toString():"");
 							
@@ -498,14 +512,20 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						}else{
 							//first map
 							InsuranceSimpleVO VO=firstMap.get(obj[2].toString());
-							String dateString=sdf.format((Date)obj[3]);
+							if(VO == null)
+								VO = new InsuranceSimpleVO();
+							String dateString = "";
+							if(obj[3] != null && !obj[3].toString().isEmpty()){
+								Date datte =  sdf.parse(obj[3].toString());
+								dateString = sdf1.format(datte);
+							}
 							VO.setDateString(dateString);
-							VO.setDate((Date)obj[3]);
+							VO.setDate(obj[3] != null ? sdf.parse(obj[3].toString()):null);
 							
 							//total list
 							InsuranceSimpleVO simpleVO=new InsuranceSimpleVO();
 							simpleVO.setName(obj[2].toString());
-							simpleVO.setDate((Date)obj[3]);
+							simpleVO.setDate(obj[3] != null ? sdf.parse(obj[3].toString()):null);
 							simpleVO.setDateString(dateString);
 							simpleVO.setUsername(obj[4] !=null ? obj[4].toString():"");
 							
@@ -530,9 +550,12 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						if((Long)obj[1]==1l){
 							//SimpleVO notVerifiedVO=firstMap.get("Applied");
 							InsuranceSimpleVO notVerifiedVO=firstMap.get("Waiting For Documents");
-							
-							notVerifiedVO.setDateString(sdf.format((Date)obj[3]));
-							notVerifiedVO.setDate((Date)obj[3]);
+							if(obj[3] != null && !obj[3].toString().isEmpty()){
+								Date datte =  sdf.parse(obj[3].toString());
+								notVerifiedVO.setDateString(sdf1.format(datte));
+							}
+							//notVerifiedVO.setDateString(sdf.format((Date)obj[3]));
+							notVerifiedVO.setDate(obj[3] != null ? sdf.parse(obj[3].toString()):null);
 							if(i==(complaintDetails.size()-1)){
 								notVerifiedVO.setStatus("current");
 								//firstMap.get("Applied").setCurrent("Applied");
@@ -543,8 +566,9 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 							InsuranceSimpleVO VO=firstMap.get(obj[2].toString());
 							if(obj[3] != null && !obj[3].toString().isEmpty())
 							{
-								VO.setDateString(sdf.format((Date)obj[3]));
-								VO.setDate((Date)obj[3]);
+								Date datte =  sdf.parse(obj[3].toString());
+								VO.setDateString(sdf1.format(datte));
+								VO.setDate(obj[3] != null ? sdf.parse(obj[3].toString()):null);
 							}
 							if(i==(complaintDetails.size()-1)){
 								VO.setStatus("current");
@@ -997,9 +1021,18 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 					CoreDashboardInsuranceVO vo = new CoreDashboardInsuranceVO();
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 					vo.setName(obj[1] != null ? obj[1].toString():"");
-					
 					statevo.getOverViewList().add(vo);
+				}
+				for (Object[] obj : list) {
+					CoreDashboardInsuranceVO vo = new CoreDashboardInsuranceVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
 					statevo.getDeathList().add(vo);
+				}
+				for (Object[] obj : list) {
+					CoreDashboardInsuranceVO vo = new CoreDashboardInsuranceVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
 					statevo.getHospitalizationList().add(vo);
 				}
 			}
