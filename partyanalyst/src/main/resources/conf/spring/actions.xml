@@ -1773,6 +1773,9 @@
 	</bean>	
 	<bean id="assemblySessionAction" class="com.itgrids.partyanalyst.web.action.AssemblySessionAction" singleton="false">
 		<property name="assemblySessionService" ref="assemblySessionService" />	
+	</bean>
+	<bean id="alertManagementSystemAction" class="com.itgrids.partyanalyst.web.action.AlertManagementSystemAction" singleton="false">	
 	</bean>	
+	
 </beans>	
 	
