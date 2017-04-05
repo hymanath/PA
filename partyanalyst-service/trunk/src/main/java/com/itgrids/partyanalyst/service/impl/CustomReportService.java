@@ -320,11 +320,12 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		 }
 		 resultStatus.setResultCode(0);
 		 resultStatus.setResultState(customReportFile.getCustomReportFileId());
-		 
+		 resultStatus.setMessage("success");
 				}
 			});
 		}catch (Exception e) {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			resultStatus.setMessage("failure");
 			LOG.error(" Exception Occured in saveCustomReportUploadFile() method, Exception - ",e);
 		}
 		return resultStatus;
