@@ -48,15 +48,15 @@
 					</div>
 					<div class="panel-body">
 						<div class="row">
-							<!--<div class="col-md-6">
-								<label>Activity Date </label>-->
-								 <input type="hidden" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
-							<!--</div>	-->
-						  <div class="col-md-6">
+							<div class="col-md-6">
+								<label title="Please select Uploading Images Activity Date.">Activity Date </label>
+								 <input type="text" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
+							</div>
+						 <!-- <div class="col-md-6">
 							 <label>Day   </label>
 							 <select id="day" class="form-control"></select> 
 						   </div>
-							
+							-->
 						<div id="showHideDiv" style="display:none;">
 							<div class="col-md-6">
 								<label>Activity Type</label>
@@ -206,7 +206,7 @@ else
 }
 
  var gobalVar = 0;
-  $( "#activityDate" ).daterangepicker({singleDatePicker:true});
+  $( "#activityDate" ).daterangepicker({singleDatePicker:true,maxDate:new Date()});
 
     var today = new Date();
     var dd = today.getDate();
@@ -230,6 +230,7 @@ else
 	  }
 	}
 	
+	window.onunload = function(){alert("Bye now!");}
 	
   function getDistrictsForStates(state)
   {
