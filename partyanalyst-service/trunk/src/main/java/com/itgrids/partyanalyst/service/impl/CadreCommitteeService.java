@@ -18911,6 +18911,8 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				}
 				
 				Map<String,EventDocumentVO> documentsMap = new TreeMap<String, EventDocumentVO>();
+				Set<Date> avaiableDatesSet = new HashSet<Date>(0);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				if(commonMethodsUtilService.isListOrSetValid(counstList)){
 					for (Object[] params : counstList) {
 						Long day = commonMethodsUtilService.getLongValueForObject(params[1]);
@@ -18918,7 +18920,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 						Long documentsCount =commonMethodsUtilService.getLongValueForObject(params[2]);
 						Long locationsCount =commonMethodsUtilService.getLongValueForObject(params[3]);
 						Long conductedCount =commonMethodsUtilService.getLongValueForObject(params[4]);
-						
+						avaiableDatesSet.add(sdf.parse(date));
 						EventDocumentVO dayWiseVO = new EventDocumentVO();
 						dayWiseVO.setDay(day);
 						dayWiseVO.setStrDate(date);
@@ -18998,13 +19000,32 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 							vo.setTotalResult(totalCount);
 							if(commonMethodsUtilService.isListOrSetValid(weeksList)){
 								for (int j = 0 ;j<weeksList.size();j++) {
-									EventDocumentVO weekVO = new EventDocumentVO();
-									Calendar cal = Calendar.getInstance();
-									Date date= format.parse(weeksList.get(j).split("to")[0].toString().trim());
-									cal.setTime(date);
-									weekVO.setName(IConstants.MONTH_NAMES[cal.get(Calendar.MONTH)]);
-									weekVO.setStrDate(weeksList.get(j));
-									vo.getSubList2().add(weekVO);
+									try {
+										EventDocumentVO weekVO = new EventDocumentVO();
+										Calendar cal = Calendar.getInstance();
+										Date weekStartdate= format.parse(weeksList.get(j).split("to")[0].toString().trim());
+										Date weekEnddate= format.parse(weeksList.get(j).split("to")[1].toString().trim());
+										cal.setTime(weekStartdate);
+										weekVO.setName(IConstants.MONTH_NAMES[cal.get(Calendar.MONTH)]);
+										weekVO.setStrDate(weeksList.get(j));
+										boolean isAvailableData=false;
+										if(commonMethodsUtilService.isListOrSetValid(avaiableDatesSet)){
+											for (Date availableDate : avaiableDatesSet) {
+												if(availableDate.equals(weekStartdate) || (availableDate.after(weekStartdate) && availableDate.before(weekEnddate))
+									    				 || availableDate.equals(weekEnddate)){
+														isAvailableData=true;
+														break;
+												}
+											}
+										}
+										else{
+											vo.getSubList2().add(weekVO);
+										}
+										if(isAvailableData)
+											vo.getSubList2().add(weekVO);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								}
 							}
 						}
