@@ -3863,5 +3863,26 @@
 	 <bean id="govtDepartmentScopeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentScopeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="alertSubTaskStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertSubTaskStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtOfficerSubTaskTracking" class="com.itgrids.partyanalyst.dao.hibernate.GovtOfficerSubTaskTrackingDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtSubTaskActionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSubTaskActionTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtOfficerSubTaskActionDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtOfficerSubTaskActionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentScopeRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentScopeRelationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentScopeDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentScopeDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentScopeLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentScopeLocationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	 <!--  Govt Alert DAO'S END -->
 </beans>		
