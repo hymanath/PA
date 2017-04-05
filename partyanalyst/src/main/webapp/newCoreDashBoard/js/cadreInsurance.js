@@ -114,8 +114,8 @@
 			getInsuranceCompanyWiseOverviewAndStatusDetails();
 			getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
 			getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
-			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','desc');
-			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','desc');
+			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);
+			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','insuredMember','desc',0);
 		});
 		$(document).on("click",".cadreInsuranceLi li",function(){
 			var blockName = $(this).html();
@@ -124,8 +124,8 @@
 				getInsuranceCompanyWiseOverviewAndStatusDetails();
 				getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
 				getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
-				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','desc');
-				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','desc');
+				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);
+				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','insuredMember','desc',0);
 				$(".cadreInsuranceDetailedblock").show();
 				$(".cadreInsuranceComparisonblock").hide();
 			}else if(blockName == "Comparison")
@@ -135,7 +135,7 @@
 				$(".cadreInsuranceDetailedblock").hide();
 			}
 		});
-		$(document).on("click",".cadeInsuranceCat",function(){
+		$(document).on("click",".cadeInsuranceCat",function(){  
 			var status = $(this).attr("attr_status");
 			if(status == 'categoryStatus')
 			{
@@ -161,14 +161,14 @@
 			{
 				$(".cadreInsuranceCategoryTs").show();
 				$(".cadreInsuranceCategoryStatusTs").hide();
-				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','asc');
-				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','asc');
+				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);
+				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','insuredMember','desc',0);
 			}else if(status == 'categoryStatus')
 			{
 				$(".cadreInsuranceCategoryTs").hide();
 				$(".cadreInsuranceCategoryStatusTs").show();
-				getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','asc');
-				getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','asc');
+				getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);
+				getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','insuredMember','asc',0);
 			}
 		});
 		/*swadhin*/
@@ -192,7 +192,24 @@
 			var locationId = $("#constListForStatusId").val();
 			getConstituencyWiseThenStatusWiseInsuranceMemberCount('insuredMember','desc',locationId);
 		});
-	}
+		$(document).on("change","#locationIdForCategoryDist",function(){
+			var locationId = $("#locationIdForCategoryDist").val();
+			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','desc',locationId)
+		});
+		$(document).on("change","#locationIdForCategoryCons",function(){
+			var locationId = $("#locationIdForCategoryCons").val();
+			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('constituency','insuredMember','desc',locationId)
+		});
+		$(document).on("change","#locationIdForStatusDist",function(){
+			var locationId = $("#locationIdForStatusDist").val();
+			getLocationWiseThenStatusWiseInsuranceMemberCountForTS('district','insuredMember','desc',locationId)
+		});
+		$(document).on("change","#locationIdForStatusCons",function(){
+			var locationId = $("#locationIdForStatusCons").val();
+			getLocationWiseThenStatusWiseInsuranceMemberCountForTS('constituency','insuredMember','desc',locationId)
+		});
+		
+	}       
 	function getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails()
 	{
 		$("#insuraceCompanyAndTypeOfIssueWiseComplaintsDetails").html(spinner);
@@ -1866,7 +1883,8 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 		highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
    }
    
-   function getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(locationType,order){
+   function getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(locationType,sortingCondition,order,locationId){
+	   
 		if(locationType == 'district')
 		{
 			$("#locationWiseThenCategoryWiseInsuranceMemberCountForTS").html(spinner);
@@ -1877,14 +1895,14 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 		var jsObj = { 
 			stateId :globalStateIdForCadreInsurance,
 			cadreEnrollmentYearId : 0,           
-			locationId: 0,                                       
+			locationId: locationId,                                       
 			status :	"",  
 			category : "",             
 			fromDateStr : "",
 			toDateStr : "",
 			type : "category",
 			locationType : locationType,
-			sortingCondition : "insuredMember",
+			sortingCondition : sortingCondition,
 			order : order
 		};
 		$.ajax({
@@ -1895,7 +1913,22 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 		}).done(function(result){ 
 			
 			if(result != null && result.length > 0)
-			{
+			{	
+				if(locationType == 'district'){
+					$("#locationIdForCategoryDist").empty(); 
+					$("#locationIdForCategoryDist").append('<option value="0">Select Location</option>');				
+					$("#locationIdForCategoryDist").append('<option value="-1">All</option>');
+					$.each(result, function(index) {     
+						$("#locationIdForCategoryDist").append('<option value="'+result[index].id+'">'+result[index].name+'</option>');  
+					});  
+				}else{
+					$("#locationIdForCategoryCons").empty();
+					$("#locationIdForCategoryCons").append('<option value="0">Select Location</option>');				
+					$("#locationIdForCategoryCons").append('<option value="-1">All</option>');
+					$.each(result, function(index) {     
+						$("#locationIdForCategoryCons").append('<option value="'+result[index].id+'">'+result[index].name+'</option>');  
+					});
+				}
 				buildLocationWiseThenCategoryWiseInsuranceMemberCountForTS(locationType,result);
 			}else{
 				$("#locationWiseThenCategoryWiseInsuranceMemberCountForTS").html("NO DATA AVAILABLE");
@@ -2023,7 +2056,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
 		}
 	}
-   function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(locationType,order){
+   function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(locationType,sortingCondition,order,locationId){
 		if(locationType == 'district')
 		{
 			$("#locationWiseThenStatusWiseInsuranceMemberCountForTS").html(spinner);
@@ -2034,14 +2067,14 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 		var jsObj = { 
 			stateId :globalStateIdForCadreInsurance,
 			cadreEnrollmentYearId : 0,           
-			locationId: 0,                                               
+			locationId: locationId,                                               
 			status :	"",  
 			category : "",             
 			fromDateStr : "",    
 			toDateStr : "",
 			type : "status",
 			locationType : locationType,
-			sortingCondition : "insuredMember",
+			sortingCondition : sortingCondition,
 			order : order
    		};
 		$.ajax({
@@ -2052,7 +2085,22 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 		}).done(function(result){
 			console.log(result);
 			if(result != null && result.length > 0)
-			{
+			{	
+				if(locationType == 'district'){
+					$("#locationIdForStatusDist").empty(); 
+					$("#locationIdForStatusDist").append('<option value="0">Select Location</option>');
+					$("#locationIdForStatusDist").append('<option value="-1">All</option>');
+					$.each(result, function(index) {     
+						$("#locationIdForStatusDist").append('<option value="'+result[index].id+'">'+result[index].name+'</option>');  
+					});
+				}else{
+					$("#locationIdForStatusCons").empty(); 
+					$("#locationIdForStatusCons").append('<option value="0">Select Location</option>');				
+					$("#locationIdForStatusCons").append('<option value="-1">All</option>');
+					$.each(result, function(index) {     
+						$("#locationIdForStatusCons").append('<option value="'+result[index].id+'">'+result[index].name+'</option>');  
+					});
+				}
 				buildLocationWiseThenStatusWiseInsuranceMemberCountForTS(locationType,result);
 			}else{
 				$("#locationWiseThenStatusWiseInsuranceMemberCountForTS").html("NO DATA AVAILABLE");
