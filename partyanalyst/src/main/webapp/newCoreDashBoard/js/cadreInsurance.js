@@ -94,19 +94,21 @@
 			var issueType = $this.attr("attr_issueType");
 			var companyid = $this.attr("attr_companyId");
 			var statusName = $this.attr("attr_name");
-			$("#insuranceHeadingId").html(statusName);
+			
+			$("#insuranceHeadingId").html(status);
 			$('#insuranceModal').modal({
 				show: true,
 				keyboard: false,
 				backdrop: 'static'
 			});
+			
 			getInsuraceStatusWiseComplaintsDetails(status,issueType,companyid);
 			getLagDaysInsuranceComplaintsCounts(status,issueType,companyid);
 			
-			getStatusTrackingDetailsOfInsuranceByComplaint(41635);
+			/* getStatusTrackingDetailsOfInsuranceByComplaint(41635);
 			getRemarksByComplaint(41635);
 			getComplaintScanCopyDetails(41635);
-			getComplaintResponsesByComplaint(41635);
+			getComplaintResponsesByComplaint(41635); */
 		});
 		$(document).on("click",".moreCadreInsuranceIcon",function(){
 			$(".cadreInsuranceDetailedblock,.cadreInsuranceLi").show();
@@ -252,7 +254,7 @@
 			str+='<table class="table table-bordered bg_ED m_top10">';
 				str+='<tr>';
 					str+='<td rowspan="2" style="vertical-align:middle;width:50%;"><h3>'+totalCount+'</h3><p class="text-capital text-muted">total claims submitted</p></td>';
-					str+='<td><h3><span class="insuraceStatusWiseComplaints" attr_status="" attr_issueType="Hospitalization" attr_companyId="0">'+totalHospital+'</span></h3><p class="text-capital text-muted">total hospital</p></td>';
+					str+='<td><h3><span class="insuraceStatusWiseComplaints" attr_status=""  attr_issueType="Hospitalization" attr_companyId="0">'+totalHospital+'</span></h3><p class="text-capital text-muted">total hospital</p></td>';
 				str+='</tr>';
 				str+='<tr>';
 					str+='<td><h3><span class="insuraceStatusWiseComplaints" attr_status="" attr_issueType="Death" attr_companyId="0">'+totalDeath+'</span></h3><p class="text-capital text-muted">total death</p></td>';
@@ -332,7 +334,6 @@
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)} 
 		}).done(function(result){
-			console.log(result)
 			if(result != null && result.length > 0)
 			{
 				buildInsuraceStatusWiseComplaintsDetails(result);
@@ -474,13 +475,13 @@
 			console.log(result)
 			if(result != null)
 			{
-				buildInsuraceStatusWiseComplaintsDetails(result);
+				buildLagDaysInsuranceComplaintsCounts(result);
 			}else{
 				$("#lagDaysInsuranceComplaintsCounts").html('NO DATA');
 			}
 		});
 	}
-	function buildInsuraceStatusWiseComplaintsDetails(result)
+	function buildLagDaysInsuranceComplaintsCounts(result)
 	{
 		var str='';
 		str+='<table class="table" style="background-color:#F2F2F2">';
@@ -754,6 +755,9 @@
 		{
 			var str='';
 			str+='<div class="row">';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<h4 class="panel-title">ANDHRA PRADESH</h4>';
+				str+='</div>';
 				str+='<div class="col-md-4 col-xs-12 col-sm-12">';
 					str+='<h4 class="panel-title text-capital">overview</h4>';
 					str+='<div id="overviewInsurance" style="height:300px"></div>';
@@ -765,6 +769,21 @@
 				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 					str+='<h4 class="panel-title text-capital">death</h4>';
 					str+='<div id="deathInsurance" style="height:300px"></div>';
+				str+='</div>';
+				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<h4 class="panel-title">TELANGANA</h4>';
+				str+='</div>';
+				str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+					str+='<h4 class="panel-title text-capital">overview</h4>';
+					str+='<div id="overviewInsuranceTs" style="height:300px"></div>';
+				str+='</div>';
+				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+					str+='<h4 class="panel-title text-capital">hospitalization</h4>';
+					str+='<div id="hospitalizationInsuranceTs" style="height:300px"></div>';
+				str+='</div>';
+				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
+					str+='<h4 class="panel-title text-capital">death</h4>';
+					str+='<div id="deathInsuranceTs" style="height:300px"></div>';
 				str+='</div>';
 			str+='</div>';
 			
@@ -819,7 +838,7 @@
 						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 					},
 					formatter: function() {
-						return  (this.total)+'-'+(this.extra);
+						return  (this.total);
 					}
 				}
 			}
@@ -923,6 +942,131 @@
 			var id2 = 'hospitalizationInsurance';
 			
 			highcharts(id2,type,xAxis,yAxis,legend,data2,plotOptions); 
+			
+			/*Telangana*/
+			var overviewListTs = []
+			var namesArrTs = [];
+			var deathArrayTs = []
+			var hospitalArrayTs = []
+			if(result[1].overViewList != null && result[1].overViewList.length > 0)
+			{
+				for(var i in result[1].overViewList)
+				{
+					
+					hospitalArrayTs.push({"y":result[1].overViewList[i].hospitalizationCount})
+					deathArrayTs.push({"y":result[1].overViewList[i].deathCount})
+					var Obj = {
+						name: 'Death',
+						data: deathArrayTs
+					}
+					var Obj1 = {
+						name: 'Hospitalization',
+						data: hospitalArrayTs
+					}
+					namesArrTs.push(result[1].overViewList[i].name);
+				}
+				overviewListTs.push(Obj);
+				overviewListTs.push(Obj1);
+			}
+			
+			/* Overview Insurance*/
+			var dataTs = overviewListTs
+			var idTs = 'overviewInsuranceTs';
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: namesArr
+			}
+			
+			highcharts(idTs,type,xAxis,yAxis,legend,dataTs,plotOptions); 
+			/* Deaths Insurance*/
+			var deathListTs = []
+			var namesArrTs1 = [];
+			var intimationsArrTs = []
+			var forwardedArrTs = []
+			var settledArrTs = []
+			var rejectedArrTs = []
+			if(result[1].deathList != null && result[1].deathList.length > 0)
+			{
+				for(var i in result[1].deathList)
+				{
+					
+					intimationsArrTs.push({"y":result[1].deathList[i].subList[0].count,color:"#306F8F"})
+					forwardedArrTs.push({"y":result[1].deathList[i].subList[1].count,color:"#F39C12"})
+					settledArrTs.push({"y":result[1].deathList[i].subList[2].count,color:"#2DCC70"})
+					rejectedArrTs.push({"y":result[1].deathList[i].subList[3].count,color:"#E74B3B"})
+					var Obj = {
+						name: 'Intimation',
+						data: intimationsArrTs
+					}
+					var Obj1 = {
+						name: 'Forwarded',
+						data: forwardedArrTs
+					}
+					var Obj2 = {
+						name: 'Settled',
+						data: settledArrTs
+					}
+					var Obj3 = {
+						name: 'Rejected',
+						data: rejectedArrTs
+					}
+					namesArrTs1.push(result[1].deathList[i].name);
+				}
+				deathListTs.push(Obj);
+				deathListTs.push(Obj1);
+				deathListTs.push(Obj2);
+				deathListTs.push(Obj3);
+			}
+			
+			var data1 = deathListTs;
+			var id1 = 'deathInsuranceTs';
+			
+			highcharts(id1,type,xAxis,yAxis,legend,data1,plotOptions); 
+			
+			/* Hospitalization Insurance*/
+			var hospitalizationListTs = []
+			var intimationsArrTs1 = []
+			var forwardedArrTs1 = []
+			var settledArrTs1 = []
+			var rejectedArrTs1 = []
+			if(result[1].hospitalizationList != null && result[1].hospitalizationList.length > 0)
+			{
+				for(var i in result[1].hospitalizationList)
+				{
+					intimationsArrTs1.push({"y":result[1].hospitalizationList[i].subList[0].count,color:"#306F8F"})
+					forwardedArrTs1.push({"y":result[1].hospitalizationList[i].subList[1].count,color:"#F39C12"})
+					settledArrTs1.push({"y":result[1].hospitalizationList[i].subList[2].count,color:"#2DCC70"})
+					rejectedArrTs1.push({"y":result[1].hospitalizationList[i].subList[3].count,color:"#E74B3B"})
+					var Obj = {
+						name: 'Intimation',
+						data: intimationsArrTs1
+					}
+					var Obj1 = {
+						name: 'Forwarded',
+						data: forwardedArrTs1
+					}
+					var Obj2 = {
+						name: 'Settled',
+						data: settledArrTs1
+					}
+					var Obj3 = {
+						name: 'Rejected',
+						data: rejectedArrTs1
+					}
+					namesArrTs1.push(result[1].hospitalizationList[i].name);
+				}
+				hospitalizationListTs.push(Obj);
+				hospitalizationListTs.push(Obj1);
+				hospitalizationListTs.push(Obj2);
+				hospitalizationListTs.push(Obj3);
+			}
+			
+			var dataTs2 = hospitalizationListTs;
+			var idTs2 = 'hospitalizationInsuranceTs';
+			
+			highcharts(idTs2,type,xAxis,yAxis,legend,dataTs2,plotOptions); 
 		}
 	/* Comparison Block Start */
 	
@@ -1517,7 +1661,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 				},
 				formatter: function() {
-					return  (this.total)+'-'+(this.extra);
+					return  (this.total);
 				}
 			}
 		}
@@ -1637,7 +1781,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 				},
 				formatter: function() {
-					return  (this.total)+'-'+(this.extra);
+					return  (this.total);
 				}
 			}
 		}
@@ -1742,7 +1886,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 				},
 				formatter: function() {
-					return  (this.total)+'-'+(this.extra);
+					return  (this.total);
 				}
 			}
 		}
@@ -1864,7 +2008,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 				},
 				formatter: function() {
-					return  (this.total)+'-'+(this.extra);
+					return  (this.total);
 				}
 			}
 		}
@@ -1959,7 +2103,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 				},
 				formatter: function() {
-					return  (this.total)+'-'+(this.extra);
+					return  (this.total);
 				}
 			}
 		}
@@ -2130,7 +2274,7 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 				},
 				formatter: function() {
-					return  (this.total)+'-'+(this.extra);
+					return  (this.total);
 				}
 			}
 		}
@@ -2232,6 +2376,3 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 			highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
 		}
    }
-	
-	
-	
