@@ -1201,9 +1201,12 @@ public String getCommentDetails(){
 		    Long activityMemberId = jObj.getLong("activityMemberId");
 			Long stateId = jObj.getLong("stateId");
 			Long userTypeId = jObj.getLong("userTypeId");
-		 activityVOList = activityService.getDistrictNamesByScopeId(jObj.getLong("activityScopeId"),activityMemberId,stateId,userTypeId);
+			String startDateStr = jObj.getString("startDate");
+			String endDateStr = jObj.getString("endDate");
+			
+		 activityVOList = activityService.getDistrictNamesByScopeId(jObj.getLong("activityScopeId"),activityMemberId,stateId,userTypeId,startDateStr,endDateStr);
 	 }catch(Exception e){
-		 LOG.error("Exception raised at getQustionList()", e);
+		 LOG.error("Exception raised at getDistrictList()", e);
 	 }
 	 return Action.SUCCESS;
  }
