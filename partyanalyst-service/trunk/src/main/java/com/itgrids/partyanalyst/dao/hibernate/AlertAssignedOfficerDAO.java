@@ -961,7 +961,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			        " EDS.editionId, " +//16
 			        " EDS.editionAlias, " +//17
 			        " TNC.tvNewsChannelId, " +//18
-			        " TNC.channelName"); //19
+			        " TNC.channelName," +
+			        "  UA.state.stateName "); //19
 		
 		sb.append(" from AlertAssignedOfficer model" +
 					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
@@ -1470,7 +1471,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			        " EDS.editionId, " +//16
 			        " EDS.editionAlias, " +//17
 			        " TNC.tvNewsChannelId, " +//18
-			        " TNC.channelName"); //19
+			        " TNC.channelName," +
+			        " S.stateName "); //19
 		sb.append(" from AlertAssignedOfficer model" +
 					" left join model.alert.userAddress UA" +
 					" left join model.alert.edition EDS" +
@@ -1672,7 +1674,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			        " EDS.editionId, " +//16
 			        " EDS.editionAlias, " +//17
 			        " TNC.tvNewsChannelId, " +//18
-			        " TNC.channelName"); //19
+			        " TNC.channelName," +
+			        " S.stateName "); //19
 		sb.append(" from AlertAssignedOfficer model" +
 					" left join model.alert.userAddress UA" +
 					" left join model.alert.edition EDS" +

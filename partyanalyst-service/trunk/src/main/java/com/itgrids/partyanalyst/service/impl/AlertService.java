@@ -2672,7 +2672,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 									updateAlertForNewsInUpdateStatus(inputVO,null);//only status change
 								}else if(inputVO !=null && inputVO.getType().trim().equalsIgnoreCase("update")){
 									//updateAlertForNewsInUpdateStatus(inputVO);				
-									List<Alert> alertList = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());				
+									List<Alert> alertList = alertDAO.getAlertDetailsOfNewstype(inputVO.getId(),inputVO.getAlertType());				
 									alert = alertList.get(0);
 									updateAlertForNewsInUpdateStatus(inputVO,alert);//Updation				
 								}else{
@@ -2722,13 +2722,16 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 						
 						 if(inputVO.getType() !=null && inputVO.getType().equalsIgnoreCase("save")){
-							 List<Alert> alertList  = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());
+							 List<Alert> alertList  = alertDAO.getAlertDetailsOfNewstype(inputVO.getId(),inputVO.getAlertType());
 							 if(alertList !=null && alertList.size()>0){
 								 alert = alertList.get(0);
+							 }else{
+								 if(inputVO.getInsertedTime() != null)
+									 alert.setCreatedTime(inputVO.getInsertedTime());
 							 }
 							 
-							 if(inputVO.getInsertedTime() != null)
-								 alert.setCreatedTime(inputVO.getInsertedTime());
+							// if(inputVO.getInsertedTime() != null)
+							//	 alert.setCreatedTime(inputVO.getInsertedTime());
 							 alert.setAlertStatusId(inputVO.getStatusId());
 							 alert.setEditionTypeId(inputVO.getEditionTypeId() != null && inputVO.getEditionTypeId() > 0l ? inputVO.getEditionTypeId() : null);	
 							 alert.setEditionId(inputVO.getEditionId() !=null && inputVO.getEditionId()>0l ? inputVO.getEditionId():null);
@@ -2982,7 +2985,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}
 					
 					 if(inputVO.getType() !=null && inputVO.getType().equalsIgnoreCase("save")){
-						 List<Alert> alertList  = alertDAO.getAlertDetailsOfNewstype(inputVO.getId());
+						 List<Alert> alertList  = alertDAO.getAlertDetailsOfNewstype(inputVO.getId(),inputVO.getAlertType());
 						 if(alertList !=null && alertList.size()>0){
 							 alert = alertList.get(0);
 						 }
