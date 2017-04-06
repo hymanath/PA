@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IActivityInfoDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAdminHouseMemberDAO;
 import com.itgrids.partyanalyst.dao.IAdminHouseSessionDAO;
 import com.itgrids.partyanalyst.dao.IAdminHouseSessionDayDAO;
@@ -42,9 +43,18 @@ public class AssemblySessionService implements IAssemblySessionService{
 	private IPartyDAO 							partyDAO;
 	private IAdminHouseSessionDAO 				adminHouseSessionDAO;
 	private IAdminHouseSessionDayDAO            adminHouseSessionDayDAO;
+	private IActivityInfoDocumentDAO			activityInfoDocumentDAO;
 	
 	
 	
+	
+	public IActivityInfoDocumentDAO getActivityInfoDocumentDAO() {
+		return activityInfoDocumentDAO;
+	}
+	public void setActivityInfoDocumentDAO(
+			IActivityInfoDocumentDAO activityInfoDocumentDAO) {
+		this.activityInfoDocumentDAO = activityInfoDocumentDAO;
+	}
 	public ISpeechAspectDAO getSpeechAspectDAO() {
 		return speechAspectDAO;
 	}
@@ -549,6 +559,28 @@ public class AssemblySessionService implements IAssemblySessionService{
 		}
 		return returnList;
 	} 
+	
+	public List<AdminHouseVO> setDayWiseImagesDetails(Long locationId){
+		List<AdminHouseVO> returnList = new ArrayList<AdminHouseVO>(0);
+		try{
+			List<Object[]> datesList = activityInfoDocumentDAO.setDayWiseImagesDetails(locationId);
+			
+			if(datesList!=null && !datesList.isEmpty()){
+				for(Object[] obj : datesList){
+					AdminHouseVO vo = new AdminHouseVO();
+					
+					vo.setDate(commonMethodsUtilService.getStringValueForObject(obj[0]));
+					vo.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					vo.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					returnList.add(vo);
+				}
+			}
+			
+		}catch(Exception e){
+			 LOG.error("Exception Occured in setDayWiseImagesDetails() method, Exception - ",e);
+		}
+		return returnList;
+	}
 	
 }
 

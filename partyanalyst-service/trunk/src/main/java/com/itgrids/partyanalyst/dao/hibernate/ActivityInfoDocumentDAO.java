@@ -831,6 +831,7 @@ public class ActivityInfoDocumentDAO extends GenericDaoHibernate<ActivityInfoDoc
 	}
 	
 	
+	
 	public List<Object[]> getEventsDocumentsCountByLocationInbfo(EventDocumentVO inputVO,Date startDate,Date endDate,
 			Long userAccessLevelId,Set<Long> userAccessLevelValues)
 	{
@@ -1320,5 +1321,17 @@ public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> d
 		query.setParameterList("constiIdsList", constiIdsList);	
 	}
 	return query.list();
-}	
+}
+
+		public List<Object[]> setDayWiseImagesDetails(Long locationId){
+			StringBuilder str = new StringBuilder();
+		    str.append("select date(model.activityDocument.activityDate),count(model.activityDocument.activityDocumentId),model.day, count(distinct model.activityLocationInfoId) , count(distinct model.activityConductedInfoId)" +
+		        "  from ActivityInfoDocument model where model.activityLocationInfoId =:locationId and model.isDeleted='N' ");
+		    str.append(" group by date(model.activityDocument.activityDate) ");
+		    
+		    Query query = getSession().createQuery(str.toString());
+		    query.setParameter("locationId",locationId);
+		    return query.list();
+		}
+	
 }

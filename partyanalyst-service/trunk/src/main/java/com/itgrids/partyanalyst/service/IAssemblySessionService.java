@@ -22,4 +22,5 @@ public interface IAssemblySessionService
 	public List<AdminHouseVO> getCandidateNameForParty(Long partyId);
 	public String saveAssemblySessionCanScoreDetails( AssemblySessionReportVO vo);
 	public List<AdminHouseVO> getDatesForSaving(Long adminHuSessionId);
+	public List<AdminHouseVO> setDayWiseImagesDetails(Long locationId);
 }
