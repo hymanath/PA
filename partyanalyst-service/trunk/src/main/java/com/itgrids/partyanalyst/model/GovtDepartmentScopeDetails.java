@@ -19,7 +19,7 @@ public class GovtDepartmentScopeDetails extends BaseModel implements Serializabl
 
 	private static final long serialVersionUID = -3806379738904956901L;
 	
-	private Long GovtDepartmentScopeDetailsId;
+	private Long govtDepartmentScopeDetailsId;
 	private Long govtDepartmentScopeId;
 	private Long govtDepartmentId;
 	private String deptLevelName;
@@ -29,16 +29,17 @@ public class GovtDepartmentScopeDetails extends BaseModel implements Serializabl
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="govt_department_scope_details_id", unique=true, nullable=false)
 	public Long getGovtDepartmentScopeDetailsId() {
-		return GovtDepartmentScopeDetailsId;
+		return govtDepartmentScopeDetailsId;
 	}
 	public void setGovtDepartmentScopeDetailsId(Long govtDepartmentScopeDetailsId) {
-		GovtDepartmentScopeDetailsId = govtDepartmentScopeDetailsId;
+		this.govtDepartmentScopeDetailsId = govtDepartmentScopeDetailsId;
 	}
 	
 	@Column(name="govt_department_scope_id")
 	public Long getGovtDepartmentScopeId() {
 		return govtDepartmentScopeId;
 	}
+	
 	public void setGovtDepartmentScopeId(Long govtDepartmentScopeId) {
 		this.govtDepartmentScopeId = govtDepartmentScopeId;
 	}
