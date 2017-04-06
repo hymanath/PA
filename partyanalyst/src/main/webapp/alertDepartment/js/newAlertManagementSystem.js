@@ -121,18 +121,19 @@ $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	{
 		$("#dateRangePicker").val('All');
 	}
-	totalAlertGroupByStatusForGovt();
-	totalAlertGroupByStatusThenDepartment();
-	getDistrictWiseTotalForAlertOverview();
-	getDistrictTotalForAlertStatus('',0);  
+	//getStatusWiseAlertOverviewCnt();
+	//totalAlertGroupByStatusThenDepartment();
+	//getDistrictWiseTotalForAlertOverview();
+	//getDistrictTotalForAlertStatus('',0);  
 });
 $(".chosenSelect").chosen({width:'100%'});
 
 function onLoadCalls()
 {
-	totalAlertGroupByStatusForGovt();
-	totalAlertGroupByStatusThenDepartment();
-	getDistrictWiseTotalForAlertOverview();
+	//getStatusWiseAlertOverviewCnt();
+	//totalAlertGroupByStatusThenDepartment();
+	//getDistrictWiseTotalForAlertOverview();
+	//getLevelWiseAlertOverviewCnt();
 }
 $(document).on("click",".settingsIcon",function(e){
 	$(this).closest(".panel").find(".settingsBlockDropDown").toggle();
@@ -156,7 +157,7 @@ function setDefaultImage(img){
 /*Default Image*/
 /*global Function and variables End*/
 /* Status OverView Start*/
-function totalAlertGroupByStatusForGovt()
+function getStatusWiseAlertOverviewCnt()
 {
 	$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var deptIdArr = globalDepartmentIdArr;
@@ -173,7 +174,7 @@ function totalAlertGroupByStatusForGovt()
     }
     $.ajax({
       type:'GET',
-      url: 'getTotalAlertGroupByStatusForGovtAction.action',
+      url: 'getStatusWiseAlertOverviewCntAction.action',
       data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result != null && result.length > 0){
@@ -313,6 +314,30 @@ function buildTotalAlertGroupByStatusForGovt(result)
 			span.css('top', textY + (span.height() * -0.5));
 		});
 	});
+}
+
+function getLevelWiseAlertOverviewCnt()
+{
+	$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var deptIdArr = globalDepartmentIdArr;
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : globalStateId,
+      deptIdArr : deptIdArr,  
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getLevelWiseAlertOverviewCntAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		console.log(result);
+    });
 }
 /* Status OverView End*/
 /* DEPARTMENT WISE STATUS OVERVIEW START*/

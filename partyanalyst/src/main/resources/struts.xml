@@ -16466,5 +16466,16 @@
 	   			<param name="root">coreDashboardInsurancevoList</param>
 	   		</result>
 		 </action>
+		 <action name="getStatusWiseAlertOverviewCntAction" class="alertManagementSystemAction"  method="getStatusWiseAlertOverviewCnt">
+			<result type="json" name="success">    
+				<param name="root">alertVOs</param>       
+			</result>
+		</action>
+		 <action name="getLevelWiseAlertOverviewCntAction" class="alertManagementSystemAction"  method="getLevelWiseAlertOverviewCnt">
+			<result type="json" name="success">    
+				<param name="root">alertVOs</param>       
+			</result>
+		</action>
+		
  </package>
 </struts>
