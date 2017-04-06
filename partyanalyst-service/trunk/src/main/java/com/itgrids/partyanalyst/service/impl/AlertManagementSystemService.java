@@ -16,6 +16,15 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 
 	private IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO; 
 	
+	
+	
+	public void setAlertAssignedOfficerNewDAO(
+			IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO) {
+		this.alertAssignedOfficerNewDAO = alertAssignedOfficerNewDAO;
+	}
+
+
+
 	public List<IdNameVO> getDepartmentStatus(){	
 		
 		List<IdNameVO> finalList = new ArrayList<IdNameVO>(); 
@@ -48,5 +57,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		return finalList;
 		
 	}
+	
+	
 	
 }
