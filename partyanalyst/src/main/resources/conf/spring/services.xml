@@ -4153,6 +4153,8 @@
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
 	</bean>
 	<bean name="alertManagementSystemService" class="com.itgrids.partyanalyst.service.impl.AlertManagementSystemService">
+		<property name="alertAssignedOfficerNewDAO" ref="alertAssignedOfficerNewDAO"></property>
+	
 	</bean>
 </beans>			
 	
