@@ -32,6 +32,10 @@ public class GovtOfficerSubTaskTracking {
 	private String isDeleted;
 	private Long alertSeverityId;
 	
+	private GovtSubTaskActionType govtSubTaskActionType;
+	private AlertSubTaskStatus alertSubTaskStatus;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "govt_officer_sub_task_tracking_id",unique = true,nullable = false)
@@ -116,6 +120,27 @@ public class GovtOfficerSubTaskTracking {
 		this.alertSeverity = alertSeverity;
 	}
 	
-
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_sub_task_action_type_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtSubTaskActionType getGovtSubTaskActionType() {
+		return govtSubTaskActionType;
+	}
+	public void setGovtSubTaskActionType(GovtSubTaskActionType govtSubTaskActionType) {
+		this.govtSubTaskActionType = govtSubTaskActionType;
+	}
 	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_sub_task_status_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertSubTaskStatus getAlertSubTaskStatus() {
+		return alertSubTaskStatus;
+	}
+	public void setAlertSubTaskStatus(AlertSubTaskStatus alertSubTaskStatus) {
+		this.alertSubTaskStatus = alertSubTaskStatus;
+	}
+	
+
 }
