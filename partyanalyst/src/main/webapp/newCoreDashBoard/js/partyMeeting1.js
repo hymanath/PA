@@ -6,6 +6,15 @@ var globalStateId=1;
 	globalClickActionMeetings();
 	function globalClickActionMeetings()
 	{
+		$(".specialMeetingBtnClsNew").each(function(){
+			if($(this).attr("attr_date") == 'default'){
+				$(this).attr("attr_startDate",moment().startOf('month').format("DD/MM/YYYY"));
+				$(this).attr("attr_endDate",moment().endOf('month').format("DD/MM/YYYY"));
+			}else if($(this).attr("attr_date") == 'lastMonth'){
+				$(this).attr("attr_startDate",moment().subtract(1,'month').startOf('month').format("DD/MM/YYYY"));
+				$(this).attr("attr_endDate",moment().subtract(1,'month').endOf('month').format("DD/MM/YYYY"));
+			}
+		});	
 		$(document).on("click",".meetingsConflictsCls1",function(){
 			$("#myModalImageId").modal("show");
 			$("#myModalLabelId").html("Image Details");
@@ -1910,11 +1919,11 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result,isCl
 		
 			str+='<div class="scroll-div">';
 			str+='<ul class="list-inline best-matched-profile " style="padding:0px !important;">';
-				str+='<li style="padding:0px !important;border-right:none !important"><div style="height:300px;" id="stateLevelMeetingBlockIdGr'+i+'" class="chartLiMee1"></div></li>';
-				str+='<li style="padding:0px !important;border-right:none !important;"><div style="height:300px;" id="stateLevelMeetingBlockIdGr1'+i+'" class="chartLiMee" ></div></li>';
-				str+='<li style="padding:0px !important;border-right:none !important;"><div style="height:300px;" id="stateLevelMeetingBlockIdGr2'+i+'" class="chartLiMee" ></div></li>';
-				str+='<li style="padding:0px !important;border-right:none !important"><div style="height:300px;" id="stateLevelMeetingBlockIdGr3'+i+'" class="chartLiMee" ></div></li>';
-				str+='<li style="padding:0px !important;border-right:none !important"><div style="height:300px;" id="stateLevelMeetingBlockIdGr4'+i+'" class="chartLiMee" ></div></li>';
+				str+='<li style="padding:0px !important;border-right:none !important"><div style="height:200px;" id="stateLevelMeetingBlockIdGr'+i+'" class="chartLiMee1"></div></li>';
+				str+='<li style="padding:0px !important;border-right:none !important;"><div style="height:200px;" id="stateLevelMeetingBlockIdGr1'+i+'" class="chartLiMee" ></div></li>';
+				str+='<li style="padding:0px !important;border-right:none !important;"><div style="height:200px;" id="stateLevelMeetingBlockIdGr2'+i+'" class="chartLiMee" ></div></li>';
+				str+='<li style="padding:0px !important;border-right:none !important"><div style="height:200px;" id="stateLevelMeetingBlockIdGr3'+i+'" class="chartLiMee" ></div></li>';
+				str+='<li style="padding:0px !important;border-right:none !important"><div style="height:200px;" id="stateLevelMeetingBlockIdGr4'+i+'" class="chartLiMee" ></div></li>';
 			str+='</ul>';
 			str+='</div>';
      str+='</div>'	
@@ -4443,4 +4452,3 @@ function getConstituenciesForDistricts(distId){
 			}
 		});
 	}
-		
