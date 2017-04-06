@@ -16413,7 +16413,12 @@
 			<result type="json" name="success">
 				<param name="root">assemblyVOList</param>
 			</result>
-	    </action> 
+	    </action>   
+	    <action name="setDayWiseImagesDetailsAction" class="assemblySessionAction" method="setDayWiseImagesDetails">
+			<result type="json" name="success">
+				<param name="root">assemblyVOList</param>
+			</result>
+	    </action>      
 	    <action name="deleteCustomReportFileDetailsAction" class="customReportAction" method="deleteCustomReportFileDetails">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>

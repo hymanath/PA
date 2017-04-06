@@ -337,6 +337,17 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 	
+	public String setDayWiseImagesDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			assemblyVOList = assemblySessionService.setDayWiseImagesDetails(jObj.getLong("locationId"));
+			}catch(Exception e){
+				LOG.error("Exception occured in setDayWiseImagesDetails() At AssemblySessionAction",e);
+			}
+		return Action.SUCCESS;
+	}
+	
 	public String submitAssemblySessionCanScoreDetails(){
 		try {
 				status = assemblySessionService.saveAssemblySessionCanScoreDetails(assemblySessionReportVO);
