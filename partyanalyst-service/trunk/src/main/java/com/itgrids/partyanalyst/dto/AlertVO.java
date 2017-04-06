@@ -30,6 +30,7 @@ public class AlertVO {
 	
 	private Long tdpCadreId;
 	private Long id;
+	private String name;
 	private Long statusId;
 	private String status;
 	private Long count;
@@ -53,6 +54,7 @@ public class AlertVO {
 	private Double statusPercent = 0.0d;
 	private String severityStr;
 	private String assignedDate;
+	private Double percentage = 0.0d;
 	
 	
 	private List<Long> deptIdList = new ArrayList<Long>();
@@ -334,6 +336,18 @@ public class AlertVO {
 	}
 	public void setColor(String color) {
 		this.color = color;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Double getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
 	}
 	
 }
