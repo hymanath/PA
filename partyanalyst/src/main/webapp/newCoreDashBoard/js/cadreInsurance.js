@@ -345,7 +345,6 @@
 	function buildInsuraceStatusWiseComplaintsDetails(result)
 	{
 		var str='';
-		str+='<div class="table-responsive">';
 		str+='<table class="table" style="border:1px solid #ddd" id="InsuraceStatusWiseComplaintsDetailsDataTab">';
 			str+='<thead class="text-capital">';
 				str+='<th>cid</th>';
@@ -453,7 +452,6 @@
 				str+='</tr>';
 			}
 		str+='</table>';
-		str+='</div>';
 		$("#insuraceStatusWiseComplaintsDetails").html(str);
 		$("#InsuraceStatusWiseComplaintsDetailsDataTab").dataTable();
 	}
@@ -1486,9 +1484,9 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 	function buildHighCandidateDtlsHighchart(mainJosnObjArr,locationName,divId,type,headingId,totalComplaintCnt){
 	    if(mainJosnObjArr != null && mainJosnObjArr.length > 0){
 			var str='';
-			  if(type="Death"){
+			  if(type=="Death"){
 				str+='<span style="margin-left:10px">'+type+'<span style="margin-left:860px;">Total:'+totalComplaintCnt+'<span></span>';  
-			  }else{
+			  }else if(type=="Hospitalization"){
 				str+='<span style="margin-left:10px">'+type+'<span style="margin-left:790px;">Total:'+totalComplaintCnt+'<span></span>'; 
 			  }
 			  
