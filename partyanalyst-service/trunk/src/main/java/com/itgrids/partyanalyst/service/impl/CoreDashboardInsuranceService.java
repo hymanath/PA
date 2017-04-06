@@ -942,6 +942,8 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						CoreDashboardInsuranceVO deathCmpnyvo = getMatchVO(apvo.getDeathList(), companyId);
 						overAllCmpnyvo.setDeathCount(overAllCmpnyvo.getDeathCount()+count);
 						deathCmpnyvo.setTotalCount(deathCmpnyvo.getTotalCount()+count);
+						//overAllCmpnyvo.setAmount(overAllCmpnyvo.getAmount()+amount);
+						deathCmpnyvo.setAmount(deathCmpnyvo.getAmount()+amount);
 						
 						CoreDashboardInsuranceVO statusvo = getMatchedVOByStatusStr(deathCmpnyvo.getSubList(), status);
 						statusvo.setCount(statusvo.getCount()+count);
@@ -950,11 +952,14 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 						CoreDashboardInsuranceVO hsptlCmpnyvo = getMatchVO(apvo.getHospitalizationList(), companyId);
 						overAllCmpnyvo.setHospitalizationCount(overAllCmpnyvo.getHospitalizationCount()+count);
 						hsptlCmpnyvo.setTotalCount(hsptlCmpnyvo.getTotalCount()+count);
+						//overAllCmpnyvo.setAmount(overAllCmpnyvo.getAmount()+amount);
+						hsptlCmpnyvo.setAmount(hsptlCmpnyvo.getAmount()+amount);
 						
 						CoreDashboardInsuranceVO statusvo = getMatchedVOByStatusStr(hsptlCmpnyvo.getSubList(), status);
 						statusvo.setCount(statusvo.getCount()+count);
 					}
 					overAllCmpnyvo.setTotalCount(overAllCmpnyvo.getTotalCount()+count);
+					overAllCmpnyvo.setAmount(overAllCmpnyvo.getAmount()+amount);
 				}
 		    }
 		    
