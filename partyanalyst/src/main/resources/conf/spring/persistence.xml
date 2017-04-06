@@ -1231,7 +1231,11 @@
 					   <value>com.itgrids.partyanalyst.model.GovtAlertSubTask</value>
 					   <value>com.itgrids.partyanalyst.model.AlertDepartmentDocumentNew</value>
 					   <value>com.itgrids.partyanalyst.model.AlertDepartmentCommentNew</value>
+					   <value>com.itgrids.partyanalyst.model.GovtAlertActionType</value>
+					   <value>com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew</value>
+					   
 	                   <!--  Govt Alert module end-->
+	                   
 				  </list>
 			
 		</property>
