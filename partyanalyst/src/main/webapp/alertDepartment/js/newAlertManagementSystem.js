@@ -121,18 +121,24 @@ $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	{
 		$("#dateRangePicker").val('All');
 	}
-	//getStatusWiseAlertOverviewCnt();
-	//totalAlertGroupByStatusThenDepartment();
-	//getDistrictWiseTotalForAlertOverview();
-	//getDistrictTotalForAlertStatus('',0);  
+	getStatusWiseAlertOverviewCnt();
+	totalAlertGroupByStatusThenDepartment();
+	getDistrictWiseTotalForAlertOverview();
+    getDistrictTotalForAlertStatus('',0);  
 });
 $(".chosenSelect").chosen({width:'100%'});
 
 function onLoadCalls()
 {
-	//getStatusWiseAlertOverviewCnt();
+	 //getStatusWiseAlertOverviewCnt();
+	 //getLevelWiseAlertOverviewCnt();
+	 //getDepartmentWiseAlertOverviewCnt();
+	 //getDepartmentScope();
+    // getDepartmentStatus();
+     //
+	 //getLevelWiseAlertOverviewCnt();
 	//totalAlertGroupByStatusThenDepartment();
-	//getDistrictWiseTotalForAlertOverview();
+    //getDistrictWiseTotalForAlertOverview();
 	//getLevelWiseAlertOverviewCnt();
 }
 $(document).on("click",".settingsIcon",function(e){
@@ -204,11 +210,11 @@ function buildTotalAlertGroupByStatusForGovt(result)
 				str+='<tbody>';
 					for(var i in result)
 					{	
-						totalAlert+=result[i].count;
+						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
-							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].status+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsCls" attr_status_id="'+result[i].statusId+'">'+result[i].count+'</td>';
-							str+='<td>'+result[i].statusPercent+'%</td>';
+							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsCls" attr_status_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
+							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
 				str+='</tbody>';  
@@ -219,10 +225,10 @@ function buildTotalAlertGroupByStatusForGovt(result)
 	var statusOverviewArr =[];
 	for(var i in result)
 	{
-		statusPercent = result[i].statusPercent;
+		statusPercent = result[i].percentage;
 		statusName = result[i].status;
-		var cnt = result[i].count;
-		var stsId = result[i].statusId;
+		var cnt = result[i].alertCnt;
+		var stsId = result[i].id;
 		var colorsId = result[i].color
 		//var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
 		
@@ -334,6 +340,58 @@ function getLevelWiseAlertOverviewCnt()
     $.ajax({
       type:'GET',
       url: 'getLevelWiseAlertOverviewCntAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		console.log(result);
+    });
+}
+
+function getDepartmentWiseAlertOverviewCnt()
+{
+	$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var deptIdArr = globalDepartmentIdArr;
+    var paperIdArr = globalNewsPaperIdArr;
+    var chanelIdArr = globalChannelIdArr;
+	var alertStatusIdArr = [];
+	var deptScopeLevelIdArr = [];
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : globalStateId,
+      deptIdArr : deptIdArr,  
+      paperIdArr : paperIdArr,
+      chanelIdArr : chanelIdArr,
+	  alertStatusIdArr:alertStatusIdArr,
+	  deptScopeLevelIdArr:deptScopeLevelIdArr,
+	  resultType:"Status"
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getDepartmentWiseAlertOverviewCntAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		console.log(result);
+    });
+}
+function getDepartmentStatus()
+{
+    var jsObj ={
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getDepartmentStatusAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		console.log(result);
+    });
+}
+function getDepartmentScope()
+{
+    var jsObj ={
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getDepartmentScopeAction.action',
       data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		console.log(result);

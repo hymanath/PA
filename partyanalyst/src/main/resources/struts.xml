@@ -16476,6 +16476,21 @@
 				<param name="root">alertVOs</param>       
 			</result>
 		</action>
+		 <action name="getDepartmentWiseAlertOverviewCntAction" class="alertManagementSystemAction"  method="getDepartmentWiseAlertOverviewCnt">
+			<result type="json" name="success">    
+				<param name="root">alertVOs</param>       
+			</result>
+		</action>
+		 <action name="getDepartmentStatusAction" class="alertManagementSystemAction"  method="getDepartmentStatus">
+			<result type="json" name="success">    
+				<param name="root">alertVOs</param>       
+			</result>
+		</action>
+		 <action name="getDepartmentScopeAction" class="alertManagementSystemAction"  method="getDepartmentScope">
+			<result type="json" name="success">    
+				<param name="root">alertVOs</param>       
+			</result>
+		</action>
 		
  </package>
 </struts>
