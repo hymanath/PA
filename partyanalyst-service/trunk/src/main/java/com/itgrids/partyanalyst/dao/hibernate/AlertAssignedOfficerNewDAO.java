@@ -19,7 +19,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		StringBuilder sb = new StringBuilder();  
     	    sb.append("select ");
     	    if(type.equalsIgnoreCase("Status")){
-    	      sb.append(" model.alertStatus.alertStatusId, model.alertStatus.alertStatus " );
+    	      sb.append(" model.alertStatus.alertStatusId, model.alertStatus.alertStatus,model.alertStatus.color " );
     	    }else if(type.equalsIgnoreCase("Level")){
     	      sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
     	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName " );
@@ -79,7 +79,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    }else if(type.equalsIgnoreCase("Level")){
       	      sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " );
        	    }else if(type.equalsIgnoreCase("Department")){
-       	    	sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId " );	
+       	    	sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId " );	
        	    }
     	  
     	    Query query = getSession().createQuery(sb.toString());
