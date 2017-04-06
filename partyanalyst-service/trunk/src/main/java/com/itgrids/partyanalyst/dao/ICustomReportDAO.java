@@ -11,4 +11,5 @@ public interface ICustomReportDAO extends GenericDao<CustomReport, Long> {
 	public String getDescriptionForReportId(Long reportId);
 	public CustomReport getmodelForCustomreportId(Long reportId) ;
 	public List<Object[]> getReportsOfProgram(Long programId,String type);
+	public Integer updateCustomReportStatus(Long reportId);
 }

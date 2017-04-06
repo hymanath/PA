@@ -651,7 +651,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 					CustomReportVO fileVO = new CustomReportVO();
 					fileVO.setId((Long)objects[0]);
 					fileVO.setName(objects[1].toString());
-					fileVO.setPath("/cadreReports/"+objects[2].toString());
+					fileVO.setPath("https://mytdp.com/"+objects[2].toString());
 					vo.getFileList().add(fileVO);
 				}
 			}
@@ -889,11 +889,18 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		}
 		return finalList;
 	} 
-	public ResultStatus deleteCustomReportFileDetails(Long reportId){
+	public ResultStatus deleteCustomReportFileDetails(Long reportId,Long fileId){
 		ResultStatus  resultStatus = new ResultStatus();
 		try {
-			CustomReportFile customRprtFile = customReportFileDAO.deleteCustomReportFileDetails(reportId);
-			 customRprtFile.setIsDeleted("Y");
+			 Integer count = customReportFileDAO.updateCustomReportFileDetails(fileId);
+			 
+			 if(count != null && count > 0){
+				 List<Long> idsList = customReportFileDAO.getSubmittedCustomReports(reportId);
+				 if(idsList == null || idsList.size() == 0){
+					 customReportDAO.updateCustomReportStatus(reportId);
+				 }
+			 }
+			 
 			 resultStatus.setResultCode(0);
 			 resultStatus.setMessage("Success");
 		} catch (Exception e) {

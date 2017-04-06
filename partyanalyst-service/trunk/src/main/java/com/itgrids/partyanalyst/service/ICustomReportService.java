@@ -13,5 +13,7 @@ public interface ICustomReportService {
 	public List<CustomReportVO> getProgramReportsDetails(Long programId);
 	public CustomReportVO getReportFullDetails(Long reportId); 
 	public List<CustomReportVO> getCustomReportProgramForreportId(Long programId,String type);
-	public ResultStatus deleteCustomReportFileDetails(Long reportId);
+	public ResultStatus deleteCustomReportFileDetails(Long reportId,Long fileId);
+	
+	
 }
