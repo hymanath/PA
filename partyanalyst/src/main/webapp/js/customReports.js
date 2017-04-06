@@ -218,7 +218,7 @@ getCustomReportPrograms();
 						if(extension == 'jpg' || extension == 'jpeg' || extension == 'png')
 						{
 							str+='<li class="text-center">';
-								str+='<i class="removeCls glyphicon glyphicon-trash" id="removeId'+i+'" attr_report_id ="'+result.fileList[i].id+'"></i>';
+								str+='<i class="removeCls glyphicon glyphicon-trash" id="removeId'+i+'" attr_report_id ="'+result.fileList[i].id+'" attr_id='+reportId+'></i>';
 								str+='<img src="'+result.fileList[i].path+'" class="img-responsive" style="height: 100px;width: 100px;"/>';
 							str+='</li>';
 						}
@@ -268,10 +268,12 @@ getCustomReportPrograms();
 		})
 	}
    $(document).on("click",".removeCls",function(){
-	   var reportId = $(this).attr("attr_report_id");
+	   var reportId = $(this).attr("attr_id");
 	   var id = $(this).attr("id");
+	   var fileId = $(this).attr("attr_report_id");
 	   var jsObj={
-			reportId:reportId
+			reportId:reportId,
+			fileId : fileId
 		}
 	   
 		$.ajax({
