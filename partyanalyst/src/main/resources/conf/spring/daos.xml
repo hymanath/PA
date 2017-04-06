@@ -3906,6 +3906,15 @@
 	 <bean id="govtAlertSubTaskDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtAlertSubTaskDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="govtDepartmentScopeLevelDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentScopeLevelDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentWorkLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentWorkLocationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentWorkLocationRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentWorkLocationRelationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	 <bean id="alertDepartmentCommentNewDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentCommentNewDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
