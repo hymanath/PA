@@ -205,7 +205,7 @@
 								<li role="presentation"   class="text-capital"><a href="#alertStatus" aria-controls="alertStatus" role="tab" data-toggle="tab">Alert Status</a></li>
 							  </ul>
 								<button type="button" class="btn btn-success getAlertDetailsCls" onClick="getAlertDtlsBasedOnSelection('click');">Get Details</button>
-							  </div>
+							 
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
 							  <div class="tab-content navTabsSettingsContent">
@@ -280,7 +280,7 @@
 							  </div>
 							</div>
 						</div>
-					
+					 </div>
 				</div>
 				<div class="panel-body">
 				    
@@ -3404,8 +3404,7 @@
 										<div class="row">
 											<div class="col-md-12 col-xs-12 col-sm-12">  
 												<h4 class="m_top10"><span class="headingColor text-capital">telangana constituency wise - categories overview</span></h4>
-											</div>   
-											
+											</div>
 										</div>
 									</div>
 									<div class="panel-body">
@@ -4669,17 +4668,29 @@ function closeBlocks()
 	$("[expand-block-right],[expand-block-more]").hide();
 	$("[expand-block-date]").addClass("hide");
 }
-minimise(".rightNavigationMenu li")
-function minimise(Id)
+//find device ipad & Iphone & Android
+	var ua = navigator.userAgent,
+	browser = {
+		iPad: /iPad/.test(ua),
+		iPhone: /iPhone/.test(ua),
+		Android5: /Android 5/.test(ua)
+	};
+	if(browser.iPad) { minimise(".rightNavigationMenu li",5) }
+	else if(browser.Android5) { alert('ANDROID') }else{
+		minimise(".rightNavigationMenu li",8)
+	}
+	
+
+function minimise(Id,count)
 {
 	var id = Id;
 	var minimized_elements = $(id);
 	minimized_elements.each(function(){    
 		var t = $(this).text();        
-		if(t.length < 8) return;
+		if(t.length < count) return;
 
 		$(this).html(
-			'<span class="less">'+t.slice(0,8)+'..</span>'+
+			'<span class="less">'+t.slice(0,count)+'..</span>'+
 			'<span style="display:none;" class="more text-capitalize">'+t+'</span>'
 		);
 
@@ -4758,15 +4769,6 @@ var globalImages;
 		$("#attendanceModal").modal('show');
 	});
 	
-	//find device ipad & Iphone & Android
-	/* var ua = navigator.userAgent,
-	browser = {
-		iPad: /iPad/.test(ua),
-		iPhone: /iPhone/.test(ua),
-		Android5: /Android 5/.test(ua)
-	};
-	if(browser.iPad) { alert('IPAD') }	
-	if(browser.Android5) { alert('ANDROID') }	 */
 	
 	//settings scroll
 	$(".basicCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
@@ -4894,6 +4896,8 @@ var globalImages;
 		/* Alert Default Call */
 		//getAlertOverviewDetails();  
 		getAlertDtlsBasedOnSelection('default');
+		/* Insurance Calls */
+		globalInsuranceCalls();
 		/* Activities Default Call */
 		getActivitiesDetails();
 		getAttendanceOverViewForPartyOffice();
@@ -4902,7 +4906,7 @@ var globalImages;
 		//getSettingEvents();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
-		globalInsuranceCalls();
+		
 	  }
 	  else  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking")
 	  {
