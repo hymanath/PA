@@ -3927,6 +3927,9 @@
 	  <bean id="alertAssignedOfficerTrackingNewDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertAssignedOfficerTrackingNewDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="govtUserAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtUserAddressDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	 
 	 <!--  Govt Alert DAO'S END -->
 	
