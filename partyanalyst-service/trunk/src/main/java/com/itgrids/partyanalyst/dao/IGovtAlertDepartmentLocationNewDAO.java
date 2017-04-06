@@ -1,7 +1,11 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
-public interface IGovtAlertDepartmentLocationNewDAO extends GenericDao<IGovtAlertDepartmentLocationNewDAO, Long> {
+import com.itgrids.partyanalyst.model.GovtAlertDepartmentLocationNew;
 
+public interface IGovtAlertDepartmentLocationNewDAO extends GenericDao<GovtAlertDepartmentLocationNew, Long> {
+	
 }
