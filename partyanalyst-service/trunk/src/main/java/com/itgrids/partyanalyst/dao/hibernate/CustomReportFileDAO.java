@@ -51,11 +51,17 @@ public class CustomReportFileDAO extends GenericDaoHibernate<CustomReportFile, L
 		}
 		 return query.list();
 	}	
-	@SuppressWarnings("unchecked")
-	public CustomReportFile deleteCustomReportFileDetails(Long reportId){
-		 Query query=getSession().createQuery(" select model  from CustomReportFile model  " +
-				" where model.customReportFileId = :reportId  ");
+	public Integer updateCustomReportFileDetails(Long fileId){
+		Query query=getSession().createQuery(" update CustomReportFile model set model.isDeleted = 'Y' where model.customReportFileId =:fileId ");		
+		query.setParameter("fileId",fileId);
+		return  query.executeUpdate();
+	}
+	
+	public List<Long> getSubmittedCustomReports(Long reportId){
+		Query query = getSession().createQuery(" select model.customReportFileId " +
+				" from CustomReportFile model " +
+				" where model.isDeleted='N' and model.customReportId=:reportId ");
 		query.setParameter("reportId", reportId);
-		return (CustomReportFile) query.uniqueResult();
+		return query.list();
 	}
 }

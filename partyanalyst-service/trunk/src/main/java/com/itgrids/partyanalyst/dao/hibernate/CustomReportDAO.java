@@ -54,4 +54,10 @@ public class CustomReportDAO extends GenericDaoHibernate<CustomReport, Long> imp
 		return query.list();
 		
 	}
+	
+	public Integer updateCustomReportStatus(Long reportId){
+		Query query = getSession().createQuery(" update CustomReport model set model.isSubmitted='N' where model.customReportId=:reportId ");
+		query.setParameter("reportId", reportId);
+		return query.executeUpdate();
+	}
 }
