@@ -2,15 +2,22 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="govt_department_scope_location;")
@@ -24,6 +31,8 @@ public class GovtDepartmentScopeLocation extends BaseModel implements Serializab
 	private String levelId;
 	private String levelValue;
 	private String isDeleted;
+	
+	private GovtDepartmentScopeDetails govtDepartmentScopeDetails;
 	
 	
 	@Id
@@ -67,6 +76,19 @@ public class GovtDepartmentScopeLocation extends BaseModel implements Serializab
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_department_scope_details_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtDepartmentScopeDetails getGovtDepartmentScopeDetails() {
+		return govtDepartmentScopeDetails;
+	}
+	public void setGovtDepartmentScopeDetails(
+			GovtDepartmentScopeDetails govtDepartmentScopeDetails) {
+		this.govtDepartmentScopeDetails = govtDepartmentScopeDetails;
+	}
+	
 	
 	
 }
