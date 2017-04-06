@@ -38,7 +38,9 @@ public class AlertGovtOfficerSmsDetails extends BaseModel implements Serializabl
 	private String smsText;
 	private Date insertTime;
 	private Alert alert;
-	
+	private User user;
+	private GovtOfficer govtOfficer;
+	private AlertStatus alertStatus;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -115,6 +117,39 @@ public class AlertGovtOfficerSmsDetails extends BaseModel implements Serializabl
 	}
 	public void setAlert(Alert alert) {
 		this.alert = alert;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_officer_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtOfficer getGovtOfficer() {
+		return govtOfficer;
+	}
+	public void setGovtOfficer(GovtOfficer govtOfficer) {
+		this.govtOfficer = govtOfficer;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_status_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertStatus getAlertStatus() {
+		return alertStatus;
+	}
+	public void setAlertStatus(AlertStatus alertStatus) {
+		this.alertStatus = alertStatus;
 	}
 	
 }
