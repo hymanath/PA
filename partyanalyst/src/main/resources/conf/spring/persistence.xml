@@ -1229,6 +1229,10 @@
 					   <value>com.itgrids.partyanalyst.model.GovtAlertDepartmentLocationNew</value>
 					   <value>com.itgrids.partyanalyst.model.AlertAssignedOfficerNew</value>
 					   <value>com.itgrids.partyanalyst.model.GovtAlertSubTask</value>
+					   
+					   <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeLevel</value>
+					   <value>com.itgrids.partyanalyst.model.GovtDepartmentWorkLocation</value>
+					   <value>com.itgrids.partyanalyst.model.GovtDepartmentWorkLocationRelation</value>
 					   <value>com.itgrids.partyanalyst.model.AlertDepartmentDocumentNew</value>
 					   <value>com.itgrids.partyanalyst.model.AlertDepartmentCommentNew</value>
 					   <value>com.itgrids.partyanalyst.model.GovtAlertActionType</value>
