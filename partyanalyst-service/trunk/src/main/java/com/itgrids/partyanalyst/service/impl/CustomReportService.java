@@ -284,40 +284,51 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		
 		 StringBuilder pathBuilder = new StringBuilder();
 		 StringBuilder str ;
+		 
 		 CustomReport cusReport = customReportDAO.getmodelForCustomreportId(reportId);
 		 cusReport.setDescription(description);
 		 cusReport.setCustomReportProgramId(programId);
 		 cusReport.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 		 cusReport.setUpdatedBy(userId);
 		 cusReport.setIsDeleted("N");
+		 
+		 if(cusReport.getIsSubmitted().equals("N")){
+			 if(mapfiles != null && mapfiles.size() > 0)
+				 cusReport.setIsSubmitted("Y");
+			 else
+				 cusReport.setIsSubmitted("N");
+		 }
+		 
 		 cusReport = customReportDAO.save(cusReport);
 			
-		 for (Map.Entry<File, String> entry : mapfiles.entrySet())
-		 {
-			 str = new StringBuilder();
-			 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
-			 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-				
-			 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
-			 .append(entry.getValue());
-			 str.append(randomNumber).append(".").append(entry.getValue());
-			 activityService = new ActivityService();
-			String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
-			 
-				if(fileCpyStts.equalsIgnoreCase("error")){
-					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-					LOG.error(" Exception Raise in copying file");
-					throw new ArithmeticException();
-				}
-				
-				customReportFile = new CustomReportFile();
-				customReportFile.setFileName(pathBuilder.toString());
-				customReportFile.setPath("/nominated_post_documents/"+pathBuilder.toString());
-				customReportFile.setIsDeleted("N");
-				customReportFile.setCustomReportId(reportId);
-				customReportFile = customReportFileDAO.save(customReportFile);
-				
+		 if(mapfiles != null && mapfiles.size() > 0){
+			 for (Map.Entry<File, String> entry : mapfiles.entrySet()){
+				 str = new StringBuilder();
+				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+					
+				 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
+				 .append(entry.getValue());
+				 str.append(randomNumber).append(".").append(entry.getValue());
+				 activityService = new ActivityService();
+				String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+				 
+					if(fileCpyStts.equalsIgnoreCase("error")){
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						LOG.error(" Exception Raise in copying file");
+						throw new ArithmeticException();
+					}
+					
+					customReportFile = new CustomReportFile();
+					customReportFile.setFileName(pathBuilder.toString());
+					customReportFile.setPath("/nominated_post_documents/"+pathBuilder.toString());
+					customReportFile.setIsDeleted("N");
+					customReportFile.setCustomReportId(reportId);
+					customReportFile = customReportFileDAO.save(customReportFile);
+					
+			 }
 		 }
+		
 		 resultStatus.setResultCode(0);
 		 resultStatus.setResultState(customReportFile.getCustomReportFileId());
 		 resultStatus.setMessage("success");
@@ -363,8 +374,19 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		try {
 			Map<Long,List<CustomReportVO>> observersMap = new LinkedHashMap<Long, List<CustomReportVO>>(0);
 			Map<Long,List<CustomReportVO>> locationsMap =new LinkedHashMap<Long, List<CustomReportVO>>(0);
-			Map<Long,List<CustomReportVO>> imagesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
+			//Map<Long,List<CustomReportVO>> imagesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
 			Map<Long,List<CustomReportVO>> filesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
+			
+			List<Object[]> reportsObj = customReportDAO.getReportsOfProgram(programId,"");
+			if(reportsObj != null && reportsObj.size() > 0){
+				for (Object[] objects : reportsObj) {
+					CustomReportVO voIn = new CustomReportVO();
+					voIn.setReportId((Long)objects[0]);
+					voIn.setName(objects[1] != null? objects[1].toString():"");
+					voIn.setLocationName(objects[2].toString());
+					finalList.add(voIn);
+				}
+			}
 			
 			//get observer details for program
 			//0-customReportId,1-tdpCadreId,2-firstname
@@ -471,7 +493,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 			}
 			//get image details for program
 			//0-customReportId,1-imageName,2-path,3-customReportimageId
-			List<Object[]> imagesObjList = customReportImageDAO.getImageDetails(programId);
+			/*List<Object[]> imagesObjList = customReportImageDAO.getImageDetails(programId);
 			if (imagesObjList != null && imagesObjList.size() > 0) {
 				for (Object[] objects : imagesObjList) {
 					if (imagesMap.get((Long)objects[0]) == null){
@@ -490,7 +512,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						imagesMap.get((Long)objects[0]).add(vo);
 					}
 				}				
-			}
+			}*/
 			
 			//get file details for program
 			//0-customReportId,1.fileName,2.path,3-customReportFileId
@@ -517,10 +539,15 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 			
 			if(observersMap != null && observersMap.size() > 0){
 				for (Entry<Long, List<CustomReportVO>> entry : observersMap.entrySet()) {
-					CustomReportVO vo = new CustomReportVO();
-					vo.setReportId(entry.getKey());
-					vo.setObserversList(entry.getValue());
-					finalList.add(vo);
+					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
+					if(matchedReportVO == null){
+						matchedReportVO = new CustomReportVO();
+						matchedReportVO.setReportId(entry.getKey());
+						matchedReportVO.setObserversList(entry.getValue());
+						finalList.add(matchedReportVO);
+					}else{
+						matchedReportVO.setObserversList(entry.getValue());
+					}
 				}
 			}
 			
@@ -538,7 +565,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 				}
 			}
 			
-			if(imagesMap != null && imagesMap.size() > 0){
+			/*if(imagesMap != null && imagesMap.size() > 0){
 				for (Entry<Long, List<CustomReportVO>> entry : imagesMap.entrySet()) {
 					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
 					if(matchedReportVO == null){
@@ -550,7 +577,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						matchedReportVO.setImagesList(entry.getValue());
 					}
 				}
-			}
+			}*/
 			
 			if(filesMap != null && filesMap.size() > 0){
 				for (Entry<Long, List<CustomReportVO>> entry : filesMap.entrySet()) {
@@ -594,7 +621,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 					observerVO.setId((Long)objects[0]);
 					observerVO.setMembershipNo(objects[1].toString());
 					observerVO.setName(objects[2].toString());
-					observerVO.setPath("/cadre_images/"+objects[3].toString());
+					observerVO.setPath(objects[3] != null && !objects[3].toString().trim().isEmpty()? objects[3].toString():"");
 					observerVO.setVoterNum(objects[4] != null ? objects[4].toString() : "");
 					observerVO.setMobileNum(objects[5].toString());
 					vo.getObserversList().add(observerVO);
@@ -638,8 +665,19 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		try {
 			Map<Long,List<CustomReportVO>> observersMap = new LinkedHashMap<Long, List<CustomReportVO>>(0);
 			Map<Long,List<CustomReportVO>> locationsMap =new LinkedHashMap<Long, List<CustomReportVO>>(0);
-			Map<Long,List<CustomReportVO>> imagesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
+			//Map<Long,List<CustomReportVO>> imagesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
 			Map<Long,List<CustomReportVO>> filesMap =new LinkedHashMap<Long,List<CustomReportVO>>(0);
+			
+			List<Object[]> reportsObj = customReportDAO.getReportsOfProgram(programId,type);
+			if(reportsObj != null && reportsObj.size() > 0){
+				for (Object[] objects : reportsObj) {
+					CustomReportVO voIn = new CustomReportVO();
+					voIn.setReportId((Long)objects[0]);
+					voIn.setName(objects[1] != null? objects[1].toString():"");
+					voIn.setLocationName(objects[2].toString());
+					finalList.add(voIn);
+				}
+			}
 			
 			//get observer details for program
 			//0-customReportId,1-tdpCadreId,2-firstname
@@ -792,10 +830,15 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 			
 			if(observersMap != null && observersMap.size() > 0){
 				for (Entry<Long, List<CustomReportVO>> entry : observersMap.entrySet()) {
-					CustomReportVO vo = new CustomReportVO();
-					vo.setReportId(entry.getKey());
-					vo.setObserversList(entry.getValue());
-					finalList.add(vo);
+					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
+					if(matchedReportVO == null){
+						matchedReportVO = new CustomReportVO();
+						matchedReportVO.setReportId(entry.getKey());
+						matchedReportVO.setObserversList(entry.getValue());
+						finalList.add(matchedReportVO);
+					}else{
+						matchedReportVO.setObserversList(entry.getValue());
+					}
 				}
 			}
 			
@@ -813,7 +856,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 				}
 			}
 			
-			if(imagesMap != null && imagesMap.size() > 0){
+			/*if(imagesMap != null && imagesMap.size() > 0){
 				for (Entry<Long, List<CustomReportVO>> entry : imagesMap.entrySet()) {
 					CustomReportVO matchedReportVO = getMatchedVO(finalList,entry.getKey());
 					if(matchedReportVO == null){
@@ -825,7 +868,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 						matchedReportVO.setImagesList(entry.getValue());
 					}
 				}
-			}
+			}*/
 			
 			if(filesMap != null && filesMap.size() > 0){
 				for (Entry<Long, List<CustomReportVO>> entry : filesMap.entrySet()) {
@@ -850,7 +893,7 @@ public class CustomReportService extends AlertService implements ICustomReportSe
 		ResultStatus  resultStatus = new ResultStatus();
 		try {
 			CustomReportFile customRprtFile = customReportFileDAO.deleteCustomReportFileDetails(reportId);
-			     customRprtFile.setIsDeleted("Y");
+			 customRprtFile.setIsDeleted("Y");
 			 resultStatus.setResultCode(0);
 			 resultStatus.setMessage("Success");
 		} catch (Exception e) {
