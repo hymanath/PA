@@ -1941,9 +1941,10 @@ $(document).on("click","#hideAsmblyData",function(){
 		//var dateStr = $("#"+dateVal).val();
 		var locationInfoId = $(this).attr("attr_act_location_info_id");
 		var tableName = $(this).attr("attr_table_name");
+		var activityLevelTextId=$("#activityLevelList option:selected").text();
 		setGobalValues();
 		
-		var newwindow = window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'&temp='+locationInfoId+'&task='+tableName+'','Upload Images for activity','width=700,height=900,toolbar=0,menubar=0,location=0');
+		var newwindow = window.open('eventFieUploadAction.action?activityScopeId='+gobalActivityScopeId+'&locationValue='+gobalLevelValue+'&activityLevel='+gobalLevelId+'&locationName='+locationName+'&gobalTempVar='+gobalTempVar+'&temp='+locationInfoId+'&activityLevelTextId='+activityLevelTextId+'&task='+tableName+'','Upload Images for activity','width=700,height=900,toolbar=0,menubar=0,location=0');
         newwindow.focus();
 	});
 	

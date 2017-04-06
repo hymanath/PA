@@ -2938,7 +2938,6 @@ function getEventsDocuments(divId,Obj,attr_activity_scopeid)
 
 function getAvailablDates(locationScope,locationValue,day,path,attr_activity_scopeid)
 	{
-		
 	  $("#popupDaysDiv").html('<img src="./images/Loading-data.gif" />');
 	 /* var dates = $('.dateRangeIdForEvents').val();
 	  var dateArray = dates.split("/");
@@ -2965,15 +2964,23 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 				var str ='';
 				for(var i in result)
 				{ 
+				var format='th';
+					if(result[i].id==1)
+						format='st';
+					else if(result[i].id==2)
+						format='nd';
+					else if(result[i].id==3)
+						format='rd';
+					
 					if(result[i].id==day)
 					{//attr_activity_scopeid,locationScope,locationScopeValue
-						str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+						str+='<li class="active dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#"> '+result[i].id+' '+format+' Day<br/> '+result[i].date+'<span class="sr-only">(current)</span></a></li>';
 						/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */
-					}else if (i==0){
-						str+='<li class="active dayssCls"  locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+					}else if (day == 0 && i==0){
+						str+='<li class="active dayssCls" locationScope="'+locationScope+'"   locationScopeValue="'+locationValue+'"  path = "'+path+'" attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">'+result[i].id+' '+format+' Day<br/> '+result[i].date+'<span class="sr-only">(current)</span></a></li>';
 						/* getEventDocumentForPopup(jObj.locationScope,jObj.locationValue,day,0,path,attr_activity_scopeid,locationScope,locationValue); */ 
 					}else{
-						str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#">Day '+result[i].id+' <span class="sr-only">(current)</span></a></li>';
+						str+='<li class="dayssCls" locationScope="'+locationScope+'" locationScopeValue="'+locationValue+'"  attr_activity_scopeid="'+attr_activity_scopeid+'" attr="'+result[i].id+'"><a href="#"> '+result[i].id+'  '+format+' Day <br/>'+result[i].date+' <span class="sr-only">(current)</span></a></li>';
 					 }
 				}
 				$("#popupDaysDiv").html(str);
@@ -3021,9 +3028,9 @@ function buildLocationForPopup(locationScope,locationValue,ActivityScope)
 			
 }
 
-function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid,locationScope,locationScopeValue,calFrom)
+function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activity_scopeid,locationScope,locationScopeValue,calFrom,Id)
 {
-	
+
 	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
 	 var dates=$('.searchDateCls ').val();
 /* 	  var dateArray=dates.split("/");
@@ -3034,7 +3041,9 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 				fromDateStr=" ";
 				toDateStr=" ";
 			} */
-		
+		if(Id == 1){
+			globalActivityScope = attr_activity_scopeid;
+		}
 		var jObj = {
 		activityId:globalActivityScope,
 		locationScope:locationScope,
@@ -3067,7 +3076,6 @@ function getEventDocumentForPopup(searchType,locationId,day,num,path,attr_activi
 
 function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locationScope,locationScopeValue)
 {
-	
 	$("#popupImages").html('');
 	var str ='';
 	$('.slider-for,.slider-nav').slick('unslick');
@@ -4598,8 +4606,8 @@ function refreshEventsActivities(){
 			//alert(cnstitncyId);
 			var searchType = $('#'+globalImagesId+'').attr("attr_search_type");
 			var value = $('#'+globalImagesId+'').attr("attr_value");
-			
 			var attr_location_nam = $('#'+globalImagesId+'').attr("attr_location_nam");
+			
 			
 			$('#myModalSLabel').html(''+attr_location_nam+' Images Details ');
 			 if(activityLevelId == 5){

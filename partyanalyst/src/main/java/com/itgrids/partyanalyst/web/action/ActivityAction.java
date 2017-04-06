@@ -79,7 +79,14 @@ public class ActivityAction extends ActionSupport implements ServletRequestAware
 	private List<ActivityResponseVO> responsevoList;
 	private ResultStatus result;
 	private List<ActivityVO> activityVOList;
+	private String activityLevelTextId;	
 	
+	public String getActivityLevelTextId() {
+		return activityLevelTextId;
+	}
+	public void setActivityLevelTextId(String activityLevelTextId) {
+		this.activityLevelTextId = activityLevelTextId;
+	}
 	public ResultStatus getResult() {
 		return result;
 	}

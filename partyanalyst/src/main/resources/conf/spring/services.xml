@@ -4150,6 +4150,7 @@
 		<property name="speechAspectDAO" ref="speechAspectDAO"></property>
 		<property name="adminHouseMemberDAO" ref="adminHouseMemberDAO"></property>
 		<property name="adminHouseSessionDayDAO" ref="adminHouseSessionDayDAO"></property>
+		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
 	</bean>
 	<bean name="alertManagementSystemService" class="com.itgrids.partyanalyst.service.impl.AlertManagementSystemService">
 	</bean>
