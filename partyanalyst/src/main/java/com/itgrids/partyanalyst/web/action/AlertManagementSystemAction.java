@@ -169,7 +169,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			
 			alertVOs = alertManagementSystemService.getStatusWiseAlertOverviewcnt(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
 		}catch(Exception e){
-			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
+			LOG.error("Exception occured in getStatusWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -203,9 +203,68 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			
 			alertVOs = alertManagementSystemService.getLevelWiseAlertOverviewCnt(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
 		}catch(Exception e){
-			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
+			LOG.error("Exception occured in getLevelWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getDepartmentWiseAlertOverviewCnt(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+			List<Long> deptIdList = new ArrayList<Long>();
+			for (int i = 0; i < deptIdArr.length(); i++){
+				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+			}  
+			
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			for (int i = 0; i < paperIdArr.length(); i++){
+				paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+			} 
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			for (int i = 0; i < chanelIdArr.length(); i++){
+				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+			}
+			JSONArray alertStatusIdArr = jObj.getJSONArray("alertStatusIdArr");  
+			List<Long> alertStatusIds = new ArrayList<Long>();
+			for (int i = 0; i < alertStatusIdArr.length(); i++){
+				alertStatusIds.add(Long.parseLong(alertStatusIdArr.getString(i)));        
+			}
+			JSONArray deptScopeLevelIdArr = jObj.getJSONArray("deptScopeLevelIdArr");  
+			List<Long> deptScopeLevelIds = new ArrayList<Long>();
+			for (int i = 0; i < deptScopeLevelIdArr.length(); i++){
+				deptScopeLevelIds.add(Long.parseLong(deptScopeLevelIdArr.getString(i)));        
+			}
+			String resultType = jObj.getString("resultType");
+			alertVOs = alertManagementSystemService.getDepartmentWiseAlertOverviewCnt(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,alertStatusIds,deptScopeLevelIds,resultType);;
+		}catch(Exception e){
+			LOG.error("Exception occured in getDepartmentWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDepartmentStatus(){
+		try{
+			alertVOs = alertManagementSystemService.getDepartmentStatus();
+		}catch(Exception e){
+			LOG.error("Exception occured in getDepartmentStatus() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDepartmentScope(){
+		try{
+			alertVOs = alertManagementSystemService.getDepartmentScope();
+		}catch(Exception e){
+			LOG.error("Exception occured in getDepartmentScope() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }
