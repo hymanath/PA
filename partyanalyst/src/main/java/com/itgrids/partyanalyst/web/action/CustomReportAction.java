@@ -210,7 +210,7 @@ public class CustomReportAction extends ActionSupport implements ServletRequestA
     public String deleteCustomReportFileDetails(){
     	try {
     		jObj = new JSONObject(getTask());
-    		resultStatus = customReportService.deleteCustomReportFileDetails(jObj.getLong("reportId"));
+    		resultStatus = customReportService.deleteCustomReportFileDetails(jObj.getLong("reportId"),jObj.getLong("fileId"));
 		} catch (Exception e) {
 			LOG.error("Exception Occured in deleteCustomReportFileDetails() method, Exception - ",e); 
 		}
