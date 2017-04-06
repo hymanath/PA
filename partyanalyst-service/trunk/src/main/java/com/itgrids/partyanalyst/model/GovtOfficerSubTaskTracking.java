@@ -85,7 +85,7 @@ public class GovtOfficerSubTaskTracking {
 		this.alertSubTaskStatusId = alertSubTaskStatusId;
 	}
 	
-	@Column(name = "alert_severity_id")
+	@Column(name = "alert_department_comment_id")
 	public Long getAlertDepartmentCommentId() {
 		return alertDepartmentCommentId;
 	}
@@ -93,7 +93,7 @@ public class GovtOfficerSubTaskTracking {
 		this.alertDepartmentCommentId = alertDepartmentCommentId;
 	}
 	
-	@Column(name = "alert_department_comment_id")
+	@Column(name = "alert_department_document_id")
 	public Long getAlertDepartmentDocumentId() {
 		return alertDepartmentDocumentId;
 	}
@@ -133,7 +133,7 @@ public class GovtOfficerSubTaskTracking {
 		this.isDeleted = isDeleted;
 	}
 	
-	@Column(name = "govt_officer_sub_task_tracking_id")
+	@Column(name = "alert_severity_id")
 	public Long getAlertSeverityId() {
 		return alertSeverityId;
 	}
