@@ -1674,20 +1674,17 @@
 			<!-- TOURS END -->  
 		
 			<!--Meetings Start -->
-			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock" expand-block="meetings">
+			<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock" expand-block="meetings">  
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12 meetingHead"  expand-block-heading="meetings">
+							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="meetings">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
 									meetings - <small class="text-muted" id="dateMeetingHeadingId"> this month</small>
 								</h4>
 							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12 meetingHead1" expand-block-heading1="meetings">
-								<!--<span class="settingsIcon pull-right">
-									<i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							    </span>-->
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="meetings">
 								<span class="notesIconMeeting pull-right">
 									<i class="glyphicon glyphicon-list-alt"  data-toggle="tooltip" data-placement="top" title="Notes" onClick="displayDashboardCommentsForMeetings(2);"></i>
 								</span>
@@ -1696,7 +1693,7 @@
 								</span>
 								<span class="meetingsRefresh pull-right" attr_meeting_type="committeeMeeting" attr_refresh_status="false">
 									<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-							    </span>
+								</span>
 								<span class="input-group pull-right dateRangePickerClsForMeetings hide" expand-block-date="meetings" style="width:200px;">
 									<input type="text" id="dateRangeIdForMeetings" style="width:180px" class="form-control" />
 									<span class="input-group-addon">
@@ -1712,65 +1709,58 @@
 								</span>
 							</h4>
 							<div id="notesMeetingId"></div>
-						<hr/>
-						<div id="meetingsUpId" style="color:red;"></div>
-                        <label>Create Notes</label>
-                        <textarea class="form-control notesAreaMeetings"></textarea>
-                        <button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>
+							<hr/>
+							<div id="meetingsUpId" style="color:red;"></div>
+							<label>Create Notes</label>
+							<textarea class="form-control notesAreaMeetings"></textarea>
+							<button class="btn btn-default btnCustomCreateMeetings btn-sm "  onClick="savingDashboardCommentForMeetings(2);">create</button>
 						</div>
-					</div>
+					</div>   
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<h6 id="lastMeetingUpdatedIdTimeId" style="top:-8px;position:relative;right:5px;float:right;font-weight:bold"></h6>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 meetingsBlock meetingNB" expand-block-inner="meetings">
-								<div class="panelBlock">
-									<h4>
-										<span class="headingColor text-capital">committee meetings</span>
-										<span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-										<span class="mainMeetingsIcon" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>
-										<span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
-									<!--<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeetingStatus();" title="Click here to  update  partyMettings status"><i class="glyphicon glyphicon-refresh"></i></span>-->
-									<span style="color:red;font-size:15px;" id=""></span><div id="partyMettingStatusId"><span><img src="images/search.gif" style="display:none;"  id="partyMettingStatusIdImg"/></span></div></h4>
-									<div class="settingsDropDown notesArrow" style="left:0px;">
-										<ul class="list-inline">
-											<li><label><input type="checkbox" class="selectAll"/>&nbsp&nbspSelect All</label></li>
-											<!--<li><label><input type="checkbox" class="unSelectAll"/>UnSelect All</label></li>-->
-										</ul>
-										<div id="committeeTypeDivId"></div>
-										<button type="button" attr_main_type_meeting_id="1" class="btn btn-success meetingGetDtlsBtncls">Get Details</button>
-									</div>
-									 <div class="row">
-										<div id="meetingBasicCountDivId"></div>
-									 </div>
-								</div>	 
-									 
-								  <div class="panelBlock m_top20" >
+							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="meetings">
+								<h4>
+									<span class="headingColor text-capital">committee meetings</span>
+									<span class="committeeMeetingsSettings" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
+									<span class="mainMeetingsIcon" style="background-color:#fff;margin-left:5px;" expand-icon-inner="meetings" expand_event_name="mainMeetings">
+										<i class="glyphicon glyphicon-fullscreen"></i>
+									</span>
+									<span style="color:red;font-size:15px;" id="committeeMeetingErrorId"></span>
+								</h4>
+								<div class="row">
+									<div id="meetingBasicCountDivId"></div>
+								</div>
+								
+								<div class="panelBlock m_top20" >
 									<h4>
 										<span class="headingColor text-capitalize">state level meetings</span>
 										<span class="stateLevelMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
 										<!--<span class="stateLevelMeetingsExpand" id="stateLevelMeetingsExpandId" attr_main_type_meeting_id="2" style="background-color:#fff;margin-left:5px;"><i class="glyphicon glyphicon-fullscreen"></i></span>-->
 										<span style="color:red;font-size:15px;" id="stateLevelMeetingErrorId"></span>
 									</h4>
-								    <div class="settingsStateLevelMeetingDropDown " style="left:0px;">
+									<div class="settingsStateLevelMeetingDropDown " style="left:0px;">
 										<ul class="list-inline">
 											<li><label><input type="checkbox" class="selectAllStateLevelMeeting"/>&nbsp&nbspSelect All</label></li>
 										</ul>
 										<div id="stateLevelMeetingDivId"></div>
 										<button type="button" attr_main_type_meeting_id="2"  class="btn btn-success stateLevelMeetingBtnCls">Get Details</button>
 									</div>
-									 
-								  </div>
-									<div class="row">
+									 <div class="row">
 										<div id="stateLevelMeetingBasicCnt"></div>
-									</div>
-								  <div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="margin-top: 25px;">
-											<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
-										<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
-										</div>
-								  <div class="panelBlock m_top20">
+									 </div>
+									
+								</div>
+								<div id="customMeetingsDiv"></div>
+								<div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="margin-top: 15px;">
+									<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
+									<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
+								</div>
+								<div class="panelBlock m_top20">
 									<div class="row">
+										
 										<div class="col-md-7 col-xs-12 col-sm-7" style="padding-right:0px;">
 											<h4>
 												<span class="headingColor text-capitalize">special meetings</span>
@@ -1780,45 +1770,29 @@
 												<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
 											</h4>
 										</div>
-										
-									</div>
-									<!--<h4>
-										<span class="headingColor text-capitalize">special meetings</span>
-										<span class="specialMeetingSeeting" style="background-color:#fff;margin-left:5px;"><i class="fa fa-gears"></i></span>
-										<span style="background-color:#fff;margin-left:5px;" attr_main_type_meeting_id="3" class="specialMeetings" id="specialMeetingsExpandId"><i class="glyphicon glyphicon-fullscreen"></i></span><span style="color:red;font-size:15px;" id="specialMeetingErrorId"></span>
-										
-										<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="refreshMeeting();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
-								    </h4>-->
-								 	<div class="specialMeetingDropDown " style="left:0px;">
-										<ul class="list-inline">
-											<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
-										</ul>
-										<div id="specialMeetingDivId"></div>
-										<button type="button" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
-									</div>
-									 <div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="specialMeetingBasicCnt"></div>
+										<div class="specialMeetingDropDown " style="left:0px;">
+											<ul class="list-inline">
+												<li><label><input type="checkbox" class="selectAllSpecialMeeting"/>&nbsp&nbspSelect All</label></li>
+											</ul>
+											<div id="specialMeetingDivId"></div>
+											<button type="button" attr_main_type_meeting_id="3"  class="btn btn-success specialMeetingBtncls">Get Details</button>
 										</div>
-									 </div>
-									 <div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div id="customMeetingsDiv"></div>
-										</div>
-									 </div>
-								   </div>
-									<div class="row"  style="display: none;">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
-											  <div class="panel panel-default panelNew">
+										<div id="specialMeetingBasicCnt"></div>
+									</div>
+								</div>
+								
+								<!--<div class="row">
+									<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+										<div class="panel-group" id="accordionMultiLocation" role="tablist" aria-multiselectable="true">
+											<div class="panel panel-default panelNew">
 												<div class="panel-heading pad_10" role="tab" id="headingMultiLocation">
 													<h4 class="panel-title" style="display: inline-block">
 														<span class="headingColor text-capital">multi Location meetings</span>
-														<span  id="multicLocationMeetingId" style="background-color: #fff;" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" class="multicLocationMeetingCls" >
+														<span style="background-color: #fff;" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" class="multicLocationMeetingCls" expand-icon-inner="meetings" expand_event_name="multiLocation">
 															<i class="glyphicon glyphicon-fullscreen"></i>
 														</span>
 														<span style="background-color:#fff;margin-left:5px;"  class="refreshButtonUcon" id="" onclick="getMultiLocationWiseMeetingGroupsData();" title="Click here to refresh"><i class="glyphicon glyphicon-refresh"></i></span><span style="color:red;font-size:15px;" id=""></span>
-														<!--<button class="btn btn-xs btn-mini btn-success getModalImagesCls" attr_Meeting_level_id="3" attr_Meeting_id="513359"> view </button>-->
+														<!--<button class="btn btn-xs btn-mini btn-success getModalImagesCls" attr_Meeting_level_id="3" attr_Meeting_id="513359"> view </button>
 													</h4>  
 													<a role="button" class="collapseDebatesIcon" data-toggle="collapse" data-parent="#accordionMultiLocation" href="#collapseMultiLocation" aria-expanded="true" aria-controls="collapseMultiLocation">
 													</a>
@@ -1828,14 +1802,13 @@
 													<div id="MultiLocationWiseMeetingGroupsData"></div>  
 												  </div>
 												</div>
-											  </div>
 											</div>
 										</div>
 									</div>
-									
+								</div>-->
 								
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 meetingsHiddenBlock" expand-block-right="meetings">
+							<div class="col-md-6 col-xs-12 col-sm-12" expand-block-right="meetings" style="display:none">
 								<div class="row">
 									<div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6">
 										<ul class="activeUlCls list-inline ">
@@ -1844,61 +1817,35 @@
 										</ul>
 									</div>
 									<div id="userTypeWiseTopFiveStrongAndPoorMeetingMemsDivId"></div>
+									<div id="stateLevelMeetingBlockId"></div>
 								</div>
 							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 stateLevelMeetingBlock1" expand-block-right="meetings">
-								<div id="stateLevelMeetingBlockId"></div>
-							</div>
-							<div class="col-md-6 col-xs-12 col-sm-12 stateGeneralMeetBlock1" expand-block-right="meetings">
-								
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock showMoreBlockCls " expand-block-right="meetings">
-										<i data-placement="top" data-toggle="tooltip"  party_meetingId="0" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more"></i>
+							<div class="col-xs-12 col-sm-12 col-md-12 meetingsHiddenBlock" expand-block-right="meetings">
+								<i data-placement="top" data-toggle="tooltip"  party_meetingId="0" class="glyphicon glyphicon-option-horizontal pull-right moreMeetingsBlocksIcon" title="Click here for more" expand-block-right="meetings"></i>
 							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocksList" style="display:none" expand-block-more="meetings">
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 moreMeetingsBlocksList" expand-block-more="meetings" style="display:none;">
 								<ul class="list-inline pull-right activeUlCls">
 									<li class="active multiMetingDetailedBlock" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Detailed</li>
 									<li class="multiLocation">Comparison</li>
 									<!--<li class="multiLocation">multiLocation</li>-->
 								</ul>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none" expand-block-more="meetings">
-										<ul class="list-inline pull-right activeUlCls">
-											<li class="active attendedMetngs" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Attended</li>
-											<li class="meetingBased" attr_levelId="0" attr_group_id="1"  attr_sessionId="0">Meetings Based</li>
-											<!--<li class="multiLocation">multiLocation</li>-->
-										</ul>
+							<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 detailedMeetngsBlkId" style="display:none" expand-block-more="meetings" >
+								<ul class="list-inline pull-right activeUlCls">
+									<li class="active attendedMetngs" attr_levelId="0" attr_group_id="1"  attr_sessionId="0" >Attended</li>
+									<li class="meetingBased" attr_levelId="0" attr_group_id="1"  attr_sessionId="0">Meetings Based</li>
+									<!--<li class="multiLocation">multiLocation</li>-->
+								</ul>
 							</div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMultiMeetingsBlocksDetailed multiMeetingChortCls " style="display:none" expand-block-more="meetings">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-md-6 col-xs-12 col-sm-6">
-												<span class="headingColor text-capitalize">Multi Locations meetings performance cohort</span>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body ">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12  specialMeetingCls" style="display:none;">
-													<div class="col-md-6 col-xs-12 col-sm-6" style="margin-top: 6px;">
-														<h4 id="partyMeetingHeadingId"></h4>
-													</div>
-													<div class="col-md-6 col-xs-12 col-sm-6">
-														<div id="sessionBtnDivId"></div>
-													</div>
-											</div>
-										</div>
-										<div id="districtWiseSpecialMeetingsGraph"></div>
-										<div id="partyMeetingOverviewTabDiv" class=""></div>
-										<div id="meetingMemberDtlsDivId" class=""></div>   
-									</div>
-								</div>
-							</div>    
-							
-							
-							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed" expand-block-more="meetings"></div>
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 meetingPerformancCls moreMeetingsBlocksDetailed" style="display:none" expand-block-more="meetings">
+							<div class="col-md-12 col-xs-12 col-sm-12 multiLocationMeetingsCLs" expand-block-more="meetings" style="display:none">
+								<ul class="list-inline pull-right activeUlCls">
+									<li class="active multiMetingDetailedBlock">Detailed</li>
+									<li class="multiLocation">Comparison</li>
+								</ul>
+								
+							</div>
+							<div id="meetingLevelHIghChartsDivId" class="moreMeetingsBlocksDetailed"  expand-block-more="meetings"></div>
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 meetingPerformancCls moreMeetingsBlocksDetailed"  expand-block-more="meetings" style="display:none">
 								<div class="panel panel-default panelNew">
 									<div class="panel-heading">
 										<div class="row">
@@ -1908,109 +1855,19 @@
 										</div>
 									</div>
 									<div class="panel-body">
+										<div id="districtWiseSpecialMeetingsGraph"></div>
+										<div id="partyMeetingOverviewTabDiv"></div>
+										<div id="cmtMemberDtlsTableId"></div>
+										
 										<div id="userAccessLevelLocationDivId"></div>
 										<div id="districtWisePartyMeetingTypeDivId"></div>
 									</div>
 								</div>
 							</div>
-							 <div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksComparision" style="display:none;" expand-block-more="meetings">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="childUserTypeDetailsDivIdForMeeting"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row"> 
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childActivityMemberDivIdForMeeting"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildActivityMeetingMemberDiv"></div>
-												   <div class="row">
-														 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-														   <!-- <b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> meetings conducted locations</span></b>-->
-															<div class="row m_top20">
-															 <div id="topPoorLocationsMeetingDiv"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-								</div>                       	
-							</div>
-							
-							<!--multiLocation-->
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top20 moreMeetingsBlocksMultiLocationComparision" style="display:none;" expand-block-more="meetings">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading">
-										<div class="row">
-											<div class="col-xs-12 col-sm-12 col-md-12">
-											  <div id="childUserTypeDetailsDivIdForMeetingMultiLocation"></div>
-											</div>
-										</div>
-									</div>
-									<div class="panel-body">
-										<div class="row"> 
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												 <div id="childActivityMemberDivIdForMeetingMultiLocation"> </div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="bg_ED pad_15 m_top20">
-												   <div id="directChildActivityMeetingMemberDivMultiLocation"></div>
-												   <div class="row">
-														 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0">
-														   <!-- <b><span class="color_333 pad_5 bg_CC text-capital"><span class="text-danger">poor</span> meetings conducted locations</span></b>-->
-															<div class="row m_top20">
-															 <div id="topPoorLocationsMeetingDivMultiLocation"></div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12" id="stateWiseDiv" style="display:none;margin-top: 25px;">
-												<label>STATE LEVEL MEETINGS & ATTENDANCE RATIO</label>
-												<div id="stateWiseHighChartsDiv"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12" id="districtWiseDiv" style="display:none;margin-top: 25px;">
-												<label>DISTRICT LEVEL MEETINGS & ATTENDANCE RATIO</label>
-												<div id="districtWiseHighChartsDiv"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12" id="constituencyWiseDiv" style="display:none;margin-top: 25px;">
-												<label>CONSTITUENCY LEVEL MEETINGS & ATTENDANCE RATIO</label>
-												<div id="constituencyWiseHighChartsDiv"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12" id="mandalWiseDiv" style="display:none;margin-top: 25px;">
-												<label>MANDAL LEVEL MEETINGS & ATTENDANCE RATIO</label>
-												<div id="mandalWiseHighChartsDiv"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12" id="lebWiseDiv" style="display:none;margin-top: 25px;">
-												<label>TOWN LEVEL MEETINGS & ATTENDANCE RATIO</label>
-												<div id="lebWiseHighChartsDiv"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12" id="villageDiv" style="display:none;margin-top: 25px;">
-												<label>VILLAGE LEVEL MEETINGS & ATTENDANCE RATIO</label>
-												<div id="villageWiseHighChartsDiv"></div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12" id="wardWiseDiv" style="display:none;margin-top: 25px;">
-												<label>WARD LEVEL MEETINGS & ATTENDANCE RATIO</label>
-												<div id="wardWiseHighChartsDiv"></div>
-											</div>
-										</div>
-									</div>
-								</div>                       	
-							</div>
 						</div>
 					</div>
 				</div>
-			</div>	
-		
+			</div>
 			
 			<!--Meetings End-->
 		</div>	
@@ -4387,8 +4244,8 @@
 </div>
 
 <!-------start popup build------------>
-<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+<div class="modal fade" id="myModalImageId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%;z-index:9999" >
     <div class="modal-content customModal">
       <div class="modal-header">
         <button type="button" class="close imageCloseBtnCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -4418,14 +4275,51 @@
 </div>
 <!-- Modal For UpdationDetails -->
 <div class="modal fade" id="commentsModalId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width:80%">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="mdlHeadingId" style="text-transform: uppercase;"></h4>
+      </div>
+      <div class="modal-body">
+	  <div class="row">
+	  <div class="col-md-3 col-xs-12 col-sm-6">
+	  <label>District</label>
+	  <select class="form-control selectCls" id="distId" attr_value="district" onchange="getConstituenciesForDistricts(this.value);" name=""    data-placeholder ="ALL" >	  
+	    </select>
+		</div>
+		<div class="col-md-3 col-xs-12 col-sm-6">
+		<label>Constituency</label>
+		<select class="form-control selectCls" id="constId" attr_value="constituency" name="" onchange="onchangeFunction();" data-placeholder ="ALL">
+		</select>
+		</div>
+		<div class="col-md-3 col-xs-12 col-sm-6">
+		<label>Status</label>
+		<select class="form-control" id="thirdPartyStatusId" name="" data-placeholder ="ALL" onchange="onchangeFunction();">
+			   <option value="ALL">ALL</option>
+			   <option value="Yes">Yes</option>
+			   <option value="No">No</option>
+		</select>
+		</div>
+		<div class="col-md-2 col-xs-12 col-sm-6">
+             <button class="btn btn-success"  id="levelTypeId" onclick="getupdationDetailsConflicts();" style="margin-top: 19px;"> Get Details </button>
+           </div>
+		</div>
+        <div id="commentsBlock" class="m_top10"></div>		
+        <!--<div id="commentsDivId"></div>-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="customModalId" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width:60%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="mdlHeadingId"></h4>
+        <h4 class="modal-title" id="customHeadingId"></h4>
       </div>
       <div class="modal-body">
-        <div id="commentsBlock"></div>
+        <div id="detailedReportsDivId"></div>
         <!--<div id="commentsDivId"></div>-->
       </div>
     </div><!-- /.modal-content -->
@@ -4473,8 +4367,8 @@
 <script src="newCoreDashBoard/js/cadreRegistration.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/partyMeeting.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
+<!--<script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>-->
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
@@ -4533,11 +4427,13 @@ $("[expand-icon]").click(function(){
 			globalToursCalls('');
 		}else if(blockName == 'meetings')
 		{
+			$(".stateLevelMeetingBlock").show();
+			$(".showMoreBlockCls").show();
+			$(".dateRangePickerClsForMeetings").removeClass("hide");
+			//$(".meetingsIconExpand").find("i").addClass("glyphicon-resize-small").removeClass("glyphicon-fullscreen");
+			$(".meetingsRefresh").attr("attr_refresh_status","true");
+			$(".meetingsRefresh").attr("attr_meeting_type","committeeMeeting");
 			getUserTypeWiseMeetingCounductedNotCounductedMayBeDetailsCnt();
-			$(".showMoreBlockCls").attr("attr_main_type_meeting_id",1);//committee meeting
-			//$(".meetingsHiddenBlock,.moreMeetingsBlocksIcon").toggle();
-			$(".meetingsHiddenBlock").find("i").show();
-			$(".moreMeetingsBlocks1,.stateLevelMeetingBlock,.stateGeneralMeetBlock").hide();
 		}else if(blockName == 'cadre')
 		{
 			getUserTypeWiseTotalCadreRegistrationCount();
@@ -4709,8 +4605,9 @@ $(document).on("click","[expand-icon-inner]",function(){
 				
 			}else if(expandName == "mainMeetings")
 			{
-				$(".stateLevelMeetingBlock").show();
-				$(".showMoreBlockCls").show();
+				var attrMainTypeMeetingId = $(this).attr("attr_main_type_meeting_id");
+				var meetingTypeId = $(this).attr("attr_meeting_type_id");
+				$(".showMoreBlockCls,.showMoreBlockCls,.moreMeetingsBlocksIcon,.stateLevelMeetingBlock").show();
 				$(".showMoreBlockCls").attr("attr_main_type_meeting_id",attrMainTypeMeetingId);
 				$(".showMoreBlockCls").attr("attr_meeting_type_id",meetingTypeId);
 				$(".showMoreBlockCls").attr("attr_selected_type","stateLevel");
@@ -4731,6 +4628,7 @@ $(document).on("click","[expand-icon-inner]",function(){
 				},500);
 			}else if(expandName == "specialMeetings")
 			{
+				$("#meetingLevelHIghChartsDivId,#userAccessLevelLocationDivId").html(' ');
 				var partyMeetingId = $(this).attr("party_meetingId");
 				var partyMeetingTypeId = $(this).attr("party_meeting_type_id");
 				var partyMeetingMainTypeId = 3;
@@ -4746,6 +4644,7 @@ $(document).on("click","[expand-icon-inner]",function(){
 				$(".meetingsRefresh").attr("attr_meeting_type","specailSessionTypeMeeting");
 				$(".stateLevelMeetingBlock").show();
 				$(".showMoreBlockCls").show();
+				
 				setSessioncolorsForStatus();
 				getCommitteesAndPublicRepresentativeMembersInvitedAndAttendedToSeeionWiseMeetingDtls(partyMeetingMainTypeId,partyMeetingTypeId,partyMeetingIdArr);
 			}
