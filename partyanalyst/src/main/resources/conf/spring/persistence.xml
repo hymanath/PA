@@ -1203,7 +1203,6 @@
 	               	 	 <value>com.itgrids.partyanalyst.model.ActivityRequiredAttribute</value>
 	                   <!--  CUSTOM REPORT END -->
 	                   
-	                   <value>com.itgrids.partyanalyst.model.GovtAlertSubTask</value>
 	                   <!--  Assembly Session  -->
 	                     <value>com.itgrids.partyanalyst.model.SpeechAspect</value>
 	                  	 <value>com.itgrids.partyanalyst.model.MemberSpeechAspect</value>
@@ -1230,9 +1229,10 @@
 					   <value>com.itgrids.partyanalyst.model.GovtAlertDepartmentLocationNew</value>
 					   <value>com.itgrids.partyanalyst.model.AlertAssignedOfficerNew</value>
 					   <value>com.itgrids.partyanalyst.model.GovtAlertSubTask</value>
+					   <value>com.itgrids.partyanalyst.model.AlertDepartmentDocumentNew</value>
+					   <value>com.itgrids.partyanalyst.model.AlertDepartmentCommentNew</value>
 	                   <!--  Govt Alert module end-->
-	                   
-	              </list>
+				  </list>
 			
 		</property>
 	</bean>
