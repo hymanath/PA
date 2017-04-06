@@ -38,4 +38,20 @@ public class CustomReportDAO extends GenericDaoHibernate<CustomReport, Long> imp
 		query.setParameter("reportId", reportId);
 		return (CustomReport) query.uniqueResult();
 	}
+	
+	public List<Object[]> getReportsOfProgram(Long programId,String type){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.customReportId,model.reportName,model.isSubmitted "
+				+ " from  CustomReport model "
+				+ " where model.isDeleted='N' and model.customReportProgramId=:programId ");
+		
+		if(type != null && !type.trim().isEmpty())
+			sb.append(" and model.isSubmitted=:type ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("programId", programId);
+		if(type != null && !type.trim().isEmpty())
+			query.setParameter("type", type);
+		return query.list();
+		
+	}
 }
