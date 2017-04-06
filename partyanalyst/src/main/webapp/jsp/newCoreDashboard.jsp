@@ -3691,7 +3691,7 @@
 				<div class="row">
 					<div class="col-md-12 col-xs-12 col-sm-12">
 						<div id="lagDaysInsuranceComplaintsCounts"></div>
-						<div id="insuraceStatusWiseComplaintsDetails"></div>
+						<div id="insuraceStatusWiseComplaintsDetails" class="table-responsive m_top20"></div>
 					</div>
 				</div>
 			</div>

@@ -380,7 +380,7 @@
 			for(var i in result)
 			{
 				str+='<tr>';
-					if(result != null)
+					if(result[i].complaintId != null)
 					{
 						str+='<td>'+result[i].complaintId+'</td>';
 					}else{
@@ -388,37 +388,37 @@
 					}
 					
 					str+='<td>';
-						if(result != null)
+						if(result[i].name != null)
 						{
 							str+='<p>N:'+result[i].name+'</p>';
 						}else{
 							str+='<p>N: -</p>';
 						}
-						if(result != null)
+						if(result[i].mobileNo != null)
 						{
 							str+='<p>M: '+result[i].mobileNo+'</p>';
 						}else{
 							str+='<p>M: -</p>';
 						}
-						if(result != null)
+						if(result[i].districtName != null)
 						{
 							str+='<p>D: '+result[i].districtName+'</p>';
 						}else{
 							str+='<p>D: -</p>';
 						}
-						if(result != null)
+						if(result[i].constituencyName != null)
 						{
 							str+='<p>C: '+result[i].constituencyName+'</p>';
 						}else{
 							str+='<p>C: -</p>';
 						}
-						if(result != null)
+						if(result[i].mandalName != null)
 						{
 							str+='<p>M: '+result[i].mandalName+'</p>';
 						}else{
 							str+='<p>M: -</p>';
 						}
-						if(result != null)
+						if(result[i].villageName != null)
 						{
 							str+='<p>V: '+result[i].villageName+'</p>';
 						}else{
@@ -427,43 +427,43 @@
 						
 						
 					str+='</td>';
-						if(result != null)
+						if(result[i].subject != null)
 						{
 							str+='<td>'+result[i].subject+'</td>';
 						}else{
 							str+='<td>-</td>';
 						}
-						if(result != null)
+						if(result[i].description != null)
 						{
 							str+='<td>'+result[i].description+'</td>';
 						}else{
 							str+='<td>-</td>';
 						}
-						if(result != null)
+						if(result[i].typeOfIssue != null)
 						{
 							str+='<td>'+result[i].typeOfIssue+'</td>';
 						}else{
 							str+='<td>-</td>';
 						}
-						if(result != null)
+						if(result[i].status != null)
 						{
 							str+='<td>'+result[i].status+'</td>';
 						}else{
 							str+='<td>-</td>';
 						}
-						if(result != null)
+						if(result[i].postedDate != null)
 						{
 							str+='<td>'+result[i].postedDate+'</td>';
 						}else{
 							str+='<td>-</td>';
 						}
-						if(result != null)
+						if(result[i].updatedDate != null)
 						{
 							str+='<td>'+result[i].updatedDate+'</td>';
 						}else{
 							str+='<td>-</td>';
 						}
-						if(result != null)
+						if(result[i].comment != null)
 						{
 							str+='<td>'+result[i].comment+'</td>';
 						}else{
