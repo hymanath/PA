@@ -3,15 +3,22 @@ package com.itgrids.partyanalyst.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "govt_officer_sub_task_action")
@@ -30,6 +37,10 @@ public class GovtOfficerSubTaskAction extends BaseModel implements Serializable 
 	private Date insertedTime;
 	private Long updatedBy;
 	private Date updatedTime;
+	
+	private Alert alert;
+	private AlertSubTaskStatus alertSubTaskStatus;
+	private AlertDepartmentComment alertDepartmentComment;
 	
 	
 	@Id
@@ -112,6 +123,40 @@ public class GovtOfficerSubTaskAction extends BaseModel implements Serializable 
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Alert getAlert() {
+		return alert;
+	}
+	public void setAlert(Alert alert) {
+		this.alert = alert;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_sub_task_status_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertSubTaskStatus getAlertSubTaskStatus() {
+		return alertSubTaskStatus;
+	}
+	public void setAlertSubTaskStatus(AlertSubTaskStatus alertSubTaskStatus) {
+		this.alertSubTaskStatus = alertSubTaskStatus;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_department_comment_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertDepartmentComment getAlertDepartmentComment() {
+		return alertDepartmentComment;
+	}
+	public void setAlertDepartmentComment(
+			AlertDepartmentComment alertDepartmentComment) {
+		this.alertDepartmentComment = alertDepartmentComment;
 	}
 	
 	
