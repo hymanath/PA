@@ -331,7 +331,7 @@
 		font-size:12px;
 		text-align:right;
 		cursor:pointer;
-		color:#fff;
+		color:#333;
 		text-transform:capitalize;
 	}
 	.rightNavigationMenu ul li:before
