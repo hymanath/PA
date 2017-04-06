@@ -5942,7 +5942,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			queryStr.append(" GD.department_name as department_name, ");
 		}else if(type.equalsIgnoreCase("Status")){
 			queryStr.append(" A.alert_status_id as alert_status_id, ");
-			queryStr.append(" ALTS.alert_status as alert_status, ");
+			queryStr.append(" ALTS.alert_status as alert_status,ALTS.alert_color as color, ");
 		}
 		queryStr.append(" count(distinct A.alert_id) as count ");
 		queryStr.append(" from ");
@@ -5975,11 +5975,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty())
 			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) )");
 		
-		queryStr.append(" group by ALTS.alert_status_id order by ALTS.alert_status_id; ");
 		if(type.equalsIgnoreCase("Department")){
-			queryStr.append(" GD.govt_department_id");
+			queryStr.append(" group by GD.govt_department_id");
 		}else if(type.equalsIgnoreCase("Status")){
-			queryStr.append(" ALTS.alert_status_id order by ALTS.alert_status_id ");
+			queryStr.append(" group by ALTS.alert_status_id order by ALTS.alert_status_id ");
 		}
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
 		if(type.equalsIgnoreCase("Department")){
@@ -5988,6 +5987,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}else if(type.equalsIgnoreCase("Status")){
 			query.addScalar("alert_status_id", Hibernate.LONG);
 			query.addScalar("alert_status", Hibernate.STRING);
+			query.addScalar("color",Hibernate.STRING);
 		}
 		query.addScalar("count", Hibernate.LONG);
 		if(fromDate != null && toDate != null){

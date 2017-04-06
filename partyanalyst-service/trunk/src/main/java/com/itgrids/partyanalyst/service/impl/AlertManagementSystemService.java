@@ -78,10 +78,6 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			if(deptIdList != null && deptIdList.size() == 0){
 				deptIdList.add(0L);  
 			}
-			//get all the alert status and build the template
-			Map<Long,AlertVO> statusMap = new HashMap<Long, AlertVO>();
-			List<Object[]> statusList = alertDepartmentStatusDAO.getAlertStatusByAlertTypeId(2l);
-			 prepareTemplate(statusList,statusMap);
 			//get alert status count and and create a map of alertStatusId and its count
 			List<Object[]> totalList = new ArrayList<Object[]>();
 			List<Object[]> alertCountList = alertDAO.getTotalGovtPendingStatusAlertCnt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,"Status");//for pending status
@@ -101,14 +97,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			if(alertCountList2 != null && alertCountList2.size() > 0){
 				totalList.addAll(alertCountList2);
 			}
-			setStatusWiseAlertCount(totalList,statusMap); 
-			if(statusMap != null && statusMap.size() > 0){
-				for(Entry<Long,AlertVO> entry:statusMap.entrySet()){
-					if(entry.getValue().getCount() != null && entry.getValue().getCount() > 0l){
-						finalAlertVOs.add(entry.getValue());
-					}
-				}
-			}
+			setAlertCount(totalList,finalAlertVOs,"Status"); 
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -116,39 +105,47 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		}
 		return null;
 	}
-	public void prepareTemplate(List<Object[]> statusList,Map<Long,AlertVO> statusMap){
-		try{
-			if(statusList != null && statusList.size() > 0){
-				for(Object[] param:statusList){
-					AlertVO statusVO = new AlertVO();
-					statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					statusVO.setColor(commonMethodsUtilService.getStringValueForObject(param[2]));
-					statusMap.put(statusVO.getId(), statusVO);
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-			LOG.error("Error occured getTotalAlertGroupByStatus() method of CccDashboardService{}");
-		}
-	}
-	public void setStatusWiseAlertCount(List<Object[]> objList,Map<Long,AlertVO> statusMap){
+	public void setAlertCount(List<Object[]> objList,List<AlertVO> finalAlertVOs,String type){
 	    try{
 	    	if(objList != null && objList.size() > 0){         
 				Long totalAlertCnt = 0l;
 				for(Object[] param : objList){
-					totalAlertCnt = totalAlertCnt+commonMethodsUtilService.getLongValueForObject(param[2]);
+					 if(type.equalsIgnoreCase("Status")){
+						 totalAlertCnt = totalAlertCnt+commonMethodsUtilService.getLongValueForObject(param[3]);	 
+					 }else{
+						 totalAlertCnt = totalAlertCnt+commonMethodsUtilService.getLongValueForObject(param[2]);						 
+					 }
 				}
 				for(Object[] param : objList){
-					if(statusMap.get(commonMethodsUtilService.getLongValueForObject(param[0])) != null){
-						statusMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setCount(statusMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
-						statusMap.get(commonMethodsUtilService.getLongValueForObject(param[0])).setPercentage(calculatePercantage(commonMethodsUtilService.getLongValueForObject(param[2]), totalAlertCnt));
-					}
+					 AlertVO VO = new AlertVO();
+					 VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 if(type.equalsIgnoreCase("Status")){
+					  VO.setColor(commonMethodsUtilService.getStringValueForObject(param[2])); 
+					  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					 }else{
+					  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					 }
+					 finalAlertVOs.add(VO);
 				}
+				//Calculating Percentage
+				calculatePercentage(finalAlertVOs,totalAlertCnt);
 			}
 	    }catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Error occured setStatusWiseAlertCnt() method of CccDashboardService{}");
+	    }
+	}
+	public void calculatePercentage(List<AlertVO> resuList,Long totalAlertCnt){
+		try{
+			if(resuList != null && resuList.size() > 0){
+				for(AlertVO VO:resuList){
+					VO.setPercentage(calculatePercantage(VO.getAlertCnt(), totalAlertCnt));
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured calculatePercentage() method of CccDashboardService{}");
 	    }
 	}
 	public Double calculatePercantage(Long subCount,Long totalCount){
@@ -189,7 +186,6 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 				deptIdList.add(0L);  
 			}
 			//get all the alert status and build the template
-			Map<Long,AlertVO> statusMap = new HashMap<Long, AlertVO>();
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long levelId = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -200,10 +196,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 				}
 			}
 			List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Level",null,null);
-			setStatusWiseAlertCount(rtrnObjLst,statusMap); 
-			if(statusMap != null && statusMap.size() > 0){
-				finalAlertVOs.addAll(statusMap.values());
-			}
+			setAlertCount(rtrnObjLst,finalAlertVOs,"Other");
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -286,7 +279,6 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 				}
 			}
 			//get all the alert status and build the template
-			Map<Long,AlertVO> deptMap = new HashMap<Long, AlertVO>();
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long levelId = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -308,10 +300,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 					totalList.addAll(rtrnObjLst);
 				}
 			}
-			setStatusWiseAlertCount(rtrnObjLst,deptMap); 
-			if(deptMap != null && deptMap.size() > 0){
-				finalAlertVOs.addAll(deptMap.values());
-			}
+			setAlertCount(rtrnObjLst,finalAlertVOs,"Other");
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();

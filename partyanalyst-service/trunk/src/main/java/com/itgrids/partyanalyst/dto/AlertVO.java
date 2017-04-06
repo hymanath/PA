@@ -55,6 +55,7 @@ public class AlertVO {
 	private String severityStr;
 	private String assignedDate;
 	private Double percentage = 0.0d;
+	private Long alertCnt = 0l;
 	
 	
 	private List<Long> deptIdList = new ArrayList<Long>();
@@ -349,5 +350,10 @@ public class AlertVO {
 	public void setPercentage(Double percentage) {
 		this.percentage = percentage;
 	}
-	
+	public Long getAlertCnt() {
+		return alertCnt;
+	}
+	public void setAlertCnt(Long alertCnt) {
+		this.alertCnt = alertCnt;
+	}
 }
