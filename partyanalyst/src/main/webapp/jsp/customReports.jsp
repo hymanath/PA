@@ -110,7 +110,7 @@
 										</li>
 									</ul>
 								</div>
-								<div class="col-md-3 col-xs-12 col-sm-3">
+								<div class="col-md-3 col-xs-12 col-sm-3" id="statusWiseBtnsDivId" style="disply:none;">
 									<ul class="activeUlCls alertFilterCls list-inline pull-right">
 										<li class="optionCls active" attr_type="">ALL</li>
 										<li class="optionCls" attr_type="Y">Submited</li>
@@ -216,9 +216,9 @@ initializeCustomReport();
 	}
 	
 	function getRequiredDocumentsSummary(){
-		$("#submittedReportsSpanId").html("");	
-		$("#notSubmittedReportsSapnId").html("");
-		$("#totalExpectedReportsSpanId").html("");
+		$("#submittedReportsSpanId").html(0);	
+		$("#notSubmittedReportsSapnId").html(0);
+		$("#totalExpectedReportsSpanId").html(0);
 		var jsObj={
 			id:$("#programSelId").val()
 		}

@@ -30,16 +30,15 @@ getCustomReportPrograms();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result != null && result.length > 0){
-				$list.html(templatess(result));
-				$list.trigger("chosen:updated");
-				getRequiredDocumentsSummary();
-				getProgramReportsDetails();
-			}			
+			$list.html(templatess(result));
+			$list.trigger("chosen:updated");
+			getRequiredDocumentsSummary();
+			getProgramReportsDetails();			
 		});
 	}
 	
 	function getProgramReportsDetails(){
+		$("#statusWiseBtnsDivId").hide();
 		$("#detailedReportsDivId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		var id = $("#programSelId").val();
 		$(".alertFilterCls li").attr("attr_id",id);
@@ -53,21 +52,22 @@ getCustomReportPrograms();
 		  dataType : 'json',
 		  data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			if(result != null && result.length > 0)
-			{
-				buildProgramReportDetails(result,id);
+			if(result != null && result.length > 0){
+				$("#statusWiseBtnsDivId").show();
+				buildProgramReportDetails(result);
 			}else{
 				$("#detailedReportsDivId").html("NO DATA AVAILABLE...")
 			}
 			
 		});
 	}
-	function buildProgramReportDetails(result,id){
+	function buildProgramReportDetails(result){
 		var str='';
 			
 			str+='<table class="table table-bordered" id="detailedReportsTableId">';
 				str+='<thead>';
 					str+='<tr style="background-color:#EDEEF0;border:1px solid #ddd">';
+						str+='<th>Name</th>';
 						str+='<th>LOCATION</th>';
 						str+='<th>OBSERVER NAME</th>';
 						//str+='<th>IMAGES</th>';
@@ -79,7 +79,7 @@ getCustomReportPrograms();
 					if(result != null && result.length > 0){
 						for(var i in result){
 							str+='<tr>';
-							
+							str+='<td>'+result[i].name+'</td>';
 							var locations = "";
 							if(result[i].locationsList != null && result[i].locationsList.length > 0){
 								for(var t in result[i].locationsList){
@@ -157,10 +157,12 @@ getCustomReportPrograms();
 		if(result.observersList != null && result.observersList.length > 0)
 		{
 			str+='<ul class="list-inline observerList">';
-			for(var i in result.observersList)
-			{
+			for(var i in result.observersList){
 				str+='<li>';
-					str+='<img src="https://mytdp.com/images/'+result.observersList[i].path+'" class="img-responsive"/>';
+				if(result.observersList[i].path != null && result.observersList[i].path.trim()!="")
+					str+='<img src="https://mytdp.com/images/cadre_images/'+result.observersList[i].path+'" class="img-responsive"/>';
+				else
+					str+='<img src="https://mytdp.com/images/User.png" class="img-responsive"/>';
 					str+='<p>Name : '+result.observersList[i].name+'</p>';
 					str+='<p>Voter No : '+result.observersList[i].voterNum+'</p>';
 					str+='<p>Mobile No : '+result.observersList[i].mobileNum+'</p>';
