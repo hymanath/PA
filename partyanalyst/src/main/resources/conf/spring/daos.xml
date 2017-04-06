@@ -3906,5 +3906,13 @@
 	 <bean id="govtAlertSubTaskDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtAlertSubTaskDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="alertDepartmentCommentNewDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentCommentNewDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	  <bean id="alertDepartmentDocumentNewDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertDepartmentDocumentNewDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 	 <!--  Govt Alert DAO'S END -->
+	
 </beans>		
