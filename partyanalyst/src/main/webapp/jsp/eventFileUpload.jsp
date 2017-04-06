@@ -9,6 +9,9 @@
 <style>
 .errorCls{color:red;font-size:12px;}
 .prev, .next{min-width:44px !important}
+.getImagesCls{
+	border-left-width: 0px; padding-left: 7px;	
+}
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -36,6 +39,17 @@
 	
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 	<script type="text/javascript" src="dragAndDropPhoto/js/uploadImage.js"></script>
+	<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
+	<link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
+	<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/Rating/bootstrap-rating.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+	<link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+	
 	
 </head>
 <body>
@@ -46,10 +60,28 @@
 					<div class="panel-heading">
 						<b id="locationNameId">File Upload</b>
 					</div>
+					
+					  <ul class="nav nav-tabs" style="cursor:pointer;">
+						<li id="uploadId2"class="active"><a onclick="clickUpload();">Upload</a></li>
+						<li id="viewId2"><a onclick="clickView();"  id="viewId">View</a></li>
+					  </ul>
+					
+					<div id="tableId" class="m_top20 left-width" style="margin-left: 17px;"></div>
+					
 					<div class="panel-body">
 						<div class="row">
+							<!--<div class="col-md-6" id="dateId" style="display:none;">
+								<label>Activity Date </label>
+								 <input type="text" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
+							</div>
+							 <div id="imgId" style="display:none;">
+								<label>Uploaded Images</label>
+								
+								<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;" onclick="clickImages();"></i>
+							</div> -->
+						  <div class="col-md-6" id="dayId" style="display:none;">
 							<div class="col-md-6">
-								<label title="Please select Uploading Images Activity Date.">Activity Date </label>
+								<label title="Please select Uploading Images Activity Date.">Select Activity Date </label>
 								 <input type="text" id="activityDate" name="complaintRegistrationVO.dateOfIncident" class="form-control clearCls" readonly>
 							</div>
 						 <!-- <div class="col-md-6">
@@ -117,14 +149,14 @@
 							<div id="uploadDiv" class="col-md-6 m_top20">
 							    <!--<button type="button" class="btn btn-primary" id="getImagesBtnId" onclick="getActivityImages(0)">View Images</button>-->
 							</div>
-							<div class="col-md-12" style="margin-top: 38px;">
+							<div class="col-md-12" id="uploadId" style="margin-top: 38px; display:none;">
 								<div class="errorDiv"></div>
 								<input type="file"  id="filer_input2" multiple="multiple" name="fileImage">
 								<p class="text-danger font-10 text-center">You can upload 10 files at a time.</p>
-							</div>	
-							
+							</div>						
 							
 						</div>
+						
 					</div>
 				</div>
 		</div>
@@ -157,6 +189,20 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="imagesModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalSLabel"></h4>
+      </div>
+      <div class="modal-body" style="padding:0px 15px;">
+       <div id="buildImagesId"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Modal -->
 
 <script src="dist/activityDashboard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -167,7 +213,8 @@
 <script type="text/javascript" src="dragAndDropPhoto/js/jquery.filer.min.js?v=1.0.5"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/custom.js?v=1.0.5"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script src="js/Activities/activitiesImages.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 //showHideDiv
@@ -694,8 +741,125 @@ $(".bootstrap-filestyle").hide();
 		
  	getDays();
 	
+$('#dayId').css('display','block');
+$('#uploadId').css('display','block');
+function clickUpload(){
+	$('#dateId').hide();
+	$('#imgId').hide();
+	$('#tableId').hide();
+	$('#uploadId2').addClass('active');
+	$('#viewId2').removeClass('active');
+	$('#dayId').css('display','block');
+	$('#uploadId').css('display','block');
+}
 
+function clickView(){
+	$('#dayId').hide();
+	$('#uploadId').hide();
+	$('#tableId').show();
+	$('#uploadId2').removeClass('active');
+	$('#viewId2').addClass('active');
+
+/* 	$('#dateId').css('display','block');
+	$('#imgId').css('display','block'); */
 	
+	var locationId="${temp}";
+	var attr_location_Name="${locationName}";
+	var attr_location_Value="${locationValue}";
+	var attr_table_name="${task}";
+	jsObj={locationId:locationId}
+	
+	$.ajax({
+	type:"POST",
+	url:"setDayWiseImagesDetailsAction.action",
+	data:{task:JSON.stringify(jsObj)} 
+			}).done(function(result){
+				if(result != null && result.length >0){
+						var str = '';
+							str+='<table class="table table-bordered" style="font-size:12px; ">';
+							str+='<thead>';
+								str+='<th style="background-color:#00B17D; color:#fff;""> Activity Date  </th>';
+								str+='<th style="background-color:#00B17D; color:#fff;""> Uploaded Images </th>';
+							str+='</thead>';
+						for(var i in result){
+							str+='<tbody>';
+								str+='<tr>';
+									var format='th';
+									if(result[i].count==1)
+										format='st';
+									else if(result[i].count==2)
+										format='nd';
+									else if(result[i].count==3)
+										format='rd';
+									
+									str+='<td>'+result[i].date+' ( '+result[i].count+' '+format+' Day )</td>';
+									str+='<td>'+result[i].id+'';
+									
+									 str+='<i class="getImagesPopUpCls glyphicon glyphicon-camera" id="images'+result[i].activityLocatInfoId+'"  style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].constituencyId+'" attr_scope_id = "" attr_value="'+0+'" attr_activity_lvl_id="" attr_search_type=""title="View Images" attr_location_nam="'+locationName+'" attr_day="'+result[i].count+'"></i>';
+									 
+									 
+									 /* str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;" attr_date="'+result[i].date+'" attr_info_id="'+locationId+'" attr_location_Name="'+attr_location_Name+'" attr_location_Value="'+attr_location_Value+'" attr_table_name="'+attr_table_name+'" attr_act_location_info_id="'+locationId+'"></i>'; */
+
+									
+									str+='</td>';
+								str+='</tr>';
+						}
+							str+='</tbody>';
+							str+='</table>';
+							$('#tableId').html(str);
+					    
+					
+				}
+			});
+}
+
+	$(document).on("click",".getImagesPopUpCls",function(){
+		
+		$('#imagesModalDivId').modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	
+	var attr_location_nam = '${locationName}'
+	var activityLevelTextId = '${activityLevelTextId}'
+	var attr_day = $(this).attr('attr_day');
+	$('#myModalSLabel').html(''+attr_location_nam+'  '+activityLevelTextId+' Images Details ');
+	var str='';
+		str+='<div class="row">';
+			str+='<div class="col-md-9">';
+				str+='<nav class="navbar navbar-default navbarCollapseCustom">';
+					str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
+					  str+='<ul class="nav navbar-nav" id="popupDaysDiv">';
+					  
+					  str+='</ul>';
+					str+='</div>';
+				str+='</nav>';
+				str+='<div class="bg_CC pad_10" id="popupImages">';
+					
+				str+='</div>';
+				str+=' <div id="paginationImagesDivId"></div>';
+			str+='</div>';
+			str+='<div class="col-md-3" style="box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);padding:0px">';
+			str+='</div>';
+		str+='</div>';
+	$("#buildImagesId").html(str);
+	if(activityLevelTextId == "Village/Ward"){
+		getAvailablDates("village",locationValueID,attr_day,'',actScopeId);
+		getEventsDocuments("","",actScopeId);
+		getEventDocumentForPopup("village",1,attr_day,0,'',actScopeId,"village",locationValueID,"",1);
+	}else if(activityLevelTextId == "Constituency"){
+		getAvailablDates("Constituency",locationValueID,attr_day,'',actScopeId);
+		getEventsDocuments("","",actScopeId);
+		getEventDocumentForPopup("Constituency",1,attr_day,0,'',actScopeId,"Constituency",locationValueID,"",1);
+	}else if(activityLevelTextId == "District"){
+		getAvailablDates("district",locationValueID,attr_day,'',actScopeId);
+		getEventsDocuments("","",actScopeId);
+		getEventDocumentForPopup("district",1,attr_day,0,'',actScopeId,"district",locationValueID,"",1);
+	}
+		
+
+	});
 </script>
 </body>
 </html>
