@@ -18,7 +18,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "govt_department_designation_officer")
+@Table(name = "govt_department_designation_officer_new")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class GovtDepartmentDesignationOfficerNew {
 	

@@ -19,20 +19,19 @@ public class GovtDepartmentScope extends BaseModel implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Long GovtDepartmentScopeId;
+	private Long govtDepartmentScopeId;
 	private String levelName;
 	private Long alertRegionScopesId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "govt_department_scope_id", unique = true, nullable = false)
+	@Column(name="govt_department_scope_id", unique = true, nullable = false)
 	public Long getGovtDepartmentScopeId() {
-		return GovtDepartmentScopeId;
+		return govtDepartmentScopeId;
 	}
 	public void setGovtDepartmentScopeId(Long govtDepartmentScopeId) {
-		GovtDepartmentScopeId = govtDepartmentScopeId;
+		this.govtDepartmentScopeId = govtDepartmentScopeId;
 	}
-	
 	@Column(name="level_name")
 	public String getLevelName() {
 		return levelName;
@@ -40,7 +39,6 @@ public class GovtDepartmentScope extends BaseModel implements Serializable{
 	public void setLevelName(String levelName) {
 		this.levelName = levelName;
 	}
-	
 	@Column(name="alert_region_scopes_id")
 	public Long getAlertRegionScopesId() {
 		return alertRegionScopesId;
