@@ -63,17 +63,102 @@
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12">
+				<div class="col-sm-12">
 					<div class="panel panel-default panelNewCustom">
 						<div class="panel-heading">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
-								department wise Alerts 
-							</h4>
+							<div class="row">
+								<div class="col-sm-9">
+									<h4 class="panel-title text-capital">
+										<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
+										department wise Alerts 
+									</h4>
+								</div>
+								<div class="col-sm-3">
+									<span class="settingsIcon pull-right" style="margin-top:7px;">
+										<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+									</span>
+									<div class="settingsBlockDropDown notesArrow documentCloseClass">
+										<i class="glyphicon glyphicon-remove setClose pull-right"></i>
+										<div class="row">
+											<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+												<ul class="nav nav-tabs navTabsSettings" role="tablist">
+													<li role="presentation" class="active text-capital"><a href="#printMediaAlerts" aria-controls="printMediaAlerts" role="tab" data-toggle="tab">Print Media</a></li>
+													<li role="presentation" class="text-capital"><a href="#electronicMediaAlerts" aria-controls="electronicMediaAlerts" role="tab" data-toggle="tab">Electronic Media</a></li>
+													<li role="presentation" class="text-capital"><a href="#departmentAlerts" aria-controls="departmentAlerts" role="tab" data-toggle="tab">Department</a></li>
+												</ul>
+											</div>
+											<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+												<div class="tab-content navTabsSettingsContent">
+													<div role="tabpanel" class="tab-pane active" id="printMediaAlerts">
+														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select News Papers</h4>
+														<hr style ="margin-bottom:0px;" />
+														<div class="">
+															<ul class="settingsUl">
+																<li>
+																	<label><input type="checkbox" class="selectAllPaperCls" checked />Select All</label>
+																</li>
+																<c:forEach items="${newsPaperList}"  var="newsPaper">
+																	<li>
+																		<label><input type="checkbox" class="newsPaperListCls" checked attr_val="${newsPaper.id}"/>
+																		${newsPaper.name}</label>
+																	</li>
+																</c:forEach>
+															</ul>
+														</div>
+													</div>
+													<div role="tabpanel" class="tab-pane" id="electronicMediaAlerts">
+														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Tv Channels</h4>
+														<hr style ="margin-bottom:0px;" />
+														<ul class="settingsUl">
+															<li>
+																<label><input type="checkbox" class="selectAllChannelsCls" checked />Select All</label>
+															</li>
+															<c:forEach items="${chanelList}"  var="channels">
+																<li>
+																	<label><input type="checkbox" class="chanelListCls" checked attr_val="${channels.id}"/>
+																	${channels.name}</label>
+																</li>
+															</c:forEach>
+														</ul>
+													</div>
+													<div role="tabpanel" class="tab-pane" id="departmentAlerts">
+														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Departments</h4>
+														<hr style ="margin-bottom:0px;" />
+														<div class="scrollerBlockDepartments">
+															<ul class="settingsUl">
+																<li>
+																	<label><input type="checkbox" class="selectAlldepartmentsCls" checked/>Select All</label>
+																</li>
+																<c:forEach items="${deptList}"  var="departments">
+																	<li>
+																		<label><input type="checkbox" class="departmentsCls" checked attr_val="${departments.id}"/>
+																		${departments.name}</label>
+																	</li>
+																</c:forEach>
+															</ul>
+														</div>
+													</div>
+												</div>
+											  
+											</div>
+											<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3 m_top10">
+												<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
+											</div>
+										</div>
+									</div>
+									<div class="input-group dateRangePickerCls m_top5">
+										<input type="text" class="form-control" style="width:180px" id="dateRangePicker">
+										<span class="input-group-addon">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</span>
+									</div>
+								</div>
+							</div>
+							
 						</div>
 						<div class="panel-body">
 							<div class="row">
-								<div class="col-md-4 col-xs-12 col-sm-4">
+								<div class="col-sm-6">
 									<div class="panel panel-default">
 										<div class="panel-heading headingColor">
 											<h4 class="panel-title text-capital fontColor">status overview</h4>
@@ -83,119 +168,44 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-8 col-xs-12 col-sm-8">
-									<div class="panel panel-default panelCustom">
-										<div class="panel-heading headingColor" style="padding:5px !important">
-											<div class="row">
-												<div class="col-md-7 col-xs-12 col-sm-7">
-													<h4 class="panel-title text-capital fontColor m_top5">Location Level overview</h4>
-												</div>
-												<div class="col-md-5 col-xs-12 col-sm-5">
-													<span class="settingsIcon pull-right" style="margin-top:7px;">
-														<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-													</span>
-													<div class="settingsBlockDropDown notesArrow documentCloseClass">
-														<i class="glyphicon glyphicon-remove setClose pull-right"></i>
-														<div class="row">
-															<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
-																<ul class="nav nav-tabs navTabsSettings" role="tablist">
-																	<li role="presentation" class="active text-capital"><a href="#printMediaAlerts" aria-controls="printMediaAlerts" role="tab" data-toggle="tab">Print Media</a></li>
-																	<li role="presentation" class="text-capital"><a href="#electronicMediaAlerts" aria-controls="electronicMediaAlerts" role="tab" data-toggle="tab">Electronic Media</a></li>
-																	<li role="presentation" class="text-capital"><a href="#departmentAlerts" aria-controls="departmentAlerts" role="tab" data-toggle="tab">Department</a></li>
-																</ul>
-															</div>
-															<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-																<div class="tab-content navTabsSettingsContent">
-																	<div role="tabpanel" class="tab-pane active" id="printMediaAlerts">
-																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select News Papers</h4>
-																		<hr style ="margin-bottom:0px;" />
-																		<div class="">
-																			<ul class="settingsUl">
-																				<li>
-																					<label><input type="checkbox" class="selectAllPaperCls" checked />Select All</label>
-																				</li>
-																				<c:forEach items="${newsPaperList}"  var="newsPaper">
-																					<li>
-																						<label><input type="checkbox" class="newsPaperListCls" checked attr_val="${newsPaper.id}"/>
-																						${newsPaper.name}</label>
-																					</li>
-																				</c:forEach>
-																			</ul>
-																		</div>
-																	</div>
-																	<div role="tabpanel" class="tab-pane" id="electronicMediaAlerts">
-																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Tv Channels</h4>
-																		<hr style ="margin-bottom:0px;" />
-																		<ul class="settingsUl">
-																			<li>
-																				<label><input type="checkbox" class="selectAllChannelsCls" checked />Select All</label>
-																			</li>
-																			<c:forEach items="${chanelList}"  var="channels">
-																				<li>
-																					<label><input type="checkbox" class="chanelListCls" checked attr_val="${channels.id}"/>
-																					${channels.name}</label>
-																				</li>
-																			</c:forEach>
-																		</ul>
-																	</div>
-																	<div role="tabpanel" class="tab-pane" id="departmentAlerts">
-																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Departments</h4>
-																		<hr style ="margin-bottom:0px;" />
-																		<div class="scrollerBlockDepartments">
-																			<ul class="settingsUl">
-																				<li>
-																					<label><input type="checkbox" class="selectAlldepartmentsCls" checked/>Select All</label>
-																				</li>
-																				<c:forEach items="${deptList}"  var="departments">
-																					<li>
-																						<label><input type="checkbox" class="departmentsCls" checked attr_val="${departments.id}"/>
-																						${departments.name}</label>
-																					</li>
-																				</c:forEach>
-																			</ul>
-																		</div>
-																	</div>
-																</div>
-															  
-															</div>
-															<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3 m_top10">
-																<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
-															</div>
-														</div>
-													</div>
-													<div class="input-group dateRangePickerCls m_top5">
-														<input type="text" class="form-control" style="width:180px" id="dateRangePicker">
-														<span class="input-group-addon">
-															<i class="glyphicon glyphicon-calendar"></i>
-														</span>
-													</div>
-												</div>
-											</div>
-											
-										</div>
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-md-12 col-xs-12 col-sm-12">
-													<div id="departmentWiseStatusOvrVw"></div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="col-sm-6">
 									<div class="panel panel-default">
 										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">departments Wise Status overview</h4>
+											<h4 class="panel-title text-capital fontColor">location level overview</h4>
+										</div>
+										<div class="panel-body">
+											<div id="levelWiseAlertOverview"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading headingColor">
+											<div class="row">
+												<div class="col-sm-8">
+													<h4 class="panel-title text-capital fontColor">location level overview</h4>
+												</div>
+												<div class="col-sm-4">
+													<ul class="switch-btn pull-right">
+														<li class="active" attr_type="status">status overview</li>
+														<li attr_type="department">location level</li>
+													</ul>
+												</div>
+											</div>
 										</div>
 										<div class="panel-body">
 											<div class="row">
-												<div id="alertDepartmentWise"></div>
+												<div class="col-sm-3">
+													<div id="departmentStatus"></div>
+												</div>
+												<div class="col-sm-9">
+													<div id="departmentWiseAlertOverviewCnt"></div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
+								
 							</div>
 						</div>
 					</div>
