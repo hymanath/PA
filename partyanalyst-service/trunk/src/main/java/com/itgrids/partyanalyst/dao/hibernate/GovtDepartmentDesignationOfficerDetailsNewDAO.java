@@ -14,7 +14,7 @@ public class GovtDepartmentDesignationOfficerDetailsNewDAO extends GenericDaoHib
     	  super(GovtDepartmentDesignationOfficerDetailsNew.class);
       }
       
-      public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<Long> levelValues , Long levelId){
+public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<Long> levelValues , Long levelId){
     	  
     	  StringBuilder sb = new StringBuilder();
     	  
@@ -48,4 +48,28 @@ public class GovtDepartmentDesignationOfficerDetailsNewDAO extends GenericDaoHib
     	  }
     	  return query.list();
       }
+      
+      public List<Long> getDesignationOfficerIdsNew(Long levelId,Long levelValue,Long designationId,Long officerId){
+    		
+    		StringBuilder sb = new StringBuilder();
+    		
+    		sb.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
+    											" from GovtDepartmentDesignationOfficerDetailsNew model" +
+    											" where model.govtDepartmentDesignationOfficer.govtDepartmentScopeId = :levelId" +
+    											" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +
+    											" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId" +
+    											" and model.isDeleted = 'N'  " );
+    		
+    		if(officerId !=null && officerId.longValue()>0l){
+    			sb.append(" and model.govtOfficerId = :officerId");
+    		}
+    	
+    		Query query = getSession().createQuery(sb.toString());
+    		
+    		query.setParameter("levelId", levelId);
+    		query.setParameter("levelValue", levelValue);
+    		query.setParameter("designationId", designationId);
+    		query.setParameter("officerId", officerId);
+    		return query.list();
+    	}
 }
