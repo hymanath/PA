@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssignedOfficerNew, Long> implements IAlertAssignedOfficerNewDAO {
 	
@@ -135,4 +136,41 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   		query.setParameter("alertId", alertId);
   		return query.list();
   	}
+        public List<Object[]> getDistrictOfficerAlertsCount(Long govtDepDesigOffcrId,Long govtOffcrId,String type){
+        	StringBuilder sb = new StringBuilder();
+	    	  
+        	if(type != null && type.equalsIgnoreCase("today")){
+        		sb.append(" select model.alertAssignedOfficerId from AlertAssignedOfficerNew model ");
+        	}else{
+        		sb.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(model.alertAssignedOfficerId) from AlertAssignedOfficerNew model ");
+        	}
+        	sb.append(" where model.isDeleted = 'N' " );
+        	
+	    	  
+        	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+	    		  sb.append(" model.govtOfficer.govtOfficerId = :govtOffcrId " );
+	    	  }
+	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	    		  sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+	    	  }
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  sb.append(" model.insertedTime = :todayDate " ); 
+	    	  }
+	    	  
+	    	  if(type != null && !type.equalsIgnoreCase("today")){
+	    		  sb.append(" group by model.alertStatus.alertStatusId ");
+	    	  }
+	    	  Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	    		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+	    	  }
+	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+	    		  query.setParameter("govtOffcrId", govtOffcrId);  
+	    	  }
+	    	  if(type != null && !type.equalsIgnoreCase("today")){
+	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  }
+	    	  return query.list();
+        }
 }

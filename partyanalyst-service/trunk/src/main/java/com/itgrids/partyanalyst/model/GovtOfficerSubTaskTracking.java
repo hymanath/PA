@@ -232,9 +232,4 @@ public class GovtOfficerSubTaskTracking {
 		this.insertedBy = insertedBy;
 	}
 	
-	
-	
-	
-	
-
 }
