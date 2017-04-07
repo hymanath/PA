@@ -873,6 +873,12 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     font-size: 18px;
     padding: 3px 7px;
 }
+.headingColorApp span{
+ background-color: rgb(74, 88, 99);
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    padding: 3px 7px;
+}
 .bg_ED {
     background-color: rgb(237, 238, 240);
 }
@@ -2907,4 +2913,29 @@ color: rgb(51, 122, 183);
 .cadreInsurancePanel .table tr:first-child td
 {
 	border-top:0px;
+}
+.cadreInsuranceCDate li{font-size:14px;}
+.Intimations {
+    background-color: #306F8F;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+.Forwarded {
+    background-color: #F39C12;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+.Settled {
+    background-color: #2DCC70;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+}
+.Rejcted {
+    background-color: #E74B3B;
+    display: inline-block;
+    height: 10px;
+    width: 10px;
 }
