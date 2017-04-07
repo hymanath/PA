@@ -741,3 +741,51 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	text-align:left;
 	font-size:14px;
 }
+.departmentList
+{
+	border-bottom:0px;
+	border-right:1px solid #ddd;
+}
+.departmentList li
+{
+	display:block;
+	width:100%
+}
+.departmentList li a
+{
+	display:block;
+	margin-left: 2px;
+	line-height: 1.42857143;
+	border: 1px solid transparent;
+	border-radius: 0;
+	width:100%
+}
+.departmentList > li.active > a, .departmentList > li.active > a:focus, .departmentList > li.active > a:hover
+{
+	color: #555;
+	cursor: default;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-right-color: transparent;
+}
+.switch-btn
+{
+	padding:3px;
+	background-color: #fff;
+	display: inline-block;
+	border-radius: 14px;
+}
+.switch-btn li
+{
+	list-style:none;
+	display: inline-block;
+	padding: 4px 8px;
+	cursor: pointer;
+	text-transform:uppercase;
+}
+.switch-btn li.active
+{
+	background-color: #4A5863;
+	color: #fff;
+	border-radius: 14px;
+}
