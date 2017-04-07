@@ -14,6 +14,7 @@ public class AssemblySessionReportVO {
 	private Long memberId;
 	private Long speechAspectId; 
 	private String score ;
+	private  Long userId;
 	//private List<AssemblySessionReportVO> partyList = new ArrayList<AssemblySessionReportVO>(0);
 	private List<AssemblySessionReportVO> membersList = new ArrayList<AssemblySessionReportVO>(0);
 	private List<AssemblySessionReportVO> scalesList = new ArrayList<AssemblySessionReportVO>(0);
@@ -90,7 +91,11 @@ public class AssemblySessionReportVO {
 	public void setScalesList(List<AssemblySessionReportVO> scalesList) {
 		this.scalesList = scalesList;
 	}
-	
-	
-	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+		
 }
