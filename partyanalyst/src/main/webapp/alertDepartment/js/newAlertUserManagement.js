@@ -2196,3 +2196,24 @@ $(document).on("click",".linkedArticlesClickId",function(){
 		$(this).attr('src',$(".mainImage").attr('src'));
 		$(".mainImage").attr('src',temp);
 	});
+	
+	//getDistrictOfficerAlertsCountView();
+	function getDistrictOfficerAlertsCountView()
+{
+	var userId=19601;
+    var jObj ={
+      userId:userId
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getDistrictOfficerAlertsCountViewAction.action',
+      data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+		var str='';
+		console.log(result);
+		// if(result != null && result.length > 0){
+			 //console.log(result);
+		//}
+		
+    });
+}

@@ -279,14 +279,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public String getDistrictOfficerAlertsCountView(){
 		try{
-			session = request.getSession();
+			/*session = request.getSession();
 		   	RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		   	
 		   	Long userId = null;
 		   	if(user != null && user.getRegistrationID() != null){
 		   		userId = user.getRegistrationID();
-			}
-			
+			}*/
+			jObj = new JSONObject(getTask());
+			Long userId = jObj.getLong("userId");
 		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId);
 			
 		}catch(Exception e){
