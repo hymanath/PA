@@ -33,14 +33,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    sb.append(" from AlertAssignedOfficerNew model" +
     	          " left join model.alert.edition EDS " +
     	          " left join model.alert.tvNewsChannel TNC " +
-    	          " left join model.govtDepartmentDesignationOfficer.userAddress UA " +
-    	          " left join UA.state S " +
-    	          " left join UA.district D" +
-    	          " left join UA.constituency C" +
-    	          " left join UA.tehsil T" +
-    	          " left join UA.localElectionBody LEB" +
-    	          " left join UA.panchayat P" +
-    	          " left join UA.ward W");
+    	          " left join model.govtDepartmentDesignationOfficer.govtUserAddress UA");
     	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
     	    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") and " +
     	    		  " model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
@@ -54,20 +47,26 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    if(fromDate != null && toDate != null)
     	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
     	    
-    	    if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 1l)
-    	      sb.append(" and S.stateId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 5l)
-    	      sb.append(" and D.districtId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 4l)
-    	      sb.append(" and C.constituencyId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 8l)
-    	      sb.append(" and T.tehsilId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 6l)
-    	      sb.append(" and P.panchayatId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 7l)
-    	      sb.append(" and LEB.localElectionBodyId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == 8l)
-    	      sb.append(" and W.constituencyId in (:levelValues)");
+    	    if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+    	      sb.append(" and UA.stateId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+    	      sb.append(" and UA.zoneId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+    	      sb.append(" and UA.regionId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+    	      sb.append(" and UA.circleId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+    	      sb.append(" and UA.districtId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+    	      sb.append(" and UA.divisionId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+    	      sb.append(" and UA.subDivisionId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+      	      sb.append(" and UA.tehsilId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+      	      sb.append(" and UA.localElectionBodyId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+      	      sb.append(" and UA.panchayatId in (:levelValues)");
     	    
     	    if(alertStatusIds != null && alertStatusIds.size() > 0){
     	    	sb.append(" and model.alertStatus.alertStatusId in (:alertStatusIds)");
