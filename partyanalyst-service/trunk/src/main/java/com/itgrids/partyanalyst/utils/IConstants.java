@@ -1284,4 +1284,16 @@ public interface IConstants {
 	
 	public static final String CORE_DASHBOARD_INSURANCE_STATUS = "INTIMATIONS,FORWARDED,SETTLED,REJECTED";
 	public static final String[] CORE_DASHBOARD_INSURANCE_STATUS_ARR = {"INTIMATIONS","FORWARDED","SETTLED","REJECTED"};
+	
+	public static final Long GOVT_DEPARTMENT_STATE_LEVEL_ID = 1L;
+	public static final Long GOVT_DEPARTMENT_ZONE_LEVEL_ID = 2L;
+	public static final Long GOVT_DEPARTMENT_REGION_LEVEL_ID = 3L;
+	public static final Long GOVT_DEPARTMENT_CIRCLE_LEVEL_ID = 4L;
+	public static final Long GOVT_DEPARTMENT_DISTRICT_LEVEL_ID = 5L;
+	public static final Long GOVT_DEPARTMENT_DIVISION_LEVEL_ID = 6L;
+	public static final Long GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID = 7L;
+	public static final Long GOVT_DEPARTMENT_MANDAL_LEVEL_ID = 8L;
+	public static final Long GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID = 9L;
+	public static final Long GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID = 10L;
+	
 }

@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewD
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerNewDAO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
@@ -117,7 +118,10 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 	}
 	
 	//Business Method
-	
+	/*
+	 * Satnosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStatusWiseAlertOverviewcnt(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long)
+	 */
 	public List<AlertVO> getStatusWiseAlertOverviewcnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
 		LOG.info("Entered in getStatusWiseAlertOverviewcnt() method of AlertManagementSystemService{}");
 		try{
@@ -253,6 +257,10 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		}
 		return d;
 	}
+	/*
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getLevelWiseAlertOverviewCnt(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long)
+	 */
 	public List<AlertVO> getLevelWiseAlertOverviewCnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
 		LOG.info("Entered in getLevelWiseAlertOverviewCnt() method of AlertManagementSystemService{}");
 		try{
@@ -299,7 +307,10 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		}
 		return null;
 	}
-	
+	/*
+	 * Santosh(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getDepartmentStatus()
+	 */
 	public List<AlertVO> getDepartmentStatus(){	
 		List<AlertVO> finalList = new ArrayList<AlertVO>(); 
 		try {
@@ -314,6 +325,10 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		}
 		return finalList;
 	}
+	/*
+	 * Satnosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getDepartmentScope()
+	 */
 	public List<AlertVO> getDepartmentScope(){	
 		List<AlertVO> finalList = new ArrayList<AlertVO>(); 
 		try {
@@ -338,6 +353,10 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			LOG.error("Error occured setRequiredData() method of AlertManagementSystemService{}");
 		}
   }
+	/*
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getDepartmentWiseAlertOverviewCnt(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long, java.util.List, java.util.List, java.lang.String)
+	 */
 	public List<AlertVO> getDepartmentWiseAlertOverviewCnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> alertStatusIds,List<Long> departmentScopeIds,String resultType){
 		LOG.info("Entered in getLevelWiseAlertOverviewCnt() method of AlertManagementSystemService{}");
 		try{
@@ -634,5 +653,29 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			e.printStackTrace();
 			LOG.error("Exception Occured in AlertManagementSystemService of  getDistrictOfficerAlertsCountView() ", e);
 		}
+	}
+	/*
+	 * Santosh(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getDeptListForUser(java.lang.Long)
+	 */
+	public List<IdAndNameVO> getDeptListForUser(Long userId){   
+		try{
+			List<IdAndNameVO> list = new ArrayList<IdAndNameVO>();
+			IdAndNameVO idAndNameVO = null;
+			List<Object[]> deptList = govtAlertDepartmentLocationNewDAO.getDeptIdAndNameForUserAccessLevel(userId);
+			if(deptList != null && deptList.size() > 0){  
+				for(Object[] param : deptList){
+					idAndNameVO = new IdAndNameVO();
+					idAndNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					idAndNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					list.add(idAndNameVO);
+				}
+			}
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getDeptListForUser() method of AlertManagementSystemService",e);
+		}
+		return null;
 	}
 }
