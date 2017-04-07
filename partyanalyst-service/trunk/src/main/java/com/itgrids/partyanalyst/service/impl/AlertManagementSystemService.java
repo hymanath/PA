@@ -117,16 +117,27 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 					 }
 				}
 				for(Object[] param : objList){
-					 AlertVO VO = new AlertVO();
-					 VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					 VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					 if(type.equalsIgnoreCase("Status")){
-					  VO.setColor(commonMethodsUtilService.getStringValueForObject(param[2])); 
-					  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
+					 AlertVO VO = getMatchVO(finalAlertVOs,id);
+					 if(VO == null){
+						 VO = new AlertVO();
+						 VO.setId(id);
+						 VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						 if(type.equalsIgnoreCase("Status")){
+						  VO.setColor(commonMethodsUtilService.getStringValueForObject(param[2])); 
+						  VO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
+						 }else{
+						  VO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
+						 }
+						 finalAlertVOs.add(VO); 
 					 }else{
-					  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					  if(type.equalsIgnoreCase("Status")){
+						  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[3]));
+						 }else{
+						  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[2]));
+						 } 
 					 }
-					 finalAlertVOs.add(VO);
+					
 				}
 				//Calculating Percentage
 				calculatePercentage(finalAlertVOs,totalAlertCnt);
@@ -147,6 +158,22 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			e.printStackTrace();
 			LOG.error("Error occured calculatePercentage() method of CccDashboardService{}");
 	    }
+	}
+	public AlertVO getMatchVO(List<AlertVO> finalAlertVOs,Long id){
+		try{
+			if(finalAlertVOs == null || finalAlertVOs.size() ==0)
+				return null;
+			for(AlertVO VO:finalAlertVOs){
+				if(VO.getId().equals(id))
+				{
+					return VO;
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getMatchVO() method of CccDashboardService{}");
+		}
+		return null;
 	}
 	public Double calculatePercantage(Long subCount,Long totalCount){
 		Double d=0.0d;
@@ -288,19 +315,20 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				}
 			}
-			List<Object[]> rtrnObjLst = null;
-			if(resultType != null && resultType.equalsIgnoreCase("Status") && !alertStatusIds.contains(1l)){
-				rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds);
-				if(rtrnObjLst != null && rtrnObjLst.size() > 0){
-					totalList.addAll(rtrnObjLst);
-				}
-			}else{
-				rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds);
+			
+			if(resultType != null && resultType.equalsIgnoreCase("Status") && (alertStatusIds.size() == 0l || !alertStatusIds.contains(1l))){
+				List<Object[]> rtrnObjLst  = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds);
 				if(rtrnObjLst != null && rtrnObjLst.size() > 0){
 					totalList.addAll(rtrnObjLst);
 				}
 			}
-			setAlertCount(rtrnObjLst,finalAlertVOs,"Other");
+			if(resultType != null && resultType.equalsIgnoreCase("Department")){
+				List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds);
+				if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+					totalList.addAll(rtrnObjLst);
+				}
+			}
+			setAlertCount(totalList,finalAlertVOs,"Other");
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();
