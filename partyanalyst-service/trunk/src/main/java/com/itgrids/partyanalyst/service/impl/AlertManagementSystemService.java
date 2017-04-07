@@ -198,7 +198,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			if(alertCountList2 != null && alertCountList2.size() > 0){
 				totalList.addAll(alertCountList2);
 			}
-			setAlertCount(totalList,finalAlertVOs,"Status"); 
+			setAlertCount(totalList,finalAlertVOs); 
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -206,39 +206,26 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		}
 		return null;
 	}
-	public void setAlertCount(List<Object[]> objList,List<AlertVO> finalAlertVOs,String type){
+	public void setAlertCount(List<Object[]> objList,List<AlertVO> finalAlertVOs){
 	    try{
 	    	if(objList != null && objList.size() > 0){         
 				Long totalAlertCnt = 0l;
 				for(Object[] param : objList){
-					 if(type.equalsIgnoreCase("Status")){
 						 totalAlertCnt = totalAlertCnt+commonMethodsUtilService.getLongValueForObject(param[3]);	 
-					 }else{
-						 totalAlertCnt = totalAlertCnt+commonMethodsUtilService.getLongValueForObject(param[2]);						 
-					 }
-				}
-				for(Object[] param : objList){
+				 }
+				 for(Object[] param : objList){
 					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
 					 AlertVO VO = getMatchVO(finalAlertVOs,id);
 					 if(VO == null){
 						 VO = new AlertVO();
 						 VO.setId(id);
 						 VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-						 if(type.equalsIgnoreCase("Status")){
-						  VO.setColor(commonMethodsUtilService.getStringValueForObject(param[2])); 
-						  VO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
-						 }else{
-						  VO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[2]));
-						 }
+						 VO.setColor(commonMethodsUtilService.getStringValueForObject(param[2])); 
+						 VO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
 						 finalAlertVOs.add(VO); 
 					 }else{
-					  if(type.equalsIgnoreCase("Status")){
-						  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[3]));
-						 }else{
-						  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[2]));
-						 } 
+					 	  VO.setAlertCnt(VO.getAlertCnt()+commonMethodsUtilService.getLongValueForObject(param[3]));
 					 }
-					
 				}
 				//Calculating Percentage
 				calculatePercentage(finalAlertVOs,totalAlertCnt);
@@ -328,7 +315,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 				}
 			}
 			List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Level",null,null);
-			setAlertCount(rtrnObjLst,finalAlertVOs,"Other");
+			setAlertCount(rtrnObjLst,finalAlertVOs);
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -444,7 +431,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 					totalList.addAll(rtrnObjLst);
 				}
 			}
-			setAlertCount(totalList,finalAlertVOs,"Other");
+			setAlertCount(totalList,finalAlertVOs);
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();

@@ -21,6 +21,7 @@ public class GovtDepartmentScope extends BaseModel implements Serializable{
 	
 	private Long govtDepartmentScopeId;
 	private String levelName;
+	private String color;
 	private Long alertRegionScopesId;
 	
 	@Id
@@ -45,6 +46,13 @@ public class GovtDepartmentScope extends BaseModel implements Serializable{
 	}
 	public void setAlertRegionScopesId(Long alertRegionScopesId) {
 		this.alertRegionScopesId = alertRegionScopesId;
+	}
+	@Column(name="color")
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 }

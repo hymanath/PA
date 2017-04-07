@@ -5939,7 +5939,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" select ");
 		if(type.equalsIgnoreCase("Department")){
 			queryStr.append(" GD.govt_department_id as govt_department_id, ");
-			queryStr.append(" GD.department_name as department_name, ");
+			queryStr.append(" GD.department_name as department_name,GD.color as color, ");
 		}else if(type.equalsIgnoreCase("Status")){
 			queryStr.append(" A.alert_status_id as alert_status_id, ");
 			queryStr.append(" ALTS.alert_status as alert_status,ALTS.alert_color as color, ");
@@ -5984,6 +5984,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(type.equalsIgnoreCase("Department")){
 		    query.addScalar("govt_department_id", Hibernate.LONG);
 		    query.addScalar("department_name", Hibernate.STRING);
+		    query.addScalar("color", Hibernate.STRING);
 		}else if(type.equalsIgnoreCase("Status")){
 			query.addScalar("alert_status_id", Hibernate.LONG);
 			query.addScalar("alert_status", Hibernate.STRING);

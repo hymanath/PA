@@ -23,10 +23,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	      sb.append(" model.alertStatus.alertStatusId, model.alertStatus.alertStatus,model.alertStatus.color " );
     	    }else if(type.equalsIgnoreCase("Level")){
     	      sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
-    	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName " );
+    	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName," +
+    	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.color " );
      	    }else if(type.equalsIgnoreCase("Department")){
      	      sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
-     	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName ");	
+     	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+     	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.color ");	
      	    }
     	     sb.append(" ,count(distinct model.alert.alertId) ");
     	      

@@ -19,6 +19,7 @@ public class GovtDepartment extends BaseModel implements Serializable{
 
 	private Long govtDepartmentId;
 	private String departmentName;
+	private String color;
 	
 	private Long cnpGovtDepartmentId;
 	
@@ -46,6 +47,13 @@ public class GovtDepartment extends BaseModel implements Serializable{
 	}
 	public void setCnpGovtDepartmentId(Long cnpGovtDepartmentId) {
 		this.cnpGovtDepartmentId = cnpGovtDepartmentId;
+	}
+	@Column(name = "color")
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 	
