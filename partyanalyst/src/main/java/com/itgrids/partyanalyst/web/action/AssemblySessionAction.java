@@ -7,12 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.record.formula.functions.Dmin;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AdminHouseVO;
 import com.itgrids.partyanalyst.dto.AssemblySessionReportVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAssemblySessionService;
 import com.opensymphony.xwork2.Action;
@@ -40,93 +40,62 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 	public AssemblySessionReportVO getAssemblySessionReportVO() {
 		return assemblySessionReportVO;
 	}
-
-
 	public void setAssemblySessionReportVO(
 			AssemblySessionReportVO assemblySessionReportVO) {
 		this.assemblySessionReportVO = assemblySessionReportVO;
 	}
-
-
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
-
-
 	public void setResultStatus(final ResultStatus resultStatus) {
 		this.resultStatus = resultStatus;
 	}
-
-
 	public HttpServletRequest getRequest() {
 		return request;
 	}
-
-
 	public void setRequest(final HttpServletRequest request) {
 		this.request = request;
 	}
-
-
 	public HttpSession getSession() {
 		return session;
 	}
-
-
 	public void setSession(final HttpSession session) {
 		this.session = session;
 	}
-
-
 	public String getTask() {
 		return task;
 	}
-
-
 	public void setTask(final String task) {
 		this.task = task;
 	}
     //override
 	public void setServletRequest(final HttpServletRequest request) {
-		this.request = request;
-		
-	}
-	
+		this.request = request;		
+	}	
 	public IAssemblySessionService getAssemblySessionService() {
 		return assemblySessionService;
 	}
-
-
 	public void setAssemblySessionService(IAssemblySessionService assemblySessionService) {
 		this.assemblySessionService = assemblySessionService;
 	}
-	
 	public List<AdminHouseVO> getAssemblyVOList() {
 		return assemblyVOList;
 	}
-
 	public void setHouseVOList(List<AdminHouseVO> assemblyVOList) {
 		this.assemblyVOList = assemblyVOList;
 	}
-
 	public AdminHouseVO getAdminHouseVO() {
 		return adminHouseVO;
 	}
-
-
 	public void setAdminHouseVO(AdminHouseVO adminHouseVO) {
 		this.adminHouseVO = adminHouseVO;
-	}
-	
+	}	
 	public String getStatus() {
 		return status;
 	}
-
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-
 	public String execute()
 	{
 		/*session = request.getSession();
@@ -142,8 +111,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 		}*/
 		return Action.SUCCESS;
 		
-	}
-	
+	}	
 	public String getAllElecYears(){
 		try{
 			jObj = new JSONObject(getTask());
@@ -214,8 +182,14 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			 String presScore = jObj.getString("presScore");
 			 String cunAttScore = jObj.getString("countrScore");
 			 String bdyLangScore = jObj.getString("bdyLangScore");
-			 
-			 
+			 session = request.getSession();
+	         RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+	         
+	         Long userId = null;
+	         if(user != null && user.getRegistrationID() != null){
+	           userId = user.getRegistrationID();
+	         }        
+             	        
 			 if(adminMemberId != null && adminMemberId.longValue() > 0l){
 				 adminHouseVO.setAdminHouseMemberId(adminMemberId);
 			 }
@@ -246,8 +220,8 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 					aspectList.add(vo);
 				}
 				adminHouseVO.getCandidateList().addAll(aspectList);
-			}
-				
+			}	        
+			  adminHouseVO.setUserId(userId);
 			status = assemblySessionService.updateMemberSpeechAspectDetails(adminHouseVO);
 				
 			} catch (Exception e) {
@@ -265,7 +239,13 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 			 String cunAttScore = jObj.getString("countrScore");
 			 String bdyLangScore = jObj.getString("bdyLangScore");
 			 
-			 
+			session = request.getSession();
+	         RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+	         
+	         Long userId = null;
+	         if(user != null && user.getRegistrationID() != null){
+	           userId = user.getRegistrationID();
+	      }
 			 if(adminMemberId != null && adminMemberId.longValue() > 0l){
 				 adminHouseVO.setAdminHouseMemberId(adminMemberId);
 			 }
@@ -297,7 +277,7 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 				}
 				adminHouseVO.getCandidateList().addAll(aspectList);
 			}
-			
+			    adminHouseVO.setUserId(userId);
 				status = assemblySessionService.deleteMemberDetails(adminHouseVO);
 				
 			} catch (Exception e) {
@@ -350,12 +330,18 @@ public class AssemblySessionAction  extends ActionSupport implements ServletRequ
 	
 	public String submitAssemblySessionCanScoreDetails(){
 		try {
-				status = assemblySessionService.saveAssemblySessionCanScoreDetails(assemblySessionReportVO);
+				session = request.getSession();
+				RegistrationVO user = (RegistrationVO)session.getAttribute("USER");	         
+				Long userId = null;
 				
+				if(user != null && user.getRegistrationID() != null){
+					userId = user.getRegistrationID();
+				}
+				assemblySessionReportVO.setUserId(userId);
+				status = assemblySessionService.saveAssemblySessionCanScoreDetails(assemblySessionReportVO);			
 			} catch (Exception e) {
 				LOG.error("Exception occured in updateMemberDetails() At AssemblySessionAction",e);
 			}
 			return Action.SUCCESS;
 	}
-
 }
