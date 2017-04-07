@@ -6007,4 +6007,14 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list(); 
 	}
 
+    public Integer updateAlertPriority(Long alertId,Long priorityId,Long userId,Date date){
+ 	   Query query = getSession().createQuery(" update Alert model set model.alertSeverityId=:priorityId,model.updatedBy=:userId,model.updatedTime=:date "
+ 	   		+ "where model.alertId=:alertId ");
+ 	   query.setParameter("alertId", alertId);
+ 	   query.setParameter("priorityId", priorityId);
+ 	   query.setParameter("userId", userId);
+ 	   query.setDate("date", date);
+ 	   return query.executeUpdate();
+    }
+
 }
