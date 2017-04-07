@@ -4161,6 +4161,10 @@
 		<property name="alertDAO" ref="alertDAO" ></property>
 		<property name="alertAssignedOfficerNewDAO" ref="alertAssignedOfficerNewDAO" ></property>
 		<property name="govtAlertDepartmentLocationNewDAO" ref="govtAlertDepartmentLocationNewDAO" ></property>
+		<property name="transactionTemplate" ref="transactionTemplate" ></property>
+		<property name="govtDepartmentScopeLevelDAO" ref="govtDepartmentScopeLevelDAO" ></property>
+		<property name="govtDepartmentWorkLocationDAO" ref="govtDepartmentWorkLocationDAO" ></property>
+		
    </bean>
 </beans>			
 	
