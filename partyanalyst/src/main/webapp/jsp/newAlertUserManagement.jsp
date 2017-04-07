@@ -19,8 +19,6 @@
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
-<link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
-<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -58,408 +56,42 @@
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12">
-					<div class="input-group dateRangePickerCls m_top5 pull-right">
-						<input type="text" class="form-control " style="width:180px;height: 35px;" id="dateRangePickerAUM">
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-calendar"></i>
-						</span>
+				<div class="col-md-12 col-xs-12 col-sm-12"> 
+					<div class="col-md-4 col-xs-12 col-sm-12">
+						<div class="panel panel-default">
+						  <div class="panel-heading headingColor">
+							<h4 class="panel-title text-capital fontColor">My Alerts</h4>
+						  </div>
+						  <div class="panel-body">
+							<div id="myAlertsDivID"></div>
+						  </div>
+						</div>
 					</div>
-				</div>
-				<div class="col-md-12 col-xs-12 col-sm-12">
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="row">
-										<div class="col-md-9 col-xs-12 col-sm-4">
-											<div class="panel panel-default">
-												<div class="panel-heading headingColor">
-													<h4 class="panel-title text-capital fontColor">My Alerts - Status Overview</h4>
-												</div>
-												<div class="panel-body">
-													<div class="row">
-														<div class="col-md-5 col-xs-12 col-sm-12">
-															<div id="graphDiv"></div>	
-														</div>
-														<div class="col-md-6 col-xs-12 col-sm-4" style="margin-top:25px;">
-															<div id="alertStatusOverview"></div>
-														</div>
-													</div>
-													
-													
-												</div>
-											</div>
-										</div>
-										<div class="col-md-3 col-xs-12 col-sm-4">
-											<div class="panel panel-default">
-												<div class="panel-body" style="height: 370px;">
-													<div class="text-right">Today</div>
-													<div class="alertImage">
-														<img src="newCoreDashBoard/img/govtAlertBill.png" alt="govt alerts"/>
-													</div>
-													<div id="overDepartmentWiseAlertOverview"></div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							<!-- 1st Screen -->
-							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_ENTITLEMENT' ) }">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="panel panel-default">
-										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">Department Alert Status</h4>
-										</div>
-										<div class="panel-body">
-											<div id="departmentWiseAlertGraphDiv"></div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12 detailedBlockShow" style="display:none;">
-									<div class="panel panel-default">
-										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">Detailed Information</h4>
-										</div>
-										<div class="panel-body">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="row">
-													<div class="col-md-3 col-xs-12 col-xs-6">
-														<label>Select Department</label>
-														<select class="form-control chosen-select" id="departmentId">
-															<option value="0">Select Department</option>
-														</select>
-													</div>
-													<div class="col-md-3 col-xs-12 col-xs-6">
-														<label>Select Level</label>
-														<select class="form-control chosen-select" id="levelDepartmentId">
-														<option value="0"> Select Level </option>
-														</select>
-													</div>
-													<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
-														<div class="input-group dateRangePickerCls m_top5 pull-right">
-															<input type="text" class="form-control " style="width:180px;height: 35px;" id="dateRangePickerDetailedBlock">
-															<span class="input-group-addon">
-																<i class="glyphicon glyphicon-calendar"></i>
-															</span>
-														</div>
-													</div>
-													<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
-														<button type="button" class="btn btn-success getDetailsClick" style="background-color:#016500; font-weight: bold;">Get Details</button>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-												<div class="row">
-													<div id="districtWiseDetailsBlock"><div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</c:if>
-				
-							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT' ) }">
-							
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="panel panel-default">
-										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">District Level - Departments Overview</h4>
-										</div>
-										<div class="panel-body">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="row pull-right">
-													<div class="col-md-8 col-xs-12 col-sm-12">
-														<div class="input-group">
-															<input type="text" class="form-control" style="width:180px;height: 35px;" id="dateRangePickerDistrictLevelDeptBlock">
-															<span class="input-group-addon">
-																<i class="glyphicon glyphicon-calendar"></i>
-															</span>
-														</div>
-													</div>
-													<div class="col-md-3 col-xs-12 col-xs-6">
-														<button type="button" class="btn btn-success getDetailsForDistrictLevelDeptAlerts" style="background-color:#016500; font-weight: bold;">Get Details</button>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div id="districtLevelDeptOverview" ></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							
-							</c:if>
-				
-							<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICE_ENTITLEMENT' ) }">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="panel panel-default">
-										<div class="panel-body">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-												<div class="row">
-													<div class="col-md-3 col-xs-12 col-sm-4">
-														<select class="chosenSelect" id="alertStatusDivId" attr_type="alertStatus">
-															<option value="0">Show All (Notified/Progress/Completed...)</option>
-														</select>
-													</div>
-													<div class="col-md-3 col-xs-12 col-sm-12">
-														<div class="input-group">
-															<input type="text" class="form-control" id="dateRangePickerDistrictAlertBlock">
-															<span class="input-group-addon">
-																<i class="glyphicon glyphicon-calendar"></i>
-															</span>
-														</div>
-													</div>
-													<div class="col-md-3 col-xs-12 col-xs-6">
-														<button type="button" class="btn btn-success getDetailsForDistrictWiseAlerts" style="background-color:#016500; font-weight: bold;">Get Details</button>
-													</div>
-												</div>
-											</div>
-											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-												<div class="row">
-													<div id="districtAlertStatusInfo" ></div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<div class="panel panel-default">
-										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">Subordinate - Alerts Overview</h4>
-										</div>
-										<div class="panel-body">
-										<div class="col-md-12 col-xs-12 col-sm-12">
-											<div class="row">
-												<div class="col-md-3 col-xs-12 col-xs-6">
-													<label>Select Level</label>
-													<select class="chosenSelect" id="subOrdianatelevelId">
-													<option value="0">Select Level</option>
-													</select>
-												</div>
-												<div class="col-md-3 col-xs-12 col-xs-6">
-													<label>Select Designation</label>
-													<select class="chosenSelect" id="designationDivId">
-													</select>
-												</div>
-												
-												<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
-													<div class="input-group m_top5 pull-right">
-														<input type="text" class="form-control" id="dateRangePickerSubOrdinateBlock">
-														<span class="input-group-addon">
-															<i class="glyphicon glyphicon-calendar"></i>
-														</span>
-													</div>
-												</div>
-												<div class="col-md-3 col-xs-12 col-xs-6 m_top20">
-													<button type="button" class="btn btn-success getDetailsForSubOrdinate" style="background-color:#016500; font-weight: bold;">Get Details</button>
-												</div>
-											</div>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<div class="row">
-												<div id="mandalWiseDetailsSubOrdBlock"></div>
-											</div>
-										</div>
-										</div>
-									</div>
-								</div>
-								</c:if>
-								
-							</div>
+					<div class="col-md-4 col-xs-12 col-sm-12">
+						<div class="panel panel-default">
+						  <div class="panel-heading headingColor">
+							<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
+						  </div>
+						  <div class="panel-body">
+							<div id="mySubTasksDivID"></div>
+						  </div>
+						</div>
+					</div>
+					<div class="col-md-4 col-xs-12 col-sm-12">
+						<div class="panel panel-default">
+						  <div class="panel-heading headingColor">
+							<h4 class="panel-title text-capital fontColor">Assigned Sub Tasks</h4>
+						  </div>
+						  <div class="panel-body">
+							<div id="assignedSubTasksDivID"></div>
+						  </div>
 						</div>
 					</div>
 				</div>
-			</div>	
+					
+			</div>
 		</div>
 	</section>
-<!--Main Div End-->
-</div>
-<!-- Alert Details Modal Start-->
-	<div class="modal fade" id="alertDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999">
-	  <div class="modal-dialog" role="document" style="width:80%">
-		<div class="modal-content">
-		  <div class="modal-header bg_CC">
-			<button type="button" class="close alertDetailsModalClose" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title fontColor text-capital">alert title</h4>    
-			<p id="mainTitleId"></p>
-		  </div>
-		  <div class="modal-body" style="padding-bottom:0px;">
-			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12">
-					<table class="table table-bordered tableCategory">
-						<tr>
-							<td style="vertical-align: top;">
-								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;type</b></span></p>
-								<p><span  id="typeId"></span></p>
-							</td>
-							<td style="vertical-align: top;">
-								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;created&nbsp;date</b></span></p>
-								<p><span  id="createdDate"></span></p>
-							</td>
-							<td style="vertical-align: top;">
-								<p class="text-capital"><span class="text-muted"><b>Alert&nbsp;status</b></span></p>
-								<p><span id="alertStatus"></span></p>
-							</td>
-							<td id="severityTdId" style="vertical-align: top;display:none;">
-								<p class="text-capital"><span class="text-muted"><b>severity</b></span></p>
-								<p><span class="circle severityIdColorCls"></span><span  id="severityId">Critical</span></p>
-							</td>
-							<td style="vertical-align: top;">
-								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;impact&nbsp;level</b></span></p>
-								<p style="text-transform: lowercase;"><span  id="levelId"></span></p>
-							</td>
-							<td style="vertical-align: top;">
-								<p class="text-capital"><span class="text-muted "><b>Alert&nbsp;location</b></span></p>
-								<p><span  id="LocationId"></span></p>
-							</td>
-						</tr>
-						<!--<tr>
-							<td colspan="8">
-								<p class="text-capital"><span class="text-muted "><b>Title</b></span></p>
-								<p><span  id="titleId"></span></p>
-							</td>
-						</tr>-->
-						<tr>
-							<td colspan="8">
-								<p class="text-capital"><span class="text-muted "><b>description</b></span></p>
-								<p><span  id="descriptionId"></span></p>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="8">
-								<p class="text-capital"><span class="text-muted "><b>category</b></span></p>
-								<p><span  id="categoryId"></span></p>
-							</td>
-						</tr>
-						<tr style="display:none" id="imageUrlTrId">
-							<td colspan="2">
-								<p class="text-capital"><span class="text-muted ">Article Attachments  </span> :
-								<ul class="list-inline imageUrlUlCls"></ul>
-							</td>
-							<td colspan="6" style="display:none" id="alertGroupAttachId">
-								<p class="text-capital"><span class="text-muted ">Grouped Articles  </span> :
-								<div id="alertGroupAttachUlId" style="border-left: 1px solid #ccc"></div>
-							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			<div class="row m_top10">
-				<div class="col-md-4 col-xs-12 col-sm-6" style="border-right:1px solid #ddd;">
-					<h4 class="panel-title text-capital"><b>involved departments in this alert</b>
-					<span id="involvedCandidatesCnt" class="pull-right">0</span></h4>
-					<div class="involvedMembersUl" id="alertCandidateDataId"></div>  
-				</div>  
-				<div class="col-md-8 col-xs-12 col-sm-6">
-					<h4 class="panel-title text-capital">alert status tracking comments</h4>
-					<div id="alertCommentsDivIdNew"></div>
-				</div>
-			</div>
-			<div class="row m_top20">
-				<div class="col-md-12 col-xs-12 col-sm-12">
-					<div class="panel panel-default">
-						<div class="panel-heading headingColor">
-							<h4 class="panel-title text-capital" id="assignedOfcrCountId"></h4>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12">
-									<div id="assignedOfficersId"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div id="alerAssignDivId" style="display:none;">
-				<form id="alertAssign" name="alertAssignForm">
-					<div class="row" style="background-color: #ccc;padding-top: 20px;box-shadow: 0px 0px 25px rgba(0,0,0,0.8);">
-						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div class="panel panel-default">
-								<div class="panel-heading headingColor">
-									<h4 class="panel-title text-capital">update alert information</h4>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<!--<div class="col-md-12 col-xs-12 col-sm-12">
-											<label class="checkbox-inline">
-												<input type="checkbox" class="notMyDepartment"/>This Alert is not releated to my department
-											</label>
-										</div>-->
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-											<span style="color:red;" id="errMsgCmntId"></span>
-											<label>
-												Comments
-											<span style="color:red">*</span>&nbsp;&nbsp;</label>
-											<label class="radio-inline">
-												<input type="radio" name="Lang" value="te" class="lang" id="telugu" onclick="languageChangeHandler();" checked="true"/>Telugu
-											</label>
-											<label class="radio-inline">
-												<input type="radio" name="Lang" value="en" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-											</label>
-											<textarea class="form-control m_top10" name="alertAssigningVO.comment" placeholder="alert tracking comments" id="alertDescId"></textarea>
-											
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<span style="color:red;" id="errMsgStsId"></span>
-											<label>Change Status</label>
-											<select class="chosenSelect" id="changeStatusId" attr_type="changeStatus" name="alertAssigningVO.statusId"><option value="0">Select Status</option></select>
-										</div>
-										<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-											<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/><span style="color:red;" id="errMsgImgId"></span>
-										</div>
-										<div class="col-md-4 col-xs-12 col-sm-6">
-											<button class="btn btn-success btn-block text-capital m_top20" id="assignOfficerId" type="button">update alert </button>
-											<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<input type="hidden" id="hiddenAlertId" name="alertAssigningVO.alertId"></input>
-				</form>
-			</div>
-		  </div>
-		</div>
-	  </div>
-	</div>
-	<!-- Alert Details Modal End-->
-	<!-- TOtal Alerts Modal Start-->
-	<div class="modal fade" id="totalAlertsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document" style="width:80%">
-		<div class="modal-content">
-		  <div class="modal-header bg_CC">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>      
-			<h4 class="modal-title text-capital">Total alerts - <span id="alertCountId"></span></h4>   
-		  </div>
-			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<div id="totalAlertsModalTabId"></div>
-					</div>
-				</div>
-			</div>
-		</div> 
-	  </div>
-	</div>
-	<!-- TOtal Alerts Modal End-->
-	<!-- modal  For Article -->
-	<div class="modal fade" id="myModalShowNew" style="z-index:9999">
-		<div class="modal-dialog" role="document" style="width:80%">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close closeArticlePopup" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<div id="linkedDocHeader"></div>
-				</div>
-				<div class="modal-body">
-					<div id="linkedDocBody"></div>
-				</div>
-			</div>
-		</div>
-				
-	</div>	
 
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -469,58 +101,11 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
-<script src="dragAndDropPhoto/js/alertManagementSystem.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagement.js" type="text/javascript"></script>
-
 <script type="text/javascript">
-initializeFile();
-$(".chosenSelect").chosen({width:'100%'});
-$(document).on("click",function(){
-	$(".ranges ul li:first-child").hasClass("active")
-});
-google.load("elements", "1", {
-	packages: "transliteration"
- }); 
- 
-var control;
-var lang;
 
-function languageChangeHandler(){
-	   var lang1 = $("input[name=Lang]:checked").val();
-		if(lang1 =="en"){
-			control.disableTransliteration();
-		}else{
-			control.enableTransliteration();
-			control.setLanguagePair(
-            google.elements.transliteration.LanguageCode.ENGLISH,
-            lang1);
-		}
-	}
-	
-google.setOnLoadCallback(onLoad);
-function onLoad() {
-	   lang = $("input[name=Lang]:checked").val();
-		var options = {
-			sourceLanguage:google.elements.transliteration.LanguageCode.ENGLISH,
-			destinationLanguage:[''+lang+''],
-			shortcutKey: 'alt+t',
-			transliterationEnabled: true
-		};
-		// Create an instance on TransliterationControl with the required options.
-		control = new google.elements.transliteration.TransliterationControl(options);
-		// Enable transliteration in the textbox with id 'descrptionId'.
-	 	if ($('#alertDescId').length){
-			control.makeTransliteratable(['alertDescId']);
-		}
-   }
-   
-function setDefaultImage(img){
-    img.src = "images/User.png";
-}
 
 </script>
 </body>
