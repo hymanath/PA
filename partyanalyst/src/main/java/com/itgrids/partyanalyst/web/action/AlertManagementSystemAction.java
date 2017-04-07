@@ -130,7 +130,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			chanelListNew = cccDashboardService.getChannelList();
 			chanelList = cccDashboardService.getChannelListForUser(userId);  
 			deptListNew = cccDashboardService.getDeptList(); 
-			deptList = cccDashboardService.getDeptListForUser(userId);
+			deptList = alertManagementSystemService.getDeptListForUser(userId);
 		return Action.SUCCESS;
 		  
 	  }
