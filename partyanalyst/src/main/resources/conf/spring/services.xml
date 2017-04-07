@@ -4153,6 +4153,9 @@
 		<property name="activityInfoDocumentDAO" ref="activityInfoDocumentDAO"></property>
 	</bean>
 	<bean name="alertManagementSystemService" class="com.itgrids.partyanalyst.service.impl.AlertManagementSystemService">
+		<property name="govtDepartmentDesignationOfficerDetailsNewDAO" ref="govtDepartmentDesignationOfficerDetailsNewDAO"></property>
+		<property name="govtDepartmentDesignationOfficerNewDAO" ref="govtDepartmentDesignationOfficerNewDAO"></property>
+		<property name="govtAlertSubTaskDAO" ref="govtAlertSubTaskDAO"></property>
 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
 		<property name="alertDepartmentStatusDAO" ref="alertDepartmentStatusDAO" ></property>
 		<property name="alertDAO" ref="alertDAO" ></property>
