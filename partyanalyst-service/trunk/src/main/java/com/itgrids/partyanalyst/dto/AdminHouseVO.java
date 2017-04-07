@@ -29,6 +29,7 @@ public class AdminHouseVO implements Serializable{
 	private Double avgPresCount = 0.0d;
 	private Double avgCunterAttCount = 0.0d;
 	private Double avgBdyLanCount = 0.0d;
+	private Long userId;
 	
 	public Long getId() {
 		return id;
@@ -168,4 +169,11 @@ public class AdminHouseVO implements Serializable{
 	public void setAvgBdyLanCount(Double avgBdyLanCount) {
 		this.avgBdyLanCount = avgBdyLanCount;
 	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
 }

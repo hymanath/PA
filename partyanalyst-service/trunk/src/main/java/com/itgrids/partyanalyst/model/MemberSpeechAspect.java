@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -30,11 +31,17 @@ public class MemberSpeechAspect extends BaseModel implements Serializable{
 	private Long speechAspectId;
 	private Double score;
 	private String isDeleted;
+	private Date insertedTime;
+	private Date updatedTime;
+	private Long insertedById;
+	private Long updatedById;
+	
 	
 	private AdminHouseSessionDay adminHouseSessionDay;
 	private AdminHouseMember adminHouseMember;
 	private SpeechAspect speechAspect;
-	
+	private User insertedBy;
+	private User updatedBy;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "member_speech_aspect_id", unique = true, nullable = false)
@@ -117,8 +124,52 @@ public class MemberSpeechAspect extends BaseModel implements Serializable{
 	public void setSpeechAspect(SpeechAspect speechAspect) {
 		this.speechAspect = speechAspect;
 	}
-	
-	
-	
-
+	@Column(name = "inserted_time")
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	@Column(name = "updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	@Column(name = "inserted_by")
+	public Long getInsertedById() {
+		return insertedById;
+	}
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
+	}
+	@Column(name = "updated_by")
+	public Long getUpdatedById() {
+		return updatedById;
+	}
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "inserted_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)	
+	public User getInsertedBy() {
+		return insertedBy;
+	}
+	public void setInsertedBy(User insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "updated_by", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)	
+	public User getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(User updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 }

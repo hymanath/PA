@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.model.MemberSpeechAspect;
 import com.itgrids.partyanalyst.model.SpeechAspect;
 import com.itgrids.partyanalyst.service.IAssemblySessionService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class AssemblySessionService implements IAssemblySessionService{
 
@@ -449,8 +450,10 @@ public class AssemblySessionService implements IAssemblySessionService{
 					for (AdminHouseVO  adminHousevo: speechAspectList) {
 							MemberSpeechAspect memberSpeechAspect = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
 							if(memberSpeechAspect != null){
-								memberSpeechAspect.setScore(Double.valueOf(adminHousevo.getValue()));
-								memberSpeechAspectDAO.save(memberSpeechAspect);
+								memberSpeechAspect.setScore(Double.valueOf(adminHousevo.getValue()));								
+								memberSpeechAspect.setUpdatedById(adminHouseVO.getUserId());								
+								memberSpeechAspect.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								memberSpeechAspectDAO.save(memberSpeechAspect);																
 								status = "success";
 							}
 						}
@@ -472,6 +475,8 @@ public class AssemblySessionService implements IAssemblySessionService{
 							MemberSpeechAspect memberSpeechAspect = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
 							if(memberSpeechAspect != null){
 								memberSpeechAspect.setIsDeleted("Y");
+								memberSpeechAspect.setUpdatedById(adminHouseVO.getUserId());
+								memberSpeechAspect.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 								memberSpeechAspectDAO.save(memberSpeechAspect);
 								status = "success";
 							}
@@ -526,6 +531,11 @@ public class AssemblySessionService implements IAssemblySessionService{
 							memberSpeechAspect.setAdminHouseSessionDayId(vo.getMembersList().get(0).getAdminHouseSessionDayId());
 							memberSpeechAspect.setScore(Double.valueOf(scaleVO.getScore()));
 							memberSpeechAspect.setAdminHouseMemberId(memberVO.getMemberId());
+							memberSpeechAspect.setInsertedById(vo.getUserId());
+							memberSpeechAspect.setUpdatedById(vo.getUserId());
+							memberSpeechAspect.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+							memberSpeechAspect.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+							
 							memberSpeechAspectDAO.save(memberSpeechAspect);
 						}
 					}
