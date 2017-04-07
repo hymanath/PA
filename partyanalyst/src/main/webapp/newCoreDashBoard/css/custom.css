@@ -2421,7 +2421,7 @@ color: rgb(51, 122, 183);
 }
 .navbarCollapseCustom li a
 {
-	padding:8px;
+	padding:3px;
 }
 .navbarCollapseCustom li.active a,.navbarCollapseCustom li a:hover,.navbarCollapseCustom li a:focus
 {
