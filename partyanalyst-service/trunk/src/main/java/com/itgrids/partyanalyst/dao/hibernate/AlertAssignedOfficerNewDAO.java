@@ -147,13 +147,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	
 	    	  
         	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  sb.append(" model.govtOfficer.govtOfficerId = :govtOffcrId " );
+	    		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcrId " );
 	    	  }
 	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
 	    	  }
 	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  sb.append(" model.insertedTime = :todayDate " ); 
+	    		  sb.append(" and model.insertedTime = :todayDate " ); 
 	    	  }
 	    	  
 	    	  if(type != null && !type.equalsIgnoreCase("today")){
@@ -167,7 +167,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
 	    		  query.setParameter("govtOffcrId", govtOffcrId);  
 	    	  }
-	    	  if(type != null && !type.equalsIgnoreCase("today")){
+	    	  if(type != null && type.equalsIgnoreCase("today")){
 	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
 	    	  }
 	    	  return query.list();
