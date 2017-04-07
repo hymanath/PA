@@ -12,22 +12,46 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
+import com.itgrids.partyanalyst.model.AlertDepartmentComment;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class AlertManagementSystemService implements IAlertManagementSystemService{
 	
-    private static final Logger LOG = Logger.getLogger(AlertManagementSystemService.class);
+	private static final Logger LOG = Logger.getLogger(AlertManagementSystemService.class);
 	private CommonMethodsUtilService commonMethodsUtilService;
 	private IAlertDAO alertDAO;
 	private IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO;
 	private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
 	private IAlertDepartmentStatusDAO alertDepartmentStatusDAO;
-
+	private IAlertDepartmentCommentDAO alertDepartmentCommentDAO;
+	private DateUtilService dateUtilService;
+	private IAlertAssignedOfficerTrackingNewDAO alertAssignedOfficerTrackingNewDAO;
+	
+	
+	public IAlertAssignedOfficerTrackingNewDAO getAlertAssignedOfficerTrackingNewDAO() {
+		return alertAssignedOfficerTrackingNewDAO;
+	}
+	public void setAlertAssignedOfficerTrackingNewDAO(
+			IAlertAssignedOfficerTrackingNewDAO alertAssignedOfficerTrackingNewDAO) {
+		this.alertAssignedOfficerTrackingNewDAO = alertAssignedOfficerTrackingNewDAO;
+	}
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
 	public void setCommonMethodsUtilService(
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
@@ -46,6 +70,12 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 	public void setAlertDepartmentStatusDAO(
 			IAlertDepartmentStatusDAO alertDepartmentStatusDAO) {
 		this.alertDepartmentStatusDAO = alertDepartmentStatusDAO;
+	}
+	public IAlertDepartmentCommentDAO getAlertDepartmentCommentDAO() {
+		return alertDepartmentCommentDAO;
+	}
+	public void setAlertDepartmentCommentDAO(IAlertDepartmentCommentDAO alertDepartmentCommentDAO) {
+		this.alertDepartmentCommentDAO = alertDepartmentCommentDAO;
 	}
 	
 	//Business Method
@@ -336,4 +366,86 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		}
 		return null;
 	}
+	
+	//sandeep
+	public ResultStatus updateAlertStatus(Long alertId,Long statusId,Long userId){
+		ResultStatus rs = new ResultStatus();
+		try {
+			List<AlertAssignedOfficerNew> objList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+			
+			if(objList !=null && objList.size() > 0){
+				AlertAssignedOfficerNew aaon = objList.get(0);
+				aaon.setAlertStatusId(statusId);
+				alertAssignedOfficerNewDAO.save(aaon);
+					
+				//save record in tracking
+				saveRecordIntoTracking(aaon,userId,0l,6l);
+				rs.setExceptionMsg("success");
+			}
+		} catch (Exception e){
+			rs.setExceptionMsg("failure");
+			LOG.error("Exception raised at updateAlertStatus");
+		}
+		return rs;
+	}
+
+	public ResultStatus updateComment(Long alertId,String comment,Long userId){
+		ResultStatus rs = new ResultStatus();
+		try {
+			
+			AlertDepartmentComment adc = new AlertDepartmentComment();
+			adc.setComment(comment);
+			adc.setInsertedBy(userId);
+			adc.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			adc = alertDepartmentCommentDAO.save(adc);
+
+			List<AlertAssignedOfficerNew> aaonList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+			if(aaonList != null && aaonList.size() > 0){
+				AlertAssignedOfficerNew aaon = aaonList.get(0);
+				
+				//save record in tracking
+				saveRecordIntoTracking(aaon,userId,adc.getAlertDepartmentCommentId(),7l);
+			}
+			rs.setExceptionMsg("success");
+		} catch (Exception e) {
+			rs.setExceptionMsg("failure");
+			LOG.error("Exception raised at updateComment");
+		}
+		return rs;
+	}
+
+	public ResultStatus updateAlertPriority(Long alertId,Long priorityId,Long userId){
+		ResultStatus rs = new ResultStatus();
+		try {
+			Integer count = alertDAO.updateAlertPriority(alertId,priorityId,userId,dateUtilService.getCurrentDateAndTime());
+			if(count != null && count > 0){
+				rs.setExceptionMsg("success");
+			}
+		} catch (Exception e) {
+			rs.setExceptionMsg("failure");
+			LOG.error("Exception raised at updateAlertPriority");
+		}
+		return rs;
+	}
+	
+	public void saveRecordIntoTracking(AlertAssignedOfficerNew aaon,Long userId,Long id,Long actiontype){
+		AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+		aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+		aaotn.setAlertId(aaon.getAlertId());
+		aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+		aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+		aaotn.setGovtAlertActionTypeId(actiontype);
+		
+		if(actiontype == 7l)//comment
+			aaotn.setAlertDepartmentCommentId(id);
+		
+		aaotn.setInsertedBy(userId);
+		aaotn.setAlertStatusId(aaon.getAlertStatusId());
+		aaotn.setUpdatedBy(userId);
+		aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+		aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		aaotn.setIsApproved(aaon.getIsApproved());
+		alertAssignedOfficerTrackingNewDAO.save(aaotn);
+	}
+	//sandeep
 }
