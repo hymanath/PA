@@ -47,25 +47,25 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    if(fromDate != null && toDate != null)
     	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
     	    
-    	    if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+    	    if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
     	      sb.append(" and UA.stateId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
     	      sb.append(" and UA.zoneId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
     	      sb.append(" and UA.regionId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
     	      sb.append(" and UA.circleId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
     	      sb.append(" and UA.districtId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
     	      sb.append(" and UA.divisionId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
     	      sb.append(" and UA.subDivisionId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
       	      sb.append(" and UA.tehsilId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
       	      sb.append(" and UA.localElectionBodyId in (:levelValues)");
-    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
       	      sb.append(" and UA.panchayatId in (:levelValues)");
     	    
     	    if(alertStatusIds != null && alertStatusIds.size() > 0){
