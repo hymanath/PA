@@ -862,7 +862,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			}
 			
 		} catch (Exception e) {
-			LOG.error("Error occured setLocationValuesToMap(List<Object[]> objList,levelMaps) method of AlertManagementSystemService",e);
+			LOG.error("Error occured setLocationValuesToMap() method of AlertManagementSystemService",e);
 		}
 	}
 }
