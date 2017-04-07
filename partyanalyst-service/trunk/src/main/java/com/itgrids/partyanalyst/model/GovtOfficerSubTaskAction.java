@@ -33,14 +33,18 @@ public class GovtOfficerSubTaskAction extends BaseModel implements Serializable 
 	private Long alertSubTaskStatusId;
 	private Long alertDepartmentCommentId;
 	
-	private Long insertedBy;
+	private Long insertedById;
 	private Date insertedTime;
-	private Long updatedBy;
+	private Long updatedById;
 	private Date updatedTime;
 	
 	private Alert alert;
 	private AlertSubTaskStatus alertSubTaskStatus;
 	private AlertDepartmentComment alertDepartmentComment;
+	private User insertedBy;
+	private User updatedBy;
+	private AlertAssignedOfficerNew alertAssignedOfficer;
+	private GovtAlertSubTask govtAlertSubTask;
 	
 	
 	@Id
@@ -94,11 +98,11 @@ public class GovtOfficerSubTaskAction extends BaseModel implements Serializable 
 	}
 	
 	@Column(name="inserted_by")
-	public Long getInsertedBy() {
-		return insertedBy;
+	public Long getInsertedById() {
+		return insertedById;
 	}
-	public void setInsertedBy(Long insertedBy) {
-		this.insertedBy = insertedBy;
+	public void setInsertedById(Long insertedById) {
+		this.insertedById = insertedById;
 	}
 	
 	@Column(name="inserted_time")
@@ -110,11 +114,11 @@ public class GovtOfficerSubTaskAction extends BaseModel implements Serializable 
 	}
 	
 	@Column(name="updated_by")
-	public Long getUpdatedBy() {
-		return updatedBy;
+	public Long getUpdatedById() {
+		return updatedById;
 	}
-	public void setUpdatedBy(Long updatedBy) {
-		this.updatedBy = updatedBy;
+	public void setUpdatedById(Long updatedById) {
+		this.updatedById = updatedById;
 	}
 	
 	@Column(name="updated_time")
@@ -157,6 +161,50 @@ public class GovtOfficerSubTaskAction extends BaseModel implements Serializable 
 	public void setAlertDepartmentComment(
 			AlertDepartmentComment alertDepartmentComment) {
 		this.alertDepartmentComment = alertDepartmentComment;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "inserted_by" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getInsertedBy() {
+		return insertedBy;
+	}
+	public void setInsertedBy(User insertedBy) {
+		this.insertedBy = insertedBy;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "updated_by" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(User updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "assigned_officer_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertAssignedOfficerNew getAlertAssignedOfficer() {
+		return alertAssignedOfficer;
+	}
+	public void setAlertAssignedOfficer(AlertAssignedOfficerNew alertAssignedOfficer) {
+		this.alertAssignedOfficer = alertAssignedOfficer;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_officer_sub_task_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtAlertSubTask getGovtAlertSubTask() {
+		return govtAlertSubTask;
+	}
+	public void setGovtAlertSubTask(GovtAlertSubTask govtAlertSubTask) {
+		this.govtAlertSubTask = govtAlertSubTask;
 	}
 	
 	

@@ -2,15 +2,22 @@ package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="govt_department_designation_hierarchy")
@@ -23,6 +30,9 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	private Long parentDesignationId;
 	private Long subDesignationId;
 	private String  isDeleted;
+	
+	private GovtDepartmentDesignation parentDesignation;
+	private GovtDepartmentDesignation subDesignation;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,5 +68,29 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="parent_designation_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtDepartmentDesignation getParentDesignation() {
+		return parentDesignation;
+	}
+	public void setParentDesignation(GovtDepartmentDesignation parentDesignation) {
+		this.parentDesignation = parentDesignation;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="sub_designation_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtDepartmentDesignation getSubDesignation() {
+		return subDesignation;
+	}
+	public void setSubDesignation(GovtDepartmentDesignation subDesignation) {
+		this.subDesignation = subDesignation;
+	}
+	
+	
 	
 }

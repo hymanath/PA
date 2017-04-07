@@ -46,6 +46,7 @@ public class GovtAlertSubTask {
 	private GovtDepartmentDesignationOfficerNew govtDepartmentDesignationOfficer;
 	private AlertAssignedOfficerNew alertAssignedOfficer;
 	private AlertSeverity alertSeverity;
+	private AlertSubTaskStatus alertSubTaskStatus;
 	private User createdUser;
 	private User updatedUser;
 	
@@ -224,6 +225,17 @@ public class GovtAlertSubTask {
 	}
 	public void setUpdatedUser(User updatedUser) {
 		this.updatedUser = updatedUser;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="alert_sub_task_status_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertSubTaskStatus getAlertSubTaskStatus() {
+		return alertSubTaskStatus;
+	}
+	public void setAlertSubTaskStatus(AlertSubTaskStatus alertSubTaskStatus) {
+		this.alertSubTaskStatus = alertSubTaskStatus;
 	}
 	
 	
