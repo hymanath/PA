@@ -25,7 +25,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private HttpServletRequest request;
 	private HttpSession session;
 	private JSONObject jObj;
-	private String task;	
+	private String task;
+	private DistrictOfficeViewAlertVO districtOfficeViewAlertVO;
 	private ICccDashboardService cccDashboardService;
 	private List<IdAndNameVO> newsPaperList;
 	private List<IdAndNameVO> chanelList;
@@ -36,6 +37,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private IAlertManagementSystemService alertManagementSystemService;
 	private List<AlertVO> alertVOs;
 	
+	
+	public DistrictOfficeViewAlertVO getDistrictOfficeViewAlertVO() {
+		return districtOfficeViewAlertVO;
+	}
+	public void setDistrictOfficeViewAlertVO(
+			DistrictOfficeViewAlertVO districtOfficeViewAlertVO) {
+		this.districtOfficeViewAlertVO = districtOfficeViewAlertVO;
+	}
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;    
 	}
@@ -264,6 +273,24 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			alertVOs = alertManagementSystemService.getDepartmentScope();
 		}catch(Exception e){
 			LOG.error("Exception occured in getDepartmentScope() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDistrictOfficerAlertsCountView(){
+		try{
+			session = request.getSession();
+		   	RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		   	
+		   	Long userId = null;
+		   	if(user != null && user.getRegistrationID() != null){
+		   		userId = user.getRegistrationID();
+			}
+			
+		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
 		}
 		return Action.SUCCESS;
 	}
