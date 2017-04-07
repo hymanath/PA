@@ -829,9 +829,11 @@ public String constituencyCommitteeSummaryAction()
 		
 		if(entitlements.contains("CADRE_COMMITTEE_MANAGEMENT".trim())){
 			cadreUser = true;
-			List<BasicVO> accLoc = getUserAccessConstituencies();
-			accessConstituency = accLoc.get(0).getName();
-			accessConstituencyId = accLoc.get(0).getId();
+			if(accessConstituencyId == null || accessConstituencyId.longValue() ==0){
+				List<BasicVO> accLoc = getUserAccessConstituencies();
+				accessConstituency = accLoc.get(0).getName();
+				accessConstituencyId = accLoc.get(0).getId();
+			}
 		}
 		
 		if(entitlements.contains("TDP_COMMITTEE_AREAWISE_ACCESS".trim())){
