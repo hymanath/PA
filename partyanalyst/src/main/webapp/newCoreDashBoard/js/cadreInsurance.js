@@ -4,14 +4,15 @@
 	var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
 	function globalInsuranceCalls()
 	{
-		getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails();
+		var getCadreval = getCadreYearVal();
+		getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails(getCadreval);
 		cadreInsuranceClickActions();
 		if($("[expand-icon='cadreInsurance']").hasClass("glyphicon-resize-small"))
 		{
 			//alert(1)
 		}
 	}
-	function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions)
+	function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
 	{
 		'use strict';
 		
@@ -26,20 +27,34 @@
 			},
 			xAxis: xAxis,
 			yAxis: yAxis,
-			tooltip: {
-				enabled:true,
-				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b><br/>'
-			},
+			tooltip: tooltip,
 			plotOptions: plotOptions,
 			legend: legend,
 			series: data
 		});
 	}
-	
+		function getCadreYearVal(){
+			 var getCadreval = ''; 
+			$('.yearWiseDtsCls').each(function(i, obj){
+			 
+				  getCadreval = $(this).val();
+			 
+			});
+			return getCadreval;
+		}
+		function getdateType(){
+			 var getdate = ''; 
+			$('.cadreInsuranceCDate li').each(function(i, obj){
+			 
+				  getdate = $(this).html();
+			 
+			});
+			return getdate;
+		}
 	function cadreInsuranceClickActions()
 	{
 		$(".cadreInsuranceCategoryStatus,.cadreInsuranceCategoryStatusTs").hide();
-		$("#dateRangeIdCadreInsurance").daterangepicker({
+		/* $("#dateRangeIdCadreInsurance").daterangepicker({
 			opens: 'left',
 			startDate: cadreInsuranceFDate,
 			endDate: cadreInsuranceTDate,
@@ -56,7 +71,7 @@
 			   'This Month': [moment().startOf('month'), moment()],
 			   'This Year': [moment().startOf('Year'), moment()]
 			}
-		});
+		}); */
 		$(document).on("click",".cadreInsuranceCDate li",function(){
 			var date = $(this).html();
 			var momentDate = '';
@@ -70,24 +85,40 @@
 			}else if(date == 'Month'){
 				cadreInsuranceFDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
 				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
-			}else if(date == '3 Month'){
+			}else if(date == '3 Months'){
 				cadreInsuranceFDate = moment().subtract(3,'month').startOf("month").format('DD-MM-YYYY');
 				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
-			}else if(date == '6 Month'){
+			}else if(date == '6 Months'){
 				cadreInsuranceFDate = moment().subtract(6,'month').startOf("month").format('DD-MM-YYYY');
 				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
-			}else if(date == '9 Month'){
+			}else if(date == '9 Months'){
 				cadreInsuranceFDate = moment().subtract(9,'month').startOf("month").format('DD-MM-YYYY');
 				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
 			}else if(date == 'All Time'){
 				cadreInsuranceFDate = moment().subtract(20,'years').startOf("year").format('DD-MM-YYYY');
 				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
 			}
-			getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails()
+			$(".liclsChange").removeClass("active");
+			$(".addActiveCls").addClass("active");
+			var getCadreval = getCadreYearVal();
+			
+			getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails(getCadreval);
+			getUserTypeWiseTotalCadreInsuranceComplainctCnt(date,getCadreval);
+			getInsuranceCompanyWiseOverviewAndStatusDetails(getCadreval);
 		});
 		$(document).on("click",".insuranceRefresh",function(){
 			globalInsuranceCalls()
 		});
+		$(document).on("change",".yearWiseDtsCls",function(){
+			var getdate = getdateType();
+			var getCadreval = getCadreYearVal();
+			
+			getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails(getCadreval);
+			getUserTypeWiseTotalCadreInsuranceComplainctCnt(getdate,getCadreval);
+			getInsuranceCompanyWiseOverviewAndStatusDetails(getCadreval);
+			
+		});
+		
 		$(document).on("click",".insuraceStatusWiseComplaints",function(){
 			var $this = $(this);
 			var status = $this.attr("attr_status");
@@ -113,7 +144,8 @@
 		$(document).on("click",".moreCadreInsuranceIcon",function(){
 			$(".cadreInsuranceDetailedblock,.cadreInsuranceLi").show();
 			$(".cadreInsuranceComparisonblock").hide();
-			getInsuranceCompanyWiseOverviewAndStatusDetails();
+			var getCadreval = getCadreYearVal();
+			getInsuranceCompanyWiseOverviewAndStatusDetails(getCadreval);
 			getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
 			getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
 			getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);
@@ -123,7 +155,8 @@
 			var blockName = $(this).html();
 			if(blockName == "Detailed")
 			{
-				getInsuranceCompanyWiseOverviewAndStatusDetails();
+				var getCadreval = getCadreYearVal();
+				getInsuranceCompanyWiseOverviewAndStatusDetails(getCadreval);
 				getDistrictWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
 				getConstituencyWiseThenCategoryWiseInsuranceMemberCount('insuredMember','desc',0);
 				getLocationWiseThenCategoryWiseInsuranceMemberCountForTS('district','insuredMember','desc',0);
@@ -212,12 +245,12 @@
 		});
 		
 	}       
-	function getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails()
+	function getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails(getCadreval)
 	{
 		$("#insuraceCompanyAndTypeOfIssueWiseComplaintsDetails").html(spinner);
 		var jsObj={ 
-			activityMemberId: 44, 
-			cadreYearId		: 4, 
+			activityMemberId: globalActivityMemberId, 
+			cadreYearId		: getCadreval, 
 			stateId 		: 1, 
 			fromDateStr 	: cadreInsuranceFDate, 
 			toDateStr		: cadreInsuranceTDate
@@ -254,7 +287,7 @@
 			str+='<table class="table table-bordered bg_ED m_top10">';
 				str+='<tr>';
 					str+='<td rowspan="2" style="vertical-align:middle;width:50%;"><h3>'+totalCount+'</h3><p class="text-capital text-muted">total claims submitted</p></td>';
-					str+='<td><h3><span class="insuraceStatusWiseComplaints" attr_status=""  attr_issueType="Hospitalization" attr_companyId="0">'+totalHospital+'</span></h3><p class="text-capital text-muted">total hospital</p></td>';
+					str+='<td><h3><span class="insuraceStatusWiseComplaints" attr_status="" attr_issueType="Hospitalization" attr_companyId="0">'+totalHospital+'</span></h3><p class="text-capital text-muted">total hospital</p></td>';
 				str+='</tr>';
 				str+='<tr>';
 					str+='<td><h3><span class="insuraceStatusWiseComplaints" attr_status="" attr_issueType="Death" attr_companyId="0">'+totalDeath+'</span></h3><p class="text-capital text-muted">total death</p></td>';
@@ -275,7 +308,7 @@
 							}else{
 								str+='<a role="button" class="collapsed collapseDebatesIcon" data-toggle="collapse" data-parent="#accordion" href="#collapseInsurance'+i+'" aria-controls="collapseInsurance'+i+'">';
 							}
-								str+='<h5>'+result[i].totalCount+' <small class="text-success">20%</small></h5>';
+								str+='<h5>'+result[i].totalCount+' <small class="text-success">'+result[i].percentage+'%</small></h5>';
 								str+='<small class="text-capital">'+result[i].name+'</small>';
 							str+='</a>';
 						str+='</div>';
@@ -521,15 +554,15 @@
 	
 	
 	  //getUserTypeWiseTotalCadreInsuranceComplainctCnt();
-	function getUserTypeWiseTotalCadreInsuranceComplainctCnt(){
+	function getUserTypeWiseTotalCadreInsuranceComplainctCnt(date,getCadreval){
 		$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html(spinner);
 		var jsObj ={ 
-				activityMemberId : 44,//globalActivityMemberId
-				userTypeId : 2,//globalUserTypeId
+				activityMemberId : globalActivityMemberId,//globalActivityMemberId
+				userTypeId : globalUserTypeId,//globalUserTypeId
 				stateId : globalStateIdForCadreInsurance,
-				fromDate : "",
-				toDate : "",
-				cadreEnrollmentYearId :0
+				fromDate : cadreInsuranceFDate,
+				toDate : cadreInsuranceTDate,
+				cadreEnrollmentYearId :getCadreval
 			}
 		$.ajax({
 			type : 'POST',
@@ -539,22 +572,31 @@
 		}).done(function(result){
 			if(result != null && result.length > 0)
 			{
-				buildUserTypeWiseTotalCadreInsuranceComplainctCnt(result);
+				buildUserTypeWiseTotalCadreInsuranceComplainctCntTopFive(result,date);
+				globalUserWiseMemberRslt = result;
 			}else{
 				$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html("NO DATA AVAILABLE");
 			}
 		});
 		
 	} 
-	function buildUserTypeWiseTotalCadreInsuranceComplainctCnt(result)
+	function buildUserTypeWiseTotalCadreInsuranceComplainctCntTopFive(result,date)
 	{
+		$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html('');
 		var str='';
-		str+='<div class="row">';
+		str+='<div class="row headingColorApp">';
+		str+='<span class="headingColor">'+date+'</span>';
+		str+='<ul class="list-inline m_top10">';
+			str+='<li><span class="Intimations"></span> Intimations</li>';
+			str+='<li><span class="Forwarded"></span> Forwarded</li>';
+			str+='<li><span class="Settled"></span> Settled</li>';
+			str+='<li><span class="Rejcted"></span> Rejcted</li>';
+		str+='</ul>';
 		for(var i in result){
 			var candidateList = result[i];
-			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
 			str+='<h4 class="panel-title">'+candidateList[0].userType+'</h4>';
-			str+='<ul class="list-inline">';
+			str+='<ul class="list-inline m_top10">';
 			for(var j in candidateList)
 			{
 				if(j != 4)
@@ -593,7 +635,7 @@
 				text: null
 			},
 			stackLabels: {
-				enabled: false,
+				enabled: true,
 				style: {
 					fontWeight: 'bold',
 					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
@@ -613,6 +655,11 @@
 			}
         }
 		
+		var tooltip = {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+			}
 		
 		for(var i in result){
 			var candidateList = result[i];
@@ -654,7 +701,7 @@
 				mainJosnObjArr.push({name:'Settled',data:settledArr,color:"#2DCC70"});  
 				mainJosnObjArr.push({name:'Rejected',data:rejectedArr ,color:"#E74B3B"});  
 				var id = 'userTypeWiseTotalCadreInsuranceComplainctCntGraph'+i+''+j+'';
-				highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+				highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions,tooltip);
 				if(j == 4)
 				{
 					break;
@@ -663,6 +710,146 @@
 			
 		}
 	}
+	function buildUserTypeWiseTotalCadreInsuranceComplainctCntTopPoor(result,date)
+	{
+		$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html('');
+		var str='';
+		str+='<div class="row headingColorApp">';
+		str+='<span class="headingColor">'+date+'</span>';
+		str+='<ul class="list-inline m_top10">';
+			str+='<li><span class="Intimations"></span> Intimations</li>';
+			str+='<li><span class="Forwarded"></span> Forwarded</li>';
+			str+='<li><span class="Settled"></span> Settled</li>';
+			str+='<li><span class="Rejcted"></span> Rejcted</li>';
+		str+='</ul>';
+		for(var i in result){
+			var candidateList = result[i];
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+			str+='<h4 class="panel-title">'+candidateList[0].userType+'</h4>';
+			str+='<ul class="list-inline m_top10">';
+			var countVar = 0;
+			if(candidateList !=null && candidateList.length>0){
+				for(var j = candidateList.length -1; j >= 0; j--)
+				{
+					
+						str+='<li style="width:20%;">';
+						str+='<p style="font-size:10px">'+candidateList[j].name+'</p>';
+						str+='<div id="userTypeWiseTotalCadreInsuranceComplainctCntGraphPoor'+i+''+j+'" style="height:200px;"></div>';
+					str+='</li>';
+					countVar =countVar+1;
+					if (countVar === 5) {
+						break;
+					}
+				}
+			}
+			
+			str+='</ul>';
+			str+='</div>';
+		}
+		str+='</div>';
+		$("#userTypeWiseTotalCadreInsuranceComplainctCnt").html(str);
+		
+		var type = {
+			type: 'column',
+			backgroundColor:'transparent'
+		}
+		var legend = {
+			enabled: false,
+		}
+		var yAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: null
+			},
+			stackLabels: {
+				enabled: true,
+				style: {
+					fontWeight: 'bold',
+					color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+				}
+			}
+		}
+		var xAxis = {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: ['Death', 'Hospital']
+		}
+		
+		var plotOptions =  {
+             series: {
+				stacking: 'normal'
+			}
+        }
+		
+		var tooltip= {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+		}
+			
+		for(var i in result){
+			var candidateList = result[i];
+			for(var j = candidateList.length -1; j >= 0; j--)
+			{	
+				var mainJosnObjArr = [];
+				for(var k in candidateList[j].subList)
+				{
+					var intimationsArr = [];
+					var forwardedArr = [];
+					var settledArr = [];
+					var rejectedArr = [];
+					for(var l in candidateList[j].subList[k].subList)
+					{
+						
+						if(candidateList[j].subList[k].subList[l].id == 1 )
+						{
+							intimationsArr.push({y:candidateList[j].subList[0].subList[l].totalCount});
+							intimationsArr.push({y:candidateList[j].subList[1].subList[l].totalCount});
+						}else if(candidateList[j].subList[k].subList[l].id == 2 )
+						{
+							forwardedArr.push({y:candidateList[j].subList[0].subList[l].totalCount});
+							forwardedArr.push({y:candidateList[j].subList[1].subList[l].totalCount});
+						}else if(candidateList[j].subList[k].subList[l].id == 3 )
+						{
+							settledArr.push({y:candidateList[j].subList[0].subList[l].totalCount});
+							settledArr.push({y:candidateList[j].subList[1].subList[l].totalCount});
+						}else if(candidateList[j].subList[k].subList[l].id == 4 )
+						{
+							rejectedArr.push({y:candidateList[j].subList[0].subList[l].totalCount});
+							rejectedArr.push({y:candidateList[j].subList[1].subList[l].totalCount});
+						}
+					}
+					
+					 
+				}
+				mainJosnObjArr.push({name:'Intimation',data:intimationsArr,color:"#306F8F"});  
+				mainJosnObjArr.push({name:'Forwarded',data:forwardedArr,color:"#F39C12"});  
+				mainJosnObjArr.push({name:'Settled',data:settledArr,color:"#2DCC70"});  
+				mainJosnObjArr.push({name:'Rejected',data:rejectedArr ,color:"#E74B3B"});  
+				var id = 'userTypeWiseTotalCadreInsuranceComplainctCntGraphPoor'+i+''+j+'';
+				highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions,tooltip);
+				countVar =countVar+1;
+				if (countVar === 5) {
+					break;
+				}
+			}
+			
+		}
+	}
+	
+	$(document).on("click",".liclsChange",function(){
+		var memberType=$(this).attr("attr_value");
+		var getdate = getdateType();
+		 if(memberType != null && memberType == "strong"){
+			 buildUserTypeWiseTotalCadreInsuranceComplainctCntTopFive(globalUserWiseMemberRslt,getdate)
+		 }else if(memberType == "poor"){
+			buildUserTypeWiseTotalCadreInsuranceComplainctCntTopPoor(globalUserWiseMemberRslt,getdate)
+		 }
+	});
+	
 	 function getStatusTrackingDetailsOfInsuranceByComplaint(complaintId)
 		{
 			var jsObj={ 
@@ -727,12 +914,12 @@
 			});
 		}
 		
-		function getInsuranceCompanyWiseOverviewAndStatusDetails()
+		function getInsuranceCompanyWiseOverviewAndStatusDetails(getCadreval)
 		{
 			$("#insuranceCompanyWiseOverviewAndStatusDetails").html(spinner);
 			var jsObj={ 
-				activityMemberId: 44, 
-				cadreYearId		: 4, 
+				activityMemberId: globalActivityMemberId, 
+				cadreYearId		: getCadreval, 
 				fromDateStr 	: cadreInsuranceFDate, 
 				toDateStr		: cadreInsuranceTDate
 			};
@@ -756,11 +943,11 @@
 			var str='';
 			str+='<div class="row">';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h4 class="panel-title">ANDHRA PRADESH</h4>';
+					str+='<h4 class="panel-title headingColorApp"><span>ANDHRA PRADESH</span></h4>';
 				str+='</div>';
-				str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 					str+='<h4 class="panel-title text-capital">overview</h4>';
-					str+='<div id="overviewInsurance" style="height:300px"></div>';
+					str+='<div id="overviewInsurance" style="height:300px;"></div>';
 				str+='</div>';
 				str+='<div class="col-md-4 col-xs-12 col-sm-4">';
 					str+='<h4 class="panel-title text-capital">hospitalization</h4>';
@@ -771,9 +958,9 @@
 					str+='<div id="deathInsurance" style="height:300px"></div>';
 				str+='</div>';
 				str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<h4 class="panel-title">TELANGANA</h4>';
+					str+='<h4 class="panel-title headingColorApp"><span>TELANGANA</span></h4>';
 				str+='</div>';
-				str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+				str+='<div class="col-md-4 col-xs-12 col-sm-12 m_top10">';
 					str+='<h4 class="panel-title text-capital">overview</h4>';
 					str+='<div id="overviewInsuranceTs" style="height:300px"></div>';
 				str+='</div>';
@@ -791,8 +978,9 @@
 			
 			var overviewList = []
 			var namesArr = [];
-			var deathArray = []
-			var hospitalArray = []
+			var deathArray = [];
+			var hospitalArray = [];
+			var amountArry =[];
 			if(result[0].overViewList != null && result[0].overViewList.length > 0)
 			{
 				for(var i in result[0].overViewList)
@@ -800,6 +988,7 @@
 					
 					hospitalArray.push({"y":result[0].overViewList[i].hospitalizationCount})
 					deathArray.push({"y":result[0].overViewList[i].deathCount})
+					amountArry.push(result[0].overViewList[i].amount)
 					var Obj = {
 						name: 'Death',
 						data: deathArray
@@ -820,6 +1009,7 @@
 			var type = {
 				type: 'bar',
 				backgroundColor:'transparent'
+				
 			}
 			var legend = {
 				enabled: false,
@@ -832,15 +1022,22 @@
 					text: null
 				},
 				stackLabels: {
+					
+					useHTML: true,
+					qTotals: amountArry,
 					enabled: true,
+					align: 'left',
 					style: {
 						fontWeight: 'bold',
 						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 					},
 					formatter: function() {
-						return  (this.total);
+						
+						return '<span style="top: 16px; position: absolute;"><br/>'+this.total+ '(<i class="fa fa-inr" aria-hidden="true"></i>'+this.options.qTotals[this.x]+')/-</span>';
 					}
+					
 				}
+				
 			}
 			var xAxis = {
 				min: 0,
@@ -850,11 +1047,16 @@
 			}
 			var plotOptions =  {
 	             series: {
-					stacking: 'normal'
+					stacking: 'normal',
+					pointWidth: 30,
+					gridLineWidth: 15
 				}
 	        }
-			
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions); 
+			var tooltip= {
+				valueSuffix: ' ',
+				shared:true
+			}
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip); 
 			/* Deaths Insurance*/
 			var deathList = []
 			var namesArr1 = [];
@@ -862,6 +1064,7 @@
 			var forwardedArr = []
 			var settledArr = []
 			var rejectedArr = []
+			var DamountArry = []
 			if(result[0].deathList != null && result[0].deathList.length > 0)
 			{
 				for(var i in result[0].deathList)
@@ -871,6 +1074,7 @@
 					forwardedArr.push({"y":result[0].deathList[i].subList[1].count,color:"#F39C12"})
 					settledArr.push({"y":result[0].deathList[i].subList[2].count,color:"#2DCC70"})
 					rejectedArr.push({"y":result[0].deathList[i].subList[3].count,color:"#E74B3B"})
+					DamountArry.push(result[0].deathList[i].amount)
 					var Obj = {
 						name: 'Intimation',
 						data: intimationsArr
@@ -897,8 +1101,33 @@
 			
 			var data1 = deathList;
 			var id1 = 'deathInsurance';
-			
-			highcharts(id1,type,xAxis,yAxis,legend,data1,plotOptions); 
+			var tooltip= {
+				valueSuffix: ' ',
+				shared:true
+			};
+			var yAxisD = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				stackLabels: {
+					useHTML: true,
+					align: 'left',
+					qTotals: DamountArry,
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					formatter: function() {
+						
+						return '<span style="top: 16px; position: absolute;"><br/>'+this.total+ '(<i class="fa fa-inr" aria-hidden="true"></i>'+this.options.qTotals[this.x]+')/-</span>';
+					}
+				}
+			}
+			highcharts(id1,type,xAxis,yAxisD,legend,data1,plotOptions,tooltip); 
 			
 			/* Hospitalization Insurance*/
 			var hospitalizationList = []
@@ -906,6 +1135,7 @@
 			var forwardedArr1 = []
 			var settledArr1 = []
 			var rejectedArr1 = []
+			var HamountArry = []
 			if(result[0].hospitalizationList != null && result[0].hospitalizationList.length > 0)
 			{
 				for(var i in result[0].hospitalizationList)
@@ -914,6 +1144,7 @@
 					forwardedArr1.push({"y":result[0].hospitalizationList[i].subList[1].count,color:"#F39C12"})
 					settledArr1.push({"y":result[0].hospitalizationList[i].subList[2].count,color:"#2DCC70"})
 					rejectedArr1.push({"y":result[0].hospitalizationList[i].subList[3].count,color:"#E74B3B"})
+					HamountArry.push(result[0].hospitalizationList[i].amount)
 					var Obj = {
 						name: 'Intimation',
 						data: intimationsArr1
@@ -940,14 +1171,40 @@
 			
 			var data2 = hospitalizationList;
 			var id2 = 'hospitalizationInsurance';
-			
-			highcharts(id2,type,xAxis,yAxis,legend,data2,plotOptions); 
+			var tooltip= {
+				valueSuffix: ' ',
+				shared:true
+			};
+			var yAxisH = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				stackLabels: {
+					useHTML: true,
+					align: 'left',
+					qTotals: HamountArry,
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					formatter: function() {
+						
+						return '<span style="top: 16px; position: absolute;"><br/>'+this.total+ '(<i class="fa fa-inr" aria-hidden="true"></i>'+this.options.qTotals[this.x]+')/-</span>';
+					}
+				}
+			}
+			highcharts(id2,type,xAxis,yAxisH,legend,data2,plotOptions,tooltip); 
 			
 			/*Telangana*/
 			var overviewListTs = []
 			var namesArrTs = [];
 			var deathArrayTs = []
 			var hospitalArrayTs = []
+			var amountArryT = []
 			if(result[1].overViewList != null && result[1].overViewList.length > 0)
 			{
 				for(var i in result[1].overViewList)
@@ -955,6 +1212,7 @@
 					
 					hospitalArrayTs.push({"y":result[1].overViewList[i].hospitalizationCount})
 					deathArrayTs.push({"y":result[1].overViewList[i].deathCount})
+					amountArryT.push(result[1].overViewList[i].amount)
 					var Obj = {
 						name: 'Death',
 						data: deathArrayTs
@@ -978,8 +1236,36 @@
 				minorGridLineWidth: 0,
 				categories: namesArr
 			}
-			
-			highcharts(idTs,type,xAxis,yAxis,legend,dataTs,plotOptions); 
+			var yAxisT = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				stackLabels: {
+					
+					useHTML: true,
+					qTotals: amountArryT,
+					enabled: true,
+					align: 'left',
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					formatter: function() {
+						
+						return '<span style="top: 16px; position: absolute;"><br/>'+this.total+ '(<i class="fa fa-inr" aria-hidden="true"></i>'+this.options.qTotals[this.x]+')/-</span>';
+					}
+					
+				}
+				
+			}
+			var tooltip= {
+				valueSuffix: ' ',
+				shared:true
+			};
+			highcharts(idTs,type,xAxis,yAxisT,legend,dataTs,plotOptions,tooltip); 
 			/* Deaths Insurance*/
 			var deathListTs = []
 			var namesArrTs1 = [];
@@ -987,6 +1273,7 @@
 			var forwardedArrTs = []
 			var settledArrTs = []
 			var rejectedArrTs = []
+			var amountArryTD = []
 			if(result[1].deathList != null && result[1].deathList.length > 0)
 			{
 				for(var i in result[1].deathList)
@@ -996,6 +1283,7 @@
 					forwardedArrTs.push({"y":result[1].deathList[i].subList[1].count,color:"#F39C12"})
 					settledArrTs.push({"y":result[1].deathList[i].subList[2].count,color:"#2DCC70"})
 					rejectedArrTs.push({"y":result[1].deathList[i].subList[3].count,color:"#E74B3B"})
+					amountArryTD.push(result[1].deathList[i].amount)
 					var Obj = {
 						name: 'Intimation',
 						data: intimationsArrTs
@@ -1022,8 +1310,37 @@
 			
 			var data1 = deathListTs;
 			var id1 = 'deathInsuranceTs';
-			
-			highcharts(id1,type,xAxis,yAxis,legend,data1,plotOptions); 
+			var tooltip= {
+				valueSuffix: ' ',
+				shared:true
+			};
+			var yAxisTD = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				stackLabels: {
+					
+					useHTML: true,
+					align:"left",
+					qTotals: amountArryTD,
+					enabled: true,
+					align: 'left',
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					formatter: function() {
+						
+						return '<span style="top: 16px; position: absolute;"><br/>'+this.total+ '(<i class="fa fa-inr" aria-hidden="true"></i>'+this.options.qTotals[this.x]+')/-</span>';
+					}
+					
+				}
+				
+			}
+			highcharts(id1,type,xAxis,yAxisTD,legend,data1,plotOptions,tooltip); 
 			
 			/* Hospitalization Insurance*/
 			var hospitalizationListTs = []
@@ -1031,6 +1348,7 @@
 			var forwardedArrTs1 = []
 			var settledArrTs1 = []
 			var rejectedArrTs1 = []
+			var amountArryTH = []
 			if(result[1].hospitalizationList != null && result[1].hospitalizationList.length > 0)
 			{
 				for(var i in result[1].hospitalizationList)
@@ -1039,6 +1357,7 @@
 					forwardedArrTs1.push({"y":result[1].hospitalizationList[i].subList[1].count,color:"#F39C12"})
 					settledArrTs1.push({"y":result[1].hospitalizationList[i].subList[2].count,color:"#2DCC70"})
 					rejectedArrTs1.push({"y":result[1].hospitalizationList[i].subList[3].count,color:"#E74B3B"})
+					amountArryTH.push(result[1].hospitalizationList[i].amount)
 					var Obj = {
 						name: 'Intimation',
 						data: intimationsArrTs1
@@ -1065,8 +1384,38 @@
 			
 			var dataTs2 = hospitalizationListTs;
 			var idTs2 = 'hospitalizationInsuranceTs';
-			
-			highcharts(idTs2,type,xAxis,yAxis,legend,dataTs2,plotOptions); 
+			var yAxisTH = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				stackLabels: {
+					
+					useHTML: true,
+					align:"left",
+					qTotals: amountArryTH,
+					enabled: true,
+					align: 'left',
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					formatter: function() {
+						
+						return '<span style="top: 16px; position: absolute;"><br/>'+this.total+ '(<i class="fa fa-inr" aria-hidden="true"></i>'+this.options.qTotals[this.x]+')/-</span>';
+					}
+					
+				}
+				
+			}
+			var tooltip= {
+				valueSuffix: ' ',
+				shared:true
+			};
+		
+			highcharts(idTs2,type,xAxis,yAxisTH,legend,dataTs2,plotOptions,tooltip); 
 		}
 	/* Comparison Block Start */
 	
@@ -1676,8 +2025,12 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				stacking: 'normal'
 			}
 		}
-		
-		highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
+		var tooltip= {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+		}
+		highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
    }
    function getConstituencyWiseThenCategoryWiseInsuranceMemberCount(sortingCondition,order,locationId)
    {
@@ -1796,8 +2149,12 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				stacking: 'normal'
 			}
 		}
-		
-		highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
+		var tooltip= {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+		}
+		highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
    }
    
    function getDistrictWiseThenStatusWiseInsuranceMemberCount(sortingCondition,order,locationId){
@@ -1901,8 +2258,12 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				stacking: 'normal'
 			}
 		}
-		
-		highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+		var tooltip= {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+		}
+		highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions,tooltip);
    }
    function getConstituencyWiseThenStatusWiseInsuranceMemberCount(sortingCondition,order,locationId){
 	   $("#constituencyWiseThenStatusWiseInsuranceMemberCount").html(spinner);  
@@ -2023,8 +2384,12 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				stacking: 'normal'
 			}
 		}
-		
-		highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+		var tooltip= {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+		}
+		highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions,tooltip);
    }
    
    function getLocationWiseThenCategoryWiseInsuranceMemberCountForTS(locationType,sortingCondition,order,locationId){
@@ -2146,8 +2511,12 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				categories: namesArr
 			}
 			
-			
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
+			var tooltip= {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+			}
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 		}else if(locationType == 'constituency'){
 			var str='';
 			str+='<div class="row">';
@@ -2196,8 +2565,12 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				minorGridLineWidth: 0,
 				categories: namesArr
 			}
-			
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions);
+			var tooltip= {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+			}
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 		}
 	}
    function getLocationWiseThenStatusWiseInsuranceMemberCountForTS(locationType,sortingCondition,order,locationId){
@@ -2319,8 +2692,13 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				minorGridLineWidth: 0,
 				categories: namesArr
 			}
-			
-			highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+			var tooltip =  {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+			}
+		
+			highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions,tooltip);
 		}else if(locationType == 'constituency'){
 			var str='';
 			str+='<div class="row">';
@@ -2373,6 +2751,11 @@ function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selected
 				categories: namesArr
 			}
 			
-			highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions);
+			var tooltip = {
+				enabled:true,
+				pointFormat: '<span style="color:{series.color}">{series.name}</span><br/>(<b>{point.y}</b>)<br/>',
+				shared:true
+			}
+			highcharts(id,type,xAxis,yAxis,legend,mainJosnObjArr,plotOptions,tooltip);
 		}
    }

@@ -3113,10 +3113,16 @@
 									<i class="glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Expand"></i>
 								</span>
 								<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" style="width:210px" expand-block-date="cadreInsurance">
-									<input type="text" id="dateRangeIdCadreInsurance" style="width:190px" class="form-control" />
+									<!--<input type="text" id="dateRangeIdCadreInsurance" style="width:190px" class="form-control" />
 									<span class="input-group-addon">
 										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
+									</span>-->
+									<select class="yearWiseDtsCls" style="height: 30px;">
+										<option value="0">All Time Cadre</option>
+										<option value="4" selected>2016-2018</option>
+										<option value="3">2014-2016</option>
+										<option value="2">2012-2014</option>
+									</select>
 								</span>
 							</div>
 						</div>
@@ -3127,10 +3133,10 @@
 								<ul class="activeUlCls list-inline cadreInsuranceCDate">
 									<li>Today</li>
 									<li>Week</li>
-									<li>Month</li>
-									<li>3 Month</li>
-									<li>6 Month</li>
-									<li>9 Month</li>
+									<li>Months</li>
+									<li>3 Months</li>
+									<li>6 Months</li>
+									<li>9 Months</li>
 									<li class="active">All Time</li>
 								</ul>
 								<div id="insuraceCompanyAndTypeOfIssueWiseComplaintsDetails" class="m_top20"></div>
@@ -3138,8 +3144,8 @@
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6" expand-block-right="cadreInsurance" style="display:none">
 								<ul class="list-inline activeUlCls pull-right">
-									<li class="active">Top 5 Strong</li>
-									<li>Top 5 Poor</li>
+									<li class="liclsChange active addActiveCls" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;5 strong</li>
+									<li class="liclsChange" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;5 poor</li>
 								</ul>
 								<div id="userTypeWiseTotalCadreInsuranceComplainctCnt"></div>
 							</div>
@@ -4460,7 +4466,7 @@ $("[expand-icon]").click(function(){
 			getUserTypeWiseTotalEligibleAndAttendedCnt();
 		}else if(blockName == 'cadreInsurance')
 		{
-			getUserTypeWiseTotalCadreInsuranceComplainctCnt();
+			getUserTypeWiseTotalCadreInsuranceComplainctCnt("All Time",4);
 		}
 	}else if(iconClass == 'glyphicon glyphicon-resize-small')
 	{
