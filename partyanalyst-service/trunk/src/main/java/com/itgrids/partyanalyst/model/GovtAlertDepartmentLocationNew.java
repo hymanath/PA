@@ -33,7 +33,7 @@ public class GovtAlertDepartmentLocationNew {
 	private User user;
 	private GovtDepartment govtDepartment;
 	private GovtDepartmentScope govtDepartmentScope;
-	private UserAddress address;
+	private GovtUserAddress govtUserAddress;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -125,15 +125,14 @@ public class GovtAlertDepartmentLocationNew {
 	public void setGovtDepartmentScope(GovtDepartmentScope govtDepartmentScope) {
 		this.govtDepartmentScope = govtDepartmentScope;
 	}
-	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="address_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public UserAddress getAddress() {
-		return address;
+	public GovtUserAddress getGovtUserAddress() {
+		return govtUserAddress;
 	}
-	public void setAddress(UserAddress address) {
-		this.address = address;
+	public void setGovtUserAddress(GovtUserAddress govtUserAddress) {
+		this.govtUserAddress = govtUserAddress;
 	}
 }

@@ -37,6 +37,7 @@ public class GovtDepartmentWorkLocation extends BaseModel implements Serializabl
 	private GovtDepartmentScope govtDepartmentScope;
 	private GovtDepartment govtDepartment;
 	private AlertRegionScopes alertRegionScopes;
+	private GovtUserAddress govtUserAddress;
 	
 
 	@Id
@@ -136,6 +137,16 @@ public class GovtDepartmentWorkLocation extends BaseModel implements Serializabl
 	}
 	public void setAlertRegionScopes(AlertRegionScopes alertRegionScopes) {
 		this.alertRegionScopes = alertRegionScopes;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_user_address_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public GovtUserAddress getGovtUserAddress() {
+		return govtUserAddress;
+	}
+	public void setGovtUserAddress(GovtUserAddress govtUserAddress) {
+		this.govtUserAddress = govtUserAddress;
 	}
 	
 	
