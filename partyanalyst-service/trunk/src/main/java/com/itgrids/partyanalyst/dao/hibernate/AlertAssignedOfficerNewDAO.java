@@ -129,5 +129,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     				" GROUP BY model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId ");
     		return query.list();
       }
-
+      
+      public List<AlertAssignedOfficerNew> getModelForAlert(Long alertId){
+  		Query query = getSession().createQuery(" select model from AlertAssignedOfficerNew model where model.alertId=:alertId and model.isDeleted='N' ");
+  		query.setParameter("alertId", alertId);
+  		return query.list();
+  	}
 }
