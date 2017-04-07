@@ -22,27 +22,29 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
        	if(countType != null && countType.equalsIgnoreCase("today")){
        		sb.append(" select model.govtAlertSubTaskId from GovtAlertSubTask model ");
        	}else{
-       		sb.append(" select model.alertSubTaskStatus.alertSubTaskStatusId,model.alertSubTaskStatus.status,count(model.govtAlertSubTaskId) from AlertAssignedOfficerNew model ");
+       		sb.append(" select model.alertSubTaskStatus.alertSubTaskStatusId,model.alertSubTaskStatus.status,count(model.govtAlertSubTaskId) from GovtAlertSubTask model ");
        	}
        	sb.append(" where model.isDeleted = 'N' " );
        	
        	if(type != null && type.equalsIgnoreCase("mySubTasks")){
        	  	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  sb.append(" model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffcrId " );
+	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId = :govtOffcrId " );
 	    	  }
-	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  sb.append(" model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+       	  	if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
 	    	  }
 	    }else{
        		if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  sb.append(" model.alertAssignedOfficer.govtOfficer.subTaskGovtOfficerId = :govtOffcrId " );
+	    		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffcrId " );
 	    	  }
-	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
-	    	  }
+       		
+       			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+       				sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+       			}
+	    	  
        	}
 	    	  if(countType != null && countType.equalsIgnoreCase("today")){
-	    		  sb.append(" model.insertedTime = :todayDate " ); 
+	    		  sb.append(" and model.createdTime = :todayDate " ); 
 	    	  }
 	    	  
 	    	  if(countType != null && !countType.equalsIgnoreCase("today")){
@@ -56,7 +58,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
 	    		  query.setParameter("govtOffcrId", govtOffcrId);  
 	    	  }
-	    	  if(countType != null && !countType.equalsIgnoreCase("today")){
+	    	  if(countType != null && countType.equalsIgnoreCase("today")){
 	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
 	    	  }
 	    	  return query.list();

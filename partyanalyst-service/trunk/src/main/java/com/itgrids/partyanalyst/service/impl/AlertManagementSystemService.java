@@ -587,6 +587,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			}
 			
 			// My alerts Status wise count
+			
 			setStatusWiseCount( myAlertsOverAllList, returnVO,"myAlerts",Long.valueOf(myAlertsTodayList.size()));
 			
 			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
@@ -628,7 +629,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 						vo = new DistrictOfficeViewAlertVO();
 						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+						//vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
 						myAlertsStatusMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), vo);
 					}
 					vo.setCount(vo.getCount()+commonMethodsUtilService.getLongValueForObject(objects[2]));
@@ -641,14 +642,14 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 					if(vo != null){
 						myAlertsOverAllCnt = myAlertsOverAllCnt+vo.getCount();
 						if(type != null && type.equalsIgnoreCase("myAlerts")){
-							returnVO.getList1().get(0).setOverAllCnt(myAlertsOverAllCnt);
 							returnVO.getList1().add(vo);
+							returnVO.getList1().get(0).setOverAllCnt(myAlertsOverAllCnt);
 						}else if(type != null && type.equalsIgnoreCase("mySubTasks")){
-							returnVO.getList2().get(0).setOverAllCnt(myAlertsOverAllCnt);
 							returnVO.getList2().add(vo);
+							returnVO.getList2().get(0).setOverAllCnt(myAlertsOverAllCnt);
 						}else if(type != null && type.equalsIgnoreCase("myAssignedSubTasks")){
-							returnVO.getList3().get(0).setOverAllCnt(myAlertsOverAllCnt);
 							returnVO.getList3().add(vo);
+							returnVO.getList3().get(0).setOverAllCnt(myAlertsOverAllCnt);
 						}
 					}
 					
@@ -657,21 +658,21 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			
 			if(type != null && type.equalsIgnoreCase("myAlerts")){
 				if(commonMethodsUtilService.isListOrSetValid(returnVO.getList1())){
-					returnVO.getList1().get(0).setCount(todayCount);
+					returnVO.getList1().get(0).setTodayCount(todayCount);
 					for (DistrictOfficeViewAlertVO vo : returnVO.getList1()) {
 						vo.setPerc(calculatePercantage(vo.getCount(),vo.getOverAllCnt()));
 					}
 				}
 			}else if(type != null && type.equalsIgnoreCase("mySubTasks")){
 				if(commonMethodsUtilService.isListOrSetValid(returnVO.getList2())){
-					returnVO.getList2().get(0).setCount(todayCount);
+					returnVO.getList2().get(0).setTodayCount(todayCount);
 					for (DistrictOfficeViewAlertVO vo : returnVO.getList2()) {
 						vo.setPerc(calculatePercantage(vo.getCount(),vo.getOverAllCnt()));
 					}
 				}
 			}else if(type != null && type.equalsIgnoreCase("myAssignedSubTasks")){
 				if(commonMethodsUtilService.isListOrSetValid(returnVO.getList3())){
-					returnVO.getList3().get(0).setCount(todayCount);
+					returnVO.getList3().get(0).setTodayCount(todayCount);
 					for (DistrictOfficeViewAlertVO vo : returnVO.getList3()) {
 						vo.setPerc(calculatePercantage(vo.getCount(),vo.getOverAllCnt()));
 					}

@@ -13,18 +13,26 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 
 	private Long id;
 	private String name;
-	private Long count;
-	private Long overAllCnt ;
+	private Long count = 0l;
+	private Long overAllCnt = 0l;
 	private Long designationId;
 	private String desigName;
 	private Long departmentId;
 	private String deptName;
+	private Long todayCount;
 	private Double perc;
 	private List<DistrictOfficeViewAlertVO> list1 = new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<DistrictOfficeViewAlertVO>  list2= new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<DistrictOfficeViewAlertVO> list3 = new ArrayList<DistrictOfficeViewAlertVO>(0);
 	
 	
+	
+	public Long getTodayCount() {
+		return todayCount;
+	}
+	public void setTodayCount(Long todayCount) {
+		this.todayCount = todayCount;
+	}
 	public Double getPerc() {
 		return perc;
 	}
