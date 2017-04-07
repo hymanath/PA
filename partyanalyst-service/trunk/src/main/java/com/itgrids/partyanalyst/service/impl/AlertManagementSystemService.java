@@ -5,10 +5,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
@@ -19,10 +24,15 @@ import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeLevelDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
+import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
 import com.itgrids.partyanalyst.model.AlertDepartmentComment;
@@ -45,6 +55,25 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 	private IGovtDepartmentDesignationOfficerNewDAO govtDepartmentDesignationOfficerNewDAO;
 	private IGovtAlertSubTaskDAO govtAlertSubTaskDAO;
 	
+	private TransactionTemplate transactionTemplate = null;
+	private IGovtDepartmentScopeLevelDAO govtDepartmentScopeLevelDAO;
+	private IGovtDepartmentWorkLocationDAO govtDepartmentWorkLocationDAO;
+	
+	
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
+	public void setGovtDepartmentScopeLevelDAO(
+			IGovtDepartmentScopeLevelDAO govtDepartmentScopeLevelDAO) {
+		this.govtDepartmentScopeLevelDAO = govtDepartmentScopeLevelDAO;
+	}
+
+	public void setGovtDepartmentWorkLocationDAO(
+			IGovtDepartmentWorkLocationDAO govtDepartmentWorkLocationDAO) {
+		this.govtDepartmentWorkLocationDAO = govtDepartmentWorkLocationDAO;
+	}
+
 	public IGovtAlertSubTaskDAO getGovtAlertSubTaskDAO() {
 		return govtAlertSubTaskDAO;
 	}
@@ -677,5 +706,162 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 			LOG.error("Error occured getDeptListForUser() method of AlertManagementSystemService",e);
 		}
 		return null;
+	}
+	
+
+	public String assigningAlertToOfficer(final AlertAssigningVO inputvo){
+		String status = null;
+		try {
+			status = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					
+					
+					//Alert Status Updation
+					Alert alert = alertDAO.get(inputvo.getAlertId());
+					alert.setAlertStatusId(2l);
+					alert.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alert.setUpdatedBy(inputvo.getUserId());
+					alert = alertDAO.save(alert);
+					
+					inputvo.setLevelValue(inputvo.getLevelValue() !=null ? inputvo.getLevelValue().longValue():null);
+					
+					
+					//Get Department Designation Officer Ids
+					Long desigOfficerId = null;
+					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(),
+							inputvo.getGovtOfficerId());
+					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
+						desigOfficerId = designationOfficerIds.get(0);
+					
+					//Officer Assigning
+					AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
+					alertAssignedOfficer.setAlertId(inputvo.getAlertId());
+					alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+					alertAssignedOfficer.setGovtOfficerId(inputvo.getGovtOfficerId() !=null ? (Long)inputvo.getGovtOfficerId():null);
+					alertAssignedOfficer.setInsertedBy(inputvo.getUserId());
+					alertAssignedOfficer.setUpdatedBy(inputvo.getUserId());
+					alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficer.setAlertStatusId(2l);
+					alertAssignedOfficer.setIsDeleted("N");
+					alertAssignedOfficer.setIsApproved("Y");
+					alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+					
+					//Officer Assigning Tracking
+					AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
+					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+					alertAssignedOfficerTracking.setAlertId(inputvo.getAlertId());
+					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+					alertAssignedOfficerTracking.setGovtOfficerId(inputvo.getGovtOfficerId());
+					alertAssignedOfficerTracking.setInsertedBy(inputvo.getUserId());
+					alertAssignedOfficerTracking.setUpdatedBy(inputvo.getUserId());
+					alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficerTracking.setAlertStatusId(2l);
+					alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
+					
+					alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+					
+					
+					return "success";
+				}
+			});
+		} catch (Exception e) {
+			LOG.error("Error occured assigningAlertToOfficer() method of AlertManagementSystemService",e);
+		}
+		return status;
+	}
+	
+	public List<IdNameVO> getDepartmentLevels(Long departmentId){
+		List<IdNameVO> resultList = new ArrayList<IdNameVO>();
+		try {						
+			List<Object[]> levelObj = govtDepartmentScopeLevelDAO.getDepartmentLevels(departmentId);
+			if(levelObj != null && levelObj.size()>0){
+				for (Object[] param : levelObj) {
+					IdNameVO VO = new IdNameVO();
+					   VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					   VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					   resultList.add(VO);
+				}				 
+			}			
+			
+		} catch (Exception e) {
+			LOG.error("Error occured getDepartmentLevels(Long departmentId) method of AlertManagementSystemService",e);
+		}
+		return resultList;
+	}
+	
+	public List<IdNameVO> getParentLevelsOfLevel(Long departmentId,Long levelId){
+		
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+		
+		try {
+			
+			Map<Long,IdNameVO> levelMap = new HashMap<Long, IdNameVO>();
+			
+			
+			List<Object[]> subLevelObj = govtDepartmentScopeLevelDAO.getParentLevelsOfLevel(departmentId,levelId);
+			
+			if(subLevelObj !=null && subLevelObj.size()>0){
+				Set<Long> subLevelIds = new HashSet<Long>();
+				for (Object[] param : subLevelObj) {					
+					if(param[0] !=null && !(param[0].equals(levelId))){	
+						
+						IdNameVO vo = new IdNameVO();						
+						vo.setId((Long)param[0]);
+						vo.setName(param[1] !=null ? param[1].toString():"");	
+						
+						//levelList.add(vo);
+						levelMap.put((Long)param[0], vo);
+						
+						subLevelIds.add((Long)param[0]);
+					}
+				}
+				
+				//0.levelId,1.workLocationId,2.LocationName
+				List<Object[]> objList = govtDepartmentWorkLocationDAO.getLevelWiseInfo(departmentId,subLevelIds);
+				
+				setLocationValuesToMap(objList,levelMap);
+				
+				if(levelMap !=null && levelMap.size()>0){
+					finalList.addAll(levelMap.values());
+				}
+				
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Error occured getParentLevelsOfLevel(Long departmentId,Long levelId) method of AlertManagementSystemService",e);
+		}
+		return finalList;
+	}
+	
+	public void setLocationValuesToMap(List<Object[]> objList,Map<Long,IdNameVO> levelMap){
+		try {
+			
+			if(objList !=null && objList.size()>0){
+				for (Object[] obj : objList) {					
+					IdNameVO mainVo = levelMap.get(obj[0] !=null ? (Long)obj[0]:0l);
+					if(mainVo == null){
+						mainVo = new IdNameVO();
+						
+						mainVo.setId((Long)obj[0]);
+						levelMap.put((Long)obj[0], mainVo);
+					}
+					
+					if(obj[1] !=null){
+						IdNameVO subVo = new IdNameVO();
+						
+						subVo.setId((Long)obj[1]);
+						subVo.setName(obj[2] !=null ? obj[2].toString():"");
+						
+						mainVo.getIdnameList().add(subVo);
+					}	
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Error occured setLocationValuesToMap(List<Object[]> objList,levelMaps) method of AlertManagementSystemService",e);
+		}
 	}
 }
