@@ -22,6 +22,7 @@ public class AlertSubTaskStatus extends BaseModel implements Serializable{
 	private Long alertSubTaskStatusId;
 	private String status;
 	private String statusOrder;
+	private String color;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -47,6 +48,13 @@ public class AlertSubTaskStatus extends BaseModel implements Serializable{
 	}
 	public void setStatusOrder(String statusOrder) {
 		this.statusOrder = statusOrder;
+	}
+	@Column(name = "color")
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 }
