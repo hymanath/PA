@@ -1,5 +1,80 @@
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
-	getDistrictOfficerAlertsCountView();
+var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
+onLoadCallsAMU();
+	function getAlertType(){
+		 var alertType = ''; 
+		$('.switch-btn-alertType li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  alertType = $(this).attr("attr_type");
+			 }
+		});
+		return alertType;
+	}
+$("#dateRangePickerAUM").daterangepicker({
+		opens: 'left',
+		startDate: currentFromDate,
+		endDate: currentToDate,
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
+	});
+	var dates= $("#dateRangePickerAUM").val();
+	var pickerDates = currentFromDate+' - '+currentToDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePickerAUM").val('All');
+	}
+	
+	$('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
+		currentFromDate = picker.startDate.format('DD/MM/YYYY');
+		currentToDate = picker.endDate.format('DD/MM/YYYY');
+		if(picker.chosenLabel == 'All')
+		{
+			$("#dateRangePickerAUM").val('All');
+		}
+		var alertType = getAlertType();
+		getDistrictOfficerAlertsCountView();
+		getDistrictLevelDeptWiseLocationLevelView(alertType);
+	});
+	
+	function onLoadCallsAMU(){
+		var alertType = getAlertType();
+		getDistrictOfficerAlertsCountView();
+		getDistrictLevelDeptWiseLocationLevelView(alertType);
+	}
+	
+	$(document).on("click",".switch-btn li",function(){
+		$(this).parent("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		var type= $(this).attr("attr_type");
+		if(type == 'filter')
+		{
+			var alertType = getAlertType();
+			getDistrictLevelDeptWiseFilterViewDetails(alertType);
+		}else if(type == "subTask"){
+			var alertType = getAlertType();
+			getDistrictLevelDeptWiseFilterViewDetails(alertType);
+		}else if(type == "status"){
+			var alertType = getAlertType();
+			getDistrictLevelDeptWiseStatusOverView(alertType);
+		}else if(type == "location"){
+			var alertType = getAlertType();
+			getDistrictLevelDeptWiseLocationLevelView(alertType);
+		}
+	});
+	
 	function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
 	{
 		'use strict';
@@ -167,7 +242,7 @@ function buildDistrictOfficerAlertsCountView(result){
 		str1+='<div class="row">';
 			str1+='<div class="col-sm-12 col-xs-12 col-md-12">';
 			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0){
-				str1+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list1[0].todayCount+'</span></p>';
+				str1+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
 			}else{
 				str1+='<p class="pad_5">TODAY <span class="pull-right badge">0</span></p>';
 			}
@@ -260,26 +335,26 @@ function buildDistrictOfficerAlertsCountView(result){
 			
 			highcharts(idST,type,xAxisST,yAxisST,legend,dataST,plotOptions,tooltip); 
 			
-			var str1='';
-		if(result !=null && result.list2 !=null && result.list2.length>0){
-		str1+='<div class="row">';
-			str1+='<div class="col-sm-12 col-xs-12 col-md-12">';
-			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0){
-				str1+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list1[0].todayCount+'</span></p>';
+			var str2='';
+		if(result !=null && result.list3 !=null && result.list3.length>0){
+		str2+='<div class="row">';
+			str2+='<div class="col-sm-12 col-xs-12 col-md-12">';
+			if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0){
+				str2+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
 			}else{
-				str1+='<p class="pad_5">TODAY <span class="pull-right badge">0</span></p>';
+				str2+='<p class="pad_5">TODAY <span class="pull-right badge">0</span></p>';
 			}
-			str1+='<hr class="m_0"/>';
-			if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0){
-				str1+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
+			str2+='<hr class="m_0"/>';
+			if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0){
+				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
 			}else{
-				str1+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
+				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
-				str1+='<div id="assignedSubTasksGraphView" style="height:250px"></div>';
-			str1+='</div>';
-		str1+='</div>';
+				str2+='<div id="assignedSubTasksGraphView" style="height:250px"></div>';
+			str2+='</div>';
+		str2+='</div>';
 	}
-	$("#assignedSubTasksDivID").html(str1);
+	$("#assignedSubTasksDivID").html(str2);
 	
 	var mainStatusArrAST=[];
 	var countAST = [];
@@ -358,11 +433,14 @@ function buildDistrictOfficerAlertsCountView(result){
 			
 			highcharts(idAST,type,xAxisAST,yAxisAST,legend,dataAST,plotOptions,tooltip); 
 }
-function getDistrictLevelDeptWiseFilterViewDetails(){
+
+function getDistrictLevelDeptWiseFilterViewDetails(alertType){
+	$("#departmentAlertCountDivId").html(spinner);
+	
 	var jObj = {
-		startDate: "01/01/2017",
-	    fromDate: "01/01/2018",
-		type:"alert"
+		startDate: currentFromDate,
+	    fromDate: currentToDate,
+		type:alertType
 		
 	}
 	$.ajax({
@@ -370,14 +448,66 @@ function getDistrictLevelDeptWiseFilterViewDetails(){
       url: 'getDistrictLevelDeptWiseFilterViewDetailsAction.action',
 	  data: {task :JSON.stringify(jObj)}
     }).done(function(result){
+			$("#departmentAlertCountDivId").html('');
+			buildDistrictLevelDeptWiseFilterViewDetails(result);
 	});
+
 }
-getDistrictLevelDeptWiseLocationLevelView();
-function getDistrictLevelDeptWiseLocationLevelView(){
+
+function buildDistrictLevelDeptWiseFilterViewDetails(result){
+	
+	if(result != null && result.length > 0){	
+		var str1='';
+		str1+='<table class="table detailedTableStyle" id="departmentAlertCountDT">';
+			str1+='<thead>';
+				str1+='<tr class="text-capital">';
+				str1+='<th>Department</th>';
+				str1+='<th>Total Alerts</th>';
+					if(result[0].subList2 !=null && result[0].subList2.length>0){
+						
+						for(var j in result[0].subList2){
+							str1+='<th>'+result[0].subList2[j].name+'</th>';
+							
+						}
+						
+					}
+				str1+='</tr>';
+			str1+='</thead>';
+			str1+='<tbody>';
+				for(var i in result){
+					str1+='<tr>';
+						str1+='<td>'+result[i].name+'</td>';
+						str1+='<td>'+result[i].categoryCount+'</td>';
+						if(result[i].subList2 !=null && result[i].subList2.length>0){
+							
+							for(var j in result[i].subList2){
+								str1+='<td >'+result[i].subList2[j].count+'</td>';
+								
+							}
+						}
+					str1+='</tr>';
+				}
+			str1+='</tbody>';
+		str1+='</table>';
+		$("#departmentAlertCountDivId").html(str1);
+		
+	}else{
+		$("#departmentAlertCountDivId").html("No Data Available");
+	}
+		$("#departmentAlertCountDT").dataTable({
+			"lengthMenu": [[10, 25, 50,100, -1], [10, 25, 50,100, "All"]]
+		});
+		
+		
+	}
+	
+	
+	
+function getDistrictLevelDeptWiseLocationLevelView(alertType){
 	var jObj = {
-		startDate: "01/01/2017",
-	    fromDate: "01/01/2018",
-		type:"alert",
+		startDate: currentFromDate,
+	    fromDate: currentToDate,
+		type:alertType,
 		deptId:0
 		
 	}
@@ -388,40 +518,18 @@ function getDistrictLevelDeptWiseLocationLevelView(){
     }).done(function(result){
 	});
 }
-getDistrictLevelDeptWiseStatusOverView();
-function getDistrictLevelDeptWiseStatusOverView(){
+
+function getDistrictLevelDeptWiseStatusOverView(alertType){
 	var jObj = {
-		startDate: "01/01/2017",
-	    fromDate: "01/01/2018",
-		type:"subTask",
+		startDate: currentFromDate,
+	    fromDate: currentToDate,
+		type:alertType,
 		deptId:0
 		
 	}
 	$.ajax({
       type:'GET',
       url: 'getDistrictLevelDeptWiseStatusOverViewAction.action',
-	  data: {task :JSON.stringify(jObj)}
-    }).done(function(result){
-	});
-}
-getGovtDepartmentDetails();
-function getGovtDepartmentDetails(){
-	var jObj = {
-	}
-	$.ajax({
-      type:'GET',
-      url: 'getGovtDepartmentDetailsAction.action',
-	  data: {task :JSON.stringify(jObj)}
-    }).done(function(result){
-	});
-}
-getGovtDeptScopeDetails();
-function getGovtDeptScopeDetails(){
-	var jObj = {
-	}
-	$.ajax({
-      type:'GET',
-      url: 'getGovtDeptScopeDetailsAction.action',
 	  data: {task :JSON.stringify(jObj)}
     }).done(function(result){
 	});

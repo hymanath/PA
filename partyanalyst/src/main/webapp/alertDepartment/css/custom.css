@@ -728,6 +728,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .detailedTableStyle  tbody tr td:last-child{
 	border-right:1px solid #ddd !important;
 }
+.detailedTableStyle thead{background-color:#EDEEF0;}
 .buttonCustomStyle {
 	border: 1px solid green;
 	color: green;
@@ -1216,4 +1217,12 @@ small.clear
 .body-icons .fa-2x
 {
 	color:#ccc
+}
+
+.pad_5{padding:5px;}
+.m_top30{margin-top:30px;}
+.headingStyleAUM{
+	
+    padding: 5px 15px !important;
+	
 }

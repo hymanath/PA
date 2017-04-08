@@ -57,39 +57,83 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12 col-xs-12 col-sm-12"> 
-					<div class="col-md-4 col-xs-12 col-sm-12">
-						<div class="panel panel-default">
-						  <div class="panel-heading headingColor">
-							<h4 class="panel-title text-capital fontColor">My Alerts</h4>
-						  </div>
-						  <div class="panel-body">
-							<div id="myAlertsDivID"></div>
-						  </div>
-						</div>
+					<div class="input-group dateRangePickerCls m_top5 pull-right" style="margin-right: 15px">
+						<input type="text" class="form-control" style="width:180px" id="dateRangePickerAUM">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
 					</div>
-					<div class="col-md-4 col-xs-12 col-sm-12">
-						<div class="panel panel-default">
-						  <div class="panel-heading headingColor">
-							<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
-						  </div>
-						  <div class="panel-body">
-							<div id="mySubTasksDivID"></div>
-						  </div>
+						<div class="row">
+							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">My Alerts</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="myAlertsDivID"></div>
+								  </div>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="mySubTasksDivID"></div>
+								  </div>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-12">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">Assigned Sub Tasks</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="assignedSubTasksDivID"></div>
+								  </div>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-md-4 col-xs-12 col-sm-12">
-						<div class="panel panel-default">
-						  <div class="panel-heading headingColor">
-							<h4 class="panel-title text-capital fontColor">Assigned Sub Tasks</h4>
-						  </div>
-						  <div class="panel-body">
-							<div id="assignedSubTasksDivID"></div>
-						  </div>
+						<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12"> 	
+							<div class="panel panel-default">
+								<div class="panel-heading headingColor ">
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-12">
+											<h4 class="panel-title text-capital fontColor">District Level - Department Wise</h4>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-12">
+											<ul class="switch-btn pull-right">
+												<li attr_type="status">status overview</li>
+												<li attr_type="location" class="active">location level</li>
+												<li attr_type="filter" >Filter View</li>
+											</ul>
+										</div>
+										<div class="col-md-2 col-xs-12 col-sm-12 ">
+											<ul class="switch-btn switch-btn-alertType pull-right">
+												<li  attr_type="alert" class="active">Alerts</li>
+												<li attr_type="subTask">Sub Tasks</li>
+												
+											</ul>
+										</div>
+										
+										
+									</div>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-12 col-xs-12 col-md-12">
+											<div id="departmentAlertCountDivId"></div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-					
-			</div>
+			</div>			
 		</div>
 	</section>
 
