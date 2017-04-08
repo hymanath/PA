@@ -608,7 +608,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		public ResultStatus updateAlertStatusComment(Long alertId,Long statusId,String comment,Long userId){
 			ResultStatus rs = new ResultStatus();
 			try {
-				
 				Alert alert = alertDAO.get(alertId);
 				if(alert != null){
 					alert.setAlertStatusId(statusId);
@@ -626,9 +625,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					adcn = alertDepartmentCommentNewDAO.save(adcn);
 				}
 				
-				
-				
 				AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
+				aaon.setAlertStatusId(statusId);
+				aaon.setUpdatedBy(userId);
+				aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				alertAssignedOfficerNewDAO.save(aaon);
 				
 				AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
 				aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
@@ -648,7 +649,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				aaotn.setIsApproved(aaon.getIsApproved());
 				alertAssignedOfficerTrackingNewDAO.save(aaotn);
-				
+				rs.setExceptionMsg("success");
 				
 			} catch (Exception e) {
 				rs.setExceptionMsg("failure");
