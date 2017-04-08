@@ -269,7 +269,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	}
     	
       @SuppressWarnings("unchecked")
-	public List<Object[]> getAlertAssignCountsForDeptWiseDetails(Date fromDate, Date toDate,int startIndex,int maxIndex){
+	public List<Object[]> getAlertAssignCountsForDeptWiseDetails(Date fromDate, Date toDate){
   		StringBuilder sb = new StringBuilder();  
   		
   	     sb.append("select ");
@@ -297,11 +297,91 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   	        query.setDate("fromDate", fromDate);
   	        query.setDate("toDate", toDate);
   	    }
-  	  if(maxIndex >0){
-			query.setFirstResult(startIndex);
-			query.setMaxResults(maxIndex);
-		}
   	  return query.list();
   	}
+	//Teja
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictLevelDeptWiseLocationLevelView(Date fromDate, Date toDate,Long deptId){
+	  		StringBuilder sb = new StringBuilder();  
+	  		
+	  	     sb.append("select ");
+	  	    
+	  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+	      		      " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " );
+	  	    
+	  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
+	  	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName," +
+	  	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.color, " );
+	  	     
+	  	     sb.append(" count(distinct model.alert.alertId) ");
+	  	     
+	  	     sb.append(" from AlertAssignedOfficerNew model ");
+	  	     
+	  	     sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' ");
+	  	     
+	  	   if(deptId != null && deptId.longValue() > 0){
+	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId ");
+	  	     }
 
+	  	    if(fromDate != null && toDate != null)
+	  	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+	  	  
+	    sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId, " +
+	    		" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " );
+	     	    
+	  	    Query query = getSession().createQuery(sb.toString());
+	  	    if(fromDate != null && toDate != null){
+	  	        query.setDate("fromDate", fromDate);
+	  	        query.setDate("toDate", toDate);
+	  	    }
+	  	    if(deptId != null && deptId.longValue() > 0){
+	  	    	query.setParameter("deptId", deptId);
+	  	    }
+	  	  return query.list();
+	  	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictLevelDeptWiseStatusOverView(Date fromDate, Date toDate,Long scopeId,Long deptId){
+	  		StringBuilder sb = new StringBuilder();  
+	  		
+	  	     sb.append("select ");
+	  	    
+	  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+	      		      " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " );
+	  	    
+	  	     sb.append(" model.alertStatus.alertStatusId," +
+	  	      		    " model.alertStatus.alertStatus," +
+	  	      		    " model.alertStatus.color, " );
+	  	     
+	  	     sb.append(" count(distinct model.alert.alertId) ");
+	  	     
+	  	     sb.append(" from AlertAssignedOfficerNew model ");
+	  	     
+	  	     sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' ");
+	  	     
+	  	     if(scopeId != null && scopeId.longValue() > 0){
+	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >=:scopeId ");
+	  	     }
+	  	     if(deptId != null && deptId.longValue() >0){
+	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId =:deptId " );
+	  	     }
+	  	    if(fromDate != null && toDate != null)
+	  	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+	  	  
+	  	      sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId,  " +
+	    		" model.alertStatus.alertStatusId " );
+	     	    
+	  	    Query query = getSession().createQuery(sb.toString());
+	  	    if(fromDate != null && toDate != null){
+	  	        query.setDate("fromDate", fromDate);
+	  	        query.setDate("toDate", toDate);
+	  	    }
+	  	    if(scopeId != null && scopeId.longValue() > 0){
+	  	    	 query.setParameter("scopeId",scopeId);
+	  	    }
+	  	  if(deptId != null && deptId.longValue() >0){
+	  		  query.setParameter("deptId",deptId);
+	  	  }
+	  	  return query.list();
+	}
+	
 }
