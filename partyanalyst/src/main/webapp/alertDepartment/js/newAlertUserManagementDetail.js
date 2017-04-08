@@ -107,7 +107,7 @@ function onLoadClicks()
 				});
 				$("#alertManagementPopupHeading").html('ALERT HISTORY')
 				$("#alertManagementPopup1 .modal-footer").hide();
-				alertHistory();
+				viewAlertHistory();
 			}else if(status == 'alertStatus')
 			{
 				$("#alertManagementPopup1").modal({
@@ -170,7 +170,7 @@ function popUpFilter(type)
 	{
 		str1+='<div class="row">';
 			str1+='<div class="col-sm-8">';
-				str1+='<h4 class="modal-title text-capital">total pending alerts - 500</h4>';
+				str1+='<h4 class="modal-title text-capital" id="modalHeadingTotal">total alerts</h4>';
 			str1+='</div>';
 			str1+='<div class="col-sm-4">';
 				str1+='<ul class="list-icons pull-right list-inline">';
@@ -229,55 +229,61 @@ function popUpFilter(type)
 		$("#filter").html(str);
 	}
 }
-function buildAlertDtlsBasedOnStatusClick(result)
+function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 {
 	var str='';
 	popUpFilter('heading');
+	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount)
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12" expand-main="false">';
 			str+='<div class="panel-group panel-white panel-left" id="accordion" role="tablist" aria-multiselectable="true">';
-			  str+='<div class="panel panel-default">';
-				str+='<div class="panel-heading" role="tab" id="headingOne">';
-					str+='<a role="button" data-toggle="collapse" class="collapseArrow" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
-						str+='<h4 class="panel-title">';
-							str+='Today Alerts';
-							str+='<small>- 25 Mar 2017</small>';
-							str+='<small><span class="pull-right">1 - 5 of About 5</span></small>';
-						str+='</h4>';
-					str+='</a>';
-				str+='</div>';
-				str+='<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">';
-					str+='<div class="panel-body pad_0">';
-						str+='<div class="row">';
-							str+='<div class="col-sm-12">';
-								str+='<ul class="alerts-list">';
-									for(var i in result)
-									{
-										str+='<li>';
-											str+='<div class="row">';
-												str+='<div class="col-sm-7">';
-													str+='<h4>';
-														str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].severtyColor+';margin-right:3px;"></i>';
-														str+='<span class="alert-title">'+result[i].title+'</span>';
-														str+='<span class="label label-default channel-name" data-toggle="tooltip" data-placement="top" title="'+result[i].source+'">'+result[i].source+'</span>';
-													str+='</h4>';
+			for(var i in result)
+			{
+				str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading" role="tab" id="heading'+result[i].id+'">';
+						str+='<a role="button" data-toggle="collapse" class="collapseArrow" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-expanded="true" aria-controls="collapse'+result[i].id+'">';
+							str+='<h4 class="panel-title">';
+								str+=''+result[i].name+'';
+								str+='<small>- '+result[i].subList[0].updatedDate+'</small>';
+								str+='<small><span class="pull-right">1 - 5 of About 5</span></small>';
+							str+='</h4>';
+						str+='</a>';
+					str+='</div>';
+					str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
+						str+='<div class="panel-body pad_0">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-12">';
+									str+='<ul class="alerts-list">';
+										for(var j in result[i].subList)
+										{
+											str+='<li>';
+												str+='<div class="row">';
+													str+='<div class="col-sm-7">';
+														str+='<h4>';
+															str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].subList[j].severtyColor+';margin-right:3px;"></i>';
+															str+='<span class="alert-title">'+result[i].subList[j].title+'</span>';
+															str+='<span class="label label-default channel-name" data-toggle="tooltip" data-placement="top" title="'+result[i].source+'">'+result[i].subList[j].source+'</span>';
+														str+='</h4>';
+													str+='</div>';
+													str+='<div class="col-sm-5">';
+														str+='<span class="arrow-icon pull-right" expand-icon="block1">';
+															str+='<i class="glyphicon glyphicon-menu-right"></i>';
+														str+='</span>';
+														str+='<span class="status-icon pull-right"></span>';
+														str+='<span class="location-name pull-right" data-toggle="tooltip" data-placement="top" title="'+result[i].subList[j].location+'">'+result[i].subList[j].location+'</span>';
+													str+='</div>';
 												str+='</div>';
-												str+='<div class="col-sm-5">';
-													str+='<span class="arrow-icon pull-right" expand-icon="block1">';
-														str+='<i class="glyphicon glyphicon-menu-right"></i>';
-													str+='</span>';
-													str+='<span class="status-icon pull-right"></span>';
-													str+='<span class="location-name pull-right" data-toggle="tooltip" data-placement="top" title="'+result[i].location+'">'+result[i].location+'</span>';
-												str+='</div>';
-											str+='</div>';
-										str+='</li>';
-									}
-								str+='</ul>';
+											str+='</li>';
+										}
+									str+='</ul>';
+								str+='</div>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-				str+='</div>';
-			  str+='</div>';
+				  str+='</div>';
+			}
+
+			  
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
@@ -350,9 +356,10 @@ function buildAlertDtlsBasedOnStatusClick(result)
 										str+='<li status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="status change">';
 											str+='<i class="glyphicon glyphicon-cog"></i>';
 											str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
-												str+='<li>high <input type="radio" name="alert-status-change-list" class="pull-right" /></li>';
-												str+='<li>medium <input type="radio" name="alert-status-change-list" class="pull-right" /></li>';
-												str+='<li>low <input type="radio" name="alert-status-change-list" class="pull-right" /></li>';
+												str+='<li>high <input type="radio" name="alert-status-change-list" value="1" class="pull-right" /></li>';
+												str+='<li>medium <input type="radio" name="alert-status-change-list" value="2" class="pull-right" /></li>';
+												str+='<li>low <input type="radio" name="alert-status-change-list" value="3" class="pull-right" /></li>';
+												str+='<li><button class="btn btn-primary btn-sm text-capital" id="priorityChangeSaveId">save</button></li>';
 											str+='</ul>';
 										str+='</li>';
 										str+='<li status-icon-block="task">';
@@ -377,7 +384,7 @@ function buildAlertDtlsBasedOnStatusClick(result)
 						str+='</div>';
 						str+='<div class="panel-body">';
 							str+='<p><i class="fa fa-fire"></i> Impact Level : State';
-								str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority: HIGH</span>';
+								str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
 							str+='</p>';
 							str+='<div status-body="task" class="m_top20"></div>';
 							str+='<div status-body="subTask" class="m_top20"></div>';
@@ -390,19 +397,19 @@ function buildAlertDtlsBasedOnStatusClick(result)
 								str+='<div class="col-sm-11">';
 									str+='<div class="panel panel-default panel-border-white">';
 										str+='<div class="panel-heading">';
-											str+='<label class="radio-inline">';
+											str+='<label class="radio-inline" name="language">';
 												str+='<input type="radio"/>Telugu';
 											str+='</label>';
-											str+='<label class="radio-inline">';
+											str+='<label class="radio-inline" name="language">';
 												str+='<input type="radio"/>English';
 											str+='</label>';
 										str+='</div>';
 										str+='<div class="panel-body">';
 											str+='<div class="comment-area">Comment Here</div>';
-											str+='<textarea class="form-control comment-area" placeholder="Comment here..."></textarea>';
+											str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
 										str+='</div>';
 										str+='<div class="panel-footer text-right">';
-											str+='<button class="btn btn-primary comment-btn">Comment</button>';
+											str+='<button class="btn btn-primary comment-btn" id="commentChangeId">Comment</button>';
 										str+='</div>';
 									str+='</div>';
 								str+='</div>';
@@ -415,9 +422,10 @@ function buildAlertDtlsBasedOnStatusClick(result)
 	str+='</div>';
 	$("#alertManagementPopupBody").html(str);
 	$('[data-toggle="tooltip"]').tooltip()
-	$(".modal-date").daterangepicker({
-		singleDatePicker : true
-	});	
+	dateRangePicker();
+}
+function dateRangePicker()
+{
 	$(function() {
 		var start = moment();
 		
@@ -433,32 +441,73 @@ function buildAlertDtlsBasedOnStatusClick(result)
 		cb(start);
 		
 	});
+	$('.modal-date').on('apply.daterangepicker', function(ev, picker) {
+		selectedDate = picker.startDate.format('DD/MM/YYYY');
+		var jsObj ={
+			alertId : 11346,
+			date:selectedDate
+		}
+		$.ajax({
+			type:'GET',
+			url: 'updateAlertDueDateAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.exceptionMsg == 'success')
+			{
+				alert("date updated successfully")
+			}else{
+				alert("try again")
+			}
+		});
+	});
 }
-function alertHistory()
+function alertHistory(result)
 {
 	var str='';
-	str+='<ul class="alert-history">';
-		str+='<li>';
-			str+='<span class="alert-history-time">11:00 AM</span>';
-			str+='<span class="alert-history-date">11/Mar/2017</span>';
-			str+='<p class="alert-history-status m_top20 text-capital"><span class="status-icon arrow-icon"></span>status: notified</p>';
-			str+='<p class="alert-history-body m_top5 text-capital">asudgi ofsgaspfasgpasi fgs</p>';
-			str+='<p class="alert-history-user m_top5 text-capital">cccadmin</p>';
-		str+='</li>';
-		str+='<li>';
-			str+='<span class="alert-history-time">11:00 AM</span>';
-			str+='<span class="alert-history-date">11/Mar/2017</span>';
-			str+='<p class="alert-history-status m_top20 text-capital"><span class="status-icon arrow-icon"></span>status: notified</p>';
-			str+='<p class="alert-history-body m_top5 text-capital">asudgi ofsgaspfasgpasi fgs</p>';
-			str+='<p class="alert-history-user m_top5 text-capital">cccadmin</p>';
-		str+='</li>';
-		str+='<li>';
-			str+='<span class="alert-history-time">11:00 AM</span>';
-			str+='<p class="alert-history-status m_top20 text-capital"><span class="status-icon arrow-icon"></span>status: notified</p>';
-			str+='<p class="alert-history-body m_top5 text-capital">asudgi ofsgaspfasgpasi fgs</p>';
-			str+='<p class="alert-history-user m_top5 text-capital">cccadmin</p>';
-		str+='</li>';
-	str+='</ul>';
+	for(var i in result)
+	{
+		str+='<ul class="alert-history">';
+			str+='<span class="alert-history-date">'+result[i].date+'</span>';
+			if(result[i].timeList != null && result[i].timeList.length > 0)
+			{
+				for(var j in result[i].timeList)
+				{
+					str+='<li>';
+						str+='<span class="alert-history-time">'+result[i].timeList[j].date+'</span>';
+						if(result[i].timeList[j].statusList != null && result[i].timeList[j].statusList.length > 0)
+						{
+							for(var k in result[i].timeList[j].statusList)
+							{
+								if(result[i].timeList[j].statusList[k].strList != null && result[i].timeList[j].statusList[k].strList.length > 0)
+								{
+									for(var l in result[i].timeList[j].statusList[k].strList)
+									{
+										str+='<p class="alert-history-status m_top20 text-capital"><span class="status-icon arrow-icon"></span>status: '+result[i].timeList[j].statusList[k].strList+'</p>';
+									}
+								}
+							}
+						}
+						if(result[i].timeList[j].commentList != null && result[i].timeList[j].commentList.length > 0)
+						{
+							for(var k in result[i].timeList[j].commentList)
+							{
+								str+='<p class="alert-history-body m_top5 text-capital">'+result[i].timeList[j].commentList[k].strList+'</p>';
+							}
+						}
+						if(result[i].timeList[j].statusList != null && result[i].timeList[j].statusList.length > 0)
+						{
+							for(var k in result[i].timeList[j].statusList)
+							{
+								str+='<p class="alert-history-user m_top5 text-capital">'+result[i].timeList[j].statusList[k].designation+'</p>';
+								str+='<p class="alert-history-user m_top5 text-capital">'+result[i].timeList[j].statusList[k].userName+'</p>';
+							}
+						}
+					str+='</li>';
+				}
+			}
+		str+='</ul>';
+	}
+	
 	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertManagementPopupBody1").html(str);
 }
@@ -486,34 +535,22 @@ function alertStatus()
 	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertManagementPopupBody1").html(str);
 	str1+='';
-	str1+='<div class="text-left">';
+	str1+='<div class="text-left" id="updateStatusChangeBody">';
 		str1+='<label class="checkbox-inline">';
 			str1+='<input type="checkbox" class="alert-status-change"/> I Want to change alert Status';
 		str1+='</label>';
 		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body" style="display:none">';
 			str1+='<div class="panel-heading">';
 				str1+='<label class="checkbox-inline">';
-					str1+='<input type="checkbox"/> InProgress';
-				str1+='</label>';
-				str1+='<label class="checkbox-inline">';
-					str1+='<input type="checkbox"/> InProgress';
-				str1+='</label>';
-				str1+='<label class="checkbox-inline">';
-					str1+='<input type="checkbox"/> InProgress';
-				str1+='</label>';
-				str1+='<label class="checkbox-inline">';
-					str1+='<input type="checkbox"/> InProgress';
-				str1+='</label>';
-				str1+='<label class="checkbox-inline">';
-					str1+='<input type="checkbox"/> InProgress';
+					str1+='<input type="radio" value="4" name="statusChange"/> InProgress';
 				str1+='</label>';
 			str1+='</div>';
 			str1+='<div class="panel-body pad_0">';
-				str1+='<textarea class="form-control" placeholder="Comment.."></textarea>';
+				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
 			str1+='</div>';
 		str1+='</div>';
 	str1+='</div>';
-	str1+='<button class="btn btn-primary btn-sm text-capital">update</button>';
+	str1+='<button class="btn btn-primary btn-sm text-capital" id="updateStatusChange">update</button>';
 	$("#alertManagementPopup1 .modal-footer").show();
 	$("#alertManagementPopup1 .modal-footer").html(str1);
 	

@@ -16576,6 +16576,10 @@
    			<param name="root">alertCoreDashBoardVOs</param>
    		</result>
 	</action>
-	                 
+	<action name="updateAlertStatusCommentAction" class="alertManagementSystemAction" method="updateAlertStatusComment">
+		<result type="json" name="success">
+   			<param name="root">resultStatus</param>
+   		</result>
+	</action> 	  
  </package>
 </struts>
