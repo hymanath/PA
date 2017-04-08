@@ -485,4 +485,22 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;
 	}
+	public String getGovtDepartmentDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			alertVOs = alertManagementSystemService.getGovtDepartmentDetails();
+		} catch (Exception e) {
+			LOG.error("Exception occured in getGovtDepartmentDetails() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getGovtDeptScopeDetails(){
+		try {
+			jObj = new JSONObject(getTask());
+			alertVOs = alertManagementSystemService.getGovtDeptScopeDetails();
+		} catch (Exception e) {
+			LOG.error("Exception occured in getGovtDeptScopeDetails() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }
