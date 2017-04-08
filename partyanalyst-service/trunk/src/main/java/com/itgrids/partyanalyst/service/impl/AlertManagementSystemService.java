@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeLevelDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -41,7 +43,7 @@ import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
-public class AlertManagementSystemService implements IAlertManagementSystemService{
+public class AlertManagementSystemService extends AlertService implements IAlertManagementSystemService{
 
 	private final static Logger LOG =  Logger.getLogger(AlertManagementSystemService.class);
 	private CommonMethodsUtilService commonMethodsUtilService;
@@ -59,6 +61,7 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 	private TransactionTemplate transactionTemplate = null;
 	private IGovtDepartmentScopeLevelDAO govtDepartmentScopeLevelDAO;
 	private IGovtDepartmentWorkLocationDAO govtDepartmentWorkLocationDAO;
+	private IAlertSubTaskStatusDAO alertSubTaskStatusDAO;
 	private IGovtDepartmentScopeDAO govtDepartmentScopeDAO;
 	
 	
@@ -886,6 +889,113 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		} catch (Exception e) {
 			LOG.error("Error occured setLocationValuesToMap() method of AlertManagementSystemService",e);
 		}
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId)
+	 */
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId){
+		LOG.info("Entered in getTotalAlertByStatus() method of AlertManagementSystemService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = alertDAO.getTotalAlertByStatus(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId);
+			setAlertDtls(alertCoreDashBoardVOs, alertList); 
+			//set Subtask into alert logic 
+			List<Long> alertIds = new ArrayList<Long>();
+			if(alertList != null && alertList.size() > 0){
+				for(Object[] param : alertList){
+					alertIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
+			//get subtask count.
+			List<Object[]> subtaskCountList = null;
+			if(alertIds != null && alertIds.size() > 0){
+				subtaskCountList = govtAlertSubTaskDAO.getSubTaskCount(alertIds);
+			}
+			//create a map from alertId and subtask count.
+			Map<Long,Long> alertIdAndSubTaskCountMap = new HashMap<Long,Long>();
+			if(subtaskCountList != null && subtaskCountList.size() > 0){
+				for(Object[] param : subtaskCountList){
+					alertIdAndSubTaskCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			if(alertCoreDashBoardVOs != null && alertCoreDashBoardVOs.size() > 0){
+				for(AlertCoreDashBoardVO alertCoreDashBoardVO : alertCoreDashBoardVOs){
+					if(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()) != null){
+						alertCoreDashBoardVO.setSubTaskCount(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()));
+					}
+				}
+			}
+			return alertCoreDashBoardVOs;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertByStatus() method of AlertManagementSystemService{}");
+		}
+		return null;
+	}
+	/*
+	 * Swadhin(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId)
+	 */
+	public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId){
+		LOG.info("Entered in getTotalAlertByOtherStatus() method of AlertManagementSystemService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Long> levelValuesList = new ArrayList<Long>();    
+			Long levelId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValuesList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+			
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			List<Long> alertIdSet = alertAssignedOfficerNewDAO.getTotalAlertByOtherStatus(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId,levelId,levelValuesList);
+			if(alertIdSet != null && alertIdSet.size() > 0){
+				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdSet));
+				setAlertDtls(alertCoreDashBoardVOs, list); 
+			}
+			//set Subtask into alert logic 
+			//get subtask count.
+			List<Object[]> subtaskCountList = null;
+			if(alertIdSet != null && alertIdSet.size() > 0){
+				subtaskCountList = govtAlertSubTaskDAO.getSubTaskCount(alertIdSet);
+			}
+			//create a map from alertId and subtask count.
+			Map<Long,Long> alertIdAndSubTaskCountMap = new HashMap<Long,Long>();
+			if(subtaskCountList != null && subtaskCountList.size() > 0){
+				for(Object[] param : subtaskCountList){
+					alertIdAndSubTaskCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			if(alertCoreDashBoardVOs != null && alertCoreDashBoardVOs.size() > 0){
+				for(AlertCoreDashBoardVO alertCoreDashBoardVO : alertCoreDashBoardVOs){
+					if(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()) != null){
+						alertCoreDashBoardVO.setSubTaskCount(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()));
+					}
+				}
+			}
+			return alertCoreDashBoardVOs;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertByOtherStatus() method of AlertManagementSystemService{}");
+		}
+		return null;  
 	}
 	/*
 	 * Teja(non-Javadoc)
