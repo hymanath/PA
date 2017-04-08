@@ -16515,48 +16515,57 @@
 			<result type="json" name="success">
 	   			<param name="root">alertVOs</param>
 	   		</result>
-		 </action> 
-		  <action name="getDistrictLevelDeptWiseStatusOverViewAction" class="alertManagementSystemAction" method="getDistrictLevelDeptWiseStatusOverView">
-			<result type="json" name="success">
-	   			<param name="root">alertVOs</param>
-	   		</result>
 		 </action>
-		 <action name="getTotalAlertBylocationLvlAction" class="alertManagementSystemAction" method="getTotalAlertBylocationLvl">
-	  	  	<result type="json" name="success">		   
-			    	<param name="root">alertCoreDashBoardVOs</param>
-		  	</result>	
-  		</action>
-  		<action name="getTotalAlertByStatusThenDeptAction" class="alertManagementSystemAction" method="getTotalAlertByStatusThenDept">
-			<result type="json" name="success">
-	   			<param name="root">districtOfficeViewAlertVO</param>
-	   		</result>
-		 </action>
-		  <action name="getTotalAlertBylocationLvlThenDeptAction" class="alertManagementSystemAction" method="getTotalAlertBylocationLvlThenDept">
-	  	  	<result type="json" name="success">		   
-			    	<param name="root">alertCoreDashBoardVOs</param>
-		  	</result>	
-  		</action>
-		 <action name="getDistrictLevelDeptWiseLocationLevelViewAction" class="alertManagementSystemAction" method="getDistrictLevelDeptWiseLocationLevelView">
-			<result type="json" name="success">
-	   			<param name="root">alertVOs</param>
-	   		</result>
-		 </action>
-		  <action name="getGovtDepartmentDetailsAction" class="alertManagementSystemAction" method="getGovtDepartmentDetails">
-			<result type="json" name="success">
-	   			<param name="root">alertVOs</param>
-	   		</result>
-		 </action>
-		 	  <action name="getGovtDeptScopeDetailsAction" class="alertManagementSystemAction" method="getGovtDeptScopeDetails">
-			<result type="json" name="success">
-	   			<param name="root">alertVOs</param>
-	   		</result>
-		 </action>
-		 <action name="getSubOrdinateLevelAction" class="alertManagementSystemAction" method="getSubOrdinateLevels">
+	<action name="getDistrictLevelDeptWiseStatusOverViewAction" class="alertManagementSystemAction" method="getDistrictLevelDeptWiseStatusOverView">
+		<result type="json" name="success">
+			<param name="root">alertVOs</param>
+		</result>
+	</action>
+	<action name="getTotalAlertBylocationLvlAction" class="alertManagementSystemAction" method="getTotalAlertBylocationLvl">
+	  	<result type="json" name="success">		   
+		   	<param name="root">alertCoreDashBoardVOs</param>
+		</result>	
+  	</action>
+  	<action name="getTotalAlertByStatusThenDeptAction" class="alertManagementSystemAction" method="getTotalAlertByStatusThenDept">
+		<result type="json" name="success">
+	   		<param name="root">districtOfficeViewAlertVO</param>
+	   	</result>
+	</action>
+	<action name="getTotalAlertBylocationLvlThenDeptAction" class="alertManagementSystemAction" method="getTotalAlertBylocationLvlThenDept">
+	  	<result type="json" name="success">		   
+	    	<param name="root">alertCoreDashBoardVOs</param>
+	  	</result>	
+  	</action>
+	<action name="getDistrictLevelDeptWiseLocationLevelViewAction" class="alertManagementSystemAction" method="getDistrictLevelDeptWiseLocationLevelView">
+		<result type="json" name="success">
+			<param name="root">alertVOs</param>
+		</result>
+	</action>
+	<action name="getGovtDepartmentDetailsAction" class="alertManagementSystemAction" method="getGovtDepartmentDetails">
+		<result type="json" name="success">
+	   		<param name="root">alertVOs</param>
+	   	</result>
+	</action>
+	<action name="getGovtDeptScopeDetailsAction" class="alertManagementSystemAction" method="getGovtDeptScopeDetails">
+		<result type="json" name="success">
+	   		<param name="root">alertVOs</param>
+	   	</result>
+	</action>
+	<action name="getSubOrdinateLevelAction" class="alertManagementSystemAction" method="getSubOrdinateLevels">
 		<result type="json" name="success">
    			<param name="root">deptListNew</param>
    		</result>
-	    </action>
-	    
-	                 
+	</action>	 
+	<action name="updateAlertDueDateAction" class="alertManagementSystemAction" method="updateAlertDueDate">
+		<result type="json" name="success">
+   			<param name="root">resultStatus</param>
+   		</result>
+	</action>	
+	<action name="viewAlertHistoryAction" class="alertManagementSystemAction" method="viewAlertHistory">
+		<result type="json" name="success">
+   			<param name="root">alertTrackingVOList</param>
+   		</result>
+	</action>
+	 	  
  </package>
 </struts>

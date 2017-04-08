@@ -1,17 +1,23 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -47,9 +53,22 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	private AlertVO alertVO;
 	private List<DistrictOfficeViewAlertVO> districtOfficeViewAlertVOList;
+	private Long alertId;
+	private List<AlertTrackingVO> alertTrackingVOList;
 	
 	
-	
+	public List<AlertTrackingVO> getAlertTrackingVOList() {
+		return alertTrackingVOList;
+	}
+	public void setAlertTrackingVOList(List<AlertTrackingVO> alertTrackingVOList) {
+		this.alertTrackingVOList = alertTrackingVOList;
+	}
+	public Long getAlertId() {
+		return alertId;
+	}
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
 	public List<DistrictOfficeViewAlertVO> getDistrictOfficeViewAlertVOList() {
 		return districtOfficeViewAlertVOList;
 	}
@@ -718,5 +737,98 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;
 	}
-		
+	
+	public String updateAlertDueDate(){
+		try {
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		   	
+		   	if(regVo == null)
+		   		return null;
+		   	
+		   	jObj = new JSONObject(getTask());
+		   	
+			resultStatus = alertManagementSystemService.updateAlertDueDate(jObj.getLong("alertId"),jObj.getString("date"),regVo.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateAlertDueDate() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String updateAlertStatusComment(){
+		try {
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		   	
+		   	if(regVo == null)
+		   		return null;
+		   	
+		   	jObj = new JSONObject(getTask());
+		   	
+		   	resultStatus = alertManagementSystemService.updateAlertStatusComment(jObj.getLong("alertId"),jObj.getLong("statusId"),jObj.getString("comment"),regVo.getRegistrationID());
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateAlertStatusComment() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	} 
+	
+	public String uploadDocumentsForAlert(){
+		try{
+			
+			Long userId = 0l;
+			
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				userId = regVo.getRegistrationID();
+			}
+			
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+		       Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+		       String fileUrl = "" ;
+		       List<String> filePaths = null;
+		   		while(fileParams.hasMoreElements())
+		   		{
+		   			String key = fileParams.nextElement();
+		   			
+				   			File[] files = multiPartRequestWrapper.getFiles(key);
+				   			filePaths = new ArrayList<String>();
+				   			if(files != null && files.length > 0)
+				   			for(File f : files)
+				   			{
+				   				String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+				   	            String ext = "";
+				   	            if(extension.length > 1){
+				   	            	ext = extension[extension.length-1];
+				   	            	mapfiles.put(f,ext);
+				   	            }
+				   	        
+				   			}	
+		   		}
+		     
+		   		resultStatus = alertManagementSystemService.uploadDocumentsForAlert(mapfiles,alertId ,userId);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in reportUploadForm() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;	
+	
+	}
+	
+	public String viewAlertHistory(){
+		try {
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo == null)
+				return null;
+			
+			jObj = new JSONObject(getTask());
+			alertTrackingVOList = alertManagementSystemService.viewAlertHistory(jObj.getLong("alertId"),regVo.getRegistrationID());
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in viewAlertHistory() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;	
+	}
 }
