@@ -74,7 +74,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	public void setGovtDepartmentDAO(IGovtDepartmentDAO govtDepartmentDAO) {
 		this.govtDepartmentDAO = govtDepartmentDAO;
 	}
-
 	public IGovtDepartmentScopeDAO getGovtDepartmentScopeDAO() {
 		return govtDepartmentScopeDAO;
 	}
@@ -1228,6 +1227,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 		}
 	}
+	
 	public List<AlertVO> getGovtDepartmentDetails(){
 		 List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
@@ -1262,4 +1262,27 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}		
 		return finalVoList;
 	}
+	
+	public  List<IdAndNameVO> getSubOrdinateLevels(Long designationId){
+		List<IdAndNameVO> finalVoList = new ArrayList<IdAndNameVO>(0);
+		try {
+			//0-govtDepartmentScopeId,1-levelName,2-color
+			List<Object[]> scopeList = govtDepartmentDesignationOfficerNewDAO.getSubOrdinateLevels(designationId);
+			
+			if(scopeList != null && scopeList.size() > 0){
+				for (Object[] objects : scopeList) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					finalVoList.add(vo);
+				}
+		}
+	
+	}catch (Exception e) {
+		LOG.error(" Exception Occured getSubOrdinateLevels() method, Exception - ",e);
+	}
+	return finalVoList;
+		
+	}
+
 }

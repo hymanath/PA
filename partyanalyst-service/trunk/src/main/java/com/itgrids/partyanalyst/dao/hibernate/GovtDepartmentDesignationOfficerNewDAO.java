@@ -23,7 +23,7 @@ public class GovtDepartmentDesignationOfficerNewDAO extends GenericDaoHibernate<
 	    	  		" model.isDeleted = 'N' ");
 	    	  
 	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  sb.append(" model.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+	    		  sb.append(" and model.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
 	    	  }
 	    	  Query query = getSession().createQuery(sb.toString());
 	    	  
@@ -33,4 +33,24 @@ public class GovtDepartmentDesignationOfficerNewDAO extends GenericDaoHibernate<
 	    	  
 	    	  return query.list();
 	      }
+	public List<Object[]> getSubOrdinateLevels(Long govtDepartmentDesignationId){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("select model.govtDepartmentScope.govtDepartmentScopeId," +
+				"model.govtDepartmentScopeId.levelName,model.govtDepartmentScopeId.color " +
+				" from GovtDepartmentDesignationOfficerNew model where " +
+				" model.isDeleted = 'N'");
+		if(govtDepartmentDesignationId != null && govtDepartmentDesignationId.longValue() >0l){
+  		  sb.append(" and  model.govtDepartmentDesignationId = :govtDepartmentDesignationId " );
+  	  }
+		 Query query = getSession().createQuery(sb.toString());
+   	  
+   	  if(govtDepartmentDesignationId != null && govtDepartmentDesignationId.longValue() >0l){
+   		  query.setParameter("govtDepartmentDesignationId", govtDepartmentDesignationId);  
+   	   }
+		
+
+	 return query.list();
+    }
 }
