@@ -16526,5 +16526,16 @@
 	   			<param name="root">alertVOs</param>
 	   		</result>
 		 </action>
+		  <action name="getGovtDepartmentDetailsAction" class="alertManagementSystemAction" method="getGovtDepartmentDetails">
+			<result type="json" name="success">
+	   			<param name="root">alertVOs</param>
+	   		</result>
+		 </action>
+		 	  <action name="getGovtDeptScopeDetailsAction" class="alertManagementSystemAction" method="getGovtDeptScopeDetails">
+			<result type="json" name="success">
+	   			<param name="root">alertVOs</param>
+	   		</result>
+		 </action>
+		 
  </package>
 </struts>
