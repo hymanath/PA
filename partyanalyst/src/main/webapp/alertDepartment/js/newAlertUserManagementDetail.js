@@ -37,7 +37,7 @@ function onLoadClicks()
 	$(document).on("click",function(e){
 		e.stopPropagation()
 		$("div.comment-area").show();
-		$(".panel-border-white .panel-heading,.panel-border-white .panel-footer,.panel-border-white textarea,.assign-user-body,.alert-status-change-list").hide();
+		$(".panel-border-white .panel-heading,.panel-border-white .panel-footer,.panel-border-white textarea,.assign-user-body,.alert-status-change-list,.assign-subtask").hide();
 		$(".panel-border-white textarea").val('');
 	});
 	$(document).on("click","[basic-switch] li",function(){
@@ -48,6 +48,9 @@ function onLoadClicks()
 		var selectionType = $(this).attr("filer-selection");
 		$(this).closest("li").removeClass("active");
 		$(this).remove();
+	});
+	$(document).on("click",".assign-subtask",function(e){
+		e.stopPropagation();
 	});
 	$(document).on("click","[filters-list] li",function(e){
 		e.stopPropagation();
@@ -72,6 +75,10 @@ function onLoadClicks()
 			{
 			}
 		}
+	});
+	$(document).on("click",".assign-subtask-btn",function(e){
+		e.stopPropagation();
+		$(this).closest("li").find(".assign-subtask").show();
 	});
 	$(document).on("click","[filer-selection-clear]",function(e){
 		e.stopPropagation();
@@ -114,6 +121,9 @@ function onLoadClicks()
 			{
 				$(this).find('ul').toggle();
 			}else if(status == 'task')
+			{
+				statusBody(status);
+			}else if(status == 'subTask')
 			{
 				statusBody(status);
 			}
@@ -219,7 +229,7 @@ function popUpFilter(type)
 		$("#filter").html(str);
 	}
 }
-function popUp()
+function buildAlertDtlsBasedOnStatusClick(result)
 {
 	var str='';
 	popUpFilter('heading');
@@ -237,28 +247,31 @@ function popUp()
 					str+='</a>';
 				str+='</div>';
 				str+='<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">';
-					str+='<div class="panel-body pad_5">';
+					str+='<div class="panel-body pad_0">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-12">';
 								str+='<ul class="alerts-list">';
-									str+='<li>';
-										str+='<div class="row">';
-											str+='<div class="col-sm-9">';
-												str+='<h4>';
-													str+='<i class="glyphicon glyphicon-cog text-danger"></i>';
-													str+='heading';
-													str+='<span class="label label-default channel-name">10 TV</span>';
-												str+='</h4>';
+									for(var i in result)
+									{
+										str+='<li>';
+											str+='<div class="row">';
+												str+='<div class="col-sm-7">';
+													str+='<h4>';
+														str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].severtyColor+';margin-right:3px;"></i>';
+														str+='<span class="alert-title">'+result[i].title+'</span>';
+														str+='<span class="label label-default channel-name" data-toggle="tooltip" data-placement="top" title="'+result[i].source+'">'+result[i].source+'</span>';
+													str+='</h4>';
+												str+='</div>';
+												str+='<div class="col-sm-5">';
+													str+='<span class="arrow-icon pull-right" expand-icon="block1">';
+														str+='<i class="glyphicon glyphicon-menu-right"></i>';
+													str+='</span>';
+													str+='<span class="status-icon pull-right"></span>';
+													str+='<span class="location-name pull-right" data-toggle="tooltip" data-placement="top" title="'+result[i].location+'">'+result[i].location+'</span>';
+												str+='</div>';
 											str+='</div>';
-											str+='<div class="col-sm-3">';
-												str+='<span class="arrow-icon pull-right" expand-icon="block1">';
-													str+='<i class="glyphicon glyphicon-menu-right"></i>';
-												str+='</span>';
-												str+='<span class="status-icon pull-right"></span>';
-												str+='<span class="location-name pull-right" data-toggle="tooltip" data-placement="top" title="yerragondapalem">yerragondapalem</span>';
-											str+='</div>';
-										str+='</div>';
-									str+='</li>';
+										str+='</li>';
+									}
 								str+='</ul>';
 							str+='</div>';
 						str+='</div>';
@@ -328,13 +341,13 @@ function popUp()
 								str+='</div>';
 								str+='<div class="col-sm-8">';
 									str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
-										str+='<li status-icon-block="alertStatus">';
+										str+='<li status-icon-block="alertStatus" data-toggle="tooltip" data-placement="top" title="alert status">';
 											str+='<span class="status-icon arrow-icon"></span>Pending';
 										str+='</li>';
-										str+='<li class="list-icons-calendar">';
+										str+='<li class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date">';
 											str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">DUe date</span>';
 										str+='</li>';
-										str+='<li status-icon-block="alertStatusChange">';
+										str+='<li status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="status change">';
 											str+='<i class="glyphicon glyphicon-cog"></i>';
 											str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
 												str+='<li>high <input type="radio" name="alert-status-change-list" class="pull-right" /></li>';
@@ -343,16 +356,20 @@ function popUp()
 											str+='</ul>';
 										str+='</li>';
 										str+='<li status-icon-block="task">';
+											str+='<i class="fa fa-level-down" data-toggle="tooltip" data-placement="top" title="Task"></i>';
+										str+='</li>';
+										str+='<li status-icon-block="subTask" class="status-icon-subtask" data-toggle="tooltip" data-placement="top" title="sub task">';
+											str+='<i class="fa fa-mail-forward"></i>';
 											str+='<i class="fa fa-level-down"></i>';
 										str+='</li>';
 										str+='<li status-icon-block="alertHistory">';
-											str+='<i class="fa fa-road"></i>';
+											str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
 										str+='</li>';
 										str+='<li>';
-											str+='<i class="glyphicon glyphicon-paperclip"></i>';
+											str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
 										str+='</li>';
 										str+='<li>';
-											str+='<i class="fa fa-comment"></i>';
+											str+='<i class="fa fa-comment" data-toggle="tooltip" data-placement="top" title="Comments"></i>';
 										str+='</li>';
 									str+='</ul>';
 								str+='</div>';
@@ -511,7 +528,7 @@ function statusBody(name)
 		str+='</div>';
 		str+='<div class="col-sm-11">';
 			str+='<h4 class="panel-title text-capital"><b>involved members in this alert</b></h4>';
-			str+='<ul class="list-inline involved-members-list">';
+			str+='<ul class="list-inline involved-members-list m_top20">';
 				str+='<li><img src=""/></li>';
 				str+='<li><img src=""/></li>';
 				str+='<li><img src=""/></li>';
@@ -522,9 +539,72 @@ function statusBody(name)
 		str+='</div>';
 	}else if(name == 'subTask')
 	{
-		str+='<ul>';
-			str+='<li>';
-				str+='under construction :P';
+		str+='<h4 class="text-capital text-muted panel-title"><i class="fa fa-level-down"></i>&nbsp;&nbsp; assign subtask</h4>';
+		str+='<ul class="assign-subtask-list">';
+			str+='<li class="assigned">';
+				str+='<i class="glyphicon glyphicon-trash remove-task"></i>';
+				str+='<div class="row">';
+					str+='<div class="col-sm-1">';
+						str+='<i class="glyphicon glyphicon-ok"></i>';
+					str+='</div>';
+					str+='<div class="col-sm-9">';
+						str+='<p>sgibdda sgf</p>';
+					str+='</div>';
+					str+='<div class="col-sm-2">';
+						str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
+						str+='<span class="icon-name icon-primary"></span>';
+						str+='<span class="label label-default">...</span>';
+					str+='</div>';
+				str+='</div>';
+			str+='</li>';
+			str+='<li class="new">';
+				str+='<div class="row">';
+					str+='<div class="col-sm-1">';
+						str+='<i class="glyphicon glyphicon-plus"></i>';
+					str+='</div>';
+					str+='<div class="col-sm-9">';
+						str+='<input type="text" class="form-control" placeholder="Enter Sub Task Title"/>';
+					str+='</div>';
+					str+='<div class="col-sm-2">';
+						str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
+						str+='<i class="glyphicon glyphicon-user assign-subtask-btn"></i>';
+						str+='<i class="glyphicon glyphicon-calendar"></i>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="assign-subtask">';
+					str+='<div class="arrow_box_top">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-4 m_top10">';
+								str+='<select class="chosen-select">';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-4 m_top10">';
+								str+='<select class="chosen-select">';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-4 m_top10">';
+								str+='<select class="chosen-select">';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-4 m_top10">';
+								str+='<select class="chosen-select">';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-4 m_top10">';
+								str+='<select class="chosen-select">';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="panel-footer text-right">';
+						str+='<button class="btn btn-primary btn-sm text-capital">assign subtask</button>';
+					str+='</div>';
+				str+='</div>';
 			str+='</li>';
 		str+='</ul>';
 	}
