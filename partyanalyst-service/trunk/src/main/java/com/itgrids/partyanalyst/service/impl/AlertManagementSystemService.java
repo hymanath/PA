@@ -1839,4 +1839,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return null;
 	}
+	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId){
+		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+		try {
+			List<Long> alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId);
+			if(alertIds != null && alertIds.size() > 0){
+				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+				setAlertDtls(finalVoList, list); 
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getDistrictLevelDeptWiseFlterClick() method, Exception - ",e);
+		}		
+		return finalVoList;
+	}
 }
