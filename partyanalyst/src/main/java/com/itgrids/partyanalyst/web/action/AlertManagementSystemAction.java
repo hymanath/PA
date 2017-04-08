@@ -46,8 +46,17 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private ResultStatus resultStatus;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	private AlertVO alertVO;
+	private List<DistrictOfficeViewAlertVO> districtOfficeViewAlertVOList;
 	
 	
+	
+	public List<DistrictOfficeViewAlertVO> getDistrictOfficeViewAlertVOList() {
+		return districtOfficeViewAlertVOList;
+	}
+	public void setDistrictOfficeViewAlertVOList(
+			List<DistrictOfficeViewAlertVO> districtOfficeViewAlertVOList) {
+		this.districtOfficeViewAlertVOList = districtOfficeViewAlertVOList;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -500,6 +509,43 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			alertVOs = alertManagementSystemService.getGovtDeptScopeDetails();
 		} catch (Exception e) {
 			LOG.error("Exception occured in getGovtDeptScopeDetails() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getSubOrdinateAlertsOverview(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			Long userId = jObj.getLong("userId");
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDateStr");
+			
+			
+			JSONArray govtScopeIds = jObj.getJSONArray("govtScopeIds");  
+			List<Long> govtScopeIdsList = new ArrayList<Long>();
+			if(govtScopeIds != null && govtScopeIds.length() > 0){
+				for (int i = 0; i < govtScopeIds.length(); i++){
+					govtScopeIdsList.add(Long.parseLong(govtScopeIds.getString(i)));        
+				} 
+			} 
+			JSONArray locationValues = jObj.getJSONArray("locationValues");  
+			List<Long> locationValuesList = new ArrayList<Long>();
+			if(locationValues != null && locationValues.length() > 0){
+				for (int i = 0; i < locationValues.length(); i++){
+					locationValuesList.add(Long.parseLong(locationValues.getString(i)));        
+				} 
+			} 
+			JSONArray desigIds = jObj.getJSONArray("desigIds");  
+			List<Long> desigIdsList = new ArrayList<Long>();
+			if(desigIds != null && desigIds.length() > 0){
+				for (int i = 0; i < desigIds.length(); i++){
+					desigIdsList.add(Long.parseLong(desigIds.getString(i)));        
+				} 
+			} 
+			Long priorityId = jObj.getLong("priorityId");			
+			districtOfficeViewAlertVOList = alertManagementSystemService.getSubOrdinateAlertsOverview(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId);
+		} catch (Exception e) {
+			LOG.error("Exception occured in getSubOrdinateAlertsOverview() of alertManagementSystemAction",e);
 		}
 		return Action.SUCCESS;
 	}
