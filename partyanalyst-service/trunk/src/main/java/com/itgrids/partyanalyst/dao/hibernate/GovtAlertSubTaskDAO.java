@@ -66,6 +66,20 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  }
 	    	  return query.list();
        }
+       public List<Object[]> getSubTaskCount(List<Long> alertIds){
+    	   StringBuilder sb = new StringBuilder();
+    	   sb.append(" select GAST.alert_id, count(distinct GAST.govt_alert_sub_task_id) " +
+    	   			 " from govt_alert_sub_task GAST, alert ALT " +
+    	   			 " where " +
+    	   			 " GAST.alert_id = ALT.alert_id " +
+    	   			 " and ALT.is_deleted = 'N' " +
+    	   			 " and GAST.is_deleted = 'N' " +
+    	   			 " and GAST.alert_id in (:alertIds) " +
+    	   			 " group by GAST.alert_id ");
+    	   Query query = getSession().createSQLQuery(sb.toString());
+    	   query.setParameterList("alertIds", alertIds);
+    	   return query.list();
+       }
        @SuppressWarnings("unchecked")
    	public List<Object[]> getSubTaskAlertAssignCountsForDeptWiseDetails(Date fromDate, Date toDate,int startIndex,int maxIndex){
      		StringBuilder sb = new StringBuilder();  

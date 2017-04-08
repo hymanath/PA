@@ -4840,7 +4840,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 											" and model.isDeleted = 'N'");
 		query.setParameter("alertId", alertId);
 		return query.list();
-	}
+	}//comp
 	public List<Object[]> getTotalAlertByStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");
@@ -4863,17 +4863,25 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        " EDS.edition_id as edition_id, " +//16
 				        " EDS.edition_alias as edition_alias, " +//17
 				        " A.tv_news_channel_id as tv_news_channel_id, " +//18
-				        " TNC.channel_name as channel_name," +
-				        " S.state_name  as stateName "); //19
+				        " TNC.channel_name as channel_name," +//19
+				        " S.state_name  as stateName, " +//20
+				        " T.tehsil_name as tehsilName, " +//21
+				        " P.panchayat_name as panchayatName, " +//22
+				        " LEB.name as localElectionBodyNeme, "+ //23
+						" ALTSVR.severity_color as severityColor "); //24
 		queryStr.append(" from alert A ");
 		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N') ");
 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");
 		queryStr.append(" left outer join alert_source ALTSRC on ALTSRC.alert_source_id = A.alert_source_id ");
 		queryStr.append(" left outer join alert_impact_scope AIS on AIS.alert_impact_scope_id = A.impact_scope_id ");
+		queryStr.append(" left outer join alert_severity ALTSVR on ALTSVR.alert_severity_id = A.alert_severity_id ");//
 		queryStr.append(" left outer join user_address UA on A.address_id=UA.user_address_id ");
 		queryStr.append(" left outer join state S on UA.state_id=S.state_id ");
 		queryStr.append(" left outer join district D on D.district_id = UA.district_id ");
 		queryStr.append(" left outer join constituency C on C.constituency_id = UA.constituency_id ");
+		queryStr.append(" left outer join tehsil T on T.tehsil_id = UA.tehsil_id ");//
+		queryStr.append(" left outer join panchayat P on P.panchayat_id = UA.panchayat_id ");//
+		queryStr.append(" left outer join local_election_body LEB on LEB.local_election_body_id = UA.local_election_body ");//
 		queryStr.append(" join alert_status ALTS on A.alert_status_id=ALTS.alert_status_id ");
 		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
 		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");
@@ -4928,8 +4936,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("edition_alias", Hibernate.STRING)//17
 				.addScalar("tv_news_channel_id", Hibernate.LONG)//18
 				.addScalar("channel_name", Hibernate.STRING)//19
-				.addScalar("stateName", Hibernate.STRING);//20
-				
+				.addScalar("stateName", Hibernate.STRING)//20
+				.addScalar("tehsilName", Hibernate.STRING)//21
+				.addScalar("panchayatName", Hibernate.STRING)//22
+				.addScalar("localElectionBodyNeme", Hibernate.STRING)//23
+				.addScalar("severityColor", Hibernate.STRING);//24
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
@@ -5284,6 +5295,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		return query.list(); 
 	}
+	//ccccc
 	public List<Object[]> getAlertDtls(Set<Long> alertSet){   
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");
@@ -5307,16 +5319,24 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        " EDS.edition_alias as edition_alias, " +//17
 				        " A.tv_news_channel_id as tv_news_channel_id, " +//18
 				        " TNC.channel_name as channel_name," + //19
-				        " S.state_name "); //20
+				        " S.state_name, "+ //20
+					 	" T.tehsil_name as tehsilName, " +//21
+				        " P.panchayat_name as panchayatName, " +//22
+				        " LEB.name as localElectionBodyNeme, " +//23
+				        " ALTSVR.severity_color as severityColor"); //24
 		queryStr.append(" from alert A ");  
 		queryStr.append(" left outer join tv_news_channel TNC on A.tv_news_channel_id = TNC.tv_news_channel_id ");//
 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");//
 		queryStr.append(" left outer join alert_source ALTSRC on ALTSRC.alert_source_id = A.alert_source_id ");//
 		queryStr.append(" left outer join alert_impact_scope AIS on AIS.alert_impact_scope_id = A.impact_scope_id ");//
+		queryStr.append(" left outer join alert_severity ALTSVR on ALTSVR.alert_severity_id = A.alert_severity_id ");//
 		queryStr.append(" left outer join user_address UA on A.address_id=UA.user_address_id ");//
 		queryStr.append(" left outer join state S on UA.state_id=S.state_id ");//
 		queryStr.append(" left outer join district D on D.district_id = UA.district_id ");//
 		queryStr.append(" left outer join constituency C on C.constituency_id = UA.constituency_id ");//
+		queryStr.append(" left outer join tehsil T on T.tehsil_id = UA.tehsil_id ");//
+		queryStr.append(" left outer join panchayat P on P.panchayat_id = UA.panchayat_id ");//
+		queryStr.append(" left outer join local_election_body LEB on LEB.local_election_body_id = UA.local_election_body ");//
 		queryStr.append(" join alert_status ALTS on A.alert_status_id=ALTS.alert_status_id ");//
 		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
 		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");//
@@ -5343,9 +5363,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("edition_alias", Hibernate.STRING)//17
 				.addScalar("tv_news_channel_id", Hibernate.LONG)//18
 				.addScalar("channel_name", Hibernate.STRING) // 19
-				.addScalar("state_name", Hibernate.STRING);//20
-				
-		
+				.addScalar("state_name", Hibernate.STRING)//20
+				.addScalar("tehsilName", Hibernate.STRING)//21
+				.addScalar("panchayatName", Hibernate.STRING)//22
+				.addScalar("localElectionBodyNeme", Hibernate.STRING)//23
+				.addScalar("severityColor", Hibernate.STRING);//24
 		if(alertSet != null && alertSet.size() > 0){
 			query.setParameterList("alertSet", alertSet);   
 		}

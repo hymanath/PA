@@ -111,6 +111,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    }
     	      return query.list();
     	}
+       
         
        public List<Object[]> getAssignedStatuses(){
     		Query query = getSession().createQuery(" SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus " +
@@ -174,6 +175,99 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
         }
+        //swadhin alertids based on status.
+        public List<Long> getTotalAlertByOtherStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, Long statusId,Long levelId,List<Long> levelValues){
+    		StringBuilder sb = new StringBuilder();  
+    	    sb.append("select distinct model.alert.alertId ");
+    	    sb.append(" from AlertAssignedOfficerNew model" +
+    	          " left join model.alert.edition EDS " +
+    	          " left join model.alert.tvNewsChannel TNC " +
+    	          " left join model.govtDepartmentDesignationOfficer.govtUserAddress UA " +
+    	          " left join UA.state S " +
+    	          " left join UA.zone Z " +
+    	          " left join UA.region R" +
+    	          " left join UA.circle C" +
+    	          " left join UA.district D" +
+    	          " left join UA.division DIV" +
+    	          " left join UA.subDivision SUBDIV" +
+    	          " left join UA.tehsil T" +
+    	          " left join UA.localElectionBody LEB " +
+    	          " left join UA.panchayat P");
+    	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and  " +
+    	    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") and " +
+    	    		  " model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
+    	    if(statusId != null && statusId.longValue() > 0L){
+    	    	sb.append(" and  model.alertStatus.alertStatusId = :statusId ");
+    	    }
+    	    if(departmentIds != null && departmentIds.size()>0){
+    	    	sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
+    	    }
+    	      
+    	    
+    	    if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+    	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");
+    	    }else if(printIdsList != null && printIdsList.size()>0){
+    	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
+    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+    	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
+    	    }        
+    	      
+    	    if(fromDate != null && toDate != null){
+    	    	 sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+    	    }
+    	     	    
+    	    if(levelId !=null && levelValues !=null && levelValues.size()>0){
+	    		if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+	    	      sb.append(" and UA.stateId in (:levelValues)");
+	    	    else if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+	    	      sb.append(" and UA.zoneId in (:levelValues)");
+	    	    else if(levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+	    	      sb.append(" and UA.regionId in (:levelValues)");
+	    	    else if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+	    	      sb.append(" and UA.circleId in (:levelValues)");
+	    	    else if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+	    	      sb.append(" and UA.districtId in (:levelValues)");
+	    	    else if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+	    	      sb.append(" and UA.divisionId in (:levelValues)");
+	    	    else if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+	    	      sb.append(" and UA.subDivisionId in (:levelValues)");
+	    	    else if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+	      	      sb.append(" and UA.tehsilId in (:levelValues)");
+	    	    else if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+	      	      sb.append(" and UA.localElectionBodyId in (:levelValues)");
+	    	    else if(levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+	      	      sb.append(" and UA.panchayatId in (:levelValues)");
+    	   	      
+    	    }
+    	   
+    	    Query query = getSession().createQuery(sb.toString());
+    	    
+    	    if(departmentIds != null && departmentIds.size()>0){
+    	    	query.setParameterList("departmentIds", departmentIds);
+    	    }
+    	      
+    	    if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+    	      query.setParameterList("printIdList", printIdsList);
+    	      query.setParameterList("electronicIdList", electronicIdsList);
+    	    }  
+    	    else if(printIdsList != null && printIdsList.size()>0){
+    	      query.setParameterList("printIdList", printIdsList);
+    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+    	      query.setParameterList("electronicIdList", electronicIdsList);
+    	    }
+    	    if(fromDate != null && toDate != null){
+    	        query.setDate("fromDate", fromDate);
+    	        query.setDate("toDate", toDate);
+    	    }
+    	    if(levelId != null && levelValues != null && levelValues.size()>0){
+    	    	 query.setParameterList("levelValues", levelValues);
+    	    }	       
+    	    if(statusId != null && statusId.longValue() > 0L){
+    	    	query.setParameter("statusId",statusId);
+    	    }
+    	      return query.list();
+    	}
+    	
       @SuppressWarnings("unchecked")
 	public List<Object[]> getAlertAssignCountsForDeptWiseDetails(Date fromDate, Date toDate,int startIndex,int maxIndex){
   		StringBuilder sb = new StringBuilder();  
