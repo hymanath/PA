@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeDAO;
@@ -63,8 +64,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IGovtDepartmentWorkLocationDAO govtDepartmentWorkLocationDAO;
 	private IAlertSubTaskStatusDAO alertSubTaskStatusDAO;
 	private IGovtDepartmentScopeDAO govtDepartmentScopeDAO;
+	private IGovtDepartmentDAO govtDepartmentDAO;
 	
 	
+	public IGovtDepartmentDAO getGovtDepartmentDAO() {
+		return govtDepartmentDAO;
+	}
+
+	public void setGovtDepartmentDAO(IGovtDepartmentDAO govtDepartmentDAO) {
+		this.govtDepartmentDAO = govtDepartmentDAO;
+	}
+
 	public IGovtDepartmentScopeDAO getGovtDepartmentScopeDAO() {
 		return govtDepartmentScopeDAO;
 	}
@@ -1215,5 +1225,39 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				}
 			}
 		}
+	}
+	public List<AlertVO> getGovtDepartmentDetails(){
+		 List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
+		try {
+			List<Object[]> deptList = govtDepartmentDAO.getAllDepartment();
+			if (deptList != null && deptList.size() > 0) {
+			 for (Object[] objects : deptList) {
+				 AlertVO alertVO = new AlertVO();
+				 alertVO.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				 alertVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));			 
+				 finalVoList.add(alertVO);
+			 }
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getGovtDepartmentDetails() method, Exception - ",e);
+		}
+		return finalVoList;
+	}
+	public List<AlertVO> getGovtDeptScopeDetails(){
+		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
+		try {
+			List<Object[]> scopeList = govtDepartmentScopeDAO.getGovtDeptScopeDetails();
+			if (scopeList != null && scopeList.size() > 0 ){
+				for (Object[] objects : scopeList) {
+					AlertVO alertVO = new AlertVO();
+					alertVO.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					alertVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					finalVoList.add(alertVO);
+				}				
+			}			
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getGovtDepartmentDetails() method, Exception - ",e);
+		}		
+		return finalVoList;
 	}
 }

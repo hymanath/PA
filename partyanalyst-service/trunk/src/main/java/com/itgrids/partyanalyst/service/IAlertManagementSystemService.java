@@ -26,4 +26,6 @@ public interface IAlertManagementSystemService {
 	public  List<AlertVO> getDistrictLevelDeptWiseFilterView(Long scopeId,String startDateStr,String fromDateStr,String type);
 	public  List<AlertVO> getDistrictLevelDeptWiseStatusOverView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId);
 	public  List<AlertVO> getDistrictLevelDeptWiseLocationLevelView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId);
+	public List<AlertVO> getGovtDepartmentDetails();
+	public List<AlertVO> getGovtDeptScopeDetails();
 }
