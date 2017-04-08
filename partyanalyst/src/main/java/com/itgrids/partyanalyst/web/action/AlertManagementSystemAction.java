@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.opensymphony.xwork2.Action;
@@ -42,10 +43,17 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdAndNameVO> locationLevelList;
 	private IAlertManagementSystemService alertManagementSystemService;
 	private List<AlertVO> alertVOs;
+	private ResultStatus resultStatus;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	private AlertVO alertVO;
 	
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
 	
 	public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOs() {
 		return alertCoreDashBoardVOs;
@@ -323,6 +331,43 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String updateComment(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return null;
+			
+			Long userId = regVo.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			
+			resultStatus = alertManagementSystemService.updateComment(jObj.getLong("alertId"),jObj.getString("comment"),userId);
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateComment() of CccDashboardAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String updateAlertPriority(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return null;
+			
+			Long userId = regVo.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			
+			resultStatus = alertManagementSystemService.updateAlertPriority(jObj.getLong("alertId"),jObj.getLong("priorityId"),userId);
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateComment() of CccDashboardAction",e);
+		}
+		return Action.SUCCESS;
+	}
+
 	public String getTotalAlertByStatus(){
 		try{
 			session = request.getSession();

@@ -98,7 +98,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     height: 50px;
     width: 210px;
 }
-.collapseIcon, .collapseIcon:active, .collapseIcon:hover, .collapseIcon:focus {
+.collapseIcon, .collapseIcon:active, .collapseIcon:hover, .collapseIcon:focus,.collapseArrow, .collapseArrow:active, .collapseArrow:hover, .collapseArrow:focus {
     color: rgb(102, 102, 102) !important;
 	text-decoration:none;
 }
@@ -116,6 +116,20 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .collapseIcon.collapsed::before {
     content: "\2b";
+}
+.collapseArrow::before {
+    color: rgb(75, 87, 99);
+    content: "\e252";
+    float: left;
+    font-family: "Glyphicons Halflings";
+    font-size: 13px;
+    font-weight: 400 !important;
+    margin-left: -4px;
+    margin-top: -4px;
+    padding: 3px 5px;
+}
+.collapseArrow.collapsed::before {
+    content: "\e250";
 }
 .navTabs li a
 {
@@ -323,11 +337,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .bg_dd
 {
-	background-color:#ddd;
+	background-color:#ddd !important;
 }
 .bg_EE
 {
-	background-color:#eee;
+	background-color:#eee !important;
 }
 .activeUlCls li {
     background: rgb(255, 255, 255);
@@ -736,8 +750,6 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .tooltip-inner {
     max-width: 381px;
-    /* If max-width does not work, try using width instead */
-    width: 380px; 
 	text-align:left;
 	font-size:14px;
 }
@@ -788,5 +800,420 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	background-color: #4A5863;
 	color: #fff;
 	border-radius: 14px;
+	-moz-transition: .5s all ease-out;
+}
+.switch-btn li:hover
+{
+	background-color: #4A5863;
+	-moz-transition: .5s all ease-out;
+	border-radius: 14px;
+	color:#fff;
 }
 .pad_5{padding:5px;}
+.panel-white
+{
+	background-color: #fff;
+	padding: 8px;
+	box-shadow:0px 0px 2px 2px rgba(0,0,0,0.2)
+}
+.panel-white .panel
+{
+	border:0px !important;
+	box-shadow: none;
+	border-radius: 0px;
+}
+.panel-white .panel-heading
+{
+	background-color: #fff;
+	padding-left: 0px;
+	border-bottom: 1px solid #ddd !important;
+}
+.panel-white .panel-body
+{
+	border-top: 0px !important;
+}
+.pad_5
+{
+	padding: 5px;
+}
+.pad_10
+{
+	padding: 10px;
+}
+.alerts-list
+{
+	padding:5px;
+}
+.alerts-list .label
+{
+	background-color: #EEEEEE;
+	border-radius: 10px;
+	color: #333;
+	font-size: 11px;
+}
+.alerts-list li
+{
+	list-style: none;
+	border-bottom: 1px solid #ddd;
+	padding: 8px;
+}
+.alerts-list .location-name
+{
+	background-color: #EEEEEE;
+	padding: 5px;
+	margin: 0px 4px;
+	text-transform: uppercase;
+	font-size: 10px;
+}
+.status-icon
+{
+	background-color: #3c763d;
+	content: '';
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	margin: 0px 4px;
+}
+.status-icon.arrow-icon
+{
+	display:inline-block;
+	height:15px;
+	width:15px;
+	position:relative;
+	top:2px;
+}
+.arrow-icon
+{
+	font-size: 20px;
+	position: relative;
+	top: -5px;
+	cursor: pointer;
+}
+.panel-right .arrow_box_left
+{
+	border:1px solid #ddd !important;
+	border-radius: 5px;
+	box-shadow:0px 0px 2px 2px rgba(0,0,0,0.2);
+	padding-bottom:0px;
+}
+.panel-right .panel
+{
+	margin-bottom:0px;
+}
+.panel-right .arrow_box_left:before
+{
+	border-right-color: #ddd !important;
+}
+.panel-right .panel
+{
+	border:0px;
+}
+.panel-right .panel-heading, .panel-right .panel-footer
+{
+	background-color: #fff;
+}
+
+.icon-name
+{
+	background-color:#ccc;
+	border-radius: 50%;
+	height: 30px;
+	width: 30px;
+	display: block;
+	text-align: center;
+	padding-top: 5px;
+	color: #fff;
+}
+.icon-primary
+{
+	background-color:  #61BCFE;
+}
+.list-icons li
+{
+	border:1px solid #ccc;
+	border-radius: 17px;
+	padding: 5px 7px;
+	text-transform: uppercase;
+	color:#999999;
+	margin:0px 3px;
+	cursor:pointer;
+	position:relative;
+}
+.list-icons li i.fa-level-down
+{
+	padding:3px 4px
+}
+.list-icons li i
+{
+	font-size: 15px;
+	color:#999999;
+}
+div[expand-main='true'] .channel-name ,
+div[expand-main='true'] .location-name 
+{
+    width: 30px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.glyphicon-remove
+{
+	cursor: pointer
+}
+.modal-insurance
+{
+	background-color:#EFEFEF
+}
+.input-group-addon.btn-success
+{
+	background-color:#5CB85C;
+}
+.panel-border-white
+{
+	border:1px solid #ddd !important;
+}
+.panel-border-white .panel-heading , .panel-border-white .panel-footer
+{
+	padding:5px;
+	display:none;
+}
+.panel-border-white .panel-body
+{
+	padding:0px;
+}
+.panel-border-white textarea
+{
+	display:none;
+}
+.panel-border-white .input-group .input-group-addon
+{
+	background-color:#fff;
+	border:0px !important;
+}
+.panel-border-white .input-group .form-control
+{
+	border:0px !important;
+}
+div.comment-area
+{
+	height:50px;
+	width:100%;
+	padding:10px;
+}
+.pad_left0
+{
+	padding-left:0px;
+}
+.assign-user
+{
+	position:relative;
+}
+.assign-user i
+{
+	margin-right:4px;
+}
+.assign-user-body
+{
+	position:absolute;
+	top:40px;
+	left:0px;
+	width:100%;
+	z-index:99999;
+}
+.arrow_box_top {
+	position: relative;
+	background: #fff;
+	border: 1px solid #ddd;
+	padding:10px;
+}
+.arrow_box_top:after, .arrow_box_top:before {
+	bottom: 100%;
+	left: 15px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box_top:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 12px;
+	margin-left: -12px;
+}
+.arrow_box_top:before {
+	border-color: rgba(221, 221, 221, 0);
+	border-bottom-color: #ddd;
+	border-width: 13px;
+	margin-left: -13px;
+}
+.border_1
+{
+	border:1px solid #ddd;
+}
+.alert-history
+{
+	border-left: 1px solid #ccc;
+	margin-left: 25px !important;
+	margin-top:20px !important;
+}
+.alert-history li
+{
+	list-style:none;
+	position:relative;
+	
+}
+.alert-history li .alert-history-time
+{
+	position: absolute;
+	left: -66px;
+	top:33px;
+	font-size: 10px;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 2px;
+	margin-top:10px;
+}
+.alert-history li .alert-history-date
+{
+	color:#4B4E5D;
+	text-transform:capitalize;
+}
+.alert-history li .alert-history-status ,.alert-history li .alert-history-body
+{
+	color:#777;
+}
+.alert-history li .alert-history-user
+{
+	color:#60BBFD;
+	font-size:12px;
+	text-transform:uppercase;
+}
+.alert-history:before
+{
+	content: "\e109";
+	font-family: 'Glyphicons Halflings';
+	display: block;
+	position: absolute;
+	left: 25px;
+	background: #4B4E5D;
+	color: #fff;
+	text-align: center;
+	border-radius: 50%;
+	padding: 6px 9px;
+	font-size: 12px;
+}
+.alert-history .status-icon.arrow-icon
+{
+	background-color:#F1E3BB;
+	border:1px solid #ddd;
+}
+.pad_0
+{
+	padding:0px !important;
+}
+.modal-footer .panel-white
+{
+	box-shadow:none;
+}
+.list-icons-calendar
+{
+	position: relative;
+	width: 130px;
+	border: 1px solid #ddd;
+	height: 30px !important;
+	padding-left: 37px !important;
+}
+.list-icons-calendar i
+{
+	position: absolute;
+	left: 0px;
+	border: 1px solid #ddd !important;
+	border-radius: 16px;
+	padding: 10px;
+	height: 30px;
+	top: -1px;
+	width: 34px;
+	font-size: 14px !important;
+}
+.alert-status-change-list
+{
+	width: 150px;
+	position: absolute;
+	top: 42px;
+	display: block;
+	padding: 0px;
+	left: -60px;
+	z-index:9999;
+}
+.alert-status-change-list li
+{
+	width: 100%;
+	padding: 8px 8px 4px 10px;
+	list-style: none;
+	border-radius: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	border-top: 0px;
+	border-bottom: 1px solid #ddd
+}
+.alert-status-change-list li:last-child
+{
+	border-bottom:0px;
+}
+.alert-status-change-list.arrow_box_top:before , .alert-status-change-list.arrow_box_top:after
+{
+	left:50%;
+}
+.filter-block
+{
+	background-color:#fff;
+	border-radius:6px;
+	padding:10px;
+	box-shadow:0px 0px 2px 2px rgba(0,0,0,0.2);
+}
+.filters-list
+{
+	padding-left:0px;
+}
+.filters-list li
+{
+	padding:3px 7px;
+	border:1px solid transparent;
+	list-style:none;
+	cursor:pointer;
+	margin:3px 0px;
+}
+.filters-list li.active
+{
+	background-color:#EEEEEE;
+	border-radius:16px;
+}
+.filters-list li.active .remove
+{
+	float:right;
+	padding:3px 4px;
+	background-color:#969696;
+	color:#EEEEEE;
+	border-radius:50%;
+	font-size:10px;
+}
+small.clear
+{
+	margin-left:5px;
+	cursor:pointer;
+}
+.involved-members-list li img
+{
+	width:70px;
+	height:70px;
+	border:1px solid #ddd;
+	border-radius:50%;
+	margin:0px 3px;
+}
+.body-icons .fa-2x
+{
+	color:#ccc
+}

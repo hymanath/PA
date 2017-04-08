@@ -215,6 +215,38 @@
 	</section>
 	
 </div>
+<div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body modal-insurance">
+				<div id="filter"></div>
+				<div id="alertManagementPopupBody"></div>
+			</div>
+		</div>
+  </div>
+</div>
+<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="alertManagementPopupBody1"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+  </div>
+</div>
+
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -229,9 +261,10 @@
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/alertManagementSystem.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <!-- Custom Script Files Data Start-->
 <script src="alertDepartment/js/newAlertManagementSystem.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->
-<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 </body>
 </html>

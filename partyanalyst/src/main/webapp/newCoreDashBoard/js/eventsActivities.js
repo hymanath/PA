@@ -1,7 +1,7 @@
  var globalStateId=1; //default AP
  var globalUserWiseEventMemberRslt;
  /* EVENT FUNCTIONALITY START*/  
-  $(document).on("click",".eventsIconExpand",function(){
+/*  $(document).on("click",".eventsIconExpand",function(){
 	$(".dateRangePickerClsForEvents").toggleClass("hide");
 	$(this).find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 	$(".eventYearExpandIcon").find("i").addClass("glyphicon-fullscreen").removeClass("glyphicon-resize-small");
@@ -87,7 +87,7 @@
 				$(".electronicMediaBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 	}
 	
-});
+});*/
 
 $(document).on("click",".moreEventsBlocksIcon",function(){
 	//$("#eventsCmpBlckDivId").find("ul li").attr("attr_type","events")	
