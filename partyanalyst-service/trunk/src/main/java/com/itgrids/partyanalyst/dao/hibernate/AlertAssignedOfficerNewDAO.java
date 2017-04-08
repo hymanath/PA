@@ -174,4 +174,40 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
         }
+      @SuppressWarnings("unchecked")
+	public List<Object[]> getAlertAssignCountsForDeptWiseDetails(Date fromDate, Date toDate,int startIndex,int maxIndex){
+  		StringBuilder sb = new StringBuilder();  
+  		
+  	     sb.append("select ");
+  	    
+  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+      		      " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " );
+  	    
+  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
+  	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName, " );
+   	   
+  	     sb.append(" count(distinct model.alert.alertId) ");
+  	      
+  	     sb.append(" from AlertAssignedOfficerNew model ");
+  	     
+  	     sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' ");
+
+  	    if(fromDate != null && toDate != null)
+  	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+  	  
+    sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId, " +
+    		" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " );
+     	    
+  	    Query query = getSession().createQuery(sb.toString());
+  	    if(fromDate != null && toDate != null){
+  	        query.setDate("fromDate", fromDate);
+  	        query.setDate("toDate", toDate);
+  	    }
+  	  if(maxIndex >0){
+			query.setFirstResult(startIndex);
+			query.setMaxResults(maxIndex);
+		}
+  	  return query.list();
+  	}
+
 }
