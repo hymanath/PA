@@ -49,6 +49,70 @@ function onLoadInitialisations()
 			getDepartmentWiseAlertOverviewCnt('department','0');
 		}
 	});
+	$(document).on("click","#updateStatusChange",function(){
+		var jsObj ={
+			alertId : 11346,
+			statusId : $('input[name=statusChange]:checked', '#updateStatusChangeBody').val(),
+			comment: $("#updateStatusChangeComment").val()
+		}
+		$.ajax({
+			type:'GET',
+			url: 'updateAlertStatusCommentAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.exceptionMsg == 'success')
+			{
+				alert("status updated successfully")
+			}else{
+				alert("try again")
+			}
+		});
+	});
+	$(document).on("click","#priorityChangeSaveId",function(){
+		
+		var jsObj ={
+			alertId : 11346,
+			priorityId : $('input[name=alert-status-change-list]:checked', '.alert-status-change-list').val(),
+		}
+		$.ajax({
+			type:'GET',
+			url: 'updateAlertPriorityAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.exceptionMsg == 'success')
+			{
+				alert("status updated successfully")
+				$("#priorityBodyId").html($('input[name=alert-status-change-list]:checked', '.alert-status-change-list').val());
+			}else{
+				alert("try again")
+			}
+		});
+	});
+	$(document).on("click","#commentChangeId",function(){
+		var comment = $("#alertCommentId").val();
+		if(comment == null || comment.trim() == "")
+		{
+			alert("please enter comment");
+			return;
+		}
+		var jsObj ={
+			alertId : 11346,
+			comment : comment
+		}
+		$.ajax({
+			type:'GET',
+			url: 'updateCommentAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.exceptionMsg == 'success')
+			{
+				alert("status updated successfully")
+			}else{
+				alert("try again")
+			}
+		});
+			
+	});
 	$(document).on("click",".filtersSubmitDivId",function(){
 		globalNewsPaperIdArr = [];
 		globalChannelIdArr = [];
@@ -152,7 +216,9 @@ function onLoadInitialisations()
 			backdrop: 'static'
 		});
 		var statusId = $(this).attr("attr_status_id");
-		getAlertDtlsBasedOnStatusClick(statusId)
+		var statusName = $(this).attr("attr_status_name");
+		var statuscount = $(this).attr("attr_status_count");
+		getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount)
 	});
 }
 
@@ -263,7 +329,7 @@ function buildTotalAlertGroupByStatusForGovt(result)
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsCls" attr_status_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsCls" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" attr_status_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -407,7 +473,7 @@ function buildLevelWiseAlertOverviewCnt(result)
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsCls" attr_status_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsCls" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -618,9 +684,9 @@ function buildDepartmentWiseAlertOverviewCnt(result)
 					str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
 						str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply'+i+'">';
 						if(result[i].name !=null && result[i].name.length > 40){
-							str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getDtlsCls">'+result[i].alertCnt+'</span></li>';  
+							str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getDtlsCls"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';  
 						}else{
-							str+='<li>'+result[i].name+' <span style="cursor:pointer;" class="pull-right getDtlsCls">'+result[i].alertCnt+'</span></li>';
+							str+='<li>'+result[i].name+' <span style="cursor:pointer;" class="pull-right getDtlsCls"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';
 						}
 						str+='</ul>';
 					str+='</div>';
@@ -732,7 +798,7 @@ function buildDepartmentWiseAlertOverviewCnt(result)
 	}
 	
 }
-function getAlertDtlsBasedOnStatusClick(statusId){ 
+function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){ 
 	$("#alertManagementPopupBody").html(spinner);
 	var deptIdArr = globalDepartmentIdArr;
 	var paperIdArr = globalNewsPaperIdArr;
@@ -753,9 +819,28 @@ function getAlertDtlsBasedOnStatusClick(statusId){
 		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result != null && result.length > 0){
-			buildAlertDtlsBasedOnStatusClick(result);
+			buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount);
 		}else{
 			$("#statusOverview").html('NO DATA AVAILABLE')
 		}
     });
+}
+function viewAlertHistory()
+{
+	$("#alertManagementPopupBody1").html(spinner)
+	var jsObj ={
+		alertId : 11346
+	}
+	$.ajax({
+		type:'GET',
+		url: 'viewAlertHistoryAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length> 0)
+		{
+			alertHistory(result);
+		}else{
+			$("#alertManagementPopupBody1").html("NO DATA AVAILABLE")
+		}
+	});
 }
