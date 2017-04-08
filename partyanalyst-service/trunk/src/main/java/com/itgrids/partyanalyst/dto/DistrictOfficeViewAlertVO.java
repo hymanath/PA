@@ -14,6 +14,9 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private Long id;
 	private String name;
 	private Long count = 0l;
+	private Long completedCnt = 0l;
+	private Long taskCnt = 0l;
+	private Long taskCompletedCnt = 0l;
 	private Long overAllCnt = 0l;
 	private Long designationId;
 	private String desigName;
@@ -24,9 +27,70 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private List<DistrictOfficeViewAlertVO> list1 = new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<DistrictOfficeViewAlertVO>  list2= new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<DistrictOfficeViewAlertVO> list3 = new ArrayList<DistrictOfficeViewAlertVO>(0);
+	private Long govtDeptDesigOffcrId;
+	private Long govtOfficerId;
+	private Double alertsPerc;
+	private String color;
+	private List<Long> todayAlertIds = new ArrayList<Long>();
+	private List<Long> overAllAlertIds = new ArrayList<Long>();
 	
 	
 	
+	
+	public List<Long> getTodayAlertIds() {
+		return todayAlertIds;
+	}
+	public void setTodayAlertIds(List<Long> todayAlertIds) {
+		this.todayAlertIds = todayAlertIds;
+	}
+	public List<Long> getOverAllAlertIds() {
+		return overAllAlertIds;
+	}
+	public void setOverAllAlertIds(List<Long> overAllAlertIds) {
+		this.overAllAlertIds = overAllAlertIds;
+	}
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public Double getAlertsPerc() {
+		return alertsPerc;
+	}
+	public void setAlertsPerc(Double alertsPerc) {
+		this.alertsPerc = alertsPerc;
+	}
+	public Long getCompletedCnt() {
+		return completedCnt;
+	}
+	public void setCompletedCnt(Long completedCnt) {
+		this.completedCnt = completedCnt;
+	}
+	public Long getTaskCnt() {
+		return taskCnt;
+	}
+	public void setTaskCnt(Long taskCnt) {
+		this.taskCnt = taskCnt;
+	}
+	public Long getTaskCompletedCnt() {
+		return taskCompletedCnt;
+	}
+	public void setTaskCompletedCnt(Long taskCompletedCnt) {
+		this.taskCompletedCnt = taskCompletedCnt;
+	}
+	public Long getGovtDeptDesigOffcrId() {
+		return govtDeptDesigOffcrId;
+	}
+	public void setGovtDeptDesigOffcrId(Long govtDeptDesigOffcrId) {
+		this.govtDeptDesigOffcrId = govtDeptDesigOffcrId;
+	}
+	public Long getGovtOfficerId() {
+		return govtOfficerId;
+	}
+	public void setGovtOfficerId(Long govtOfficerId) {
+		this.govtOfficerId = govtOfficerId;
+	}
 	public Long getTodayCount() {
 		return todayCount;
 	}

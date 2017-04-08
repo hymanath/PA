@@ -30,5 +30,7 @@ public interface IAlertManagementSystemService {
 	public List<AlertVO> getGovtDeptScopeDetails();
 	public  List<IdAndNameVO> getSubOrdinateLevels(Long designationId);
 	public List<AlertCoreDashBoardVO> groupAlertsTimeWise(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs);
+	public List<DistrictOfficeViewAlertVO> getSubOrdinateAlertsOverview(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
+			List<Long> desigIds,Long priorityId);
 	
 }

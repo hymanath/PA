@@ -8,8 +8,8 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssignedOfficerNew, Long> implements IAlertAssignedOfficerNewDAO {
 	
@@ -142,9 +142,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	StringBuilder sb = new StringBuilder();
 	    	  
         	if(type != null && type.equalsIgnoreCase("today")){
-        		sb.append(" select model.alertAssignedOfficerId from AlertAssignedOfficerNew model ");
+        		sb.append(" select model.alertAssignedOfficerId,model.alert.alertId from AlertAssignedOfficerNew model ");
         	}else{
-        		sb.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(model.alertAssignedOfficerId) from AlertAssignedOfficerNew model ");
+        		sb.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(model.alertAssignedOfficerId),model.alertStatus.color from AlertAssignedOfficerNew model ");
         	}
         	sb.append(" where model.isDeleted = 'N' " );
         	
@@ -317,7 +317,6 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   	    }
   	  return query.list();
   	}
-	//Teja
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDistrictLevelDeptWiseLocationLevelView(Date fromDate, Date toDate,Long deptId){
 	  		StringBuilder sb = new StringBuilder();  
@@ -402,4 +401,191 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  	  return query.list();
 	}
 	
+       /* public List<Object[]> getAlertDetailsForDistrictOfficer(Date fromDate, Date toDate, Long stateId, 
+        		List<Long> departmentIds,Long levelId,List<Long> levelValues,String type,String dateType){
+    		StringBuilder sb = new StringBuilder();  
+    	    sb.append("select ");
+    	   
+    	      sb.append(" model.alert.alertId, model.alert.description,EDS.editionAlias,TNC.channelName,model.alert.alertType.alertTypeId," +
+    	      		" model.alert.alertCategory.alertCategoryId,date(model.insertedTime) " );
+    	    
+    	      
+    	    sb.append(" from AlertAssignedOfficerNew model" +
+    	          " left join model.alert.edition EDS " +
+    	          " left join model.alert.tvNewsChannel TNC " +
+    	          " left join model.govtDepartmentDesignationOfficer.govtUserAddress UA");
+    	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
+    	    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+")   ");
+    	    
+    	    if(departmentIds != null && !departmentIds.isEmpty())
+    	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
+    	    
+    	    if(dateType != null && dateType.equalsIgnoreCase("pastData")){
+    	    	if(fromDate != null){
+    	    		sb.append(" and date(model.insertedTime) <=  :fromDate");
+    	    	}
+    	    }else{
+    	    	if(fromDate != null && toDate != null){
+    	    		sb.append(" and date(model.insertedTime) between  :fromDate and ");
+    	    	}
+    	    }
+    	 
+    	    if(fromDate != null && toDate != null)
+    	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+    	    
+    	    if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+    	      sb.append(" and UA.stateId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+    	      sb.append(" and UA.zoneId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+    	      sb.append(" and UA.regionId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+    	      sb.append(" and UA.circleId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+    	      sb.append(" and UA.districtId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+    	      sb.append(" and UA.divisionId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+    	      sb.append(" and UA.subDivisionId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+      	      sb.append(" and UA.tehsilId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+      	      sb.append(" and UA.localElectionBodyId in (:levelValues)");
+    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+      	      sb.append(" and UA.panchayatId in (:levelValues)");
+    	
+    	  
+    	    Query query = getSession().createQuery(sb.toString());
+    	    if(departmentIds != null && !departmentIds.isEmpty())
+    	      query.setParameterList("departmentIds", departmentIds);
+    	 
+    	    if(fromDate != null && toDate != null){
+    	        query.setDate("fromDate", fromDate);
+    	        query.setDate("toDate", toDate);
+    	    }
+    	    
+    	    
+    	    if(dateType != null && dateType.equalsIgnoreCase("pastData")){
+    	    	if(fromDate != null){
+    	    		query.setDate("fromDate", fromDate);
+    	    	}
+    	    }else{
+    	    	if(fromDate != null && toDate != null){
+    	    		query.setDate("fromDate", fromDate);
+    	    		query.setDate("toDate", toDate);
+    	    	}
+    	    }
+    	    if(levelId != null && levelValues != null && !levelValues.isEmpty())
+    	        query.setParameterList("levelValues", levelValues);
+    	    
+    	  
+    	      return query.list();
+    	}*/
+        
+        public List<Object[]> getSubOrdinateAlertsDetails(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
+    			List<Long> desigIds,Long priorityId,String type){
+        	
+        	StringBuilder sb = new StringBuilder();  
+    	    sb.append("select model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
+    	    		"model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName,model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
+    	    		"model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName,count(distinct  model.alert.alertId) ");
+        	
+        	sb.append(" from AlertAssignedOfficerNew model " );
+    	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
+  	    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+")   ");
+    	    
+    	    if(desigIds != null && !desigIds.isEmpty())
+      	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId in (:desigIds)");
+    	    
+    	    if(govtScopeIds != null && !govtScopeIds.isEmpty())
+    	    	sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId in (:govtScopeIds) ");
+    	   
+    	    if(locationValues != null && !locationValues.isEmpty())
+    	    	sb.append("  and model.govtDepartmentDesignationOfficer.levelValue in (:locationValues) ");
+    	    
+    	    if(priorityId != null && priorityId.longValue() >0l)
+    	    	sb.append("  and model.alert.alertSeverityId = :priorityId " );
+    	    
+    	    if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+      	      sb.append(" and UA.stateId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+      	      sb.append(" and UA.zoneId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+      	      sb.append(" and UA.regionId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+      	      sb.append(" and UA.circleId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+      	      sb.append(" and UA.districtId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+      	      sb.append(" and UA.divisionId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+      	      sb.append(" and UA.subDivisionId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+        	      sb.append(" and UA.tehsilId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+        	      sb.append(" and UA.localElectionBodyId in (:levelValues)");
+      	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+        	      sb.append(" and UA.panchayatId in (:levelValues)");
+    	    
+    	    if(type != null && type.equalsIgnoreCase("completedAlerts")){
+    	    	sb.append("  and mode.alertStatus.alertStatusId = 4 ");
+    	    }
+    	    
+    	    sb.append(" group by  model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId,model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
+    	    		" model.govtDepartmentDesignationOfficer.levelValue ");
+    	    Query query = getSession().createQuery(sb.toString());
+    	    
+    	    if(govtScopeIds != null && !govtScopeIds.isEmpty())
+    	      query.setParameterList("govtScopeIds", govtScopeIds);
+    	    
+    	    if(desigIds != null && !desigIds.isEmpty())
+    	    	 query.setParameterList("desigIds", desigIds);
+    	    
+    	    if(locationValues != null && !locationValues.isEmpty())
+    	    	query.setParameterList("locationValues", locationValues);
+    	    
+    	    if(fromDate != null && endDate != null){
+    	    	query.setDate("fromDate", fromDate);
+    	    	query.setDate("endDate", endDate);
+    	    }
+    	    
+    	    if(priorityId != null && priorityId.longValue() >0l)
+    	    	query.setParameter("priorityId", priorityId);
+    	    
+    	    return query.list();
+    	    	
+        }
+        
+        public List<Long> getDistrictOfficerAlertsIds(Long govtDepDesigOffcrId,Long govtOffcrId,String type){
+        	StringBuilder sb = new StringBuilder();
+	    	  
+        	  sb.append(" select distinct model.alert.alertId from AlertAssignedOfficerNew model ");
+        	
+        	  sb.append(" where model.isDeleted = 'N' " );
+        	
+	    	  
+        	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+	    		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcrId " );
+	    	  }
+	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+	    	  }
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  sb.append(" and model.insertedTime = :todayDate " ); 
+	    	  }
+	    	  
+	    	  
+	    	  Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	    		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+	    	  }
+	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+	    		  query.setParameter("govtOffcrId", govtOffcrId);  
+	    	  }
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  }
+	    	  return query.list();
+        }
 }
