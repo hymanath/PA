@@ -434,17 +434,54 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			Long scopeId = regVo.getRegistrationID();
 			jObj = new JSONObject(getTask());
-			int startIndex = jObj.getInt("startIndex");
-			int maxIndex = jObj.getInt("maxIndex");
 			String startDateStr = jObj.getString("startDate");
 			String fromDateStr = jObj.getString("fromDate");
 			String type = jObj.getString("type");
 			
-			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseFilterView(scopeId,startDateStr,fromDateStr,startIndex,maxIndex,type);
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseFilterView(scopeId,startDateStr,fromDateStr,type);
 			
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception occured in getDistrictLevelDeptWiseFilterView() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDistrictLevelDeptWiseStatusOverView(){
+		try{
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long scopeId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			String startDateStr = jObj.getString("startDate");
+			String fromDateStr = jObj.getString("fromDate");
+			String type = jObj.getString("type");
+			Long deptId = jObj.getLong("deptId");
+			
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseStatusOverView(scopeId,startDateStr,fromDateStr,type,deptId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occured in getDistrictLevelDeptWiseStatusOverView() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDistrictLevelDeptWiseLocationLevelView(){
+		try{
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long scopeId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			String startDateStr = jObj.getString("startDate");
+			String fromDateStr = jObj.getString("fromDate");
+			String type = jObj.getString("type");
+			Long deptId = jObj.getLong("deptId");
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occured in getDistrictLevelDeptWiseStatusOverView() of alertManagementSystemAction",e);
 		}
 		return Action.SUCCESS;
 	}

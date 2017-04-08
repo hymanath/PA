@@ -361,10 +361,8 @@ function buildDistrictOfficerAlertsCountView(result){
 getDistrictLevelDeptWiseFilterViewDetails();
 function getDistrictLevelDeptWiseFilterViewDetails(){
 	var jObj = {
-		startIndex:0,
-		maxIndex:10,
-		startDate: currentFromDate,
-	    fromDate: currentToDate,
+		startDate: "01/01/2017",
+	    fromDate: "01/01/2018",
 		type:"alert"
 		
 	}
@@ -375,4 +373,35 @@ function getDistrictLevelDeptWiseFilterViewDetails(){
     }).done(function(result){
 	});
 }
+getDistrictLevelDeptWiseLocationLevelView();
+function getDistrictLevelDeptWiseLocationLevelView(){
+	var jObj = {
+		startDate: "01/01/2017",
+	    fromDate: "01/01/2018",
+		type:"alert",
+		deptId:0
+		
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelDeptWiseLocationLevelViewAction.action',
+	  data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
 	});
+}
+getDistrictLevelDeptWiseStatusOverView();
+function getDistrictLevelDeptWiseStatusOverView(){
+	var jObj = {
+		startDate: "01/01/2017",
+	    fromDate: "01/01/2018",
+		type:"subTask",
+		deptId:0
+		
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelDeptWiseStatusOverViewAction.action',
+	  data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+	});
+}
