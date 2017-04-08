@@ -123,10 +123,57 @@
 								</div>
 								<div class="panel-body">
 									<div class="row">
-										<div class="col-sm-12 col-xs-12 col-md-12">
-											<div id="departmentAlertCountDivId"></div>
+											<div class="col-sm-12 col-xs-12 col-md-12 departmentlocationShow">
+													<ul class="list-inline activeUlCls  constituencyUl">
+														<li class="descendingConstituencyCls active" onClick="">
+															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+														</li >
+														<li class="ascendingConstituencyCls" onClick="">
+															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+														</li>
+														<li class="atozConstituecySortingCls" onClick="">
+															A-Z
+														</li>
+														<li class="ztozConstituecySortingCls" onClick="">
+															Z-A
+														</li>
+														<li>
+														<select class="form-control" id="" onChange="">
+															<option value="0">Select Constitency </option>
+															<option value="0">Select Constitency </option>
+														</select>
+														</li>
+													</ul>
+													<div id="departmentlocationCountDivId"></div>
+												
+											</div>
+											<div class="col-sm-12 col-xs-12 col-md-12 departmentStatusShow" style="display:none;">	
+												<ul class="list-inline activeUlCls  constituencyUl">
+														<li class="descendingConstituencyCls active" onClick="">
+															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+														</li >
+														<li class="ascendingConstituencyCls" onClick="">
+															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+														</li>
+														<li class="atozConstituecySortingCls" onClick="">
+															A-Z
+														</li>
+														<li class="ztozConstituecySortingCls" onClick="">
+															Z-A
+														</li>
+														<li>
+														<select class="form-control" id="" onChange="">
+															<option value="0">Select Constitency </option>
+															<option value="0">Select Constitency </option>
+														</select>
+														</li>
+													</ul>
+												<div id="departmentStatusCountDivId"></div>
+											</div>
+											<div class="col-sm-12 col-xs-12 col-md-12 departmentAlertCountShow" style="display:none;">
+												<div id="departmentAlertCountDivId"></div>
+											</div>
 										</div>
-										
 									</div>
 								</div>
 							</div>

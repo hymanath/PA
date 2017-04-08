@@ -61,15 +61,28 @@ $("#dateRangePickerAUM").daterangepicker({
 		var type= $(this).attr("attr_type");
 		if(type == 'filter')
 		{
+			$(".departmentlocationShow").hide();
+			$(".departmentStatusShow").hide();
+			$(".departmentAlertCountShow").show();
+			
 			var alertType = getAlertType();
 			getDistrictLevelDeptWiseFilterViewDetails(alertType);
 		}else if(type == "subTask"){
+			$(".departmentlocationShow").hide();
+			$(".departmentStatusShow").hide();
+			$(".departmentAlertCountShow").show();
 			var alertType = getAlertType();
 			getDistrictLevelDeptWiseFilterViewDetails(alertType);
 		}else if(type == "status"){
+			$(".departmentlocationShow").hide();
+			$(".departmentStatusShow").show();
+			$(".departmentAlertCountShow").hide();
 			var alertType = getAlertType();
 			getDistrictLevelDeptWiseStatusOverView(alertType);
 		}else if(type == "location"){
+			$(".departmentlocationShow").show();
+			$(".departmentStatusShow").hide();
+			$(".departmentAlertCountShow").hide();
 			var alertType = getAlertType();
 			getDistrictLevelDeptWiseLocationLevelView(alertType);
 		}
@@ -147,10 +160,12 @@ function buildDistrictOfficerAlertsCountView(result){
 			var statusArr=[];
 			var statusNamesArr=[];
 			var uniqCnt = {};
+			var color;
 			var totalAlertCnt = result.list1[0].overAllCnt;
 			statusArr.push(result.list1[i].count);
 			statusNamesArr.push(result.list1[i].name);
 			percArr.push(result.list1[i].perc);
+			color=result.list1[i].color;
 			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list1[i].count),color:"#D3D3D3"};
 			count.push(uniqCnt);
 			var obj1={
@@ -159,7 +174,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			var obj={
 						name: 'No.of Alerts',
 						data: statusArr,
-						colorByPoint: true
+						color: color
 					}
 			
 			mainStatusArr.push(obj1);
@@ -265,11 +280,13 @@ function buildDistrictOfficerAlertsCountView(result){
 		for(var i in result.list2){
 			var statusArrST=[];
 			var statusNamesArrST=[];
+			var colorST;
 			var uniqCnt = {};
 			var totalAlertCnt = result.list2[0].overAllCnt;
 			statusArrST.push(result.list2[i].count);
 			statusNamesArrST.push(result.list2[i].name);
 			percArrST.push(result.list2[i].perc);
+			colorST=result.list2[i].color;
 			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list2[i].count),color:"#D3D3D3"};
 			countST.push(uniqCnt);
 			var obj1={
@@ -278,7 +295,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			var obj={
 						name: 'No.of Alerts',
 						data: statusArrST,
-						colorByPoint: true
+						color: colorST
 					}
 			
 			mainStatusArrST.push(obj1);
@@ -363,11 +380,13 @@ function buildDistrictOfficerAlertsCountView(result){
 		for(var i in result.list3){
 			var statusArrAST=[];
 			var statusNamesArrAST=[];
+			var colorAST;
 			var uniqCnt = {};
 			var totalAlertCnt = result.list3[0].overAllCnt;
 			statusArrAST.push(result.list3[i].count);
 			statusNamesArrAST.push(result.list3[i].name);
 			percArrAST.push(result.list3[i].perc);
+			colorAST = result.list3[i].color;
 			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list3[i].count),color:"#D3D3D3"};
 			countAST.push(uniqCnt);
 			var obj1={
@@ -376,7 +395,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			var obj={
 						name: 'No.of Alerts',
 						data: statusArrAST,
-						colorByPoint: true
+						color: colorAST
 					}
 			
 			mainStatusArrAST.push(obj1);
@@ -516,7 +535,107 @@ function getDistrictLevelDeptWiseLocationLevelView(alertType){
       url: 'getDistrictLevelDeptWiseLocationLevelViewAction.action',
 	  data: {task :JSON.stringify(jObj)}
     }).done(function(result){
+		buildDistrictLevelDeptWiseLocationLevelView(result);
 	});
+}
+
+function buildDistrictLevelDeptWiseLocationLevelView(result){
+	var mainlocationArr=[];
+	
+	if(result !=null && result.length>0){
+		for(var i in result){
+			
+			var locationNamesArr=[];
+				locationNamesArr.push(result[i].name)
+			if(result[i].subList2 !=null &&  result[i].subList2.length>0){
+				for(var j in result[i].subList2){
+					var locationArr=[];
+					var locationColorArr;
+					locationArr.push(result[i].subList2[j].count);
+					locationColorArr = result[i].subList2[j].color
+					var obj={
+								name: result[i].subList2[j].name,
+								data: locationArr,
+								color:locationColorArr
+							}
+					
+					mainlocationArr.push(obj);
+					
+				}
+			}
+		}
+		
+		
+	}
+	
+		var data = mainlocationArr
+			var id = 'departmentlocationCountDivId';
+			var type = {
+				type: 'bar',
+				backgroundColor:'transparent'
+				
+			}
+			var legend = {
+				verticalAlign:'top',
+				enabled: true
+			}
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				labels: {
+						enabled:false
+					},
+				stackLabels: {
+					//useHTML: true,
+					//align: 'left',
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					 formatter: function() {
+						
+						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return (this.total);
+					} 
+					
+				}
+				
+			}
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: locationNamesArr
+			}
+			var plotOptions =  {
+	             series: {
+					stacking: 'normal',
+					pointWidth: 30,
+					gridLineWidth: 15
+				}
+	        }
+			var tooltip = {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			};
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 }
 
 function getDistrictLevelDeptWiseStatusOverView(alertType){
@@ -532,8 +651,109 @@ function getDistrictLevelDeptWiseStatusOverView(alertType){
       url: 'getDistrictLevelDeptWiseStatusOverViewAction.action',
 	  data: {task :JSON.stringify(jObj)}
     }).done(function(result){
+		buildDistrictLevelDeptWiseStatusOverView(result);
 	});
 }
+
+function buildDistrictLevelDeptWiseStatusOverView(result){
+	var mainlStatusArr=[];
+	
+	if(result !=null && result.length>0){
+		for(var i in result){
+			
+			var locStatusNamesArr=[];
+				locStatusNamesArr.push(result[i].name)
+			if(result[i].subList2 !=null &&  result[i].subList2.length>0){
+				for(var j in result[i].subList2){
+					var locStatusArr=[];
+					var locStatusColorArr;
+					locStatusArr.push(result[i].subList2[j].count);
+					locStatusColorArr = result[i].subList2[j].color
+					var obj={
+								name: result[i].subList2[j].name,
+								data: locStatusArr,
+								color:locStatusColorArr
+							}
+					
+					mainlStatusArr.push(obj);
+					
+				}
+			}
+		}
+		
+		
+	}
+	
+		var data = mainlStatusArr
+			var id = 'departmentStatusCountDivId';
+			var type = {
+				type: 'bar',
+				backgroundColor:'transparent'
+				
+			}
+			var legend = {
+				verticalAlign:'top',
+				enabled: true
+			}
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				labels: {
+						enabled:false
+					},
+				stackLabels: {
+					//useHTML: true,
+					//align: 'left',
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					 formatter: function() {
+						
+						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return (this.total);
+					} 
+					
+				}
+				
+			}
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: locStatusNamesArr
+			}
+			var plotOptions =  {
+	             series: {
+					stacking: 'normal',
+					pointWidth: 30,
+					gridLineWidth: 15
+				}
+	        }
+			var tooltip = {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			};
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+}
+
 
 //getSubOrdinateAlertsOverview();
 function getSubOrdinateAlertsOverview(){
