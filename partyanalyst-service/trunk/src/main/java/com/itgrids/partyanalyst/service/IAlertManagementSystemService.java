@@ -1,12 +1,16 @@
 package com.itgrids.partyanalyst.service;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 
 public interface IAlertManagementSystemService {
@@ -32,5 +36,8 @@ public interface IAlertManagementSystemService {
 	public List<AlertCoreDashBoardVO> groupAlertsTimeWise(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs);
 	public List<DistrictOfficeViewAlertVO> getSubOrdinateAlertsOverview(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
 			List<Long> desigIds,Long priorityId);
-	
+	public ResultStatus updateAlertDueDate(Long alertId ,String date,Long userId);
+	public ResultStatus updateAlertStatusComment(Long alertId,Long statusId,String comment,Long userId);
+	public ResultStatus uploadDocumentsForAlert(final Map<File, String> mapfiles,final Long alertId,final Long userId);
+	public List<AlertTrackingVO> viewAlertHistory(Long alertId,Long userId);
 }
