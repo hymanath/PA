@@ -496,11 +496,11 @@ function buildDistrictLevelDeptWiseFilterViewDetails(result){
 				for(var i in result){
 					str1+='<tr>';
 						str1+='<td>'+result[i].name+'</td>';
-						str1+='<td>'+result[i].categoryCount+'</td>';
+						str1+='<td class="distWiseDeptCls" attr_dept_id='+result[i].id+' attr_level_id='+result[i].subList2[j].id+' style="cursor:pointer;" >'+result[i].categoryCount+'</td>';
 						if(result[i].subList2 !=null && result[i].subList2.length>0){
 							
 							for(var j in result[i].subList2){
-								str1+='<td >'+result[i].subList2[j].count+'</td>';
+								str1+='<td class="distWiseDeptCls" attr_dept_id='+result[i].id+' attr_level_id='+result[i].subList2[j].id+' style="cursor:pointer;">'+result[i].subList2[j].count+'</td>';
 								
 							}
 						}
@@ -795,4 +795,18 @@ function getSubOrdinateLevel(){
 	});
 	
 }
-
+$(document).on("click",".distWiseDeptCls",function(){
+	var deptId = $(this).attr("attr_dept_id");
+	var levelId = $(this).attr("attr_level_id");
+	var jObj = {
+		deptId: deptId,
+	    levelId: levelId
+		
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelDeptWiseFlterClickAction.action',
+	  data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+	});
+});

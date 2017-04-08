@@ -715,7 +715,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				} 
 			} 
 			Long priorityId = jObj.getLong("priorityId");			
-			districtOfficeViewAlertVOList = alertManagementSystemService.getSubOrdinateAlertsOverview(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId);
+			//districtOfficeViewAlertVOList = alertManagementSystemService.getSubOrdinateAlertsOverview(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSubOrdinateAlertsOverview() of alertManagementSystemAction",e);
 		}
@@ -830,5 +830,22 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			LOG.error("Exception Occured in viewAlertHistory() method, Exception - ",e); 
 		}
 		return Action.SUCCESS;	
+	}
+	
+	public String getDistrictLevelDeptWiseFlterClick(){
+		try{
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long scopeId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			Long deptId = jObj.getLong("deptId");
+			Long levelId = jObj.getLong("levelId");
+			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occured in getDistrictLevelDeptWiseFlterClick() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
 	}
 }
