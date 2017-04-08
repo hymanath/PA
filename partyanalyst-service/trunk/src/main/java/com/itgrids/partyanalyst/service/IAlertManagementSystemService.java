@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
@@ -17,5 +18,7 @@ public interface IAlertManagementSystemService {
 	public DistrictOfficeViewAlertVO getDistrictOfficerAlertsCountView(Long userId);
 	public List<IdNameVO> getDepartmentLevels(Long departmentId);
 	public List<IdNameVO> getParentLevelsOfLevel(Long departmentId,Long levelId);
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId);
+	public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId);
 	public  List<AlertVO> getDistrictLevelDeptWiseFilterView(Long scopeId,String startDateStr,String fromDateStr,int startIndex,int maxIndex,String type);
 }
