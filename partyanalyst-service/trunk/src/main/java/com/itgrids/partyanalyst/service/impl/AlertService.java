@@ -5629,6 +5629,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertCoreDashBoardVO.setUpdatedDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
 					alertCoreDashBoardVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
 					alertCoreDashBoardVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
+					alertCoreDashBoardVO.setSevertyColor(commonMethodsUtilService.getStringValueForObject(param[24]));
 					statusId = commonMethodsUtilService.getLongValueForObject(param[3]);
 					if(param[1] != null && param[2] != null){
 						if(statusId == 4L || statusId == 5L || statusId == 6L || statusId == 7L){
@@ -5640,13 +5641,18 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}
 					alertCoreDashBoardVO.setAlertLevel(commonMethodsUtilService.getStringValueForObject(param[8]));
 					alertCoreDashBoardVO.setTitle(commonMethodsUtilService.getStringValueForObject(param[9]));    
-					 if(param[11] == null){
-					    alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[20]));    
-					 }else if(param[10] == null){
-						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[11]));
-					 }else{
+					
+					if(param[23] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[23]));	
+					}else if(param[22] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[22]));	
+					}else if(param[10] != null){
 						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[10]));	
-					 }
+					}else if(param[11] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[11]));	
+					}else if(param[20] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[20]));
+					}
 					//hiii
 						if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 1L){//manual
 							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
