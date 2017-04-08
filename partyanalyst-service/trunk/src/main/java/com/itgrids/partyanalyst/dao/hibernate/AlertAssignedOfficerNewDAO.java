@@ -342,7 +342,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 
 	  	    if(fromDate != null && toDate != null)
 	  	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
-	  	  
+	  	  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >= :scopeId ");
 	    sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId, " +
 	    		" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " );
 	     	    
@@ -354,6 +354,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  	    if(deptId != null && deptId.longValue() > 0){
 	  	    	query.setParameter("deptId", deptId);
 	  	    }
+	  	    query.setParameter("scopeId",5l);
 	  	  return query.list();
 	  	}
 	@SuppressWarnings("unchecked")
