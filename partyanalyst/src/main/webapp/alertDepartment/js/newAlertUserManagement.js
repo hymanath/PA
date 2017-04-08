@@ -358,3 +358,21 @@ function buildDistrictOfficerAlertsCountView(result){
 			
 			highcharts(idAST,type,xAxisAST,yAxisAST,legend,dataAST,plotOptions,tooltip); 
 }
+getDistrictLevelDeptWiseFilterViewDetails();
+function getDistrictLevelDeptWiseFilterViewDetails(){
+	var jObj = {
+		startIndex:0,
+		maxIndex:10,
+		startDate: currentFromDate,
+	    fromDate: currentToDate,
+		type:"alert"
+		
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelDeptWiseFilterViewDetailsAction.action',
+	  data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+	});
+}
+	});
