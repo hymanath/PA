@@ -534,6 +534,7 @@ function getDistrictLevelDeptWiseStatusOverView(alertType){
     }).done(function(result){
 	});
 }
+
 //getSubOrdinateAlertsOverview();
 function getSubOrdinateAlertsOverview(){
 	var userId="";
@@ -560,3 +561,18 @@ function getSubOrdinateAlertsOverview(){
 	    }).done(function(result){
 		});
  }
+//getSubOrdinateLevel();
+function getSubOrdinateLevel(){
+	var designationId =0;
+	var jObj = {
+		designationId : designationId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getSubOrdinateLevelAction.action',
+	  data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+	});
+	
+}
+
