@@ -18,6 +18,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class AlertSeverity extends BaseModel implements Serializable {
 	private Long alertSeverityId;
 	private String severity;
+	private String severityColor;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,5 +39,14 @@ public class AlertSeverity extends BaseModel implements Serializable {
 	public void setSeverity(String severity) {
 		this.severity = severity;
 	}
+	@Column(name = "severity_color")
+	public String getSeverityColor() {
+		return severityColor;
+	}
+
+	public void setSeverityColor(String severityColor) {
+		this.severityColor = severityColor;
+	}
+	
 
 }
