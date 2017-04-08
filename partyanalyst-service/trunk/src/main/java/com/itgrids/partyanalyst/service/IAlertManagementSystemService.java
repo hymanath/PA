@@ -17,4 +17,5 @@ public interface IAlertManagementSystemService {
 	public DistrictOfficeViewAlertVO getDistrictOfficerAlertsCountView(Long userId);
 	public List<IdNameVO> getDepartmentLevels(Long departmentId);
 	public List<IdNameVO> getParentLevelsOfLevel(Long departmentId,Long levelId);
+	public  List<AlertVO> getDistrictLevelDeptWiseFilterView(Long scopeId,String startDateStr,String fromDateStr,int startIndex,int maxIndex,String type);
 }
