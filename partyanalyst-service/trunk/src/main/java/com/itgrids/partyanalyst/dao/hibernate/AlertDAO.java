@@ -4841,9 +4841,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}//comp
-	public List<Object[]> getTotalAlertByStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId){
+	public List<Object[]> getTotalAlertByStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct ");
+		queryStr.append(" select distinct ");  
 		queryStr.append(" A.alert_id as alert_id, " +//0
 				        " A.created_time as created_time, " +//1
 				        " A.updated_time as updated_time, " +//2
@@ -4887,9 +4887,14 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");
 		queryStr.append(" where ");
 		queryStr.append(" A.is_deleted='N' and ");
+		if(deptId != null && deptId.longValue() > 0 ){
+			queryStr.append(" A.govt_department_id =:deptId and ");
+		}else{
+			if(deptIdList != null && deptIdList.size() > 0)
+				queryStr.append(" A.govt_department_id in (:deptIdList) and ");
+		}
 		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
-		if(deptIdList != null && deptIdList.size() > 0)
-			queryStr.append(" A.govt_department_id in (:deptIdList) and ");
+		
 		if(fromDate != null && toDate != null)
 			queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
 		if(stateId != null && stateId.longValue() >= 0L){
@@ -4951,8 +4956,14 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(electronicIdList != null && electronicIdList.size() > 0){
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
-		if(deptIdList != null && deptIdList.size() > 0){
-			query.setParameterList("deptIdList", deptIdList);
+		
+		
+		if(deptId != null && deptId.longValue() > 0 ){
+			query.setParameter("deptId", deptId);
+		}else{
+			if(deptIdList != null && deptIdList.size() > 0){
+				query.setParameterList("deptIdList", deptIdList);
+			}
 		}
 		if(statusId != null && statusId.longValue() > 0L){
 			query.setParameter("statusId", statusId);

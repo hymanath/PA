@@ -175,8 +175,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
         }
+        
         //swadhin alertids based on status.
-        public List<Long> getTotalAlertByOtherStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, Long statusId,Long levelId,List<Long> levelValues){
+        public List<Long> getTotalAlertByOtherStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, Long statusId,Long levelId,List<Long> levelValues, Long govtDepartmentScopeId, Long deptId){
     		StringBuilder sb = new StringBuilder();  
     	    sb.append("select distinct model.alert.alertId ");
     	    sb.append(" from AlertAssignedOfficerNew model" +
@@ -193,15 +194,23 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	          " left join UA.tehsil T" +
     	          " left join UA.localElectionBody LEB " +
     	          " left join UA.panchayat P");
-    	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and  " +
-    	    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") and " +
-    	    		  " model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
+    	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N'  " +
+    	    		  " and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") " +
+    	    		  " and model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
+    	    if(govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
+    	    	sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :govtDepartmentScopeId ");
+    	    }
     	    if(statusId != null && statusId.longValue() > 0L){
     	    	sb.append(" and  model.alertStatus.alertStatusId = :statusId ");
     	    }
-    	    if(departmentIds != null && departmentIds.size()>0){
-    	    	sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
+    	    if(deptId != null && deptId.longValue() > 0L){
+    	    	sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId =:deptId ");
+    	    }else{
+    	    	if(departmentIds != null && departmentIds.size()>0){
+        	    	sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
+        	    }
     	    }
+    	    
     	      
     	    
     	    if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
@@ -242,9 +251,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	   
     	    Query query = getSession().createQuery(sb.toString());
     	    
-    	    if(departmentIds != null && departmentIds.size()>0){
-    	    	query.setParameterList("departmentIds", departmentIds);
+    	    if(deptId != null && deptId.longValue() > 0L){
+    	    	query.setParameter("deptId",deptId);
+    	    }else{
+    	    	if(departmentIds != null && departmentIds.size()>0){
+        	    	query.setParameterList("departmentIds", departmentIds);
+        	    }
     	    }
+    	    
+    	    
     	      
     	    if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
     	      query.setParameterList("printIdList", printIdsList);
@@ -264,6 +279,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    }	       
     	    if(statusId != null && statusId.longValue() > 0L){
     	    	query.setParameter("statusId",statusId);
+    	    }
+    	    if(govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
+    	    	query.setParameter("govtDepartmentScopeId",govtDepartmentScopeId);
     	    }
     	      return query.list();
     	}
