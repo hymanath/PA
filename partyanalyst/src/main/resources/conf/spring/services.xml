@@ -4166,6 +4166,9 @@
 		<property name="transactionTemplate" ref="transactionTemplate" ></property>
 		<property name="govtDepartmentWorkLocationDAO" ref="govtDepartmentWorkLocationDAO" ></property>
 		<property name="govtDepartmentDAO" ref="govtDepartmentDAO" ></property>
+		<property name="alertDepartmentCommentNewDAO" ref="alertDepartmentCommentNewDAO" ></property>
+		<property name="activityService" ref="activityService" ></property>
+		<property name="alertDepartmentDocumentNewDAO" ref="alertDepartmentDocumentNewDAO" ></property>		
    </bean>
 </beans>			
 	
