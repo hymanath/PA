@@ -534,3 +534,29 @@ function getDistrictLevelDeptWiseStatusOverView(alertType){
     }).done(function(result){
 	});
 }
+//getSubOrdinateAlertsOverview();
+function getSubOrdinateAlertsOverview(){
+	var userId="";
+	var fromDateStr= "";
+	var toDateStr= "";
+	var govtScopeIds=[];
+	var locationValues=[];
+	var desigIds=[];
+	var priorityId="";
+	
+	var jObj = {
+	userId : userId,
+	fromDateStr : fromDateStr, 
+	toDateStr : toDateStr,
+	govtScopeIds : govtScopeIds,
+	locationValues : locationValues,
+	desigIds : desigIds,
+	priorityId : priorityId
+	}
+	$.ajax({
+	      type:'GET',
+	      url: 'getSubOrdinateAlertsOverviewAction.action',
+		  data: {task :JSON.stringify(jObj)}
+	    }).done(function(result){
+		});
+ }
