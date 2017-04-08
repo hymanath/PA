@@ -16496,6 +16496,11 @@
 	   			<param name="root">districtOfficeViewAlertVO</param>
 	   		</result>
 		 </action>
+		 <action name="getTotalAlertByStatusNewAction" class="alertManagementSystemAction" method="getTotalAlertByStatus">
+	  	  	<result type="json" name="success">		   
+			    	<param name="root">alertCoreDashBoardVOs</param>
+		  	</result>	
+  		</action>
 		 <action name="getDistrictLevelDeptWiseFilterViewDetailsAction" class="alertManagementSystemAction" method="getDistrictLevelDeptWiseFilterViewDetails">
 			<result type="json" name="success">
 	   			<param name="root">alertVOs</param>
