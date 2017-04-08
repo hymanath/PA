@@ -3,11 +3,15 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -31,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeLevelDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -903,7 +908,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 * Swadhin(non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId)
 	 */
-	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId){
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long deptId){
 		LOG.info("Entered in getTotalAlertByStatus() method of AlertManagementSystemService{}");
 		try{
 			Date fromDate = null;
@@ -914,7 +919,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				toDate = sdf.parse(toDateStr);
 			}
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
-			List<Object[]> alertList = alertDAO.getTotalAlertByStatus(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId);
+			List<Object[]> alertList = alertDAO.getTotalAlertByStatus(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId,deptId);
 			setAlertDtls(alertCoreDashBoardVOs, alertList); 
 			//set Subtask into alert logic 
 			List<Long> alertIds = new ArrayList<Long>();
@@ -953,10 +958,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 * Swadhin(non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId)
 	 */
-	public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId){
+	public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId,Long govtDeptScopeId,Long deptId){
 		LOG.info("Entered in getTotalAlertByOtherStatus() method of AlertManagementSystemService{}");
 		try{
-			Date fromDate = null;
+			Date fromDate = null;  
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
@@ -974,7 +979,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
-			List<Long> alertIdSet = alertAssignedOfficerNewDAO.getTotalAlertByOtherStatus(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId,levelId,levelValuesList);
+			List<Long> alertIdSet = alertAssignedOfficerNewDAO.getTotalAlertByOtherStatus(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId,levelId,levelValuesList,govtDeptScopeId,deptId);
 			if(alertIdSet != null && alertIdSet.size() > 0){
 				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdSet));
 				setAlertDtls(alertCoreDashBoardVOs, list); 
@@ -1104,6 +1109,107 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					return alertVO;
 				}
 			}
+		}
+		return null;
+	}
+	
+	public List<AlertCoreDashBoardVO> groupAlertsTimeWise(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs){
+		try{
+			Map<Long,ArrayList<AlertCoreDashBoardVO>> groupIdThenAlertListMap = new LinkedHashMap<Long,ArrayList<AlertCoreDashBoardVO>>();
+			ArrayList<AlertCoreDashBoardVO> dashBoardVOs = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if(alertCoreDashBoardVOs != null && alertCoreDashBoardVOs.size() > 0){
+				for(AlertCoreDashBoardVO  alertCoreDashBoardVO : alertCoreDashBoardVOs){
+					
+					String alertDateStr = alertCoreDashBoardVO.getCreatedDate();
+					Date alertDate = sdf.parse(alertDateStr);
+					Long group = getDateGroup(alertDate);
+					dashBoardVOs = groupIdThenAlertListMap.get(group);
+					if(dashBoardVOs == null){
+						dashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+						groupIdThenAlertListMap.put(group, dashBoardVOs);
+					}
+					dashBoardVOs.add(alertCoreDashBoardVO);
+				}
+			}
+			List<AlertCoreDashBoardVO> list = new ArrayList<AlertCoreDashBoardVO>();
+			AlertCoreDashBoardVO altVO = null;
+			if(groupIdThenAlertListMap != null && groupIdThenAlertListMap.size() > 0){
+				for(Entry<Long,ArrayList<AlertCoreDashBoardVO>> entry : groupIdThenAlertListMap.entrySet()){
+					altVO = new AlertCoreDashBoardVO();
+					if(entry.getKey().longValue() == 1L){
+						altVO.setId(entry.getKey());
+						altVO.setName("Today Alerts");
+						altVO.setSubList(entry.getValue());
+					}else if(entry.getKey().longValue() == 2L){
+						altVO.setId(entry.getKey());
+						altVO.setName("Week Alerts");
+						altVO.setSubList(entry.getValue());
+					}else if(entry.getKey().longValue() == 3L){
+						altVO.setId(entry.getKey());
+						altVO.setName("Month Alerts");
+						altVO.setSubList(entry.getValue());
+					}else if(entry.getKey().longValue() == 4L){
+						altVO.setId(entry.getKey());
+						altVO.setName("Past Alerts");
+						altVO.setSubList(entry.getValue());
+					}
+					
+					list.add(altVO);
+				}
+			}
+			if(list != null && list.size() > 0){
+				Collections.sort(list, alertDateWiseAscOrder);
+			}
+				
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	public static Comparator<AlertCoreDashBoardVO> alertDateWiseAscOrder = new Comparator<AlertCoreDashBoardVO>() {
+    	public int compare(AlertCoreDashBoardVO obj2, AlertCoreDashBoardVO obj1) {
+    	Long vo2 = obj2.getId();
+    	Long vo1 = obj1.getId();
+    	//descending order of percantages.
+    	 return vo2.compareTo(vo1);
+    	}
+     };
+	public Long getDateGroup(Date alertDate){
+		try{
+			DateUtilService dateUtilService = new DateUtilService();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			//today date
+			Date todayDate = dateUtilService.getCurrentDateAndTime();
+			String dateStr0 = sdf.format(todayDate);
+			Long milisecToday = sdf.parse(dateStr0).getTime();
+			//date before 7 days
+			Date sevevDaysBefore = dateUtilService.getDateBeforeNDays(6);
+			String dateStr1 = sdf.format(sevevDaysBefore);
+			Long milisecSevevDaysBefore = sdf.parse(dateStr1).getTime();
+			//start date of month.
+			Date startDateOfMonth = dateUtilService.getStartDateOfMonth();
+			String dateStr2 = sdf.format(startDateOfMonth);
+			Long milisecStartDateOfMonth = sdf.parse(dateStr2).getTime();
+			//last day of privious month.
+			Date lastDayOfPreviousMonth = dateUtilService.getLastDayOfPreiviousMonth();
+			String dateStr3 = sdf.format(lastDayOfPreviousMonth);
+			Long milisecLastDayOfPreviousMonth = sdf.parse(dateStr3).getTime();
+			
+			if(alertDate.getTime() == milisecToday.longValue()){
+				return 1L;
+			}else if(alertDate.getTime() >= milisecToday.longValue() && alertDate.getTime() <= milisecSevevDaysBefore.longValue()){
+				return 2L;
+			}else if(alertDate.getTime() >= milisecToday.longValue() && alertDate.getTime() <= milisecStartDateOfMonth.longValue()){
+				return 3L;
+			}else{
+				return 4L;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		return null;
 	}

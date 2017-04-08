@@ -136,11 +136,7 @@ public class DateUtilService {
 		}
 	}
 
-	public static void main(String[] args) {
-		List<Date> list = getDatesOfNextMonth();
-		System.out.println(list);
-	}
-
+	
 	public Date getDateAndTime(String DateString) {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_WITH_SECONDS);
@@ -455,5 +451,52 @@ public class DateUtilService {
 			return null;
 		}
 	}
+	// date before n days
+	public static Date getDateBeforeNDays(int noOfDays) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar now = Calendar.getInstance();
+			now.add(Calendar.DATE, -noOfDays);
+			Date pastDate = now.getTime();
+			String dateStr = sdf.format(pastDate);
+			
+			return sdf.parse(dateStr);
 
+		} catch (Exception e) {
+			Log.error("Exception occured in getListOfDateOfWeekAfterCurrentWeek() method of DateUtilService class", e);
+			return null;
+		}
+	}
+	//get start date of month.
+	public static Date getStartDateOfMonth(){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar now = Calendar.getInstance();  
+		    now.set(Calendar.DAY_OF_MONTH, 1);
+		    Date pastDate = now.getTime();
+			String dateStr = sdf.format(pastDate);
+			return sdf.parse(dateStr);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	//get last day of previous month.
+	public static Date getLastDayOfPreiviousMonth(){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar now = Calendar.getInstance();  
+		    now.set(Calendar.DAY_OF_MONTH, 1);
+		    now.add(Calendar.DATE, -1);
+		    Date pastDate = now.getTime();
+			String dateStr = sdf.format(pastDate);
+			return sdf.parse(dateStr);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static void main(String[] args){
+		System.out.println(getLastDayOfPreiviousMonth());
+	}
 }
