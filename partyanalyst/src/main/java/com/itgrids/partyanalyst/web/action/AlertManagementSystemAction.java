@@ -715,7 +715,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				} 
 			} 
 			Long priorityId = jObj.getLong("priorityId");			
-			//districtOfficeViewAlertVOList = alertManagementSystemService.getSubOrdinateAlertsOverview(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId);
+			districtOfficeViewAlertVOList = alertManagementSystemService.getSubOrdinateAlertsOverview(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSubOrdinateAlertsOverview() of alertManagementSystemAction",e);
 		}
