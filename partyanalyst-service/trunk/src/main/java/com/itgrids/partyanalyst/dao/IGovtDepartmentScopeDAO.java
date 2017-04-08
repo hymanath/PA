@@ -8,5 +8,6 @@ import com.itgrids.partyanalyst.model.GovtDepartmentScope;
 
 public interface IGovtDepartmentScopeDAO extends GenericDao<GovtDepartmentScope, Long>{
 	public List<Object[]> getgovtDepatScopeDetails(Long scopeId);
+	public List<Object[]> getGovtDepartmenttScopeDetails(Long scopeId);
 	
 }
