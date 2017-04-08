@@ -2247,5 +2247,21 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAlertTitleForAlertId(Long alertId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.alert.title," +
+				  " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+				  " model.govtOfficer.mobileNo " +
+				  " from " +
+				  " AlertAssignedOfficer model " +
+				  " where " +
+				  " model.isDeleted = 'N' and " +
+				  " model.isApproved = 'Y' and " +
+				  " model.alertId = :alertId ");
+		Query query = getSession().createQuery(sb.toString());
+		      query.setParameter("alertId",alertId);
+		return query.list();
+	}
 	
 }

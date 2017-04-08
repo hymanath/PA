@@ -44,4 +44,16 @@ public class GovtDepartmentScopeLevelDAO extends GenericDaoHibernate<GovtDepartm
 		return query.list();
 		
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> govtDepartmentScopeLevelDetails(Long scopeId){
+   		Query query = getSession().createQuery(" " +
+   				" select " +
+   				" model.govtDepartmentId," +
+   				" model.govtDepartmentScopeId " +
+   				" from GovtDepartmentScopeLevel model " +
+   				" where " +
+   				" model.parentGovtDepartmentScopeId =:scopeId and model.isDeleted ='N' ");
+   		query.setParameter("scopeId",scopeId);
+   		return query.list();
+     }
 }
