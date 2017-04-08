@@ -39,7 +39,9 @@ public class AlertAssignedOfficerTrackingNew {
 	private Date insertedTime;
 	private Date updatedTime;
 	private String isApproved;
+	private Long alertSeviorityId;
 	
+	private AlertSeverity AlertSeverity;
 	private AlertAssignedOfficerNew alertAssignedOfficer;
 	private Alert alert;
 	private GovtDepartmentDesignationOfficerNew govtDepartmentDesignationOfficer;
@@ -240,6 +242,25 @@ public class AlertAssignedOfficerTrackingNew {
 	public void setAlertDepartmentDocument(
 			AlertDepartmentDocumentNew alertDepartmentDocument) {
 		this.alertDepartmentDocument = alertDepartmentDocument;
+	}
+	
+	@Column(name = "alert_seviority")
+	public Long getAlertSeviorityId() {
+		return alertSeviorityId;
+	}
+	public void setAlertSeviorityId(Long alertSeviorityId) {
+		this.alertSeviorityId = alertSeviorityId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_seviority", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertSeverity getAlertSeverity() {
+		return AlertSeverity;
+	}
+	public void setAlertSeverity(AlertSeverity alertSeverity) {
+		AlertSeverity = alertSeverity;
 	}
 	
 	
