@@ -41,7 +41,7 @@ public class AlertAssignedOfficerTrackingNew {
 	private String isApproved;
 	private Long alertSeviorityId;
 	
-	private AlertSeverity AlertSeverity;
+	private AlertSeverity alertSeviority;
 	private AlertAssignedOfficerNew alertAssignedOfficer;
 	private Alert alert;
 	private GovtDepartmentDesignationOfficerNew govtDepartmentDesignationOfficer;
@@ -256,12 +256,13 @@ public class AlertAssignedOfficerTrackingNew {
 	@JoinColumn(name = "alert_seviority", insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public AlertSeverity getAlertSeverity() {
-		return AlertSeverity;
+	public AlertSeverity getAlertSeviority() {
+		return alertSeviority;
 	}
-	public void setAlertSeverity(AlertSeverity alertSeverity) {
-		AlertSeverity = alertSeverity;
+	public void setAlertSeviority(AlertSeverity alertSeviority) {
+		this.alertSeviority = alertSeviority;
 	}
+	
 	
 	
 	
