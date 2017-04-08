@@ -5,7 +5,7 @@ var globalStateId = 1;
 var globalNewsPaperIdArr = [];
 var globalChannelIdArr = [];
 var globalDepartmentIdArr = [];
-var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 
 /* OnLoad Calls Start*/
 onLoadInitialisations();
@@ -151,6 +151,8 @@ function onLoadInitialisations()
 			keyboard: false,
 			backdrop: 'static'
 		});
+		var statusId = $(this).attr("attr_status_id");
+		getAlertDtlsBasedOnStatusClick(statusId)
 	});
 }
 
@@ -729,4 +731,31 @@ function buildDepartmentWiseAlertOverviewCnt(result)
 		});
 	}
 	
+}
+function getAlertDtlsBasedOnStatusClick(statusId){ 
+	$("#alertManagementPopupBody").html(spinner);
+	var deptIdArr = globalDepartmentIdArr;
+	var paperIdArr = globalNewsPaperIdArr;
+	var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		stateId : globalStateId,
+		deptIdArr : deptIdArr,  
+		paperIdArr : paperIdArr,
+		chanelIdArr : chanelIdArr,                 
+		statusId : statusId                                
+    }
+    $.ajax({
+		type:'GET',
+		url: 'getTotalAlertByStatusNewAction.action',
+		data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			buildAlertDtlsBasedOnStatusClick(result);
+		}else{
+			$("#statusOverview").html('NO DATA AVAILABLE')
+		}
+    });
 }
