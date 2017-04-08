@@ -16521,6 +16521,21 @@
 	   			<param name="root">alertVOs</param>
 	   		</result>
 		 </action>
+		 <action name="getTotalAlertBylocationLvlAction" class="alertManagementSystemAction" method="getTotalAlertBylocationLvl">
+	  	  	<result type="json" name="success">		   
+			    	<param name="root">alertCoreDashBoardVOs</param>
+		  	</result>	
+  		</action>
+  		<action name="getTotalAlertByStatusThenDeptAction" class="alertManagementSystemAction" method="getTotalAlertByStatusThenDept">
+			<result type="json" name="success">
+	   			<param name="root">districtOfficeViewAlertVO</param>
+	   		</result>
+		 </action>
+		  <action name="getTotalAlertBylocationLvlThenDeptAction" class="alertManagementSystemAction" method="getTotalAlertBylocationLvlThenDept">
+	  	  	<result type="json" name="success">		   
+			    	<param name="root">alertCoreDashBoardVOs</param>
+		  	</result>	
+  		</action>
 		 <action name="getDistrictLevelDeptWiseLocationLevelViewAction" class="alertManagementSystemAction" method="getDistrictLevelDeptWiseLocationLevelView">
 			<result type="json" name="success">
 	   			<param name="root">alertVOs</param>
