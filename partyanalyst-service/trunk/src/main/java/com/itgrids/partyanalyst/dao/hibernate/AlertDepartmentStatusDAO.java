@@ -111,4 +111,21 @@ public class AlertDepartmentStatusDAO extends GenericDaoHibernate<AlertDepartmen
 	      }
 	      return query.list();   
    }
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllStatuses(){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct" +
+						" alertDepartmentStatus.alertStatus.alertStatusId, " +
+						" alertDepartmentStatus.alertStatus.alertStatus," +
+						" alertDepartmentStatus.alertStatus.color," +
+						" alertDepartmentStatus.alertStatus.shortName " +
+						" from " +
+						" AlertDepartmentStatus alertDepartmentStatus " +
+						" where " +
+						" alertDepartmentStatus.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+		
+		queryStr.append(" order by alertDepartmentStatus.alertStatus.statusOrder ");
+		Query query = getSession().createQuery(queryStr.toString());
+		return query.list();
+	}
 }
