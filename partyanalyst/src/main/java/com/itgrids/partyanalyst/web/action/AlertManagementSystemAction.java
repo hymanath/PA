@@ -11,6 +11,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -41,9 +42,18 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdAndNameVO> locationLevelList;
 	private IAlertManagementSystemService alertManagementSystemService;
 	private List<AlertVO> alertVOs;
+	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	private AlertVO alertVO;
 	
 	
+	
+	public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOs() {
+		return alertCoreDashBoardVOs;
+	}
+	public void setAlertCoreDashBoardVOs(
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs) {
+		this.alertCoreDashBoardVOs = alertCoreDashBoardVOs;
+	}
 	public JSONObject getjObj() {
 		return jObj;
 	}
@@ -310,6 +320,66 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTotalAlertByStatus(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
+			Long statusId = jObj.getLong("statusId");
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+			List<Long> deptIdList = new ArrayList<Long>();
+			if(deptIdArr != null && deptIdArr.length() > 0){
+				for (int i = 0; i < deptIdArr.length(); i++){
+					deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+				} 
+			}
+			 
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			if(paperIdArr != null && paperIdArr.length() > 0){
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			if(chanelIdArr != null && chanelIdArr.length() > 0){
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+				}
+			}
+			
+			if(statusId != null && statusId.longValue() == 1L){//pending
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId);
+			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId);
+			}else{
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L);
+				List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
+				if(alertCoreDashBoardVOs != null){
+					list1.addAll(alertCoreDashBoardVOs);
+				}
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId);
+				List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
+				if(alertCoreDashBoardVOs != null ){
+					list2.addAll(alertCoreDashBoardVOs);
+				}
+				alertCoreDashBoardVOs.clear();
+				alertCoreDashBoardVOs.addAll(list1);
+				alertCoreDashBoardVOs.addAll(list2);     
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;
 	}
