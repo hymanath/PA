@@ -30,8 +30,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String source;
 	private String severtyColor;
 	private Long subTaskCount = 0L;
-	
-	
+		
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
 	private List<AlertCoreDashBoardVO> subList1 = new ArrayList<AlertCoreDashBoardVO>(0);
 	private Set<Long> setList = new HashSet<Long>(0);
