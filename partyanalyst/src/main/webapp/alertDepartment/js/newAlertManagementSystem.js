@@ -146,7 +146,7 @@ function onLoadInitialisations()
 	$(".chosenSelect").chosen({width:'100%'});
 	$(document).on("click",".getDtlsCls",function(){
 		$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		$("#totalAlertsModal").modal({
+		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
 			backdrop: 'static'

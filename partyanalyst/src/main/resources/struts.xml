@@ -16496,7 +16496,17 @@
 	   			<param name="root">districtOfficeViewAlertVO</param>
 	   		</result>
 		 </action>
-		 <action name="getTotalAlertByStatusNewAction" class="alertManagementSystemAction" method="getTotalAlertByStatus">
+		<action name="updateCommentAction" class="alertManagementSystemAction" method="updateComment">
+			<result type="json" name="success">
+	   			<param name="root">resultStatus</param>
+	   		</result>
+		</action>
+		<action name="updateAlertPriorityAction" class="alertManagementSystemAction" method="updateAlertPriority">
+			<result type="json" name="success">
+	   			<param name="root">resultStatus</param>
+	   		</result>
+		</action>	 	
+		<action name="getTotalAlertByStatusNewAction" class="alertManagementSystemAction" method="getTotalAlertByStatus">
 	  	  	<result type="json" name="success">		   
 			    	<param name="root">alertCoreDashBoardVOs</param>
 		  	</result>	
@@ -16505,6 +16515,6 @@
 			<result type="json" name="success">
 	   			<param name="root">alertVOs</param>
 	   		</result>
-		 </action>
+		 </action> 
  </package>
 </struts>
