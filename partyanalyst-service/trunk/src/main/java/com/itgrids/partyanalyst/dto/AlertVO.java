@@ -33,7 +33,7 @@ public class AlertVO {
 	private String name;
 	private Long statusId;
 	private String status;
-	private Long count;
+	private Long count = 0l;
 	private String category;
 	private Long categoryId;
 	private Long categoryCount = 0l;
@@ -41,7 +41,7 @@ public class AlertVO {
 	private String locationName;
 	
 	private List<AlertVO> subList1;
-	private List<AlertVO> subList2;
+	private List<AlertVO> subList2 = new ArrayList<AlertVO>(0);
 	private String title;
 	private String date1;
 	private String date2;
@@ -271,7 +271,6 @@ public class AlertVO {
 	public void setCategoryCount(Long categoryCount) {
 		this.categoryCount = categoryCount;
 	}
-	
 	public List<AlertVO> getSubList2() {
 		return subList2;
 	}
