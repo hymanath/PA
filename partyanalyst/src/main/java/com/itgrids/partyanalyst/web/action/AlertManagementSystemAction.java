@@ -20,6 +20,10 @@ import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
+/**
+ * @author Teja
+ *
+ */
 public class AlertManagementSystemAction extends ActionSupport implements ServletRequestAware{
 
 	private final static Logger LOG = Logger.getLogger(AlertManagementSystemAction.class);
@@ -37,8 +41,27 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdAndNameVO> locationLevelList;
 	private IAlertManagementSystemService alertManagementSystemService;
 	private List<AlertVO> alertVOs;
+	private AlertVO alertVO;
 	
 	
+	public JSONObject getjObj() {
+		return jObj;
+	}
+	public void setjObj(JSONObject jObj) {
+		this.jObj = jObj;
+	}
+	public ICccDashboardService getCccDashboardService() {
+		return cccDashboardService;
+	}
+	public IAlertManagementSystemService getAlertManagementSystemService() {
+		return alertManagementSystemService;
+	}
+	public AlertVO getAlertVO() {
+		return alertVO;
+	}
+	public void setAlertVO(AlertVO alertVO) {
+		this.alertVO = alertVO;
+	}
 	public DistrictOfficeViewAlertVO getDistrictOfficeViewAlertVO() {
 		return districtOfficeViewAlertVO;
 	}
@@ -60,12 +83,6 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public void setSession(HttpSession session) {
 		this.session = session;
-	}
-	public JSONObject getjObj() {
-		return jObj;
-	}
-	public void setjObj(JSONObject jObj) {
-		this.jObj = jObj;
 	}
 	public String getTask() {
 		return task;
@@ -293,6 +310,26 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDistrictLevelDeptWiseFilterViewDetails(){
+		try{
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long scopeId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			int startIndex = jObj.getInt("startIndex");
+			int maxIndex = jObj.getInt("maxIndex");
+			String startDateStr = jObj.getString("startDate");
+			String fromDateStr = jObj.getString("fromDate");
+			String type = jObj.getString("type");
+			
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseFilterView(scopeId,startDateStr,fromDateStr,startIndex,maxIndex,type);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occured in getDistrictLevelDeptWiseFilterView() of alertManagementSystemAction",e);
 		}
 		return Action.SUCCESS;
 	}
