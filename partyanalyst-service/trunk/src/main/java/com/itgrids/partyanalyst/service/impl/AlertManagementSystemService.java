@@ -263,7 +263,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				 }
 				 for(Object[] param : objList){
 					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
-					 AlertVO VO = getMatchVO(finalAlertVOs,id);
+					 AlertVO VO = getMatchVO1(finalAlertVOs,id);
 					 if(VO == null){
 						 VO = new AlertVO();
 						 VO.setId(id);
@@ -295,7 +295,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			LOG.error("Error occured calculatePercentage() method of CccDashboardService{}");
 	    }
 	}
-	public AlertVO getMatchVO(List<AlertVO> finalAlertVOs,Long id){
+	public AlertVO getMatchVO1(List<AlertVO> finalAlertVOs,Long id){
 		try{
 			if(finalAlertVOs == null || finalAlertVOs.size() ==0)
 				return null;
@@ -1141,7 +1141,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					setDeptWiseGraphView(deptWiseSubTaskList,finalVoList);
 				}
 			}
-			
+			if(finalVoList != null && finalVoList.size() > 0){
+				finalVoList.get(0).setSubList1(scopeVoList);
+			}
 		} catch (Exception e) {
 			LOG.error(" Exception Occured in getDistrictLevelDeptWiseLocationLevelView() method, Exception - ",e);
 		}
