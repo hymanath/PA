@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeLevelDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
@@ -58,8 +59,42 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 	private TransactionTemplate transactionTemplate = null;
 	private IGovtDepartmentScopeLevelDAO govtDepartmentScopeLevelDAO;
 	private IGovtDepartmentWorkLocationDAO govtDepartmentWorkLocationDAO;
+	private IGovtDepartmentScopeDAO govtDepartmentScopeDAO;
 	
 	
+	public IGovtDepartmentScopeDAO getGovtDepartmentScopeDAO() {
+		return govtDepartmentScopeDAO;
+	}
+
+	public void setGovtDepartmentScopeDAO(
+			IGovtDepartmentScopeDAO govtDepartmentScopeDAO) {
+		this.govtDepartmentScopeDAO = govtDepartmentScopeDAO;
+	}
+
+	public CommonMethodsUtilService getCommonMethodsUtilService() {
+		return commonMethodsUtilService;
+	}
+
+	public IGovtAlertDepartmentLocationNewDAO getGovtAlertDepartmentLocationNewDAO() {
+		return govtAlertDepartmentLocationNewDAO;
+	}
+
+	public IAlertDepartmentStatusDAO getAlertDepartmentStatusDAO() {
+		return alertDepartmentStatusDAO;
+	}
+
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public IGovtDepartmentScopeLevelDAO getGovtDepartmentScopeLevelDAO() {
+		return govtDepartmentScopeLevelDAO;
+	}
+
+	public IGovtDepartmentWorkLocationDAO getGovtDepartmentWorkLocationDAO() {
+		return govtDepartmentWorkLocationDAO;
+	}
+
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
@@ -851,5 +886,106 @@ public class AlertManagementSystemService implements IAlertManagementSystemServi
 		} catch (Exception e) {
 			LOG.error("Error occured setLocationValuesToMap() method of AlertManagementSystemService",e);
 		}
+	}
+	/*
+	 * Teja(non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getDistrictLevelDeptWiseFilterView(java.lang.Long,java.lang.String,java.lang.String,java.lang.int,java.lang.int)
+	 */
+	public  List<AlertVO> getDistrictLevelDeptWiseFilterView(Long scopeId,String startDateStr,String fromDateStr,int startIndex,int maxIndex,String type){
+		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
+		try {
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr != null && startDateStr.trim().length() > 0 && fromDateStr != null && fromDateStr.trim().length() > 0){
+				fromDate = sdf.parse(startDateStr);
+				toDate = sdf.parse(fromDateStr);
+			}
+			List<Object[]> scopeDetlsLst = govtDepartmentScopeDAO.getgovtDepatScopeDetails(scopeId);
+			Map<Long, List<Long>> deptlevelmap = new HashMap<Long, List<Long>>(0);
+			List<Object[]> levelLst = govtDepartmentScopeLevelDAO.govtDepartmentScopeLevelDetails(scopeId);
+			if(levelLst != null && levelLst.size() > 0){
+				for (Object[] objects : levelLst) {
+					if(deptlevelmap.get((Long) objects[0]) == null){
+						List<Long> scopeIds = new ArrayList<Long>(0);
+						scopeIds.add((Long) objects[1]);
+						deptlevelmap.put((Long) objects[0],scopeIds);
+					}else{
+						deptlevelmap.get((Long) objects[0]).add((Long) objects[1]);
+					}
+				}
+			}
+			if(type.equalsIgnoreCase("alert")){
+				//deptId-0,deptNmae-1,scopeId-2,levelName-3,count-4
+				List<Object[]> levelWiseCntsLst = alertAssignedOfficerNewDAO.getAlertAssignCountsForDeptWiseDetails(fromDate, toDate,startIndex,maxIndex);
+				if(levelWiseCntsLst != null && levelWiseCntsLst.size() > 0){
+					setDistrictLevelDeptWiseFilterView(levelWiseCntsLst,finalVoList,scopeDetlsLst,deptlevelmap);
+				}
+			}else{
+				//deptId-0,deptNmae-1,scopeId-2,levelName-3,count-4
+				List<Object[]> subLevelWiseCntsLst = govtAlertSubTaskDAO.getSubTaskAlertAssignCountsForDeptWiseDetails(fromDate, toDate,startIndex,maxIndex);
+				if(subLevelWiseCntsLst != null && subLevelWiseCntsLst.size() > 0){
+					setDistrictLevelDeptWiseFilterView(subLevelWiseCntsLst,finalVoList,scopeDetlsLst,deptlevelmap);
+				}
+			}
+			if(finalVoList != null && finalVoList.size() > 0){
+				for (AlertVO vo : finalVoList) {
+					if(vo.getSubList2() != null && vo.getSubList2().size() > 0){
+						for (AlertVO subVo : vo.getSubList2()){
+							   vo.setCategoryCount(vo.getCategoryCount()+subVo.getCount());
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			LOG.error(" Exception Occured in getDistrictLevelDeptWiseFilterView() method, Exception - ",e);
+		}
+		return finalVoList;
+	}
+	public void setDistrictLevelDeptWiseFilterView(List<Object[]> objLst,List<AlertVO> finalVOList,List<Object[]> scopeDetlsLst,Map<Long, List<Long>> deptlevelmap){
+		if(objLst != null && objLst.size() > 0){
+			for (Object[] obj : objLst) {
+				AlertVO matchedDeptVO = getmatchedVo(finalVOList,(Long)obj[0]);
+				if(matchedDeptVO == null){
+					matchedDeptVO = new AlertVO(); 
+					matchedDeptVO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					matchedDeptVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					setScopeDetailsSkeleton(scopeDetlsLst, matchedDeptVO);
+					List<Long> scopeIdsList = deptlevelmap.get((Long)obj[0]);
+					if(scopeIdsList.contains((Long)obj[2])){
+						AlertVO matchedScopeVO = getmatchedVo(matchedDeptVO.getSubList2(),(Long)obj[2]);
+						if(matchedScopeVO != null){
+							matchedScopeVO.setCount((Long) obj[4]);
+						}
+					}
+					finalVOList.add(matchedDeptVO);
+				}else{
+						AlertVO matchedScopeVo = getmatchedVo(matchedDeptVO.getSubList2(),(Long)obj[2]);
+						if(matchedScopeVo != null){
+							matchedScopeVo.setCount((Long) obj[4]);
+						}
+				   }
+			   }
+		   }
+	  }
+	public void setScopeDetailsSkeleton(List<Object[]> scopeDetlsLst,AlertVO finalVo){
+		if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
+			for (Object[] objects : scopeDetlsLst){
+				AlertVO vo = new AlertVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				finalVo.getSubList2().add(vo);
+		   }
+		}
+	}
+	public AlertVO getmatchedVo(List<AlertVO> finalVOList,Long deptId){
+		if(finalVOList != null && finalVOList.size() > 0){
+			for (AlertVO alertVO : finalVOList){
+				if(alertVO.getId() != null && alertVO.getId().equals(deptId)){
+					return alertVO;
+				}
+			}
+		}
+		return null;
 	}
 }
