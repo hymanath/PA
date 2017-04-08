@@ -494,6 +494,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;
 	}
+	
 	public String getGovtDepartmentDetails(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -549,4 +550,21 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;
 	}
+	public String getSubOrdinateLevels(){
+		try{
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long scopeId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			Long designationId = jObj.getLong("designationId");
+			deptListNew = alertManagementSystemService.getSubOrdinateLevels(designationId);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occured in getSubOrdinateLevels() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+		
 }
