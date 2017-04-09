@@ -695,7 +695,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			String fromDateStr = jObj.getString("fromDate");
 			String type = jObj.getString("type");
 			Long deptId = jObj.getLong("deptId");
-			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptId);
+			String sortingType = jObj.getString("sortingType");
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptId,sortingType);
 			
 		}catch(Exception e){
 			e.printStackTrace();
