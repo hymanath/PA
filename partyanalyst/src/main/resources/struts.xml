@@ -16580,6 +16580,44 @@
 		<result type="json" name="success">
    			<param name="root">resultStatus</param>
    		</result>
-	</action> 	  
+	</action>
+	<action name="getDepartmentLevelsAction" class="alertManagementSystemAction" method="getDepartmentLevels">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+		 </action>
+		 <action name="getParentLevelsOfLevelAction" class="alertManagementSystemAction" method="getParentLevelsOfLevel">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+		 </action>
+		 
+		 <action name="getDesignationsByDepartmentNewAction" class="alertManagementSystemAction" method="getDesignationsByDepartmentNew">
+			<result type="json" name="success">		   
+				<param name="root">govtDeptVoList</param>
+			</result>	
+		</action>
+		<action name="getOfficersByDesignationAndLevelNewAction" class="alertManagementSystemAction" method="getOfficersByDesignationAndLevelNew">
+			<result type="json" name="success">		   
+				<param name="root">govtDeptVoList</param>
+			</result>	
+		</action>
+		
+		<action name="assigningAlertToOfficerNewAction" class="alertManagementSystemAction" method="assigningAlertToOfficerNew">
+			<result type="json" name="success">		   
+				<param name="root">successMsg</param>
+			</result>	
+		</action>
+		
+		<action name="assigningSubTaskToOfficerAction" class="alertManagementSystemAction" method="assigningSubTaskToOfficer">
+			<result type="json" name="success">		   
+				<param name="root">successMsg</param>
+			</result>	
+		</action>
+		<action name="getGovtSubLevelInfoAction" class="alertManagementSystemAction" method="getGovtSubLevelInfo">
+			<result type="json" name="success">		   
+				<param name="root">idNameVO</param>
+			</result>	
+		</action> 	  
  </package>
 </struts>

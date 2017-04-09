@@ -16,11 +16,14 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
+import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
@@ -49,6 +52,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdAndNameVO> locationLevelList;
 	private IAlertManagementSystemService alertManagementSystemService;
 	private List<AlertVO> alertVOs;
+	private List<IdNameVO> idnameVoList;
+	private List<GovtDepartmentVO> govtDeptVoList = new ArrayList<GovtDepartmentVO>(0);
+	
+	private String successMsg;
+	private AlertAssigningVO alertAssigningVO;	
+	private IdNameVO idNameVO;
 	private ResultStatus resultStatus;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	private AlertVO alertVO;
@@ -107,6 +116,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public void setAlertVO(AlertVO alertVO) {
 		this.alertVO = alertVO;
+	}
+	public IdNameVO getIdNameVO() {
+		return idNameVO;
+	}
+	public void setIdNameVO(IdNameVO idNameVO) {
+		this.idNameVO = idNameVO;
+	}
+	public AlertAssigningVO getAlertAssigningVO() {
+		return alertAssigningVO;
+	}
+	public void setAlertAssigningVO(AlertAssigningVO alertAssigningVO) {
+		this.alertAssigningVO = alertAssigningVO;
+	}
+	public String getSuccessMsg() {
+		return successMsg;
+	}
+	public void setSuccessMsg(String successMsg) {
+		this.successMsg = successMsg;
+	}
+	public List<GovtDepartmentVO> getGovtDeptVoList() {
+		return govtDeptVoList;
+	}
+	public void setGovtDeptVoList(List<GovtDepartmentVO> govtDeptVoList) {
+		this.govtDeptVoList = govtDeptVoList;
+	}
+	public List<IdNameVO> getIdnameVoList() {
+		return idnameVoList;
+	}
+	public void setIdnameVoList(List<IdNameVO> idnameVoList) {
+		this.idnameVoList = idnameVoList;
 	}
 	public DistrictOfficeViewAlertVO getDistrictOfficeViewAlertVO() {
 		return districtOfficeViewAlertVO;
@@ -355,11 +394,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			
 		}catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
+			LOG.error("Exception occured in getDistrictOfficerAlertsCountView() of AlertManagementSystemAction",e);
 		}
 		return Action.SUCCESS;
 	}
-	
 	public String updateComment(){
 		try {
 			session = request.getSession();
@@ -848,4 +886,112 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getDepartmentLevels(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long departmentId = jObj.getLong("departmentId");
+			
+			idnameVoList = alertManagementSystemService.getDepartmentLevels(departmentId);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getDepartmentLevels() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getParentLevelsOfLevel(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			Long departmentId = jObj.getLong("departmentId");
+			Long levelId = jObj.getLong("levelId");
+			
+			idnameVoList = alertManagementSystemService.getParentLevelsOfLevel(departmentId,levelId);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getParentLevelsOfLevel() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDesignationsByDepartmentNew(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long departmentId = jObj.getLong("departmentId");
+				Long levelId = jObj.getLong("levelId");
+				Long levelValue = jObj.getLong("levelValue");
+			
+				govtDeptVoList = alertManagementSystemService.getDesignationsByDepartment(departmentId,levelId,levelValue);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getDesignationsByDepartment() in AlertManagementSystemAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+	public String getOfficersByDesignationAndLevelNew(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long levelId = jObj.getLong("levelId");
+				Long levelValue = jObj.getLong("levelValue");
+				Long designationId = jObj.getLong("designationId");
+			
+				govtDeptVoList = alertManagementSystemService.getOfficersByDesignationAndLevel(levelId,levelValue,designationId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getOfficersByDesignationAndLevel() in AlertManagementSystemAction",e);
+			}
+			   return Action.SUCCESS;
+	}
+	
+	public String assigningAlertToOfficerNew(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   if(regVo == null)
+				   successMsg = "failure";
+			   Long userId = regVo.getRegistrationID();
+			   alertAssigningVO.setUserId(userId);
+			 
+			   
+			   successMsg = alertManagementSystemService.assigningAlertToOfficer(alertAssigningVO);
+			   
+			} catch (Exception e) {
+				LOG.error("Exception Raised in assigningAlertToOfficerNew() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+	public String assigningSubTaskToOfficer(){
+		   try {
+			   session = request.getSession();
+			   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			   if(regVo == null)
+				   successMsg = "failure";
+			   Long userId = regVo.getRegistrationID();
+			   alertAssigningVO.setUserId(userId);
+			 
+			   
+			   successMsg = alertManagementSystemService.assigningSubTaskToOfficer(alertAssigningVO);
+			   
+			} catch (Exception e) {
+				LOG.error("Exception Raised in assigningSubTaskToOfficer() in CccDashboardAction",e);
+			}
+			   return Action.SUCCESS;
+		}
+	
+		public String getGovtSubLevelInfo(){
+			   try {
+				   jObj = new JSONObject(getTask());
+				   	Long departmentId = jObj.getLong("departmentId");
+					Long levelId = jObj.getLong("levelId");
+					Long levelValue = jObj.getLong("levelValue");
+				   
+					idNameVO = alertManagementSystemService.getGovtSubLevelInfo(departmentId,levelId,levelValue);
+				   
+				} catch (Exception e) {
+					LOG.error("Exception Raised in getGovtSubLevelInfo() in CccDashboardAction",e);
+				}
+				   return Action.SUCCESS;
+			}
 }

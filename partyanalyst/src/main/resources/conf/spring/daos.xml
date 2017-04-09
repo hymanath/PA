@@ -3866,7 +3866,7 @@
 	 <bean id="alertSubTaskStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertSubTaskStatusDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 <bean id="govtOfficerSubTaskTracking" class="com.itgrids.partyanalyst.dao.hibernate.GovtOfficerSubTaskTrackingDAO">
+	 <bean id="govtOfficerSubTaskTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtOfficerSubTaskTrackingDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 <bean id="govtSubTaskActionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSubTaskActionTypeDAO">

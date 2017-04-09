@@ -4171,6 +4171,8 @@
 		<property name="alertDepartmentDocumentNewDAO" ref="alertDepartmentDocumentNewDAO" ></property>	
 		<property name="dateUtilService" ref="dateUtilService" ></property>	
 		<property name="alertAssignedOfficerTrackingNewDAO" ref="alertAssignedOfficerTrackingNewDAO" ></property>
+		<property name="govtOfficerSubTaskTrackingDAO" ref="govtOfficerSubTaskTrackingDAO" ></property>
+		<property name="govtDepartmentWorkLocationRelationDAO" ref="govtDepartmentWorkLocationRelationDAO" ></property>
    </bean>
 </beans>			
 	
