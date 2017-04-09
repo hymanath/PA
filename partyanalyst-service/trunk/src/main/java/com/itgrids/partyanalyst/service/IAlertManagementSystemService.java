@@ -47,5 +47,5 @@ public interface IAlertManagementSystemService {
 	public ResultStatus updateAlertStatusComment(Long alertId,Long statusId,String comment,Long userId);
 	public ResultStatus uploadDocumentsForAlert(final Map<File, String> mapfiles,final Long alertId,final Long userId);
 	public List<AlertTrackingVO> viewAlertHistory(Long alertId,Long userId);
-	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId);
+	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId,Long statusId);
 }
