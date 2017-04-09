@@ -124,50 +124,58 @@
 								<div class="panel-body">
 									<div class="row">
 											<div class="col-sm-12 col-xs-12 col-md-12 departmentlocationShow">
-													<ul class="list-inline activeUlCls  constituencyUl">
-														<li class="descendingConstituencyCls active" onClick="">
-															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-														</li >
-														<li class="ascendingConstituencyCls" onClick="">
-															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-														</li>
-														<li class="atozConstituecySortingCls" onClick="">
-															A-Z
-														</li>
-														<li class="ztozConstituecySortingCls" onClick="">
-															Z-A
-														</li>
-														<li>
-														<select class="form-control" id="" onChange="">
-															<option value="0">Select Constitency </option>
-															<option value="0">Select Constitency </option>
-														</select>
-														</li>
-													</ul>
+												<div class="col-md-2 col-xs-12 col-sm-4">
+														<ul class="list-inline activeUlCls  constituencyUl">
+															<li class="descendingConstituencyCls active" onClick="">
+																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+															</li >
+															<li class="ascendingConstituencyCls" onClick="">
+																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+															</li>
+															<li class="atozConstituecySortingCls" onClick="">
+																A-Z
+															</li>
+															<li class="ztozConstituecySortingCls" onClick="">
+																Z-A
+															</li>
+														</ul>
+												</div>
+												<div class="col-sm-4 col-xs-12 col-md-4">
+													<select class="form-control " id="govtDepartmentsLocId" onChange="">
+													</select>
+												</div>
+												<div class="col-sm-4 col-xs-12 col-md-3 pull-right">
+													<select class="form-control" id="districtWiseLevelLocId" onChange="">
+													</select>
+												</div>
 													<div id="departmentlocationCountDivId"></div>
 												
 											</div>
 											<div class="col-sm-12 col-xs-12 col-md-12 departmentStatusShow" style="display:none;">	
-												<ul class="list-inline activeUlCls  constituencyUl">
-														<li class="descendingConstituencyCls active" onClick="">
-															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-														</li >
-														<li class="ascendingConstituencyCls" onClick="">
-															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-														</li>
-														<li class="atozConstituecySortingCls" onClick="">
-															A-Z
-														</li>
-														<li class="ztozConstituecySortingCls" onClick="">
-															Z-A
-														</li>
-														<li>
-														<select class="form-control" id="" onChange="">
-															<option value="0">Select Constitency </option>
-															<option value="0">Select Constitency </option>
-														</select>
-														</li>
-													</ul>
+												<div class="col-md-3 col-xs-12 col-sm-4">
+													<ul class="list-inline activeUlCls  constituencyUl">
+															<li class="descendingConstituencyCls active" onClick="">
+																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+															</li >
+															<li class="ascendingConstituencyCls" onClick="">
+																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+															</li>
+															<li class="atozConstituecySortingCls" onClick="">
+																A-Z
+															</li>
+															<li class="ztozConstituecySortingCls" onClick="">
+																Z-A
+															</li>
+														</ul>
+												</div>
+												<div class="col-sm-4 col-xs-12 col-md-4">
+													<select class="form-control " id="govtDepartmentsStsId" onChange="" >
+													</select>
+												</div>
+												<div class="col-sm-4 col-xs-12 col-md-3 pull-right">
+													<select class="form-control" id="districtWiseLevelStsId" onChange="">
+													</select>
+												</div>
 												<div id="departmentStatusCountDivId"></div>
 											</div>
 											<div class="col-sm-12 col-xs-12 col-md-12 departmentAlertCountShow" style="display:none;">

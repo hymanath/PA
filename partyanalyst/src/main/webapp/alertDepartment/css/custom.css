@@ -1359,7 +1359,3 @@ small.clear
 	text-transform:uppercase;
 	cursor:pointer;
 }
-.constituencyUl li:last-child
-{
-	padding:0px;
-}
