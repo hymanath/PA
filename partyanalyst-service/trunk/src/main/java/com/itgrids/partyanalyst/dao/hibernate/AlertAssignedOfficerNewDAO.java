@@ -402,7 +402,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  	  return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId){
+	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.alert.alertId "+
 				  " from " +
@@ -415,11 +415,17 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		if(locationLevelId != null && locationLevelId.longValue() > 0){
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :locationLevelId ");
 		}
+		if(statusId != null && statusId.longValue() >0){
+			sb.append(" and model.alertStatus.alertStatusId = :statusId ");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(deptId != null && deptId.longValue() >0)
 		      query.setParameter("deptId",deptId);
 		if(locationLevelId != null && locationLevelId.longValue() > 0)
-		      query.setParameter("locationLevelId",locationLevelId);
+		      query.setParameter("locationLevelId",statusId);
+		if(statusId != null && statusId.longValue() >0){
+			query.setParameter("statusId",statusId);
+		}
 		return query.list();
 	}
        /* public List<Object[]> getAlertDetailsForDistrictOfficer(Date fromDate, Date toDate, Long stateId, 
