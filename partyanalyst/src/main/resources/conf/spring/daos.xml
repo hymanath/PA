@@ -3931,6 +3931,19 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
+	 <bean id="alertCallerDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertCallerDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="alertCallerTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertCallerTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="alertEntrySourceDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertEntrySourceDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="alertIssueTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertIssueTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 	 <!--  Govt Alert DAO'S END -->
 	
 </beans>		

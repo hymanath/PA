@@ -16531,6 +16531,31 @@
 	   			<param name="root">districtOfficeViewAlertVO</param>
 	   		</result>
 		 </action>
+		 
+		 <action name="createGrievance" class="createAlertAction" method="createGrievance">
+			<result name="success">/jsp/createGrievance.jsp</result>
+			<result name="error" type="redirect">login.action</result>
+		</action>
+		<action name="getAlertIssueTypesAction" class="createAlertAction" method="getAlertIssueTypes">
+			<result type="json" name="success">
+	   			<param name="root">keyValueVOList</param>
+	   		</result>
+		 </action>
+		 <action name="getHamletsForPanchayatAction" class="createAlertAction" method="getHamletsForPanchayat">
+			<result type="json" name="success">
+	   			<param name="root">keyValueVOList</param>
+	   		</result>
+		 </action>
+		 <action name="getAlertCallerTypesAction" class="createAlertAction" method="getAlertCallerTypes">
+			<result type="json" name="success">
+	   			<param name="root">keyValueVOList</param>
+	   		</result>
+		 </action>
+		 <action name="saveGrievanceAlertAction" class="createAlertAction" method="createGrievanceAlert">
+		  	  <result name="success" type="stream">			   
+				    <param name="inputName">inputStream</param>
+			  </result>	
+		  </action>
 		  <action name="getTotalAlertBylocationLvlThenDeptAction" class="alertManagementSystemAction" method="getTotalAlertBylocationLvlThenDept">
 	  	  	<result type="json" name="success">		   
 			    	<param name="root">alertCoreDashBoardVOs</param>
