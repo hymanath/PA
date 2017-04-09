@@ -46,13 +46,13 @@ $("#dateRangePickerAUM").daterangepicker({
 		}
 		var alertType = getAlertType();
 		getDistrictOfficerAlertsCountView();
-		getDistrictLevelDeptWiseLocationLevelView(alertType);
+		getDistrictLevelDeptWiseLocationLevelView(alertType,"");
 	});
 	
 	function onLoadCallsAMU(){
 		var alertType = getAlertType();
 		getDistrictOfficerAlertsCountView();
-		getDistrictLevelDeptWiseLocationLevelView(alertType);
+		getDistrictLevelDeptWiseLocationLevelView(alertType,"");
 		getGovtDepartmentDetails();
 		getGovtDeptScopeDetails();
 	}
@@ -129,7 +129,7 @@ $("#dateRangePickerAUM").daterangepicker({
 			$(".departmentStatusShow").hide();
 			$(".departmentAlertCountShow").hide();
 			var alertType = getAlertType();
-			getDistrictLevelDeptWiseLocationLevelView(alertType);
+			getDistrictLevelDeptWiseLocationLevelView(alertType,"");
 		}
 	});
 	
@@ -567,12 +567,13 @@ function buildDistrictLevelDeptWiseFilterViewDetails(result){
 	
 	
 	
-function getDistrictLevelDeptWiseLocationLevelView(alertType){
+function getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType){
 	var jObj = {
 		startDate: currentFromDate,
 	    fromDate: currentToDate,
 		type:alertType,
-		deptId:0
+		deptId:0,
+		sortingType:sortingType
 		
 	}
 	$.ajax({
