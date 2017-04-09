@@ -57,12 +57,13 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
     											" from GovtDepartmentDesignationOfficerDetailsNew model" +
     											" where model.govtDepartmentDesignationOfficer.govtDepartmentScopeId = :levelId" +
     											" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +
-    											" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId" +
+    											" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId " +
+    											" and and model.govtOfficerId = :officerId " +
     											" and model.isDeleted = 'N'  " );
     		
-    		if(officerId !=null && officerId.longValue()>0l){
-    			sb.append(" and model.govtOfficerId = :officerId");
-    		}
+    		/*if(officerId !=null && officerId.longValue()>0l){
+    			sb.append(" ");
+    		}*/
     	
     		Query query = getSession().createQuery(sb.toString());
     		
