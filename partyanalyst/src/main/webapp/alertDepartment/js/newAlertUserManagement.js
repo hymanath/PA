@@ -800,7 +800,8 @@ $(document).on("click",".distWiseDeptCls",function(){
 	var levelId = $(this).attr("attr_level_id");
 	var jObj = {
 		deptId: deptId,
-	    levelId: levelId
+	    levelId: 0,
+		statusId:2
 		
 	}
 	$.ajax({

@@ -878,7 +878,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			jObj = new JSONObject(getTask());
 			Long deptId = jObj.getLong("deptId");
 			Long levelId = jObj.getLong("levelId");
-			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId);
+			Long statusId = jObj.getLong("statusId");
+			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId);
 			
 		}catch(Exception e){
 			e.printStackTrace();
