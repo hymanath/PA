@@ -1370,10 +1370,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					matchedDeptVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
 					setScopeDetailsSkeleton(scopeDetlsLst, matchedDeptVO);
 					List<Long> scopeIdsList = deptlevelmap.get((Long)obj[0]);
-					if(scopeIdsList.contains((Long)obj[2])){
-						AlertVO matchedScopeVO = getmatchedVo(matchedDeptVO.getSubList2(),(Long)obj[2]);
-						if(matchedScopeVO != null){
-							matchedScopeVO.setCount((Long) obj[4]);
+					if(scopeIdsList != null){
+						if(scopeIdsList.contains((Long)obj[2])){
+							AlertVO matchedScopeVO = getmatchedVo(matchedDeptVO.getSubList2(),(Long)obj[2]);
+							if(matchedScopeVO != null){
+								matchedScopeVO.setCount((Long) obj[4]);
+							}
 						}
 					}
 					finalVOList.add(matchedDeptVO);
