@@ -2422,7 +2422,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						 " edition.editionAlias, " +//17
 						 " tvNewsChannel.tvNewsChannelId, " +//18
 						 " tvNewsChannel.channelName," +//19
-						 " state.stateName " );//20
+						 " state.stateName, "+//20
+						" tehsil.tehsilName, " +//21
+						" panchayat.panchayatName , " +//22
+						" localElectionBody.name, " +//23
+						" abc "); //24
 	    queryStr.append(" from " +
 	                	" AlertAssigned model " +
 	                	" left join model.alert alert " +
@@ -2704,7 +2708,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
  			query.setParameterList("alertStatusIds", alertStatusIds);
  		}
 	    return query.list();    
-	}
+	}//imp
 	public List<Object[]> getAlertDtlsAssignedByPartyCommite(Long userAccessLevelId, List<Long> userAccessLevelValues, Long stateId, List<Long> impactLevelIds, Date fromDate, Date toDate, List<Long> tdpCommitteeLevelIds, Long cadreId, Long tdpBasicCommitteeId, Long designationId,List<Long> alertStatusIds,List<Long> alertTypeList,List<Long> editionList,Long districtId){
 		StringBuilder queryStr = new StringBuilder(); 
 		queryStr.append(" select distinct ");       
@@ -2728,7 +2732,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						 " edition.editionAlias, " +//17
 						 " tvNewsChannel.tvNewsChannelId, " +//18
 						 " tvNewsChannel.channelName," +//19
-						 " state.stateName ");//20
+						 " state.stateName ," +//20
+						 " tehsil.tehsilName, " +//21
+						 " panchayat.panchayatName , " +//22
+						 " localElectionBody.name, " +//23
+						 " abc "); //24
 		queryStr.append(" from AlertAssigned model " +   
 						" left join model.alert alert " +
 						 " left join alert.alertCategory alertCategory " +
@@ -2865,7 +2873,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						 " edition.editionAlias, " +//17
 						 " tvNewsChannel.tvNewsChannelId, " +//18
 						 " tvNewsChannel.channelName," +//19
-						 " state.stateName ");//20
+						 " state.stateName, "+//20
+						" tehsil.tehsilName, " +//21
+						" panchayat.panchayatName , " +//22
+						" localElectionBody.name, " +//23
+						" abc "); //24
 	    queryStr.append(" from " +
 	                	" AlertAssigned model " +
 	                	" left join model.alert alert " +
@@ -2882,6 +2894,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" left join userAddress.district district  " +
 						" left join userAddress.constituency constituency" +
 						" left join userAddress.tehsil tehsil" +
+						" left join userAddress.localElectionBody localElectionBody  " +
+						" left join userAddress.panchayat panchayat " +
 						" left join userAddress.parliamentConstituency parliamentConstituency  " );
 				       if(resultType != null && resultType.equalsIgnoreCase("Program Committee")){
 			            queryStr.append(" ,TdpMember model1");	 
@@ -2989,8 +3003,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						 " edition.editionAlias, " +//17
 						 " tvNewsChannel.tvNewsChannelId, " +//18
 						 " tvNewsChannel.channelName," +//19
-						 " state.stateName " );//20
-	   			
+						 " state.stateName, " +//20
+						" tehsil.tehsilName, " +//21
+						" panchayat.panchayatName , " +//22
+						" localElectionBody.name, " +//23
+						" abc "); //24
 	    queryStr.append(" from " +
 	                	" Alert model " +
 	                	" left join model.alertCategory alertCategory " +
@@ -3008,6 +3025,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" left join userAddress.tehsil tehsil " +
 						" left join userAddress.parliamentConstituency parliamentConstituency" +
 						" left join userAddress.localElectionBody localElectionBody " +
+						" left join userAddress.panchayat panchayat " +
 						" left join localElectionBody.electionType electionType  " +
 						" where  " +
 	                	" model.isDeleted='N' " +
@@ -4340,7 +4358,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" edition.editionAlias, " +//17
 						" tvNewsChannel.tvNewsChannelId, " +//18
 						" tvNewsChannel.channelName," +//19
-						" state.stateName ");//20
+						" state.stateName, "+//20
+						" tehsil.tehsilName, " +//21
+						" panchayat.panchayatName , " +//22
+						" localElectionBody.name, " +//23
+						" abc "); //24
 		queryStr.append(" from Alert model " +
 						" left join model.alertSource alertSource " +
 		        		" left join model.editionType editionType " +
