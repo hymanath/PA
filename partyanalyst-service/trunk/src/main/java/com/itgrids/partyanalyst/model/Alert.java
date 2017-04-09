@@ -70,6 +70,15 @@ public class Alert extends BaseModel implements Serializable {
 	private String isMultiple;
 	private Long newsUserId;
 	
+	private Long alertCallerId;
+	private Long alertCallerTypeId;
+	private Long alertEntrySourceId;
+	private AlertCaller alertCaller;
+	private AlertCallerType alertCallerType;
+	private AlertEntrySource alertEntrySource;
+	private Long alertIssueTypeId;
+	private AlertIssueType alertIssueType;
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -452,7 +461,80 @@ public class Alert extends BaseModel implements Serializable {
 	public void setNewsUserId(Long newsUserId) {
 		this.newsUserId = newsUserId;
 	}
-	
-	
-	
+
+	@Column(name = "alert_caller_id")
+	public Long getAlertCallerId() {
+		return alertCallerId;
+	}
+	public void setAlertCallerId(Long alertCallerId) {
+		this.alertCallerId = alertCallerId;
+	}
+
+	@Column(name = "alert_caller_type_id")
+	public Long getAlertCallerTypeId() {
+		return alertCallerTypeId;
+	}
+	public void setAlertCallerTypeId(Long alertCallerTypeId) {
+		this.alertCallerTypeId = alertCallerTypeId;
+	}
+
+	@Column(name = "alert_entry_source_id")
+	public Long getAlertEntrySourceId() {
+		return alertEntrySourceId;
+	}
+	public void setAlertEntrySourceId(Long alertEntrySourceId) {
+		this.alertEntrySourceId = alertEntrySourceId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_caller_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertCaller getAlertCaller() {
+		return alertCaller;
+	}
+	public void setAlertCaller(AlertCaller alertCaller) {
+		this.alertCaller = alertCaller;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_caller_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertCallerType getAlertCallerType() {
+		return alertCallerType;
+	}
+	public void setAlertCallerType(AlertCallerType alertCallerType) {
+		this.alertCallerType = alertCallerType;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_entry_source_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertEntrySource getAlertEntrySource() {
+		return alertEntrySource;
+	}
+	public void setAlertEntrySource(AlertEntrySource alertEntrySource) {
+		this.alertEntrySource = alertEntrySource;
+	}
+
+	@Column(name = "alert_issue_type_id")
+	public Long getAlertIssueTypeId() {
+		return alertIssueTypeId;
+	}
+	public void setAlertIssueTypeId(Long alertIssueTypeId) {
+		this.alertIssueTypeId = alertIssueTypeId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_issue_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertIssueType getAlertIssueType() {
+		return alertIssueType;
+	}
+	public void setAlertIssueType(AlertIssueType alertIssueType) {
+		this.alertIssueType = alertIssueType;
+	}
 }
