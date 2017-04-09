@@ -3594,6 +3594,11 @@
 		<property name="newsPaperDAO" ref="newsPaperDAO"></property>
 		<property name="tvNewsChannelDAO" ref="tvNewsChannelDAO"></property>
 		<property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
+		<property name="alertIssueTypeDAO" ref="alertIssueTypeDAO"></property>
+		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
+		<property name="alertCallerTypeDAO" ref="alertCallerTypeDAO"></property>
+		<property name="alertCallerDAO" ref="alertCallerDAO"></property>
+		<property name="hamletDAO" ref="hamletDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	

@@ -1239,6 +1239,10 @@
 					   <value>com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew</value>
 					   <value>com.itgrids.partyanalyst.model.GovtUserAddress</value>
 					   
+					   <value>com.itgrids.partyanalyst.model.AlertCaller</value>
+					   <value>com.itgrids.partyanalyst.model.AlertCallerType</value>
+					   <value>com.itgrids.partyanalyst.model.AlertEntrySource</value>
+					   <value>com.itgrids.partyanalyst.model.AlertIssueType</value>
 					   
 	                   <!--  Govt Alert module end-->
 	                   

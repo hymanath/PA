@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
+import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
@@ -82,7 +83,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<KeyValueVO> keyValueVOList = new ArrayList<KeyValueVO>(0);
 	private List<Long> cadreIds=new ArrayList<Long>(0);
 	private List<UserTypeVO> activityMembersList;
+	private GrievanceAlertVO grievanceAlertVO;
 	
+	
+	
+	public GrievanceAlertVO getGrievanceAlertVO() {
+		return grievanceAlertVO;
+	}
+
+	public void setGrievanceAlertVO(GrievanceAlertVO grievanceAlertVO) {
+		this.grievanceAlertVO = grievanceAlertVO;
+	}
+
 	public ICccDashboardService getCccDashboardService() {
 		return cccDashboardService;
 	}
@@ -2184,6 +2196,75 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception occured in getStateOrGHMCImpcatLevelAlertCntPublicationWise() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;  
+	}
+	
+	public String createGrievance(){
+		return Action.SUCCESS;
+	}
+	
+	public String getAlertIssueTypes(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			keyValueVOList = alertService.getAlertIssueTypes();
+		}catch(Exception e){
+			LOG.error("Exception occured in getAlertIssueTypes() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getHamletsForPanchayat(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long panchyatId = jObj.getLong("panchayatId");
+			keyValueVOList = alertService.getHamletsForPanchayat(panchyatId);
+		}catch(Exception e){
+			LOG.error("Exception occured in getHamletsForPanchayat() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getAlertCallerTypes(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			keyValueVOList = alertService.getAlertCallerTypes();
+		}catch(Exception e){
+			LOG.error("Exception occured in getAlertCallerTypes() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String createGrievanceAlert()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			int i = 0;
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				if(files != null && files.length > 0){
+					for(File f : files){
+						String fileName  =multiPartRequestWrapper.getFileNames(key)[i];
+						//fileName = StringEscapeUtils.escapeJava(fileName);
+						mapfiles.put(f,fileName);  
+						i++;
+					}
+				}
+			}
+			status = alertService.createGrievanceAlert(grievanceAlertVO,regVo.getRegistrationID(),mapfiles);
+			
+			inputStream = new StringBufferInputStream(status);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in raiseComplaint",e);
+		}
+		return Action.SUCCESS;	
 	}
 }
 
