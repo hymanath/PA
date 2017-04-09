@@ -706,7 +706,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	
 	public String getGovtDepartmentDetails(){
 		try {
-			jObj = new JSONObject(getTask());
+			//jObj = new JSONObject(getTask());
 			alertVOs = alertManagementSystemService.getGovtDepartmentDetails();
 		} catch (Exception e) {
 			LOG.error("Exception occured in getGovtDepartmentDetails() of alertManagementSystemAction",e);
@@ -715,7 +715,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public String getGovtDeptScopeDetails(){
 		try {
-			jObj = new JSONObject(getTask());
+			//jObj = new JSONObject(getTask());
 			alertVOs = alertManagementSystemService.getGovtDeptScopeDetails();
 		} catch (Exception e) {
 			LOG.error("Exception occured in getGovtDeptScopeDetails() of alertManagementSystemAction",e);
