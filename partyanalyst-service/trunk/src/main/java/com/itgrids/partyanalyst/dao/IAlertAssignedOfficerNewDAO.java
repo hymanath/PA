@@ -22,5 +22,6 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
 	public List<Object[]> getSubOrdinateAlertsDetails(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
 			List<Long> desigIds,Long priorityId,String type);
 	 public List<Long> getDistrictOfficerAlertsIds(Long govtDepDesigOffcrId,Long govtOffcrId,String type);
+	 public List<Object[]> getLocationThenGovtDeptScopeWiseAlertCount(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdsList,List<Long> printIdsList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList);
 	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId);
 }
