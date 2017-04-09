@@ -16596,6 +16596,11 @@
    			<param name="root">alertTrackingVOList</param>
    		</result>
 	</action>
+	<action name="getStateThenGovtDeptScopeWiseAlertCountAction" class="alertManagementSystemAction" method="getStateThenGovtDeptScopeWiseAlertCount">
+	  	<result type="json" name="success">		   
+	    	<param name="root">alertCoreDashBoardVOs</param>
+	  	</result>	
+  	</action> 	  
 	<action name="getDistrictLevelDeptWiseFlterClickAction" class="alertManagementSystemAction" method="getDistrictLevelDeptWiseFlterClick">
 		<result type="json" name="success">
    			<param name="root">alertCoreDashBoardVOs</param>
