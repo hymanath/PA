@@ -1564,7 +1564,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return finalVoList;
 	}
-	public  List<AlertVO> getDistrictLevelDeptWiseStatusOverView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId){
+	public  List<AlertVO> getDistrictLevelDeptWiseStatusOverView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType){
 		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
 			Date fromDate = null;
@@ -1602,6 +1602,18 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			if(finalVoList != null && finalVoList.size() > 0){
 				finalVoList.get(0).setSubList1(statusVoList);
+				for (AlertVO finalVo : finalVoList) {
+					if(finalVo.getSubList2() != null && finalVo.getSubList2().size() > 0){
+						Long totalCount = 0l;
+						for (AlertVO subVo : finalVo.getSubList2()) {
+							totalCount = totalCount+subVo.getCount();
+						}
+						finalVo.setCount(totalCount);
+					}
+				}
+				if(sortingType != null && !sortingType.trim().isEmpty()){
+					sortListBasedRequiredType(finalVoList,sortingType);
+				}
 			}
 		} catch (Exception e) {
 			LOG.error(" Exception Occured in getDistrictLevelDeptWiseStatusOverView() method, Exception - ",e);
