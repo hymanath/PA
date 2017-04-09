@@ -20,7 +20,7 @@ public class GovtDepartmentWorkLocationDAO extends GenericDaoHibernate<GovtDepar
 		StringBuilder sb = new StringBuilder();
 				
 		sb.append(" SELECT model.govtDepartmentScopeId,model.govtDepartmentWorkLocationId,model.locationName " +
-											  " FROM GovtDepartmentWorkLocation  " +
+											  " FROM GovtDepartmentWorkLocation model " +
 											  " WHERE model.isDeleted ='N' " );
 		
 		if(deptId !=null && deptId.longValue()>0l){

@@ -4,9 +4,11 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -25,6 +27,11 @@ public interface IAlertManagementSystemService {
 	public ResultStatus updateAlertPriority(Long alertId,Long priorityId,Long userId);
 	public List<IdNameVO> getDepartmentLevels(Long departmentId);
 	public List<IdNameVO> getParentLevelsOfLevel(Long departmentId,Long levelId);
+	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId,Long levelValue);
+	public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId);
+	public String assigningAlertToOfficer(final AlertAssigningVO inputvo);
+	public String assigningSubTaskToOfficer(final AlertAssigningVO inputvo);
+	public IdNameVO getGovtSubLevelInfo(Long departmentId,Long LevelId,Long levelValue);
 	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long deptId);
 	public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId,Long govtDeptScopeId,Long deptId);
 	public  List<AlertVO> getDistrictLevelDeptWiseFilterView(Long scopeId,String startDateStr,String fromDateStr,String type);

@@ -33,6 +33,8 @@ public class AlertAssigningVO {
 	private List<String> documentsList = new ArrayList<String>(0);
 	private Long statusId;
 	
+	private Long alertAssignedOfficerId;
+	
 	
 	public Long getId() {
 		return id;
@@ -112,4 +114,12 @@ public class AlertAssigningVO {
 	public void setStatusId(Long statusId) {
 		this.statusId = statusId;
 	}
+	public Long getAlertAssignedOfficerId() {
+		return alertAssignedOfficerId;
+	}
+	public void setAlertAssignedOfficerId(Long alertAssignedOfficerId) {
+		this.alertAssignedOfficerId = alertAssignedOfficerId;
+	}
+	
+	
 }

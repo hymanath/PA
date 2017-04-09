@@ -72,4 +72,32 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
     		query.setParameter("officerId", officerId);
     		return query.list();
     	}
+      
+      public List<Object[]> getDesignationsForDepartmentAndLevelLocation(Long govtDepartmentId,Long levelId,Long levelValue){
+  		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
+  												" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
+  												" from GovtDepartmentDesignationOfficerDetailsNew model" +
+  												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentId = :govtDepartmentId" +
+  												" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :levelId " +
+  												" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue ");
+  		
+  		query.setParameter("govtDepartmentId", govtDepartmentId);
+  		query.setParameter("levelId", levelId);
+  		query.setParameter("levelValue", levelValue);
+  		return query.list();
+  	}
+      public List<Object[]> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId){
+  		Query query = getSession().createQuery("select distinct model.govtOfficer.govtOfficerId," +
+  												" model.govtOfficer.officerName,model.govtOfficer.mobileNo " +
+  												" from GovtDepartmentDesignationOfficerDetailsNew model" +
+  												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId = :designationId" +
+  												" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :levelId" +
+  												" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +
+  												" and model.isDeleted = 'N'");
+  		query.setParameter("designationId", designationId);
+  		query.setParameter("levelId", levelId);
+  		query.setParameter("levelValue", levelValue);
+  		
+  		return query.list();
+  	}
 }
