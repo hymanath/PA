@@ -24,7 +24,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.mapping.Array;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -34,6 +33,8 @@ import com.itgrids.partyanalyst.dao.IActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IActionTypeStatusDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
+import com.itgrids.partyanalyst.dao.IAlertCallerDAO;
+import com.itgrids.partyanalyst.dao.IAlertCallerTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertClarificationCommentsDAO;
@@ -46,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
+import com.itgrids.partyanalyst.dao.IAlertIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDocumentsDAO;
@@ -59,10 +61,12 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMemberTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
@@ -75,7 +79,6 @@ import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -92,15 +95,16 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
+import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
-import com.itgrids.partyanalyst.dto.TrainingCampProgramVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssigned;
+import com.itgrids.partyanalyst.model.AlertCaller;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertCategory;
 import com.itgrids.partyanalyst.model.AlertClarification;
@@ -109,6 +113,7 @@ import com.itgrids.partyanalyst.model.AlertClarificationStatus;
 import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertDocument;
+import com.itgrids.partyanalyst.model.AlertIssueType;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.AlertTrackingDocuments;
@@ -184,10 +189,57 @@ private SmsSenderService smsSenderService;
 private INewsPaperDAO newsPaperDAO;
 private ITvNewsChannelDAO tvNewsChannelDAO;
 private ICoreDashboardGenericService coreDashboardGenericService;
+private IAlertIssueTypeDAO alertIssueTypeDAO;
+private IPanchayatHamletDAO panchayatHamletDAO;
+private IAlertCallerTypeDAO alertCallerTypeDAO;
+private IAlertCallerDAO alertCallerDAO;
+private IHamletDAO hamletDAO;
+
+
+
+public IHamletDAO getHamletDAO() {
+	return hamletDAO;
+}
+
+public void setHamletDAO(IHamletDAO hamletDAO) {
+	this.hamletDAO = hamletDAO;
+}
+
+public IAlertCallerDAO getAlertCallerDAO() {
+	return alertCallerDAO;
+}
+
+public void setAlertCallerDAO(IAlertCallerDAO alertCallerDAO) {
+	this.alertCallerDAO = alertCallerDAO;
+}
+
+public IAlertCallerTypeDAO getAlertCallerTypeDAO() {
+	return alertCallerTypeDAO;
+}
+
+public void setAlertCallerTypeDAO(IAlertCallerTypeDAO alertCallerTypeDAO) {
+	this.alertCallerTypeDAO = alertCallerTypeDAO;
+}
+
+public IPanchayatHamletDAO getPanchayatHamletDAO() {
+	return panchayatHamletDAO;
+}
+
+public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+	this.panchayatHamletDAO = panchayatHamletDAO;
+}
 
 public void setDelimitationConstituencyDAO(
 		IDelimitationConstituencyDAO delimitationConstituencyDAO) {  
 	this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+}
+
+public IAlertIssueTypeDAO getAlertIssueTypeDAO() {
+	return alertIssueTypeDAO;
+}
+
+public void setAlertIssueTypeDAO(IAlertIssueTypeDAO alertIssueTypeDAO) {
+	this.alertIssueTypeDAO = alertIssueTypeDAO;
 }
 
 public void setGovtDepartmentDAO(IGovtDepartmentDAO govtDepartmentDAO) {
@@ -9191,6 +9243,215 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			LOG.error("Error occured setImpactLevelWisePublicationAlert() method of AlertService{}");
  		}
  	}
+    
+    public List<KeyValueVO> getAlertIssueTypes(){
+    	List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+    	try {
+			List<AlertIssueType> list = alertIssueTypeDAO.getAll();
+			if(list != null && !list.isEmpty()){
+				for (AlertIssueType alertIssueType : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(alertIssueType.getAlertIssueTypeId());
+					vo.setName(alertIssueType.getIssueType());
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured setImpactLevelWisePublicationAlert() method of AlertService{}",e);
+		}
+    	return returnList;
+    }
+    
+    public List<KeyValueVO> getHamletsForPanchayat(Long panchayatId){
+    	List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+    	try {
+			List<Object[]> list = panchayatHamletDAO.getHamletsOfAPanchayat(panchayatId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getHamletsForPanchayat() method of AlertService{}",e);
+		}
+    	return returnList;
+    }
+    
+    public List<KeyValueVO> getAlertCallerTypes(){
+    	List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+    	try {
+			List<Object[]> list = alertCallerTypeDAO.getAlertCallerTypesByOrder();
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getAlertCallerTypes() method of AlertService{}",e);
+		}
+    	return returnList;
+    }
+    
+    public String createGrievanceAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
+	{
+    	String resultStatus = null;
+    	try {
+    		resultStatus = (String) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					String rs = new String();
+					DateUtilService date = new DateUtilService();
+				 
+					AlertCaller alertCaller = new AlertCaller();
+					alertCaller.setCallerName(inputVO.getName());
+					alertCaller.setAddress(inputVO.getAddress());
+					alertCaller.setMobileNo(inputVO.getMobileNo());
+					alertCaller.setEmail(inputVO.getEmailId());
+					alertCaller = alertCallerDAO.save(alertCaller);
+					
+					Alert alert = new Alert();
+					alert.setAlertSeverityId(2l);
+					alert.setAlertTypeId(2l);
+					alert.setImpactLevelId(inputVO.getLocationLevelId());
+					alert.setImpactLevelValue(inputVO.getLocationValue());
+					alert.setDescription(inputVO.getDescription().toString());
+					alert.setCreatedBy(userId);
+					alert.setUpdatedBy(userId);
+					alert.setImpactScopeId(inputVO.getLocationLevelId());
+
+				 /*if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+					 alert.setAlertStatusId(2l);// if assign list given default status is notified
+				 else*/
+					 alert.setAlertStatusId(2l);// default pending status
+
+					 alert.setAlertSourceId(inputVO.getInformationSourceId());
+					 alert.setCreatedTime(date.getCurrentDateAndTime());
+					 alert.setUpdatedTime(date.getCurrentDateAndTime());
+					 alert.setIsDeleted("N");
+				 	 alert.setAlertCategoryId(1L);//default Manual alert
+					 alert.setTitle(inputVO.getAlertTitle());
+				 
+					 UserAddress userAddress = saveUserAddressForGrievanceAlert(inputVO);
+					 alert.setAddressId(userAddress.getUserAddressId());
+					 
+					 alert.setAlertCallerId(alertCaller.getAlertCallerId());
+					 alert.setAlertCallerTypeId(inputVO.getCallerTypeId());
+					 alert.setAlertEntrySourceId(inputVO.getEntrySourceId());
+					 alert.setAlertIssueTypeId(inputVO.getIssueTypeId());
+					 
+					 alert = alertDAO.save(alert);
+					 
+					 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+				 
+					 rs = "success";
+					 
+					 AlertComment alertComment = new AlertComment();
+					 alertComment.setComments(inputVO.getDescription().toString());
+					 alertComment.setAlertId(alert.getAlertId());
+					 alertComment.setInsertedTime(date.getCurrentDateAndTime());
+					 alertComment.setIsDeleted("N");
+					 alertComment.setInsertedBy(userId);
+					 alertComment = alertCommentDAO.save(alertComment);
+					 
+				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+				 alertTrackingVO.setUserId(userId);
+				 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
+				 alertTrackingVO.setAlertUserTypeId(inputVO.getEntrySourceId());
+				 /*if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+				 {
+					 alertTrackingVO.setAlertStatusId(2l);
+				 }else{*/
+					 alertTrackingVO.setAlertStatusId(2l);
+				 //}
+				 
+				 alertTrackingVO.setAlertId(alert.getAlertId());
+				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+				 
+				 saveAlertTrackingDetails(alertTrackingVO)	;	
+					
+						return rs;
+				}
+
+			});
+		} catch (Exception e) {
+			resultStatus = "failure";
+			LOG.error("Error occured getAlertCallerTypes() method of AlertService{}",e);
+		}
+	
+	return resultStatus;
+	}
+    
+    public UserAddress saveUserAddressForGrievanceAlert(final GrievanceAlertVO inputVO)
+	{
+		UserAddress userAddress = new UserAddress();
+		try{
+			
+			if(inputVO.getLocationLevelId().longValue() == 2l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+			}
+			else if(inputVO.getLocationLevelId().longValue() == 3l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				
+			}
+			
+			else if(inputVO.getLocationLevelId().longValue() == 4l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+			}
+			else if(inputVO.getLocationLevelId().longValue() == 5l || inputVO.getLocationLevelId().longValue() == 7l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				if(inputVO.getLocationLevelId() ==  5l)
+					userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+				else
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));	
+			}
+			
+			else if(inputVO.getLocationLevelId().longValue() == 6l || inputVO.getLocationLevelId().longValue() == 8l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				if(inputVO.getLocationLevelId() ==  6l)
+				{
+					userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+					userAddress.setPanchayatId(inputVO.getPanchayatId());
+				}
+				else
+				{
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));	
+					userAddress.setWard(constituencyDAO.get(inputVO.getPanchayatId()));
+				}
+			}
+			else if(inputVO.getLocationLevelId().longValue() == 9l)
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+				userAddress.setPanchayatId(inputVO.getPanchayatId());
+				userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
+			}
+			
+			userAddress = userAddressDAO.save(userAddress);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return userAddress;
+	}
 }
 
 
