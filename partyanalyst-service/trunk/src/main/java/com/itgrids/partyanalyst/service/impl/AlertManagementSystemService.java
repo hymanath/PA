@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationRelationDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerSubTaskTrackingDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
@@ -1510,7 +1511,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		return null;
 	}
 	
-	public  List<AlertVO> getDistrictLevelDeptWiseLocationLevelView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId){
+	public  List<AlertVO> getDistrictLevelDeptWiseLocationLevelView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType){
 		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
 			Date fromDate = null;
@@ -1545,7 +1546,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			if(finalVoList != null && finalVoList.size() > 0){
 				finalVoList.get(0).setSubList1(scopeVoList);
-			}
+				for (AlertVO finalVo : finalVoList) {
+					if(finalVo.getSubList2() != null && finalVo.getSubList2().size() > 0){
+						Long totalCount = 0l;
+						for (AlertVO subVo : finalVo.getSubList2()) {
+							totalCount = totalCount+subVo.getCount();
+						}
+						finalVo.setCount(totalCount);
+					}
+				}
+					if(sortingType != null && !sortingType.trim().isEmpty()){
+						sortListBasedRequiredType(finalVoList,sortingType);
+					}
+			   }
 		} catch (Exception e) {
 			LOG.error(" Exception Occured in getDistrictLevelDeptWiseLocationLevelView() method, Exception - ",e);
 		}
@@ -2060,4 +2073,51 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return null;
 	}
+	public void sortListBasedRequiredType(List<AlertVO> resultList,String sortingType){
+		 try{
+			if(sortingType != null && sortingType.equalsIgnoreCase("Decending")){
+				Collections.sort(resultList, alertDescendingCountWiseSorting);
+			}else if(sortingType != null && sortingType.equalsIgnoreCase("Ascending")){
+				Collections.sort(resultList, alertAscendingCountWiseSorting);
+			}else if(sortingType != null && sortingType.equalsIgnoreCase("AlphabeticalAscending")){
+				Collections.sort(resultList, alphabeticalAscendingSort);
+			}else if(sortingType != null && sortingType.equalsIgnoreCase("AlphabeticalDescending")){
+				Collections.sort(resultList, alphabeticalDescendingSort);
+			}
+		 }catch(Exception e){
+			LOG.error("Exception occured  in sortListByRequiredType() in AlertService class ",e);  
+		 }
+	 }
+	public static Comparator<AlertVO> alertDescendingCountWiseSorting = new Comparator<AlertVO>() {
+    	public int compare(AlertVO location2, AlertVO location1) {
+    	Long count2 = location2.getCount();
+    	Long count1 = location1.getCount();
+    	//descending order of percantages.
+    	 return count1.compareTo(count2);
+    	}
+     };
+     public static Comparator<AlertVO> alertAscendingCountWiseSorting = new Comparator<AlertVO>() {
+     	public int compare(AlertVO location2, AlertVO location1) {
+     	Long count2 = location2.getCount();
+     	Long count1 = location1.getCount();
+     	//ascending order of percantages.
+     	 return count2.compareTo(count1);
+     	}
+      };
+      public static Comparator<AlertVO> alphabeticalDescendingSort = new Comparator<AlertVO>() {
+       	public int compare(AlertVO location2, AlertVO location1) {
+        	String name2 = location2.getName();
+       	    String name1 = location1.getName();
+       	    //descending order of percantages.
+       	    return name1.compareTo(name2);
+       	}
+       };
+       public static Comparator<AlertVO> alphabeticalAscendingSort = new Comparator<AlertVO>() {
+          	public int compare(AlertVO location2, AlertVO location1) {
+          	String name2 = location2.getName();
+          	String name1 = location1.getName();
+          	//ascending order of percantages.
+          	 return name2.compareTo(name1);
+          	}
+        };
 }
