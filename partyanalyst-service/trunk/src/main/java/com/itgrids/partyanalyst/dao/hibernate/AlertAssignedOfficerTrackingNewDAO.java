@@ -32,4 +32,12 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     	query.setParameter("alertId", alertId);
     	return query.list();
     }
+    
+    public List<Object[]> getCommentsForAlert(Long alertId){
+    	 Query query = getSession().createQuery(" select model.alertDepartmentComment.alertDepartmentCommentId,model.alertDepartmentComment.comment,date(model.alertDepartmentComment.insertedTime) "
+    	 		+ " from AlertAssignedOfficerTrackingNew model "
+    	 		+ " where model.alertId=:alertId ");
+    	 query.setParameter("alertId", alertId);
+    	 return query.list();
+    }
 }

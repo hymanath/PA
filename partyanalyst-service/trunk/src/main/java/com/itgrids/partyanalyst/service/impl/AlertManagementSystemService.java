@@ -3590,6 +3590,61 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		}
         		return voList;
         	} 
+        	
+        public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId){
+        	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0); 
+        	try {
+        		List<Object[]> objList = govtAlertSubTaskDAO.getSubTaskInfoForAlert(alertId);
+        		Map<Long,AlertTrackingVO> tempMap = new HashMap<Long, AlertTrackingVO>(0);
+        		
+        		if(objList != null && objList.size() > 0){
+        			List<Long> subTaskIds = new ArrayList<Long>(0);
+        			for (Object[] obj : objList) {
+        				subTaskIds.add((Long)obj[0]);
+        				AlertTrackingVO vo = new AlertTrackingVO();
+        				vo.setUserId((Long)obj[0]);
+        				vo.setUserName(obj[1].toString());
+        				tempMap.put((Long)obj[0], vo);
+					}
+        			
+        			List<Object[]> objectsList = govtOfficerSubTaskTrackingDAO.getCommentsForSubTasks(subTaskIds);
+        			if(objectsList != null && objectsList.size() > 0){
+        				for (Object[] objects : objectsList) {
+							if(tempMap.get((Long)objects[0]) != null){
+								tempMap.get((Long)objects[0]).setUserId((Long)objects[1]);
+							}
+						}
+        			}
+        			
+        		}
+        		
+        		if(tempMap != null && tempMap.size() > 0){
+        			voList.addAll(tempMap.values());
+        		}
+			} catch (Exception e) {
+				LOG.error("Error occured getSubTaskInfoForAlert() method of AlertManagementSystemService");
+			}	
+        	return voList;
+        } 
+        	
+        public List<AlertTrackingVO> getCommentsForAlert(Long alertId){
+        	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
+        	try {
+				List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getCommentsForAlert(alertId);
+				if(objList != null && objList.size() > 0){
+					for (Object[] objects : objList) {
+						AlertTrackingVO vo = new AlertTrackingVO();
+						vo.setUserId((Long)objects[0]);
+						vo.setUserName(objects[1].toString());
+						vo.setDate(objects[2].toString());
+						voList.add(vo);
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Error occured getCommentsForAlert() method of AlertManagementSystemService");
+			}
+        	return voList;
+        }
           /*
       	 * Swadhin K Lenka
       	 * overview  click
