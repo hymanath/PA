@@ -16736,6 +16736,16 @@
 		    <param name="inputName">alertTrackingVOList</param>
 		</result>								
 	</action>
-	  	                   
+	<action name="getSubTaskInfoForAlertAction" class="alertManagementSystemAction" method="getSubTaskInfoForAlert">			
+		<result name="success" type="stream">			   
+		    <param name="inputName">alertTrackingVOList</param>
+		</result>								
+	</action>
+	<action name="getCommentsForAlertAction" class="alertManagementSystemAction" method="getCommentsForAlert">			
+		<result name="success" type="stream">			   
+		    <param name="inputName">alertTrackingVOList</param>
+		</result>								
+	</action>  	  
+	                 
  </package>
 </struts>
