@@ -58,7 +58,7 @@ public class GovtDepartmentScopeLevelDAO extends GenericDaoHibernate<GovtDepartm
      }
 	public List<Object[]> getChildDeptScopeIdList(Long govtDepartmentId,Long parentGovtDepartmentScopeId){
 		Query query = getSession().createQuery(" select model.govtDepartment.govtDepartmentId, " +
-				" model.govtDepartmentScopeId " +
+				" model.govtDepartmentScopeId,model.govtDepartmentScope.levelName " +
 				" from GovtDepartmentScopeLevel model " +
 				" where " +
 				" model.govtDepartment.govtDepartmentId = :govtDepartmentId " +
