@@ -271,6 +271,7 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 			 }
 				return query.list();
 	   }
+	//anil
 	public List<Object[]> getActionTypeAlertDetails(Date fromDate, Date toDate, Long stateId, Long alertTypeId, List<Long> alertStatusIds, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList,Long actionTypeId,List<Long> impactScopeIds,Long alertVerificationStatusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");     
@@ -295,8 +296,10 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 						" tvNewsChannel.tvNewsChannelId, " +//18
 						" tvNewsChannel.channelName," +//19
 						" state.stateName," + //20
-						" model1.actionTypeStatus.actionTypeStatusId," +//21
-						" model1.actionTypeStatus.status ");//22
+						" tehsil.tehsilName, " +//21
+						" panchayat.panchayatName , " +//22  
+						" localElectionBody.name, " +//23
+						" 1 ");//24
 		queryStr.append(" from  Alert model " +
 						" left join model.alertSource alertSource " +
 		        		" left join model.editionType editionType " +

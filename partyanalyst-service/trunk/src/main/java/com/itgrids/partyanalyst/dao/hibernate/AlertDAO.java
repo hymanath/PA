@@ -1148,6 +1148,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		}
 		return query.list();  
 	}
+	//anil
 	public List<Object[]> getAlertDtls(Date fromDate, Date toDate, Long stateId, Long alertTypeId, List<Long> alertStatusIds, Long alertCategoryId, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> editionList,List<Long> impactScopeIds){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");     
@@ -1171,7 +1172,11 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" edition.editionAlias, " +//17
 						" tvNewsChannel.tvNewsChannelId, " +//18
 						" tvNewsChannel.channelName," +//19
-						" state.stateName ");//20
+						" state.stateName, " +//20
+						" tehsil.tehsilName, " +//21
+						" panchayat.panchayatName , " +//22
+						" localElectionBody.name, " +//23
+						" 4");//24
 		queryStr.append(" from Alert model " +
 						" left join model.alertSource alertSource " +
 		        		" left join model.editionType editionType " +
@@ -2426,7 +2431,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" tehsil.tehsilName, " +//21
 						" panchayat.panchayatName , " +//22
 						" localElectionBody.name, " +//23
-						" abc "); //24
+						" 1 "); //24
 	    queryStr.append(" from " +
 	                	" AlertAssigned model " +
 	                	" left join model.alert alert " +
@@ -2736,7 +2741,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						 " tehsil.tehsilName, " +//21
 						 " panchayat.panchayatName , " +//22
 						 " localElectionBody.name, " +//23
-						 " abc "); //24
+						 " 1 "); //24
 		queryStr.append(" from AlertAssigned model " +   
 						" left join model.alert alert " +
 						 " left join alert.alertCategory alertCategory " +
@@ -2877,7 +2882,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" tehsil.tehsilName, " +//21
 						" panchayat.panchayatName , " +//22
 						" localElectionBody.name, " +//23
-						" abc "); //24
+						" 1 "); //24
 	    queryStr.append(" from " +
 	                	" AlertAssigned model " +
 	                	" left join model.alert alert " +
@@ -3007,7 +3012,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" tehsil.tehsilName, " +//21
 						" panchayat.panchayatName , " +//22
 						" localElectionBody.name, " +//23
-						" abc "); //24
+						" 1 "); //24  
 	    queryStr.append(" from " +
 	                	" Alert model " +
 	                	" left join model.alertCategory alertCategory " +
@@ -3022,8 +3027,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" left join userAddress.state state  " +
 						" left join userAddress.district district " +
 						" left join userAddress.constituency constituency " +
-						" left join userAddress.tehsil tehsil " +
 						" left join userAddress.parliamentConstituency parliamentConstituency" +
+						" left join userAddress.tehsil tehsil " +
 						" left join userAddress.localElectionBody localElectionBody " +
 						" left join userAddress.panchayat panchayat " +
 						" left join localElectionBody.electionType electionType  " +
@@ -4362,7 +4367,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" tehsil.tehsilName, " +//21
 						" panchayat.panchayatName , " +//22
 						" localElectionBody.name, " +//23
-						" abc "); //24
+						" 1 "); //24
 		queryStr.append(" from Alert model " +
 						" left join model.alertSource alertSource " +
 		        		" left join model.editionType editionType " +
