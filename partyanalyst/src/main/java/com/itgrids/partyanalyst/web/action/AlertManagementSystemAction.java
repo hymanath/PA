@@ -1088,5 +1088,25 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		 }
 		 return Action.SUCCESS;
 	 }
-}
 //public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order)
+		public String getDistrictOfficerAlertDetails(){
+			try{
+				session = request.getSession();
+			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long scopeId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				JSONArray alertIdArr = jObj.getJSONArray("alertIdArr");  
+				List<Long> alertIdList = new ArrayList<Long>();
+				for (int i = 0; i < alertIdArr.length(); i++){
+					alertIdList.add(Long.parseLong(alertIdArr.getString(i)));        
+				}
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(alertIdList);
+				
+				alertCoreDashBoardVOs =alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getDistrictOfficeralertDetails() of alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+}
