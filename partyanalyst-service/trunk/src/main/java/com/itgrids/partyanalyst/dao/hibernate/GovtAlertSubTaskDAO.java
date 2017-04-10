@@ -114,7 +114,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
      	}
    	
    	@SuppressWarnings("unchecked")
-	public List<Object[]> getDistrictLevelDeptWiseStatusOverViewForSubTask(Date fromDate, Date toDate,Long scopeId,Long deptId){
+	public List<Object[]> getDistrictLevelDeptWiseStatusOverViewForSubTask(Date fromDate, Date toDate,Long scopeId,Long deptId,Long levelId){
 	  		StringBuilder sb = new StringBuilder();  
 	  		
 	  	     sb.append("select ");
@@ -140,7 +140,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	  	     }
 	  	    if(fromDate != null && toDate != null)
 	  	      sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
-	  	  
+	  	    if(levelId != null && levelId.longValue() > 0){
+	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId =:levelId ");
+	  	     }
 	    sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId, " +
 	    		" model.alertSubTaskStatus.alertSubTaskStatusId " );
 	     	    
@@ -154,6 +156,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	  	    }
 	  	    if(deptId != null && deptId.longValue() > 0){
 	  	    	query.setParameter("deptId",deptId);
+	  	    }
+	  	    if(levelId != null && levelId.longValue() > 0){
+	  	    	query.setParameter("levelId",levelId);
 	  	    }
 	  	  return query.list();
 	  	}
