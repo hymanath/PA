@@ -3656,7 +3656,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       	 * overview  click
       	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStateThenGovtDeptScopeWiseAlertCount(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long)
       	 */
-      	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId){
+      	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId,String category){
       		try{
       			
       			Date fromDate = null;
@@ -3696,17 +3696,24 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				for(Object [] param : childDeptScopeIdList){
     					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
     				}
-    			}  
-      			List<Long> alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCountForStatusForClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,deptScopeIdList,parentGovtDepartmentScopeId,locationId,childLocationId);
+    			} 
+    			List<Long> alertList = null;
+    			if(category != null && category.trim().isEmpty() && !category.trim().equalsIgnoreCase("overview")){
+    				alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCountOnClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,deptScopeIdList,parentGovtDepartmentScopeId,locationId,childLocationId);
+
+    			}else{
+    				alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCountForStatusForClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,deptScopeIdList,parentGovtDepartmentScopeId,locationId,childLocationId);
+
+    			}
       			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
       			if(alertList != null && alertList.size() > 0){
     				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertList));
     				setAlertDtls(alertCoreDashBoardVOs, list); 
     			}
-      			return alertCoreDashBoardVOs;  
+      			return alertCoreDashBoardVOs;    
       			
       		}catch(Exception e){
-      			e.printStackTrace();  
+      			e.printStackTrace();    
       		}
       		return null;
       	}
@@ -3757,5 +3764,5 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
         	return finalList;
         }
-          
+
 }
