@@ -16745,7 +16745,12 @@
 		<result name="success" type="stream">			   
 		    <param name="inputName">alertTrackingVOList</param>
 		</result>								
-	</action>  	  
-	                 
+	</action>
+	<action name="getStatusCompletionInfoAction" class="alertManagementSystemAction" method="getStatusCompletionInfo">			
+		<result name="success" type="stream">			   
+		    <param name="inputName">idnameVoList</param>
+		</result>								
+	</action>
+	  	                   
  </package>
 </struts>

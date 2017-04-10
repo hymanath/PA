@@ -4190,6 +4190,7 @@
 		<property name="govtDepartmentDesignationHierarchyDAO" ref="govtDepartmentDesignationHierarchyDAO" ></property>
 		<property name="govtDepartmentDesignationOfficerDetailsDAO" ref="govtDepartmentDesignationOfficerDetailsDAO" ></property>
 		<property name="govtDepartmentDesignationDAO" ref="govtDepartmentDesignationDAO" ></property>
+		<property name="alertStatusDAO" ref="alertStatusDAO" ></property>
    </bean>
 </beans>			
 	
