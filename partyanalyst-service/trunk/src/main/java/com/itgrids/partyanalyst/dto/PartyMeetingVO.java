@@ -76,7 +76,8 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private Double nonInviteePerc = 0.00;
 	private String distName;
 	private String constNmae;
-	
+	private String meetingTime;
+	private String partyInvaitedChecking;
 	
 	public Double getInviteeAttendedPerc() {
 		return inviteeAttendedPerc;
@@ -489,4 +490,17 @@ public class PartyMeetingVO implements java.io.Serializable{
 	public void setConstNmae(String constNmae) {
 		this.constNmae = constNmae;
 	}
+	public String getMeetingTime() {
+		return meetingTime;
+	}
+	public void setMeetingTime(String meetingTime) {
+		this.meetingTime = meetingTime;
+	}
+	public String getPartyInvaitedChecking() {
+		return partyInvaitedChecking;
+	}
+	public void setPartyInvaitedChecking(String partyInvaitedChecking) {
+		this.partyInvaitedChecking = partyInvaitedChecking;
+	}
+	
 }

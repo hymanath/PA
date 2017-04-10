@@ -1741,5 +1741,27 @@ public class TrainingCampAttendanceDAO extends GenericDaoHibernate<TrainingCampA
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getBatchIds(List<Long> tdpCadreIdsList){
+		Query query = getSession().createQuery(" select distinct model.trainingCampBatch.trainingCampBatchId,model.attendance.tdpCadre.tdpCadreId " +
+				" ,model.attendance.attendanceId," +
+				" date(model.attendance.attendedTime),model.trainingCampProgram.durationInDays " +
+				" from TrainingCampAttendance model " +
+				" where model.attendance.tdpCadre.tdpCadreId in (:tdpCadreIdsList) ");	
+		query.setParameterList("tdpCadreIdsList", tdpCadreIdsList);
+		return query.list();
+	}
+	
+	public List<Object[]> getCampDetails(List<Long> batchIds){
+		Query query = getSession().createQuery(" select distinct model.trainingCampBatch.trainingCampBatchId, " +
+				" model.trainingCampProgram.programName," +
+				" model.trainingCampSchedule.trainingCamp.campName, model.trainingCampBatch.trainingCampBatchName," +
+				" date(model.trainingCampBatch.fromDate), date(model.trainingCampBatch.toDate), " +
+				" model.trainingCampProgram.durationInDays " +
+				" from TrainingCampAttendance model " +
+				" where model.trainingCampBatch.trainingCampBatchId in (:batchIds) " );
+		query.setParameterList("batchIds", batchIds);
+	  return query.list();
+	}
 }
 

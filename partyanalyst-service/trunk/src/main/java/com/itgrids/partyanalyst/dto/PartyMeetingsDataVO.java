@@ -65,7 +65,7 @@ public class PartyMeetingsDataVO implements Serializable{
 	private String path;
 	private Long levelId;
 	private Long imagesCount = 0l;
-	
+	private String attendedDate;
 	
 	public Long getImagesCount() {
 		return imagesCount;
@@ -368,6 +368,12 @@ public class PartyMeetingsDataVO implements Serializable{
 	}
 	public void setPath(String path) {
 		this.path = path;
+	}
+	public String getAttendedDate() {
+		return attendedDate;
+	}
+	public void setAttendedDate(String attendedDate) {
+		this.attendedDate = attendedDate;
 	} 
 	
 }
