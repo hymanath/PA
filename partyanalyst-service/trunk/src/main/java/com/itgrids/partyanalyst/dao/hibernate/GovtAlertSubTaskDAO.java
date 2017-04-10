@@ -454,10 +454,10 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
   	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
   	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
 		
-		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
-			queryStr.append(" group by GDWL.govt_department_work_location_id, GDS.govt_department_scope_id,AAO.alert_status_id ");
-		}else{
+		if(type != null && type.equalsIgnoreCase("status")){
 			queryStr.append(" group by GDWL.govt_department_work_location_id, AAO.alert_sub_task_status_id ");
+		}else if(type != null && type.equalsIgnoreCase("scope")){
+			queryStr.append(" group by GDWL.govt_department_work_location_id, GDS.govt_department_scope_id ");
 		}
 		
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
