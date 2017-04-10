@@ -1237,9 +1237,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
     		
     		queryStr.append(" and GDS.govt_department_scope_id = GDDO.govt_department_scope_id  ");
-    		if(locationId != null && locationId.longValue() > 0L){
-    			queryStr.append(" and GDWL.govt_department_work_location_id = :locationId ");
-    		}
+    		
     		if(statusId != null && statusId.longValue() > 0L){
     			queryStr.append(" and AAO.alert_status_id = :statusId  ");
     		}
@@ -1253,9 +1251,19 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		queryStr.append(" and GD.govt_department_id = GDD.govt_department_id  ");
     		
     		queryStr.append(" and GDWL.govt_department_work_location_id=GDWLR.parent_govt_department_work_location_id   ");
-    		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
-    			queryStr.append(" and GDWL.govt_department_scope_id=:parentGovtDepartmentScopeId   ");
+    		
+    		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+    			queryStr.append(" and GDWL.govt_department_work_location_id = 1 ");
+    			queryStr.append(" and GDWL.govt_department_scope_id=1   ");
+    		}else{
+    			if(locationId != null && locationId.longValue() > 0L){
+        			queryStr.append(" and GDWL.govt_department_work_location_id = :locationId ");
+        		}
+    			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+        			queryStr.append(" and GDWL.govt_department_scope_id=:parentGovtDepartmentScopeId   ");
+        		}
     		}
+    		
     		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
     			queryStr.append(" and GD.govt_department_id = :govtDepartmentId   ");
     		}
@@ -1304,9 +1312,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		if(statusId != null && statusId.longValue() > 0L){
     			query.setParameter("statusId",statusId);
     		}
-    		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
-    			query.setParameter("parentGovtDepartmentScopeId",parentGovtDepartmentScopeId);
-    		}
+    		
     		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
     			query.setParameter("govtDepartmentId",govtDepartmentId);
     		}
@@ -1316,8 +1322,16 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		if(levelId != null && levelValues != null && !levelValues.isEmpty()){
     			query.setParameterList("levelValues",levelValues);
     		}
-    		if(locationId != null && locationId.longValue() > 0){
-    			query.setParameter("locationId",locationId);
+    		
+    		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+    			
+    		}else{
+    			if(locationId != null && locationId.longValue() > 0){
+        			query.setParameter("locationId",locationId);
+        		}
+    			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+        			query.setParameter("parentGovtDepartmentScopeId",parentGovtDepartmentScopeId);
+        		}
     		}
     		return query.list();   
         	
