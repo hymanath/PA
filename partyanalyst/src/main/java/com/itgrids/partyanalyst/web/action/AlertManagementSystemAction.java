@@ -1080,7 +1080,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				String sortType = jObj.getString("sortType");
 				String order = jObj.getString("order");
-				alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order);
+				String searchType = jObj.getString("alertType");
+				alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,searchType);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
@@ -1154,10 +1155,11 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String sortType = jObj.getString("sortType");
 				String order = jObj.getString("order");
 				String searchType =jObj.getString("searchType");
+				String alertType = jObj.getString("alertType");
 				if(searchType == "status")
-				 alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,null,null,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order);
-				//else
-				 // alertCoreDashBoardVOs=alertManagementSystemService.getDistrictOfficerScopesWiseAlerts(fromDate,toDate,stateId,null,null,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order);
+				 alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,null,null,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType);
+				else if(searchType == "scopes")
+				  alertCoreDashBoardVOs=alertManagementSystemService.getDistrictOfficerScopesWiseAlerts(fromDate,toDate,stateId,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType);
 					
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
