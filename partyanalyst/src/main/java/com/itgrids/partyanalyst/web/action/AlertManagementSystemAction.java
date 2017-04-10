@@ -1395,6 +1395,20 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;	
 		}
+		public String getStatusCompletionInfo(){
+			try {
+				
+				jObj = new JSONObject(getTask());
+				Long alertId = jObj.getLong("alertId");
+				Long levelValue = jObj.getLong("levelValue");
+				
+				idnameVoList = alertManagementSystemService.getStatusCompletionInfo(alertId,levelValue);
+				
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getStatusCompletionInfo() method, Exception - ",e);
+			}
+			return Action.SUCCESS;	
+		}
 		
 		public String getSubTaskInfoForAlert(){
 			try {
