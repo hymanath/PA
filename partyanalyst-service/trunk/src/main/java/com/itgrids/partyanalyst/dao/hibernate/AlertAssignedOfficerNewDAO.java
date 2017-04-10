@@ -523,8 +523,40 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    sb.append("select model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
     	    		"model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName,model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
     	    		"model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName,count(distinct  model.alert.alertId) ");
+    	    
+    	    	if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+        	      sb.append(" , S.locationValue,S.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+        	      sb.append(" , Z.locationValue,Z.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+        	      sb.append(" , R.locationValue,R.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+        	      sb.append(" , C.locationValue,C.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+        	      sb.append(" , D.locationValue,D.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+        	      sb.append(" , DIV.locationValue,DIV.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+        	      sb.append(" , SUBDIV.locationValue,SUBDIV.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+          	      sb.append(" , T.locationValue,T.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+          	      sb.append(" , LEB.locationValue,LEB.locationName ");
+        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+          	      sb.append(" , P.locationValue,P.locationName ");
         	
-        	sb.append(" from AlertAssignedOfficerNew model " );
+        	sb.append(" from AlertAssignedOfficerNew model " +
+        			" left join model.govtDepartmentDesignationOfficer.govtUserAddress UA " +
+    	          " left join UA.state S " +
+    	          " left join UA.zone Z " +
+    	          " left join UA.region R " +
+    	          " left join UA.circle C " +
+    	          " left join UA.district D " +
+    	          " left join UA.division DIV " +
+    	          " left join UA.subDivision SUBDIV " +
+    	          " left join UA.tehsil T" +
+    	          " left join UA.localElectionBody LEB " +
+    	          " left join UA.panchayat P " );
     	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
   	    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+")   ");
     	    
@@ -562,7 +594,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	      sb.append(" and UA.panchayatId in (:levelValues)");
     	    
     	    if(type != null && type.equalsIgnoreCase("completedAlerts")){
-    	    	sb.append("  and mode.alertStatus.alertStatusId = 4 ");
+    	    	sb.append("  and model.alertStatus.alertStatusId = 4 ");
     	    }
     	    
     	    sb.append(" group by  model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId,model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
@@ -582,6 +614,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    	query.setDate("fromDate", fromDate);
     	    	query.setDate("endDate", endDate);
     	    }
+    	    if(levelId != null && levelValues != null && !levelValues.isEmpty())
+    	    		query.setParameterList("levelValues", levelValues);
     	    
     	    if(priorityId != null && priorityId.longValue() >0l)
     	    	query.setParameter("priorityId", priorityId);
