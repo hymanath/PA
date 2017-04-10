@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.model.AlertStatus;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 		implements IAlertStatusDAO {
@@ -15,6 +16,14 @@ public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 	}
 	public List<Object[]> getAllStatus(){
 		Query query = getSession().createQuery("select model.alertStatusId, model.alertStatus, model.color,model.shortName from AlertStatus model order by model.statusOrder asc ");
+		return query.list();
+	}
+	public List<Object[]> getAlertStatusInfoForReOpen(){
+		Query query = getSession().createQuery("select model.alertStatusId, model.alertStatus " +
+				" from AlertStatus model " +
+				" where model.alertStatusId in (:alertStatusIds) ");
+		
+		query.setParameterList("alertStatusIds", IConstants.AMS_REOPEN_ALERT_STATUS);
 		return query.list();
 	}
 

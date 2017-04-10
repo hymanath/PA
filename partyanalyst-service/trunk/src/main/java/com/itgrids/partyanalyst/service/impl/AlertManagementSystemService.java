@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentDocumentNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
@@ -43,6 +44,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeLevelDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationRelationDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerSubTaskTrackingDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AlertStatusDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
@@ -96,9 +98,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
 	private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
 
+	private IAlertStatusDAO alertStatusDAO;
 	
 	
-	
+	public void setAlertStatusDAO(IAlertStatusDAO alertStatusDAO) {
+		this.alertStatusDAO = alertStatusDAO;
+	}
+
 	public IGovtDepartmentDesignationDAO getGovtDepartmentDesignationDAO() {
 		return govtDepartmentDesignationDAO;
 	}
@@ -3704,5 +3710,52 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       		}
       		return null;
       	}
+      	
+      	public List<IdNameVO>  getStatusCompletionInfo(Long alertId,Long levelValue){
+        	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+        	try {
+        		
+        		List<Long> workLocationids = govtDepartmentWorkLocationRelationDAO.getChildLocations(levelValue);        		        		        		
+        		List<Object[]> userObjList =  alertAssignedOfficerNewDAO.getDesignationOfficerDetails(alertId);
+        		
+        		Alert alert  = alertDAO.get(alertId);        		
+        		boolean isReOpen = false;
+        		
+        		if(userObjList !=null && userObjList.size()>0){        			
+        			Object[] obj = userObjList.get(0);
+        			
+        			if(workLocationids !=null && obj[1] !=null){
+        				if(workLocationids.contains((Long)obj[1]) && alert.getAlertStatusId().longValue() == 4l ){
+        					isReOpen = true;
+        				}
+        			}
+        		}
+        		
+        		if(isReOpen){
+        			List<Object[]> listObj = alertStatusDAO.getAlertStatusInfoForReOpen();
+        			if(listObj !=null && listObj.size()>0){
+        				for (Object[] objects : listObj) {
+							IdNameVO vo = new IdNameVO();
+							vo.setId((Long)objects[0]);
+							vo.setName(objects[1].toString());
+							
+							finalList.add(vo);
+						}
+        			}
+        		}else{        			
+        			IdNameVO VO = new IdNameVO();        			
+        			VO.setId(alert.getAlertStatusId());
+        			VO.setName(alert.getAlertStatus().getAlertStatus());
+        			VO.setStatus("false");
+        			finalList.add(VO);
+        		}
+        		
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Error occured getStatusCompletionInfo() method of AlertManagementSystemService",e);
+			}
+        	return finalList;
+        }
           
 }
