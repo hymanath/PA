@@ -1949,7 +1949,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return monthStr;
 	}
-	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCount(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId){
+	/*
+	 * Swadhin K Lenks
+	 * overview
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStateThenGovtDeptScopeWiseAlertCount(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long)
+	 */
+	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCount(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType,String order){
 		try{
 			
 			Date fromDate = null;
@@ -2024,16 +2029,35 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
 					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
 					innerList = new ArrayList<AlertCoreDashBoardVO>();
+					Long total = new Long(0L);
 					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){  
 						innerVO = new AlertCoreDashBoardVO();
 						innerVO.setId(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()));
 						innerVO.setName(lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
 						innerVO.setSevertyColor(lvlIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? lvlIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
+						total = total + commonMethodsUtilService.getLongValueForObject(innerEntry.getValue());
 						innerVO.setCount(commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
 						innerList.add(innerVO);
 					}
+					alertCoreDashBoardVO.setTotalCount(total);
 					alertCoreDashBoardVO.setSubList(innerList);
 					returnList.add(alertCoreDashBoardVO);
+				}
+			}
+			if(returnList != null && returnList.size() > 0){
+				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+					}else{
+						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+					}
+				}
+				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+					}else{
+						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+					}
 				}
 			}
 			System.out.println("HI");  
@@ -2284,4 +2308,228 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           	 return name2.compareTo(name1);
           	}
         };
+        public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order){
+    		try{
+    			
+    			Date fromDate = null;
+    			Date toDate = null;
+    			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+    			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+    				fromDate = sdf.parse(fromDateStr);
+    				toDate = sdf.parse(toDateStr);
+    			}
+    			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+    			if(printIdList != null && printIdList.size() > 0){  
+    				if(electronicIdList != null && electronicIdList.size() == 0){
+    					electronicIdList.add(0L);
+    				}
+    			}else if(electronicIdList != null && electronicIdList.size() > 0){
+    				if(printIdList != null && printIdList.size() == 0){
+    					printIdList.add(0L);
+    				}
+    			}else{
+    				electronicIdList.add(0L);
+    				printIdList.add(0L);
+    			}
+    			
+    			List<Long> levelValues = new ArrayList<Long>();    
+    			Long levelId = 0L;
+    			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+    			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+    				for(Object[] param : lvlValueAndLvlIdList){
+    					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+    					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+    				}
+    			}
+    			
+    			
+    			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+    			List<Long> deptScopeIdList = new ArrayList<Long>();
+    			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+    				for(Object [] param : childDeptScopeIdList){
+    					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+    				}
+    			}
+    			
+    			
+    			List<Object[]> alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCountForStatus(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
+    			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+    			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+    				prepareResultForState(alertList,returnList,sortingType,order);
+    				return returnList;
+    			}
+    			
+    			Map<Long,String> locIdAndLocNameMap = new LinkedHashMap<Long,String>();
+    			Map<Long,String> statusIdAndStatusName = new LinkedHashMap<Long,String>();
+    			Map<Long,String> statusIdAndColor = new LinkedHashMap<Long,String>();
+    			Map<Long,LinkedHashMap<Long,Long>> locIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+    			LinkedHashMap<Long,Long> statusIdAndAlertCountMap = null;
+    			
+    			if(alertList != null && alertList.size() > 0){ 
+    				for(Object[] param : alertList){
+    					locIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[2]));
+    					statusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[4]));
+    					statusIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[6]));
+    					
+    					statusIdAndAlertCountMap = locIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+    					if(statusIdAndAlertCountMap == null){
+    						statusIdAndAlertCountMap = new LinkedHashMap<Long,Long>();
+    						locIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusIdAndAlertCountMap);
+    					}
+    					statusIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[5]));
+    				}
+    			}
+    			
+    			List<AlertCoreDashBoardVO> innerList = null;
+    			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+    			AlertCoreDashBoardVO innerVO = null;
+    			if(locIdThenStatusIdThenAlertCount != null && locIdThenStatusIdThenAlertCount.size() > 0){
+    				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenStatusIdThenAlertCount.entrySet()){
+    					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+    					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+    					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+    					innerList = new ArrayList<AlertCoreDashBoardVO>();
+    					Long total = new Long(0L);
+    					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){  
+    						innerVO = new AlertCoreDashBoardVO();
+    						innerVO.setId(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()));
+    						innerVO.setName(statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
+    						innerVO.setSevertyColor(statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
+    						total = total + commonMethodsUtilService.getLongValueForObject(innerEntry.getValue());
+    						innerVO.setCount(commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
+    						innerList.add(innerVO);
+    					}
+    					alertCoreDashBoardVO.setTotalCount(total);
+    					alertCoreDashBoardVO.setSubList(innerList);
+    					returnList.add(alertCoreDashBoardVO);
+    				}
+    			}
+    			System.out.println("HI");
+    			if(returnList != null && returnList.size() > 0){
+    				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+    						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+    					}else{
+    						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+    					}
+    				}
+    				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+    						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+    					}else{
+    						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+    					}
+    				}
+    			}
+    			return returnList;
+    			
+    		}catch(Exception e){
+    			e.printStackTrace();
+    		}
+    		return null;
+    	}
+        public List<AlertCoreDashBoardVO> prepareResultForState(List<Object[]> alertList,List<AlertCoreDashBoardVO> returnList,String sortingType,String order){
+        	try{
+        		
+        		Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
+    			Map<Long,String> statusIdAndStatusName = new LinkedHashMap<Long,String>();
+    			Map<Long,String> statusIdAndColor = new LinkedHashMap<Long,String>();    
+    			
+    			Map<Long,LinkedHashMap<Long,Long>> lvlIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+    			LinkedHashMap<Long,Long> statusIdThenAlertCount = null;
+    			
+        		if(alertList != null && alertList.size() > 0){
+        			for(Object[] param : alertList){
+        				lvlIdAndLvlName.put(commonMethodsUtilService.getLongValueForObject(param[3]),commonMethodsUtilService.getStringValueForObject(param[4]));
+        				statusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[5]), commonMethodsUtilService.getStringValueForObject(param[6]));
+        				statusIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[5]), commonMethodsUtilService.getStringValueForObject(param[8]));
+    					
+        				statusIdThenAlertCount = lvlIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+    					if(statusIdThenAlertCount == null){
+    						statusIdThenAlertCount = new LinkedHashMap<Long,Long>();
+    						lvlIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[3]), statusIdThenAlertCount);
+    					}
+    					statusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[5]), commonMethodsUtilService.getLongValueForObject(param[7]));
+    				}
+        		}
+        		List<AlertCoreDashBoardVO> innerList = null;
+    			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+    			AlertCoreDashBoardVO innerVO = null;
+    			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
+    				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+    					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+    					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+    					alertCoreDashBoardVO.setName(lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+    					innerList = new ArrayList<AlertCoreDashBoardVO>();
+    					Long total = new Long(0L);
+    					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){  
+    						innerVO = new AlertCoreDashBoardVO();
+    						innerVO.setId(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()));
+    						innerVO.setName(statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
+    						innerVO.setSevertyColor(statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
+    						total = total + commonMethodsUtilService.getLongValueForObject(innerEntry.getValue());
+    						innerVO.setCount(commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
+    						innerList.add(innerVO);
+    					}
+    					alertCoreDashBoardVO.setTotalCount(total);
+    					alertCoreDashBoardVO.setSubList(innerList);
+    					returnList.add(alertCoreDashBoardVO);
+    				}
+    			}
+    			System.out.println("HI");
+    			if(returnList != null && returnList.size() > 0){
+    				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+    						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+    					}else{
+    						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+    					}
+    				}
+    				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+    						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+    					}else{
+    						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+    					}
+    				}
+    			}
+    			
+    			return returnList;
+        	}catch(Exception e){
+        		e.printStackTrace();
+        	}
+        	return null;
+        }
+        public static Comparator<AlertCoreDashBoardVO> alertAscendingCountWiseSortingLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+         	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+         	Long count2 = location2.getTotalCount();
+         	Long count1 = location1.getTotalCount();
+         	//ascending order of percantages.
+         	 return count2.compareTo(count1);
+         	}
+          };
+          public static Comparator<AlertCoreDashBoardVO> alertDescCountWiseSortingLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+           	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+           	Long count2 = location2.getTotalCount();
+           	Long count1 = location1.getTotalCount();
+           	//ascending order of percantages.
+           	 return count1.compareTo(count2);
+           	}
+            };
+          public static Comparator<AlertCoreDashBoardVO> alphabeticalDescendingSortLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+           	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+            	String name2 = location2.getName();
+           	    String name1 = location1.getName();
+           	    //descending order of percantages.
+           	    return name1.compareTo(name2);
+           	}
+           };
+           public static Comparator<AlertCoreDashBoardVO> alphabeticalAscSortLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+              	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+              		String name2 = location2.getName();
+              	    String name1 = location1.getName();
+              	    //descending order of percantages.
+              	    return name2.compareTo(name1);
+              	}
+              };
 }
