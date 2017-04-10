@@ -231,7 +231,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	 * @return List<CastePositionVO>
 	 * description  { This service is used to get location wise caste position count }
 	 */
-	@Override
+
 	public List<CastePositionVO> getLocationWiseCastePositionCount(Long LocationLevelId,Long positionId,Long stateId) {
 	
 		List<CastePositionVO> resultList = new ArrayList<CastePositionVO>();
@@ -325,7 +325,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	 * @return List<CastePositionVO>
 	 * description  { This service is used to get location wise caste group position count }
 	 */
-	@Override
+
 	public List<CastePositionVO> getLocationWiseCasteGroupPositionCount(Long LocationLevelId,Long positionId,Long stateId) {
 		List<CastePositionVO> resultList = new ArrayList<CastePositionVO>(0);
 		try{

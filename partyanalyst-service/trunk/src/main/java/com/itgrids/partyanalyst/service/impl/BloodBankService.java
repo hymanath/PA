@@ -174,7 +174,6 @@ public class BloodBankService implements IBloodBankService{
 		this.dateUtilService = dateUtilService;
 	}
 
-	@Override
 	public List<BloodBankVO> getOccupationList() {
 		
 		List<BloodBankVO> occuList=new ArrayList<BloodBankVO>(0);
@@ -194,7 +193,6 @@ public class BloodBankService implements IBloodBankService{
 		return occuList;
 	}
 
-	@Override
 	public List<BloodBankVO> getEducationalQualificationsList() {
 		
 		List<BloodBankVO> eductnQulfctnLst=new ArrayList<BloodBankVO>(0);
@@ -1010,7 +1008,7 @@ public class BloodBankService implements IBloodBankService{
 		}
 		return finalStatus;
 	}
-	@Override
+
 	public List<BloodBankVO> getBloodComponentList() {
 		
 		List<BloodBankVO> bloodComponentList=new ArrayList<BloodBankVO>(0);

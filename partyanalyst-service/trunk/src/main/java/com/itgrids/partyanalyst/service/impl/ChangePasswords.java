@@ -16,17 +16,20 @@ public class ChangePasswords {
 	{
 		Map<String,String> pwdMap = new HashMap<String, String>(0);
 		
-		/*BufferedReader br = new BufferedReader(new FileReader("D:\\pwdChange.txt"));
-		
-		while (br.readLine() != null){
-			String str = br.readLine().trim();
-		    System.out.println(str);
+		BufferedReader br = new BufferedReader(new FileReader("E:\\pwdChange.txt"));
+		String str = null;
+		int i = 0;
+		while ((str = br.readLine()) != null)
+		{
+			str = str.trim();
+		    System.out.println(++i+")"+str);
 		    String[] arr = str.split("\t");
 		    if(arr.length == 2)
 		    	pwdMap.put(arr[0].trim(),arr[1].trim());
-		}*/
+		}
 		
-		pwdMap.put("PRD_SECY_RWS","873468");
+		br.close();
+		//pwdMap.put("PRD_SECY_RWS","873468");
 		changePassword(pwdMap);
 		
 	}

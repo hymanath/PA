@@ -224,7 +224,7 @@ public class ByeElectionVO implements Serializable,Comparable<ByeElectionVO>{
 	public void setUnRecognizeList(List<ByeElectionVO> unRecognizeList) {
 		this.unRecognizeList = unRecognizeList;
 	}
-	@Override
+
 	public int compareTo(ByeElectionVO obj) {
 		if(obj instanceof ByeElectionVO){
 			ByeElectionVO vo = (ByeElectionVO) obj;
