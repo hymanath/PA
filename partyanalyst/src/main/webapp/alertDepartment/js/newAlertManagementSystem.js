@@ -48,11 +48,142 @@ function onLoadInitialisations()
 		getDepartmentLevels(deptId);
 	});
 	$(document).on("click","#assignOfficerId",function(){
-		/* if(!fieldsValidation())
+		if($("#departmentsId").val() == null || $("#departmentsId").val() == "" || $("#departmentsId").val() == 0)
 		{
+			alert("please select department");
 			return;
-		} */
-		
+		}
+		if($("#locationLevelSelectId").val() == null || $("#locationLevelSelectId").val() == "" || $("#locationLevelSelectId").val() == 0)
+		{
+			alert("please select impact level");
+			return;
+		}
+		if($("#locationLevelSelectId").val() == 1)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				alert("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				alert("please select designation");
+				return;
+			}
+			
+		}
+		if($("#locationLevelSelectId").val() == 5)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				alert("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				alert("please select location");
+				return;
+			}
+			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
+			{
+				alert("please select designation");
+				return;
+			}
+		}
+		if($("#locationLevelSelectId").val() == 6)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				alert("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				alert("please select district");
+				return;
+			}
+			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
+			{
+				alert("please select location");
+				return;
+			}
+			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
+			{
+				alert("please select designation");
+				return;
+			}
+		}
+		if($("#locationLevelSelectId").val() == 7)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				alert("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				alert("please select district");
+				return;
+			}
+			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
+			{
+				alert("please select division");
+				return;
+			}
+			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
+			{
+				alert("please select location");
+				return;
+			}
+			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
+			{
+				alert("please select designation");
+				return;
+			}
+		}
+		if($("#locationLevelSelectId").val() == 8)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				alert("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				alert("please select district");
+				return;
+			}
+			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
+			{
+				alert("please select division");
+				return;
+			}
+			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
+			{
+				alert("please select sub division");
+				return;
+			}
+			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
+			{
+				alert("please select location");
+				return;
+			}
+			if($("#locationSubLevelSelectId9").val() == null || $("#locationSubLevelSelectId9").val() == "" || $("#locationSubLevelSelectId9").val() == 0)
+			{
+				alert("please select designation");
+				return;
+			}
+		}
+		if($("#designationsId").val() == null || $("#designationsId").val() == "" || $("#designationsId").val() == 0)
+		{
+			alert("please select designations");
+			return;
+		}
+		if($("#officerNamesId").val() == null || $("#officerNamesId").val() == "" || $("#officerNamesId").val() == 0)
+		{
+			alert("please select officer name");
+			return;
+		}
 		$("#assiningLdngImg").show();
 		$("#assignOfficerId").hide();
 		var uploadHandler = {
@@ -65,29 +196,8 @@ function onLoadInitialisations()
 
 		YAHOO.util.Connect.setForm('alertAssignForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','assigningAlertToOfficerNewAction.action',uploadHandler); 
-		
-		
 	});
-	$(document).on("click","#assignOfficerSubTaskId",function(){
-		/* if(!fieldsValidation())
-		{
-			return;
-		} */
-		
-		$("#assiningLdngImgSubTask").show();
-		$("#assignOfficerSubTaskId").hide();
-		var uploadHandler = {
-			upload: function(o) {
-				uploadResult = o.responseText;
-				displayStatusSubTask(uploadResult);
-			}
-		};
-		
 
-		YAHOO.util.Connect.setForm('alertAssignSubTaskForm',true);
-		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
-	});
-	
 	$(document).on('change','#designationsId', function(evt, params) {
 		var designationId = $(this).val();
 		officersByDesignationAndLevel(designationId)
@@ -1024,11 +1134,11 @@ function getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,depa
 		}
 	});
 }
-function viewAlertHistory()
+function viewAlertHistory(alertId)
 {
 	$("#alertManagementPopupBody1").html(spinner)
 	var jsObj ={
-		alertId : 11346
+		alertId : alertId
 	}
 	$.ajax({
 		type:'GET',
@@ -1248,24 +1358,10 @@ function displayStatus(result)
 		$("#assignSuccess").html('Try Again');
 	}	
 }
-function displayStatusSubTask(result)
-{
-	var result = (String)(result);
-	if(result.search('success') != -1){
-		$("#assiningLdngImgSubTask").hide();
-		$("#assignOfficerSubTaskId").show();
-		alert("Alert Assigned Successfully.");
-		$("#assignSuccessSubTask").html('Alert Assigned Successfully')
-		location.reload();
-	}else{
-		alert("Please Try Again.");
-		$("#assignSuccessSubTask").addClass("text-danger");
-		$("#assignSuccessSubTask").html('Try Again');
-	}	
-}
-function getAlertStatusHistory(){
+
+function getAlertStatusHistory(alertId){
 	var jsObj ={
-		alertId : 11346
+		alertId : alertId
 	}
 	$.ajax({
 		type:'GET',
@@ -1278,5 +1374,108 @@ function getAlertStatusHistory(){
 		}else{
 			$("#alertManagementPopupBody1").html("NO DATA")
 		}
+	});
+}
+function rightSideExpandView(alertId)
+{
+	$("#rightSideExpandView").html(spinner);
+	var str='';
+	str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
+		str+='<div class="panel-right">';
+			str+='<div class="arrow_box_left">';
+				str+='<i class="glyphicon glyphicon-remove pull-right"  expanded-close="block1"></i>';
+				str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-4">';
+								str+='<div id="assignedUser"></div>';
+							str+='</div>';
+							str+='<div class="col-sm-8">';
+								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
+									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" data-toggle="tooltip" data-placement="top" title="alert status">';
+										str+='<span class="status-icon arrow-icon"></span>Pending';
+									str+='</li>';
+									str+='<li class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">DUe date</span>';
+									str+='</li>';
+									str+='<li status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="status change">';
+										str+='<i class="glyphicon glyphicon-cog"></i>';
+										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
+											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" class="pull-right" /></li>';
+											str+='<li>medium <input type="radio" name="alert-status-change-list" value="2" class="pull-right" /></li>';
+											str+='<li>low <input type="radio" name="alert-status-change-list" value="3" class="pull-right" /></li>';
+											str+='<li><button class="btn btn-primary btn-sm text-capital" id="priorityChangeSaveId">save</button></li>';
+										str+='</ul>';
+									str+='</li>';
+									str+='<li status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
+										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
+									str+='</li>';
+									str+='<li>';
+										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="panel-body">';
+						str+='<p><i class="fa fa-fire"></i> Impact Level : State';
+							str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
+						str+='</p>';
+						str+='<div status-body="task" class="m_top20"></div>';
+						str+='<div status-body="subTask" class="m_top20"></div>';
+					str+='</div>';
+					str+='<div class="panel-footer">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-1 text-center">';
+								str+='<span class="icon-name icon-primary">Ra</span>';
+							str+='</div>';
+							str+='<div class="col-sm-11">';
+								str+='<div class="panel panel-default panel-border-white">';
+									str+='<div class="panel-heading">';
+										str+='<label class="radio-inline" name="language">';
+											str+='<input type="radio"/>Telugu';
+										str+='</label>';
+										str+='<label class="radio-inline" name="language">';
+											str+='<input type="radio"/>English';
+										str+='</label>';
+									str+='</div>';
+									str+='<div class="panel-body">';
+										str+='<div class="comment-area">Comment Here</div>';
+										str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
+									str+='</div>';
+									str+='<div class="panel-footer text-right">';
+										str+='<button class="btn btn-primary comment-btn" id="commentChangeId">Comment</button>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#rightSideExpandView").html(str);
+	$('[data-toggle="tooltip"]').tooltip();
+	dateRangePicker();
+	assignedOfficersDetailsForAlert(alertId);
+
+}
+function assignedOfficersDetailsForAlert(alertId)
+{
+	var jsObj = {
+		alertId : alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAssignedOfficersDetailsAction.action',
+	data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			buildAssignedOfficersDetailsForAlert(result);
+		}else{
+			assignUser(alertId);
+		}
+		
 	});
 }

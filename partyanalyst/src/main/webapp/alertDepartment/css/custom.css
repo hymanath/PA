@@ -1285,6 +1285,11 @@ small.clear
 	display:block;
 	border:1px solid #ddd;
 	padding:4px 8px;
+	position:relative;
+}
+.assign-subtask-list li ul li
+{
+	border:0px;
 }
 .assign-subtask-list li.new .glyphicon-plus
 {
@@ -1373,6 +1378,7 @@ small.clear
 	width:100%;
 	z-index:9999;
 	display:none;
+	position:absolute;
 }
 .assign-subtask .arrow_box_top:after,.assign-subtask  .arrow_box_top:before 
 {
