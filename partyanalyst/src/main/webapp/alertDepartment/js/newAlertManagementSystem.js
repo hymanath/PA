@@ -44,7 +44,8 @@ function onLoadInitialisations()
 		designationsByDepartment();
 	});
 	$(document).on('change', '#departmentsId', function(){
-		getDepartmentLevels();
+		var deptId = $(this).val();
+		getDepartmentLevels(deptId);
 	});
 	$(document).on("click","#assignOfficerId",function(){
 		/* if(!fieldsValidation())
@@ -1048,10 +1049,10 @@ function viewAlertHistory()
 
 
 
-function getDepartmentLevels(){
+function getDepartmentLevels(deptId){
 	
 	var jsObj = {
-		departmentId : 49
+		departmentId : deptId
 	}
 	$.ajax({
       type:'GET',
