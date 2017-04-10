@@ -1030,7 +1030,7 @@ div.comment-area
 	position:absolute;
 	top:40px;
 	left:0px;
-	width:100%;
+	width:450px;
 	z-index:99999;
 }
 .arrow_box_top {
@@ -1081,14 +1081,13 @@ div.comment-area
 .alert-history li .alert-history-time
 {
 	position: absolute;
-	left: -66px;
-	top:33px;
+	left: -56px;
+	top: 0;
 	font-size: 10px;
 	background: #fff;
 	border: 1px solid #ddd;
 	border-radius: 3px;
 	padding: 2px;
-	margin-top:10px;
 }
 .alert-history li .alert-history-date
 {
@@ -1358,4 +1357,8 @@ small.clear
 	padding:2px 3px;
 	text-transform:uppercase;
 	cursor:pointer;
+}
+.constituencyUl li:last-child
+{
+	padding:0px;
 }
