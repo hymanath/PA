@@ -1076,5 +1076,17 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	 public String alertDistOfficeManagement(){
 		 return Action.SUCCESS; 
 	 }
+	 public String getDeptListForMultiLvl(){    
+		 try{
+			 session = request.getSession();
+			 RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			 Long userId = regVo.getRegistrationID();
+			 idnameVoList = alertManagementSystemService.getDeptListForMultiLvl(userId);
+			 
+		 }catch(Exception e){
+			 LOG.error("Exception Occured in getDeptListForMultiLvl() method, Exception - ",e); 
+		 }
+		 return Action.SUCCESS;
+	 }
 }
 //public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order)

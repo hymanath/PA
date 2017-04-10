@@ -16661,6 +16661,10 @@
 	  <action name="alertDistOfficeManagement" class="alertManagementSystemAction" method="alertDistOfficeManagement">
 	  		<result name="success">/jsp/newAlertDistrictOffice.jsp</result>
 	  </action>
-	   	                   
+	  <action name="getDeptListForMultiLvlAction" class="alertManagementSystemAction" method="getDeptListForMultiLvl">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+		 </action>            
  </package>
 </struts>
