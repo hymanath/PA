@@ -2640,7 +2640,10 @@ $(document).on('change','#districtSelectBoxId',function(){
 	 var seletedDistId = $(this).val();
 	 distIdArr.push(seletedDistId);            
     });
-	getConstituenciesForDistricts(distIdArr);
+	if(distIdArr != [] && distIdArr.length>0)
+	{
+	    getConstituenciesForDistricts(distIdArr);
+	}
 });  
 	$(document).on("click",".geoLevlCheckedCls",function(){
 		
