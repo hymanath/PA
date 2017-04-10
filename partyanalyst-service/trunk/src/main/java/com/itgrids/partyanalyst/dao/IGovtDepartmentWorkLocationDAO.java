@@ -10,5 +10,6 @@ import com.itgrids.partyanalyst.model.GovtDepartmentWorkLocation;
 public interface IGovtDepartmentWorkLocationDAO extends GenericDao<GovtDepartmentWorkLocation, Long> {
 
 	public List<Object[]> getLevelWiseInfo(Long deptId,Set<Long> levelIds);
+	public List<Object[]> getParentLevelValuesListInfo(List<Long> levelValues);
 	
 }
