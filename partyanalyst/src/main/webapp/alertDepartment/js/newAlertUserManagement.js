@@ -232,20 +232,33 @@ $("#dateRangePickerAUM").daterangepicker({
 		buildDistrictOfficerAlertsCountView(result);
     });
 }
-
+var overAllAlertIds =[];
+var totalCoutAlertIds =[];
 function buildDistrictOfficerAlertsCountView(result){
 	var str='';
 		if(result !=null && result.list1 !=null && result.list1.length>0){
 		str+='<div class="row">';
 			str+='<div class="col-sm-12 col-xs-12 col-md-12">';
 			if(result.list1[0].todayCount !=null && result.list1[0].todayCount !=0){
+				if(result.list1[0].todayCount !=null && result.list1[0].todayCount !=0 && esult.list1[0].todayCount>0){
+					totalCoutAlertIds.push(result.list1[0].todayAlertIds);
+				str+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+'>TODAY <span class="pull-right badge">'+result.list1[0].todayCount+'</span></p>';
+				}
+			else{
 				str+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list1[0].todayCount+'</span></p>';
+			}
 			}else{
 				str+='<p class="pad_5">TODAY <span class="pull-right badge">0</span></p>';
 			}
 			str+='<hr class="m_0"/>';
 			if(result.list1[0].overAllCnt !=null && result.list1[0].overAllCnt !=0){
-				str+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list1[0].overAllCnt+'</span></p>';
+				if(result.list1[0].overAllCnt !=null && result.list1[0].overAllCnt !=0 && result.list1[0].overAllCnt>0){
+					overAllAlertIds.push(result.list1[0].overAllAlertIds);
+				str+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list1[0].overAllCnt+'</span></p>';
+				}
+			  else{
+				  str+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list1[0].overAllCnt+'</span></p>';
+			  }
 			}else{
 				str+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
@@ -360,13 +373,23 @@ function buildDistrictOfficerAlertsCountView(result){
 		str1+='<div class="row">';
 			str1+='<div class="col-sm-12 col-xs-12 col-md-12">';
 			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0){
+			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0 && result.list2[0].todayCount>0){
+				  totalCoutAlertIds.push(result.list2[0].todayAlertIds);
+				str1+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' >TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
+			}else{
 				str1+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
+			}
 			}else{
 				str1+='<p class="pad_5">TODAY <span class="pull-right badge">0</span></p>';
 			}
 			str1+='<hr class="m_0"/>';
 			if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0){
-				str1+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
+			 if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0 && result.list2[0].overAllCnt>0){
+				overAllAlertIds.push(result.list2[0].overAllAlertIds);
+				str1+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
+			 }else{
+				 str1+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
+			 }
 			}else{
 				str1+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
@@ -460,13 +483,23 @@ function buildDistrictOfficerAlertsCountView(result){
 		str2+='<div class="row">';
 			str2+='<div class="col-sm-12 col-xs-12 col-md-12">';
 			if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0){
+				if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0 && esult.list3[0].todayCount>0){
+					totalCoutAlertIds.push(result.list3[0].todayAlertIds);
+				str2+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' >TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
+				}else{
 				str2+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
+				}
 			}else{
 				str2+='<p class="pad_5">TODAY <span class="pull-right badge">0</span></p>';
 			}
 			str2+='<hr class="m_0"/>';
 			if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0){
+				if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0 && result.list3[0].overAllCnt>0){
+					overAllAlertIds.push(result.list3[0].overAllAlertIds);
+				str2+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
+				}else{
 				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
+				}
 			}else{
 				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
@@ -1009,4 +1042,30 @@ function viewAlertHistory()
 $(document).on("change","#districtWiseLevelLocId",function(){
 	var levelId = $(this).val();
 	getDistrictLevelDeptWiseStatusOverView("alert","Decending",0,levelId); 
+});
+$(document).on("click",".overAllCount",function(){
+	var alertIdArr =[];
+	alertIdArr.push(parseInt($(this).attr("attr_overCunt")));
+	var jObj = {
+		alertIdArr: alertIdArr		
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelOfficerClickAction.action',
+	  data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+	});
+});
+$(document).on("click",".todayCountCls",function(){
+	var alertIdArr =[];
+	alertIdArr.push(parseInt($(this).attr("attr_todayCunt")));
+	var jObj = {
+		alertIdArr: alertIdArr		
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelOfficerClickAction.action',
+	  data: {task :JSON.stringify(jObj)}
+    }).done(function(result){
+	});
 });
