@@ -1296,4 +1296,6 @@ public interface IConstants {
 	public static final Long GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID = 9L;
 	public static final Long GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID = 10L;
 	
+	public static final List<Long>  AMS_REOPEN_ALERT_STATUS = Arrays.asList(11l,12l);
+	
 }
