@@ -1156,9 +1156,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String order = jObj.getString("order");
 				String searchType =jObj.getString("searchType");
 				String alertType = jObj.getString("alertType");
-				if(searchType == "status")
+				if(searchType.equalsIgnoreCase("status"))
 				 alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,null,null,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType);
-				else if(searchType == "scopes")
+				else if(searchType.equalsIgnoreCase("scopes"))
 				  alertCoreDashBoardVOs=alertManagementSystemService.getDistrictOfficerScopesWiseAlerts(fromDate,toDate,stateId,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType);
 					
 			} catch (Exception e) {
