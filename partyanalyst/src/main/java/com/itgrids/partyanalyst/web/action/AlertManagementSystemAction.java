@@ -1109,4 +1109,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;
 		}
+		public String getAlertStatusHistory(){
+			try {
+				jObj = new JSONObject(getTask());
+				alertTrackingVOList = alertManagementSystemService.getAlertStatusHistory(jObj.getLong("alertId"));
+			} catch (Exception e) {
+				LOG.error("Exception Raised in getAlertStatusHistory() in CccDashboardAction",e);
+			}
+			return Action.SUCCESS;
+		}
+		
 }

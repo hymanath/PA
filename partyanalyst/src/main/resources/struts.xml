@@ -16659,7 +16659,6 @@
    			<param name="root">cadreTraingVO</param>
    		</result>
 	  </action>
-	  
 	  <action name="alertDistManagement" class="alertManagementSystemAction" method="alertDistManagement">
 	  		<result name="success">/jsp/newAlertDistrictCollector.jsp</result>
 	  </action>
@@ -16675,6 +16674,11 @@
 			<result type="json" name="success">
 	   			<param name="root">alertCoreDashBoardVOs</param>
 	   		</result>
-		</action> 	                   
+		</action>
+	<action name="getAlertStatusHistoryAction" class="alertManagementSystemAction" method="getAlertStatusHistory">
+		<result type="json" name="success">
+   			<param name="root">alertTrackingVOList</param>
+   		</result>
+	</action>  	                   
  </package>
 </struts>
