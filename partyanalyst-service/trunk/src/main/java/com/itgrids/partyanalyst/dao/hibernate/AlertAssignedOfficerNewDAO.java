@@ -865,8 +865,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		}
     		queryStr.append(" and GDDO.level_value=GDWLR.govt_department_work_location_id    ");
     		
-    		
+    		if(fromDate != null && toDate != null){
     		queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
+    		}
     		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
     			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
     		}
@@ -1012,8 +1013,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		}
     		queryStr.append(" and GDDO.level_value=GDWLR.govt_department_work_location_id    ");
     		
-    		
-    		queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
+    		if(fromDate != null && toDate != null){
+    			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
+    		}
     		
     		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
     			queryStr.append(" and GUA.state_id in (:levelValues)");
