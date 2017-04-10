@@ -53,4 +53,5 @@ public interface IAlertManagementSystemService {
 	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order);
 	public List<IdNameVO> getDeptListForMultiLvl(Long userId);
 	public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(List<Long> alertIdList);
+	public List<AlertTrackingVO> getAlertStatusHistory(Long alertId);
 }

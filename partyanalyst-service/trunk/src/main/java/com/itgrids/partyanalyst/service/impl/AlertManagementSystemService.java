@@ -32,6 +32,9 @@ import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationHierarchyDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeDAO;
@@ -90,8 +93,37 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IGovtDepartmentDAO govtDepartmentDAO;
 	private ActivityService activityService;
 	private IAlertDepartmentDocumentNewDAO alertDepartmentDocumentNewDAO;
+	private IGovtDepartmentDesignationHierarchyDAO govtDepartmentDesignationHierarchyDAO;
+	private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
+	private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
 
 	
+	
+	
+	public IGovtDepartmentDesignationDAO getGovtDepartmentDesignationDAO() {
+		return govtDepartmentDesignationDAO;
+	}
+
+	public void setGovtDepartmentDesignationDAO(IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO) {
+		this.govtDepartmentDesignationDAO = govtDepartmentDesignationDAO;
+	}
+
+	public IGovtDepartmentDesignationOfficerDetailsDAO getGovtDepartmentDesignationOfficerDetailsDAO() {
+		return govtDepartmentDesignationOfficerDetailsDAO;
+	}
+
+	public void setGovtDepartmentDesignationOfficerDetailsDAO(
+			IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO) {
+		this.govtDepartmentDesignationOfficerDetailsDAO = govtDepartmentDesignationOfficerDetailsDAO;
+	}
+
+	public IGovtDepartmentDesignationHierarchyDAO getGovtDepartmentDesignationHierarchyDAO() {
+		return govtDepartmentDesignationHierarchyDAO;
+	}
+
+	public void setGovtDepartmentDesignationHierarchyDAO(IGovtDepartmentDesignationHierarchyDAO govtDepartmentDesignationHierarchyDAO) {
+		this.govtDepartmentDesignationHierarchyDAO = govtDepartmentDesignationHierarchyDAO;
+	}
 
 	public IAlertDepartmentDocumentNewDAO getAlertDepartmentDocumentNewDAO() {
 		return alertDepartmentDocumentNewDAO;
@@ -2268,7 +2300,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Error occured getGovtSubLevelMatchedVo() method of CccDashboardService{}");
+			LOG.error("Error occured getGovtSubLevelMatchedVo() method of AlertManagementSystemService{}");
 		}
 		return null;
 	}
@@ -2284,7 +2316,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				Collections.sort(resultList, alphabeticalDescendingSort);
 			}
 		 }catch(Exception e){
-			LOG.error("Exception occured  in sortListByRequiredType() in AlertService class ",e);  
+			LOG.error("Exception occured  in sortListByRequiredType() in AlertManagementSystemService class ",e);  
 		 }
 	 }
 	public static Comparator<AlertVO> alertDescendingCountWiseSorting = new Comparator<AlertVO>() {
@@ -2575,4 +2607,64 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     		}		
     		return finalVoList;
     	}
+        public ResultStatus senedSMSTOAlertAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long alertId){
+        	ResultStatus rs = new ResultStatus();
+        	try {
+        		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
+        		
+        		//get asigned officer dept, alert title
+        		//0-title,1-deptId,2-deptName
+        		Object[] objArr = alertDAO.getAlertDetailsForSMS(alertId);
+        		if(objArr != null){
+        			String message = "Alert is assigned to you,Please follow up and resolve.\nTitle : "+objArr[0].toString()+" \nDept"+objArr[2].toString();
+        			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
+        		}
+        		
+        		//get parent designation Id
+        		List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(designationId);
+        		if(parentDesigIds != null && parentDesigIds.size() > 0){
+        			//get high level officer mobile nums
+        			List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getHigherOfficerMobileNums(parentDesigIds);
+        			
+        			if(mobilenums != null && mobilenums.size() > 0){
+        				String message = "Alert is assigned to "+objArr[2].toString()+" - "+govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo+".\n Please follow up.";
+        				String mobileNums = "";
+        				for (String string : mobilenums) {
+        					mobileNums = mobileNums.equalsIgnoreCase("")?string:mobileNums+","+string;
+        				}
+        				govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
+        			}
+        		}
+        		
+        		
+        		rs.setExceptionMsg("success");
+        	} catch (Exception e) {
+        		rs.setExceptionMsg("failure");
+        		LOG.error("Error occured senedSMSTOAlertAssignedOfficer() method of AlertManagementSystemService{}");
+        	}
+        	return rs;
+        }    
+        
+        public List<AlertTrackingVO> getAlertStatusHistory(Long alertId){
+        	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
+        	try {
+        		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
+				List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getAlertStatusHistory(alertId);
+				
+				if(objList != null && objList.size() > 0){
+					for (Object[] objects : objList) {
+						AlertTrackingVO vo = new AlertTrackingVO();
+						vo.setStatus(objects[0] != null ? objects[0].toString():"");
+						vo.setComment(objects[1] != null ? objects[1].toString():"");
+						vo.setDate(objects[2] != null ? objects[2].toString():"");
+						vo.setUserName(objects[3] != null ? objects[3].toString():""+" - "+objects[4] != null ? objects[4].toString():"");
+						vo.setDesignation(objects[5] != null ? objects[5].toString():""+" - "+objects[6] != null ? objects[6].toString():"");
+						voList.add(vo);
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Error occured getAlertStatusHistory() method of AlertManagementSystemService{}");
+			}
+        	return voList;
+        }
 }

@@ -6077,5 +6077,13 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
  	   query.setDate("date", date);
  	   return query.executeUpdate();
     }
+    
+    public Object[] getAlertDetailsForSMS(Long alertId){
+    	Query query = getSession().createQuery(" select model.title,model.govtDepartment.govtDepartmentId,model.govtDepartment.departmentName "
+    			+ " from Alert model "
+    			+ " where model.alertId=:alertId and model.isDeleted='N' ");
+    	query.setParameter("alertId", alertId);
+    	return (Object[])query.uniqueResult();
+    }
 
 }

@@ -21,8 +21,22 @@ public class AlertTrackingVO {
 	private List<AlertTrackingVO> timeList = new ArrayList<AlertTrackingVO>(0);
 	private List<String> strList = new ArrayList<String>(0);
 	private String userName;
+	private String status;
+	private String comment;
 	
 	
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public String getUserName() {
 		return userName;
 	}

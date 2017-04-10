@@ -25,4 +25,11 @@ public class GovtDepartmentDesignationDAO extends GenericDaoHibernate<GovtDepart
 		query.setParameter("levelId", levelId);
 		return query.list();
 	}
+	
+	public String getDepartmentDetails(Long designationId){
+		Query query = getSession().createQuery(" select model.designationName "
+				+ " from GovtDepartmentDesignation model where model.govtDepartmentDesignationId=:designationId ");
+		query.setParameter("designationId", designationId);
+		return (String)query.uniqueResult();
+	}
 }
