@@ -1396,5 +1396,35 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			return Action.SUCCESS;	
 		}
 		
+		public String getSubTaskInfoForAlert(){
+			try {
+				
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
+				jObj = new JSONObject(getTask());
+				alertTrackingVOList = alertManagementSystemService.getSubTaskInfoForAlert(jObj.getLong("alertId"));
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getSubTaskInfoForAlert() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+		public String getCommentsForAlert(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
+				jObj = new JSONObject(getTask());
+				alertTrackingVOList = alertManagementSystemService.getCommentsForAlert(jObj.getLong("alertId"));
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getCommentsForAlert() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+			
+		}
 }
 //public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId)
