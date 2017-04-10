@@ -203,9 +203,5 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertDistrictCollector.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-
-</script>
 </body>
 </html>

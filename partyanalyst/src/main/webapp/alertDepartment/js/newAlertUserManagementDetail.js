@@ -96,6 +96,7 @@ function onLoadClicks()
 	$(document).on("click","[status-icon] li",function(e){
 		e.stopPropagation();
 		var status = $(this).attr("status-icon-block")
+		var alertId = $(this).attr("attr_alert_id")
 		if(status != null && status != undefined)
 		{
 			if(status == 'alertHistory')
@@ -107,7 +108,7 @@ function onLoadClicks()
 				});
 				$("#alertManagementPopupHeading").html('ALERT HISTORY')
 				$("#alertManagementPopup1 .modal-footer").hide();
-				viewAlertHistory();
+				viewAlertHistory(alertId);
 			}else if(status == 'alertStatus')
 			{
 				$("#alertManagementPopup1").modal({
@@ -116,7 +117,7 @@ function onLoadClicks()
 					backdrop: 'static'
 				});
 				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY')
-				getAlertStatusHistory();
+				getAlertStatusHistory(alertId);
 			}else if(status == 'alertStatusChange')
 			{
 				$(this).find('ul').toggle();
@@ -306,101 +307,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 	$("#alertManagementPopupBody").html(str);
 	$('[data-toggle="tooltip"]').tooltip();
 }
-function rightSideExpandView(alertId)
-{
-	$("#rightSideExpandView").html(spinner);
-	var str='';
-	str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
-		str+='<div class="panel-right">';
-			str+='<div class="arrow_box_left">';
-				str+='<i class="glyphicon glyphicon-remove pull-right"  expanded-close="block1"></i>';
-				str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading">';
-						str+='<div class="row">';
-							str+='<div class="col-sm-4">';
-								str+='<div id="assignedUser"></div>';
-								
-							str+='</div>';
-							str+='<div class="col-sm-8">';
-								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
-									str+='<li status-icon-block="alertStatus" data-toggle="tooltip" data-placement="top" title="alert status">';
-										str+='<span class="status-icon arrow-icon"></span>Pending';
-									str+='</li>';
-									str+='<li class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date">';
-										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">DUe date</span>';
-									str+='</li>';
-									str+='<li status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="status change">';
-										str+='<i class="glyphicon glyphicon-cog"></i>';
-										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
-											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" class="pull-right" /></li>';
-											str+='<li>medium <input type="radio" name="alert-status-change-list" value="2" class="pull-right" /></li>';
-											str+='<li>low <input type="radio" name="alert-status-change-list" value="3" class="pull-right" /></li>';
-											str+='<li><button class="btn btn-primary btn-sm text-capital" id="priorityChangeSaveId">save</button></li>';
-										str+='</ul>';
-									str+='</li>';
-									/*str+='<li status-icon-block="task">';
-										str+='<i class="fa fa-level-down" data-toggle="tooltip" data-placement="top" title="Task"></i>';
-									str+='</li>';*/
-									str+='<li status-icon-block="subTask" class="status-icon-subtask" data-toggle="tooltip" data-placement="top" title="sub task">';
-										str+='<i class="fa fa-mail-forward"></i>';
-										str+='<i class="fa fa-level-down"></i>';
-									str+='</li>';
-									str+='<li status-icon-block="alertHistory">';
-										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
-									str+='</li>';
-									str+='<li>';
-										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
-									str+='</li>';
-									str+='<li>';
-										str+='<i class="fa fa-comment" data-toggle="tooltip" data-placement="top" title="Comments"></i>';
-									str+='</li>';
-								str+='</ul>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="panel-body">';
-						str+='<p><i class="fa fa-fire"></i> Impact Level : State';
-							str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
-						str+='</p>';
-						str+='<div status-body="task" class="m_top20"></div>';
-						str+='<div status-body="subTask" class="m_top20"></div>';
-					str+='</div>';
-					str+='<div class="panel-footer">';
-						str+='<div class="row">';
-							str+='<div class="col-sm-1 text-center">';
-								str+='<span class="icon-name icon-primary">Ra</span>';
-							str+='</div>';
-							str+='<div class="col-sm-11">';
-								str+='<div class="panel panel-default panel-border-white">';
-									str+='<div class="panel-heading">';
-										str+='<label class="radio-inline" name="language">';
-											str+='<input type="radio"/>Telugu';
-										str+='</label>';
-										str+='<label class="radio-inline" name="language">';
-											str+='<input type="radio"/>English';
-										str+='</label>';
-									str+='</div>';
-									str+='<div class="panel-body">';
-										str+='<div class="comment-area">Comment Here</div>';
-										str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
-									str+='</div>';
-									str+='<div class="panel-footer text-right">';
-										str+='<button class="btn btn-primary comment-btn" id="commentChangeId">Comment</button>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	str+='</div>';
-	$("#rightSideExpandView").html(str);
-	$('[data-toggle="tooltip"]').tooltip();
-	dateRangePicker();
-	assignedOfficersDetailsForAlert(alertId);
 
-}
 function dateRangePicker()
 {
 	$(function() {
@@ -438,25 +345,7 @@ function dateRangePicker()
 		});
 	});
 }
-function assignedOfficersDetailsForAlert(alertId)
-{
-	var jsObj = {
-		alertId : alertId
-	}
-	$.ajax({
-		type:'GET',
-		url: 'getAssignedOfficersDetailsForAlertAction.action',
-	data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length > 0)
-		{
-			buildAssignedOfficersDetailsForAlert(result);
-		}else{
-			assignUser(alertId);
-		}
-		
-	});
-}
+
 function buildAssignedOfficersDetailsForAlert(result)
 {
 	var str='';
@@ -466,10 +355,9 @@ function buildAssignedOfficersDetailsForAlert(result)
 			str+='<span class="icon-name icon-primary">'+result[0].name.substring(0,1)+''+splitName[1].substring(0,1)+'</span>';
 		str+='</div>';
 		str+='<div class="media-body">';
-			str+='<p>'+result[0].name+'</p>';
-			str+='<p>'+result[0].department+'</p>';
-			str+='<p> - '+result[0].designation+'</p>';
-			str+='<p><i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+'</p>';
+			str+='<p>'+result[0].name+' - '+result[0].department+'</p>';
+			str+='<p> - '+result[0].designation+' (<i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+')</p>';
+			str+='<p></p>';
 		str+='</div>';
 	str+='</div>';
 	$("#assignedUser").html(str);
@@ -521,7 +409,7 @@ function assignUser(alertId)
 					str+='</div>';
 				str+='</div>';
 			str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
-				str+='<button class="btn btn-primary btn-sm text-capital" id="assignOfficerId" type="button">assign alert</button>';
+				str+='<button class="btn btn-primary btn-sm text-capital" id="assignOfficerId" type="button">assign</button>';
 				str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">';
 				str+='<span class="text-success" id="assignSuccess"></span>';
 			str+='</div>';
@@ -628,106 +516,4 @@ function alertStatus(result)
 	$("#alertManagementPopup1 .modal-footer").show();
 	$("#alertManagementPopup1 .modal-footer").html(str1);
 	
-}
-function statusBody(name)
-{
-	var str='';
-	if(name == 'subTask')
-	{
-		str+='<div class="col-sm-1 text-center body-icons">';
-			str+='<i class="fa fa-users fa-2x"></i>';
-		str+='</div>';
-		str+='<div class="col-sm-11">';
-			str+='<h4 class="panel-title text-capital"><b>involved members in this alert</b></h4>';
-			str+='<ul class="list-inline involved-members-list m_top20">';
-				str+='<li><img src=""/></li>';
-				str+='<li><img src=""/></li>';
-				str+='<li><img src=""/></li>';
-				str+='<li><img src=""/></li>';
-				str+='<li><img src=""/></li>';
-				str+='<li><img src=""/></li>';
-			str+='</ul>';
-		str+='</div>';
-		str+='<h4 class="text-capital text-muted panel-title"><i class="fa fa-level-down"></i>&nbsp;&nbsp; assign subtask</h4>';
-		str+='<ul class="assign-subtask-list">';
-			str+='<li class="assigned">';
-				str+='<i class="glyphicon glyphicon-trash remove-task"></i>';
-				str+='<div class="row">';
-					str+='<div class="col-sm-1">';
-						str+='<i class="glyphicon glyphicon-ok"></i>';
-					str+='</div>';
-					str+='<div class="col-sm-9">';
-						str+='<p>sgibdda sgf</p>';
-					str+='</div>';
-					str+='<div class="col-sm-2">';
-						str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
-						str+='<span class="icon-name icon-primary"></span>';
-						str+='<span class="label label-default">...</span>';
-					str+='</div>';
-				str+='</div>';
-			str+='</li>';
-			str+='<li class="new">';
-				str+='<div class="row">';
-					str+='<div class="col-sm-1">';
-						str+='<i class="glyphicon glyphicon-plus"></i>';
-					str+='</div>';
-					str+='<div class="col-sm-9">';
-						str+='<input type="text" class="form-control" placeholder="Enter Sub Task Title"/>';
-					str+='</div>';
-					str+='<div class="col-sm-2">';
-						str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
-						str+='<i class="glyphicon glyphicon-user assign-subtask-btn"></i>';
-						str+='<i class="glyphicon glyphicon-calendar"></i>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="assign-subtask">';
-					str+='<form id="alertAssignSubTask" name="alertAssignSubTaskForm">';
-						str+='<div class="arrow_box_top">';
-							str+='<div>';
-								str+='<div class="row">';
-									str+='<div class="col-sm-6">';
-										str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
-										str+='<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	';
-											str+='<option value="0">Select Department</option>';
-											str+='<option value="49">RWS</option>';
-										str+='</select>';
-									str+='</div>';
-									str+='<div class="col-sm-6">';
-										str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
-										str+='<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	';
-											str+='<option></option>';
-										str+='</select>';
-									str+='</div>';
-									str+='<div id="parentLevelDivId"> </div>';
-									
-									str+='<div class="col-sm-6">';
-										str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId"></span></label>';
-										str+='<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">';
-											str+='<option></option>	';
-										str+='</select>';
-									str+='</div>';
-									str+='<div class="col-sm-6">';
-										str+='<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId"></span></label>';
-										str+='<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">';
-											str+='<option></option>';
-										str+='</select>';
-									str+='</div>';
-								str+='</div>';
-								str+='<input type="hidden" id="hiddenAlertId" value="13817" name="alertAssigningVO.alertId"/>';
-							str+='</div>';
-						str+='</div>';
-					str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
-						str+='<button class="btn btn-primary btn-sm text-capital" id="assignOfficerSubTaskId" type="button">assign alert</button>';
-						str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImgSubTask">';
-						str+='<span class="text-success" id="assignSuccessSubTask"></span>';
-					str+='</div>';
-					str+='</form>';
-				str+='</div>';
-			str+='</li>';
-		str+='</ul>';
-	}
-	
-	$("[status-body]").html(' ');
-	$("[status-body="+name+"]").html(str);
-	$(".chosenSelect").chosen({width:'100%'})
 }
