@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserFavoriteLinksDAO;
 import com.itgrids.partyanalyst.dao.IUserPrivacySettingsDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
@@ -73,9 +74,10 @@ public class UserProfileService implements IUserProfileService {
 	SimpleDateFormat df = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 	private static final Logger log = Logger.getLogger(UserProfileService.class);
 	private INominationDAO nominationDAO;
-	
-	public INominationDAO getNominationDAO() {
-		return nominationDAO;
+    private IUserDAO userDAO;
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 
 
@@ -1039,5 +1041,16 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
    {
 	   Long viewId = userRolesDAO.checkForUserPublicStreeming(userId);
 	   return viewId;
+   }
+   
+   public String getUserRedirectedUrl(Long userId)
+   {
+	   try{
+		   return userDAO.getUserRedirectedUrl(userId);
+	   }catch(Exception e)
+	   {
+		   log.error(e);
+	   }
+	   return null;
    }
 }
