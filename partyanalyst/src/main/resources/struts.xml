@@ -5722,6 +5722,7 @@
       
       <result type="redirect" name="alertManagementAction">alertManagementAction.action</result>
       <result type="redirect" name="alertUserManagementAction">alertUserManagementAction.action</result>
+      <result type="redirect" name="URL_REDIRECT">${redirectUrl}</result>
       
     </action>
 		
