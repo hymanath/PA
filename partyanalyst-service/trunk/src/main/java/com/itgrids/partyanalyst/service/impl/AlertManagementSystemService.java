@@ -1577,7 +1577,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return finalVoList;
 	}
-	public  List<AlertVO> getDistrictLevelDeptWiseStatusOverView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType){
+	public  List<AlertVO> getDistrictLevelDeptWiseStatusOverView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType,Long levelId){
 		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
 			Date fromDate = null;
@@ -1602,13 +1602,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			if(type.equalsIgnoreCase("alert")){
 				//deptId-0,deptName-1,statusId-2,statusName-3,color-4,Count-5
-				List<Object[]> deptWiseStatusViewLst = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseStatusOverView(fromDate, toDate,scopeId,deptId);
+				List<Object[]> deptWiseStatusViewLst = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseStatusOverView(fromDate, toDate,scopeId,deptId,levelId);
 				if(deptWiseStatusViewLst != null && deptWiseStatusViewLst.size() > 0){
 					setDeptWiseGraphView(deptWiseStatusViewLst,finalVoList);
 				}
 			}else if(type.equalsIgnoreCase("subTask")){
 				//deptId-0,deptName-1,statusId-2,statusName-3,color-4,Count-5
-				List<Object[]> deptWiseSubtaskLst = govtAlertSubTaskDAO.getDistrictLevelDeptWiseStatusOverViewForSubTask(fromDate, toDate, scopeId,deptId);
+				List<Object[]> deptWiseSubtaskLst = govtAlertSubTaskDAO.getDistrictLevelDeptWiseStatusOverViewForSubTask(fromDate, toDate, scopeId,deptId,levelId);
 				if(deptWiseSubtaskLst != null && deptWiseSubtaskLst.size() > 0){
 					setDeptWiseGraphView(deptWiseSubtaskLst,finalVoList);
 				}
