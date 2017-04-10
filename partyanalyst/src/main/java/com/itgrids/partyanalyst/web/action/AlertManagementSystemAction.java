@@ -1244,13 +1244,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");         
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				Long locationId = jObj.getLong("locationId");
-				Long childLocationId = jObj.getLong("childLocationId");
-				alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountOnClick(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,locationId,childLocationId);
+				Long childLocationId = jObj.getLong("childLocationId");  
+				String category = jObj.getString("category");
+				alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountOnClick(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,locationId,childLocationId,category);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
-			return Action.SUCCESS;	
+			return Action.SUCCESS;	     
 		}
 	 
 	 public String updateSubTaskComment(){
