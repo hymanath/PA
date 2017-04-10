@@ -315,65 +315,8 @@ function rightSideExpandView(alertId)
 					str+='<div class="panel-heading">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-4">';
-								str+='<div class="media">';
-									str+='<div class="media-left">';
-										str+='<span class="icon-name icon-primary">Ra</span>';
-									str+='</div>';
-									str+='<div class="media-body">';
-										str+='<p>Raja Mahendara</p>';
-										str+='<p>-Designation</p>';
-									str+='</div>';
-								str+='</div>';
-								str+='<div class="assign-user">';
-									str+='<ul class="list-icons list-inline">';
-										str+='<li>';
-											str+='<i class="glyphicon glyphicon-user"></i>Click To Assignee';
-										str+='</li>';
-									str+='</ul>';
-									str+='<div class="assign-user-body">';
-										str+='<form id="alertAssign" name="alertAssignForm">';
-											str+='<div class="arrow_box_top">';
-												str+='<div>';
-													str+='<div class="row">';
-														str+='<div class="col-sm-6">';
-															str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
-															str+='<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	';
-																str+='<option value="0">Select Department</option>';
-																str+='<option value="49">RWS</option>';
-															str+='</select>';
-														str+='</div>';
-														str+='<div class="col-sm-6">';
-															str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
-															str+='<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	';
-																str+='<option></option>';
-															str+='</select>';
-														str+='</div>';
-														str+='<div id="parentLevelDivId"> </div>';
-														
-														str+='<div class="col-sm-6">';
-															str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId"></span></label>';
-															str+='<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">';
-																str+='<option></option>	';
-															str+='</select>';
-														str+='</div>';
-														str+='<div class="col-sm-6">';
-															str+='<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId"></span></label>';
-															str+='<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">';
-																str+='<option></option>';
-															str+='</select>';
-														str+='</div>';
-													str+='</div>';
-													str+='<input type="hidden" id="hiddenAlertId" value="'+alertId+'" name="alertAssigningVO.alertId"/>';
-												str+='</div>';
-											str+='</div>';
-										str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
-											str+='<button class="btn btn-primary btn-sm text-capital" id="assignOfficerId" type="button">assign alert</button>';
-											str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">';
-											str+='<span class="text-success" id="assignSuccess"></span>';
-										str+='</div>';
-										str+='</form>';
-									str+='</div>';
-								str+='</div>';
+								str+='<div id="assignedUser"></div>';
+								
 							str+='</div>';
 							str+='<div class="col-sm-8">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
@@ -452,6 +395,7 @@ function rightSideExpandView(alertId)
 	$("#rightSideExpandView").html(str);
 	$('[data-toggle="tooltip"]').tooltip();
 	dateRangePicker();
+	assignedOfficersDetailsForAlert(alertId);
 	$(".chosenSelect").chosen({width:'100%'});
 }
 function dateRangePicker()
@@ -490,6 +434,97 @@ function dateRangePicker()
 			}
 		});
 	});
+}
+function assignedOfficersDetailsForAlert(alertId)
+{
+	var jsObj = {
+		alertId : alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAssignedOfficersDetailsForAlertAction.action',
+	data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			buildAssignedOfficersDetailsForAlert(result);
+		}else{
+			assignUser();
+		}
+		
+	});
+}
+function buildAssignedOfficersDetailsForAlert(result)
+{
+	var str='';
+	str+='<div class="media">';
+		str+='<div class="media-left">';
+			str+='<span class="icon-name icon-primary">'+result[0].name.substring(0,1)+'</span>';
+		str+='</div>';
+		str+='<div class="media-body">';
+			str+='<p>'+result[0].name+'</p>';
+			str+='<p>'+result[0].department+'</p>';
+			str+='<p> - '+result[0].designation+'</p>';
+			str+='<p><i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+'</p>';
+		str+='</div>';
+	str+='</div>';
+	$("#assignedUser").html(str);
+	$(".assign-user").hide();
+}
+function assignUser()
+{
+	var str='';
+	str+='<div class="assign-user">';
+		str+='<ul class="list-icons list-inline">';
+			str+='<li>';
+				str+='<i class="glyphicon glyphicon-user"></i>Click To Assignee';
+			str+='</li>';
+		str+='</ul>';
+		str+='<div class="assign-user-body">';
+			str+='<form id="alertAssign" name="alertAssignForm">';
+				str+='<div class="arrow_box_top">';
+					str+='<div>';
+						str+='<div class="row">';
+							str+='<div class="col-sm-6">';
+								str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
+								str+='<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	';
+									str+='<option value="0">Select Department</option>';
+									str+='<option value="49">RWS</option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+								str+='<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div id="parentLevelDivId"> </div>';
+							
+							str+='<div class="col-sm-6">';
+								str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId"></span></label>';
+								str+='<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">';
+									str+='<option></option>	';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId"></span></label>';
+								str+='<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+						str+='</div>';
+						str+='<input type="hidden" id="hiddenAlertId" value="'+alertId+'" name="alertAssigningVO.alertId"/>';
+					str+='</div>';
+				str+='</div>';
+			str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
+				str+='<button class="btn btn-primary btn-sm text-capital" id="assignOfficerId" type="button">assign alert</button>';
+				str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">';
+				str+='<span class="text-success" id="assignSuccess"></span>';
+			str+='</div>';
+			str+='</form>';
+		str+='</div>';
+	str+='</div>';
+	$("#assignedUser").html(str);
 }
 function alertHistory(result)
 {
