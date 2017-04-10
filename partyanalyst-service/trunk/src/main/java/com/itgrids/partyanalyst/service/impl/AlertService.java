@@ -33,6 +33,8 @@ import com.itgrids.partyanalyst.dao.IActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IActionTypeStatusDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertCallerDAO;
 import com.itgrids.partyanalyst.dao.IAlertCallerTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
@@ -61,6 +63,11 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationHierarchyDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMemberTypeDAO;
@@ -104,6 +111,8 @@ import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssigned;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
 import com.itgrids.partyanalyst.model.AlertCaller;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertCategory;
@@ -118,6 +127,9 @@ import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.AlertTrackingDocuments;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
+import com.itgrids.partyanalyst.model.GovtDepartment;
+import com.itgrids.partyanalyst.model.GovtDepartmentDesignationNew;
+import com.itgrids.partyanalyst.model.GovtOfficerNew;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VerificationComments;
@@ -189,13 +201,83 @@ private SmsSenderService smsSenderService;
 private INewsPaperDAO newsPaperDAO;
 private ITvNewsChannelDAO tvNewsChannelDAO;
 private ICoreDashboardGenericService coreDashboardGenericService;
+
 private IAlertIssueTypeDAO alertIssueTypeDAO;
 private IPanchayatHamletDAO panchayatHamletDAO;
 private IAlertCallerTypeDAO alertCallerTypeDAO;
 private IAlertCallerDAO alertCallerDAO;
 private IHamletDAO hamletDAO;
+private IGovtDepartmentDesignationOfficerDetailsNewDAO govtDepartmentDesignationOfficerDetailsNewDAO;
+private IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO;
+private IAlertAssignedOfficerTrackingNewDAO alertAssignedOfficerTrackingNewDAO;
+private IGovtOfficerNewDAO govtOfficerNewDAO;
+private IGovtDepartmentDesignationNewDAO govtDepartmentDesignationNewDAO;
+private IGovtDepartmentDesignationHierarchyDAO govtDepartmentDesignationHierarchyDAO;
+private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
 
 
+
+public IGovtDepartmentDesignationOfficerDetailsDAO getGovtDepartmentDesignationOfficerDetailsDAO() {
+	return govtDepartmentDesignationOfficerDetailsDAO;
+}
+
+public void setGovtDepartmentDesignationOfficerDetailsDAO(
+		IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO) {
+	this.govtDepartmentDesignationOfficerDetailsDAO = govtDepartmentDesignationOfficerDetailsDAO;
+}
+
+public IGovtDepartmentDesignationHierarchyDAO getGovtDepartmentDesignationHierarchyDAO() {
+	return govtDepartmentDesignationHierarchyDAO;
+}
+
+public void setGovtDepartmentDesignationHierarchyDAO(
+		IGovtDepartmentDesignationHierarchyDAO govtDepartmentDesignationHierarchyDAO) {
+	this.govtDepartmentDesignationHierarchyDAO = govtDepartmentDesignationHierarchyDAO;
+}
+
+public IGovtDepartmentDesignationNewDAO getGovtDepartmentDesignationNewDAO() {
+	return govtDepartmentDesignationNewDAO;
+}
+
+public void setGovtDepartmentDesignationNewDAO(
+		IGovtDepartmentDesignationNewDAO govtDepartmentDesignationNewDAO) {
+	this.govtDepartmentDesignationNewDAO = govtDepartmentDesignationNewDAO;
+}
+
+public IGovtOfficerNewDAO getGovtOfficerNewDAO() {
+	return govtOfficerNewDAO;
+}
+
+public void setGovtOfficerNewDAO(IGovtOfficerNewDAO govtOfficerNewDAO) {
+	this.govtOfficerNewDAO = govtOfficerNewDAO;
+}
+
+public IGovtDepartmentDesignationOfficerDetailsNewDAO getGovtDepartmentDesignationOfficerDetailsNewDAO() {
+	return govtDepartmentDesignationOfficerDetailsNewDAO;
+}
+
+public void setGovtDepartmentDesignationOfficerDetailsNewDAO(
+		IGovtDepartmentDesignationOfficerDetailsNewDAO govtDepartmentDesignationOfficerDetailsNewDAO) {
+	this.govtDepartmentDesignationOfficerDetailsNewDAO = govtDepartmentDesignationOfficerDetailsNewDAO;
+}
+
+public IAlertAssignedOfficerNewDAO getAlertAssignedOfficerNewDAO() {
+	return alertAssignedOfficerNewDAO;
+}
+
+public void setAlertAssignedOfficerNewDAO(
+		IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO) {
+	this.alertAssignedOfficerNewDAO = alertAssignedOfficerNewDAO;
+}
+
+public IAlertAssignedOfficerTrackingNewDAO getAlertAssignedOfficerTrackingNewDAO() {
+	return alertAssignedOfficerTrackingNewDAO;
+}
+
+public void setAlertAssignedOfficerTrackingNewDAO(
+		IAlertAssignedOfficerTrackingNewDAO alertAssignedOfficerTrackingNewDAO) {
+	this.alertAssignedOfficerTrackingNewDAO = alertAssignedOfficerTrackingNewDAO;
+}
 
 public IHamletDAO getHamletDAO() {
 	return hamletDAO;
@@ -9324,10 +9406,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alert.setUpdatedBy(userId);
 					alert.setImpactScopeId(inputVO.getLocationLevelId());
 
-				 /*if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
-					 alert.setAlertStatusId(2l);// if assign list given default status is notified
-				 else*/
-					 alert.setAlertStatusId(2l);// default pending status
+					alert.setAlertStatusId(2l);// default pending status
 
 					 alert.setAlertSourceId(inputVO.getInformationSourceId());
 					 alert.setCreatedTime(date.getCurrentDateAndTime());
@@ -9348,8 +9427,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 
 					 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
 				 
-					 rs = "success";
-					 
 					 AlertComment alertComment = new AlertComment();
 					 alertComment.setComments(inputVO.getDescription().toString());
 					 alertComment.setAlertId(alert.getAlertId());
@@ -9358,23 +9435,103 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertComment.setInsertedBy(userId);
 					 alertComment = alertCommentDAO.save(alertComment);
 					 
-				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
-				 alertTrackingVO.setUserId(userId);
-				 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
-				 alertTrackingVO.setAlertUserTypeId(inputVO.getEntrySourceId());
-				 /*if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
-				 {
-					 alertTrackingVO.setAlertStatusId(2l);
-				 }else{*/
-					 alertTrackingVO.setAlertStatusId(2l);
-				 //}
-				 
-				 alertTrackingVO.setAlertId(alert.getAlertId());
-				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
-				 
-				 saveAlertTrackingDetails(alertTrackingVO)	;	
+					 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+					 alertTrackingVO.setUserId(userId);
+					 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
+					 alertTrackingVO.setAlertUserTypeId(inputVO.getEntrySourceId());
+					 /*if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+					 {
+						 alertTrackingVO.setAlertStatusId(2l);
+					 }else{*/
+						 alertTrackingVO.setAlertStatusId(2l);
+					 //}
+					 
+					 alertTrackingVO.setAlertId(alert.getAlertId());
+					 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+					 
+					 saveAlertTrackingDetails(alertTrackingVO);	
 					
-						return rs;
+					//Get Department Designation Officer Ids
+					Long desigOfficerId = null;
+					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputVO.getLevelId(), inputVO.getLevelValue(), inputVO.getDesignationId(),
+							inputVO.getGovtOfficerId());
+					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
+						desigOfficerId = designationOfficerIds.get(0);
+					
+					//Officer Assigning
+					AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
+					alertAssignedOfficer.setAlertId(alert.getAlertId());
+					alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+					alertAssignedOfficer.setGovtOfficerId(inputVO.getGovtOfficerId() !=null ? (Long)inputVO.getGovtOfficerId():null);
+					alertAssignedOfficer.setInsertedBy(userId);
+					alertAssignedOfficer.setUpdatedBy(userId);
+					alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficer.setAlertStatusId(2l);
+					alertAssignedOfficer.setIsDeleted("N");
+					alertAssignedOfficer.setIsApproved("Y");
+					alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+					
+					//Officer Assigning Tracking
+					AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
+					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+					alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
+					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+					alertAssignedOfficerTracking.setGovtOfficerId(inputVO.getGovtOfficerId());
+					alertAssignedOfficerTracking.setInsertedBy(userId);
+					alertAssignedOfficerTracking.setUpdatedBy(userId);
+					alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					alertAssignedOfficerTracking.setAlertStatusId(2l);
+					alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
+					alertAssignedOfficerTracking.setIsApproved("Y");
+					alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+					
+					alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+					
+					String officerName = "";
+					String officerMobileNo = "";
+					String designationName = "";
+					String departmentName = "";
+					
+					GovtOfficerNew govtOfficer = govtOfficerNewDAO.get(inputVO.getGovtOfficerId());
+					if(govtOfficer != null){
+						officerName = govtOfficer.getOfficerName();
+						officerMobileNo = govtOfficer.getMobileNo();
+					}
+					
+					GovtDepartmentDesignationNew govtDepartmentDesignation = govtDepartmentDesignationNewDAO.get(inputVO.getDesignationId());
+					if(govtDepartmentDesignation != null)
+						designationName = govtDepartmentDesignation.getDesignationName();
+					
+					GovtDepartment govtDepartment = govtDepartmentDAO.get(inputVO.getDesignationId());
+					if(govtDepartment != null)
+						departmentName = govtDepartment.getDepartmentName();
+					
+					GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
+					List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(inputVO.getDesignationId());
+		            if(parentDesigIds != null && parentDesigIds.size() > 0){
+		              //get high level officer mobile nums
+		              List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getHigherOfficerMobileNums(parentDesigIds);
+		              
+		              if(mobilenums != null && mobilenums.size() > 0){
+		                String message = "Alert is assigned to "+designationName+" - "+departmentName+" - "+officerName+" - "+ officerMobileNo+".\n Please follow up.";
+		                String mobileNums = "";
+		                for (String string : mobilenums) {
+		                  mobileNums = mobileNums.equalsIgnoreCase("")?string:mobileNums+","+string;
+		                }
+		                //govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
+		              }
+		            }
+		            
+		            String callerMessage = "Your Request is Raised,and Assigned to Higher Authority.";
+		            govtSMSAPIService.senedSMSForGovtAlert(inputVO.getMobileNo(),callerMessage);
+		            
+		            String officerMessage = "Alert is assigned to you,Please follow up and resolve.\nTitle : "+inputVO.getAlertTitle()+" \nDept : "+departmentName;
+		            govtSMSAPIService.senedSMSForGovtAlert(officerMobileNo,officerMessage); 
+		            
+					 rs = "success";
+					 return rs;
 				}
 
 			});
