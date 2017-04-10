@@ -748,7 +748,6 @@ public List<Object[]> getActivityQuestionnairesAttributeCountsByDayWise(SearchAt
 		return null;
 
 }
-@Override
 public List<Object[]> getActivityQuestionAnswerCountReasonWise(List<Long> questionIdsList) {
 	
 	  StringBuilder queryStr=new StringBuilder();

@@ -6911,7 +6911,6 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		 return query.list();
 	}
 
-	@Override
 	public Object[] getCadreDetailsByMmbrShpId(String memberShipNo) {
 		
 		StringBuilder queryString=new StringBuilder();
