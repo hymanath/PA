@@ -28,10 +28,10 @@ public class GrievanceAlertVO {
 	private String emailId;
 	
 	private Long departmentId;
-	private Long impactLevelId;
-	private Long locationId;
+	private Long levelId;
+	private Long levelValue;
 	private Long designationId;
-	private Long officerId;
+	private Long govtOfficerId;
 	
 	
 	public Long getAlertTypeId() {
@@ -166,17 +166,17 @@ public class GrievanceAlertVO {
 	public void setDepartmentId(Long departmentId) {
 		this.departmentId = departmentId;
 	}
-	public Long getImpactLevelId() {
-		return impactLevelId;
+	public Long getLevelId() {
+		return levelId;
 	}
-	public void setImpactLevelId(Long impactLevelId) {
-		this.impactLevelId = impactLevelId;
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
 	}
-	public Long getLocationId() {
-		return locationId;
+	public Long getLevelValue() {
+		return levelValue;
 	}
-	public void setLocationId(Long locationId) {
-		this.locationId = locationId;
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
 	}
 	public Long getDesignationId() {
 		return designationId;
@@ -184,11 +184,11 @@ public class GrievanceAlertVO {
 	public void setDesignationId(Long designationId) {
 		this.designationId = designationId;
 	}
-	public Long getOfficerId() {
-		return officerId;
+	public Long getGovtOfficerId() {
+		return govtOfficerId;
 	}
-	public void setOfficerId(Long officerId) {
-		this.officerId = officerId;
+	public void setGovtOfficerId(Long govtOfficerId) {
+		this.govtOfficerId = govtOfficerId;
 	}
 	public Long getLocationValue() {
 		return locationValue;
