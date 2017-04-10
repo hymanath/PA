@@ -31,8 +31,8 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	private Long subDesignationId;
 	private String  isDeleted;
 	
-	private GovtDepartmentDesignation parentDesignation;
-	private GovtDepartmentDesignation subDesignation;
+	private GovtDepartmentDesignationNew parentDesignation;
+	private GovtDepartmentDesignationNew subDesignation;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -73,10 +73,10 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	@JoinColumn(name="parent_designation_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public GovtDepartmentDesignation getParentDesignation() {
+	public GovtDepartmentDesignationNew getParentDesignation() {
 		return parentDesignation;
 	}
-	public void setParentDesignation(GovtDepartmentDesignation parentDesignation) {
+	public void setParentDesignation(GovtDepartmentDesignationNew parentDesignation) {
 		this.parentDesignation = parentDesignation;
 	}
 	
@@ -84,13 +84,11 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	@JoinColumn(name="sub_designation_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public GovtDepartmentDesignation getSubDesignation() {
+	public GovtDepartmentDesignationNew getSubDesignation() {
 		return subDesignation;
 	}
-	public void setSubDesignation(GovtDepartmentDesignation subDesignation) {
+	public void setSubDesignation(GovtDepartmentDesignationNew subDesignation) {
 		this.subDesignation = subDesignation;
 	}
-	
-	
 	
 }
