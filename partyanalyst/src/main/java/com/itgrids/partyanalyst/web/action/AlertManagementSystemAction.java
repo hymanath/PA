@@ -1177,4 +1177,39 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				   return Action.SUCCESS;
 			}
+	 
+	 public String getDepartmentSubLevels(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			   	Long departmentId = jObj.getLong("departmentId");
+			   	Long parentLevelId = jObj.getLong("levelId");
+			   	
+			   	idnameVoList = alertManagementSystemService.getDepartmentSubLevels(departmentId,parentLevelId);
+			 
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getDepartmentSubLevels() in CccDashboardAction",e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String getChildLevelValuesForSubTask(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			   	Long departmentId = jObj.getLong("departmentId");
+			   	Long parentLevelId = jObj.getLong("parentLevelId");
+			   	Long parentLevelValue = jObj.getLong("parentLevelValue");
+			   	Long levelId = jObj.getLong("levelId");
+			   	
+			   	List<Long> parentLevelValues = new ArrayList<Long>();
+			   	parentLevelValues.add(parentLevelValue);
+			   	
+			   	idnameVoList = alertManagementSystemService.getChildLevelValuesForSubTask(departmentId,parentLevelId,parentLevelValues,levelId);
+			 
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getChildLevelValuesForSubTask() in CccDashboardAction",e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 
+	 
 }

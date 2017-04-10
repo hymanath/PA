@@ -16684,6 +16684,19 @@
 		<result type="json" name="success">		   
 			<param name="root">govtDeptVoList1</param>
 		</result>	
-	</action> 	                   
+	</action>
+	   	     
+	  <action name="getDepartmentSubLevelsAction" class="alertManagementSystemAction" method="getDepartmentSubLevels">
+		<result type="json" name="success">
+   			<param name="root">idnameVoList</param>
+   		</result>
+	  </action>
+	  
+	  <action name="getChildLevelValuesForSubTaskAction" class="alertManagementSystemAction" method="getChildLevelValuesForSubTask">
+		<result type="json" name="success">
+   			<param name="root">idnameVoList</param>
+   		</result>
+	  </action>
+	                
  </package>
 </struts>
