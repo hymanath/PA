@@ -55,6 +55,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdNameVO> idnameVoList;
 	private List<GovtDepartmentVO> govtDeptVoList = new ArrayList<GovtDepartmentVO>(0);
 	
+	private List<GovtDepartmentVO> govtDeptVoList1;
 	private String successMsg;
 	private AlertAssigningVO alertAssigningVO;	
 	private IdNameVO idNameVO;
@@ -64,6 +65,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<DistrictOfficeViewAlertVO> districtOfficeViewAlertVOList;
 	private Long alertId;
 	private List<AlertTrackingVO> alertTrackingVOList;
+	private List<AlertCoreDashBoardVO> alertCoreDashBoardVo;
 	
 	
 	public List<AlertTrackingVO> getAlertTrackingVOList() {
@@ -223,6 +225,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public void setAlertVOs(List<AlertVO> alertVOs) {
 		this.alertVOs = alertVOs;
+	}
+	
+	public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVo() {
+		return alertCoreDashBoardVo;
+	}
+	public void setAlertCoreDashBoardVo(
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVo) {
+		this.alertCoreDashBoardVo = alertCoreDashBoardVo;
 	}
 	public String execute(){
 		    session = request.getSession();
@@ -390,7 +400,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}*/
 			jObj = new JSONObject(getTask());
 			Long userId = jObj.getLong("userId");
-		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId);
+			String startDate =jObj.getString("startDate");
+			String endDate =jObj.getString("endDate");
+		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId,startDate,endDate);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1117,6 +1129,43 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				LOG.error("Exception Raised in getAlertStatusHistory() in CccDashboardAction",e);
 			}
 			return Action.SUCCESS;
+		}	
+		public String getStateThenGovtDeptScopeWiseAlertCountStatus(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");  
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				String sortType = jObj.getString("sortType");
+				String order = jObj.getString("order");
+				String searchType =jObj.getString("searchType");
+				if(searchType == "status")
+				 alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,null,null,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order);
+				//else
+				 // alertCoreDashBoardVOs=alertManagementSystemService.getDistrictOfficerScopesWiseAlerts(fromDate,toDate,stateId,null,null,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order);
+					
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
 		}
-		
+		public String getAssignedOfficersDetails(){
+			   try {
+					jObj = new JSONObject(getTask());
+					Long alertId = jObj.getLong("alertId");
+				
+					govtDeptVoList1 = alertManagementSystemService.getAssignedOfficersDetails(alertId);
+			   } catch (Exception e) {
+				   LOG.error("Exception Raised in getAssignedOfficersDetails() in CccDashboardAction",e);
+				}
+				   return Action.SUCCESS;
+			}
 }
