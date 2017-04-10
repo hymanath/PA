@@ -18,7 +18,6 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		super(AppointmentCandidate.class);
 	}
 
-	@Override
 	public List<Object[]> getAppointmentCandidateDetails(Long candidateDsgntnId,Long appntmntPrrtyId,Long appntmntSttsId,Integer crrntMnth) {
 		
 		   StringBuilder queryStr=new StringBuilder();
@@ -52,7 +51,6 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 	     return query.list();
 	}
 
-	@Override
 	public List<Object[]> getAppCandidatePreviousCountDetails(Long tdpCadreId,String mobileNO,Integer crrntMnth) {
 		
 		     StringBuilder queryStr=new StringBuilder();
@@ -86,7 +84,6 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		return query.list();
 	}
 
-	@Override
 	public List<Object[]> getAppCandidatePreviousRequestedDetails(Long tdpCadreId, String mobileNO,Integer crrntMnth) {
 		  StringBuilder queryStr=new StringBuilder();
 		     
@@ -116,7 +113,6 @@ public class AppointmentCandidateDAO extends GenericDaoHibernate<AppointmentCand
 		return query.list();
 	}
 
-	@Override
 	public Object getMaxDate(Long tdpCadreId, String mobileNo,Integer crrntMnth) {
 		
 	      StringBuilder queryStr=new StringBuilder();
