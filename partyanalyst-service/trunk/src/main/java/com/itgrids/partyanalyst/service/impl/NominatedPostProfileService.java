@@ -71,6 +71,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreReportDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampBatchAttendeeDAO;
+import com.itgrids.partyanalyst.dao.ITrainingCampCadreFeedbackDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.TehsilDAO;
@@ -172,7 +173,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IAlertCandidateDAO alertCandidateDAO;
 	private ICadreDetailsService cadreDetailsService;
 	private ISchedulersInfoDAO schedulersInfoDAO;
-	    
+	private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;    
 	    
 	public void setSchedulersInfoDAO(ISchedulersInfoDAO schedulersInfoDAO) {
 		this.schedulersInfoDAO = schedulersInfoDAO;
@@ -587,6 +588,16 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
 	}
+	
+	public ITrainingCampCadreFeedbackDetailsDAO getTrainingCampCadreFeedbackDetailsDAO() {
+		return trainingCampCadreFeedbackDetailsDAO;
+	}
+
+	public void setTrainingCampCadreFeedbackDetailsDAO(
+			ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO) {
+		this.trainingCampCadreFeedbackDetailsDAO = trainingCampCadreFeedbackDetailsDAO;
+	}
+
 	/**
 	 * @Author  Hyma
 	 * @Version NominatedPostProfileService.java  July 13, 2016 05:30:00 PM 
@@ -8659,6 +8670,106 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 	}
 	return returnList;
  }*/
+  public List<CadrePerformanceVO> getCampDetails(List<Long> tdpCadreIdsList){
+	  List<CadrePerformanceVO> returnList = new ArrayList<CadrePerformanceVO>();
+	  List<Long> batchIds = new ArrayList<Long>();
+	  List<Long> cadreIds = new ArrayList<Long>();
+	  try{	  
+		  List<Object[]> batchIdDetails =trainingCampAttendanceDAO.getBatchIds(tdpCadreIdsList);
+		  if(batchIdDetails != null && batchIdDetails.size()>0){
+			for(Object[] param : batchIdDetails) {
+				CadrePerformanceVO  returnVo = getMatchedVO(returnList,commonMethodsUtilService.getLongValueForObject(param[0]));
+				if(returnVo == null){
+					returnVo = new CadrePerformanceVO();
+					returnList.add(returnVo);
+				}
+                if(returnVo.getAttendedTime() != null && returnVo.getAttendedTime() != commonMethodsUtilService.getStringValueForObject(param[3]) && !returnVo.getAttendedTime().contains(commonMethodsUtilService.getStringValueForObject(param[3]))){
+                	returnVo.setNoOfAttendanceDays(returnVo.getNoOfAttendanceDays()+1l);
+                	returnVo.setAttendedTime(returnVo.getAttendedTime()+','+commonMethodsUtilService.getStringValueForObject(param[3]));
+				}else{
+					returnVo.setAttendedTime(commonMethodsUtilService.getStringValueForObject(param[3]));
+					returnVo.setNoOfAttendanceDays(1l);
+				}
+				 returnVo.setAttendanceId(commonMethodsUtilService.getLongValueForObject(param[2]));
+				
+				 returnVo.setBatchId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				
+				 returnVo.setNoOfDaysProgram(commonMethodsUtilService.getLongValueForObject(param[4]));
+				 returnVo.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+			 //if(!cadreIds.contains(commonMethodsUtilService.getLongValueForObject(param[1])))
+					cadreIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				
+		     if(!batchIds.contains(commonMethodsUtilService.getLongValueForObject(param[0])))
+				 batchIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));	
+				 
+			}
+			
+		  }
+		List<Object[]> campDetails =trainingCampAttendanceDAO.getCampDetails(batchIds);
+		  if(campDetails != null && campDetails.size()>0){
+			  for(Object[] obj : campDetails){
+				  CadrePerformanceVO  Vo = getMatchedVO(returnList,commonMethodsUtilService.getLongValueForObject(obj[0]));
+				  if(Vo != null){
+					  Vo.setTraingName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					  Vo.setTraingCamp(commonMethodsUtilService.getStringValueForObject(obj[2]));
+					  Vo.setBatchNmae(commonMethodsUtilService.getStringValueForObject(obj[3]));
+					  Vo.setStartDate(commonMethodsUtilService.getStringValueForObject(obj[4]));
+					  Vo.setEnddate(commonMethodsUtilService.getStringValueForObject(obj[5]));
+					  Vo.setNoOfBatchDays(commonMethodsUtilService.getLongValueForObject(obj[6]));
+					  Vo.setNoOfDayBetweenDates(dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(obj[4]),commonMethodsUtilService.getStringValueForObject(obj[5])));
+				  }
+			  }
+		  }
+		  List<Object[]> trainingFeedbackDetails = trainingCampCadreFeedbackDetailsDAO.getTrainingFeedbackDetails(cadreIds);
+		  if(trainingFeedbackDetails != null && trainingFeedbackDetails.size()>0){
+			  for(Object[] event :trainingFeedbackDetails){
+				  CadrePerformanceVO stausVo =getMatchedVOBycadre(returnList,commonMethodsUtilService.getLongValueForObject(event[0]));
+				  if(stausVo != null){
+					  stausVo.setId(commonMethodsUtilService.getLongValueForObject(event[0]));
+					  stausVo.setFeedBackStatus(commonMethodsUtilService.getStringValueForObject(event[1]));
+				  }
+			  }
+		  }
+		  
+	    }catch(Exception e){
+		  LOG.error("Exception Occured in getCampDetails()", e);
+	   }
+	return returnList;
+  }
+  public CadrePerformanceVO getMatchedVO(List<CadrePerformanceVO> returnList,Long id)
+	{
+		try{
+			if(returnList == null || returnList.size() == 0)
+				return null;
+			for(CadrePerformanceVO vo : returnList)
+			{
+				if(vo.getBatchId() == id.longValue() )
+					return vo;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+  public CadrePerformanceVO getMatchedVOBycadre(List<CadrePerformanceVO> returnList,Long id)
+ 	{
+ 		try{
+ 			if(returnList == null || returnList.size() == 0)
+ 				return null;
+ 			for(CadrePerformanceVO vo : returnList)
+ 			{
+ 				if(vo.getId() == id.longValue() )
+ 					return vo;
+ 			}
+ 		}
+ 		catch(Exception e)
+ 		{
+ 			e.printStackTrace();
+ 		}
+ 		return null;
+ 	}
 
  }
 

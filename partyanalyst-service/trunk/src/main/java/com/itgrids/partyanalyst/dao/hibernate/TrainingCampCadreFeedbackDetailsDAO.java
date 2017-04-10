@@ -139,5 +139,10 @@ public class TrainingCampCadreFeedbackDetailsDAO extends GenericDaoHibernate<Tra
 	 return query.list();
  }
     
-    
+  public List<Object[]> getTrainingFeedbackDetails(List<Long> tdpCadreIds){
+	  Query query = getSession().createQuery(" select  model.tdpCadre.tdpCadreId,model.cadreLeadershipSkillsStatus.status " +
+	  		" from TrainingCampCadreFeedbackDetails model where model.tdpCadre.tdpCadreId in(:tdpCadreIds) ");
+	  query.setParameterList("tdpCadreIds", tdpCadreIds);
+	  return query.list();
+  }
 }

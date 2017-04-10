@@ -10,6 +10,8 @@ public class CadreEventsVO implements java.io.Serializable{
 	public Long attendedCount;
 	public Long lateCount;
 	public String attendedTime;
+	public Long eventId;
+	public String eventName;
 	private List<CadreEventsVO> subList = new ArrayList<CadreEventsVO>(0);
 	
 	
@@ -55,5 +57,17 @@ public class CadreEventsVO implements java.io.Serializable{
 	public void setAttendedTime(String attendedTime) {
 		this.attendedTime = attendedTime;
 	}
-	
+	public Long getEventId() {
+		return eventId;
+	}
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
+	}
+	public String getEventName() {
+		return eventName;
+	}
+	public void setEventName(String eventName) {
+		this.eventName = eventName;
+	}
+		
 }

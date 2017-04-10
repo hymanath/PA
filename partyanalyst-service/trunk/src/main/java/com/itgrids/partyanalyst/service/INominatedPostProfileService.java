@@ -90,5 +90,6 @@ public interface INominatedPostProfileService {
 	 public List<LocationsVO> getLocationByDepartment(Long levelId,Long departmentId,Long boardId,Long positionId);
 	 //public List<CadreEventsVO> getCadreDetailedReportEventAttendee(Long parentEventId,Long cadreId,List<Long> extraEventIdsList);
 	 public void setBrdWisNominPstAppliedDepOrCorpApplledDetails(List<Object[]> depOCorpList,List<Long> apllicationIds,List<NominatedPostVO> returnVoList,String status);
+	 public List<CadrePerformanceVO> getCampDetails(List<Long> tdpCadreIdsList);
 	 
 }
