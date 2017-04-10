@@ -213,7 +213,14 @@ public class CadreRegistrationVO implements Serializable{
 	private String deliveryLocation;
 	private String nomineeAadharNo;
 	private String newNomineeRelationType;
+	private Long tabPrimaryKey;
 	
+	public Long getTabPrimaryKey() {
+		return tabPrimaryKey;
+	}
+	public void setTabPrimaryKey(Long tabPrimaryKey) {
+		this.tabPrimaryKey = tabPrimaryKey;
+	}
 	public String getNomineeAadharNo() {
 		return nomineeAadharNo;
 	}
