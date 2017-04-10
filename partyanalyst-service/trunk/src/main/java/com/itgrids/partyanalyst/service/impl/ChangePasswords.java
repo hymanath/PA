@@ -16,14 +16,18 @@ public class ChangePasswords {
 	{
 		Map<String,String> pwdMap = new HashMap<String, String>(0);
 		
-		BufferedReader br = new BufferedReader(new FileReader("E:\\pwdChange.txt"));
+		/*BufferedReader br = new BufferedReader(new FileReader("D:\\pwdChange.txt"));
 		
 		while (br.readLine() != null){
-		    System.out.println(br.readLine());
-		}
+			String str = br.readLine().trim();
+		    System.out.println(str);
+		    String[] arr = str.split("\t");
+		    if(arr.length == 2)
+		    	pwdMap.put(arr[0].trim(),arr[1].trim());
+		}*/
 		
-		/*pwdMap.put("FDCS_SKLM_CSM","457849");
-		changePassword(pwdMap);*/
+		pwdMap.put("PRD_SECY_RWS","873468");
+		changePassword(pwdMap);
 		
 	}
 	
@@ -32,7 +36,7 @@ public class ChangePasswords {
 		try{
 			System.out.println("---------------------");
 			MD5Encrypt encrypt = new MD5Encrypt();
-			BufferedWriter outWriter = new BufferedWriter(new FileWriter("D:\\pwdChange.txt")); 
+			BufferedWriter outWriter = new BufferedWriter(new FileWriter("D:\\pwdChanged.txt")); 
 					
 			for(Map.Entry<String,String> entry : pwdMap.entrySet())
 			{
