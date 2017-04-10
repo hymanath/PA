@@ -1819,25 +1819,28 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			setScopeDetails(totalTasks,scopWiseMap,"totalTasks");
 			
 			List<Object[]> completedTasks = govtAlertSubTaskDAO.getSubOrdinateTasksDetails(userId,fromDate,toDate,govtScopeIds,locationValues,levelId,levelValues,desigIds,priorityId,"completedTasks");
-			setScopeDetails(totalTasks,scopWiseMap,"completedTasks");
+			setScopeDetails(completedTasks,scopWiseMap,"completedTasks");
 			
 			if(commonMethodsUtilService.isMapValid(scopWiseMap)){
 				for(Map.Entry<Long, DistrictOfficeViewAlertVO> entry : scopWiseMap.entrySet()){
 					DistrictOfficeViewAlertVO vo = entry.getValue();
+					returnList.add(vo);
 					if(commonMethodsUtilService.isListOrSetValid(vo.getList1())){
-						for(DistrictOfficeViewAlertVO desigVO :vo.getList1()){
-							if(desigVO.getCount() != null && desigVO.getCompletedCnt() != null)
-							{
-								desigVO.setAlertsPerc(calculatePercantage(desigVO.getCompletedCnt(),desigVO.getCount()));//alertperc
-								desigVO.setOverAllCnt(desigVO.getOverAllCnt()+desigVO.getCount());
+						for(DistrictOfficeViewAlertVO locationVO :vo.getList1()){
+							if(commonMethodsUtilService.isListOrSetValid(locationVO.getList2())){
+								for(DistrictOfficeViewAlertVO desigVO :locationVO.getList2()){
+										if(desigVO.getCount() != null && desigVO.getCompletedCnt() != null)
+										{
+											desigVO.setAlertsPerc(calculatePercantage(desigVO.getCompletedCnt(),desigVO.getCount()));//alertperc
+											desigVO.setOverAllCnt(desigVO.getOverAllCnt()+desigVO.getCount());
+										}
+										if(desigVO.getTaskCnt() != null && desigVO.getTaskCompletedCnt() != null)
+										{
+											desigVO.setPerc(calculatePercantage(desigVO.getTaskCompletedCnt(),desigVO.getTaskCnt()));//taskPerc
+											desigVO.setOverAllCnt(desigVO.getOverAllCnt()+desigVO.getTaskCnt());
+										}
+								 }
 							}
-							if(desigVO.getTaskCnt() != null && desigVO.getTaskCompletedCnt() != null)
-							{
-								desigVO.setPerc(calculatePercantage(desigVO.getTaskCompletedCnt(),desigVO.getTaskCnt()));//taskPerc
-								desigVO.setOverAllCnt(desigVO.getOverAllCnt()+desigVO.getTaskCnt());
-							}
-							
-							
 						}
 					}
 				}
@@ -1865,10 +1868,18 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					scopeVO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
 					scopeVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
 					
-					DistrictOfficeViewAlertVO desigVo = getMatchVOForSubOrdinate(scopeVO.getList1(),commonMethodsUtilService.getLongValueForObject(obj[2]));
+					DistrictOfficeViewAlertVO locationVO = getMatchVOForSubOrdinate(scopeVO.getList1(),commonMethodsUtilService.getLongValueForObject(obj[5]));
+					if(locationVO == null){
+						locationVO = new DistrictOfficeViewAlertVO();
+						scopeVO.getList1().add(locationVO);
+					}
+					locationVO.setId(commonMethodsUtilService.getLongValueForObject(obj[5]));
+					locationVO.setName(commonMethodsUtilService.getStringValueForObject(obj[6]));
+					
+					DistrictOfficeViewAlertVO desigVo = getMatchVOForSubOrdinate(locationVO.getList2(),commonMethodsUtilService.getLongValueForObject(obj[2]));
 					if(desigVo == null){
 						desigVo = new DistrictOfficeViewAlertVO();
-						scopeVO.getList1().add(desigVo);
+						locationVO.getList2().add(desigVo);
 					}
 					desigVo.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					desigVo.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));

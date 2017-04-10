@@ -37,12 +37,11 @@ public class GovtDepartmentDesignationOfficerNewDAO extends GenericDaoHibernate<
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("select model.govtDepartmentScope.govtDepartmentScopeId," +
-				"model.govtDepartmentScopeId.levelName,model.govtDepartmentScopeId.color " +
-				" from GovtDepartmentDesignationOfficerNew model where " +
-				" model.isDeleted = 'N'");
+		sb.append("select distinct model.govtDepartmentScope.govtDepartmentScopeId," +
+				"model.govtDepartmentScope.levelName,model.govtDepartmentScope.color " +
+				" from GovtDepartmentDesignationOfficerNew model where ");
 		if(govtDepartmentDesignationId != null && govtDepartmentDesignationId.longValue() >0l){
-  		  sb.append(" and  model.govtDepartmentDesignationId = :govtDepartmentDesignationId " );
+  		  sb.append("   model.govtDepartmentDesignationId = :govtDepartmentDesignationId " );
   	  }
 		 Query query = getSession().createQuery(sb.toString());
    	  
