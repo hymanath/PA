@@ -16653,6 +16653,14 @@
 		<result type="json" name="success">
    			<param name="root">cadreTraingVO</param>
    		</result>
-	  </action> 	                   
+	  </action>
+	  
+	  <action name="alertDistManagement" class="alertManagementSystemAction" method="alertDistManagement">
+	  		<result name="success">/jsp/newAlertDistrictCollector.jsp</result>
+	  </action>
+	  <action name="alertDistOfficeManagement" class="alertManagementSystemAction" method="alertDistOfficeManagement">
+	  		<result name="success">/jsp/newAlertDistrictOffice.jsp</result>
+	  </action>
+	   	                   
  </package>
 </struts>

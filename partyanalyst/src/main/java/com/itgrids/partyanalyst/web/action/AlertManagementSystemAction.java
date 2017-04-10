@@ -1029,4 +1029,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				   return Action.SUCCESS;
 			}
+		
+	 public String alertDistManagement(){
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String alertDistOfficeManagement(){
+		 return Action.SUCCESS; 
+	 }
 }
