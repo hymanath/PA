@@ -252,7 +252,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 						
 							str+='<h4 class="panel-title">';
 								str+=''+result[i].name+'';
-								str+='<small>- '+result[i].subList[0].updatedDate+'</small>';
+								str+='<small> - '+result[i].createdDate+'</small>';
 								str+='<small><span class="pull-right">1 - '+result[i].subList.length+' of About '+result[i].subList.length+'</span></small>';
 							str+='</h4>';
 						str+='</a>';

@@ -16528,7 +16528,7 @@
   		</action>
   		<action name="getTotalAlertByStatusThenDeptAction" class="alertManagementSystemAction" method="getTotalAlertByStatusThenDept">
 			<result type="json" name="success">
-	   			<param name="root">districtOfficeViewAlertVO</param>
+	   			<param name="root">alertCoreDashBoardVOs</param>
 	   		</result>
 		 </action>
 		 
