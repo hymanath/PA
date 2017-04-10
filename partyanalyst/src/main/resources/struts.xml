@@ -16648,7 +16648,12 @@
 			<result type="json" name="success">		   
 				<param name="root">idNameVO</param>
 			</result>	
-		</action> 	  
+		</action> 	
+		<action name="getSubOrdinateAlertsOverviewAction" class="alertManagementSystemAction" method="getSubOrdinateAlertsOverview">
+			<result type="json" name="success">		   
+				<param name="root">districtOfficeViewAlertVOList</param>
+			</result>	
+		</action>  
 	 <action name="getCampDetailsAction" class="nominatedPostProfileAction" method="getCampDetails">
 		<result type="json" name="success">
    			<param name="root">cadreTraingVO</param>
