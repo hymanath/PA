@@ -66,7 +66,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		this.constituencyDAO = constituencyDAO;
 	}
 	
-	public void testMyDetails(){
+	/*public void testMyDetails(){
 		try {
 				NotificationDeviceVO notifyVO = new NotificationDeviceVO();
 			 notifyVO.setNotification(" hi anand new notification14");
@@ -76,13 +76,13 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			 notifyVO.setRegisteredId("fQxM86Nj_5E:APA91bG-WJr7QnUmmUEdrcsparpLsxJOMUT-oSHGBjvcZPPu-fYTkBAlZ5uPw2kUJ3t-ublItcUScsVGnz9UyMdGaaKX9qhvOavxBv70IJzm3bpOvcFmvmcOAdq7ZCL-VZPGvkW435Eh");
 			 notificationService.pushNotification(notifyVO);
 			//List<Object[]> list = notificationsDAO.getNotificationsDetailsByNotification(0L, 0L, lastUpdatedDate);
-			/*if(commonMethodsUtilService.isListOrSetValid(list)){
+			if(commonMethodsUtilService.isListOrSetValid(list)){
 				System.out.println();
-			}*/
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
 	/*public void test(){
 		//List<Object[]> list = userDAO.getUserDetails();
@@ -4066,7 +4066,7 @@ return outerVO;
 */
 
 
-public static Comparator<AgeRangeVO> hamletWiseSort = new Comparator<AgeRangeVO>()
+/*public static Comparator<AgeRangeVO> hamletWiseSort = new Comparator<AgeRangeVO>()
 {	  
 		  public int compare(AgeRangeVO vo2,AgeRangeVO vo1)
 			{  
@@ -4086,7 +4086,12 @@ public static Comparator<AgeRangeVO> mandalWiseSort = new Comparator<AgeRangeVO>
 			               return s2.compareTo(s1);
 			
 			}
-};
+};*/
+
+	public void testGetUserRedirectedUrl()
+	{
+		System.out.println(userDAO.getUserRedirectedUrl(36632L));
+	}
 }
 
 
