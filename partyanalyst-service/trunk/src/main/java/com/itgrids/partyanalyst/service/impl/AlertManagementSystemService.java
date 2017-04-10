@@ -2551,4 +2551,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         	  }
         	  return null;
           }
+
+       public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(List<Long> alertIdList){
+    		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+    		try {
+    			if(alertIdList != null && alertIdList.size() > 0){
+    				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdList));
+    				setAlertDtls(finalVoList, list); 
+    			}
+    		} catch (Exception e) {
+    			LOG.error(" Exception Occured in getDistrictOfficerAlertDetails() method, Exception - ",e);
+    		}		
+    		return finalVoList;
+    	}
 }
