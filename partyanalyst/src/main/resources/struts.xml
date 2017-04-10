@@ -16701,5 +16701,36 @@
 			<param name="root">alertCoreDashBoardVOs</param>
 		</result>	
 	</action>                   
+	<action name="updateSubTaskCommentAction" class="alertManagementSystemAction" method="updateSubTaskComment">
+		<result type="json" name="success">
+   			<param name="root">resultStatus</param>
+   		</result>
+	</action>
+	<action name="updateSubTaskPriorityAction" class="alertManagementSystemAction" method="updateSubTaskPriority">
+		<result type="json" name="success">
+   			<param name="root">resultStatus</param>
+   		</result>
+	</action>
+	<action name="updateSubTaskDueDateAction" class="alertManagementSystemAction" method="updateSubTaskDueDate">
+		<result type="json" name="success">
+   			<param name="root">resultStatus</param>
+   		</result>
+	</action>
+	<action name="uploadDocumentsForSubTaskAction" class="alertManagementSystemAction" method="uploadDocumentsForSubTask">			
+		<result name="success" type="stream">			   
+		    <param name="inputName">inputStream</param>
+		</result>								
+	</action>
+	<action name="viewSubTaskHistoryAction" class="alertManagementSystemAction" method="viewSubTaskHistory">			
+		<result name="success" type="stream">			   
+		    <param name="inputName">alertTrackingVOList</param>
+		</result>								
+	</action>
+	<action name="getSubTaskStatusHistoryAction" class="alertManagementSystemAction" method="getSubTaskStatusHistory">			
+		<result name="success" type="stream">			   
+		    <param name="inputName">alertTrackingVOList</param>
+		</result>								
+	</action>
+	  	                   
  </package>
 </struts>
