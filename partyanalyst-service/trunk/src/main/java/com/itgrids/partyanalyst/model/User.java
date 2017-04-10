@@ -139,6 +139,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserSurveyBooths> userSurveyBooths = new HashSet<UserSurveyBooths>(0);
 	private String uniqueCode;
 	private String isEnabled;
+	private RedirectUrl redirectUrl; 
 	
 	public User(){}
 	 
@@ -1132,6 +1133,18 @@ public class User extends BaseModel implements Serializable{
 
 	public void setIsEnabled(String isEnabled) {
 		this.isEnabled = isEnabled;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="redirect_url_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public RedirectUrl getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(RedirectUrl redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}
 
 	
