@@ -58,9 +58,9 @@ public interface IAlertManagementSystemService {
 	public List<AlertTrackingVO> getAlertStatusHistory(Long alertId);
 	public List<GovtDepartmentVO> getAssignedOfficersDetails(Long alertId);
 	public List<AlertCoreDashBoardVO> getDistrictOfficerScopesWiseAlerts(String fromDateStr, String toDateStr, Long stateId, Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType);
-	public List<AlertVO> getAllDivisionDetails();	
-	public List<AlertVO> getAllSubDivisionDetails();
-	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId);
+	public List<AlertVO> getAllDivisionDetails();  	
+	public List<AlertVO> getAllSubDivisionDetails();  
+	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId,String category);
 	public ResultStatus updateSubTaskComment(final Long subTaskId,final String comment,final Long userId);
 	public ResultStatus updateSubTaskStatusComment(Long subTaskId,final Long statusId,final String comment,final Long userId);
 	public ResultStatus updateSubTaskPriority(final Long subTaskId,final Long priorityId,final Long userId);
