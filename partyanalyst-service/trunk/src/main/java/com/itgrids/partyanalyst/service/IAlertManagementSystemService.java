@@ -68,4 +68,6 @@ public interface IAlertManagementSystemService {
 	public ResultStatus uploadDocumentsForSubTask(final Map<File, String> mapfiles,final Long subTaskId,final Long userId);
 	public List<AlertTrackingVO> viewSubTaskHistory(Long subTaskId);
 	public List<AlertTrackingVO> getSubTaskStatusHistory(Long subTaskId);
+	public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId);
+	public List<AlertTrackingVO> getCommentsForAlert(Long alertId);
 }

@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking;
 public interface IGovtOfficerSubTaskTrackingDAO extends GenericDao<GovtOfficerSubTaskTracking,Long>{
 	public List<GovtOfficerSubTaskTracking> getModelForSubTask(Long subTaskId);
 	public List<Object[]> getSubTaskStatusHistory(Long subTaskId);
+	public List<Object[]> getCommentsForSubTasks(List<Long> subTaskIds);
 }

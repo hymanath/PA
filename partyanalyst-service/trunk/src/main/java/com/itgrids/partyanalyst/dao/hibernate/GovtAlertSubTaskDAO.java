@@ -522,4 +522,12 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	
     	return query.executeUpdate();
     }
+    
+    public List<Object[]> getSubTaskInfoForAlert(Long alertId){
+    	Query query = getSession().createQuery(" select model.govtAlertSubTaskId,model.title "
+    			+ " from GovtAlertSubTask model"
+    			+ " where model.alertId=:alertId and model.isDeleted='N' ");
+    	query.setParameter("alertId", alertId);
+    	return query.list();
+    }
 }

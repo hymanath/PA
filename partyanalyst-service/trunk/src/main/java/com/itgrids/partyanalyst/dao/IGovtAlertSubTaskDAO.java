@@ -24,4 +24,5 @@ public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long>
  			Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,String type);
  	 public Integer updateSubTaskPriority(Long subTaskId,Long id,Long userId,Date date);
  	public Integer updateSubTaskDueDate(Long subTaskId,Date dueDate,Long userId,Date date);
+ 	public List<Object[]> getSubTaskInfoForAlert(Long alertId);
 }
