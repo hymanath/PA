@@ -676,7 +676,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			String type = jObj.getString("type");
 			Long deptId = jObj.getLong("deptId");
 			String sortingType = jObj.getString("sortingType");
-			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseStatusOverView(scopeId,startDateStr,fromDateStr,type,deptId,sortingType);
+			Long levelId = jObj.getLong("levelId");
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseStatusOverView(scopeId,startDateStr,fromDateStr,type,deptId,sortingType,levelId);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -916,7 +917,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			Long levelId = jObj.getLong("levelId");
 			Long statusId = jObj.getLong("statusId");
 			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId);
-			
+			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception occured in getDistrictLevelDeptWiseFlterClick() of alertManagementSystemAction",e);

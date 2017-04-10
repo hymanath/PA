@@ -127,7 +127,7 @@ $("#dateRangePickerAUM").daterangepicker({
 			$(".departmentlocationShow").hide();
 			$(".departmentStatusShow").show();
 			$(".departmentAlertCountShow").hide();
-			getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId); 
+			getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId,0); 
 		}else if(type == "location"){
 			$(".sortingDivCls").show();
 			$(".departmentlocationShow").show();
@@ -155,7 +155,7 @@ $("#dateRangePickerAUM").daterangepicker({
 			$(".departmentlocationShow").hide();
 			$(".departmentStatusShow").show();
 			$(".departmentAlertCountShow").hide();
-			getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId); 
+			getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId,0); 
 		}else if(levelType == "location"){
 			$(".sortingDivCls").show();
 			$(".departmentlocationShow").show();
@@ -173,7 +173,7 @@ $("#dateRangePickerAUM").daterangepicker({
 		var departmentId = $( "#govtDepartmentsLocId option:selected" ).val();
 		
 		if(levelType == "status"){
-			getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId); 
+			getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId,0); 
 		}else if(levelType == "location"){
 			
 			getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departmentId);
@@ -186,7 +186,7 @@ $("#dateRangePickerAUM").daterangepicker({
 		var sortingType = getSortingType();
 		var departmentId = $(this).val();
 		if(levelType == "status"){
-			getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId); 
+			getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId,0); 
 		}else if(levelType == "location"){
 			getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departmentId);
 		}
@@ -745,13 +745,14 @@ function buildDistrictLevelDeptWiseLocationLevelView(result){
 			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 }
 
-function getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId){
+function getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId,levelId){
 	var jObj = {
 		startDate: currentFromDate,
 	    fromDate: currentToDate,
 		type:alertType,
 		deptId:departmentId,
-		sortingType:sortingType
+		sortingType:sortingType,
+		levelId:levelId
 		
 	}
 	$.ajax({
@@ -1005,3 +1006,7 @@ function viewAlertHistory()
 		}
 	});
 }
+$(document).on("change","#districtWiseLevelLocId",function(){
+	var levelId = $(this).val();
+	getDistrictLevelDeptWiseStatusOverView("alert","Decending",0,levelId); 
+});
