@@ -9404,7 +9404,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alert.setDescription(inputVO.getDescription().toString());
 					alert.setCreatedBy(userId);
 					alert.setUpdatedBy(userId);
-					alert.setImpactScopeId(inputVO.getLocationLevelId());
+					alert.setImpactScopeId(7l);
 
 					alert.setAlertStatusId(2l);// default pending status
 
@@ -9520,7 +9520,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		                for (String string : mobilenums) {
 		                  mobileNums = mobileNums.equalsIgnoreCase("")?string:mobileNums+","+string;
 		                }
-		                //govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
+		                govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
 		              }
 		            }
 		            
