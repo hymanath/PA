@@ -217,37 +217,44 @@
 							<div class="col-sm-12 m_top10">
 								<h4 class="text-success text-capital">assign alert to department officer</h4>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Deparmtnet</label>
-								<select class="chosen" id="departmentId" name="grievanceAlertVO.departmentId" onchange="getDesignations();">
+							  
+							<div class="col-sm-4">
+								<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>
+								<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">  
 									<option value="0">Select Department</option>
-									<option value="49">RURAL WATER SUPPLY</option>
+									<option value="49">RWS</option>
 								</select>
 							</div>
-							<!--<div class="col-sm-3 m_top10">
-								<label>Impact Level</label>
-								<select class="chosen" name="grievanceAlertVO.impactLevelId">
-									<option value="0">Select Impact Level</option>
+							<div class="col-sm-4">
+								<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>
+								<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">  
+									<option></option>
 								</select>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Location</label>
-								<select class="chosen" name="grievanceAlertVO.locationId">
-									<option value="0">Select Location</option>
-								</select>
-							</div>-->
-							<div class="col-sm-3 m_top10">
-								<label>Designation</label>
-								<select class="chosen" id="designationId" name="grievanceAlertVO.designationId">
-									<option value="0">Select Designation</option>
+							<div id="parentLevelDivId"> </div>
+
+							<div class="col-sm-4">
+								<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId"></span></label>
+								<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">
+									<option></option>  
 								</select>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Officer Name</label>
-								<select class="chosen" id="officerId" name="grievanceAlertVO.officerId">
-									<option value="0">Select Officer</option>
+							<div class="col-sm-4">
+								<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId"></span></label>
+								<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
+									<option></option>
 								</select>
 							</div>
+								  
+								  <input type="hidden" id="hiddenAlertId" value="'+alertId+'" name="alertAssigningVO.alertId"/>
+								
+							  
+							<div class="panel-footer text-right pad_5 border_1 bg_EE">
+							  <button class="btn btn-primary btn-sm text-capital" id="assignOfficerId" type="button">assign alert</button>
+							  <img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">
+							  <span class="text-success" id="assignSuccess"></span>
+							</div>
+							</form>
 						</div>
 						<div class="row">
 							<div class="col-sm-4 m_top25">
@@ -1113,6 +1120,203 @@ function createGrievanceAlert()
 	}
 		
 	var loginUserId = "${sessionScope.USER.registrationID}";
+	/* Assign */
+	$(".chosenSelect").chosen({width:'100%'})
+	$(document).on('change', '#locationLevelSelectId', function(){
+		getParentLevelsOfLevel();
+	});
+	$(document).on('change','.locationCls', function(evt, params) {
+		designationsByDepartment();
+	});
+	$(document).on('change', '#departmentsId', function(){
+		getDepartmentLevels();
+	});
+	$(document).on('change','#designationsId', function(evt, params) {
+		var designationId = $(this).val();
+		officersByDesignationAndLevel(designationId)
+	});
+	function getDepartmentLevels(){
+		
+		var jsObj = {
+			departmentId : 49
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getDepartmentLevelsAction.action',
+		  data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildDepartmentLevels(result);
+			}
+		});
+		
+	}
+	function buildDepartmentLevels(result){
+		
+		var str='';	
+		str+='<option value="0">Select Level</option>';
+		for(var i in result){
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		
+		$("#locationLevelSelectId").html(str);
+		$("#locationLevelSelectId").trigger("chosen:updated");
+	}
+
+
+	function getParentLevelsOfLevel(){
+		departmentId = 49;
+		var jsObj = {
+			departmentId : departmentId,
+			levelId : $("#locationLevelSelectId").val()
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getParentLevelsOfLevelAction.action',
+		  data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildParentLevelsOfLevel(result,departmentId);
+			}
+		});
+	}
+	function buildParentLevelsOfLevel(result,departmentId){
+		var str='';
+			
+			for(var i in result){
+				if(i<result.length-1){
+					str+='<div class="col-sm-4">';
+						str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+						str+='<select  class="chosenSelect" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
+					str+='</div>';
+				}else{
+					str+='<div class="col-sm-4">';
+						str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+						str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
+					str+='</div>';
+				}
+				
+			}
+		
+		$("#parentLevelDivId").html(str);
+		$(".chosenSelect").chosen({width:'100%'});
+		
+		for(var i in result){
+			
+			if(result[i].idnameList !=null && result[i].idnameList.length>0){
+				var newStr='';		
+				newStr+='<option value="0">Select '+result[i].name+'</option>';
+				for(var j in result[i].idnameList){
+					 newStr+='<option value="'+result[i].idnameList[j].id+'">'+result[i].idnameList[j].name+'</option>';
+				}			
+				$("#locationSubLevelSelectId"+result[i].id+"").html(newStr);
+				$("#locationSubLevelSelectId"+result[i].id+"").trigger("chosen:updated");
+			}
+		}
+		
+	}
+	function getGovtSubLevelInfo(departmentId,levelId){
+		
+		$("#designationsId").empty();
+		$("#designationsId").trigger("chosen:updated");
+		$("#officerNamesId").empty();
+		$("#officerNamesId").trigger("chosen:updated");	
+		
+		var levelValue=$("#locationSubLevelSelectId"+levelId+"").val();	
+		
+		var jsObj = {
+			departmentId : departmentId,
+			levelId :levelId,
+			levelValue:levelValue
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getGovtSubLevelInfoAction.action',
+		  data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null){
+				buildGovtSubLevelInfoAction(result);
+			}
+				
+		});
+	}
+	function buildGovtSubLevelInfoAction(result){
+		
+		var str='';
+		if(result !=null){		
+			if(result.idnameList !=null && result.idnameList.length>0){
+				str+='<option value="0">Select '+result.name+'</option>';
+				for(var i in result.idnameList){
+					str+='<option value="'+result.idnameList[i].id+'">'+result.idnameList[i].name+'</option>';
+				}
+			}
+			
+			$("#locationSubLevelSelectId"+result.id+"").html(str);
+			$("#locationSubLevelSelectId"+result.id+"").trigger("chosen:updated");
+		}
+		
+	}
+
+
+
+	function designationsByDepartment()
+	{
+		$("#designationsId").empty();
+		$("#designationsId").trigger("chosen:updated");
+		$("#officerNamesId").empty();
+		$("#officerNamesId").trigger("chosen:updated");
+		var LevelId = $("#locationLevelSelectId").chosen().val();
+		var deprtmntId = $("#departmentsId").chosen().val();
+		var levelValue = $(".locationCls").chosen().val();
+		
+		var jsObj = {
+			departmentId	: deprtmntId,
+			levelId			: LevelId,
+			levelValue			: levelValue
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getDesignationsByDepartmentNewAction.action',
+		  data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Designation</option>';
+			for(var i in result)
+			{
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+			}
+			$("#designationsId").html(str);
+			$("#designationsId").trigger("chosen:updated");
+		});
+	}
+
+	function officersByDesignationAndLevel(designationId)
+	{
+		$("#officerNamesId").empty();
+		$("#officerNamesId").trigger("chosen:updated");
+		var LevelId = $("#locationLevelSelectId").chosen().val()
+		var LevelValue = $(".locationCls").chosen().val()
+		
+		var jsObj = {
+			levelId				: LevelId,
+			levelValue			: LevelValue,
+			designationId		: designationId
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getOfficersByDesignationAndLevelNewAction.action',
+		  data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			var str='';
+			str+='<option value="0">Select Officer</option>';
+			for(var i in result)
+			{
+				str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+			}
+			$("#officerNamesId").html(str);
+			$("#officerNamesId").trigger("chosen:updated");
+		});
+	}
 
 </script>
 </body>
