@@ -80,14 +80,14 @@
             	<div class="panel-heading bg_cc">
                 	<h4 class="panel-title">NEW GRIEVANCE REQUEST</h4>
                 </div>
-				<form id="saveGrievanceAlertForm" name="saveGrievanceAlertForm" enctype="multipart/form-data" action="saveGrievanceAlertAction.action" method="POST">
+				<form id="saveGrievanceAlertForm" name="saveGrievanceAlertForm" enctype="multipart/form-data" method="POST">
 					<div class="panel-body bg_EF">
 						<div class="row">
 							<div class="col-sm-12">
 								<h4 class="text-success text-capital m_top10">location details</h4>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Alert Location Level</label>
+								<label>Alert Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLevelId"></span></label>
 								<select class="chosen" id="alertlevelId" onchange="disableByGrievLevel();">
 									<option value="0">Select Location Level</option>
 									<option value="1">Central</option>
@@ -100,38 +100,38 @@
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="stateDiv">
-								<label>State</label>
+								<label>State<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgStateId"></span></label>
 								<select class="chosen" id="stateId" onChange="getDistrictsForReferPopup();" name="grievanceAlertVO.stateId">
 									<option value="0">Select State</option>
 									<option value="1">Andhra Pradesh</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="districtDiv" style="display:block;">
-								<label>District</label>
+								<label>District<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDistrictId"></span></label>
 								<select class="chosen" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup();" name="grievanceAlertVO.districtId">
 									<option value="0">Select District</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="constituencyDiv" style="display:block;">
-								<label>Constituency</label>
+								<label>Constituency<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgConstId"></span></label>
 								<select class="chosen" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();" name="grievanceAlertVO.constituencyId">
 									<option value="0">Select Constituency</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="mandalDiv" style="display:block;">
-								<label>Mandal/Muncipality</label>
+								<label>Mandal/Muncipality<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMandalId"></span></label>
 								<select class="chosen" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" name="grievanceAlertVO.mandalId">
 									<option value="0">Select Mandal/Muncipality</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="panchayatDiv" style="display:block;">
-								<label>Village/Ward</label>
+								<label>Village/Ward<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgVillageId"></span></label>
 								<select class="chosen" id="referpanchayatId" onchange="getHamletss();" name="grievanceAlertVO.panchayatId">
 									<option value="0">Select Village/Ward</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="villageDiv" style="display:none;">
-								<label>Hamlet</label>
+								<label>Hamlet<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgHamletId"></span></label>
 								<select class="chosen" id="hamletId" name="grievanceAlertVO.hamletId">
 									<option value="0">Select Hamlet</option>
 								</select>
@@ -142,15 +142,15 @@
 								<h4 class="text-success text-capital">grievance details</h4>
 							</div>
 							<div class="col-sm-8 m_top10">
-								<label>Alert Title</label>
+								<label>Alert Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgTitleId"></span></label>
 								<input type="text" class="form-control" id="alertTitleId" name="grievanceAlertVO.alertTitle"/>
 							</div>
-							<div class="col-sm-4 m_top10">
+							<!--<div class="col-sm-4 m_top10">
 								<label>Complaint No</label>
 								<input type="text" class="form-control" id="complaintNo" name="grievanceAlertVO.complaintNo"/>
-							</div>
+							</div>-->
 							<div class="col-sm-12 m_top10">
-								<label>Alert Description : </label>
+								<label>Alert Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDescId"></span></label>
 								<label class="radio-inline">
 									<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
 								</label>
@@ -164,19 +164,19 @@
 								<textarea class="form-control" id="alertdescriptionId" name="grievanceAlertVO.description"></textarea>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Complaint Given By</label>
+								<label>Complaint Given By<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCallerTypeId"></span></label>
 								<select class="chosen" id="callerTypeId" name="grievanceAlertVO.callerTypeId">
 									<option value="0">Select Caller Type</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Grievance Related To</label>
+								<label>Grievance Related To<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgIssueTypeId"></span></label>
 								<select class="chosen" id="issueTypeId" name="grievanceAlertVO.issueTypeId">
 									<option value="0">Select Issue Type</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Grievance Entry Category</label>
+								<label>Grievance Entry Category<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEntrySourceId"></span></label>
 								<select class="chosen" id="entrySourceId" name="grievanceAlertVO.entrySourceId">
 									<option value="0">Select Entry Source</option>
 									<option value="1">Toll Free Number</option>
@@ -189,19 +189,19 @@
 								<h4 class="text-success text-capital">caller details</h4>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Name</label>
+								<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgNameId"></span></label>
 								<input type="text" id="nameId" class="form-control" name="grievanceAlertVO.name"/>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Address</label>
+								<label>Address<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgAddressId"></span></label>
 								<input type="text" id="addressId" class="form-control" name="grievanceAlertVO.address"/>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Mobile No</label>
+								<label>Mobile No<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMobileNoId"></span></label>
 								<input type="text" id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo"/>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Email ID</label>
+								<label>Email ID<!--<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEmailId"></span>--></label>
 								<input type="text" id="emailId" class="form-control" placeholder="abc@xyz.com" name="grievanceAlertVO.emailId"/>
 							</div>
 						</div>
@@ -218,47 +218,43 @@
 								<h4 class="text-success text-capital">assign alert to department officer</h4>
 							</div>
 							  
-							<div class="col-sm-4">
-								<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>
-								<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">  
+							<div class="col-sm-3">
+								<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptId"></span></label>
+								<select class="chosenSelect" id="departmentsId" name="grievanceAlertVO.departmentId">  
 									<option value="0">Select Department</option>
 									<option value="49">RWS</option>
 								</select>
 							</div>
-							<div class="col-sm-4">
-								<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>
-								<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">  
+							<div class="col-sm-3">
+								<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
+								<select  class="chosenSelect" id="locationLevelSelectId" name="grievanceAlertVO.levelId">  
 									<option></option>
 								</select>
 							</div>
 							<div id="parentLevelDivId"> </div>
 
-							<div class="col-sm-4">
-								<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId"></span></label>
-								<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">
+							<div class="col-sm-3">
+								<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDesgId"></span></label>
+								<select name="grievanceAlertVO.designationId" id="designationsId" class="chosenSelect">
 									<option></option>  
 								</select>
 							</div>
-							<div class="col-sm-4">
-								<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId"></span></label>
-								<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
+							<div class="col-sm-3">
+								<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgOffcrId"></span></label>
+								<select name="grievanceAlertVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
 									<option></option>
 								</select>
 							</div>
-								  
-								  <input type="hidden" id="hiddenAlertId" value="'+alertId+'" name="alertAssigningVO.alertId"/>
-								
-							  
-							<div class="panel-footer text-right pad_5 border_1 bg_EE">
-							  <button class="btn btn-primary btn-sm text-capital" id="assignOfficerId" type="button">assign alert</button>
-							  <img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">
-							  <span class="text-success" id="assignSuccess"></span>
-							</div>
-							</form>
 						</div>
 						<div class="row">
 							<div class="col-sm-4 m_top25">
-								<button class="btn btn-success btn-block text-capital" onclick="createGrievanceAlert();">create grievance request</button>
+								<input type="button" class="btn btn-success btn-block text-capital" value="create grievance request" onclick="createGrievanceAlert();"></input>
+							</div>
+							<div class="col-sm-4">
+								<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="creatingLdngImg"/>
+							</div>
+							<div class="col-sm-4">
+								<span id="successmsg"></span>
 							</div>
 						</div>
 					</div>
@@ -698,118 +694,6 @@ function disableByGrievLevel(){
 	}
 }
 
-function getDesignations(){
-	$("#officerId").empty();
-	$("#officerId").trigger('chosen:updated');
-	
-	var departmentId = $("#departmentId").val();
-	var levelId = $("#alertlevelId").val();
-	var levelVal = 0;
-	if(levelId == 2){
-		levelVal = $("#stateId").val();
-	}
-	else if(levelId == 3){
-		levelVal = $("#referdistrictId").val();
-		levelId = 11;
-	}
-	else if(levelId == 4){
-		levelVal = $("#referconstituencyId").val();
-	}
-	else if(levelId == 5){
-		levelVal = $("#refermandalNameId").val();
-		var mandalName = $("#refermandalNameId").text();
-		if(mandalName.indexOf('Mandal') == -1)
-			levelId = 14;
-		else
-			levelId = 13;
-	}
-	else if(levelId == 6){
-		levelVal = $("#referpanchayatId").val();
-		levelId = 15;
-	}
-	else if(levelId == 7){
-		levelVal = $("#hamletId").val();
-		levelId = 15;
-	}
-	
-	var jsObj={
-		departmentId : departmentId,
-		levelId : levelId,
-		levelValue : levelVal
-	}
-	$.ajax({
-		type:"POST",
-		url :"getDesignationsByDepartmentAction.action",
-		 dataType: 'json',
-		data: {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		var str;
-		str+='<option value="0">Select Designation</option>';
-		if(result!=null && result.length>0){
-			for(var i in result){
-				if(result[i].id > 0)
-					str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-			}
-		}
-		$("#designationId").html(str);
-		$("#designationId").trigger('chosen:updated');
-	});
-}
-
-function getOfficers(){
-	var designationId = $("#designationId").val();
-	var levelId = $("#alertlevelId").val();
-	var levelVal = 0;
-	if(levelId == 2){
-		levelVal = $("#stateId").val();
-	}
-	else if(levelId == 3){
-		levelVal = $("#referdistrictId").val();
-		levelId = 11;
-	}
-	else if(levelId == 4){
-		levelVal = $("#referconstituencyId").val();
-	}
-	else if(levelId == 5){
-		levelVal = $("#refermandalNameId").val();
-		var mandalName = $("#refermandalNameId").text();
-		if(mandalName.indexOf('Mandal') == -1)
-			levelId = 14;
-		else
-			levelId = 13;
-	}
-	else if(levelId == 6){
-		levelVal = $("#referpanchayatId").val();
-		levelId = 15;
-	}
-	else if(levelId == 7){
-		levelVal = $("#referpanchayatId").val();
-		levelId = 15;
-	}
-	
-	var jsObj={
-		designationId : designationId,
-		levelId : levelId,
-		levelValue : levelVal
-	}
-	$.ajax({
-		type:"POST",
-		url :"getOfficersByDesignationAndLevelAction.action",
-		 dataType: 'json',
-		data: {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		var str;
-		str+='<option value="0">Select Officer</option>';
-		if(result!=null && result.length>0){
-			for(var i in result){
-				if(result[i].id > 0)
-					str +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-			}
-		}
-		$("#officerId").html(str);
-		$("#officerId").trigger('chosen:updated');
-	});
-}
 </script>
 <script type="text/javascript">
 
@@ -847,6 +731,9 @@ google.setOnLoadCallback(onLoad);
 
 function createGrievanceAlert()
 {
+	$(".errorMsgClas").html('');
+	//var validate = true;
+	
   var  level=$("#alertlevelId").val();
   var  state=$("#stateId").val();
   var  district=$("#referdistrictId").val();
@@ -867,20 +754,22 @@ function createGrievanceAlert()
   var mobileNo = $("#mobileNoId").val().trim();
   var email = $("#emailId").val().trim();
   
-  var department = $("#departmentId").val();
-  var designation = $("#designationId").val();
-  var officer = $("#officerId").val();
+  var department = $("#departmentsId").val();
+  var assignLevelId = $("#locationLevelSelectId").val();
+  var levelValue = $(".locationCls").val();
+  var designation = $("#designationsId").val();
+  var officer = $("#officerNamesId").val();
   
   if(level==0)
   {
-     $("#errorDiv1").html(" Please select level ");
+     $("#errMsgLevelId").html(" Please select level ");
   }
   
   if(level==2)
   {
     if(state==0)               
       {
-      $("#errorDiv1").html(" Please select state ");
+      $("#errMsgStateId").html(" Please select state ");
           return;
     }
 	$("#locationLevelIdhidden").val(2);
@@ -891,12 +780,12 @@ function createGrievanceAlert()
   {
     if(state==0)
     {
-      $("#errorDiv1").html(" Please select state ");
+      $("#errMsgStateId").html(" Please select state ");
           return;
     }
     if(district==0)
     {
-      $("#errorDiv1").html(" Please select District ");
+      $("#errMsgDistrictId").html(" Please select District ");
           return;
     }
 	$("#locationLevelIdhidden").val(3);
@@ -907,17 +796,17 @@ function createGrievanceAlert()
   {
     if(state==0)
       {
-        $("#errorDiv1").html(" Please select state ");
+        $("#errMsgStateId").html(" Please select state ");
             return;
       }
     if(district==0)
       {
-        $("#errorDiv1").html(" Please select District ");
+        $("#errMsgDistrictId").html(" Please select District ");
             return;
       }
     if(assembly==0)
     {
-      $("#errorDiv1").html(" Please select Assembly ");
+      $("#errMsgConstId").html(" Please select Assembly ");
           return;
     }
 	$("#locationLevelIdhidden").val(4);
@@ -928,23 +817,23 @@ function createGrievanceAlert()
 	  var mandalName = $("#refermandalNameId1 option:selected").text();
     if(state==0)
       {
-        $("#errorDiv1").html(" Please select state ");
+        $("#errMsgStateId").html(" Please select state ");
             return;
       }
     if(district==0)
       {
-        $("#errorDiv1").html(" Please select District ");
+        $("#errMsgDistrictId").html(" Please select District ");
             return;
       }
     if(assembly==0)
      {
-      $("#errorDiv1").html(" Please select Assembly ");
+      $("#errMsgConstId").html(" Please select Assembly ");
           return;
      }
     
     if(mandal==0)
     {
-      $("#errorDiv1").html(" Please select Mandal/ Municipality ");
+      $("#errMsgMandalId").html(" Please select Mandal/ Municipality ");
           return;
     }
 	$("#locationLevelValhidden").val(mandal);
@@ -958,33 +847,33 @@ function createGrievanceAlert()
   {
 	if(state==0)
       {
-        $("#errorDiv1").html(" Please select state ");
+        $("#errMsgStateId").html(" Please select state ");
             return;
       }
     if(district==0)
       {
-        $("#errorDiv1").html(" Please select District ");
+        $("#errMsgDistrictId").html(" Please select District ");
             return;
       }
       if(assembly==0)
      {
-      $("#errorDiv1").html(" Please select Assembly ");
+      $("#errMsgConstId").html(" Please select Assembly ");
           return;
      }
     
       if(mandal==0)
      {
-      $("#errorDiv1").html(" Please select Mandal/ Municipality ");
+      $("#errMsgMandalId").html(" Please select Mandal/ Municipality ");
           return;
      }
      if(panchayat==0)
      {
-    $("#errorDiv1").html(" Please select Panchayat ");
+    $("#errMsgVillageId").html(" Please select Panchayat ");
         return;
      }
 	 if(village==0)
      {
-    $("#errorDiv1").html(" Please select Village ");
+    $("#errMsgHamletId").html(" Please select Village ");
         return;
      }
 	 $("#locationLevelValhidden").val(village);
@@ -995,28 +884,28 @@ function createGrievanceAlert()
 	   var panchayatName = $("#referpanchayatId1 option:selected").text();
     if(state==0)
       {
-        $("#errorDiv1").html(" Please select state ");
+        $("#errMsgStateId").html(" Please select state ");
             return;
       }
     if(district==0)
       {
-        $("#errorDiv1").html(" Please select District ");
+        $("#errMsgDistrictId").html(" Please select District ");
             return;
       }
       if(assembly==0)
      {
-      $("#errorDiv1").html(" Please select Assembly ");
+      $("#errMsgConstId").html(" Please select Assembly ");
           return;
      }
     
       if(mandal==0)
      {
-      $("#errorDiv1").html(" Please select Mandal/ Municipality ");
+      $("#errMsgMandalId").html(" Please select Mandal/ Municipality ");
           return;
      }
      if(panchayat==0)
      {
-    $("#errorDiv1").html(" Please select Panchayat ");
+    $("#errMsgVillageId").html(" Please select Panchayat ");
         return;
      }
 	 $("#locationLevelValhidden").val(panchayat);
@@ -1026,99 +915,103 @@ function createGrievanceAlert()
 			$("#locationLevelIdhidden").val(8);
     }
 	
-	 if(title.length==0 ||title=='')
+	 if(title.length==0 || title=='')
 	  {
-		$("#errorDiv1").html(" Please enter Alert Title.  ");
+		$("#errMsgTitleId").html(" Please enter Alert Title.  ");
 			return;
 	  }
   
 	if(description.length==0 ||description==''){
-		$("#errorDiv1").html(" Please enter description ");
+		$("#errMsgDescId").html(" Please enter description ");
 		return;
 	}
-	  
-	$("#createAlertajaxImg").html('<img src="images/search.gif"/>');
-	var uploadHandler = {
-				upload: function(o) {
-					uploadResult = o.responseText;
-					$("#createAlertajaxImg").html('');
-					if(uploadResult.indexOf("success") !=-1)
-					{
-					 $("#errorDiv1").html("Alert Created Successfully ").css("color","green");	
-					 setTimeout(function(){ $("#errorDiv1").html("");
-					 }, 1000);
-					}else if(uploadResult.indexOf("edit") !=-1){  
-						$("#errorDiv1").html("Alert Edited Successfully ").css("color","green");	
-						setTimeout(function(){ $("#errorDiv1").html("");
-						}, 1000);
-					}  
-					clearFields();
-					return false;
-				}
-			};
-
+	
+	if(callerType == 0){
+		$("#errMsgCallerTypeId").html(" Select Caller Type ");
+		return;
+	}
+	if(issueType == 0){
+		$("#errMsgIssueTypeId").html(" Select Issue Type ");
+		return;
+	}
+	if(entrySource == 0){
+		$("#errMsgEntrySourceId").html(" Select Entry Category ");
+		return;
+	}
+	
+  if(name.length==0 ||name==''){
+		$("#errMsgNameId").html(" Please enter Name ");
+		return;
+	}
+	if(address.length==0 ||address==''){
+		$("#errMsgAddressId").html(" Please enter Address ");
+		return;
+	}
+	if(mobileNo.length==0 ||mobileNo==''){
+		$("#errMsgMobileNoId").html(" Please enter MobileNo ");
+		return;
+	}
+	if(mobileNo.length > 0){
+		var numericExpression = /^[0-9]+$/;
+		if(!mobileNo.match(numericExpression)){
+			$('#errMsgMobileNoId').html('Enter Numerics Only.');
+			return;
+		}
+	}
+	
+  if(department == 0){
+		$("#errMsgDeptId").html(" Select Department ");
+		return;
+	}
+	if(assignLevelId == 0){
+		$("#errMsgLvlId").html(" Select Level ");
+		return;
+	}
+	if(levelValue == 0){
+		$("#errMsgLocationId").html(" Select Location ");
+		return;
+	}
+	if(designation == 0){
+		$("#errMsgDesgId").html(" Select Designation ");
+		return;
+	}
+	if(officer == 0){
+		$("#errMsgOffcrId").html(" Select Officer ");
+		return;
+	}
+	
+	//if(validate){
+		$("#creatingLdngImg").show();
+		
+		var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				
+				if(uploadResult.indexOf("success") !=-1)
+				{
+				 $("#successmsg").html("Alert Created And Assigned Successfully ").css("color","green");	
+				 $("#creatingLdngImg").hide();
+				 setTimeout(function(){ 
+					$("#successmsg").html("");
+					location.reload();
+				 }, 1000);
+				}else{  
+					$("#successmsg").html("Exception Occured..Try Again...").css("color","red");	
+					$("#creatingLdngImg").hide();
+					setTimeout(function(){ 
+						$("#successmsg").html("");
+					}, 1000);
+				}  
+				return false;
+			}
+		};
+		
 		YAHOO.util.Connect.setForm('saveGrievanceAlertForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','saveGrievanceAlertAction.action',uploadHandler);
-	}
+	//}
+	
+}
 
-	function clearFields(){
-		$("#extraUploadFileDiv").html("");
-		$("#uploadFileId0").val("");
-		$("#extraClarificationUploadFileDiv li").each(function(){
-			$(this).remove();                   
-		});
-		$("#totalFileListId li").each(function(){
-			$(this).remove();                             
-		});
-		$("#apptmemberDetailsDiv").html("");
-		$(".membersBlock").html("");
-		$("#assignedMembers").html("");
-		$(".assignedMembersBlock").html("");
-		$("#involvedCandidatesDiv").hide();	
-		
-		showHideBySearchType();	
-		
-		involvedCadreIds =[];
-		$("#involvedMembers").html('(0 - Members added)');
-		
-		$("#alertTitleId").val("");
-		$(".alertclearCls").val("");
-		$(".clearCls").val("");
-		$("#alertCategory").val(0);
-		
-		$("#advanceSearchTypeId").val(0);
-		var select = new Dropkick("#advanceSearchTypeId");
-		select.refresh();	
-		
-		$("#stateId1").val(0);
-		var select = new Dropkick("#stateId1");
-		select.refresh();
-		
-		$("#alertTypeId").val(0);
-		var select = new Dropkick("#alertTypeId");
-		select.refresh();
-		
-		$("#alertCategory").val(0);
-		var select = new Dropkick("#alertCategory");
-		select.refresh();
-		
-		$("#alertSeverityId").val(0);  
-		var select = new Dropkick("#alertSeverityId");
-		select.refresh();
-		
-		$("#alertlevelId1").val(2);
-		var select = new Dropkick("#alertlevelId1");
-		select.refresh();
-		
-		$("#alertSourceId").val(0);
-		var select = new Dropkick("#alertSourceId");
-		select.refresh();
-		
-		$("#alertImpactId").val(0);
-		var select = new Dropkick("#alertImpactId");
-		select.refresh();
-	}
-		
 	var loginUserId = "${sessionScope.USER.registrationID}";
 	/* Assign */
 	$(".chosenSelect").chosen({width:'100%'})
@@ -1185,14 +1078,14 @@ function createGrievanceAlert()
 			
 			for(var i in result){
 				if(i<result.length-1){
-					str+='<div class="col-sm-4">';
-						str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+					str+='<div class="col-sm-3">';
+						str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLocationId"></span></label>';
 						str+='<select  class="chosenSelect" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
 					str+='</div>';
 				}else{
-					str+='<div class="col-sm-4">';
-						str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
-						str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
+					str+='<div class="col-sm-3">';
+						str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLocationId"></span></label>';
+						str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="grievanceAlertVO.levelValue" ></select>';
 					str+='</div>';
 				}
 				

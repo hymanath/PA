@@ -3594,11 +3594,19 @@
 		<property name="newsPaperDAO" ref="newsPaperDAO"></property>
 		<property name="tvNewsChannelDAO" ref="tvNewsChannelDAO"></property>
 		<property name="coreDashboardGenericService" ref="coreDashboardGenericService"></property>
+		
 		<property name="alertIssueTypeDAO" ref="alertIssueTypeDAO"></property>
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
 		<property name="alertCallerTypeDAO" ref="alertCallerTypeDAO"></property>
 		<property name="alertCallerDAO" ref="alertCallerDAO"></property>
 		<property name="hamletDAO" ref="hamletDAO"></property>
+		<property name="govtDepartmentDesignationOfficerDetailsNewDAO" ref="govtDepartmentDesignationOfficerDetailsNewDAO"></property>
+		<property name="alertAssignedOfficerNewDAO" ref="alertAssignedOfficerNewDAO"></property>
+		<property name="alertAssignedOfficerTrackingNewDAO" ref="alertAssignedOfficerTrackingNewDAO"></property>
+		<property name="govtOfficerNewDAO" ref="govtOfficerNewDAO"></property>
+		<property name="govtDepartmentDesignationNewDAO" ref="govtDepartmentDesignationNewDAO"></property>
+		<property name="govtDepartmentDesignationHierarchyDAO" ref="govtDepartmentDesignationHierarchyDAO"></property>
+		<property name="govtDepartmentDesignationOfficerDetailsDAO" ref="govtDepartmentDesignationOfficerDetailsDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	
