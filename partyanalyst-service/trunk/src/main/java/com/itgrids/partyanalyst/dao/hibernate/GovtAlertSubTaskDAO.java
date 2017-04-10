@@ -501,4 +501,25 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		return query.list();
     }
    	
+    public Integer updateSubTaskPriority(Long subTaskId,Long priorityId,Long userId,Date date){
+    	Query query = getSession().createQuery(" update GovtAlertSubTask model set model.alertSeverityId=:priorityId,model.updatedBy=:userId,model.updatedTime=:date "
+    			+ " where model.govtAlertSubTaskId=:subTaskId and model.isDeleted='N' ");
+    	query.setParameter("subTaskId", subTaskId);
+    	query.setParameter("priorityId", priorityId);
+    	query.setParameter("userId", userId);
+    	query.setDate("date", date);
+    	
+    	return query.executeUpdate();
+    }
+    
+    public Integer updateSubTaskDueDate(Long subTaskId,Date dueDate,Long userId,Date date){
+    	Query query = getSession().createQuery(" update GovtAlertSubTask model set model.dueDate=:dueDate,model.updatedBy=:userId,model.updatedTime=:date "
+    			+ " where model.govtAlertSubTaskId=:subTaskId and model.isDeleted='N' ");
+    	query.setParameter("subTaskId", subTaskId);
+    	query.setDate("dueDate", dueDate);
+    	query.setParameter("userId", userId);
+    	query.setDate("date", date);
+    	
+    	return query.executeUpdate();
+    }
 }
