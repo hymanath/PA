@@ -754,5 +754,11 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 	}
 	
+	public String getUserRedirectedUrl(Long userId)
+	{
+		Query query = getSession().createQuery("SELECT model.redirectUrl.url FROM User model where model.userId = :userId");
+		query.setParameter("userId",userId);
+		return (String) query.uniqueResult();
+	}
 	
 }
