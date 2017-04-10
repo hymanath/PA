@@ -2067,7 +2067,8 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService"/>
 		<property name="userPrivacySettingsDAO" ref="userPrivacySettingsDAO"/>
 		<property name="userRolesDAO" ref="userRolesDAO"/>
-		<property name="nominationDAO" ref="nominationDAO" />	
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="userDAO" ref="userDAO" />
 	</bean>
 	
 	<bean name="userService" class="com.itgrids.partyanalyst.service.impl.UserService">
