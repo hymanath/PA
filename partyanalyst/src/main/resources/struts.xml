@@ -16736,15 +16736,15 @@
    			<param name="root">alertTrackingVOList</param>
    		</result>			
 	</action>
-	<action name="getSubTaskInfoForAlertAction" class="alertManagementSystemAction" method="getSubTaskInfoForAlert">			
-		<result name="success" type="stream">			   
-		    <param name="inputName">alertTrackingVOList</param>
-		</result>								
+	<action name="getSubTaskInfoForAlertAction" class="alertManagementSystemAction" method="getSubTaskInfoForAlert">	
+		<result type="json" name="success">
+   			<param name="root">alertTrackingVOList</param>
+   		</result>			
 	</action>
-	<action name="getCommentsForAlertAction" class="alertManagementSystemAction" method="getCommentsForAlert">			
-		<result name="success" type="stream">			   
-		    <param name="inputName">alertTrackingVOList</param>
-		</result>								
+	<action name="getCommentsForAlertAction" class="alertManagementSystemAction" method="getCommentsForAlert">	
+		<result type="json" name="success">
+   			<param name="root">alertTrackingVOList</param>
+   		</result>			
 	</action>
 	<action name="getStatusCompletionInfoAction" class="alertManagementSystemAction" method="getStatusCompletionInfo">			
 		<result name="success" type="stream">			   

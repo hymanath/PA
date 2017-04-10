@@ -1459,6 +1459,7 @@ function rightSideExpandView(alertId)
 	$('[data-toggle="tooltip"]').tooltip();
 	dateRangePicker();
 	assignedOfficersDetailsForAlert(alertId);
+	departmentsByAlert(alertId);
 	getAlertData(alertId);
 	
 }
@@ -1483,7 +1484,6 @@ function assignedOfficersDetailsForAlert(alertId)
 }
 function getAlertData(alertId)
 {
-	$("#alertDetails").html(spinner);
 	var jsObj =
 	{
 		alertId  :alertId,
@@ -1497,10 +1497,8 @@ function getAlertData(alertId)
 		getAlertCategortByAlert(alertId);
 		getInvolvedMembersDetilas(alertId);
 		getAlertStatusCommentsTrackingDetails(alertId);
-		departmentsByAlert(alertId);
-		assignedOfficersDetailsForAlert(alertId);
-		getSubTaskInfoForAlert(alertId);
-		getCommentsForAlert(alertId);
+		//getSubTaskInfoForAlert(alertId);
+		//getCommentsForAlert(alertId);
 		if(result != null && result.length > 0){
 			buildAlertDataNew(result)
 			if(result[0].categoryId == 2)
@@ -1542,7 +1540,7 @@ function buildAlertDataNew(result)
 			str+='</div>';
 		}
 	str+='</div>';
-	$("#alertDetails").html(str);
+	$("#alertDetails").append(str);
 	
 }
 function getAlertCategortByAlert(alertId){
@@ -1594,25 +1592,14 @@ function buildAlertCandidateData(result,categoryId)
 
 	var str='';
 	str+='<div class="row m_top20">';
-		str+='<div class="col-sm-1 text-center">';
-			for(var i in result)
-			{
-				var secondName = result[i].name.split("")
-				str+='<span class="icon-name icon-primary">'+result[i].name.substring(0,1)+''+secondName[1].substring(0,1)+'</span>';
-			}
+		str+='<div class="col-sm-1 text-center body-icons">';
+			str+='<i class="fa fa-users fa-2x"></i>';
 		str+='</div>';
 		str+='<div class="col-sm-11">';
 			str+='<h4 class="text-muted text-capital">involved members details</h4>';
 			for(var i in result)
 			{
-				if(result[i].impactLevelId == 1)
-				{
-					str+=' <span class="label label-success pull-right" style="margin-top: 7px;">+ Ve</span>'; 
-				}else if(result[i].impactLevelId == 2){
-					str+=' <span class="label label-danger pull-right" style="margin-top: 7px;">- Ve</span>';
-				}else{
-					str+=' <span class="label label-neutral pull-right" style="margin-top: 7px;">N</span>';
-				}
+				
 				if(result[i].name != null && result[i].name != "")
 					str+=' <p class="text-capital"><span class="text-muted">Name :</span> <b>'+result[i].name+'</b></p>';
 					str+=' <p class="text-capital"><span class="text-muted">Department: </span><b>'+result[i].status+'</b></p>';
@@ -1623,6 +1610,14 @@ function buildAlertCandidateData(result,categoryId)
 				str+='  <p>'+result[i].source+'</p>';
 				if(result[i].dateStr !=null && result[i].dateStr.length>0){
 					str+='<p><a>'+result[i].dateStr+'</a></p>';
+				}
+				if(result[i].impactLevelId == 1)
+				{
+					str+=' <p class="label label-success" style="margin-top: 7px;">Positive</p>'; 
+				}else if(result[i].impactLevelId == 2){
+					str+=' <p class="label label-danger" style="margin-top: 7px;">Negative</p>';
+				}else{
+					str+=' <p class="label label-neutral" style="margin-top: 7px;">Neutral</p>';
 				}
 			}
 		str+='</div>';
@@ -1637,28 +1632,8 @@ function getGroupedArticlesInfo(articleId)
 		  //url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 		  url: "http://mytdp.com/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 	}).then(function(result){
-		
-		var str='';
-		if(result !=null && result.length>0){
-			var str='';
-			str+='<div class="row m_top20">';
-				str+='<div class="col-sm-1 text-center body-icons">';
-					str+='<i class="fa fa-tags fa-2x"></i>';
-				str+='</div>';
-				str+='<div class="col-sm-11">';
-					str+='<h4 class="text-muted text-capital">grouped articles</h4>';
-					str+='<ul class="list-inline">';
-						for(var i in result)
-						{
-							if(articleId != result[i].id){
-								str+='<li class="articleImgDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
-							}
-						}
-					str+='</ul>';
-				str+='</div>';
-			str+='</div>';
-			$("#alertDetails").append(str);
-		}
+		console.log(result);
+		//$("#alertDetails").append(str);
 	});
 }
 function getAlertStatusCommentsTrackingDetails(alertId){
@@ -1671,9 +1646,61 @@ function getAlertStatusCommentsTrackingDetails(alertId){
 		dataType : 'json',
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){ 
-		console.log(result);
-		$("#alertDetails").append(str);
+		if(result != null && result.length > 0)
+		{
+			buildStatusWiseCommentsTrackingAction(result);
+		}
 	});
+}
+function buildStatusWiseCommentsTrackingAction(result)
+{
+	var str='';
+		str+='<div class="row m_top20">';
+		
+			str+='<div class="col-sm-1 text-center body-icons">';
+				str+='<i class="fa fa-comments-o fa-2x"></i>';
+			str+='</div>';
+			str+='<div class="col-sm-11">';
+				str+='<h4 class="text-muted text-capital">comments</h4>';
+				for(var i in result)
+				{
+					str+='<div class="media">';
+						str+='<div class="media-left">';
+							if(result[i].name != null && result[i].name.length > 0)
+							{
+								str+='<span class="icon-name icon-primary text-capital">'+result[i].name.substring(0,2)+'</span>';
+							}else{
+								str+='<span class="icon-name icon-primary">ME</span>';
+							}
+						str+='</div>';
+						str+='<div class="media-body">';
+							if(result[i].comment != null && result[i].comment.length > 0)
+							{
+								str+='<p class="m_top5">'+result[i].comment+'</p>';
+							}
+							if(result[i].latestStatus != null && result[i].latestStatus.length > 0)
+							{
+								str+='<p class="m_top5">Latest Status : '+result[i].latestStatus+'</p>';
+							}
+							if(result[i].source != null && result[i].source.length > 0)
+							{
+								str+='<p class="m_top5">Source : '+result[i].source+'</p>';
+							}
+							if(result[i].status != null && result[i].status.length > 0)
+							{
+								str+='<p class="m_top5">Status : '+result[i].status+'</p>';
+							}
+							if(result[i].dateStr != null && result[i].dateStr.length > 0)
+							{
+								str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].dateStr+'</p>';
+							}
+						str+='</div>';
+					str+='</div>';
+				}
+			str+='</div>';
+		
+		str+='</div>';
+	$("#alertDetails").append(str);
 }
 function departmentsByAlert(alertId){
 	var jsObj = {
@@ -1684,18 +1711,13 @@ function departmentsByAlert(alertId){
 		url: 'getDepartmentsByAlertAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		$("#alertDetails").append(str);
-	});
-}
-function assignedOfficersDetailsForAlert(alertId){
-	var jsObj = {
-		alertId : alertId
-	}
-	$.ajax({
-		type:'GET',
-		url: 'getAssignedOfficersDetailsForAlertAction.action',
-		data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
+		var str='';
+		str+='<p class="m_top20">';
+			for(var i in result)
+			{
+				str+='<span class="label label-default label-category">'+result[i].name+'</span>';
+			}
+		str+='</p>';
 		$("#alertDetails").append(str);
 	});
 }
@@ -1708,7 +1730,8 @@ function getSubTaskInfoForAlert(alertId){
 		url: 'getSubTaskInfoForAlertAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		$("#alertDetails").append(str);
+		console.log(result);
+		//$("#alertDetails").append(str);
 	});
 }
 function getCommentsForAlert(alertId){
@@ -1720,6 +1743,7 @@ function getCommentsForAlert(alertId){
 		url: 'getCommentsForAlertAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		$("#alertDetails").append(str);
+		console.log(result);
+		//$("#alertDetails").append(str);
 	});
 }
