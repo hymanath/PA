@@ -1218,15 +1218,15 @@ function getTotalAlertCountDetails(statusId,statusName,count,departmentId){
 	});
 }); */
 
-function viewAlertHistory()
+function viewAlertHistory(alertId)
 {
 	$("#alertManagementPopupBody1").html(spinner)
 	var jsObj ={
-		alertId : 11346
+		subTaskId : alertId
 	}
 	$.ajax({
 		type:'GET',
-		url: 'viewAlertHistoryAction.action',
+		url: 'viewSubTaskHistoryAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length> 0)
@@ -1238,7 +1238,7 @@ function viewAlertHistory()
 	});
 }
 
-function rightSideExpandView(alertId)
+function rightSideExpandView(subTaskId)
 {
 	$("#rightSideExpandView").html(spinner);
 	var str='';
@@ -1254,7 +1254,7 @@ function rightSideExpandView(alertId)
 							str+='</div>';
 							str+='<div class="col-sm-8">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
-									str+='<li status-icon-block="alertStatus" data-toggle="tooltip" data-placement="top" title="alert status">';
+									str+='<li status-icon-block="alertStatus" attr_alert_id="'+subTaskId+'" data-toggle="tooltip" data-placement="top" title="alert status">';
 										str+='<span class="status-icon arrow-icon"></span>Pending';
 									str+='</li>';
 									str+='<li class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date">';
@@ -1269,11 +1269,11 @@ function rightSideExpandView(alertId)
 											str+='<li><button class="btn btn-primary btn-sm text-capital" id="priorityChangeSaveId">save</button></li>';
 										str+='</ul>';
 									str+='</li>';
-									str+='<li status-icon-block="subTask" class="status-icon-subtask" data-toggle="tooltip" data-placement="top" title="sub task">';
+									str+='<li status-icon-block="subTask" attr_alert_id="'+subTaskId+'" class="status-icon-subtask" data-toggle="tooltip" data-placement="top" title="sub task">';
 										str+='<i class="fa fa-mail-forward"></i>';
 										str+='<i class="fa fa-level-down"></i>';
 									str+='</li>';
-									str+='<li status-icon-block="alertHistory">';
+									str+='<li status-icon-block="alertHistory" attr_alert_id="'+subTaskId+'">';
 										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
 									str+='</li>';
 									str+='<li>';
@@ -1323,13 +1323,13 @@ function rightSideExpandView(alertId)
 	$("#rightSideExpandView").html(str);
 	$('[data-toggle="tooltip"]').tooltip();
 	dateRangePicker();
-	assignedOfficersDetailsForAlert(alertId);
+	assignedOfficersDetailsForAlert(subTaskId);
 
 }
-function assignedOfficersDetailsForAlert(alertId)
+function assignedOfficersDetailsForAlert(subTaskId)
 {
 	var jsObj = {
-		alertId : alertId
+		alertId : subTaskId
 	}
 	$.ajax({
 		type:'GET',

@@ -1402,3 +1402,10 @@ small.clear
 {
 	padding:0px;
 }
+.label-category
+{
+	font-size:14px;
+	border-radius:14px;
+	background-color:#EEEEEE;
+	color:#777;
+}

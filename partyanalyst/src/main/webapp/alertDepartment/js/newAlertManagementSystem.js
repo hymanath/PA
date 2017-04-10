@@ -1421,6 +1421,7 @@ function rightSideExpandView(alertId)
 						str+='<p><i class="fa fa-fire"></i> Impact Level : State';
 							str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
 						str+='</p>';
+						str+='<div id="alertDetails"></div>';
 						str+='<div status-body="task" class="m_top20"></div>';
 						str+='<div status-body="subTask" class="m_top20"></div>';
 					str+='</div>';
@@ -1433,10 +1434,10 @@ function rightSideExpandView(alertId)
 								str+='<div class="panel panel-default panel-border-white">';
 									str+='<div class="panel-heading">';
 										str+='<label class="radio-inline" name="language">';
-											str+='<input type="radio"/>Telugu';
+											str+='<input type="radio"name="Lang" value="te" class="lang" id="telugu" onclick="languageChangeHandler();" checked="true"/>Telugu';
 										str+='</label>';
 										str+='<label class="radio-inline" name="language">';
-											str+='<input type="radio"/>English';
+											str+='<input type="radio"name="Lang"value="en" class="lang" id="eng" onclick="languageChangeHandler();"/>English';
 										str+='</label>';
 									str+='</div>';
 									str+='<div class="panel-body">';
@@ -1458,7 +1459,8 @@ function rightSideExpandView(alertId)
 	$('[data-toggle="tooltip"]').tooltip();
 	dateRangePicker();
 	assignedOfficersDetailsForAlert(alertId);
-
+	getAlertData(alertId);
+	
 }
 function assignedOfficersDetailsForAlert(alertId)
 {
@@ -1477,5 +1479,247 @@ function assignedOfficersDetailsForAlert(alertId)
 			assignUser(alertId);
 		}
 		
+	});
+}
+function getAlertData(alertId)
+{
+	$("#alertDetails").html(spinner);
+	var jsObj =
+	{
+		alertId  :alertId,
+		task : ""
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAlertsDataAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		getAlertCategortByAlert(alertId);
+		getInvolvedMembersDetilas(alertId);
+		getAlertStatusCommentsTrackingDetails(alertId);
+		departmentsByAlert(alertId);
+		assignedOfficersDetailsForAlert(alertId);
+		getSubTaskInfoForAlert(alertId);
+		getCommentsForAlert(alertId);
+		if(result != null && result.length > 0){
+			buildAlertDataNew(result)
+			if(result[0].categoryId == 2)
+			{
+				getGroupedArticlesInfo(result[0].alertCategoryTypeId)
+			}
+		}else{
+			$("#alertDetails").html("NO DATA");
+		}
+	});
+}
+  
+  
+function buildAlertDataNew(result)
+{
+	var str='';
+	str+='<div class="row m_top20">';
+		for(var i in result)
+		{
+			str+='<div class="col-sm-1 text-center body-icons">';
+				str+='<i class="fa fa-check fa-2x"></i>';
+			str+='</div>';
+			str+='<div class="col-sm-11">';
+				str+='<h3>'+result[i].title+'</h3>';
+				str+='<p class="m_top10">'+result[i].desc+'</p>';
+				str+='<p class="m_top10"><small> <i class="fa fa-map-marker"></i> '+result[i].locationVO.state+','+result[i].locationVO.districtName+','+result[i].locationVO.constituencyName+','+result[i].locationVO.wardName+','+result[i].locationVO.villageName+'</small></p>';
+				str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created : '+result[i].date+'</small></p>';
+			str+='</div>';
+		}
+	str+='</div>';
+	str+='<div class="row m_top20">';
+		if(result[i].imageUrl !=null && result[i].imageUrl.length>0){
+			str+='<div class="col-sm-1 text-center body-icons">';
+				str+='<i class="fa fa-paperclip fa-2x"></i>';
+			str+='</div>';
+			str+='<div class="col-sm-11">';
+				str+='<h4 class="text-muted text-capital">article attachment</h4>';
+				str+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId='+result[i].alertCategoryTypeId+' src="http://mytdp.com/NewsReaderImages/'+result[i].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer"/>';
+			str+='</div>';
+		}
+	str+='</div>';
+	$("#alertDetails").html(str);
+	
+}
+function getAlertCategortByAlert(alertId){
+	$("#categoryId").html('');
+	var jsObj =
+	{
+		alertId  :alertId
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getAlertCategoryByAlertAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			var str='';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-1 text-center body-icons">';
+					str+='<i class="fa fa-tags fa-2x"></i>';
+				str+='</div>';
+				str+='<div class="col-sm-11">';
+					str+='<h4 class="text-muted text-capital">category</h4>';
+					str+='<p class="m_top20"><span class="label label-default label-category">'+result+'</span></p>';
+				str+='</div>';
+			str+='</div>';
+			
+			$("#alertDetails").append(str);
+		}
+		
+	});
+}
+function getInvolvedMembersDetilas(alertId){
+	var jsObj ={
+		alertId  :alertId
+	}
+	$.ajax({
+		  type:'GET',
+		  url: 'getInvolvedMembersInAlertAction.action',
+		  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			buildAlertCandidateData(result);
+		}
+	});
+}
+function buildAlertCandidateData(result,categoryId)
+{
+
+	var str='';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-1 text-center">';
+			for(var i in result)
+			{
+				var secondName = result[i].name.split("")
+				str+='<span class="icon-name icon-primary">'+result[i].name.substring(0,1)+''+secondName[1].substring(0,1)+'</span>';
+			}
+		str+='</div>';
+		str+='<div class="col-sm-11">';
+			str+='<h4 class="text-muted text-capital">involved members details</h4>';
+			for(var i in result)
+			{
+				if(result[i].impactLevelId == 1)
+				{
+					str+=' <span class="label label-success pull-right" style="margin-top: 7px;">+ Ve</span>'; 
+				}else if(result[i].impactLevelId == 2){
+					str+=' <span class="label label-danger pull-right" style="margin-top: 7px;">- Ve</span>';
+				}else{
+					str+=' <span class="label label-neutral pull-right" style="margin-top: 7px;">N</span>';
+				}
+				if(result[i].name != null && result[i].name != "")
+					str+=' <p class="text-capital"><span class="text-muted">Name :</span> <b>'+result[i].name+'</b></p>';
+					str+=' <p class="text-capital"><span class="text-muted">Department: </span><b>'+result[i].status+'</b></p>';
+				if(result[i].designation != null && result[i].designation != "")
+				{
+					str+='<p class="text-capital"><span class="text-muted">Designation</span>'+result[i].designation+'</p>';
+				}
+				str+='  <p>'+result[i].source+'</p>';
+				if(result[i].dateStr !=null && result[i].dateStr.length>0){
+					str+='<p><a>'+result[i].dateStr+'</a></p>';
+				}
+			}
+		str+='</div>';
+	str+='</div>';
+	
+	$("#alertDetails").append(str);
+}
+function getGroupedArticlesInfo(articleId)
+{
+	$.ajax({
+		  type : 'GET',      
+		  //url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  url: "http://mytdp.com/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+	}).then(function(result){
+		
+		var str='';
+		if(result !=null && result.length>0){
+			var str='';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-1 text-center body-icons">';
+					str+='<i class="fa fa-tags fa-2x"></i>';
+				str+='</div>';
+				str+='<div class="col-sm-11">';
+					str+='<h4 class="text-muted text-capital">grouped articles</h4>';
+					str+='<ul class="list-inline">';
+						for(var i in result)
+						{
+							if(articleId != result[i].id){
+								str+='<li class="articleImgDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
+							}
+						}
+					str+='</ul>';
+				str+='</div>';
+			str+='</div>';
+			$("#alertDetails").append(str);
+		}
+	});
+}
+function getAlertStatusCommentsTrackingDetails(alertId){
+	var jsObj={
+		alertId:alertId
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getStatusWiseCommentsTrackingAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){ 
+		console.log(result);
+		$("#alertDetails").append(str);
+	});
+}
+function departmentsByAlert(alertId){
+	var jsObj = {
+		alertId : alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getDepartmentsByAlertAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#alertDetails").append(str);
+	});
+}
+function assignedOfficersDetailsForAlert(alertId){
+	var jsObj = {
+		alertId : alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAssignedOfficersDetailsForAlertAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#alertDetails").append(str);
+	});
+}
+function getSubTaskInfoForAlert(alertId){
+	var jsObj ={
+		alertId  :alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getSubTaskInfoForAlertAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#alertDetails").append(str);
+	});
+}
+function getCommentsForAlert(alertId){
+	var jsObj ={
+		alertId  :alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getCommentsForAlertAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#alertDetails").append(str);
 	});
 }
