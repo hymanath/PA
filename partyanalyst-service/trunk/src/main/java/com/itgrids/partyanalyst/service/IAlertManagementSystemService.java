@@ -58,4 +58,6 @@ public interface IAlertManagementSystemService {
 	public List<AlertTrackingVO> getAlertStatusHistory(Long alertId);
 	public List<GovtDepartmentVO> getAssignedOfficersDetails(Long alertId);
 	public List<AlertCoreDashBoardVO> getDistrictOfficerScopesWiseAlerts(String fromDateStr, String toDateStr, Long stateId, Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType);
+	public List<AlertVO> getAllDivisionDetails();	
+	public List<AlertVO> getAllSubDivisionDetails();
 }

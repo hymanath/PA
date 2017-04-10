@@ -15,6 +15,7 @@ public class GovtDepartmentWorkLocationDAO extends GenericDaoHibernate<GovtDepar
 		super(GovtDepartmentWorkLocation.class);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getLevelWiseInfo(Long deptId,Set<Long> levelIds){
 		
 		StringBuilder sb = new StringBuilder();
@@ -42,11 +43,9 @@ public class GovtDepartmentWorkLocationDAO extends GenericDaoHibernate<GovtDepar
 			query.setParameterList("levelIds", levelIds);
 		}
 		
-		return query.list();
-		
+		return query.list();		
 	}
-	
-	public List<Object[]> getParentLevelValuesListInfo(List<Long> levelValues){
+public List<Object[]> getParentLevelValuesListInfo(List<Long> levelValues){
 		
 		Query query = getSession().createQuery("select model.govtDepartmentWorkLocationId,model.locationName" +
 				" FROM GovtDepartmentWorkLocation model" +
@@ -57,4 +56,21 @@ public class GovtDepartmentWorkLocationDAO extends GenericDaoHibernate<GovtDepar
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllDivisionDetails(){
+   		Query query = getSession().createQuery("select model.govtUserAddress.divisionId,model.locationName" +
+   				                            " from  GovtDepartmentWorkLocation model " +
+   				                            "where model.govtDepartmentScope.govtDepartmentScopeId =:scopeId " +
+   				                            "and model.isDeleted='N' ");   				                          
+   		query.setParameter("scopeId", 6l);   				                            
+   		return query.list();
+     }
+     public List<Object[]> getAllSubDivisionDetails(){
+   		Query query = getSession().createQuery("select model.govtUserAddress.subDivisionId,model.locationName" +
+   				                            " from  GovtDepartmentWorkLocation model " +
+   				                            "where model.govtDepartmentScope.govtDepartmentScopeId =:scopeId " +
+   				                            "and model.isDeleted='N' ");   				                          
+   		query.setParameter("scopeId", 7l);   				                            
+   		return query.list();
+     }
 }
