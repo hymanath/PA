@@ -833,8 +833,8 @@
 		            <value>com.itgrids.partyanalyst.model.EventGenderInfo</value>
 		            <value>com.itgrids.partyanalyst.model.EventGenderDayInfo</value>
 		            
-		           <value>com.itgrids.partyanalyst.model.NominatedPostAccessType</value> 
-				   <value>com.itgrids.partyanalyst.model.NominatedPostAccessUser</value> 
+		         <!--   <value>com.itgrids.partyanalyst.model.NominatedPostAccessType</value>  
+				   <value>com.itgrids.partyanalyst.model.NominatedPostAccessUser</value>  -->
 				   
 				      <value>com.itgrids.partyanalyst.model.CadreRegIssueType</value>
 				      <value>com.itgrids.partyanalyst.model.CadreRegIssue</value>
@@ -844,6 +844,18 @@
 				      <value>com.itgrids.partyanalyst.model.CadreRegUser</value>
 				      <value>com.itgrids.partyanalyst.model.CadreRegUserAccess</value>
 		              <value>com.itgrids.partyanalyst.model.PaymentTransactionInfo</value>	
+		              <value>com.itgrids.partyanalyst.model.RedirectUrl</value>
+		              <value>com.itgrids.partyanalyst.model.ActivityConductedInfo</value>
+		              <value>com.itgrids.partyanalyst.model.TabUserInfo</value>
+		              <value>com.itgrids.partyanalyst.model.PartyMeetingSession</value>
+		              <value>com.itgrids.partyanalyst.model.PartyMeetingMinuteStatus</value>
+		              <value>com.itgrids.partyanalyst.model.SessionType</value>
+		              <value>com.itgrids.partyanalyst.model.PartyMeetingMainType</value>
+		              <value>com.itgrids.partyanalyst.model.CardPrintStatus</value>
+		              <value>com.itgrids.partyanalyst.model.CommitteeConfirmRule</value>
+		              <value>com.itgrids.partyanalyst.model.CardPrintVendor</value>
+		              <value>com.itgrids.partyanalyst.model.TdpCadreCardPrint</value>
+		              
 			</list>
 		</property>
 	</bean>
@@ -906,6 +918,10 @@
 
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
+	
+	<bean id="redirectUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.RedirectUrlDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="activityAttendanceDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityAttendanceDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -2724,12 +2740,12 @@
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
-   <bean id="nominatedPostAccessTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessTypeDAO" >
+  <!--  <bean id="nominatedPostAccessTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessTypeDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean> 
-	<bean id="nominatedPostAccessUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessUserDAO" >
+	</bean>  -->
+	<!-- <bean id="nominatedPostAccessUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessUserDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
+	</bean> -->
 
    <bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
 		<property name="stateDAO" ref="stateDAO"/>
