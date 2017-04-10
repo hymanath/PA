@@ -324,7 +324,6 @@ public List<BirthDayDetailsVO> getLeaderOccasionDetails(Long occastionTypeId,Str
 					      }
 					      if(commonMethodsUtilService.isListOrSetValid(positionList))
 					    	  Collections.sort(positionList, new Comparator<IdNameVO>() {
-						          @Override
 						          public int compare(final IdNameVO vo1, final IdNameVO vo2) {
 						              return vo1.getName().compareTo(vo2.getName());
 						          }

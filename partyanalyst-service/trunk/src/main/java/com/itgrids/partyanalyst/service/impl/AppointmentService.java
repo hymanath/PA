@@ -821,7 +821,6 @@ public class AppointmentService implements IAppointmentService{
 		return voList;
 	}
 	
-	@Override
 	public List<AppointmentBasicInfoVO> getAppointmentUsersDtlsByUserId(Long userId) {
 		List<AppointmentBasicInfoVO> appntmntUsrDtlsLst=new ArrayList<AppointmentBasicInfoVO>(0);
 		try{
@@ -877,7 +876,6 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return resultStatus;
 	}
-	@Override
 	public List<LabelStatusVO> getLabelDtslByDate(String slctdDate,Long appntmntUsrId,Long statusId) {
 		
 		List<LabelStatusVO> finalVoList=new ArrayList<LabelStatusVO>(0);
@@ -1058,7 +1056,7 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return voList;
 	}
-	@Override
+
 	public ResultStatus deleteAppointmentLabel(Long appointmentLabelId,String remarks,Long userId) {
 	   
 		ResultStatus status=new ResultStatus();
@@ -1085,7 +1083,7 @@ public class AppointmentService implements IAppointmentService{
 		}
 		return status;
 	}
-	@Override
+
 	public List<AppointmentBasicInfoVO> getAppointmentsCandidateDetails(Long candidateDsgntnId, Long appntmntPrrtyId, Long appntmntSttsId,String currentMonth,String anyDate) {
 		
 		List<AppointmentBasicInfoVO> fnlAppntCnddtSttsList=new ArrayList<AppointmentBasicInfoVO>(0);

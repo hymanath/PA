@@ -1295,7 +1295,7 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 				}
 				if(statusList != null && statusList.size() > 0){
 					Collections.sort(statusList, new Comparator<UserTypeVO>() {
-						@Override
+						
 						public int compare(UserTypeVO status1, UserTypeVO status2) {
 							return status1.getId().compareTo(status2.getId());
 						}
@@ -1582,7 +1582,6 @@ public class CoreDashboardInsuranceService implements ICoreDashboardInsuranceSer
 		return resultList;
 	  }
 	   public static Comparator<UserTypeVO> cadreSortingByComplaintCount = new Comparator<UserTypeVO>() {
-			@Override
 			public int compare(UserTypeVO member2, UserTypeVO member1) {
 				Long count2 = member2.getTotalCount();
 				Long count1 = member1.getTotalCount();
