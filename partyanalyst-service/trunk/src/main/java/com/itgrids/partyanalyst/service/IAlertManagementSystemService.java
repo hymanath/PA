@@ -23,7 +23,7 @@ public interface IAlertManagementSystemService {
 	public List<AlertVO> getDepartmentStatus();
 	public List<AlertVO> getDepartmentScope();
 	public List<IdAndNameVO> getDeptListForUser(Long userId);
-	public DistrictOfficeViewAlertVO getDistrictOfficerAlertsCountView(Long userId);
+	public DistrictOfficeViewAlertVO getDistrictOfficerAlertsCountView(Long userId,String startDate,String endDate);
 	public ResultStatus updateComment(Long alertId,String comment,Long userId);
 	public ResultStatus updateAlertPriority(Long alertId,Long priorityId,Long userId);
 	public List<IdNameVO> getDepartmentLevels(Long departmentId);
@@ -54,4 +54,5 @@ public interface IAlertManagementSystemService {
 	public List<IdNameVO> getDeptListForMultiLvl(Long userId);
 	public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(List<Long> alertIdList);
 	public List<AlertTrackingVO> getAlertStatusHistory(Long alertId);
+	public List<GovtDepartmentVO> getAssignedOfficersDetails(Long alertId);
 }
