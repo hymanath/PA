@@ -2711,7 +2711,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			List<Object[]> alertList =null;
       			if(alertType != null && alertType.equalsIgnoreCase("alert")){
       				 alertList = alertAssignedOfficerNewDAO.getDistrictOfficerScopesWiseAlerts(fromDate,toDate,stateId,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
-      			}else if(alertType != null && alertType.equalsIgnoreCase("subAlert")){
+      			}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
      				 	 alertList = govtAlertSubTaskDAO.getDistrictOfficerSubTaskAlerts(fromDate,toDate,stateId,null,null,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,"scopes");
       			}
       			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
