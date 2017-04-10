@@ -2351,7 +2351,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           	 return name2.compareTo(name1);
           	}
         };
-        public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order){
+        public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType){
     		try{
     			
     			Date fromDate = null;
@@ -2394,8 +2394,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				}
     			}
     			
-    			
-    			List<Object[]> alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCountForStatus(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
+    			List<Object[]> alertList =null;
+    			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+    				 alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCountForStatus(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
+    			}else if(alertType != null && alertType.equalsIgnoreCase("subAlert")){
+   				 	 alertList = govtAlertSubTaskDAO.getDistrictOfficerSubTaskAlerts(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,"status");
+    			}
     			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
     			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
     				prepareResultForState(alertList,returnList,sortingType,order);
@@ -2607,48 +2611,48 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     		}		
     		return finalVoList;
     	}
-        public ResultStatus senedSMSTOAlertAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long alertId){
-        	ResultStatus rs = new ResultStatus();
-        	try {
-        		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
-        		
-        		//get asigned officer dept, alert title
-        		//0-title,1-deptId,2-deptName
-        		Object[] objArr = alertDAO.getAlertDetailsForSMS(alertId);
-        		if(objArr != null){
-        			String message = "Alert is assigned to you,Please follow up and resolve.\nTitle : "+objArr[0].toString()+" \nDept"+objArr[2].toString();
-        			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
-        		}
-        		
-        		//get parent designation Id
-        		List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(designationId);
-        		if(parentDesigIds != null && parentDesigIds.size() > 0){
-        			//get high level officer mobile nums
-        			List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getHigherOfficerMobileNums(parentDesigIds);
-        			
-        			if(mobilenums != null && mobilenums.size() > 0){
-        				String message = "Alert is assigned to "+objArr[2].toString()+" - "+govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo+".\n Please follow up.";
-        				String mobileNums = "";
-        				for (String string : mobilenums) {
-        					mobileNums = mobileNums.equalsIgnoreCase("")?string:mobileNums+","+string;
-        				}
-        				govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
-        			}
-        		}
-        		
-        		
-        		rs.setExceptionMsg("success");
-        	} catch (Exception e) {
-        		rs.setExceptionMsg("failure");
-        		LOG.error("Error occured senedSMSTOAlertAssignedOfficer() method of AlertManagementSystemService{}");
-        	}
-        	return rs;
-        }    
-        
-        public List<AlertTrackingVO> getAlertStatusHistory(Long alertId){
-        	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
-        	try {
-        		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
+       public ResultStatus senedSMSTOAlertAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long alertId){
+       	ResultStatus rs = new ResultStatus();
+       	try {
+       		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
+       		
+       		//get asigned officer dept, alert title
+       		//0-title,1-deptId,2-deptName
+       		Object[] objArr = alertDAO.getAlertDetailsForSMS(alertId);
+       		if(objArr != null){
+       			String message = "Alert is assigned to you,Please follow up and resolve.\nTitle : "+objArr[0].toString()+" \nDept"+objArr[2].toString();
+       			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
+       		}
+       		
+       		//get parent designation Id
+       		List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(designationId);
+       		if(parentDesigIds != null && parentDesigIds.size() > 0){
+       			//get high level officer mobile nums
+       			List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getHigherOfficerMobileNums(parentDesigIds);
+       			
+       			if(mobilenums != null && mobilenums.size() > 0){
+       				String message = "Alert is assigned to "+objArr[2].toString()+" - "+govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo+".\n Please follow up.";
+       				String mobileNums = "";
+       				for (String string : mobilenums) {
+       					mobileNums = mobileNums.equalsIgnoreCase("")?string:mobileNums+","+string;
+       				}
+       				govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
+       			}
+       		}
+       		
+       		
+       		rs.setExceptionMsg("success");
+       	} catch (Exception e) {
+       		rs.setExceptionMsg("failure");
+       		LOG.error("Error occured senedSMSTOAlertAssignedOfficer() method of AlertManagementSystemService{}");
+       	}
+       	return rs;
+       }    
+       
+       public List<AlertTrackingVO> getAlertStatusHistory(Long alertId){
+       	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
+       	try {
+       		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
 				List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getAlertStatusHistory(alertId);
 				
 				if(objList != null && objList.size() > 0){
@@ -2665,6 +2669,125 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			} catch (Exception e) {
 				LOG.error("Error occured getAlertStatusHistory() method of AlertManagementSystemService{}");
 			}
-        	return voList;
-        }
+       	return voList;
+       }
+       
+       
+       public List<AlertCoreDashBoardVO> getDistrictOfficerScopesWiseAlerts(String fromDateStr, String toDateStr, Long stateId, Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType){
+   		try{
+   			
+   			Date fromDate = null;
+   			Date toDate = null;
+   			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+   			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+   				fromDate = sdf.parse(fromDateStr);
+   				toDate = sdf.parse(toDateStr);
+   			}
+   			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+   			
+   			List<Long> levelValues = new ArrayList<Long>();    
+   			Long levelId = 0L;
+   			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+   			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+   				for(Object[] param : lvlValueAndLvlIdList){
+   					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+   					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+   				}
+   			}
+   			
+   			List<AlertCoreDashBoardVO> govtDeptScopes = new ArrayList<AlertCoreDashBoardVO>();
+   			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+   			List<Long> deptScopeIdList = new ArrayList<Long>();
+   			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+   				for(Object [] param : childDeptScopeIdList){
+   					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+   					AlertCoreDashBoardVO scopeVO = new AlertCoreDashBoardVO();
+   					scopeVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+   					scopeVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+   					govtDeptScopes.add(scopeVO);
+   				}
+   			}
+   			
+   			List<Object[]> alertList =null;
+   			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+   				 alertList = alertAssignedOfficerNewDAO.getDistrictOfficerScopesWiseAlerts(fromDate,toDate,stateId,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
+   			}else if(alertType != null && alertType.equalsIgnoreCase("subAlert")){
+  				 	 alertList = govtAlertSubTaskDAO.getDistrictOfficerSubTaskAlerts(fromDate,toDate,stateId,null,null,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,"scopes");
+   			}
+   			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+   			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+   				prepareResultForState(alertList,returnList,sortingType,order);
+   				return returnList;
+   			}
+   			
+   			Map<Long,String> locIdAndLocNameMap = new LinkedHashMap<Long,String>();
+   			Map<Long,String> statusIdAndStatusName = new LinkedHashMap<Long,String>();
+   			Map<Long,String> statusIdAndColor = new LinkedHashMap<Long,String>();
+   			Map<Long,LinkedHashMap<Long,Long>> locIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+   			LinkedHashMap<Long,Long> statusIdAndAlertCountMap = null;
+   			
+   			if(alertList != null && alertList.size() > 0){ 
+   				for(Object[] param : alertList){
+   					locIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[2]));
+   					statusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[4]));
+   					statusIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[6]));
+   					
+   					statusIdAndAlertCountMap = locIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+   					if(statusIdAndAlertCountMap == null){
+   						statusIdAndAlertCountMap = new LinkedHashMap<Long,Long>();
+   						locIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusIdAndAlertCountMap);
+   					}
+   					statusIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[5]));
+   				}
+   			}
+   			
+   			List<AlertCoreDashBoardVO> innerList = null;
+   			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+   			AlertCoreDashBoardVO innerVO = null;
+   			if(locIdThenStatusIdThenAlertCount != null && locIdThenStatusIdThenAlertCount.size() > 0){
+   				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenStatusIdThenAlertCount.entrySet()){
+   					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+   					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+   					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+   					innerList = new ArrayList<AlertCoreDashBoardVO>();
+   					Long total = new Long(0L);
+   					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){  
+   						innerVO = new AlertCoreDashBoardVO();
+   						innerVO.setId(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()));
+   						innerVO.setName(statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
+   						innerVO.setSevertyColor(statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
+   						total = total + commonMethodsUtilService.getLongValueForObject(innerEntry.getValue());
+   						innerVO.setCount(commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
+   						innerList.add(innerVO);
+   					}
+   					alertCoreDashBoardVO.setTotalCount(total);
+   					alertCoreDashBoardVO.setSubList(innerList);
+   					returnList.add(alertCoreDashBoardVO);
+   				}
+   			}
+   			System.out.println("HI");
+   			if(returnList != null && returnList.size() > 0){
+   				returnList.get(0).getSubList1().addAll(govtDeptScopes);
+   				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+   					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+   						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+   					}else{
+   						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+   					}
+   				}
+   				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+   					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+   						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+   					}else{
+   						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+   					}
+   				}
+   			}
+   			return returnList;
+   			
+   		}catch(Exception e){
+   			e.printStackTrace();
+   		}
+   		return null;
+   	}
 }
