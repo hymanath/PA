@@ -8678,7 +8678,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		  List<Object[]> batchIdDetails =trainingCampAttendanceDAO.getBatchIds(tdpCadreIdsList);
 		  if(batchIdDetails != null && batchIdDetails.size()>0){
 			for(Object[] param : batchIdDetails) {
-				CadrePerformanceVO  returnVo = getMatchedVO(returnList,commonMethodsUtilService.getLongValueForObject(param[0]));
+				CadrePerformanceVO  returnVo = getMatchedVO1(returnList,commonMethodsUtilService.getLongValueForObject(param[0]));
 				if(returnVo == null){
 					returnVo = new CadrePerformanceVO();
 					returnList.add(returnVo);
@@ -8708,7 +8708,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 		List<Object[]> campDetails =trainingCampAttendanceDAO.getCampDetails(batchIds);
 		  if(campDetails != null && campDetails.size()>0){
 			  for(Object[] obj : campDetails){
-				  CadrePerformanceVO  Vo = getMatchedVO(returnList,commonMethodsUtilService.getLongValueForObject(obj[0]));
+				  CadrePerformanceVO  Vo = getMatchedVO1(returnList,commonMethodsUtilService.getLongValueForObject(obj[0]));
 				  if(Vo != null){
 					  Vo.setTraingName(commonMethodsUtilService.getStringValueForObject(obj[1]));
 					  Vo.setTraingCamp(commonMethodsUtilService.getStringValueForObject(obj[2]));
@@ -8736,7 +8736,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 	   }
 	return returnList;
   }
-  public CadrePerformanceVO getMatchedVO(List<CadrePerformanceVO> returnList,Long id)
+  public CadrePerformanceVO getMatchedVO1(List<CadrePerformanceVO> returnList,Long id)
 	{
 		try{
 			if(returnList == null || returnList.size() == 0)
