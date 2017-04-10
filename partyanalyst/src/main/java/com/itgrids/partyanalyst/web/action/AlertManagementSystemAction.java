@@ -234,6 +234,13 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVo) {
 		this.alertCoreDashBoardVo = alertCoreDashBoardVo;
 	}
+	
+	public List<GovtDepartmentVO> getGovtDeptVoList1() {
+		return govtDeptVoList1;
+	}
+	public void setGovtDeptVoList1(List<GovtDepartmentVO> govtDeptVoList1) {
+		this.govtDeptVoList1 = govtDeptVoList1;
+	}
 	public String execute(){
 		    session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
