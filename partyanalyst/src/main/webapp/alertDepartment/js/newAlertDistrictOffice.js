@@ -69,9 +69,13 @@ $("#dateRangePickerAUM").daterangepicker({
 	$("#myAlertsDivID").html(spinner);
 	$("#mySubTasksDivID").html(spinner);
 	$("#assignedSubTasksDivID").html(spinner);
+	var fromDateStr= "";
+	var toDateStr= "";
 	var userId=19601;
     var jObj ={
-      userId:userId
+      userId:userId,
+	  startDate:fromDateStr,
+	  endDate:toDateStr
     }
     $.ajax({
       type:'GET',
@@ -557,3 +561,39 @@ $(document).on("click",".todayCountCls",function(){
 		}
 	});
 });
+//getDistrictOfficerGraphicalRepresentation(5);
+//getDistrictOfficerGraphicalRepresentation(6);
+//getDistrictOfficerGraphicalRepresentation(7);
+function getDistrictOfficerGraphicalRepresentation(parentScopeId){
+	
+	
+		var userId="";
+		var fromDateStr= "";
+		var toDateStr= "";
+		var locationValues=[];
+		var desigIds=[];
+		var priorityId=0;
+		var paperIdArr =[];
+		var chanelIdArr =[];
+		var jObj = {
+		fromDate : fromDateStr, 
+		toDate : toDateStr,
+		stateId:1,
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		parentGovtDepartmentScopeId:parentScopeId,
+		govtDepartmentId:49,
+		sortType:"count",
+		order:"asc",
+		searchType:"scopes",
+		alertType:"alert"
+		}
+		$.ajax({
+		      type:'GET',
+		      url: 'getStateThenGovtDeptScopeWiseAlertCountStatusAction.action',
+			  data: {task :JSON.stringify(jObj)}
+		    }).done(function(result){
+			});
+	
+}
+
