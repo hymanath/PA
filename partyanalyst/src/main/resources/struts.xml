@@ -16726,15 +16726,15 @@
 		    <param name="inputName">inputStream</param>
 		</result>								
 	</action>
-	<action name="viewSubTaskHistoryAction" class="alertManagementSystemAction" method="viewSubTaskHistory">			
-		<result name="success" type="stream">			   
-		    <param name="inputName">alertTrackingVOList</param>
-		</result>								
+	<action name="viewSubTaskHistoryAction" class="alertManagementSystemAction" method="viewSubTaskHistory">		
+		<result type="json" name="success">
+   			<param name="root">alertTrackingVOList</param>
+   		</result>	
 	</action>
-	<action name="getSubTaskStatusHistoryAction" class="alertManagementSystemAction" method="getSubTaskStatusHistory">			
-		<result name="success" type="stream">			   
-		    <param name="inputName">alertTrackingVOList</param>
-		</result>								
+	<action name="getSubTaskStatusHistoryAction" class="alertManagementSystemAction" method="getSubTaskStatusHistory">	
+		<result type="json" name="success">
+   			<param name="root">alertTrackingVOList</param>
+   		</result>			
 	</action>
 	<action name="getSubTaskInfoForAlertAction" class="alertManagementSystemAction" method="getSubTaskInfoForAlert">			
 		<result name="success" type="stream">			   

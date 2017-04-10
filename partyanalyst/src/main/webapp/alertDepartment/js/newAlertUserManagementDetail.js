@@ -137,7 +137,8 @@ function onLoadClicks()
 		$("[expand-icon]").removeClass("text-primary");
 		$(this).addClass("text-primary");
 		$(this).closest("li").addClass("active");
-		rightSideExpandView(alertId)
+		rightSideExpandView(alertId);
+		
 		setTimeout(function(){
 			$("[expanded-block="+expandBlockName+"]").show().css("transition"," ease-in, width 0.7s ease-in-out");
 		},750);
@@ -306,6 +307,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 	str+='</div>';
 	$("#alertManagementPopupBody").html(str);
 	$('[data-toggle="tooltip"]').tooltip();
+	getAlertData(alertId);
 }
 
 function dateRangePicker()
