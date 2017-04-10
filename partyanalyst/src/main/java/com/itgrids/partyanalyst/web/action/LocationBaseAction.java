@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class LocationBaseAction extends ActionSupport implements ServletContextAware {
+	private static final long serialVersionUID = 6402876283671639758L;
 	private final static Logger LOG = Logger.getLogger(GeodemographicsAction.class);
 	private HttpServletRequest request;
 	private HttpSession session;
