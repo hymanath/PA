@@ -16700,7 +16700,12 @@
 		<result type="json" name="success">		   
 			<param name="root">alertCoreDashBoardVOs</param>
 		</result>	
-	</action>                   
+	</action>
+	<action name="getStateThenGovtDeptScopeWiseAlertCountOnClickAction" class="alertManagementSystemAction" method="getStateThenGovtDeptScopeWiseAlertCountOnClick">
+		<result type="json" name="success">		   
+			<param name="root">alertCoreDashBoardVOs</param>
+		</result>	
+	</action>                    
 	<action name="updateSubTaskCommentAction" class="alertManagementSystemAction" method="updateSubTaskComment">
 		<result type="json" name="success">
    			<param name="root">resultStatus</param>
