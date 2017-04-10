@@ -16665,6 +16665,11 @@
 			<result type="json" name="success">
 	   			<param name="root">idnameVoList</param>
 	   		</result>
-		 </action>            
+		 </action>
+	 <action name="getDistrictLevelOfficerClickAction" class="alertManagementSystemAction" method="getDistrictOfficerAlertDetails">
+			<result type="json" name="success">
+	   			<param name="root">alertCoreDashBoardVOs</param>
+	   		</result>
+		</action> 	                   
  </package>
 </struts>
