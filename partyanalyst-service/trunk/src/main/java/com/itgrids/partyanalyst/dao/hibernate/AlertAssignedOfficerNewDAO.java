@@ -907,8 +907,16 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		if(levelId != null && levelValues != null && !levelValues.isEmpty()){
     			query.setParameterList("levelValues",levelValues);
     		}
-    		return query.list(); 
-        	
-        	
+    		return query.list();
+        }
+        public List<Object[]> getDeptList(Long userId){
+        	Query query = getSession().createQuery(" select distinct " +
+        			" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+        			" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName " +
+        			" from AlertAssignedOfficerNew model " +
+        			" where " +
+        			" model.govtDepartmentDesignationOfficer.userId = :userId");
+        	query.setParameter("userId", userId);
+        	return query.list();
         }
 }

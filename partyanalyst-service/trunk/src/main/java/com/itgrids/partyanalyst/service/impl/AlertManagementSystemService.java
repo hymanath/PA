@@ -2507,29 +2507,48 @@ public class AlertManagementSystemService extends AlertService implements IAlert
          	//ascending order of percantages.
          	 return count2.compareTo(count1);
          	}
-          };
-          public static Comparator<AlertCoreDashBoardVO> alertDescCountWiseSortingLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+        };
+        public static Comparator<AlertCoreDashBoardVO> alertDescCountWiseSortingLvlWise = new Comparator<AlertCoreDashBoardVO>() {
            	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
            	Long count2 = location2.getTotalCount();
            	Long count1 = location1.getTotalCount();
            	//ascending order of percantages.
            	 return count1.compareTo(count2);
            	}
-            };
-          public static Comparator<AlertCoreDashBoardVO> alphabeticalDescendingSortLvlWise = new Comparator<AlertCoreDashBoardVO>() {
-           	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+         };
+         public static Comparator<AlertCoreDashBoardVO> alphabeticalDescendingSortLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+         public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
             	String name2 = location2.getName();
            	    String name1 = location1.getName();
            	    //descending order of percantages.
            	    return name1.compareTo(name2);
-           	}
-           };
-           public static Comparator<AlertCoreDashBoardVO> alphabeticalAscSortLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+         	}
+         };
+         public static Comparator<AlertCoreDashBoardVO> alphabeticalAscSortLvlWise = new Comparator<AlertCoreDashBoardVO>() {
               	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
               		String name2 = location2.getName();
               	    String name1 = location1.getName();
               	    //descending order of percantages.
               	    return name2.compareTo(name1);
-              	}
-              };
+             }
+          };
+          public List<IdNameVO> getDeptListForMultiLvl(Long userId){
+        	  try{
+        		  List<Object[]> deptList= alertAssignedOfficerNewDAO.getDeptList(userId);
+        		  List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();  
+        		  IdNameVO idNameVO = null;
+        		  if(deptList != null && deptList.size() > 0){
+        			  for(Object[] param : deptList){
+        				  idNameVO = new IdNameVO();
+        				  idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+        				  idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+        				  idNameVOs.add(idNameVO);
+        			  }
+        		  }
+        		  return idNameVOs;
+        	  }catch(Exception e){
+        		  e.printStackTrace();
+        	  }
+        	  return null;
+          }
 }
