@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.service.IBirthDayDetailsService;
 import com.itgrids.partyanalyst.service.IConstituencySearchService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IUserProfileService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -77,8 +78,21 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO>				selectOptionVOList;
 	private List<BirthDayDetailsVO> birthDaysList;
 	private IBirthDayDetailsService birthDayDetailsService;
+	private IUserProfileService userProfileService;
+	private String redirectUrl;
 
-	
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
+	}
+
+	public void setUserProfileService(IUserProfileService userProfileService) {
+		this.userProfileService = userProfileService;
+	}
+
 	public IBirthDayDetailsService getBirthDayDetailsService() {
 		return birthDayDetailsService;
 	}
@@ -562,10 +576,15 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	  try{
 		session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute(IConstants.USER);
+		
+		redirectUrl = userProfileService.getUserRedirectedUrl(user.getRegistrationID());
+		
+		if(redirectUrl != null && redirectUrl.trim().length() > 0)
+			return "URL_REDIRECT";
+		
 		List<String> entitlements = null;
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
-			Long userId = user.getRegistrationID();
 			
 			if(entitlements.contains("GOVT_DEPARTMENT_ADMIN_ENTITLEMENT")){
 				return "cccDashboardAction";
