@@ -3945,5 +3945,9 @@
 	 </bean>
 	 
 	 <!--  Govt Alert DAO'S END -->
-	
+	 
+	 <bean id="redirectUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.RedirectUrlDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+
 </beans>		
