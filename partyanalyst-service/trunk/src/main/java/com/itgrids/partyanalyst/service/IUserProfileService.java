@@ -28,4 +28,6 @@ public interface IUserProfileService {
 	public Long checkWeaterUserConnectedOrNot(Long sourcrId,Long targetId);
 	
 	public Long getUserTypeAcessViw(Long userId);
+	
+	public String getUserRedirectedUrl(Long userId);
 }

@@ -24,7 +24,7 @@ public class CadreRegistrationDataSink {
 	public static void main(String[] args)
 	{
 		
-		File mainDir = new File("D:/SHARE");
+		File mainDir = new File("D:/SHARE/TS/");
 		
 		if(mainDir.isDirectory())
 		{
@@ -54,6 +54,16 @@ public class CadreRegistrationDataSink {
 														for(CadreDataVO VO :recordsList)
 														{
 															try{
+																Long familyVoterId = null;
+																
+																if( (VO.getVoterId() == null || VO.getVoterId().longValue() == 0) && 
+																		(VO.getFamilyVoterId() == null || VO.getFamilyVoterId().longValue() == 0))
+																{
+																	familyVoterId = getFamilyVoterId(sqlite.getAbsolutePath(),VO.getCadreId());
+																	
+																	if(familyVoterId != null)
+																		VO.setFamilyVoterId(familyVoterId);
+																}
 																CadreResponseVO cadreResponseVO = synkData(VO);
 																
 																if(cadreResponseVO.getSaveStatus().equalsIgnoreCase("Success"))
@@ -100,7 +110,7 @@ public class CadreRegistrationDataSink {
 	         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
 	       
-	         String webServiceUrl  = "http://www.mytdp.in/WebService/saveFieldDataForCadre";
+	         String webServiceUrl  = "http://kafka-866687595.us-east-1.elb.amazonaws.com/WebService/saveFieldDataForCadre";
 	           
 	         WebResource webResource = client.resource( webServiceUrl );
 	           
@@ -133,6 +143,32 @@ public class CadreRegistrationDataSink {
 			  e.printStackTrace();
 		  }
 		  
+	  }
+	  
+	  public static Long getFamilyVoterId(String sqlitePath,Long cadreId)
+	  {
+		  Long voterId = null;
+		  try{
+			  Class.forName("org.sqlite.JDBC");
+				Connection connection = null;
+				Statement statement = null;
+				ResultSet rs = null;
+				 
+				connection = DriverManager.getConnection("jdbc:sqlite:"+sqlitePath);
+				statement = connection.createStatement();
+				
+				rs = statement.executeQuery("SELECT voter_id FROM cadre WHERE cadre_id < "+cadreId+" AND voter_id IS NOT NULL ORDER BY cadre_id DESC LIMIT 1");
+				
+				while(rs.next())
+				{
+					voterId = rs.getLong("voter_id");
+				}
+				
+		  }catch(Exception e)
+		  {
+			  e.printStackTrace();
+		  }
+		  return voterId;
 	  }
 	
 public static List<CadreDataVO> getDataFromSqlite(String sqlitePath)
