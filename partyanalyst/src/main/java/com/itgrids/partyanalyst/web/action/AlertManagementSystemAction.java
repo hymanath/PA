@@ -66,8 +66,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private Long alertId;
 	private List<AlertTrackingVO> alertTrackingVOList;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVo;
+	private Long subTaskId;
 	
 	
+	public Long getSubTaskId() {
+		return subTaskId;
+	}
+	public void setSubTaskId(Long subTaskId) {
+		this.subTaskId = subTaskId;
+	}
 	public List<AlertTrackingVO> getAlertTrackingVOList() {
 		return alertTrackingVOList;
 	}
@@ -882,7 +889,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				return null;
 			
 			jObj = new JSONObject(getTask());
-			alertTrackingVOList = alertManagementSystemService.viewAlertHistory(jObj.getLong("alertId"),regVo.getRegistrationID());
+			alertTrackingVOList = alertManagementSystemService.viewAlertHistory(jObj.getLong("alertId"));
 			
 			
 		} catch (Exception e) {
@@ -1134,10 +1141,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				jObj = new JSONObject(getTask());
 				alertTrackingVOList = alertManagementSystemService.getAlertStatusHistory(jObj.getLong("alertId"));
 			} catch (Exception e) {
-				LOG.error("Exception Raised in getAlertStatusHistory() in CccDashboardAction",e);
+				LOG.error("Exception Raised in getAlertStatusHistory() in alertManagementSystemAction",e);
 			}
 			return Action.SUCCESS;
-		}	
+		}   
 		public String getStateThenGovtDeptScopeWiseAlertCountStatus(){
 			try {
 				session = request.getSession();
@@ -1210,6 +1217,147 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		 return Action.SUCCESS;
 	 }
-	 
-	 
+	 public String updateSubTaskComment(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
+				jObj = new JSONObject(getTask());
+				
+				resultStatus = alertManagementSystemService.updateSubTaskComment(jObj.getLong("subTaskId"),jObj.getString("comment"),regVo.getRegistrationID());
+			} catch (Exception e) {
+				LOG.error("Exception Raised in updateSubTaskComment() in alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+
+		public String updateSubTaskStatusComment(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
+				jObj = new JSONObject(getTask());
+				
+				resultStatus = alertManagementSystemService.updateSubTaskStatusComment(jObj.getLong("subTaskId"),jObj.getLong("statusId"),jObj.getString("comment"),regVo.getRegistrationID());
+			} catch (Exception e) {
+				LOG.error("Exception Raised in updateSubTaskStatusComment() in alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+			
+		}
+
+		public String updateSubTaskPriority(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
+				jObj = new JSONObject(getTask());
+				
+				resultStatus = alertManagementSystemService.updateSubTaskPriority(jObj.getLong("subTaskId"),jObj.getLong("priorityId"),jObj.getLong("userId"));
+			} catch (Exception e) {
+				LOG.error("Exception Raised in updateSubTaskPriority() in alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+
+		public String updateSubTaskDueDate(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
+				jObj = new JSONObject(getTask());
+				
+				resultStatus = alertManagementSystemService.updateSubTaskDueDate(jObj.getLong("subTaskId"),jObj.getString("dueDate"),regVo.getRegistrationID());
+			} catch (Exception e) {
+				LOG.error("Exception Raised in updateSubTaskDueDate() in alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+
+		public String uploadDocumentsForSubTask(){
+			try{
+				
+				Long userId = 0l;
+				
+				RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+				if(regVo!=null && regVo.getRegistrationID()!=null){
+					userId = regVo.getRegistrationID();
+				}
+				
+				Map<File,String> mapfiles = new HashMap<File,String>();
+				MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+				   Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+				   String fileUrl = "" ;
+				   List<String> filePaths = null;
+					while(fileParams.hasMoreElements())
+					{
+						String key = fileParams.nextElement();
+						
+								File[] files = multiPartRequestWrapper.getFiles(key);
+								filePaths = new ArrayList<String>();
+								if(files != null && files.length > 0)
+								for(File f : files)
+								{
+									String[] extension  =multiPartRequestWrapper.getFileNames(key)[0].split("\\.");
+									String ext = "";
+									if(extension.length > 1){
+										ext = extension[extension.length-1];
+										mapfiles.put(f,ext);
+									}
+								
+								}	
+					}
+				 
+					resultStatus = alertManagementSystemService.uploadDocumentsForSubTask(mapfiles,subTaskId ,userId);
+				
+			}catch (Exception e) {
+				LOG.error("Exception Occured in uploadDocumentsForSubTask() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+
+		}
+
+		public String viewSubTaskHistory(){
+			try {
+				
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
+				jObj = new JSONObject(getTask());
+				
+				alertTrackingVOList = alertManagementSystemService.viewSubTaskHistory(jObj.getLong("subTaskId"));
+			} catch (Exception e) {
+				LOG.error("Exception Occured in viewSubTaskHistory() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+
+		public String getSubTaskStatusHistory(){
+			try {
+				
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
+				jObj = new JSONObject(getTask());
+				
+				alertTrackingVOList = alertManagementSystemService.getSubTaskStatusHistory(jObj.getLong("subTaskId"));
+				
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getSubTaskStatusHistory() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+		
 }
