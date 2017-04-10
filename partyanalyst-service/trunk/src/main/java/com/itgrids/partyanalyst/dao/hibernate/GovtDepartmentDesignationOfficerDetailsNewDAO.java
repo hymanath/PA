@@ -58,7 +58,7 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
     											" where model.govtDepartmentDesignationOfficer.govtDepartmentScopeId = :levelId" +
     											" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +
     											" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId " +
-    											" and and model.govtOfficerId = :officerId " +
+    											" and model.govtOfficerId = :officerId " +
     											" and model.isDeleted = 'N'  " );
     		
     		/*if(officerId !=null && officerId.longValue()>0l){

@@ -2351,6 +2351,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           	 return name2.compareTo(name1);
           	}
         };
+        
         public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType){
     		try{
     			
@@ -2812,4 +2813,135 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    		}
    		return returnList;
    	}
+        
+        public List<IdNameVO> getDepartmentSubLevels(Long departmentId,Long parentLevelId){
+        	List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+        	try {
+        		
+        		List<Object[]> objList = govtDepartmentScopeLevelDAO.getDepartmentSubLevels(departmentId,parentLevelId);
+	        		
+	        	if(objList !=null && objList.size()>0){
+	        		for (Object[] obj : objList) {
+	        			IdNameVO VO = new IdNameVO();
+						VO.setId((Long)obj[0]);
+						VO.setName(obj[1] !=null ? obj[1].toString():"");
+						returnList.add(VO);
+					}
+	        	}
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Error occured getDepartmentSubLevels() method of AlertManagementSystemService class ");
+			}
+        	return returnList;        	
+        }
+        
+        public List<IdNameVO> getChildLevelValuesForSubTask(Long departmentId,Long parentLevelId,List<Long> parentLevelValues,Long levelId){
+        	List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
+        	try {
+        		
+        		Map<Long,IdNameVO> levelMap = new HashMap<Long, IdNameVO>();
+        		
+        		//ScopeId,levelName
+        		List<Object[]> subLevelObj = govtDepartmentScopeLevelDAO.getParentLevelsOfLevel(departmentId,levelId);
+        		
+        		if(subLevelObj !=null && subLevelObj.size()>0){
+        				Set<Long> subLevelIds = new HashSet<Long>();
+        				for (Object[] param : subLevelObj) {		
+        					if(parentLevelId <= (Long)param[0]){
+        						IdNameVO vo = new IdNameVO();						
+        						vo.setId((Long)param[0]);
+        						vo.setName(param[1] !=null ? param[1].toString():"");	
+        						
+        						levelMap.put((Long)param[0], vo);
+        						
+        						subLevelIds.add((Long)param[0]);
+        					}
+        						
+        				}
+        				
+        				List<Object[]> levelValueObj = govtDepartmentWorkLocationDAO.getParentLevelValuesListInfo(parentLevelValues);
+        				
+        				List<IdNameVO> parentList = new ArrayList<IdNameVO>(); 
+        				
+        				parentList = setParentListInfo(parentList,levelValueObj);
+        				
+        				
+        				//0.levelId,1.workLocationId,2.LocationName
+        				List<Object[]> objValueList = govtDepartmentWorkLocationDAO.getLevelWiseInfo(departmentId,subLevelIds);
+        				
+        				if(objValueList !=null && objValueList.size()>0){
+        					setLocationValuesToLevelMap(objValueList,levelMap,parentList,parentLevelId);
+        				}
+        				
+        				if(levelMap !=null && levelMap.size()>0){
+        					finalList.addAll(levelMap.values());
+        				}
+        				
+        		}
+        		
+        		
+			} catch (Exception e) {
+				LOG.error("Error occured getChildLevelValuesForSubTask() method of CccDashboardService{}");
+			}
+        	
+        	return finalList;
+        	
+        }
+        
+        public List<IdNameVO> setParentListInfo(List<IdNameVO> parentList,List<Object[]> levelValueObj ){
+        	        	
+        	try {
+				
+        		if(levelValueObj !=null && levelValueObj.size()>0){
+        			for (Object[] param : levelValueObj) {
+						
+        				IdNameVO Vo = new IdNameVO();
+        				Vo.setId((Long)param[0]);//workLocationId
+        				Vo.setName(param[1] !=null ? param[1].toString():"");
+        				
+        				parentList.add(Vo);
+					}
+        		}
+        		
+			} catch (Exception e) {
+				LOG.error("Error occured setParentListInfo() method of CccDashboardService{}");
+			}
+        	return parentList;
+        } 
+        
+        
+        public void setLocationValuesToLevelMap(List<Object[]> objList,Map<Long,IdNameVO> levelMap,List<IdNameVO> parentList,
+        		Long parentLevelId){
+    		try {
+    			
+    			if(objList !=null && objList.size()>0){
+    				for (Object[] obj : objList) {    					
+    					if(obj[0] !=null){    						
+    						if(parentLevelId.equals((Long)obj[0])){
+    							
+    							IdNameVO mainVo = levelMap.get(obj[0] !=null ? (Long)obj[0]:0l);
+    							if(mainVo == null){
+    								mainVo = new IdNameVO();    								
+    								mainVo.setId((Long)obj[0]);
+    								levelMap.put((Long)obj[0], mainVo);
+    							}
+    							
+    							if(obj[1] !=null){    								
+    								IdNameVO subVo = getGovtSubLevelMatchedVo(parentList,(Long)obj[1]);    								
+    								if(subVo !=null){
+    									mainVo.getIdnameList().add(subVo);
+    								}
+    							}    							
+    						}
+    					}
+    				}
+    			}
+    			
+    		} catch (Exception e) {
+    			LOG.error("Error occured setLocationValuesToLevelMap() method of AlertManagementSystemService",e);
+    		}
+    	}
+        
+        
 }
