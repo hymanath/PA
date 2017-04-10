@@ -750,5 +750,7 @@
 		<pattern>/departmentDetailsAction*</pattern>
 		<pattern>/alertManagementAction*</pattern>
 		<pattern>/alertUserManagementAction*</pattern>
+		<pattern>/alertDistManagement*</pattern>
+		<pattern>/alertDistOfficeManagement*</pattern>
 	 </decorator>
 </decorators>
