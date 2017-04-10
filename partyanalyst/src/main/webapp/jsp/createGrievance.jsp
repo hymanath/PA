@@ -993,6 +993,7 @@ function createGrievanceAlert()
 				 $("#creatingLdngImg").hide();
 				 setTimeout(function(){ 
 					$("#successmsg").html("");
+					clearFields();
 					location.reload();
 				 }, 1000);
 				}else{  
@@ -1010,6 +1011,20 @@ function createGrievanceAlert()
 		YAHOO.util.Connect.asyncRequest('POST','saveGrievanceAlertAction.action',uploadHandler);
 	//}
 	
+}
+
+function clearFields(){
+	$("#alertlevelId").val(0).trigger('chosen:updated');
+	$("#departmentsId").val(0).trigger('chosen:updated');
+	$("#entrySourceId").val(0).trigger('chosen:updated');
+	
+	$("#alertTitleId").val('');
+	$("#alertdescriptionId").val('');
+	$("#nameId").val('');
+	$("#addressId").val('');
+	$("#mobileNoId").val('');
+	$("#emailId").val('');
+	$("#uploadFileId0").val('');
 }
 
 	var loginUserId = "${sessionScope.USER.registrationID}";
