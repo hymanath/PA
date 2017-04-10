@@ -1250,6 +1250,7 @@
 		<property name="ananymousUserService" ref="ananymousUserService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 		<property name="birthDayDetailsService" ref="birthDayDetailsService" />
+		<property name="userProfileService" ref="userProfileService" />
 	</bean>
 	
 	<bean id="surveyorProfileSaveAction" class="com.itgrids.partyanalyst.web.action.SurveyorProfileSaveAction" singleton="false">
