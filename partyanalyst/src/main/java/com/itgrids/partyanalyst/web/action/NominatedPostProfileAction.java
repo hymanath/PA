@@ -89,6 +89,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private List<LocationsVO> locationVoList;
 	private List<GeoLevelListVO> geoLevelListVO;
 	private List<CadreEventsVO> cadreReportVO;
+	private List<CadrePerformanceVO> cadreTraingVO;
 	
 	
 	public List<GeoLevelListVO> getGeoLevelListVO() {
@@ -393,6 +394,12 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public void setCastePositionVO(CastePositionVO castePositionVO) {
 		this.castePositionVO = castePositionVO;
+	}
+	public List<CadrePerformanceVO> getCadreTraingVO() {
+		return cadreTraingVO;
+	}
+	public void setCadreTraingVO(List<CadrePerformanceVO> cadreTraingVO) {
+		this.cadreTraingVO = cadreTraingVO;
 	}
 	public String getBoardLevels(){
 		try{
@@ -2333,5 +2340,32 @@ public String execute()
 		}
 		
 		return Action.SUCCESS;
+	}
+	public String getCampDetails(){
+		try {
+			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			jObj = new JSONObject(getTask());
+			List<Long> tdpCadreIdsList = new ArrayList<Long>(0);
+			JSONArray tdpCadreIds = jObj.getJSONArray("tdpCadreIds");
+			
+			if(tdpCadreIds !=null && tdpCadreIds.length()>0){
+				for (int i = 0; i < tdpCadreIds.length(); i++) {
+					Long locId = Long.valueOf(tdpCadreIds.get(i).toString());
+					tdpCadreIdsList.add(locId);
+				}
+			}
+			
+			cadreTraingVO = nominatedPostProfileService.getCampDetails(tdpCadreIdsList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Entered into getCampDetails method of NominatedPostProfileAction ",e);
+		}
+
+		return Action.SUCCESS;
+		
 	}
 }

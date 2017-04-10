@@ -3656,6 +3656,7 @@
 		<property name="alertCandidateDAO" ref="alertCandidateDAO"></property>
 		<property name="alertAssignedDAO" ref="alertAssignedDAO"></property>
 		<property name="schedulersInfoDAO" ref="schedulersInfoDAO"/>
+		<property name="trainingCampCadreFeedbackDetailsDAO" ref="trainingCampCadreFeedbackDetailsDAO"></property>
 	</bean>
 	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
 	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>
