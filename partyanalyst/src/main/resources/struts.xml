@@ -16680,7 +16680,7 @@
    			<param name="root">alertTrackingVOList</param>
    		</result>
 	</action> 
-	 <action name="getAssignedOfficersDetailsForAlertAction" class="alertManagementSystemAction" method="getAssignedOfficersDetails">
+	 <action name="getAssignedOfficersDetailsAction" class="alertManagementSystemAction" method="getAssignedOfficersDetails">
 		<result type="json" name="success">		   
 			<param name="root">govtDeptVoList1</param>
 		</result>	
