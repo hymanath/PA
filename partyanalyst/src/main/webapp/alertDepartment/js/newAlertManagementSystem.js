@@ -1272,6 +1272,11 @@ function getAlertStatusHistory(){
 		url: 'getAlertStatusHistoryAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		
+		if(result != null && result.length>0)
+		{
+			alertStatus(result);
+		}else{
+			$("#alertManagementPopupBody1").html("NO DATA")
+		}
 	});
 }

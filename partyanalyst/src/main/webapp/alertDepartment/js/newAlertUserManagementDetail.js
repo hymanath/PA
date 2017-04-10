@@ -116,7 +116,7 @@ function onLoadClicks()
 					backdrop: 'static'
 				});
 				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY')
-				alertStatus();
+				getAlertStatusHistory();
 			}else if(status == 'alertStatusChange')
 			{
 				$(this).find('ul').toggle();
@@ -132,19 +132,21 @@ function onLoadClicks()
 	$(document).on("click","[expand-icon]",function(){
 		var expandBlockName = $(this).attr("expand-icon");
 		var alertId = $(this).attr("attr_alertId");
-		if($("[expand-main]").attr("expand-main") === 'true')
-		{
-			$("[expand-main]").attr("expand-main","false");
-			$("[expanded-channel]").attr("expanded-channel","false");
-			$("[expanded-block="+expandBlockName+"]").hide().css("transition"," ease-out, width 0.7s ease-in-out");
-			$("[expand-main]").removeClass("col-sm-4").addClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		}else{
+		$("[expand-icon]").closest("li").removeClass("active");
+		$("[expand-icon]").removeClass("text-primary");
+		$(this).addClass("text-primary");
+		$(this).closest("li").addClass("active");
+		rightSideExpandView(alertId)
+		setTimeout(function(){
+			$("[expanded-block="+expandBlockName+"]").show().css("transition"," ease-in, width 0.7s ease-in-out");
+		},750);
+		setTimeout(function(){
+			$("#alertManagementPopup").scrollTop(0);
+		},780);
+		if($("[expand-main]").attr("expand-main") === 'false')
+		{	
 			$("[expand-main]").attr("expand-main","true");
 			$("[expanded-channel]").attr("expanded-channel","true");
-			setTimeout(function(){
-				$("[expanded-block="+expandBlockName+"]").show().css("transition"," ease-in, width 0.7s ease-in-out");
-			},750);
-			rightSideExpandView(alertId)
 			$("[expand-main]").addClass("col-sm-4").removeClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		}
 	});
@@ -306,6 +308,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 }
 function rightSideExpandView(alertId)
 {
+	$("#rightSideExpandView").html(spinner);
 	var str='';
 	str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
 		str+='<div class="panel-right">';
@@ -396,7 +399,7 @@ function rightSideExpandView(alertId)
 	$('[data-toggle="tooltip"]').tooltip();
 	dateRangePicker();
 	assignedOfficersDetailsForAlert(alertId);
-	$(".chosenSelect").chosen({width:'100%'});
+
 }
 function dateRangePicker()
 {
@@ -449,7 +452,7 @@ function assignedOfficersDetailsForAlert(alertId)
 		{
 			buildAssignedOfficersDetailsForAlert(result);
 		}else{
-			assignUser();
+			assignUser(alertId);
 		}
 		
 	});
@@ -457,9 +460,10 @@ function assignedOfficersDetailsForAlert(alertId)
 function buildAssignedOfficersDetailsForAlert(result)
 {
 	var str='';
+	var splitName = result[0].name.split(" ");
 	str+='<div class="media">';
 		str+='<div class="media-left">';
-			str+='<span class="icon-name icon-primary">'+result[0].name.substring(0,1)+'</span>';
+			str+='<span class="icon-name icon-primary">'+result[0].name.substring(0,1)+''+splitName[1].substring(0,1)+'</span>';
 		str+='</div>';
 		str+='<div class="media-body">';
 			str+='<p>'+result[0].name+'</p>';
@@ -471,7 +475,7 @@ function buildAssignedOfficersDetailsForAlert(result)
 	$("#assignedUser").html(str);
 	$(".assign-user").hide();
 }
-function assignUser()
+function assignUser(alertId)
 {
 	var str='';
 	str+='<div class="assign-user">';
@@ -480,7 +484,7 @@ function assignUser()
 				str+='<i class="glyphicon glyphicon-user"></i>Click To Assignee';
 			str+='</li>';
 		str+='</ul>';
-		str+='<div class="assign-user-body">';
+		str+='<div class="assign-user-body" style="display:none">';
 			str+='<form id="alertAssign" name="alertAssignForm">';
 				str+='<div class="arrow_box_top">';
 					str+='<div>';
@@ -525,6 +529,7 @@ function assignUser()
 		str+='</div>';
 	str+='</div>';
 	$("#assignedUser").html(str);
+	$(".chosenSelect").chosen({width:'100%'});
 }
 function alertHistory(result)
 {
@@ -576,7 +581,7 @@ function alertHistory(result)
 	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertManagementPopupBody1").html(str);
 }
-function alertStatus()
+function alertStatus(result)
 {
 	var str='';
 	var str1='';
@@ -587,15 +592,19 @@ function alertStatus()
 			str+='<th>Comments</th>';
 			str+='<th>Updated By</th>';
 		str+='</thead>';
-		str+='<tr>';
-			str+='<td>12/03/2017</td>';
-			str+='<td>InProgress</td>';
-			str+='<td>Comments</td>';
-			str+='<td>';
-				str+='<p class="text-primary text-capitalize">officer name_01</p>';
-				str+='<p class="text-muted text-capitalize">-<u>Designation & Department</u></p>';
-			str+='</td>';
-		str+='</tr>';
+		for(var i in result)
+		{
+			str+='<tr>';
+				str+='<td>'+result[i].date+'</td>';
+				str+='<td>'+result[i].status+'</td>';
+				str+='<td>'+result[i].comment+'</td>';
+				str+='<td>';
+					str+='<p class="text-primary text-capitalize">'+result[i].userName+'</p>';
+					str+='<p class="text-muted text-capitalize">-<u>'+result[i].designation+'</u></p>';
+				str+='</td>';
+			str+='</tr>';
+		}
+		
 	str+='</table>';
 	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertManagementPopupBody1").html(str);
