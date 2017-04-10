@@ -47,7 +47,7 @@ public interface IAlertManagementSystemService {
 	public ResultStatus updateAlertDueDate(Long alertId ,String date,Long userId);
 	public ResultStatus updateAlertStatusComment(Long alertId,Long statusId,String comment,Long userId);
 	public ResultStatus uploadDocumentsForAlert(final Map<File, String> mapfiles,final Long alertId,final Long userId);
-	public List<AlertTrackingVO> viewAlertHistory(Long alertId,Long userId);
+	public List<AlertTrackingVO> viewAlertHistory(Long alertId);
 	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCount(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortType,String order);
 	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId,Long statusId);
 	public List<IdNameVO> getDepartmentSubLevels(Long departmentId,Long parentLevelId);
@@ -60,4 +60,11 @@ public interface IAlertManagementSystemService {
 	public List<AlertCoreDashBoardVO> getDistrictOfficerScopesWiseAlerts(String fromDateStr, String toDateStr, Long stateId, Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType);
 	public List<AlertVO> getAllDivisionDetails();	
 	public List<AlertVO> getAllSubDivisionDetails();
+	public ResultStatus updateSubTaskComment(final Long subTaskId,final String comment,final Long userId);
+	public ResultStatus updateSubTaskStatusComment(Long subTaskId,final Long statusId,final String comment,final Long userId);
+	public ResultStatus updateSubTaskPriority(final Long subTaskId,final Long priorityId,final Long userId);
+	public ResultStatus updateSubTaskDueDate(final Long subTaskId,final String dueDate,final Long userId);
+	public ResultStatus uploadDocumentsForSubTask(final Map<File, String> mapfiles,final Long subTaskId,final Long userId);
+	public List<AlertTrackingVO> viewSubTaskHistory(Long subTaskId);
+	public List<AlertTrackingVO> getSubTaskStatusHistory(Long subTaskId);
 }
