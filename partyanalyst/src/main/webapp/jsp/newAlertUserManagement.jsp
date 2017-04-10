@@ -111,80 +111,48 @@
 											</ul>
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-12 ">
-											<ul class="switch-btn switch-btn-alertType pull-right">
+											<ul class="switch-btn-alertType pull-right">
 												<li  attr_type="alert" class="active">Alerts</li>
 												<li attr_type="subTask">Sub Tasks</li>
 												
 											</ul>
 										</div>
-										
-										
 									</div>
 								</div>
 								<div class="panel-body">
 									<div class="row">
-											<div class="col-sm-12 col-xs-12 col-md-12 departmentlocationShow">
-													<div class="col-md-2 col-xs-12 col-sm-4">
-														<ul class="list-inline activeUlCls  constituencyUl">
-															<li class="descendingConstituencyCls active" onClick="getDistrictLevelDeptWiseLocationLevelView('alert','Decending');">
-															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-														</li >
-														<li class="ascendingConstituencyCls" onClick="getDistrictLevelDeptWiseLocationLevelView('alert','Ascending');">
-															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-														</li>
-														<li class="atozConstituecySortingCls" onClick="getDistrictLevelDeptWiseLocationLevelView('alert','AlphabeticalAscending');">
-															A-Z
-														</li>
-														<li class="ztozConstituecySortingCls" onClick="getDistrictLevelDeptWiseLocationLevelView('alert','AlphabeticalDescending');">
-															Z-A
-														</li>
-														<li>
-														</ul>
-												</div>
-												<div class="col-sm-4 col-xs-12 col-md-4">
-													<select class="form-control " id="govtDepartmentsLocId" onChange="">
-													</select>
-												</div>
-												<div class="col-sm-4 col-xs-12 col-md-3 pull-right">
-													<select class="form-control" id="districtWiseLevelLocId" onChange="">
-													</select>
-												</div>
-													<div id="departmentlocationCountDivId"></div>
-												
+										<div class="col-sm-12 col-xs-12 col-md-12 ">
+											<div class="col-md-2 col-xs-12 col-sm-4 sortingDivCls">
+												<ul class="list-inline activeUlCls  constituencyUl locationWiseSorting">
+												<li class="active " attr_sorting_type="Decending">
+													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+												</li>
+												<li class="" attr_sorting_type="Ascending">
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li class="" attr_sorting_type="AlphabeticalAscending">
+													A-Z
+												</li>
+												<li class="" attr_sorting_type="AlphabeticalDescending">
+													Z-A
+												</li>
+												</ul>
 											</div>
-											<div class="col-sm-12 col-xs-12 col-md-12 departmentStatusShow" style="display:none;">	
-												<div class="col-md-3 col-xs-12 col-sm-4">
-													<ul class="list-inline activeUlCls  constituencyUl">
-															<li class="descendingConstituencyCls active" onClick="">
-																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-															</li >
-															<li class="ascendingConstituencyCls" onClick="">
-																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-															</li>
-															<li class="atozConstituecySortingCls" onClick="">
-																A-Z
-															</li>
-															<li class="ztozConstituecySortingCls" onClick="">
-																Z-A
-															</li>
-														</ul>
-												</div>
-												<div class="col-sm-4 col-xs-12 col-md-4">
-													<select class="form-control " id="govtDepartmentsStsId" onChange="" >
-													</select>
-												</div>
-												<div class="col-sm-4 col-xs-12 col-md-3 pull-right">
-													<select class="form-control" id="districtWiseLevelStsId" onChange="">
-													</select>
-												</div>
-												<div id="departmentStatusCountDivId"></div>
+											<div class="col-sm-4 col-xs-12 col-md-4 sortingDivCls">
+												<select class="form-control locationWiseDeptOnChange" id="govtDepartmentsLocId" >
+												</select>
 											</div>
-											<div class="col-sm-12 col-xs-12 col-md-12 departmentAlertCountShow" style="display:none;">
-												<div id="departmentAlertCountDivId"></div>
+											<div class="col-sm-4 col-xs-12 col-md-3 pull-right sortingDivCls">
+												<select class="form-control locationWiseDistLevelOnChange" id="districtWiseLevelLocId" >
+												</select>
 											</div>
+												<div id="departmentlocationCountDivId" class="departmentlocationShow"></div>
+												<div id="departmentStatusCountDivId" class="departmentStatusShow" style="display:none;"></div>
+												<div id="departmentAlertCountDivId" class="departmentAlertCountShow" style="display:none;"></div>
 										</div>
 									</div>
 								</div>
+							</div>
 							</div>
 						</div>
 					</div>
@@ -192,7 +160,37 @@
 			</div>			
 		</div>
 	</section>
-
+<div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body modal-insurance">
+				<div id="filter"></div>
+				<div id="alertManagementPopupBody"></div>
+			</div>
+		</div>
+  </div>
+</div>
+<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="alertManagementPopupBody1"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+  </div>
+</div>
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -204,6 +202,7 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagement.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 

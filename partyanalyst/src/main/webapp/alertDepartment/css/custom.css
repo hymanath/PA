@@ -810,6 +810,36 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	border-radius: 14px;
 	color:#fff;
 }
+.switch-btn-alertType
+{
+	padding:3px;
+	background-color: #fff;
+	display: inline-block;
+	border-radius: 14px;
+}
+.switch-btn-alertType li
+{
+	list-style:none;
+	display: inline-block;
+	padding: 4px 8px;
+	cursor: pointer;
+	text-transform:uppercase;
+}
+.switch-btn-alertType li.active
+{
+	background-color: #4A5863;
+	color: #fff;
+	border-radius: 14px;
+	-moz-transition: .5s all ease-out;
+}
+.switch-btn-alertType li:hover
+{
+	background-color: #4A5863;
+	-moz-transition: .5s all ease-out;
+	border-radius: 14px;
+	color:#fff;
+}
+
 .pad_5{padding:5px;}
 .panel-white
 {
