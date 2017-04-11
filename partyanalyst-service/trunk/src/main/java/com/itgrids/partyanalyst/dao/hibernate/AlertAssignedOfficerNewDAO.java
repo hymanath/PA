@@ -813,7 +813,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
             	queryStr.append(" AAO.alert_status_id as alertStatusId, ");
             	queryStr.append(" ALTS.alert_status as alertStatus, ");
             	queryStr.append(" count(distinct AAO.alert_id) as count,");
-            	queryStr.append(" GDS.color as color");
+            	queryStr.append(" ALTS.alert_color as color");
         	}
         	
     		queryStr.append(" from ");  

@@ -2087,27 +2087,21 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				}
 			}
 			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
-			List<AlertCoreDashBoardVO> innerList = null;
 			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
-			AlertCoreDashBoardVO innerVO = null;
 			if(locIdThenLvlIdThenAlertCount != null && locIdThenLvlIdThenAlertCount.size() > 0){
 				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenLvlIdThenAlertCount.entrySet()){
 					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
 					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
 					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
-					innerList = new ArrayList<AlertCoreDashBoardVO>();
+					buildStatusWiseTemplate(alertCoreDashBoardVO,lvlIdAndLvlName,lvlIdAndColor);
 					Long total = new Long(0L);
-					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){  
-						innerVO = new AlertCoreDashBoardVO();
-						innerVO.setId(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()));
-						innerVO.setName(lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
-						innerVO.setSevertyColor(lvlIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? lvlIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
-						total = total + commonMethodsUtilService.getLongValueForObject(innerEntry.getValue());
-						innerVO.setCount(commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
-						innerList.add(innerVO);
+					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
+						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+							total = total + outerEntry.getValue().get(boardVO.getId());
+						}
 					}
 					alertCoreDashBoardVO.setTotalCount(total);
-					alertCoreDashBoardVO.setSubList(innerList);
 					returnList.add(alertCoreDashBoardVO);
 				}
 			}
@@ -2127,13 +2121,30 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					}
 				}
 			}
-			System.out.println("HI");  
 			return returnList;
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public void buildStatusWiseTemplate(AlertCoreDashBoardVO alertCoreDashBoardVO,Map<Long,String> lvlIdAndLvlName,Map<Long,String> lvlIdAndColor){
+		try{
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			AlertCoreDashBoardVO coreDashBoardVO = null;
+			if(lvlIdAndLvlName != null && lvlIdAndLvlName.size() > 0 && lvlIdAndColor != null &&  lvlIdAndColor.size() > 0){
+				for(Entry<Long,String> entry : lvlIdAndLvlName.entrySet()){
+					coreDashBoardVO = new AlertCoreDashBoardVO();
+					coreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(entry.getKey()));
+					coreDashBoardVO.setName(commonMethodsUtilService.getStringValueForObject(entry.getValue()));
+					coreDashBoardVO.setSevertyColor(lvlIdAndColor.get(entry.getKey()) != null ? lvlIdAndColor.get(entry.getKey()) : "");
+					alertCoreDashBoardVOs.add(coreDashBoardVO);
+				}
+				alertCoreDashBoardVO.setSubList(alertCoreDashBoardVOs);  
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId,Long statusId){
@@ -2456,31 +2467,25 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				}
     			}
     			
-    			List<AlertCoreDashBoardVO> innerList = null;
     			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
-    			AlertCoreDashBoardVO innerVO = null;
     			if(locIdThenStatusIdThenAlertCount != null && locIdThenStatusIdThenAlertCount.size() > 0){
     				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenStatusIdThenAlertCount.entrySet()){
     					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
     					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
     					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
-    					innerList = new ArrayList<AlertCoreDashBoardVO>();
+    					buildStatusWiseTemplate(alertCoreDashBoardVO,statusIdAndStatusName,statusIdAndColor);
     					Long total = new Long(0L);
-    					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){  
-    						innerVO = new AlertCoreDashBoardVO();
-    						innerVO.setId(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()));
-    						innerVO.setName(statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
-    						innerVO.setSevertyColor(statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
-    						total = total + commonMethodsUtilService.getLongValueForObject(innerEntry.getValue());
-    						innerVO.setCount(commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
-    						innerList.add(innerVO);
+    					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
+    						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+    							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+    							total = total + outerEntry.getValue().get(boardVO.getId());
+    						}
     					}
     					alertCoreDashBoardVO.setTotalCount(total);
-    					alertCoreDashBoardVO.setSubList(innerList);
     					returnList.add(alertCoreDashBoardVO);
     				}
     			}
-    			System.out.println("HI");
+    			
     			if(returnList != null && returnList.size() > 0){
     				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
     					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
@@ -2536,23 +2541,18 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
     					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
     					alertCoreDashBoardVO.setName(lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
-    					innerList = new ArrayList<AlertCoreDashBoardVO>();
+    					buildStatusWiseTemplate(alertCoreDashBoardVO,statusIdAndStatusName,statusIdAndColor);
     					Long total = new Long(0L);
-    					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){  
-    						innerVO = new AlertCoreDashBoardVO();
-    						innerVO.setId(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()));
-    						innerVO.setName(statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
-    						innerVO.setSevertyColor(statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
-    						total = total + commonMethodsUtilService.getLongValueForObject(innerEntry.getValue());
-    						innerVO.setCount(commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
-    						innerList.add(innerVO);
+    					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
+    						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+    							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+    							total = total + outerEntry.getValue().get(boardVO.getId());
+    						}
     					}
     					alertCoreDashBoardVO.setTotalCount(total);
-    					alertCoreDashBoardVO.setSubList(innerList);
     					returnList.add(alertCoreDashBoardVO);
     				}
     			}
-    			System.out.println("HI");
     			if(returnList != null && returnList.size() > 0){
     				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
     					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
