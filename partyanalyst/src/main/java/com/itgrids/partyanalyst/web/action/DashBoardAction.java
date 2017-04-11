@@ -586,6 +586,21 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		if(user != null && user.getEntitlements() != null && user.getEntitlements().size()>0){
 			entitlements = user.getEntitlements();
 			
+			
+			if(entitlements.contains("GOVT_DEPARTMENT_ADMIN_ENTITLEMENT_NEW")){
+				return "alertManagementAction";
+			}
+			if(entitlements.contains("GOVT_DEPARTMENT_ENTITLEMENT_NEW")){
+				return "alertUserManagementAction";
+			}
+			if(entitlements.contains("GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT_NEW")){
+				return "alertDistManagement";
+			}
+			if(entitlements.contains("GOVT_DEPARTMENT_DISTRICT_OFFICE_ENTITLEMENT_NEW")){
+				return "alertDistOfficeManagement";
+			}
+			
+			
 			if(entitlements.contains("GOVT_DEPARTMENT_ADMIN_ENTITLEMENT")){
 				return "cccDashboardAction";
 			}

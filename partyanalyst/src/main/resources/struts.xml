@@ -251,6 +251,8 @@
       		
       		<result type="redirect" name="alertManagementAction">alertManagementAction.action</result>
       		<result type="redirect" name="alertUserManagementAction">alertUserManagementAction.action</result>
+      		<result type="redirect" name="alertDistManagement">alertDistManagement.action</result>
+      		<result type="redirect" name="alertDistOfficeManagement">alertDistOfficeManagement.action</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
@@ -5721,7 +5723,9 @@
       <result type="redirect" name="departmentDetailsAction">departmentDetailsAction.action</result>
       
       <result type="redirect" name="alertManagementAction">alertManagementAction.action</result>
-      <result type="redirect" name="alertUserManagementAction">alertUserManagementAction.action</result>
+	  <result type="redirect" name="alertUserManagementAction">alertUserManagementAction.action</result>
+	  <result type="redirect" name="alertDistManagement">alertDistManagement.action</result>
+	  <result type="redirect" name="alertDistOfficeManagement">alertDistOfficeManagement.action</result>
       <result type="redirect" name="URL_REDIRECT">${redirectUrl}</result>
       
     </action>
@@ -16432,9 +16436,11 @@
 	    </action>    
 	    <action name="alertManagementAction" class="alertManagementSystemAction">
 	  		<result name="success">/jsp/newAlertManagementSystem.jsp</result>
+	  		<result name="error" type="redirect">govtLoginAction.action</result>
 		</action> 
 		<action name="alertUserManagementAction" class="alertManagementSystemAction" method="getDepartmentDetails">
 	  		<result name="success">/jsp/newAlertUserManagement.jsp</result>
+	  		<result name="error" type="redirect">govtLoginAction.action</result>
 		</action> 
 		
 		<action name="getLagDaysInsuranceComplaintsCountsAction" class="coreDashboardAction" method="getLagDaysInsuranceComplaintsCounts">
@@ -16662,9 +16668,11 @@
 	  </action>
 	  <action name="alertDistManagement" class="alertManagementSystemAction" method="alertDistManagement">
 	  		<result name="success">/jsp/newAlertDistrictCollector.jsp</result>
+	  		<result name="error" type="redirect">govtLoginAction.action</result>
 	  </action>
 	  <action name="alertDistOfficeManagement" class="alertManagementSystemAction" method="alertDistOfficeManagement">
 	  		<result name="success">/jsp/newAlertDistrictOffice.jsp</result>
+	  		<result name="error" type="redirect">govtLoginAction.action</result>
 	  </action>
 	  <action name="getDeptListForMultiLvlAction" class="alertManagementSystemAction" method="getDeptListForMultiLvl">
 			<result type="json" name="success">
