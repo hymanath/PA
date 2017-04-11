@@ -74,8 +74,8 @@ $("#dateRangePickerAUM").daterangepicker({
 	var userId=19601;
     var jObj ={
       userId:userId,
-	  startDate:fromDateStr,
-	  endDate:toDateStr
+	  startDate:currentFromDate,
+	  endDate:currentToDate
     }
     $.ajax({
       type:'GET',
@@ -457,8 +457,8 @@ function getSubOrdinateAlertsOverview(){
 	
 	var jObj = {
 	userId : userId,
-	fromDateStr : fromDateStr, 
-	toDateStr : toDateStr,
+	fromDateStr : currentFromDate, 
+	toDateStr : currentToDate,
 	govtScopeIds : govtScopeIds,
 	locationValues : locationValues,
 	desigIds : desigIds,
@@ -575,8 +575,8 @@ function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 		var paperIdArr =[];
 		var chanelIdArr =[];
 		var jObj = {
-		fromDate : fromDateStr, 
-		toDate : toDateStr,
+		fromDate : currentFromDate, 
+		toDate : currentToDate,
 		stateId:1,
 		paperIdArr:paperIdArr,
 		chanelIdArr:chanelIdArr,
@@ -600,9 +600,9 @@ function getDistrictLevelDeptWiseFlterClick()
 {
 	
 	var jsObj = {
-		deptId : deptId,
-		levelId : levelId,
-		statusId : statusId
+		deptId : 49,
+		levelId : 5,
+		statusId : 7
 	}
 	$.ajax({
       type:'GET',
@@ -621,8 +621,8 @@ function getDistrictLevelWiseClick()
 	var toDateStr= "";
 	var jsObj = {
 		stateId : 1,
-		fromDate : fromDateStr,
-		toDate : toDateStr,
+		fromDate : currentFromDate,
+		toDate : currentToDate,
 		govtDepartmentId : 49,
 		parentGovtDepartmentScopeId : 5,
 		govtDeptWorkLocId : 8,
