@@ -405,15 +405,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public String getDistrictOfficerAlertsCountView(){
 		try{
-			/*session = request.getSession();
+			session = request.getSession();
 		   	RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		   	
 		   	Long userId = null;
 		   	if(user != null && user.getRegistrationID() != null){
 		   		userId = user.getRegistrationID();
-			}*/
+			}
 			jObj = new JSONObject(getTask());
-			Long userId = jObj.getLong("userId");
+			//Long userId = jObj.getLong("userId");
 			String startDate =jObj.getString("startDate");
 			String endDate =jObj.getString("endDate");
 		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId,startDate,endDate);
@@ -752,9 +752,11 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public String getSubOrdinateAlertsOverview(){
 		try {
-			jObj = new JSONObject(getTask());
-			
-			Long userId = jObj.getLong("userId");
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());			
+			//Long userId = jObj.getLong("userId");
 			String fromDateStr = jObj.getString("fromDate");
 			String toDateStr = jObj.getString("toDateStr");
 			
@@ -1061,9 +1063,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		public String getStateThenGovtDeptScopeWiseAlertCountStatusWise(){
 			try {
 				Long userId =  null;
-				/*session = request.getSession();
+				session = request.getSession();
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-				 userId = regVo.getRegistrationID();*/
+				 userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
 				String fromDate = jObj.getString("fromDate");
 				String toDate = jObj.getString("toDate");  
@@ -1089,7 +1091,6 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String sortType = jObj.getString("sortType");
 				String order = jObj.getString("order");
 				String searchType = jObj.getString("alertType");
-				userId = jObj.getLong("userId");
 				alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,searchType);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
@@ -1148,10 +1149,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}   
 		public String getStateThenGovtDeptScopeWiseAlertCountStatus(){
 			try {
-				Long userId = null;
-				/*session = request.getSession();
+				session = request.getSession();
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-				 userId = regVo.getRegistrationID();*/
+				Long userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
 				String fromDate = jObj.getString("fromDate");
 				String toDate = jObj.getString("toDate");  
@@ -1165,7 +1165,6 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String order = jObj.getString("order");
 				String searchType =jObj.getString("searchType");
 				String alertType = jObj.getString("alertType");
-				userId = jObj.getLong("userId");
 				if(searchType.equalsIgnoreCase("status"))
 				 alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,null,null,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType);
 				else if(searchType.equalsIgnoreCase("scopes"))
