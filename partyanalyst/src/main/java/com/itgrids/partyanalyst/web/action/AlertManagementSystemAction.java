@@ -1060,9 +1060,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 		public String getStateThenGovtDeptScopeWiseAlertCountStatusWise(){
 			try {
-				session = request.getSession();
+				Long userId =  null;
+				/*session = request.getSession();
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-				Long userId = regVo.getRegistrationID();
+				 userId = regVo.getRegistrationID();*/
 				jObj = new JSONObject(getTask());
 				String fromDate = jObj.getString("fromDate");
 				String toDate = jObj.getString("toDate");  
@@ -1088,6 +1089,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String sortType = jObj.getString("sortType");
 				String order = jObj.getString("order");
 				String searchType = jObj.getString("alertType");
+				userId = jObj.getLong("userId");
 				alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,searchType);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
@@ -1146,9 +1148,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}   
 		public String getStateThenGovtDeptScopeWiseAlertCountStatus(){
 			try {
-				session = request.getSession();
+				Long userId = null;
+				/*session = request.getSession();
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-				Long userId = regVo.getRegistrationID();
+				 userId = regVo.getRegistrationID();*/
 				jObj = new JSONObject(getTask());
 				String fromDate = jObj.getString("fromDate");
 				String toDate = jObj.getString("toDate");  
@@ -1162,6 +1165,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String order = jObj.getString("order");
 				String searchType =jObj.getString("searchType");
 				String alertType = jObj.getString("alertType");
+				userId = jObj.getLong("userId");
 				if(searchType.equalsIgnoreCase("status"))
 				 alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCountStatusWise(fromDate,toDate,stateId,null,null,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType);
 				else if(searchType.equalsIgnoreCase("scopes"))
