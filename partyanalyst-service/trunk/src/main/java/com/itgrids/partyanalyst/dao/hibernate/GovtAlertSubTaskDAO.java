@@ -651,5 +651,145 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     		      query.setParameterList("levelValues",levelValues);
     		    }
     		    return query.list();
-    		    }
+    		 }
+   public List<Object[]> getDistrictOfficerAlertsSubTasksCountsView(Long govtDepDesigOffcrId,Long govtOffcrId,String type){
+	   	StringBuilder sb = new StringBuilder();
+	    	if(type != null && type.equalsIgnoreCase("today")){
+	    		sb.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+	    				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+	    				" count(distinct  model.alert.alertId) ");
+	    	}else if(type != null && type.equalsIgnoreCase("completed")){
+	    		sb.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+		      		      " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+		      		      " count(distinct  model.alert.alertId) ");
+	    	}
+   		sb.append(" from GovtAlertSubTask model ");
+   	
+   		sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted = 'N' " );
+   	
+	     if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+	  		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcrId " );
+	  	  }
+	  	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	  		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+	  	  }
+	  	  if(type != null && type.equalsIgnoreCase("today")){
+	  		  sb.append(" and model.createdTime = :todayDate " ); 
+	  	  }
+ 	  
+	  	  sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId ");
+	    	  Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	    		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+	    	  }
+	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+	    		  query.setParameter("govtOffcrId", govtOffcrId);  
+	    	  }
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  }
+	    	  return query.list();
+   }
+   public List<Object[]> getDistrictOfficerMyAssignedSubTasksCountsView(Long govtDepDesigOffcrId,Long govtOffcrId,String type){
+	   	StringBuilder sb = new StringBuilder();
+	    	if(type != null && type.equalsIgnoreCase("today")){
+	    		sb.append(" select model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+	    				" model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+	    				" count(distinct  model.alertAssignedOfficer.alert.alertId) ");
+	    	}else if(type != null && type.equalsIgnoreCase("completed")){
+	    		sb.append(" select model.alertAssignedOfficer..govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+		      		      " model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+		      		      " count(distinct  model.alertAssignedOfficer.alert.alertId) ");
+	    	}
+   		sb.append(" from GovtAlertSubTask model ");
+   	
+   		sb.append(" where model.alertAssignedOfficer.isDeleted = 'N' and model.alertAssignedOfficer.alert.isDeleted = 'N' " );
+   	
+	     if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+	  		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffcrId " );
+	  	  }
+	  	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	  		  sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+	  	  }
+	  	  if(type != null && type.equalsIgnoreCase("today")){
+	  		  sb.append(" and model.alertAssignedOfficer.createdTime = :todayDate " ); 
+	  	  }
+ 	  
+	  	  sb.append(" group by model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId ");
+	    	Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+	    		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+	    	  }
+	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+	    		  query.setParameter("govtOffcrId", govtOffcrId);  
+	    	  }
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  }
+	    	  return query.list();
+   }
+   public List<Object[]> getDistrictOfficerMySubTasksStatusWiseDetails(Long govtDepDesigOffcrId,Long govtOffcrId){
+   	StringBuilder sb = new StringBuilder();
+   	sb.append(" select model.alertSubTaskStatus.alertSubTaskStatusId," +
+   			"  model.alertSubTaskStatus.status," +
+   			"  model.alertSubTaskStatus.color," +
+   			"  count(distinct model.alert.alertId) ");
+   	
+   	sb.append(" from GovtAlertSubTask model ");
+   	
+   	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted = 'N' " );
+   	
+   	  
+   	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+   		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcrId " );
+   	  }
+   	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+   		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+   	  }
+   	  
+   	  sb.append(" group by model.alertSubTaskStatus.alertSubTaskStatusId ");
+   	 
+   	  Query query = getSession().createQuery(sb.toString());
+   	  
+   	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+   		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+   	  }
+   	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+   		  query.setParameter("govtOffcrId", govtOffcrId);  
+   	  }
+   	  return query.list();
+   }
+   public List<Object[]> getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(Long govtDepDesigOffcrId,Long govtOffcrId){
+   	StringBuilder sb = new StringBuilder();
+   	sb.append(" select model.alertAssignedOfficer.alertStatus.alertStatusId," +
+   			"  model.alertAssignedOfficer.alertStatus.alertStatus," +
+   			"  model.alertAssignedOfficer.alertStatus.color," +
+   			"  count(distinct model.alertAssignedOfficer.alert.alertId) ");
+   	
+   	sb.append(" from GovtAlertSubTask model ");
+   	
+   	sb.append(" where model.alertAssignedOfficer.isDeleted = 'N' and model.alertAssignedOfficer.alert.isDeleted = 'N' " );
+   	
+   	  
+   	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+   		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffcrId " );
+   	  }
+   	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+   		  sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+   	  }
+   	  
+   	  sb.append(" group by model.alertAssignedOfficer.alertStatus.alertStatusId ");
+   	 
+   	  Query query = getSession().createQuery(sb.toString());
+   	  
+   	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
+   		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+   	  }
+   	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
+   		  query.setParameter("govtOffcrId", govtOffcrId);  
+   	  }
+   	  return query.list();
+   }
 }
