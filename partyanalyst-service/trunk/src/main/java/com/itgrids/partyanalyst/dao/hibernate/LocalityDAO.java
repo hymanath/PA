@@ -64,4 +64,15 @@ public class LocalityDAO extends GenericDaoHibernate<Locality, Long> implements 
 		
 	}
 
+	public List<Object[]> getLocalitiesNamesForWard(List<Long> wardIds)
+	{
+		Query query = getSession().createQuery("select model.localityId , model.name,model.ward.name from Locality model " +
+				" where model.ward.constituencyId in (:wardIds)");
+		
+		query.setParameterList("wardIds", wardIds);
+		
+		return query.list();
+		
+		
+	}
 }

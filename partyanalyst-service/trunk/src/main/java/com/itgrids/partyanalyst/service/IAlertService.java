@@ -109,4 +109,5 @@ public interface IAlertService {
     public List<KeyValueVO> getHamletsForPanchayat(Long panchayatId);
     public List<KeyValueVO> getAlertCallerTypes();
     public String createGrievanceAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
+    public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type);
 }
