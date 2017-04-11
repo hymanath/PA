@@ -34,6 +34,7 @@ public class AlertDataVO {
 	private Long alertCategoryId;
 	private String alertCategoryName;
 	private String title;
+	private String statusColor;
 	
 	private Long categoryId;
 	private String category;
@@ -51,7 +52,21 @@ public class AlertDataVO {
 	private String designation="";
 	
 	private String department;
+	private String dueDate;
 	
+	
+	public String getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+	public String getStatusColor() {
+		return statusColor;
+	}
+	public void setStatusColor(String statusColor) {
+		this.statusColor = statusColor;
+	}
 	public String getTitle() {
 		return title;
 	}
