@@ -33,6 +33,8 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private String color;
 	private List<Long> todayAlertIds = new ArrayList<Long>();
 	private List<Long> overAllAlertIds = new ArrayList<Long>();
+	private List<Long> levelValues =new ArrayList<Long>();
+	private Long levelId;
 	
 	
 	
@@ -168,6 +170,18 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	}
 	public void setDeptName(String deptName) {
 		this.deptName = deptName;
+	}
+	public List<Long> getLevelValues() {
+		return levelValues;
+	}
+	public void setLevelValues(List<Long> levelValues) {
+		this.levelValues = levelValues;
+	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
 	}
 	
 	
