@@ -561,9 +561,9 @@ $(document).on("click",".todayCountCls",function(){
 		}
 	});
 });
-//getDistrictOfficerGraphicalRepresentation(5);
-//getDistrictOfficerGraphicalRepresentation(6);
-//getDistrictOfficerGraphicalRepresentation(7);
+getDistrictOfficerGraphicalRepresentation(5);
+getDistrictOfficerGraphicalRepresentation(6);
+getDistrictOfficerGraphicalRepresentation(7);
 function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 	
 	
@@ -585,7 +585,7 @@ function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 		govtDepartmentId:49,
 		sortType:"count",
 		order:"asc",
-		searchType:"scopes",
+		searchType:"scopes",//locationWise:scopes,StatusOverview:status
 		alertType:"alert"
 		}
 		$.ajax({
