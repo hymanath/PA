@@ -16754,8 +16754,8 @@
    		</result>			
 	</action>
 	<action name="getStatusCompletionInfoAction" class="alertManagementSystemAction" method="getStatusCompletionInfo">			
-		<result name="success" type="stream">			   
-		    <param name="inputName">idnameVoList</param>
+		<result type="json" name="success">			   
+		    <param name="root">idnameVoList</param>
 		</result>								
 	</action>
 	<action name="getPanchayatAndWardDetailsAction" class="createAlertAction" method="getPanchayatiesByMandalOrMuncipality">
@@ -16783,7 +16783,7 @@
 	   			<param name="root">alertCoreDashBoardVOs</param>
 	   		</result>
 	</action>
-	  <action name="stateLevelDeptOfficerStatusOverViewAction" class="alertManagementSystemAction"  method="stateLevelDeptOfficerStatusOverview">
+	 <action name="stateLevelDeptOfficerStatusOverViewAction" class="alertManagementSystemAction"  method="stateLevelDeptOfficerStatusOverview">
 		<result type="json" name="success">    
 			<param name="root">alertVOs</param>       
 		</result>
@@ -16852,6 +16852,11 @@
 			<result type="json" name="success">		   
 				<param name="root">alertVOs</param>
 			</result>	
-		</action> 	  	                   
+		</action> 
+	<action name="uploadDocumentsForAlertAction" class="alertManagementSystemAction" method="uploadDocumentsForAlert">
+  	   <result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+    </action>  	                   
  </package>
 </struts>
