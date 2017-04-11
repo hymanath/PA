@@ -70,6 +70,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewD
 import com.itgrids.partyanalyst.dao.IGovtOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ILocalityDAO;
 import com.itgrids.partyanalyst.dao.IMemberTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -214,8 +215,17 @@ private IGovtOfficerNewDAO govtOfficerNewDAO;
 private IGovtDepartmentDesignationNewDAO govtDepartmentDesignationNewDAO;
 private IGovtDepartmentDesignationHierarchyDAO govtDepartmentDesignationHierarchyDAO;
 private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
+private ILocalityDAO localityDAO;
 
 
+
+public ILocalityDAO getLocalityDAO() {
+	return localityDAO;
+}
+
+public void setLocalityDAO(ILocalityDAO localityDAO) {
+	this.localityDAO = localityDAO;
+}
 
 public IGovtDepartmentDesignationOfficerDetailsDAO getGovtDepartmentDesignationOfficerDetailsDAO() {
 	return govtDepartmentDesignationOfficerDetailsDAO;
@@ -9608,6 +9618,46 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			e.printStackTrace();
 		}
 		return userAddress;
+	}
+    
+public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
+		
+		List<IdNameVO> panachatiesList = new ArrayList<IdNameVO>();
+		
+		if(tehsilId !=null ){
+			if(type.equalsIgnoreCase("mandal")){
+				List<Object[]> panchayties = constituencyDAO.getPanchayatsByTehsilId(Long.valueOf(tehsilId));
+				if(panchayties !=null && !panchayties.isEmpty()){
+					for (Object[] list : panchayties) {
+						IdNameVO panchayaties = new IdNameVO();
+						panchayaties.setId(Long.valueOf(list[0] != null ? list[0].toString():"0"));
+						panchayaties.setName(list[1] != null ? list[1].toString():"");
+						panachatiesList.add(panchayaties);
+					}
+					return panachatiesList;
+				}
+			}
+			else if(type.equalsIgnoreCase("muncipality")){
+				List<Object[]> list = constituencyDAO.getWardIdAndName(Long.valueOf(tehsilId));
+				 List<Long> wardIds = new ArrayList<Long>();
+				 if(list != null && !list.isEmpty()){
+					 for (Object[] obj : list) {
+						wardIds.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					}
+				 }
+				 List<Object[]> list1 = localityDAO.getLocalitiesNamesForWard(wardIds);
+				 if(list1 != null && !list1.isEmpty()){
+					 for (Object[] obj : list1) {
+							IdNameVO panchayaties = new IdNameVO();
+							panchayaties.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+							panchayaties.setName(obj[1] != null ? obj[1].toString():"");
+							panchayaties.setName(panchayaties.getName()+" ("+obj[2].toString()+")");
+							panachatiesList.add(panchayaties);
+					}
+				 }
+			}
+		}
+		return panachatiesList;
 	}
 }
 

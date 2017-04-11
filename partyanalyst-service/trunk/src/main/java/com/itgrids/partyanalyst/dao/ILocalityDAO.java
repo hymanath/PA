@@ -12,4 +12,5 @@ public interface ILocalityDAO extends GenericDao<Locality, Long>{
 	public List<Object[]> getLocalitiesForWard(Long wardId , Long userId);
 
 	public List<Object[]> getAllLocalitiesForHamlet(Long userId , Long hamletId, String type);
+	public List<Object[]> getLocalitiesNamesForWard(List<Long> wardIds);
 }
