@@ -915,7 +915,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				}
 			}
-
+			returnVO.setLevelValues(levelValues);
+			returnVO.setLevelId(levelId);
 			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
 			
 			Long govtDepDesigOffcrId = 0l;
@@ -3816,4 +3817,41 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
       		return finalVO;
       	}
+      	public List<AlertCoreDashBoardVO> getDistrictLevelWiseClick(Long userId,String fromDateStr,String toDateStr,Long stateId,Long govtDepartmentId,Long parentGovtDepartmentScopeId,Long govtDeptWorkLocId,Long statusId,Long childGovtScopeId,String status){
+    		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+    		try {
+    			Date fromDate = null;
+      			Date toDate = null;
+      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+      				fromDate = sdf.parse(fromDateStr);
+      				toDate = sdf.parse(toDateStr);
+      			}
+      			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+      			List<Long> levelValues = new ArrayList<Long>();    
+      			Long levlId = 0L;
+      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+      				for(Object[] param : lvlValueAndLvlIdList){
+      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+      					levlId = commonMethodsUtilService.getLongValueForObject(param[0]);
+      				}
+      			}
+    			List<Long> alertIds = null;
+    			if(status != null && status.equalsIgnoreCase("alert")){
+    			    alertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsDetails(fromDate,toDate,stateId,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,govtDeptWorkLocId,statusId,childGovtScopeId);
+    			 }else if(status != null && status.equalsIgnoreCase("subTask")){
+    				alertIds = govtAlertSubTaskDAO.getDistrictOfficerAlertsDetails(fromDate,toDate,stateId,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,govtDeptWorkLocId,statusId,childGovtScopeId);
+    			 }	
+    			 if(alertIds != null && alertIds.size() > 0){
+    				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+    				setAlertDtls(finalVoList, list); 
+    			}			
+    			
+    		} catch (Exception e) {
+    			LOG.error(" Exception Occured in getDistrictLevelWiseClick() method, Exception - ",e);
+    		}		
+    		return finalVoList;
+    	}
+
 }
