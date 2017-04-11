@@ -16774,6 +16774,31 @@
 			<result type="json" name="success">
 	   			<param name="root">alertCoreDashBoardVOs</param>
 	   		</result>
-	</action>  	                   
+	</action>
+	  <action name="stateLevelDeptOfficerStatusOverViewAction" class="alertManagementSystemAction"  method="stateLevelDeptOfficerStatusOverview">
+		<result type="json" name="success">    
+			<param name="root">alertVOs</param>       
+		</result>
+	</action>
+	<action name="stateLevelDeptOfficerLocationLevelOverviewAction" class="alertManagementSystemAction"  method="stateLevelDeptOfficerLocationLevelOverview">
+		<result type="json" name="success">    
+			<param name="root">alertVOs</param>       
+		</result>
+	</action>
+	<action name="getIASOfficerMyAlertsCountMainViewAction" class="alertManagementSystemAction" method="getIASOfficerMyAlertsCountMainView">
+			<result type="json" name="success">
+	   			<param name="root">districtOfficeViewAlertVO</param>
+	   		</result>
+	</action>
+	<action name="getIASOfficerMySubTasksCountViewAction" class="alertManagementSystemAction" method="getIASOfficerMySubTasksCountView">
+			<result type="json" name="success">
+	   			<param name="root">districtOfficeViewAlertVO</param>
+	   		</result>
+	</action>
+	<action name="getIASOfficerMyAssignedSubTasksCountViewAction" class="alertManagementSystemAction" method="getIASOfficerMyAssignedSubTasksCountView">
+			<result type="json" name="success">
+	   			<param name="root">districtOfficeViewAlertVO</param>
+	   		</result>
+	</action>                   
  </package>
 </struts>
