@@ -9,11 +9,15 @@ function onLoadClicks()
 	"use strict";
 	
 	$(document).on("click",".alert-status-change",function(){
+		var alertId = $(this).attr("attr_alert_id");
+		
 		if($(this).is(':checked'))
 		{
 			$(".alert-status-change-body").show();
+			getStatusCompletionInfo(alertId);
 		}else{
 			$(".alert-status-change-body").hide();
+			$("#updateStatusChangeBody").html(" ");
 		}
 	});
 	$(document).on("click","div.comment-area",function(e){
@@ -29,15 +33,10 @@ function onLoadClicks()
 		e.stopPropagation()
 	});
 	
-	$(document).on("click",".comment-btn",function(e){
-		$("div.comment-area").show();
-		$(".panel-border-white .panel-heading,.panel-border-white .panel-footer,.panel-border-white textarea").hide();
-		$(".panel-border-white textarea").val('');
-	});
 	$(document).on("click",function(e){
 		e.stopPropagation()
 		$("div.comment-area").show();
-		$(".panel-border-white .panel-heading,.panel-border-white .panel-footer,.panel-border-white textarea,.assign-user-body,.alert-status-change-list,.assign-subtask").hide();
+		$(".panel-border-white .panel-heading,.panel-border-white .panel-footer,.panel-border-white textarea,.assign-user-body,.alert-status-change-list,.assign-subtask,.alert-status-attachment").hide();
 		$(".panel-border-white textarea").val('');
 	});
 	$(document).on("click","[basic-switch] li",function(){
@@ -118,6 +117,7 @@ function onLoadClicks()
 				});
 				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY')
 				getAlertStatusHistory(alertId);
+				
 			}else if(status == 'alertStatusChange')
 			{
 				$(this).find('ul').toggle();
@@ -127,6 +127,9 @@ function onLoadClicks()
 			}else if(status == 'subTask')
 			{
 				statusBody(status);
+			}else if(status == 'attachment')
+			{
+				$(this).find('.alert-status-attachment').toggle();
 			}
 		}
 	});
@@ -310,27 +313,31 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 	getAlertData(alertId);
 }
 
-function dateRangePicker()
+function dateRangePicker(alertId)
 {
 	$(function() {
 		var start = moment();
 		
 		function cb(start) {
-			$('.modal-date').html(start.format('MMM D, YYYY'));
+			$('.modal-date').html(start.format('DD/MM/YYYY'));
 		}
 
 		$('.modal-date').daterangepicker({
 			startDate: start,
-			singleDatePicker:true
+			singleDatePicker:true,
+			locale:{
+				format:"DD/MM/YYYY"
+			}
+			
 		}, cb);
 
-		cb(start);
+		//cb(start);
 		
 	});
 	$('.modal-date').on('apply.daterangepicker', function(ev, picker) {
 		selectedDate = picker.startDate.format('DD/MM/YYYY');
 		var jsObj ={
-			alertId : 11346,
+			alertId : alertId,
 			date:selectedDate
 		}
 		$.ajax({
@@ -379,6 +386,9 @@ function assignUser(alertId)
 				str+='<div class="arrow_box_top">';
 					str+='<div>';
 						str+='<div class="row">';
+							str+='<div class="col-sm-12">';
+								str+='<div id="assignErrorDivId"></div>';
+							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
 								str+='<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	';
@@ -471,51 +481,68 @@ function alertHistory(result)
 	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertManagementPopupBody1").html(str);
 }
-function alertStatus(result)
+function alertStatusHistory(result,alertId)
 {
 	var str='';
 	var str1='';
-	str+='<table class="table border_1">';
-		str+='<thead class="text-capitalize">';
-			str+='<th>Date</th>';
-			str+='<th>Status</th>';
-			str+='<th>Comments</th>';
-			str+='<th>Updated By</th>';
-		str+='</thead>';
-		for(var i in result)
-		{
-			str+='<tr>';
-				str+='<td>'+result[i].date+'</td>';
-				str+='<td>'+result[i].status+'</td>';
-				str+='<td>'+result[i].comment+'</td>';
-				str+='<td>';
-					str+='<p class="text-primary text-capitalize">'+result[i].userName+'</p>';
-					str+='<p class="text-muted text-capitalize">-<u>'+result[i].designation+'</u></p>';
-				str+='</td>';
-			str+='</tr>';
-		}
-		
-	str+='</table>';
-	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
-	$("#alertManagementPopupBody1").html(str);
-	str1+='';
-	str1+='<div class="text-left" id="updateStatusChangeBody">';
-		str1+='<label class="checkbox-inline">';
-			str1+='<input type="checkbox" class="alert-status-change"/> I Want to change alert Status';
-		str1+='</label>';
-		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body" style="display:none">';
+	if(result != null && result.length>0)
+	{
+		str+='<table class="table border_1">';
+			str+='<thead class="text-capitalize">';
+				str+='<th>Date</th>';
+				str+='<th>Status</th>';
+				str+='<th>Updated By</th>';
+				str+='<th>Comments</th>';
+			str+='</thead>';
+			for(var i in result)
+			{
+				str+='<tr>';
+					str+='<td>'+result[i].date+'</td>';
+					str+='<td>'+result[i].status+'</td>';
+					str+='<td>';
+						str+='<p class="text-primary text-capitalize">'+result[i].userName+'</p>';
+						str+='<p class="text-muted text-capitalize">-<u>'+result[i].designation+'</u></p>';
+					str+='</td>';
+					str+='<td>'+result[i].comment+'</td>';
+				str+='</tr>';
+			}
+			
+		str+='</table>';
+		str1+='<div class="text-left">';
+			str1+='<label class="checkbox-inline">';
+				str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change"/> I Want to change alert Status';
+			str1+='</label>';
+			str1+='<div  id="updateStatusChangeBody"></div>';
+		str1+='</div>';
+		$("#alertManagementPopup1 .modal-footer").show();
+		$("#alertManagementPopup1 .modal-footer").html(str1);
+		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
+		$("#alertManagementPopupBody1").html(str);
+	}else{
+		$("#alertManagementPopupBody1").html("NO DATA")
+	}
+}
+function alertStatus(result,alertId)
+{
+	var str1='';
+	
+		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
 			str1+='<div class="panel-heading">';
-				str1+='<label class="checkbox-inline">';
-					str1+='<input type="radio" value="4" name="statusChange"/> InProgress';
-				str1+='</label>';
+				for(var i in result)
+				{
+					str1+='<label class="radio-inline">';
+						str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
+					str1+='</label>';
+					
+				}
+				
 			str1+='</div>';
 			str1+='<div class="panel-body pad_0">';
 				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
 			str1+='</div>';
 		str1+='</div>';
-	str1+='</div>';
-	str1+='<button class="btn btn-primary btn-sm text-capital" id="updateStatusChange">update</button>';
-	$("#alertManagementPopup1 .modal-footer").show();
-	$("#alertManagementPopup1 .modal-footer").html(str1);
+	
+	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
+	$("#updateStatusChangeBody").html(str1);
 	
 }
