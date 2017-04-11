@@ -16767,6 +16767,11 @@
 		<result name="success" type="stream">			   
 		    <param name="inputName">alertVO</param>
 		</result>								
+	</action>
+	<action name="getDocumentsForAlertsAction" class="alertManagementSystemAction" method="getDocumentsForAlert">			
+		<result name="success" type="stream">			   
+		    <param name="inputName">keyValueVOList</param>
+		</result>								
 	</action> 
 	<action name="getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction" class="alertManagementSystemAction" method="getStateThenGovtDeptScopeWiseAlertCountStatusWise">
 	  	<result type="json" name="success">		   
