@@ -2411,6 +2411,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				fromDate = sdf.parse(fromDateStr);
     				toDate = sdf.parse(toDateStr);
     			}
+    			
+    			if(electronicIdList == null && printIdList == null){
+    				electronicIdList = new ArrayList<Long>();
+    				printIdList = new ArrayList<Long>();
+    			}
     			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
     			if(printIdList != null && printIdList.size() > 0){  
     				if(electronicIdList != null && electronicIdList.size() == 0){
@@ -2421,6 +2426,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     					printIdList.add(0L);
     				}
     			}else{
+    				
     				electronicIdList.add(0L);
     				printIdList.add(0L);
     			}
