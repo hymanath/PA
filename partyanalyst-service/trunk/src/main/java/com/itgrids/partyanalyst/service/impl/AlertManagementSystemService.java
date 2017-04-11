@@ -74,7 +74,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 
 	private final static Logger LOG =  Logger.getLogger(AlertManagementSystemService.class);
 	private CommonMethodsUtilService commonMethodsUtilService;
-	private IAlertDAO alertDAO;
+	private IAlertDAO alertDAO; 
 	private IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO;
 	private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
 	private IAlertDepartmentStatusDAO alertDepartmentStatusDAO;
@@ -2976,273 +2976,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               	return finalVoList;
               }
            
-             //Regarding filter. district
-             public List<IdNameVO> getDistIdListForDistFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType,String order){
-           		try{
-           			
-           			Date fromDate = null;
-           			Date toDate = null;
-           			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-           			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
-           				fromDate = sdf.parse(fromDateStr);
-           				toDate = sdf.parse(toDateStr);
-           			}
-           			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-           			if(printIdList != null && printIdList.size() > 0){  
-           				if(electronicIdList != null && electronicIdList.size() == 0){
-           					electronicIdList.add(0L);
-           				}
-           			}else if(electronicIdList != null && electronicIdList.size() > 0){
-           				if(printIdList != null && printIdList.size() == 0){
-           					printIdList.add(0L);
-           				}
-           			}else{
-           				electronicIdList.add(0L);
-           				printIdList.add(0L);
-           			}
-           			
-           			List<Long> levelValues = new ArrayList<Long>();    
-           			Long levelId = 0L;
-           			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
-           			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
-           				for(Object[] param : lvlValueAndLvlIdList){
-           					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-           					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
-           				}
-           			}
-           			
-           			
-           			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
-           			List<Long> deptScopeIdList = new ArrayList<Long>();
-           			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
-           				for(Object [] param : childDeptScopeIdList){
-           					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-           				}
-           			}
-           			
-           			
-           			List<Object[]> alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
-           			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();  
-   	          		  IdNameVO idNameVO = null;
-   	          		  if(alertList != null && alertList.size() > 0){
-   	          			  for(Object[] param : alertList){
-   	          				  idNameVO = new IdNameVO();
-   	          				  idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-   	          				  idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
-   	          				  idNameVOs.add(idNameVO);
-   	          			  }
-   	          		  }
-   	          		  return idNameVOs;
-           			
-           		}catch(Exception e){
-           			e.printStackTrace();
-           		}
-           		return null;
-             }
-             //Regarding filter. division->district
-             public List<AlertCoreDashBoardVO> getDistIdListForDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType,String order){
-         		try{
-         			
-         			Date fromDate = null;
-         			Date toDate = null;
-         			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-         			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
-         				fromDate = sdf.parse(fromDateStr);
-         				toDate = sdf.parse(toDateStr);
-         			}
-         			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-         			if(printIdList != null && printIdList.size() > 0){  
-         				if(electronicIdList != null && electronicIdList.size() == 0){
-         					electronicIdList.add(0L);
-         				}
-         			}else if(electronicIdList != null && electronicIdList.size() > 0){
-         				if(printIdList != null && printIdList.size() == 0){
-         					printIdList.add(0L);
-         				}
-         			}else{
-         				electronicIdList.add(0L);
-         				printIdList.add(0L);
-         			}
-         			
-         			List<Long> levelValues = new ArrayList<Long>();    
-         			Long levelId = 0L;
-         			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
-         			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
-         				for(Object[] param : lvlValueAndLvlIdList){
-         					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-         					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
-         				}
-         			}
-         			
-         			
-         			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
-         			List<Long> deptScopeIdList = new ArrayList<Long>();
-         			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
-         				for(Object [] param : childDeptScopeIdList){
-         					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-         				}
-         			}
-         			
-         			
-         			List<Object[]> alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
-         			
-         			System.out.println("HI");  
-         			return null;
-         			
-         		}catch(Exception e){
-         			e.printStackTrace();
-         		}
-         		return null;
-         	}
-             //Regarding filter. division->division
-             public List<IdNameVO> getDivisionIdListForDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType,String order){
-         		try{
-         			
-         			Date fromDate = null;
-         			Date toDate = null;
-         			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-         			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
-         				fromDate = sdf.parse(fromDateStr);
-         				toDate = sdf.parse(toDateStr);
-         			}
-         			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-         			if(printIdList != null && printIdList.size() > 0){  
-         				if(electronicIdList != null && electronicIdList.size() == 0){
-         					electronicIdList.add(0L);
-         				}
-         			}else if(electronicIdList != null && electronicIdList.size() > 0){
-         				if(printIdList != null && printIdList.size() == 0){
-         					printIdList.add(0L);
-         				}
-         			}else{
-         				electronicIdList.add(0L);
-         				printIdList.add(0L);
-         			}
-         			
-         			List<Long> levelValues = new ArrayList<Long>();    
-         			Long levelId = 0L;
-         			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
-         			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
-         				for(Object[] param : lvlValueAndLvlIdList){
-         					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-         					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
-         				}
-         			}
-         			
-         			
-         			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
-         			List<Long> deptScopeIdList = new ArrayList<Long>();
-         			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
-         				for(Object [] param : childDeptScopeIdList){
-         					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-         				}
-         			}
-         			
-         			
-         			List<Object[]> alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
-         			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();  
-   	          		  IdNameVO idNameVO = null;
-   	          		  if(alertList != null && alertList.size() > 0){
-   	          			  for(Object[] param : alertList){
-   	          				  idNameVO = new IdNameVO();
-   	          				  idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-   	          				  idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
-   	          				  idNameVOs.add(idNameVO);
-   	          			  }
-   	          		  }
-   	          		  return idNameVOs;
-         			
-         		}catch(Exception e){
-         			e.printStackTrace();
-         		}
-         		return null;
-           }
-           //Regarding filter. division->sub division
-             //1
-           //Regarding filter. district->sub division
-             public List<IdNameVO> getDistrictIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType,String order){
-            	 try{
-            		 
-            	 }catch(Exception e){
-            		 e.printStackTrace();
-            	 }
-            	 return null;
-             }
-             //2
-           //Regarding filter. division->sub division
-            public List<IdNameVO> getDivisionIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType,String order){
-           	 try{
-           		 
-           	 }catch(Exception e){
-           		 e.printStackTrace();
-           	 }
-           	 return null;
-            }
-
-             //3
-           //Regarding filter. sub division->sub division
-             public List<IdNameVO> getSubDivisionIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType,String order){
-           		try{
-           			
-           			Date fromDate = null;
-           			Date toDate = null;
-           			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-           			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
-           				fromDate = sdf.parse(fromDateStr);
-           				toDate = sdf.parse(toDateStr);
-           			}
-           			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-           			if(printIdList != null && printIdList.size() > 0){  
-           				if(electronicIdList != null && electronicIdList.size() == 0){
-           					electronicIdList.add(0L);
-           				}
-           			}else if(electronicIdList != null && electronicIdList.size() > 0){
-           				if(printIdList != null && printIdList.size() == 0){
-           					printIdList.add(0L);
-           				}
-           			}else{
-           				electronicIdList.add(0L);
-           				printIdList.add(0L);
-           			}
-           			
-           			List<Long> levelValues = new ArrayList<Long>();    
-           			Long levelId = 0L;
-           			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
-           			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
-           				for(Object[] param : lvlValueAndLvlIdList){
-           					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-           					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
-           				}
-           			}
-           			
-           			
-           			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
-           			List<Long> deptScopeIdList = new ArrayList<Long>();
-           			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
-           				for(Object [] param : childDeptScopeIdList){
-           					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-           				}
-           			}
-           			
-           			
-           			List<Object[]> alertList = alertAssignedOfficerNewDAO.getLocationThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList);
-           			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();  
-     	          		  IdNameVO idNameVO = null;
-     	          		  if(alertList != null && alertList.size() > 0){
-     	          			  for(Object[] param : alertList){
-     	          				  idNameVO = new IdNameVO();
-     	          				  idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-     	          				  idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
-     	          				  idNameVOs.add(idNameVO);
-     	          			  }
-     	          		  }
-     	          		  return idNameVOs;
-           			
-           		}catch(Exception e){
-           			e.printStackTrace();
-           		}
-           		return null;
-         }
+             
          	public ResultStatus updateSubTaskComment(final Long subTaskId,final String comment,final Long userId){
         		final ResultStatus rs = new ResultStatus();
         		try {
@@ -3984,7 +3718,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			}
       			// My alerts view
       			List<Object[]> mySubTasksTodayList = null;
-      			List<Object[]> mySubTasksCompletedList = null;
+      			List<Object[]> mySubTasksCompletedList = null;  
       			List<Object[]> mySubTasksStatusList = null;
       			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
       				mySubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrId, govtOffcrId,"today");
@@ -4131,5 +3865,5 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			return finalList;
       	}
-      
+      	
 }
