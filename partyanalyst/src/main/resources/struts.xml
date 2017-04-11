@@ -16684,7 +16684,7 @@
 	   			<param name="root">alertCoreDashBoardVOs</param>
 	   		</result>
 		</action>
-	<action name="getAlertStatusHistoryAction" class="alertManagementSystemAction" method="getAlertStatusHistory">
+		<action name="getAlertStatusHistoryAction" class="alertManagementSystemAction" method="getAlertStatusHistory">
 		<result type="json" name="success">
    			<param name="root">alertTrackingVOList</param>
    		</result>
@@ -16764,6 +16764,11 @@
 		<result name="success" type="stream">			   
 		    <param name="inputName">alertVO</param>
 		</result>								
-	</action>  	                   
+	</action> 
+	<action name="getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction" class="alertManagementSystemAction" method="getStateThenGovtDeptScopeWiseAlertCountStatusWise">
+	  	<result type="json" name="success">		   
+	    	<param name="root">alertCoreDashBoardVOs</param>
+	  	</result>	
+  	</action> 	                   
  </package>
 </struts>
