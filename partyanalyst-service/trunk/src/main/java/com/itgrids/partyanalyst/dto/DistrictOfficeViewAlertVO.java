@@ -35,10 +35,30 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private List<Long> overAllAlertIds = new ArrayList<Long>();
 	private List<Long> levelValues =new ArrayList<Long>();
 	private Long levelId;
+	private List<DistrictOfficeViewAlertVO> subList1 = new ArrayList<DistrictOfficeViewAlertVO>(0);
+	private List<DistrictOfficeViewAlertVO>  subList2= new ArrayList<DistrictOfficeViewAlertVO>(0);
+	private List<DistrictOfficeViewAlertVO> subList3 = new ArrayList<DistrictOfficeViewAlertVO>(0);
 	
 	
 	
-	
+	public List<DistrictOfficeViewAlertVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<DistrictOfficeViewAlertVO> subList1) {
+		this.subList1 = subList1;
+	}
+	public List<DistrictOfficeViewAlertVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<DistrictOfficeViewAlertVO> subList2) {
+		this.subList2 = subList2;
+	}
+	public List<DistrictOfficeViewAlertVO> getSubList3() {
+		return subList3;
+	}
+	public void setSubList3(List<DistrictOfficeViewAlertVO> subList3) {
+		this.subList3 = subList3;
+	}
 	public List<Long> getTodayAlertIds() {
 		return todayAlertIds;
 	}
