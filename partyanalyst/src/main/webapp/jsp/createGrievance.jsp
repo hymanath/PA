@@ -8,7 +8,7 @@
 	<html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title> Alert </title>
+	<title> GOVT GRIEVANCE </title>
 	<!-- Bootstrap -->
 	<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 	<link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">
@@ -78,7 +78,7 @@
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default">
             	<div class="panel-heading bg_cc">
-                	<h4 class="panel-title">NEW GRIEVANCE REQUEST</h4>
+                	<h4 class="panel-title">GOVERNMENT GRIEVANCE</h4>
                 </div>
 				<form id="saveGrievanceAlertForm" name="saveGrievanceAlertForm" enctype="multipart/form-data" method="POST">
 					<div class="panel-body bg_EF">
