@@ -11,7 +11,8 @@ public interface IGovtDepartmentWorkLocationDAO extends GenericDao<GovtDepartmen
 
 	public List<Object[]> getLevelWiseInfo(Long deptId,Set<Long> levelIds);
 	public List<Object[]> getParentLevelValuesListInfo(List<Long> levelValues);
-	public List<Object[]> getAllDivisionDetails();
-	public List<Object[]> getAllSubDivisionDetails();
+	public List<Object[]> getAllDivisionDetails(Long districtId);
+	public List<Object[]> getAllSubDivisionDetails(Long divisionId);
+	public List<Object[]> getAllDistrictDetails();
 	
 }

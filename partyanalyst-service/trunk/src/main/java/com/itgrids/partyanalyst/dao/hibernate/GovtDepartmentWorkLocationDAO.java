@@ -55,22 +55,33 @@ public List<Object[]> getParentLevelValuesListInfo(List<Long> levelValues){
 		query.setParameterList("levelValues", levelValues);
 		return query.list();
 	}
-	
+    
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAllDivisionDetails(){
+	public List<Object[]> getAllDivisionDetails(Long districtId){
    		Query query = getSession().createQuery("select model.govtUserAddress.divisionId,model.locationName" +
    				                            " from  GovtDepartmentWorkLocation model " +
    				                            "where model.govtDepartmentScope.govtDepartmentScopeId =:scopeId " +
-   				                            "and model.isDeleted='N' ");   				                          
-   		query.setParameter("scopeId", 6l);   				                            
+   				                            "and model.isDeleted='N' and model.govtUserAddress.districtId =:districtId ");   				                          
+   		query.setParameter("scopeId", 6l); 
+   		query.setParameter("districtId", districtId);
    		return query.list();
      }
-     public List<Object[]> getAllSubDivisionDetails(){
+     public List<Object[]> getAllSubDivisionDetails(Long divisionId){
    		Query query = getSession().createQuery("select model.govtUserAddress.subDivisionId,model.locationName" +
    				                            " from  GovtDepartmentWorkLocation model " +
    				                            "where model.govtDepartmentScope.govtDepartmentScopeId =:scopeId " +
-   				                            "and model.isDeleted='N' ");   				                          
-   		query.setParameter("scopeId", 7l);   				                            
+   				                            "and model.isDeleted='N'and model.govtUserAddress.divisionId =:divisionId");   				                          
+   		query.setParameter("scopeId", 7l);
+   		query.setParameter("divisionId", divisionId);
    		return query.list();
      }
+     @SuppressWarnings("unchecked")
+ 	public List<Object[]> getAllDistrictDetails(){
+ 		Query query = getSession().createQuery("select model.govtUserAddress.districtId,model.locationName" +
+ 				                            " from  GovtDepartmentWorkLocation model " +
+ 				                            "where model.govtDepartmentScope.govtDepartmentScopeId =:scopeId " +
+ 				                            "and model.isDeleted='N'");   				                          
+ 		query.setParameter("scopeId", 5l);   				                            
+ 		return query.list();
+       }   
 }
