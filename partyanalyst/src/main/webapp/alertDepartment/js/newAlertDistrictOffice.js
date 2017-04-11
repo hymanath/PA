@@ -71,9 +71,9 @@ $("#dateRangePickerAUM").daterangepicker({
 	$("#assignedSubTasksDivID").html(spinner);
 	var fromDateStr= "";
 	var toDateStr= "";
-	var userId=19601;
+	//var userId=19601;
     var jObj ={
-      userId:userId,
+      //userId:userId,
 	  startDate:currentFromDate,
 	  endDate:currentToDate
     }
@@ -447,7 +447,7 @@ function buildDistrictOfficerAlertsCountView(result){
 
 //getSubOrdinateAlertsOverview();
 function getSubOrdinateAlertsOverview(){
-	var userId=19601;
+	//var userId="";
 	var fromDateStr= "";
 	var toDateStr= "";
 	var govtScopeIds=[];
@@ -456,7 +456,6 @@ function getSubOrdinateAlertsOverview(){
 	var priorityId="";
 	
 	var jObj = {
-	userId : userId,
 	fromDateStr : currentFromDate, 
 	toDateStr : currentToDate,
 	govtScopeIds : govtScopeIds,
@@ -566,7 +565,7 @@ getDistrictOfficerGraphicalRepresentation(6);
 getDistrictOfficerGraphicalRepresentation(7);
 function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 	
-		var userId=19601;
+		//var userId="";
 		var fromDateStr= "";
 		var toDateStr= "";
 		var locationValues=[];
@@ -575,7 +574,6 @@ function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 		var paperIdArr =[];
 		var chanelIdArr =[];
 		var jObj = {
-			userId:userId,
 		fromDate : currentFromDate, 
 		toDate : currentToDate,
 		stateId:1,
