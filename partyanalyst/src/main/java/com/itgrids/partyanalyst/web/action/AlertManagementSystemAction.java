@@ -1485,5 +1485,115 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;
 		}
+	 public String stateLevelDeptOfficerStatusOverview(){
+			try{
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+				List<Long> deptIdList = new ArrayList<Long>();
+				for (int i = 0; i < deptIdArr.length(); i++){
+					deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+				}  
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				}
+				
+				alertVOs = alertManagementSystemService.stateLevelDeptOfficerStatusOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
+			}catch(Exception e){
+				LOG.error("Exception occured in getStatusWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+	 public String stateLevelDeptOfficerLocationLevelOverview(){
+			try{
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+				List<Long> deptIdList = new ArrayList<Long>();
+				for (int i = 0; i < deptIdArr.length(); i++){
+					deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+				}  
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+				}
+				
+				alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
+			}catch(Exception e){
+				LOG.error("Exception occured in stateLevelDeptOfficerLocationLevelOverview() of AlertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+	 public String getIASOfficerMyAlertsCountMainView(){
+			try{
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAlertsCountView(userId);
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getIASOfficerMyAlertsCountView() of AlertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+	 public String getIASOfficerMySubTasksCountView(){
+			try{
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMySubTasksCountView(userId);
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getIASOfficerMySubTasksCountView() of AlertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+	 public String getIASOfficerMyAssignedSubTasksCountView(){
+			try{
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAssignedSubTasksCountView(userId);
+				
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getIASOfficerMySubTasksCountView() of AlertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
 }
-//public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId)
+//public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order)
