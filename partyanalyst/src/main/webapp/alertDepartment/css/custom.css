@@ -908,6 +908,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	border-bottom: 1px solid #ddd;
 	padding: 8px;
 }
+.alerts-list li.active
+{
+	background-color:#f9f9f9;
+	box-shadow:0px 0px 2px 2px rgba(0,0,0,0.3);
+}
 .alerts-list .location-name
 {
 	background-color: #EEEEEE;
@@ -989,6 +994,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	margin:0px 3px;
 	cursor:pointer;
 	position:relative;
+}
+.list-icons li .alert-status-attachment ul li
+{
+	border:0px;
+	padding:0px;
 }
 .list-icons li i.fa-level-down
 {
@@ -1210,6 +1220,17 @@ div.comment-area
 	left: -60px;
 	z-index:9999;
 }
+.alert-status-attachment
+{
+	width: 550px;
+	position: absolute;
+	top: 42px;
+	display: block;
+	padding: 0px;
+	right:	0px;
+	z-index:9999;
+	padding:8px;
+}
 .alert-status-change-list li
 {
 	width: 100%;
@@ -1224,6 +1245,10 @@ div.comment-area
 .alert-status-change-list li:last-child
 {
 	border-bottom:0px;
+}
+.alert-status-attachment.arrow_box_top:before , .alert-status-attachment.arrow_box_top:after
+{
+	left:95%;
 }
 .alert-status-change-list.arrow_box_top:before , .alert-status-change-list.arrow_box_top:after
 {
