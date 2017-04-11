@@ -42,4 +42,12 @@ public class GovtOfficerSubTaskTrackingDAO extends GenericDaoHibernate<GovtOffic
 		query.setParameterList("subTaskIds", subTaskIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getCommentDetialsForSubTasks(Long subTaskId){
+		Query query = getSession().createQuery(" select model.alertDepartmentCommentId,model.alertDepartmentComment.comment,date(model.alertDepartmentComment.insertedTime) "
+				+ " from GovtOfficerSubTaskTracking model "
+				+ " where model.govtAlertSubTaskId = :subTaskId and model.isDeleted='N' and model.govtAlertSubTask.isDeleted='N' ");
+		query.setParameter("subTaskId", subTaskId);
+		return query.list();
+	}
 }

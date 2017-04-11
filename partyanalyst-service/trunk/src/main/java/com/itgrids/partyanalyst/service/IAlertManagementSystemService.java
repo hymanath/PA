@@ -71,4 +71,5 @@ public interface IAlertManagementSystemService {
 	public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId);
 	public List<AlertTrackingVO> getCommentsForAlert(Long alertId);
 	public List<IdNameVO>  getStatusCompletionInfo(Long alertId,Long levelValue);
+	public AlertVO getSubTaskFullDetails(Long subTaskId);
 }
