@@ -16760,6 +16760,11 @@
 		    <param name="inputName">idnameVoList</param>
 		</result>								
 	</action>
+	<action name="getPanchayatAndWardDetailsAction" class="createAlertAction" method="getPanchayatiesByMandalOrMuncipality">
+		<result type="json" name="success">
+			<param name="root">idNameVOList</param>
+		</result>
+	</action>
 	<action name="getSubTaskFullDetailsAction" class="alertManagementSystemAction" method="getSubTaskFullDetails">			
 		<result name="success" type="stream">			   
 		    <param name="inputName">alertVO</param>

@@ -2266,9 +2266,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
+	
+	public String getPanchayatiesByMandalOrMuncipality(){
+		
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = alertService.getPanchayatDetailsByMandalId(jObj.getLong("mandalId"),jObj.getString("type"));
+		}
+		catch(Exception e){	
+			LOG.error("Exception occured in getPanchayatiesByMandalOrMuncipality()",e);
+		}
+		
+		return Action.SUCCESS;	
+	}
 }
-
-
-
 
 //getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList)
