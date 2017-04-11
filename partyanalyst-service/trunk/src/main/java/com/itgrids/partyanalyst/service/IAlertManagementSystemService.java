@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 
 public interface IAlertManagementSystemService {
 	public List<AlertVO> getStatusWiseAlertOverviewcnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
@@ -89,4 +90,5 @@ public interface IAlertManagementSystemService {
 	public List<IdNameVO> getDivisionIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId);
 	public List<IdNameVO> getSubDivisionIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId);
 	public List<AlertVO> getAllDistrictDetails();
+	public List<KeyValueVO> getDocumentsForAlert(Long alertId);
 }
