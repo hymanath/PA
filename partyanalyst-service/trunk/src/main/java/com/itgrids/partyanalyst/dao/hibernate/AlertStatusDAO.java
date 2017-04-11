@@ -19,7 +19,7 @@ public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 		return query.list();
 	}
 	public List<Object[]> getAlertStatusInfoForReOpen(){
-		Query query = getSession().createQuery("select model.alertStatusId, model.alertStatus " +
+		Query query = getSession().createQuery("select model.alertStatusId, model.alertStatus,model.color " +
 				" from AlertStatus model " +
 				" where model.alertStatusId in (:alertStatusIds) ");
 		

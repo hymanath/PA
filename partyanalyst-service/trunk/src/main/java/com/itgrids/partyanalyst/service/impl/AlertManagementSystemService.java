@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.IDN;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -3745,16 +3746,27 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							IdNameVO vo = new IdNameVO();
 							vo.setId((Long)objects[0]);
 							vo.setName(objects[1].toString());
-							
+							vo.setDateStr(objects[2] != null? objects[2].toString():null);
 							finalList.add(vo);
 						}
         			}
         		}else{        			
-        			IdNameVO VO = new IdNameVO();        			
+        			/*IdNameVO VO = new IdNameVO();        			
         			VO.setId(alert.getAlertStatusId());
         			VO.setName(alert.getAlertStatus().getAlertStatus());
         			VO.setStatus("false");
-        			finalList.add(VO);
+        			finalList.add(VO);*/
+        			
+        			List<Object[]> objList = alertDepartmentStatusDAO.getAlertGovtDepartmentStatus(alert.getGovtDepartmentId());
+        			if(objList != null && objList.size() > 0){
+        				for (Object[] objects : objList) {
+        					IdNameVO VO = new IdNameVO();
+        					VO.setId((Long)objects[0]);
+                			VO.setName(objects[1].toString());
+                			VO.setDateStr(objects[2] != null ? objects[2].toString():"");
+                			finalList.add(VO);
+						}
+        			}
         		}
         		
 				
