@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
@@ -67,8 +68,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<AlertTrackingVO> alertTrackingVOList;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVo;
 	private Long subTaskId;
+	private List<KeyValueVO> keyValueVOList;
 	
 	
+	public List<KeyValueVO> getKeyValueVOList() {
+		return keyValueVOList;
+	}
+	public void setKeyValueVOList(List<KeyValueVO> keyValueVOList) {
+		this.keyValueVOList = keyValueVOList;
+	}
 	public Long getSubTaskId() {
 		return subTaskId;
 	}
@@ -1623,6 +1631,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				LOG.error("Exception Raised in getAllDistrictDetails() in AlertManagementSystemAction",e);
 			}
 			return Action.SUCCESS;
+		}
+		public String getDocumentsForAlert(){
+			try {
+				jObj = new JSONObject(getTask());
+				keyValueVOList = alertManagementSystemService.getDocumentsForAlert(jObj.getLong("alertId"));
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getDocumentsForAlert() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
 		}
 }
 //public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId)
