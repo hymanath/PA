@@ -16838,7 +16838,6 @@
 	   			<param name="root">idnameVoList</param>
 	   		</result>
 	</action>                
-	</action>
 	 <action name="getAllDivisionDetailsAction" class="alertManagementSystemAction" method="getAllDivisionDetails">
 			<result type="json" name="success">		   
 				<param name="root">alertVOs</param>
