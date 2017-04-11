@@ -40,4 +40,12 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     	 query.setParameter("alertId", alertId);
     	 return query.list();
     }
+    
+    public List<Object[]> getDocumentsForAlert(Long alertId){
+    	Query query = getSession().createQuery(" select model.alertDepartmentDocument.alertDepartmentDocumentId,model.alertDepartmentDocument.document "
+    			+ " from AlertAssignedOfficerTrackingNew model "
+    			+ " where model.alertId=:alertId ");
+    	query.setParameter("alertId", alertId);
+    	return query.list();
+    }
 }
