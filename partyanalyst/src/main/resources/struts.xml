@@ -11563,14 +11563,12 @@
 		<result type="json" name="success">
     	    <param name="root">locations</param>
          </result>
-	</action>
-	
+	</action>	
 	<action name="getAllRTCZonesAction" class="rtcUnionAction" method="getAllRTCZones">
 		<result type="json" name="success">
 	    	<param name="root">idNameVoList</param>
 	    </result>
-	</action>
-	
+	</action>	
 	<action name="getRegionsOfZoneAction" class="rtcUnionAction" method="getRegionsOfZone">
 		<result type="json" name="success">
 	    	<param name="root">idNameVoList</param>
@@ -16804,6 +16802,21 @@
 			<result type="json" name="success">
 	   			<param name="root">districtOfficeViewAlertVO</param>
 	   		</result>
-	</action>                   
+	</action>
+	 <action name="getAllDivisionDetailsAction" class="alertManagementSystemAction" method="getAllDivisionDetails">
+			<result type="json" name="success">		   
+				<param name="root">alertVOs</param>
+			</result>	
+		</action> 
+	<action name="getAllSubDivisionDetailsAction" class="alertManagementSystemAction" method="getAllSubDivisionDetails">
+			<result type="json" name="success">		   
+				<param name="root">alertVOs</param>
+			</result>	
+	</action>
+	<action name="getAllDistrictDetailsAction" class="alertManagementSystemAction" method="getAllDistrictDetails">
+			<result type="json" name="success">		   
+				<param name="root">alertVOs</param>
+			</result>	
+		</action> 	  	                   
  </package>
 </struts>
