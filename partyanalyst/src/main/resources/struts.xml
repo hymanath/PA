@@ -16752,6 +16752,10 @@
 		    <param name="inputName">idnameVoList</param>
 		</result>								
 	</action>
-	  	                   
+	<action name="getSubTaskFullDetailsAction" class="alertManagementSystemAction" method="getSubTaskFullDetails">			
+		<result name="success" type="stream">			   
+		    <param name="inputName">alertVO</param>
+		</result>								
+	</action>  	                   
  </package>
 </struts>
