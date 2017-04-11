@@ -224,25 +224,24 @@
 				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 			</div>
 			<div class="modal-body modal-insurance">
-				<div id="filter"></div>
+				<!--<div id="filter"></div>-->
 				<div id="alertManagementPopupBody"></div>
 			</div>
 		</div>
-  </div>
+	</div>
 </div>
 <div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document" style="width:85%;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
 			</div>
 			<div class="modal-body">
 				<div id="alertManagementPopupBody1"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
+				<button type="button closeSecondModal" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
   </div>
@@ -267,9 +266,5 @@
 <script src="alertDepartment/js/newAlertManagementSystem.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->
-<script type="text/javascript">
-
-
-</script>
 </body>
 </html>

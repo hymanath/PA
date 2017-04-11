@@ -240,7 +240,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 	popUpFilter('heading');
 	var alertId = '';
 	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount)
-	str+='<div class="row m_top20">';
+	str+='<div class="row">';
 		str+='<div class="col-sm-12" expand-main="false">';
 			str+='<div class="panel-group panel-white panel-left" id="accordion" role="tablist" aria-multiselectable="true">';
 			for(var i in result)
