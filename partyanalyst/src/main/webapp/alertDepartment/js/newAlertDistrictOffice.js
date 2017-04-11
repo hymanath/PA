@@ -90,8 +90,15 @@ $("#dateRangePickerAUM").daterangepicker({
 }
 var overAllAlertIds =[];
 var totalCoutAlertIds =[];
+var userLevelId;
+var userLevelValues = [];
 function buildDistrictOfficerAlertsCountView(result){
 	var str='';
+	if(result !=null){
+		userLevelId = result.levelId;
+		if(result.levelValues != null && result.levelValues.length > 0)
+			userLevelValues=result.levelValues;
+	}
 		if(result !=null && result.list1 !=null && result.list1.length>0){
 		str+='<div class="row">';
 			str+='<div class="col-sm-12 col-xs-12 col-md-12">';
