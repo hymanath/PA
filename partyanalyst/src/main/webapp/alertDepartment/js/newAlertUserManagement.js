@@ -73,3 +73,38 @@ function getIASOfficerMyAssignedSubTasksCountView(){
     }).done(function(result){
     });
 }
+getAllDistrictDetails();
+function getAllDistrictDetails(){
+	var jsObj ={		
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAllDistrictDetailsAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){		
+	});
+}
+getAllDivisionDetails();
+function getAllDivisionDetails(){
+	var jsObj ={
+		districtId : 5,
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAllDivisionDetailsAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){		
+	});
+}
+getAllSubDivisionDetails();
+function getAllSubDivisionDetails(){
+	var jsObj ={
+			divisionId : 6 ,
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAllSubDivisionDetailsAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){		
+	});
+}
