@@ -457,8 +457,10 @@ function responsiveTabs()
 }
 
 
+	
 function onLoadCalls()
 {
+	getDeptNamesForMultiLevel(); 
 	responsiveTabs();
 	
 	getStatusWiseAlertOverviewCnt();
@@ -1746,4 +1748,584 @@ function getCommentsForAlert(alertId){
 		console.log(result);
 		//$("#alertDetails").append(str);
 	});
+}
+ 
+function getDeptNamesForMultiLevel(){   
+  $.ajax({
+      type:'GET',
+      url: 'getDeptListForMultiLvlAction.action',
+    data: {}
+    }).done(function(result){
+		buildDeptNamesForMultiLevel(result);
+		$(".collapseIconForMulti").addClass("ddddddd")
+  });
+}
+function buildDeptNamesForMultiLevel(result){
+	
+	if(result !=null && result.length>0){
+		var str='';
+		 str+='<div class="scrollerBlock">';
+			str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+				str+='<div class="panel-group" id="departmentOverview" role="tablist" aria-multiselectable="true">';
+				for(var i in result){
+				  str+='<div class="panel panel-default">';
+					str+='<div class="panel-heading headingColor" role="tab" id="headingOne'+i+'">';
+					if(i == 0)
+					{
+						str+='<a role="button" class="collapseIconForMulti departmentLevelWiseDetails" attr_departmentId="'+result[i].id+'" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+						str+='<h4 class="panel-title fontColor" >'+result[i].name+'<span style="margin-left:20px"></span>';
+						  str+='</h4>';
+						str+='</a>';
+					}else{
+						str+='<a role="button" class="collapsed collapseIconForMulti departmentLevelWiseDetails" attr_departmentId="'+result[i].id+'"  data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+						  str+='<h4 class="panel-title fontColor">'+result[i].name+'<span style="margin-left:20px"></span>';
+						  str+='</h4>';
+						str+='</a>';
+					}
+					str+='</div>';
+					if(i == 0)
+					{
+						str+='<div id="collapseOne'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					}else{
+						str+='<div id="collapseOne'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+					}
+					
+					  str+='<div class="panel-body">';
+					  str+='<div id="graphViewBlocks'+i+'">';
+						str+='<div id="stateLevelGraphViewId'+result[i].id+'"></div>';
+						str+='<div id="districtLevelGraphViewId'+result[i].id+'"></div>';
+						str+='<div id="divisionLevelGraphViewId'+result[i].id+'"></div>';
+						str+='<div id="subDivisionLevelGraphViewId'+result[i].id+'"></div>';
+						str+='</div>';
+					  str+='</div>';
+					str+='</div>';
+				  str+='</div>';
+				}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		$("#levelWiseDepartmentDetailsId").html(str);
+	}else{
+		$("#levelWiseDepartmentDetailsId").html("No Data Available");
+	}
+}
+
+$(document).on("click",".departmentLevelWiseDetails",function(){	 
+		var departmentId = $(this).attr("attr_departmentId");
+		
+		//state Level
+		//getStateThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,1);
+		//District Level
+		//getDistrictThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,5);
+		//Division Level
+		//getDivisionThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,6);
+		//Sub-Division Level
+		//getSubDivisionThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,7);
+		
+});
+
+//status Wise MultiLevel Blocks Ajax Calls Start
+//state Level
+function getStateThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,scopeId){
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,  
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : scopeId,      
+    sortType : "count",
+    order : "desc"	
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildStatusWiseMultiLevelBlocksDetailsStateLevel(result,departmentId);
+    });
+}
+//District Level
+function getDistrictThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,scopeId){
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,  
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : scopeId,      
+    sortType : "count",
+    order : "desc"	
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildStatusWiseMultiLevelBlocksDetailsDistrictLevel(result,departmentId);
+    });
+}
+//Division Level
+function getDivisionThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,scopeId){
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,  
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : scopeId,      
+    sortType : "count",
+    order : "desc"
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildStatusWiseMultiLevelBlocksDetailsDivisionLevel(result,departmentId);
+    });
+}
+
+//Sub-Division Level
+function getSubDivisionThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,scopeId){
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,  
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : scopeId,      
+    sortType : "count",
+    order : "desc"
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildStatusWiseMultiLevelBlocksDetailsSubDivision(result,departmentId);
+    });
+}
+
+//status Wise MultiLevel Blocks Ajax Calls End
+function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
+	{
+		'use strict';
+		
+		$('#'+id).highcharts({
+			chart: type,
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: null
+			},
+			xAxis: xAxis,
+			yAxis: yAxis,
+			tooltip: tooltip,
+			plotOptions: plotOptions,
+			legend: legend,
+			series: data
+		});
+	}
+	
+
+function buildStatusWiseMultiLevelBlocksDetailsStateLevel(result,departmentId){
+	var str='';
+	
+	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+			str+='<h4>STATE LEVEL</h4>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
+			str+='<ul class="switch-btn">';
+				str+='<li class="active" attr_type="overview">status overview</li>';
+				str+='<li attr_type="status">status</li>';
+			str+='</ul>';
+		str+='</div>';
+		str+='<div id="stateLevelGraphStausWise"></div>';
+	str+='</div>';
+	
+	$("#stateLevelGraphViewId"+departmentId).html(str);
+	
+	var mainlocationArr=[];
+	if(result !=null && result.length>0){
+		var locationNamesArr=[];
+		
+		for(var i in result){
+				locationNamesArr.push(result[i].name)
+			if(result[i].subList !=null &&  result[i].subList.length>0){
+				for(var j in result[i].subList){
+					var locationArr=[];
+					var locationColorArr;
+					locationArr.push(result[i].subList[j].count);
+					locationColorArr = result[i].subList[j].severtyColor
+					var obj={
+								name: result[i].subList[j].name,
+								data: locationArr,
+								color:locationColorArr
+							}
+					
+					mainlocationArr.push(obj);
+					
+				}
+			}
+		}
+		
+		var data = mainlocationArr
+			var id = 'stateLevelGraphStausWise';
+			var type = {
+				type: 'bar',
+				backgroundColor:'transparent'
+				
+			}
+			var legend = {
+				verticalAlign:'top',
+				enabled: true
+			}
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				labels: {
+						enabled:false
+					},
+				stackLabels: {
+					//useHTML: true,
+					//align: 'left',
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					 formatter: function() {
+						
+						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return (this.total);
+					} 
+					
+				}
+				
+			}
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: locationNamesArr
+			}
+			var plotOptions =  {
+	             series: {
+					stacking: 'normal',
+					pointWidth: 30,
+					gridLineWidth: 15
+				}
+	        }
+			var tooltip = {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			};
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		
+	}
+}
+
+function buildStatusWiseMultiLevelBlocksDetailsDistrictLevel(result,departmentId){
+	var str='';
+	
+	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+			str+='<h4>DISTRICT LEVEL</h4>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
+			str+='<ul class="switch-btn">';
+				str+='<li class="active" attr_type="overview">status overview</li>';
+				str+='<li attr_type="status">status</li>';
+			str+='</ul>';
+		str+='</div>';
+		str+='<div id="districtLevelGraphStausWise"></div>';
+	str+='</div>';
+	
+	$("#districtLevelGraphViewId"+departmentId).html(str);
+	
+	
+}
+function buildStatusWiseMultiLevelBlocksDetailsDivisionLevel(result,departmentId){
+	var str='';
+	
+	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+			str+='<h4>STATE LEVEL</h4>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
+			str+='<ul class="switch-btn">';
+				str+='<li class="active" attr_type="overview">status overview</li>';
+				str+='<li attr_type="status">status</li>';
+			str+='</ul>';
+		str+='</div>';
+		str+='<div id="divisionGraphStausWise"></div>';
+	str+='</div>';
+	
+	$("#divisionLevelGraphViewId"+departmentId).html(str);
+	
+	var mainlocationArrDiv=[];
+	if(result !=null && result.length>0){
+		for(var i in result){
+			var locationNamesArrDiv=[];
+				locationNamesArrDiv.push(result[i].name)
+			if(result[i].subList !=null &&  result[i].subList.length>0){
+				for(var j in result[i].subList){
+					var locationArrDiv=[];
+					var locationColorArrDiv;
+					locationArrDiv.push(result[i].subList[j].count);
+					locationColorArrDiv = result[i].subList[j].severtyColor
+					var obj={
+								name: result[i].subList[j].name,
+								data: locationArrDiv,
+								color:locationColorArrDiv
+							}
+					
+					mainlocationArrDiv.push(obj);
+					
+				}
+			}
+		}
+		
+		var data = mainlocationArrDiv
+			var id = 'divisionGraphStausWise';
+			var type = {
+				type: 'bar',
+				backgroundColor:'transparent'
+				
+			}
+			var legend = {
+				verticalAlign:'top',
+				enabled: true
+			}
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				labels: {
+						enabled:false
+					},
+				stackLabels: {
+					//useHTML: true,
+					//align: 'left',
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					 formatter: function() {
+						
+						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return (this.total);
+					} 
+					
+				}
+				
+			}
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: locationNamesArrDiv
+			}
+			var plotOptions =  {
+	             series: {
+					stacking: 'normal',
+					pointWidth: 30,
+					gridLineWidth: 15
+				}
+	        }
+			var tooltip = {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			};
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		
+	}
+}
+function buildStatusWiseMultiLevelBlocksDetailsSubDivision(result,departmentId){
+	var str='';
+	
+	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+			str+='<h4>STATE LEVEL</h4>';
+		str+='</div>';
+		str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
+			str+='<ul class="switch-btn">';
+				str+='<li class="active" attr_type="overview">status overview</li>';
+				str+='<li attr_type="status">status</li>';
+			str+='</ul>';
+		str+='</div>';
+		str+='<div id="subDivisionGraphStausWise"></div>';
+	str+='</div>';
+	
+	$("#subDivisionLevelGraphViewId"+departmentId).html(str);
+	
+	var mainlocationArrSD=[];
+	if(result !=null && result.length>0){
+		for(var i in result){
+			var locationNamesArrSD=[];
+				locationNamesArrSD.push(result[i].name)
+			if(result[i].subList !=null &&  result[i].subList.length>0){
+				for(var j in result[i].subList){
+					var locationArrSD=[];
+					var locationColorArrSD;
+					locationArrSD.push(result[i].subList[j].count);
+					locationColorArrSD = result[i].subList[j].severtyColor
+					var obj={
+								name: result[i].subList[j].name,
+								data: locationArrSD,
+								color:locationColorArrSD
+							}
+					
+					mainlocationArrSD.push(obj);
+					
+				}
+			}
+		}
+		
+		var data = mainlocationArrSD
+			var id = 'subDivisionGraphStausWise';
+			var type = {
+				type: 'bar',
+				backgroundColor:'transparent'
+				
+			}
+			var legend = {
+				verticalAlign:'top',
+				enabled: true
+			}
+			var yAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				labels: {
+						enabled:false
+					},
+				stackLabels: {
+					//useHTML: true,
+					//align: 'left',
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					 formatter: function() {
+						
+						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return (this.total);
+					} 
+					
+				}
+				
+			}
+			var xAxis = {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: locationNamesArrSD
+			}
+			var plotOptions =  {
+	             series: {
+					stacking: 'normal',
+					pointWidth: 30,
+					gridLineWidth: 15
+				}
+	        }
+			var tooltip = {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			};
+			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		
+	}
+}
+//overview
+//getStateThenGovtDeptScopeWiseAlertCount();
+function getStateThenGovtDeptScopeWiseAlertCount(){
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,  
+    govtDepartmentId : 49,
+    parentGovtDepartmentScopeId : 7,
+    sortType : "count",
+    order : "desc"  
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getStateThenGovtDeptScopeWiseAlertCountAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+    
+    });
 }

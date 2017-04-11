@@ -205,7 +205,8 @@
 										</div>
 									</div>
 								</div>
-								
+								<!-- Level Wise Department Wise  -->
+									<div id="levelWiseDepartmentDetailsId"></div>
 							</div>
 						</div>
 					</div>
@@ -266,5 +267,9 @@
 <script src="alertDepartment/js/newAlertManagementSystem.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->
+<script type="text/javascript">
+
+
+</script>
 </body>
 </html>
