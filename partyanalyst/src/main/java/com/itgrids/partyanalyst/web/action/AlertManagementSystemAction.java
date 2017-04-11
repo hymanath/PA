@@ -1024,7 +1024,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			   successMsg = alertManagementSystemService.assigningAlertToOfficer(alertAssigningVO);
 			   
 			} catch (Exception e) {
-				LOG.error("Exception Raised in assigningAlertToOfficerNew() in CccDashboardAction",e);
+				LOG.error("Exception Raised in assigningAlertToOfficerNew() in AlertManagementSystemAction",e);
 			}
 			   return Action.SUCCESS;
 		}
@@ -1041,7 +1041,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			   successMsg = alertManagementSystemService.assigningSubTaskToOfficer(alertAssigningVO);
 			   
 			} catch (Exception e) {
-				LOG.error("Exception Raised in assigningSubTaskToOfficer() in CccDashboardAction",e);
+				LOG.error("Exception Raised in assigningSubTaskToOfficer() in AlertManagementSystemAction",e);
 			}
 			   return Action.SUCCESS;
 		}
@@ -1056,7 +1056,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					idNameVO = alertManagementSystemService.getGovtSubLevelInfo(departmentId,levelId,levelValue);
 				   
 				} catch (Exception e) {
-					LOG.error("Exception Raised in getGovtSubLevelInfo() in CccDashboardAction",e);
+					LOG.error("Exception Raised in getGovtSubLevelInfo() in AlertManagementSystemAction",e);
 				}
 				   return Action.SUCCESS;
 			}
@@ -1594,5 +1594,35 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;
 		}
+		
+		public String getAllDivisionDetails(){
+			try {
+				jObj = new JSONObject(getTask());
+				Long districtId = jObj.getLong("districtId");
+				alertVOs = alertManagementSystemService.getAllDivisionDetails(districtId);
+			} catch (Exception e) {
+				LOG.error("Exception Raised in getAllDivisionDetails() in AlertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+		public String getAllSubDivisionDetails(){
+			try {
+				jObj = new JSONObject(getTask());				
+				Long divisionId = jObj.getLong("divisionId");
+				alertVOs = alertManagementSystemService.getAllSubDivisionDetails(divisionId);
+			} catch (Exception e) {
+				LOG.error("Exception Raised in getAllSubDivisionDetails() in AlertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
+		public String getAllDistrictDetails(){
+			try {
+				jObj = new JSONObject(getTask());
+				alertVOs = alertManagementSystemService.getAllDistrictDetails();
+			} catch (Exception e) {
+				LOG.error("Exception Raised in getAllDistrictDetails() in AlertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
 }
-//public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order)
+//public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId)
