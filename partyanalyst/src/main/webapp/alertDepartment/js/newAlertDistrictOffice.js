@@ -566,7 +566,6 @@ getDistrictOfficerGraphicalRepresentation(6);
 getDistrictOfficerGraphicalRepresentation(7);
 function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 	
-	
 		var userId="";
 		var fromDateStr= "";
 		var toDateStr= "";
@@ -596,4 +595,48 @@ function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 			});
 	
 }
+//getDistrictLevelDeptWiseFlterClick();
+function getDistrictLevelDeptWiseFlterClick()
+{
+	
+	var jsObj = {
+		deptId : deptId,
+		levelId : levelId,
+		statusId : statusId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelDeptWiseFlterClickAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		//buildAssignedOfficersDetailsForAlert(result);
+	});
+}
+//getDistrictLevelWiseClick();
+function getDistrictLevelWiseClick()
+{
+	var levelValues = [];
+	  //levelValues.push(7);
+	var fromDateStr= "";
+	var toDateStr= "";
+	var jsObj = {
+		stateId : 1,
+		fromDate : fromDateStr,
+		toDate : toDateStr,
+		govtDepartmentId : 49,
+		parentGovtDepartmentScopeId : 5,
+		govtDeptWorkLocId : 8,
+		statusId : 0,
+		childGovtScopeId : 8,
+		status : "alert",
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelWiseClickAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		
+	});
+}
+
 

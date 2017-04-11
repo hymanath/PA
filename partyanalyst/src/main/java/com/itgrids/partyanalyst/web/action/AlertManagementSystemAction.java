@@ -1451,5 +1451,35 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;	
 		}
+		public String getDistrictLevelWiseClick(){
+			try{
+				session = request.getSession();
+			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());		
+				Long stateId = jObj.getLong("stateId");
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");
+				Long statusId = jObj.getLong("statusId");
+				Long childGovtScopeId = jObj.getLong("childGovtScopeId");
+				String fromDateStr = jObj.getString("fromDate");
+				String toDateStr = jObj.getString("toDate");
+				//Long levelId = jObj.getLong("levelId");
+				/*JSONArray levelValuesArr = jObj.getJSONArray("levelValues");  
+					List<Long> levelValuesIdList = new ArrayList<Long>();
+				 for (int i = 0; i < levelValuesArr.length(); i++){
+					levelValuesIdList.add(Long.parseLong(levelValuesArr.getString(i)));        
+				 }*/		 
+				String status =jObj.getString("status");
+				Long govtDeptWorkLocId = jObj.getLong("govtDeptWorkLocId");
+				
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelWiseClick(userId,fromDateStr,toDateStr,stateId,govtDepartmentId,parentGovtDepartmentScopeId,govtDeptWorkLocId,statusId,childGovtScopeId,status);
+				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getDistrictLevelWiseClick() of alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
 }
 //public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId)
