@@ -138,11 +138,11 @@
 												</li>
 												</ul>
 											</div>
-											<div class="col-sm-4 col-xs-12 col-md-4 sortingDivCls">
+											<div class="col-sm-4 col-xs-12 col-md-4 sortingDivClsDept">
 												<select class="form-control locationWiseDeptOnChange" id="govtDepartmentsLocId" >
 												</select>
 											</div>
-											<div class="col-sm-4 col-xs-12 col-md-3 pull-right sortingDivCls">
+											<div class="col-sm-4 col-xs-12 col-md-3 pull-right sortingDivClsLevel" style="display:none">
 												<select class="form-control locationWiseDistLevelOnChange" id="districtWiseLevelLocId" >
 												</select>
 											</div>
