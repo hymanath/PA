@@ -907,6 +907,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;	
 	}
+	/*
+	 * overview
+	 */
 	public String getStateThenGovtDeptScopeWiseAlertCount(){
 		try {
 			session = request.getSession();
@@ -936,12 +939,20 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 			String sortType = jObj.getString("sortType");
 			String order = jObj.getString("order");
-			alertCoreDashBoardVOs = alertManagementSystemService.getStateThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order);
+			Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
+			Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
+			Long subDivisionWorkLocationId = jObj.getLong("subDivisionWorkLocationId");
+			String alertType = null;
+			alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 		}
 		return Action.SUCCESS;	
 	}
+	/*	getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(String fromDateStr, String toDateStr, Long stateId, 
+		List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+			Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId)*/
 	
 	public String getDistrictLevelDeptWiseFlterClick(){
 		try{
@@ -1602,6 +1613,209 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;
 		}
+	 public String getDistIdListForDistFilter(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				idnameVoList = alertManagementSystemService.getDistIdListForDistFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId);
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+	 public String getDistIdListForDivisionFilter(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				
+				idnameVoList = alertManagementSystemService.getDistIdListForDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId);
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+	 public String getDivisionIdListForDivisionFilter(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
+				idnameVoList = alertManagementSystemService.getDivisionIdListForDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId);
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+	 public String getDistrictIdListForSubDivisionFilter(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				idnameVoList = alertManagementSystemService.getDistrictIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId);
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+	 public String getDivisionIdListForSubDivisionFilter(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
+				idnameVoList = alertManagementSystemService.getDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId);
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
+	 public String getSubDivisionIdListForSubDivisionFilter(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
+				Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
+				idnameVoList = alertManagementSystemService.getSubDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,divisionWorkLocationId);
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
 		
 		public String getAllDivisionDetails(){
 			try {
@@ -1642,4 +1856,3 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			return Action.SUCCESS;	
 		}
 }
-//public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId)

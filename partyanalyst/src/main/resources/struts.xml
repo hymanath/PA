@@ -16807,6 +16807,37 @@
 			<result type="json" name="success">
 	   			<param name="root">districtOfficeViewAlertVO</param>
 	   		</result>
+	</action> 
+	<action name="getDistIdListForDistFilterAction" class="alertManagementSystemAction" method="getDistIdListForDistFilter">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+	</action>
+	<action name="getDistIdListForDivisionFilterAction" class="alertManagementSystemAction" method="getDistIdListForDivisionFilter">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+	</action>
+	<action name="getDivisionIdListForDivisionFilterAction" class="alertManagementSystemAction" method="getDivisionIdListForDivisionFilter">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+	</action>
+	<action name="getDistrictIdListForSubDivisionFilterAction" class="alertManagementSystemAction" method="getDistrictIdListForSubDivisionFilter">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+	</action>
+	<action name="getDivisionIdListForSubDivisionFilterAction" class="alertManagementSystemAction" method="getDivisionIdListForSubDivisionFilter">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+	</action>  
+	<action name="getSubDivisionIdListForSubDivisionFilterAction" class="alertManagementSystemAction" method="getSubDivisionIdListForSubDivisionFilter">
+			<result type="json" name="success">
+	   			<param name="root">idnameVoList</param>
+	   		</result>
+	</action>                
 	</action>
 	 <action name="getAllDivisionDetailsAction" class="alertManagementSystemAction" method="getAllDivisionDetails">
 			<result type="json" name="success">		   
