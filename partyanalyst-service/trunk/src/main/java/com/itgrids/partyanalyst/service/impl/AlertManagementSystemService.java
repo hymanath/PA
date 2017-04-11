@@ -3764,5 +3764,40 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
         	return finalList;
         }
-
+      	
+      	public AlertVO getSubTaskFullDetails(Long subTaskId){
+      		AlertVO finalVO = new AlertVO();
+      		try {
+      			GovtAlertSubTask gast = govtAlertSubTaskDAO.get(subTaskId);
+      			if(gast != null){
+      				finalVO.setSubTaskId(gast.getGovtAlertSubTaskId());
+      				finalVO.setAlertId(gast.getAlertId());
+      				finalVO.setTitle(gast.getTitle());
+      				finalVO.setDesc(gast.getDescription() != null ? gast.getDescription():"");
+      				finalVO.setSeverity(gast.getAlertSeverityId() != null ? gast.getAlertSeverityId() : null);
+      				finalVO.setDueDate(gast.getCreatedTime() != null ? gast.getDueDate().toString():"");
+      				finalVO.setStatusId(gast.getAlertSubTaskStatusId());
+      				finalVO.setDate1(new SimpleDateFormat("dd/MM/yyy").format(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse((gast.getCreatedTime().toString()))));
+      				if(gast.getAlert().getAlertCategoryId() == 2l)
+      					finalVO.setImageUrl(gast.getAlert().getImageUrl());
+      				
+      				//get sub task comment details
+      				List<Object[]> objList = govtOfficerSubTaskTrackingDAO.getCommentDetialsForSubTasks(subTaskId);
+      				if(objList != null && objList.size() > 0){
+      					for (Object[] objects : objList) {
+							IdNameVO voIn = new IdNameVO();
+							voIn.setId((Long)objects[0]);
+							voIn.setName(objects[1].toString());
+							voIn.setDateStr(objects[3].toString());
+							finalVO.getIdNamesList().add(voIn);
+						}
+      				}
+      				
+      				
+      			}
+			} catch (Exception e) {
+				LOG.error("Error occured getSubTaskFullDetails() method of AlertManagementSystemService",e);
+			}
+      		return finalVO;
+      	}
 }

@@ -56,8 +56,29 @@ public class AlertVO {
 	private String assignedDate;
 	private Double percentage = 0.0d;
 	private Long alertCnt = 0l;
+	private Long subTaskId;
+	private String dueDate;
+	private String imageUrl;
 	
 	
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	public String getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+	public Long getSubTaskId() {
+		return subTaskId;
+	}
+	public void setSubTaskId(Long subTaskId) {
+		this.subTaskId = subTaskId;
+	}
 	private List<Long> deptIdList = new ArrayList<Long>();
 	
 	public Long getConstituencyNo() {
