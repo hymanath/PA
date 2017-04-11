@@ -959,7 +959,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			List<Long> todayAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"today");
 			List<Long> overAllAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"overAll");
 			// My alerts Status wise count
-			
+			if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
 			setStatusWiseCount( myAlertsOverAllList, returnVO,"myAlerts",Long.valueOf(myAlertsTodayList.size()),todayAlertIds,overAllAlertIds);
 			
 			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
@@ -972,6 +972,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			List<Long> todayMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","mySubTasks");
 			List<Long> overAllMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","mySubTasks");
 			// My SubTasks Status wise count
+			
+			if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
 			setStatusWiseCount( myAlertsOverAllList, returnVO,"mySubTasks",Long.valueOf(myAlertsTodayList.size()),todayMySubTaskAlertIds,overAllMySubTaskAlertIds);
 			
 			
@@ -985,6 +987,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			List<Long> todayMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","myAssignedSubTasks");
 			List<Long> overAllMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","myAssignedSubTasks");
 			// My Assigned SubTasks Status wise count
+			if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
 			setStatusWiseCount( myAlertsOverAllList, returnVO,"myAssignedSubTasks",Long.valueOf(myAlertsTodayList.size()),todayMyAssSubTaskAlertIds,overAllMyAssSubTaskAlertIds);
 			
 		}catch(Exception e){
@@ -2707,36 +2710,32 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           		try{
           			
           			Date fromDate = null;
-          			Date toDate = null;
-          			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-          			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
-          				fromDate = sdf.parse(fromDateStr);
-          				toDate = sdf.parse(toDateStr);
-          			}
-          			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-          			
-          			List<Long> levelValues = new ArrayList<Long>();    
-          			Long levelId = 0L;
-          			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
-          			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
-          				for(Object[] param : lvlValueAndLvlIdList){
-          					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-          					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
-          				}
-          			}
-          			
-          			List<AlertCoreDashBoardVO> govtDeptScopes = new ArrayList<AlertCoreDashBoardVO>();
-          			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
-          			List<Long> deptScopeIdList = new ArrayList<Long>();
-          			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
-          				for(Object [] param : childDeptScopeIdList){
-          					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-          					AlertCoreDashBoardVO scopeVO = new AlertCoreDashBoardVO();
-          					scopeVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
-          					scopeVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
-          					govtDeptScopes.add(scopeVO);
-          				}
-          			}
+        			Date toDate = null;
+        			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+        				fromDate = sdf.parse(fromDateStr);
+        				toDate = sdf.parse(toDateStr);
+        			}
+        			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+        			
+        			List<Long> levelValues = new ArrayList<Long>();    
+        			Long levelId = 0L;
+        			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+        			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+        				for(Object[] param : lvlValueAndLvlIdList){
+        					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+        					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+        				}
+        			}
+        			
+        			
+        			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+        			List<Long> deptScopeIdList = new ArrayList<Long>();
+        			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+        				for(Object [] param : childDeptScopeIdList){
+        					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+        				}
+        			}
           			
           			List<Object[]> alertList =null;
           			if(alertType != null && alertType.equalsIgnoreCase("alert")){
@@ -2745,75 +2744,68 @@ public class AlertManagementSystemService extends AlertService implements IAlert
          				 	 alertList = govtAlertSubTaskDAO.getDistrictOfficerSubTaskAlerts(fromDate,toDate,stateId,null,null,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,"scopes");
           			}
           			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
-          			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
-          				prepareResultForState(alertList,returnList,sortingType,order);
-          				return returnList;
-          			}
-          			
-          			Map<Long,String> locIdAndLocNameMap = new LinkedHashMap<Long,String>();
-          			Map<Long,String> statusIdAndStatusName = new LinkedHashMap<Long,String>();
-          			Map<Long,String> statusIdAndColor = new LinkedHashMap<Long,String>();
-          			Map<Long,LinkedHashMap<Long,Long>> locIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
-          			LinkedHashMap<Long,Long> statusIdAndAlertCountMap = null;
-          			
-          			if(alertList != null && alertList.size() > 0){ 
-          				for(Object[] param : alertList){
-          					locIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[2]));
-          					statusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[4]));
-          					statusIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[6]));
-          					
-          					statusIdAndAlertCountMap = locIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-          					if(statusIdAndAlertCountMap == null){
-          						statusIdAndAlertCountMap = new LinkedHashMap<Long,Long>();
-          						locIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusIdAndAlertCountMap);
-          					}
-          					statusIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[5]));
-          				}
-          			}
-          			
-          			List<AlertCoreDashBoardVO> innerList = null;
-          			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
-          			AlertCoreDashBoardVO innerVO = null;
-          			if(locIdThenStatusIdThenAlertCount != null && locIdThenStatusIdThenAlertCount.size() > 0){
-          				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenStatusIdThenAlertCount.entrySet()){
-          					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
-          					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
-          					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
-          					innerList = new ArrayList<AlertCoreDashBoardVO>();
-          					Long total = new Long(0L);
-          					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){  
-          						innerVO = new AlertCoreDashBoardVO();
-          						innerVO.setId(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()));
-          						innerVO.setName(statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndStatusName.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
-          						innerVO.setSevertyColor(statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) != null ? statusIdAndColor.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey())) : "");
-          						total = total + commonMethodsUtilService.getLongValueForObject(innerEntry.getValue());
-          						innerVO.setCount(commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
-          						innerList.add(innerVO);
-          					}
-          					alertCoreDashBoardVO.setTotalCount(total);
-          					alertCoreDashBoardVO.setSubList(innerList);
-          					returnList.add(alertCoreDashBoardVO);
-          				}
-          			}
-          			System.out.println("HI");
-          			if(returnList != null && returnList.size() > 0){
-          				returnList.get(0).getSubList1().addAll(govtDeptScopes);
-          				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
-          					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
-          						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
-          					}else{
-          						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
-          					}
-          				}
-          				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
-          					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
-          						Collections.sort(returnList, alphabeticalAscSortLvlWise);
-          					}else{
-          						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
-          					}
-          				}
-          			}
-          			return returnList;
+        			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+        				prepareResultForState(alertList,returnList,sortingType,order);
+        				return returnList;
+        			}
+        			
+        			Map<Long,String> locIdAndLocNameMap = new LinkedHashMap<Long,String>();
+        			Map<Long,String> statusIdAndStatusName = new LinkedHashMap<Long,String>();
+        			Map<Long,String> statusIdAndColor = new LinkedHashMap<Long,String>();
+        			Map<Long,LinkedHashMap<Long,Long>> locIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+        			LinkedHashMap<Long,Long> statusIdAndAlertCountMap = null;
+        			
+        			if(alertList != null && alertList.size() > 0){ 
+        				for(Object[] param : alertList){
+        					locIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[2]));
+        					statusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[4]));
+        					statusIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[6]));
+        					
+        					statusIdAndAlertCountMap = locIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+        					if(statusIdAndAlertCountMap == null){
+        						statusIdAndAlertCountMap = new LinkedHashMap<Long,Long>();
+        						locIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusIdAndAlertCountMap);
+        					}
+        					statusIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[5]));
+        				}
+        			}
+        			
+        			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+        			if(locIdThenStatusIdThenAlertCount != null && locIdThenStatusIdThenAlertCount.size() > 0){
+        				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenStatusIdThenAlertCount.entrySet()){
+        					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+        					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+        					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+        					buildStatusWiseTemplate(alertCoreDashBoardVO,statusIdAndStatusName,statusIdAndColor);
+        					Long total = new Long(0L);
+        					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
+        						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+        							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+        							total = total + outerEntry.getValue().get(boardVO.getId());
+        						}
+        					}
+        					alertCoreDashBoardVO.setTotalCount(total);
+        					returnList.add(alertCoreDashBoardVO);
+        				}
+        			}
+        			
+        			if(returnList != null && returnList.size() > 0){
+        				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+        					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+        						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+        					}else{
+        						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+        					}
+        				}
+        				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+        					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+        						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+        					}else{
+        						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+        					}
+        				}
+        			}
+        			return returnList;
           			
           		}catch(Exception e){
           			e.printStackTrace();
