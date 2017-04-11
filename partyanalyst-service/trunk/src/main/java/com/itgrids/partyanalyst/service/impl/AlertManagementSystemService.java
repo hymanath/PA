@@ -54,6 +54,7 @@ import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
@@ -3554,6 +3555,24 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				LOG.error("Error occured getSubTaskFullDetails() method of AlertManagementSystemService",e);
 			}
       		return finalVO;
+      	}
+      	
+      	public List<KeyValueVO> getDocumentsForAlert(Long alertId){
+      		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+      		try {
+				List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getDocumentsForAlert(alertId);
+				if(objList != null && objList.size() > 0){
+					for (Object[] objects : objList) {
+						KeyValueVO vo = new KeyValueVO();
+						vo.setId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						voList.add(vo);
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Error occured getDocumentsForAlert() method of AlertManagementSystemService",e);
+			}
+      		return voList;
       	}
      	public List<AlertCoreDashBoardVO> getDistrictLevelWiseClick(Long userId,String fromDateStr,String toDateStr,Long stateId,Long govtDepartmentId,Long parentGovtDepartmentScopeId,Long govtDeptWorkLocId,Long statusId,Long childGovtScopeId,String status){
     		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
