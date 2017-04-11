@@ -90,14 +90,14 @@ $("#dateRangePickerAUM").daterangepicker({
 }
 var overAllAlertIds =[];
 var totalCoutAlertIds =[];
-var userLevelId;
-var userLevelValues = [];
+var globalUserLevelId;
+var globalUserLevelValues = [];
 function buildDistrictOfficerAlertsCountView(result){
 	var str='';
 	if(result !=null){
-		userLevelId = result.levelId;
+		globalUserLevelId = result.levelId;
 		if(result.levelValues != null && result.levelValues.length > 0)
-			userLevelValues=result.levelValues;
+			globalUserLevelValues=result.levelValues;
 	}
 		if(result !=null && result.list1 !=null && result.list1.length>0){
 		str+='<div class="row">';
