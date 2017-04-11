@@ -70,7 +70,31 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private Long subTaskId;
 	private List<KeyValueVO> keyValueVOList;
 	
+	private List<File> imageForDisplay = new ArrayList<File>();
+	private List<String> imageForDisplayContentType = new ArrayList<String>();
+	private List<String> imageForDisplayFileName = new ArrayList<String>();
 	
+	
+	
+	public List<File> getImageForDisplay() {
+		return imageForDisplay;
+	}
+	public void setImageForDisplay(List<File> imageForDisplay) {
+		this.imageForDisplay = imageForDisplay;
+	}
+	public List<String> getImageForDisplayContentType() {
+		return imageForDisplayContentType;
+	}
+	public void setImageForDisplayContentType(
+			List<String> imageForDisplayContentType) {
+		this.imageForDisplayContentType = imageForDisplayContentType;
+	}
+	public List<String> getImageForDisplayFileName() {
+		return imageForDisplayFileName;
+	}
+	public void setImageForDisplayFileName(List<String> imageForDisplayFileName) {
+		this.imageForDisplayFileName = imageForDisplayFileName;
+	}
 	public List<KeyValueVO> getKeyValueVOList() {
 		return keyValueVOList;
 	}
