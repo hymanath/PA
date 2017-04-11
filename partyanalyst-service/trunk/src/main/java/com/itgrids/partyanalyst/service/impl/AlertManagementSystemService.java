@@ -693,12 +693,16 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						}
 						
 						AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
+						if(statusId == 8l || statusId == 9l)
+							aaon.setIsApproved("N");
 						aaon.setAlertStatusId(statusId);
 						aaon.setUpdatedBy(userId);
 						aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						alertAssignedOfficerNewDAO.save(aaon);
 						
 						AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+							if(statusId == 8l || statusId == 9l)
+								aaon.setIsApproved("N");
 						aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
 						aaotn.setAlertId(aaon.getAlertId());
 						aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
