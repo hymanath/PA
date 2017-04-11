@@ -447,7 +447,7 @@ function buildDistrictOfficerAlertsCountView(result){
 
 //getSubOrdinateAlertsOverview();
 function getSubOrdinateAlertsOverview(){
-	var userId="";
+	var userId=19601;
 	var fromDateStr= "";
 	var toDateStr= "";
 	var govtScopeIds=[];
@@ -566,7 +566,7 @@ getDistrictOfficerGraphicalRepresentation(6);
 getDistrictOfficerGraphicalRepresentation(7);
 function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 	
-		var userId="";
+		var userId=19601;
 		var fromDateStr= "";
 		var toDateStr= "";
 		var locationValues=[];
@@ -575,6 +575,7 @@ function getDistrictOfficerGraphicalRepresentation(parentScopeId){
 		var paperIdArr =[];
 		var chanelIdArr =[];
 		var jObj = {
+			userId:userId,
 		fromDate : currentFromDate, 
 		toDate : currentToDate,
 		stateId:1,
