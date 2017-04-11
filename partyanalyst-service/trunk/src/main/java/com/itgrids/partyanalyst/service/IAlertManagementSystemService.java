@@ -73,4 +73,9 @@ public interface IAlertManagementSystemService {
 	public List<IdNameVO>  getStatusCompletionInfo(Long alertId,Long levelValue);
 	public AlertVO getSubTaskFullDetails(Long subTaskId);
 	public List<AlertCoreDashBoardVO> getDistrictLevelWiseClick(Long userId,String fromDateStr,String toDateStr,Long stateId,Long govtDepartmentId,Long parentGovtDepartmentScopeId,Long govtDeptWorkLocId,Long statusId,Long childGovtScopeId,String status);
+	public List<AlertVO> stateLevelDeptOfficerStatusOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
+	public List<AlertVO> stateLevelDeptOfficerLocationLevelOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
+	public DistrictOfficeViewAlertVO getIASOfficerMyAlertsCountView(Long userId);
+	public DistrictOfficeViewAlertVO getIASOfficerMyAssignedSubTasksCountView(Long userId);
+	 public DistrictOfficeViewAlertVO getIASOfficerMySubTasksCountView(Long userId);
 }

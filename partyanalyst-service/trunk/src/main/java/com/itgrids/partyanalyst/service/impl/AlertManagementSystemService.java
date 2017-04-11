@@ -1595,30 +1595,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				toDate = sdf.parse(fromDateStr);
 			}
 			List<Object[]> scopeDetlsLst = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetails(scopeId);
-			List<AlertVO> scopeVoList = new ArrayList<AlertVO>(0);
-			if(scopeDetlsLst != null && scopeDetlsLst.size() > 0){
-				for (Object[] objects : scopeDetlsLst) {
-					AlertVO vo = new AlertVO();
-						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						vo.setColor(commonMethodsUtilService.getStringValueForObject(objects[2]));
-					scopeVoList.add(vo);
-				}
-			}
 			if(type.equalsIgnoreCase("alert")){
 				//deptId-0,deptname-1,scopeId-2,level-3,,color-4,count-4
 				List<Object[]> deptWiseLocationLvlLList = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseLocationLevelView(fromDate, toDate,deptId);
 				if(deptWiseLocationLvlLList != null && deptWiseLocationLvlLList.size() > 0){
-					setDeptWiseGraphView(deptWiseLocationLvlLList,finalVoList);
+					setDeptWiseGraphView(deptWiseLocationLvlLList,finalVoList,scopeDetlsLst);
 				}
 			}else if(type.equalsIgnoreCase("subTask")){
 				List<Object[]> deptWiseSubTaskList = govtAlertSubTaskDAO.getDistrictLevelDeptWiseLocationLevelViewForSubtask(fromDate, toDate, deptId);
 				if(deptWiseSubTaskList != null && deptWiseSubTaskList.size() > 0){
-					setDeptWiseGraphView(deptWiseSubTaskList,finalVoList);
+					setDeptWiseGraphView(deptWiseSubTaskList,finalVoList,scopeDetlsLst);
 				}
 			}
 			if(finalVoList != null && finalVoList.size() > 0){
-				finalVoList.get(0).setSubList1(scopeVoList);
 				for (AlertVO finalVo : finalVoList) {
 					if(finalVo.getSubList2() != null && finalVo.getSubList2().size() > 0){
 						Long totalCount = 0l;
@@ -1649,32 +1638,20 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			//statuisId-0,status-1,color-2,shortName-3
 			List<Object[]> statusList = alertDepartmentStatusDAO.getAllStatuses();
-			List<AlertVO> statusVoList = new ArrayList<AlertVO>(0);
-			if(statusList != null && statusList.size() > 0){
-				for (Object[] objects : statusList) {
-					AlertVO vo = new AlertVO();
-						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
-						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						vo.setColor(commonMethodsUtilService.getStringValueForObject(objects[2]));
-						vo.setSeverityStr(commonMethodsUtilService.getStringValueForObject(objects[3]));//shortname
-					statusVoList.add(vo);
-				}
-			}
 			if(type.equalsIgnoreCase("alert")){
 				//deptId-0,deptName-1,statusId-2,statusName-3,color-4,Count-5
 				List<Object[]> deptWiseStatusViewLst = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseStatusOverView(fromDate, toDate,scopeId,deptId,levelId);
 				if(deptWiseStatusViewLst != null && deptWiseStatusViewLst.size() > 0){
-					setDeptWiseGraphView(deptWiseStatusViewLst,finalVoList);
+					setDeptWiseGraphView(deptWiseStatusViewLst,finalVoList,statusList);
 				}
 			}else if(type.equalsIgnoreCase("subTask")){
 				//deptId-0,deptName-1,statusId-2,statusName-3,color-4,Count-5
 				List<Object[]> deptWiseSubtaskLst = govtAlertSubTaskDAO.getDistrictLevelDeptWiseStatusOverViewForSubTask(fromDate, toDate, scopeId,deptId,levelId);
 				if(deptWiseSubtaskLst != null && deptWiseSubtaskLst.size() > 0){
-					setDeptWiseGraphView(deptWiseSubtaskLst,finalVoList);
+					setDeptWiseGraphView(deptWiseSubtaskLst,finalVoList,statusList);
 				}
 			}
 			if(finalVoList != null && finalVoList.size() > 0){
-				finalVoList.get(0).setSubList1(statusVoList);
 				for (AlertVO finalVo : finalVoList) {
 					if(finalVo.getSubList2() != null && finalVo.getSubList2().size() > 0){
 						Long totalCount = 0l;
@@ -1693,23 +1670,24 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return finalVoList;
 	}
-	public void setDeptWiseGraphView(List<Object[]> objList,List<AlertVO> finalVoList){
+	public void setDeptWiseGraphView(List<Object[]> objList,List<AlertVO> finalVoList,List<Object[]> tempList){
 		if(objList != null && objList.size() >0){
 			for (Object[] obj : objList) {
-				
 				AlertVO matchedDeptVo = getmatchedVo(finalVoList, (Long)obj[0]);
 				if(matchedDeptVo == null){
 					matchedDeptVo = new AlertVO();
+					matchedDeptVo.setSubList2(getTemplate(tempList));
 					matchedDeptVo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
 					matchedDeptVo.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
 				
-					AlertVO statusVo = new AlertVO();
-					statusVo.setId(commonMethodsUtilService.getLongValueForObject(obj[2]));
-					statusVo.setName(commonMethodsUtilService.getStringValueForObject(obj[3]));
-					statusVo.setColor(commonMethodsUtilService.getStringValueForObject(obj[4]));
-					statusVo.setCount(commonMethodsUtilService.getLongValueForObject(obj[5]));
-
-					matchedDeptVo.getSubList2().add(statusVo);
+					if(matchedDeptVo.getSubList2() != null && matchedDeptVo.getSubList2().size() > 0){
+						for (AlertVO  vo : matchedDeptVo.getSubList2()) {
+							if(vo.getId().equals((Long)obj[2])){
+								vo.setCount(commonMethodsUtilService.getLongValueForObject(obj[5]));
+							}
+						}
+						
+					}
 					finalVoList.add(matchedDeptVo);
 					
 				}else{
@@ -3809,7 +3787,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
       		return finalVO;
       	}
-      	public List<AlertCoreDashBoardVO> getDistrictLevelWiseClick(Long userId,String fromDateStr,String toDateStr,Long stateId,Long govtDepartmentId,Long parentGovtDepartmentScopeId,Long govtDeptWorkLocId,Long statusId,Long childGovtScopeId,String status){
+     	public List<AlertCoreDashBoardVO> getDistrictLevelWiseClick(Long userId,String fromDateStr,String toDateStr,Long stateId,Long govtDepartmentId,Long parentGovtDepartmentScopeId,Long govtDeptWorkLocId,Long statusId,Long childGovtScopeId,String status){
     		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
     		try {
     			Date fromDate = null;
@@ -3846,4 +3824,312 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     		return finalVoList;
     	}
 
+          /*
+  		 * Teja(non-Javadoc)
+  		 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#stateLevelDeptOfficerStatusOverview()
+  		 */
+          public List<AlertVO> stateLevelDeptOfficerStatusOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
+          		LOG.info("Entered in stateLevelDeptOfficerStatusOverview() method of AlertManagementSystemService{}");
+          		try{
+          			
+          			Date fromDate = null;
+          			Date toDate = null;
+          			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+          			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+          				fromDate = sdf.parse(fromDateStr);
+          				toDate = sdf.parse(toDateStr);
+          			}
+          			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+          			//get alert status count and and create a map of alertStatusId and its count
+          			List<Object[]> totalList = new ArrayList<Object[]>();
+          			List<Object[]> alertCountList = alertDAO.getTotalGovtPendingStatusAlertCnt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,"Status");//for pending status
+          			if(alertCountList != null && alertCountList.size() > 0){
+          				totalList.addAll(alertCountList);
+          			}
+          			List<Long> levelValues = new ArrayList<Long>();    
+          			Long levelId = 0L;
+          			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+          			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+          				for(Object[] param : lvlValueAndLvlIdList){
+          					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+          					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+          				}
+          			}
+          			List<Object[]> alertCountList2 = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"status",null,null);
+          			if(alertCountList2 != null && alertCountList2.size() > 0){
+          				totalList.addAll(alertCountList2);
+          			}
+          			setAlertCount(totalList,finalAlertVOs); 
+          			return finalAlertVOs; 
+          		}catch(Exception e){
+          			e.printStackTrace();
+          			LOG.error("Error occured stateLevelDeptOfficerStatusOverview() method of AlertManagementSystemService{}");
+          		}
+          		return null;
+          	}
+          public List<AlertVO> stateLevelDeptOfficerLocationLevelOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
+      		LOG.info("Entered in stateLevelDeptOfficerLocationLevelOverview() method of AlertManagementSystemService{}");
+      		try{
+      			Date fromDate = null;
+      			Date toDate = null;
+      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+      				fromDate = sdf.parse(fromDateStr);
+      				toDate = sdf.parse(toDateStr);
+      			}
+      			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+      			//get all the alert status and build the template
+      			List<Long> levelValues = new ArrayList<Long>();    
+      			Long levelId = 0L;
+      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+      				for(Object[] param : lvlValueAndLvlIdList){
+      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+      				}
+      			}
+      			List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Level",null,null);
+      			setAlertCount(rtrnObjLst,finalAlertVOs);
+      			return finalAlertVOs; 
+      		}catch(Exception e){
+      			e.printStackTrace();
+      			LOG.error("Error occured stateLevelDeptOfficerLocationLevelOverview() method of AlertManagementSystemService{}");
+      		}
+      		return null;
+      	}
+        public DistrictOfficeViewAlertVO getIASOfficerMyAlertsCountView(Long userId){
+      		
+      		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
+      		try{
+      			
+      			List<Long> levelValues = new ArrayList<Long>();    
+      			Long levelId = 0L;
+      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+      				for(Object[] param : lvlValueAndLvlIdList){
+      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+      				}
+      			}
+      			
+      			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
+      			
+      			Long govtDepDesigOffcrId = 0l;
+      			Long govtOffcrId = 0l;
+      			if(commonMethodsUtilService.isListOrSetValid(list1)){
+      				for( Object[]  obj :list1){
+      					govtDepDesigOffcrId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+      					govtOffcrId = commonMethodsUtilService.getLongValueForObject(obj[1]);
+      					returnVO.setGovtDeptDesigOffcrId(govtDepDesigOffcrId);
+      					returnVO.setGovtOfficerId(govtOffcrId);
+      					returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));//officerId
+      					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//officerName
+      					returnVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(obj[3]));//depId
+      					returnVO.setDeptName(commonMethodsUtilService.getStringValueForObject(obj[4]));//deptName
+      					returnVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(obj[5]));//designationId
+      					returnVO.setDesigName(commonMethodsUtilService.getStringValueForObject(obj[6]));//designationName
+      					
+      				}
+      			}
+      			// My alerts view
+      			List<Object[]> myAlertsTodayList = null;
+      			List<Object[]> myAlertsCompletedList = null;
+      			List<Object[]> myAlertsStatusList = null;
+      			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
+      				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrId,govtOffcrId,"today");
+      				myAlertsCompletedList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrId,govtOffcrId,"completed");
+      				myAlertsStatusList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsStatusWiseDetails(govtDepDesigOffcrId, govtOffcrId);
+      			}
+      			setIASOfficerStatusWiseCountView(myAlertsTodayList,myAlertsCompletedList,myAlertsStatusList,returnVO,"MyAlerts");
+      			
+      		}catch(Exception e){
+      			e.printStackTrace();
+      			LOG.error("Exception Occured in AlertManagementSystemService of  getIASOfficerAlertsCountMainView() ", e);
+      		}
+      		return returnVO;
+      	}
+        public DistrictOfficeViewAlertVO getIASOfficerMySubTasksCountView(Long userId){
+      		
+      		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
+      		try{
+      			
+      			List<Long> levelValues = new ArrayList<Long>();    
+      			Long levelId = 0L;
+      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+      				for(Object[] param : lvlValueAndLvlIdList){
+      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+      				}
+      			}
+      			
+      			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
+      			
+      			Long govtDepDesigOffcrId = 0l;
+      			Long govtOffcrId = 0l;
+      			if(commonMethodsUtilService.isListOrSetValid(list1)){
+      				for( Object[]  obj :list1){
+      					govtDepDesigOffcrId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+      					govtOffcrId = commonMethodsUtilService.getLongValueForObject(obj[1]);
+      					returnVO.setGovtDeptDesigOffcrId(govtDepDesigOffcrId);
+      					returnVO.setGovtOfficerId(govtOffcrId);
+      					returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));//officerId
+      					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//officerName
+      					returnVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(obj[3]));//depId
+      					returnVO.setDeptName(commonMethodsUtilService.getStringValueForObject(obj[4]));//deptName
+      					returnVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(obj[5]));//designationId
+      					returnVO.setDesigName(commonMethodsUtilService.getStringValueForObject(obj[6]));//designationName
+      					
+      				}
+      			}
+      			// My alerts view
+      			List<Object[]> mySubTasksTodayList = null;
+      			List<Object[]> mySubTasksCompletedList = null;
+      			List<Object[]> mySubTasksStatusList = null;
+      			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
+      				mySubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrId, govtOffcrId,"today");
+      				mySubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrId,govtOffcrId,"completed");
+      				mySubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMySubTasksStatusWiseDetails(govtDepDesigOffcrId, govtOffcrId);
+      			}
+      			setIASOfficerStatusWiseCountView(mySubTasksTodayList,mySubTasksCompletedList,mySubTasksStatusList,returnVO,"MyAlerts");
+      			
+      		}catch(Exception e){
+      			e.printStackTrace();
+      			LOG.error("Exception Occured in AlertManagementSystemService of  getIASOfficerAlertsCountMainView() ", e);
+      		}
+      		return returnVO;
+      	} 
+       public DistrictOfficeViewAlertVO getIASOfficerMyAssignedSubTasksCountView(Long userId){
+      		
+      		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
+      		try{
+      			
+      			List<Long> levelValues = new ArrayList<Long>();    
+      			Long levelId = 0L;
+      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+      				for(Object[] param : lvlValueAndLvlIdList){
+      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+      				}
+      			}
+      			
+      			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
+      			
+      			Long govtDepDesigOffcrId = 0l;
+      			Long govtOffcrId = 0l;
+      			if(commonMethodsUtilService.isListOrSetValid(list1)){
+      				for( Object[]  obj :list1){
+      					govtDepDesigOffcrId = commonMethodsUtilService.getLongValueForObject(obj[0]);
+      					govtOffcrId = commonMethodsUtilService.getLongValueForObject(obj[1]);
+      					returnVO.setGovtDeptDesigOffcrId(govtDepDesigOffcrId);
+      					returnVO.setGovtOfficerId(govtOffcrId);
+      					returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));//officerId
+      					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//officerName
+      					returnVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(obj[3]));//depId
+      					returnVO.setDeptName(commonMethodsUtilService.getStringValueForObject(obj[4]));//deptName
+      					returnVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(obj[5]));//designationId
+      					returnVO.setDesigName(commonMethodsUtilService.getStringValueForObject(obj[6]));//designationName
+      					
+      				}
+      			}
+      			// My alerts view
+      			List<Object[]> myAssignedSubTasksTodayList = null;
+      			List<Object[]> myAssignedSubTasksCompletedList = null;
+      			List<Object[]> myAssignedSubTasksStatusList = null;
+      			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
+      				myAssignedSubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrId, govtOffcrId,"today");
+      				myAssignedSubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrId,govtOffcrId,"completed");
+      				myAssignedSubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(govtDepDesigOffcrId, govtOffcrId);
+      			}
+      			setIASOfficerStatusWiseCountView(myAssignedSubTasksTodayList,myAssignedSubTasksCompletedList,myAssignedSubTasksStatusList,returnVO,"MyAlerts");
+      			
+      		}catch(Exception e){
+      			e.printStackTrace();
+      			LOG.error("Exception Occured in AlertManagementSystemService of  getIASOfficerAlertsCountMainView() ", e);
+      		}
+      		return returnVO;
+      	} 
+      	public void setIASOfficerStatusWiseCountView(List<Object[]> myAlertsTodayList,List<Object[]> myAlertsCompletedList,
+      			List<Object[]> statusList,
+      			DistrictOfficeViewAlertVO returnVO,String alertType){
+      		try{
+      			List<DistrictOfficeViewAlertVO> todayFinalList = new ArrayList<DistrictOfficeViewAlertVO>(0);
+      			List<DistrictOfficeViewAlertVO> completedFinalList = new ArrayList<DistrictOfficeViewAlertVO>(0);
+      			List<DistrictOfficeViewAlertVO> statusFinalList = new ArrayList<DistrictOfficeViewAlertVO>(0);
+      			
+      			if(myAlertsTodayList != null && myAlertsTodayList.size() > 0){
+      				for (Object[] objects : myAlertsTodayList) {
+      					DistrictOfficeViewAlertVO todayVo = new DistrictOfficeViewAlertVO();
+      						todayVo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+      						todayVo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+      						todayVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+      					todayFinalList.add(todayVo);
+					}
+      			}
+      			
+      			if(myAlertsCompletedList != null && myAlertsCompletedList.size() > 0){
+      				for (Object[] objects : myAlertsCompletedList) {
+      					DistrictOfficeViewAlertVO completedVo = new DistrictOfficeViewAlertVO();
+      						completedVo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+      						completedVo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+      						completedVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+      					completedFinalList.add(completedVo);
+					}
+      			}
+      			if(statusList != null && statusList.size() >0){
+      				for (Object[] param : statusList) {
+      				DistrictOfficeViewAlertVO statusVo = new DistrictOfficeViewAlertVO();
+      					statusVo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+  						statusVo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+  						statusVo.setColor(commonMethodsUtilService.getStringValueForObject(param[2]));
+  						statusVo.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+  					statusFinalList.add(statusVo);
+					}
+      			}
+      			if(alertType !=null && alertType.isEmpty() && alertType.equalsIgnoreCase("MyAlerts")){
+      				if(commonMethodsUtilService.isListOrSetValid(returnVO.getList1())){
+      					DistrictOfficeViewAlertVO vo = new DistrictOfficeViewAlertVO();
+      					vo.setSubList1(todayFinalList);
+      					vo.setSubList2(completedFinalList);
+      					vo.setSubList3(statusFinalList);
+      					
+      					returnVO.getList1().add(vo);
+      				}
+      				if(returnVO.getList1() != null && returnVO.getList1().size() > 0){
+      					for (DistrictOfficeViewAlertVO districtOfficeViewAlertVO : returnVO.getList1()){
+      						Long totalCount = 0l;
+      						if(districtOfficeViewAlertVO.getSubList3() != null && districtOfficeViewAlertVO.getSubList3().size() > 0){
+      								for (DistrictOfficeViewAlertVO statusFinalVo : districtOfficeViewAlertVO.getSubList3()) {
+      									totalCount = totalCount + statusFinalVo.getCount();
+									}
+      							}
+      							districtOfficeViewAlertVO.setOverAllCnt(totalCount);//TotalCount
+  							  if(districtOfficeViewAlertVO.getSubList3() != null && districtOfficeViewAlertVO.getSubList3().size() > 0){
+								for (DistrictOfficeViewAlertVO statusVo : districtOfficeViewAlertVO.getSubList3()) {
+									statusVo.setPerc(calculatePercantage(statusVo.getCount(),districtOfficeViewAlertVO.getOverAllCnt()));
+								}
+      					      }
+      						}
+      					}
+      				}
+      		}catch(Exception e){
+      			e.printStackTrace();
+      			LOG.error("Exception Occured in AlertManagementSystemService of  setIASOfficerStatusWiseCountView() ", e);
+      		}
+      	}
+      	public List<AlertVO> getTemplate(List<Object[]> tempList){
+      		List<AlertVO> finalList = new ArrayList<AlertVO>(0);
+			if(tempList != null && tempList.size() > 0){
+				for (Object[] objects : tempList) {
+					AlertVO vo = new AlertVO();
+						vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.setColor(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						finalList.add(vo);
+				}
+			}
+			return finalList;
+      	}
+      
 }
