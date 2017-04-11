@@ -362,9 +362,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append(" select ");
     
-    		queryStr.append(" GDWL.govt_department_work_location_id as govtDepartmentWorkLocationId ");
-        	queryStr.append(", GDWL.govt_department_scope_id as parentGovtDepartmentScopeId ");
-        	queryStr.append(", GDWL.location_name as locationName ");
+    	queryStr.append(" GDWL.govt_department_work_location_id as govtDepartmentWorkLocationId, ");
+    	queryStr.append(" GDWL.govt_department_scope_id as parentGovtDepartmentScopeId, ");
+    	queryStr.append(" GDWL.location_name as locationName, ");
         	
         	if(type != null && type.equalsIgnoreCase("status")){
         		queryStr.append(" ,AAO.alert_sub_task_status_id as alertStatusId ");
@@ -375,7 +375,11 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
         	}
         	
         	queryStr.append(" count(distinct AAO.govt_alert_sub_task_id) as count,");
-        	queryStr.append(" GDS.color as color");
+        	if(type != null && type.equalsIgnoreCase("status")){
+        		queryStr.append(" ALTS.color as color");
+        	}else if(type != null && type.equalsIgnoreCase("scope")){
+        		queryStr.append(" GDS.color as color");
+        	}
     	
     	
 		queryStr.append(" from ");  
@@ -428,7 +432,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		queryStr.append(" and GDDO.level_value=GDWLR.govt_department_work_location_id    ");
 		
 		
-		queryStr.append(" and date(AAO.createdTime) between :fromDate and :toDate ");
+		queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		}
