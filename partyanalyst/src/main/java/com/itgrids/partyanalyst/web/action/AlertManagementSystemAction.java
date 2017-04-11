@@ -1441,5 +1441,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			return Action.SUCCESS;	
 			
 		}
+		
+		public String getSubTaskFullDetails(){
+			try {
+				jObj = new JSONObject(getTask());
+				alertVO = alertManagementSystemService.getSubTaskFullDetails(jObj.getLong("subTaskId"));
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getSubTaskFullDetails() method, Exception - ",e); 
+			}
+			return Action.SUCCESS;	
+		}
 }
 //public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountOnClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long locationId, Long childLocationId)
