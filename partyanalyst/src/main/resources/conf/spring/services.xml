@@ -3608,6 +3608,7 @@
 		<property name="govtDepartmentDesignationNewDAO" ref="govtDepartmentDesignationNewDAO"></property>
 		<property name="govtDepartmentDesignationHierarchyDAO" ref="govtDepartmentDesignationHierarchyDAO"></property>
 		<property name="govtDepartmentDesignationOfficerDetailsDAO" ref="govtDepartmentDesignationOfficerDetailsDAO"></property>
+		<property name="localityDAO" ref="localityDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	

@@ -83,11 +83,33 @@
 				<form id="saveGrievanceAlertForm" name="saveGrievanceAlertForm" enctype="multipart/form-data" method="POST">
 					<div class="panel-body bg_EF">
 						<div class="row">
+							<div class="col-sm-12 m_top10">
+								<h4 class="text-success text-capital">caller details</h4>
+							</div>
+							<div class="col-sm-3 m_top10">
+								<label>Mobile No<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMobileNoId"></span></label>
+								<input type="text" id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo"/>
+							</div>
+							<div class="col-sm-3 m_top10">
+								<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgNameId"></span></label>
+								<input type="text" id="nameId" class="form-control" name="grievanceAlertVO.name"/>
+							</div>
+							<div class="col-sm-3 m_top10">
+								<label>Email ID<!--<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEmailId"></span>--></label>
+								<input type="text" id="emailId" class="form-control" placeholder="abc@xyz.com" name="grievanceAlertVO.emailId"/>
+							</div>
+							<div class="col-sm-3 m_top10">
+								<label>Address<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgAddressId"></span></label>
+								<input type="text" id="addressId" class="form-control" name="grievanceAlertVO.address"/>
+							</div>
+						</div>
+						
+						<div class="row">
 							<div class="col-sm-12">
 								<h4 class="text-success text-capital m_top10">location details</h4>
 							</div>
 							<div class="col-sm-3 m_top10">
-								<label>Alert Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLevelId"></span></label>
+								<label>Grievance Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLevelId"></span></label>
 								<select class="chosen" id="alertlevelId" onchange="disableByGrievLevel();">
 									<option value="0">Select Location Level</option>
 									<option value="1">Central</option>
@@ -96,7 +118,7 @@
 									<option value="4">Constituency</option>
 									<option value="5">Mandal/Muncipality</option>
 									<option value="6" selected>Village/Ward</option>
-									<option value="7">Hamlet</option>
+									<!--<option value="7">Hamlet</option>-->
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="stateDiv">
@@ -137,31 +159,10 @@
 								</select>
 							</div>
 						</div>
+						
 						<div class="row">
 							<div class="col-sm-12 m_top10">
 								<h4 class="text-success text-capital">grievance details</h4>
-							</div>
-							<div class="col-sm-8 m_top10">
-								<label>Alert Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgTitleId"></span></label>
-								<input type="text" class="form-control" id="alertTitleId" name="grievanceAlertVO.alertTitle"/>
-							</div>
-							<!--<div class="col-sm-4 m_top10">
-								<label>Complaint No</label>
-								<input type="text" class="form-control" id="complaintNo" name="grievanceAlertVO.complaintNo"/>
-							</div>-->
-							<div class="col-sm-12 m_top10">
-								<label>Alert Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDescId"></span></label>
-								<label class="radio-inline">
-									<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-								</label>
-								<label class="radio-inline">
-									<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-								</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12 m_top10">
-								<textarea class="form-control" id="alertdescriptionId" name="grievanceAlertVO.description"></textarea>
 							</div>
 							<div class="col-sm-3 m_top10">
 								<label>Complaint Given By<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCallerTypeId"></span></label>
@@ -184,27 +185,32 @@
 								</select>
 							</div>
 						</div>
+						
 						<div class="row">
+							<div class="col-sm-8 m_top10">
+								<label>Grievance Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgTitleId"></span></label>
+								<input type="text" class="form-control" id="alertTitleId" name="grievanceAlertVO.alertTitle"/>
+							</div>
+							<!--<div class="col-sm-4 m_top10">
+								<label>Complaint No</label>
+								<input type="text" class="form-control" id="complaintNo" name="grievanceAlertVO.complaintNo"/>
+							</div>-->
 							<div class="col-sm-12 m_top10">
-								<h4 class="text-success text-capital">caller details</h4>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgNameId"></span></label>
-								<input type="text" id="nameId" class="form-control" name="grievanceAlertVO.name"/>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Address<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgAddressId"></span></label>
-								<input type="text" id="addressId" class="form-control" name="grievanceAlertVO.address"/>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Mobile No<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMobileNoId"></span></label>
-								<input type="text" id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo"/>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Email ID<!--<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEmailId"></span>--></label>
-								<input type="text" id="emailId" class="form-control" placeholder="abc@xyz.com" name="grievanceAlertVO.emailId"/>
+								<label>Grievance Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDescId"></span></label>
+								<label class="radio-inline">
+									<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+								</label>
+								<label class="radio-inline">
+									<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+								</label>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-sm-12 m_top10">
+								<textarea class="form-control" id="alertdescriptionId" name="grievanceAlertVO.description"></textarea>
+							</div>
+						</div>
+						
 						<div class="row">
 							<div class="col-sm-12 m_top10">
 								<h4 class="text-success text-capital">upload document linking to this alert</h4>
@@ -213,19 +219,20 @@
 								</div>
 							</div>
 						</div>
+						
 						<div class="row">
 							<div class="col-sm-12 m_top10">
 								<h4 class="text-success text-capital">assign alert to department officer</h4>
 							</div>
 							  
-							<div class="col-sm-3">
+							<div class="col-sm-3 m_top10">
 								<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptId"></span></label>
 								<select class="chosenSelect" id="departmentsId" name="grievanceAlertVO.departmentId">  
 									<option value="0">Select Department</option>
 									<option value="49">RWS</option>
 								</select>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-3 m_top10">
 								<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
 								<select  class="chosenSelect" id="locationLevelSelectId" name="grievanceAlertVO.levelId">  
 									<option></option>
@@ -233,13 +240,13 @@
 							</div>
 							<div id="parentLevelDivId"> </div>
 
-							<div class="col-sm-3">
+							<div class="col-sm-3 m_top10">
 								<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDesgId"></span></label>
 								<select name="grievanceAlertVO.designationId" id="designationsId" class="chosenSelect">
 									<option></option>  
 								</select>
 							</div>
-							<div class="col-sm-3">
+							<div class="col-sm-3 m_top10">
 								<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgOffcrId"></span></label>
 								<select name="grievanceAlertVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
 									<option></option>
@@ -343,6 +350,7 @@ function getAlertsource(){
 
 function getDistrictsForReferPopup() {
 	var stateId = $("#stateId").val();
+	$("#villageDiv").hide();
 	var jobj = {
 		stateId : stateId  
 	}
@@ -394,6 +402,7 @@ function getDistrictsForReferPopup() {
 	 $("#designationId").trigger('chosen:updated');
 	 $("#officerId").empty();
 	 $("#officerId").trigger('chosen:updated');
+	 $("#villageDiv").hide();
 	var jobj = {
 		districtId : districtId
 	}
@@ -438,6 +447,7 @@ function getDistrictsForReferPopup() {
 	 $("#designationId").trigger('chosen:updated');
 	 $("#officerId").empty();
 	 $("#officerId").trigger('chosen:updated');
+	 $("#villageDiv").hide();
 	var jobj = {
 		constituencyId : constituencyId
 	}
@@ -479,6 +489,7 @@ function getDistrictsForReferPopup() {
 	 $("#referpanchayatId").find('option').not(':first').remove();
 	 var mandalId = $('#refermandalNameId').val();
 	 var  type = $("#refermandalNameId option:selected").text();
+	 $("#villageDiv").hide();
 			   
 	 if(type.indexOf("Mandal") == -1) 
 		type = "muncipality" ;
@@ -492,13 +503,13 @@ function getDistrictsForReferPopup() {
 			}
 	 $.ajax({
 				type:"POST",
-				url :"getPanchayatDetailsAction.action",
+				url :"getPanchayatAndWardDetailsAction.action",
 				 dataType: 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
 				var panchyatStr='';
 				if(result!=null && result.length>0){
-					panchyatStr +='<option value="0">Select Panchayat</option>';
+					panchyatStr +='<option value="0">Select Village/Ward</option>';
 					for(var i in result){
 						if(result[i].id > 0)
 							panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -507,7 +518,7 @@ function getDistrictsForReferPopup() {
 					$("#referpanchayatId").trigger('chosen:updated');
 				}else{
 					//for panchayat
-					$("#referpanchayatId").html('<option value="0">Select Panchayat</option>');
+					$("#referpanchayatId").html('<option value="0">Select Village/Ward</option>');
 					$("#referpanchayatId").trigger('chosen:updated'); 
 				}     
 		});
@@ -527,7 +538,10 @@ function getHamletss(){
 		type = "muncipality" ;
 	else
 		type = "mandal" ; 
-	  var jsObj={
+	
+	if(type == "mandal"){
+		$("#villageDiv").show();
+		var jsObj={
 				panchayatId :panchayatId,
 				task:""
 			}
@@ -552,6 +566,7 @@ function getHamletss(){
 					$("#hamletId").trigger('chosen:updated'); 
 				}     
 		});
+	}
 }
 
 function getAlertCallerTypes(){
@@ -1093,12 +1108,12 @@ function clearFields(){
 			
 			for(var i in result){
 				if(i<result.length-1){
-					str+='<div class="col-sm-3">';
+					str+='<div class="col-sm-3 m_top10">';
 						str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLocationId"></span></label>';
 						str+='<select  class="chosenSelect" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
 					str+='</div>';
 				}else{
-					str+='<div class="col-sm-3">';
+					str+='<div class="col-sm-3 m_top10">';
 						str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLocationId"></span></label>';
 						str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="grievanceAlertVO.levelValue" ></select>';
 					str+='</div>';
