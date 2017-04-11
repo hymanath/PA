@@ -2969,10 +2969,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			LOG.error("Error occured setLocationValuesToLevelMap() method of AlertManagementSystemService",e);
         		}
         	}
-        public List<AlertVO> getAllDivisionDetails(){
+            public List<AlertVO> getAllDivisionDetails(Long districtId){
          List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
      		try {
-	    		List<Object[]> divisionList = govtDepartmentWorkLocationDAO.getAllDivisionDetails();
+	    		List<Object[]> divisionList = govtDepartmentWorkLocationDAO.getAllDivisionDetails(districtId);
 	    		if (divisionList != null && divisionList.size() > 0) {
            			for (Object[] objects : divisionList) {
            				 AlertVO alertVO = new AlertVO();
@@ -2986,10 +2986,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    			}    	
            	return finalVoList;
            }
-           public List<AlertVO> getAllSubDivisionDetails(){
+           public List<AlertVO> getAllSubDivisionDetails(Long divisionId){
                List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
               	try {
-              		List<Object[]> subDivisionList = govtDepartmentWorkLocationDAO.getAllSubDivisionDetails();
+              		List<Object[]> subDivisionList = govtDepartmentWorkLocationDAO.getAllSubDivisionDetails(divisionId);
               		if (subDivisionList != null && subDivisionList.size() > 0) {
               			for (Object[] objects : subDivisionList) {
               				 AlertVO alertVO = new AlertVO();
@@ -4448,5 +4448,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    		}
    		return null;
     }
-      	
-}
+	public List<AlertVO> getAllDistrictDetails(){
+        List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
+    		try {
+    		List<Object[]> districtList = govtDepartmentWorkLocationDAO.getAllDistrictDetails();
+    		if (districtList != null && districtList.size() > 0) {
+          			for
+          			(Object[] objects : districtList) {
+          				 AlertVO alertVO = new AlertVO();
+          				 alertVO.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+          				 alertVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+          				 finalVoList.add(alertVO);
+          				}					
+  				}				
+  			} catch (Exception e) {
+  				LOG.error(" Exception Occured in getAllDistrictDetails() method, Exception - ",e);
+  			}    	
+          	return finalVoList;
+      } 
+	
+}      	
