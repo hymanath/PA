@@ -1483,10 +1483,14 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		return query.list();
         }
         //division scope lvl
-        public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId){
+        public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,String filter){
         	StringBuilder queryStr = new StringBuilder();
         	queryStr.append(" select ");
         	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
+        	if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
+        		queryStr.append(" GDWL2.govt_department_work_location_id as parentGovtDepartmentWorkLocationId, ");
+        		queryStr.append(" GDWL2.location_name as DISTRICT , ");
+        	}
         	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
         	queryStr.append(" GDWL1.location_name as locationName, ");//2
         	queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
@@ -1580,12 +1584,21 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    
     		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
     		
-    		Query query = getSession().createSQLQuery(queryStr.toString())
-    				.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG)
-    				.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG)
-    				.addScalar("locationName", Hibernate.STRING)
-    				.addScalar("govtDepartmentScopeId", Hibernate.LONG)
-    				.addScalar("count", Hibernate.LONG);
+    		
+    		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+    		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
+    		if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
+    			query.addScalar("parentGovtDepartmentWorkLocationId", Hibernate.LONG);
+        		query.addScalar("DISTRICT", Hibernate.STRING);
+        	}
+    		query.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG);
+    		query.addScalar("locationName", Hibernate.STRING);
+    		query.addScalar("govtDepartmentScopeId", Hibernate.LONG);
+    		query.addScalar("count", Hibernate.LONG);
+    		
+    		
+    		
+    		
     		if(fromDate != null && toDate != null){
     			query.setDate("fromDate", fromDate);
     			query.setDate("toDate", toDate);
@@ -1616,10 +1629,16 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		return query.list();
         }
         //sub division scope lvl
-        public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId){
+        public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String filter){
         	StringBuilder queryStr = new StringBuilder();
         	queryStr.append(" select ");
         	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
+        	if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
+        		queryStr.append(" GDWL2.govt_department_work_location_id as parentGovtDepartmentWorkLocationId, ");
+        		queryStr.append(" GDWL2.location_name as DISTRICT , ");
+        		queryStr.append(" GDWL3.govt_department_work_location_id as GDWLI, ");
+        		queryStr.append(" GDWL3.location_name as DIVISION, ");
+        	}
         	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
         	queryStr.append(" GDWL1.location_name as locationName, ");//2
         	queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
@@ -1718,12 +1737,19 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    
     		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
     		
-    		Query query = getSession().createSQLQuery(queryStr.toString())
-    				.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG)
-    				.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG)
-    				.addScalar("locationName", Hibernate.STRING)
-    				.addScalar("govtDepartmentScopeId", Hibernate.LONG)
-    				.addScalar("count", Hibernate.LONG);
+    		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+    		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
+    		if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
+    			query.addScalar("parentGovtDepartmentWorkLocationId", Hibernate.LONG);
+        		query.addScalar("DISTRICT", Hibernate.STRING);
+        		query.addScalar("GDWLI", Hibernate.LONG);
+        		query.addScalar("DIVISION", Hibernate.STRING);
+        	}
+    		query.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG);
+    		query.addScalar("locationName", Hibernate.STRING);
+    		query.addScalar("govtDepartmentScopeId", Hibernate.LONG);
+    		query.addScalar("count", Hibernate.LONG);
+    		
     		if(fromDate != null && toDate != null){
     			query.setDate("fromDate", fromDate);
     			query.setDate("toDate", toDate);
