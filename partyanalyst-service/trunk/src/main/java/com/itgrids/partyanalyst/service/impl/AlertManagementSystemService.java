@@ -1371,7 +1371,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 * Teja(non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getDistrictLevelDeptWiseFilterView(java.lang.Long,java.lang.String,java.lang.String,java.lang.int,java.lang.int)
 	 */
-	public  List<AlertVO> getDistrictLevelDeptWiseFilterView(Long scopeId,String startDateStr,String fromDateStr,String type){
+	public  List<AlertVO> getDistrictLevelDeptWiseFilterView(Long userId,String startDateStr,String fromDateStr,String type){
 		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
 			Date fromDate = null;
@@ -1380,6 +1380,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			if(startDateStr != null && startDateStr.trim().length() > 0 && fromDateStr != null && fromDateStr.trim().length() > 0){
 				fromDate = sdf.parse(startDateStr);
 				toDate = sdf.parse(fromDateStr);
+			}
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long scopeId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					scopeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
 			}
 			List<Object[]> scopeDetlsLst = govtDepartmentScopeDAO.getgovtDepatScopeDetails(scopeId);
 			Map<Long, List<Long>> deptlevelmap = new HashMap<Long, List<Long>>(0);
@@ -1584,7 +1593,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		return null;
 	}
 	
-	public  List<AlertVO> getDistrictLevelDeptWiseLocationLevelView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType){
+	public  List<AlertVO> getDistrictLevelDeptWiseLocationLevelView(Long userId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType){
 		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
 			Date fromDate = null;
@@ -1593,6 +1602,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			if(startDateStr != null && startDateStr.trim().length() > 0 && fromDateStr != null && fromDateStr.trim().length() > 0){
 				fromDate = sdf.parse(startDateStr);
 				toDate = sdf.parse(fromDateStr);
+			}
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long scopeId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					scopeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
 			}
 			List<Object[]> scopeDetlsLst = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetails(scopeId);
 			if(type.equalsIgnoreCase("alert")){
@@ -1626,7 +1644,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return finalVoList;
 	}
-	public  List<AlertVO> getDistrictLevelDeptWiseStatusOverView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType,Long levelId){
+	public  List<AlertVO> getDistrictLevelDeptWiseStatusOverView(Long userId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType,Long levelId){
 		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
 			Date fromDate = null;
@@ -1638,6 +1656,16 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			//statuisId-0,status-1,color-2,shortName-3
 			List<Object[]> statusList = alertDepartmentStatusDAO.getAllStatuses();
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long scopeId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					scopeId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+			
 			if(type.equalsIgnoreCase("alert")){
 				//deptId-0,deptName-1,statusId-2,statusName-3,color-4,Count-5
 				List<Object[]> deptWiseStatusViewLst = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseStatusOverView(fromDate, toDate,scopeId,deptId,levelId);
