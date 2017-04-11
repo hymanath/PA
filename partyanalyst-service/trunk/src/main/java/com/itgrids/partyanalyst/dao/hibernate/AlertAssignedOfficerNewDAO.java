@@ -1341,13 +1341,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         public List<Object[]> getDesignationOfficerDetails(Long alertId){
         	
         	Query query = getSession().createQuery(" SELECT model1.userId,model2.levelValue  " +
-        											" FROM AlertAssignedOfficerNew model,GovtDepartmentDesignationOfficerDetailsNew model1,GovtAlertDepartmentLocation model2 " +
-        											" WHERE model.isdeleted ='N' " +
+        											" FROM AlertAssignedOfficerNew model,GovtDepartmentDesignationOfficerDetailsNew model1,GovtAlertDepartmentLocationNew model2 " +
+        											" WHERE model.isDeleted ='N' " +
         											"  and  model1.isDeleted='N' " +
         											" and model.govtDepartmentDesignationOfficerId = model1.govtDepartmentDesignationOfficerId" +
         											" and model2.userId = model1.userId " +
         											" and model.govtOfficerId = model1.govtOfficerId" +
-        											" and model.alertId  =:alertId " +
+        											" and model.alertId  = :alertId " +
         											" and model.isApproved = 'Y' " +
         											" GROUP BY model1.userId,model2.levelValue  ");
         	
@@ -1901,11 +1901,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         		          query.setParameter("childGovtScopeId",childGovtScopeId);
         		        }
         		        return query.list();
-        		 }  
+      			 }  
     @SuppressWarnings("unchecked")
-	public List<Object[]> getDistrictOfficerMyAlertsCountView(Long govtDepDesigOffcrId,Long govtOffcrId,String type){
+    public List<Object[]> getDistrictOfficerMyAlertsCountView(Long govtDepDesigOffcrId,Long govtOffcrId,String type){
         	StringBuilder sb = new StringBuilder();
-	    	  
+        	  
         	if(type != null && type.equalsIgnoreCase("today")){
         		sb.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
         				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartment.departmentName," +
@@ -1918,8 +1918,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	sb.append(" from AlertAssignedOfficerNew model ");
         	
         	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted = 'N' " );
-        	
-	    	  
+        		            	
+        		    	    	  
         	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
 	    		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcrId " );
 	    	  }
@@ -1955,8 +1955,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	sb.append(" from AlertAssignedOfficerNew model ");
         	
         	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted = 'N' " );
-        	
-	    	  
+        		            	
+        		    	    	  
         	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
 	    		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcrId " );
 	    	  }

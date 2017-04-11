@@ -218,7 +218,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				  " model.alertCategory.category," + //27-28
 				  " model.imageUrl, " +
 				  " model.alertCategoryTypeId ");//29-30
-		str.append(",govtDepartment.departmentName ");
+		str.append(",govtDepartment.departmentName,alertStatus.color ");//31-32
 		
 		str.append(" from Alert model left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");

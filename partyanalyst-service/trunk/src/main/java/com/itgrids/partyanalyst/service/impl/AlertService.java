@@ -1173,6 +1173,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		try{
 			List<Object[]> docList = alertDocumentDAO.getDocumentsForAlert(alertId);
 			 List<Object[]> list = alertDAO.getAlertsData(alertId);
+			 List<String> dueDateList = alertAssignedOfficerTrackingNewDAO.getAlertDueDate(alertId); 
 			 Object[] sourceDtls = alertDAO.getSourceDtlsByAlertId(alertId);   
 			 String alertSource = "";
 			 if(sourceDtls != null){
@@ -1229,6 +1230,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setRegionScope(params[26] != null ?params[26].toString() : "");
 					 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
 					 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
+					 alertVO.setStatusColor(params[32] != null ?params[32].toString() : "");
+					 if(dueDateList != null && dueDateList.size() > 0){
+						 Date date =new SimpleDateFormat("yyyy-MM-dd").parse(dueDateList.get(dueDateList.size()-1).toString());
+						 String dateStr = new SimpleDateFormat("dd/MM/yyyy").format(date);
+						 alertVO.setDueDate(dateStr);
+					 }
 					 alertVO.setDocumentList(documentList);
 					 alertVO.setDocumentNameList(documentNameList);
 					 LocationVO locationVO = new LocationVO();

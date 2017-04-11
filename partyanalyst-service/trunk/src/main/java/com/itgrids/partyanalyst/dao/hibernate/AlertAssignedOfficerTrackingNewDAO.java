@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
@@ -47,5 +48,12 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     			+ " where model.alertId=:alertId ");
     	query.setParameter("alertId", alertId);
     	return query.list();
+    }
+    public List<String> getAlertDueDate (Long alertId){
+  	  Query query = getSession().createSQLQuery("select distinct date(model.due_date) as dateStr from alert_assigned_officer_tracking_new model where model.alert_id=:alertId and " +
+  	  		" model.due_date is not null").addScalar("dateStr", Hibernate.STRING);
+  	  query.setParameter("alertId", alertId);
+  	  return query.list();
+  			  
     }
 }
