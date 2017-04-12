@@ -16,10 +16,10 @@ public class AlertIssueSubTypeDAO extends GenericDaoHibernate<AlertIssueSubType,
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object> getSubTypesByAlertIssueType(Long alertIssueTypeId)
+	public List<Object[]> getSubTypesByAlertIssueType(Long alertIssueTypeId)
 	{
 		Query query = getSession().createQuery("SELECT model.alertIssueSubTypeId,model.issueType FROM AlertIssueSubType model WHERE " +
-				" model.alertIssueType.alertIssueTypeId = :alertIssueTypeId order by model.order_no");
+				" model.alertIssueType.alertIssueTypeId = :alertIssueTypeId order by model.orderNo");
 		query.setParameter("alertIssueTypeId",alertIssueTypeId);
 		return query.list();
 	}

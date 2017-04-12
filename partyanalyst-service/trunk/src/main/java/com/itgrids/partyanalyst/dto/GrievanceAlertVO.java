@@ -21,6 +21,7 @@ public class GrievanceAlertVO {
 	private Long callerTypeId;
 	private Long issueTypeId;
 	private Long entrySourceId;
+	private Long alertIssueSubTypeId;
 	
 	private String name;
 	private String address;
@@ -195,5 +196,11 @@ public class GrievanceAlertVO {
 	}
 	public void setLocationValue(Long locationValue) {
 		this.locationValue = locationValue;
+	}
+	public Long getAlertIssueSubTypeId() {
+		return alertIssueSubTypeId;
+	}
+	public void setAlertIssueSubTypeId(Long alertIssueSubTypeId) {
+		this.alertIssueSubTypeId = alertIssueSubTypeId;
 	}
 }

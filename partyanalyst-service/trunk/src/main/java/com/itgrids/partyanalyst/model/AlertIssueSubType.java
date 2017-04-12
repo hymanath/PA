@@ -27,7 +27,7 @@ public class AlertIssueSubType extends BaseModel implements Serializable{
 	private static final long serialVersionUID = 9039469603692401537L;
 	
 	private Long alertIssueSubTypeId;
-	private Long issueType;
+	private String issueType;
 	private AlertIssueType alertIssueType;
 	private Long orderNo;
 	
@@ -45,11 +45,11 @@ public class AlertIssueSubType extends BaseModel implements Serializable{
 	}
 
 	@Column(name="issue_type")
-	public Long getIssueType() {
+	public String getIssueType() {
 		return issueType;
 	}
 
-	public void setIssueType(Long issueType) {
+	public void setIssueType(String issueType) {
 		this.issueType = issueType;
 	}
 

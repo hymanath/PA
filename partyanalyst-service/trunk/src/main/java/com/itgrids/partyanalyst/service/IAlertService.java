@@ -119,4 +119,5 @@ public interface IAlertService {
     public List<AlertVO> getFeedbackStatusDetails();
     public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId,Long levelValue);
     public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId);
+    public List<KeyValueVO> getAlertIssueSubTypes(Long alertIssueType);
 }
