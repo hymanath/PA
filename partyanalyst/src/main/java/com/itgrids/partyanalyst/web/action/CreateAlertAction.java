@@ -2367,7 +2367,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		try{
 			jObj = new JSONObject(getTask());
 			
-			alertVOs = alertService.getAlertDetailsByStatusId(jObj.getLong("alertStatusId"),jObj.getString("mobileNo"),jObj.getString("fromDate"),jObj.getString("toDate"));    
+			alertVOs = alertService.getAlertDetailsByStatusId(jObj.getLong("alertStatusId"),jObj.getString("mobileNo"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("feedbackStattusId"));    
 		}catch(Exception e) {
 			LOG.error("Exception occured in getAlertDetailsByStatusId() of CreateAlertAction",e);
 		}
