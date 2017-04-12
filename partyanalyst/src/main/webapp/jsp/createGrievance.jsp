@@ -23,7 +23,7 @@
 	<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 	<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 	<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
-	
+		<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 	
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -60,6 +60,7 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	<!-- YUI Dependency files (End) -->
 	
 	<style>
@@ -385,6 +386,8 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+ <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script>
 
 $(".chosen").chosen({
@@ -1407,7 +1410,7 @@ function getAlertIsuueSubTypes()
 		});
 	}
 
-function getAlertDetails(alertStatusId,status)
+function getAlertDetails(alertStatusId,status,feedbackStattusId)
 	{
 		/* var datesArr =[]; 
 		if(datesArr != null){
@@ -1431,7 +1434,8 @@ function getAlertDetails(alertStatusId,status)
 			alertStatusId : alertStatusId,
 			mobileNo : '',
 			fromDate :fromDateStr,//"12/04/2016",
-			toDate : toDateStr//"12/04/2017"
+			toDate : toDateStr,//"12/04/2017"
+			feedbackStattusId:feedbackStattusId
 			
 		}
 		$.ajax({
@@ -1440,7 +1444,7 @@ function getAlertDetails(alertStatusId,status)
 		  data: {task :JSON.stringify(jObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){
-				buildAlertDetails(result,status);
+				buildAlertDetails(result,status,alertStatusId);
 			}
 		});
 }
@@ -1513,29 +1517,52 @@ function getFeedBackStatusDetails()
 		});
 }	
 	
-function buildAlertDetails(result,status){
+function buildAlertDetails(result,status,alertStatusId){
 	var str = '';
 		str+='<div style="background-color: lightgrey; font-weight: bold; margin-top: 5px; margin-bottom: 5px; border-radius: 5px; text-align: center; text-transform: uppercase; font-size: 15px;">  '+status+' Status Grievance Details </div>';
 		
-	str+='<table class="table table-bordered " style="text-align:center;">';
+	str+='<table class="table table-bordered " style="text-align:center;" id="tabbDetails" >';
 		str+='<thead>';
-			str+='<th  style="text-align:center">Title</th>';
-			str+='<th  style="text-align:center">Alert Level</th>';
-			str+='<th  style="text-align:center">Created On</th>'; 
+			str+='<th  style="text-align:center">TITLE</th>';
+			str+='<th  style="text-align:center">DEPARTMENT</th>';
+			str+='<th  style="text-align:center">ISSUE TYPE</th>';
+			str+='<th  style="text-align:center">ISSUE SUB TYPE</th>';
+			str+='<th  style="text-align:center">IMPACT LEVEL</th>';
+			str+='<th  style="text-align:center">CREATED ON</th>'; 
 			str+='<th  style="text-align:center"> Update Status </th>'; 
 		str+='</thead>';
 		str+='<tbody>';
 		for( var i in result){
 			str+='<tr>';
 				str+='<td>'+result[i].title+'</td>';
+				str+='<td>'+result[i].deptName+'</td>';
+				str+='<td>'+result[i].issueType+'</td>';
+				str+='<td>'+result[i].issueSubType+'</td>';
 				str+='<td>'+result[i].locationName+'</td>';
 				str+='<td>'+result[i].createdTime+'</td>';
-				str+='<td><button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button></td>';
+				
+				str+='<td>';
+				if(result[i].feedbackStatus != null){
+					str+=' '+result[i].feedbackStatus+' <br>';	
+					str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
+				}else{
+					if(alertStatusId != 2 && alertStatusId != 1 && alertStatusId != 3)
+						str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
+					else
+						str+=' - ';	
+				}
+				
+			str+='</td>';
 			str+='</tr>';
 		}
 		str+='</tbody>';
 		str+='</table>';
 		$("#alertDataDivId").html(str);
+		$('#tabbDetails').dataTable({
+				"iDisplayLength": 20,
+				"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+			});
+			
 }
 $(document).on("click",".updateAlertCls",function(){
 	var alertId = $(this).attr("attr_alert_id");
@@ -1634,7 +1661,7 @@ function showDashboard(){
 			var str='';
 			if(result[0].statusList != null && result[0].statusList.length>0) {
 				str+='<div style="background-color: lightgrey; font-weight: bold; margin-top: 55px; margin-bottom: 5px; border-radius: 5px; text-align: center; text-transform: uppercase; font-size: 15px;">  Grievance Details </div>';
-				str+='<table  class="table table-bordered"  style="text-align:center;">';
+				str+='<table  class="table table-bordered"  style="text-align:center;" id="tabDetails">';
 					str+='<thead>';
 					str+='<tr>';
 						str+='<th  style="text-align:center">  </th>';
@@ -1650,28 +1677,39 @@ function showDashboard(){
 							str+='<tr>';
 							str+='<th  style="text-align:center" > '+result[0].statusList[k].status+' </th>';
 							for(var l in result[0].statusList[k].statusList){
-								if(result[0].statusList[k].statusList[l].count != null)
-									str+='<td  style="text-align:center" > <a style="color:green;font-weight:bold;" href="javascript:{getAlertDetails('+result[0].statusList[k].statusList[l].alertStatusId+',\''+result[0].statusList[k].statusList[l].status+'\')}"> '+result[0].statusList[k].statusList[l].count+' </a> </td>';
-									
+								if(result[0].statusList[k].statusList[l].count != null){
+									if(result[0].statusList[k].statusList[l].alertStatusId != 2 && result[0].statusList[k].statusList[l].alertStatusId != 1 && result[0].statusList[k].statusList[l].alertStatusId != 3)
+											str+='<td  style="text-align:center" > <a style="color:green;font-weight:bold;" href="javascript:{getAlertDetails('+result[0].statusList[k].statusList[l].alertStatusId+',\''+result[0].statusList[k].statusList[l].status+'\','+result[0].statusList[k].alertStatusId+')}"> '+result[0].statusList[k].statusList[l].count+' </a> </td>';
+										else
+											str+='<td  style="text-align:center" > '+result[0].statusList[k].statusList[l].count+' </td>';
+								}	
 								else 
 									str+='<td  style="text-align:center" > -  </td>';
 							}
 							str+='</tr>';
 						}
-					/*	str+='<tr>';
+						str+='<tr>';
 						str+='<th  style="text-align:center" > TOTAL </th>';
-							for(var k in result[0].statusList){
-								if(result[0].statusList[k].count != null)
-									str+='<th  style="text-align:center" > '+result[0].statusList[k].count+' </th>';
-								else
-									str+='<th  style="text-align:center" >  -  </th>';
+							for(var k in result[0].statusList[0].statusList){
+								if(result[0].statusList[0].statusList[k].totalCount != null && parseInt(result[0].statusList[0].statusList[k].totalCount)>0){
+									//str+='<td  style="text-align:center" > '+result[0].statusList[0].statusList[k].count+' </td>';
+									str+='<td  style="text-align:center" > <a style="color:green;font-weight:bold;" href="javascript:{getAlertDetails('+result[0].statusList[0].statusList[k].alertStatusId+',\''+result[0].statusList[0].statusList[k].status+'\',0)}"> '+result[0].statusList[0].statusList[k].totalCount+' </a> </td>';
+								}
+								else if(result[0].statusList[0].statusList[k].count != null && parseInt(result[0].statusList[0].statusList[k].count)>0){
+									//str+='<td  style="text-align:center" > '+result[0].statusList[0].statusList[k].count+' </td>';
+									str+='<td  style="text-align:center" > <a style="color:green;font-weight:bold;" href="javascript:{getAlertDetails('+result[0].statusList[0].statusList[k].alertStatusId+',\''+result[0].statusList[0].statusList[k].status+'\',0)}"> '+result[0].statusList[0].statusList[k].count+' </a> </td>';
+								}
+								else{
+									str+='<td  style="text-align:center" >  -  </td>';
+								}
 							}
-						str+='</tr>';*/
+						str+='</tr>';
 					str+='</tbody>';
 				str+='</table>';
 			}
 			
 			$('#summaryDiv').html(str);
+			
 		}
 	}
 	getDistrictsForReferPopup();
