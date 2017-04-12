@@ -4410,7 +4410,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         }
         //2
       //Regarding filter. division->sub division
-       public List<IdNameVO> getDivisionIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long districtWorkLocationId,String group){
+       public List<IdNameVO> getDivisionIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long districtWorkLocationId,String group,String alertType,String searchType){
     	   try{
    
    			Date fromDate = null;
@@ -4451,8 +4451,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    				}
    			}
    			
-   			
-   			List<Object[]> alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,null,null,"true",group,null);
+   			List<Object[]> alertList = null;
+			if(alertType != null && alertType.equalsIgnoreCase("alert"))
+			   alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,null,null,"true",group,searchType);
+			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
+			 alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType);
    			Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
    			if(alertList != null && alertList.size() > 0){
      				for(Object[] param : alertList){
@@ -4479,7 +4482,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 
         //3
       //Regarding filter. sub division->sub division
-        public List<IdNameVO> getSubDivisionIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long districtWorkLocationId,Long divisionWorkLocationId,String group){
+        public List<IdNameVO> getSubDivisionIdListForSubDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long districtWorkLocationId,Long divisionWorkLocationId,String group,String alertType,String searchType){
         	try{
         	
    			Date fromDate = null;
@@ -4520,8 +4523,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    				}
    			}
    			
-   			
-   			List<Object[]> alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,"true",group,null);
+   			List<Object[]> alertList = null;
+			if(alertType != null && alertType.equalsIgnoreCase("alert"))
+   			 alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,"true",group,searchType);
+			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
+			alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType);
    			Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
    			if(alertList != null && alertList.size() > 0){
      				for(Object[] param : alertList){
