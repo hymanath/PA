@@ -804,12 +804,12 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	queryStr.append(" GDWL1.location_name as locationName, ");//2
    	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
    		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
-   			queryStr.append(" GDWL.govt_department_scope_id as GDSI, AAO.alert_status_id as govtDepartmentScopeId, ");//3
+   			queryStr.append(" GDWL.govt_department_scope_id as GDSI, AAO.alert_sub_task_status_id as govtDepartmentScopeId, ");//3
    		}else{
    			if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
    				queryStr.append(" AAO.alert_sub_task_status_id as govtDepartmentScopeId, ");//3
    			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
-   				queryStr.append(" GDWL.govt_department_scope_id as GDSI as govtDepartmentScopeId, ");//3
+   				queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
    			}
    		}
    		
@@ -876,7 +876,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		
 		
 		if(fromDate != null && toDate != null){
-			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
+			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
@@ -903,18 +903,15 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
  	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
 		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
 			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
-				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id, AAO.alert_status_id ");
+				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id, AAO.alert_sub_task_status_id ");
 			}else{
-				
 				if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
 					queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_sub_task_status_id ");
 	   			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
 	   				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
 	   			}
-				
 			}
-			
-   	}else{
+	}else{
    		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
    	}
 		
@@ -971,8 +968,8 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	queryStr.append(" GDWL1.location_name as locationName, ");//2
    	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
    		if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
-   			queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
-   		}else if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
+   			queryStr.append(" AAO.alert_sub_task_status_id as govtDepartmentScopeId, ");//3
+   		}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
    			queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
    		}
    	}else{
@@ -1068,7 +1065,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
  	    
 		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
 			if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
-				queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+				queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_sub_task_status_id ");
 			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
 				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
 			}

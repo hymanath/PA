@@ -4583,10 +4583,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        				if(printIdList != null && printIdList.size() == 0){
        					printIdList.add(0L);
        				}
-       			}else{
+       			}/*else{
        				electronicIdList.add(0L);
        				printIdList.add(0L);
-       			}
+       			}*/
        			
        			List<Long> levelValues = new ArrayList<Long>();    
        			Long levelId = 0L;
@@ -4656,10 +4656,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        			}
        			List<Object[]> deptScopeIdDtlsList = null;
        			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && deptScopeIds != null && deptScopeIds.size()>0){
-       				deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));
-       			}else if(deptScopeIds != null && deptScopeIds.size()>0){ 
        				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
-       			}
+       				//deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));
+       			}/*else if(deptScopeIds != null && deptScopeIds.size()>0){ 
+       				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
+       			}*/
        			
        			
        			if(deptScopeIdDtlsList != null && deptScopeIdDtlsList.size() > 0){
