@@ -118,4 +118,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public Object[] getAlertDetailsForSMS(Long alertId);
 	 public List<Object[]> getAlertDetials(String mobileNo,Long alertStatusId,Date startDate,Date endDate);
 	 public List<Object[]> getAlertCallerDetails(Long alertId);
+	public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewForAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type);
 }
