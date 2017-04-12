@@ -471,7 +471,7 @@ function responsiveTabs()
 	
 function onLoadCalls()
 {
-	getDeptNamesForMultiLevel(); 
+	 
 	responsiveTabs();
 	
 	getStatusWiseAlertOverviewCnt();
@@ -479,6 +479,9 @@ function onLoadCalls()
 	getDepartmentWiseAlertOverviewCnt('status','0');
 	
 	getDepartmentStatus();
+	getDeptNamesForMultiLevel();
+	
+	
 }
 
 $(window,document).on('resize', function(){
@@ -957,6 +960,7 @@ function buildDepartmentWiseAlertOverviewCnt(result,type,id)
 		departmentStatus.push(result[i].name);
 		departmentStatus.push(result[i].percentage);
 		departmentStatusOvrVwArr.push(departmentStatus)
+		
 		$('#departmentStatusGraph'+i).highcharts({
 			chart: {
 				type: 'bar'
@@ -1842,7 +1846,7 @@ function getDeptNamesForMultiLevel(){
     data: {}
     }).done(function(result){
 		buildDeptNamesForMultiLevel(result);
-		$(".collapseIconForMulti").addClass("ddddddd")
+		
 	});
 }
 function buildDeptNamesForMultiLevel(result){
@@ -1855,6 +1859,7 @@ function buildDeptNamesForMultiLevel(result){
 				for(var i in result){
 				  str+='<div class="panel panel-default">';
 					str+='<div class="panel-heading headingColor" role="tab" id="headingOne'+i+'">';
+					var defaultDepartmentID = result[i].id;
 					if(i == 0)
 					{
 						str+='<a role="button" class="collapseIconForMulti departmentLevelWiseDetails" attr_departmentId="'+result[i].id+'" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
@@ -1876,12 +1881,172 @@ function buildDeptNamesForMultiLevel(result){
 					}
 					
 					  str+='<div class="panel-body">';
-					  str+='<div id="graphViewBlocks'+i+'">';
-						str+='<div id="stateLevelGraphViewId'+result[i].id+'"></div>';
-						str+='<div id="districtLevelGraphViewId'+result[i].id+'"></div>';
-						str+='<div id="divisionLevelGraphViewId'+result[i].id+'"></div>';
-						str+='<div id="subDivisionLevelGraphViewId'+result[i].id+'"></div>';
+					  str+='<div class="col-md-12 col-xs-12 col-sm-12" style="border-bottom: 1px solid rgb(211, 211, 211);">';
+							str+='<div class="row">';
+								str+='<div class="col-md-4 col-xs-12 col-sm-12">';
+									str+='<h4>STATE LEVEL</h4>';
+								str+='</div>';
+								str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
+									str+='<ul class="switch_btn_multiLevel stateWiseInterChange">';
+										str+='<li  attr_type="overview" attr_department_id = "'+result[i].id+'">overview</li>';
+										str+='<li class="active" attr_type="status" attr_department_id = "'+result[i].id+'">status</li>';
+									str+='</ul>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div id="stateLevelGraphStausWise"></div>';
 						str+='</div>';
+						
+						str+='<div class="col-md-12 col-xs-12 col-sm-12" style="border-bottom: 1px solid rgb(211, 211, 211);">';
+							str+='<div class="row">';
+								
+								str+='<div class="col-md-9 col-xs-12 col-sm-12">';
+									str+='<h4>DISTRICT LEVEL</h4>';
+								str+='</div>';
+								
+								str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
+									str+='<ul class="switch_btn_multiLevel districtWiseInterChange">';
+										str+='<li  attr_type="overview" attr_department_id = "'+result[i].id+'">overview</li>';
+										str+='<li class="active" attr_type="status" attr_department_id = "'+result[i].id+'">status</li>';
+									str+='</ul>';
+								str+='</div>';
+								
+								
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+									str+='<div class="row">';
+									
+									str+='<div class="col-md-2 col-xs-12 col-sm-12">';
+									str+='<ul class="list-inline activeUlCls  constituencyUl districtWiseSorting">';
+									str+='<li class="active " attr_sorting_type="count" attr_order_type="desc" attr_department_id = "'+result[i].id+'">';
+										str+='<i class="glyphicon glyphicon-sort-by-attributes" ></i>';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="count" attr_order_type="asc" attr_department_id = "'+result[i].id+'">';
+										str+='<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="name" attr_order_type="asc"  attr_department_id = "'+result[i].id+'">';
+										str+='A-Z';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="name" attr_order_type="desc"  attr_department_id = "'+result[i].id+'">';
+										str+='Z-A';
+									str+='</li>';
+									str+='</ul>';
+								str+='</div>';
+								
+								
+								str+='<div class="col-sm-12 col-xs-12 col-md-2">';
+									str+='<select class="form-control districtWiseSortingApplyGraph" id="districtWiseLevelsDivId" attr_department_id = "'+result[i].id+'" >';
+									str+='</select>';
+								str+='</div>';
+								
+								str+='</div>';
+								str+='</div>';
+								
+							str+='</div>';
+							
+							str+='<div id="districtLevelGraphStausWise"></div>';
+						str+='</div>';
+						
+						str+='<div class="col-md-12 col-xs-12 col-sm-12" style="border-bottom: 1px solid rgb(211, 211, 211);">';
+							str+='<div class="row">';
+								str+='<div class="col-md-9 col-xs-12 col-sm-12">';
+									str+='<h4>DIVISION LEVEL</h4>';
+								str+='</div>';
+								
+								str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
+									str+='<ul class="switch_btn_multiLevel divisionWiseInterChange">';
+										str+='<li attr_type="overview" attr_department_id = "'+result[i].id+'">overview</li>';
+										str+='<li class="active"  attr_type="status" attr_department_id = "'+result[i].id+'">status</li>';
+									str+='</ul>';
+								str+='</div>';
+								
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+									str+='<div class="row">';
+									
+									str+='<div class="col-md-2 col-xs-12 col-sm-12">';
+									str+='<ul class="list-inline activeUlCls  constituencyUl divisionWiseSorting">';
+									str+='<li class="active " attr_sorting_type="count" attr_order_type="desc" attr_department_id = "'+result[i].id+'">';
+										str+='<i class="glyphicon glyphicon-sort-by-attributes" ></i>';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="count" attr_order_type="asc" attr_department_id = "'+result[i].id+'">';
+										str+='<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="name" attr_order_type="asc"  attr_department_id = "'+result[i].id+'">';
+										str+='A-Z';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="name" attr_order_type="desc"  attr_department_id = "'+result[i].id+'">';
+										str+='Z-A';
+									str+='</li>';
+									str+='</ul>';
+								str+='</div>';
+								
+								
+								str+='<div class="col-sm-12 col-xs-12 col-md-2">';
+									str+='<select class="form-control " id="divisionDistWiseLevelsDivId" attr_department_id = "'+result[i].id+'" >';
+									str+='</select>';
+								str+='</div>';
+								str+='<div class="col-sm-12 col-xs-12 col-md-2">';
+									str+='<select class="form-control divisionWiseSortingApplyGraph" id="divisionWiseLevelsDivId" attr_department_id = "'+result[i].id+'" >';
+									str+='</select>';
+								str+='</div>';
+								
+							str+='</div>';
+							str+='</div>';
+							
+							str+='</div>';
+							
+							str+='<div id="divisionLevelGraphStausWise"></div>';
+						str+='</div>';
+						
+						
+						
+						str+='<div class="col-md-12 col-xs-12 col-sm-12" style="border-bottom: 1px solid rgb(211, 211, 211);">';
+							str+='<div class="row">';
+								str+='<div class="col-md-9 col-xs-12 col-sm-12">';
+									str+='<h4>SUB-DIVISION LEVEL</h4>';
+								str+='</div>';
+								
+								str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
+									str+='<ul class="switch_btn_multiLevel subDivisionWiseInterChange">';
+										str+='<li attr_type="overview" attr_department_id = "'+result[i].id+'">overview</li>';
+										str+='<li class="active"  attr_type="status" attr_department_id = "'+result[i].id+'">status</li>';
+									str+='</ul>';
+								str+='</div>';
+								
+								str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+									str+='<div class="row">';
+									
+									str+='<div class="col-md-2 col-xs-12 col-sm-12">';
+									str+='<ul class="list-inline activeUlCls  constituencyUl subDivisionWiseSorting">';
+									str+='<li class="active " attr_sorting_type="count" attr_order_type="desc" attr_department_id = "'+result[i].id+'">';
+										str+='<i class="glyphicon glyphicon-sort-by-attributes" ></i>';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="count" attr_order_type="asc" attr_department_id = "'+result[i].id+'">';
+										str+='<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="name" attr_order_type="asc"  attr_department_id = "'+result[i].id+'">';
+										str+='A-Z';
+									str+='</li>';
+									str+='<li class="" attr_sorting_type="name" attr_order_type="desc"  attr_department_id = "'+result[i].id+'">';
+										str+='Z-A';
+									str+='</li>';
+									str+='</ul>';
+								str+='</div>';
+								
+								
+								str+='<div class="col-sm-12 col-xs-12 col-md-2">';
+									str+='<select class="form-control subDivisionWiseSortingApplyGraph" id="subDivisionWiseLevelsDivId" attr_department_id = "'+result[i].id+'" >';
+									str+='</select>';
+								str+='</div>';
+								
+							str+='</div>';
+							str+='</div>';
+							
+							str+='</div>';
+							
+							str+='<div id="subDivisionLevelGraphStausWise"></div>';
+						str+='</div>';
+						
+						
+						
 					  str+='</div>';
 					str+='</div>';
 				  str+='</div>';
@@ -1890,9 +2055,20 @@ function buildDeptNamesForMultiLevel(result){
 			str+='</div>';
 		str+='</div>';
 		$("#levelWiseDepartmentDetailsId").html(str);
+		
+		//state Level
+		getStateThenGovtDeptScopeWiseAlertCountForStateLevel(defaultDepartmentID,"status");
+		getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(defaultDepartmentID,"status","count","desc",0);
+		getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(defaultDepartmentID,"status","count","desc",0,0);
+		getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(defaultDepartmentID,"status","count","desc");
+		getDistIdListForDistFilter(defaultDepartmentID);
+		getDistIdListForDivisionFilter(defaultDepartmentID);  		
+		
+		
 	}else{
 		$("#levelWiseDepartmentDetailsId").html("No Data Available");
 	}
+	
 }
 function getTotalArticledetails(articleId){
 	
@@ -2153,120 +2329,7 @@ function getTotalArticledetails(articleId){
 		$("#alertManagementPopupHeading").html(heading)
 	});    
 }
-$(document).on("click",".departmentLevelWiseDetails",function(){	 
-		var departmentId = $(this).attr("attr_departmentId");
-		
-		//state Level
-		//getStateThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,1);
-		//District Level
-		//getDistrictThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,5);
-		//Division Level
-		//getDivisionThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,6);
-		//Sub-Division Level
-		//getSubDivisionThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,7);
-		
-});
 
-//status Wise MultiLevel Blocks Ajax Calls Start
-//state Level
-function getStateThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,scopeId){
-  var paperIdArr = globalNewsPaperIdArr;
-  var chanelIdArr = globalChannelIdArr;
-
-    var jsObj ={
-    fromDate:currentFromDate,
-    toDate:currentToDate,
-    stateId : globalStateId,
-    paperIdArr : paperIdArr,
-    chanelIdArr : chanelIdArr,  
-    govtDepartmentId : departmentId,
-    parentGovtDepartmentScopeId : scopeId,      
-    sortType : "count",
-    order : "desc"	
-    }
-    $.ajax({
-    type:'GET',         
-    url: 'getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction.action',
-    data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		buildStatusWiseMultiLevelBlocksDetailsStateLevel(result,departmentId);
-    });
-}
-//District Level
-function getDistrictThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,scopeId){
-  var paperIdArr = globalNewsPaperIdArr;
-  var chanelIdArr = globalChannelIdArr;
-
-    var jsObj ={
-		fromDate:currentFromDate,
-		toDate:currentToDate,
-		stateId : globalStateId,
-		paperIdArr : paperIdArr,
-		chanelIdArr : chanelIdArr,  
-		govtDepartmentId : departmentId,
-		parentGovtDepartmentScopeId : scopeId,      
-		sortType : "count",
-		order : "desc"	
-    }
-    $.ajax({
-		type:'GET',         
-		url: 'getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction.action',
-		data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		buildStatusWiseMultiLevelBlocksDetailsDistrictLevel(result,departmentId);
-    });
-}
-//Division Level
-function getDivisionThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,scopeId){
-  var paperIdArr = globalNewsPaperIdArr;
-  var chanelIdArr = globalChannelIdArr;
-
-    var jsObj ={
-    fromDate:currentFromDate,
-    toDate:currentToDate,
-    stateId : globalStateId,
-    paperIdArr : paperIdArr,
-    chanelIdArr : chanelIdArr,  
-    govtDepartmentId : departmentId,
-    parentGovtDepartmentScopeId : scopeId,      
-    sortType : "count",
-    order : "desc"
-    }
-    $.ajax({
-    type:'GET',         
-    url: 'getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction.action',
-    data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		buildStatusWiseMultiLevelBlocksDetailsDivisionLevel(result,departmentId);
-    });
-}
-
-//Sub-Division Level
-function getSubDivisionThenGovtDeptScopeWiseAlertCountStatusWise(departmentId,scopeId){
-  var paperIdArr = globalNewsPaperIdArr;
-  var chanelIdArr = globalChannelIdArr;
-
-    var jsObj ={
-    fromDate:currentFromDate,
-    toDate:currentToDate,
-    stateId : globalStateId,
-    paperIdArr : paperIdArr,
-    chanelIdArr : chanelIdArr,  
-    govtDepartmentId : departmentId,
-    parentGovtDepartmentScopeId : scopeId,      
-    sortType : "count",
-    order : "desc"
-    }
-    $.ajax({
-    type:'GET',         
-    url: 'getStateThenGovtDeptScopeWiseAlertCountStatusWiseAction.action',
-    data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		buildStatusWiseMultiLevelBlocksDetailsSubDivision(result,departmentId);
-    });
-}
-
-//status Wise MultiLevel Blocks Ajax Calls End
 function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
 	{
 		'use strict';
@@ -2287,369 +2350,235 @@ function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
 			series: data
 		});
 	}
-	
 
-function buildStatusWiseMultiLevelBlocksDetailsStateLevel(result,departmentId){
-	var str='';
 	
-	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		str+='<div class="col-md-4 col-xs-12 col-sm-12">';
-			str+='<h4>STATE LEVEL</h4>';
-		str+='</div>';
-		str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
-			str+='<ul class="switch-btn">';
-				str+='<li class="active" attr_type="overview">status overview</li>';
-				str+='<li attr_type="status">status</li>';
-			str+='</ul>';
-		str+='</div>';
-		str+='<div id="stateLevelGraphStausWise"></div>';
-	str+='</div>';
-	
-	$("#stateLevelGraphViewId"+departmentId).html(str);
-	
-	var mainlocationArr=[];
-	if(result !=null && result.length>0){
-		var locationNamesArr=[];
-		
-		for(var i in result){
-				locationNamesArr.push(result[i].name)
-			if(result[i].subList !=null &&  result[i].subList.length>0){
-				for(var j in result[i].subList){
-					var locationArr=[];
-					var locationColorArr;
-					locationArr.push(result[i].subList[j].count);
-					locationColorArr = result[i].subList[j].severtyColor
-					var obj={
-								name: result[i].subList[j].name,
-								data: locationArr,
-								color:locationColorArr
-							}
-					
-					mainlocationArr.push(obj);
-					
-				}
-			}
-		}
-		
-		var data = mainlocationArr
-			var id = 'stateLevelGraphStausWise';
-			var type = {
-				type: 'bar',
-				backgroundColor:'transparent'
-				
-			}
-			var legend = {
-				verticalAlign:'top',
-				enabled: true
-			}
-			var yAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: null
-				},
-				labels: {
-						enabled:false
-					},
-				stackLabels: {
-					//useHTML: true,
-					//align: 'left',
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-					},
-					 formatter: function() {
-						
-						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-						return (this.total);
-					} 
-					
-				}
-				
-			}
-			var xAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: locationNamesArr
-			}
-			var plotOptions =  {
-	             series: {
-					stacking: 'normal',
-					pointWidth: 30,
-					gridLineWidth: 15
-				}
-	        }
-			var tooltip = {
-				formatter: function () {
-					var s = '<b>' + this.x + '</b>';
-
-						$.each(this.points, function () {
-						if(this.series.name != "Series 1")  
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							this.y/* +' - ' +
-							(Highcharts.numberFormat(this.percentage,1)+'%'); */
-					});
-
-					return s;
-				},
-				shared: true
-			};
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-		
+function getgroupType(){
+		 var groupType = ''; 
+		$('.stateWiseInterChange li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  groupType = $(this).attr("attr_type");
+			 }
+		});
+		return groupType;
 	}
-}
-
-function buildStatusWiseMultiLevelBlocksDetailsDistrictLevel(result,departmentId){
-	var str='';
 	
-	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		str+='<div class="col-md-4 col-xs-12 col-sm-12">';
-			str+='<h4>DISTRICT LEVEL</h4>';
-		str+='</div>';
-		str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
-			str+='<ul class="switch-btn">';
-				str+='<li class="active" attr_type="overview">status overview</li>';
-				str+='<li attr_type="status">status</li>';
-			str+='</ul>';
-		str+='</div>';
-		str+='<div id="districtLevelGraphStausWise"></div>';
-	str+='</div>';
-	
-	$("#districtLevelGraphViewId"+departmentId).html(str);
-	
-	
-}
-function buildStatusWiseMultiLevelBlocksDetailsDivisionLevel(result,departmentId){
-	var str='';
-	
-	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		str+='<div class="col-md-4 col-xs-12 col-sm-12">';
-			str+='<h4>STATE LEVEL</h4>';
-		str+='</div>';
-		str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
-			str+='<ul class="switch-btn">';
-				str+='<li class="active" attr_type="overview">status overview</li>';
-				str+='<li attr_type="status">status</li>';
-			str+='</ul>';
-		str+='</div>';
-		str+='<div id="divisionGraphStausWise"></div>';
-	str+='</div>';
-	
-	$("#divisionLevelGraphViewId"+departmentId).html(str);
-	
-	var mainlocationArrDiv=[];
-	if(result !=null && result.length>0){
-		for(var i in result){
-			var locationNamesArrDiv=[];
-				locationNamesArrDiv.push(result[i].name)
-			if(result[i].subList !=null &&  result[i].subList.length>0){
-				for(var j in result[i].subList){
-					var locationArrDiv=[];
-					var locationColorArrDiv;
-					locationArrDiv.push(result[i].subList[j].count);
-					locationColorArrDiv = result[i].subList[j].severtyColor
-					var obj={
-								name: result[i].subList[j].name,
-								data: locationArrDiv,
-								color:locationColorArrDiv
-							}
-					
-					mainlocationArrDiv.push(obj);
-					
-				}
-			}
-		}
-		
-		var data = mainlocationArrDiv
-			var id = 'divisionGraphStausWise';
-			var type = {
-				type: 'bar',
-				backgroundColor:'transparent'
-				
-			}
-			var legend = {
-				verticalAlign:'top',
-				enabled: true
-			}
-			var yAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: null
-				},
-				labels: {
-						enabled:false
-					},
-				stackLabels: {
-					//useHTML: true,
-					//align: 'left',
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-					},
-					 formatter: function() {
-						
-						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-						return (this.total);
-					} 
-					
-				}
-				
-			}
-			var xAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: locationNamesArrDiv
-			}
-			var plotOptions =  {
-	             series: {
-					stacking: 'normal',
-					pointWidth: 30,
-					gridLineWidth: 15
-				}
-	        }
-			var tooltip = {
-				formatter: function () {
-					var s = '<b>' + this.x + '</b>';
-
-						$.each(this.points, function () {
-						if(this.series.name != "Series 1")  
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							this.y/* +' - ' +
-							(Highcharts.numberFormat(this.percentage,1)+'%'); */
-					});
-
-					return s;
-				},
-				shared: true
-			};
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-		
+	function getgroupTypeDistrict(){
+		 var groupType = ''; 
+		$('.districtWiseInterChange li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  groupType = $(this).attr("attr_type");
+			 }
+		});
+		return groupType;
 	}
-}
-function buildStatusWiseMultiLevelBlocksDetailsSubDivision(result,departmentId){
-	var str='';
-	
-	str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-		str+='<div class="col-md-4 col-xs-12 col-sm-12">';
-			str+='<h4>STATE LEVEL</h4>';
-		str+='</div>';
-		str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
-			str+='<ul class="switch-btn">';
-				str+='<li class="active" attr_type="overview">status overview</li>';
-				str+='<li attr_type="status">status</li>';
-			str+='</ul>';
-		str+='</div>';
-		str+='<div id="subDivisionGraphStausWise"></div>';
-	str+='</div>';
-	
-	$("#subDivisionLevelGraphViewId"+departmentId).html(str);
-	
-	var mainlocationArrSD=[];
-	if(result !=null && result.length>0){
-		for(var i in result){
-			var locationNamesArrSD=[];
-				locationNamesArrSD.push(result[i].name)
-			if(result[i].subList !=null &&  result[i].subList.length>0){
-				for(var j in result[i].subList){
-					var locationArrSD=[];
-					var locationColorArrSD;
-					locationArrSD.push(result[i].subList[j].count);
-					locationColorArrSD = result[i].subList[j].severtyColor
-					var obj={
-								name: result[i].subList[j].name,
-								data: locationArrSD,
-								color:locationColorArrSD
-							}
-					
-					mainlocationArrSD.push(obj);
-					
-				}
-			}
-		}
-		
-		var data = mainlocationArrSD
-			var id = 'subDivisionGraphStausWise';
-			var type = {
-				type: 'bar',
-				backgroundColor:'transparent'
-				
-			}
-			var legend = {
-				verticalAlign:'top',
-				enabled: true
-			}
-			var yAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: null
-				},
-				labels: {
-						enabled:false
-					},
-				stackLabels: {
-					//useHTML: true,
-					//align: 'left',
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-					},
-					 formatter: function() {
-						
-						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-						return (this.total);
-					} 
-					
-				}
-				
-			}
-			var xAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: locationNamesArrSD
-			}
-			var plotOptions =  {
-	             series: {
-					stacking: 'normal',
-					pointWidth: 30,
-					gridLineWidth: 15
-				}
-	        }
-			var tooltip = {
-				formatter: function () {
-					var s = '<b>' + this.x + '</b>';
-
-						$.each(this.points, function () {
-						if(this.series.name != "Series 1")  
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							this.y/* +' - ' +
-							(Highcharts.numberFormat(this.percentage,1)+'%'); */
-					});
-
-					return s;
-				},
-				shared: true
-			};
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-		
+	function getgroupTypeDivision(){
+		 var groupTypeDiv = ''; 
+		$('.divisionWiseInterChange li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  groupTypeDiv = $(this).attr("attr_type");
+			 }
+		});
+		return groupTypeDiv;
 	}
-}
-//overview
-//getStateThenGovtDeptScopeWiseAlertCount();
-function getStateThenGovtDeptScopeWiseAlertCount(){
+	function getgroupTypeSubDivision(){
+		 var groupTypeSubDiv = ''; 
+		$('.subDivisionWiseInterChange li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  groupTypeSubDiv = $(this).attr("attr_type");
+			 }
+		});
+		return groupTypeSubDiv;
+	}
+	function getDistrictWiseSorting(){
+		 var districtSortingType = ''; 
+		 var districtOrderType = ''; 
+		$('.districtWiseSorting li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  districtSortingType = $(this).attr("attr_sorting_type");
+			  districtOrderType = $(this).attr("attr_order_type");
+			 }
+		});
+		return {
+			districtSortingType : districtSortingType,
+			districtOrderType :districtOrderType
+			};
+	}
+	
+	function getDivisionWiseSorting(){
+		 var divisionSortingType = ''; 
+		 var divisionOrderType = ''; 
+		$('.divisionWiseSorting li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  divisionSortingType = $(this).attr("attr_sorting_type");
+			  divisionOrderType = $(this).attr("attr_order_type");
+			 }
+		});
+		return {
+			divisionSortingType : divisionSortingType,
+			divisionOrderType :divisionOrderType
+			};
+	}
+	
+	function getSubDivisionWiseSorting(){
+		 var subdivisionSortingType = ''; 
+		 var subdivisionOrderType = ''; 
+		$('.subDivisionWiseSorting li').each(function(i, obj){
+			 if($(this).hasClass('active')){
+			  subdivisionSortingType = $(this).attr("attr_sorting_type");
+			  subdivisionOrderType = $(this).attr("attr_order_type");
+			 }
+		});
+		return {
+			subdivisionSortingType : subdivisionSortingType,
+			subdivisionOrderType :subdivisionOrderType
+			};
+	}
+		
+$(document).on("click",".departmentLevelWiseDetails",function(){
+	
+		var departmentId = $(this).attr("attr_departmentId");
+		//var groupType = getgroupType();
+		//state Level
+		getStateThenGovtDeptScopeWiseAlertCountForStateLevel(departmentId,"status");
+		getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,"status","count","desc",0);
+		getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,"status","count","desc",0,0);
+		getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId,"status","count","desc");
+		
+		
+});
+
+$(document).on("click",".stateWiseInterChange li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		var departmentId = $(this).attr("attr_department_id");
+		var groupType = getgroupType();
+		//state Level
+		getStateThenGovtDeptScopeWiseAlertCountForStateLevel(departmentId,groupType);
+		
+		
+		
+});
+
+$(document).on("click",".districtWiseInterChange li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		var departmentId = $(this).attr("attr_department_id");
+		var groupType = getgroupTypeDistrict();
+		
+		var sortingType = getDistrictWiseSorting().districtSortingType; // 'value1'
+		var orderType = getDistrictWiseSorting().districtOrderType; // 'value2'
+		var districtId = $("#districtWiseLevelsDivId").val();
+		getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,groupType,sortingType,orderType,districtId);
+		
+		
+});
+
+$(document).on("click",".districtWiseSorting li",function(){
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+			var sortingType = $(this).attr("attr_sorting_type");
+			var departmentId = $(this).attr("attr_department_id");
+			var orderType = $(this).attr("attr_order_type");
+			var groupType = getgroupTypeDistrict();
+			var districtId = $("#districtWiseLevelsDivId").val();
+			getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,groupType,sortingType,orderType,districtId);
+			
+});
+
+$(document).on("change",".districtWiseSortingApplyGraph",function(){
+			
+			
+			var departmentId = $(this).attr("attr_department_id");
+			
+			var groupType = getgroupTypeDistrict();
+			var sortingType = getDistrictWiseSorting().districtSortingType; // 'value1'
+			var orderType = getDistrictWiseSorting().districtOrderType; // 'value2'
+			
+			var districtId = $("#districtWiseLevelsDivId").val();
+			getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,groupType,sortingType,orderType,districtId);
+			
+});
+
+//Division
+
+
+$(document).on("click",".divisionWiseInterChange li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		var departmentId = $(this).attr("attr_department_id");
+		var groupType = getgroupTypeDivision();
+		
+		var sortingType = getDivisionWiseSorting().divisionSortingType; // 'value1'
+		var orderType = getDivisionWiseSorting().divisionOrderType; // 'value2'
+		
+		getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,groupType,sortingType,orderType,0,0);
+		
+		
+});
+
+$(document).on("click",".divisionWiseSorting li",function(){
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+			
+			var sortingType = $(this).attr("attr_sorting_type");
+			var departmentId = $(this).attr("attr_department_id");
+			var orderType = $(this).attr("attr_order_type");
+			var groupType = getgroupTypeDivision();
+			//var districtId = $("#districtWiseLevelsDivId").val();
+			
+			getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,groupType,sortingType,orderType,0,0);
+			
+});
+
+$(document).on("change",".divisionWiseSortingApplyGraph",function(){
+			
+			
+			var departmentId = $(this).attr("attr_department_id");
+			
+			var groupType = getgroupTypeDivision();
+			var sortingType = getDivisionWiseSorting().divisionSortingType; // 'value1'
+			var orderType = getDivisionWiseSorting().divisionOrderType; // 'value2'
+			
+			var districtWorkLocationId = $("#divisionWiseLevelsDivId").val();
+			var divisionWorkLocationId = $("#divisionDistWiseLevelsDivId").val();
+			
+			getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,groupType,sortingType,orderType,districtWorkLocationId,divisionWorkLocationId);
+			
+});
+
+// Sub-Division
+$(document).on("click",".subDivisionWiseInterChange li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		
+		var departmentId = $(this).attr("attr_department_id");
+		var groupType = getgroupTypeSubDivision();
+		
+		var sortingType = getSubDivisionWiseSorting().subDivisionSortingType; // 'value1'
+		var orderType = getSubDivisionWiseSorting().subDivisionOrderType; // 'value2'
+	
+		getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId,groupType,sortingType,orderType);
+		
+		
+});
+
+$(document).on("click",".subDivisionWiseSorting li",function(){
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+			
+			var sortingType = $(this).attr("attr_sorting_type");
+			var departmentId = $(this).attr("attr_department_id");
+			var orderType = $(this).attr("attr_order_type");
+			
+			var groupType = getgroupTypeSubDivision();
+			
+			getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId,groupType,sortingType,orderType);
+			
+});
+
+//status Wise MultiLevel Blocks Ajax Calls Start
+//state Level
+function getStateThenGovtDeptScopeWiseAlertCountForStateLevel(departmentId,groupType){
   var paperIdArr = globalNewsPaperIdArr;
   var chanelIdArr = globalChannelIdArr;
 
@@ -2659,20 +2588,1525 @@ function getStateThenGovtDeptScopeWiseAlertCount(){
     stateId : globalStateId,
     paperIdArr : paperIdArr,
     chanelIdArr : chanelIdArr,  
-    govtDepartmentId : 49,
-    parentGovtDepartmentScopeId : 7,
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : 1, 
+	districtWorkLocationId : 0,  
+	divisionWorkLocationId : 0,       
+	subDivisionWorkLocationId : 0,	
     sortType : "count",
-    order : "desc"  
+    order : "desc",
+	group:groupType
+	
     }
     $.ajax({
     type:'GET',         
     url: 'getStateThenGovtDeptScopeWiseAlertCountAction.action',
     data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
-    
+		buildStateThenGovtDeptScopeWiseAlertCountForStateLevel(result,groupType);
     });
 }
 
+function buildStateThenGovtDeptScopeWiseAlertCountForStateLevel(result,groupType){
+	
+	if(groupType == "status"){
+		if(result !=null && result.length>0){
+			var locationNamesArrState=[];
+			 var pendingAlertArr = [];
+				 var notifiedAlertArr = [];
+				 var actionInProgessAlertArr = [];
+				 var completedAlertArr = [];
+				 var unblTRslvAlertArr = [];
+				 var actionNotRequiredAlertArr = [];
+				 var duplicateAlertArr = [];
+				 var WronglyMappedDesignationArr = [];
+				 var WronglyMappedDepartmentArr = [];
+				 var RejoinderArr = [];
+				 var Incomplete = [];
+				 var Closed = [];
+			for(var i in result){
+				
+				 locationNamesArrState.push(result[i].name)
+				
+				if(result[i].subList !=null &&  result[i].subList.length>0){
+					for(var j in result[i].subList){
+							
+						 if(result[i].subList[j].id==1){
+							 pendingAlertArr.push(result[i].subList[j].count); 
+						}else if(result[i].subList[j].id==2){
+							 notifiedAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==3){
+							 actionInProgessAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==4){
+							 completedAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==5){
+							 unblTRslvAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==6){
+							 actionNotRequiredAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==7){
+							 duplicateAlertArr.push(result[i].subList[j].count);
+						}
+						else if(result[i].subList[j].id==8){
+							 WronglyMappedDesignationArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==9){
+							 WronglyMappedDepartmentArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==10){
+							 RejoinderArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==11){
+							 Incomplete.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==12){
+							 Closed.push(result[i].subList[j].count);
+						}
+						
+						
+						
+					}
+					
+				}
+			}
+			
+			var mainJosnObjArrState = [];
+			   if(pendingAlertArr != null && pendingAlertArr.length > 0){
+				mainJosnObjArrState.push({name:'Pending',data:pendingAlertArr,color:"#ff4c64"});  
+			  }
+			   if(notifiedAlertArr != null && notifiedAlertArr.length > 0){
+				mainJosnObjArrState.push({name:'Notified',data:notifiedAlertArr,color:"#EFA5B6"});  
+			  }
+			  if(actionInProgessAlertArr != null && actionInProgessAlertArr.length > 0){
+				mainJosnObjArrState.push({name:'Action In Progess',data:actionInProgessAlertArr,color:"#FFCB7F"});  
+			  }
+			  if(completedAlertArr != null && completedAlertArr.length > 0){
+				mainJosnObjArrState.push({name:'Completed',data:completedAlertArr,color:"#85CA8B"});  
+			  }
+			  if(unblTRslvAlertArr != null && unblTRslvAlertArr.length > 0){
+				mainJosnObjArrState.push({name:'Unable to Resolve',data:unblTRslvAlertArr,color:"#C6A3A9"});  
+			  }
+			  if(actionNotRequiredAlertArr != null && actionNotRequiredAlertArr.length > 0){
+				mainJosnObjArrState.push({name:'Action Not Required',data:actionNotRequiredAlertArr,color:"#9698C8"});  
+			  }
+			  if(duplicateAlertArr != null && duplicateAlertArr.length > 0){
+				mainJosnObjArrState.push({name:'Duplicate',data:duplicateAlertArr,color:"#DEC6E0"});  
+			  }
+			   if(WronglyMappedDesignationArr != null && WronglyMappedDesignationArr.length > 0){
+				mainJosnObjArrState.push({name:'Duplicate',data:WronglyMappedDesignationArr,color:"#FE9900"});  
+			  }
+			   if(WronglyMappedDepartmentArr != null && WronglyMappedDepartmentArr.length > 0){
+				mainJosnObjArrState.push({name:'Duplicate',data:WronglyMappedDepartmentArr,color:"#0C9514"});  
+			  }
+			   if(RejoinderArr != null && RejoinderArr.length > 0){
+				mainJosnObjArrState.push({name:'Duplicate',data:RejoinderArr,color:"#82CA9C"});  
+			  } if(Incomplete != null && Incomplete.length > 0){
+				mainJosnObjArrState.push({name:'Duplicate',data:Incomplete,color:"#C9AC82"});  
+			  }if(Closed != null && Closed.length > 0){
+				mainJosnObjArrState.push({name:'Closed',data:Closed,color:"#ababab"});  
+			  }
+		
+		
+			
+			var heightOfDiv = locationNamesArrState.length ;
+			if(heightOfDiv >25){
+				heightOfDiv = heightOfDiv * 36;
+				$("#stateLevelGraphStausWise").css("height",heightOfDiv);
+			}
+			
+			
+			var data = mainJosnObjArrState
+				var id = 'stateLevelGraphStausWise';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
+				}
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrState
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				}
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#stateLevelGraphStausWise").html('No Data Available');
+		}
+	}else if(groupType == "overview"){
+		
+		if(result !=null && result.length>0){
+			
+			
+				var mainlocationArr =[];
+				//var mainlocationArr1 =[];
+					var nmaesArr =[];
+					var colorArr=[];
+				if(result[0].subList !=null && result[0].subList.length>0){
+					for(var j in result[0].subList){
+						var tempArr =[];
+						tempArr.push(result[0].subList[j].name)
+						tempArr.push(result[0].subList[j].count)
+						colorArr.push(result[0].subList[j].severtyColor)
+						
+						nmaesArr.push(result[0].subList[j].name);
+						mainlocationArr.push(tempArr);
+						//mainlocationArr.push(result[0].subList[j].count);
+						//mainlocationArr1.push(mainlocationArr)
+						
+						
+						
+					}
+					
+				}
+
+			console.log(mainlocationArr)
+			//console.log(mainlocationArr1)
+		$('#stateLevelGraphStausWise').highcharts({
+			
+			chart: {
+				type: 'bar'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+			 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				categories: nmaesArr,
+				labels: {
+				enabled: true,
+					
+				}
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+				labels: {
+					enabled: false,
+						
+					},
+				/* stackLabels: {
+					//useHTML: true,
+					//align: 'left',
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					 formatter: function() {
+						
+						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return (this.y);
+					} 
+					
+				} */
+			},
+			tooltip: {
+				 pointFormat: '<b>{point.y}</b>',
+				 shared:true
+			},
+			
+			legend: {
+				verticalAlign:'top',
+				enabled: false
+			},
+			
+			series: [{
+				 name: '',
+				 colorByPoint:true,
+				 data: mainlocationArr,
+				 dataLabels: {
+						enabled: true,
+						 format: '{point.y}', // one decimal
+					}
+				 
+			}]
+		});
+		}
+	}
+	
+}
+
+
+//District Level
+function getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,groupType,sortType,order,districtId){
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,  
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : 5, 
+	districtWorkLocationId : districtId,  
+	divisionWorkLocationId : 0,       
+	subDivisionWorkLocationId : 0,	
+    sortType : sortType,
+    order : order,
+	group:groupType
+	
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getStateThenGovtDeptScopeWiseAlertCountAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,groupType);
+    });
+}
+
+function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,groupType){
+	
+	if(groupType == "status"){
+		if(result !=null && result.length>0){
+			var locationNamesArrDistrict=[];
+			 var pendingAlertArr = [];
+				 var notifiedAlertArr = [];
+				 var actionInProgessAlertArr = [];
+				 var completedAlertArr = [];
+				 var unblTRslvAlertArr = [];
+				 var actionNotRequiredAlertArr = [];
+				 var duplicateAlertArr = [];
+				 var WronglyMappedDesignationArr = [];
+				 var WronglyMappedDepartmentArr = [];
+				 var RejoinderArr = [];
+				 var Incomplete = [];
+				 var Closed = [];
+			for(var i in result){
+				
+				 locationNamesArrDistrict.push(result[i].name)
+				
+				if(result[i].subList !=null &&  result[i].subList.length>0){
+					for(var j in result[i].subList){
+							
+						 if(result[i].subList[j].id==1){
+							 pendingAlertArr.push(result[i].subList[j].count); 
+						}else if(result[i].subList[j].id==2){
+							 notifiedAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==3){
+							 actionInProgessAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==4){
+							 completedAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==5){
+							 unblTRslvAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==6){
+							 actionNotRequiredAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==7){
+							 duplicateAlertArr.push(result[i].subList[j].count);
+						}
+						else if(result[i].subList[j].id==8){
+							 WronglyMappedDesignationArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==9){
+							 WronglyMappedDepartmentArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==10){
+							 RejoinderArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==11){
+							 Incomplete.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==12){
+							 Closed.push(result[i].subList[j].count);
+						}
+						
+						
+						
+					}
+					
+				}
+			}
+			
+			var mainJosnObjArrDistrict = [];
+			   if(pendingAlertArr != null && pendingAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Pending',data:pendingAlertArr,color:"#ff4c64"});  
+			  }
+			   if(notifiedAlertArr != null && notifiedAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Notified',data:notifiedAlertArr,color:"#EFA5B6"});  
+			  }
+			  if(actionInProgessAlertArr != null && actionInProgessAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Action In Progess',data:actionInProgessAlertArr,color:"#FFCB7F"});  
+			  }
+			  if(completedAlertArr != null && completedAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Completed',data:completedAlertArr,color:"#85CA8B"});  
+			  }
+			  if(unblTRslvAlertArr != null && unblTRslvAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Unable to Resolve',data:unblTRslvAlertArr,color:"#C6A3A9"});  
+			  }
+			  if(actionNotRequiredAlertArr != null && actionNotRequiredAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Action Not Required',data:actionNotRequiredAlertArr,color:"#9698C8"});  
+			  }
+			  if(duplicateAlertArr != null && duplicateAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Duplicate',data:duplicateAlertArr,color:"#DEC6E0"});  
+			  }
+			   if(WronglyMappedDesignationArr != null && WronglyMappedDesignationArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Duplicate',data:WronglyMappedDesignationArr,color:"#FE9900"});  
+			  }
+			   if(WronglyMappedDepartmentArr != null && WronglyMappedDepartmentArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Duplicate',data:WronglyMappedDepartmentArr,color:"#0C9514"});  
+			  }
+			   if(RejoinderArr != null && RejoinderArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Duplicate',data:RejoinderArr,color:"#82CA9C"});  
+			  } if(Incomplete != null && Incomplete.length > 0){
+				mainJosnObjArrDistrict.push({name:'Duplicate',data:Incomplete,color:"#C9AC82"});  
+			  }if(Closed != null && Closed.length > 0){
+				mainJosnObjArrDistrict.push({name:'Closed',data:Closed,color:"#ababab"});  
+			  }
+		
+		
+			
+			var heightOfDiv = locationNamesArrDistrict.length ;
+			if(heightOfDiv >9){
+				heightOfDiv = heightOfDiv * 50;
+				$("#districtLevelGraphStausWise").css("height",heightOfDiv);
+			}
+			
+			
+			var data = mainJosnObjArrDistrict
+				var id = 'districtLevelGraphStausWise';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
+				}
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrDistrict
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				}
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#districtLevelGraphStausWise").html('No Data Available');
+		}
+	}else if(groupType == "overview"){
+		
+		if(result !=null && result.length>0){
+			
+			var locationNamesArrDistrictOverView=[];
+				var stateArr = [];
+				 var goneArr = [];
+				 var regionArr = [];
+				 var circleArr = [];
+				 var districtArr = [];
+				 var divisionArr = [];
+				 var subDivisionArr = [];
+				 var mandalArr = [];
+				 var municipalityArr = [];
+				 var panchayatArr = [];
+				
+			for(var i in result){
+				
+				 locationNamesArrDistrictOverView.push(result[i].name)
+				
+				if(result[i].subList !=null &&  result[i].subList.length>0){
+					for(var j in result[i].subList){
+							
+						 if(result[i].subList[j].id==1){
+							 stateArr.push(result[i].subList[j].count); 
+						}else if(result[i].subList[j].id==2){
+							 goneArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==3){
+							 regionArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==4){
+							 circleArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==5){
+							 districtArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==6){
+							 divisionArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==7){
+							 subDivisionArr.push(result[i].subList[j].count);
+						}
+						else if(result[i].subList[j].id==8){
+							 mandalArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==9){
+							 municipalityArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==10){
+							 panchayatArr.push(result[i].subList[j].count);
+						}
+						
+						
+						
+					}
+					
+				}
+			}
+			
+			
+			var mainJosnObjArrDistrictOverview = [];
+			   if(stateArr != null && stateArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'State',data:stateArr,color:"#957ADB"});  
+			  }
+			   if(goneArr != null && goneArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Gone',data:goneArr,color:"#EEEFF0"});  
+			  }
+			  if(regionArr != null && regionArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Region',data:regionArr,color:"#0065FE"});  
+			  }
+			  if(circleArr != null && circleArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Circle',data:circleArr,color:"#BCF0E1"});  
+			  }
+			  if(districtArr != null && districtArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'District',data:districtArr,color:"#FE6603"});  
+			  }
+			  if(divisionArr != null && divisionArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Division',data:divisionArr,color:"#C8A11A"});  
+			  }
+			  if(subDivisionArr != null && subDivisionArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Sub-Division',data:subDivisionArr,color:"#4546B6"});  
+			  }
+			   if(mandalArr != null && mandalArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Mandal',data:mandalArr,color:"#CC329A"});  
+			  }
+			   if(municipalityArr != null && municipalityArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Municipality',data:municipalityArr,color:"#A0400D"});  
+			  }
+			   if(panchayatArr != null && panchayatArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
+			  } 
+		
+		
+			
+			var heightOfDiv = locationNamesArrDistrictOverView.length ;
+			if(heightOfDiv >25){
+				heightOfDiv = heightOfDiv * 36;
+				$("#districtLevelGraphStausWise").css("height",heightOfDiv);
+			}
+			
+			
+			var data = mainJosnObjArrDistrictOverview
+				var id = 'districtLevelGraphStausWise';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
+				}
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrDistrictOverView
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				}
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#districtLevelGraphStausWise").html('No Data Available');
+		}
+	}
+	
+}
+
+
+	function getDistIdListForDistFilter(departmentId){
+		
+	 $("#districtWiseLevelsDivId").html('');
+	 var groupType = getgroupTypeDistrict();
+	  var paperIdArr = globalNewsPaperIdArr;
+	  var chanelIdArr = globalChannelIdArr;
+
+		var jsObj ={
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		stateId : globalStateId,
+		paperIdArr : paperIdArr,
+		chanelIdArr : chanelIdArr,    
+		govtDepartmentId : departmentId,
+		parentGovtDepartmentScopeId : 5,
+		group : groupType//overview
+		}
+		$.ajax({
+		type:'GET',                  
+		url: 'getDistIdListForDistFilterAction.action',
+		data: {task :JSON.stringify(jsObj)}     
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				$("#districtWiseLevelsDivId").append('<option value="0">Select District</option>');
+				for(var i in result){
+					$("#districtWiseLevelsDivId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				}
+			}
+		});    
+	}
+
+
+//Division Level
+function getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,groupType,sortType,order,districtWorkLocationId,divisionWorkLocationId){
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,  
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : 6, 
+	districtWorkLocationId : districtWorkLocationId,  
+	divisionWorkLocationId : divisionWorkLocationId,       
+	subDivisionWorkLocationId : 0,	
+    sortType : sortType,
+    order : order,
+	group:groupType
+	
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getStateThenGovtDeptScopeWiseAlertCountAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,groupType);
+    });
+}
+
+function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,groupType){
+	
+	if(groupType == "status"){
+		if(result !=null && result.length>0){
+			var locationNamesArrDivision=[];
+			 var pendingAlertArr = [];
+				 var notifiedAlertArr = [];
+				 var actionInProgessAlertArr = [];
+				 var completedAlertArr = [];
+				 var unblTRslvAlertArr = [];
+				 var actionNotRequiredAlertArr = [];
+				 var duplicateAlertArr = [];
+				 var WronglyMappedDesignationArr = [];
+				 var WronglyMappedDepartmentArr = [];
+				 var RejoinderArr = [];
+				 var Incomplete = [];
+				 var Closed = [];
+			for(var i in result){
+				
+				 locationNamesArrDivision.push(result[i].name)
+				
+				if(result[i].subList !=null &&  result[i].subList.length>0){
+					for(var j in result[i].subList){
+							
+						 if(result[i].subList[j].id==1){
+							 pendingAlertArr.push(result[i].subList[j].count); 
+						}else if(result[i].subList[j].id==2){
+							 notifiedAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==3){
+							 actionInProgessAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==4){
+							 completedAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==5){
+							 unblTRslvAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==6){
+							 actionNotRequiredAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==7){
+							 duplicateAlertArr.push(result[i].subList[j].count);
+						}
+						else if(result[i].subList[j].id==8){
+							 WronglyMappedDesignationArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==9){
+							 WronglyMappedDepartmentArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==10){
+							 RejoinderArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==11){
+							 Incomplete.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==12){
+							 Closed.push(result[i].subList[j].count);
+						}
+						
+						
+						
+					}
+					
+				}
+			}
+			
+			var mainJosnObjArrDivision = [];
+			   if(pendingAlertArr != null && pendingAlertArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Pending',data:pendingAlertArr,color:"#ff4c64"});  
+			  }
+			   if(notifiedAlertArr != null && notifiedAlertArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Notified',data:notifiedAlertArr,color:"#EFA5B6"});  
+			  }
+			  if(actionInProgessAlertArr != null && actionInProgessAlertArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Action In Progess',data:actionInProgessAlertArr,color:"#FFCB7F"});  
+			  }
+			  if(completedAlertArr != null && completedAlertArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Completed',data:completedAlertArr,color:"#85CA8B"});  
+			  }
+			  if(unblTRslvAlertArr != null && unblTRslvAlertArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Unable to Resolve',data:unblTRslvAlertArr,color:"#C6A3A9"});  
+			  }
+			  if(actionNotRequiredAlertArr != null && actionNotRequiredAlertArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Action Not Required',data:actionNotRequiredAlertArr,color:"#9698C8"});  
+			  }
+			  if(duplicateAlertArr != null && duplicateAlertArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Duplicate',data:duplicateAlertArr,color:"#DEC6E0"});  
+			  }
+			   if(WronglyMappedDesignationArr != null && WronglyMappedDesignationArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Duplicate',data:WronglyMappedDesignationArr,color:"#FE9900"});  
+			  }
+			   if(WronglyMappedDepartmentArr != null && WronglyMappedDepartmentArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Duplicate',data:WronglyMappedDepartmentArr,color:"#0C9514"});  
+			  }
+			   if(RejoinderArr != null && RejoinderArr.length > 0){
+				mainJosnObjArrDivision.push({name:'Duplicate',data:RejoinderArr,color:"#82CA9C"});  
+			  } if(Incomplete != null && Incomplete.length > 0){
+				mainJosnObjArrDivision.push({name:'Duplicate',data:Incomplete,color:"#C9AC82"});  
+			  }if(Closed != null && Closed.length > 0){
+				mainJosnObjArrDivision.push({name:'Closed',data:Closed,color:"#ababab"});  
+			  }
+		
+		
+			
+			var heightOfDiv = locationNamesArrDivision.length ;
+			if(heightOfDiv >9){
+				heightOfDiv = heightOfDiv * 50;
+				$("#divisionLevelGraphStausWise").css("height",heightOfDiv);
+			}
+			
+			
+			var data = mainJosnObjArrDivision
+				var id = 'divisionLevelGraphStausWise';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
+				}
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrDivision
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				}
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#divisionLevelGraphStausWise").html('No Data Available');
+		}
+	}else if(groupType == "overview"){
+		
+		if(result !=null && result.length>0){
+			
+			var locationNamesArrDivisionOverView=[];
+				var stateArr = [];
+				 var goneArr = [];
+				 var regionArr = [];
+				 var circleArr = [];
+				 var districtArr = [];
+				 var divisionArr = [];
+				 var subDivisionArr = [];
+				 var mandalArr = [];
+				 var municipalityArr = [];
+				 var panchayatArr = [];
+				
+			for(var i in result){
+				
+				 locationNamesArrDivisionOverView.push(result[i].name)
+				
+				if(result[i].subList !=null &&  result[i].subList.length>0){
+					for(var j in result[i].subList){
+							
+						 if(result[i].subList[j].id==1){
+							 stateArr.push(result[i].subList[j].count); 
+						}else if(result[i].subList[j].id==2){
+							 goneArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==3){
+							 regionArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==4){
+							 circleArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==5){
+							 districtArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==6){
+							 divisionArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==7){
+							 subDivisionArr.push(result[i].subList[j].count);
+						}
+						else if(result[i].subList[j].id==8){
+							 mandalArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==9){
+							 municipalityArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==10){
+							 panchayatArr.push(result[i].subList[j].count);
+						}
+						
+						
+						
+					}
+					
+				}
+			}
+			
+			
+			var mainJosnObjArrDivisionOverview = [];
+			   if(stateArr != null && stateArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'State',data:stateArr,color:"#957ADB"});  
+			  }
+			   if(goneArr != null && goneArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'Gone',data:goneArr,color:"#EEEFF0"});  
+			  }
+			  if(regionArr != null && regionArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'Region',data:regionArr,color:"#0065FE"});  
+			  }
+			  if(circleArr != null && circleArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'Circle',data:circleArr,color:"#BCF0E1"});  
+			  }
+			  if(districtArr != null && districtArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'District',data:districtArr,color:"#FE6603"});  
+			  }
+			  if(divisionArr != null && divisionArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'Division',data:divisionArr,color:"#C8A11A"});  
+			  }
+			  if(subDivisionArr != null && subDivisionArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'Sub-Division',data:subDivisionArr,color:"#4546B6"});  
+			  }
+			   if(mandalArr != null && mandalArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'Mandal',data:mandalArr,color:"#CC329A"});  
+			  }
+			   if(municipalityArr != null && municipalityArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'Municipality',data:municipalityArr,color:"#A0400D"});  
+			  }
+			   if(panchayatArr != null && panchayatArr.length > 0){
+				mainJosnObjArrDivisionOverview.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
+			  } 
+		
+		
+			
+			var heightOfDiv = locationNamesArrDivisionOverView.length ;
+			if(heightOfDiv >25){
+				heightOfDiv = heightOfDiv * 36;
+				$("#divisionLevelGraphStausWise").css("height",heightOfDiv);
+			}
+			
+			
+			var data = mainJosnObjArrDivisionOverview
+				var id = 'divisionLevelGraphStausWise';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
+				}
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrDivisionOverView
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				}
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#divisionLevelGraphStausWise").html('No Data Available');
+		}
+	}
+	
+}	
+
+//Sub Division Level
+function getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId,groupType,sortType,order){
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,  
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : 7, 
+	districtWorkLocationId : 0,  
+	divisionWorkLocationId : 0,       
+	subDivisionWorkLocationId : 0,	
+    sortType : sortType,
+    order : order,
+	group:groupType
+	
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getStateThenGovtDeptScopeWiseAlertCountAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,groupType);
+    });
+}
+
+function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,groupType){
+	
+	if(groupType == "status"){
+		if(result !=null && result.length>0){
+			var locationNamesArrsubDivision=[];
+			 var pendingAlertArr = [];
+				 var notifiedAlertArr = [];
+				 var actionInProgessAlertArr = [];
+				 var completedAlertArr = [];
+				 var unblTRslvAlertArr = [];
+				 var actionNotRequiredAlertArr = [];
+				 var duplicateAlertArr = [];
+				 var WronglyMappedDesignationArr = [];
+				 var WronglyMappedDepartmentArr = [];
+				 var RejoinderArr = [];
+				 var Incomplete = [];
+				 var Closed = [];
+			for(var i in result){
+				
+				 locationNamesArrsubDivision.push(result[i].name)
+				
+				if(result[i].subList !=null &&  result[i].subList.length>0){
+					for(var j in result[i].subList){
+							
+						 if(result[i].subList[j].id==1){
+							 pendingAlertArr.push(result[i].subList[j].count); 
+						}else if(result[i].subList[j].id==2){
+							 notifiedAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==3){
+							 actionInProgessAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==4){
+							 completedAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==5){
+							 unblTRslvAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==6){
+							 actionNotRequiredAlertArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==7){
+							 duplicateAlertArr.push(result[i].subList[j].count);
+						}
+						else if(result[i].subList[j].id==8){
+							 WronglyMappedDesignationArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==9){
+							 WronglyMappedDepartmentArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==10){
+							 RejoinderArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==11){
+							 Incomplete.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==12){
+							 Closed.push(result[i].subList[j].count);
+						}
+						
+						
+						
+					}
+					
+				}
+			}
+			
+			var mainJosnObjArrsubDivision = [];
+			   if(pendingAlertArr != null && pendingAlertArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Pending',data:pendingAlertArr,color:"#ff4c64"});  
+			  }
+			   if(notifiedAlertArr != null && notifiedAlertArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Notified',data:notifiedAlertArr,color:"#EFA5B6"});  
+			  }
+			  if(actionInProgessAlertArr != null && actionInProgessAlertArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Action In Progess',data:actionInProgessAlertArr,color:"#FFCB7F"});  
+			  }
+			  if(completedAlertArr != null && completedAlertArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Completed',data:completedAlertArr,color:"#85CA8B"});  
+			  }
+			  if(unblTRslvAlertArr != null && unblTRslvAlertArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Unable to Resolve',data:unblTRslvAlertArr,color:"#C6A3A9"});  
+			  }
+			  if(actionNotRequiredAlertArr != null && actionNotRequiredAlertArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Action Not Required',data:actionNotRequiredAlertArr,color:"#9698C8"});  
+			  }
+			  if(duplicateAlertArr != null && duplicateAlertArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Duplicate',data:duplicateAlertArr,color:"#DEC6E0"});  
+			  }
+			   if(WronglyMappedDesignationArr != null && WronglyMappedDesignationArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Duplicate',data:WronglyMappedDesignationArr,color:"#FE9900"});  
+			  }
+			   if(WronglyMappedDepartmentArr != null && WronglyMappedDepartmentArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Duplicate',data:WronglyMappedDepartmentArr,color:"#0C9514"});  
+			  }
+			   if(RejoinderArr != null && RejoinderArr.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Duplicate',data:RejoinderArr,color:"#82CA9C"});  
+			  } if(Incomplete != null && Incomplete.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Duplicate',data:Incomplete,color:"#C9AC82"});  
+			  }if(Closed != null && Closed.length > 0){
+				mainJosnObjArrsubDivision.push({name:'Closed',data:Closed,color:"#ababab"});  
+			  }
+		
+		
+			
+			var heightOfDiv = locationNamesArrsubDivision.length ;
+			if(heightOfDiv >9){
+				heightOfDiv = heightOfDiv * 50;
+				$("#subDivisionLevelGraphStausWise").css("height",heightOfDiv);
+			}
+			
+			
+			var data = mainJosnObjArrsubDivision
+				var id = 'subDivisionLevelGraphStausWise';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
+				}
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrsubDivision
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				}
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#subDivisionLevelGraphStausWise").html('No Data Available');
+		}
+	}else if(groupType == "overview"){
+		
+		if(result !=null && result.length>0){
+			
+			var locationNamesArrsubDivisionOverView=[];
+				var stateArr = [];
+				 var goneArr = [];
+				 var regionArr = [];
+				 var circleArr = [];
+				 var districtArr = [];
+				 var divisionArr = [];
+				 var subDivisionArr = [];
+				 var mandalArr = [];
+				 var municipalityArr = [];
+				 var panchayatArr = [];
+				
+			for(var i in result){
+				
+				 locationNamesArrsubDivisionOverView.push(result[i].name)
+				
+				if(result[i].subList !=null &&  result[i].subList.length>0){
+					for(var j in result[i].subList){
+							
+						 if(result[i].subList[j].id==1){
+							 stateArr.push(result[i].subList[j].count); 
+						}else if(result[i].subList[j].id==2){
+							 goneArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==3){
+							 regionArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==4){
+							 circleArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==5){
+							 districtArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==6){
+							 divisionArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==7){
+							 subDivisionArr.push(result[i].subList[j].count);
+						}
+						else if(result[i].subList[j].id==8){
+							 mandalArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==9){
+							 municipalityArr.push(result[i].subList[j].count);
+						}else if(result[i].subList[j].id==10){
+							 panchayatArr.push(result[i].subList[j].count);
+						}
+						
+						
+						
+					}
+					
+				}
+			}
+			
+			
+			var mainJosnObjArrsubDivisionOverview = [];
+			   if(stateArr != null && stateArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'State',data:stateArr,color:"#957ADB"});  
+			  }
+			   if(goneArr != null && goneArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'Gone',data:goneArr,color:"#EEEFF0"});  
+			  }
+			  if(regionArr != null && regionArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'Region',data:regionArr,color:"#0065FE"});  
+			  }
+			  if(circleArr != null && circleArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'Circle',data:circleArr,color:"#BCF0E1"});  
+			  }
+			  if(districtArr != null && districtArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'District',data:districtArr,color:"#FE6603"});  
+			  }
+			  if(divisionArr != null && divisionArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'Division',data:divisionArr,color:"#C8A11A"});  
+			  }
+			  if(subDivisionArr != null && subDivisionArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'Sub-Division',data:subDivisionArr,color:"#4546B6"});  
+			  }
+			   if(mandalArr != null && mandalArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'Mandal',data:mandalArr,color:"#CC329A"});  
+			  }
+			   if(municipalityArr != null && municipalityArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'Municipality',data:municipalityArr,color:"#A0400D"});  
+			  }
+			   if(panchayatArr != null && panchayatArr.length > 0){
+				mainJosnObjArrsubDivisionOverview.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
+			  } 
+		
+		
+			
+			var heightOfDiv = locationNamesArrsubDivisionOverView.length ;
+			if(heightOfDiv >25){
+				heightOfDiv = heightOfDiv * 36;
+				$("#divisionLevelGraphStausWise").css("height",heightOfDiv);
+			}
+			
+			
+			var data = mainJosnObjArrsubDivisionOverview
+				var id = 'divisionLevelGraphStausWise';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
+				}
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrsubDivisionOverView
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				}
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#subDivisionLevelGraphStausWise").html('No Data Available');
+		}
+	}
+	
+}
+
+function getDistIdListForDivisionFilter(departmentId){
+	$("#divisionDistWiseLevelsDivId").html('');
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+var groupType = getgroupTypeDivision();
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,    
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : 6,
+	group : groupType
+    }
+    $.ajax({
+    type:'GET',                  
+    url: 'getDistIdListForDivisionFilterAction.action',
+    data: {task :JSON.stringify(jsObj)}     
+    }).done(function(result){
+		if(result !=null && result.length>0){
+				$("#divisionDistWiseLevelsDivId").append('<option value="0">Select District</option>');
+				for(var i in result){
+					$("#divisionDistWiseLevelsDivId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				}
+			}
+    });    
+}
+$(document).on("change","#divisionDistWiseLevelsDivId",function(){
+	var defaultDepartmentID = $(this).attr("attr_department_id")
+		getDivisionIdListForDivisionFilter(defaultDepartmentID);
+		
+		
+});
+
+function getDivisionIdListForDivisionFilter(departmentId){
+	$("#divisionWiseLevelsDivId").html('');
+	var districtId = $("#divisionDistWiseLevelsDivId").val();
+		var groupType = getgroupTypeDivision();
+  var paperIdArr = globalNewsPaperIdArr;
+  var chanelIdArr = globalChannelIdArr;
+
+    var jsObj ={
+    fromDate:currentFromDate,
+    toDate:currentToDate,
+    stateId : globalStateId,
+    paperIdArr : paperIdArr,
+    chanelIdArr : chanelIdArr,    
+    govtDepartmentId : departmentId,
+    parentGovtDepartmentScopeId : 6,
+	districtWorkLocationId : districtId, //district id here
+	group : groupType
+    }
+    $.ajax({
+    type:'GET',                  
+    url: 'getDivisionIdListForDivisionFilterAction.action',
+    data: {task :JSON.stringify(jsObj)}     
+    }).done(function(result){
+		if(result !=null && result.length>0){
+				$("#divisionWiseLevelsDivId").append('<option value="0">Select District</option>');
+				for(var i in result){
+					$("#divisionWiseLevelsDivId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+				}
+			}
+    });    
+}	
 function showSbmitStatusNew(uploadResult,alertId){
 	if(uploadResult !=null && uploadResult.search("success") != -1){
 		getDocumentsForAlert(alertId);
