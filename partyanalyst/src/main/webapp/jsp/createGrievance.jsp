@@ -294,18 +294,18 @@
 	   <div class="row">
 		   <div class="col-sm-4">
 			   <label>Comment</label>
-			   <textarea id="comntId"></textarea>
+			   <textarea id="comntId" style="width:350px; height:90px;"></textarea>
 		   </div>
-		    <div class="col-sm-4">
-			   <label>FeedbackStatus</label>
+		    <div class="col-sm-3">
+			   <label>FeedBack Status :</label>
 			  <select id="feedbackStatusList" class="form-control">
 				<option value="0"> Select FeedbackStatus</option>
 			  </select>
 		   </div>
 		   <div class="col-sm-4">
-				<button type="button" class="btn btn-success">Save</button>
+				<button type="button" class="btn btn-success" onClick="saveAlertStatusDetails();" style="margin-top:22px;">Save</button>
+				<span id="saveMsgId"></span>
 		   </div>
-		   <div id="saveMsgId"></div>
 	   </div>
       </div>
     </div>
@@ -1329,9 +1329,9 @@ function getAlertDetails()
 
 function getAlertCallerDetails(alertId)
 	{
-		$("#buildUpdateDivId").html('');
+		$("#comntId").val('');
+		$("#feedbackStatusList").val(0);
 		$("#updateAlertModalDivId").modal('show');
-		
 		var jObj = {
 			alertId : alertId
 		}
@@ -1348,15 +1348,16 @@ function getAlertCallerDetails(alertId)
 //saveAlertStatusDetails();
 function saveAlertStatusDetails()
 	{
-		var comment = $("#commentId").val();
+		var comment = $("#comntId").val();
 		var feedBackStatus =$("#feedbackStatusList").val();
 		var alertId = $("#hiddenAlertId").val();
 		var sourceId = $("#hiddenSourceId").val();
+		var statusId = $("#hiddenStatusId").val();
 		
 		var jObj = {
 			alertId : alertId,
 			comment : comment,
-			alertStatusId : 2,
+			alertStatusId : statusId,
 			alertFeedBackStatusId : feedBackStatus,
 			alertSourceId : sourceId
 		}
@@ -1370,6 +1371,9 @@ function saveAlertStatusDetails()
 			}else{
 				$("#saveMsgId").html("<span style='color:green;'>Updation failed.Please try again.</span>");
 			}
+			setTimeout(function(){ 
+				 $("#updateAlertModalDivId").modal('hide');
+			},1500);
 		});
 }
 getFeedBackStatusDetails();
@@ -1404,7 +1408,7 @@ function buildAlertDetails(result){
 			str+='<tr>';
 				str+='<td>'+result[i].title+'</td>';
 				str+='<td>'+result[i].locationName+'</td>';
-				str+='<td>'+result[i].createdTime+'<button type="button"  class="btn btn-success updateAlertCls" attr_alert_id ="'+result[i].alertId+'">Update</button></td>';
+				str+='<td>'+result[i].createdTime+'<button type="button"  class="btn btn-success updateAlertCls" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button></td>';
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -1413,12 +1417,16 @@ function buildAlertDetails(result){
 }
 $(document).on("click",".updateAlertCls",function(){
 	var alertId = $(this).attr("attr_alert_id");
+	var sourceId =$(this).attr("attr_alert__source_id");
+	var statusId =$(this).attr("attr_alert__status_id");
 	getAlertCallerDetails(alertId);
+	$("#hiddenAlertId").val(alertId);
+	$("#hiddenSourceId").val(sourceId);
+	$("#hiddenStatusId").val(statusId);
 });	
 	
 function buildAlertCallerDetails(result){
 	var str= '';
-	
 		str+='<div class="panel panel-default m_top10">';
 			str+='<div class="panel-body">';
 			  str+='<ul>';
