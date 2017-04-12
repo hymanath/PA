@@ -2199,7 +2199,12 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	}
 	
 	public String createGrievance(){
-		return Action.SUCCESS;
+		session = request.getSession();
+		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		if(regVo != null)
+			return Action.SUCCESS;
+		else
+			return Action.ERROR;
 	}
 	
 	public String getAlertIssueTypes(){
@@ -2278,6 +2283,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		
 		return Action.SUCCESS;	
+	}
+	
+	public String getAllMandalsByDistrictID()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = alertService.getAllMandalsByDistrictID(jObj.getLong("districtId"));			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getAllMandalsByDistrictID",e);
+		}
+		return Action.SUCCESS;
 	}
 }
 
