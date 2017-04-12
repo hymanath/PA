@@ -966,7 +966,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
 			Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
 			Long subDivisionWorkLocationId = jObj.getLong("subDivisionWorkLocationId");
-			String alertType = null;
+			String alertType =  jObj.getString("alertType");
+			
 			String group = jObj.getString("group");
 			alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group);
 		} catch (Exception e) {
