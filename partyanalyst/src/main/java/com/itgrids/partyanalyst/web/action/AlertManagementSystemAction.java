@@ -1885,7 +1885,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;	
 		}
-		public String getStateThenGovtDeptScopeWiseAlertCountStatus1(){
+		public String getDistrictOfficeGraphicalView(){
 			try {
 				session = request.getSession();
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
@@ -1919,13 +1919,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long subDivisionWorkLocationId = jObj.getLong("subDivisionWorkLocationId");
 				String alertType = jObj.getString("alertType");
 				String searchType = jObj.getString("searchType");
+				String group = jObj.getString("group");
 				if(searchType.equalsIgnoreCase("statusWise"))
 				 alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group);
 				else if(searchType.equalsIgnoreCase("scopeWise"))
 				  alertCoreDashBoardVOs=alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType);
 					
 			} catch (Exception e) {
-				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
+				LOG.error("Exception Occured in getDistrictOfficeGraphicalView() method, Exception - ",e); 
 			}
 			return Action.SUCCESS;	
 		}

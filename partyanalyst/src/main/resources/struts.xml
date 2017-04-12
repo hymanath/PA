@@ -16857,6 +16857,11 @@
   	   <result type="json" name="success">
 			<param name="root">resultStatus</param>
 		</result>
-    </action>  	                   
+    </action> 
+    <action name="getDistrictOfficeGraphicalViewAction" class="alertManagementSystemAction" method="getDistrictOfficeGraphicalView">
+	  	<result type="json" name="success">		   
+	    	<param name="root">alertCoreDashBoardVOs</param>
+	  	</result>	
+  	</action>	                   
  </package>
 </struts>
