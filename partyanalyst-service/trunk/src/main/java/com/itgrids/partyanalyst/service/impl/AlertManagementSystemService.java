@@ -742,7 +742,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 			String folderName = folderCreationForAlertsAttachments();
-			CustomReportFile customReportFile = null;
 			CustomReport customReport = null;
 			
 			Calendar calendar = Calendar.getInstance();
@@ -753,7 +752,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			 int temp = month+1;
 			 String monthText = getMonthForInt(temp);
 			
-			 StringBuilder pathBuilder = new StringBuilder();
+			 
 			 StringBuilder str ;
 			 
 			 if(mapfiles != null && mapfiles.size() > 0){
@@ -762,9 +761,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					 str = new StringBuilder();
 					 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
 					 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-						
-					 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
-					 .append(entry.getValue());
+					 StringBuilder pathBuilder = new StringBuilder();
+					  pathBuilder.append("alerts_attachments/").append(randomNumber).append(".").append(entry.getValue());
 					 str.append(randomNumber).append(".").append(entry.getValue());
 					String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
 					 
@@ -786,14 +784,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				 }
 			 }
 			
-			 resultStatus.setResultCode(0);
-			 resultStatus.setResultState(customReportFile.getCustomReportFileId());
-			 resultStatus.setMessage("success");
+			 resultStatus.setExceptionMsg("success");
 					}
 				});
 			}catch (Exception e) {
-				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-				resultStatus.setMessage("failure");
+				resultStatus.setExceptionMsg("failure");
 				LOG.error(" Exception Occured in saveCustomReportUploadFile() method, Exception - ",e);
 			}
 			return resultStatus;
