@@ -1355,7 +1355,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	return query.list();
         }
         //state and district scope lvl
-        public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId, String group){
+        public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,
+        		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
+        		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId, String group,String searchType){
         	StringBuilder queryStr = new StringBuilder();
         	queryStr.append(" select ");
         	
@@ -1366,7 +1368,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
         			queryStr.append(" GDWL.govt_department_scope_id as GDSI, AAO.alert_status_id as govtDepartmentScopeId, ");//3
         		}else{
-        			queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+        			if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
+        				queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+        			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
+        				queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+        			}
         		}
         		
         	}else{
@@ -1461,7 +1467,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
     				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id, AAO.alert_status_id ");
     			}else{
-    				queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+    				if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
+    					queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+        			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
+        				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+        			}
+    				
     			}
     			
         	}else{
@@ -1507,7 +1518,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		return query.list();
         }
         //division scope lvl
-        public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group){
+        public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
+        		List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,
+        		List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group,String searchType){
         	StringBuilder queryStr = new StringBuilder();
         	queryStr.append(" select ");
         	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
@@ -1518,7 +1531,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
         	queryStr.append(" GDWL1.location_name as locationName, ");//2
         	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
-        		queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+        		if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
+        			queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+    			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
+    				queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+    			}
+        		
         	}else{
         		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
         	}
@@ -1611,7 +1629,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
       	    
     		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
-    			queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+    			
+    			if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
+					queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+    			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
+    				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+    			}
         	}else{
         		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
         	}
@@ -1660,7 +1683,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		return query.list();
         }
         //sub division scope lvl
-        public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String filter,String group){
+        public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
+        		Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
+        		Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String filter,String group,String searchType){
         	StringBuilder queryStr = new StringBuilder();
         	queryStr.append(" select ");
         	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
@@ -1673,7 +1698,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
         	queryStr.append(" GDWL1.location_name as locationName, ");//2
         	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
-        		queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+        		if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
+    				queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+    			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
+    				queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+    			}
         	}else{
         		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
         	}
@@ -1771,8 +1800,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
       	    
     		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
-    			queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
-        	}else{
+    			if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
+					queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+    			}else if(searchType != null && searchType.equalsIgnoreCase("scopeWise")){
+    				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+    			}
+    		}else{
         		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
         	}
     		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
