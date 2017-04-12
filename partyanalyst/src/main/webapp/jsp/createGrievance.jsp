@@ -115,9 +115,9 @@
 									</select>
 								</div>
 								<div class="col-sm-3 m_top10">
-									<label>Issue Sub Type<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgSubTypeId"></span></label>
+									<label>Problem<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgSubTypeId"></span></label>
 									<select class="chosen" id="issueSubTypeId" name="grievanceAlertVO.alertIssueSubTypeId">
-										<option value="0">Select Sub Type</option>
+										<option value="0">Select Problem</option>
 									</select>
 								</div>
 								<!-- <div class="col-sm-3 m_top10">
@@ -1188,7 +1188,7 @@ function getAlertIsuueSubTypes()
 	  url: 'getAlertIssueSubTypesAction.action',
 	  data: {task :JSON.stringify(jObj)}
 	}).done(function(result){
-		$('#issueSubTypeId').append('<option value="0">Select IssueSubType</option>');
+		$('#issueSubTypeId').append('<option value="0">Select Problem</option>');
 		if(result != null && result.length > 0)
 		{
 			for(var i in result)
