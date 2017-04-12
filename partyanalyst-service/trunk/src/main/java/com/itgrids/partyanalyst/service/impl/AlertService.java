@@ -9569,6 +9569,57 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	return resultStatus;
 	}
     
+	public List<AlertTrackingVO> getAlertCallerDetailsByMobileNo(Long userId,String startdateStr,String endDateStr,String status,String mobileNo,Long departmentId){
+		List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
+		try {
+			Date startDate=null;
+			Date endDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(startdateStr != null && !startdateStr.isEmpty() && startdateStr != null && !startdateStr.isEmpty()){
+				 startDate=format.parse(startdateStr);
+				 endDate = format.parse(endDateStr);
+			}
+			
+			List<AlertStatus> statusList =  alertStatusDAO.getAll();
+			AlertTrackingVO returnVO = new AlertTrackingVO();
+			 if(commonMethodsUtilService.isListOrSetValid(statusList)){
+				 for (AlertStatus alertStatus : statusList) {
+					 AlertTrackingVO vo = new AlertTrackingVO();
+					 vo.setAlertStatusId(alertStatus.getAlertStatusId());
+					 vo.setStatus(alertStatus.getAlertStatus());
+					 returnVO.getStatusList().add(vo);
+				}
+			 }
+			 
+			List<Object[]> objList1 = alertTrackingDAO.getStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
+			
+			if(objList1 != null && objList1.size() > 0){
+				for (Object[] param : objList1) {
+					AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getStatusList(), "alertStatusId", commonMethodsUtilService.getStringValueForObject(param[0]));
+					if(vo != null){
+						vo.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+			}
+			
+			List<Object[]> objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
+			
+			if(objList != null && objList.size() > 0){
+				for (Object[] param : objList) {
+					AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getStatusList(), "alertStatusId", commonMethodsUtilService.getStringValueForObject(param[0]));
+					if(vo != null){
+						vo.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+			}
+			
+			voList.add(returnVO);
+		} catch (Exception e) {
+			LOG.error("Error occured getAlertCallerDetailsByMobileNo() method of AlertManagementSystemService");
+		}
+		return voList;
+	}
+	
     public UserAddress saveUserAddressForGrievanceAlert(final GrievanceAlertVO inputVO)
 	{
 		UserAddress userAddress = new UserAddress();
