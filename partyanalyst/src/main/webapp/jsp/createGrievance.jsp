@@ -185,7 +185,7 @@
 								<div class="col-sm-3 m_top10" id="mandalDiv" style="display:block;">
 									<label>Mandal<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMandalId"></span></label>
 									<select class="chosen" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" name="grievanceAlertVO.mandalId">
-										<option value="0">Select Mandaly</option>
+										<option value="0">Select Mandal</option>
 									</select>
 								</div>
 								<div class="col-sm-3 m_top10" id="panchayatDiv" style="display:block;">
@@ -241,7 +241,7 @@
 								<div class="col-sm-3 m_top10">
 									<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
 									<select  class="chosenSelect" id="locationLevelSelectId" disabled>  
-										<option></option>
+										<option value="13">MANDAL</option>
 									</select>
 								</div>
 								<div id="parentLevelDivId"> </div>
@@ -288,7 +288,7 @@
 						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.issueTypeId"/>
 						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.entrySourceId"/>
 						<input type="hidden" class="form-control" value="49" name="grievanceAlertVO.departmentId"/>
-						<input type="hidden" class="form-control" value="8" name="grievanceAlertVO.levelId"/>
+						<input type="hidden" class="form-control" value="13" name="grievanceAlertVO.levelId"/>
 					</form>
 				</div>
 				<div id="dashboardGrevanceDivId" style="display:none;">
@@ -563,6 +563,8 @@ function getDistrictsForReferPopup() {
  }
  
  function getPanchayatsForReferPopup(){
+	 
+	 designationsByDepartment();
 	
 	 $("#referpanchayatId").find('option').not(':first').remove();
 	 var mandalId = $('#refermandalNameId').val();
@@ -1123,7 +1125,7 @@ function clearFields(){
 	$("#emailId").val('');
 	$("#uploadFileId0").val('');
 }
-getDepartmentLevels();
+//getDepartmentLevels();
 	var loginUserId = "${sessionScope.USER.registrationID}";
 	/* Assign */
 	$(".chosenSelect").chosen({width:'100%'})
@@ -1133,9 +1135,9 @@ getDepartmentLevels();
 	$(document).on('change','.locationCls', function(evt, params) {
 		designationsByDepartment();
 	});
-	$(document).on('change', '#departmentsId', function(){
+	/*$(document).on('change', '#departmentsId', function(){
 		getDepartmentLevels();
-	});
+	});*/
 	$(document).on('change','#designationsId', function(evt, params) {
 		var designationId = $(this).val();
 		officersByDesignationAndLevel(designationId)
@@ -1281,7 +1283,7 @@ getDepartmentLevels();
 		$("#officerNamesId").trigger("chosen:updated");
 		var LevelId = $("#locationLevelSelectId").chosen().val();
 		var deprtmntId = $("#departmentsId").chosen().val();
-		var levelValue = $(".locationCls").chosen().val();
+		var levelValue = $("#refermandalNameId").chosen().val();
 		
 		var jsObj = {
 			departmentId	: deprtmntId,
@@ -1290,7 +1292,7 @@ getDepartmentLevels();
 		}
 		$.ajax({
 		  type:'GET',
-		  url: 'getDesignationsByDepartmentNewAction.action',
+		  url: 'getOldDesignationsByDepartmentNewAction.action',
 		  data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
 			var str='';
@@ -1309,7 +1311,7 @@ getDepartmentLevels();
 		$("#officerNamesId").empty();
 		$("#officerNamesId").trigger("chosen:updated");
 		var LevelId = $("#locationLevelSelectId").chosen().val()
-		var LevelValue = $(".locationCls").chosen().val()
+		var LevelValue = $("#refermandalNameId").chosen().val()
 		
 		var jsObj = {
 			levelId				: LevelId,
@@ -1318,7 +1320,7 @@ getDepartmentLevels();
 		}
 		$.ajax({
 		  type:'GET',
-		  url: 'getOfficersByDesignationAndLevelNewAction.action',
+		  url: 'getOldOfficersByDesignationAndLevelNewAction.action',
 		  data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
 			var str='';

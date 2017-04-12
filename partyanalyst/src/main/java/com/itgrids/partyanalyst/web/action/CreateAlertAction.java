@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
+import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -86,7 +87,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<UserTypeVO> activityMembersList;
 	private GrievanceAlertVO grievanceAlertVO;
 	private List<AlertTrackingVO> alertTrackingVOList;
+	private List<GovtDepartmentVO> govtDeptVoList = new ArrayList<GovtDepartmentVO>(0);
 	
+	
+	public List<GovtDepartmentVO> getGovtDeptVoList() {
+		return govtDeptVoList;
+	}
+
+	public void setGovtDeptVoList(List<GovtDepartmentVO> govtDeptVoList) {
+		this.govtDeptVoList = govtDeptVoList;
+	}
+
 	public List<AlertTrackingVO> getAlertTrackingVOList() {
 		return alertTrackingVOList;
 	}
@@ -2377,6 +2388,34 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception occured in getAlertFeedBackStatusDetails() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getDesignationsByDepartmentNew(){
+	   try {
+			jObj = new JSONObject(getTask());
+			Long departmentId = jObj.getLong("departmentId");
+			Long levelId = jObj.getLong("levelId");
+			Long levelValue = jObj.getLong("levelValue");
+		
+			govtDeptVoList = alertService.getDesignationsByDepartment(departmentId,levelId,levelValue);
+	   } catch (Exception e) {
+		   LOG.error("Exception Raised in getDesignationsByDepartment() in AlertManagementSystemAction",e);
+		}
+		   return Action.SUCCESS;
+	}
+	
+	public String getOfficersByDesignationAndLevelNew(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long levelId = jObj.getLong("levelId");
+				Long levelValue = jObj.getLong("levelValue");
+				Long designationId = jObj.getLong("designationId");
+			
+				govtDeptVoList = alertService.getOfficersByDesignationAndLevel(levelId,levelValue,designationId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getOfficersByDesignationAndLevel() in AlertManagementSystemAction",e);
+			}
+			   return Action.SUCCESS;
 	}
 }
 

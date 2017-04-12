@@ -16897,7 +16897,17 @@
 		<result type="json" name="success">  
 			<param name="root">alertVOs</param>
 		</result>
-	</action>
+	</action> 
+	<action name="getOldDesignationsByDepartmentNewAction" class="createAlertAction" method="getDesignationsByDepartmentNew">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action> 	 
+	<action name="getOldOfficersByDesignationAndLevelNewAction" class="createAlertAction" method="getOfficersByDesignationAndLevelNew">
+		<result type="json" name="success">		   
+			<param name="root">govtDeptVoList</param>
+		</result>	
+	</action>                  
 	<action name="stateLevelDeptOfficerDepartmentWiseAlertsViewAction" class="alertManagementSystemAction"  method="stateLevelDeptOfficerDepartmentWiseAlertsView">
 		<result type="json" name="success">    
 			<param name="root">alertVOs</param>       
