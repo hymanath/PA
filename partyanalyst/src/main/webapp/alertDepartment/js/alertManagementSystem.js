@@ -175,6 +175,7 @@ function totalAlertGroupByStatusForGovt()
 	var deptIdArr = globalDepartmentIdArr;
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
 	
     var jsObj ={
       fromDate:currentFromDate,
@@ -182,7 +183,8 @@ function totalAlertGroupByStatusForGovt()
       stateId : globalStateId,
       deptIdArr : deptIdArr,  
       paperIdArr : paperIdArr,
-      chanelIdArr : chanelIdArr
+      chanelIdArr : chanelIdArr,
+	  callCenterArr : callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -335,6 +337,7 @@ function totalAlertGroupByStatusThenDepartment()
     var deptIdArr = globalDepartmentIdArr;
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
 	
 	var jsObj ={
       fromDate:currentFromDate,
@@ -343,7 +346,8 @@ function totalAlertGroupByStatusThenDepartment()
       deptIdArr : deptIdArr,  
       paperIdArr : paperIdArr,
       chanelIdArr : chanelIdArr,
-      sortingType : "dsc"
+      sortingType : "dsc",
+	  callCenterArr : callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -545,15 +549,17 @@ $(document).on("click",".getDtlsCls",function(){
 	
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
 	
     var jsObj ={
-      fromDate:currentFromDate,
-      toDate:currentToDate,
-      stateId : globalStateId,
-      deptIdArr : deptIdArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr : chanelIdArr,
-	  statusId : alertStatusId       
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		stateId : globalStateId,
+		deptIdArr : deptIdArr,  
+		paperIdArr : paperIdArr,
+		chanelIdArr : chanelIdArr,
+		statusId : alertStatusId,
+		callCenterArr : callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -585,15 +591,17 @@ function getData(count, alertStatusId){
 	
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
 	
     var jsObj ={
-      fromDate:currentFromDate,
-      toDate:currentToDate,
-      stateId : globalStateId,
-      deptIdArr : deptIdArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr : chanelIdArr,
-	  statusId : alertStatusId       
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		stateId : globalStateId,
+		deptIdArr : deptIdArr,  
+		paperIdArr : paperIdArr,
+		chanelIdArr : chanelIdArr,
+		statusId : alertStatusId,
+		callCenterArr : callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -1665,13 +1673,15 @@ function getDistrictWiseTotalForAlertOverview(){
 	
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
     var jsObj ={
-      fromDate:currentFromDate,
-      toDate:currentToDate,
-      stateId : globalStateId,
-      deptIdArr : deptIdArr,  
-      newsPaperIdArr : paperIdArr,
-      newChanelIdArr : chanelIdArr    
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		stateId : globalStateId,
+		deptIdArr : deptIdArr,  
+		newsPaperIdArr : paperIdArr,
+		newChanelIdArr : chanelIdArr,
+		callCenterArr : callCenterArr
     }
 	$.ajax({
 		type : 'GET',
@@ -1699,14 +1709,16 @@ function getDistrictTotalForAlertStatus(id,departmentId)
 	}
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
 	
     var jsObj ={
-      fromDate:currentFromDate,
-      toDate:currentToDate,
-      stateId : globalStateId,
-      deptIdArr : deptIDArr,  
-      newsPaperIdArr : paperIdArr,
-      newChanelIdArr : chanelIdArr     
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		stateId : globalStateId,
+		deptIdArr : deptIDArr,  
+		newsPaperIdArr : paperIdArr,
+		newChanelIdArr : chanelIdArr,
+		callCenterArr : callCenterArr
     }
 	$.ajax({
 	  type : 'GET',
@@ -2571,6 +2583,7 @@ $(document).on("click",".totAlertsStsCls",function(){
 	var deptIdArr = [];
 	var paperIdArr = [];
 	var chanelIdArr = [];
+	var callCenterArr = [];
 	var alertStatusId = $(this).attr("attr_status_id");
 	var deptId = $(this).attr("attr_dept_id");
 		deptIdArr.push(deptId);  
@@ -2579,19 +2592,23 @@ $(document).on("click",".totAlertsStsCls",function(){
 		paperIdArr = globalNewsPaperIdArr;
 	}else if(type == "electronic"){
 		chanelIdArr = globalChannelIdArr;
+	}else if(type = "callCenter"){
+		callCenterArr = globalCallCenterArr;
 	}else if(type == "Totals"){
 		paperIdArr = globalNewsPaperIdArr;
 		chanelIdArr = globalChannelIdArr;
+		callCenterArr = globalCallCenterArr;
 	}
     var jsObj ={
-      fromDate:currentFromDate,
-      toDate:currentToDate,
-      stateId : globalStateId,
-      deptIdArr : deptIdArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr : chanelIdArr,
-	  statusId : alertStatusId ,
-		type   :  type   
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		stateId : globalStateId,
+		deptIdArr : deptIdArr,  
+		paperIdArr : paperIdArr,
+		chanelIdArr : chanelIdArr,
+		statusId : alertStatusId ,
+		type   :  type,
+		callCenterArr : callCenterArr		
     }
     $.ajax({
       type:'GET',
@@ -2618,14 +2635,16 @@ function getDesigAndStatusWiseAlertsCounts(departmentId){
 
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
 	
     var jsObj ={
-	  departmentId:departmentId,	
-	  stateId : globalStateId,
-      fromDate:currentFromDate,
-      toDate:currentToDate,
-      paperIdArr : paperIdArr,
-      chanelIdArr : chanelIdArr    
+		departmentId:departmentId,	
+		stateId : globalStateId,
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		paperIdArr : paperIdArr,
+		chanelIdArr : chanelIdArr,
+		callCenterArr : callCenterArr
     }
 	$.ajax({
 		type : 'GET',
@@ -2753,6 +2772,7 @@ function getDesigAndStatusWiseAlertDetails(statusId,designationId,departmentId)
 {
 	var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
 	
     var jsObj ={
 		departmentId:	departmentId,	
@@ -2762,7 +2782,8 @@ function getDesigAndStatusWiseAlertDetails(statusId,designationId,departmentId)
 		paperIdArr : 	paperIdArr,
 		chanelIdArr : 	chanelIdArr,
 		statusId:	  	statusId,
-		designationId:	designationId
+		designationId:	designationId,
+		callCenterArr : callCenterArr
     }
 	$.ajax({
 		type : 'GET',
@@ -2787,6 +2808,7 @@ function getDepartmentAndDistrictWiseAlertsCountsAlerts(val,stIndex)
 	
 	var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
+	var callCenterArr = globalCallCenterArr;
 	
 	var t = val.split("-");
 	var levelId = t[0];
@@ -2818,7 +2840,8 @@ function getDepartmentAndDistrictWiseAlertsCountsAlerts(val,stIndex)
 		chanelIdArr : 		chanelIdArr,
 		type		:		type,
 		stIndex		:		stIndex,
-		endIndex	:		10
+		endIndex	:		10,
+		callCenterArr : callCenterArr
 		
     }
 	$.ajax({
