@@ -146,7 +146,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	if(type != null && type.equalsIgnoreCase("today")){
         		sb.append(" select model.alertAssignedOfficerId,model.alert.alertId from AlertAssignedOfficerNew model ");
         	}else{
-        		sb.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(model.alertAssignedOfficerId),model.alertStatus.color from AlertAssignedOfficerNew model ");
+        		sb.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(model.alert.alertId),model.alertStatus.color from AlertAssignedOfficerNew model ");
         	}
         	sb.append(" where model.isDeleted = 'N' " );
         	
