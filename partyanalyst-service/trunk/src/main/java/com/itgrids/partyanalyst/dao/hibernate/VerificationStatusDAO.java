@@ -299,7 +299,8 @@ public class VerificationStatusDAO extends GenericDaoHibernate<VerificationStatu
 						" tehsil.tehsilName, " +//21
 						" panchayat.panchayatName , " +//22  
 						" localElectionBody.name, " +//23
-						" 1 ");//24
+						" 1 , " +
+						" alertStatus.color ");//24
 		queryStr.append(" from  Alert model " +
 						" left join model.alertSource alertSource " +
 		        		" left join model.editionType editionType " +
