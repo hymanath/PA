@@ -16897,6 +16897,11 @@
 		<result type="json" name="success">  
 			<param name="root">alertVOs</param>
 		</result>
-	</action>  	                   
+	</action>
+		</action>
+	<action name="stateLevelDeptOfficerDepartmentWiseAlertsViewAction" class="alertManagementSystemAction"  method="stateLevelDeptOfficerDepartmentWiseAlertsView">
+		<result type="json" name="success">    
+			<param name="root">alertVOs</param>       
+		</result>  	                   
  </package>
 </struts>
