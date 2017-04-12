@@ -585,33 +585,6 @@ function getDistrictLevelDeptWiseFlterClick()
 		//buildAssignedOfficersDetailsForAlert(result);
 	});
 }
-//getDistrictLevelWiseClick();
-function getDistrictLevelWiseClick()
-{
-	var levelValues = [];
-	  //levelValues.push(7);
-	var fromDateStr= "";
-	var toDateStr= "";
-	var jsObj = {
-		stateId : 1,
-		fromDate : currentFromDate,
-		toDate : currentToDate,
-		govtDepartmentId : 49,
-		parentGovtDepartmentScopeId : 5,
-		govtDeptWorkLocId : 8,
-		statusId : 0,
-		childGovtScopeId : 8,
-		status : "alert",
-	}
-	$.ajax({
-      type:'GET',
-      url: 'getDistrictLevelWiseClickAction.action',
-	  data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		
-	});
-}
-
 getDistrictOfficeGraphicalView(5);
 getDistrictOfficeGraphicalView(6);
 getDistrictOfficeGraphicalView(7);
@@ -648,6 +621,48 @@ function getDistrictOfficeGraphicalView(parentGovtDepartmentScopeId){
     $.ajax({
           type:'GET',
           url: 'getDistrictOfficeGraphicalViewAction.action',
+        data: {task :JSON.stringify(jObj)}
+        }).done(function(result){
+      });
+  
+}
+
+//getDistrictLevelWiseClick(5) // graphical click for statusOverview and Locationlevel
+function getDistrictLevelWiseClick(parentGovtDepartmentScopeId){
+	var stateId;
+    var paperIdList =[];
+    var chanelIdList =[];
+    var govtDepartmentId;
+    var parentGovtDepartmentScopeId;
+    var sortType;
+    var order;
+    var alertType;
+    var districtWorkLocationId;
+    var divisionWorkLocationId;
+    var subDivisionWorkLocationId;
+    var group;
+    var jObj = {
+    fromDate : currentFromDate, 
+    toDate : currentToDate,
+    stateId:1,
+    paperIdArr:paperIdList,
+    chanelIdArr:chanelIdList,
+    parentGovtDepartmentScopeId:parentGovtDepartmentScopeId,
+    govtDepartmentId:49,
+    sortType:"count",
+    order:"asc",
+    districtWorkLocationId:0,
+    divisionWorkLocationId:0,
+    subDivisionWorkLocationId:0,
+    group:"status",
+    alertType:"alert",
+    searchType :"statusWise",
+	statusId : 2,
+	govtDeprtMentScopeId : 0
+    }
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictLevelWiseClickAction.action',
         data: {task :JSON.stringify(jObj)}
         }).done(function(result){
       });
