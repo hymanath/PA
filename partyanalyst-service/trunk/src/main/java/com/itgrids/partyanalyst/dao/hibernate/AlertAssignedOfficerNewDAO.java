@@ -1355,14 +1355,24 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	return query.list();
         }
         //state and district scope lvl
-        public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId){
+        public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId, String group){
         	StringBuilder queryStr = new StringBuilder();
         	queryStr.append(" select ");
         	
         	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
         	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
         	queryStr.append(" GDWL1.location_name as locationName, ");//2
-        	queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+        	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+        		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+        			queryStr.append(" GDWL.govt_department_scope_id as GDSI, AAO.alert_status_id as govtDepartmentScopeId, ");//3
+        		}else{
+        			queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+        		}
+        		
+        	}else{
+        		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+        	}
+        	
         	queryStr.append(" count(distinct AAO.alert_id) as count");
         	
     		queryStr.append(" from ");
@@ -1447,15 +1457,29 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    	queryStr.append(" and GUA.local_election_body in (:levelValues)");
       	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
       	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
-      	    
-    		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+    		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+    			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+    				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id, AAO.alert_status_id ");
+    			}else{
+    				queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+    			}
+    			
+        	}else{
+        		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+        	}
     		
-    		Query query = getSession().createSQLQuery(queryStr.toString())
-    				.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG)
-    				.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG)
-    				.addScalar("locationName", Hibernate.STRING)
-    				.addScalar("govtDepartmentScopeId", Hibernate.LONG)
-    				.addScalar("count", Hibernate.LONG);
+    		
+    		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+    		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
+    		query.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG);
+    		query.addScalar("locationName", Hibernate.STRING);
+    		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+    			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+    				query.addScalar("GDSI", Hibernate.LONG);
+    			}
+    		}
+    		query.addScalar("govtDepartmentScopeId", Hibernate.LONG);
+    		query.addScalar("count", Hibernate.LONG);
     		if(fromDate != null && toDate != null){
     			query.setDate("fromDate", fromDate);
     			query.setDate("toDate", toDate);
@@ -1483,7 +1507,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		return query.list();
         }
         //division scope lvl
-        public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,String filter){
+        public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group){
         	StringBuilder queryStr = new StringBuilder();
         	queryStr.append(" select ");
         	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
@@ -1493,7 +1517,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	}
         	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
         	queryStr.append(" GDWL1.location_name as locationName, ");//2
-        	queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+        	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+        		queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+        	}else{
+        		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+        	}
         	queryStr.append(" count(distinct AAO.alert_id) as count");//4
         	
     		queryStr.append(" from ");
@@ -1582,8 +1610,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
       	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
       	    
-    		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
-    		
+    		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+    			queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+        	}else{
+        		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+        	}
     		
     		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
     		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
@@ -1629,7 +1660,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		return query.list();
         }
         //sub division scope lvl
-        public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String filter){
+        public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String filter,String group){
         	StringBuilder queryStr = new StringBuilder();
         	queryStr.append(" select ");
         	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
@@ -1641,7 +1672,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	}
         	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
         	queryStr.append(" GDWL1.location_name as locationName, ");//2
-        	queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+        	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+        		queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+        	}else{
+        		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+        	}
         	queryStr.append(" count(distinct AAO.alert_id) as count");//4
         	
     		queryStr.append(" from ");
@@ -1735,8 +1770,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
       	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
       	    
-    		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
-    		
+    		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+    			queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+        	}else{
+        		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+        	}
     		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
     		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
     		if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){

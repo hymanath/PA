@@ -10,5 +10,6 @@ import com.itgrids.partyanalyst.model.AlertStatus;
 public interface IAlertStatusDAO extends GenericDao<AlertStatus, Long> {
 	public List<Object[]> getAllStatus();
 	public List<Object[]> getAlertStatusInfoForReOpen();
+	public List<Object[]> getAlertStatusDtlsBasidOnAlertIds(List<Long> statusIds);
 
 }

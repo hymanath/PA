@@ -26,5 +26,11 @@ public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 		query.setParameterList("alertStatusIds", IConstants.AMS_REOPEN_ALERT_STATUS);
 		return query.list();
 	}
+	public List<Object[]> getAlertStatusDtlsBasidOnAlertIds(List<Long> statusIds){
+		Query query = getSession().createQuery(" select model.alertStatusId,model.alertStatus,model.color from AlertStatus model" +
+				" where model.alertStatusId in (:statusIds) ");
+		query.setParameterList("statusIds", statusIds);  
+		return query.list();
+	}
 
 }
