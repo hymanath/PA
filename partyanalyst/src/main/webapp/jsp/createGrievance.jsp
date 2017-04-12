@@ -18,6 +18,8 @@
 	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
 	<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 	<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+	<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
+	
 	
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -82,12 +84,21 @@
 						<button class="btn btn-success pull-right" onclick="showDashboard();"> Dashboard </button>
 						<button class="btn btn-primary  pull-right" style="margin-right:5px"  onclick="showNewGrievance();" > + New Grievance </button> 
 					</h4>
+					
                 </div>
+				<div class="col-md-4 col-xs-12 col-sm-6 pull-right" id="dateDivId" style="display:none;margin-bottom:10px">
+				<span class="input-group pull-right dateRangePickerClsForEvents m_top10" expand-block-date="events" style="width:200px;">
+						<input type="text" id="dateRangeIdForEvents" style="width:180px" class="form-control" onChange="getGrievanceSummary()"/>
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
+					</span>
+				</div>
 				<div class="" id="newGrevanceDivId">
 					<form id="saveGrievanceAlertForm" name="saveGrievanceAlertForm" enctype="multipart/form-data" method="POST">
 						<div class="panel-body bg_EF">
 							<div class="row">
-								<div class="col-sm-3 m_top10">
+								<div class="col-sm-3 m_top10" >
 									<label>Complaint Given By<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCallerTypeId"></span></label>
 									<select class="chosen" id="callerTypeId" disabled>
 										<option value="1">CITIZEN</option>
@@ -327,7 +338,10 @@
 
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="dist/DateRange/moment.js" type="text/javascript"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script>
+
 $(".chosen").chosen({
 	width : '100%'
 });
@@ -339,7 +353,23 @@ google.load("elements", "1", {
 
 //getAlertIssueTypes();
 //getAlertCallerTypes();
-
+$("#dateRangeIdForEvents").daterangepicker({
+	opens: 'left',
+	startDate: moment().subtract(1, 'month').startOf('month'),
+	endDate: moment().subtract(1, 'month').endOf('month'),
+	locale: {
+	  format: 'DD/MM/YYYY'
+	},
+	ranges: {
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+	   'This Month': [moment().startOf('month'), moment()],
+	   'This Year': [moment().startOf('Year'), moment()]
+	}
+});
 function getAlertType(){
 	$("#alertTypeId").html('');
 	var jsObj ={
@@ -1313,12 +1343,20 @@ function getAlertDetails(alertStatusId)
 		var statusId; */
 		$('#alertDataDivId').html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
 		
+		var fromDateStr;
+		var toDateStr;
 		
+		 var dates = $('#dateRangeIdForEvents').val();
+		 var dateArray = dates.split("-");
+		 if(dateArray != null){
+			 fromDateStr = dateArray[0];
+			 toDateStr = dateArray[1];
+		  }
 		var jObj = {
 			alertStatusId : alertStatusId,
 			mobileNo : '',
-			fromDate :"12/04/2016",
-			toDate : "12/04/2017"
+			fromDate :fromDateStr,//"12/04/2016",
+			toDate : toDateStr//"12/04/2017"
 			
 		}
 		$.ajax({
@@ -1448,6 +1486,7 @@ $("#buildUpdateDivId").html(str);
 
 
 function showDashboard(){
+		$("#dateDivId").show();
 		getGrievanceSummary();
 		$('#dashboardGrevanceDivId').show();
 		$('#newGrevanceDivId').hide();
@@ -1458,10 +1497,19 @@ function showDashboard(){
 	}
 	function getGrievanceSummary(){
 		$('#summaryDiv').html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
+		var fromDateStr;
+		var toDateStr;
 		
+		 var dates = $('#dateRangeIdForEvents').val();
+		  var dateArray = dates.split("-");
+		  if(dateArray != null){
+			  fromDateStr = dateArray[0];
+			 toDateStr = dateArray[1];
+		  }
+		  
 		var jsObj ={
-			startDate:'01/04/2017',
-			endDate:'01/05/2017',
+			startDate:fromDateStr,//'01/04/2017',
+			endDate:toDateStr,//'01/05/2017',
 			mobileNo:'',
 			status:"",
 			deptId:0,
