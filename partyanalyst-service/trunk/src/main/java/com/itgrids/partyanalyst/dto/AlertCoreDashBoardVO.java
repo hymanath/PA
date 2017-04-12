@@ -30,6 +30,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String source;
 	private String severtyColor;
 	private Long subTaskCount = 0L;
+	private String statusColor;
 		
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
 	private List<AlertCoreDashBoardVO> subList1 = new ArrayList<AlertCoreDashBoardVO>(0);
@@ -209,6 +210,14 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setSubTaskCount(Long subTaskCount) {
 		this.subTaskCount = subTaskCount;
+	}
+
+	public String getStatusColor() {
+		return statusColor;
+	}
+
+	public void setStatusColor(String statusColor) {
+		this.statusColor = statusColor;
 	}
 	
 	
