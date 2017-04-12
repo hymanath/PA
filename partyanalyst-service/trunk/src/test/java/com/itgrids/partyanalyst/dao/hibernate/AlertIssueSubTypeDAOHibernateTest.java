@@ -21,7 +21,7 @@ public class AlertIssueSubTypeDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testGetSubTypesByAlertIssueType()
 	{
-		List<Object> list = alertIssueSubTypeDAO.getSubTypesByAlertIssueType(1L);
+		List<Object[]> list = alertIssueSubTypeDAO.getSubTypesByAlertIssueType(1L);
 		System.out.println(list.size());
 	}
 }
