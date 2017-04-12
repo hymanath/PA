@@ -95,7 +95,8 @@ public interface IAlertManagementSystemService {
 			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
 			Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,String searchType);
 	public List<AlertCoreDashBoardVO>  getDistrictLevelWiseClick(String fromDateStr, String toDateStr, Long stateId, 
-           List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
-           Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
-           Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String group,String searchType,Long statusId,Long govtDeprtMentScopeId);
+	           List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+	           Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+	           Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String group,String searchType,Long statusId,Long govtDeprtMentScopeId); 
+	public List<AlertVO> stateLevelDeptOfficerDepartmentWiseAlertsView(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
 }
