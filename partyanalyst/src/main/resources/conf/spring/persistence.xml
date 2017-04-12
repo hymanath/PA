@@ -1248,6 +1248,7 @@
 	                   <!--  Govt Alert module end-->
 	                   
 	                   <value>com.itgrids.partyanalyst.model.RedirectUrl</value>
+	                   <value>com.itgrids.partyanalyst.model.AlertIssueSubType</value>
 	                   
 				  </list>
 			
