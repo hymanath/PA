@@ -5,6 +5,7 @@ var globalStateId = 1;
 var globalNewsPaperIdArr = [];
 var globalChannelIdArr = [];
 var globalDepartmentIdArr = [];
+var globalCallCenterArr = [];
 /* Global Filter Arreys Start*/
 
 $(".newsPaperListCls").each(function(){
@@ -23,6 +24,12 @@ $(".departmentsCls").each(function(){
 	if($(this).is(":checked"))
 	{
 		globalDepartmentIdArr.push($(this).attr("attr_val"));
+	}
+});
+$(".callcenterCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		globalCallCenterArr.push($(this).attr("attr_val"));
 	}
 });
 /* OnLoad Calls Start*/
@@ -87,7 +94,13 @@ $(document).on("click",".selectAllPaperCls",function(){
 		$(".newsPaperListCls").prop('checked', false);
 	}
 });
-
+$(document).on("click",".selectAllcallcenterCls",function(){
+	if($(this).prop('checked')) {
+		$(".callcenterCls").prop('checked', true);
+	}else{
+		$(".callcenterCls").prop('checked', false);
+	}
+});
 $("#dateRangePicker").daterangepicker({
 	opens: 'left',
 	startDate: currentFromDate,
