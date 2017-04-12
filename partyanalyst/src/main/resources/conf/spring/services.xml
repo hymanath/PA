@@ -3610,6 +3610,10 @@
 		<property name="govtDepartmentDesignationOfficerDetailsDAO" ref="govtDepartmentDesignationOfficerDetailsDAO"></property>
 		<property name="localityDAO" ref="localityDAO"></property>
 		<property name="alertFeedbackStatusDAO" ref="alertFeedbackStatusDAO"></property>
+		<property name="alertAssignedOfficerDAO" ref="alertAssignedOfficerDAO"></property>
+		<property name="alertAssignedOfficerTrackingDAO" ref="alertAssignedOfficerTrackingDAO"></property>
+		<property name="govtOfficerDAO" ref="govtOfficerDAO"></property>
+		<property name="govtDepartmentDesignationDAO" ref="govtDepartmentDesignationDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	
