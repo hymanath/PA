@@ -2296,6 +2296,58 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getAlertDetailsByStatusId(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			alertVOs = alertService.getAlertDetailsByStatusId(jObj.getLong("alertStatusId"),jObj.getString("mobileNo"),jObj.getString("fromDate"),jObj.getString("toDate"));    
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertDetailsByStatusId() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAlertCallerDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			alertVOs = alertService.getAlertCallerDetails(jObj.getLong("alertId"));    
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertCallerDetails() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String saveAlertStatus()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+
+			
+			jObj = new JSONObject(getTask());
+			AlertVO alertVO = new AlertVO();
+			alertVO.setAlertId(jObj.getLong("alertId"));
+			alertVO.setComment(jObj.getString("comment"));
+			alertVO.setStatusId(jObj.getLong("alertStatusId"));
+			alertVO.setFeedBackStatusId(jObj.getLong("alertFeedBackStatusId"));
+			alertVO.setAlertSourceId(jObj.getLong("alertSourceId"));
+			
+			status = alertService.saveAlertStatusDetails(alertVO,userId);
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in saveAlertStatus",e);
+		}
+		return Action.SUCCESS;	
+	}
+	public String getAlertFeedBackStatusDetails(){
+		try{
+			
+			alertVOs = alertService.getFeedbackStatusDetails();    
+		}catch(Exception e) {
+			LOG.error("Exception occured in getAlertFeedBackStatusDetails() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }
 
 //getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList)

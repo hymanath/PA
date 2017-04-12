@@ -16872,6 +16872,26 @@
   	   <result type="json" name="success">
 			<param name="root">alertCoreDashBoardVOs</param>
 		</result>
-    </action>   	                   
+    </action> 
+    <action name="getAlertDetailsByStatusAction" class="createAlertAction"  method="getAlertDetailsByStatusId">
+		<result type="json" name="success">  
+			<param name="root">alertVOs</param>
+		</result>
+	</action> 
+	<action name="getAlertCallerDetailsAction" class="createAlertAction"  method="getAlertCallerDetails">
+		<result type="json" name="success">  
+			<param name="root">alertVOs</param>
+		</result>
+	</action>
+	<action name="saveAlertStatusAction" class="createAlertAction" method="saveAlertStatus">
+		 <result type="json" name="success">
+				<param name="root">status</param>
+		 </result>
+	</action>
+	<action name="getAlertFeedBackStatusDetailsAction" class="createAlertAction"  method="getAlertFeedBackStatusDetails">
+		<result type="json" name="success">  
+			<param name="root">alertVOs</param>
+		</result>
+	</action>  	                   
  </package>
 </struts>
