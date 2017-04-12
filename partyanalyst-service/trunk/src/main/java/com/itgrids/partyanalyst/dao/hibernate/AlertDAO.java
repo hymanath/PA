@@ -6181,8 +6181,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     				" model.regionScopes.scope," +
     				" model.alertStatus.alertStatusId " +
     				" from Alert model " +
-    				" where " );
-    				//" model.isDeleted = 'N'");
+    				" where " +
+    				" model.isDeleted = 'N'");
     		if(mobileNo != null)
     		{
     			sb.append(" model.alertCaller.mobileNo = :mobileNo ");
@@ -6218,8 +6218,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 			" model.alertCaller.address," +
     	 			" model.alertCaller.mobileNo " +
     	 			" from Alert model " +
-    	 			" where " );
-    	 			//"model.isDeleted = 'N' ");
+    	 			" where " +
+    	 			"model.isDeleted = 'N' ");
     	 	if(alertId != null && alertId.longValue() >0l)
     	 	{
     	 		sb.append("  model.alertId = :alertId");
