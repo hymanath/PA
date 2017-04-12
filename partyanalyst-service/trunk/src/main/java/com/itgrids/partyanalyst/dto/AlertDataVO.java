@@ -53,8 +53,16 @@ public class AlertDataVO {
 	
 	private String department;
 	private String dueDate;
+	private Long severityId;
 	
 	
+	
+	public Long getSeverityId() {
+		return severityId;
+	}
+	public void setSeverityId(Long severityId) {
+		this.severityId = severityId;
+	}
 	public String getDueDate() {
 		return dueDate;
 	}

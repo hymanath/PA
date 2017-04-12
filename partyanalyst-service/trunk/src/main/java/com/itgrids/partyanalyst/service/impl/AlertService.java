@@ -1234,6 +1234,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setAlertType(params[3] != null ? params[3].toString() : "");
 					 alertVO.setUserType(params[4] != null ? params[4].toString() : "");
 					 alertVO.setSeverity(params[5] != null ? params[5].toString() : "");
+					 alertVO.setSeverityId(params[33] != null ? (Long)params[33] : null);
 					 alertVO.setRegionScopeId(params[6] != null ? (Long)params[6] : null);
 					 alertVO.setRegionScope(params[26] != null ?params[26].toString() : "");
 					 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
