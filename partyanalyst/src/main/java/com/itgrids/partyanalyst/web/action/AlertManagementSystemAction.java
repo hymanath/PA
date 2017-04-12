@@ -967,7 +967,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
 			Long subDivisionWorkLocationId = jObj.getLong("subDivisionWorkLocationId");
 			String alertType = null;
-			alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId);
+			String group = jObj.getString("group");
+			alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 		}
@@ -1664,7 +1665,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
-				idnameVoList = alertManagementSystemService.getDistIdListForDistFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId);
+				String group = jObj.getString("group");
+				idnameVoList = alertManagementSystemService.getDistIdListForDistFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,group);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
@@ -1697,8 +1699,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
-				
-				idnameVoList = alertManagementSystemService.getDistIdListForDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId);
+				String group = jObj.getString("group");
+				idnameVoList = alertManagementSystemService.getDistIdListForDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,group);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
@@ -1732,7 +1734,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
-				idnameVoList = alertManagementSystemService.getDivisionIdListForDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId);
+				String group = jObj.getString("group");
+				idnameVoList = alertManagementSystemService.getDivisionIdListForDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,group);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
@@ -1765,7 +1768,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
-				idnameVoList = alertManagementSystemService.getDistrictIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId);
+				String group = jObj.getString("group");
+				idnameVoList = alertManagementSystemService.getDistrictIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,group);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
@@ -1799,7 +1803,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
-				idnameVoList = alertManagementSystemService.getDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId);
+				String group = jObj.getString("group");
+				idnameVoList = alertManagementSystemService.getDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,group);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
@@ -1834,7 +1839,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
 				Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
-				idnameVoList = alertManagementSystemService.getSubDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,divisionWorkLocationId);
+				String group = jObj.getString("group");
+				idnameVoList = alertManagementSystemService.getSubDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,divisionWorkLocationId,group);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
