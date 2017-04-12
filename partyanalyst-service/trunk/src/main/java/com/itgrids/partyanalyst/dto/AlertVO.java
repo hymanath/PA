@@ -63,8 +63,28 @@ public class AlertVO {
 	private String address;
 	private String mobileNo;
 	private Long feedBackStatusId;
+	private String deptName;
+	private String callCenterSource;
+	private String issueType;
 	
-	
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public String getCallCenterSource() {
+		return callCenterSource;
+	}
+	public void setCallCenterSource(String callCenterSource) {
+		this.callCenterSource = callCenterSource;
+	}
+	public String getIssueType() {
+		return issueType;
+	}
+	public void setIssueType(String issueType) {
+		this.issueType = issueType;
+	}
 	public String getImageUrl() {
 		return imageUrl;
 	}
