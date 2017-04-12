@@ -830,7 +830,7 @@ public List<UserTypeVO> getSelectedChildMembersForActivities(Long parentActivity
 	  
 	  if(resultList != null && resultList.size() > 0)
 	  {
-		  Collections.sort(resultList, eventInviteeAttendedPercDesc);
+		  Collections.sort(resultList, eventConductedCuntDesc);
 	  }
 	} catch (Exception e) {
 		 LOG.error("Error occured at getSelectedChildMembersForActivities() in setAttendedDataToMap class",e);
@@ -2165,6 +2165,15 @@ public List<List<UserTypeVO>> getUserTypeActivityConductedCnt(List<Long> activit
 		 return perc1.compareTo(perc2);
 		}
 	}; 
+public static Comparator<UserTypeVO> eventConductedCuntDesc = new Comparator<UserTypeVO>() {
+		public int compare(UserTypeVO member2, UserTypeVO member1) {
+
+		Long cunt2 = member2.getCondctedActiesCount();
+		Long cunt1 = member1.getCondctedActiesCount();
+		//descending order of percantages.
+		 return cunt1.compareTo(cunt2);
+		}
+	};
 }
 
 
