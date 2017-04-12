@@ -101,7 +101,9 @@
 																<ul class="nav nav-tabs navTabsSettings" role="tablist">
 																	<li role="presentation" class="active text-capital"><a href="#printMediaAlerts" aria-controls="printMediaAlerts" role="tab" data-toggle="tab">Print Media</a></li>
 																	<li role="presentation" class="text-capital"><a href="#electronicMediaAlerts" aria-controls="electronicMediaAlerts" role="tab" data-toggle="tab">Electronic Media</a></li>
+																	<li role="presentation" class="text-capital"><a href="#callcenterAlerts" aria-controls="callcenterAlerts" role="tab" data-toggle="tab">Call Center</a></li>
 																	<li role="presentation" class="text-capital"><a href="#departmentAlerts" aria-controls="departmentAlerts" role="tab" data-toggle="tab">Department</a></li>
+																	
 																</ul>
 															</div>
 															<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
@@ -137,6 +139,23 @@
 																				</li>
 																			</c:forEach>
 																		</ul>
+																	</div>
+																	<div role="tabpanel" class="tab-pane" id="callcenterAlerts">
+																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Call Center</h4>
+																		<hr style ="margin-bottom:0px;" />
+																		<div class="scrollerBlockDepartments">
+																			<ul class="settingsUl">
+																				<li>
+																					<label><input type="checkbox" class="selectAllcallcenterCls" checked/>Select All</label>
+																				</li>
+																				
+																					<li>
+																						<label><input type="checkbox" class="callcenterCls" checked attr_val="1"/>Call Center
+																						</label>
+																					</li>
+																				
+																			</ul>
+																		</div>
 																	</div>
 																	<div role="tabpanel" class="tab-pane" id="departmentAlerts">
 																		<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Departments</h4>
