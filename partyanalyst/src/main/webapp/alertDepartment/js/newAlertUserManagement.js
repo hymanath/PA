@@ -73,6 +73,27 @@ function getIASOfficerMyAssignedSubTasksCountView(){
     }).done(function(result){
     });
 }
+stateLevelDeptOfficerDepartmentWiseAlertsView();
+function stateLevelDeptOfficerDepartmentWiseAlertsView(){
+	//$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	var deptIdArr =[];
+    var paperIdArr =[];
+    var chanelIdArr =[];
+    var jsObj ={
+      fromDate:"01/01/1997",
+      toDate:"01/01/2027",
+      stateId : 1,
+      deptIdArr : deptIdArr,  
+      paperIdArr : paperIdArr,
+      chanelIdArr :chanelIdArr
+    }
+    $.ajax({
+      type:'GET',
+      url: 'stateLevelDeptOfficerDepartmentWiseAlertsViewAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+    });
+}
 getAllDistrictDetails();
 function getAllDistrictDetails(){
 	var jsObj ={		
