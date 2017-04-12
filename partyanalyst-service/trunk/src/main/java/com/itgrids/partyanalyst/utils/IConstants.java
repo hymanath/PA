@@ -1267,7 +1267,7 @@ public interface IConstants {
 	public static final String PARTY_MEETINGS ="party_meetings"; 
 	public static final Long GOVT_TOUR_TYPE_ID = 2L;
 	//ALERT MONITORING DASHBOARD
-	public static final String GOVT_ALERT_CATEGORY_ID="2,3";
+	public static final String GOVT_ALERT_CATEGORY_ID="1,2,3";
 	public static final String GOVT_ALERT_TYPE_ID="2";
 	
 	public static final String ALERT_DEPT_DOCUMENTS ="alert_documents";

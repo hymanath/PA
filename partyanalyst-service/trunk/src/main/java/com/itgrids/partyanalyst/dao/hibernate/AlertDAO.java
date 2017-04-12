@@ -4729,7 +4729,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.executeUpdate();
 	}
 	
-	public List<Object[]> getTotalAlertGroupByStatusForGovt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList){
+	public List<Object[]> getTotalAlertGroupByStatusForGovt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,
+			List<Long> callCenterList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
 		queryStr.append(" A.alert_status_id as alert_status_id, ");
@@ -4762,8 +4763,19 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		
-		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty())
-			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) )");
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+			
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) )");
+			
+			if( callCenterList !=null && !callCenterList.isEmpty() ){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" or A.alert_caller_id is null ");
+			}
+			queryStr.append(" )");
+			
+		}
+			
 		
 		/*else if(printIdList != null && !printIdList.isEmpty())
 			queryStr.append(" and EDS.news_paper_id in (:printIdList)");
@@ -4874,7 +4886,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}//comp
-	public List<Object[]> getTotalAlertByStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId){
+	public List<Object[]> getTotalAlertByStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId,List<Long> callCenterList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");  
 		queryStr.append(" A.alert_id as alert_id, " +//0
@@ -4943,12 +4955,22 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		//queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		
-		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty())
-			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) )");
-		else if(printIdList != null && !printIdList.isEmpty())
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) )");
+			
+			if( callCenterList !=null && !callCenterList.isEmpty() ){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" or A.alert_caller_id is null ");
+			}
+			queryStr.append(" ) ");
+			
+		}
+			
+		/*else if(printIdList != null && !printIdList.isEmpty())
 			queryStr.append(" and EDS.news_paper_id in (:printIdList)");
 		else if(electronicIdList != null && !electronicIdList.isEmpty())
-			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");*/
 		
 		if(statusId != null && statusId.longValue() > 0L){
 			queryStr.append(" and A.alert_status_id = :statusId ; ");
@@ -6267,4 +6289,139 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	return query.list();
     	 	
     }
+    
+    public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct ");  
+		queryStr.append(" A.alert_id as alert_id, " +//0
+				        " A.created_time as created_time, " +//1
+				        " A.updated_time as updated_time, " +//2
+				        " A.alert_status_id as alert_status_id, " +//3
+				        " ALTS.alert_status as alert_status, " +//4
+				        " A.alert_category_id as alert_category_id, " +//5
+				        " AC.category as category, " +//6
+				        " AIS.alert_impact_scope_id as alert_impact_scope_id, " +//7
+				        " AIS.impact_scope as impact_scope, " +//8
+				        " A.title as title, " +//9
+				        " C.name as name, " +//10
+				        " D.district_name as district_name, " +//11
+				        " A.alert_source_id as alert_source_id, " +//12
+				        " ALTSRC.source as source, " +//13
+				        " 0 as edition_type_id, " +//14
+				        " '' as edition_type, " +//15
+				        " EDS.edition_id as edition_id, " +//16
+				        " EDS.edition_alias as edition_alias, " +//17
+				        " A.tv_news_channel_id as tv_news_channel_id, " +//18
+				        " TNC.channel_name as channel_name," +//19
+				        " S.state_name  as stateName, " +//20
+				        " T.tehsil_name as tehsilName, " +//21
+				        " P.panchayat_name as panchayatName, " +//22
+				        " LEB.name as localElectionBodyNeme, "+ //23
+						" ALTSVR.severity_color as severityColor, " +//24
+						" ALTS.alert_color as color"); //25  
+		queryStr.append(" from alert A ");
+		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N') ");
+		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");
+		queryStr.append(" left outer join alert_source ALTSRC on ALTSRC.alert_source_id = A.alert_source_id ");
+		queryStr.append(" left outer join alert_impact_scope AIS on AIS.alert_impact_scope_id = A.impact_scope_id ");
+		queryStr.append(" left outer join alert_severity ALTSVR on ALTSVR.alert_severity_id = A.alert_severity_id ");//
+		queryStr.append(" left outer join user_address UA on A.address_id=UA.user_address_id ");
+		queryStr.append(" left outer join state S on UA.state_id=S.state_id ");
+		queryStr.append(" left outer join district D on D.district_id = UA.district_id ");
+		queryStr.append(" left outer join constituency C on C.constituency_id = UA.constituency_id ");
+		queryStr.append(" left outer join tehsil T on T.tehsil_id = UA.tehsil_id ");//
+		queryStr.append(" left outer join panchayat P on P.panchayat_id = UA.panchayat_id ");//
+		queryStr.append(" left outer join local_election_body LEB on LEB.local_election_body_id = UA.local_election_body ");//
+		queryStr.append(" join alert_status ALTS on A.alert_status_id=ALTS.alert_status_id ");
+		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
+		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");
+		queryStr.append(" where ");
+		queryStr.append(" A.is_deleted='N' and ");
+		if(deptId != null && deptId.longValue() > 0 ){
+			queryStr.append(" A.govt_department_id =:deptId and ");
+		}else{
+			if(deptIdList != null && deptIdList.size() > 0)
+				queryStr.append(" A.govt_department_id in (:deptIdList) and ");
+		}
+		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
+		
+		if(fromDate != null && toDate != null)
+			queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" S.state_id = 1 and ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" S.state_id = 36 and ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" S.state_id in (1,36) and ");
+			}
+		}
+		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+		//queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) )");
+		}
+			
+		/*else if(printIdList != null && !printIdList.isEmpty())
+			queryStr.append(" and EDS.news_paper_id in (:printIdList)");
+		else if(electronicIdList != null && !electronicIdList.isEmpty())
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");*/
+		
+		if(statusId != null && statusId.longValue() > 0L){
+			queryStr.append(" and A.alert_status_id = :statusId ; ");
+		}
+		
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alert_id", Hibernate.LONG)//0
+				.addScalar("created_time", Hibernate.STRING)//1
+				.addScalar("updated_time", Hibernate.STRING)//2
+				.addScalar("alert_status_id", Hibernate.LONG)//3
+				.addScalar("alert_status", Hibernate.STRING)//4
+				.addScalar("alert_category_id", Hibernate.LONG)//5
+				.addScalar("category", Hibernate.STRING)//6
+				.addScalar("alert_impact_scope_id", Hibernate.LONG)//7
+				.addScalar("impact_scope", Hibernate.STRING)//8
+				.addScalar("title", Hibernate.STRING)//9
+				.addScalar("name", Hibernate.STRING)//10
+				.addScalar("district_name", Hibernate.STRING)//11
+				.addScalar("alert_source_id", Hibernate.LONG)//12
+				.addScalar("source", Hibernate.STRING)//13
+				.addScalar("edition_type_id", Hibernate.LONG)//14
+				.addScalar("edition_type", Hibernate.STRING)//15
+				.addScalar("edition_id", Hibernate.LONG)//16
+				.addScalar("edition_alias", Hibernate.STRING)//17
+				.addScalar("tv_news_channel_id", Hibernate.LONG)//18
+				.addScalar("channel_name", Hibernate.STRING)//19
+				.addScalar("stateName", Hibernate.STRING)//20
+				.addScalar("tehsilName", Hibernate.STRING)//21
+				.addScalar("panchayatName", Hibernate.STRING)//22
+				.addScalar("localElectionBodyNeme", Hibernate.STRING)//23
+				.addScalar("severityColor", Hibernate.STRING)//24
+				.addScalar("color", Hibernate.STRING);//25
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(printIdList != null && printIdList.size() > 0){
+			query.setParameterList("printIdList", printIdList);   
+		}
+		if(electronicIdList != null && electronicIdList.size() > 0){
+			query.setParameterList("electronicIdList", electronicIdList);
+		}
+		
+		
+		if(deptId != null && deptId.longValue() > 0 ){
+			query.setParameter("deptId", deptId);
+		}else{
+			if(deptIdList != null && deptIdList.size() > 0){
+				query.setParameterList("deptIdList", deptIdList);
+			}
+		}
+		if(statusId != null && statusId.longValue() > 0L){
+			query.setParameter("statusId", statusId);
+		}
+		
+		return query.list(); 
+	}
 }

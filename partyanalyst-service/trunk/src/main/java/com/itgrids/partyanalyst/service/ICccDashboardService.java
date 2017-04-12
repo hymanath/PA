@@ -10,14 +10,16 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 
 public interface ICccDashboardService {   
-	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
-	public List<AlertVO> getTotalAlertGroupByStatusThenDepartment(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,String sortingType);
+	public List<AlertVO> getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> callCenterList);
+	public List<AlertVO> getTotalAlertGroupByStatusThenDepartment(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,String sortingType,
+			List<Long> callCenterList);
 	
 	public List<GovtDepartmentVO> getDepartmentLevels();
 	public List<GovtDepartmentVO> getLocationsBasedOnLevel(Long levelId);
 	public List<GovtDepartmentVO> getDepartmentsByAlert(Long alertId);
 	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId,Long levelValue);
-	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId);
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,
+			List<Long> callCenterList);
 	public List<IdAndNameVO> getNewsPapaerList();
 	public List<IdAndNameVO> getChannelList();
 	public List<IdAndNameVO> getDeptList(); 
@@ -30,9 +32,9 @@ public interface ICccDashboardService {
 	public List<GovtDepartmentVO> getStatusWiseCommentsTracking(Long alertId);
 	public List<AlertVO> getAlertCountLocationWiseThenStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> govtDepartmentId,Long lvlValue);
 	public List<GovtDepartmentVO> getDistrictWiseTotalAlertsForAlert(String startDateStr,String endDateStr,Long stateId,
-			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId);
+			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId,List<Long> callCenterList);
 	public List<GovtDepartmentVO> getStatusWiseDistrictTotalForAlert(String startDateStr,String endDateStr,Long stateId,
-			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId);
+			 List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long userId,List<Long> callCenterList);
 	
 	public List<GovtDepartmentVO> getMandalsForConstituency(Long constituencyId);
 	public List<GovtDepartmentVO> getLebsForConstituency(Long constituencyId);
@@ -56,13 +58,14 @@ public interface ICccDashboardService {
 	
 	public List<AlertCoreDashBoardVO> getSubOrdinateLocationWiseAlertDetails(Long designationId,Long levelId,Long levelValue,String fromDateStr,String toDateStr);
 
-	public List<AlertCoreDashBoardVO> getTotalAlertByStatusForDeptWiseClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,String type,Long userId);
-	public List<GovtDepartmentVO> getDesigAndStatusWiseAlertsCounts(Long departmentId,Long stateId,String fromDateStr,String toDateStr,List<Long> printIdsList,List<Long> electronicIdsList,Long userId);
+	public List<AlertCoreDashBoardVO> getTotalAlertByStatusForDeptWiseClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,String type,Long userId,
+			List<Long> callCenterList);
+	public List<GovtDepartmentVO> getDesigAndStatusWiseAlertsCounts(Long departmentId,Long stateId,String fromDateStr,String toDateStr,List<Long> printIdsList,List<Long> electronicIdsList,Long userId,List<Long> callCenterList);
 	
 	public List<AlertCoreDashBoardVO> getDesigAndStatusWiseAlertDetails(Long departmentId,Long stateId,String fromDateStr,String toDateStr,List<Long> printIdsList,
-			List<Long> electronicIdsList,Long userId,Long designationId,Long statusId);
+			List<Long> electronicIdsList,Long userId,Long designationId,Long statusId,List<Long> callCenterList);
 	public List<AlertCoreDashBoardVO> getTotalAlertDtls(String fromDateStr, String toDateStr,Long userId,Long statusId,Long deptId,String type);
-	public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId);
+	public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long statusId,Long userId,List<Long> callCenterList);
 	public List<AlertCoreDashBoardVO> getTotalAlertDetailsGroupByDeptThenStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, Long userId,Long deptId, Long statusId);
 	public List<AlertCoreDashBoardVO> getAlertCountDetailsLocationWiseThenStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> govtDepartmentId,Long lvlValue,Long locId,Long statusId);
 	public List<IdAndNameVO> getDeptListForUser(Long userId);
@@ -72,7 +75,7 @@ public interface ICccDashboardService {
 	public List<IdAndNameVO> getChannelListForUser(Long userId);
 	public String getDesignationForUser(Long userId);
 	public List<AlertCoreDashBoardVO> getDepartmentAndDistrictWiseAlertsCountsAlerts(String startDateStr,String endDateStr,Long stateId,List<Long> deptIdList,List<Long> paperIdList,List<Long> chanelIdList,Long levelId,
-			List<Long> regionScopeValues,String type,Long statusId,int startIndex,int endIndex);
+			List<Long> regionScopeValues,String type,Long statusId,int startIndex,int endIndex,List<Long> callCenterList);
 	
 	public List<IdAndNameVO> getSubDesignationOfficersInfo(Long parentOfficerId);
 	public List<IdAndNameVO> getSubDesignationsInfo(Long parentOfficerId,Long levelId);

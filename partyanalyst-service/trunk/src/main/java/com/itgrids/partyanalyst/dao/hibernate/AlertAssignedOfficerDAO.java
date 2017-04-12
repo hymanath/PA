@@ -1005,7 +1005,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		return query.list();
 	}
 	
-	public List<Object[]> getDesigAndStatusWiseAlertsCounts(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList){
+	public List<Object[]> getDesigAndStatusWiseAlertsCounts(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct");
 		sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
@@ -1031,12 +1031,15 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 		/*if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
 			sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");*/
-		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
+		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterList !=null && !callCenterList.isEmpty())
+			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) ) or (model.alert.alertCallerId is not null) )");
 		else if(printIdsList != null && !printIdsList.isEmpty())
 			sb.append(" and EDS.newsPaperId in (:printIdsList)");
 		else if(electronicIdsList != null && !electronicIdsList.isEmpty())
 			sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");
+		else if(callCenterList !=null && !callCenterList.isEmpty())
+			sb.append(" and model.alert.alertCallerId is not null ");
+		
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
 		
@@ -1087,7 +1090,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		return query.list();
 	}
 	
-	public List<Object[]> getDepartmentAndDistrictWiseAlertsCounts(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,String type){
+	public List<Object[]> getDepartmentAndDistrictWiseAlertsCounts(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,String type,
+			List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct");
 		sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
@@ -1118,9 +1122,6 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		if(type !=null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentLevelId =:levelId ");
 		}
-		/*else{
-			sb.append(" and D.districtId is not null");   
-		}*/
 		
 		
 		if(departmentIds != null && !departmentIds.isEmpty())
@@ -1128,8 +1129,18 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		/*if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
 			sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");*/
 		
-		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
+		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) )");
+			
+			if( callCenterList !=null && !callCenterList.isEmpty() ){
+	    		sb.append(" or (model.alert.alertCallerId is not null) ");
+			}else{
+				sb.append(" or (model.alert.alertCallerId is null) ");
+			}
+	    	sb.append(" ) ");
+			
+		}
+			
 		/*else if(printIdsList != null && !printIdsList.isEmpty())
 			sb.append(" and EDS.newsPaperId in (:printIdsList)");
 		else if(electronicIdsList != null && !electronicIdsList.isEmpty())
@@ -1197,7 +1208,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		return query.list();
 	}
 	
-	public List<Object[]> getStatusWiseTotalCountsForAlert(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList){
+	public List<Object[]> getStatusWiseTotalCountsForAlert(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,
+			List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct");
 		sb.append(" model.alertStatus.alertStatusId," +
@@ -1222,8 +1234,18 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		
 		if(departmentIds != null && !departmentIds.isEmpty())
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
-		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
+		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) )");
+			
+			if( callCenterList !=null && !callCenterList.isEmpty() ){
+	    		sb.append(" or (model.alert.alertCallerId is not null) ");
+				}else{
+					sb.append(" or (model.alert.alertCallerId is null) ");
+				}
+				sb.append(" ) ");
+				
+		}
+			
 		/*if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
 			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
 		else if(printIdsList != null && !printIdsList.isEmpty())
@@ -1279,7 +1301,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			
 		return query.list();
 	}
-	public List<Object[]> getAlertCountForCccAdminLongin(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,String type){
+	public List<Object[]> getAlertCountForCccAdminLongin(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,String type,
+			List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();  
 	    sb.append("select ");
 	    sb.append(" model.alertStatus.alertStatusId," +
@@ -1311,14 +1334,18 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	    if(departmentIds != null && !departmentIds.isEmpty())
 	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 	    
-	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");
-	   /* }else if(printIdsList != null && !printIdsList.isEmpty()){
-	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
-	    }else if(electronicIdsList != null && !electronicIdsList.isEmpty()){
-	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
-	    }  */      
-	      
+	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+	    	sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+	    	
+	    	if( callCenterList !=null && !callCenterList.isEmpty() ){
+	    		sb.append(" or (model.alert.alertCallerId is not null) ");
+			}else{
+				sb.append(" or (model.alert.alertCallerId is null) ");
+			}
+	    	sb.append(" ) ");
+	    	
+	    }
+	    
 	    if(fromDate != null && toDate != null)
 	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
 	    
@@ -1364,7 +1391,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	        
 	      return query.list();
 	}
-	public List<Long> getTotalAlertByOtherStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, Long statusId,Long levelId,List<Long> levelValues){
+	public List<Long> getTotalAlertByOtherStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, Long statusId,Long levelId,List<Long> levelValues,List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();  
 	    sb.append("select distinct model.alert.alertId ");
 	    sb.append(" from AlertAssignedOfficer model" +
@@ -1389,13 +1416,21 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	    }
 	      
 	    
-	    if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
-	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");
+	    if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0 && callCenterList !=null && !callCenterList.isEmpty()){
+	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (model.alert.alertCallerId is not null) )");
+	    }else if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0 ){
+	    	sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))) ");
+	    }else if(printIdsList != null && printIdsList.size()>0 && callCenterList !=null && !callCenterList.isEmpty() ){
+	    	sb.append(" and ( EDS.newsPaperId in (:printIdList)   or (model.alert.alertCallerId is not null))  ");
+	    }else if(electronicIdsList != null && electronicIdsList.size()>0 &&  callCenterList !=null && !callCenterList.isEmpty()){
+	    	sb.append(" and ( TNC.tvNewsChannelId in (:electronicIdList)  or (model.alert.alertCallerId is not null))  ");
 	    }else if(printIdsList != null && printIdsList.size()>0){
 	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
 	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
 	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
-	    }        
+	    }else if(callCenterList != null && callCenterList.size()>0){
+		      sb.append(" and model.alert.alertCallerId is not null ");
+		  }       
 	      
 	    if(fromDate != null && toDate != null){
 	    	 sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
@@ -1426,10 +1461,17 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	    	query.setParameterList("departmentIds", departmentIds);
 	    }
 	      
-	    if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	    if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0 && callCenterList !=null && !callCenterList.isEmpty() ){
 	      query.setParameterList("printIdList", printIdsList);
 	      query.setParameterList("electronicIdList", electronicIdsList);
-	    }  
+	    }else if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0 ){
+	    	query.setParameterList("printIdList", printIdsList);
+		      query.setParameterList("electronicIdList", electronicIdsList);
+	    }else if(printIdsList != null && printIdsList.size()>0 && callCenterList !=null && !callCenterList.isEmpty() ){
+	    	query.setParameterList("printIdList", printIdsList);
+	    }else if(electronicIdsList != null && electronicIdsList.size()>0 &&  callCenterList !=null && !callCenterList.isEmpty()){
+	    	 query.setParameterList("electronicIdsList", electronicIdsList);
+	    }
 	    else if(printIdsList != null && printIdsList.size()>0){
 	      query.setParameterList("printIdList", printIdsList);
 	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
@@ -1449,7 +1491,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	}
 	
 	public List<Object[]> getDesigAndStatusWiseAlertDetails(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,
-			List<Long> printIdsList,List<Long> electronicIdsList,Long designationId,Long statusId){
+			List<Long> printIdsList,List<Long> electronicIdsList,Long designationId,Long statusId,List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct");
 		sb.append(" model.alert.alertId, " +//0
@@ -1471,8 +1513,12 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			        " EDS.editionId, " +//16
 			        " EDS.editionAlias, " +//17
 			        " TNC.tvNewsChannelId, " +//18
-			        " TNC.channelName," +
-			        " S.stateName "); //19
+			        " TNC.channelName," +//19
+			        " S.stateName," +//20
+			        " T.tehsilName," + //21
+			        " P.panchayatName," + //22
+			        " LEB.name " +  //23
+			        "  "); 
 		sb.append(" from AlertAssignedOfficer model" +
 					" left join model.alert.userAddress UA" +
 					" left join model.alert.edition EDS" +
@@ -1497,12 +1543,14 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		/*if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
 			sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");*/
 		
-		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
+		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterList !=null && !callCenterList.isEmpty())
+			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) or (model.alert.alertCallerId is not null) )");
 		else if(printIdsList != null && !printIdsList.isEmpty())
 			sb.append(" and EDS.newsPaperId in (:printIdsList)");
 		else if(electronicIdsList != null && !electronicIdsList.isEmpty())
 			sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");
+		else if(callCenterList !=null && !callCenterList.isEmpty())
+			sb.append(" and model.alert.alertCallerId is not null ");
 		
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
@@ -1562,7 +1610,8 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		return query.list();
 	}
 	
-	public List<Object[]> getDistWiseTotalAlertsStatusForAlert(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList, String type){
+	public List<Object[]> getDistWiseTotalAlertsStatusForAlert(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList, String type,
+			List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct ");
 		if(type != null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("state")){
@@ -1597,8 +1646,19 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 		}  
 		if(departmentIds != null && !departmentIds.isEmpty())
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
-		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-			sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");
+		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+			
+			sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+			
+			if( callCenterList !=null && !callCenterList.isEmpty() ){
+	    		sb.append(" or (model.alert.alertCallerId is not null) ");
+				}else{
+					sb.append(" or (model.alert.alertCallerId is null) ");
+				}
+				sb.append(" ) ");
+			
+		}
+			
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
 		
@@ -1652,7 +1712,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	}
 	
 	public List<Object[]> getTotalAlertByStatusForDeptWiseClick(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,
-			List<Long> printIdsList,List<Long> electronicIdsList,String typeStr,Long statusId){
+			List<Long> printIdsList,List<Long> electronicIdsList,String typeStr,Long statusId,List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct");
 		sb.append(" model.alert.alertId, " +//0
@@ -1674,8 +1734,12 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			        " EDS.editionId, " +//16
 			        " EDS.editionAlias, " +//17
 			        " TNC.tvNewsChannelId, " +//18
-			        " TNC.channelName," +
-			        " S.stateName "); //19
+			        " TNC.channelName," + //19
+			        " S.stateName, " + //20
+			        " T.tehsilName," + //21
+			        " P.panchayatName," + //22
+			        " LEB.name " +  //23
+			        "  "); 
 		sb.append(" from AlertAssignedOfficer model" +
 					" left join model.alert.userAddress UA" +
 					" left join model.alert.edition EDS" +
@@ -1704,13 +1768,21 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			if(electronicIdsList !=null && electronicIdsList.size() > 0){
 				sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");
 			}
-		}else if(typeStr != null && typeStr.trim().equalsIgnoreCase("Totals")){
-			if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-				sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
+		}else if(typeStr != null && typeStr.trim().equalsIgnoreCase("callCenter")){
+			if(callCenterList !=null && callCenterList.size() > 0){
+				sb.append(" and model.alert.alertCallerId is not null ");
+			}
+		}
+		else if(typeStr != null && typeStr.trim().equalsIgnoreCase("Totals")){
+			if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterList !=null && !callCenterList.isEmpty())
+				sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) or (model.alert.alertCallerId is not null) ) ");
 			else if(printIdsList != null && !printIdsList.isEmpty())
 				sb.append(" and EDS.newsPaperId in (:printIdsList)");
 			else if(electronicIdsList != null && !electronicIdsList.isEmpty())
 				sb.append(" and TNC.tvNewsChannelId in (:electronicIdsList)");
+			else if(callCenterList !=null && !callCenterList.isEmpty()){
+				sb.append(" and model.alert.alertCallerId is not null ");
+			}
 		}
 		if(fromDate != null && toDate != null)
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
@@ -2155,7 +2227,7 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 	*/}
 	
 	public List<Long> getDepartmentAndDistrictWiseAlertsCountsAlerts(List<Long> departmentIds,Long levelId,List<Long> levelValues,Long stateId,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList
-			,String type,Long statusId,int startIndex,int endIndex){
+			,String type,Long statusId,int startIndex,int endIndex,List<Long> callCenterList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct");
 		
@@ -2182,7 +2254,15 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 		}
 		if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
-			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) )");
+			sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) )");
+			
+			if( callCenterList !=null && !callCenterList.isEmpty() ){
+	    		sb.append(" or (model.alert.alertCallerId is not null) ");
+				}else{
+					sb.append(" or (model.alert.alertCallerId is null) ");
+				}
+				sb.append(" ) ");
+			
 		}
 		if(fromDate != null && toDate != null){
 			sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
