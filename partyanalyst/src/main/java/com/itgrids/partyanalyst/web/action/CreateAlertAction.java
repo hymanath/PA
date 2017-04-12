@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
@@ -84,9 +85,16 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<Long> cadreIds=new ArrayList<Long>(0);
 	private List<UserTypeVO> activityMembersList;
 	private GrievanceAlertVO grievanceAlertVO;
+	private List<AlertTrackingVO> alertTrackingVOList;
 	
-	
-	
+	public List<AlertTrackingVO> getAlertTrackingVOList() {
+		return alertTrackingVOList;
+	}
+
+	public void setAlertTrackingVOList(List<AlertTrackingVO> alertTrackingVOList) {
+		this.alertTrackingVOList = alertTrackingVOList;
+	}
+
 	public GrievanceAlertVO getGrievanceAlertVO() {
 		return grievanceAlertVO;
 	}
@@ -2238,6 +2246,28 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception occured in getAlertCallerTypes() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getAlertCallerDetailsByMobileNo(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return null;
+			
+			jObj = new JSONObject(getTask());
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			String status = jObj.getString("status");
+			String mobileNo = jObj.getString("mobileNo");
+			Long deptId = jObj.getLong("deptId");
+			
+			alertTrackingVOList = alertService.getAlertCallerDetailsByMobileNo(regVo.getRegistrationID(),startDate,endDate,status,mobileNo,deptId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getCommentsForAlert() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;	
+		
 	}
 	
 	public String createGrievanceAlert()
