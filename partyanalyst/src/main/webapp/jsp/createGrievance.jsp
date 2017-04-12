@@ -77,205 +77,213 @@
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default">
-            	<div class="panel-heading bg_cc">
-                	<h4 class="panel-title">GOVERNMENT GRIEVANCE</h4>
+            	<div class="panel-heading bg_cc"   style="height:50px;" >
+                	<h4 class="panel-title" >GOVERNMENT GRIEVANCE 
+						<button class="btn btn-success pull-right" onclick="showDashboard();"> Dashboard </button>
+						<button class="btn btn-primary  pull-right" style="margin-right:5px"  onclick="showNewGrievance();" > + New Grievance </button> 
+					</h4>
                 </div>
-				<form id="saveGrievanceAlertForm" name="saveGrievanceAlertForm" enctype="multipart/form-data" method="POST">
-					<div class="panel-body bg_EF">
-						<div class="row">
-							<div class="col-sm-3 m_top10">
-								<label>Complaint Given By<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCallerTypeId"></span></label>
-								<select class="chosen" id="callerTypeId" disabled>
-									<option value="1">CITIZEN</option>
-								</select>
+				<div class="" id="newGrevanceDivId">
+					<form id="saveGrievanceAlertForm" name="saveGrievanceAlertForm" enctype="multipart/form-data" method="POST">
+						<div class="panel-body bg_EF">
+							<div class="row">
+								<div class="col-sm-3 m_top10">
+									<label>Complaint Given By<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCallerTypeId"></span></label>
+									<select class="chosen" id="callerTypeId" disabled>
+										<option value="1">CITIZEN</option>
+									</select>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Grievance Related To<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgIssueTypeId"></span></label>
+									<select class="chosen" id="issueTypeId" disabled>
+										<option value="1">Drinking Water</option>
+									</select>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Grievance Entry Category<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEntrySourceId"></span></label>
+									<select class="chosen" id="entrySourceId" disabled>
+										<option value="1">Toll Free Number</option>
+									</select>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptId"></span></label>
+									<select class="chosenSelect" id="departmentsId" disabled>  
+										<option value="49">RWS</option>
+									</select>
+								</div>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Grievance Related To<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgIssueTypeId"></span></label>
-								<select class="chosen" id="issueTypeId" disabled>
-									<option value="1">Drinking Water</option>
-								</select>
+							
+							<div class="row">
+								<div class="col-sm-12 m_top10">
+									<h4 class="text-success text-capital">caller details</h4>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Mobile No<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMobileNoId"></span></label>
+									<input type="text" id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo"/>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgNameId"></span></label>
+									<input type="text" id="nameId" class="form-control" name="grievanceAlertVO.name"/>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Email ID<!--<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEmailId"></span>--></label>
+									<input type="text" id="emailId" class="form-control" placeholder="abc@xyz.com" name="grievanceAlertVO.emailId"/>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Address<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgAddressId"></span></label>
+									<input type="text" id="addressId" class="form-control" name="grievanceAlertVO.address"/>
+								</div>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Grievance Entry Category<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEntrySourceId"></span></label>
-								<select class="chosen" id="entrySourceId" disabled>
-									<option value="1">Toll Free Number</option>
-								</select>
+							
+							<div class="row">
+								<div class="col-sm-12">
+									<h4 class="text-success text-capital m_top10">location details</h4>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Grievance Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLevelId"></span></label>
+									<select class="chosen" id="alertlevelId" onchange="disableByGrievLevel();" disabled>
+										<!--<option value="0">Select Location Level</option>
+										<option value="1">Central</option>
+										<option value="2">State</option>
+										<option value="3">District</option>
+										<option value="4">Constituency</option>
+										<option value="5">Mandal/Muncipality</option>
+										<option value="6">Village/Ward</option>-->
+										<option value="7" selected>Habitation</option>
+									</select>
+								</div>
+								<div class="col-sm-3 m_top10" id="stateDiv">
+									<label>State<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgStateId"></span></label>
+									<select class="chosen" id="stateId" onChange="getDistrictsForReferPopup();" name="grievanceAlertVO.stateId">
+										<!--<option value="0">Select State</option>-->
+										<option value="1" selected>Andhra Pradesh</option>
+									</select>
+								</div>
+								<div class="col-sm-3 m_top10" id="districtDiv" style="display:block;">
+									<label>District<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDistrictId"></span></label>
+									<select class="chosen" id="referdistrictId" onChange="getMandalsByConstituencyForReferPopup();" name="grievanceAlertVO.districtId">
+										<option value="0">Select District</option>
+									</select>
+								</div>
+								<!--<div class="col-sm-3 m_top10" id="constituencyDiv" style="display:block;">
+									<label>Constituency<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgConstId"></span></label>
+									<select class="chosen" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();" name="grievanceAlertVO.constituencyId">
+										<option value="0">Select Constituency</option>
+									</select>
+								</div>-->
+								<div class="col-sm-3 m_top10" id="mandalDiv" style="display:block;">
+									<label>Mandal<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMandalId"></span></label>
+									<select class="chosen" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" name="grievanceAlertVO.mandalId">
+										<option value="0">Select Mandaly</option>
+									</select>
+								</div>
+								<div class="col-sm-3 m_top10" id="panchayatDiv" style="display:block;">
+									<label>Village<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgVillageId"></span></label>
+									<select class="chosen" id="referpanchayatId" onchange="getHamletss();" name="grievanceAlertVO.panchayatId">
+										<option value="0">Select Village</option>
+									</select>
+								</div>
+								<div class="col-sm-3 m_top10" id="villageDiv" style="display:block;">
+									<label>Habitation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgHamletId"></span></label>
+									<select class="chosen" id="hamletId" name="grievanceAlertVO.hamletId">
+										<option value="0">Select Habitation</option>
+									</select>
+								</div>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptId"></span></label>
-								<select class="chosenSelect" id="departmentsId" disabled>  
-									<option value="49">RWS</option>
-								</select>
+							
+							<div class="row">
+								<div class="col-sm-12 m_top10">
+									<h4 class="text-success text-capital">grievance details</h4>
+								</div>
 							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-sm-12 m_top10">
-								<h4 class="text-success text-capital">caller details</h4>
+							
+							<div class="row">
+								<div class="col-sm-8 m_top10">
+									<label>Grievance Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgTitleId"></span></label>
+									<input type="text" class="form-control" id="alertTitleId" name="grievanceAlertVO.alertTitle"/>
+								</div>
+								<!--<div class="col-sm-4 m_top10">
+									<label>Complaint No</label>
+									<input type="text" class="form-control" id="complaintNo" name="grievanceAlertVO.complaintNo"/>
+								</div>-->
+								<div class="col-sm-12 m_top10">
+									<label>Grievance Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDescId"></span></label>
+									<label class="radio-inline">
+										<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+									</label>
+									<label class="radio-inline">
+										<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+									</label>
+								</div>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Mobile No<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMobileNoId"></span></label>
-								<input type="text" id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo"/>
+							<div class="row">
+								<div class="col-sm-12 m_top10">
+									<textarea class="form-control" id="alertdescriptionId" name="grievanceAlertVO.description"></textarea>
+								</div>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgNameId"></span></label>
-								<input type="text" id="nameId" class="form-control" name="grievanceAlertVO.name"/>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Email ID<!--<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEmailId"></span>--></label>
-								<input type="text" id="emailId" class="form-control" placeholder="abc@xyz.com" name="grievanceAlertVO.emailId"/>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Address<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgAddressId"></span></label>
-								<input type="text" id="addressId" class="form-control" name="grievanceAlertVO.address"/>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-sm-12">
-								<h4 class="text-success text-capital m_top10">location details</h4>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Grievance Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLevelId"></span></label>
-								<select class="chosen" id="alertlevelId" onchange="disableByGrievLevel();" disabled>
-									<!--<option value="0">Select Location Level</option>
-									<option value="1">Central</option>
-									<option value="2">State</option>
-									<option value="3">District</option>
-									<option value="4">Constituency</option>
-									<option value="5">Mandal/Muncipality</option>
-									<option value="6">Village/Ward</option>-->
-									<option value="7" selected>Habitation</option>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top10" id="stateDiv">
-								<label>State<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgStateId"></span></label>
-								<select class="chosen" id="stateId" onChange="getDistrictsForReferPopup();" name="grievanceAlertVO.stateId">
-									<!--<option value="0">Select State</option>-->
-									<option value="1" selected>Andhra Pradesh</option>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top10" id="districtDiv" style="display:block;">
-								<label>District<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDistrictId"></span></label>
-								<select class="chosen" id="referdistrictId" onChange="getMandalsByConstituencyForReferPopup();" name="grievanceAlertVO.districtId">
-									<option value="0">Select District</option>
-								</select>
-							</div>
-							<!--<div class="col-sm-3 m_top10" id="constituencyDiv" style="display:block;">
-								<label>Constituency<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgConstId"></span></label>
-								<select class="chosen" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();" name="grievanceAlertVO.constituencyId">
-									<option value="0">Select Constituency</option>
-								</select>
-							</div>-->
-							<div class="col-sm-3 m_top10" id="mandalDiv" style="display:block;">
-								<label>Mandal<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMandalId"></span></label>
-								<select class="chosen" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" name="grievanceAlertVO.mandalId">
-									<option value="0">Select Mandaly</option>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top10" id="panchayatDiv" style="display:block;">
-								<label>Village<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgVillageId"></span></label>
-								<select class="chosen" id="referpanchayatId" onchange="getHamletss();" name="grievanceAlertVO.panchayatId">
-									<option value="0">Select Village</option>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top10" id="villageDiv" style="display:block;">
-								<label>Habitation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgHamletId"></span></label>
-								<select class="chosen" id="hamletId" name="grievanceAlertVO.hamletId">
-									<option value="0">Select Habitation</option>
-								</select>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-sm-12 m_top10">
-								<h4 class="text-success text-capital">grievance details</h4>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-sm-8 m_top10">
-								<label>Grievance Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgTitleId"></span></label>
-								<input type="text" class="form-control" id="alertTitleId" name="grievanceAlertVO.alertTitle"/>
-							</div>
-							<!--<div class="col-sm-4 m_top10">
-								<label>Complaint No</label>
-								<input type="text" class="form-control" id="complaintNo" name="grievanceAlertVO.complaintNo"/>
-							</div>-->
-							<div class="col-sm-12 m_top10">
-								<label>Grievance Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDescId"></span></label>
-								<label class="radio-inline">
-									<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-								</label>
-								<label class="radio-inline">
-									<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-								</label>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-12 m_top10">
-								<textarea class="form-control" id="alertdescriptionId" name="grievanceAlertVO.description"></textarea>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-sm-12 m_top10">
-								<h4 class="text-success text-capital">assign alert to department officer</h4>
-							</div>
-							  
-							<div class="col-sm-3 m_top10">
-								<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
-								<select  class="chosenSelect" id="locationLevelSelectId" disabled>  
-									<option></option>
-								</select>
-							</div>
-							<div id="parentLevelDivId"> </div>
+							
+							<div class="row">
+								<div class="col-sm-12 m_top10">
+									<h4 class="text-success text-capital">assign alert to department officer</h4>
+								</div>
+								  
+								<div class="col-sm-3 m_top10">
+									<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
+									<select  class="chosenSelect" id="locationLevelSelectId" disabled>  
+										<option></option>
+									</select>
+								</div>
+								<div id="parentLevelDivId"> </div>
 
-							<div class="col-sm-3 m_top10">
-								<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDesgId"></span></label>
-								<select name="grievanceAlertVO.designationId" id="designationsId" class="chosenSelect">
-									<option></option>  
-								</select>
+								<div class="col-sm-3 m_top10">
+									<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDesgId"></span></label>
+									<select name="grievanceAlertVO.designationId" id="designationsId" class="chosenSelect">
+										<option></option>  
+									</select>
+								</div>
+								<div class="col-sm-3 m_top10">
+									<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgOffcrId"></span></label>
+									<select name="grievanceAlertVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
+										<option></option>
+									</select>
+								</div>
 							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgOffcrId"></span></label>
-								<select name="grievanceAlertVO.govtOfficerId" id="officerNamesId" class="chosenSelect">
-									<option></option>
-								</select>
+							
+							<div class="row">
+								<div class="col-sm-12 m_top10">
+									<h4 class="text-success text-capital">upload document linking to this alert</h4>
+									<div class="block  m_top10">
+										<input type="file" id="uploadFileId0" name="imageForDisplay"/>
+									</div>
+								</div>
 							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-sm-12 m_top10">
-								<h4 class="text-success text-capital">upload document linking to this alert</h4>
-								<div class="block  m_top10">
-									<input type="file" id="uploadFileId0" name="imageForDisplay"/>
+							
+							<div class="row">
+								<div class="col-sm-4 m_top25">
+									<input type="button" class="btn btn-success btn-block text-capital" value="create grievance request" onclick="createGrievanceAlert();"></input>
+								</div>
+								<div class="col-sm-4">
+									<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="creatingLdngImg"/>
+								</div>
+								<div class="col-sm-4">
+									<span id="successmsg"></span>
 								</div>
 							</div>
 						</div>
+						<input type="hidden" class="form-control" id="locationLevelValhidden" name="grievanceAlertVO.locationValue"/>
+						<input type="hidden" class="form-control" id="locationLevelIdhidden" name="grievanceAlertVO.locationLevelId"/>
 						
-						<div class="row">
-							<div class="col-sm-4 m_top25">
-								<input type="button" class="btn btn-success btn-block text-capital" value="create grievance request" onclick="createGrievanceAlert();"></input>
-							</div>
-							<div class="col-sm-4">
-								<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="creatingLdngImg"/>
-							</div>
-							<div class="col-sm-4">
-								<span id="successmsg"></span>
-							</div>
-						</div>
-					</div>
-					<input type="hidden" class="form-control" id="locationLevelValhidden" name="grievanceAlertVO.locationValue"/>
-					<input type="hidden" class="form-control" id="locationLevelIdhidden" name="grievanceAlertVO.locationLevelId"/>
-					
-					<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.callerTypeId"/>
-					<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.issueTypeId"/>
-					<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.entrySourceId"/>
-					<input type="hidden" class="form-control" value="49" name="grievanceAlertVO.departmentId"/>
-					<input type="hidden" class="form-control" value="8" name="grievanceAlertVO.levelId"/>
-				</form>
-				<div id="alertDataDivId"></div>
+						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.callerTypeId"/>
+						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.issueTypeId"/>
+						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.entrySourceId"/>
+						<input type="hidden" class="form-control" value="49" name="grievanceAlertVO.departmentId"/>
+						<input type="hidden" class="form-control" value="8" name="grievanceAlertVO.levelId"/>
+					</form>
+				</div>
+				<div id="dashboardGrevanceDivId" style="display:none;">
+					<div id="summaryDiv"></div>
+					<div id="alertDataDivId"></div>
+				<div>
             </div>
         </div>
     </div>
@@ -1293,14 +1301,8 @@ getDepartmentLevels();
 			$("#officerNamesId").trigger("chosen:updated");
 		});
 	}
-	
-	
-	
-	
-	
-	
-getAlertDetails();
-function getAlertDetails()
+
+function getAlertDetails(alertStatusId)
 	{
 		/* var datesArr =[]; 
 		if(datesArr != null){
@@ -1309,10 +1311,13 @@ function getAlertDetails()
 		}
 		var mobileNo;
 		var statusId; */
+		$('#alertDataDivId').html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
+		
+		
 		var jObj = {
-			alertStatusId : 2,
-			mobileNo : 9676696760,
-			fromDate :"12/04/2017",
+			alertStatusId : alertStatusId,
+			mobileNo : '',
+			fromDate :"12/04/2016",
 			toDate : "12/04/2017"
 			
 		}
@@ -1441,6 +1446,69 @@ $("#buildUpdateDivId").html(str);
 }
 
 
+
+function showDashboard(){
+		getGrievanceSummary();
+		$('#dashboardGrevanceDivId').show();
+		$('#newGrevanceDivId').hide();
+	}
+	function showNewGrievance(){
+		$('#dashboardGrevanceDivId').hide();
+		$('#newGrevanceDivId').show();
+	}
+	function getGrievanceSummary(){
+		$('#summaryDiv').html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
+		
+		var jsObj ={
+			startDate:'01/04/2017',
+			endDate:'01/05/2017',
+			mobileNo:'',
+			status:"",
+			deptId:0,
+			task:""
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getAlertCallerDetails.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				buildGrievanceSummary(result);
+			}	  
+		});
+	}
+	
+	function buildGrievanceSummary(result){
+		if(result != null && result.length>0){
+			var str='';
+			if(result[0].statusList != null && result[0].statusList.length>0) {
+				str+='<table  class="table table-bordered"  style="text-align:center;">';
+					str+='<thead>';
+						str+='<th> TOTAL </th>';
+						var totalCount =0;
+						for(var k in result[0].statusList){
+							str+='<th> '+result[0].statusList[k].status+' </th>';
+							if(result[0].statusList[k].count != null)
+								totalCount=totalCount+parseInt(result[0].statusList[k].count);
+						}
+					str+='</thead>';
+					str+='<tbody>';
+					str+='<tr>';
+						str+='<td> '+totalCount+' </td>';
+						for(var k in result[0].statusList){
+							if(result[0].statusList[k].count != null)
+								str+='<td> <a style="color:green;font-weight:bold;" href="javascript:{getAlertDetails('+result[0].statusList[k].alertStatusId+')}"> '+result[0].statusList[k].count+' </a> </td>';
+							else
+									str+='<td> - </td>';
+						}
+					str+='</tr>';
+					str+='</tbody>';
+				str+='</table>';
+			}
+			
+			$('#summaryDiv').html(str);
+		}
+	}
 </script>
 </body>
 </html>
