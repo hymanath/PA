@@ -10,12 +10,16 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title> GOVT GRIEVANCE </title>
 	<!-- Bootstrap -->
-	<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
-	<link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">
+	<!--<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">-->
+	<link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
+	<!--<link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">-->
 	<!-- JQuery files (Start) -->
 	
-	<script src="dist/js/jquery-1.11.2.min.js"></script>
-	<script type="text/javascript" src="dist/js/bootstrap.js"></script>
+	<!--<script src="dist/js/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="dist/js/bootstrap.js"></script>-->
+	<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+	<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 	<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 	<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 	<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
@@ -78,7 +82,7 @@
 <div class="container">
 	<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
-        	<div class="panel panel-default">
+        	<div class="panel panel-default m_top10">
             	<div class="panel-heading bg_cc"   style="height:50px;" >
                 	<h4 class="panel-title" >GOVERNMENT GRIEVANCE 
 						<button class="btn btn-success pull-right" onclick="showDashboard();"> Dashboard </button>
@@ -165,7 +169,7 @@
 								</div>
 								<div class="col-sm-3 m_top10" id="stateDiv">
 									<label>State<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgStateId"></span></label>
-									<select class="chosen" id="stateId" onChange="getDistrictsForReferPopup();" name="grievanceAlertVO.stateId">
+									<select class="chosen" id="stateId" onChange="getDistrictsForReferPopup();" name="grievanceAlertVO.stateId" disabled>
 										<!--<option value="0">Select State</option>-->
 										<option value="1" selected>Andhra Pradesh</option>
 									</select>
@@ -289,6 +293,7 @@
 						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.entrySourceId"/>
 						<input type="hidden" class="form-control" value="49" name="grievanceAlertVO.departmentId"/>
 						<input type="hidden" class="form-control" value="13" name="grievanceAlertVO.levelId"/>
+						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.stateId"/>
 					</form>
 				</div>
 				<div id="dashboardGrevanceDivId" style="display:none;">
