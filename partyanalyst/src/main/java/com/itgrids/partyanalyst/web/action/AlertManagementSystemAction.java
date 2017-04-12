@@ -1813,7 +1813,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
 				String group = jObj.getString("group");
-				idnameVoList = alertManagementSystemService.getDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,group);
+				String alertType = jObj.getString("alertType");
+				String searchType = jObj.getString("searchType");
+				idnameVoList = alertManagementSystemService.getDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,group,alertType,searchType);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
@@ -1849,7 +1851,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
 				Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
 				String group = jObj.getString("group");
-				idnameVoList = alertManagementSystemService.getSubDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,divisionWorkLocationId,group);
+				String alertType = jObj.getString("alertType");
+				String searchType = jObj.getString("searchType");
+				idnameVoList = alertManagementSystemService.getSubDivisionIdListForSubDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,districtWorkLocationId,divisionWorkLocationId,group,alertType,searchType);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 			}
