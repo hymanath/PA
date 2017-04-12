@@ -27,7 +27,8 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 	private Long ivrCandidateSurveyQuestionId;
 	private Long candidateId;
 	private Long ivrSurveyQuestionId;
-	private Long ivrOptionsId;
+	//private Long ivrOptionsId;
+	private Long ivrSurveyQuestionOptionId;
 	private String isLocationScope;
 	private Long locationScopeId;
 	private Long locationValue;
@@ -35,7 +36,8 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 	private Long addressId;
 	
 	private Candidate  candidate;
-	private IvrOption  ivrOption;
+	//private IvrOption  ivrOption;
+	private IvrSurveyQuestionOption ivrSurveyQuestionOption;
 	private IvrSurveyQuestion ivrSurveyQuestion;
 	private TdpCadre tdpCadre;
 	private UserAddress userAddress;
@@ -64,13 +66,13 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 	public void setIvrSurveyQuestionId(Long ivrSurveyQuestionId) {
 		this.ivrSurveyQuestionId = ivrSurveyQuestionId;
 	}
-	@Column(name = "ivr_options_id")
+	/*@Column(name = "ivr_option_id")
 	public Long getIvrOptionsId() {
 		return ivrOptionsId;
 	}
 	public void setIvrOptionsId(Long ivrOptionsId) {
 		this.ivrOptionsId = ivrOptionsId;
-	}
+	}*/
 	@Column(name = "is_location_scope")
 	public String getIsLocationScope() {
 		return isLocationScope;
@@ -102,8 +104,8 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 	public void setCandidate(Candidate candidate) {
 		this.candidate = candidate;
 	}
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="ivr_options_id", insertable=false, updatable = false)
+	/*@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="ivr_option_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
      public IvrOption getIvrOption() {
@@ -111,7 +113,7 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 	}
 	public void setIvrOption(IvrOption ivrOption) {
 		this.ivrOption = ivrOption;
-	}
+	}*/
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="ivr_survey_question_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -161,4 +163,26 @@ public class IvrSurveyCandidateQuestion extends BaseModel implements Serializabl
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
 	}
+	
+	@Column(name = "ivr_survey_question_option_id")
+	public Long getIvrSurveyQuestionOptionId() {
+		return ivrSurveyQuestionOptionId;
+	}
+	public void setIvrSurveyQuestionOptionId(Long ivrSurveyQuestionOptionId) {
+		this.ivrSurveyQuestionOptionId = ivrSurveyQuestionOptionId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="ivr_survey_question_option_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public IvrSurveyQuestionOption getIvrSurveyQuestionOption() {
+		return ivrSurveyQuestionOption;
+	}
+	public void setIvrSurveyQuestionOption(
+			IvrSurveyQuestionOption ivrSurveyQuestionOption) {
+		this.ivrSurveyQuestionOption = ivrSurveyQuestionOption;
+	}
+	
+	
 }
