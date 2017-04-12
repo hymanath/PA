@@ -1939,4 +1939,48 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;	
 		}
+		public String getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(){
+			try {
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				
+				jObj = new JSONObject(getTask());
+				String fromDateStr = jObj.getString("fromDateStr");
+				String toDateStr = jObj.getString("toDateStr");
+				Long stateId = jObj.getLong("stateId");
+				
+				JSONArray printIdArr = jObj.getJSONArray("printIdArr");  
+				List<Long> printIdList = new ArrayList<Long>();
+				if(printIdArr != null && printIdArr.length() > 0){
+					for (int i = 0; i < printIdArr.length(); i++){
+						printIdList.add(Long.parseLong(printIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray electronicIdArr = jObj.getJSONArray("electronicIdArr");  
+				List<Long> electronicIdList = new ArrayList<Long>();
+				if(electronicIdArr != null && electronicIdArr.length() > 0){
+					for (int i = 0; i < electronicIdArr.length(); i++){
+						electronicIdList.add(Long.parseLong(electronicIdArr.getString(i)));        
+					} 
+				}
+				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");
+				String sortingType = jObj.getString("sortingType");
+				String order = jObj.getString("order");
+				String alertType = null;
+				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
+				Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
+				Long subDivisionWorkLocationId = jObj.getLong("subDivisionWorkLocationId");
+				String group = jObj.getString("group");
+				
+				alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDateStr,
+						toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
+						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group);
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview() method, Exception - ",e);
+			}
+			return Action.SUCCESS;	
+		}
 }
