@@ -4713,12 +4713,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			//DateUtilService dateUtilService = new DateUtilService();
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = null;
-			if(isActionType != null && isActionType.equalsIgnoreCase("Yes")){ //alertStatusId means alertActionTypeStatusId
+			if(isActionType != null && isActionType.equalsIgnoreCase("Yes")){ //alertStatusId means alertActionTypeStatusId //d
 			  alertList = verificationStatusDAO.getActionTypeAlertDetails(fromDate, toDate, stateId, alertTypeId, alertStatusIds, userAccessLevelId, userAccessLevelValues, editionList,alertActionTypeId,impactScopeIds,alertVerificationStatusId);
-			}else{
+			}else{//d
 			 alertList = alertDAO.getAlertDtls(fromDate, toDate, stateId, alertTypeId, alertStatusIds, alertCategoryId, userAccessLevelId, userAccessLevelValues,editionList,impactScopeIds);	
 			}
-			setAlertDtls(alertCoreDashBoardVOs, alertList);
+			setAlertDtls(alertCoreDashBoardVOs, alertList);   
 			
 			return alertCoreDashBoardVOs;
 		}catch(Exception e){
@@ -5753,7 +5753,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}
 			
-			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//done
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//d
 			List<Object[]> alertList = alertDAO.getAlertDtlsForPubRep(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, publicRepresentativeTypeId, cadreId, alertStatusIds,alertTypeList,editionList,districtId);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			return alertCoreDashBoardVOs;  
@@ -5781,6 +5781,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertCoreDashBoardVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
 					alertCoreDashBoardVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
 					alertCoreDashBoardVO.setSevertyColor(commonMethodsUtilService.getStringValueForObject(param[24]));
+					alertCoreDashBoardVO.setStatusColor(commonMethodsUtilService.getStringValueForObject(param[25]));
 					statusId = commonMethodsUtilService.getLongValueForObject(param[3]);
 					if(param[1] != null && param[2] != null){
 						if(statusId == 4L || statusId == 5L || statusId == 6L || statusId == 7L){
@@ -5975,7 +5976,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}
 			
-			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//done
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//d
 			List<Object[]> alertList = alertDAO.getAlertDtlsAssignedByPartyCommite(userAccessLevelId, userAccessLevelValues, stateId, scopeIdList, fromDate, toDate, commitLvlIdList, cadreId, commitTypeId,designationId,alertStatusIds,alertTypeList,editionList,districtId);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);    
 			return alertCoreDashBoardVOs;
@@ -6035,7 +6036,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}
 				}
 			}
-			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//done
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//d
 			List<Object[]> alertList = alertDAO.getAlertDetailsByCadreWise(userAccessLevelId,userAccessLevelValues,fromDate,toDate,stateId,impactLevelIds,tdpCadreId,alertStatusIds,resultType,alertTypeList,editionList,districtId);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			return alertCoreDashBoardVOs;
@@ -6103,7 +6104,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					}else if(firstDigit == 2l){
 						publicationId = Long.valueOf(publicationIdStr.substring(1));
 						publicationType="NewsPaper";
-					}else{
+					}else{//d
 						List<Object[]> tvChannelAlertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"TvChannel",publicationId,localElectionBodyId,locationLevel);
 						setAlertDtls(alertCoreDashBoardVOs, tvChannelAlertList);	
 						List<Object[]> newsPaperAelrtList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,"NewsPaper",publicationId,localElectionBodyId,locationLevel);
@@ -6111,7 +6112,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						return alertCoreDashBoardVOs;
 					}
 				}
-			}
+			}//d
 			List<Object[]> alertList = alertDAO.getDistrictAndStateImpactLevelWiseAlertDtls(userAccessLevelId, userAccessLevelValues, fromDate, toDate, stateId, impactLevelIds, districtIdList,catId,alertTypeList,editionTypeList,constituencyId,alertStatusIds,publicationType,publicationId,localElectionBodyId,locationLevel);
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			return alertCoreDashBoardVOs;
@@ -7350,7 +7351,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAccessLevelValues.clear();
 				userAccessLevelValues.addAll(parliamentAssemlyIds);      
 			}
-			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//done
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();//d
 			List<Object[]> alertList = alertDAO.getAlertDtlsByAlertTypeId(fromDate, toDate, stateId, alertTypeId, userAccessLevelId, userAccessLevelValues,impactScopeIds,alertStatusIds,editionTypeList);	
 			setAlertDtls(alertCoreDashBoardVOs, alertList);
 			return alertCoreDashBoardVOs;
