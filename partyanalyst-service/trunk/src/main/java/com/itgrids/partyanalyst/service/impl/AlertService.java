@@ -129,6 +129,7 @@ import com.itgrids.partyanalyst.model.AlertClarificationStatus;
 import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertDocument;
+import com.itgrids.partyanalyst.model.AlertFeedbackStatus;
 import com.itgrids.partyanalyst.model.AlertIssueType;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
@@ -155,7 +156,7 @@ import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
 public class AlertService implements IAlertService{
 private TransactionTemplate transactionTemplate = null;
 private IAlertDAO alertDAO;
-private IAlertCandidateDAO alertCandidateDAO; 
+private IAlertCandidateDAO alertCandidateDAO;
 private IUserAddressDAO userAddressDAO;
 private IStateDAO stateDAO;
 private IDistrictDAO districtDAO;
@@ -9458,15 +9459,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				public Object doInTransaction(TransactionStatus status) {
 					String rs = new String();
 					DateUtilService date = new DateUtilService();
-				 
-					AlertCaller alertCaller = new AlertCaller();
-					alertCaller.setCallerName(inputVO.getName());
-					alertCaller.setAddress(inputVO.getAddress());
-					alertCaller.setMobileNo(inputVO.getMobileNo());
-					alertCaller.setEmail(inputVO.getEmailId());
-					alertCaller = alertCallerDAO.save(alertCaller);
-					
 					Alert alert = new Alert();
+					
+					List<Long> existingList = alertCallerDAO.checkIsExist(inputVO.getMobileNo(),inputVO.getName());
+					if(!commonMethodsUtilService.isListOrSetValid(existingList)){
+						AlertCaller alertCaller = new AlertCaller();
+						alertCaller.setCallerName(inputVO.getName());
+						alertCaller.setAddress(inputVO.getAddress());
+						alertCaller.setMobileNo(inputVO.getMobileNo());
+						alertCaller.setEmail(inputVO.getEmailId());
+						alertCaller = alertCallerDAO.save(alertCaller);
+						alert.setAlertCallerId(alertCaller.getAlertCallerId());
+					}
+					else{
+						 alert.setAlertCallerId(existingList.get(0));
+					}
+				
 					alert.setAlertSeverityId(2l);
 					alert.setAlertTypeId(2l);
 					alert.setImpactLevelId(inputVO.getLocationLevelId());
@@ -9488,7 +9496,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 UserAddress userAddress = saveUserAddressForGrievanceAlert(inputVO);
 					 alert.setAddressId(userAddress.getUserAddressId());
 					 
-					 alert.setAlertCallerId(alertCaller.getAlertCallerId());
+					
 					 alert.setAlertCallerTypeId(inputVO.getCallerTypeId());
 					 alert.setAlertEntrySourceId(inputVO.getEntrySourceId());
 					 alert.setAlertIssueTypeId(inputVO.getIssueTypeId());
@@ -9648,17 +9656,41 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			}
 			
+			 List<AlertFeedbackStatus> feedbackStatusList =  alertFeedbackStatusDAO.getAll();
+			 List<AlertTrackingVO> feedbacksStatusList = new ArrayList<AlertTrackingVO>(0);
+			 if(commonMethodsUtilService.isListOrSetValid(feedbackStatusList)){
+				 for (AlertFeedbackStatus alertStatus : feedbackStatusList) {
+					 if(alertStatus.getIsDeleted().equalsIgnoreCase("N")){
+						 AlertTrackingVO vo = new AlertTrackingVO();
+						 vo.setAlertStatusId(alertStatus.getAlertFeedbackStatusId());
+						 vo.setStatus(alertStatus.getStatus());
+						 if(commonMethodsUtilService.isListOrSetValid(returnVO.getStatusList())){
+							 for (AlertTrackingVO alertTrackingVO : returnVO.getStatusList()) {
+								 AlertTrackingVO vo1 = new AlertTrackingVO();
+								 vo1.setAlertStatusId(alertTrackingVO.getAlertStatusId());
+								 vo1.setStatus(alertTrackingVO.getStatus());
+								 vo.getStatusList().add(vo1);
+							}
+						 }
+						 feedbacksStatusList.add(vo);
+					 }
+				}
+			 }
+				 
 			List<Object[]> objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
-			
 			if(objList != null && objList.size() > 0){
 				for (Object[] param : objList) {
-					AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getStatusList(), "alertStatusId", commonMethodsUtilService.getStringValueForObject(param[0]));
+					AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(feedbacksStatusList, "alertStatusId", commonMethodsUtilService.getStringValueForObject(param[1]));
 					if(vo != null){
-						vo.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						AlertTrackingVO vo1 = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(vo.getStatusList(), "alertStatusId", commonMethodsUtilService.getStringValueForObject(param[0]));
+						if(vo1 != null){
+							vo1.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+						}
 					}
 				}
 			}
-			
+			 returnVO.getStatusList().clear();
+			 returnVO.getStatusList().addAll(feedbacksStatusList);
 			voList.add(returnVO);
 		} catch (Exception e) {
 			LOG.error("Error occured getAlertCallerDetailsByMobileNo() method of AlertManagementSystemService");
@@ -9804,12 +9836,13 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		try{
 			Date fromDate = null;      
 			Date toDate = null;
+			Long deptId = 49L;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Object[]> alertList = alertDAO.getAlertDetials(mobileNo,alertStatusId,fromDate,toDate);
+			List<Object[]> alertList = alertDAO.getAlertDetials(mobileNo,alertStatusId,fromDate,toDate,deptId);
 			if(alertList != null && alertList.size() > 0l){
 				for (Object[] objects : alertList) {
 					AlertVO vo = new AlertVO();
@@ -9820,6 +9853,9 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					vo.setAlertSourceId(commonMethodsUtilService.getLongValueForObject(objects[4]));
 					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[5]));
 					vo.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+					vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+					vo.setCallCenterSource(commonMethodsUtilService.getStringValueForObject(objects[8]));
+					vo.setIssueType(commonMethodsUtilService.getStringValueForObject(objects[9]));
 					returnList.add(vo);
 				}
 			}
@@ -9840,6 +9876,9 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 					vo.setAddress(commonMethodsUtilService.getStringValueForObject(objects[2]));
 					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					vo.setTitle(commonMethodsUtilService.getStringValueForObject(objects[4]));
+					vo.setDesc(commonMethodsUtilService.getStringValueForObject(objects[5]));
+					vo.setDate1(commonMethodsUtilService.getStringValueForObject(objects[6]));
 					returnList.add(vo);
 				}
 			}
@@ -9874,6 +9913,13 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					alertTracking.setAlertSourceId(alertvo.getAlertSourceId());
 					alertTracking.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
 					alertTrackingDAO.save(alertTracking);
+					
+					Alert alert = alertDAO.get(alertvo.getAlertId());
+					if(alert != null){
+						alert.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
+						alertDAO.save(alert);
+					}
+					
 					return "success";
 				
 				}
