@@ -123,7 +123,7 @@ function getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(){
 			
 			
 			govtDepartmentId : 0,
-			parentGovtDepartmentScopeId : 8,
+			parentGovtDepartmentScopeId : 6,
 			sortingType : "",
 			order : "",
 			alertType : "",
