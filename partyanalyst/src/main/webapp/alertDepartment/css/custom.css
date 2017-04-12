@@ -1432,7 +1432,31 @@ small.clear
 	text-transform:uppercase;
 	cursor:pointer;
 }
-.constituencyUl li:last-child
+
+.switch_btn_multiLevel
 {
-	padding:0px;
+	padding:3px;
+	background-color: #fff;
+	display: inline-block;
+	
+}
+.switch_btn_multiLevel li
+{
+	list-style:none;
+	display: inline-block;
+	padding: 4px 8px;
+	cursor: pointer;
+	text-transform:uppercase;
+}
+.switch_btn_multiLevel li.active
+{
+	background-color: #4A5863;
+	color: #fff;
+	-moz-transition: .5s all ease-out;
+}
+.switch_btn_multiLevel li:hover
+{
+	background-color: #4A5863;
+	-moz-transition: .5s all ease-out;
+	color:#fff;
 }
