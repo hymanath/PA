@@ -641,9 +641,9 @@ function getDistrictOfficeGraphicalView(parentGovtDepartmentScopeId){
     districtWorkLocationId:0,
     divisionWorkLocationId:0,
     subDivisionWorkLocationId:0,
-    group:"status",
-    alertType:"alert",
-  searchType :"statusWise"
+    group:"status",//status only
+    alertType:"alert",//alertType=(alert/subTask)
+  	searchType :"scopeWise"//locationLevel="scopeWise" or statusOverview="statusWise"
     }
     $.ajax({
           type:'GET',
