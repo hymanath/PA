@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -88,4 +89,87 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		query.setParameter("alertId", alertId);
 		return query.list();   
 	}
+	
+	public List<Object[]> getStatuswiseAlertsDetails(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId){
+		StringBuilder queryStr  = new StringBuilder();
+		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,as1.alert_status as alert_status , count(distinct a.alert_id) as count ");
+		queryStr.append(" from ");
+		queryStr.append(" alert a ");
+		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
+		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		queryStr.append(" left join alert_assigned_officer_new a1 on a.alert_id = a1.alert_id  ");
+		queryStr.append(" left join govt_department_designation_officer_new a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
+		queryStr.append(" left join govt_department_designation_new a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
+		queryStr.append(" where a.is_deleted='N' ");
+		
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+			queryStr.append(" and ac.mobile_no =:mobile_no ");
+		if(departmentId != null && departmentId.longValue()>0L)
+			queryStr.append(" and a3.govt_department_id =:departmentId ");
+		if(userId != null) 
+			queryStr.append(" and a.created_by =:userId ");
+		if(startDate != null && startDate != null)
+			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
+		
+		queryStr.append(" GROUP BY alert_status_id ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alert_status_id", Hibernate.LONG)
+				.addScalar("alert_status", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+		if(departmentId != null && departmentId.longValue()>0L)
+			query.setParameter("departmentId", departmentId);
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+		query.setParameter("mobileNo", mobileNo);
+		
+		if(userId != null) 
+			query.setParameter("userId", userId);
+		
+		if(startDate != null && startDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();   
+	}
+	
+	public List<Object[]> getAlertFeedbackStatuswiseAlertsDetails(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId){
+		StringBuilder queryStr  = new StringBuilder();
+		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,as1.alert_status as alert_status , count(distinct a.alert_id) as count ");
+		queryStr.append(" from ");
+		queryStr.append(" alert a ");
+		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
+		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		queryStr.append(" left join alert_assigned_officer_new a1 on a.alert_id = a1.alert_id  ");
+		queryStr.append(" left join govt_department_designation_officer_new a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
+		queryStr.append(" left join govt_department_designation_new a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
+		queryStr.append(" where a.is_deleted='N' ");
+		
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+			queryStr.append(" and ac.mobile_no =:mobile_no ");
+		if(departmentId != null && departmentId.longValue()>0L)
+			queryStr.append(" and a3.govt_department_id =:departmentId ");
+		if(userId != null) 
+			queryStr.append(" and a.created_by =:userId ");
+		if(startDate != null && startDate != null)
+			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
+		
+		queryStr.append(" GROUP BY alert_status_id ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alert_status_id", Hibernate.LONG)
+				.addScalar("alert_status", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+		if(departmentId != null && departmentId.longValue()>0L)
+			query.setParameter("departmentId", departmentId);
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+		query.setParameter("mobileNo", mobileNo);
+		
+		if(userId != null) 
+			query.setParameter("userId", userId);
+		
+		if(startDate != null && startDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();   
+	}
+	
 }
