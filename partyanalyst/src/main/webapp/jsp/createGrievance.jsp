@@ -306,26 +306,30 @@
 </div>
 
 <!-- PopUp -->
-<div class="modal fade" id="updateAlertModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!--<div class="modal fade" id="updateAlertModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
     <div class="modal-content customModal">
       <div class="modal-header">
         <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">FeedbackStatus Updation</h4>
+        <h4 class="modal-title">Feedback Status Updation</h4>
       </div>
-      <div class="modal-body" style="padding:0px 15px;">
+      <div class="modal-body" style="padding:0px 15px 0px 0px;">
        <div id="buildUpdateDivId"></div>
-	   <div class="row">
+	    <div class="row">
 		   <div class="col-sm-4">
-			   <label>Comment</label>
-			   <textarea id="comntId" style="width:350px; height:90px;"></textarea>
+			   <label>Comment</label><br>
+			   <textarea id="comntId"  ></textarea>
 		   </div>
+		</div>
+		<div class="row">
 		    <div class="col-sm-3">
-			   <label>FeedBack Status :</label>
+			   <label>FeedBack Status :</label><br>
 			  <select id="feedbackStatusList" class="form-control">
-				<option value="0"> Select FeedbackStatus</option>
+				<option value="0"> Select Feedback Status</option>
 			  </select>
 		   </div>
+		</div>
+		<div class="row">
 		   <div class="col-sm-4">
 				<button type="button" class="btn btn-success" onClick="saveAlertStatusDetails();" style="margin-top:22px;">Save</button>
 				<span id="saveMsgId"></span>
@@ -334,7 +338,37 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->
+
+
+<div class="modal fade" id="updateAlertModalDivId" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+       <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Feedback Status Updation</h4>
+      </div>
+      <div class="panel-body" style="padding:10px;background-color: lightgrey;">
+		<div id="buildUpdateDivId">
+		</div>
+		
+		<div class="col-md-12 col-xs-12 col-sm-12  m_top10">
+			  <label>FeedBack Status :</label><br>
+			  <select id="feedbackStatusList" class="form-control">
+				<option value="0"> Select Feedback Status</option>
+			  </select>
+		</div>
+		<div class="col-md-12 col-xs-12 col-sm-12">			
+				<span id="saveMsgId"></span>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onClick="saveAlertStatusDetails();" >Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!-- Hidden Variables -->
 <input type="hidden" id="hiddenAlertId"></input>
@@ -360,18 +394,19 @@ google.load("elements", "1", {
 //getAlertCallerTypes();
 $("#dateRangeIdForEvents").daterangepicker({
 	opens: 'left',
-	startDate: moment().subtract(1, 'month').startOf('month'),
-	endDate: moment().subtract(1, 'month').endOf('month'),
+	startDate: moment().subtract('month').startOf('month'),
+	endDate: moment().subtract('month').endOf('month'),
 	locale: {
 	  format: 'DD/MM/YYYY'
 	},
 	ranges: {
+		'This Month': [moment().startOf('month'), moment()],
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
 	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
 	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-	   'This Month': [moment().startOf('month'), moment()],
+	   
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
 });
@@ -436,7 +471,7 @@ function getAlertsource(){
 	});
 }
 
-getDistrictsForReferPopup();
+
 function getDistrictsForReferPopup() {
 	var stateId = $("#stateId").val();
 	
@@ -1339,7 +1374,7 @@ function clearFields(){
 		});
 	}
 
-function getAlertDetails(alertStatusId)
+function getAlertDetails(alertStatusId,status)
 	{
 		/* var datesArr =[]; 
 		if(datesArr != null){
@@ -1372,7 +1407,7 @@ function getAlertDetails(alertStatusId)
 		  data: {task :JSON.stringify(jObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){
-				buildAlertDetails(result);
+				buildAlertDetails(result,status);
 			}
 		});
 }
@@ -1380,6 +1415,7 @@ function getAlertDetails(alertStatusId)
 function getAlertCallerDetails(alertId)
 	{
 		$("#comntId").val('');
+		$("#saveMsgId").html('');
 		$("#feedbackStatusList").val(0);
 		$("#updateAlertModalDivId").modal('show');
 		var jObj = {
@@ -1395,7 +1431,7 @@ function getAlertCallerDetails(alertId)
 			}
 		});
 }
-//saveAlertStatusDetails();
+
 function saveAlertStatusDetails()
 	{
 		var comment = $("#comntId").val();
@@ -1444,21 +1480,24 @@ function getFeedBackStatusDetails()
 		});
 }	
 	
-function buildAlertDetails(result){
+function buildAlertDetails(result,status){
 	var str = '';
-	
-	str+='<table class="table table-bordered ">';
+		str+='<div style="background-color: lightgrey; font-weight: bold; margin-top: 5px; margin-bottom: 5px; border-radius: 5px; text-align: center; text-transform: uppercase; font-size: 15px;">  '+status+' Status Grievance Details </div>';
+		
+	str+='<table class="table table-bordered " style="text-align:center;">';
 		str+='<thead>';
-			str+='<th>Title</th>';
-			str+='<th>Alert Level</th>';
-			str+='<th>Created Time</th>'; 
+			str+='<th  style="text-align:center">Title</th>';
+			str+='<th  style="text-align:center">Alert Level</th>';
+			str+='<th  style="text-align:center">Created On</th>'; 
+			str+='<th  style="text-align:center"> Update Status </th>'; 
 		str+='</thead>';
 		str+='<tbody>';
 		for( var i in result){
 			str+='<tr>';
 				str+='<td>'+result[i].title+'</td>';
 				str+='<td>'+result[i].locationName+'</td>';
-				str+='<td>'+result[i].createdTime+'<button type="button"  class="btn btn-success updateAlertCls" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button></td>';
+				str+='<td>'+result[i].createdTime+'</td>';
+				str+='<td><button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button></td>';
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -1477,16 +1516,38 @@ $(document).on("click",".updateAlertCls",function(){
 	
 function buildAlertCallerDetails(result){
 	var str= '';
-		str+='<div class="panel panel-default m_top10">';
-			str+='<div class="panel-body">';
-			  str+='<ul>';
+	
+	//	str+='<div class="panel panel-default m_top10">';
+		//	str+='<div class="panel-body">';
+			
 				for(var i in result){
-				str+='<li> Updated By : '+result[i].name+' - '+result[i].mobileNo+'</li>';
-					//str+='<h4>'+result[i].address+'</h4></li>';
+				//str+='<p> Given By : '+result[i].name+' - '+result[i].mobileNo+'</p>';
+					//str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+					str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+					str+='<p><span>Given By : </span> <span>'+result[i].name+'</span></p>';
+					str+='</div>';
+					str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+					str+='<p><span>Mobile No : </span> <span>'+result[i].mobileNo+'</span></p>';
+					str+='</div>';
+					str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+					str+='<p><span>Created On : </span> <span>'+result[i].date1+'</span></p>';
+					str+='</div>';
+					//str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<h5><span>Title : </span> <span>'+result[i].title+'</span></h5>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<h5><span>description : </span> <span>'+result[i].desc+'</span></h5>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12  m_top10">';
+					str+='<label>Comment</label><br>';
+					str+='<textarea id="comntId" rows="3" style="width: 799px;"></textarea>';
+					str+='</div>';
 				}
-			  str+='</ul>';
-			str+='</div>';
-		str+='</div>';
+			 
+		//	str+='</div>';
+		//str+='</div>';
+		
 $("#buildUpdateDivId").html(str);
 }
 
@@ -1503,6 +1564,7 @@ function showDashboard(){
 		$('#newGrevanceDivId').show();
 	}
 	function getGrievanceSummary(){
+	    $('#alertDataDivId').html('');
 		$('#summaryDiv').html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
 		var fromDateStr;
 		var toDateStr;
@@ -1537,26 +1599,40 @@ function showDashboard(){
 		if(result != null && result.length>0){
 			var str='';
 			if(result[0].statusList != null && result[0].statusList.length>0) {
+				str+='<div style="background-color: lightgrey; font-weight: bold; margin-top: 55px; margin-bottom: 5px; border-radius: 5px; text-align: center; text-transform: uppercase; font-size: 15px;">  Grievance Details </div>';
 				str+='<table  class="table table-bordered"  style="text-align:center;">';
 					str+='<thead>';
-						str+='<th> TOTAL </th>';
-						var totalCount =0;
-						for(var k in result[0].statusList){
-							str+='<th> '+result[0].statusList[k].status+' </th>';
-							if(result[0].statusList[k].count != null)
-								totalCount=totalCount+parseInt(result[0].statusList[k].count);
-						}
-					str+='</thead>';
-					str+='<tbody>';
 					str+='<tr>';
-						str+='<td> '+totalCount+' </td>';
-						for(var k in result[0].statusList){
-							if(result[0].statusList[k].count != null)
-								str+='<td> <a style="color:green;font-weight:bold;" href="javascript:{getAlertDetails('+result[0].statusList[k].alertStatusId+')}"> '+result[0].statusList[k].count+' </a> </td>';
-							else
-									str+='<td> - </td>';
+						str+='<th  style="text-align:center">  </th>';
+						var totalCount =0;
+						for(var k in result[0].statusList[0].statusList){
+							str+='<th  style="text-align:center" > '+result[0].statusList[0].statusList[k].status+' </th>';
 						}
 					str+='</tr>';
+					
+					str+='</thead>';
+					str+='<tbody>';
+						for(var k in result[0].statusList){
+							str+='<tr>';
+							str+='<th  style="text-align:center" > '+result[0].statusList[k].status+' </th>';
+							for(var l in result[0].statusList[k].statusList){
+								if(result[0].statusList[k].statusList[l].count != null)
+									str+='<td  style="text-align:center" > <a style="color:green;font-weight:bold;" href="javascript:{getAlertDetails('+result[0].statusList[k].statusList[l].alertStatusId+',\''+result[0].statusList[k].statusList[l].status+'\')}"> '+result[0].statusList[k].statusList[l].count+' </a> </td>';
+									
+								else 
+									str+='<td  style="text-align:center" > -  </td>';
+							}
+							str+='</tr>';
+						}
+					/*	str+='<tr>';
+						str+='<th  style="text-align:center" > TOTAL </th>';
+							for(var k in result[0].statusList){
+								if(result[0].statusList[k].count != null)
+									str+='<th  style="text-align:center" > '+result[0].statusList[k].count+' </th>';
+								else
+									str+='<th  style="text-align:center" >  -  </th>';
+							}
+						str+='</tr>';*/
 					str+='</tbody>';
 				str+='</table>';
 			}
@@ -1564,6 +1640,7 @@ function showDashboard(){
 			$('#summaryDiv').html(str);
 		}
 	}
+	getDistrictsForReferPopup();
 </script>
 </body>
 </html>
