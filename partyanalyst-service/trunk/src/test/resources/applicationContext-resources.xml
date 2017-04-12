@@ -855,6 +855,8 @@
 		              <value>com.itgrids.partyanalyst.model.CommitteeConfirmRule</value>
 		              <value>com.itgrids.partyanalyst.model.CardPrintVendor</value>
 		              <value>com.itgrids.partyanalyst.model.TdpCadreCardPrint</value>
+		              <value>com.itgrids.partyanalyst.model.AlertIssueSubType</value>
+		              <value>com.itgrids.partyanalyst.model.AlertIssueType</value>
 		              
 			</list>
 		</property>
@@ -918,6 +920,10 @@
 
 
 	<!-- Add new DAOs PARTY ANALYST DATABASE here -->
+	
+	<bean id="alertIssueSubTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertIssueSubTypeDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="redirectUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.RedirectUrlDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
