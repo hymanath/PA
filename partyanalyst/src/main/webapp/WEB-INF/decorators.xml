@@ -740,8 +740,6 @@
 		<pattern>/geoDemographicsAction*</pattern>
 		<pattern>/newConstituencyPage*</pattern>
 		<pattern>/customReportAction*</pattern>
-		
-		<pattern>/createGrievance*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
@@ -752,5 +750,7 @@
 		<pattern>/alertUserManagementAction*</pattern>
 		<pattern>/alertDistManagement*</pattern>
 		<pattern>/alertDistOfficeManagement*</pattern>
+		
+		<pattern>/createGrievance*</pattern>
 	 </decorator>
 </decorators>

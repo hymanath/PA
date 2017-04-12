@@ -2417,6 +2417,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}
 			   return Action.SUCCESS;
 	}
+	
+	public String getAlertIssueSubTypes(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long issueTypeId = jObj.getLong("issueTypeId");
+				
+				keyValueVOList = alertService.getAlertIssueSubTypes(issueTypeId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getAlertIssueSubTypes() in CreateAlertAction",e);
+			}
+			   return Action.SUCCESS;
+	}
 }
 
 //getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList)
