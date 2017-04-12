@@ -9448,7 +9448,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alert.setAlertCallerTypeId(inputVO.getCallerTypeId());
 					 alert.setAlertEntrySourceId(inputVO.getEntrySourceId());
 					 alert.setAlertIssueTypeId(inputVO.getIssueTypeId());
-					 
+					 alert.setAlertSourceId(5l);
 					 alert = alertDAO.save(alert);
 					 
 					 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
@@ -9722,6 +9722,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					vo.setCreatedTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
 					vo.setAlertSourceId(commonMethodsUtilService.getLongValueForObject(objects[4]));
 					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+					vo.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[6]));
 					returnList.add(vo);
 				}
 			}
