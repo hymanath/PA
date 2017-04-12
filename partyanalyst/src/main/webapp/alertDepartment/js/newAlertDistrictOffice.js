@@ -567,40 +567,7 @@ $(document).on("click",".todayCountCls",function(){
 		}
 	});
 });
-getDistrictOfficerGraphicalRepresentation(5);
-getDistrictOfficerGraphicalRepresentation(6);
-getDistrictOfficerGraphicalRepresentation(7);
-function getDistrictOfficerGraphicalRepresentation(parentScopeId){
-	
-		//var userId="";
-		var fromDateStr= "";
-		var toDateStr= "";
-		var locationValues=[];
-		var desigIds=[];
-		var priorityId=0;
-		var paperIdArr =[];
-		var chanelIdArr =[];
-		var jObj = {
-		fromDate : currentFromDate, 
-		toDate : currentToDate,
-		stateId:1,
-		paperIdArr:paperIdArr,
-		chanelIdArr:chanelIdArr,
-		parentGovtDepartmentScopeId:parentScopeId,
-		govtDepartmentId:49,
-		sortType:"count",
-		order:"asc",
-		searchType:"scopes",//locationWise:scopes,StatusOverview:status
-		alertType:"alert"
-		}
-		$.ajax({
-		      type:'GET',
-		      url: 'getStateThenGovtDeptScopeWiseAlertCountStatusAction.action',
-			  data: {task :JSON.stringify(jObj)}
-		    }).done(function(result){
-			});
-	
-}
+
 //getDistrictLevelDeptWiseFlterClick();
 function getDistrictLevelDeptWiseFlterClick()
 {
@@ -608,7 +575,7 @@ function getDistrictLevelDeptWiseFlterClick()
 	var jsObj = {
 		deptId : 49,
 		levelId : 5,
-		statusId : 7
+		statusId : 2
 	}
 	$.ajax({
       type:'GET',
@@ -643,6 +610,48 @@ function getDistrictLevelWiseClick()
     }).done(function(result){
 		
 	});
+}
+
+getDistrictOfficeGraphicalView(5);
+getDistrictOfficeGraphicalView(6);
+getDistrictOfficeGraphicalView(7);
+function getDistrictOfficeGraphicalView(parentGovtDepartmentScopeId){
+	var stateId;
+    var paperIdList =[];
+    var chanelIdList =[];
+    var govtDepartmentId;
+    var parentGovtDepartmentScopeId;
+    var sortType;
+    var order;
+    var alertType;
+    var districtWorkLocationId;
+    var divisionWorkLocationId;
+    var subDivisionWorkLocationId;
+    var group;
+    var jObj = {
+    fromDate : currentFromDate, 
+    toDate : currentToDate,
+    stateId:1,
+    paperIdArr:paperIdList,
+    chanelIdArr:chanelIdList,
+    parentGovtDepartmentScopeId:parentGovtDepartmentScopeId,
+    govtDepartmentId:49,
+    sortType:"count",
+    order:"asc",
+    districtWorkLocationId:0,
+    divisionWorkLocationId:0,
+    subDivisionWorkLocationId:0,
+    group:"status",
+    alertType:"alert",
+  searchType :"statusWise"
+    }
+    $.ajax({
+          type:'GET',
+          url: 'getDistrictOfficeGraphicalViewAction.action',
+        data: {task :JSON.stringify(jObj)}
+        }).done(function(result){
+      });
+  
 }
 
 
