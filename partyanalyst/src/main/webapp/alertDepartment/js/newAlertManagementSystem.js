@@ -62,10 +62,11 @@ function onLoadInitialisations()
 		getTotalArticledetails(articleId);
 	});
 	$(document).on("click","#uploadBtnId",function(){
+		var alertId = $(this).attr("attr_alert_id");
 		var uploadHandler = { 
 			upload: function(o) {
 				uploadResult = o.responseText;
-				showSbmitStatusNew(uploadResult);
+				showSbmitStatusNew(uploadResult,alertId);
 			}
 		};
 		YAHOO.util.Connect.setForm('uploadAttachment',true);  
@@ -278,7 +279,7 @@ function onLoadInitialisations()
 			comment : comment
 		}
 		$.ajax({
-			type:'GET',
+			type:'POST',
 			url: 'updateCommentAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -1424,9 +1425,9 @@ function rightSideExpandView(alertId)
 									str+='<li status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="status change">';
 										str+='<i class="glyphicon glyphicon-cog"></i>';
 										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
-											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right" /></li>';
-											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right" /></li>';
-											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right" /></li>';
+											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
+											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right priorityRadioCls" /></li>';
+											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
 											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="priorityChangeSaveId">SET</button></li>';
 										str+='</ul>';
 									str+='</li>';
@@ -1475,7 +1476,7 @@ function rightSideExpandView(alertId)
 										str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
 									str+='</div>';
 									str+='<div class="panel-footer text-right">';
-										str+='<button class="btn btn-primary comment-btn" attr_alert_id="'+alertId+'" id="commentChangeId">Comment</button>';
+										str+='<button class="btn btn-primary comment-btn" attr_alert_id="'+alertId+'" id="commentChangeId">Save</button>';
 										str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
 									str+='</div>';
 								str+='</div>';
@@ -1542,6 +1543,7 @@ function getAlertData(alertId)
 		//getInvolvedMembersDetilas(alertId);
 		getSubTaskInfoForAlert(alertId);
 		getCommentsForAlert(alertId);
+		getDocumentsForAlert(alertId);
 		if(result != null && result.length > 0){
 			buildAlertDataNew(result)
 			if(result[0].categoryId == 2)
@@ -1572,6 +1574,12 @@ function buildAlertDataNew(result)
 		$('.modal-date').data('daterangepicker').setEndDate(result[0].dueDate);
 		$('.modal-date').html(result[0].dueDate);
 	}
+	
+	//priorityRadioCls
+	if(result[0].severityId != null && result[0].severityId > 0){
+		$("input[name=alert-status-change-list][value='"+result[0].severityId+"']").prop("checked",true);
+	}
+	
 	str+='<div class="row m_top20">';
 		for(var i in result)
 		{
@@ -1591,10 +1599,16 @@ function buildAlertDataNew(result)
 			str1+='<div class="col-sm-1 text-center body-icons">';
 				str1+='<i class="fa fa-paperclip fa-2x"></i>';
 			str1+='</div>';
-			str1+='<div class="col-sm-11">';
-				str1+='<h4 class="text-muted text-capital">article attachment</h4>';
-				str1+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId='+result[i].alertCategoryTypeId+' src="http://mytdp.com/NewsReaderImages/'+result[i].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer"/>';
-			str1+='</div>';
+			if(result[i].imageUrl != null){
+				str1+='<div class="col-sm-4">';
+					str1+='<h4 class="text-muted text-capital">article attachment</h4>';
+					str1+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId='+result[i].alertCategoryTypeId+' src="http://mytdp.com/NewsReaderImages/'+result[i].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer"/>';
+				str1+='</div>';
+				str1+='<div class="col-sm-7" id="existingDocsDivId"></div>';
+			}else{
+				str1+='<div class="col-sm-11" id="existingDocsDivId"></div>';
+			}
+			
 		}
 	str1+='</div>';
 	$("#alertDetails").html(str);
@@ -2659,12 +2673,37 @@ function getStateThenGovtDeptScopeWiseAlertCount(){
     });
 }
 
-
-function showSbmitStatusNew(uploadResult){
+function showSbmitStatusNew(uploadResult,alertId){
 	if(uploadResult !=null && uploadResult.search("success") != -1){
-		setTimeout(function(){
-			$("#successSpanModalId").html("<center style='color: green; font-size: 16px;'>Saved Successfully</center>").fadeOut(3000);
-			location.reload(true);				
-		}, 500);
+		getDocumentsForAlert(alertId);
 	}
 }
+function getDocumentsForAlert(alertId){
+	$("#existingDocsDivId").html("");
+	var jsObj ={
+		alertId:alertId 
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getDocumentsForAlertsAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			var str='';
+			str+='<h4 class="text-muted text-capital">alert attachment</h4>';
+			str+='<ul class="list-inline imageShowOpen">';
+			for(var i in result){
+				str+='<li class="" attr_doc_id="'+result[i].id+'"  attr_path="'+result[i].name+'" id="imageAttachmentOpen'+result[i].id+'" >';
+					str+='<img src="http://mytdp.com/'+result[i].name+'" style="width: 60px; height: 60px;cursor:pointer" />';
+				str+='</li>';
+			}
+			str+='</ul>';
+			$("#existingDocsDivId").html(str);
+		}
+    });
+}
+$(document).on('click', '.imageShowOpen li', function(){
+	var id = $(this).attr("attr_doc_id");
+	var path = "http://mytdp.com/"+$(this).attr("attr_path");
+	window.open(path);
+});
