@@ -24,8 +24,14 @@ public class AlertTrackingVO {
 	private String status;
 	private String comment;
 	private Long count;
+	private Long totalCount=0L;
 	
-	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public Long getCount() {
 		return count;
 	}

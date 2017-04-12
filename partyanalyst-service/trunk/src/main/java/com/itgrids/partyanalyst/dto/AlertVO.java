@@ -66,7 +66,21 @@ public class AlertVO {
 	private String deptName;
 	private String callCenterSource;
 	private String issueType;
+	private String issueSubType;
+	private String feedbackStatus;
 	
+	public String getFeedbackStatus() {
+		return feedbackStatus;
+	}
+	public void setFeedbackStatus(String feedbackStatus) {
+		this.feedbackStatus = feedbackStatus;
+	}
+	public String getIssueSubType() {
+		return issueSubType;
+	}
+	public void setIssueSubType(String issueSubType) {
+		this.issueSubType = issueSubType;
+	}
 	public String getDeptName() {
 		return deptName;
 	}
