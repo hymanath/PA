@@ -31,4 +31,14 @@ public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long>
  	public List<Object[]> getDistrictOfficerMySubTasksStatusWiseDetails(Long govtDepDesigOffcrId,Long govtOffcrId);
  	public List<Object[]> getDistrictOfficerMyAssignedSubTasksCountsView(Long govtDepDesigOffcrId,Long govtOffcrId,String type);
  	public List<Object[]> getDistrictOfficerAlertsSubTasksCountsView(Long govtDepDesigOffcrId,Long govtOffcrId,String type);
+ 	public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
+ 		   List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
+ 		   Long districtWorkLocationId, String group,String searchType);
+ 	public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(Date fromDate,Date toDate,Long stateId,
+ 		   List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
+ 		   Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,
+ 		   Long subDivisionWorkLocationId,String filter,String group,String searchType);
+ 	public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
+ 		   Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
+ 		   Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group,String searchType);
 }
