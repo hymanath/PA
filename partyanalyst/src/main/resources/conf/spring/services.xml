@@ -3614,6 +3614,7 @@
 		<property name="alertAssignedOfficerTrackingDAO" ref="alertAssignedOfficerTrackingDAO"></property>
 		<property name="govtOfficerDAO" ref="govtOfficerDAO"></property>
 		<property name="govtDepartmentDesignationDAO" ref="govtDepartmentDesignationDAO"></property>
+		<property name="alertIssueSubTypeDAO" ref="alertIssueSubTypeDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	

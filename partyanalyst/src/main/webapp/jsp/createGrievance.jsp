@@ -115,11 +115,17 @@
 									</select>
 								</div>
 								<div class="col-sm-3 m_top10">
+									<label>Issue Sub Type<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgSubTypeId"></span></label>
+									<select class="chosen" id="issueSubTypeId" name="grievanceAlertVO.alertIssueSubTypeId">
+										<option value="0">Select Sub Type</option>
+									</select>
+								</div>
+								<!-- <div class="col-sm-3 m_top10">
 									<label>Grievance Entry Category<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEntrySourceId"></span></label>
 									<select class="chosen" id="entrySourceId" disabled>
 										<option value="1">Toll Free Number</option>
 									</select>
-								</div>
+								</div> -->
 								<div class="col-sm-3 m_top10">
 									<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptId"></span></label>
 									<select class="chosenSelect" id="departmentsId" disabled>  
@@ -878,6 +884,7 @@ function createGrievanceAlert()
   var callerType = $("#callerTypeId").val();
   var issueType = $("#issueTypeId").val();
   var entrySource = $("#entrySourceId").val();
+  var issueSubType = $("#issueSubTypeId").val();
   
   var name = $("#nameId").val().trim();
   var address = $("#addressId").val().trim();
@@ -890,7 +897,10 @@ function createGrievanceAlert()
   var designation = $("#designationsId").val();
   var officer = $("#officerNamesId").val();
   
-  
+  if(issueSubType == 0){
+	  $("#errMsgSubTypeId").html("Select Issue Sub Type");
+	  return;
+  }
   if(mobileNo.length==0 ||mobileNo==''){
 		$("#errMsgMobileNoId").html(" Please enter MobileNo ");
 		return;
@@ -1165,6 +1175,29 @@ function clearFields(){
 	$("#emailId").val('');
 	$("#uploadFileId0").val('');
 }
+getAlertIsuueSubTypes();
+function getAlertIsuueSubTypes()
+{
+	$('#issueSubTypeId').empty();
+	$('#issueSubTypeId').trigger('chosen:updated');
+	var jObj = {
+			issueTypeId : 1
+		}
+	$.ajax({
+	  type:'GET',
+	  url: 'getAlertIssueSubTypesAction.action',
+	  data: {task :JSON.stringify(jObj)}
+	}).done(function(result){
+		$('#issueSubTypeId').append('<option value="0">Select IssueSubType</option>');
+		if(result != null && result.length > 0)
+		{
+			for(var i in result)
+				$('#issueSubTypeId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+		}
+		$('#issueSubTypeId').trigger('chosen:updated');
+	});
+}
+
 //getDepartmentLevels();
 	var loginUserId = "${sessionScope.USER.registrationID}";
 	/* Assign */
@@ -1560,6 +1593,7 @@ function showDashboard(){
 		$('#newGrevanceDivId').hide();
 	}
 	function showNewGrievance(){
+		$('#dateDivId').hide();
 		$('#dashboardGrevanceDivId').hide();
 		$('#newGrevanceDivId').show();
 	}
