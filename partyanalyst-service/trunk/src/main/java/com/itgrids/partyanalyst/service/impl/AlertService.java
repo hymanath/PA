@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertFeedbackStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
+import com.itgrids.partyanalyst.dao.IAlertIssueSubTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
@@ -228,7 +229,17 @@ private IAlertAssignedOfficerDAO alertAssignedOfficerDAO;
 private IAlertAssignedOfficerTrackingDAO alertAssignedOfficerTrackingDAO;
 private IGovtOfficerDAO govtOfficerDAO;
 private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
+private IAlertIssueSubTypeDAO alertIssueSubTypeDAO;
 
+
+
+public IAlertIssueSubTypeDAO getAlertIssueSubTypeDAO() {
+	return alertIssueSubTypeDAO;
+}
+
+public void setAlertIssueSubTypeDAO(IAlertIssueSubTypeDAO alertIssueSubTypeDAO) {
+	this.alertIssueSubTypeDAO = alertIssueSubTypeDAO;
+}
 
 public IGovtDepartmentDesignationDAO getGovtDepartmentDesignationDAO() {
 	return govtDepartmentDesignationDAO;
@@ -9496,12 +9507,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 UserAddress userAddress = saveUserAddressForGrievanceAlert(inputVO);
 					 alert.setAddressId(userAddress.getUserAddressId());
 					 
-					
 					 alert.setAlertCallerTypeId(inputVO.getCallerTypeId());
 					 alert.setAlertEntrySourceId(inputVO.getEntrySourceId());
 					 alert.setAlertIssueTypeId(inputVO.getIssueTypeId());
 					 alert.setAlertSourceId(5l);
 					 alert.setGovtDepartmentId(inputVO.getDepartmentId());
+					 alert.setAlertIssueSubTypeId(inputVO.getAlertIssueSubTypeId());
 					 
 					 alert = alertDAO.save(alert);
 					 
@@ -9993,6 +10004,24 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured getOfficersByDesignationAndLevel() method of CccDashboardService",e);
+		}
+		return returnList;
+	}
+	
+	public List<KeyValueVO> getAlertIssueSubTypes(Long alertIssueType){
+		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+		try {
+			List<Object[]> list = alertIssueSubTypeDAO.getSubTypesByAlertIssueType(alertIssueType);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getAlertIssueSubTypes() method of AlertService",e);
 		}
 		return returnList;
 	}

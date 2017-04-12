@@ -7,5 +7,5 @@ import com.itgrids.partyanalyst.model.AlertIssueSubType;
 
 public interface IAlertIssueSubTypeDAO extends GenericDao<AlertIssueSubType,Long>{
 
-	public List<Object> getSubTypesByAlertIssueType(Long alertIssueTypeId);
+	public List<Object[]> getSubTypesByAlertIssueType(Long alertIssueTypeId);
 }
