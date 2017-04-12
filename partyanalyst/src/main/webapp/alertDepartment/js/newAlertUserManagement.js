@@ -99,11 +99,42 @@ function getAllDivisionDetails(){
 getAllSubDivisionDetails();
 function getAllSubDivisionDetails(){
 	var jsObj ={
-			divisionId : 6 ,
+			divisionId : 20 ,
 	}
 	$.ajax({
 		type:'GET',
 		url: 'getAllSubDivisionDetailsAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){		
+	});
+}
+getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview();
+function getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(){
+	
+        var printIdArr =[];
+        var electronicIdArr =[];        
+	   
+	var jsObj={
+			fromDateStr:"01/01/1997",
+			toDateStr:"01/01/2027",
+			stateId : 1,
+			printIdArr : printIdArr,
+			electronicIdArr : electronicIdArr,
+			
+			
+			govtDepartmentId : 0,
+			parentGovtDepartmentScopeId : 8,
+			sortingType : "",
+			order : "",
+			alertType : "",
+			districtWorkLocationId : 0,
+			divisionWorkLocationId : 0,
+			subDivisionWorkLocationId : 0,
+			group : ""
+			}
+	$.ajax({
+		type:'GET',
+		url: 'getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){		
 	});

@@ -16867,6 +16867,11 @@
   	  <result type="json" name="success">
            <param name="root">idNameVOList</param>
       </result>
-   </action>                       
+   </action>
+    <action name="getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewAction" class="alertManagementSystemAction" method="getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview">
+  	   <result type="json" name="success">
+			<param name="root">alertCoreDashBoardVOs</param>
+		</result>
+    </action>   	                   
  </package>
 </struts>
