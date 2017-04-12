@@ -178,4 +178,14 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		
 		return query.list();
 	}
+	
+	public List<String> getOldHigherOfficerMobileNums(List<Long> designationIds){
+		Query query = getSession().createQuery(" select model.govtOfficer.mobileNo "
+				+ " from GovtDepartmentDesignationOfficerDetails model "
+				+ " where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId in (:designationIds) and model.isDeleted = 'N' ");
+		
+		query.setParameterList("designationIds", designationIds);
+		
+		return query.list();
+	}
 }
