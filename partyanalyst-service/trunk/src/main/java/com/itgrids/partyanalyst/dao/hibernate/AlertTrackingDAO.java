@@ -133,9 +133,11 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 	
 	public List<Object[]> getAlertFeedbackStatuswiseAlertsDetails(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId){
 		StringBuilder queryStr  = new StringBuilder();
-		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,as1.alert_status as alert_status , count(distinct a.alert_id) as count ");
+		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,a.alert_feedback_status_id as feedbackStatusId , af.status as status ," +
+				" count(distinct a.alert_id) as count ");
 		queryStr.append(" from ");
 		queryStr.append(" alert a ");
+		queryStr.append(" LEFT JOIN  alert_feedback_status af on a.alert_feedback_status_id = af.alert_feedback_status_id ");
 		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
 		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
 		queryStr.append(" left join alert_assigned_officer_new a1 on a.alert_id = a1.alert_id  ");
@@ -152,10 +154,12 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		if(startDate != null && startDate != null)
 			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
 		
-		queryStr.append(" GROUP BY alert_status_id ");
+		queryStr.append(" GROUP BY a.alert_status_id,a.alert_feedback_status_id ");
+		queryStr.append(" ORDER BY a.alert_status_id,a.alert_feedback_status_id ");
 		Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("alert_status_id", Hibernate.LONG)
-				.addScalar("alert_status", Hibernate.STRING)
+				.addScalar("feedbackStatusId", Hibernate.LONG)
+				.addScalar("status", Hibernate.STRING)
 				.addScalar("count", Hibernate.LONG);
 		if(departmentId != null && departmentId.longValue()>0L)
 			query.setParameter("departmentId", departmentId);
