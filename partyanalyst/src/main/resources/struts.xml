@@ -16837,7 +16837,12 @@
 			<result type="json" name="success">
 	   			<param name="root">idnameVoList</param>
 	   		</result>
-	</action>                
+	</action>
+	<action name="getAlertCallerDetails" class="createAlertAction" method="getAlertCallerDetailsByMobileNo">
+			<result type="json" name="success">
+	   			<param name="root">alertTrackingVOList</param>
+	   		</result>
+	</action>
 	 <action name="getAllDivisionDetailsAction" class="alertManagementSystemAction" method="getAllDivisionDetails">
 			<result type="json" name="success">		   
 				<param name="root">alertVOs</param>
