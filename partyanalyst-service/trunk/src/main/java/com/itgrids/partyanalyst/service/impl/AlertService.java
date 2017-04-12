@@ -9538,7 +9538,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		                for (String string : mobilenums) {
 		                  mobileNums = mobileNums.equalsIgnoreCase("")?string:mobileNums+","+string;
 		                }
-		                govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
+		               // govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
 		              }
 		            }
 		            
@@ -9546,7 +9546,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		            govtSMSAPIService.senedSMSForGovtAlert(inputVO.getMobileNo(),callerMessage);
 		            
 		            String officerMessage = "Alert is assigned to you,Please follow up and resolve.\nTitle : "+inputVO.getAlertTitle()+" \nDept : "+departmentName;
-		            govtSMSAPIService.senedSMSForGovtAlert(officerMobileNo,officerMessage); 
+		            //govtSMSAPIService.senedSMSForGovtAlert(officerMobileNo,officerMessage); 
 		            
 					 rs = "success";
 					 return rs;
@@ -9610,11 +9610,11 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					userAddress.setWard(constituencyDAO.get(inputVO.getPanchayatId()));
 				}
 			}
-			else if(inputVO.getLocationLevelId().longValue() == 9l)
+			else if(inputVO.getLocationLevelId().toString().equalsIgnoreCase("11"))
 			{
 				userAddress.setState(stateDAO.get(inputVO.getStateId()));
 				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
-				userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
 				userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
 				userAddress.setPanchayatId(inputVO.getPanchayatId());
 				userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
@@ -9667,6 +9667,32 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 		}
 		return panachatiesList;
 	}
+
+public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
+
+	List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+	List<Object[]> mandals = tehsilDAO.findTehsilsByDistrict(districtId);
+	if(mandals != null && mandals.size() > 0)
+	{
+		for(Object[] obj : mandals){
+			IdNameVO objVO = new IdNameVO();
+			objVO.setId((Long)obj[0]);
+			objVO.setName(obj[1].toString() +" " +"Mandal");
+			returnList.add(objVO);
+		}
+	}
+	/*List<Object[]> localbodies = constituencyDAO.getLocalElectionBodiesByconstituency(constituencyID);
+	if(localbodies != null && localbodies.size() > 0)
+	{
+			for(Object[] obj : localbodies){
+				IdNameVO objVO = new IdNameVO();
+				objVO.setId((Long)obj[0]);
+				objVO.setName(obj[1].toString());
+				returnList.add(objVO);
+			}
+	}*/
+	return returnList;
+}
 }
 
 
