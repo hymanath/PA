@@ -6103,7 +6103,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     				" model.impactLevelId," +
     				" date(model.createdTime)," +
     				" model.alertSourceId," +
-    				" model.regionScopes.scope" +
+    				" model.regionScopes.scope," +
+    				" model.alertStatus.alertStatusId " +
     				" from Alert model " +
     				" where " );
     				//" model.isDeleted = 'N'");
