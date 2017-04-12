@@ -9657,13 +9657,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 }
 			 
 			List<Object[]> objList1 = alertTrackingDAO.getStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
-			
+			Map<Long,Long> statusWiseMap = new HashMap<Long, Long>(0);
 			if(objList1 != null && objList1.size() > 0){
 				for (Object[] param : objList1) {
 					AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getStatusList(), "alertStatusId", commonMethodsUtilService.getStringValueForObject(param[0]));
 					if(vo != null){
 						vo.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
 					}
+					statusWiseMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
 			}
 			
@@ -9706,6 +9707,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 					}
 				}
+			}
+			if(commonMethodsUtilService.isMapValid(statusWiseMap) && commonMethodsUtilService.isListOrSetValid(feedbacksStatusList)){
+				AlertTrackingVO vo = feedbacksStatusList.get(0);
+				 List<AlertTrackingVO> list =vo.getStatusList();
+				 if(commonMethodsUtilService.isListOrSetValid(list)){
+					 for (AlertTrackingVO statusVO : list) {
+						 statusVO.setTotalCount(statusWiseMap.get(statusVO.getAlertStatusId()));
+					}
+				 }
 			}
 			 returnVO.getStatusList().clear();
 			 returnVO.getStatusList().addAll(feedbacksStatusList);
