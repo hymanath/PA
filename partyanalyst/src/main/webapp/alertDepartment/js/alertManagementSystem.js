@@ -42,6 +42,7 @@ $(document).on("click",".filtersSubmitDivId",function(){
 	globalNewsPaperIdArr = [];
 	globalChannelIdArr = [];
 	globalDepartmentIdArr = [];
+	globalCallCenterArr = [];
 	$(".newsPaperListCls").each(function(){
 		if($(this).is(":checked"))
 		{
@@ -60,10 +61,17 @@ $(document).on("click",".filtersSubmitDivId",function(){
 			globalDepartmentIdArr.push($(this).attr("attr_val"));
 		}
 	});
+	$(".callcenterCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalCallCenterArr.push($(this).attr("attr_val"));
+		}
+	});
 	var newsPaperIdLen = globalNewsPaperIdArr.length;
 	var channelIdLen = globalChannelIdArr.length;
-	if(newsPaperIdLen == 0 && channelIdLen == 0){
-		alert("Please Select Atleast One Newspaper or Channel.");   
+	var callCenterIdLen = globalCallCenterArr.length;
+	if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen == 0){
+		alert("Please Select Atleast One Newspaper or Channel or CallCenter ");   
 		return;
 	}
 	var departmentIdLen = globalDepartmentIdArr.length;
@@ -1831,6 +1839,12 @@ function buildStatusWiseTotalAlerts(result){
 									for(var k in result[i].govtDeptList){
 										totalPrintCount = totalPrintCount+result[i].govtDeptList[k].printCnt;
 									}
+									
+									var totalCallCenterCount =0;
+									for(var l in result[i].govtDeptList){
+										totalCallCenterCount = totalCallCenterCount+result[i].govtDeptList[l].callCenterCnt;
+									}
+									
 									for(var t in result[i].govtDeptList){
 									}
 									
@@ -1865,12 +1879,30 @@ function buildStatusWiseTotalAlerts(result){
 											}	
 										}
 									str+='</tr>'; 
+									}//totalCallCenterCount
+									if(totalCallCenterCount != null && totalCallCenterCount !=0){
+									str+='<tr>';
+										str+='<td>Call Center</td>';
+										if(totalCallCenterCount != null && totalCallCenterCount !=0){
+											str+='<td><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="callCenter">'+totalCallCenterCount+'</span></td>';
+										}else{
+											str+='<td>'+totalCallCenterCount+'</td>';
+										}
+										for(var j in result[i].govtDeptList){
+											if(result[i].govtDeptList[j].callCenterCnt != null && result[i].govtDeptList[j].callCenterCnt !=0){
+												str+='<td><span class="totAlertsStsCls" attr_status_id="'+result[i].govtDeptList[j].departmentId+'" attr_dept_id ='+result[i].departmentId+' attr_type="callCenter">'+result[i].govtDeptList[j].callCenterCnt+'</span></td>';
+											}else{
+												str+='<td>'+result[i].govtDeptList[j].callCenterCnt+'</td>';
+											}	
+										}
+									str+='</tr>'; 
 									}
+									
 									str+='<tr>';
 										str+='<td class="bg_EE text-capital">Total Alerts</td>';
 										
 										
-										totalCount = totalPrintCount+totalElecCount;
+										totalCount = totalPrintCount+totalElecCount+totalCallCenterCount;
 										if(totalCount != null && totalCount!= 0){
 											str+='<td class="bg_EE"><span class="totAlertsStsCls" attr_status_id="0" attr_dept_id ='+result[i].departmentId+' attr_type="Totals">'+totalCount+'</span></td>';
 										}else{
@@ -2592,7 +2624,7 @@ $(document).on("click",".totAlertsStsCls",function(){
 		paperIdArr = globalNewsPaperIdArr;
 	}else if(type == "electronic"){
 		chanelIdArr = globalChannelIdArr;
-	}else if(type = "callCenter"){
+	}else if(type == "callCenter"){
 		callCenterArr = globalCallCenterArr;
 	}else if(type == "Totals"){
 		paperIdArr = globalNewsPaperIdArr;
@@ -2720,7 +2752,7 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 							}
 						}
 					}
-					str1+='<td style="background-color:#eee" class="text-capital">Total Alerts</td>';
+					/* str1+='<td style="background-color:#eee" class="text-capital">Total Alerts</td>';
 					str1+='<td style="background-color:#eee">'+totalCount+'</td>';
 					if(result[0].govtDeptList !=null && result[0].govtDeptList.length>0){
 						for(var j in result[0].govtDeptList){
@@ -2737,7 +2769,7 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 							}
 							
 						}
-					}
+					} */
 					
 				str1+='</tr>';
 			str1+='</tbody>';
@@ -2992,7 +3024,7 @@ function buildtotalAlertsModalTabGrphClickId(result,stIndex,totalCount,val){
 			});
 		}
 		$("#totalAlertsModalTabGraphClickId").html(str);  
-		$("#alertCountGrphClickId").html(len);   
+		$("#alertCountGrphClickId").html(totalCount);   
 	}else{
 		$(".paginationId").html("");
 						
