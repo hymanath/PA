@@ -9493,6 +9493,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alert.setAlertEntrySourceId(inputVO.getEntrySourceId());
 					 alert.setAlertIssueTypeId(inputVO.getIssueTypeId());
 					 alert.setAlertSourceId(5l);
+					 alert.setGovtDepartmentId(inputVO.getDepartmentId());
+					 
 					 alert = alertDAO.save(alert);
 					 
 					 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
