@@ -33,7 +33,9 @@ import com.itgrids.partyanalyst.dao.IActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IActionTypeStatusDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedDAO;
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertCallerDAO;
 import com.itgrids.partyanalyst.dao.IAlertCallerTypeDAO;
@@ -64,10 +66,12 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationHierarchyDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtOfficerDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -104,6 +108,7 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
+import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -113,8 +118,8 @@ import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssigned;
-import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
-import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficer;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerTracking;
 import com.itgrids.partyanalyst.model.AlertCaller;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertCategory;
@@ -130,8 +135,8 @@ import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.AlertTrackingDocuments;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
 import com.itgrids.partyanalyst.model.GovtDepartment;
-import com.itgrids.partyanalyst.model.GovtDepartmentDesignationNew;
-import com.itgrids.partyanalyst.model.GovtOfficerNew;
+import com.itgrids.partyanalyst.model.GovtDepartmentDesignation;
+import com.itgrids.partyanalyst.model.GovtOfficer;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VerificationComments;
@@ -218,8 +223,46 @@ private IGovtDepartmentDesignationHierarchyDAO govtDepartmentDesignationHierarch
 private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
 private ILocalityDAO localityDAO;
 private IAlertFeedbackStatusDAO alertFeedbackStatusDAO;
+private IAlertAssignedOfficerDAO alertAssignedOfficerDAO;
+private IAlertAssignedOfficerTrackingDAO alertAssignedOfficerTrackingDAO;
+private IGovtOfficerDAO govtOfficerDAO;
+private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
 
 
+public IGovtDepartmentDesignationDAO getGovtDepartmentDesignationDAO() {
+	return govtDepartmentDesignationDAO;
+}
+
+public void setGovtDepartmentDesignationDAO(
+		IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO) {
+	this.govtDepartmentDesignationDAO = govtDepartmentDesignationDAO;
+}
+
+public IGovtOfficerDAO getGovtOfficerDAO() {
+	return govtOfficerDAO;
+}
+
+public void setGovtOfficerDAO(IGovtOfficerDAO govtOfficerDAO) {
+	this.govtOfficerDAO = govtOfficerDAO;
+}
+
+public IAlertAssignedOfficerTrackingDAO getAlertAssignedOfficerTrackingDAO() {
+	return alertAssignedOfficerTrackingDAO;
+}
+
+public void setAlertAssignedOfficerTrackingDAO(
+		IAlertAssignedOfficerTrackingDAO alertAssignedOfficerTrackingDAO) {
+	this.alertAssignedOfficerTrackingDAO = alertAssignedOfficerTrackingDAO;
+}
+
+public IAlertAssignedOfficerDAO getAlertAssignedOfficerDAO() {
+	return alertAssignedOfficerDAO;
+}
+
+public void setAlertAssignedOfficerDAO(
+		IAlertAssignedOfficerDAO alertAssignedOfficerDAO) {
+	this.alertAssignedOfficerDAO = alertAssignedOfficerDAO;
+}
 
 public ILocalityDAO getLocalityDAO() {
 	return localityDAO;
@@ -9480,13 +9523,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					
 					//Get Department Designation Officer Ids
 					Long desigOfficerId = null;
-					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputVO.getLevelId(), inputVO.getLevelValue(), inputVO.getDesignationId(),
+					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationOfficerIdsNew(inputVO.getLevelId(), inputVO.getMandalId(), inputVO.getDesignationId(),
 							inputVO.getGovtOfficerId());
 					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
 						desigOfficerId = designationOfficerIds.get(0);
 					
 					//Officer Assigning
-					AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
+					AlertAssignedOfficer alertAssignedOfficer = new AlertAssignedOfficer();
 					alertAssignedOfficer.setAlertId(alert.getAlertId());
 					alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
 					alertAssignedOfficer.setGovtOfficerId(inputVO.getGovtOfficerId() !=null ? (Long)inputVO.getGovtOfficerId():null);
@@ -9497,10 +9540,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertAssignedOfficer.setAlertStatusId(2l);
 					alertAssignedOfficer.setIsDeleted("N");
 					alertAssignedOfficer.setIsApproved("Y");
-					alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
 					
 					//Officer Assigning Tracking
-					AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
+					AlertAssignedOfficerTracking alertAssignedOfficerTracking = new AlertAssignedOfficerTracking();
 					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
 					alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
 					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
@@ -9510,36 +9553,36 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 					alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					alertAssignedOfficerTracking.setAlertStatusId(2l);
-					alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
+					//alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
 					alertAssignedOfficerTracking.setIsApproved("Y");
-					alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+					//alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
 					
-					alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+					alertAssignedOfficerTracking = alertAssignedOfficerTrackingDAO.save(alertAssignedOfficerTracking);
 					
 					String officerName = "";
 					String officerMobileNo = "";
 					String designationName = "";
 					String departmentName = "";
 					
-					GovtOfficerNew govtOfficer = govtOfficerNewDAO.get(inputVO.getGovtOfficerId());
+					GovtOfficer govtOfficer = govtOfficerDAO.get(inputVO.getGovtOfficerId());
 					if(govtOfficer != null){
 						officerName = govtOfficer.getOfficerName();
 						officerMobileNo = govtOfficer.getMobileNo();
 					}
 					
-					GovtDepartmentDesignationNew govtDepartmentDesignation = govtDepartmentDesignationNewDAO.get(inputVO.getDesignationId());
+					GovtDepartmentDesignation govtDepartmentDesignation = govtDepartmentDesignationDAO.get(inputVO.getDesignationId());
 					if(govtDepartmentDesignation != null)
 						designationName = govtDepartmentDesignation.getDesignationName();
 					
-					GovtDepartment govtDepartment = govtDepartmentDAO.get(inputVO.getDesignationId());
+					GovtDepartment govtDepartment = govtDepartmentDAO.get(inputVO.getDepartmentId());
 					if(govtDepartment != null)
 						departmentName = govtDepartment.getDepartmentName();
 					
 					GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
-					List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(inputVO.getDesignationId());
+					List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getOldParentDepartment(inputVO.getDesignationId());
 		            if(parentDesigIds != null && parentDesigIds.size() > 0){
 		              //get high level officer mobile nums
-		              List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getHigherOfficerMobileNums(parentDesigIds);
+		              List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getOldHigherOfficerMobileNums(parentDesigIds);
 		              
 		              if(mobilenums != null && mobilenums.size() > 0){
 		                String message = "Alert is assigned to "+designationName+" - "+departmentName+" - "+officerName+" - "+ officerMobileNo+".\n Please follow up.";
@@ -9853,6 +9896,55 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}
 		}catch(Exception e){
 			LOG.error("Error occured getFeedbackStatusDetails() method of AlertService{}",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId,Long levelValue){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			
+			List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationsForDepartmentAndLevelLocation(departmentId,levelId,levelValue);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();
+					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getDesignationsByDepartment() method of AlertManagementSystemService",e);
+		}
+		return returnList;
+	}
+	
+	public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId){
+		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
+		try {
+			
+			List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getOldOfficersByDesignationAndLevel(levelId, levelValue, designationId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					GovtDepartmentVO vo = new GovtDepartmentVO();					
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					
+					StringBuilder str = new StringBuilder();
+					
+					String name="";
+					name = obj[1] != null ? obj[1].toString():"";
+					if(!name.toString().isEmpty())
+						name=name.concat(obj[2] !=null ? " "+" - "+obj[2].toString():"");
+					else
+						name=obj[2] !=null ? obj[2].toString():"";
+
+					vo.setName(name);
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getOfficersByDesignationAndLevel() method of CccDashboardService",e);
 		}
 		return returnList;
 	}
