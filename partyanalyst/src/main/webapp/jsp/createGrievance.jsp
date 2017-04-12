@@ -275,10 +275,48 @@
 					<input type="hidden" class="form-control" value="49" name="grievanceAlertVO.departmentId"/>
 					<input type="hidden" class="form-control" value="8" name="grievanceAlertVO.levelId"/>
 				</form>
+				<div id="alertDataDivId"></div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- PopUp -->
+<div class="modal fade" id="updateAlertModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
+    <div class="modal-content customModal">
+      <div class="modal-header">
+        <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">FeedbackStatus Updation</h4>
+      </div>
+      <div class="modal-body" style="padding:0px 15px;">
+       <div id="buildUpdateDivId"></div>
+	   <div class="row">
+		   <div class="col-sm-4">
+			   <label>Comment</label>
+			   <textarea id="comntId"></textarea>
+		   </div>
+		    <div class="col-sm-4">
+			   <label>FeedbackStatus</label>
+			  <select id="feedbackStatusList" class="form-control">
+				<option value="0"> Select FeedbackStatus</option>
+			  </select>
+		   </div>
+		   <div class="col-sm-4">
+				<button type="button" class="btn btn-success">Save</button>
+		   </div>
+		   <div id="saveMsgId"></div>
+	   </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden Variables -->
+<input type="hidden" id="hiddenAlertId"></input>
+<input type="hidden" id="hiddenSourceId"></input>
+<input type="hidden" id="hiddenStatusId"></input>
+
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script>
@@ -1255,6 +1293,145 @@ getDepartmentLevels();
 			$("#officerNamesId").trigger("chosen:updated");
 		});
 	}
+	
+	
+	
+	
+	
+	
+getAlertDetails();
+function getAlertDetails()
+	{
+		/* var datesArr =[]; 
+		if(datesArr != null){
+			startDate = datesArr[0];
+			endDate = datesArr[1];
+		}
+		var mobileNo;
+		var statusId; */
+		var jObj = {
+			alertStatusId : 2,
+			mobileNo : 9676696760,
+			fromDate :"12/04/2017",
+			toDate : "12/04/2017"
+			
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getAlertDetailsByStatusAction.action',
+		  data: {task :JSON.stringify(jObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildAlertDetails(result);
+			}
+		});
+}
+
+function getAlertCallerDetails(alertId)
+	{
+		$("#buildUpdateDivId").html('');
+		$("#updateAlertModalDivId").modal('show');
+		
+		var jObj = {
+			alertId : alertId
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'getAlertCallerDetailsAction.action',
+		  data: {task :JSON.stringify(jObj)}
+		}).done(function(result){
+			if(result != null){
+				buildAlertCallerDetails(result);
+			}
+		});
+}
+//saveAlertStatusDetails();
+function saveAlertStatusDetails()
+	{
+		var comment = $("#commentId").val();
+		var feedBackStatus =$("#feedbackStatusList").val();
+		var alertId = $("#hiddenAlertId").val();
+		var sourceId = $("#hiddenSourceId").val();
+		
+		var jObj = {
+			alertId : alertId,
+			comment : comment,
+			alertStatusId : 2,
+			alertFeedBackStatusId : feedBackStatus,
+			alertSourceId : sourceId
+		}
+		$.ajax({
+		  type:'GET',
+		  url: 'saveAlertStatusAction.action',
+		  data: {task :JSON.stringify(jObj)}
+		}).done(function(result){
+			if(result == "success"){
+				$("#saveMsgId").html("<span style='color:green;'>Updated Successfully..</span>");
+			}else{
+				$("#saveMsgId").html("<span style='color:green;'>Updation failed.Please try again.</span>");
+			}
+		});
+}
+getFeedBackStatusDetails();
+function getFeedBackStatusDetails()
+	{
+		var jObj = {
+			}
+		$.ajax({
+		  type:'GET',
+		  url: 'getAlertFeedBackStatusDetailsAction.action',
+		  data: {task :JSON.stringify(jObj)}
+		}).done(function(result){
+			if(result != null)
+			{
+				for(var i in result)
+					$('#feedbackStatusList').append('<option value="'+result[i].id+'">'+result[i].status+'</option>');
+			}
+		});
+}	
+	
+function buildAlertDetails(result){
+	var str = '';
+	
+	str+='<table class="table table-bordered ">';
+		str+='<thead>';
+			str+='<th>Title</th>';
+			str+='<th>Alert Level</th>';
+			str+='<th>Created Time</th>'; 
+		str+='</thead>';
+		str+='<tbody>';
+		for( var i in result){
+			str+='<tr>';
+				str+='<td>'+result[i].title+'</td>';
+				str+='<td>'+result[i].locationName+'</td>';
+				str+='<td>'+result[i].createdTime+'<button type="button"  class="btn btn-success updateAlertCls" attr_alert_id ="'+result[i].alertId+'">Update</button></td>';
+			str+='</tr>';
+		}
+		str+='</tbody>';
+		str+='</table>';
+		$("#alertDataDivId").html(str);
+}
+$(document).on("click",".updateAlertCls",function(){
+	var alertId = $(this).attr("attr_alert_id");
+	getAlertCallerDetails(alertId);
+});	
+	
+function buildAlertCallerDetails(result){
+	var str= '';
+	
+		str+='<div class="panel panel-default m_top10">';
+			str+='<div class="panel-body">';
+			  str+='<ul>';
+				for(var i in result){
+				str+='<li> Updated By : '+result[i].name+' - '+result[i].mobileNo+'</li>';
+					//str+='<h4>'+result[i].address+'</h4></li>';
+				}
+			  str+='</ul>';
+			str+='</div>';
+		str+='</div>';
+$("#buildUpdateDivId").html(str);
+}
+
 
 </script>
 </body>
