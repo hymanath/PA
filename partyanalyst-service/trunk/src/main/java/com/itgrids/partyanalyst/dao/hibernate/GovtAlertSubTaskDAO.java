@@ -668,7 +668,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    		sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted = 'N' " );
    	
 	     if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	  		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcrId " );
+	  		  sb.append(" and model.subTaskGovtOfficer.govtOfficerId = :govtOffcrId " );
 	  	  }
 	  	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
 	  		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
@@ -698,7 +698,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    				" model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
 	    				" count(distinct  model.alertAssignedOfficer.alert.alertId) ");
 	    	}else if(type != null && type.equalsIgnoreCase("completed")){
-	    		sb.append(" select model.alertAssignedOfficer..govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+	    		sb.append(" select model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
 		      		      " model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
 		      		      " count(distinct  model.alertAssignedOfficer.alert.alertId) ");
 	    	}
@@ -713,7 +713,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	  		  sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
 	  	  }
 	  	  if(type != null && type.equalsIgnoreCase("today")){
-	  		  sb.append(" and model.alertAssignedOfficer.createdTime = :todayDate " ); 
+	  		  sb.append(" and model.alertAssignedOfficer.insertedTime = :todayDate " ); 
 	  	  }
  	  
 	  	  sb.append(" group by model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId ");
@@ -743,7 +743,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	
    	  
    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-   		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffcrId " );
+   		  sb.append(" and model.subTaskGovtOfficer.govtOfficerId = :govtOffcrId " );
    	  }
    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
