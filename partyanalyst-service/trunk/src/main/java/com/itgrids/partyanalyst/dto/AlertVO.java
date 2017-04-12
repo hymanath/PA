@@ -59,6 +59,10 @@ public class AlertVO {
 	private Long subTaskId;
 	private String dueDate;
 	private String imageUrl;
+	private String createdTime;
+	private String address;
+	private String mobileNo;
+	private Long feedBackStatusId;
 	
 	
 	public String getImageUrl() {
@@ -375,5 +379,29 @@ public class AlertVO {
 	}
 	public void setAlertCnt(Long alertCnt) {
 		this.alertCnt = alertCnt;
+	}
+	public String getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public Long getFeedBackStatusId() {
+		return feedBackStatusId;
+	}
+	public void setFeedBackStatusId(Long feedBackStatusId) {
+		this.feedBackStatusId = feedBackStatusId;
 	}
 }

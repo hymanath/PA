@@ -111,4 +111,8 @@ public interface IAlertService {
     public String createGrievanceAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
     public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type);
     public List<IdNameVO> getAllMandalsByDistrictID(Long districtId);
+    public List<AlertVO> getAlertDetailsByStatusId(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr);
+    public List<AlertVO> getAlertCallerDetails(Long alertId);
+    public String saveAlertStatusDetails(final AlertVO alertvo,final Long userId);
+    public List<AlertVO> getFeedbackStatusDetails();
 }

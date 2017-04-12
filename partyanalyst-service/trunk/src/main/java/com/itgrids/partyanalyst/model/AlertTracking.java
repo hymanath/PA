@@ -39,6 +39,8 @@ public class AlertTracking extends BaseModel implements Serializable {
 	private AlertStatus alertStatus;
 	private User user;
 	private Long alertSourceId;
+	private Long AlertFeedbackStatusId;
+	private AlertFeedbackStatus alertFeedbackStatus;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -162,6 +164,27 @@ public class AlertTracking extends BaseModel implements Serializable {
 
 	public void setAlertSourceId(Long alertSourceId) {
 		this.alertSourceId = alertSourceId;
+	}
+	
+	@Column(name = "alert_feedback_status_id")
+	public Long getAlertFeedbackStatusId() {
+		return AlertFeedbackStatusId;
+	}
+
+	public void setAlertFeedbackStatusId(Long alertFeedbackStatusId) {
+		AlertFeedbackStatusId = alertFeedbackStatusId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_feedback_status_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertFeedbackStatus getAlertFeedbackStatus() {
+		return alertFeedbackStatus;
+	}
+
+	public void setAlertFeedbackStatus(AlertFeedbackStatus alertFeedbackStatus) {
+		this.alertFeedbackStatus = alertFeedbackStatus;
 	}
 	
 }

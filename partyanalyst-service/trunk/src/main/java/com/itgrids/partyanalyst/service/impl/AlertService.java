@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
+import com.itgrids.partyanalyst.dao.IAlertFeedbackStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
@@ -216,6 +217,7 @@ private IGovtDepartmentDesignationNewDAO govtDepartmentDesignationNewDAO;
 private IGovtDepartmentDesignationHierarchyDAO govtDepartmentDesignationHierarchyDAO;
 private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
 private ILocalityDAO localityDAO;
+private IAlertFeedbackStatusDAO alertFeedbackStatusDAO;
 
 
 
@@ -651,6 +653,12 @@ public void setTvNewsChannelDAO(ITvNewsChannelDAO tvNewsChannelDAO) {
 public void setCoreDashboardGenericService(
 		ICoreDashboardGenericService coreDashboardGenericService) {
 	this.coreDashboardGenericService = coreDashboardGenericService;
+}
+public IAlertFeedbackStatusDAO getAlertFeedbackStatusDAO() {
+	return alertFeedbackStatusDAO;
+}
+public void setAlertFeedbackStatusDAO(IAlertFeedbackStatusDAO alertFeedbackStatusDAO) {
+	this.alertFeedbackStatusDAO = alertFeedbackStatusDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -9693,6 +9701,108 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	}*/
 	return returnList;
 }
+
+	public List<AlertVO> getAlertDetailsByStatusId(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr){
+		List<AlertVO> returnList = new ArrayList<AlertVO>();
+		try{
+			Date fromDate = null;      
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> alertList = alertDAO.getAlertDetials(mobileNo,alertStatusId,fromDate,toDate);
+			if(alertList != null && alertList.size() > 0l){
+				for (Object[] objects : alertList) {
+					AlertVO vo = new AlertVO();
+					vo.setAlertId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setTitle(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setAlertImpactId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					vo.setCreatedTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					vo.setAlertSourceId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+					vo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+					returnList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured getAlertDetailsByStatusId() method of AlertService{}",e);
+		}
+		return returnList;
+	}
+
+	public List<AlertVO> getAlertCallerDetails(Long alertId){
+		List<AlertVO> returnList = new ArrayList<AlertVO>();
+		try{
+			List<Object[]> callrList = alertDAO.getAlertCallerDetails(alertId);
+			if(callrList != null && callrList.size() > 0l){
+				for (Object[] objects : callrList) {
+					AlertVO vo = new AlertVO();
+					vo.setAlertSourceId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setAddress(commonMethodsUtilService.getStringValueForObject(objects[2]));
+					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					returnList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured getAlertCallerDetails() method of AlertService{}",e);
+		}
+		return returnList;
+	}
+	public String saveAlertStatusDetails(final AlertVO alertvo,final Long userId){
+		String status = new String();
+		try{
+			status = (String) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					
+					//Saving comment In alertComment
+					AlertComment alertComment = new AlertComment();
+					alertComment.setAlertId(alertvo.getAlertId());
+					alertComment.setComments(alertvo.getComment());
+					alertComment.setInsertedBy(userId);
+					alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertComment.setIsDeleted("N");
+					alertComment = alertCommentDAO.save(alertComment);
+					
+					//saving alertTtrcking
+					AlertTracking alertTracking = new AlertTracking();
+					alertTracking.setAlertId(alertvo.getAlertId());
+					alertTracking.setAlertStatusId(alertvo.getStatusId());
+					alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
+					alertTracking.setAlertTrackingActionId(2l);
+					alertTracking.setInsertedBy(userId);
+					alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertTracking.setAlertSourceId(alertvo.getAlertSourceId());
+					alertTracking.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
+					alertTrackingDAO.save(alertTracking);
+					return "success";
+				
+				}
+			});
+		}catch(Exception e){
+			LOG.error("Error occured saveAlertStatusDetails() method of AlertService{}",e);
+		}
+		return status;
+	}
+	
+	public List<AlertVO> getFeedbackStatusDetails(){
+		List<AlertVO> returnList = new ArrayList<AlertVO>();
+		try{
+			List<Object[]> fedBckStatusLst = alertFeedbackStatusDAO.getFeedBackStatus();
+			if(fedBckStatusLst != null && fedBckStatusLst.size() > 0l){
+				for (Object[] objects : fedBckStatusLst) {
+					AlertVO vo = new AlertVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					returnList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured getFeedbackStatusDetails() method of AlertService{}",e);
+		}
+		return returnList;
+	}
 }
 
 

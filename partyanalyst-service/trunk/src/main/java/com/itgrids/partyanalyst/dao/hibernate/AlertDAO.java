@@ -6096,4 +6096,62 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	return (Object[])query.uniqueResult();
     }
 
+    public List<Object[]> getAlertDetials(String mobileNo,Long alertStatusId,Date startDate,Date endDate){
+    	StringBuilder sb = new StringBuilder();
+    		sb.append("select distinct model.alertId," +
+    				" model.title," +
+    				" model.impactLevelId," +
+    				" date(model.createdTime)," +
+    				" model.alertSource.alertSourceId," +
+    				" model.regionScopes.scope" +
+    				" from Alert model " +
+    				" where " );
+    				//" model.isDeleted = 'N'");
+    		if(mobileNo != null)
+    		{
+    			sb.append(" model.alertCaller.mobileNo = :mobileNo ");
+    		}
+    		if(alertStatusId != null && alertStatusId.longValue() > 0l)
+    		{
+    			sb.append(" and model.alertStatus.alertStatusId = :alertStatusId ");
+    		}
+    		if(startDate != null && endDate != null)
+    		{
+    			sb.append(" and (date(model.createdTime) between :startDate and :endDate) ");
+    		}
+    		
+    		Query query = getSession().createQuery(sb.toString());
+    		if(mobileNo != null)
+    			query.setParameter("mobileNo", mobileNo);
+    		if(alertStatusId != null && alertStatusId.longValue() > 0l)
+    			query.setParameter("alertStatusId", alertStatusId);
+    		if(startDate != null && endDate != null)
+    		{
+    			query.setDate("startDate", startDate);
+    			query.setDate("endDate", endDate);
+    			
+    		}
+    		
+    		return query.list();
+    }
+    
+    public List<Object[]> getAlertCallerDetails(Long alertId){
+    	StringBuilder sb = new StringBuilder();
+    	 	sb.append("select distinct model.alertSource.alertSourceId," +
+    	 			" model.alertCaller.callerName," +
+    	 			" model.alertCaller.address," +
+    	 			" model.alertCaller.mobileNo " +
+    	 			" from Alert model " +
+    	 			" where " );
+    	 			//"model.isDeleted = 'N' ");
+    	 	if(alertId != null && alertId.longValue() >0l)
+    	 	{
+    	 		sb.append("  model.alertId = :alertId");
+    	 	}
+    	 	Query query = getSession().createQuery(sb.toString());
+    	 	if(alertId != null && alertId.longValue() >0l)
+    	 		query.setParameter("alertId", alertId);
+    	 	return query.list();
+    	 	
+    }
 }
