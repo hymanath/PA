@@ -955,27 +955,29 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
 				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsCount(govtDepDesigOffcrId,govtOffcrId,"today");
 				myAlertsOverAllList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsCount(govtDepDesigOffcrId,govtOffcrId,"overAll");
+				List<Long> todayAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"today");
+				List<Long> overAllAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"overAll");
+				// My alerts Status wise count
+				if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
+				setStatusWiseCount( myAlertsOverAllList, returnVO,"myAlerts",Long.valueOf(myAlertsTodayList.size()),todayAlertIds,overAllAlertIds);
 			}
 			
-			List<Long> todayAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"today");
-			List<Long> overAllAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"overAll");
-			// My alerts Status wise count
-			if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
-			setStatusWiseCount( myAlertsOverAllList, returnVO,"myAlerts",Long.valueOf(myAlertsTodayList.size()),todayAlertIds,overAllAlertIds);
+			
 			
 			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
 				myAlertsTodayList = null;
 				myAlertsOverAllList = null;
 				myAlertsTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrId,govtOffcrId,"today","mySubTasks");
 				myAlertsOverAllList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrId,govtOffcrId,"overAll","mySubTasks");
+				List<Long> todayMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","mySubTasks");
+				List<Long> overAllMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","mySubTasks");
+				// My SubTasks Status wise count
+				
+				if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
+				setStatusWiseCount( myAlertsOverAllList, returnVO,"mySubTasks",Long.valueOf(myAlertsTodayList.size()),todayMySubTaskAlertIds,overAllMySubTaskAlertIds);
 			}
 			
-			List<Long> todayMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","mySubTasks");
-			List<Long> overAllMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","mySubTasks");
-			// My SubTasks Status wise count
 			
-			if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
-			setStatusWiseCount( myAlertsOverAllList, returnVO,"mySubTasks",Long.valueOf(myAlertsTodayList.size()),todayMySubTaskAlertIds,overAllMySubTaskAlertIds);
 			
 			
 			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
@@ -983,13 +985,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				myAlertsOverAllList = null;
 				myAlertsTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrId,govtOffcrId,"today","myAssignedSubTasks");
 				myAlertsOverAllList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrId,govtOffcrId,"overAll","myAssignedSubTasks");
+
+				List<Long> todayMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","myAssignedSubTasks");
+				List<Long> overAllMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","myAssignedSubTasks");
+				// My Assigned SubTasks Status wise count
+				if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
+				setStatusWiseCount( myAlertsOverAllList, returnVO,"myAssignedSubTasks",Long.valueOf(myAlertsTodayList.size()),todayMyAssSubTaskAlertIds,overAllMyAssSubTaskAlertIds);
+				
 			}
-			
-			List<Long> todayMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","myAssignedSubTasks");
-			List<Long> overAllMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","myAssignedSubTasks");
-			// My Assigned SubTasks Status wise count
-			if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
-			setStatusWiseCount( myAlertsOverAllList, returnVO,"myAssignedSubTasks",Long.valueOf(myAlertsTodayList.size()),todayMyAssSubTaskAlertIds,overAllMyAssSubTaskAlertIds);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -4008,11 +4011,24 @@ public class AlertManagementSystemService extends AlertService implements IAlert
             			prepareResultForState(alertList,returnList,sortingType,order);
         				return returnList;
     				}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 5L){
-        				alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group);
+    					if(alertType != null && alertType.equalsIgnoreCase("alert")){
+    						alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group);
+    					}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+    						alertList = govtAlertSubTaskDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,"statusWise");
+    					}
         			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 6L){
-            			alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group);
+        				
+        				if(alertType != null && alertType.equalsIgnoreCase("alert")){
+        					alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group);
+        				}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+        					alertList = govtAlertSubTaskDAO.getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,"statusWise");
+        				}
         			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 7L){
-            			alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group);
+        				if(alertType != null && alertType.equalsIgnoreCase("alert")){
+        					alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group);
+        				}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+        					alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,"statusWise");
+        				}
         			}
     			}else{
     				if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L || parentGovtDepartmentScopeId.longValue() == 5L){
