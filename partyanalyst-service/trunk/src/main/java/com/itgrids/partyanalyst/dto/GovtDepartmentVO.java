@@ -41,8 +41,10 @@ public class GovtDepartmentVO {
 	
 	private Long printCnt=0l;
 	private Long ElecCnt = 0l;
+	private Long callCenterCnt=0l;
 	private Long totElecCount =0l;
 	private Long totPrintCount =0l;
+	private Long totalCallCentreCnt=0l;
 	
 	private String image;
 	private Long impactLevelId;
@@ -252,6 +254,18 @@ public class GovtDepartmentVO {
 	}
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
+	}
+	public Long getCallCenterCnt() {
+		return callCenterCnt;
+	}
+	public void setCallCenterCnt(Long callCenterCnt) {
+		this.callCenterCnt = callCenterCnt;
+	}
+	public Long getTotalCallCentreCnt() {
+		return totalCallCentreCnt;
+	}
+	public void setTotalCallCentreCnt(Long totalCallCentreCnt) {
+		this.totalCallCentreCnt = totalCallCentreCnt;
 	}
 	
 	
