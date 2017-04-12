@@ -16862,6 +16862,11 @@
 	  	<result type="json" name="success">		   
 	    	<param name="root">alertCoreDashBoardVOs</param>
 	  	</result>	
-  	</action>	                   
+  	</action>	 
+  	<action name="getAllMandalsByDistrictIDAction" class="createAlertAction" method="getAllMandalsByDistrictID">
+  	  <result type="json" name="success">
+           <param name="root">idNameVOList</param>
+      </result>
+   </action>                       
  </package>
 </struts>

@@ -83,6 +83,33 @@
 				<form id="saveGrievanceAlertForm" name="saveGrievanceAlertForm" enctype="multipart/form-data" method="POST">
 					<div class="panel-body bg_EF">
 						<div class="row">
+							<div class="col-sm-3 m_top10">
+								<label>Complaint Given By<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCallerTypeId"></span></label>
+								<select class="chosen" id="callerTypeId" disabled>
+									<option value="1">CITIZEN</option>
+								</select>
+							</div>
+							<div class="col-sm-3 m_top10">
+								<label>Grievance Related To<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgIssueTypeId"></span></label>
+								<select class="chosen" id="issueTypeId" disabled>
+									<option value="1">Drinking Water</option>
+								</select>
+							</div>
+							<div class="col-sm-3 m_top10">
+								<label>Grievance Entry Category<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEntrySourceId"></span></label>
+								<select class="chosen" id="entrySourceId" disabled>
+									<option value="1">Toll Free Number</option>
+								</select>
+							</div>
+							<div class="col-sm-3 m_top10">
+								<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptId"></span></label>
+								<select class="chosenSelect" id="departmentsId" disabled>  
+									<option value="49">RWS</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class="row">
 							<div class="col-sm-12 m_top10">
 								<h4 class="text-success text-capital">caller details</h4>
 							</div>
@@ -110,52 +137,52 @@
 							</div>
 							<div class="col-sm-3 m_top10">
 								<label>Grievance Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLevelId"></span></label>
-								<select class="chosen" id="alertlevelId" onchange="disableByGrievLevel();">
-									<option value="0">Select Location Level</option>
+								<select class="chosen" id="alertlevelId" onchange="disableByGrievLevel();" disabled>
+									<!--<option value="0">Select Location Level</option>
 									<option value="1">Central</option>
 									<option value="2">State</option>
 									<option value="3">District</option>
 									<option value="4">Constituency</option>
 									<option value="5">Mandal/Muncipality</option>
-									<option value="6" selected>Village/Ward</option>
-									<!--<option value="7">Hamlet</option>-->
+									<option value="6">Village/Ward</option>-->
+									<option value="7" selected>Habitation</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="stateDiv">
 								<label>State<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgStateId"></span></label>
 								<select class="chosen" id="stateId" onChange="getDistrictsForReferPopup();" name="grievanceAlertVO.stateId">
-									<option value="0">Select State</option>
-									<option value="1">Andhra Pradesh</option>
+									<!--<option value="0">Select State</option>-->
+									<option value="1" selected>Andhra Pradesh</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="districtDiv" style="display:block;">
 								<label>District<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDistrictId"></span></label>
-								<select class="chosen" id="referdistrictId" onChange="getConstituenciesBydistrictForReferPopup();" name="grievanceAlertVO.districtId">
+								<select class="chosen" id="referdistrictId" onChange="getMandalsByConstituencyForReferPopup();" name="grievanceAlertVO.districtId">
 									<option value="0">Select District</option>
 								</select>
 							</div>
-							<div class="col-sm-3 m_top10" id="constituencyDiv" style="display:block;">
+							<!--<div class="col-sm-3 m_top10" id="constituencyDiv" style="display:block;">
 								<label>Constituency<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgConstId"></span></label>
 								<select class="chosen" id="referconstituencyId" onChange="getMandalsByConstituencyForReferPopup();" name="grievanceAlertVO.constituencyId">
 									<option value="0">Select Constituency</option>
 								</select>
-							</div>
+							</div>-->
 							<div class="col-sm-3 m_top10" id="mandalDiv" style="display:block;">
-								<label>Mandal/Muncipality<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMandalId"></span></label>
+								<label>Mandal<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMandalId"></span></label>
 								<select class="chosen" id="refermandalNameId" onChange="getPanchayatsForReferPopup();" name="grievanceAlertVO.mandalId">
-									<option value="0">Select Mandal/Muncipality</option>
+									<option value="0">Select Mandaly</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10" id="panchayatDiv" style="display:block;">
-								<label>Village/Ward<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgVillageId"></span></label>
+								<label>Village<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgVillageId"></span></label>
 								<select class="chosen" id="referpanchayatId" onchange="getHamletss();" name="grievanceAlertVO.panchayatId">
-									<option value="0">Select Village/Ward</option>
+									<option value="0">Select Village</option>
 								</select>
 							</div>
-							<div class="col-sm-3 m_top10" id="villageDiv" style="display:none;">
-								<label>Hamlet<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgHamletId"></span></label>
+							<div class="col-sm-3 m_top10" id="villageDiv" style="display:block;">
+								<label>Habitation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgHamletId"></span></label>
 								<select class="chosen" id="hamletId" name="grievanceAlertVO.hamletId">
-									<option value="0">Select Hamlet</option>
+									<option value="0">Select Habitation</option>
 								</select>
 							</div>
 						</div>
@@ -163,26 +190,6 @@
 						<div class="row">
 							<div class="col-sm-12 m_top10">
 								<h4 class="text-success text-capital">grievance details</h4>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Complaint Given By<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCallerTypeId"></span></label>
-								<select class="chosen" id="callerTypeId" name="grievanceAlertVO.callerTypeId">
-									<option value="0">Select Caller Type</option>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Grievance Related To<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgIssueTypeId"></span></label>
-								<select class="chosen" id="issueTypeId" name="grievanceAlertVO.issueTypeId">
-									<option value="0">Select Issue Type</option>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top10">
-								<label>Grievance Entry Category<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgEntrySourceId"></span></label>
-								<select class="chosen" id="entrySourceId" name="grievanceAlertVO.entrySourceId">
-									<option value="0">Select Entry Source</option>
-									<option value="1">Toll Free Number</option>
-									<option value="2">Others</option>
-								</select>
 							</div>
 						</div>
 						
@@ -213,28 +220,12 @@
 						
 						<div class="row">
 							<div class="col-sm-12 m_top10">
-								<h4 class="text-success text-capital">upload document linking to this alert</h4>
-								<div class="block  m_top10">
-									<input type="file" id="uploadFileId0" name="imageForDisplay"/>
-								</div>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col-sm-12 m_top10">
 								<h4 class="text-success text-capital">assign alert to department officer</h4>
 							</div>
 							  
 							<div class="col-sm-3 m_top10">
-								<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptId"></span></label>
-								<select class="chosenSelect" id="departmentsId" name="grievanceAlertVO.departmentId">  
-									<option value="0">Select Department</option>
-									<option value="49">RWS</option>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top10">
 								<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
-								<select  class="chosenSelect" id="locationLevelSelectId" name="grievanceAlertVO.levelId">  
+								<select  class="chosenSelect" id="locationLevelSelectId" disabled>  
 									<option></option>
 								</select>
 							</div>
@@ -253,6 +244,16 @@
 								</select>
 							</div>
 						</div>
+						
+						<div class="row">
+							<div class="col-sm-12 m_top10">
+								<h4 class="text-success text-capital">upload document linking to this alert</h4>
+								<div class="block  m_top10">
+									<input type="file" id="uploadFileId0" name="imageForDisplay"/>
+								</div>
+							</div>
+						</div>
+						
 						<div class="row">
 							<div class="col-sm-4 m_top25">
 								<input type="button" class="btn btn-success btn-block text-capital" value="create grievance request" onclick="createGrievanceAlert();"></input>
@@ -265,8 +266,14 @@
 							</div>
 						</div>
 					</div>
-					<input type="hidden" class="form-control" id="locationLevelValhidden" name="grievanceAlertVO.locationValue" />
-					<input type="hidden" class="form-control" id="locationLevelIdhidden" name="grievanceAlertVO.locationLevelId" />
+					<input type="hidden" class="form-control" id="locationLevelValhidden" name="grievanceAlertVO.locationValue"/>
+					<input type="hidden" class="form-control" id="locationLevelIdhidden" name="grievanceAlertVO.locationLevelId"/>
+					
+					<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.callerTypeId"/>
+					<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.issueTypeId"/>
+					<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.entrySourceId"/>
+					<input type="hidden" class="form-control" value="49" name="grievanceAlertVO.departmentId"/>
+					<input type="hidden" class="form-control" value="8" name="grievanceAlertVO.levelId"/>
 				</form>
             </div>
         </div>
@@ -284,8 +291,8 @@ google.load("elements", "1", {
 	packages: "transliteration"
 });
 
-getAlertIssueTypes();
-getAlertCallerTypes();
+//getAlertIssueTypes();
+//getAlertCallerTypes();
 
 function getAlertType(){
 	$("#alertTypeId").html('');
@@ -348,9 +355,10 @@ function getAlertsource(){
 	});
 }
 
+getDistrictsForReferPopup();
 function getDistrictsForReferPopup() {
 	var stateId = $("#stateId").val();
-	$("#villageDiv").hide();
+	
 	var jobj = {
 		stateId : stateId  
 	}
@@ -371,33 +379,36 @@ function getDistrictsForReferPopup() {
 			$("#referdistrictId").html(str);
 			$("#referdistrictId").trigger('chosen:updated');
 			//for const
-			$("#referconstituencyId").html('<option value="0">Select Assembly</option>');
-			$("#referconstituencyId").trigger('chosen:updated');
+			//$("#referconstituencyId").html('<option value="0">Select Assembly</option>');
+			//$("#referconstituencyId").trigger('chosen:updated');
 			//for mandal/municipality
-			$("#refermandalNameId").html('<option value="0">Select Mandal/Muncipality</option>');
+			$("#refermandalNameId").html('<option value="0">Select Mandal</option>');
 			$("#refermandalNameId").trigger('chosen:updated');
 			//for panchayat
-			$("#referpanchayatId").html('<option value="0">Select Panchayat</option>');
-			$("#referpanchayatId").trigger('chosen:updated');     
+			$("#referpanchayatId").html('<option value="0">Select Village</option>');
+			$("#referpanchayatId").trigger('chosen:updated');
+			$("#hamletId").html('<option value="0">Select Habitation</option>');
+			$("#hamletId").trigger('chosen:updated');
 		}else{
 			//for dist
 			$("#referdistrictId").html('<option value="0">Select District</option>');
 			$("#referdistrictId").trigger('chosen:updated');     
 			//for const
-			$("#referconstituencyId").html('<option value="0">Select Assembly</option>');
-			$("#referconstituencyId").trigger('chosen:updated');
+			//$("#referconstituencyId").html('<option value="0">Select Assembly</option>');
+			//$("#referconstituencyId").trigger('chosen:updated');
 			//for mandal/municipality
-			$("#refermandalNameId").html('<option value="0">Select Mandal/Muncipality</option>');
+			$("#refermandalNameId").html('<option value="0">Select Mandal</option>');
 			$("#refermandalNameId").trigger('chosen:updated');
 			//for panchayat
-			$("#referpanchayatId").html('<option value="0">Select Panchayat</option>');
+			$("#referpanchayatId").html('<option value="0">Select Village</option>');
 			$("#referpanchayatId").trigger('chosen:updated');  
+			$("#hamletId").html('<option value="0">Select Habitation</option>');
+			$("#hamletId").trigger('chosen:updated');
 		} 
 	});  
   }
- function getConstituenciesBydistrictForReferPopup(){
+ /*function getConstituenciesBydistrictForReferPopup(){
 	 var districtId = $("#referdistrictId").val();
-	 $("#departmentId").val(0).trigger('chosen:updated');
 	 $("#designationId").empty();
 	 $("#designationId").trigger('chosen:updated');
 	 $("#officerId").empty();
@@ -438,28 +449,23 @@ function getDistrictsForReferPopup() {
 				$("#referpanchayatId").trigger('chosen:updated'); 
 			}
 		});
- }
+ }*/
 
  function getMandalsByConstituencyForReferPopup(){
-	 var constituencyId = $('#referconstituencyId').val();
-	 $("#departmentId").val(0).trigger('chosen:updated');
-	 $("#designationId").empty();
-	 $("#designationId").trigger('chosen:updated');
-	 $("#officerId").empty();
-	 $("#officerId").trigger('chosen:updated');
-	 $("#villageDiv").hide();
-	var jobj = {
-		constituencyId : constituencyId
+	 var districtId = $('#referdistrictId').val();
+	 
+	 var jobj = {
+		districtId : districtId
 	}
 		$.ajax({
 			type : "POST",
-			url  : "getMandalsByConstituencyAction.action",
+			url  : "getAllMandalsByDistrictIDAction.action",
 			data : {task:JSON.stringify(jobj)}
 		}).done(function(result){
 			var mandalStr='';
 			if(result != null && result.length > 0){
 				
-			    mandalStr +='<option value="0">Select Mandal/ Municipality</option>';
+			    mandalStr +='<option value="0">Select Mandal</option>';
 				for(var i in result){
 					if(result[i].id > 0)
 					mandalStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -471,7 +477,7 @@ function getDistrictsForReferPopup() {
 				$("#referpanchayatId").trigger('chosen:updated'); 
 			}else{
 				//for mandal/municipality
-				$("#refermandalNameId").html('<option value="0">Select Mandal/Muncipality</option>');
+				$("#refermandalNameId").html('<option value="0">Select Mandal</option>');
 				$("#refermandalNameId").trigger('chosen:updated');
 				//for panchayat
 				$("#referpanchayatId").html('<option value="0">Select Panchayat</option>');
@@ -481,16 +487,11 @@ function getDistrictsForReferPopup() {
  }
  
  function getPanchayatsForReferPopup(){
-	$("#departmentId").val(0).trigger('chosen:updated');
-	$("#designationId").empty();
-	 $("#designationId").trigger('chosen:updated');
-	 $("#officerId").empty();
-	 $("#officerId").trigger('chosen:updated');
+	
 	 $("#referpanchayatId").find('option').not(':first').remove();
 	 var mandalId = $('#refermandalNameId').val();
 	 var  type = $("#refermandalNameId option:selected").text();
-	 $("#villageDiv").hide();
-			   
+	 		   
 	 if(type.indexOf("Mandal") == -1) 
 		type = "muncipality" ;
 	else
@@ -509,7 +510,7 @@ function getDistrictsForReferPopup() {
 			}).done(function(result){
 				var panchyatStr='';
 				if(result!=null && result.length>0){
-					panchyatStr +='<option value="0">Select Village/Ward</option>';
+					panchyatStr +='<option value="0">Select Village</option>';
 					for(var i in result){
 						if(result[i].id > 0)
 							panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -518,18 +519,14 @@ function getDistrictsForReferPopup() {
 					$("#referpanchayatId").trigger('chosen:updated');
 				}else{
 					//for panchayat
-					$("#referpanchayatId").html('<option value="0">Select Village/Ward</option>');
+					$("#referpanchayatId").html('<option value="0">Select Village</option>');
 					$("#referpanchayatId").trigger('chosen:updated'); 
 				}     
 		});
 }
 
 function getHamletss(){
-	$("#departmentId").val(0).trigger('chosen:updated');
-	$("#designationId").empty();
-	 $("#designationId").trigger('chosen:updated');
-	 $("#officerId").empty();
-	 $("#officerId").trigger('chosen:updated');
+	
 	 $("#hamletId").find('option').not(':first').remove();
 	 var panchayatId = $('#referpanchayatId').val();
 	 var  type = $("#refermandalNameId option:selected").text();
@@ -540,7 +537,7 @@ function getHamletss(){
 		type = "mandal" ; 
 	
 	if(type == "mandal"){
-		$("#villageDiv").show();
+		
 		var jsObj={
 				panchayatId :panchayatId,
 				task:""
@@ -553,7 +550,7 @@ function getHamletss(){
 			}).done(function(result){
 				var panchyatStr='';
 				if(result!=null && result.length>0){
-					panchyatStr +='<option value="0">Select Village</option>';
+					panchyatStr +='<option value="0">Select Habitation</option>';
 					for(var i in result){
 						if(result[i].id > 0)
 							panchyatStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -562,7 +559,7 @@ function getHamletss(){
 					$("#hamletId").trigger('chosen:updated');
 				}else{
 					//for panchayat
-					$("#hamletId").html('<option value="0">Select Village</option>');
+					$("#hamletId").html('<option value="0">Select Habitation</option>');
 					$("#hamletId").trigger('chosen:updated'); 
 				}     
 		});
@@ -618,7 +615,7 @@ function getAlertIssueTypes(){
 function disableByGrievLevel(){
 	var alertLevelId = $("#alertlevelId").val();
 	if(alertLevelId == 2){
-		$("#stateId").val(0).trigger('chosen:updated');
+		$("#stateId").val(1).trigger('chosen:updated');
 		$("#referdistrictId").empty().trigger('chosen:updated');
 		$("#referconstituencyId").empty().trigger('chosen:updated');
 		$("#refermandalNameId").empty().trigger('chosen:updated');
@@ -633,7 +630,7 @@ function disableByGrievLevel(){
 		$("#villageDiv").hide();
 	}
 	else if(alertLevelId == 3){
-		$("#stateId").val(0).trigger('chosen:updated');
+		$("#stateId").val(1).trigger('chosen:updated');
 		$("#referdistrictId").empty().trigger('chosen:updated');
 		$("#referconstituencyId").empty().trigger('chosen:updated');
 		$("#refermandalNameId").empty().trigger('chosen:updated');
@@ -648,7 +645,7 @@ function disableByGrievLevel(){
 		$("#villageDiv").hide();
 	}
 	else if(alertLevelId == 4){
-		$("#stateId").val(0).trigger('chosen:updated');
+		$("#stateId").val(1).trigger('chosen:updated');
 		$("#referdistrictId").empty().trigger('chosen:updated');
 		$("#referconstituencyId").empty().trigger('chosen:updated');
 		$("#refermandalNameId").empty().trigger('chosen:updated');
@@ -663,7 +660,7 @@ function disableByGrievLevel(){
 		$("#villageDiv").hide();
 	}
 	else if(alertLevelId == 5){
-		$("#stateId").val(0).trigger('chosen:updated');
+		$("#stateId").val(1).trigger('chosen:updated');
 		$("#referdistrictId").empty().trigger('chosen:updated');
 		$("#referconstituencyId").empty().trigger('chosen:updated');
 		$("#refermandalNameId").empty().trigger('chosen:updated');
@@ -678,7 +675,7 @@ function disableByGrievLevel(){
 		$("#villageDiv").hide();
 	}
 	else if(alertLevelId == 6){
-		$("#stateId").val(0).trigger('chosen:updated');
+		$("#stateId").val(1).trigger('chosen:updated');
 		$("#referdistrictId").empty().trigger('chosen:updated');
 		$("#referconstituencyId").empty().trigger('chosen:updated');
 		$("#refermandalNameId").empty().trigger('chosen:updated');
@@ -693,7 +690,7 @@ function disableByGrievLevel(){
 		$("#villageDiv").hide();
 	}
 	else if(alertLevelId == 7){
-		$("#stateId").val(0).trigger('chosen:updated');
+		$("#stateId").val(1).trigger('chosen:updated');
 		$("#referdistrictId").empty().trigger('chosen:updated');
 		$("#referconstituencyId").empty().trigger('chosen:updated');
 		$("#refermandalNameId").empty().trigger('chosen:updated');
@@ -752,7 +749,7 @@ function createGrievanceAlert()
   var  level=$("#alertlevelId").val();
   var  state=$("#stateId").val();
   var  district=$("#referdistrictId").val();
-  var  assembly=$("#referconstituencyId").val();
+  //var  assembly=$("#referconstituencyId").val();
   var  mandal=$("#refermandalNameId").val();
   var  panchayat=$("#referpanchayatId").val();
   var  village = $("#hamletId").val();
@@ -774,6 +771,32 @@ function createGrievanceAlert()
   var levelValue = $(".locationCls").val();
   var designation = $("#designationsId").val();
   var officer = $("#officerNamesId").val();
+  
+  
+  if(mobileNo.length==0 ||mobileNo==''){
+		$("#errMsgMobileNoId").html(" Please enter MobileNo ");
+		return;
+	}
+	if(mobileNo.length != 10){
+		$("#errMsgMobileNoId").html(" Please enter Valid MobileNO ");
+		return;
+	}
+	if(mobileNo.length > 0){
+		var numericExpression = /^[0-9]+$/;
+		if(!mobileNo.match(numericExpression)){
+			$('#errMsgMobileNoId').html('Enter Numerics Only.');
+			return;
+		}
+	}
+	if(name.length==0 ||name==''){
+		$("#errMsgNameId").html(" Please enter Name ");
+		return;
+	}
+	if(address.length==0 ||address==''){
+		$("#errMsgAddressId").html(" Please enter Address ");
+		return;
+	}
+	
   
   if(level==0)
   {
@@ -819,13 +842,13 @@ function createGrievanceAlert()
         $("#errMsgDistrictId").html(" Please select District ");
             return;
       }
-    if(assembly==0)
+    /*if(assembly==0)
     {
       $("#errMsgConstId").html(" Please select Assembly ");
           return;
     }
 	$("#locationLevelIdhidden").val(4);
-	$("#locationLevelValhidden").val(assembly);
+	$("#locationLevelValhidden").val(assembly);*/
   }
   if(level==5)
   {
@@ -840,11 +863,11 @@ function createGrievanceAlert()
         $("#errMsgDistrictId").html(" Please select District ");
             return;
       }
-    if(assembly==0)
+    /*if(assembly==0)
      {
       $("#errMsgConstId").html(" Please select Assembly ");
           return;
-     }
+     }*/
     
     if(mandal==0)
     {
@@ -870,29 +893,29 @@ function createGrievanceAlert()
         $("#errMsgDistrictId").html(" Please select District ");
             return;
       }
-      if(assembly==0)
+     /* if(assembly==0)
      {
       $("#errMsgConstId").html(" Please select Assembly ");
           return;
-     }
+     }*/
     
       if(mandal==0)
      {
-      $("#errMsgMandalId").html(" Please select Mandal/ Municipality ");
+      $("#errMsgMandalId").html(" Please select Mandal ");
           return;
      }
      if(panchayat==0)
      {
-    $("#errMsgVillageId").html(" Please select Panchayat ");
+    $("#errMsgVillageId").html(" Please select Village ");
         return;
      }
 	 if(village==0)
      {
-    $("#errMsgHamletId").html(" Please select Village ");
+    $("#errMsgHamletId").html(" Please select Habitation ");
         return;
      }
 	 $("#locationLevelValhidden").val(village);
-		 $("#locationLevelIdhidden").val(9);
+		 $("#locationLevelIdhidden").val(11);
     }
 	if(level==6)
   {
@@ -907,11 +930,11 @@ function createGrievanceAlert()
         $("#errMsgDistrictId").html(" Please select District ");
             return;
       }
-      if(assembly==0)
+      /*if(assembly==0)
      {
       $("#errMsgConstId").html(" Please select Assembly ");
           return;
-     }
+     }*/
     
       if(mandal==0)
      {
@@ -941,43 +964,6 @@ function createGrievanceAlert()
 		return;
 	}
 	
-	if(callerType == 0){
-		$("#errMsgCallerTypeId").html(" Select Caller Type ");
-		return;
-	}
-	if(issueType == 0){
-		$("#errMsgIssueTypeId").html(" Select Issue Type ");
-		return;
-	}
-	if(entrySource == 0){
-		$("#errMsgEntrySourceId").html(" Select Entry Category ");
-		return;
-	}
-	
-  if(name.length==0 ||name==''){
-		$("#errMsgNameId").html(" Please enter Name ");
-		return;
-	}
-	if(address.length==0 ||address==''){
-		$("#errMsgAddressId").html(" Please enter Address ");
-		return;
-	}
-	if(mobileNo.length==0 ||mobileNo==''){
-		$("#errMsgMobileNoId").html(" Please enter MobileNo ");
-		return;
-	}
-	if(mobileNo.length > 0){
-		var numericExpression = /^[0-9]+$/;
-		if(!mobileNo.match(numericExpression)){
-			$('#errMsgMobileNoId').html('Enter Numerics Only.');
-			return;
-		}
-	}
-	
-  if(department == 0){
-		$("#errMsgDeptId").html(" Select Department ");
-		return;
-	}
 	if(assignLevelId == 0){
 		$("#errMsgLvlId").html(" Select Level ");
 		return;
@@ -994,6 +980,25 @@ function createGrievanceAlert()
 		$("#errMsgOffcrId").html(" Select Officer ");
 		return;
 	}
+	
+	if(callerType == 0){
+		$("#errMsgCallerTypeId").html(" Select Caller Type ");
+		return;
+	}
+	if(issueType == 0){
+		$("#errMsgIssueTypeId").html(" Select Issue Type ");
+		return;
+	}
+	if(entrySource == 0){
+		$("#errMsgEntrySourceId").html(" Select Entry Category ");
+		return;
+	}
+	
+  if(department == 0){
+		$("#errMsgDeptId").html(" Select Department ");
+		return;
+	}
+	
 	
 	//if(validate){
 		$("#creatingLdngImg").show();
@@ -1030,8 +1035,9 @@ function createGrievanceAlert()
 
 function clearFields(){
 	$("#alertlevelId").val(0).trigger('chosen:updated');
-	$("#departmentsId").val(0).trigger('chosen:updated');
+	$("#departmentsId").val(1).trigger('chosen:updated');
 	$("#entrySourceId").val(0).trigger('chosen:updated');
+	$("#telugu").prop("checked", true);
 	
 	$("#alertTitleId").val('');
 	$("#alertdescriptionId").val('');
@@ -1041,7 +1047,7 @@ function clearFields(){
 	$("#emailId").val('');
 	$("#uploadFileId0").val('');
 }
-
+getDepartmentLevels();
 	var loginUserId = "${sessionScope.USER.registrationID}";
 	/* Assign */
 	$(".chosenSelect").chosen({width:'100%'})
@@ -1084,6 +1090,12 @@ function clearFields(){
 		
 		$("#locationLevelSelectId").html(str);
 		$("#locationLevelSelectId").trigger("chosen:updated");
+		
+		$("#locationLevelSelectId").val(8);
+		$("#locationLevelSelectId").trigger("chosen:updated");
+		setTimeout(function(){
+			getParentLevelsOfLevel();
+		},1000);
 	}
 
 
@@ -1137,6 +1149,9 @@ function clearFields(){
 			}
 		}
 		
+		$("#locationSubLevelSelectId1").val(1);
+		$("#locationSubLevelSelectId1").trigger('chosen:updated');
+		$("#locationSubLevelSelectId1").trigger("change");
 	}
 	function getGovtSubLevelInfo(departmentId,levelId){
 		
