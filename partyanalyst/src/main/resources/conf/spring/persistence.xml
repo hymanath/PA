@@ -1243,6 +1243,7 @@
 					   <value>com.itgrids.partyanalyst.model.AlertCallerType</value>
 					   <value>com.itgrids.partyanalyst.model.AlertEntrySource</value>
 					   <value>com.itgrids.partyanalyst.model.AlertIssueType</value>
+					   <value>com.itgrids.partyanalyst.model.AlertFeedbackStatus</value>
 					   
 	                   <!--  Govt Alert module end-->
 	                   

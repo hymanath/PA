@@ -3949,5 +3949,8 @@
 	 <bean id="redirectUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.RedirectUrlDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="alertFeedbackStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertFeedbackStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 
 </beans>		
