@@ -958,7 +958,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				List<Long> todayAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"today");
 				List<Long> overAllAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"overAll");
 				// My alerts Status wise count
-				if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
+				if(myAlertsOverAllList != null && myAlertsOverAllList.size() > 0)
 				setStatusWiseCount( myAlertsOverAllList, returnVO,"myAlerts",Long.valueOf(myAlertsTodayList.size()),todayAlertIds,overAllAlertIds);
 			}
 			
@@ -973,7 +973,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				List<Long> overAllMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","mySubTasks");
 				// My SubTasks Status wise count
 				
-				if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
+				if(myAlertsOverAllList != null && myAlertsOverAllList.size() > 0)
 				setStatusWiseCount( myAlertsOverAllList, returnVO,"mySubTasks",Long.valueOf(myAlertsTodayList.size()),todayMySubTaskAlertIds,overAllMySubTaskAlertIds);
 			}
 			
@@ -989,7 +989,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				List<Long> todayMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","myAssignedSubTasks");
 				List<Long> overAllMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","myAssignedSubTasks");
 				// My Assigned SubTasks Status wise count
-				if(myAlertsTodayList != null && myAlertsTodayList.size() > 0)
+				if(myAlertsOverAllList != null && myAlertsOverAllList.size() > 0)
 				setStatusWiseCount( myAlertsOverAllList, returnVO,"myAssignedSubTasks",Long.valueOf(myAlertsTodayList.size()),todayMyAssSubTaskAlertIds,overAllMyAssSubTaskAlertIds);
 				
 			}
@@ -3980,10 +3980,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				if(printIdList != null && printIdList.size() == 0){
     					printIdList.add(0L);
     				}
-    			}else{
+    			}/*else{
     				electronicIdList.add(0L);
     				printIdList.add(0L);
-    			}
+    			}*/
     			
     			List<Long> levelValues = new ArrayList<Long>();    
     			Long levelId = 0L;
@@ -4056,9 +4056,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				}
     			}
     			List<Object[]> deptScopeIdDtlsList = null;
-    			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+    			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && deptScopeIds != null && deptScopeIds.size() >0){
     				deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));
-    			}else{ 
+    			}else if(deptScopeIds != null && deptScopeIds.size() >0){ 
     				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
     			}
     			
@@ -4647,9 +4647,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        				}
        			}
        			List<Object[]> deptScopeIdDtlsList = null;
-       			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+       			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && deptScopeIds != null && deptScopeIds.size()>0){
        				deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));
-       			}else{ 
+       			}else if(deptScopeIds != null && deptScopeIds.size()>0){ 
        				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
        			}
        			
