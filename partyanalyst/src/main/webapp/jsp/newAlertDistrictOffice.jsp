@@ -142,7 +142,7 @@
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2 locationWiseSortingDist">
 												<select class="form-control locationWiseDistOnChange" id="DistrictNamesId" >
-												<option value="0">Select District</option>
+												
 												</select>
 											</div>
 											<div class="col-sm-12 col-xs-12 col-md-12">
@@ -170,7 +170,7 @@
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2 ">
 												<select class="form-control locationWiseDiviDistOnChange" id="DivisionDistNamesId" >
-													<option value="0">Select District</option>
+													
 												</select>
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
@@ -204,7 +204,7 @@
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
 												<select class="form-control locationWiseSubDiviDistOnChange" id="SubDivisionDistNamesId" >
-												<option value="0">Select District</option>
+												
 												</select>
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
@@ -273,8 +273,11 @@
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/alertManagementSystemNewUploadDistrictOfficer.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertDistrictOffice.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 <script type="text/javascript">
 
 
