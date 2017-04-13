@@ -4916,4 +4916,44 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 		
 	 }
+	 //For state level page
+     public List<AlertVO> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
+ 		LOG.info("Entered in stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick() method of AlertManagementSystemService{}");
+ 		try{
+ 			
+ 			Date fromDate = null;
+ 			Date toDate = null;
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+ 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+ 				fromDate = sdf.parse(fromDateStr);
+ 				toDate = sdf.parse(toDateStr);
+ 			}
+ 			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+ 			//get alert status count and and create a map of alertStatusId and its count
+ 			List<Object[]> totalList = new ArrayList<Object[]>();
+ 			List<Object[]> alertCountList = alertDAO.stateLevelDeptOfficerDepartmentWiseAlertsViewForAlertCnt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,"Status");//for pending status
+ 			if(alertCountList != null && alertCountList.size() > 0){
+ 				totalList.addAll(alertCountList);
+ 			}
+ 			List<Long> levelValues = new ArrayList<Long>();    
+ 			Long levelId = 0L;
+ 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+ 			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+ 				for(Object[] param : lvlValueAndLvlIdList){
+ 					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+ 					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+ 				}
+ 			}
+ 			List<Object[]> alertCountList2 = govtAlertSubTaskDAO.stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"status",null,null);
+ 			if(alertCountList2 != null && alertCountList2.size() > 0){
+ 				totalList.addAll(alertCountList2);
+ 			}
+ 			setAlertCountDetails(totalList,finalAlertVOs); 
+ 			return finalAlertVOs; 
+ 		}catch(Exception e){
+ 			e.printStackTrace();
+ 			LOG.error("Error occured stateLevelDeptOfficerStatusOverview() method of AlertManagementSystemService{}");
+ 		}
+ 		return null;
+ 	}
 }      	
