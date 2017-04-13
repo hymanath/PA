@@ -2036,4 +2036,24 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;
 		}
+		public String getDistrictLevelDeptWiseAlertClick(){
+			try{
+				session = request.getSession();
+			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long scopeId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				Long govtDeptDesigOffceId = jObj.getLong("govtDeptDesigOffceId");
+				Long govtOffceId = jObj.getLong("govtOffceId");
+				Long statusId = jObj.getLong("statusId");
+				String formDateStr = jObj.getString("formDate");
+				String toDateStr = jObj.getString("toDate");
+				String clickType =  jObj.getString("clickType");
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(govtDeptDesigOffceId,govtOffceId,statusId,formDateStr,toDateStr,clickType);
+				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getDistrictLevelDeptWiseAlertClick() of alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
 }

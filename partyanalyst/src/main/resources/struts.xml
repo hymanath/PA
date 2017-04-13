@@ -16918,5 +16918,10 @@
 			<param name="root">keyValueVOList</param>
 		</result>	
 	</action>                  
+	<action name="getDistrictLevelDeptWiseAlertClickAction" class="alertManagementSystemAction" method="getDistrictLevelDeptWiseAlertClick">
+		<result type="json" name="success">
+	   		<param name="root">alertCoreDashBoardVOs</param>
+	   	</result>
+	</action>  	                   
  </package>
 </struts>
