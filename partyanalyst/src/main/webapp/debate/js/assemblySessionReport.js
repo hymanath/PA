@@ -463,10 +463,10 @@ function buildMemberDetails(result,sessionDayId){
 					//str+='</td>';
 					
 					str+='<td class=" " ><span class="glyphicon glyphicon-edit updateSessionDetails constantCls'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="cursor:pointer;" title="Click Here to Edit Member Details."></span>';
-					str+='<span class="glyphicon glyphicon-floppy-disk saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" attr_no="'+i+j+'" title="Click Here to update Member Details." attr_admin_hose_mem_id=""></span><span id="errMsgFrSaveId"></span>';
+					str+='<span class="glyphicon glyphicon-floppy-disk saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" attr_no="'+i+j+'" title="Click Here to update Member Details." attr_admin_hose_mem_id=""></span><span id="errMsgFrSaveId"><span><img src="images/ajaxImg2.gif" style="width:10px;display:none;" id="procesingImg7"></span></span>';
 					str+='</td>';
 					
-					str+='<td><span class="glyphicon glyphicon-trash deleteMemberDetaCls" attr_no="'+i+j+'" style="cursor:pointer;" title="Click Here to delete a member"></span><span id="errMsgFrDelId"></span></td>';
+					str+='<td><span class="glyphicon glyphicon-trash deleteMemberDetaCls" attr_no="'+i+j+'" style="cursor:pointer;" title="Click Here to delete a member"></span><span id="errMsgFrDelId"><span><img src="images/ajaxImg2.gif" style="width:10px;display:none;" id="procesingImg8"></span></span></td>';
 				str+='</tr>';
 			}
 			
@@ -773,6 +773,7 @@ function getPatries(id){
 }
 
 	function savingApplication(){
+		$("#procesingImg6").show();
 		if($("#UpdateStartdateRange").val() > 0){
 			$("#adminHouseSessionDayId").val($("#UpdateStartdateRange").val());
 		}
@@ -782,6 +783,7 @@ function getPatries(id){
 		var uploadHandler = {
 				upload: function(o) {
 					$("#savingAjaxImg").css("display","none");
+					$("#procesingImg6").hide();
 					uploadResult = o.responseText;
 					
 					showSbmitStatus(uploadResult);
@@ -938,6 +940,7 @@ function getDatesForSaving(){
 }
 
 function saveCandDetails(num){
+	$("#procesingImg7").show();
 	 var value;
 	var indexArr = ["0","1","2","3"];
 	for(var i in indexArr){
@@ -971,6 +974,7 @@ function saveCandDetails(num){
 				  url: 'updateMemberDetailsAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
+				 $("#procesingImg7").hide();
 				if(result == "success"){
 					$("#errMsgFrSaveId").html("<span style='color:green'>Updated Successfully..</span>");
 					setTimeout(function(){ 
@@ -986,6 +990,8 @@ $(document).on("click",".deleteMemberDetaCls",function(){
 	deleteCandDetails(num);
 });
 function deleteCandDetails(num){
+	$("#procesingImg8").show();
+	
 	var subjScore = $("#editAspectScore"+num+0).val();
 	var presScore = $("#editAspectScore"+num+1).val();
 	var countrScore = $("#editAspectScore"+num+2).val();
@@ -1008,6 +1014,7 @@ function deleteCandDetails(num){
 				  url: 'deleteMemberDetailsAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
+				 $("#procesingImg8").hide();
 				 if(result == "success"){
 					$("#errMsgFrDelId").html("<span style='color:green'>Deleted Successfully..</span>");
 					setTimeout(function(){ 
