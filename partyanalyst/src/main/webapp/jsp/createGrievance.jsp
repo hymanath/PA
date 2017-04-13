@@ -1544,8 +1544,11 @@ function buildAlertDetails(result,status,alertStatusId){
 				
 				str+='<td>';
 				if(result[i].feedbackStatus != null){
-					str+=' '+result[i].feedbackStatus+' <br>';	
-					str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
+					if(result[i].feedbackStatus == 	"Received" || result[i].feedbackStatus == 	"Not Received"){
+						str+=' '+result[i].feedbackStatus+' <br>';
+					}else{
+						str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
+					}
 				}else{
 					if(alertStatusId != 2 && alertStatusId != 1 && alertStatusId != 3)
 						str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
