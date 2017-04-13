@@ -499,4 +499,25 @@ public class DateUtilService {
 	public static void main(String[] args){
 		System.out.println(getLastDayOfPreiviousMonth());
 	}
+	//add multiple times
+	public String addMultipleTimes(List<String> timeListStr){
+		try{
+			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+			timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+			Date date1 = null;
+			long sum = 0l;
+			
+			for(String str : timeListStr){
+				date1 = timeFormat.parse(str);
+				sum += date1.getTime();
+			}
+
+			String date3 = timeFormat.format(new Date(sum));
+			return date3;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
