@@ -1,5 +1,5 @@
-var globalLevelId =0;
-var globallevelValues =[];
+var globalUserLevelId = 0;
+var globalUserLevelValues = [];
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
@@ -438,9 +438,8 @@ onLoadCallsAMU();
 var overAllAlertIds =[];
 var totalCoutAlertIds =[];
 function buildDistrictOfficerAlertsCountView(result){
-	
-	globalLevelId = result.levelId;
-	globallevelValues = result.levelValues;
+	globalUserLevelId = result.levelId;
+	globalUserLevelValues = result.levelValues;
 		if(result !=null && result.list1 !=null && result.list1.length>0){
 			var str='';
 		str+='<div class="row">';
