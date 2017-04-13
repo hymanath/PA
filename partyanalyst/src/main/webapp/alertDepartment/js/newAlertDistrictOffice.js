@@ -847,7 +847,7 @@ function getDistrictLevelWiseClick(parentGovtDepartmentScopeId){
     stateId : 1,
     paperIdArr : paperIdArr,
     chanelIdArr : chanelIdArr,    
-    govtDepartmentId : departmentId,
+    govtDepartmentId : globalDepartmentId,
     parentGovtDepartmentScopeId : 6,
 	districtWorkLocationId : districtId, //district id here
 	group : "status",
@@ -920,7 +920,10 @@ function getDistrictIdListForSubDivisionFilter(globalDepartmentId){
 		getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,0,0,0);
 	});
 	$(document).on("change",".locationWiseSubDiviDistOnChange",function(){
-		
+		var searchType = getSearchType();
+		var alertType = getAlertType();
+		var sortingType = getSubDivisionWiseSorting().subDivisionSortingType; // 'value1'
+		var orderType = getSubDivisionWiseSorting().subDivisionOrderType; // 'value2'
 		var districtId =$("#SubDivisionDistNamesId").val();
 		getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,0,0);
 		getDivisionIdListForSubDivisionFilter(globalDepartmentId,districtId);  
