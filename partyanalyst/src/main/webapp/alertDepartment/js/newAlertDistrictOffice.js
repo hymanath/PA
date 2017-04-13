@@ -577,26 +577,6 @@ $(document).on("click",".todayCountCls",function(){
 		}
 	});
 });
-
-//getDistrictLevelDeptWiseFlterClick();
-function getDistrictLevelDeptWiseFlterClick()
-{
-	
-	var jsObj = {
-		deptId : 49,
-		levelId : 5,
-		statusId : 2
-	}
-	$.ajax({
-      type:'GET',
-      url: 'getDistrictLevelDeptWiseFlterClickAction.action',
-	  data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		//buildAssignedOfficersDetailsForAlert(result);
-	});
-}
-
-
 //getDistrictLevelWiseClick(5) // graphical click for statusOverview and Locationlevel
 function getDistrictLevelWiseClick(parentGovtDepartmentScopeId){
 	var stateId;
@@ -2173,4 +2153,24 @@ function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,sea
 		}
 	}
 	
+}
+//getDistrictLevelDeptWiseAlertClick();//click on each status graph for alerts,mySubTask,assignedSubTask
+function getDistrictLevelDeptWiseAlertClick()
+{
+	
+	var jsObj = {
+		govtDeptDesigOffceId : 20,
+		govtOffceId : 20,
+		statusId : 2,
+		formDate:currentFromDate, 
+		toDate: currentToDate,
+		clickType:"alert"
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelDeptWiseAlertClickAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		//buildAssignedOfficersDetailsForAlert(result);
+	});
 }
