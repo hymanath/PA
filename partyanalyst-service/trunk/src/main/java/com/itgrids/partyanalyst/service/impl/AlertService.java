@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -89,6 +91,8 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
@@ -108,6 +112,7 @@ import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
@@ -224,6 +229,10 @@ private IGovtDepartmentDesignationNewDAO govtDepartmentDesignationNewDAO;
 private IGovtDepartmentDesignationHierarchyDAO govtDepartmentDesignationHierarchyDAO;
 private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
 private ILocalityDAO localityDAO;
+private IUserLoginDetailsDAO userLoginDetailsDAO;
+private IUserDAO userDAO;  
+
+
 private IAlertFeedbackStatusDAO alertFeedbackStatusDAO;
 private IAlertAssignedOfficerDAO alertAssignedOfficerDAO;
 private IAlertAssignedOfficerTrackingDAO alertAssignedOfficerTrackingDAO;
@@ -232,7 +241,13 @@ private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
 private IAlertIssueSubTypeDAO alertIssueSubTypeDAO;
 
 
+public void setUserDAO(IUserDAO userDAO) {
+	this.userDAO = userDAO;
+}
 
+public void setUserLoginDetailsDAO(IUserLoginDetailsDAO userLoginDetailsDAO) {
+	this.userLoginDetailsDAO = userLoginDetailsDAO;
+}
 public IAlertIssueSubTypeDAO getAlertIssueSubTypeDAO() {
 	return alertIssueSubTypeDAO;
 }
@@ -9832,6 +9847,115 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 		}
 		return panachatiesList;
 	}
+	public CallCenterVO getTotalUserLogingDtls(String fromDateStr, String toDateStr){
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//loging details
+			List<Object[]> loginDtlsList = userLoginDetailsDAO.getUserLoginLogoutDtls(fromDate, toDate);
+			List<Long> userIdList = new ArrayList<Long>();
+			Map<Long,String> userIdAndMinLoginTimeMap = new HashMap<Long,String>();
+			Map<Long,String> userIdAndMaxLogoutTimeMap = new HashMap<Long,String>();
+			Map<Long,String> userIdAndTotalHrWorkedMap = new HashMap<Long,String>();
+			List<String> timeListStr = new ArrayList<String>();
+			
+			if(loginDtlsList != null && loginDtlsList.size() > 0){
+				for(Object[] param : loginDtlsList){
+					userIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					userIdAndMinLoginTimeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[1]));
+					userIdAndMaxLogoutTimeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[2]));
+					userIdAndTotalHrWorkedMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[3]));
+					
+					if(param[3] != null && !param[3].toString().trim().isEmpty() && param[3].toString().trim().length() > 0){
+						timeListStr.add(param[3].toString());
+					}
+				}
+			}
+			
+			//user details
+			List<Object[]> userDtlsList = userDAO.getUserDetails(userIdList);
+			
+			List<CallCenterVO> callCenterVOs = new ArrayList<CallCenterVO>();
+			CallCenterVO callCenterVO = null;
+			if(userDtlsList != null && userDtlsList.size() > 0){
+				for(Object[] param : userDtlsList){
+					callCenterVO = new CallCenterVO();
+					callCenterVO.setUserId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					callCenterVO.setFirstName(commonMethodsUtilService.getStringValueForObject(param[3]));
+					callCenterVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					callCenterVO.setMobileNum(commonMethodsUtilService.getStringValueForObject(param[6]));
+					callCenterVOs.add(callCenterVO);
+				}
+			}
+			
+			//alert count
+			List<Object[]> countList = alertDAO.getNoOFAlertCreatedList(fromDate,toDate);
+			Map<Long,Long> usrIdAndCountMap = new HashMap<Long,Long>();
+			Long totalAlert = new Long(0L);
+			if(countList != null && countList.size() > 0){
+				for(Object[] param : countList){
+					usrIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					totalAlert += commonMethodsUtilService.getLongValueForObject(param[1]);
+				}
+			}
+			
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0 && fromDateStr.trim().equalsIgnoreCase(toDateStr.trim())){
+				if(callCenterVOs != null && callCenterVOs.size() > 0){
+					for(CallCenterVO param : callCenterVOs){
+						param.setLoginTime(userIdAndMinLoginTimeMap.get(param.getUserId()) != null ? userIdAndMinLoginTimeMap.get(param.getUserId()).trim().length() > 0 ? userIdAndMinLoginTimeMap.get(param.getUserId()).trim().substring(10,19): "" : "");
+						param.setLogoutTime(userIdAndMaxLogoutTimeMap.get(param.getUserId()) != null ? userIdAndMaxLogoutTimeMap.get(param.getUserId()).trim().length() > 10 ? userIdAndMaxLogoutTimeMap.get(param.getUserId()).trim().substring(10,19): "" : "");
+						param.setTotalHours(userIdAndTotalHrWorkedMap.get(param.getUserId()) != null ? userIdAndTotalHrWorkedMap.get(param.getUserId()).trim() : "");
+						
+						param.setNoOfAlertCreated(usrIdAndCountMap.get(param.getUserId()) != null ? usrIdAndCountMap.get(param.getUserId()) : 0);
+					}
+				}
+			}else{
+				List<Object[]> attendanceCountList = userLoginDetailsDAO.getAttendanceForMultiDate(fromDate, toDate);
+				Map<Long,Long> userIdAndPresentCountMap = new HashMap<Long,Long>();
+				if(attendanceCountList != null && attendanceCountList.size() > 0){
+					for(Object[] param : attendanceCountList){
+						userIdAndPresentCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+				if(callCenterVOs != null && callCenterVOs.size() > 0){
+					for(CallCenterVO param : callCenterVOs){
+						param.setAttendedCount(userIdAndPresentCountMap.get(param.getUserId()) != null ? userIdAndPresentCountMap.get(param.getUserId()) : 0L);
+
+						param.setTotalHours(userIdAndTotalHrWorkedMap.get(param.getUserId()) != null ? userIdAndTotalHrWorkedMap.get(param.getUserId()).trim().substring(10) : "");
+						
+						param.setNoOfAlertCreated(usrIdAndCountMap.get(param.getUserId()) != null ? usrIdAndCountMap.get(param.getUserId()) : 0);
+					}
+				}
+			}
+			
+			CallCenterVO callVO = new CallCenterVO();
+			if(callCenterVOs != null && callCenterVOs.size() > 0){
+				callVO.setTotalAgent(Long.valueOf(Integer.toString(callCenterVOs.size())));
+				callVO.getCallCenterVOList().addAll(callCenterVOs);
+			}
+			String totalTime = "";
+			if(timeListStr != null && timeListStr.size() > 0){
+				totalTime = dateUtilService.addMultipleTimes(timeListStr);
+				callVO.setTotalTime(totalTime);
+			}
+			
+			callVO.setTotalAlert(totalAlert);
+			
+			
+			return callVO;
+			
+			
+		}catch(Exception e){
+			LOG.error("Error occured at getTotalUserLogingDtls() in AlertService ",e);
+		}
+		return null;
+	}
+	
 
 public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 
