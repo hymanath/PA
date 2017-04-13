@@ -4828,6 +4828,37 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			LOG.error("Error occured setStatusWiseAlertCnt() method of CccDashboardService{}");
     	    }
     	}
+        //For status over view sub task for state level page
+        public List<AlertVO> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
+      		LOG.info("Entered in stateLevelDeptOfficerLocationLevelOverviewBySubTasks() method of AlertManagementSystemService{}");
+      		try{
+      			Date fromDate = null;
+      			Date toDate = null;
+      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+      				fromDate = sdf.parse(fromDateStr);
+      				toDate = sdf.parse(toDateStr);
+      			}
+      			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+      			//get all the alert status and build the template
+      			List<Long> levelValues = new ArrayList<Long>();    
+      			Long levelId = 0L;
+      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+      				for(Object[] param : lvlValueAndLvlIdList){
+      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+      				}
+      			}
+      			List<Object[]> rtrnObjLst = govtAlertSubTaskDAO.stateLevelDeptOfficerLocationLevelOverviewBySubTasks(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Level",null,null);
+      			setAlertCount(rtrnObjLst,finalAlertVOs);
+      			return finalAlertVOs; 
+      		}catch(Exception e){
+      			e.printStackTrace();
+      			LOG.error("Error occured stateLevelDeptOfficerLocationLevelOverviewBySubTasks() method of AlertManagementSystemService{}");
+      		}
+      		return null;
+      	}
 	 public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseAlertClick(Long govtDeptDesigOffceId,Long govtOffceId,Long statusId,String formDateStr,String toDateStr,String clickType){
 			List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 			try {
