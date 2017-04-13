@@ -123,7 +123,7 @@
 									<div class="row">
 										<div class="col-sm-12 col-xs-12 col-md-12 ">
 											<h4>DISTRICT LEVEL</h4>
-											<div class="col-md-2 col-xs-12 col-sm-4">
+											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
 										
 												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDistrict">
 												<li class="active " attr_sorting_type="count" attr_order_type="desc" >
@@ -142,14 +142,16 @@
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2 locationWiseSortingDist">
 												<select class="form-control locationWiseDistOnChange" id="DistrictNamesId" >
+												<option value="0">Select District</option>
 												</select>
 											</div>
+											<div class="col-sm-12 col-xs-12 col-md-12">
 												<div id="districtLevelSubOrdinarteDetails" class=""></div>
-												
+											</div>	
 										</div>
 										<div class="col-sm-12 col-xs-12 col-md-12 ">
 										<h4>DIVISION LEVEL</h4>
-											<div class="col-md-2 col-xs-12 col-sm-4">
+											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
 											
 												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDivision">
 												<li class="active " attr_sorting_type="count" attr_order_type="desc" >
@@ -168,22 +170,25 @@
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2 ">
 												<select class="form-control locationWiseDiviDistOnChange" id="DivisionDistNamesId" >
+													<option value="0">Select District</option>
 												</select>
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
 												<select class="form-control locationWiseDiviOnChange" id="DivisionNamesId" >
+													<option value="0">Select Division</option>
 												</select>
 											</div>
+											<div class="col-sm-12 col-xs-12 col-md-12">
 												<div id="divisionLevelSubOrdinarteDetails" class=""></div>
-												
+											</div>	
 										</div>
 										
 										<div class="col-sm-12 col-xs-12 col-md-12 ">
 											<h4>SUB-DIVISION LEVEL</h4>
-											<div class="col-md-2 col-xs-12 col-sm-4">
+											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
 										
 												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingSubDivision">
-												<li class="active " attr_sorting_type="count" attr_order_type="desc" >
+												<li class="active" attr_sorting_type="count" attr_order_type="desc" >
 													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
 												</li>
 												<li class="" attr_sorting_type="count" attr_order_type="asc">
@@ -199,17 +204,22 @@
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
 												<select class="form-control locationWiseSubDiviDistOnChange" id="SubDivisionDistNamesId" >
+												<option value="0">Select District</option>
 												</select>
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
 												<select class="form-control locationWiseSubDiviDiviOnChange" id="SubDivisionDiviNamesId" >
+												<option value="0">Select Division</option>
 												</select>
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
 												<select class="form-control locationWiseSubDiviOnChange" id="SubDivisionNamesId" >
+												<option value="0">Select SubDivision</option>
 												</select>
 											</div>
+											<div class="col-sm-12 col-xs-12 col-md-12">
 												<div id="SubdivisionLevelSubOrdinarteDetails" class=""></div>
+												</div>
 												
 										</div>
 									</div>
