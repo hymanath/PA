@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.RegistrationColumnNames;
@@ -760,5 +762,32 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		query.setParameter("userId",userId);
 		return (String) query.uniqueResult();
 	}
+	public List<Object[]> getUserDetails(List<Long> userIdList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct" +
+				" UR.user_id as userId" +//0
+				" ,UR.username as username" +//1
+				" ,UR.profile_img as profileImg" +//2
+				" ,UR.firstname as firstname" +//3
+				" ,UR.middlename as middlename" +//4
+				" ,UR.lastname as lastname " +//5
+				" ,UR.mobile as mobile " +//6
+				" from " +
+				" user UR " +
+				" where " +
+				" UR.user_id in(:userIdList)");
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		query.addScalar("userId", Hibernate.LONG);
+		query.addScalar("username", Hibernate.STRING);
+		query.addScalar("profileImg", Hibernate.STRING);
+		query.addScalar("firstname", Hibernate.STRING);
+		query.addScalar("middlename", Hibernate.STRING);
+		query.addScalar("lastname", Hibernate.STRING);
+		query.addScalar("mobile", Hibernate.STRING);
+		
+		query.setParameterList("userIdList", userIdList);
+		return query.list();
+	}
+	
 	
 }

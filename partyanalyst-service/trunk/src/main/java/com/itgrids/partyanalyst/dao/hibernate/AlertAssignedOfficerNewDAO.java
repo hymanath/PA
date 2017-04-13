@@ -1930,6 +1930,513 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
         }
+	 //state and district scope lvl for click
+    public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewOnClick(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId, String group,Long govtDepartmentWorkLocationId,Long govtDepartmentScopeId){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append(" select distinct AAO.alert_id");
+    	/*
+    	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
+    	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
+    	queryStr.append(" GDWL1.location_name as locationName, ");//2
+    	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+    		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+    			queryStr.append(" GDWL.govt_department_scope_id as GDSI, AAO.alert_status_id as govtDepartmentScopeId, ");//3
+    		}else{
+    			queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+    		}
+    		
+    	}else{
+    		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+    	}
+    	
+    	queryStr.append(" count(distinct AAO.alert_id) as count");
+    	*/
+		queryStr.append(" from ");
+		
+		queryStr.append(" alert A ");
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
+			queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
+		}
+		queryStr.append(" ,alert_status ALTS, ");
+		queryStr.append(" alert_assigned_officer_new AAO, ");
+		queryStr.append(" govt_department_designation_officer_new GDDO, ");
+		queryStr.append(" govt_user_address GUA, ");
+		queryStr.append(" alert_category ALTC, ");
+		queryStr.append(" alert_type ALTT, ");
+		
+		queryStr.append(" govt_department_work_location GDWL, ");
+		queryStr.append(" govt_department_work_location GDWL1 ");
+		
+		queryStr.append(" where ");
+		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
+		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
+		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
+		
+		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.alert_status_id = ALTS.alert_status_id  ");
+		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
+		
+		queryStr.append(" and GDWL.govt_department_scope_id = GDDO.govt_department_scope_id ");
+		queryStr.append(" and GDDO.govt_department_designation_officer_id = AAO.govt_department_designation_officer_id ");
+		
+		queryStr.append(" and GUA.user_address_id = GDWL.govt_user_address_id  ");
+		queryStr.append(" and GDDO.address_id = GUA.user_address_id  ");
+		
+		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
+		}
+		
+		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+			queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
+		}else{
+			queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.district_id  ");
+		}
+		if(districtWorkLocationId != null && districtWorkLocationId.longValue() > 0L){
+			queryStr.append(" and  GDWL1.govt_department_work_location_id = :districtWorkLocationId");
+		}
+		
+		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+			queryStr.append(" and GDWL1.govt_department_scope_id=:parentGovtDepartmentScopeId   ");
+		}
+		
+		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
+			queryStr.append(" and GDWL.govt_department_id = :govtDepartmentId   ");
+		}
+		if(govtDepartmentWorkLocationId != null && govtDepartmentWorkLocationId.longValue() > 0L && govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
+			if(group != null && group.trim().equalsIgnoreCase("overview")){
+				queryStr.append(" and GDWL1.govt_department_work_location_id = :govtDepartmentWorkLocationId ");
+				queryStr.append(" and GDWL.govt_department_scope_id = :govtDepartmentScopeId ");
+				
+			}else{
+				if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+					queryStr.append(" and GDWL.govt_department_scope_id = :govtDepartmentWorkLocationId");
+					queryStr.append(" and AAO.alert_status_id = :govtDepartmentScopeId");
+				}else{
+					queryStr.append(" and GDWL1.govt_department_work_location_id = :govtDepartmentWorkLocationId");
+					queryStr.append(" and AAO.alert_status_id = :govtDepartmentScopeId");
+				}
+			}          
+		}
+		
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
+		}
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		}
+		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+			queryStr.append(" and GUA.state_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+  	    	queryStr.append(" and GUA.zone_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.region_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+  	    	queryStr.append(" and GUA.circle_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+  	    	queryStr.append(" and GUA.district_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.division_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.sub_division_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+  	    	queryStr.append(" and GUA.tehsil_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+  	    	queryStr.append(" and GUA.local_election_body in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+  	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
+		/*if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+				queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id, AAO.alert_status_id ");
+			}else{
+				queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+			}
+			
+    	}else{
+    		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+    	}*/
+		
+		
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		/*query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
+		query.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG);
+		query.addScalar("locationName", Hibernate.STRING);
+		if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+				query.addScalar("GDSI", Hibernate.LONG);
+			}
+		}
+		query.addScalar("govtDepartmentScopeId", Hibernate.LONG);*/
+		query.addScalar("count", Hibernate.LONG);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			query.setParameterList("printIdList", printIdList);  
+			query.setParameterList("electronicIdList", electronicIdList);
+		}
+		if(levelId != null && levelValues != null && !levelValues.isEmpty()){
+			query.setParameterList("levelValues",levelValues);
+		}
+		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+			query.setParameterList("deptScopeIdList",deptScopeIdList);
+		}
+		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+			query.setParameter("parentGovtDepartmentScopeId",parentGovtDepartmentScopeId);
+		}
+		
+		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
+			query.setParameter("govtDepartmentId",govtDepartmentId);
+		}
+		if(districtWorkLocationId != null && districtWorkLocationId.longValue() > 0L){
+			query.setParameter("districtWorkLocationId",districtWorkLocationId);
+		}
+		if(govtDepartmentWorkLocationId != null && govtDepartmentWorkLocationId.longValue() > 0L && govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
+			query.setParameter("govtDepartmentWorkLocationId",govtDepartmentWorkLocationId);
+			query.setParameter("govtDepartmentScopeId",govtDepartmentScopeId);
+		}
+		return query.list();
+    }
+  //division scope lvl for click
+    public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group,Long govtDepartmentScopeId){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append(" select distinct AAO.alert_id as count");
+    	/*queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
+    	if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
+    		queryStr.append(" GDWL2.govt_department_work_location_id as parentGovtDepartmentWorkLocationId, ");
+    		queryStr.append(" GDWL2.location_name as DISTRICT , ");
+    	}
+    	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
+    	queryStr.append(" GDWL1.location_name as locationName, ");//2
+    	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+    		queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+    	}else{
+    		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+    	}
+    	queryStr.append(" count(distinct AAO.alert_id) as count");//4
+*/    	
+		queryStr.append(" from ");
+		
+		queryStr.append(" alert A ");
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
+			queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
+		}
+		queryStr.append(" ,alert_status ALTS, ");
+		queryStr.append(" alert_assigned_officer_new AAO, ");
+		queryStr.append(" govt_department_designation_officer_new GDDO, ");
+		queryStr.append(" govt_user_address GUA, ");
+		queryStr.append(" alert_category ALTC, ");
+		queryStr.append(" alert_type ALTT, ");
+		
+		queryStr.append(" govt_department_work_location GDWL, ");
+		queryStr.append(" govt_department_work_location GDWL1, ");
+		queryStr.append(" govt_department_work_location GDWL2 ");
+		
+		queryStr.append(" where ");
+		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
+		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
+		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
+		
+		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.alert_status_id = ALTS.alert_status_id  ");
+		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
+		
+		queryStr.append(" and GDWL.govt_department_scope_id = GDDO.govt_department_scope_id ");
+		queryStr.append(" and GDDO.govt_department_designation_officer_id = AAO.govt_department_designation_officer_id ");
+		
+		queryStr.append(" and GUA.user_address_id = GDWL.govt_user_address_id  ");
+		queryStr.append(" and GDDO.address_id = GUA.user_address_id  ");
+		
+		
+		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
+		}
+		
+		
+		queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.division_id  ");
+		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+			queryStr.append(" and GDWL1.govt_department_scope_id=:parentGovtDepartmentScopeId   ");
+		}
+		queryStr.append(" and GDWL2.govt_department_work_location_id = GUA.district_id and GDWL2.govt_department_scope_id = 5  ");
+		
+		if(districtWorkLocationId != null && districtWorkLocationId.longValue() > 0L){
+			queryStr.append(" and   GDWL2.govt_department_work_location_id = :districtWorkLocationId");
+		}
+		if(divisionWorkLocationId != null && divisionWorkLocationId.longValue() > 0L){
+			queryStr.append(" and   GDWL1.govt_department_work_location_id = :divisionWorkLocationId");
+		}
+		
+		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
+			queryStr.append(" and GDWL.govt_department_id = :govtDepartmentId   ");
+		}
+		if(govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
+			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+	    		queryStr.append(" and AAO.alert_status_id = :govtDepartmentScopeId, ");//3
+	    	}else{
+	    		queryStr.append(" and GDWL.govt_department_scope_id = :govtDepartmentScopeId, ");//3
+	    	}  
+		}
+		
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
+		}
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		}
+		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+			queryStr.append(" and GUA.state_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+  	    	queryStr.append(" and GUA.zone_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.region_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+  	    	queryStr.append(" and GUA.circle_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+  	    	queryStr.append(" and GUA.district_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.division_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.sub_division_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+  	    	queryStr.append(" and GUA.tehsil_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+  	    	queryStr.append(" and GUA.local_election_body in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+  	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
+  	    
+		/*if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+			queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+    	}else{
+    		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+    	}*/
+		
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
+		/*if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
+			query.addScalar("parentGovtDepartmentWorkLocationId", Hibernate.LONG);
+    		query.addScalar("DISTRICT", Hibernate.STRING);
+    	}
+		query.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG);
+		query.addScalar("locationName", Hibernate.STRING);
+		query.addScalar("govtDepartmentScopeId", Hibernate.LONG);*/
+		query.addScalar("count", Hibernate.LONG);
+		
+		
+		
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			query.setParameterList("printIdList", printIdList);  
+			query.setParameterList("electronicIdList", electronicIdList);
+		}
+		if(levelId != null && levelValues != null && !levelValues.isEmpty()){
+			query.setParameterList("levelValues",levelValues);  
+		}
+		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+			query.setParameterList("deptScopeIdList",deptScopeIdList);
+		}
+		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+			query.setParameter("parentGovtDepartmentScopeId",parentGovtDepartmentScopeId);
+		}
+		
+		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
+			query.setParameter("govtDepartmentId",govtDepartmentId);
+		}
+		if(districtWorkLocationId != null && districtWorkLocationId.longValue() > 0L){
+			query.setParameter("districtWorkLocationId",districtWorkLocationId);
+		}
+		if(divisionWorkLocationId != null && divisionWorkLocationId.longValue() > 0L){
+			query.setParameter("divisionWorkLocationId",divisionWorkLocationId);
+		}
+		if(govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
+			query.setParameter("govtDepartmentScopeId",govtDepartmentScopeId);
+		}
+		
+		return query.list();
+    } 
+  //sub division scope lvl for click
+    public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String filter,String group,Long govtDepartmentScopeId){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append(" select ");
+    	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
+    	if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
+    		queryStr.append(" GDWL2.govt_department_work_location_id as parentGovtDepartmentWorkLocationId, ");
+    		queryStr.append(" GDWL2.location_name as DISTRICT , ");
+    		queryStr.append(" GDWL3.govt_department_work_location_id as GDWLI, ");
+    		queryStr.append(" GDWL3.location_name as DIVISION, ");
+    	}
+    	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
+    	queryStr.append(" GDWL1.location_name as locationName, ");//2
+    	if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+    		queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+    	}else{
+    		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
+    	}
+    	queryStr.append(" count(distinct AAO.alert_id) as count");//4
+    	
+		queryStr.append(" from ");
+		
+		queryStr.append(" alert A ");
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
+			queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
+		}
+		queryStr.append(" ,alert_status ALTS, ");
+		queryStr.append(" alert_assigned_officer_new AAO, ");
+		queryStr.append(" govt_department_designation_officer_new GDDO, ");
+		queryStr.append(" govt_user_address GUA, ");
+		queryStr.append(" alert_category ALTC, ");
+		queryStr.append(" alert_type ALTT, ");
+		
+		queryStr.append(" govt_department_work_location GDWL, ");
+		queryStr.append(" govt_department_work_location GDWL1, ");
+		queryStr.append(" govt_department_work_location GDWL2, ");
+		queryStr.append(" govt_department_work_location GDWL3 ");
+		
+		queryStr.append(" where ");
+		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
+		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
+		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
+		
+		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.alert_status_id = ALTS.alert_status_id  ");
+		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
+		
+		queryStr.append(" and GDWL.govt_department_scope_id = GDDO.govt_department_scope_id ");
+		queryStr.append(" and GDDO.govt_department_designation_officer_id = AAO.govt_department_designation_officer_id ");
+		
+		queryStr.append(" and GUA.user_address_id = GDWL.govt_user_address_id  ");
+		queryStr.append(" and GDDO.address_id = GUA.user_address_id  ");
+		
+		
+		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
+		}
+		
+		
+		queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.sub_division_id  ");
+		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+			queryStr.append(" and GDWL1.govt_department_scope_id=:parentGovtDepartmentScopeId   ");
+		}
+		queryStr.append(" and GDWL2.govt_department_work_location_id = GUA.district_id and GDWL2.govt_department_scope_id = 5  ");
+		queryStr.append(" and GDWL3.govt_department_work_location_id = GUA.division_id and GDWL3.govt_department_scope_id = 6 ");
+		
+		if(divisionWorkLocationId != null && divisionWorkLocationId.longValue() > 0L){
+			queryStr.append(" and   GDWL3.govt_department_work_location_id = :divisionWorkLocationId");
+		}
+		if(districtWorkLocationId != null && districtWorkLocationId.longValue() > 0L){
+			queryStr.append(" and   GDWL2.govt_department_work_location_id = :districtWorkLocationId");
+		}
+		if(subDivisionWorkLocationId != null && subDivisionWorkLocationId.longValue() > 0L){
+			queryStr.append(" and   GDWL1.govt_department_work_location_id = :subDivisionWorkLocationId");
+		}
+		
+		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
+			queryStr.append(" and GDWL.govt_department_id = :govtDepartmentId   ");
+		}
+		if(govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
+			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+	    		queryStr.append(" and AAO.alert_status_id =:govtDepartmentScopeId, ");//3
+	    	}else{
+	    		queryStr.append(" and GDWL.govt_department_scope_id = :govtDepartmentScopeId, ");//3
+	    	}
+		}
+		
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
+		}
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		}
+		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+			queryStr.append(" and GUA.state_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+  	    	queryStr.append(" and GUA.zone_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.region_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+  	    	queryStr.append(" and GUA.circle_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+  	    	queryStr.append(" and GUA.district_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.division_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+  	    	queryStr.append(" and GUA.sub_division_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+  	    	queryStr.append(" and GUA.tehsil_id in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+  	    	queryStr.append(" and GUA.local_election_body in (:levelValues)");
+  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+  	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
+  	    
+		/*if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status")){
+			queryStr.append(" group by GDWL1.govt_department_work_location_id , AAO.alert_status_id ");
+    	}else{
+    		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
+    	}*/
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
+		/*if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
+			query.addScalar("parentGovtDepartmentWorkLocationId", Hibernate.LONG);
+    		query.addScalar("DISTRICT", Hibernate.STRING);
+    		query.addScalar("GDWLI", Hibernate.LONG);
+    		query.addScalar("DIVISION", Hibernate.STRING);
+    	}
+		query.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG);
+		query.addScalar("locationName", Hibernate.STRING);
+		query.addScalar("govtDepartmentScopeId", Hibernate.LONG);*/
+		query.addScalar("count", Hibernate.LONG);
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+			query.setParameterList("printIdList", printIdList);  
+			query.setParameterList("electronicIdList", electronicIdList);
+		}
+		if(levelId != null && levelValues != null && !levelValues.isEmpty()){
+			query.setParameterList("levelValues",levelValues);  
+		}
+		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+			query.setParameterList("deptScopeIdList",deptScopeIdList);
+		}
+		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+			query.setParameter("parentGovtDepartmentScopeId",parentGovtDepartmentScopeId);
+		}
+		
+		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
+			query.setParameter("govtDepartmentId",govtDepartmentId);
+		}
+		if(districtWorkLocationId != null && districtWorkLocationId.longValue() > 0L){
+			query.setParameter("districtWorkLocationId",districtWorkLocationId);
+		}
+		if(divisionWorkLocationId != null && divisionWorkLocationId.longValue() > 0L){
+			query.setParameter("divisionWorkLocationId",divisionWorkLocationId);
+		}
+		
+		if(subDivisionWorkLocationId != null && subDivisionWorkLocationId.longValue() > 0L){
+			query.setParameter("subDivisionWorkLocationId",subDivisionWorkLocationId);
+		}
+		if(govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
+			query.setParameter("govtDepartmentScopeId",govtDepartmentScopeId);
+		}
+		
+    	
+		return query.list();
+    }
+}
 	public List<Long> getDistrictOfficerAlertsDetails(Date fromDate,Date toDate,
     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId, String group,Long statusId,Long govtDeprtMentScopeId){

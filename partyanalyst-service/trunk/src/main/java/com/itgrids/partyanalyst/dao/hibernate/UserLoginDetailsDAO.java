@@ -4,11 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, Long> implements IUserLoginDetailsDAO{
 	
@@ -50,6 +51,49 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 	{
 		return getHibernateTemplate().find("select distinct model.sessionId from UserLoginDetails model where model.loginTime is not null and model.logoutTime is null and model.userId = ? order by model.loginTime desc",userId);
 		
+	}
+	public List<Object[]> getUserLoginLogoutDtls(Date startDate, Date endDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select " +
+				" ULD.user_id as userId, " +
+				" min(ULD.login_time) as minLoginTime, " +
+				" max(ULD.logout_time) as maxLogoutTime, " +
+				" SEC_TO_TIME(sum(TIME_TO_SEC(TIMEDIFF(ULD.logout_time,ULD.login_time)))) as workingHour " +
+				" from " +
+				" user_login_details ULD " +
+				" where " );
+		if(startDate != null && endDate != null){
+			queryStr.append(" Date(login_time) between  :startDate and :endDate ");
+		}
+		queryStr.append(" group by ULD.user_id ");
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		query.addScalar("userId", Hibernate.LONG);
+		query.addScalar("minLoginTime", Hibernate.STRING);
+		query.addScalar("maxLogoutTime", Hibernate.STRING);
+		query.addScalar("workingHour", Hibernate.STRING);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();
+	}
+	public List<Object[]> getAttendanceForMultiDate(Date fromDate, Date toDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ULD.user_id as userId, count(distinct Date(ULD.login_time)) as count " +
+				" from user_login_details ULD  " +
+				" where ");
+				if(fromDate != null && toDate != null){
+					queryStr.append(" Date(login_time) between  :fromDate and :toDate ");
+				}
+		queryStr.append(" group by ULD.user_id ");
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		query.addScalar("userId", Hibernate.LONG);
+		query.addScalar("count", Hibernate.LONG);
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		return query.list();
 	}
 	
 }
