@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
@@ -112,6 +113,7 @@ public interface IAlertService {
     public List<KeyValueVO> getAlertCallerTypes();
     public String createGrievanceAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
     public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type);
+    public CallCenterVO getTotalUserLogingDtls(String fromDateStr, String toDateStr);
     public List<IdNameVO> getAllMandalsByDistrictID(Long districtId);
     public List<AlertVO> getAlertDetailsByStatusId(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStattusId);
     public List<AlertVO> getAlertCallerDetails(Long alertId);
