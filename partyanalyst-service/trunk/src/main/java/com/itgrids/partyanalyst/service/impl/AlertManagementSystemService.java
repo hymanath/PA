@@ -4166,10 +4166,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       				if(printIdList != null && printIdList.size() == 0){
       					printIdList.add(0L);
       				}
-      			}else{
+      			}/*else{
       				electronicIdList.add(0L);
       				printIdList.add(0L);
-      			}
+      			}*/
       			
       			List<Long> levelValues = new ArrayList<Long>();    
       			Long levelId = 0L;
@@ -4236,10 +4236,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				if(printIdList != null && printIdList.size() == 0){
     					printIdList.add(0L);
     				}
-    			}else{
+    			}/*else{
     				electronicIdList.add(0L);
     				printIdList.add(0L);
-    			}
+    			}*/
     			
     			List<Long> levelValues = new ArrayList<Long>();    
     			Long levelId = 0L;
@@ -4305,10 +4305,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				if(printIdList != null && printIdList.size() == 0){
     					printIdList.add(0L);
     				}
-    			}else{
+    			}/*else{
     				electronicIdList.add(0L);
     				printIdList.add(0L);
-    			}
+    			}*/
     			
     			List<Long> levelValues = new ArrayList<Long>();    
     			Long levelId = 0L;
@@ -4377,10 +4377,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
-			}else{
+			}/*else{
 				electronicIdList.add(0L);
 				printIdList.add(0L);
-			}
+			}*/
 			
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long levelId = 0L;
@@ -4449,10 +4449,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    				if(printIdList != null && printIdList.size() == 0){
    					printIdList.add(0L);
    				}
-   			}else{
+   			}/*else{
    				electronicIdList.add(0L);
    				printIdList.add(0L);
-   			}
+   			}*/
    			
    			List<Long> levelValues = new ArrayList<Long>();    
    			Long levelId = 0L;
@@ -4521,10 +4521,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    				if(printIdList != null && printIdList.size() == 0){
    					printIdList.add(0L);
    				}
-   			}else{
+   			}/*else{
    				electronicIdList.add(0L);
    				printIdList.add(0L);
-   			}
+   			}*/
    			
    			List<Long> levelValues = new ArrayList<Long>();    
    			Long levelId = 0L;
