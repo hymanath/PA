@@ -973,102 +973,170 @@ function getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departm
 }
 
 function buildDistrictLevelDeptWiseLocationLevelView(result){
-	var mainlocationArr=[];
-	
-	if(result !=null && result.length>0){
-		for(var i in result){
+		if(result !=null && result.length>0){
 			
-			var locationNamesArr=[];
-				locationNamesArr.push(result[i].name)
-			if(result[i].subList2 !=null &&  result[i].subList2.length>0){
-				for(var j in result[i].subList2){
-					var locationArr=[];
-					var locationColorArr;
-					locationArr.push(result[i].subList2[j].count);
-					locationColorArr = result[i].subList2[j].color
-					var obj={
-								name: result[i].subList2[j].name,
-								data: locationArr,
-								color:locationColorArr
-							}
-					
-					mainlocationArr.push(obj);
-					
-				}
-			}
-		}
-		
-		
-	}
-	
-		var data = mainlocationArr
-			var id = 'departmentlocationCountDivId';
-			var type = {
-				type: 'bar',
-				backgroundColor:'transparent'
+			var locationNamesArrDistrictOverView=[];
+				var stateArr = [];
+				 var goneArr = [];
+				 var regionArr = [];
+				 var circleArr = [];
+				 var districtArr = [];
+				 var divisionArr = [];
+				 var subDivisionArr = [];
+				 var mandalArr = [];
+				 var municipalityArr = [];
+				 var panchayatArr = [];
 				
-			}
-			var legend = {
-				verticalAlign:'top',
-				enabled: true
-			}
-			var yAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: null
-				},
-				labels: {
-						enabled:false
-					},
-				stackLabels: {
-					//useHTML: true,
-					//align: 'left',
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-					},
-					 formatter: function() {
+			for(var i in result){
+				
+				 locationNamesArrDistrictOverView.push(result[i].name)
+				
+				if(result[i].subList2 !=null &&  result[i].subList2.length>0){
+					for(var j in result[i].subList2){
+							
+						 if(result[i].subList2[j].id==1){
+							 stateArr.push(result[i].subList2[j].count); 
+						}else if(result[i].subList2[j].id==2){
+							 goneArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==3){
+							 regionArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==4){
+							 circleArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==5){
+							 districtArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==6){
+							 divisionArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==7){
+							 subDivisionArr.push(result[i].subList2[j].count);
+						}
+						else if(result[i].subList2[j].id==8){
+							 mandalArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==9){
+							 municipalityArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==10){
+							 panchayatArr.push(result[i].subList2[j].count);
+						}
 						
-						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-						return '<span style="top:16px; position: absolute;"><br/>('+this.total+')</span>';
-						//return (this.total);
-					} 
+						
+						
+					}
 					
 				}
-				
 			}
-			var xAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: locationNamesArr
+			
+			
+			var mainJosnObjArrDistrictOverview = [];
+			   if(stateArr != null && stateArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'State',data:stateArr,color:"#957ADB"});  
+			  }
+			   if(goneArr != null && goneArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Gone',data:goneArr,color:"#EEEFF0"});  
+			  }
+			  if(regionArr != null && regionArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Region',data:regionArr,color:"#0065FE"});  
+			  }
+			  if(circleArr != null && circleArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Circle',data:circleArr,color:"#BCF0E1"});  
+			  }
+			  if(districtArr != null && districtArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'District',data:districtArr,color:"#FE6603"});  
+			  }
+			  if(divisionArr != null && divisionArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Division',data:divisionArr,color:"#C8A11A"});  
+			  }
+			  if(subDivisionArr != null && subDivisionArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Sub-Division',data:subDivisionArr,color:"#4546B6"});  
+			  }
+			   if(mandalArr != null && mandalArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Mandal',data:mandalArr,color:"#CC329A"});  
+			  }
+			   if(municipalityArr != null && municipalityArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Municipality',data:municipalityArr,color:"#A0400D"});  
+			  }
+			   if(panchayatArr != null && panchayatArr.length > 0){
+				mainJosnObjArrDistrictOverview.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
+			  } 
+		
+		
+			
+			var heightOfDiv = locationNamesArrDistrictOverView.length ;
+			if(heightOfDiv >25){
+				heightOfDiv = heightOfDiv * 36;
+				$("#departmentlocationCountDivId").css("height",heightOfDiv);
 			}
-			var plotOptions =  {
-	             series: {
-					stacking: 'normal',
-					pointWidth: 30,
-					gridLineWidth: 15
+			
+			
+			var data = mainJosnObjArrDistrictOverview
+				var id = 'departmentlocationCountDivId';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
 				}
-	        }
-			var tooltip = {
-				formatter: function () {
-					var s = '<b>' + this.x + '</b>';
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrDistrictOverView
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				}
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
 
-						$.each(this.points, function () {
-						if(this.series.name != "Series 1")  
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							this.y/* +' - ' +
-							(Highcharts.numberFormat(this.percentage,1)+'%'); */
-					});
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
 
-					return s;
-				},
-				shared: true
-			};
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#departmentlocationCountDivId").html('No Data Available');
+		}
 }
 
 function getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId,levelId){
@@ -1099,119 +1167,177 @@ function getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,department
 
 function buildDistrictLevelDeptWiseStatusOverView(result){
 	
-	var mainlocationArr=[];
-	
 	if(result !=null && result.length>0){
-		for(var i in result){
-			
-			var locationNamesArr=[];
-				locationNamesArr.push(result[i].name)
-			if(result[i].subList2 !=null &&  result[i].subList2.length>0){
-				for(var j in result[i].subList2){
-					var locationArr=[];
-					var locationColorArr;
-					locationArr.push(result[i].subList2[j].count);
-					locationColorArr = result[i].subList2[j].color
-					var obj={
-								name: result[i].subList2[j].name,
-								data: locationArr,
-								color:locationColorArr
-							}
-					
-					mainlocationArr.push(obj);
-					
-				}
-			}
-		}
-		
-		
-	} 
-	
-		var data = mainlocationArr
-			var id = 'departmentStatusCountDivId';
-			var type = {
-				type: 'bar',
-				backgroundColor:'transparent'
+			var locationNamesArrDistrict=[];
+			 var pendingAlertArr = [];
+				 var notifiedAlertArr = [];
+				 var actionInProgessAlertArr = [];
+				 var completedAlertArr = [];
+				 var unblTRslvAlertArr = [];
+				 var actionNotRequiredAlertArr = [];
+				 var duplicateAlertArr = [];
+				 var WronglyMappedDesignationArr = [];
+				 var WronglyMappedDepartmentArr = [];
+				 var RejoinderArr = [];
+				 var Incomplete = [];
+				 var Closed = [];
+			for(var i in result){
 				
-			}
-			var legend = {
-				verticalAlign:'top',
-				enabled: true
-			}
-			var yAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				title: {
-					text: null
-				},
-				labels: {
-						enabled:false
-					},
-				stackLabels: {
-					useHTML: true,
-					align: 'left',
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-					},
-					 formatter: function() {
-						
-						return '<span style="top:16px; position: absolute;"><br/>('+this.total+')</span>';
-						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-						//return (this.total);
-					} 
-					
-				}
+				 locationNamesArrDistrict.push(result[i].name)
 				
-			}
-			var xAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: locationNamesArr
-			}
-			var plotOptions =  {
-	             bar: {
-					stacking: 'percent',
-					pointWidth: 30,
-					gridLineWidth: 15
-				},
-				series: {
-					cursor: 'pointer',
-					point: {
-					events: {
-						click: function () {
-							var value = (this.extra).split("-");
-							var statusId = value[0];
-							var statusName = value[1];
-							var count = value[2];
-							var departmentId = value[3];
+				if(result[i].subList2 !=null &&  result[i].subList2.length>0){
+					for(var j in result[i].subList2){
 							
-							 
-							getTotalAlertCountDetails(statusId,statusName,count,departmentId);
+						 if(result[i].subList2[j].id==1){
+							 pendingAlertArr.push(result[i].subList2[j].count); 
+						}else if(result[i].subList2[j].id==2){
+							 notifiedAlertArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==3){
+							 actionInProgessAlertArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==4){
+							 completedAlertArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==5){
+							 unblTRslvAlertArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==6){
+							 actionNotRequiredAlertArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==7){
+							 duplicateAlertArr.push(result[i].subList2[j].count);
 						}
+						else if(result[i].subList2[j].id==8){
+							 WronglyMappedDesignationArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==9){
+							 WronglyMappedDepartmentArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==10){
+							 RejoinderArr.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==11){
+							 Incomplete.push(result[i].subList2[j].count);
+						}else if(result[i].subList2[j].id==12){
+							 Closed.push(result[i].subList2[j].count);
+						}
+						
+						
+						
+					}
+					
+				}
+			}
+			
+			var mainJosnObjArrDistrict = [];
+			   if(pendingAlertArr != null && pendingAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Pending',data:pendingAlertArr,color:"#ff4c64"});  
+			  }
+			   if(notifiedAlertArr != null && notifiedAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Notified',data:notifiedAlertArr,color:"#EFA5B6"});  
+			  }
+			  if(actionInProgessAlertArr != null && actionInProgessAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Action In Progess',data:actionInProgessAlertArr,color:"#FFCB7F"});  
+			  }
+			  if(completedAlertArr != null && completedAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Completed',data:completedAlertArr,color:"#85CA8B"});  
+			  }
+			  if(unblTRslvAlertArr != null && unblTRslvAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Unable to Resolve',data:unblTRslvAlertArr,color:"#C6A3A9"});  
+			  }
+			  if(actionNotRequiredAlertArr != null && actionNotRequiredAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Action Not Required',data:actionNotRequiredAlertArr,color:"#9698C8"});  
+			  }
+			  if(duplicateAlertArr != null && duplicateAlertArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Duplicate',data:duplicateAlertArr,color:"#DEC6E0"});  
+			  }
+			   if(WronglyMappedDesignationArr != null && WronglyMappedDesignationArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'WronglyMappedDesignation',data:WronglyMappedDesignationArr,color:"#FE9900"});  
+			  }
+			   if(WronglyMappedDepartmentArr != null && WronglyMappedDepartmentArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'WronglyMappedDepartment',data:WronglyMappedDepartmentArr,color:"#0C9514"});  
+			  }
+			   if(RejoinderArr != null && RejoinderArr.length > 0){
+				mainJosnObjArrDistrict.push({name:'Rejoinder',data:RejoinderArr,color:"#82CA9C"});  
+			  } if(Incomplete != null && Incomplete.length > 0){
+				mainJosnObjArrDistrict.push({name:'Incomplete',data:Incomplete,color:"#C9AC82"});  
+			  }if(Closed != null && Closed.length > 0){
+				mainJosnObjArrDistrict.push({name:'Closed',data:Closed,color:"#ababab"});  
+			  }
+		
+		
+			
+			var heightOfDiv = locationNamesArrDistrict.length ;
+			if(heightOfDiv >9){
+				heightOfDiv = heightOfDiv * 50;
+				$("#departmentStatusCountDivId").css("height",heightOfDiv);
+			}
+			
+			
+			var data = mainJosnObjArrDistrict
+				var id = 'departmentStatusCountDivId';
+				var type = {
+					type: 'bar',
+					backgroundColor:'transparent'
+					
+				}
+				var legend = {
+					verticalAlign:'top',
+					enabled: true
+				}
+				var yAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+							enabled:false
+						},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						 formatter: function() {
+							
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+						
+					}
+					
+				}
+				var xAxis = {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArrDistrict
+				}
+				var plotOptions =  {
+					 series: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
 					}
 				}
-				}
-	        }
-			var tooltip = {
-				formatter: function () {
-					var s = '<b>' + this.x + '</b>';
+				var tooltip = {
+					formatter: function () {
+						var s = '<b>' + this.x + '</b>';
 
-						$.each(this.points, function () {
-						if(this.series.name != "Series 1")  
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							this.y/* +' - ' +
-							(Highcharts.numberFormat(this.percentage,1)+'%'); */
-					});
+							$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
 
-					return s;
-				},
-				shared: true
-			};
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+						return s;
+					},
+					shared: true
+				};
+				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
+		}else{
+			$("#departmentStatusCountDivId").html('No Data Available');
+		}
 }
 
 
