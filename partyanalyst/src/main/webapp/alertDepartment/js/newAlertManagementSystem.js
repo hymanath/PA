@@ -37,6 +37,15 @@ function onLoadInitialisations()
 		}
 	});
 	/*alert Assigned Part Start*/
+	$(document).on('click', '.imageShowOpen li', function(){
+		var id = $(this).attr("attr_doc_id");
+		var path = "http://mytdp.com/"+$(this).attr("attr_path");
+		window.open(path);
+	});
+	$(document).on("change","#divisionDistWiseLevelsDivId",function(){
+		var defaultDepartmentID = $(this).attr("attr_department_id")
+			getDivisionIdListForDivisionFilter(defaultDepartmentID);
+	});
 	$(document).on('change', '#locationLevelSelectId', function(){
 		getParentLevelsOfLevel();
 	});
@@ -906,46 +915,56 @@ function buildDepartmentWiseAlertOverviewCnt(result,type,id)
 	var str='';
 	str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-		for(var i in result)
-		{
-			str+='<div class="departmentScroll'+i+'">';
+			str+='<div class="departmentScroll">';
 				str+='<div class="row">';
-					str+='<div class="col-md-7 col-xs-12 col-sm-4 m_top10">';
-						str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply'+i+'">';
-						if(result[i].name !=null && result[i].name.length > 40){
-							if(type== 'status')
-							{
-								str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getTotalAlertByStatusThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';  
-							}else if(type == 'department'){
-								str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getTotalAlertBylocationLvlThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"   attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';  
-							}
-							
-						}else{
-							if(type== 'status')
-							{
-								str+='<li>'+result[i].name+' <span style="cursor:pointer;" class="pull-right getTotalAlertByStatusThenDept" attr_department_id="'+id+'"  attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';
-							}else if(type == 'department'){
-								str+='<li>'+result[i].name+' <span style="cursor:pointer;" class="pull-right getTotalAlertBylocationLvlThenDept"  attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';
+					str+='<div class="col-sm-7 m_top10">';
+						str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
+						for(var i in result)
+						{
+							if(result[i].name !=null && result[i].name.length > 40){
+								if(type== 'status')
+								{
+									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getTotalAlertByStatusThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';  
+								}else if(type == 'department'){
+									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getTotalAlertBylocationLvlThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"   attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';  
+								}
+								
+							}else{
+								if(type== 'status')
+								{
+									str+='<li>'+result[i].name+' <span style="cursor:pointer;" class="pull-right getTotalAlertByStatusThenDept" attr_department_id="'+id+'"  attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';
+								}else if(type == 'department'){
+									str+='<li>'+result[i].name+' <span style="cursor:pointer;" class="pull-right getTotalAlertBylocationLvlThenDept"  attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';
+								}
+								
 							}
 							
 						}
 						str+='</ul>';
 					str+='</div>';
-					str+='<div class="col-md-5 col-xs-12 col-sm-4">';
-						str+='<div id="departmentStatusGraph'+i+'"></div>';
+					str+='<div class="col-sm-5">';
+						str+='<div id="departmentStatusGraph"></div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
-		}
 		str+='</div>';
 	str+='</div>';
 	$("#departmentWiseAlertOverviewCnt").html(str);
+	var scrollApply = result.length;
+	if( scrollApply > 10)
+	{
+		$(".departmentScroll").mCustomScrollbar({
+			setHeight: '500px'
+		});
+	}
+	
 	var departmentStatusOvrVwArr = [];
-	var departmentStatus = [];
+	
 	for(var i in result)
 	{
+		var departmentStatus = [];
 		var dynamicHeight;
-		$(".dynamicHeightApply"+i).each(function(){
+		$(".dynamicHeightApply").each(function(){
 			dynamicHeight = $(this).find("li").length;
 			if(result.length == 1){
 				dynamicHeight = (dynamicHeight*60)+"px";
@@ -956,12 +975,12 @@ function buildDepartmentWiseAlertOverviewCnt(result,type,id)
 			}
 			
 		});
-		$("#departmentStatusGraph"+i).css("height",dynamicHeight);
+		$("#departmentStatusGraph").css("height",dynamicHeight);
 		departmentStatus.push(result[i].name);
 		departmentStatus.push(result[i].percentage);
 		departmentStatusOvrVwArr.push(departmentStatus)
-		
-		$('#departmentStatusGraph'+i).highcharts({
+	}	
+		$('#departmentStatusGraph').highcharts({
 			chart: {
 				type: 'bar'
 			},
@@ -1037,7 +1056,7 @@ function buildDepartmentWiseAlertOverviewCnt(result,type,id)
 				 data: departmentStatusOvrVwArr
 			}]
 		});
-	}
+	
 	
 }
 function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){ 
@@ -1406,7 +1425,7 @@ function getStatusCompletionInfo(alertId){
 }
 function rightSideExpandView(alertId)
 {
-	$("#rightSideExpandView").html(spinner);
+    $("#rightSideExpandView").html(spinner);
 	var str='';
 	str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
 		str+='<div class="panel-right">';
@@ -4069,12 +4088,7 @@ var groupType = getgroupTypeDivision();
 			}
     });    
 }
-$(document).on("change","#divisionDistWiseLevelsDivId",function(){
-	var defaultDepartmentID = $(this).attr("attr_department_id")
-		getDivisionIdListForDivisionFilter(defaultDepartmentID);
-		
-		
-});
+
 
 function getDivisionIdListForDivisionFilter(departmentId){
 	$("#divisionWiseLevelsDivId").html('');
@@ -4136,8 +4150,3 @@ function getDocumentsForAlert(alertId){
 		}
     });
 }
-$(document).on('click', '.imageShowOpen li', function(){
-	var id = $(this).attr("attr_doc_id");
-	var path = "http://mytdp.com/"+$(this).attr("attr_path");
-	window.open(path);
-});
