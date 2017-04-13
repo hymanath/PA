@@ -2684,6 +2684,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdList));
         				setAlertDtls(finalVoList, list); 
         			}
+        			setSubListCount(finalVoList, alertIdList);
         		} catch (Exception e) {
         			LOG.error(" Exception Occured in getDistrictOfficerAlertDetails() method, Exception - ",e);
         		}		
@@ -3655,10 +3656,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        				else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
        					alertIds = govtAlertSubTaskDAO.getSubDivisionWorkLocationDeptScopeWiseSubTaskCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId);
        			}	
-    			 if(alertIds != null && alertIds.size() > 0){
+    		 if(alertIds != null && alertIds.size() > 0){
     				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
     				setAlertDtls(finalVoList, list); 
-    			}			
+    			}	
+    		  setSubListCount(finalVoList, alertIds); 
     			
     		} catch (Exception e) {
     			LOG.error(" Exception Occured in getDistrictLevelWiseClick() method, Exception - ",e);
@@ -4826,4 +4828,61 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			LOG.error("Error occured setStatusWiseAlertCnt() method of CccDashboardService{}");
     	    }
     	}
-}
+	 public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseAlertClick(Long govtDeptDesigOffceId,Long govtOffceId,Long statusId,String formDateStr,String toDateStr,String clickType){
+			List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+			try {
+			
+				Date fromDate = null; 
+	   			Date toDate = null;
+	   			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	   			if(formDateStr != null && formDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+	   				fromDate = sdf.parse(formDateStr);
+	   				toDate = sdf.parse(toDateStr);
+	   			}
+				List<Long> alertIds = null;
+				if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() > 0l && govtOffceId != null && govtOffceId.longValue() > 0l){
+				 if(clickType != null && clickType.equalsIgnoreCase("alert"))
+				  alertIds = alertAssignedOfficerNewDAO.getDistrictOffrAlertsIds(govtDeptDesigOffceId,govtOffceId,fromDate,toDate,statusId);
+				 else if(clickType != null && clickType.equalsIgnoreCase("mySubTasks"))
+				  alertIds = govtAlertSubTaskDAO.getDistrictOffcrSubTasksAlertIds(govtDeptDesigOffceId,govtOffceId,"mySubTasks",fromDate,toDate,statusId);
+				 else if(clickType != null && clickType.equalsIgnoreCase("myAssignedSubTasks"))
+				  alertIds = govtAlertSubTaskDAO.getDistrictOffcerSubTsksAlertIds(govtDeptDesigOffceId,govtOffceId,"myAssignedSubTasks",fromDate,toDate,statusId);
+				}
+				if(alertIds != null && alertIds.size() > 0){
+					List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+					
+					setAlertDtls(finalVoList, list); 
+				}
+				setSubListCount(finalVoList, alertIds);
+				
+			} catch (Exception e) {
+				LOG.error(" Exception Occured in getDistrictLevelDeptWiseAlertClick() method, Exception - ",e);
+			}		
+			return finalVoList;
+		}
+	 public void setSubListCount(List<AlertCoreDashBoardVO> finalVoList,List<Long> alertIds){
+		 try{
+			 List<Object[]> subtaskCountList = null;
+				if(alertIds != null && alertIds.size() > 0){
+					subtaskCountList = govtAlertSubTaskDAO.getSubTaskCount(alertIds);
+				}
+				//create a map from alertId and subtask count.
+				Map<Long,Long> alertIdAndSubTaskCountMap = new HashMap<Long,Long>();
+				if(subtaskCountList != null && subtaskCountList.size() > 0){
+					for(Object[] param : subtaskCountList){
+						alertIdAndSubTaskCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+				if(finalVoList != null && finalVoList.size() > 0){
+					for(AlertCoreDashBoardVO alertCoreDashBoardVO : finalVoList){
+						if(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()) != null){
+							alertCoreDashBoardVO.setSubTaskCount(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()));
+						}
+					}
+				}
+		 }catch (Exception e) {
+				LOG.error(" Exception Occured in setSubListCount() method, Exception - ",e);
+			}
+		
+	 }
+}      	
