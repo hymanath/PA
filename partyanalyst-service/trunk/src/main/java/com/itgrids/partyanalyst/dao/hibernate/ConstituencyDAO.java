@@ -1763,7 +1763,7 @@ public List<Long> getConstituenciesByState(Long stateId) {
 	}
 	public List<Object[]> getPanchayatsByTehsilId(Long tehsilId)
 	{
-		Query query = getSession().createSQLQuery("select model.panchayat_id as id , model.panchayat_name as name from panchayat model where model.tehsil_id = :tehsilId")
+		Query query = getSession().createSQLQuery("select model.panchayat_id as id , model.panchayat_name as name from panchayat model where model.tehsil_id = :tehsilId and model.is_deleted = 'N' ")
 		.addScalar("id",Hibernate.LONG)
 		.addScalar("name",Hibernate.STRING);
 		query.setParameter("tehsilId", tehsilId);
