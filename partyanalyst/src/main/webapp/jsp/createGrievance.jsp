@@ -1490,6 +1490,7 @@ function saveAlertStatusDetails()
 		  data: {task :JSON.stringify(jObj)}
 		}).done(function(result){
 			if(result == "success"){
+				showDashboard();
 				$("#saveMsgId").html("<span style='color:green;'>Updated Successfully..</span>");
 			}else{
 				$("#saveMsgId").html("<span style='color:green;'>Updation failed.Please try again.</span>");
