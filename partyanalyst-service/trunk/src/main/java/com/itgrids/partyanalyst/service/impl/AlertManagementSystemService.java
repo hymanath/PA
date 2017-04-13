@@ -3546,6 +3546,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			}
         		}
         		
+        		if(finalList != null && finalList.size() > 0){
+        			finalList.get(0).setApplicationStatus(isReOpen+"");
+        		}
 				
 			} catch (Exception e) {
 				e.printStackTrace();
