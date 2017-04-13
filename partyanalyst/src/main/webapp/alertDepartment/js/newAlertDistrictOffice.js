@@ -37,7 +37,7 @@ $("#dateRangePickerAUM").daterangepicker({
 			$("#dateRangePickerAUM").val('All');
 		}
 		
-		getDistrictOfficerAlertsCountView();
+		onLoadCallsAMU();
 	});
 	
 	function onLoadCallsAMU(){
@@ -64,7 +64,7 @@ $("#dateRangePickerAUM").daterangepicker({
 		});
 	}
 	
-	
+	var globalDepartmentId;
 	function getDistrictOfficerAlertsCountView(){
 	$("#myAlertsDivID").html(spinner);
 	$("#mySubTasksDivID").html(spinner);
@@ -85,20 +85,29 @@ $("#dateRangePickerAUM").daterangepicker({
 		$("#myAlertsDivID").html('');
 		$("#mySubTasksDivID").html('');
 		$("#assignedSubTasksDivID").html('');
-		buildDistrictOfficerAlertsCountView(result);
+		if(result !=null){
+			globalDepartmentId = result.departmentId;
+			buildDistrictOfficerAlertsCountView(result);
+		}
+		
+		getDistrictOfficeGraphicalViewForDistrict(globalDepartmentId,"scopeWise","alert","desc","count",0);
+		getDistrictOfficeGraphicalViewForDivision(globalDepartmentId,"scopeWise","alert","desc","count",0,0);
+		getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,"scopeWise","alert","desc","count",0,0,0);
+		getDistIdListForDistFilter(globalDepartmentId);
+		getDistIdListForDivisionFilter(globalDepartmentId);
+		getDistrictIdListForSubDivisionFilter(globalDepartmentId); 
     });
 }
 var overAllAlertIds =[];
 var totalCoutAlertIds =[];
 var globalUserLevelId;
 var globalUserLevelValues = [];
-var globalDepartmentId;
+
 
 function buildDistrictOfficerAlertsCountView(result){
 	var str='';
 	if(result !=null){
 		globalUserLevelId = result.levelId;
-		globalDepartmentId = result.departmentId;
 		if(result.levelValues != null && result.levelValues.length > 0)
 			globalUserLevelValues=result.levelValues;
 	}
@@ -134,89 +143,60 @@ function buildDistrictOfficerAlertsCountView(result){
 	}
 	$("#myAlertsDivID").html(str);
 	
-	var mainStatusArr=[];
-	var count = [];
-	var percArr = [];
 	if(result !=null && result.list1 !=null && result.list1.length>0){
+		var mainArrTempAT=[];
+		var namesArrAT=[];
+		var countAT = [];
+		
 		for(var i in result.list1){
-			var statusArr=[];
-			var statusNamesArr=[];
+			
 			var uniqCnt = {};
-			var color;
+			
 			var totalAlertCnt = result.list1[0].overAllCnt;
-			statusArr.push(result.list1[i].count);
-			statusNamesArr.push(result.list1[i].name);
-			percArr.push(result.list1[i].perc);
-			color=result.list1[i].color;
+			namesArrAT.push(result.list1[i].name);
+			var tempArrAT = {"y":result.list1[i].count,color:result.list1[i].color};
 			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list1[i].count),color:"#D3D3D3"};
-			count.push(uniqCnt);
-			var obj1={
-				data: count    
-			}
-			var obj={
-						name: 'No.of Alerts',
-						data: statusArr,
-						color: color
-					}
+			countAT.push(uniqCnt);
 			
-			mainStatusArr.push(obj1);
-			mainStatusArr.push(obj);
-			
+			mainArrTempAT.push(tempArrAT);
 		}
-	}
 	
-		var data = mainStatusArr
-			var id = 'myAlertGraphView';
-			var type = {
-				type: 'bar',
-				backgroundColor:'transparent'
-				
-			}
-			var legend = {
-				enabled: false,
-			}
-			var yAxis = {
+	console.log(mainArrTempAT)
+	 $('#myAlertGraphView').highcharts({
+			
+			chart: {
+				type: 'bar'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+			 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				categories: namesArrAT,
+				labels: {
+				enabled: true,
+					
+				}
+			},
+			yAxis: {
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
 				title: {
-					text: null
+					text: ''
 				},
 				labels: {
-						enabled:false
-					},
-				stackLabels: {
-					//useHTML: true,
-					alertPerc: percArr,
-					//align: 'left',
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-					},
-					 formatter: function() {
+					enabled: false,
 						
-						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-						return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-					} 
-					
-				}
+					},
 				
-			}
-			var xAxis = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: statusNamesArr
-			}
-			var plotOptions =  {
-	             series: {
-					stacking: 'normal',
-					pointWidth: 30,
-					gridLineWidth: 15
-				}
-	        }
-			var tooltip = {
+			},
+			tooltip: {
 				formatter: function () {
 					var s = '<b>' + this.x + '</b>';
 
@@ -230,8 +210,49 @@ function buildDistrictOfficerAlertsCountView(result){
 					return s;
 				},
 				shared: true
-			};
-			highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip); 
+			},
+			
+			legend: {
+				verticalAlign:'top',
+				enabled: false
+			},
+			plotOptions: {
+					bar: {
+						stacking: 'percent',  
+						pointWidth: 25,
+						gridLineWidth: 15
+					},
+				
+				},
+			series: [{
+				
+				data: countAT,
+					
+			},
+			{
+				name: "Number of alerts",
+				 data: mainArrTempAT,
+				colorByPoint: true,
+				 dataLabels: {
+					useHTML: true,
+					align: 'left',
+					
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					 formatter: function() {
+						return '<span style="position: absolute;"><br/>'+Highcharts.numberFormat(this.percentage,2)+'%'+' '+'('+this.y+')</span>';
+					} 
+					
+				}  
+				
+			}]
+		}); 
+		}else{
+			 $('#myAlertGraphView').html("No Data Available")
+		}
 
 			
 		var str1='';
@@ -265,84 +286,116 @@ function buildDistrictOfficerAlertsCountView(result){
 	}
 	$("#mySubTasksDivID").html(str1);
 	
-	var mainStatusArrST=[];
-	var countST = [];
-	var percArrST = [];
-	if(result !=null && result.list2 !=null && result.list2.length>0){
+if(result !=null && result.list2 !=null && result.list2.length>0){
+		var mainArrTempST=[];
+		var namesArrST=[];
+		var countST = [];
+		
 		for(var i in result.list2){
-			var statusArrST=[];
-			var statusNamesArrST=[];
-			var colorST;
+			
 			var uniqCnt = {};
+			
 			var totalAlertCnt = result.list2[0].overAllCnt;
-			statusArrST.push(result.list2[i].count);
-			statusNamesArrST.push(result.list2[i].name);
-			percArrST.push(result.list2[i].perc);
-			colorST=result.list2[i].color;
+			namesArrST.push(result.list2[i].name);
+			var tempArrST = {"y":result.list2[i].count,color:result.list2[i].color};
 			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list2[i].count),color:"#D3D3D3"};
 			countST.push(uniqCnt);
-			var obj1={
-				data: countST    
-			}
-			var obj={
-						name: 'No.of Alerts',
-						data: statusArrST,
-						color: colorST
-					}
 			
-			mainStatusArrST.push(obj1);
-			mainStatusArrST.push(obj);
-			
+			mainArrTempST.push(tempArrST);
 		}
-	}
 	
-		var dataST = mainStatusArrST
-			var idST = 'mySubTasksGraphView';
-			var type = {
-				type: 'bar',
-				backgroundColor:'transparent'
-				
-			}
-			var legend = {
-				enabled: false,
-			}
-			var yAxisST = {
+	 $('#mySubTasksGraphView').highcharts({
+			
+			chart: {
+				type: 'bar'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+			 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				categories: namesArrST,
+				labels: {
+				enabled: true,
+					
+				}
+			},
+			yAxis: {
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
 				title: {
-					text: null
+					text: ''
 				},
 				labels: {
-						enabled:false
+					enabled: false,
+						
 					},
-				stackLabels: {
-					//useHTML: true,
-					alertPerc: percArrST,
-					//align: 'left',
+				
+			},
+			tooltip: {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			},
+			
+			legend: {
+				verticalAlign:'top',
+				enabled: false
+			},
+			plotOptions: {
+					bar: {
+						stacking: 'percent',  
+						pointWidth: 25,
+						gridLineWidth: 15
+					},
+				
+				},
+			series: [{
+				
+				data: countST,
+					
+			},
+			{
+				name: "Number of alerts",
+				 data: mainArrTempST,
+				 colorByPoint: true,
+				 dataLabels: {
+					useHTML: true,
+					align: 'left',
+					
 					enabled: true,
 					style: {
 						fontWeight: 'bold',
 						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 					},
 					 formatter: function() {
-						
-						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-						return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return '<span style="position: absolute;"><br/>'+Highcharts.numberFormat(this.percentage,2)+'%'+' '+'('+this.y+')</span>';
 					} 
 					
-				}
+				}  
 				
-			}
-			var xAxisST = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: statusNamesArrST
-			}
-			
-			
-			highcharts(idST,type,xAxisST,yAxisST,legend,dataST,plotOptions,tooltip); 
+			}]
+		}); 
+		}else{
+			 $('#mySubTasksGraphView').html("No Data Available")
+		}
+		
 			
 			var str2='';
 		if(result !=null && result.list3 !=null && result.list3.length>0){
@@ -375,91 +428,117 @@ function buildDistrictOfficerAlertsCountView(result){
 	}
 	$("#assignedSubTasksDivID").html(str2);
 	
-	var mainStatusArrAST=[];
-	var countAST = [];
-	var percArrAST = [];
 	if(result !=null && result.list3 !=null && result.list3.length>0){
+		var mainArrTemp=[];
+		var namesArr=[];
+		var countAST = [];
+		
 		for(var i in result.list3){
-			var statusArrAST=[];
-			var statusNamesArrAST=[];
-			var colorAST;
+			
 			var uniqCnt = {};
 			var totalAlertCnt = result.list3[0].overAllCnt;
-			statusArrAST.push(result.list3[i].count);
-			statusNamesArrAST.push(result.list3[i].name);
-			percArrAST.push(result.list3[i].perc);
-			colorAST = result.list3[i].color;
+			namesArr.push(result.list3[i].name);
+			var tempArr = {"y":result.list3[i].count,color:result.list3[i].color};
 			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list3[i].count),color:"#D3D3D3"};
 			countAST.push(uniqCnt);
-			var obj1={
-				data: countAST    
-			}
-			var obj={
-						name: 'No.of Alerts',
-						data: statusArrAST,
-						color: colorAST
-					}
 			
-			mainStatusArrAST.push(obj1);
-			mainStatusArrAST.push(obj);
-			
+			mainArrTemp.push(tempArr);
 		}
-	}
 	
-		var dataAST = mainStatusArrAST
-			var idAST = 'assignedSubTasksGraphView';
-			var type = {
-				type: 'bar',
-				backgroundColor:'transparent'
-				
-			}
-			var legend = {
-				enabled: false,
-			}
-			var yAxisAST = {
+	
+	 $('#assignedSubTasksGraphView').highcharts({
+			
+			chart: {
+				type: 'bar'
+			},
+			title: {
+				text: ''
+			},
+			subtitle: {
+				text: ''
+			},
+			xAxis: {
+			 min: 0,
+				 gridLineWidth: 0,
+				 minorGridLineWidth: 0,
+				categories: namesArr,
+				labels: {
+				enabled: true,
+					
+				}
+			},
+			yAxis: {
 				min: 0,
 				gridLineWidth: 0,
 				minorGridLineWidth: 0,
 				title: {
-					text: null
+					text: ''
 				},
 				labels: {
-						enabled:false
+					enabled: false,
+						
 					},
-				stackLabels: {
-					//useHTML: true,
-					alertPerc: percArrAST,
-					//align: 'left',
+				
+			},
+			tooltip: {
+				formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			},
+			
+			legend: {
+				verticalAlign:'top',
+				enabled: false
+			},
+			plotOptions: {
+					bar: {
+						stacking: 'percent',  
+						pointWidth: 25,
+						gridLineWidth: 15
+					},
+				
+				},
+			series: [{
+				
+				data: countAST,
+					
+			},
+			{
+				name: "Number of alerts",
+				 data: mainArrTemp,
+				 colorByPoint: true,
+				 dataLabels: {
+					useHTML: true,
+					align: 'left',
+					
 					enabled: true,
 					style: {
 						fontWeight: 'bold',
 						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 					},
 					 formatter: function() {
-						
-						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-						return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return '<span style="position: absolute;"><br/>'+Highcharts.numberFormat(this.percentage,2)+'%'+' '+'('+this.y+')</span>';
 					} 
 					
-				}
+				}  
 				
-			}
-			var xAxisAST = {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: statusNamesArrAST
-			}
-			
-			
-			highcharts(idAST,type,xAxisAST,yAxisAST,legend,dataAST,plotOptions,tooltip); 
-			alert(globalDepartmentId)
-			getDistrictOfficeGraphicalViewForDistrict(globalDepartmentId,"scopeWise","alert","desc","count",0);
-			getDistrictOfficeGraphicalViewForDivision(globalDepartmentId,"scopeWise","alert","desc","count",0,0);
-			getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,"scopeWise","alert","desc","count",0,0,0);
-			getDistIdListForDistFilter(globalDepartmentId);
-			getDistIdListForDivisionFilter(globalDepartmentId);
-			getDistrictIdListForSubDivisionFilter(globalDepartmentId);  
+			}]
+		}); 
+		}else{
+			$('#assignedSubTasksGraphView').html("No Data Available")
+		}
+		
+			 
 }
 
 //getSubOrdinateAlertsOverview();
@@ -669,18 +748,18 @@ function getDistrictLevelWiseClick(parentGovtDepartmentScopeId){
 			};
 	}
 	
-	function getSubDivisionWiseSorting(){
-		 var subdivisionSortingType = ''; 
-		 var subdivisionOrderType = ''; 
+	function getSubDivision(){
+		 var subSortingType = ''; 
+		 var subOrderType = ''; 
 		$('.locationWiseSortingSubDivision li').each(function(i, obj){
 			 if($(this).hasClass('active')){
-			  subdivisionSortingType = $(this).attr("attr_sorting_type");
-			  subdivisionOrderType = $(this).attr("attr_order_type");
+			  subSortingType = $(this).attr("attr_sorting_type");
+			  subOrderType = $(this).attr("attr_order_type");
 			 }
 		});
 		return {
-			subdivisionSortingType : subdivisionSortingType,
-			subdivisionOrderType :subdivisionOrderType
+			subSortingType : subSortingType,
+			subOrderType :subOrderType
 			};
 	}
 	
@@ -737,7 +816,7 @@ function getDistrictLevelWiseClick(parentGovtDepartmentScopeId){
 		data: {task :JSON.stringify(jsObj)}     
 		}).done(function(result){
 			if(result !=null && result.length>0){
-				$("#DistrictNamesId").append('<option value="0">Select District</option>');
+				//$("#DistrictNamesId").append('<option value="0">Select District</option>');
 				for(var i in result){
 					$("#DistrictNamesId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -791,7 +870,7 @@ function getDistrictLevelWiseClick(parentGovtDepartmentScopeId){
     data: {task :JSON.stringify(jsObj)}     
     }).done(function(result){
 		if(result !=null && result.length>0){
-				$("#DivisionDistNamesId").append('<option value="0">Select District</option>');
+				//$("#DivisionDistNamesId").append('<option value="0">Select District</option>');
 				for(var i in result){
 					$("#DivisionDistNamesId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -860,7 +939,7 @@ function getDistrictLevelWiseClick(parentGovtDepartmentScopeId){
     data: {task :JSON.stringify(jsObj)}     
     }).done(function(result){
 		if(result !=null && result.length>0){
-				$("#DivisionNamesId").append('<option value="0">Select District</option>');
+				//$("#DivisionNamesId").append('<option value="0">Select District</option>');
 				for(var i in result){
 					$("#DivisionNamesId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -901,7 +980,7 @@ function getDistrictIdListForSubDivisionFilter(globalDepartmentId){
     data: {task :JSON.stringify(jsObj)}     
     }).done(function(result){
 		if(result !=null && result.length>0){
-				$("#SubDivisionDistNamesId").append('<option value="0">Select District</option>');
+				//$("#SubDivisionDistNamesId").append('<option value="0">Select District</option>');
 				for(var i in result){
 					$("#SubDivisionDistNamesId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -920,10 +999,12 @@ function getDistrictIdListForSubDivisionFilter(globalDepartmentId){
 		getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,0,0,0);
 	});
 	$(document).on("change",".locationWiseSubDiviDistOnChange",function(){
+		var sortingType = getSubDivision().subSortingType; // 'value1'
+		var orderType = getSubDivision().subOrderType; // 'value2'
+		
 		var searchType = getSearchType();
 		var alertType = getAlertType();
-		var sortingType = getSubDivisionWiseSorting().subDivisionSortingType; // 'value1'
-		var orderType = getSubDivisionWiseSorting().subDivisionOrderType; // 'value2'
+		
 		var districtId =$("#SubDivisionDistNamesId").val();
 		getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,0,0);
 		getDivisionIdListForSubDivisionFilter(globalDepartmentId,districtId);  
@@ -932,8 +1013,8 @@ function getDistrictIdListForSubDivisionFilter(globalDepartmentId){
 		
 		var districtId =$("#SubDivisionDistNamesId").val();
 		var districtDivisionId =$("#SubDivisionDiviNamesId").val();
-		var sortingType = getSubDivisionWiseSorting().subDivisionSortingType; // 'value1'
-		var orderType = getSubDivisionWiseSorting().subDivisionOrderType; // 'value2'
+		var sortingType = getSubDivision().subSortingType; // 'value1'
+		var orderType = getSubDivision().subOrderType; // 'value2'
 		var searchType = getSearchType();
 		var alertType = getAlertType();
 		
@@ -944,8 +1025,8 @@ function getDistrictIdListForSubDivisionFilter(globalDepartmentId){
 	
 		var districtId =$("#SubDivisionDistNamesId").val();
 		var districtDivisionId =$("#SubDivisionDiviNamesId").val();
-		var sortingType = getSubDivisionWiseSorting().subDivisionSortingType; // 'value1'
-		var orderType = getSubDivisionWiseSorting().subDivisionOrderType; // 'value2'
+		var sortingType = getSubDivision().subSortingType; // 'value1'
+		var orderType = getSubDivision().subOrderType; // 'value2'
 		var searchType = getSearchType();
 		var alertType = getAlertType();
 		
@@ -982,7 +1063,7 @@ var searchType = getSearchType();
     data: {task :JSON.stringify(jsObj)}     
     }).done(function(result){
 		if(result !=null && result.length>0){
-				$("#SubDivisionDiviNamesId").append('<option value="0">Select District</option>');
+				//$("#SubDivisionDiviNamesId").append('<option value="0">Select Division</option>');
 				for(var i in result){
 					$("#SubDivisionDiviNamesId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -1018,7 +1099,7 @@ var searchType = getSearchType();
     data: {task :JSON.stringify(jsObj)}     
     }).done(function(result){
     if(result !=null && result.length>0){
-				$("#SubDivisionNamesId").append('<option value="0">Select District</option>');
+				//$("#SubDivisionNamesId").append('<option value="0">Select SubDivision</option>');
 				for(var i in result){
 					$("#SubDivisionNamesId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -1028,6 +1109,7 @@ var searchType = getSearchType();
 
 function getDistrictOfficeGraphicalViewForDistrict(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId){
 	
+	$("#districtLevelSubOrdinarteDetails").html(spinner);
     var paperIdList =[];
     var chanelIdList =[];
     
@@ -1054,6 +1136,7 @@ function getDistrictOfficeGraphicalViewForDistrict(globalDepartmentId,searchType
           url: 'getDistrictOfficeGraphicalViewAction.action',
         data: {task :JSON.stringify(jObj)}
         }).done(function(result){
+			$("#districtLevelSubOrdinarteDetails").html('')
 			buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,searchType)
       });
   
@@ -1405,6 +1488,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,search
 
 function getDistrictOfficeGraphicalViewForDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,districtDivisionId){
 	
+	$("#divisionLevelSubOrdinarteDetails").html(spinner);
     var paperIdList =[];
     var chanelIdList =[];
     
@@ -1431,6 +1515,7 @@ function getDistrictOfficeGraphicalViewForDivision(globalDepartmentId,searchType
           url: 'getDistrictOfficeGraphicalViewAction.action',
         data: {task :JSON.stringify(jObj)}
         }).done(function(result){
+			$("#divisionLevelSubOrdinarteDetails").html('');
 			buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,searchType);
       });
   
@@ -1783,6 +1868,8 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,search
 
 function getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,districtDivisionId,districtDivisionId){
 	
+	$("#SubdivisionLevelSubOrdinarteDetails").html(spinner);
+	
     var paperIdList =[];
     var chanelIdList =[];
    
@@ -1809,6 +1896,7 @@ function getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchT
           url: 'getDistrictOfficeGraphicalViewAction.action',
         data: {task :JSON.stringify(jObj)}
         }).done(function(result){
+			$("#SubdivisionLevelSubOrdinarteDetails").html('');
 			 buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,searchType)
       });
   
