@@ -191,8 +191,8 @@
 											<label class="f_10">Presentation:</label>
 											<input type="text"  class="form-control presentationCls" id="presentationId0"  name="assemblySessionReportVO.membersList[0].scalesList[1].score" attr_no="0">
 										</div>
-										<div class="col-md-1 col-xs-12 col-sm-6">
-											<label class="f_10">Counter:</label>
+										<div class="col-md-1 col-xs-12 col-sm-6" style="margin-top:-14px;">
+											<label class="f_10">Counter Attack:</label>
 											<input type="text"  class="form-control counterAttackCls" id="counterAttackId0"  name="assemblySessionReportVO.membersList[0].scalesList[2].score" attr_no="0">
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-6">
@@ -213,6 +213,7 @@
 							</div>
 							<div id="errMsg" ></div>
 							<button type="button" class="btn btn-info  " id="submitBtnId" style="border-radius: 16px;;background:#0b95de" onclick="savingApplication();">SUBMIT</button>
+							<span ><img src="images/ajaxImg2.gif" style="width:20px;display:none;" id="procesingImg6"></span>
 							</form>
 						</div>
 						
@@ -269,8 +270,8 @@
 				<label class="f_10">Presentation:</label>
 				<input type="text" class="form-control presentationCls" attr_no="" >
 			</div>
-			<div class="col-md-1 col-xs-12 col-sm-6 m_top20">
-				<label class="f_10">Counter:</label>
+			<div class="col-md-1 col-xs-12 col-sm-6 m_top20" style="margin-top:-15px;">
+				<label class="f_10">Counter Attack:</label>
 				<input type="text" class="form-control counterAttackCls" attr_no="">
 			</div>
 			<div class="col-md-2 col-xs-12 col-sm-6 m_top20">
@@ -314,8 +315,8 @@
 					<label class="f_10">Presentation:</label>
 					<input type="text" class="form-control presentationCls" attr_no="">
 				</div>
-				<div class="col-md-1 col-xs-12 col-sm-6 ">
-					<label class="f_10">Counter:</label>
+				<div class="col-md-1 col-xs-12 col-sm-6 " style="margin-top:-15px;">
+					<label class="f_10">Counter Attack:</label>
 					<input type="text" class="form-control counterAttackCls" attr_no="">
 				</div>
 				<div class="col-md-2 col-xs-12 col-sm-6 ">
