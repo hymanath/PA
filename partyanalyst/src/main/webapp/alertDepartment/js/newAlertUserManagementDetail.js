@@ -10,7 +10,7 @@ function onLoadClicks()
 	
 	$(document).on("click",".alert-status-change",function(){
 		var alertId = $(this).attr("attr_alert_id");
-		
+
 		if($(this).is(':checked'))
 		{
 			$(".alert-status-change-body").show();
@@ -93,7 +93,7 @@ function onLoadClicks()
 		$(this).remove();
 	});
 	$(document).on("click","[status-icon] li",function(e){
-		e.stopPropagation();
+        e.stopPropagation();
 		var status = $(this).attr("status-icon-block")
 		var alertId = $(this).attr("attr_alert_id")
 		if(status != null && status != undefined)
@@ -134,7 +134,7 @@ function onLoadClicks()
 		}
 	});
 	$(document).on("click","[expand-icon]",function(){
-		var expandBlockName = $(this).attr("expand-icon");
+        var expandBlockName = $(this).attr("expand-icon");
 		var alertId = $(this).attr("attr_alertId");
 		$("[expand-icon]").closest("li").removeClass("active");
 		$("[expand-icon]").removeClass("text-primary");
@@ -155,7 +155,7 @@ function onLoadClicks()
 			$("[expand-main]").addClass("col-sm-4").removeClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
 		}
 	});
-	$(document).on("click","[expanded-close]",function(){
+    $(document).on("click","[expanded-close]",function(){
 		var expandBlockName = $(this).attr("expanded-close");
 		if($("[expand-main]").attr("expand-main") === 'true')
 		{
@@ -321,7 +321,7 @@ function dateRangePicker(alertId)
 		function cb(start) {
 			$('.modal-date').html(start.format('DD/MM/YYYY'));
 		}
-
+       
 		$('.modal-date').daterangepicker({
 			startDate: start,
 			singleDatePicker:true,
@@ -330,7 +330,7 @@ function dateRangePicker(alertId)
 			}
 			
 		}, cb);
-
+        
 		//cb(start);
 		
 	});
