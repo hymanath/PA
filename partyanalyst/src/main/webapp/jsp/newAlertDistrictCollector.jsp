@@ -107,7 +107,7 @@
 											<ul class="switch-btn pull-right">
 												<li attr_type="status">status overview</li>
 												<li attr_type="location" class="active">location level</li>
-												<li attr_type="filter" >Filter View</li>
+												<!--<li attr_type="filter" >Filter View</li>-->
 											</ul>
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-12 ">
