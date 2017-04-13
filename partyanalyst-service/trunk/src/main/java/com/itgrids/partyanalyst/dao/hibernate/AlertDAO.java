@@ -6117,6 +6117,29 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	query.setParameter("alertId", alertId);
     	return (Object[])query.uniqueResult();
     }
+    public List<Object[]> getNoOFAlertCreatedList(Date startDate, Date endDate){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append(" select " +
+    			" ALT.createdBy " +
+    			" , count(distinct ALT.alertId) " +
+    			" from " +
+    			" Alert ALT, UserLoginDetails ULD " +
+    			" where " +
+    			" ALT.createdBy = ULD.userId " );
+    	//queryStr.append(" and ALT.isDeleted = 'N' ");
+    	if(startDate != null && endDate != null){
+    		queryStr.append(" and date(ALT.createdTime) between :startDate and :endDate ");
+    	}
+    	queryStr.append(" group by ALT.createdBy ");
+    	Query query = getSession().createQuery(queryStr.toString());
+    	
+    	if(startDate != null && endDate != null){
+    		query.setDate("startDate",startDate);
+    		query.setDate("endDate",endDate);
+    	}
+    	return query.list();
+    			
+    }
     public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewForAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
