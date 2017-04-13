@@ -1718,7 +1718,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				String group = jObj.getString("group");
-				String alertType = jObj.getString("group");
+				String alertType = jObj.getString("alertType");
 				String searchType = jObj.getString("searchType");
 				idnameVoList = alertManagementSystemService.getDistIdListForDivisionFilter(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,group,alertType,searchType);
 			} catch (Exception e) {
