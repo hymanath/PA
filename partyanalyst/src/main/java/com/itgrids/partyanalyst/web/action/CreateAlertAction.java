@@ -2479,6 +2479,12 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}
 			   return Action.SUCCESS;
 	}
+	public String getAgentWiseReport(){
+		try{
+			return Action.SUCCESS;
+		}catch (Exception e) {
+			   e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 }
-
-//public CallCenterVO getTotalUserLogingDtls(String fromDateStr, String toDateStr)

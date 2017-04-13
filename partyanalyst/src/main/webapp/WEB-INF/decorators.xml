@@ -750,6 +750,7 @@
 		<pattern>/alertUserManagementAction*</pattern>
 		<pattern>/alertDistManagement*</pattern>
 		<pattern>/alertDistOfficeManagement*</pattern>
+		<pattern>/agentWiseReportAction*</pattern> 
 		
 		<pattern>/createGrievance*</pattern>
 	 </decorator>
