@@ -3609,6 +3609,8 @@
 		<property name="govtDepartmentDesignationHierarchyDAO" ref="govtDepartmentDesignationHierarchyDAO"></property>
 		<property name="govtDepartmentDesignationOfficerDetailsDAO" ref="govtDepartmentDesignationOfficerDetailsDAO"></property>
 		<property name="localityDAO" ref="localityDAO"></property>
+		<property name="userLoginDetailsDAO" ref="userLoginDetailsDAO"></property>
+		<property name="userDAO" ref="userDAO"></property>  
 		<property name="alertFeedbackStatusDAO" ref="alertFeedbackStatusDAO"></property>
 		<property name="alertAssignedOfficerDAO" ref="alertAssignedOfficerDAO"></property>
 		<property name="alertAssignedOfficerTrackingDAO" ref="alertAssignedOfficerTrackingDAO"></property>

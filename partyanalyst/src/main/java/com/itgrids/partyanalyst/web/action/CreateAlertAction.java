@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
@@ -86,10 +87,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<Long> cadreIds=new ArrayList<Long>(0);
 	private List<UserTypeVO> activityMembersList;
 	private GrievanceAlertVO grievanceAlertVO;
+	private CallCenterVO callCenterVO;
 	private List<AlertTrackingVO> alertTrackingVOList;
 	private List<GovtDepartmentVO> govtDeptVoList = new ArrayList<GovtDepartmentVO>(0);
 	
 	
+	public CallCenterVO getCallCenterVO() {
+		return callCenterVO;
+	}
+
+	public void setCallCenterVO(CallCenterVO callCenterVO) {
+		this.callCenterVO = callCenterVO;
+	}
+
 	public List<GovtDepartmentVO> getGovtDeptVoList() {
 		return govtDeptVoList;
 	}
@@ -2351,6 +2361,20 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		
 		return Action.SUCCESS;	
 	}
+	public String getTotalUserLogingDtls(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDateStr");
+			callCenterVO = alertService.getTotalUserLogingDtls(fromDateStr, toDateStr);
+		}
+		catch(Exception e){	  
+			LOG.error("Exception occured in getTotalUserLogingDtls()",e);
+		}
+		
+		return Action.SUCCESS;	
+	}
+	
 	
 	public String getAllMandalsByDistrictID()
 	{
@@ -2457,4 +2481,4 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	}
 }
 
-//getTotalAlertGroupByStatus(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList)
+//public CallCenterVO getTotalUserLogingDtls(String fromDateStr, String toDateStr)
