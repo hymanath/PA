@@ -2433,4 +2433,43 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	    }
  	      return query.list();
  	}
+	 
+	 public List<Long> getDistrictOffrAlertsIds(Long govtDeptDesigOffceId,Long govtOffceId,Date fromDate,Date toDate,Long statusId){
+	    	StringBuilder sb = new StringBuilder();
+	    	  
+	    	  sb.append(" select distinct model.alert.alertId from AlertAssignedOfficerNew model ");
+	    	
+	    	  sb.append(" where model.isDeleted = 'N' " );
+	    	
+	    	  
+	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
+	    		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffceId " );
+	    	  }
+	    	  if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDeptDesigOffceId " );
+	    	  }
+	    	  if(statusId != null && statusId.longValue() > 0L){
+	    		  sb.append(" and  model.alertStatus.alertStatusId = :statusId");
+	  		  }
+	    	  if(fromDate != null && toDate != null){
+	    		  sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+	  		  }
+	    	  
+	    	  Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
+	    		  query.setParameter("govtDeptDesigOffceId", govtDeptDesigOffceId);  
+	    	  }
+	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
+	    		  query.setParameter("govtOffceId", govtOffceId);  
+	    	  }
+	    	  if(statusId != null && statusId.longValue() > 0L){
+	    		  query.setParameter("statusId", statusId); 
+	    	  }
+	    	  if(fromDate != null && toDate != null){
+	  			query.setDate("fromDate", fromDate);
+	  			query.setDate("toDate", toDate);
+	  		}
+	    	  return query.list();
+	    }
 }// GDWL.govt_department_work_location_id, GDS.govt_department_scope_id,AAO.alert_status_id

@@ -1575,4 +1575,98 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		}
 		return query.list();
    }
+   public List<Long> getDistrictOffcrSubTasksAlertIds(Long govtDeptDesigOffceId,Long govtOffceId,String type,Date fromDate,Date toDate,Long statusId){
+ 	   StringBuilder sb = new StringBuilder();
+	    	
+    		sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
+    	
+    	sb.append(" where model.isDeleted = 'N' " );
+    	
+    	if(type != null && type.equalsIgnoreCase("mySubTasks")){
+    	  	  if(govtOffceId != null && govtOffceId.longValue() >0l){
+	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId = :govtOffceId " );
+	    	  }
+    	  	if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDeptDesigOffceId " );
+	    	  }
+	    }else{
+    		if(govtOffceId != null && govtOffceId.longValue() >0l){
+	    		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffceId " );
+	    	  }
+    		
+    			if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
+    				sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDeptDesigOffceId " );
+    			}
+	    	  
+    	}
+    	   if(statusId != null && statusId.longValue() > 0L){
+    		 sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId");
+		  }
+		  if(fromDate != null && toDate != null){
+			 sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
+		    }
+	    	  Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
+	    		  query.setParameter("govtDeptDesigOffceId", govtDeptDesigOffceId);  
+	    	  }
+	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
+	    		  query.setParameter("govtOffceId", govtOffceId);  
+	    	  }
+	    	  if(statusId != null && statusId.longValue() > 0L){
+	    		  query.setParameter("statusId", statusId); 
+	    	  }
+	    	  if(fromDate != null && toDate != null){
+	    		  query.setDate("fromDate", fromDate);
+	    		  query.setDate("toDate", toDate);
+	    	  }
+	    	  return query.list();
+    }
+     public List<Long> getDistrictOffcerSubTsksAlertIds(Long govtDeptDesigOffceId,Long govtOffceId,String type,Date fromDate,Date toDate,Long statusId){
+ 	   StringBuilder sb = new StringBuilder();
+    		sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
+    	
+    	sb.append(" where model.isDeleted = 'N' " );
+    	
+    	if(type != null && type.equalsIgnoreCase("mySubTasks")){
+    	  	  if(govtOffceId != null && govtOffceId.longValue() >0l){
+	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId = :govtOffceId " );
+	    	  }
+    	  	if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDeptDesigOffceId " );
+	    	  }
+	    }else{
+    		if(govtOffceId != null && govtOffceId.longValue() >0l){
+	    		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffceId " );
+	    	  }
+    		
+    			if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
+    				sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDeptDesigOffceId " );
+    			}
+	    	  
+    	}
+    	if(statusId != null && statusId.longValue() > 0L){
+    		sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId");
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
+		}
+	    	   
+	    	  Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
+	    		  query.setParameter("govtDeptDesigOffceId", govtDeptDesigOffceId);  
+	    	  }
+	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
+	    		  query.setParameter("govtOffceId", govtOffceId);  
+	    	  }
+	    	  if(statusId != null && statusId.longValue() > 0L){
+	    		  query.setParameter("statusId", statusId); 
+	    	  }
+	    	  if(fromDate != null && toDate != null){
+	    		  query.setDate("fromDate", fromDate);
+	    		  query.setDate("toDate", toDate);
+	    	  }
+	    	  return query.list();
+    }
 }
