@@ -961,13 +961,18 @@ public class AlertAssignedOfficerDAO extends GenericDaoHibernate<AlertAssignedOf
 			        " EDS.editionId, " +//16
 			        " EDS.editionAlias, " +//17
 			        " TNC.tvNewsChannelId, " +//18
-			        " TNC.channelName," +
-			        "  UA.state.stateName "); //19
+			        " TNC.channelName," +//19
+			        "  UA.state.stateName," + //20
+			        " T.tehsilName," + //21
+			        " P.panchayatName," + //22
+			        " LEB.name " +  //23
+			        "  ");  //balu
 		
 		sb.append(" from AlertAssignedOfficer model" +
 					" left join model.govtDepartmentDesignationOfficer.userAddress UA" +
 					" left join model.alert.edition EDS" +
 					" left join model.alert.tvNewsChannel TNC" +
+					" left join UA.state S " +
 					" left join UA.district D" +
 					" left join UA.constituency C" +
 					" left join UA.tehsil T" +
