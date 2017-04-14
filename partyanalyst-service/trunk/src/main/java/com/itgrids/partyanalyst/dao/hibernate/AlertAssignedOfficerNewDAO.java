@@ -429,7 +429,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		if(deptId != null && deptId.longValue() >0)
 		      query.setParameter("deptId",deptId);
 		if(locationLevelId != null && locationLevelId.longValue() > 0)
-		      query.setParameter("locationLevelId",statusId);
+		      query.setParameter("locationLevelId",locationLevelId);
 		if(statusId != null && statusId.longValue() >0){
 			query.setParameter("statusId",statusId);
 		}
