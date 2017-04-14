@@ -82,6 +82,7 @@ public class Alert extends BaseModel implements Serializable {
 	private AlertFeedbackStatus alertFeedbackStatus;
 	private AlertIssueSubType alertIssueSubType;
 	private Long alertIssueSubTypeId;
+	private User userId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -582,5 +583,17 @@ public class Alert extends BaseModel implements Serializable {
 	public void setAlertIssueSubTypeId(Long alertIssueSubTypeId) {
 		this.alertIssueSubTypeId = alertIssueSubTypeId;
 	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "created_by", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getUserId() {
+		return userId;
+	}
+
+	public void setUserId(User userId) {
+		this.userId = userId;
+	}
+	
 	
 }
