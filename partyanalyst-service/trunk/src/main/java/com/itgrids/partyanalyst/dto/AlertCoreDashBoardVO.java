@@ -6,6 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Administrator
+ *
+ */
 public class AlertCoreDashBoardVO implements Serializable{
 
 	private Long id;
@@ -51,10 +55,19 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long totalAlert = 0L;
 	private Long attendedCount = 0L;
 	private String range;
-		
+	private String callerStr;
+	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
 	private List<AlertCoreDashBoardVO> subList1 = new ArrayList<AlertCoreDashBoardVO>(0);
 	private Set<Long> setList = new HashSet<Long>(0);
+
+	public String getCallerStr() {
+		return callerStr;
+	}
+
+	public void setCallerStr(String callerStr) {
+		this.callerStr = callerStr;
+	}
 
 	public Long getId() {
 		return id;
