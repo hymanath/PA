@@ -916,14 +916,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			returnVO.setLevelId(levelId);
 			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
 			
-			Long govtDepDesigOffcrId = 0l;
-			Long govtOffcrId = 0l;
+			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>(0);
+			List<Long> govtOffcrIds = new ArrayList<Long>(0);
 			if(commonMethodsUtilService.isListOrSetValid(list1)){
 				for( Object[]  obj :list1){
-					govtDepDesigOffcrId = commonMethodsUtilService.getLongValueForObject(obj[0]);
-					govtOffcrId = commonMethodsUtilService.getLongValueForObject(obj[1]);
-					returnVO.setGovtDeptDesigOffcrId(govtDepDesigOffcrId);
-					returnVO.setGovtOfficerId(govtOffcrId);
+					govtDepDesigOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					govtOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					returnVO.setGovtDeptDesigOffcrIds(govtDepDesigOffcrIds);
+					returnVO.setGovtOfficerIds(govtOffcrIds);
 					returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));//officerId
 					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//officerName
 					returnVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(obj[3]));//depId
@@ -948,25 +948,25 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}*/
 			List<Object[]> myAlertsTodayList = null;
 			List<Object[]> myAlertsOverAllList = null;
-			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
-				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsCount(govtDepDesigOffcrId,govtOffcrId,"today");
-				myAlertsOverAllList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsCount(govtDepDesigOffcrId,govtOffcrId,"overAll");
-				List<Long> todayAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"today");
-				List<Long> overAllAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrId,govtOffcrId,"overAll");
+			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size()>0 && govtOffcrIds != null && govtOffcrIds.size()>0){
+				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsCount(govtDepDesigOffcrIds,govtOffcrIds,"today");
+				myAlertsOverAllList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsCount(govtDepDesigOffcrIds,govtOffcrIds,"overAll");
+				List<Long> todayAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"today");
+				List<Long> overAllAlertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"overAll");
 				// My alerts Status wise count
 				if(myAlertsOverAllList != null && myAlertsOverAllList.size() > 0)
 				setStatusWiseCount( myAlertsOverAllList, returnVO,"myAlerts",Long.valueOf(myAlertsTodayList.size()),todayAlertIds,overAllAlertIds);
 			}
 			
+				
 			
-			
-			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
+			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size()>0 && govtOffcrIds != null && govtOffcrIds.size()>0){
 				myAlertsTodayList = null;
 				myAlertsOverAllList = null;
-				myAlertsTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrId,govtOffcrId,"today","mySubTasks");
-				myAlertsOverAllList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrId,govtOffcrId,"overAll","mySubTasks");
-				List<Long> todayMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","mySubTasks");
-				List<Long> overAllMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","mySubTasks");
+				myAlertsTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrIds,govtOffcrIds,"today","mySubTasks");
+				myAlertsOverAllList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrIds,govtOffcrIds,"overAll","mySubTasks");
+				List<Long> todayMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today","mySubTasks");
+				List<Long> overAllMySubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"overAll","mySubTasks");
 				// My SubTasks Status wise count
 				
 				if(myAlertsOverAllList != null && myAlertsOverAllList.size() > 0)
@@ -976,14 +976,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			
 			
 			
-			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
+			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size()>0 && govtOffcrIds != null && govtOffcrIds.size()>0){
 				myAlertsTodayList = null;
 				myAlertsOverAllList = null;
-				myAlertsTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrId,govtOffcrId,"today","myAssignedSubTasks");
-				myAlertsOverAllList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrId,govtOffcrId,"overAll","myAssignedSubTasks");
+				myAlertsTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrIds,govtOffcrIds,"today","myAssignedSubTasks");
+				myAlertsOverAllList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCount(govtDepDesigOffcrIds,govtOffcrIds,"overAll","myAssignedSubTasks");
 
-				List<Long> todayMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"today","myAssignedSubTasks");
-				List<Long> overAllMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrId,govtOffcrId,"overAll","myAssignedSubTasks");
+				List<Long> todayMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today","myAssignedSubTasks");
+				List<Long> overAllMyAssSubTaskAlertIds = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"overAll","myAssignedSubTasks");
 				// My Assigned SubTasks Status wise count
 				if(myAlertsOverAllList != null && myAlertsOverAllList.size() > 0)
 				setStatusWiseCount( myAlertsOverAllList, returnVO,"myAssignedSubTasks",Long.valueOf(myAlertsTodayList.size()),todayMyAssSubTaskAlertIds,overAllMyAssSubTaskAlertIds);
@@ -3761,14 +3761,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			
       			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
       			
-      			Long govtDepDesigOffcrId = 0l;
-      			Long govtOffcrId = 0l;
+      			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>(0);
+      			List<Long> govtOffcrIds =  new ArrayList<Long>(0);
       			if(commonMethodsUtilService.isListOrSetValid(list1)){
       				for( Object[]  obj :list1){
-      					govtDepDesigOffcrId = commonMethodsUtilService.getLongValueForObject(obj[0]);
-      					govtOffcrId = commonMethodsUtilService.getLongValueForObject(obj[1]);
-      					returnVO.setGovtDeptDesigOffcrId(govtDepDesigOffcrId);
-      					returnVO.setGovtOfficerId(govtOffcrId);
+      					govtDepDesigOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+      					govtOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+      					returnVO.setGovtDeptDesigOffcrIds(govtDepDesigOffcrIds);
+      					returnVO.setGovtOfficerIds(govtOffcrIds);
       					returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));//officerId
       					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//officerName
       					returnVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(obj[3]));//depId
@@ -3782,10 +3782,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			List<Object[]> myAlertsTodayList = null;
       			List<Object[]> myAlertsCompletedList = null;
       			List<Object[]> myAlertsStatusList = null;
-      			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
-      				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrId,govtOffcrId,"today");
-      				myAlertsCompletedList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrId,govtOffcrId,"completed");
-      				myAlertsStatusList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsStatusWiseDetails(govtDepDesigOffcrId, govtOffcrId);
+      			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size()>0 && govtOffcrIds != null && govtOffcrIds.size() >0){
+      				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"today");
+      				myAlertsCompletedList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"completed");
+      				myAlertsStatusList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds);
       			}
       			setIASOfficerStatusWiseCountView(myAlertsTodayList,myAlertsCompletedList,myAlertsStatusList,returnVO,"MyAlerts");
       			
@@ -3812,14 +3812,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			
       			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
       			
-      			Long govtDepDesigOffcrId = 0l;
-      			Long govtOffcrId = 0l;
+      			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>(0);
+      			List<Long> govtOffcrIds =  new ArrayList<Long>(0);
       			if(commonMethodsUtilService.isListOrSetValid(list1)){
       				for( Object[]  obj :list1){
-      					govtDepDesigOffcrId = commonMethodsUtilService.getLongValueForObject(obj[0]);
-      					govtOffcrId = commonMethodsUtilService.getLongValueForObject(obj[1]);
-      					returnVO.setGovtDeptDesigOffcrId(govtDepDesigOffcrId);
-      					returnVO.setGovtOfficerId(govtOffcrId);
+      					govtDepDesigOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+      					govtOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+      					returnVO.setGovtDeptDesigOffcrIds(govtDepDesigOffcrIds);
+      					returnVO.setGovtOfficerIds(govtOffcrIds);
       					returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));//officerId
       					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//officerName
       					returnVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(obj[3]));//depId
@@ -3833,10 +3833,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			List<Object[]> mySubTasksTodayList = null;
       			List<Object[]> mySubTasksCompletedList = null;  
       			List<Object[]> mySubTasksStatusList = null;
-      			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
-      				mySubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrId, govtOffcrId,"today");
-      				mySubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrId,govtOffcrId,"completed");
-      				mySubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMySubTasksStatusWiseDetails(govtDepDesigOffcrId, govtOffcrId);
+      			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0 && govtOffcrIds != null && govtOffcrIds.size() >0){
+      				mySubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrIds, govtOffcrIds,"today");
+      				mySubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrIds,govtOffcrIds,"completed");
+      				mySubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMySubTasksStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds);
       			}
       			setIASOfficerStatusWiseCountView(mySubTasksTodayList,mySubTasksCompletedList,mySubTasksStatusList,returnVO,"MyAlerts");
       			
@@ -3863,14 +3863,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			
       			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
       			
-      			Long govtDepDesigOffcrId = 0l;
-      			Long govtOffcrId = 0l;
+      			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>(0);
+      			List<Long> govtOffcrIds =  new ArrayList<Long>(0);
       			if(commonMethodsUtilService.isListOrSetValid(list1)){
       				for( Object[]  obj :list1){
-      					govtDepDesigOffcrId = commonMethodsUtilService.getLongValueForObject(obj[0]);
-      					govtOffcrId = commonMethodsUtilService.getLongValueForObject(obj[1]);
-      					returnVO.setGovtDeptDesigOffcrId(govtDepDesigOffcrId);
-      					returnVO.setGovtOfficerId(govtOffcrId);
+      					govtDepDesigOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+      					govtOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+      					returnVO.setGovtDeptDesigOffcrIds(govtDepDesigOffcrIds);
+      					returnVO.setGovtOfficerIds(govtOffcrIds);
       					returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));//officerId
       					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//officerName
       					returnVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(obj[3]));//depId
@@ -3884,10 +3884,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			List<Object[]> myAssignedSubTasksTodayList = null;
       			List<Object[]> myAssignedSubTasksCompletedList = null;
       			List<Object[]> myAssignedSubTasksStatusList = null;
-      			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0l && govtOffcrId != null && govtOffcrId.longValue() > 0l){
-      				myAssignedSubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrId, govtOffcrId,"today");
-      				myAssignedSubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrId,govtOffcrId,"completed");
-      				myAssignedSubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(govtDepDesigOffcrId, govtOffcrId);
+      			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() >0 && govtOffcrIds != null && govtOffcrIds.size() > 0){
+      				myAssignedSubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrIds, govtOffcrIds,"today");
+      				myAssignedSubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrIds,govtOffcrIds,"completed");
+      				myAssignedSubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds);
       			}
       			setIASOfficerStatusWiseCountView(myAssignedSubTasksTodayList,myAssignedSubTasksCompletedList,myAssignedSubTasksStatusList,returnVO,"MyAlerts");
       			
