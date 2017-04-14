@@ -311,12 +311,10 @@ public List<Object[]> getDistrictWiseActivityCounts(Long locationId,Long activit
 			else if(countType != null && countType.equalsIgnoreCase("ivr"))
 				queryStr.append("  and model.ivrStatus ='Y' " );
 			
-			if(countType != null && countType.trim().equalsIgnoreCase("notConducted")){
-				queryStr.append("  and model.updatedStatus ='UPDATED' and (model.infoCellCount is null or (model.ivrStatus is null and model.ivrStatus = 'N')) ");
-			}else if(countType != null && countType.trim().equalsIgnoreCase("conducted")){
-				queryStr.append("  and model.updatedStatus ='UPDATED' and (model.infoCellCount is not null or model.ivrStatus = 'Y') ");
-			}else if(countType != null && countType.trim().equalsIgnoreCase("notupdated")){
-				queryStr.append(" and model.updatedStatus ='NOT UPDATED' ");
+			if(countType != null && countType.equalsIgnoreCase("Conducted")){
+				queryStr.append("  and model.ivrStatus ='Y' or model.infoCellCount is not null  ");
+			}else if(countType != null && countType.equalsIgnoreCase("NotConducted")){
+				queryStr.append("  and model.ivrStatus ='N'  or model.infoCellCount is null   ");
 			}
 			
 				queryStr.append("     " );

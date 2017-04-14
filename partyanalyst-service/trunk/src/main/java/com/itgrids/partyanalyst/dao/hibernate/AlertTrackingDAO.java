@@ -91,22 +91,23 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 	}
 	
 	public List<Object[]> getStatuswiseAlertsDetails(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId){
+		userId = null;
 		StringBuilder queryStr  = new StringBuilder();
 		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,as1.alert_status as alert_status , count(distinct a.alert_id) as count ");
 		queryStr.append(" from ");
 		queryStr.append(" alert a ");
 		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
 		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
-		queryStr.append(" left join alert_assigned_officer_new a1 on a.alert_id = a1.alert_id  ");
-		queryStr.append(" left join govt_department_designation_officer_new a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
-		queryStr.append(" left join govt_department_designation_new a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
-		queryStr.append(" where a.is_deleted='N' ");
+		queryStr.append(" left join alert_assigned_officer a1 on a.alert_id = a1.alert_id  ");
+		queryStr.append(" left join govt_department_designation_officer a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
+		queryStr.append(" left join govt_department_designation a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
+		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
 		
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 			queryStr.append(" and ac.mobile_no =:mobile_no ");
 		if(departmentId != null && departmentId.longValue()>0L)
 			queryStr.append(" and a3.govt_department_id =:departmentId ");
-		if(userId != null) 
+		if(userId != null && userId.longValue()>0L) 
 			queryStr.append(" and a.created_by =:userId ");
 		if(startDate != null && startDate != null)
 			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
@@ -121,7 +122,7 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 		query.setParameter("mobileNo", mobileNo);
 		
-		if(userId != null) 
+		if(userId != null && userId.longValue()>0L) 
 			query.setParameter("userId", userId);
 		
 		if(startDate != null && startDate != null){
@@ -132,6 +133,7 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 	}
 	
 	public List<Object[]> getAlertFeedbackStatuswiseAlertsDetails(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId){
+		userId= null;
 		StringBuilder queryStr  = new StringBuilder();
 		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,a.alert_feedback_status_id as feedbackStatusId , af.status as status ," +
 				" count(distinct a.alert_id) as count ");
@@ -140,16 +142,16 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" LEFT JOIN  alert_feedback_status af on a.alert_feedback_status_id = af.alert_feedback_status_id ");
 		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
 		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
-		queryStr.append(" left join alert_assigned_officer_new a1 on a.alert_id = a1.alert_id  ");
-		queryStr.append(" left join govt_department_designation_officer_new a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
-		queryStr.append(" left join govt_department_designation_new a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
-		queryStr.append(" where a.is_deleted='N' ");
+		queryStr.append(" left join alert_assigned_officer a1 on a.alert_id = a1.alert_id  ");
+		queryStr.append(" left join govt_department_designation_officer a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
+		queryStr.append(" left join govt_department_designation a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
+		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
 		
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 			queryStr.append(" and ac.mobile_no =:mobile_no ");
 		if(departmentId != null && departmentId.longValue()>0L)
 			queryStr.append(" and a3.govt_department_id =:departmentId ");
-		if(userId != null) 
+		if(userId != null && userId.longValue()>0L) 
 			queryStr.append(" and a.created_by =:userId ");
 		if(startDate != null && startDate != null)
 			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
@@ -166,7 +168,7 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 		query.setParameter("mobileNo", mobileNo);
 		
-		if(userId != null) 
+		if(userId != null && userId.longValue()>0L) 
 			query.setParameter("userId", userId);
 		
 		if(startDate != null && startDate != null){
