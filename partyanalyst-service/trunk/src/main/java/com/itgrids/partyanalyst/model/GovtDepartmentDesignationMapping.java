@@ -29,6 +29,7 @@ public class GovtDepartmentDesignationMapping extends BaseModel implements Seria
 	private Long parentDesignationId;
 	private Long govtDepartmentDesignationId;
 	private Long isDeleted;
+	private Long orderNo;
 	
 	private GovtDepartmentDesignation parentDesignation;
 	private GovtDepartmentDesignation govtDepartmentDesignation;
@@ -92,6 +93,14 @@ public class GovtDepartmentDesignationMapping extends BaseModel implements Seria
 	public void setGovtDepartmentDesignation(
 			GovtDepartmentDesignation govtDepartmentDesignation) {
 		this.govtDepartmentDesignation = govtDepartmentDesignation;
+	}
+	
+	@Column(name = "order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
 	}
 	
 	
