@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IDepartmentsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IEventAttendeeDAO;
+import com.itgrids.partyanalyst.dao.IEventDAO;
 import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IGovtOrderDAO;
 import com.itgrids.partyanalyst.dao.IGovtOrderDocumentsDAO;
@@ -81,6 +83,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreEventsVO;
 import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
 import com.itgrids.partyanalyst.dto.CadreStatsVO;
+import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -173,7 +176,8 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private IAlertCandidateDAO alertCandidateDAO;
 	private ICadreDetailsService cadreDetailsService;
 	private ISchedulersInfoDAO schedulersInfoDAO;
-	private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;    
+	private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;   
+	private IEventDAO eventDAO;
 	    
 	public void setSchedulersInfoDAO(ISchedulersInfoDAO schedulersInfoDAO) {
 		this.schedulersInfoDAO = schedulersInfoDAO;
@@ -596,6 +600,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	public void setTrainingCampCadreFeedbackDetailsDAO(
 			ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO) {
 		this.trainingCampCadreFeedbackDetailsDAO = trainingCampCadreFeedbackDetailsDAO;
+	}
+	
+	public IEventDAO getEventDAO() {
+		return eventDAO;
+	}
+	public void setEventDAO(IEventDAO eventDAO) {
+		this.eventDAO = eventDAO;
 	}
 
 	/**
@@ -8770,7 +8781,123 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
  		}
  		return null;
  	}
-
+  /**
+	 * @Author: Krishna 
+	 * @description : to get cadre wise mahanadu event details for tdpcadreidsList
+	 * @param tdpCadreIdsList
+	 * @param parentEventId
+	 * @return List<EventDetailsVO>
+	 */
+	  public List<EventDetailsVO> getMahanaduEventDetilsByCadreIdDetils(Long parentEventId,Long tdpCadreId){
+		             List<EventDetailsVO> finalList  = new ArrayList<EventDetailsVO>();
+			       try{
+			         LOG.info("Entered into nominatedPostProfileService of getMahanaduEventDetilsByCadreIdDetils");
+					  Map<String,Map<String,EventDetailsVO>> newEventMap = new HashMap<String,Map<String,EventDetailsVO>>();
+					  Map<String,EventDetailsVO> subEventMap = null;
+					  
+					  SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+					  DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss a");
+					
+					  SimpleDateFormat newFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+					  SimpleDateFormat newDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+					 
+					  List<Long> subEventIds = new ArrayList<Long>();
+					  List<Object[]> subEventObjs = eventDAO.getSubEventsDetailsByParentEventId(parentEventId);
+					  if(subEventObjs != null && !subEventObjs.isEmpty()){
+						  for(Object[] objs : subEventObjs){
+							  EventDetailsVO vo = new EventDetailsVO();
+							  vo.setId(objs[0]!= null?(Long)objs[0]:0l);
+							  vo.setName(objs[1]!= null?objs[1].toString():"");
+							  subEventIds.add(objs[0]!= null?(Long)objs[0]:0l);
+							  finalList.add(vo);
+						  }
+					  }
+			  
+			 
+					    Object[] dateObj = eventDAO.getBetweenDatesOfEvent(parentEventId);
+					    if(dateObj != null){
+					    	Date fromDate = (Date)dateObj[0];
+					    	Date toDate = (Date)dateObj[1];
+					    	List<Date> datesList = commonMethodsUtilService.getBetweenDates(fromDate,toDate);
+						    	for(EventDetailsVO vo : finalList){
+							    	  for(Date dateStr : datesList){		    		  
+							    		      EventDetailsVO entsVO = new EventDetailsVO();
+							    		      entsVO.setDateStr(newDateFormat.format(newFormat.parse(dateStr.toString())));
+							    	    	  vo.getLocationList().add(entsVO);
+							    		    }
+							           }  		    	  
+						       }   
+					    
+			    
+							    List<Object[]> eventAttendeeDetilsObj = eventAttendeeDAO.getMahanaduEventCadreDetails(subEventIds, tdpCadreId);
+								  if(eventAttendeeDetilsObj != null && eventAttendeeDetilsObj.size()>0){
+										  
+										    for(Object[] param : eventAttendeeDetilsObj){
+										    	
+										     String eventName = param[1] != null ? param[1].toString():"";
+											  
+										       subEventMap = newEventMap.get(eventName);
+											     if(subEventMap == null){
+												  subEventMap = new HashMap<String,EventDetailsVO>();
+												  newEventMap.put(eventName, subEventMap);
+											   }
+											  String eventDate =  param[3] != null ? param[3].toString():"";
+											  EventDetailsVO evntsVO = subEventMap.get(eventDate);
+											  
+												   if(evntsVO == null){
+													   evntsVO = new EventDetailsVO();
+													   evntsVO.setName(eventName);
+													   evntsVO.setDateStr(eventDate);
+													   evntsVO.setType(param[4] != null ? dateFormat.format(sdf.parse(param[4].toString())):"");
+													
+													   subEventMap.put(eventDate, evntsVO);
+												    }
+										        }	   
+								            }
+								  
+							 
+							  if(finalList != null && finalList.size()>0 && !finalList.isEmpty()){
+								    for(EventDetailsVO eventsVO : finalList){
+										   Map<String,EventDetailsVO> subMap = newEventMap.get(eventsVO.getName());
+										   if(subMap == null){
+											   subMap = new HashMap<String,EventDetailsVO>();
+											   List<EventDetailsVO> subList = eventsVO.getLocationList();
+												 for(EventDetailsVO childVO : subList){
+													 String date = childVO.getDateStr();
+													 Set<String> dateKeys = subMap.keySet();
+													 for(String dateStrng : dateKeys){
+														if(dateStrng.contains(date)){
+															childVO.setDateStr(date);
+															if(subMap.containsKey(date)) {
+																EventDetailsVO detailsVO1 = subMap.get(date);
+																childVO.setTime(detailsVO1.getType());
+															 }	  
+														  }
+													  }	  
+												  }
+										   }else{
+											   List<EventDetailsVO> subList = eventsVO.getLocationList();
+												  for(EventDetailsVO childVO : subList){
+													  String date = childVO.getDateStr();
+													  Set<String> dateKeys = subMap.keySet();
+													  for(String dateStrng : dateKeys){
+														  if(dateStrng.contains(date)){
+															  childVO.setDateStr(date);
+														   if(subMap.containsKey(date)) {
+															   EventDetailsVO detailsVO1 = subMap.get(date);
+															   childVO.setTime(detailsVO1.getType());
+															}	  
+														  }	  
+													  }	  
+											     }
+										     }
+								         }	  
+							        }				
+			}catch(Exception e){
+			  LOG.error("Exception Occured into nominatedPostProfileService of getMahanaduEventDetilsByCadreIdDetils");
+			}
+	return finalList;
+	 }
  }
 
 

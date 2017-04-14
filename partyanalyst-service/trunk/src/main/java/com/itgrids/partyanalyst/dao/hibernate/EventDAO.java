@@ -242,4 +242,24 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		query.setParameter("isVisible", IConstants.IS_VISIBLE);
 		return query.list();
 	}
+	public List<Object[]> getSubEventsDetailsByParentEventId(Long parentEventId){
+		Query query = getSession().createQuery(" select distinct model.eventId,model.name from Event model" +
+			                   " where model.parentEventId=:parentEventId");
+				if(parentEventId != null && parentEventId.longValue()>0l){
+					query.setParameter("parentEventId", parentEventId);
+				}
+	
+				return query.list();
+	}
+	public Object[] getBetweenDatesOfEvent(Long parentEventId){
+		
+		Query query = getSession().createQuery(" select date(model.eventStartTime)," +
+                       " date(model.eventEndDate) from Event model" +
+		               " where model.eventId =:parentEventId");
+		
+		if(parentEventId != null && parentEventId.longValue()>0l){
+			query.setParameter("parentEventId", parentEventId);
+		}
+		return  (Object[]) query.uniqueResult();
+	}
 }

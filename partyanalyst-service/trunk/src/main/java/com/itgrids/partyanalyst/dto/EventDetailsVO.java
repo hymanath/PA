@@ -38,6 +38,8 @@ public class EventDetailsVO {
 	private String type;
 	private Long totalCount=0L;
 	private Long activityAttendedCount =0L;
+	private String dateStr;
+	private String time;
 	
 	public Long getActivityAttendedCount() {
 		return activityAttendedCount;
@@ -206,6 +208,19 @@ public class EventDetailsVO {
 	}
 	public void setConductedCount(Long conductedCount) {
 		this.conductedCount = conductedCount;
+	}
+	public String getDateStr() {
+		return dateStr;
+	}
+	public void setDateStr(String dateStr) {
+		this.dateStr = dateStr;
+	}
+	
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
 	}
 	
   	

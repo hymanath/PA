@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.AddNotcadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreEventsVO;
 import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
+import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.GovtOrderVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -91,5 +92,6 @@ public interface INominatedPostProfileService {
 	 //public List<CadreEventsVO> getCadreDetailedReportEventAttendee(Long parentEventId,Long cadreId,List<Long> extraEventIdsList);
 	 public void setBrdWisNominPstAppliedDepOrCorpApplledDetails(List<Object[]> depOCorpList,List<Long> apllicationIds,List<NominatedPostVO> returnVoList,String status);
 	 public List<CadrePerformanceVO> getCampDetails(List<Long> tdpCadreIdsList);
+	 public List<EventDetailsVO> getMahanaduEventDetilsByCadreIdDetils(Long parentEventId,Long tdpCadreId);
 	 
 }
