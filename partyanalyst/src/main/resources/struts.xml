@@ -16961,6 +16961,11 @@
 		<result type="json" name="success">
 	   		<param name="root">grievanceAlertVo</param>
 	   	</result>
-	</action> 	                   
+	</action>
+	<action name="getMahanaduEventDetilsByCadreIdsAction" class="nominatedPostProfileAction" method="getMahanaduEventDetilsByCadreIds">
+			<result type="json" name="success">
+				<param name="root">eventDetilsList</param>     
+			</result>
+    </action>         	                   
  </package>
 </struts>

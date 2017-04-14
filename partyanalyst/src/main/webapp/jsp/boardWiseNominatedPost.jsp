@@ -181,6 +181,22 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" tabindex="-1" id="mahanaduDetailedReprotsId" role="dialog">  
+	<div class="modal-dialog" style="width:85%;">      
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">MAHANADU 2015 REPORT </h4>
+			</div>
+			<div class="modal-body">
+				<div  id="mahanadu2015DetilsId" class="table-responsive"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -1541,11 +1557,26 @@ function buildCadreDetailedReport(result){
 								else
 									str+='<td> '+result.subList[i].cadreEventsVO.subList[j].attendedCount+' </td>';
 							
-							}else{
+							}else if(result.subList[i].cadreEventsVO.subList[j].name == 'Mahanadu - 2015' && result.subList[i].cadreEventsVO.subList[j].id == 7){
 								if(result.subList[i].cadreEventsVO.subList[j].attendedCount != null && result.subList[i].cadreEventsVO.subList[j].attendedCount>0){
+									str+='<td >';
+									str+='<ul class="enrolled-mem enrolledMembr2015Cls" attr_cdr_id ="'+result.subList[i].cadreBasicPerformaceVO.id+'" style="cursor:pointer;" >';
+									str+='<li class="yes" > YES <span></span></li>&nbsp;';
+									str+=' </ul> </td> ';
+									
+								}else{
+									//str+='<td> NO </td>';
 									str+='<td>  ';
 									str+='<ul class="enrolled-mem">';
-									str+='<li class="yes"> YES <span></span></li>&nbsp;';
+									str+='<li class="no" > NO <span></span></li>&nbsp;';
+									str+=' </ul> ';
+									str+='</td>  ';
+								}
+							}else{
+								if(result.subList[i].cadreEventsVO.subList[j].attendedCount != null && result.subList[i].cadreEventsVO.subList[j].attendedCount>0){
+									str+='<td >  ';
+									str+='<ul class="enrolled-mem ">';
+									str+='<li class="yes" > YES <span></span></li>&nbsp;';
 									str+=' </ul> </td> ';
 									
 								}else{
@@ -1571,7 +1602,84 @@ function buildCadreDetailedReport(result){
 			"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 		});
 }
-
+   $(document).on("click",'.enrolledMembr2015Cls', function() {
+	   var tdpCadreId =$(this).attr("attr_cdr_id");
+	       getMahanaduEventDetilsByTdpCadreId(tdpCadreId);
+	   $("#mahanadu2015DetilsId").html("");
+	   $('#mahanaduDetailedReprotsId').modal('show');
+	
+    }); 
+	
+function getMahanaduEventDetilsByTdpCadreId(tdpCadreId){
+		var jsObj = { 
+				 parentEventId : 7,                  
+				 tdpCadreId :tdpCadreId
+				 
+			    }
+	$.ajax({
+		type : 'POST',
+		url : 'getMahanaduEventDetilsByCadreIdsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		 if(result != null && result.length>0){
+			 buildMahanaduEventDetilsByTdpCadreWise(result);
+		 }else{
+			 $("#mahanadu2015DetilsId").html("<center>NO DATA AVAILABLE</center>");
+		 }
+	});
+}
+  function buildMahanaduEventDetilsByTdpCadreWise(result){
+	 var str ='';
+	 str +='<table class ="table table-bordered" id="dataTableCadreDetailsIds">';
+	 str+='<thead>';
+	  str+='<th>Event Name</th>';
+		   var locationList = result[0].locationList;
+		       str+='<th>'+locationList[0].dateStr+'</th>';
+			   str+='<th>'+locationList[1].dateStr+'</th>';  
+			   str+='<th>'+locationList[2].dateStr+'</th>';
+	  str+='</thead>';
+	  str +='<tbody>';
+	  for(var i in result){
+		   str+='<tr>';
+		   var locationList = result[i].locationList;
+		   var name = result[i].name;
+		   var id = result[i].id;
+		   if((name == "Main Entry" || name == "Blood Donation Camp" || name == "Exit") 
+			       && (id==8 || id==12 || id == 16)){
+			       str+='<td>'+result[i].name+'</td>';
+					   for(var j in locationList){
+					   var date = locationList[j].dateStr;
+						 if(date == "2015-05-27"){
+							var time = locationList[j].time;
+							  if(time != null){
+									 str+='<td>'+time+'</td>';
+								 }else{
+									 str+='<td> - </td>';
+								 }	 
+						  }else if(date == "2015-05-28"){
+							 var time = locationList[j].time;
+							   if(time != null){
+									 str+='<td>'+time+'</td>';
+								 }else{
+									 str+='<td> - </td>';
+								 } 	 
+						  }else if(date == "2015-05-29"){
+							  var time = locationList[j].time;
+								if(time != null){
+									 str+='<td>'+time+'</td>';
+								}else{
+									 str+='<td> - </td>';
+								} 
+						  }
+					   }
+		    str+='</tr>';
+		   }	        
+	 }  
+	 str +='</tbody>';
+     str +='</table>';	 
+	 $("#mahanadu2015DetilsId").html(str);
+ } 
 </script>
 <script>
 var tableToExcel = (function() {

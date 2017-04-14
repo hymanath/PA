@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.CadreCommitteeVO;
 import com.itgrids.partyanalyst.dto.CadreEventsVO;
 import com.itgrids.partyanalyst.dto.CadrePerformanceVO;
 import com.itgrids.partyanalyst.dto.CastePositionVO;
+import com.itgrids.partyanalyst.dto.EventDetailsVO;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.GeoLevelListVO;
 import com.itgrids.partyanalyst.dto.GeoLevelReportVO;
@@ -90,6 +91,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	private List<GeoLevelListVO> geoLevelListVO;
 	private List<CadreEventsVO> cadreReportVO;
 	private List<CadrePerformanceVO> cadreTraingVO;
+	private List<EventDetailsVO> eventDetilsList;
 	
 	
 	public List<GeoLevelListVO> getGeoLevelListVO() {
@@ -346,6 +348,12 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 	}
 	public void setCadreReportVO(List<CadreEventsVO> cadreReportVO) {
 		this.cadreReportVO = cadreReportVO;
+	}
+	public List<EventDetailsVO> getEventDetilsList() {
+		return eventDetilsList;
+	}
+	public void setEventDetilsList(List<EventDetailsVO> eventDetilsList) {
+		this.eventDetilsList = eventDetilsList;
 	}
 	public String nominatedPosts()
 	{
@@ -2367,5 +2375,17 @@ public String execute()
 
 		return Action.SUCCESS;
 		
+	}
+	public String getMahanaduEventDetilsByCadreIds(){
+		try{
+			LOG.info("Enterd into nominatedPostProfileAction of getMahanaduEventDetilsByCadreIds");
+			jObj = new JSONObject(getTask());
+			Long parentEventId = jObj.getLong("parentEventId") ;
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			eventDetilsList = nominatedPostProfileService.getMahanaduEventDetilsByCadreIdDetils(parentEventId,tdpCadreId);
+		}catch(Exception e){
+			LOG.error("Exception Occured into nominatedPostProfileAction of getMahanaduEventDetilsByCadreIds");
+		}
+		return Action.SUCCESS;
 	}
 }
