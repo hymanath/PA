@@ -106,6 +106,10 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	 color: rgb(102, 102, 102) !important;
 	text-decoration:none;
 }
+.collapseIconForIAS, .collapseIconForIAS:active, .collapseIconForIAS:hover, .collapseIconForIAS:focus{
+	 color: rgb(102, 102, 102) !important;
+	text-decoration:none;
+}
 .collapseIcon::before {
     border: 1px solid rgb(75, 87, 99);
     color: rgb(75, 87, 99);
@@ -148,6 +152,21 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     padding: 3px 5px;
 }
 .collapseIconForMulti.collapsed::before {
+     content: "\2b";
+}
+.collapseIconForIAS::before {
+  
+    color: #000;
+     content: "\2212";
+    float: right;
+    font-family: "Glyphicons Halflings";
+    font-size: 13px;
+    font-weight: 400 !important;
+    margin-left: -4px;
+    margin-top: -4px;
+    padding: 3px 5px;
+}
+.collapseIconForIAS.collapsed::before {
      content: "\2b";
 }
 .navTabs li a
@@ -1459,4 +1478,11 @@ small.clear
 	background-color: #4A5863;
 	-moz-transition: .5s all ease-out;
 	color:#fff;
+}
+.pad_3{padding:3px;}
+.table_styled tbody tr td{border-left:1px solid #dddd !important;border-right:1px solid #dddd !important;border-bottom:1px solid #dddd !important;}
+.table_styled {
+    border-collapse:separate;
+    border: solid #dddd 1px;
+    border-radius: 8px;
 }
