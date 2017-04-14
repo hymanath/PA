@@ -24,6 +24,16 @@ public class AlertVO {
 	private Long panchayatId;
 	private Long wardId;
 	
+	
+	private String state;
+	private String district;
+	private String constituency;
+	private String tehsil;
+	private String localBody;
+	private String panchayat;
+	private String hamlet;
+	private String ward;
+	
 	private List<IdNameVO> idNamesList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> assignList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> docList = new ArrayList<IdNameVO>(0);
@@ -69,6 +79,55 @@ public class AlertVO {
 	private String issueSubType;
 	private String feedbackStatus;
 	
+	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getConstituency() {
+		return constituency;
+	}
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+	public String getTehsil() {
+		return tehsil;
+	}
+	public void setTehsil(String tehsil) {
+		this.tehsil = tehsil;
+	}
+	public String getLocalBody() {
+		return localBody;
+	}
+	public void setLocalBody(String localBody) {
+		this.localBody = localBody;
+	}
+	public String getPanchayat() {
+		return panchayat;
+	}
+	public void setPanchayat(String panchayat) {
+		this.panchayat = panchayat;
+	}
+	public String getHamlet() {
+		return hamlet;
+	}
+	public void setHamlet(String hamlet) {
+		this.hamlet = hamlet;
+	}
+	public String getWard() {
+		return ward;
+	}
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
 	public String getFeedbackStatus() {
 		return feedbackStatus;
 	}
