@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
+import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -4919,7 +4920,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 		
 	 }
-	 //For state level page
+	//For state level page
      public List<AlertVO> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
  		LOG.info("Entered in stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick() method of AlertManagementSystemService{}");
  		try{
@@ -4959,4 +4960,37 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  		}
  		return null;
  	}
+	 public List<GrievanceAlertVO> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId){
+			List<GrievanceAlertVO> finalVoList = new ArrayList<GrievanceAlertVO>(0);
+		try {
+			List<Object[]> GovtGrivenceDetails = alertDAO.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId);
+			 if(GovtGrivenceDetails != null &&  GovtGrivenceDetails.size()>0){
+				 for(Object[] param : GovtGrivenceDetails){
+					 GrievanceAlertVO Vo = new  GrievanceAlertVO();
+					 Vo.setDate(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10));
+					 Vo.setTime(commonMethodsUtilService.getStringValueForObject(param[1]).substring(11, 16));
+					 Vo.setTitle(commonMethodsUtilService.getStringValueForObject(param[2]));
+					 Vo.setDescription(commonMethodsUtilService.getStringValueForObject(param[3]));
+					 Vo.setRelatedTo(commonMethodsUtilService.getStringValueForObject(param[4]));
+					 Vo.setProblem(commonMethodsUtilService.getStringValueForObject(param[5]));
+					 Vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[6]));
+					 Vo.setCreatedBy(commonMethodsUtilService.getStringValueForObject(param[7]));
+					 
+					 Vo.setDistrict(commonMethodsUtilService.getStringValueForObject(param[8]));
+					 Vo.setAssembly(commonMethodsUtilService.getStringValueForObject(param[9]));
+					 Vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[10]));
+					 Vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[11]));
+					 Vo.setHamlet(commonMethodsUtilService.getStringValueForObject(param[12]));
+					 Vo.setLeb(commonMethodsUtilService.getStringValueForObject(param[13]));
+					 Vo.setWard(commonMethodsUtilService.getStringValueForObject(param[14]));
+					 
+					 finalVoList.add(Vo);
+				 }
+			 }
+							
+			} catch (Exception e) {
+				LOG.error(" Exception Occured in getGovtGrievanceAlertDetails() method, Exception - ",e);
+			}		
+			return finalVoList;
+		}
 }      	
