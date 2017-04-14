@@ -16,8 +16,8 @@ public interface IUserLoginDetailsDAO extends GenericDao<UserLoginDetails, Long>
 	
 	public List<Object> getLandingPageAndExitPageForAUser(String sessionId);
 	public List<String> getAllActiveUsersSessionIds(Long userId);
-	public List<Object[]> getUserLoginLogoutDtls(Date startDate, Date endDate);
-	public List<Object[]> getAttendanceForMultiDate(Date fromDate, Date toDate);
+	public List<Object[]> getUserLoginLogoutDtls(Long userId,Date startDate, Date endDate);
+	public List<Object[]> getAttendanceForMultiDate(Date fromDate, Date toDate,Long userId);
 	
 	
 }
