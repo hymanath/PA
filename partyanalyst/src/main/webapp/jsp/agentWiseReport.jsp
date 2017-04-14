@@ -180,7 +180,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-2">
+							<div class="col-md-2" style="display:none;">  
 								<div class="row">
 									<div class="col-md-3">
 										<i class="glyphicon glyphicon-time" style="font-size:40px;color:#B49963"></i>
@@ -349,7 +349,6 @@ $(document).on("click",".showDtlsOfUser",function(){
 	$("#singleUsertableId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$("#userLoginDetailsId").modal("show");        
 	var userId = $(this).attr("attr_user_id");
-	alert(userId);
 	var jsObj ={
 		fromDate:callCenterUserFDate,                                 
 		toDateStr:callCenterUserTDate,    
@@ -357,7 +356,7 @@ $(document).on("click",".showDtlsOfUser",function(){
     }
     $.ajax({
     type:'GET',         
-    url: 'getUserLogingDtlsAction.action',  
+    url: 'getUserLogingDtlsAction.action',    
     data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result!=null){
