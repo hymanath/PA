@@ -1845,10 +1845,12 @@ public List<Object[]> getDistrictWiseDetails(Date startDate,Date endDate,Long ac
 	    	}
 			
 		}else{
-			if(countType != null && countType.equalsIgnoreCase("Conducted")){
-				queryStr.append(" and (model.conductedDate is not null or model.ivrStatus = 'Y')  and " );
-			}else if(countType != null && countType.equalsIgnoreCase("NotConducted")){
-				queryStr.append(" and model.conductedDate is  null and ( model.ivrStatus = 'N' )  and " );
+			if(countType != null && countType.trim().equalsIgnoreCase("notConducted")){
+				queryStr.append(" and model.updatedStatus ='UPDATED' and ((model.conductedDate is null ) and (model.ivrStatus = 'N' or model.ivrStatus is null)) and ");
+			}else if(countType != null && countType.trim().equalsIgnoreCase("conducted")){
+				queryStr.append(" and model.updatedStatus ='UPDATED' and (model.conductedDate is not null or model.ivrStatus = 'Y') and ");
+			}else if(countType != null && countType.trim().equalsIgnoreCase("notupdated")){
+				queryStr.append(" and model.updatedStatus ='NOT UPDATED' and ");
 			}
 			else if(countType != null && countType.equalsIgnoreCase("planned"))
 				queryStr.append(" and  model.plannedDate is not null  and " );

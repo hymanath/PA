@@ -101,6 +101,7 @@ import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.AdminHouseVO;
 import com.itgrids.partyanalyst.dto.AlertClarificationVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
@@ -10192,6 +10193,89 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 		return returnList;
 	}
+	public List<KeyValueVO> getAlertStatusList(List<Object[]> list){
+		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+		try{
+			//List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			if(list != null && list.size() > 0l){
+				for (Object[] objects : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					returnList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured getAlertIssueSubTypes() method of AlertService",e);
+		}
+		return returnList;
+	}
+	public List<KeyValueVO> getStatusCount(Long locationId,String locationType,String searchType,String startDateStr,String endDateStr){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			Map<Long,KeyValueVO> locationMap = new LinkedHashMap<Long, KeyValueVO>();
+			Date fromDate = null;      
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(startDateStr != null && startDateStr.trim().length() > 0 && endDateStr != null && endDateStr.trim().length() > 0){
+				fromDate = sdf.parse(startDateStr);
+				toDate = sdf.parse(endDateStr);
+			}
+			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			List<Object[]> cuntList = alertDAO.getStatusCount(locationId, locationType, searchType, fromDate, toDate);
+			if(cuntList != null){
+				for (Object[] objects : cuntList) {
+					Long id = commonMethodsUtilService.getLongValueForObject(objects[0]);
+					Long statusId = commonMethodsUtilService.getLongValueForObject(objects[2]);
+					KeyValueVO vo = locationMap.get(id);
+					if(vo == null){
+						vo = new KeyValueVO();
+						vo.setId(id);
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.setList(getAlertStatusList(statusList));
+						KeyValueVO statusVO = getMatchedVOList(vo.getList(),statusId);
+						if(statusVO != null){
+							statusVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[3]));
+							vo.setTotalCount(vo.getTotalCount()+statusVO.getCount());
+						}
+						locationMap.put(id, vo);
+					}
+					else{
+						KeyValueVO statusVO = getMatchedVOList(vo.getList(),statusId);
+						if(statusVO != null){
+							statusVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[3]));
+							vo.setTotalCount(vo.getTotalCount()+statusVO.getCount());
+						}
+					}
+					//finalList.add(vo);
+				}
+			}
+			
+			if(locationMap != null)
+				finalList = new ArrayList<KeyValueVO>(locationMap.values());
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getMatchedVOList() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	
+	public KeyValueVO getMatchedVOList(List<KeyValueVO> list, Long statusId)
+	{
+		try {
+			if(list != null && list.size()>0)
+			{
+				for (KeyValueVO keyValueVO : list) {
+					if(keyValueVO.getId().longValue() == statusId.longValue())
+						return keyValueVO;
+				}
+			}
+		} catch (Exception e) {
+			 LOG.error("Exception Occured in getMatchedVOList() method, Exception - ",e);
+		}
+		return null;
+	}
+	
 	public AlertCoreDashBoardVO getUserLogingDtls(Long userId, String fromDateStr, String toDateStr){
 		try{
 			List<AlertCoreDashBoardVO> coreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();

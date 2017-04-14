@@ -123,6 +123,8 @@ public interface IAlertService {
     public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId,Long levelValue);
     public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId);
     public List<KeyValueVO> getAlertIssueSubTypes(Long alertIssueType);
+    public List<KeyValueVO> getAlertStatusList(List<Object[]> list);
+    public List<KeyValueVO> getStatusCount(Long locationId,String locationType,String searchType,String startDateStr,String endDateStr);
     public AlertCoreDashBoardVO getUserLogingDtls(Long userId, String fromDateStr, String toDateStr);
     public List<AlertsSummeryVO> getStatusWiseAlertsCountSummery(List<Integer> daysLst);
 }

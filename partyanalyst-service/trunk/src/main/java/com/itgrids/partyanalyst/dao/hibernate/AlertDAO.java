@@ -6482,6 +6482,95 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		return query.list(); 
 	}
+    public List<Object[]> getStatusCount(Long locationId,String locationType,String searchType,Date startDate,Date endDate){
+    	StringBuilder sb = new StringBuilder();
+    		sb.append("select distinct ");
+    	if(locationId != null && locationId.longValue() > 0l){
+	    	if(searchType != null && searchType.trim().equalsIgnoreCase("rural")){
+	    		if(locationType != null && locationType.trim().equalsIgnoreCase("mandals")){
+	    			sb.append("t.tehsilId,t.tehsilName,");
+	    		}else if(locationType != null && locationType.trim().equalsIgnoreCase("panchayat")){
+	    			sb.append("p.panchayatId, p.panchayatName,");
+	    		}else if(locationType != null && locationType.trim().equalsIgnoreCase("hamlets")){
+					sb.append("h.hamletId, h.hamletName,");
+				}
+	    	}else if(searchType != null && searchType.trim().equalsIgnoreCase("urban")){
+	    		if(locationType != null && locationType.trim().equalsIgnoreCase("muncipality")){
+	    			sb.append("leb.localElectionBodyId,leb.name,");
+	    		}else if(locationType != null && locationType.trim().equalsIgnoreCase("wards")){
+	    			sb.append("w.constituencyId,w.name,");
+	    		}
+	    	}
+    	}else{
+			sb.append("d.districtId,d.districtName,");
+		}
+    	
+    		sb.append(" model.alertStatus.alertStatusId,count(model.alertId)" ) ;
+    		sb.append("from Alert model " +
+    				 " left join model.userAddress.state s "+
+		    		 " left join model.userAddress.district d "+
+		             " left join model.userAddress.constituency c " +
+		             " left join model.userAddress.tehsil t " +
+		             " left join model.userAddress.localElectionBody leb " +
+		             " left join model.userAddress.panchayat p " +
+		             " left join model.userAddress.ward w " +
+		             " left join model.userAddress.hamlet h ");
+    		sb.append(" where model.isDeleted = 'N' and model.alertCallerId is not null ");
+    		
+    		if(locationId != null && locationId.longValue() > 0l){
+    			if(searchType != null && searchType.trim().equalsIgnoreCase("rural")){
+    				if(locationType != null && locationType.trim().equalsIgnoreCase("mandals")){
+    					sb.append(" and d.districtId = :locationId");
+    				}else if(locationType != null && locationType.trim().equalsIgnoreCase("panchayat")){
+    					sb.append(" and t.tehsilId = :locationId");
+    				}else if(locationType != null && locationType.trim().equalsIgnoreCase("hamlets")){
+    					sb.append(" and p.panchayatId = :locationId");
+    				}
+    			}else if(searchType != null && searchType.trim().equalsIgnoreCase("urban")){
+    				if(locationType != null && locationType.trim().equalsIgnoreCase("muncipality")){
+    					sb.append(" and d.districtId = :locationId");
+    				}else if(locationType != null && locationType.trim().equalsIgnoreCase("wards")){
+    					sb.append(" and leb.localElectionBodyId = :locationId");
+    				}
+    			}
+    		}
+    		
+    		if(startDate != null && endDate != null){
+    			sb.append(" and (date(model.createdTime) between :startDate and :endDate) ");
+    		}
+    		
+    		if(locationId != null && locationId.longValue() > 0l){
+    			if(searchType != null && searchType.trim().equalsIgnoreCase("rural")){
+    				if(locationType != null && locationType.trim().equalsIgnoreCase("mandals")){
+    					sb.append(" group by t.tehsilId,model.alertStatus.alertStatusId order by t.tehsilName");
+    				}else if(locationType != null && locationType.trim().equalsIgnoreCase("panchayat")){
+    					sb.append(" group by p.panchayatId,model.alertStatus.alertStatusId order by p.panchayatName");
+    				}/*else if(locationType != null && locationType.trim().equalsIgnoreCase("hamlets")){
+    					sb.append(" group by h.hamletId,model.alertStatus.alertStatusId order by h.hamletName");
+    				}*/
+    			}else if(searchType != null && searchType.trim().equalsIgnoreCase("urban")){
+    				if(locationType != null && locationType.trim().equalsIgnoreCase("muncipality")){
+    					sb.append(" group by leb.localElectionBodyId,model.alertStatus.alertStatusId order by leb.name");
+    				}else if(locationType != null && locationType.trim().equalsIgnoreCase("wards")){
+    					sb.append(" group by w.constituencyId,model.alertStatus.alertStatusId order by w.name");
+    				}
+    			}
+    		}else{
+    			sb.append(" group by d.districtId,model.alertStatus.alertStatusId order by d.districtName");
+    		}
+    		
+    		Query query = getSession().createQuery(sb.toString());
+    		if(locationId != null && locationId.longValue() > 0l)
+    			query.setParameter("locationId", locationId);
+    		
+    		if(startDate != null && endDate != null){
+    			query.setDate("startDate", startDate);
+    			query.setDate("endDate", endDate);
+    		}
+    		
+    		return query.list();
+    	
+    }
     public List<Object[]> getCallerUserAlertDtls(Date fromDate, Date toDate, Long userId){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append(" select distinct ");
