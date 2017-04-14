@@ -10168,6 +10168,62 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 		return returnList;
 	}
+	public AlertCoreDashBoardVO getUserLogingDtls(Long userId, String fromDateStr, String toDateStr){
+		try{
+			List<AlertCoreDashBoardVO> coreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> userAlertDtlsList = alertDAO.getCallerUserAlertDtls(fromDate,toDate,userId);
+			buildAlertDetailsForLonginUser(coreDashBoardVOs,userAlertDtlsList);
+			
+		}catch(Exception e){
+			LOG.error("Error occured getUserLogingDtls() method of AlertService",e);
+		}
+		return null;
+	}
+	public void buildAlertDetailsForLonginUser(List<AlertCoreDashBoardVO> coreDashBoardVOs, List<Object[]> userAlertDtlsList){
+		try{
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+			if(userAlertDtlsList != null && userAlertDtlsList.size() > 0){
+				for(Object[] param : userAlertDtlsList){
+					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					alertCoreDashBoardVO.setCreatedDate(commonMethodsUtilService.getStringValueForObject(param[1]));
+					alertCoreDashBoardVO.setCategory(commonMethodsUtilService.getStringValueForObject(param[2]));
+					alertCoreDashBoardVO.setTitle(commonMethodsUtilService.getStringValueForObject(param[3]));
+					alertCoreDashBoardVO.setDesc(commonMethodsUtilService.getStringValueForObject(param[4]));
+					alertCoreDashBoardVO.setName(commonMethodsUtilService.getStringValueForObject(param[5]));
+					alertCoreDashBoardVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[6]));
+					alertCoreDashBoardVO.setEmail(commonMethodsUtilService.getStringValueForObject(param[7]));
+					alertCoreDashBoardVO.setDepartment(commonMethodsUtilService.getStringValueForObject(param[8]));
+					alertCoreDashBoardVO.setImpactLevel(commonMethodsUtilService.getStringValueForObject(param[9]));
+					if(param[15] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[15]));
+					}else if(param[14] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[14]));
+					}else if(param[13] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[13]));
+					}else if(param[12] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[12]));
+					}else if(param[11] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[11]));
+					}else if(param[10] != null){
+						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[10]));
+					}
+					alertCoreDashBoardVO.setDesignation(commonMethodsUtilService.getStringValueForObject(param[16]));
+					alertCoreDashBoardVO.setOfficerMobileNo(commonMethodsUtilService.getStringValueForObject(param[17]));
+					coreDashBoardVOs.add(alertCoreDashBoardVO);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }
 
 

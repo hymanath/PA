@@ -8,7 +8,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
-import org.springframework.jdbc.object.SqlQuery;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
@@ -6456,4 +6455,77 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		return query.list(); 
 	}
+    public List<Object[]> getCallerUserAlertDtls(Date fromDate, Date toDate, Long userId){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append(" select distinct ");
+    	queryStr.append(" A.alert_id as alertId, 			" +//0
+    				 	" A.created_time as createdTime, 	" +//1
+    				 	" ALTC.category as category, 		" +//2
+	    				" A.title as title, 				" +//3
+	    				" A.description as description, 	" +//4
+	    				" ALTCALL.caller_name as callerName," +//5
+	    				" ALTCALL.mobile_no as mobileNo, 	" +//6
+	    				" ALTCALL.email as email, 			" +//7
+	    				" GD.department_name as departmentName, " +//8
+	    				" AIS.impact_scope as impactScope, 	" +//9
+	    				" S.state_name as stateName, 		" +//10
+	    				" D.district_name as districtName, 	" +//11
+	    				" C.name as conName, 				" +//12
+	    				" T.tehsil_name as tehsilName, 		" +//13
+	    				" P.panchayat_name as panchayatName," +//14
+	    				" LEB.name as lebName , 			" +//15
+	    				" GDDN.designation_name as designationName, " +//16
+	    				" GOV.mobile_no as officerMobileNo");//17
+    	queryStr.append(" from alert A ");
+    	queryStr.append(" left outer join alert_assigned_officer_new AAON on A.alert_id = AAON.alert_id ");
+    	queryStr.append(" left outer join alert_caller ALTCALL on ALTCALL.alert_caller_id = A.alert_caller_id ");
+    	queryStr.append(" left outer join user_address UA on A.address_id=UA.user_address_id ");
+    	queryStr.append(" left outer join state S on UA.state_id=S.state_id ");
+    	queryStr.append(" left outer join district D on D.district_id = UA.district_id ");
+    	queryStr.append(" left outer join constituency C on C.constituency_id = UA.constituency_id ");
+    	queryStr.append(" left outer join tehsil T on T.tehsil_id = UA.tehsil_id ");
+    	queryStr.append(" left outer join panchayat P on P.panchayat_id = UA.panchayat_id ");
+    	queryStr.append(" left outer join local_election_body LEB on LEB.local_election_body_id = UA.local_election_body ");
+    	queryStr.append(" left outer join govt_department GD on GD.govt_department_id = A.govt_department_id ");
+    	queryStr.append(" left outer join alert_impact_scope AIS on AIS.alert_impact_scope_id = A.impact_scope_id ");
+    	queryStr.append(" left outer join govt_department_designation_officer_new GDDON on  GDDON.govt_department_designation_officer_id = AAON.govt_department_designation_officer_id ");
+    	queryStr.append(" left outer join govt_department_designation_new GDDN on GDDN.govt_department_designation_id = GDDON.govt_department_designation_id");
+    	queryStr.append(" left outer join govt_officer_new GOV on GOV.govt_officer_id = AAON.govt_officer_id ");
+    	queryStr.append(" join alert_category ALTC on ALTC.alert_category_id = A.alert_category_id ");
+    	queryStr.append(" where ");
+    	queryStr.append(" A.created_by = :userId ");
+    	if(fromDate != null && toDate != null){
+    		queryStr.append(" and Date(A.created_time) between :fromDate and :toDate ");
+    	}
+    	
+    	SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+    	
+    	query.addScalar("alertId", Hibernate.LONG);
+    	query.addScalar("createdTime", Hibernate.STRING);
+    	query.addScalar("category", Hibernate.STRING);
+    	query.addScalar("title", Hibernate.STRING);
+    	query.addScalar("description", Hibernate.STRING);
+    	query.addScalar("callerName", Hibernate.STRING);
+    	query.addScalar("mobileNo", Hibernate.STRING);
+    	query.addScalar("email", Hibernate.STRING);
+    	query.addScalar("departmentName", Hibernate.STRING);
+    	query.addScalar("impactScope", Hibernate.STRING);
+    	query.addScalar("stateName", Hibernate.STRING);
+    	query.addScalar("districtName", Hibernate.STRING);
+    	query.addScalar("conName", Hibernate.STRING);
+    	query.addScalar("tehsilName", Hibernate.STRING);
+    	query.addScalar("panchayatName", Hibernate.STRING);
+    	query.addScalar("lebName", Hibernate.STRING);
+    	query.addScalar("designationName", Hibernate.STRING);
+    	query.addScalar("officerMobileNo", Hibernate.STRING);
+    	
+    	query.setParameter("userId",userId);
+    	if(fromDate != null && toDate != null){
+    		query.setDate("fromDate",fromDate);
+    		query.setDate("toDate",toDate);
+    	}
+    	return query.list();
+    }
+    
 }
+
