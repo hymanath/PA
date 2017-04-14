@@ -111,6 +111,7 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
+import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
@@ -10023,6 +10024,16 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					vo.setIssueType(commonMethodsUtilService.getStringValueForObject(objects[9]));
 					vo.setIssueSubType(commonMethodsUtilService.getStringValueForObject(objects[10]));
 					vo.setFeedbackStatus(commonMethodsUtilService.getStringValueForObject(objects[11]));
+					
+					vo.setDistrict(commonMethodsUtilService.getStringValueForObject(objects[12]));
+					vo.setConstituency(commonMethodsUtilService.getStringValueForObject(objects[13]));
+					vo.setTehsil(commonMethodsUtilService.getStringValueForObject(objects[14]));
+					vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(objects[15]));
+					vo.setHamlet(commonMethodsUtilService.getStringValueForObject(objects[16]));
+					vo.setLocalBody(commonMethodsUtilService.getStringValueForObject(objects[17]));
+					vo.setWard(commonMethodsUtilService.getStringValueForObject(objects[18]));
+					 
+					 
 					returnList.add(vo);
 				}
 			}
