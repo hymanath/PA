@@ -2835,6 +2835,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 												" and model.publicationDate.publicationDateId = :publicationDate");
 			
 			query.setParameter("publicationDate", IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+			query.setParameter("tehsilId", tehsilId);
 			return (Constituency) query.uniqueResult();
 		}
 }
