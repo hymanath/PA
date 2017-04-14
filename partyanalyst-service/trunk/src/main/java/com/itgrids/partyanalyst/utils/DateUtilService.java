@@ -513,15 +513,24 @@ public class DateUtilService {
 	        secondsList.add(Long.parseLong(arrayTime[2]));
 	    
 	    }
+	    for(long secVal : secondsList){
+		      ss += secVal;
+	    }
+	    long ss1 = ss;
+	    ss = ss % 60;
+	    long nextTo = ss1 / 60;
+	    minitiesList.add(nextTo);
+	    for(long minVal : minitiesList){
+		      mm += minVal;
+		} 
+	    long mm1 = mm;
+	    mm = mm % 60;
+	    nextTo = mm1 / 60;
+	    hourList.add(nextTo);
 	    for(long hourVal : hourList){
 	      hr += hourVal;
 	    }
-	    for(long minVal : minitiesList){
-	      mm += minVal;
-	    }
-	    for(long secVal : secondsList){
-	      ss += secVal;
-	    }
+	    
 	    
 	    return hr+":"+mm+":"+ss;
 	    
