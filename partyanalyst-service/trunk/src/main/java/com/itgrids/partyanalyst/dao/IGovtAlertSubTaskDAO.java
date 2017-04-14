@@ -12,14 +12,14 @@ import com.itgrids.partyanalyst.model.GovtAlertSubTask;
 
 public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long> {
 	
-	public List<Object[]> getDistrictOfficerAlertsSubTasksCount(Long govtDepDesigOffcrId,Long govtOffcrId,String countType,String type);
+	public List<Object[]> getDistrictOfficerAlertsSubTasksCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String countType,String type);
 	public List<Object[]> getSubTaskCount(List<Long> alertIds);
  	public List<Object[]> getSubTaskAlertAssignCountsForDeptWiseDetails(Date fromDate, Date toDate);
  	public List<Object[]> getDistrictLevelDeptWiseStatusOverViewForSubTask(Date fromDate, Date toDate,Long scopeId,Long deptId,Long levelId);
  	public List<Object[]> getDistrictLevelDeptWiseLocationLevelViewForSubtask(Date fromDate, Date toDate,Long deptId);
  	public List<Object[]> getSubOrdinateTasksDetails(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
 			List<Long> desigIds,Long priorityId,String type);
- 	 public List<Long> getDistrictOfficerSubTasksAlertIds(Long govtDepDesigOffcrId,Long govtOffcrId,String countType,String type);
+ 	 public List<Long> getDistrictOfficerSubTasksAlertIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String countType,String type);
   	public List<Object[]> getDistrictOfficerSubTaskAlerts(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
  			Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,String type);
 	 public Integer updateSubTaskPriority(Long subTaskId,Long id,Long userId,Date date);
@@ -27,10 +27,10 @@ public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long>
  	public List<Object[]> getSubTaskInfoForAlert(Long alertId);
  	//public List<Long> getDistrictOfficerAlertsDetails(Date fromDate,Date toDate,Long stateId,Long levelId,List<Long> levelValues,
 		        //Long govtDepartmentId,Long parentGovtDepartmentScopeId,Long govtDeptWorkLocId,Long statusId,Long childGovtScopeId);
- 	public List<Object[]> getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(Long govtDepDesigOffcrId,Long govtOffcrId);
- 	public List<Object[]> getDistrictOfficerMySubTasksStatusWiseDetails(Long govtDepDesigOffcrId,Long govtOffcrId);
- 	public List<Object[]> getDistrictOfficerMyAssignedSubTasksCountsView(Long govtDepDesigOffcrId,Long govtOffcrId,String type);
- 	public List<Object[]> getDistrictOfficerAlertsSubTasksCountsView(Long govtDepDesigOffcrId,Long govtOffcrId,String type);
+ 	public List<Object[]> getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds);
+ 	public List<Object[]> getDistrictOfficerMySubTasksStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds);
+ 	public List<Object[]> getDistrictOfficerMyAssignedSubTasksCountsView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type);
+ 	public List<Object[]> getDistrictOfficerAlertsSubTasksCountsView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type);
  	public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
  		   List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
  		   Long districtWorkLocationId, String group,String searchType);
