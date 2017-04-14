@@ -1,5 +1,7 @@
 var globalUserLevelId = 0;
 var globalUserLevelValues = [];
+var globalgovtDeptDesigOffcrIds=[0];
+var	globalgovtOfficerIds = [0];
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
@@ -1502,7 +1504,11 @@ function buildDistrictOfficerAlertsCountView(result){
 		globalUserLevelId = result.levelId;
 		if(result.levelValues != null && result.levelValues.length > 0)
 			globalUserLevelValues=result.levelValues;
-	}
+		}
+		if(result.govtDeptDesigOffcrIds != null && result.govtDeptDesigOffcrIds.length > 0)
+			globalgovtDeptDesigOffcrIds[0]=result.govtDeptDesigOffcrIds;
+		if(result.govtOfficerIds != null && result.govtOfficerIds.length > 0)
+			globalgovtOfficerIds[0]=result.govtOfficerIds;
 		if(result !=null && result.list1 !=null && result.list1.length>0){
 			var str='';
 		str+='<div class="row">';
