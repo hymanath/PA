@@ -27,8 +27,8 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private List<DistrictOfficeViewAlertVO> list1 = new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<DistrictOfficeViewAlertVO>  list2= new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<DistrictOfficeViewAlertVO> list3 = new ArrayList<DistrictOfficeViewAlertVO>(0);
-	private Long govtDeptDesigOffcrId;
-	private Long govtOfficerId;
+	private List<Long> govtDeptDesigOffcrIds;
+	private List<Long> govtOfficerIds;
 	private Double alertsPerc;
 	private String color;
 	private List<Long> todayAlertIds = new ArrayList<Long>();
@@ -101,17 +101,18 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	public void setTaskCompletedCnt(Long taskCompletedCnt) {
 		this.taskCompletedCnt = taskCompletedCnt;
 	}
-	public Long getGovtDeptDesigOffcrId() {
-		return govtDeptDesigOffcrId;
+
+	public List<Long> getGovtDeptDesigOffcrIds() {
+		return govtDeptDesigOffcrIds;
 	}
-	public void setGovtDeptDesigOffcrId(Long govtDeptDesigOffcrId) {
-		this.govtDeptDesigOffcrId = govtDeptDesigOffcrId;
+	public void setGovtDeptDesigOffcrIds(List<Long> govtDeptDesigOffcrIds) {
+		this.govtDeptDesigOffcrIds = govtDeptDesigOffcrIds;
 	}
-	public Long getGovtOfficerId() {
-		return govtOfficerId;
+	public List<Long> getGovtOfficerIds() {
+		return govtOfficerIds;
 	}
-	public void setGovtOfficerId(Long govtOfficerId) {
-		this.govtOfficerId = govtOfficerId;
+	public void setGovtOfficerIds(List<Long> govtOfficerIds) {
+		this.govtOfficerIds = govtOfficerIds;
 	}
 	public Long getTodayCount() {
 		return todayCount;
