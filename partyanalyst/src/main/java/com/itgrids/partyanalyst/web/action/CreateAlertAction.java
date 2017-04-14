@@ -90,8 +90,17 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private CallCenterVO callCenterVO;
 	private List<AlertTrackingVO> alertTrackingVOList;
 	private List<GovtDepartmentVO> govtDeptVoList = new ArrayList<GovtDepartmentVO>(0);
+	private AlertCoreDashBoardVO alertCoreDashBoardVO;
 	
 	
+	public AlertCoreDashBoardVO getAlertCoreDashBoardVO() {
+		return alertCoreDashBoardVO;
+	}
+
+	public void setAlertCoreDashBoardVO(AlertCoreDashBoardVO alertCoreDashBoardVO) {
+		this.alertCoreDashBoardVO = alertCoreDashBoardVO;
+	}
+
 	public CallCenterVO getCallCenterVO() {
 		return callCenterVO;
 	}
@@ -2487,4 +2496,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getUserLogingDtls(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDateStr");
+			Long userId = jObj.getLong("userId");  
+			alertCoreDashBoardVO = alertService.getUserLogingDtls(userId,fromDateStr, toDateStr);          
+		}
+		catch(Exception e){	  
+			LOG.error("Exception occured in getTotalUserLogingDtls()",e);
+		}
+		
+		return Action.SUCCESS;	
+	}
 }
+//public AlertCoreDashBoardVO getUserLogingDtls(Long userId, String fromDateStr, String toDateStr)
