@@ -16948,5 +16948,10 @@
 			<param name="root">alertsSummeryVOList</param>       
 		</result> 
 	</action>                
+	<action name="getGovtGrievanceAlertDetailsAction" class="alertManagementSystemAction" method="getGovtGrievanceAlertDetails">
+		<result type="json" name="success">
+	   		<param name="root">grievanceAlertVo</param>
+	   	</result>
+	</action> 	                   
  </package>
 </struts>
