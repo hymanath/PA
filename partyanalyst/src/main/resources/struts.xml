@@ -16937,6 +16937,11 @@
 	<action name="agentWiseReportAction" class="createAlertAction" method="getAgentWiseReport">
 	  		<result name="success">/jsp/agentWiseReport.jsp</result>
 	  		<result name="error" type="redirect">govtLoginAction.action</result>
-	</action>                  
+	</action> 
+	<action name="getUserLogingDtlsAction" class="createAlertAction" method="getUserLogingDtls">
+	  	<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVO</param>       
+		</result> 
+	</action>                 
  </package>
 </struts>
