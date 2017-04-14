@@ -47,7 +47,7 @@
 				<div class="row">
 					<div class="panel panel-default m_top10">
 						<div class="panel-heading" style="background-color: #fff;">
-							<h4>Overview</h4>
+							<h4>Overview <a class="btn btn-success pull-right" href="locationWiseReportAction.action" style="margin-top: -8px;" > Geographical View  </a></h4>
 						</div>
 						<div class="panel-body">  
 							<div class="row m_top5">

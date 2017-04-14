@@ -1840,14 +1840,14 @@ function showDashboard(){
 				  var  districtId = $("#modalDistrictId").val();
 				  var  mandalId = $("#modalMandalNameId").val();
 				  var  villageId = $("#modalPanchayatId").val();
-				  alert(mandalId);
+				  //alert(mandalId);
 				  if(villageId != null && villageId>0){
 					  locatoinType = "hamlet";
 					  locationId = villageId;
 					   mobileNo ="";
 				  }
 				  if(mandalId != null && mandalId>0){
-					  alert(4);
+					 // alert(4);
 					  locatoinType = "tehsil";
 					  locationId = mandalId;
 					   mobileNo ="";
