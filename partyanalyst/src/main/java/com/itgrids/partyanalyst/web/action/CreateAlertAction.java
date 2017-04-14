@@ -2501,6 +2501,24 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	}
 	public String getAgentWiseReport(){
 		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			boolean noaccess = false;
+			List<String> entitlements = null;
+			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+				entitlements = regVO.getEntitlements();
+				if(!(entitlements.contains("GRIEVANCE_CALL_CENTER_USER_TRACKING_USER_ENTITLEMENT") || entitlements.contains("GRIEVANCE_CALL_CENTER_USER_TRACKING_ADMIN_ENTITLEMENT"))){
+					noaccess = true ;
+				}
+				if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+					noaccess = false;
+				}
+				if(noaccess){
+					return "error";
+				}
+			}		
 			return Action.SUCCESS;
 		}catch (Exception e) {
 			   e.printStackTrace();
@@ -2522,6 +2540,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		
 		return Action.SUCCESS;	
 	}
+
 	
 	public String getStatusWiseAlertsCountSummery(){
 		try {
