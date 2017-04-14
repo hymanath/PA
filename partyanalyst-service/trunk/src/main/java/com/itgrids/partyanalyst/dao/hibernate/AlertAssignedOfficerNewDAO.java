@@ -2796,13 +2796,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   	    	queryStr.append(" and GUA.panchayat_id in (:levelValues)");
   	    
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
-		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
-		if(filter != null && !filter.trim().isEmpty() && filter.trim().equalsIgnoreCase("true")){
-			query.addScalar("parentGovtDepartmentWorkLocationId", Hibernate.LONG);
-    		query.addScalar("DISTRICT", Hibernate.STRING);
-    		query.addScalar("GDWLI", Hibernate.LONG);
-    		query.addScalar("DIVISION", Hibernate.STRING);
-    	}
+		
 		query.addScalar("alertIds", Hibernate.LONG);
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
