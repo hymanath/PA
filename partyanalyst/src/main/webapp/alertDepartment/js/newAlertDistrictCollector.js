@@ -1550,8 +1550,10 @@ function buildDistrictOfficerAlertsCountView(result){
 			
 			var totalAlertCnt = result.list1[0].overAllCnt;
 			namesArrAT.push(result.list1[i].name);
-			var tempArrAT = {"y":result.list1[i].count,color:result.list1[i].color};
-			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list1[i].count),color:"#D3D3D3"};
+			var tempArrAT = {"y":result.list1[i].count,color:result.list1[i].color,"extra":result.list1[i].id+"-"+result.list1[i].name+"-"+result.list1[i].count};
+			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list1[i].count),color:"#D3D3D3","extra":result.list1[i].id+"-"+result.list1[i].name+"-"+result.list1[i].count};
+			
+			
 			countAT.push(uniqCnt);
 			
 			mainArrTempAT.push(tempArrAT);
@@ -1618,6 +1620,24 @@ function buildDistrictOfficerAlertsCountView(result){
 						pointWidth: 25,
 						gridLineWidth: 15
 					},
+					series: {
+							cursor: 'pointer',
+							point: {
+							events: {
+									click: function () {
+										var stateImpactInfo = (this.extra).split("-");
+										 var StatusId = stateImpactInfo[0];
+										var StatusName = stateImpactInfo[1];
+										var totalAlertCnt = stateImpactInfo[2];
+										
+										 if(totalAlertCnt == 0){
+											return;  
+										 }
+										getDistrictLevelDeptWiseAlertClick(StatusId,StatusName,totalAlertCnt,"alert");
+									}
+								}
+							}
+				        }
 				
 				},
 			series: [{
@@ -1697,8 +1717,11 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			
 			var totalAlertCnt = result.list2[0].overAllCnt;
 			namesArrST.push(result.list2[i].name);
-			var tempArrST = {"y":result.list2[i].count,color:result.list2[i].color};
-			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list2[i].count),color:"#D3D3D3"};
+			var tempArrST = {"y":result.list2[i].count,color:result.list2[i].color,"extra":result.list2[i].id+"-"+result.list2[i].name+"-"+result.list2[i].count};
+			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list2[i].count),color:"#D3D3D3","extra":result.list2[i].id+"-"+result.list2[i].name+"-"+result.list2[i].count};
+			
+			//var tempArrST = {"y":result.list2[i].count,color:result.list2[i].color};
+			//var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list2[i].count),color:"#D3D3D3"};
 			countST.push(uniqCnt);
 			
 			mainArrTempST.push(tempArrST);
@@ -1764,6 +1787,24 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 						pointWidth: 25,
 						gridLineWidth: 15
 					},
+					series: {
+							cursor: 'pointer',
+							point: {
+							events: {
+									click: function () {
+										var stateImpactInfo = (this.extra).split("-");
+										 var StatusId = stateImpactInfo[0];
+										var StatusName = stateImpactInfo[1];
+										var totalAlertCnt = stateImpactInfo[2];
+										
+										 if(totalAlertCnt == 0){
+											return;  
+										 }
+										getDistrictLevelDeptWiseAlertClick(StatusId,StatusName,totalAlertCnt,"mySubTasks");
+									}
+								}
+							}
+				        }
 				
 				},
 			series: [{
@@ -1842,8 +1883,8 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			var uniqCnt = {};
 			var totalAlertCnt = result.list3[0].overAllCnt;
 			namesArr.push(result.list3[i].name);
-			var tempArr = {"y":result.list3[i].count,color:result.list3[i].color};
-			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list3[i].count),color:"#D3D3D3"};
+			var tempArr = {"y":result.list3[i].count,color:result.list3[i].color,"extra":result.list3[i].id+"-"+result.list3[i].name+"-"+result.list3[i].count};
+			var uniqCnt = {"y":parseInt(totalAlertCnt)-parseInt(result.list3[i].count),color:"#D3D3D3","extra":result.list3[i].id+"-"+result.list3[i].name+"-"+result.list3[i].count};
 			countAST.push(uniqCnt);
 			
 			mainArrTemp.push(tempArr);
@@ -1910,6 +1951,24 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 						pointWidth: 25,
 						gridLineWidth: 15
 					},
+					series: {
+							cursor: 'pointer',
+							point: {
+							events: {
+									click: function () {
+										var stateImpactInfo = (this.extra).split("-");
+										 var StatusId = stateImpactInfo[0];
+										var StatusName = stateImpactInfo[1];
+										var totalAlertCnt = stateImpactInfo[2];
+										
+										 if(totalAlertCnt == 0){
+											return;  
+										 }
+										getDistrictLevelDeptWiseAlertClick(StatusId,StatusName,totalAlertCnt,"mySubTasks");
+									}
+								}
+							}
+				        }
 				
 				},
 			series: [{
@@ -2591,3 +2650,37 @@ $(document).on("click",".gettotalLocCls",function(){
 		}
 	});
 }); */
+
+function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
+{
+	$("#alertManagementPopupBody").html('')
+	
+		$("#alertManagementPopup").modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+		$("#alertManagementPopupBody").html(spinner);
+		
+
+	var jsObj = {
+		govtDeptDesigOffceId : globalgovtDeptDesigOffcrId,
+		govtOffceId : globalgovtOfficerId,
+		statusId : StatusId,
+		formDate:currentFromDate, 
+		toDate: currentToDate,
+		clickType:clickType //
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDistrictLevelDeptWiseAlertClickAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			$("#totalAlertsModalTabId").html('');
+			buildAlertDtlsBasedOnStatusClick(result,name,totalCount);
+		}else{
+			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
+		}
+	});
+}
