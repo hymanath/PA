@@ -144,9 +144,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	StringBuilder sb = new StringBuilder();
 	    	  
         	if(type != null && type.equalsIgnoreCase("today")){
-        		sb.append(" select model.alertAssignedOfficerId,model.alert.alertId from AlertAssignedOfficerNew model ");
+        		sb.append(" select model.alertAssignedOfficerId, model.alert.alertId from AlertAssignedOfficerNew model ");
         	}else{
-        		sb.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(model.alert.alertId),model.alertStatus.color from AlertAssignedOfficerNew model ");
+        		sb.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(distinct model.alert.alertId),model.alertStatus.color from AlertAssignedOfficerNew model ");
         	}
         	sb.append(" where model.isDeleted = 'N' " );
         	
@@ -627,7 +627,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         public List<Long> getDistrictOfficerAlertsIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type){
         	StringBuilder sb = new StringBuilder();
 	    	  
-        	  sb.append(" select distinct model.alert.alertId from AlertAssignedOfficerNew model ");
+        	  sb.append(" select  distinct model.alert.alertId from AlertAssignedOfficerNew model ");
         	
         	  sb.append(" where model.isDeleted = 'N' " );
         	

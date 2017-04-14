@@ -3,7 +3,6 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +10,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -111,6 +110,7 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
+import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
@@ -10252,6 +10252,113 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}
 		}catch(Exception e){
 			e.printStackTrace();
+		}
+	}
+	
+	public List<AlertsSummeryVO> getStatusWiseAlertsCountSummery(List<Integer> daysLst){
+		
+		List<AlertsSummeryVO> returnList = new ArrayList<AlertsSummeryVO>();
+		Map<Long,AlertsSummeryVO> statusMap = new HashMap<Long, AlertsSummeryVO>();
+		try{
+			List<AlertStatus> statusList =  alertStatusDAO.getAll();
+			 if(commonMethodsUtilService.isListOrSetValid(statusList)){
+			 for(AlertStatus status : statusList)
+				 {
+					 AlertsSummeryVO vo = new AlertsSummeryVO();
+					 vo.setId(status.getAlertStatusId());
+					 vo.setName(status.getAlertStatus());
+					 //returnList.add(vo);
+					 statusMap.put(status.getAlertStatusId(), vo);
+				 }
+			 }
+			 
+			if(daysLst!=null && daysLst.size()>0){
+					for(Integer day:daysLst){
+						
+						Date today 	 =  dateUtilService.getCurrentDateAndTime();
+						Date fromDate =  null;
+						if(today!=null){
+							fromDate =  getPrevDayForNoOfDays(day, today);
+						}
+						
+						 List<Object[]> statusWiseCount = alertDAO.getStatusWiseAlertsCountByDates(fromDate,today); 
+						 getEfficiencyOfDatesForEachStatus(statusWiseCount,returnList,statusMap,day);
+					}
+				}
+			
+			if(commonMethodsUtilService.isMapValid(statusMap)){
+				//returnList.addAll(statusMap.values());
+				for(Map.Entry<Long,AlertsSummeryVO > entry :statusMap.entrySet()){
+					AlertsSummeryVO statusVo = entry.getValue();
+					returnList.add(statusVo);
+					if(commonMethodsUtilService.isListOrSetValid(statusVo.getEffcncyRslts())){
+						for (AlertsSummeryVO daysVo : statusVo.getEffcncyRslts()) {
+							
+							String percentage = "0.0";
+							if(statusVo.getTtlAlrtss() != null && statusVo.getTtlAlrtss().longValue() >0l)
+							 percentage = (new BigDecimal(daysVo.getEffcncyAlerts()*(100.0)/statusVo.getTtlAlrtss())).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							
+							float prcntgeFlt = Float.parseFloat(percentage);
+							if(daysVo.getDays()==30){
+								if(prcntgeFlt>=90.0f){
+									daysVo.setClrFrEffcncy("green");
+								}
+							}else{
+								if(prcntgeFlt>=95.0f){
+									daysVo.setClrFrEffcncy("green");
+								}
+							}
+							
+							daysVo.setEffcncyPrcnt(percentage);
+							
+						}
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getStatusWiseAlertsCountSummery() method of AlertService",e);
+		}
+		return returnList;
+	}
+	
+	public Date getPrevDayForNoOfDays(int noOfDays, Date today){
+		Calendar cal = new GregorianCalendar();
+		cal.setTime(today);
+		
+		cal.add(Calendar.DAY_OF_MONTH, -noOfDays);
+		Date prevDay = cal.getTime();
+		return prevDay;
+	}
+	public void getEfficiencyOfDatesForEachStatus(List<Object[]> statusWiseCount,List<AlertsSummeryVO> returnList,Map<Long,AlertsSummeryVO> statusMap,Integer day){
+		
+		try{
+			
+			Long indiTtlCnt      = 0l;
+			Long indiEffcncyCnt  = 0l;
+			if(commonMethodsUtilService.isListOrSetValid(statusWiseCount)){
+				for (Object[] obj : statusWiseCount) {
+					indiTtlCnt = indiTtlCnt+Long.valueOf(obj[0].toString());
+					AlertsSummeryVO statusVo = statusMap.get(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					if(statusVo != null){
+							AlertsSummeryVO daysVo = new AlertsSummeryVO();
+							daysVo.setEffcncyType("Last "+day+" Days");
+							daysVo.setEffcncyPrcnt("0.0");
+							daysVo.setClrFrEffcncy("red");
+							//indiEffcncyCnt = indiEffcncyCnt+Long.valueOf(obj[0].toString());
+					
+							statusVo.setTtlAlrtss(statusVo.getTtlAlrtss()+indiTtlCnt);
+							daysVo.setEffcncyAlerts(daysVo.getEffcncyAlerts()+Long.valueOf(obj[0].toString()));
+							daysVo.setDays(day);
+							statusVo.getEffcncyRslts().add(daysVo);
+					}
+					
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getEfficiencyOfDatesForEachStatus() method of AlertService",e);
 		}
 	}
 }
