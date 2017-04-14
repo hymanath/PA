@@ -33,4 +33,7 @@ public interface IEventDAO extends GenericDao<Event, Long> {
 	public Object[] getEventStartAndEndDate(Long eventId);
 	public List<Object[]> getEventSubEventByParentEventId(Long parentEventId);
 	public List<Object[]> getMainEvents();
+	
+	public List<Object[]> getSubEventsDetailsByParentEventId(Long parentEventId);
+	public Object[] getBetweenDatesOfEvent(Long eventId);
 }

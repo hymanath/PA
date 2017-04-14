@@ -2791,4 +2791,27 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getMahanaduEventCadreDetails(List<Long> eventIds,Long tdpCadreId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select distinct model.eventId,model.event.name,model.tdpCadreId," +
+				     " date(model.attendedTime),time(model.attendedTime) " +
+				     " from EventAttendee model " +
+				     " where model.eventId in(:eventIds) " +
+				     " and model.tdpCadreId =:tdpCadreId)");
+		   
+		   queryStr.append(" group by model.event.name,date(model.attendedTime) ");
+		   
+		Query qry = getSession().createQuery(queryStr.toString());
+		
+		if(eventIds != null && !eventIds.isEmpty()){
+			qry.setParameterList("eventIds", eventIds);
+		}
+		if(tdpCadreId != null && tdpCadreId.longValue()>0l){
+			qry.setParameter("tdpCadreId", tdpCadreId);
+		}
+		return qry.list();
+	}
 }
