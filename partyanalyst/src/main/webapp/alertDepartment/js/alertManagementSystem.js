@@ -641,6 +641,7 @@ function buildtotalAlertsModalTabId(result){
 				str+='<th>LAG Days</th>';
 				str+='<th>Impact Level</th>';
 				str+='<th>Location</th>';
+				str+='<th>Given By </th>';
 				str+='<th></th>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -686,6 +687,12 @@ function buildtotalAlertsModalTabId(result){
 					}else{
 						str+='<td> - </td>';        
 					}
+					if(result[i].callerStr != null && result[i].callerStr.length > 0){
+						str+='<td>'+result[i].callerStr+'</td>';        
+					}else{
+						str+='<td> - </td>';        
+					}
+					
 					str+='<td><button class="btn btn-success alertDetailsModalCls" attr_alert_Id="'+result[i].id+'" attr_status_id="'+result[i].statusId+'">Alert Details</button></td>';      
 				str+='</tr>';
 			}
