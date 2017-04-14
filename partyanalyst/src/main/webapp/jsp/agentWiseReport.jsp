@@ -12,6 +12,8 @@
     <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="dist/alertDashBoard/dist/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
+    <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
+	
 	
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -39,7 +41,7 @@
                     <li><button class="dateCls" type="button">This Month</button></li>
                     <li><button class="dateCls" type="button">Last Month</button></li>
 					<li>
-					<div class="input-group">
+					<div class="input-group" style="margin-bottom: -10px">
 		                 <input type="text" class="form-control" id="dateRangePickerId"/>
 			             <span class="input-group-addon">
 		                  <i class="glyphicon glyphicon-calendar"></i>
@@ -103,19 +105,19 @@
 
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script>
-
+    var currentFromDate=moment().startOf('month').format("DD/MM/YYYY");
+    var currentToDate=moment().endOf('month').format("DD/MM/YYYY");
+	
 	$(document).ready(function(){
 	$("#agentWiseOverViewId").DataTable();
-	$(document).ready(function(){
 	 $("#dateRangePickerId").daterangepicker({
 		opens:'left',
-		startDate:moment().add(29, 'days'),    
-		endDate:moment(),
+		startDate:moment().startOf('month'),    
+		endDate:moment().endOf('month'),
 		ranges: {
         }
 	     });
   });
-});
 </script>
 <script>
 getTotalUserLogingDtls();
