@@ -60,13 +60,15 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 				" max(ULD.logout_time) as maxLogoutTime, " +
 				" SEC_TO_TIME(sum(TIME_TO_SEC(TIMEDIFF(ULD.logout_time,ULD.login_time)))) as workingHour " +
 				" from " +
-				" user_login_details ULD " +
-				" where " );
+				" user_login_details ULD, user U " +
+				" where  ULD.user_id = U.user_id  " );
 		if(startDate != null && endDate != null){
-			queryStr.append(" Date(login_time) between  :startDate and :endDate ");
+			queryStr.append(" and Date(login_time) between  :startDate and :endDate ");
 		}
 		if(userId != null && userId.longValue() > 0L){
 			queryStr.append(" and ULD.user_id = :userId");
+		}else {
+			queryStr.append(" and U.username like '%apcc%' ");
 		}
 		queryStr.append(" group by ULD.user_id ");
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
@@ -92,7 +94,7 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 			queryStr.append(" Date(login_time) between  :fromDate and :toDate ");
 		}
 		if(userId != null && userId.longValue() > 0L){
-			queryStr.append("and ULD.user_id = :userId ");
+			queryStr.append("and ULD.user_id = :userId ");  
 		}
 		queryStr.append(" group by ULD.user_id ");
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
