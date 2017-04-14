@@ -16942,6 +16942,11 @@
 	  	<result type="json" name="success">    
 			<param name="root">alertCoreDashBoardVO</param>       
 		</result> 
-	</action>                 
+	</action> 
+	<action name="getStatusWiseAlertsCountSummeryAction" class="createAlertAction"  method="getStatusWiseAlertsCountSummery">
+		<result type="json" name="success">    
+			<param name="root">alertsSummeryVOList</param>       
+		</result> 
+	</action>                
  </package>
 </struts>
