@@ -6532,7 +6532,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	}
     	return query.list();
     }
-    
+
+    public List<Object[]> getCallerDetailsForAlerts(List<Long> alertIdsList){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append(" select distinct model.alertId, alertCaller.callerName,alertCaller.mobileNo " +
+    			" from Alert model " +
+    			" left join model.alertCaller alertCaller  where model.isDeleted='N' and model.alertId in (:alertIdsList) ");
+    	Query query = getSession().createQuery(queryStr.toString());
+    	query.setParameterList("alertIdsList", alertIdsList);
+    	return query.list();
+    }
     public List<Object[]> getStatusWiseAlertsCountByDates(Date fromDate ,Date toDate){
     	StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct count(A.alertId) , A.alertStatus.alertStatusId from Alert A " +

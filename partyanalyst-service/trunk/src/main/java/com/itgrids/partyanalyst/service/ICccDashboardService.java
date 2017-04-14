@@ -79,5 +79,6 @@ public interface ICccDashboardService {
 	
 	public List<IdAndNameVO> getSubDesignationOfficersInfo(Long parentOfficerId);
 	public List<IdAndNameVO> getSubDesignationsInfo(Long parentOfficerId,Long levelId);
+	public List<AlertCoreDashBoardVO> getTotalPhoneNumbers(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs);
 	
 } 
