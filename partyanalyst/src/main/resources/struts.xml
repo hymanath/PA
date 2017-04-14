@@ -16944,8 +16944,7 @@
 		</result>
 	</action> 
 	<action name="locationWiseReportAction" class="createAlertAction" method="locationReport">
-		  <result name="success">/jsp/locationWiseReport.jsp</result>
-		</action>                 
+		  <result name="success">/jsp/locationWiseReport.jsp</result>                
 	</action> 
 	<action name="getUserLogingDtlsAction" class="createAlertAction" method="getUserLogingDtls">
 	  	<result type="json" name="success">    
