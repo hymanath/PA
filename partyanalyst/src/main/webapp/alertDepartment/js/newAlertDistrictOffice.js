@@ -231,12 +231,13 @@ $("#dateRangePickerAUM").daterangepicker({
 		
 			var districtId =$("#SubDivisionDistNamesId").val();
 			var districtDivisionId =$("#SubDivisionDiviNamesId").val();
+			var districtSubDivisionId =$("#SubDivisionNamesId").val();
 			var sortingType = getSubDivision().subSortingType; // 'value1'
 			var orderType = getSubDivision().subOrderType; // 'value2'
 			var searchType = getSearchType();
 			var alertType = getAlertType();
 			
-			getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,districtDivisionId,districtDivisionId);
+			getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,districtDivisionId,districtSubDivisionId);
 			
 		});
 		//sub-division wise graph click end
@@ -3121,7 +3122,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,search
 	
 }
 //For Sub Division Level
-function getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,districtDivisionId,districtDivisionId){
+function getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,districtDivisionId,districtSubDivisionId){
 	
 	$("#SubdivisionLevelSubOrdinarteDetails").html(spinner);
 	
@@ -3141,7 +3142,7 @@ function getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchT
     order:orderType,
     districtWorkLocationId:districtId,
     divisionWorkLocationId:districtDivisionId,
-    subDivisionWorkLocationId:districtDivisionId,
+    subDivisionWorkLocationId:districtSubDivisionId,
     group:"status",//status only
     alertType:alertType,//alertType=(alert/subTask)
   	searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
