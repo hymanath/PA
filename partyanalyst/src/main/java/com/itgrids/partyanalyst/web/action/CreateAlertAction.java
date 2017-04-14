@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
+import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
@@ -49,6 +50,7 @@ import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 
 public class CreateAlertAction extends ActionSupport implements ServletRequestAware, ServletContextAware{
 	private HttpSession session;
@@ -90,6 +92,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private CallCenterVO callCenterVO;
 	private List<AlertTrackingVO> alertTrackingVOList;
 	private List<GovtDepartmentVO> govtDeptVoList = new ArrayList<GovtDepartmentVO>(0);
+	private List<AlertsSummeryVO> alertsSummeryVOList;
 	private AlertCoreDashBoardVO alertCoreDashBoardVO;
 	
 	
@@ -99,6 +102,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 
 	public void setAlertCoreDashBoardVO(AlertCoreDashBoardVO alertCoreDashBoardVO) {
 		this.alertCoreDashBoardVO = alertCoreDashBoardVO;
+	}
+
+	public List<AlertsSummeryVO> getAlertsSummeryVOList() {
+		return alertsSummeryVOList;
+	}
+
+	public void setAlertsSummeryVOList(List<AlertsSummeryVO> alertsSummeryVOList) {
+		this.alertsSummeryVOList = alertsSummeryVOList;
 	}
 
 	public CallCenterVO getCallCenterVO() {
@@ -2496,6 +2507,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	
 	public String getUserLogingDtls(){
 		try{
 			jObj = new JSONObject(getTask());
@@ -2510,5 +2522,21 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		
 		return Action.SUCCESS;	
 	}
+	
+	public String getStatusWiseAlertsCountSummery(){
+		try {
+			jObj = new JSONObject(getTask());
+			JSONArray dysArr = jObj.getJSONArray("daysArr");
+			List<Integer> daysList = new ArrayList<Integer>();
+			for (int i = 0; i < dysArr.length(); i++) {
+				Integer desgId = (Integer)dysArr.get(i);
+				daysList.add(desgId);
+			}
+			
+			alertsSummeryVOList = alertService.getStatusWiseAlertsCountSummery(daysList);
+	   } catch (Exception e) {
+		   LOG.error("Exception Raised in getStatusWiseAlertsCountSummery() in CreateAlertAction",e);
+		}
+		   return Action.SUCCESS;
+	}
 }
-//public AlertCoreDashBoardVO getUserLogingDtls(Long userId, String fromDateStr, String toDateStr)

@@ -1571,6 +1571,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			}
 			str+='<hr class="m_0"/>';
 			if(result.list1[0].overAllCnt !=null && result.list1[0].overAllCnt !=0){
+				overAllAlertIds = [];
 				if(result.list1[0].overAllCnt !=null && result.list1[0].overAllCnt !=0 && result.list1[0].overAllCnt>0){
 					overAllAlertIds.push(result.list1[0].overAllAlertIds);
 				str+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_name ="OVERALL" attr_total_count = "'+result.list1[0].overAllCnt+'">OVERALL <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].overAllCnt+'</span></p>';
@@ -1733,6 +1734,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			}
 			str1+='<hr class="m_0"/>';
 			if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0){
+				overAllAlertIds = [];
 			 if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0 && result.list2[0].overAllCnt>0){
 				overAllAlertIds.push(result.list2[0].overAllAlertIds);
 				str1+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
@@ -1893,6 +1895,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			}
 			str2+='<hr class="m_0"/>';
 			if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0){
+				overAllAlertIds = [];
 				if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0 && result.list3[0].overAllCnt>0){
 					overAllAlertIds.push(result.list3[0].overAllAlertIds);
 				str2+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
@@ -3565,8 +3568,9 @@ $(document).on("click",".overAllCount",function(){
 		
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name");
-	var totalCount = $(this).attr("attr_total_count")
-	alertIdArr.push(parseInt($(this).attr("attr_overCunt")));
+	var totalCount = $(this).attr("attr_total_count");
+	
+	alertIdArr=($(this).attr("attr_overcunt").split(','));
 	var jObj = {
 		alertIdArr: alertIdArr		
 	}
@@ -3830,3 +3834,4 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		}
 	});
 }
+
