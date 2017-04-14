@@ -9849,6 +9849,7 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 	}
 	public CallCenterVO getTotalUserLogingDtls(String fromDateStr, String toDateStr){
 		try{
+			CallCenterVO callVO = new CallCenterVO();
 			Date fromDate = null;
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -9857,7 +9858,7 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 				toDate = sdf.parse(toDateStr);
 			}
 			//loging details
-			List<Object[]> loginDtlsList = userLoginDetailsDAO.getUserLoginLogoutDtls(fromDate, toDate);
+			List<Object[]> loginDtlsList = userLoginDetailsDAO.getUserLoginLogoutDtls(null,fromDate, toDate);
 			List<Long> userIdList = new ArrayList<Long>();
 			Map<Long,String> userIdAndMinLoginTimeMap = new HashMap<Long,String>();
 			Map<Long,String> userIdAndMaxLogoutTimeMap = new HashMap<Long,String>();
@@ -9894,7 +9895,7 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 			}
 			
 			//alert count
-			List<Object[]> countList = alertDAO.getNoOFAlertCreatedList(fromDate,toDate);
+			List<Object[]> countList = alertDAO.getNoOFAlertCreatedList(fromDate,toDate,null);
 			Map<Long,Long> usrIdAndCountMap = new HashMap<Long,Long>();
 			Long totalAlert = new Long(0L);
 			if(countList != null && countList.size() > 0){
@@ -9913,9 +9914,10 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 						
 						param.setNoOfAlertCreated(usrIdAndCountMap.get(param.getUserId()) != null ? usrIdAndCountMap.get(param.getUserId()) : 0);
 					}
+					callVO.setRange("single");
 				}
 			}else{
-				List<Object[]> attendanceCountList = userLoginDetailsDAO.getAttendanceForMultiDate(fromDate, toDate);
+				List<Object[]> attendanceCountList = userLoginDetailsDAO.getAttendanceForMultiDate(fromDate, toDate,null);
 				Map<Long,Long> userIdAndPresentCountMap = new HashMap<Long,Long>();
 				if(attendanceCountList != null && attendanceCountList.size() > 0){
 					for(Object[] param : attendanceCountList){
@@ -9926,14 +9928,15 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 					for(CallCenterVO param : callCenterVOs){
 						param.setAttendedCount(userIdAndPresentCountMap.get(param.getUserId()) != null ? userIdAndPresentCountMap.get(param.getUserId()) : 0L);
 
-						param.setTotalHours(userIdAndTotalHrWorkedMap.get(param.getUserId()) != null ? userIdAndTotalHrWorkedMap.get(param.getUserId()).trim().substring(10) : "");
+						param.setTotalHours(userIdAndTotalHrWorkedMap.get(param.getUserId()) != null ? userIdAndTotalHrWorkedMap.get(param.getUserId()).trim() : "");
 						
 						param.setNoOfAlertCreated(usrIdAndCountMap.get(param.getUserId()) != null ? usrIdAndCountMap.get(param.getUserId()) : 0);
 					}
+					callVO.setRange("multiple");
 				}
 			}
 			
-			CallCenterVO callVO = new CallCenterVO();
+			
 			if(callCenterVOs != null && callCenterVOs.size() > 0){
 				callVO.setTotalAgent(Long.valueOf(Integer.toString(callCenterVOs.size())));
 				callVO.getCallCenterVOList().addAll(callCenterVOs);
@@ -10171,6 +10174,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	public AlertCoreDashBoardVO getUserLogingDtls(Long userId, String fromDateStr, String toDateStr){
 		try{
 			List<AlertCoreDashBoardVO> coreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			AlertCoreDashBoardVO alertCoreDashBoardVO = new AlertCoreDashBoardVO();
 			Date fromDate = null;
 			Date toDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -10180,7 +10184,33 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}
 			List<Object[]> userAlertDtlsList = alertDAO.getCallerUserAlertDtls(fromDate,toDate,userId);
 			buildAlertDetailsForLonginUser(coreDashBoardVOs,userAlertDtlsList);
+			//loging details
+			List<Object[]> loginDtlsList = userLoginDetailsDAO.getUserLoginLogoutDtls(userId,fromDate, toDate);
+			//no of alert created
+			List<Object[]> countList = alertDAO.getNoOFAlertCreatedList(fromDate,toDate,userId);
 			
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0 && fromDateStr.trim().equalsIgnoreCase(toDateStr.trim())){
+				
+				alertCoreDashBoardVO.setLoginTime(commonMethodsUtilService.getStringValueForObject(loginDtlsList.get(0)[1]));
+				alertCoreDashBoardVO.setLogoutTime(commonMethodsUtilService.getStringValueForObject(loginDtlsList.get(0)[2]));
+				alertCoreDashBoardVO.setTotalHours(commonMethodsUtilService.getStringValueForObject(loginDtlsList.get(0)[3]));
+				
+				alertCoreDashBoardVO.setNoOfAlertCreated(commonMethodsUtilService.getLongValueForObject(countList.get(0)[1]));
+				alertCoreDashBoardVO.setRange("single");
+			}else{
+				List<Object[]> attendanceCountList = userLoginDetailsDAO.getAttendanceForMultiDate(fromDate, toDate,userId);
+				alertCoreDashBoardVO.setAttendedCount(commonMethodsUtilService.getLongValueForObject(attendanceCountList.get(0)[1]));
+				alertCoreDashBoardVO.setTotalHours(commonMethodsUtilService.getStringValueForObject(loginDtlsList.get(0)[3]));
+				
+				alertCoreDashBoardVO.setNoOfAlertCreated(commonMethodsUtilService.getLongValueForObject(countList.get(0)[1]));
+				
+				alertCoreDashBoardVO.setRange("multiple");
+				
+			}
+			if(coreDashBoardVOs != null && coreDashBoardVOs.size() > 0){
+				alertCoreDashBoardVO.setSubList(coreDashBoardVOs);
+			}
+			return alertCoreDashBoardVO;
 		}catch(Exception e){
 			LOG.error("Error occured getUserLogingDtls() method of AlertService",e);
 		}
