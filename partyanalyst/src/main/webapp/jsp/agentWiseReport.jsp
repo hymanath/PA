@@ -5,14 +5,18 @@
 <head>
 <title>call center user</title>
   	<meta charset="utf-8">
+    <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+    <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
    	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+	<link href="dist/alertDashBoard/dist/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
+	
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
- 
+     <script src="dist/DateRange/moment.js" type="text/javascript"></script>
+	 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
   	<style>
    		li {
     		list-style:none;
@@ -28,13 +32,20 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 			   	<h3>Call Center User(Agent) Wise Report</h3>
-				<ul class="list-inline">
-					<li><button class="btn-success dateCls" type="button">today</button></li>
-					<li><button class="dateCls" type="button">This Week(April 9-15)</button></li>
-					<li><button class="dateCls" type="button">Last Week(Apr)</button></li>
-					<li><button class="dateCls" type="button">This Month(Apr)</button></li>
-					<li><button class="dateCls" type="button">Last Month(Apr)</button></li>
-					<li><i class="fa fa-calendar-o"></i><span style="margin-left:10px;">Custom Date Range</span></li>
+				<ul class="list-inline callCenterUser">
+					<li>Today</li>
+					<li>This Week(April 9-15)</li>
+					<li>Last Week(Apr)</li>
+					<li>This Month(Apr)</li>
+					<li>Last Month(Apr)</li>
+					<li>
+					<div class="input-group">
+		                 <input type="text" class="form-control" id="dateRangePickerId"/>
+			             <span class="input-group-addon">
+		                  <i class="glyphicon glyphicon-calendar"></i>
+			                 </span>     
+			                </div>
+					</li>
 				  </ul>
 			</div>
 			
@@ -95,10 +106,21 @@
 
 	$(document).ready(function(){
 	$("#agentWiseOverViewId").DataTable();
-	});
+	$(document).ready(function(){
+	   var start = moment().subtract(29, 'days');
+       var end = moment();
+     
+	 $("#dateRangePickerId").daterangepicker({
+		opens:'left',
+		startDate:start,    
+		endDate:end,
+		ranges: {
+        }     
+	     });
+  });
+});
 </script>
 <script>
-alert(111)
 getTotalUserLogingDtls();
 function getTotalUserLogingDtls(){
     var jsObj ={
@@ -159,7 +181,34 @@ $(document).on("click",".dateCls",function(){
 	$(".dateCls").removeClass("btn-success");
 	$(this).addClass("btn-success");  
 });
-
+   $(document).on("click",".callCenterUser li",function(){
+         
+			var date =  $(this).html();
+		
+			if(date == 'Today')
+			{
+				callCenterUserFDate = moment().format('DD-MM-YYYY');
+				callCenterUserTDate = moment().format('DD-MM-YYYY');
+				
+			 
+			}else if(date == 'This Week(April 9-15)'){
+				callCenterUserFDate = moment().startOf("week").format('DD-MM-YYYY');
+				callCenterUserTDate = moment().endOf('week').format('DD-MM-YYYY');
+				
+			}else if(date == 'Last Week(Apr)'){
+				callCenterUserFDate = moment().subtract(6, 'days').format('DD-MM-YYYY');
+				callCenterUserTDate = moment().format('DD-MM-YYYY');
+				
+				}else if(date == 'This Month(Apr)'){
+				callCenterUserFDate = moment().startOf("month").format('DD-MM-YYYY');
+				callCenterUserTDate = moment().endOf('month').format('DD-MM-YYYY');
+				
+			}else if(date == 'Last Month(Apr)'){
+				callCenterUserFDate = moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY');
+				callCenterUserTDate = moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY');
+				
+			}
+		});
 </script>
 </body>
 </html>
