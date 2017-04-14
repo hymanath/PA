@@ -6533,5 +6533,26 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	return query.list();
     }
     
+    public List<Object[]> getStatusWiseAlertsCountByDates(Date fromDate ,Date toDate){
+    	StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct count(A.alertId) , A.alertStatus.alertStatusId from Alert A " +
+				" where A.isDeleted = 'N' ");
+		
+		if(fromDate!=null && toDate!=null){
+			queryStr.append(" and  date(A.createdTime) >=:fromDate and date(A.createdTime) <=:toDate  ");
+		}
+		
+		queryStr.append(" group by A.alertStatus.alertStatusId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(fromDate!=null && toDate!=null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+		
+    }
+    
 }
 
