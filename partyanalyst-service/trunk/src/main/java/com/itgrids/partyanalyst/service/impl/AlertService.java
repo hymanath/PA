@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dao.IAlertTrackingDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertUserDAO;
 import com.itgrids.partyanalyst.dao.IAlertVerificationUserTypeUserDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IClarificationRequiredDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -110,7 +111,6 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
-import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
@@ -231,7 +231,7 @@ private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOff
 private ILocalityDAO localityDAO;
 private IUserLoginDetailsDAO userLoginDetailsDAO;
 private IUserDAO userDAO;  
-
+private IBoothDAO boothDAO;
 
 private IAlertFeedbackStatusDAO alertFeedbackStatusDAO;
 private IAlertAssignedOfficerDAO alertAssignedOfficerDAO;
@@ -240,6 +240,14 @@ private IGovtOfficerDAO govtOfficerDAO;
 private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
 private IAlertIssueSubTypeDAO alertIssueSubTypeDAO;
 
+
+public IBoothDAO getBoothDAO() {
+	return boothDAO;
+}
+
+public void setBoothDAO(IBoothDAO boothDAO) {
+	this.boothDAO = boothDAO;
+}
 
 public void setUserDAO(IUserDAO userDAO) {
 	this.userDAO = userDAO;
@@ -9795,6 +9803,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAddress.setState(stateDAO.get(inputVO.getStateId()));
 				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
 				//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
 				userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
 				userAddress.setPanchayatId(inputVO.getPanchayatId());
 				userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));

@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBoothDAO{
@@ -2827,4 +2828,13 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			queryObj.setParameter("id", id);
 			return queryObj.list();
 	}
+		
+		public Constituency getConstituencyIdByTehsilId(Long tehsilId){
+			Query query = getSession().createQuery("select distinct model.constituency from Booth model" +
+												" where model.tehsil.tehsilId = :tehsilId" +
+												" and model.publicationDate.publicationDateId = :publicationDate");
+			
+			query.setParameter("publicationDate", IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+			return (Constituency) query.uniqueResult();
+		}
 }
