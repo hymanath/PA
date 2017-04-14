@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
+import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -73,7 +74,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<File> imageForDisplay = new ArrayList<File>();
 	private List<String> imageForDisplayContentType = new ArrayList<String>();
 	private List<String> imageForDisplayFileName = new ArrayList<String>();
-	
+	private List<GrievanceAlertVO> grievanceAlertVo;
 	
 	
 	public List<File> getImageForDisplay() {
@@ -279,6 +280,13 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public void setGovtDeptVoList1(List<GovtDepartmentVO> govtDeptVoList1) {
 		this.govtDeptVoList1 = govtDeptVoList1;
+	}
+	
+	public List<GrievanceAlertVO> getGrievanceAlertVo() {
+		return grievanceAlertVo;
+	}
+	public void setGrievanceAlertVo(List<GrievanceAlertVO> grievanceAlertVo) {
+		this.grievanceAlertVo = grievanceAlertVo;
 	}
 	public String execute(){
 		    session = request.getSession();
@@ -2124,4 +2132,20 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				return Action.SUCCESS;
 			}
+		public String getGovtGrievanceAlertDetails(){
+			try{
+				session = request.getSession();
+			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long scopeId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				String mobileNo = jObj.getString("mobileNo");
+				String locatoinType = jObj.getString("locatoinType");
+				Long locationId = jObj.getLong("locationId");
+				grievanceAlertVo = alertManagementSystemService.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId);
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getGovtGrievanceAlertDetails() of alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		} 
 }
