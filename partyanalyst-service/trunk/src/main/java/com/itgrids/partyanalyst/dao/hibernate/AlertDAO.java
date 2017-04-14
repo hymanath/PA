@@ -6116,7 +6116,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	query.setParameter("alertId", alertId);
     	return (Object[])query.uniqueResult();
     }
-    public List<Object[]> getNoOFAlertCreatedList(Date startDate, Date endDate){
+    public List<Object[]> getNoOFAlertCreatedList(Date startDate, Date endDate,Long userId){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append(" select " +
     			" ALT.createdBy " +
@@ -6129,12 +6129,18 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	if(startDate != null && endDate != null){
     		queryStr.append(" and date(ALT.createdTime) between :startDate and :endDate ");
     	}
+    	if(userId != null && userId.longValue() > 0L){
+    		queryStr.append(" and ULD.userId =:userId ");
+    	}
     	queryStr.append(" group by ALT.createdBy ");
     	Query query = getSession().createQuery(queryStr.toString());
     	
     	if(startDate != null && endDate != null){
     		query.setDate("startDate",startDate);
     		query.setDate("endDate",endDate);
+    	}
+    	if(userId != null && userId.longValue() > 0L){
+    		query.setParameter("userId", userId);
     	}
     	return query.list();
     			
@@ -6339,7 +6345,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        " A.alert_source_id as alert_source_id, " +//12
 				        " ALTSRC.source as source, " +//13
 				        " 0 as edition_type_id, " +//14
-				        " '' as edition_type, " +//15
+				        " ' ' as edition_type, " +//15
 				        " EDS.edition_id as edition_id, " +//16
 				        " EDS.edition_alias as edition_alias, " +//17
 				        " A.tv_news_channel_id as tv_news_channel_id, " +//18
@@ -6349,7 +6355,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        " P.panchayat_name as panchayatName, " +//22
 				        " LEB.name as localElectionBodyNeme, "+ //23
 						" ALTSVR.severity_color as severityColor, " +//24
-						" ALTS.alert_color as color"); //25  
+						" ALTS.alert_color as color "); //25  
 		queryStr.append(" from alert A ");
 		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N') ");
 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");
@@ -6391,7 +6397,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		//queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
-			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) )");
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ))");
 		}
 			
 		/*else if(printIdList != null && !printIdList.isEmpty())
@@ -6400,7 +6406,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");*/
 		
 		if(statusId != null && statusId.longValue() > 0L){
-			queryStr.append(" and A.alert_status_id = :statusId ; ");
+			queryStr.append(" and A.alert_status_id = :statusId  ");
 		}
 		
 		Query query = getSession().createSQLQuery(queryStr.toString())

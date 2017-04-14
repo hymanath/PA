@@ -52,7 +52,7 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 		return getHibernateTemplate().find("select distinct model.sessionId from UserLoginDetails model where model.loginTime is not null and model.logoutTime is null and model.userId = ? order by model.loginTime desc",userId);
 		
 	}
-	public List<Object[]> getUserLoginLogoutDtls(Date startDate, Date endDate){
+	public List<Object[]> getUserLoginLogoutDtls(Long userId, Date startDate, Date endDate){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
 				" ULD.user_id as userId, " +
@@ -65,26 +65,35 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 		if(startDate != null && endDate != null){
 			queryStr.append(" Date(login_time) between  :startDate and :endDate ");
 		}
+		if(userId != null && userId.longValue() > 0L){
+			queryStr.append(" and ULD.user_id = :userId");
+		}
 		queryStr.append(" group by ULD.user_id ");
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
 		query.addScalar("userId", Hibernate.LONG);
 		query.addScalar("minLoginTime", Hibernate.STRING);
 		query.addScalar("maxLogoutTime", Hibernate.STRING);
-		query.addScalar("workingHour", Hibernate.STRING);
+		query.addScalar("workingHour", Hibernate.TEXT);
 		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
 			query.setDate("endDate", endDate);
 		}
+		if(userId != null && userId.longValue() > 0L){
+			query.setParameter("userId", userId);
+		}
 		return query.list();
 	}
-	public List<Object[]> getAttendanceForMultiDate(Date fromDate, Date toDate){
+	public List<Object[]> getAttendanceForMultiDate(Date fromDate, Date toDate,Long userId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ULD.user_id as userId, count(distinct Date(ULD.login_time)) as count " +
 				" from user_login_details ULD  " +
 				" where ");
-				if(fromDate != null && toDate != null){
-					queryStr.append(" Date(login_time) between  :fromDate and :toDate ");
-				}
+		if(fromDate != null && toDate != null){
+			queryStr.append(" Date(login_time) between  :fromDate and :toDate ");
+		}
+		if(userId != null && userId.longValue() > 0L){
+			queryStr.append("and ULD.user_id = :userId ");
+		}
 		queryStr.append(" group by ULD.user_id ");
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
 		query.addScalar("userId", Hibernate.LONG);
@@ -92,6 +101,9 @@ public class UserLoginDetailsDAO extends GenericDaoHibernate<UserLoginDetails, L
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
+		}
+		if(userId != null && userId.longValue() > 0L){
+			query.setParameter("userId", userId);
 		}
 		return query.list();
 	}
