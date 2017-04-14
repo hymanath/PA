@@ -499,25 +499,31 @@ public class DateUtilService {
 	public static void main(String[] args){
 		System.out.println(getLastDayOfPreiviousMonth());
 	}
-	//add multiple times
-	public String addMultipleTimes(List<String> timeListStr){
-		try{
-			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-			timeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-			Date date1 = null;
-			long sum = 0l;
-			
-			for(String str : timeListStr){
-				date1 = timeFormat.parse(str);
-				sum += date1.getTime();
-			}
-
-			String date3 = timeFormat.format(new Date(sum));
-			return date3;
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
+	public String addMultipleTimes(List<String> dateListStr){
+	    long hr = 0l;
+	    long mm = 0l;
+	    long ss = 0l;
+	    List<Long> hourList = new ArrayList<Long>();
+	    List<Long> minitiesList = new ArrayList<Long>();
+	    List<Long> secondsList = new ArrayList<Long>();
+	    for(String str : dateListStr){
+	      String[] arrayTime=str.split(":");
+	        hourList.add(Long.parseLong(arrayTime[0]));
+	        minitiesList.add(Long.parseLong(arrayTime[1]));
+	        secondsList.add(Long.parseLong(arrayTime[2]));
+	    
+	    }
+	    for(long hourVal : hourList){
+	      hr += hourVal;
+	    }
+	    for(long minVal : minitiesList){
+	      mm += minVal;
+	    }
+	    for(long secVal : secondsList){
+	      ss += secVal;
+	    }
+	    
+	    return hr+":"+mm+":"+ss;
+	    
+	  }
 }

@@ -12,6 +12,8 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String name;
 	private String title;
 	private String desc;
+	private String email;
+	private String officerMobileNo;
 	
 	private Long totalCount=0l;
 	private Long count=0l;
@@ -31,6 +33,23 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String severtyColor;
 	private Long subTaskCount = 0L;
 	private String statusColor;
+	private List<String> attachments;
+	private String callerDetails;
+	private String department;
+	private String impactLevel;
+	private String designation;
+	private String mobileNo;
+	private String imagePath;
+	private String loginTime;
+	private String logoutTime;
+	private String totalHours;
+	private Long noOfAlertCreated = 0L;
+	
+	
+	private Long totalAgent = 0L;
+	private String totalTime;
+	private Long totalAlert = 0L;
+	private Long attendedCount = 0L;
 		
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
 	private List<AlertCoreDashBoardVO> subList1 = new ArrayList<AlertCoreDashBoardVO>(0);
@@ -218,6 +237,141 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setStatusColor(String statusColor) {
 		this.statusColor = statusColor;
+	}
+
+	public String getCallerDetails() {
+		return callerDetails;
+	}
+
+	public void setCallerDetails(String callerDetails) {
+		this.callerDetails = callerDetails;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getImpactLevel() {
+		return impactLevel;
+	}
+
+	public void setImpactLevel(String impactLevel) {
+		this.impactLevel = impactLevel;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+
+	public String getLoginTime() {
+		return loginTime;
+	}
+
+	public void setLoginTime(String loginTime) {
+		this.loginTime = loginTime;
+	}
+
+	public String getLogoutTime() {
+		return logoutTime;
+	}
+
+	public void setLogoutTime(String logoutTime) {
+		this.logoutTime = logoutTime;
+	}
+
+	public String getTotalHours() {
+		return totalHours;
+	}
+
+	public void setTotalHours(String totalHours) {
+		this.totalHours = totalHours;
+	}
+
+	public Long getNoOfAlertCreated() {
+		return noOfAlertCreated;
+	}
+
+	public void setNoOfAlertCreated(Long noOfAlertCreated) {
+		this.noOfAlertCreated = noOfAlertCreated;
+	}
+
+	public Long getTotalAgent() {
+		return totalAgent;
+	}
+
+	public void setTotalAgent(Long totalAgent) {
+		this.totalAgent = totalAgent;
+	}
+
+	public String getTotalTime() {
+		return totalTime;
+	}
+
+	public void setTotalTime(String totalTime) {
+		this.totalTime = totalTime;
+	}
+
+	public Long getTotalAlert() {
+		return totalAlert;
+	}
+
+	public void setTotalAlert(Long totalAlert) {
+		this.totalAlert = totalAlert;
+	}
+
+	public Long getAttendedCount() {
+		return attendedCount;
+	}
+
+	public void setAttendedCount(Long attendedCount) {
+		this.attendedCount = attendedCount;
+	}
+
+	public List<String> getAttachments() {
+		if(attachments == null){
+			attachments = new ArrayList<String>();
+		}
+		return attachments;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getOfficerMobileNo() {
+		return officerMobileNo;
+	}
+
+	public void setOfficerMobileNo(String officerMobileNo) {
+		this.officerMobileNo = officerMobileNo;
 	}
 	
 	
