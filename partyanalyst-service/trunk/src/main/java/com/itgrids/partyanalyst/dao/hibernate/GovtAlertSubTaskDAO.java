@@ -21,7 +21,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	   super(GovtAlertSubTask.class);
        }
        
-       public List<Object[]> getDistrictOfficerAlertsSubTasksCount(Long govtDepDesigOffcrId,Long govtOffcrId,String countType,String type){
+       public List<Object[]> getDistrictOfficerAlertsSubTasksCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String countType,String type){
     	   StringBuilder sb = new StringBuilder();
 	    	
     	   
@@ -33,19 +33,18 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
        	sb.append(" where model.isDeleted = 'N' " );
        	
        	if(type != null && type.equalsIgnoreCase("mySubTasks")){
-       	  	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId = :govtOffcrId " );
+       		if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId in(:govtOffcrIds) " );
 	    	  }
-       	  	if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+       	  	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
 	    }else{
-       		if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffcrId " );
-	    	  }
-       		
-       			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-       				sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+	    		if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId in( :govtOffcrIds) " );
+	    		}
+	    		if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+       				sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in( :govtDepDesigOffcrIds) " );
        			}
 	    	  
        	}
@@ -58,11 +57,11 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  }
 	    	  Query query = getSession().createQuery(sb.toString());
 	    	  
-	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
 	    	  }
-	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  query.setParameter("govtOffcrId", govtOffcrId);  
+	    	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
 	    	  }
 	    	  if(countType != null && countType.equalsIgnoreCase("today")){
 	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
@@ -313,7 +312,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	
     }
     
-    public List<Long> getDistrictOfficerSubTasksAlertIds(Long govtDepDesigOffcrId,Long govtOffcrId,String countType,String type){
+    public List<Long> getDistrictOfficerSubTasksAlertIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String countType,String type){
  	   StringBuilder sb = new StringBuilder();
 	    	
  	   
@@ -323,20 +322,19 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	sb.append(" where model.isDeleted = 'N' " );
     	
     	if(type != null && type.equalsIgnoreCase("mySubTasks")){
-    	  	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId = :govtOffcrId " );
+    		if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId in(:govtOffcrIds) " );
 	    	  }
-    	  	if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+    		if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
 	    }else{
-    		if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffcrId " );
+	    	if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId in(:govtOffcrIds) " );
 	    	  }
-    		
-    			if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-    				sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
-    			}
+    		if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+    			sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
+    		}
 	    	  
     	}
 	    	  if(countType != null && countType.equalsIgnoreCase("today")){
@@ -345,11 +343,11 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  
 	    	  Query query = getSession().createQuery(sb.toString());
 	    	  
-	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
 	    	  }
-	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  query.setParameter("govtOffcrId", govtOffcrId);  
+	    	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
 	    	  }
 	    	  if(countType != null && countType.equalsIgnoreCase("today")){
 	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
@@ -534,7 +532,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	query.setParameter("alertId", alertId);
     	return query.list();
     }
-   public List<Object[]> getDistrictOfficerAlertsSubTasksCountsView(Long govtDepDesigOffcrId,Long govtOffcrId,String type){
+   public List<Object[]> getDistrictOfficerAlertsSubTasksCountsView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type){
 	   	StringBuilder sb = new StringBuilder();
 	    	if(type != null && type.equalsIgnoreCase("today")){
 	    		sb.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
@@ -549,11 +547,11 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	
    		sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted = 'N' " );
    	
-	     if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	  		  sb.append(" and model.subTaskGovtOfficer.govtOfficerId = :govtOffcrId " );
+   		  if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	  		  sb.append(" and model.subTaskGovtOfficer.govtOfficerId in(:govtOffcrIds) " );
 	  	  }
-	  	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	  		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+   		if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	  		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	  	  }
 	  	  if(type != null && type.equalsIgnoreCase("today")){
 	  		  sb.append(" and model.createdTime = :todayDate " ); 
@@ -562,18 +560,18 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	  	  sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId ");
 	    	  Query query = getSession().createQuery(sb.toString());
 	    	  
-	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
 	    	  }
-	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  query.setParameter("govtOffcrId", govtOffcrId);  
+	    	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
 	    	  }
 	    	  if(type != null && type.equalsIgnoreCase("today")){
 	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
 	    	  }
 	    	  return query.list();
    }
-   public List<Object[]> getDistrictOfficerMyAssignedSubTasksCountsView(Long govtDepDesigOffcrId,Long govtOffcrId,String type){
+   public List<Object[]> getDistrictOfficerMyAssignedSubTasksCountsView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type){
 	   	StringBuilder sb = new StringBuilder();
 	    	if(type != null && type.equalsIgnoreCase("today")){
 	    		sb.append(" select model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
@@ -588,11 +586,11 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	
    		sb.append(" where model.alertAssignedOfficer.isDeleted = 'N' and model.alertAssignedOfficer.alert.isDeleted = 'N' " );
    	
-	     if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	  		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffcrId " );
+   		if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	  		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId in(:govtOffcrIds) " );
 	  	  }
-	  	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	  		  sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+   		if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	  		  sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	  	  }
 	  	  if(type != null && type.equalsIgnoreCase("today")){
 	  		  sb.append(" and model.alertAssignedOfficer.insertedTime = :todayDate " ); 
@@ -601,18 +599,18 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	  	  sb.append(" group by model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId ");
 	    	Query query = getSession().createQuery(sb.toString());
 	    	  
-	    	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-	    		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+	    	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
 	    	  }
-	    	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-	    		  query.setParameter("govtOffcrId", govtOffcrId);  
+	    	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
 	    	  }
 	    	  if(type != null && type.equalsIgnoreCase("today")){
 	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
 	    	  }
 	    	  return query.list();
    }
-   public List<Object[]> getDistrictOfficerMySubTasksStatusWiseDetails(Long govtDepDesigOffcrId,Long govtOffcrId){
+   public List<Object[]> getDistrictOfficerMySubTasksStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds){
    	StringBuilder sb = new StringBuilder();
    	sb.append(" select model.alertSubTaskStatus.alertSubTaskStatusId," +
    			"  model.alertSubTaskStatus.status," +
@@ -624,26 +622,26 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted = 'N' " );
    	
    	  
-   	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-   		  sb.append(" and model.subTaskGovtOfficer.govtOfficerId = :govtOffcrId " );
+   	if(govtOffcrIds != null && govtOffcrIds.size()>0){
+   		  sb.append(" and model.subTaskGovtOfficer.govtOfficerId in(:govtOffcrIds) " );
    	  }
-   	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-   		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+   	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+   		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
    	  }
    	  
    	  sb.append(" group by model.alertSubTaskStatus.alertSubTaskStatusId ");
    	 
    	  Query query = getSession().createQuery(sb.toString());
    	  
-   	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-   		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+   	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+   		  query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
    	  }
-   	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-   		  query.setParameter("govtOffcrId", govtOffcrId);  
+   	if(govtOffcrIds != null && govtOffcrIds.size()>0){
+   		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
    	  }
    	  return query.list();
    }
-   public List<Object[]> getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(Long govtDepDesigOffcrId,Long govtOffcrId){
+   public List<Object[]> getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds){
    	StringBuilder sb = new StringBuilder();
    	sb.append(" select model.alertAssignedOfficer.alertStatus.alertStatusId," +
    			"  model.alertAssignedOfficer.alertStatus.alertStatus," +
@@ -655,22 +653,22 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	sb.append(" where model.alertAssignedOfficer.isDeleted = 'N' and model.alertAssignedOfficer.alert.isDeleted = 'N' " );
    	
    	  
-   	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-   		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId = :govtOffcrId " );
+   	if(govtOffcrIds != null && govtOffcrIds.size()>0){
+   		  sb.append(" and model.alertAssignedOfficer.govtOfficer.govtOfficerId in(:govtOffcrIds) " );
    	  }
-   	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-   		  sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDepDesigOffcrId " );
+   	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+   		  sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
    	  }
    	  
    	  sb.append(" group by model.alertAssignedOfficer.alertStatus.alertStatusId ");
    	 
    	  Query query = getSession().createQuery(sb.toString());
    	  
-   	  if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() >0l){
-   		  query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+   	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+   		  query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
    	  }
-   	  if(govtOffcrId != null && govtOffcrId.longValue() >0l){
-   		  query.setParameter("govtOffcrId", govtOffcrId);  
+   	if(govtOffcrIds != null && govtOffcrIds.size()>0){
+   		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
    	  }
    	  return query.list();
    }
