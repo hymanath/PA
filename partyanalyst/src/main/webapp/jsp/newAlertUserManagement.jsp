@@ -55,10 +55,280 @@
 	
 	<section class="m_top20">
 		<div class="container">
-		IAS
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12"> 
+					<div class="input-group dateRangePickerCls m_top5 pull-right" style="margin-right: 15px">
+						<input type="text" class="form-control" style="width:180px" id="dateRangePickerAUM">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
+					</div>
+						<div class="row">
+							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">My Alerts</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="myAlertsDivID"></div>
+								  </div>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="mySubTasksDivID"></div>
+								  </div>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-12">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">Assigned Sub Tasks</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="assignedSubTasksDivID"></div>
+								  </div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+						
+							<div class="col-sm-6">
+								<div class="panel panel-default">
+									<div class="panel-heading headingColor">
+										<h4 class="panel-title text-capital fontColor">status overview</h4>
+									</div>
+									<div class="panel-body">
+									<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+										<div class="panel panel-default">
+											<div class="" role="tab" id="headingOne" style="padding: 15px;">
+											 
+												<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+												 <h4 class="panel-title"> ALERTS</h4>
+												
+												</a>
+											  
+											</div>
+											<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+											  <div class="panel-body">
+												<div id="statusOverview"></div>
+											  </div>
+											</div>
+										</div>
+										<div class="panel panel-default">
+											<div class="" role="tab" id="headingTwo" style="padding: 15px;">
+											
+												<a class="collapsed collapseIconForIAS subTaskViewDts" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+												  <h4 class="panel-title">
+												  SUB TASKS</h4>
+												</a>
+											  
+											</div>
+											<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+											  <div class="panel-body">
+												<div id="statusWiseSubTasksOverview"></div>
+											  </div>
+											</div>
+										</div>
+									</div>
+										
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="panel panel-default">
+									<div class="panel-heading headingColor">
+										<h4 class="panel-title text-capital fontColor">location level overview</h4>
+									</div>
+									<div class="panel-body">
+										<div class="panel-group" id="accordionL" role="tablist" aria-multiselectable="true">
+											<div class="panel panel-default">
+												<div class="" role="tab" id="headingOneL" style="padding: 15px;">
+												 
+													<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordionL" href="#collapseOneL" aria-expanded="true" aria-controls="collapseOneL">
+													 <h4 class="panel-title"> ALERTS</h4>
+													
+													</a>
+												  
+												</div>
+												<div id="collapseOneL" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneL">
+												  <div class="panel-body">
+													<div id="levelWiseAlertOverview"></div>
+												  </div>
+												</div>
+											</div>
+											<div class="panel panel-default">
+												<div class="" role="tab" id="headingTwoL" style="padding: 15px;">
+												
+													<a class="collapsed collapseIconForIAS subTaskLocViewDts" role="button" data-toggle="collapse" data-parent="#accordionL" href="#collapseTwoL" aria-expanded="false" aria-controls="collapseTwoL">
+													  <h4 class="panel-title">
+													  SUB TASKS</h4>
+													</a>
+												  
+												</div>
+												<div id="collapseTwoL" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoL">
+												  <div class="panel-body">
+													<div id="levelWiseSubTasksAlertOverview"></div>
+												  </div>
+												</div>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading headingColor">
+								<h4 class="panel-title text-capital fontColor">status overview</h4>
+							</div>
+									
+						<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-12 col-xs-12 col-md-12 ">
+								<h4>STATE LEVEL</h4>
+								<div class="col-sm-12 col-xs-12 col-md-12">
+									<div id="stateLevelIASDetails" class=""></div>
+								</div>	
+							</div>
+							<div class="col-sm-12 col-xs-12 col-md-12 ">
+								<h4>ZONE LEVEL</h4>
+								<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
+							
+									<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingZone">
+									<li class="active " attr_sorting_type="count" attr_order_type="desc" >
+										<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+									</li>
+									<li class="" attr_sorting_type="count" attr_order_type="asc">
+										<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+									</li>
+									<li class="" attr_sorting_type="name" attr_order_type="asc">
+										A-Z
+									</li>
+									<li class="" attr_sorting_type="name" attr_order_type="desc">
+										Z-A
+									</li>
+									</ul>
+								</div>
+								<div class="col-sm-12 col-xs-12 col-md-12">
+									<div id="zoneLevelIASDetails" class=""></div>
+								</div>	
+							</div>
+							<div class="col-sm-12 col-xs-12 col-md-12 ">
+								<h4>DISTRICT LEVEL</h4>
+								<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
+							
+									<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDistrict">
+									<li class="active " attr_sorting_type="count" attr_order_type="desc" >
+										<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+									</li>
+									<li class="" attr_sorting_type="count" attr_order_type="asc">
+										<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+									</li>
+									<li class="" attr_sorting_type="name" attr_order_type="asc">
+										A-Z
+									</li>
+									<li class="" attr_sorting_type="name" attr_order_type="desc">
+										Z-A
+									</li>
+									</ul>
+								</div>
+								<div class="col-sm-4 col-xs-12 col-md-2 locationWiseSortingDist">
+									<select class="form-control locationWiseDistOnChange" id="DistrictNamesId" >
+									
+									</select>
+								</div>
+								<div class="col-sm-12 col-xs-12 col-md-12">
+									<div id="districtLevelSubOrdinarteDetails" class=""></div>
+								</div>	
+							</div>
+							<div class="col-sm-12 col-xs-12 col-md-12 ">
+							<h4>DIVISION LEVEL</h4>
+								<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
+								
+									<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDivision">
+									<li class="active " attr_sorting_type="count" attr_order_type="desc" >
+										<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+									</li>
+									<li class="" attr_sorting_type="count" attr_order_type="asc">
+										<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+									</li>
+									<li class="" attr_sorting_type="name" attr_order_type="asc">
+										A-Z
+									</li>
+									<li class="" attr_sorting_type="name" attr_order_type="desc">
+										Z-A
+									</li>
+									</ul>
+								</div>
+								<div class="col-sm-4 col-xs-12 col-md-2 ">
+									<select class="form-control locationWiseDiviDistOnChange" id="DivisionDistNamesId" >
+										
+									</select>
+								</div>
+								<div class="col-sm-4 col-xs-12 col-md-2">
+									<select class="form-control locationWiseDiviOnChange" id="DivisionNamesId" >
+										<option value="0">Select Division</option>
+									</select>
+								</div>
+								<div class="col-sm-12 col-xs-12 col-md-12">
+									<div id="divisionLevelSubOrdinarteDetails" class=""></div>
+								</div>	
+							</div>
+							
+							<div class="col-sm-12 col-xs-12 col-md-12 ">
+								<h4>SUB-DIVISION LEVEL</h4>
+								<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
+							
+									<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingSubDivision">
+									<li class="active" attr_sorting_type="count" attr_order_type="desc" >
+										<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+									</li>
+									<li class="" attr_sorting_type="count" attr_order_type="asc">
+										<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+									</li>
+									<li class="" attr_sorting_type="name" attr_order_type="asc">
+										A-Z
+									</li>
+									<li class="" attr_sorting_type="name" attr_order_type="desc">
+										Z-A
+									</li>
+									</ul>
+								</div>
+								<div class="col-sm-4 col-xs-12 col-md-2">
+									<select class="form-control locationWiseSubDiviDistOnChange" id="SubDivisionDistNamesId" >
+									
+									</select>
+								</div>
+								<div class="col-sm-4 col-xs-12 col-md-2">
+									<select class="form-control locationWiseSubDiviDiviOnChange" id="SubDivisionDiviNamesId" >
+									<option value="0">Select Division</option>
+									</select>
+								</div>
+								<div class="col-sm-4 col-xs-12 col-md-2">
+									<select class="form-control locationWiseSubDiviOnChange" id="SubDivisionNamesId" >
+									<option value="0">Select SubDivision</option>
+									</select>
+								</div>
+								<div class="col-sm-12 col-xs-12 col-md-12">
+									<div id="SubdivisionLevelSubOrdinarteDetails" class=""></div>
+									</div>
+									
+							</div>
+						</div>
+						</div>		
+						</div>		
+					</div>
+				</div>
+			</div>			
 		</div>
 	</section>
-
+	
+</div>
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
