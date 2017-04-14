@@ -6125,7 +6125,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     			" Alert ALT, UserLoginDetails ULD " +
     			" where " +
     			" ALT.createdBy = ULD.userId " );
-    	//queryStr.append(" and ALT.isDeleted = 'N' ");
+    	queryStr.append(" and ALT.isDeleted = 'N' ");
     	if(startDate != null && endDate != null){
     		queryStr.append(" and date(ALT.createdTime) between :startDate and :endDate ");
     	}
@@ -6498,10 +6498,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	queryStr.append(" left outer join govt_department_designation_new GDDN on GDDN.govt_department_designation_id = GDDON.govt_department_designation_id");
     	queryStr.append(" left outer join govt_officer_new GOV on GOV.govt_officer_id = AAON.govt_officer_id ");
     	queryStr.append(" join alert_category ALTC on ALTC.alert_category_id = A.alert_category_id ");
-    	queryStr.append(" where ");
-    	queryStr.append(" A.created_by = :userId ");
+    	queryStr.append(" where A.is_deleted = 'N' ");
+    	queryStr.append(" and A.created_by = :userId ");
     	if(fromDate != null && toDate != null){
-    		queryStr.append(" and Date(A.created_time) between :fromDate and :toDate ");
+    		queryStr.append(" and Date(A.created_time) between :fromDate and :toDate ;");
     	}
     	
     	SQLQuery query = getSession().createSQLQuery(queryStr.toString());
