@@ -2527,6 +2527,37 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getAlertStatusCount(){
+		try {
+			jObj = new JSONObject(getTask());
+			keyValueVOList = alertService.getStatusCount(jObj.getLong("locationId"),jObj.getString("locationType"),jObj.getString("searchType"),jObj.getString("startDate"),jObj.getString("endDate"));
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getAlertStatusCount",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String locationReport(){
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		boolean noaccess = false;
+		List<String> entitlements = null;
+		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			entitlements = regVO.getEntitlements();
+			if(!(entitlements.contains("GRIEVANCE_CALL_CENTER_GEO_GRAPHICAL_REPORT_ADMIN_ENTITLEMENT") || entitlements.contains("GRIEVANCE_CALL_CENTER_GEO_GRAPHICAL_REPORT_USER_ENTITLEMENT"))){
+				noaccess = true ;
+			}
+		
+		if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			noaccess = false;
+		}
+		if(noaccess){
+			return "error";
+		}
+		}		
+		return Action.SUCCESS;
+	}
 	
 	public String getUserLogingDtls(){
 		try{
