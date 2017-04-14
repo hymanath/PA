@@ -1957,6 +1957,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				alertCoreDashBoardVOs.addAll(list2);     
 			}
 			
+			alertCoreDashBoardVOs = cccDashboardService.getTotalPhoneNumbers(alertCoreDashBoardVOs);
+				
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
 		}
