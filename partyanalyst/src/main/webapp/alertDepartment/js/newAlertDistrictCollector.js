@@ -1510,7 +1510,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			if(result.list1[0].todayCount !=null && result.list1[0].todayCount !=0){
 				if(result.list1[0].todayCount !=null && result.list1[0].todayCount !=0 && esult.list1[0].todayCount>0){
 					totalCoutAlertIds.push(result.list1[0].todayAlertIds);
-				str+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_name ="TODAY" attr_total_count = "'+result.list1[0].todayCount+'">TODAY <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].todayCount+'</span></p>';
+				str+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_name ="TODAY" attr_total_count = "'+result.list1[0].todayCount+'">TODAY <span class="pull-right badge" style="cursor:pointer" title="To get my alerts details">'+result.list1[0].todayCount+'</span></p>';
 				}
 			else{
 				str+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list1[0].todayCount+'</span></p>';
@@ -1522,7 +1522,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			if(result.list1[0].overAllCnt !=null && result.list1[0].overAllCnt !=0){
 				if(result.list1[0].overAllCnt !=null && result.list1[0].overAllCnt !=0 && result.list1[0].overAllCnt>0){
 					overAllAlertIds.push(result.list1[0].overAllAlertIds);
-				str+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_name ="OVERALL" attr_total_count = "'+result.list1[0].overAllCnt+'">OVERALL <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].overAllCnt+'</span></p>';
+				str+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_name ="OVERALL" attr_total_count = "'+result.list1[0].overAllCnt+'" title="To get my alerts details" >OVERALL <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].overAllCnt+'</span></p>';
 				}
 			  else{
 				  str+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list1[0].overAllCnt+'</span></p>';
@@ -1659,7 +1659,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0){
 			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0 && result.list2[0].todayCount>0){
 				  totalCoutAlertIds.push(result.list2[0].todayAlertIds);
-				str1+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' >TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
+				str1+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' style="cursor:pointer" title="To get my sub task details">TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
 			}else{
 				str1+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
 			}
@@ -1670,7 +1670,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0){
 			 if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0 && result.list2[0].overAllCnt>0){
 				overAllAlertIds.push(result.list2[0].overAllAlertIds);
-				str1+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
+				str1+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' style="cursor:pointer" title="To get my sub task details" >OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
 			 }else{
 				 str1+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
 			 }
@@ -1805,7 +1805,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0){
 				if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0 && esult.list3[0].todayCount>0){
 					totalCoutAlertIds.push(result.list3[0].todayAlertIds);
-				str2+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' >TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
+				str2+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' style="cursor:pointer" title="To get my assigned sub task details" >TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
 				}else{
 				str2+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
 				}
@@ -1816,7 +1816,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0){
 				if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0 && result.list3[0].overAllCnt>0){
 					overAllAlertIds.push(result.list3[0].overAllAlertIds);
-				str2+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
+				str2+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' style="cursor:pointer" title="To get my assigned sub task details">OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
 				}else{
 				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
 				}
