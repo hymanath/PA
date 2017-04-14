@@ -7,6 +7,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dao.columns.enums.BoothColumnNames;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Constituency;
 
 public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
@@ -495,4 +496,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 public List<Object[]> getboothList(Long localElecBdyId);
 	 public List<Object[]> getBoothListFrPanchayat(Long panchayId);
 	 public List<Object[]> getWardsByLocalElecBody(Long id,Long publicationDateId,Long constituencyId);
+	 
+	 public Constituency getConstituencyIdByTehsilId(Long tehsilId);
 }
