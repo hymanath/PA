@@ -9869,7 +9869,7 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 			//loging details
 			List<Object[]> loginDtlsList = userLoginDetailsDAO.getUserLoginLogoutDtls(null,fromDate, toDate);
 			List<Long> userIdList = new ArrayList<Long>();
-			Map<Long,String> userIdAndMinLoginTimeMap = new HashMap<Long,String>();
+			Map<Long,String> userIdAndMinLoginTimeMap = new HashMap<Long,String>();  
 			Map<Long,String> userIdAndMaxLogoutTimeMap = new HashMap<Long,String>();
 			Map<Long,String> userIdAndTotalHrWorkedMap = new HashMap<Long,String>();
 			List<String> timeListStr = new ArrayList<String>();
@@ -9898,6 +9898,7 @@ public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type){
 					callCenterVO.setUserId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					callCenterVO.setFirstName(commonMethodsUtilService.getStringValueForObject(param[3]));
 					callCenterVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					callCenterVO.setImagePath(commonMethodsUtilService.getStringValueForObject(param[2]));
 					callCenterVO.setMobileNum(commonMethodsUtilService.getStringValueForObject(param[6]));
 					callCenterVOs.add(callCenterVO);
 				}
