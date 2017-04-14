@@ -6250,7 +6250,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	StringBuilder queryStr  = new StringBuilder();
 		queryStr.append(" SELECT  a.alert_id as alert_id ,a.title as title , a.impact_level_id as levelId , date(a.created_time) as time ," +
 				"  a.alert_source_id as sourceId,rs.scope as scope ,a.alert_status_id as statusId, gd.department_name as deptName,es.entry_source as source , " +
-				" it.issue_type as issueType , ist.issue_type as issueSubType , fs.status as feedbackStattus ");
+				" it.issue_type as issueType , ist.issue_type as issueSubType , fs.status as feedbackStattus, d.district_name as districtName," +
+				" c.name as cname, t.tehsil_name as tehsilName, p.panchayat_name as pname, h.hamlet_name as hname , leb.name as lname, " +
+				" w.name as ward ");
 		queryStr.append(" from ");
 		queryStr.append(" alert a ");
 		queryStr.append(" Left Join alert_feedback_status fs on a.alert_feedback_status_id = fs.alert_feedback_status_id ");
@@ -6258,12 +6260,22 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" Left Join alert_issue_type it on a.alert_issue_type_id = it.alert_issue_type_id ");
 		queryStr.append(" Left Join alert_issue_sub_type ist on a.alert_issue_sub_type_id = ist.alert_issue_sub_type_id ");
 		queryStr.append(" Left Join region_scopes rs on a.impact_level_id = rs.region_scopes_id ");
-		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
+		queryStr.append(" LEFT JOIN alert_status as1 on a.alert_status_id = as1.alert_status_id ");
 		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
 		queryStr.append(" left join alert_assigned_officer a1 on a.alert_id = a1.alert_id  ");
 		queryStr.append(" left join govt_department_designation_officer a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
 		queryStr.append(" left join govt_department_designation a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
 		queryStr.append(" left join govt_department gd on a3.govt_department_id = gd.govt_department_id  ");
+		queryStr.append(" left join user_address ua on a.address_id = ua.user_address_id  ");
+		queryStr.append(" left join district d on ua.district_id = d.district_id  ");
+		queryStr.append(" left join constituency c on ua.constituency_id = c.constituency_id  ");
+		queryStr.append(" left join tehsil t on ua.tehsil_id = t.tehsil_id  ");
+		queryStr.append(" left join panchayat p on ua.panchayat_id = p.panchayat_id  ");
+		queryStr.append(" left join hamlet h on ua.hamlet_id = h.hamlet_id  ");
+		queryStr.append(" left join local_election_body leb on ua.local_election_body = leb.local_election_body_id  ");
+		queryStr.append(" left join constituency w on ua.ward = w.constituency_id  ");
+		
+		
 		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
 		if(alertStatusId != null && alertStatusId.longValue() > 0l)
 			queryStr.append(" and a.alert_status_id =:alertStatusId ");
@@ -6289,7 +6301,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("source", Hibernate.STRING)
 				.addScalar("issueType", Hibernate.STRING)
 				.addScalar("issueSubType", Hibernate.STRING)
-				.addScalar("feedbackStattus", Hibernate.STRING);
+				.addScalar("feedbackStattus", Hibernate.STRING)
+				.addScalar("districtName", Hibernate.STRING)//12
+				.addScalar("cname", Hibernate.STRING)
+				.addScalar("tehsilName", Hibernate.STRING)
+				.addScalar("pname", Hibernate.STRING)
+				.addScalar("hname", Hibernate.STRING)
+				.addScalar("lname", Hibernate.STRING)
+				.addScalar("ward", Hibernate.STRING);
+		
+		
 		if(departmentId != null && departmentId.longValue()>0L)
 			query.setParameter("departmentId", departmentId);
 		if(mobileNo != null && !mobileNo.isEmpty()) 
@@ -6562,6 +6583,48 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list();
 		
     }
+    public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId ){
+    	StringBuilder sb = new StringBuilder();
+    	 	sb.append(" select model.alertId,model.createdTime,model.title,model.description,model.alertIssueType.issueType," +
+    	 			" model.alertIssueSubType.issueType,model.alertStatus.alertStatus,model.alertCaller.callerName, district.districtName, " +
+    	 			" constituency.name, tehsil.tehsilName,panchayat.panchayatName,hamlet.hamletName,leb.name,ward.name ");
+    	 				//9					10					11					12					13		14
+    	 	sb.append("	from Alert model " );
+    		sb.append(" left join model.userAddress userAddress1 ");
+    	 	sb.append(" left join userAddress1.panchayat panchayat ");
+    	 	sb.append(" left join userAddress1.ward ward ");
+    	 	sb.append(" left join userAddress1.tehsil tehsil ");
+    	 	sb.append(" left join userAddress1.constituency constituency ");
+    	 	sb.append(" left join userAddress1.ward ward ");
+    	 	sb.append(" left join userAddress1.district  district");
+    	 	sb.append(" left join userAddress1.state state ");
+    		sb.append(" left join userAddress1.hamlet hamlet "); 
+    		sb.append(" left join userAddress1.localElectionBody leb ");
+    	 		sb.append(" where  ");
+    	 	if(mobileNo != null && !mobileNo.isEmpty()){
+        	 		sb.append(" model.alertCaller.mobileNo =:mobileNo and ");
+        	 	}
+    	 	if(locatoinType != null && locatoinType.equalsIgnoreCase("district")){
+    	 		sb.append(" model.userAddress.district.districtId =:locationId and ");
+    	 	}else if(locatoinType != null && locatoinType.equalsIgnoreCase("tehsil")){
+    	 		sb.append(" model.userAddress.tehsil.tehsilId =:locationId and ");
+    	 	}else if(locatoinType != null && locatoinType.equalsIgnoreCase("panchayat")){
+    	 		sb.append(" model.userAddress.panchayat.panchayatId =:locationId and ");
+    	 	}
+    	 	sb.append(" model.isDeleted ='N' ");
+    	 	Query query = getSession().createQuery(sb.toString());
+    	 	if(locatoinType != null && locatoinType.equalsIgnoreCase("district")){
+    	 		query.setParameter("locationId",locationId);
+    	 	}else if(locatoinType != null && locatoinType.equalsIgnoreCase("tehsil")){
+    	 		query.setParameter("locationId",locationId);
+    	 	}else if(locatoinType != null && locatoinType.equalsIgnoreCase("panchayat")){
+    	 		query.setParameter("locationId",locationId);
+    	 	}
+    	 	if(mobileNo != null && !mobileNo.isEmpty()){
+    	 		query.setParameter("mobileNo",mobileNo);
+    	 	}
+    	 	return query.list();
+    	 		 	
+    }
     
 }
-
