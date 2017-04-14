@@ -125,4 +125,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getCallerUserAlertDtls(Date fromDate, Date toDate, Long userId);
 	public List<Object[]> getCallerDetailsForAlerts(List<Long> alertIdsList);
 	public List<Object[]> getStatusWiseAlertsCountByDates(Date fromDate ,Date toDate);
+	public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId );
 }
