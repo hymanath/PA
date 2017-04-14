@@ -48,10 +48,10 @@
 		<div class="col-md-12 col-xs-12 col-sm-12" style="padding: 20px;">	
 			
 			<div class="row">
-				<div class="col-md-4 col-xs-12 col-sm-6">
-					<h4 class="panel-title" >LOCATION WISE GRIEVANCE REPORT </h4>
+				<div class="col-md-12 col-xs-12 col-sm-6">
+					<h4 class="panel-title" >LOCATION WISE GRIEVANCE REPORT  <a class="btn btn-success pull-right" href="agentWiseReportAction.action" style="margin-top: -8px;" > User Tracking View  </a> </h4>
 				</div>
-				<div class="col-md-1 col-xs-12 col-sm-4 pull-right">
+				<div class="col-md-1 col-xs-12 col-sm-4 pull-right m_top20">
 						<div class="input-group dateRangePickerCls m_top5 pull-right" >
 							<input type="text" class="form-control" style="width:180px" id="dateRangePickerAUM" onChange="getAlertStatusCount('districtDivId','district',0,'','')";/>
 							<span class="input-group-addon">
