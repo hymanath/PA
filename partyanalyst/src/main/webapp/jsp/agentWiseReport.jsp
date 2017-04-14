@@ -5,21 +5,18 @@
 <head>
 <title>call center user</title>
   	<meta charset="utf-8">
-    <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
+  
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	 <link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
+	<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+	<link rel="stylesheet" href="dist/css/font-awesome.css">
 	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-    <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
-   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link href="dist/alertDashBoard/dist/Plugins/Date/daterangepicker.css" rel="stylesheet" type="text/css"/>
-    <link href="dist/DateRange/daterangepicker.css" rel="stylesheet" type="text/css">
-	
-	
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-     <script src="dist/DateRange/moment.js" type="text/javascript"></script>
-	 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-  	<style>
+	<link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
+	<link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+	<style>
    		li {
     		list-style:none;
   		}
@@ -27,18 +24,19 @@
 		  height:20px;
 		  width:20px;
   		}
+		#singleUsercallerDataTableId thead tr th{background-color:#d3d3d3 !important;}
   	</style>
 </head>
 <body>
-	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-heading">
+	<div class="container m_top20">
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
 				<div class="row">
 					<div class="col-md-6">
-						<h3>Call Center User(Agent) Wise Report</h3>
+						<h4>Call Center User(Agent) Wise Report</h4>
 					</div>
-					<div class="col-md-3">  
-						<div class="input-group" style="margin-bottom: -10px">
+					<div class="col-md-3 pull-right">  
+						<div class="input-group">
 							<input type="text" class="form-control" id="dateRangePickerId"/>
 							<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
@@ -46,58 +44,68 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div class="panel panel-default m_top10">
+						<div class="panel-heading" style="background-color: #fff;">
+							<h4>Overview</h4>
+						</div>
+						<div class="panel-body">  
+							<div class="row m_top5">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="col-md-2">
+											<p><i class="fa fa-group" style="font-size:40px;margin-left:15px;"></i></p>
+										</div>
+										<div class="col-md-10">
+											<ul class="list-group">
+												<li>Total Login Agents</li> 
+												<li id="totalLoginId"></li>
+											</ul>
+										</div>                      
+									</div>
+								</div>
+								<div class="col-md-4">
+								<div class="row">
+									<div class="col-md-2">
+										<p><i class="glyphicon glyphicon-time text-success" style="font-size:40px;margin-left:15px;"></i></p>
+									</div>
+								  <div class="col-md-10">
+									   <ul class="list-group">
+										  <li>Total Login Hours</li> 
+										  <li  id="totalTimeId"></li>
+									  </ul>
+								   </div>
+							   </div>
+						  </div>
+						   <div class="col-md-4">
+							  <div class="row">
+								   <div class="col-md-2">
+									<p><i class="fa fa-file-o" style="font-size:40px;margin-left:15px;" ></i></p>
+								   </div>
+								   <div class="col-md-10">
+									 <ul class="list-group">
+									   <li>Total Requests Created</li> 
+										 <li  id="totalRequestId"></li>
+									 </ul>
+								   </div>
+							   </div>
+						  </div>
+						</div>
+					</div>
+				</div>
 			</div>
-		  	<div class="panel-body">
-				<h3>Overview</h3>
-		  	</div>
-			<div clas=" panel-body">  
-		       	<div class="row">
-				 	<div class="col-md-4">
-						<div class="row">
-						   	<div class="col-md-2">
-							  	<p><i class="fa fa-group" style="font-size:40px;margin-left:15px;"></i></p>
-						   	</div>
-						   	<div class="col-md-10">
-							  	<ul class="list-group">
-									<li>Total Login Agents</li> 
-								 	<li style="font-size:40px;" id="totalLoginId"></li>
-							  	</ul>
-						   	</div>                      
-				   		</div>
-			  		</div>
-			   		<div class="col-md-4">
-				   	<div class="row">
-					   	<div class="col-md-2">
-						  	<p><i class="glyphicon glyphicon-time" style="font-size:50px;"></i></p>
-					   	</div>
-					  <div class="col-md-10">
-						   <ul class="list-group">
-							  <li>Total Login Hours</li> 
-							  <li style="font-size:30px;" id="totalTimeId"></li>
-						  </ul>
-					   </div>
-				   </div>
-			  </div>
-			   <div class="col-md-4">
-				  <div class="row">
-					   <div class="col-md-2">
-						<p><i class="fa fa-file-o" style="font-size:50px;"></i></p>
-					   </div>
-					   <div class="col-md-10">
-						 <ul class="list-group">
-						   <li>Total Requests Created</li> 
-							 <li style="font-size:30px;" id="totalRequestId"></li>
-						 </ul>
-					   </div>
-				   </div>
-			  </div>
-			</div>
+			<div class="row">
+			<div class="panel panel-default m_top10">
+				<div class="panel-body">
+					<h4>Agent Wise Overview</h4>
+					<div id="tableId" class="m_top10"></div>
+				</div>
+			</div>			
+			</div>			
+	
 		</div>
-   </div>
-
- 
-	 <div id="tableId"></div>
- </div>
+	</div>
+</div>
 
  <div class="modal fade" id="userLoginDetailsId" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document" style="width:85%;">
@@ -159,10 +167,10 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-2 singleUserCls">  
+							<div class="col-md-3 singleUserCls">  
 								<div class="row">
 									<div class="col-md-3">
-										<i class="glyphicon glyphicon-time" style="font-size:40px;"></i>
+										<i class="glyphicon glyphicon-time text-danger" style="font-size:40px;"></i>
 									</div>
 									<div class="col-md-9">
 										<ul class="list-group">
@@ -175,7 +183,7 @@
 							<div class="col-md-2">
 								<div class="row">
 									<div class="col-md-3">
-										<i class="glyphicon glyphicon-time" style="font-size:40px;"></i>
+										<i class="glyphicon glyphicon-time" style="font-size:40px;color:#B49963"></i>
 									</div>
 									<div class="col-md-9">
 										<ul class="list-group">
@@ -185,7 +193,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-md-3">
+							<div class="col-md-2">
 								<div class="row">
 									<div class="col-md-2">
 										<i class="fa fa-file-o" style="font-size:40px;"></i>
@@ -199,7 +207,7 @@
 								</div>
 							</div>
 							<div class="col-md-2">
-								<button class="btn btn-success btn-lg">
+								<button class="btn btn-success btn-lg" onclick="generateExcel();">
 									<span class="glyphicon glyphicon-download-alt"></span> Download
 								</button>   
 							</div>
@@ -214,24 +222,51 @@
 		</div>
   </div>
 </div>
- 
+ <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
+<script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script>
-    var callCenterUserFDate=moment().format('DD/MM/YYYY');
-    var callCenterUserTDate=moment().format('DD/MM/YYYY');
-	
-	$(document).ready(function(){
+	var callCenterUserFDate=moment().format("DD/MM/YYYY");
+	var callCenterUserTDate=moment().format("DD/MM/YYYY");
+
 	$("#agentWiseOverViewId").DataTable();
-	 $("#dateRangePickerId").daterangepicker({
-		opens:'left',
-		startDate:moment(),    
-		endDate:moment(),  
-		ranges: {
-        }
-	 });
-  });  
-</script>
-<script>
+	
+	$("#dateRangePickerId").daterangepicker({
+	opens: 'left',
+	startDate: callCenterUserFDate,
+	endDate: callCenterUserTDate,
+	locale: {
+	  format: 'DD/MM/YYYY'
+	},
+	ranges: {
+		'Today' : [moment(), moment()],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+	   'This Month': [moment().startOf('month'), moment()],
+	   'This Year': [moment().startOf('Year'), moment()]
+	}
+});
+
+$('#dateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
+	callCenterUserFDate = picker.startDate.format('DD/MM/YYYY');
+	callCenterUserTDate = picker.endDate.format('DD/MM/YYYY');
+	
+	
+	onLoadCalls();
+});
+
+function onLoadCalls(){
+	getTotalUserLogingDtls();               
+}
 getTotalUserLogingDtls();
 function getTotalUserLogingDtls(){  
 	$("#tableId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -248,11 +283,12 @@ function getTotalUserLogingDtls(){
 			if(result.callCenterVOList!=null && result.callCenterVOList.length>0){
 								
 					
-					$('#totalLoginId').html(result.totalAgent);
-					$('#totalRequestId').html(result.totalAlert);
-					$('#totalTimeId').html(result.totalTime);
+					$('#totalLoginId').html('<h2>'+result.totalAgent+'</h2>');
+					$('#totalRequestId').html('<h2>'+result.totalAlert+'</h2>');
+					$('#totalTimeId').html('<h2>'+result.totalTime+'</h2>');
 					
 					var str ='';
+					
 					str+='<table class="table table-bordered" id="callerDatailsId">';
 					str+='<thead>';
 					  str+='<tr style="font-size:14px;">';
@@ -310,9 +346,8 @@ $(document).on("click",".dateCls",function(){
 	$(this).addClass("btn-success");  
 });
 $(document).on("click",".showDtlsOfUser",function(){
-	alert(callCenterUserFDate);
-	alert(callCenterUserTDate);
-	$("#userLoginDetailsId").modal("show");  
+	$("#singleUsertableId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#userLoginDetailsId").modal("show");        
 	var userId = $(this).attr("attr_user_id");
 	alert(userId);
 	var jsObj ={
@@ -334,16 +369,18 @@ $(document).on("click",".showDtlsOfUser",function(){
 function buildUserDetails(result){
 	if(result.subList!=null && result.subList.length>0){
 		if(result.range == "multiple"){
-			$('.singleUserCls').hide();              
-			$('#individualLonginDaysId').html(result.attendedCount);
+			$('.singleUserCls').hide();
+			$('.multiUserCls').show();			
+			$('#individualLonginDaysId').html('<h4>'+result.attendedCount+'</h4>');
 		}else{
 			$('.multiUserCls').hide();
-			$('#individualLonginId').html(result.loginTime);    
-			$('#individualLongoffId').html(result.logoutTime);
+			$('.singleUserCls').show();    
+			$('#individualLonginId').html('<h4>'+result.loginTime+'</h4>');    
+			$('#individualLongoffId').html('<h4>'+result.logoutTime+'</h4>');
 		}
 		
-		$('#individualLoginHrId').html(result.totalHours);
-		$('#individualAlertCreatedId').html(result.noOfAlertCreated); 
+		$('#individualLoginHrId').html('<h4>'+result.totalHours+'</h4>');
+		$('#individualAlertCreatedId').html('<h4>'+result.noOfAlertCreated+'</h4>'); 
 		var str ='';
 		
 		str+='<table class="table table-bordered" id="singleUsercallerDataTableId">';
@@ -428,28 +465,23 @@ function buildUserDetails(result){
 	}    
 	
 }
-   $(document).on("click",".callCenterUser li button.dateCls",function(){
-			var date =  $(this).html();
-			if(date == 'Today')
-			{     
-				callCenterUserFDate = moment().format('DD/MM/YYYY');
-				callCenterUserTDate = moment().format('DD/MM/YYYY');
-				alert(callCenterUserFDate);
-				alert(callCenterUserTDate);
-			}else if(date == 'This Week'){
-				callCenterUserFDate = moment().startOf("week").format('DD/MM/YYYY');
-				callCenterUserTDate = moment().endOf('week').format('DD/MM/YYYY');
-			}else if(date == 'Last Week'){
-				callCenterUserFDate = moment().subtract(6, 'days').format('DD/MM/YYYY');
-				callCenterUserTDate = moment().format('DD/MM/YYYY');
-				}else if(date == 'This Month'){
-				callCenterUserFDate = moment().startOf("month").format('DD/MM/YYYY');
-				callCenterUserTDate = moment().endOf('month').format('DD/MM/YYYY');
-			}else if(date == 'Last Month'){
-				callCenterUserFDate = moment().subtract(1, 'month').startOf('month').format('DD/MM/YYYY');
-				callCenterUserTDate = moment().subtract(1, 'month').endOf('month').format('DD/MM/YYYY');
-			}
-		});
+</script>
+
+<script>
+function generateExcel(){
+	tableToExcel('singleUsertableId', 'Call Center Report');
+}
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
 </script>
 </body>
 </html>
