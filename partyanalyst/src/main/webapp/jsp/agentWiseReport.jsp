@@ -33,18 +33,18 @@
 			<div class="panel-heading">
 			   	<h3>Call Center User(Agent) Wise Report</h3>
 				<ul class="list-inline callCenterUser">
-					<li>Today</li>
-					<li>This Week(April 9-15)</li>
-					<li>Last Week(Apr)</li>
-					<li>This Month(Apr)</li>
-					<li>Last Month(Apr)</li>
+					<li><button class="btn-success dateCls" type="button">Today</button></li>
+                    <li><button class="dateCls" type="button">This Week</button></li>
+                    <li><button class="dateCls" type="button">Last Week</button></li>
+                    <li><button class="dateCls" type="button">This Month</button></li>
+                    <li><button class="dateCls" type="button">Last Month</button></li>
 					<li>
 					<div class="input-group">
 		                 <input type="text" class="form-control" id="dateRangePickerId"/>
 			             <span class="input-group-addon">
 		                  <i class="glyphicon glyphicon-calendar"></i>
-			                 </span>     
-			                </div>
+			                 </span> 							 
+							</div>
 					</li>
 				  </ul>
 			</div>
@@ -107,15 +107,12 @@
 	$(document).ready(function(){
 	$("#agentWiseOverViewId").DataTable();
 	$(document).ready(function(){
-	   var start = moment().subtract(29, 'days');
-       var end = moment();
-     
 	 $("#dateRangePickerId").daterangepicker({
 		opens:'left',
-		startDate:start,    
-		endDate:end,
+		startDate:moment().add(29, 'days'),    
+		endDate:moment(),
 		ranges: {
-        }     
+        }
 	     });
   });
 });
@@ -181,32 +178,25 @@ $(document).on("click",".dateCls",function(){
 	$(".dateCls").removeClass("btn-success");
 	$(this).addClass("btn-success");  
 });
-   $(document).on("click",".callCenterUser li",function(){
-         
+   $(document).on("click",".callCenterUser li button.dateCls",function(){
+ 
 			var date =  $(this).html();
-		
 			if(date == 'Today')
-			{
+			{     
 				callCenterUserFDate = moment().format('DD-MM-YYYY');
 				callCenterUserTDate = moment().format('DD-MM-YYYY');
-				
-			 
-			}else if(date == 'This Week(April 9-15)'){
+			}else if(date == 'This Week'){
 				callCenterUserFDate = moment().startOf("week").format('DD-MM-YYYY');
 				callCenterUserTDate = moment().endOf('week').format('DD-MM-YYYY');
-				
-			}else if(date == 'Last Week(Apr)'){
+			}else if(date == 'Last Week'){
 				callCenterUserFDate = moment().subtract(6, 'days').format('DD-MM-YYYY');
 				callCenterUserTDate = moment().format('DD-MM-YYYY');
-				
-				}else if(date == 'This Month(Apr)'){
+				}else if(date == 'This Month'){
 				callCenterUserFDate = moment().startOf("month").format('DD-MM-YYYY');
 				callCenterUserTDate = moment().endOf('month').format('DD-MM-YYYY');
-				
-			}else if(date == 'Last Month(Apr)'){
+			}else if(date == 'Last Month'){
 				callCenterUserFDate = moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY');
 				callCenterUserTDate = moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY');
-				
 			}
 		});
 </script>
