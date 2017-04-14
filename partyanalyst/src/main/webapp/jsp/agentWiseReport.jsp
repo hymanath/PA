@@ -292,6 +292,7 @@ function getTotalUserLogingDtls(){
 					str+='<table class="table table-bordered" id="callerDatailsId">';
 					str+='<thead>';
 					  str+='<tr style="font-size:14px;">';
+						 str+='<th>Image</th>';
 						 str+='<th>Agent Name</th>';
 						 str+='<th>ContactNumber</th>';
 						 if(result.range == "multiple"){
@@ -309,6 +310,7 @@ function getTotalUserLogingDtls(){
 					for(var i in result.callCenterVOList){	
 					 str+='<tr>';
 
+						str+='<td><img src="https://www.mytdp.com/images/user_images/'+result.callCenterVOList[i].imagePath+'" style="width: 60px; height: 60px;cursor:pointer" /></td>';      
 						str+='<td>'+result.callCenterVOList[i].userName+'</td>';  
 						str+='<td>'+result.callCenterVOList[i].mobileNum+'</td>';
 						if(result.range == "multiple"){
