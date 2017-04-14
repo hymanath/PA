@@ -309,7 +309,7 @@ function getTotalUserLogingDtls(){
 					for(var i in result.callCenterVOList){	
 					 str+='<tr>';
 
-						str+='<td>'+result.callCenterVOList[i].firstName+'</td>';
+						str+='<td>'+result.callCenterVOList[i].userName+'</td>';  
 						str+='<td>'+result.callCenterVOList[i].mobileNum+'</td>';
 						if(result.range == "multiple"){
 							 str+='<th>'+result.callCenterVOList[i].attendedCount+'</th>';
