@@ -49,7 +49,6 @@ import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
-import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficer;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerAction;
@@ -3112,6 +3111,63 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public List<AlertCoreDashBoardVO> getTotalPhoneNumbers(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs){
+		List<AlertCoreDashBoardVO>  returnList = new ArrayList<AlertCoreDashBoardVO> ();
+		try{
+			List<Long> alertIdsList= new ArrayList<Long>(); 
+			if(commonMethodsUtilService.isListOrSetValid(alertCoreDashBoardVOs)){  
+				for (AlertCoreDashBoardVO alertVO : alertCoreDashBoardVOs) {
+					alertIdsList.add(alertVO.getId());
+				}
+			}
+			if(commonMethodsUtilService.isListOrSetValid(alertIdsList)){
+				
+				
+				 List<Object[]> deptCorpList =  new ArrayList<Object[]>(0);
+					Map<Long,String> alertCallerMap = new HashMap<Long, String>(0);
+                 if(alertIdsList != null && alertIdsList.size()>0){
+                      
+                      int filterCount = 200;
+                      int i = 0; 
+                      int j = filterCount;
+                      int maxcount = alertIdsList.size();
+                      while (maxcount >0){  
+                          if(maxcount<filterCount)
+                             j = i+maxcount;
+		                     List<Object[]> callersList = alertDAO.getCallerDetailsForAlerts(alertIdsList.subList(i, j));
+		          			if(commonMethodsUtilService.isListOrSetValid(callersList)){
+		          				for (Object[] param : callersList) {
+		          					if(param[1] != null)
+		          					alertCallerMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1])+"\n"+commonMethodsUtilService.getStringValueForObject(param[2]));
+		          				}
+		          			}
+                          i=j;
+                          maxcount = maxcount-filterCount;
+                          j=j+filterCount;
+                      }
+                 }
+				
+				if(commonMethodsUtilService.isMapValid(alertCallerMap)){
+					for (AlertCoreDashBoardVO alertVO : alertCoreDashBoardVOs) {
+						String callerInfoStr = alertCallerMap.get(alertVO.getId());
+						alertVO.setCallerStr(callerInfoStr);
+						returnList.add(alertVO);
+					}
+				}
+			}
+			
+			
+			if(!commonMethodsUtilService.isListOrSetValid(returnList)){
+				returnList.clear();
+				returnList.addAll(alertCoreDashBoardVOs);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return returnList;
 	}
 	
 }
