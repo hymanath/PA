@@ -28,6 +28,7 @@ public class CallCenterVO {
 	private String totalTime;
 	private Long totalAlert;
 	private Long attendedCount;
+	private String range;
 	
 	private CallCenterVO callCenterVO;
 	private List<CallCenterVO> callCenterVOList = null;
@@ -152,6 +153,12 @@ public class CallCenterVO {
 	}
 	public void setAttendedCount(Long attendedCount) {
 		this.attendedCount = attendedCount;
+	}
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
 	}
 	
 	

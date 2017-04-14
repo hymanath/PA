@@ -50,6 +50,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String totalTime;
 	private Long totalAlert = 0L;
 	private Long attendedCount = 0L;
+	private String range;
 		
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
 	private List<AlertCoreDashBoardVO> subList1 = new ArrayList<AlertCoreDashBoardVO>(0);
@@ -372,6 +373,14 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setOfficerMobileNo(String officerMobileNo) {
 		this.officerMobileNo = officerMobileNo;
+	}
+
+	public String getRange() {
+		return range;
+	}
+
+	public void setRange(String range) {
+		this.range = range;
 	}
 	
 	
