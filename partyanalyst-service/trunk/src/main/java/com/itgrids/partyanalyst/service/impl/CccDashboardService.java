@@ -2446,7 +2446,7 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 			}
 			
 			List<Object[]> alertList = alertAssignedOfficerDAO.getSubOrdinateLevelWiseAlertsDetails(designationId, levelId, levelValue, fromDate, toDate);
-			setAlertDtls(returnList, alertList);
+			setTotalAlertByStatusForDeptWiseClickAlertDtls(returnList, alertList);
 			
 		} catch (Exception e) {
 			logger.error("Error occured getSubOrdinateLocationWiseAlertDetails() method of CccDashboardService",e);
