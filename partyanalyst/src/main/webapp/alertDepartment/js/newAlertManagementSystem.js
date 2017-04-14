@@ -3354,8 +3354,8 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,groupT
 				$.each($('#districtLevelGraphStausWise').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
 					$(this).attr("class","getTotaldistrictCls");    
-					$(this).attr("attr_district_id",districtId);         
-					$(this).attr("attr_district_name",districtName);	
+					$(this).attr("attr_district_id",districtIdDDD);         
+					$(this).attr("attr_district_name",districtNameDDD);	
 					$(this).attr("attr_total_count",totalCountDDD);
 					$(this).attr("attr_department_Id",departmentId);					
 				}); 
@@ -4324,7 +4324,7 @@ function getDivisionIdListForDivisionFilter(departmentId){
     data: {task :JSON.stringify(jsObj)}     
     }).done(function(result){
 		if(result !=null && result.length>0){
-				$("#divisionWiseLevelsDivId").append('<option value="0">Select District</option>');
+				$("#divisionWiseLevelsDivId").append('<option value="0">Select Division</option>');
 				for(var i in result){
 					$("#divisionWiseLevelsDivId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
