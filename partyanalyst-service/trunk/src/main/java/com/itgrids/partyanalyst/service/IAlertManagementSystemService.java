@@ -56,7 +56,7 @@ public interface IAlertManagementSystemService {
 	public List<IdNameVO> getChildLevelValuesForSubTask(Long departmentId,Long parentLevelId,List<Long> parentLevelValues,Long levelId);
 	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType);
 	public List<IdNameVO> getDeptListForMultiLvl(Long userId);
-	public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(List<Long> alertIdList);
+	public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(Long govtDeptGovtOffrId,Long govtOffrcrId,String countType,String alertType);
 	public List<AlertTrackingVO> getAlertStatusHistory(Long alertId);
 	public List<GovtDepartmentVO> getAssignedOfficersDetails(Long alertId);
 	public List<AlertCoreDashBoardVO> getDistrictOfficerScopesWiseAlerts(String fromDateStr, String toDateStr, Long stateId, Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType);
