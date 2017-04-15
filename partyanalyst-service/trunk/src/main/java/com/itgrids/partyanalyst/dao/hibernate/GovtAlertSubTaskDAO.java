@@ -1863,4 +1863,31 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    }
 	      return query.list();
 	}
+		@SuppressWarnings("unchecked")
+		public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId){
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select distinct model.alert.alertId "+
+					  " from " +
+					  " GovtAlertSubTask model " +
+					  " where " +
+					  " model.isDeleted = 'N' ");
+			if(deptId != null && deptId.longValue() >0){
+				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId ");
+			}
+			if(locationLevelId != null && locationLevelId.longValue() > 0){
+				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :locationLevelId ");
+			}
+			if(statusId != null && statusId.longValue() >0){
+				sb.append(" and model.alertSubTaskStatus.alertSubTaskStatusId = :statusId ");
+			}
+			Query query = getSession().createQuery(sb.toString());
+			if(deptId != null && deptId.longValue() >0)
+			      query.setParameter("deptId",deptId);
+			if(locationLevelId != null && locationLevelId.longValue() > 0)
+			      query.setParameter("locationLevelId",locationLevelId);
+			if(statusId != null && statusId.longValue() >0){
+				query.setParameter("statusId",statusId);
+			}
+			return query.list();
+		}
 }

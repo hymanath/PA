@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerDetailsNew;
+import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
 
 public class GovtDepartmentDesignationOfficerDetailsNewDAO extends GenericDaoHibernate<GovtDepartmentDesignationOfficerDetailsNew, Long>
 		implements IGovtDepartmentDesignationOfficerDetailsNewDAO {
@@ -153,6 +154,16 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
   		query.setParameter("levelValue", levelValue);
   		query.setParameter("designationId", designationId);
   		query.setParameter("officerId", officerId);
+  		return query.list();
+  	}
+     @SuppressWarnings("unchecked")
+	public List<Object[]> getDesignationsNameForUser(Long userId){
+  		Query query = getSession().createQuery("select model.govtOfficer.officerName," +
+  				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName " +
+  												" from GovtDepartmentDesignationOfficerDetailsNew model" +
+  												" where model.user.userId = :userId" +
+  												" and model.isDeleted = 'N' ");
+  		query.setParameter("userId", userId);
   		return query.list();
   	}
 }
