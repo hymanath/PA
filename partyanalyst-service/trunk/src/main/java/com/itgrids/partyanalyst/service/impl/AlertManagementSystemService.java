@@ -2556,9 +2556,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     					statusIds.add(commonMethodsUtilService.getLongValueForObject(param[4]));
     				}
     			}
-    			
-    			
-    			List<Object[]> statusIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
+    			List<Object[]> statusIdDtlsList = null;
+    			if(statusIds != null && statusIds.size() > 0){
+    			 statusIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
+        		}
     			
     			List<Object[]> deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
     			

@@ -2941,7 +2941,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  
 	    	  sb.append(" select distinct model.alert.alertId from AlertAssignedOfficerNew model ");
 	    	
-	    	  sb.append(" where model.isDeleted = 'N' and and model.alert.isDeleted='N' " );
+	    	  sb.append(" where model.isDeleted = 'N' and  model.alert.isDeleted='N' " );
 	    	
 	    	  
 	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
