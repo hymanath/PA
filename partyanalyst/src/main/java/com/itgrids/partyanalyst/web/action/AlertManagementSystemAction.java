@@ -77,7 +77,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<String> imageForDisplayFileName = new ArrayList<String>();
 	private List<GrievanceAlertVO> grievanceAlertVo;
 	private FilterSectionVO filterDetilsList;
+	private String officerNameAnddesgnationName;
 	
+	public String getOfficerNameAnddesgnationName() {
+		return officerNameAnddesgnationName;
+	}
+	public void setOfficerNameAnddesgnationName(String officerNameAnddesgnationName) {
+		this.officerNameAnddesgnationName = officerNameAnddesgnationName;
+	}
 	public List<File> getImageForDisplay() {
 		return imageForDisplay;
 	}
@@ -310,11 +317,11 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	public String getDepartmentDetails(){
 		try{
 			session = request.getSession();
-		   	/*RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-			Long userId = regVo.getRegistrationID();*/
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
 			
-			//officerName = cccDashboardService.getDesignationForUser(userId);
-			//session.setAttribute("officerName", officerName);
+			officerNameAnddesgnationName = alertManagementSystemService.getDesignationForUser(userId);
+			session.setAttribute("officerNameAnddesgnationName", officerNameAnddesgnationName);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1004,7 +1011,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			Long deptId = jObj.getLong("deptId");
 			Long levelId = jObj.getLong("levelId");
 			Long statusId = jObj.getLong("statusId");
-			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId);
+			String type = jObj.getString("type");
+			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1160,8 +1168,18 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		
 		
 	 public String alertDistManagement(){
-		 return Action.SUCCESS;
-	 }
+		 try {
+			 session = request.getSession();
+			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				
+				officerNameAnddesgnationName = alertManagementSystemService.getDesignationForUser(userId);
+				session.setAttribute("officerNameAnddesgnationName", officerNameAnddesgnationName);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in alertDistManagement() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 	 
 	 public String alertDistOfficeManagement(){
 		 return Action.SUCCESS; 
