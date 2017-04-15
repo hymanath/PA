@@ -290,6 +290,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 														str+='<span class="arrow-icon pull-right" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
 															str+='<i class="glyphicon glyphicon-menu-right"></i>';
 														str+='</span>';
+														alertId = result[i].subList[j].id;
 														str+='<span class="status-icon pull-right"></span>';
 														str+='<span class="location-name pull-right" data-toggle="tooltip" data-placement="top" title="'+result[i].subList[j].location+'">'+result[i].subList[j].location+'</span>';
 													str+='</div>';
