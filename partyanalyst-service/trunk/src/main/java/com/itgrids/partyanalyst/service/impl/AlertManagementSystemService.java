@@ -2678,9 +2678,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
             	  return null;
               }
 
-           public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(List<Long> alertIdList){
+           public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(Long govtDeptGovtOffrId,Long govtOffrcrId,String countType,String alertType){
         		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
         		try {
+        			List<Long> alertIdList = null;
+        			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>();
+        			govtDepDesigOffcrIds.add(govtDeptGovtOffrId);
+        			List<Long> govtOffcrIds = new ArrayList<Long>();
+        			govtOffcrIds.add(govtOffrcrId);
+        			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+        				 alertIdList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,countType);
+        			}else {
+       				 	alertIdList = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDepDesigOffcrIds,govtOffcrIds,countType,alertType);
+        			}
         			if(alertIdList != null && alertIdList.size() > 0){
         				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdList));
         				setAlertDtls(finalVoList, list); 
