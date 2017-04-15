@@ -1177,12 +1177,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				Long scopeId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
-				JSONArray alertIdArr = jObj.getJSONArray("alertIdArr");  
-				List<Long> alertIdList = new ArrayList<Long>();
-				for (int i = 0; i < alertIdArr.length(); i++){
-					alertIdList.add(Long.parseLong(alertIdArr.getString(i)));        
-				}
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(alertIdList);
+				Long govtDeptGovtOffrId = jObj.getLong("govtDepDesigOffcrId");
+				Long govtOffrcrId = jObj.getLong("govtOfficerId");
+				String countType = jObj.getString("countType");
+				String alertType = jObj.getString("alertType");
+				
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptGovtOffrId,govtOffrcrId,countType,alertType);
 				
 				alertCoreDashBoardVOs =alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
