@@ -6545,9 +6545,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     					sb.append(" group by t.tehsilId,model.alertStatus.alertStatusId order by t.tehsilName");
     				}else if(locationType != null && locationType.trim().equalsIgnoreCase("panchayat")){
     					sb.append(" group by p.panchayatId,model.alertStatus.alertStatusId order by p.panchayatName");
-    				}/*else if(locationType != null && locationType.trim().equalsIgnoreCase("hamlets")){
-    					sb.append(" group by h.hamletId,model.alertStatus.alertStatusId order by h.hamletName");
-    				}*/
+    				}
     			}else if(searchType != null && searchType.trim().equalsIgnoreCase("urban")){
     				if(locationType != null && locationType.trim().equalsIgnoreCase("muncipality")){
     					sb.append(" group by leb.localElectionBodyId,model.alertStatus.alertStatusId order by leb.name");
@@ -6672,7 +6670,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list();
 		
     }
-    public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId ){
+    public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,Date fromDate,Date toDate ){
     	StringBuilder sb = new StringBuilder();
     	 	sb.append(" select model.alertId,model.createdTime,model.title,model.description,model.alertIssueType.issueType," +
     	 			" model.alertIssueSubType.issueType,model.alertStatus.alertStatus,model.alertCaller.callerName, district.districtName, " +
@@ -6699,7 +6697,14 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 		sb.append(" model.userAddress.tehsil.tehsilId =:locationId and ");
     	 	}else if(locatoinType != null && locatoinType.equalsIgnoreCase("panchayat")){
     	 		sb.append(" model.userAddress.panchayat.panchayatId =:locationId and ");
+    	 	}else if(locatoinType != null && locatoinType.equalsIgnoreCase("hamlet")){
+    	 		sb.append(" model.userAddress.hamlet.hamletId =:locationId and ");
     	 	}
+    	 	
+    	 	if(fromDate != null && toDate != null){
+    			sb.append(" (date(model.createdTime) between :fromDate and :toDate) and ");
+    		}
+    	 	
     	 	sb.append(" model.isDeleted ='N' ");
     	 	Query query = getSession().createQuery(sb.toString());
     	 	if(locatoinType != null && locatoinType.equalsIgnoreCase("district")){
@@ -6708,10 +6713,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 		query.setParameter("locationId",locationId);
     	 	}else if(locatoinType != null && locatoinType.equalsIgnoreCase("panchayat")){
     	 		query.setParameter("locationId",locationId);
+    	 	}else if(locatoinType != null && locatoinType.equalsIgnoreCase("hamlet")){
+    	 		query.setParameter("locationId",locationId);
     	 	}
     	 	if(mobileNo != null && !mobileNo.isEmpty()){
     	 		query.setParameter("mobileNo",mobileNo);
     	 	}
+    	 	if(fromDate != null && toDate != null){
+    			query.setDate("fromDate", fromDate);
+    			query.setDate("toDate", toDate);
+    		}
     	 	return query.list();
     	 		 	
     }

@@ -11,6 +11,7 @@ public class KeyValueVO implements Serializable {
 	private Long count = 0l;
 	private List<KeyValueVO> list = new ArrayList<KeyValueVO>(0);
 	private Long totalCount = 0l;
+	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>(0);
 	
 	
 	public Long getId() {
@@ -42,5 +43,11 @@ public class KeyValueVO implements Serializable {
 	}
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
+	}
+	public List<KeyValueVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<KeyValueVO> subList) {
+		this.subList = subList;
 	}
 }

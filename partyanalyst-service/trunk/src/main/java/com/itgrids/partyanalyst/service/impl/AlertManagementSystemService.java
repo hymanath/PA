@@ -5053,10 +5053,18 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  		return null;
  	}
 
-	 public List<GrievanceAlertVO> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId){
+	 public List<GrievanceAlertVO> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,String fromDateStr,String toDateStr){
 			List<GrievanceAlertVO> finalVoList = new ArrayList<GrievanceAlertVO>(0);
 		try {
-			List<Object[]> GovtGrivenceDetails = alertDAO.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId);
+			Date fromDate = null;
+ 			Date toDate = null;
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+ 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+ 				fromDate = sdf.parse(fromDateStr);
+ 				toDate = sdf.parse(toDateStr);
+ 			}
+ 			
+			List<Object[]> GovtGrivenceDetails = alertDAO.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId,fromDate,toDate);
 			 if(GovtGrivenceDetails != null &&  GovtGrivenceDetails.size()>0){
 				 for(Object[] param : GovtGrivenceDetails){
 					 GrievanceAlertVO Vo = new  GrievanceAlertVO();
