@@ -30,6 +30,7 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	private Long parentDesignationId;
 	private Long subDesignationId;
 	private String  isDeleted;
+	private Long orderNo;
 	
 	private GovtDepartmentDesignationNew parentDesignation;
 	private GovtDepartmentDesignationNew subDesignation;
@@ -90,5 +91,14 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	public void setSubDesignation(GovtDepartmentDesignationNew subDesignation) {
 		this.subDesignation = subDesignation;
 	}
+	@Column(name="order_no")
+	public Long getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}
+	
+	
 	
 }

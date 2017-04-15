@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.GovtDepartmentDesignationHierarchy;
 public interface IGovtDepartmentDesignationHierarchyDAO extends GenericDao<GovtDepartmentDesignationHierarchy,Long>{
 	public List<Long> getParentDepartment(Long designationId);
 	public List<Long> getOldParentDepartment(Long designationId);
+	public List<Long> getChildLocationDesignations(Long designationId);
 }
