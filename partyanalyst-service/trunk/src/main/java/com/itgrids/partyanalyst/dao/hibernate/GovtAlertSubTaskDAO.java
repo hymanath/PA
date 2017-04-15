@@ -49,7 +49,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  
        	}
 	    	  if(countType != null && countType.equalsIgnoreCase("today")){
-	    		  sb.append(" and model.createdTime = :todayDate " ); 
+	    		  sb.append(" and date(model.createdTime) between  :todayDate and :todayDate " ); 
 	    	  }
 	    	  
 	    	  if(countType != null && !countType.equalsIgnoreCase("today")){
@@ -338,7 +338,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  
     	}
 	    	  if(countType != null && countType.equalsIgnoreCase("today")){
-	    		  sb.append(" and model.createdTime = :todayDate " ); 
+	    		  sb.append(" and date(model.createdTime) between :todayDate and :todayDate " ); 
 	    	  }
 	    	  
 	    	  Query query = getSession().createQuery(sb.toString());
@@ -554,7 +554,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	  		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	  	  }
 	  	  if(type != null && type.equalsIgnoreCase("today")){
-	  		  sb.append(" and model.createdTime = :todayDate " ); 
+	  		  sb.append(" and date(model.createdTime) between :todayDate and :todayDate " ); 
 	  	  }
  	  
 	  	  sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId ");
