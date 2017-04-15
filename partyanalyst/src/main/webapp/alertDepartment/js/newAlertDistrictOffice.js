@@ -1537,8 +1537,8 @@ function getDocumentsForAlert(alertId){
 		$("#assignedSubTasksDivID").html('');
 		if(result !=null){
 			globalDepartmentId = result.departmentId;
-			globalgovtDeptDesigOffcrId = result.govtDeptDesigOffcrId;
-			globalgovtOfficerId = result.govtOfficerId;
+			globalgovtDeptDesigOffcrId = result.govtDeptDesigOffcrIds[0];
+			globalgovtOfficerId = result.govtOfficerIds[0];
 			buildDistrictOfficerAlertsCountView(result);
 		}
 		
@@ -1566,7 +1566,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			if(result.list1[0].todayCount !=null && result.list1[0].todayCount !=0){
 				if(result.list1[0].todayCount !=null && result.list1[0].todayCount !=0 && esult.list1[0].todayCount>0){
 					totalCoutAlertIds.push(result.list1[0].todayAlertIds);
-				str+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_name ="TODAY" attr_total_count = "'+result.list1[0].todayCount+'">TODAY <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].todayCount+'</span></p>';
+				str+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_name ="TODAY" attr_total_count = "'+result.list1[0].todayCount+'" attr_alert_type="alert">TODAY <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].todayCount+'</span></p>';
 				}
 			else{
 				str+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list1[0].todayCount+'</span></p>';
@@ -1579,7 +1579,7 @@ function buildDistrictOfficerAlertsCountView(result){
 				overAllAlertIds = [];
 				if(result.list1[0].overAllCnt !=null && result.list1[0].overAllCnt !=0 && result.list1[0].overAllCnt>0){
 					overAllAlertIds.push(result.list1[0].overAllAlertIds);
-				str+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_name ="OVERALL" attr_total_count = "'+result.list1[0].overAllCnt+'">OVERALL <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].overAllCnt+'</span></p>';
+				str+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_name ="OVERALL" attr_total_count = "'+result.list1[0].overAllCnt+'" attr_alert_type="alert">OVERALL <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].overAllCnt+'</span></p>';
 				}
 			  else{
 				  str+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list1[0].overAllCnt+'</span></p>';
@@ -1730,7 +1730,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0){
 			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0 && result.list2[0].todayCount>0){
 				  totalCoutAlertIds.push(result.list2[0].todayAlertIds);
-				str1+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' >TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
+				str1+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_alert_type="mySubTasks">TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
 			}else{
 				str1+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
 			}
@@ -1742,7 +1742,7 @@ function buildDistrictOfficerAlertsCountView(result){
 				overAllAlertIds = [];
 			 if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0 && result.list2[0].overAllCnt>0){
 				overAllAlertIds.push(result.list2[0].overAllAlertIds);
-				str1+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
+				str1+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_alert_type="mySubTasks">OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
 			 }else{
 				 str1+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
 			 }
@@ -1891,7 +1891,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0){
 				if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0 && esult.list3[0].todayCount>0){
 					totalCoutAlertIds.push(result.list3[0].todayAlertIds);
-				str2+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' >TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
+				str2+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_alert_type="myAssignedSubTasks" >TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
 				}else{
 				str2+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
 				}
@@ -1903,7 +1903,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 				overAllAlertIds = [];
 				if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0 && result.list3[0].overAllCnt>0){
 					overAllAlertIds.push(result.list3[0].overAllAlertIds);
-				str2+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+'>OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
+				str2+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_alert_type="myAssignedSubTasks">OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
 				}else{
 				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
 				}
@@ -3544,10 +3544,13 @@ $(document).on("click",".overAllCount",function(){
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count");
-	
-	alertIdArr=($(this).attr("attr_overcunt").split(','));
+	var alertType = $(this).attr("attr_alert_type");
+	//alertIdArr=($(this).attr("attr_overcunt").split(','));
 	var jObj = {
-		alertIdArr: alertIdArr		
+		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
+		govtOfficerId : globalgovtOfficerId,
+		countType: "overAll",
+		alertType : alertType		
 	}
 	$.ajax({
       type:'GET',
@@ -3573,9 +3576,13 @@ $(document).on("click",".todayCountCls",function(){
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count")
-	alertIdArr.push(parseInt($(this).attr("attr_todayCunt")));
+	//alertIdArr.push(parseInt($(this).attr("attr_todayCunt")));
+	var alertType = $(this).attr("attr_alert_type");
 	var jObj = {
-		alertIdArr: alertIdArr		
+		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
+		govtOfficerId : globalgovtOfficerId,
+		countType: "today",
+		alertType : alertType
 	}
 	$.ajax({
       type:'GET',
@@ -3783,8 +3790,7 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		});
 		$("#alertManagementPopupBody").html(spinner);
 		
-
-	var jsObj = {
+		var jsObj = {
 		govtDeptDesigOffceId : globalgovtDeptDesigOffcrId,
 		govtOffceId : globalgovtOfficerId,
 		statusId : StatusId,
