@@ -723,7 +723,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 		
-		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.is_approved = 'Y' and AAO.is_deleted='N' ");
 		queryStr.append(" and AAO.alert_sub_task_status_id = ALTS.alert_sub_task_status_id  ");
 		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 		
@@ -882,7 +882,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 		
-		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.is_approved = 'Y' and AAO.is_deleted='N' ");
 		queryStr.append(" and AAO.alert_sub_task_status_id = ALTS.alert_sub_task_status_id  ");
 		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 		
@@ -1049,7 +1049,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 		
-		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.is_approved = 'Y' and AAO.is_deleted='N' ");
 		queryStr.append(" and AAO.alert_sub_task_status_id = ALTS.alert_sub_task_status_id  ");
 		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 		
@@ -1199,7 +1199,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 		
-		queryStr.append(" and AAO.is_approved = 'Y' and A.is_deleted='N' ");
+		queryStr.append(" and AAO.is_approved = 'Y' and AAO.is_deleted='N' ");
 		queryStr.append(" and AAO.alert_sub_task_status_id = ALTS.alert_sub_task_status_id  ");
 		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 		
@@ -1266,7 +1266,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
 		query.addScalar("alertIds", Hibernate.LONG);
-		query.addScalar("govtDepartmentWorkLocationId", Hibernate.LONG);
+		
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
@@ -1330,7 +1330,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 		
-		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.is_approved = 'Y' and AAO.is_deleted='N' ");
 		queryStr.append(" and AAO.alert_sub_task_status_id = ALTS.alert_sub_task_status_id  ");
 		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 		
@@ -1463,7 +1463,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 		
-		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.is_approved = 'Y' and AAO.is_deleted='N' ");
 		queryStr.append(" and AAO.alert_sub_task_status_id = ALTS.alert_sub_task_status_id  ");
 		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 		
