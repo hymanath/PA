@@ -240,8 +240,6 @@
 $('#dateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 	callCenterUserFDate = picker.startDate.format('DD/MM/YYYY');
 	callCenterUserTDate = picker.endDate.format('DD/MM/YYYY');
-	
-	
 	onLoadCalls();
 });
 
@@ -280,7 +278,7 @@ function getTotalUserLogingDtls(){
 							 str+='<th class="text-capital">Login Days</th>';
 						 }else{
 							 str+='<th class="text-capital">Login Time</th>';
-							str+='<th class="text-capital">Logoff Time</th>';
+							 str+='<th class="text-capital">Logoff Time</th>';
 						 }
 						 str+='<th class="text-capital">Total Worked Hours</th>';
 						 str+='<th class="text-capital">No Of Requested Created</th>';
