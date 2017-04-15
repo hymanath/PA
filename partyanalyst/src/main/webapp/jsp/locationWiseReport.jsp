@@ -106,14 +106,15 @@ $("#dateRangePickerAUM").daterangepicker({
 		},
 		ranges: {
 			
-			'Today' : [moment(), moment()],
-		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-		   'This Month': [moment().startOf('month'), moment()],
-		   'This Year': [moment().startOf('Year'), moment()]
+			'Today' : [moment(), moment()],         
+			'Yesterday' : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],               
+			'This Month': [moment().startOf('month'), moment()],          
+			'Last 30 Day': [moment().subtract(29, 'days'), moment()],    
+			'Last 1 Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'Last 3 Months': [moment().subtract(3, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'Last 6 Months': [moment().subtract(6, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+			'This Year': [moment().startOf('Year'), moment()],
+			'Last 1 Year': [moment().subtract(1, 'Year').startOf('Year'), moment().subtract(1, 'Year').endOf('Year')], 
 		}
 	});
 	
