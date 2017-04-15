@@ -3497,43 +3497,43 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       		return null;
       	}
       	
-      	public List<IdNameVO>  getStatusCompletionInfo(Long alertId,Long levelValue){
+      	public List<IdNameVO>  getStatusCompletionInfo(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId){
         	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
         	try {
         		
-        		List<Long> workLocationids = govtDepartmentWorkLocationRelationDAO.getChildLocations(levelValue);        		        		        		
-        		List<Object[]> userObjList =  alertAssignedOfficerNewDAO.getDesignationOfficerDetails(alertId);
+        		Alert alert  = alertDAO.get(alertId);
         		
-        		Alert alert  = alertDAO.get(alertId);        		
-        		boolean isReOpen = false;
+        		String userType = null;
         		
-        		if(userObjList !=null && userObjList.size()>0){        			
-        			Object[] obj = userObjList.get(0);
+        		List<Long> levelValues = new ArrayList<Long>(0);
+        		levelValues.add(levelValue);
+        		
+        		List<Long> parentDesigOfficerIdList = govtDepartmentDesignationOfficerNewDAO.getGovtDepartmentDesinationOfficerId(designationId,levelId,levelValues,userId);
+        		
+        		Long parentDesigOfficerId = 0l;
+        		if(parentDesigOfficerIdList !=null && parentDesigOfficerIdList.size()>0){
+        			parentDesigOfficerId = parentDesigOfficerIdList.get(0);
+        		}
+        		
+        		List<Long> alertDeptOfficerList = alertAssignedOfficerNewDAO.getGovtDepartmentDesignationOfficer(alertId);        		
+        		Long alertGovtofficerId = alertDeptOfficerList.get(0);
+        		
+        		
+        		List<Long> subDesignations = govtDepartmentDesignationHierarchyDAO.getChildLocationDesignations(designationId);
+        		
+        		Long childDesignationOfficerId =0l;
+        		if(subDesignations != null && subDesignations.size() > 0){
+        			Long subDesignationId = subDesignations.get(0);    
         			
-        			if(workLocationids !=null && obj[1] !=null){
-        				if(workLocationids.contains((Long)obj[1]) && alert.getAlertStatusId().longValue() == 4l ){
-        					isReOpen = true;
-        				}
+        			List<Long> deptOfficerList = govtDepartmentDesignationOfficerNewDAO.getGovtDepartmentDesignationOfficer(levelId,levelValues,subDesignationId);
+        			
+        			if(deptOfficerList !=null && deptOfficerList.size()>0){
+        				childDesignationOfficerId = deptOfficerList.get(0);
         			}
         		}
         		
-        		if(isReOpen){
-        			List<Object[]> listObj = alertStatusDAO.getAlertStatusInfoForReOpen();
-        			if(listObj !=null && listObj.size()>0){
-        				for (Object[] objects : listObj) {
-							IdNameVO vo = new IdNameVO();
-							vo.setId((Long)objects[0]);
-							vo.setName(objects[1].toString());
-							vo.setDateStr(objects[2] != null? objects[2].toString():null);
-							finalList.add(vo);
-						}
-        			}
-        		}else{        			
-        			/*IdNameVO VO = new IdNameVO();        			
-        			VO.setId(alert.getAlertStatusId());
-        			VO.setName(alert.getAlertStatus().getAlertStatus());
-        			VO.setStatus("false");
-        			finalList.add(VO);*/
+        		if(parentDesigOfficerId >0l && parentDesigOfficerId.equals(alertGovtofficerId)){
+        			userType ="own";
         			
         			List<Object[]> objList = alertDepartmentStatusDAO.getAlertGovtDepartmentStatus(alert.getGovtDepartmentId());
         			if(objList != null && objList.size() > 0){
@@ -3545,10 +3545,38 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                 			finalList.add(VO);
 						}
         			}
+        			
+        		}else if(alertGovtofficerId !=null && alertGovtofficerId.longValue()>0 && childDesignationOfficerId.longValue()>0l 
+        				&& alertGovtofficerId.equals(childDesignationOfficerId) ){ 
+        			
+        			userType = "subUser";
+        			
+        			if(alert.getAlertStatusId().longValue() == 4l){//Completed Status  
+        				//userType = "subUserStatus";
+        				List<Object[]> listObj = alertStatusDAO.getAlertStatusInfoForReOpen();
+            			if(listObj !=null && listObj.size()>0){
+            				for (Object[] objects : listObj) {
+    							IdNameVO vo = new IdNameVO();
+    							vo.setId((Long)objects[0]);
+    							vo.setName(objects[1].toString());
+    							vo.setDateStr(objects[2] != null? objects[2].toString():null);
+    							finalList.add(vo);
+    						}
+            			}
+        			}else{
+        				IdNameVO vo = new IdNameVO();        			
+            			finalList.add(vo);            			
+        			}  
+        			
+        		}else{
+        			userType = "other";        			
+        			IdNameVO vo = new IdNameVO();        			
+        			finalList.add(vo);
         		}
         		
+        		
         		if(finalList != null && finalList.size() > 0){
-        			finalList.get(0).setApplicationStatus(isReOpen+"");
+        			finalList.get(0).setApplicationStatus(userType+" - "+alert.getAlertStatusId());
         		}
 				
 			} catch (Exception e) {
@@ -3557,7 +3585,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
         	return finalList;
         }
-      	
+      	      	
       	public AlertVO getSubTaskFullDetails(Long subTaskId){
       		AlertVO finalVO = new AlertVO();
       		try {
@@ -4960,6 +4988,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  		}
  		return null;
  	}
+
 	 public List<GrievanceAlertVO> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId){
 			List<GrievanceAlertVO> finalVoList = new ArrayList<GrievanceAlertVO>(0);
 		try {

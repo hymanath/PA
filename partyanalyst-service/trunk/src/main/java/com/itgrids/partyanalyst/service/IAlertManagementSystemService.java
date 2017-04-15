@@ -72,7 +72,7 @@ public interface IAlertManagementSystemService {
 	public List<AlertTrackingVO> getSubTaskStatusHistory(Long subTaskId);
 	public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId);
 	public List<AlertTrackingVO> getCommentsForAlert(Long alertId);
-	public List<IdNameVO>  getStatusCompletionInfo(Long alertId,Long levelValue);
+	public List<IdNameVO>  getStatusCompletionInfo(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId);
 	public AlertVO getSubTaskFullDetails(Long subTaskId);
 	public List<AlertVO> stateLevelDeptOfficerStatusOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);
 	public List<AlertVO> stateLevelDeptOfficerLocationLevelOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId);

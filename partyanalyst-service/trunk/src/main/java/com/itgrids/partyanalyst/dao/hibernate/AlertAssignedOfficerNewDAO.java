@@ -2974,4 +2974,17 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  		}
 	    	  return query.list();
 	    }
+	 
+	 public List<Long> getGovtDepartmentDesignationOfficer(Long alertId){
+     	
+     	Query query = getSession().createQuery(" SELECT model.govtDepartmentDesignationOfficerId  " +
+     											" FROM AlertAssignedOfficerNew model" +
+     											" WHERE model.isDeleted ='N' " +
+     											" and model.alertId  = :alertId " +
+     											" and model.isApproved = 'Y' " );
+     	
+     	query.setParameter("alertId", alertId);
+     	return query.list();
+     }
+	 
 }// GDWL.govt_department_work_location_id, GDS.govt_department_scope_id,AAO.alert_status_id

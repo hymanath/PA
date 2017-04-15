@@ -52,4 +52,74 @@ public class GovtDepartmentDesignationOfficerNewDAO extends GenericDaoHibernate<
 
 	 return query.list();
     }
+	
+	/*1	STATE
+	2	ZONE
+	3	REGION
+	4	CIRCLE
+	5	DISTRICT
+	6	DIVISION
+	7	SUB DIVISION
+	8	MANDAL
+	9	MUNICIPALITY
+	10	PANCHAYAT*/
+	
+	public List<Long> getGovtDepartmentDesignationOfficer(Long levelId,List<Long> levelValues,Long subDesignationId){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select model.govtDepartmentDesignationOfficerId "
+				+ " from GovtDepartmentDesignationOfficerNew model "
+				+ " where model.govtDepartmentDesignationId = :subDesignationId "
+				+ "  ");
+		
+		if(levelId !=null && levelValues !=null && levelValues.size()>0){
+			if(levelId.longValue() == 1l){
+				sb.append(" and model.govtUserAddress.stateId in (:levelValues) ");
+			}else if(levelId.longValue() == 2l){
+				sb.append(" and model.govtUserAddress.zoneId in (:levelValues) ");
+			}else if(levelId.longValue() == 3l){
+				sb.append(" and model.govtUserAddress.regionId in (:levelValues) ");
+			}else if(levelId.longValue() == 4l){
+				sb.append(" and model.govtUserAddress.circleId in (:levelValues) ");
+			}else if(levelId.longValue() == 5l){
+				sb.append(" and model.govtUserAddress.districtId in (:levelValues) ");
+			}else if(levelId.longValue() == 6l){
+				sb.append(" and model.govtUserAddress.divisionId in (:levelValues) ");
+			}else if(levelId.longValue() == 7l){
+				sb.append(" and model.govtUserAddress.subDivisionId in (:levelValues) ");
+			}else if(levelId.longValue() == 8l){
+				sb.append(" and model.govtUserAddress.tehsilId in (:levelValues) ");
+			}else if(levelId.longValue() == 9l){
+				sb.append(" and model.govtUserAddress.localElectionBodyId in (:levelValues) ");
+			}else if(levelId.longValue() == 10l){
+				sb.append(" and model.govtUserAddress.panchayatId in (:levelValues) ");
+			}
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameterList("levelValues",levelValues);
+		query.setParameter("subDesignationId",subDesignationId);
+		return query.list();
+	}
+	
+	public List<Long> getGovtDepartmentDesinationOfficerId(Long designationId,Long levelId,List<Long> levelValues,Long userId){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select model.govtDepartmentDesignationOfficerId "
+				+ " from GovtDepartmentDesignationOfficerDetailsNew model "
+				+ " where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId "
+				+ " and model.govtDepartmentDesignationOfficer.govtDepartmentScopeId = :levelId"
+				+ " and model.govtDepartmentDesignationOfficer.levelValue in (:levelValues) "
+				+ " and model.userId = :userId  ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("designationId",designationId);
+		query.setParameter("levelId",levelId);
+		query.setParameterList("levelValues",levelValues);
+		query.setParameter("userId",userId);
+		
+		return query.list();
+		
+	}
 }
