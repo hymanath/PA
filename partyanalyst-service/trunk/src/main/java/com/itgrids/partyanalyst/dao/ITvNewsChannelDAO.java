@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.TvNewsChannel;
 
 public interface ITvNewsChannelDAO extends GenericDao<TvNewsChannel, Long>{
 	public List<Object[]> getChannelList();
+	public List<Object[]> getAllElectrinicMedia();
 }

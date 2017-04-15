@@ -7,4 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.Editions;
 
 public interface IEditionsDAO extends GenericDao<Editions, Long> {
+	public List<Object[]> getAllprintMediaAlerts();
 }
