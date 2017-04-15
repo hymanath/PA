@@ -245,10 +245,23 @@ function buildAlertStatusDetails(result,divId,type,locatinName){
 		str+='<div class="tableStyled">';
 	}
 	
-		str+='<table class="table table-condensed" >';
+		str+='<table class="table" >';
 		str+='<thead>';
 		str+='<tr>';
-			str+='<th  style="text-align:center;">Location Name</th>';
+	if(type == "mandals"){
+		str+='<div class="tableStyledM">';
+		str+='<th  style="text-align:center;">Mandal/Munci. Name</th>';
+	}	
+	else if(type == "panchayat"){
+		str+='<th  style="text-align:center;">Panchayat Name</th>';
+	}	
+	else if(type == "hamlets"){
+		str+='<th  style="text-align:center;">Hamlet Name</th>';
+	}else{
+		str+='<th  style="text-align:center;">District Name</th>';
+	}
+	
+			
 			str+='<th  style="text-align:center">Total</th>';
 			if(result[0].list != null && result[0].list.length > 0){
 				for(var i in result[0].list)
