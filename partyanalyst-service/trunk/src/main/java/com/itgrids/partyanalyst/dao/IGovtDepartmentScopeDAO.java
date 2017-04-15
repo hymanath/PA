@@ -11,5 +11,6 @@ public interface IGovtDepartmentScopeDAO extends GenericDao<GovtDepartmentScope,
 	public List<Object[]> getGovtDepartmenttScopeDetails(Long scopeId);
 	public List<Object[]> getGovtDeptScopeDetails();
 	public List<Object[]> getGovtDepartmenttScopeDetailsBasedOnScopeIds(List<Long> scopeIds);
+	public List<Object[]> getFilterSectionDetailsOnScopeIds();
 	
 }
