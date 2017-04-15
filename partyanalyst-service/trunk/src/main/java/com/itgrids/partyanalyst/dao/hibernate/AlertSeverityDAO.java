@@ -1,10 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import java.util.List;
 
-import com.itgrids.partyanalyst.dao.IAlertDAO;
+import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
+
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
-import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertSeverity;
 
 public class AlertSeverityDAO extends GenericDaoHibernate<AlertSeverity, Long>
@@ -12,5 +13,13 @@ public class AlertSeverityDAO extends GenericDaoHibernate<AlertSeverity, Long>
 	public AlertSeverityDAO() {
 		super(AlertSeverity.class);
 	}
+	public List<Object[]> getFilterSectionDetailsOnSeverity(){
+   		Query query = getSession().createQuery(" select " +
+   				" model.alertSeverityId," +
+   				" model.severity," +
+   				" model.severityColor " +
+   				" from AlertSeverity model ");
+   		return query.list();
+     }
 
 }

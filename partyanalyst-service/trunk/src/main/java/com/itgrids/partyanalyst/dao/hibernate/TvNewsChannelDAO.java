@@ -20,5 +20,9 @@ public class TvNewsChannelDAO extends GenericDaoHibernate<TvNewsChannel, Long> i
 		Query query = getSession().createQuery(queryStr.toString());  
 		return query.list();
 	}
+	public List<Object[]> getAllElectrinicMedia(){
+		Query query = getSession().createQuery("select model.tvNewsChannelId, model.channelName from TvNewsChannel model ");
+		return query.list();
+	}
 
 }
