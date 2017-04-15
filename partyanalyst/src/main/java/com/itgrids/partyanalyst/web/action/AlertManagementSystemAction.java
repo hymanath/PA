@@ -2153,7 +2153,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String mobileNo = jObj.getString("mobileNo");
 				String locatoinType = jObj.getString("locatoinType");
 				Long locationId = jObj.getLong("locationId");
-				grievanceAlertVo = alertManagementSystemService.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId);
+				String startDate = jObj.getString("fromDate");
+				String endDate = jObj.getString("toDate");
+				grievanceAlertVo = alertManagementSystemService.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId,startDate,endDate);
 			}catch(Exception e){
 				e.printStackTrace();
 				LOG.error("Exception occured in getGovtGrievanceAlertDetails() of alertManagementSystemAction",e);
