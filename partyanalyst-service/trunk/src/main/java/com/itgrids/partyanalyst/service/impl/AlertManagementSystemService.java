@@ -27,12 +27,15 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
+import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentDocumentNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
+import com.itgrids.partyanalyst.dao.IEditionsDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
@@ -47,11 +50,14 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationRelationDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerSubTaskTrackingDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AlertStatusDAO;
+import com.itgrids.partyanalyst.dao.INewsPaperDAO;
+import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
+import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -102,9 +108,45 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IGovtDepartmentDesignationOfficerDetailsDAO govtDepartmentDesignationOfficerDetailsDAO;
 	private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
 
-	private IAlertStatusDAO alertStatusDAO;
+	private IAlertStatusDAO alertStatusDAO; 
+	private IAlertSeverityDAO alertSeverityDAO; 
+	private IAlertCategoryDAO alertCategoryDAO;
+	private IEditionsDAO editionsDAO; 
+	private ITvNewsChannelDAO tvNewsChannelDAO;
+	private INewsPaperDAO newsPaperDAO;
 	
-	
+	public IAlertSeverityDAO getAlertSeverityDAO() {
+		return alertSeverityDAO;
+	}
+
+	public void setAlertSeverityDAO(IAlertSeverityDAO alertSeverityDAO) {
+		this.alertSeverityDAO = alertSeverityDAO;
+	}
+
+	public IAlertCategoryDAO getAlertCategoryDAO() {
+		return alertCategoryDAO;
+	}
+
+	public void setAlertCategoryDAO(IAlertCategoryDAO alertCategoryDAO) {
+		this.alertCategoryDAO = alertCategoryDAO;
+	}
+
+	public IEditionsDAO getEditionsDAO() {
+		return editionsDAO;
+	}
+
+	public void setEditionsDAO(IEditionsDAO editionsDAO) {
+		this.editionsDAO = editionsDAO;
+	}
+
+	public ITvNewsChannelDAO getTvNewsChannelDAO() {
+		return tvNewsChannelDAO;
+	}
+
+	public void setTvNewsChannelDAO(ITvNewsChannelDAO tvNewsChannelDAO) {
+		this.tvNewsChannelDAO = tvNewsChannelDAO;
+	}
+
 	public void setAlertStatusDAO(IAlertStatusDAO alertStatusDAO) {
 		this.alertStatusDAO = alertStatusDAO;
 	}
@@ -284,6 +326,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		this.alertDepartmentCommentNewDAO = alertDepartmentCommentNewDAO;
 	}
 	
+	public INewsPaperDAO getNewsPaperDAO() {
+		return newsPaperDAO;
+	}
+
+	public void setNewsPaperDAO(INewsPaperDAO newsPaperDAO) {
+		this.newsPaperDAO = newsPaperDAO;
+	}
+
 	//Business Method
 	/*
 	 * Satnosh (non-Javadoc)
@@ -5082,4 +5132,51 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  			LOG.error("Error occured setStatusWiseAlertCnt() method of CccDashboardService{}");
  	    }
  	}
+	 public FilterSectionVO getFilterSectionAlertDetails(){
+		 FilterSectionVO filterVo =new FilterSectionVO();
+		try {
+			List<Object[]> scopeIds = govtDepartmentScopeDAO.getFilterSectionDetailsOnScopeIds();
+			 setFilterSectionAlertDetails(scopeIds,filterVo,"scopes");
+			List<Object[]> severityIds = alertSeverityDAO.getFilterSectionDetailsOnSeverity();
+			 setFilterSectionAlertDetails(severityIds,filterVo,"severity");
+			List<Object[]> categoryIds = alertCategoryDAO.getAllCategory();
+			 setFilterSectionAlertDetails(categoryIds,filterVo,"category");
+			List<Object[]> editionsIds = newsPaperDAO.getNewPaperList();
+			 setFilterSectionAlertDetails(editionsIds,filterVo,"editions");
+			List<Object[]> tvNewsChannelIds = tvNewsChannelDAO.getAllElectrinicMedia();
+			 setFilterSectionAlertDetails(tvNewsChannelIds,filterVo,"tvNewsChannel");
+			} catch (Exception e) {
+				LOG.error(" Exception Occured in getFilterSectionAlertDetails() method, Exception - ",e);
+			}		
+			return filterVo;
+		}
+	 public void setFilterSectionAlertDetails(List<Object[]> scopeIds,FilterSectionVO filterVo,String names)
+	 { 
+		 List<FilterSectionVO> list =new ArrayList<FilterSectionVO>();
+		 if(scopeIds!= null && scopeIds.size()>0){
+			 for(Object[] param : scopeIds){
+				 FilterSectionVO Vo = new  FilterSectionVO();
+				 Vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				 Vo.setName(commonMethodsUtilService.getStringValueForObject(param[1])); 
+				 list.add(Vo);
+				
+			 }
+		 }
+		 if(names.equalsIgnoreCase("scopes")){
+			 filterVo.getScopesList().addAll(list); 
+		 }
+		 if(names.equalsIgnoreCase("severity")){
+			 filterVo.getSeverityList().addAll(list);
+		 }
+		 if(names.equalsIgnoreCase("category")){
+			 filterVo.getCategoryList().addAll(list);
+		 }
+		 if(names.equalsIgnoreCase("editions")){
+			 filterVo.getEditionsList().addAll(list);
+		 }
+		 if(names.equalsIgnoreCase("tvNewsChannel")){
+			 filterVo.getTvNewsChannelList().addAll(list);
+		 }
+		 
+	 }
 }      	
