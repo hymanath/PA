@@ -16965,6 +16965,11 @@
 			<result type="json" name="success">
 				<param name="root">eventDetilsList</param>     
 			</result>
-    </action>         	                   
+    </action> 
+    <action name="getFilterSectionAlertDetailsAction" class="alertManagementSystemAction" method="getFilterSectionAlertDetails">
+			<result type="json" name="success">
+				<param name="root">filterDetilsList</param>     
+			</result>
+    </action>       	                   
  </package>
 </struts>
