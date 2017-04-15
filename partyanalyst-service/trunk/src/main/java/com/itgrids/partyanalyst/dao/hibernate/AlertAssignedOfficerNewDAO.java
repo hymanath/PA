@@ -148,7 +148,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	}else{
         		sb.append(" select model.alertStatus.alertStatusId,model.alertStatus.alertStatus,count(distinct model.alert.alertId),model.alertStatus.color from AlertAssignedOfficerNew model ");
         	}
-        	sb.append(" where model.isDeleted = 'N' " );
+        	sb.append(" where model.isDeleted = 'N' and model.isApproved = 'Y' " );
         	
 	    	  
         	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
@@ -158,7 +158,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
 	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  sb.append(" and model.insertedTime = :todayDate " ); 
+	    		  sb.append(" and date(model.insertedTime) between :todayDate and :todayDate " ); 
 	    	  }
 	    	  
 	    	  if(type != null && !type.equalsIgnoreCase("today")){
@@ -639,7 +639,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
 	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  sb.append(" and model.insertedTime = :todayDate " ); 
+	    		  sb.append(" and date(model.insertedTime) between :todayDate  and :todayDate " ); 
 	    	  }
 	    	  
 	    	  
@@ -1881,7 +1881,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
 	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  sb.append(" and model.insertedTime = :todayDate " ); 
+	    		  sb.append(" and date(model.insertedTime) between  :todayDate and  :todayDate " ); 
 	    	  }
 	    	  
 	    	  sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId ");
