@@ -46,7 +46,7 @@
 				</div>
 				<div class="row">
 					<div class="panel panel-default m_top10">
-						<div class="panel-heading" style="background-color: #fff;">
+						<div class="panel-heading">
 							<h4>Overview <a class="btn btn-success pull-right" href="locationWiseReportAction.action" style="margin-top: -8px;" > Geographical View  </a></h4>
 						</div>
 						<div class="panel-body">  
@@ -95,10 +95,12 @@
 				</div>
 			</div>
 			<div class="row">
-			<div class="panel panel-default m_top10">
-				<div class="panel-body">
+			<div class="panel panel-default">
+				<div class="panel-heading">
 					<h4>Agent Wise Overview</h4>
-					<div id="tableId" class="m_top10"></div>
+				</div>
+				<div class="panel-body">
+					<div id="tableId" class="m_top30"></div>   
 				</div>
 			</div>			
 			</div>			
@@ -112,39 +114,16 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="">Modal title</h4>
+				<h4 class="modal-title" id="callerUserNameId"></h4>
 			</div>
 			<div class="modal-body">
 				<div class="panel panel-default">
 					<div class="panel-body">
-						<!--<div class="row">
-							<div class="col-md-4">
-								<div class="row">
-								   <div class="col-md-12">  
-										<ul class="list-group">
-											<li>Santhosh</li> 
-											<li>+919493565654</li>
-										</ul>
-								   </div>                      
-								</div>
-							</div>
-							<div class="col-md-8">
-								<ul class="list-inline">
-									<li><button class="btn btn btn-mg btn-success" type="button">today</button></li>
-									<li>This Week(April 9-15)</li>
-									<li>Last Week(Apr)</li>
-									<li>This Month(Apr)</li>
-									<li>Last Month(Apr)</li>
-									<li><i class="glyphicon glyphicon-time" ></i>Custom Date Range</li>
-								</ul>
-							</div>
-						</div>-->
-					
 						<div class="row">
 							<div class="col-md-5 multiUserCls" >
 								<div class="row">
 									<div class="col-md-2">
-										<i class="glyphicon glyphicon-time" style="font-size:40px;"></i>
+										<i class="glyphicon glyphicon-calendar" style="font-size:40px;"></i>
 									</div>
 									<div class="col-md-10">
 										<ul class="list-group">
@@ -221,8 +200,8 @@
 			</div>
 		</div>
   </div>
-</div>
- <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+</div>  
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
@@ -235,9 +214,9 @@
 	var callCenterUserFDate=moment().format("DD/MM/YYYY");
 	var callCenterUserTDate=moment().format("DD/MM/YYYY");
 
-	$("#agentWiseOverViewId").DataTable();
+	$("#agentWiseOverViewId").DataTable();    
 	
-	$("#dateRangePickerId").daterangepicker({
+	$("#dateRangePickerId").daterangepicker({  
 	opens: 'left',
 	startDate: callCenterUserFDate,
 	endDate: callCenterUserTDate,
@@ -246,13 +225,15 @@
 	},
 	ranges: {
 		'Today' : [moment(), moment()],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-	   'This Month': [moment().startOf('month'), moment()],
-	   'This Year': [moment().startOf('Year'), moment()]
+		'Yesterday' : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],               
+		'This Month': [moment().startOf('month'), moment()],          
+		'Last 30 Day': [moment().subtract(29, 'days'), moment()],    
+		'Last 1 Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		'Last 3 Months': [moment().subtract(3, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		'Last 6 Months': [moment().subtract(6, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		'This Year': [moment().startOf('Year'), moment()],
+		'Last 1 Year': [moment().subtract(1, 'Year').startOf('Year'), moment().subtract(1, 'Year').endOf('Year')],             
+		
 	}
 });
 
@@ -279,7 +260,7 @@ function getTotalUserLogingDtls(){
     url: 'getTotalUserLogingDtlsAction.action',
     data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		if(result!=null){
+		if(result!=null){   
 			if(result.callCenterVOList!=null && result.callCenterVOList.length>0){
 								
 					
@@ -289,28 +270,28 @@ function getTotalUserLogingDtls(){
 					
 					var str ='';
 					
-					str+='<table class="table table-bordered" id="callerDatailsId">';
+					str+='<table class="table table-hover" id="callerDatailsId">';
 					str+='<thead>';
-					  str+='<tr style="font-size:14px;">';
-						 str+='<th>Image</th>';
-						 str+='<th>Agent Name</th>';
-						 str+='<th>ContactNumber</th>';
+					  str+='<tr style="font-size:14px;">';      
+						 str+='<th class="text-capital">Image</th>';
+						 str+='<th class="text-capital">Agent Name</th>';
+						 str+='<th class="text-capital">ContactNumber</th>';
 						 if(result.range == "multiple"){
-							 str+='<th>Login Days</th>';
+							 str+='<th class="text-capital">Login Days</th>';
 						 }else{
-							 str+='<th>Login Time</th>';
-							str+='<th>Logoff Time</th>';
+							 str+='<th class="text-capital">Login Time</th>';
+							str+='<th class="text-capital">Logoff Time</th>';
 						 }
-						 str+='<th>Total Worked Hours</th>';
-						 str+='<th>No Of Requested Created</th>';
-						 str+='<th>View Datails</th>';
+						 str+='<th class="text-capital">Total Worked Hours</th>';
+						 str+='<th class="text-capital">No Of Requested Created</th>';
+						 str+='<th class="text-capital">View Datails</th>';
 					  str+='</tr>';
 					 str+='</thead>';
 					str+='<tbody>';
 					for(var i in result.callCenterVOList){	
-					 str+='<tr>';
+					 str+='<tr>';  
 
-						str+='<td><img src="https://www.mytdp.com/images/user_images/'+result.callCenterVOList[i].imagePath+'" style="width: 60px; height: 60px;cursor:pointer" /></td>';      
+						str+='<td><img class="img-circle" src="https://www.mytdp.com/images/user_images/'+result.callCenterVOList[i].imagePath+'" style="width: 45px; height: 45px;border:1px solid #ccc" /></td>';      
 						str+='<td>'+result.callCenterVOList[i].userName+'</td>';  
 						str+='<td>'+result.callCenterVOList[i].mobileNum+'</td>';
 						if(result.range == "multiple"){
@@ -323,7 +304,7 @@ function getTotalUserLogingDtls(){
 						str+='<td>'+result.callCenterVOList[i].totalHours+'</td>';
 						str+='<td>'+result.callCenterVOList[i].noOfAlertCreated+'</td>';
 						if(result.callCenterVOList[i].noOfAlertCreated > 0){
-							str+='<td style="cursor:pointer;" class="showDtlsOfUser" attr_user_id="'+result.callCenterVOList[i].userId+'"><i class="glyphicon glyphicon-chevron-right"></i></td>';
+							str+='<td style="cursor:pointer;" class="showDtlsOfUser" attr_user_id="'+result.callCenterVOList[i].userId+'" attr_user_name="'+result.callCenterVOList[i].userName+'"><i class="glyphicon glyphicon-chevron-right"></i></td>';
 						}else{
 							str+='<td ><i class="glyphicon glyphicon-chevron-right"></i></td>';
 						}
@@ -335,12 +316,13 @@ function getTotalUserLogingDtls(){
 					
 					$('#tableId').html(str);
 					$("#callerDatailsId").DataTable();
-				}else{
-					$("#tableId").html('No Data Available.');  
 				}
+			}else{
+				$("#tableId").html('No Data Available.');
+				$('#totalLoginId').html('<h2>0</h2>');
+				$('#totalRequestId').html('<h2>0</h2>');  
+				$('#totalTimeId').html('<h2>0</h2>');
 			}
-		
-			
     });
 }
 $(document).on("click",".dateCls",function(){
@@ -351,8 +333,9 @@ $(document).on("click",".showDtlsOfUser",function(){
 	$("#singleUsertableId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	$("#userLoginDetailsId").modal("show");        
 	var userId = $(this).attr("attr_user_id");
+	var userName = $(this).attr("attr_user_name");
 	var jsObj ={
-		fromDate:callCenterUserFDate,                                 
+		fromDate:callCenterUserFDate,                                   
 		toDateStr:callCenterUserTDate,    
 		userId : userId
     }
@@ -362,12 +345,14 @@ $(document).on("click",".showDtlsOfUser",function(){
     data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result!=null){
-			buildUserDetails(result);
+			buildUserDetails(result,userName);
 		}
 		
 	});
-});
-function buildUserDetails(result){
+});  
+function buildUserDetails(result,userName){
+	
+	$('#callerUserNameId').html('<h4>Agent Name:'+userName+'</h4>');    
 	if(result.subList!=null && result.subList.length>0){
 		if(result.range == "multiple"){
 			$('.singleUserCls').hide();
@@ -387,16 +372,16 @@ function buildUserDetails(result){
 		str+='<table class="table table-bordered" id="singleUsercallerDataTableId">';
 		str+='<thead>';
 			 str+='<tr style="font-size:14px;">';
-				 str+='<th>Complaint Id</th>';
-				 str+='<th>Date & Time</th>';
-				 str+='<th>Category</th>';
-				 str+='<th>Title</th>';
-				 str+='<th>Caller Details </th>';
-				 str+='<th>Assigned Department</th>';
-				 str+='<th>ImpactLocation Level</th>';
-				 str+='<th>Location Name</th>';
-				 str+='<th>Officer Designation</th>';
-				 str+='<th>Officer Contact No</th>';
+				 str+='<th class="text-capital">Complaint Id</th>';
+				 str+='<th class="text-capital">Date & Time</th>';
+				 str+='<th class="text-capital">Category</th>';
+				 str+='<th class="text-capital">Title</th>';
+				 str+='<th class="text-capital">Caller Details </th>';
+				 str+='<th class="text-capital">Assigned Department</th>';
+				 str+='<th class="text-capital">ImpactLocation Level</th>';
+				 str+='<th class="text-capital">Location Name</th>';
+				 str+='<th class="text-capital">Officer Designation</th>';
+				 str+='<th class="text-capital">Officer Contact No</th>';
 			  str+='</tr>';
 			str+='</thead>';
 		str+='<tbody>';
