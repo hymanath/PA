@@ -2908,13 +2908,13 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,search
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-				$.each($('#divisionLevelSubOrdinarteDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+				/* $.each($('#divisionLevelSubOrdinarteDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
 					$(this).attr("class","getTotaldivisionCls");    
-					$(this).attr("attr_district_id",districtId);         
+					//$(this).attr("attr_district_id",districtId);         
 					$(this).attr("attr_district_name",districtName);	
 					$(this).attr("attr_total_count",totalCount);	
-				}); 
+				});  */
 		}else{
 			$("#divisionLevelSubOrdinarteDetails").html('No Data Available');
 		}
@@ -3685,7 +3685,7 @@ function getlevelAndStatusWiseClickForDivision(statusId,statusName,totalCount,sc
     govtDepartmentId:globalDepartmentId,
     sortType:sortingType,
     order:orderType,
-    districtWorkLocationId:globalDistrictId,
+    districtWorkLocationId:0,
     divisionWorkLocationId:divisionId,
     subDivisionWorkLocationId:0,
     group:"status",
@@ -3746,7 +3746,7 @@ function getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount
     govtDepartmentId:globalDepartmentId,
     sortType:sortingType,
     order:orderType,
-    districtWorkLocationId:globalDistrictId,
+    districtWorkLocationId:0,
     divisionWorkLocationId:0,
     subDivisionWorkLocationId:subDivisionId,
     group:"status",
