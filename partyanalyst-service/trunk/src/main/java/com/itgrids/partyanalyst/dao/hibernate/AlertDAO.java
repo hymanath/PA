@@ -6655,7 +6655,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     public List<Object[]> getStatusWiseAlertsCountByDates(Date fromDate ,Date toDate){
     	StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct count(A.alertId) , A.alertStatus.alertStatusId from Alert A " +
-				" where A.isDeleted = 'N' ");
+				" where A.isDeleted = 'N' and A.alertCallerId is not null ");
 		
 		if(fromDate!=null && toDate!=null){
 			queryStr.append(" and  date(A.createdTime) >=:fromDate and date(A.createdTime) <=:toDate  ");
