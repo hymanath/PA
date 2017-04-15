@@ -2211,10 +2211,16 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 	}
 	
-	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId,Long statusId){
+	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId,Long statusId,String type){
 		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+		List<Long> alertIds = null;
 		try {
-			List<Long> alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId);
+			if(type.equalsIgnoreCase("alert")){
+				alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId);
+			}else if(type.equalsIgnoreCase("subTask")){
+				alertIds = govtAlertSubTaskDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId);
+			}
+			
 			if(alertIds != null && alertIds.size() > 0){
 				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
 				setAlertDtls(finalVoList, list); 
@@ -5137,7 +5143,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  			}
  	    }catch(Exception e){
  			e.printStackTrace();
- 			LOG.error("Error occured setStatusWiseAlertCnt() method of CccDashboardService{}");
+ 			LOG.error("Error occured setStatusWiseAlertCnt() method of AlertManagementSystemService{}");
  	    }
  	}
 	 public FilterSectionVO getFilterSectionAlertDetails(){
@@ -5187,4 +5193,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		 }
 		 
 	 }
+	 public String getDesignationForUser(Long userId){
+			String officerName = null;
+			String desgnationName = null;
+			String officerNameAnddesgnationName = null;
+			try {
+				List<Object[]> officerList = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationsNameForUser(userId);
+				
+					officerName = (String) officerList.get(0)[0];
+					desgnationName = (String) officerList.get(0)[1];
+					officerNameAnddesgnationName = officerName+"-"+desgnationName;
+			} catch (Exception e) {
+				LOG.error("Error occured getDesignationForUser() method of AlertManagementSystemService",e);
+			}
+			return officerNameAnddesgnationName;
+		}
 }      	
