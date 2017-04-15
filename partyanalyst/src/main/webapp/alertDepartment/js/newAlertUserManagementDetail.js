@@ -14,12 +14,12 @@ function onLoadClicks()
 		if($(this).is(':checked'))
 		{
 			$(".alert-status-change-body").show();
-			getStatusCompletionInfo(alertId);
+			//getStatusCompletionInfo(alertId);
 		}else{
 			$(".alert-status-change-body").hide();
 			$("#updateStatusChangeBody").html(" ");
 		}
-	});
+	}); 
 	$(document).on("click","div.comment-area",function(e){
 		e.stopPropagation()
 		$(this).hide();

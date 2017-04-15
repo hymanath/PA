@@ -1455,11 +1455,16 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		public String getStatusCompletionInfo(){
 			try {
 				
+				session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				if(regVo == null)
+					return null;
+				
 				jObj = new JSONObject(getTask());
 				Long alertId = jObj.getLong("alertId");
 				Long levelValue = jObj.getLong("levelValue");
 				
-				idnameVoList = alertManagementSystemService.getStatusCompletionInfo(alertId,levelValue);
+				idnameVoList = alertManagementSystemService.getStatusCompletionInfo(alertId,levelValue,jObj.getLong("designationId"),jObj.getLong("levelId"),regVo.getRegistrationID());
 				
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStatusCompletionInfo() method, Exception - ",e);

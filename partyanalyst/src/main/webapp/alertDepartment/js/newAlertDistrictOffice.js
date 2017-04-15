@@ -749,7 +749,9 @@ function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	var jsObj ={
 		alertId : alertId,
-		levelValue: 1
+		levelValue : globalUserLevelValues[0],
+		designationId : 589,
+		levelId : globalUserLevelId
 	}
 	$.ajax({
 		type:'GET',
@@ -854,6 +856,7 @@ function rightSideExpandView(alertId)
 	assignedOfficersDetailsForAlert(alertId);
 	departmentsByAlert(alertId);
 	getAlertData(alertId);
+	getStatusCompletionInfo(alertId);
 	/* var options = {
 	  sourceLanguage:
 		  google.elements.transliteration.LanguageCode.ENGLISH,
