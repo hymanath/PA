@@ -1399,7 +1399,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		queryStr.append(" govt_department_work_location GDWL1 ");
     		
     		queryStr.append(" where ");
-    		queryStr.append(" A.alert_id = AAO.alert_id  ");
+    		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N'  ");
     		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
     		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
     		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -1561,7 +1561,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		queryStr.append(" govt_department_work_location GDWL2 ");
     		
     		queryStr.append(" where ");
-    		queryStr.append(" A.alert_id = AAO.alert_id  ");
+    		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N'  ");
     		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
     		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
     		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -1728,7 +1728,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		queryStr.append(" govt_department_work_location GDWL3 ");
     		
     		queryStr.append(" where ");
-    		queryStr.append(" A.alert_id = AAO.alert_id  ");
+    		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N' ");
     		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
     		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
     		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -1969,7 +1969,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		queryStr.append(" govt_department_work_location GDWL1 ");
 		
 		queryStr.append(" where ");
-		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N'  ");
 		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
 		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -2137,7 +2137,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		queryStr.append(" govt_department_work_location GDWL2 ");
 		
 		queryStr.append(" where ");
-		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N'  ");
 		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
 		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -2303,7 +2303,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		queryStr.append(" govt_department_work_location GDWL3 ");
 		
 		queryStr.append(" where ");
-		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N' ");
 		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
 		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -2461,13 +2461,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		queryStr.append(" govt_department_work_location GDWL1 ");
 		
 		queryStr.append(" where ");
-		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N' ");
 		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
 		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 		
-		queryStr.append(" and AAO.is_approved = 'Y'  ");
+		queryStr.append(" and AAO.is_approved = 'Y' and A.is_deleted='N' ");
 		queryStr.append(" and AAO.alert_status_id = ALTS.alert_status_id  ");
 		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 		
@@ -2589,7 +2589,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		queryStr.append(" govt_department_work_location GDWL2 ");
 		
 		queryStr.append(" where ");
-		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" A.alert_id = AAO.alert_id  and A.is_deleted='N' ");
 		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
 		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -2721,7 +2721,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		queryStr.append(" govt_department_work_location GDWL3 ");
 		
 		queryStr.append(" where ");
-		queryStr.append(" A.alert_id = AAO.alert_id  ");
+		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N' ");
 		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
 		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -2941,7 +2941,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  
 	    	  sb.append(" select distinct model.alert.alertId from AlertAssignedOfficerNew model ");
 	    	
-	    	  sb.append(" where model.isDeleted = 'N' " );
+	    	  sb.append(" where model.isDeleted = 'N' and and model.alert.isDeleted='N' " );
 	    	
 	    	  
 	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
