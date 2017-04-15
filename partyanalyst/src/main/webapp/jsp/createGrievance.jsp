@@ -141,7 +141,7 @@
 								</div>
 								<div class="col-sm-3 m_top10">
 									<label>Mobile No<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMobileNoId"></span></label>
-									<input id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo" style="width: 230px" type="text"><span class="glyphicon glyphicon-search pull-right govtGrievanceCls" style="margin-top: -34px;background-color: lightgrey;padding:10px;margin-right: -10px;: 2px;cursor:pointer;" attr_id="mobile"></span>
+									<input id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo" style="width: 230px" type="text"><span class="glyphicon glyphicon-search pull-right govtGrievanceCls" style="margin-top: -34px;background-color: lightgrey;padding:10px;margin-right: -10px;: 2px;cursor:pointer;" attr_id="mobile" title=" Click here to get existing Grievance requests with this mobile no"></span>
 								</div>
 								<div class="col-sm-3 m_top10">
 									<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgNameId"></span></label>
@@ -1840,14 +1840,18 @@ function showDashboard(){
 				  var  districtId = $("#modalDistrictId").val();
 				  var  mandalId = $("#modalMandalNameId").val();
 				  var  villageId = $("#modalPanchayatId").val();
-				  //alert(mandalId);
-				  if(villageId != null && villageId>0){
+				  var hamletId = $("#modalhamletId").val();
+				  if(hamletId != null && hamletId>0){
 					  locatoinType = "hamlet";
+					  locationId = hamletId;
+					   mobileNo ="";
+				  }
+				  if(villageId != null && villageId>0){
+					  locatoinType = "panchayat";
 					  locationId = villageId;
 					   mobileNo ="";
 				  }
 				  if(mandalId != null && mandalId>0){
-					 // alert(4);
 					  locatoinType = "tehsil";
 					  locationId = mandalId;
 					   mobileNo ="";
@@ -1877,6 +1881,7 @@ function showDashboard(){
 				  var  districtId = $("#modalDistrictId").val();
 				  var  mandalId = $("#modalMandalNameId").val();
 				  var  villageId = $("#modalPanchayatId").val();
+				  var hamletId = $("#modalhamletId").val();
 				  if(districtId != null && districtId>0){
 					  locatoinType = "district";
 					  locationId = districtId;
@@ -1891,7 +1896,12 @@ function showDashboard(){
 					  locatoinType = "panchayat";
 					  locationId = villageId;
 					   mobileNo ="";
-				  } 
+				  }
+				if(hamletId != null && hamletId>0){
+					  locatoinType = "hamlet";
+					  locationId = hamletId;
+					   mobileNo ="";
+				  }				  
 			  }
 			 }
 		});
@@ -1910,7 +1920,9 @@ function showDashboard(){
 		var jsObj ={
 			mobileNo: mobileNo,
 			locatoinType:locatoinType,
-			locationId : locationId
+			locationId : locationId,
+			fromDate : "",
+			toDate : ""
 		}
 		$.ajax({
 			type:'GET',
