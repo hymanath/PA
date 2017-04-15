@@ -10246,7 +10246,17 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				fromDate = sdf.parse(startDateStr);
 				toDate = sdf.parse(endDateStr);
 			}
+			List<KeyValueVO> totalStatusList = new ArrayList<KeyValueVO>();
 			List<Object[]> statusList = alertStatusDAO.getAllStatus();
+			if(statusList != null && statusList.size() > 0l){
+				for (Object[] objects : statusList) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setCount(0l);
+					totalStatusList.add(vo);
+				}
+			}
 			List<Object[]> cuntList = alertDAO.getStatusCount(locationId, locationType, searchType, fromDate, toDate);
 			if(cuntList != null){
 				for (Object[] objects : cuntList) {
@@ -10258,11 +10268,16 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						vo.setId(id);
 						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						vo.setList(getAlertStatusList(statusList));
+						//vo.setSubList(totalStatusList);
 						KeyValueVO statusVO = getMatchedVOList(vo.getList(),statusId);
+						KeyValueVO totalVO = getMatchedVOList(totalStatusList,statusId);
 						if(statusVO != null){
 							statusVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[3]));
 							vo.setTotalCount(vo.getTotalCount()+statusVO.getCount());
 						}
+						if(totalVO != null){
+							totalVO.setCount(totalVO.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+							}
 						locationMap.put(id, vo);
 					}
 					else{
@@ -10271,13 +10286,20 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 							statusVO.setCount(commonMethodsUtilService.getLongValueForObject(objects[3]));
 							vo.setTotalCount(vo.getTotalCount()+statusVO.getCount());
 						}
+						KeyValueVO totalVO = getMatchedVOList(totalStatusList,statusId);
+						if(totalVO != null){
+							totalVO.setCount(totalVO.getCount()+commonMethodsUtilService.getLongValueForObject(objects[3]));
+							}
 					}
 					//finalList.add(vo);
 				}
 			}
 			
-			if(locationMap != null)
+			if(locationMap != null){
 				finalList = new ArrayList<KeyValueVO>(locationMap.values());
+				finalList.get(0).getSubList().addAll(totalStatusList);
+			}
+			
 			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getMatchedVOList() method, Exception - ",e);
