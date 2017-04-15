@@ -2521,7 +2521,6 @@ $(document).on("click",".overAllCount",function(){
 	var statusName = $(this).attr("attr_name_alert");
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
-	alert(statusName)
 	//alertIdArr=($(this).attr("attr_overcunt").split(','));
 	var jObj = {
 		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
@@ -2584,11 +2583,12 @@ function getTotalAlertCountDetails(departmentId,levelId,statusId,name,totalCount
 			backdrop: 'static'
 		});
 		$("#alertManagementPopupBody").html(spinner);
+		var alertType = getAlertType();
 		var jObj = {
 			deptId: departmentId,
 			levelId: levelId,
-			statusId:statusId
-		
+			statusId:statusId,
+			type:alertType
 		}
 	$.ajax({
       type:'GET',
