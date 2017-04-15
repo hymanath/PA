@@ -4203,6 +4203,11 @@
 		<property name="govtDepartmentDesignationOfficerDetailsDAO" ref="govtDepartmentDesignationOfficerDetailsDAO" ></property>
 		<property name="govtDepartmentDesignationDAO" ref="govtDepartmentDesignationDAO" ></property>
 		<property name="alertStatusDAO" ref="alertStatusDAO" ></property>
+		<property name="alertSeverityDAO" ref="alertSeverityDAO" ></property> 
+		<property name="alertCategoryDAO" ref="alertCategoryDAO" ></property> 
+		<property name="editionsDAO" ref="editionsDAO" ></property>
+		<property name="tvNewsChannelDAO" ref="tvNewsChannelDAO" ></property>
+		<property name="newsPaperDAO" ref="newsPaperDAO" ></property>   
    </bean>
 </beans>			
 	

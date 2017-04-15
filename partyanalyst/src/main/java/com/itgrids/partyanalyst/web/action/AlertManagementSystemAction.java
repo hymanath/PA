@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
+import com.itgrids.partyanalyst.dto.FilterSectionVO;
 
 /**
  * @author Teja
@@ -75,7 +76,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<String> imageForDisplayContentType = new ArrayList<String>();
 	private List<String> imageForDisplayFileName = new ArrayList<String>();
 	private List<GrievanceAlertVO> grievanceAlertVo;
-	
+	private FilterSectionVO filterDetilsList;
 	
 	public List<File> getImageForDisplay() {
 		return imageForDisplay;
@@ -287,6 +288,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public void setGrievanceAlertVo(List<GrievanceAlertVO> grievanceAlertVo) {
 		this.grievanceAlertVo = grievanceAlertVo;
+	}
+	public FilterSectionVO getFilterDetilsList() {
+		return filterDetilsList;
+	}
+	public void setFilterDetilsList(FilterSectionVO filterDetilsList) {
+		this.filterDetilsList = filterDetilsList;
 	}
 	public String execute(){
 		    session = request.getSession();
@@ -2153,4 +2160,18 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;
 		} 
+		public String getFilterSectionAlertDetails(){
+			try{
+				session = request.getSession();
+			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				Long userId = regVo.getRegistrationID();
+				jObj = new JSONObject(getTask());
+				
+				filterDetilsList = alertManagementSystemService.getFilterSectionAlertDetails();
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Exception occured in getFilterSectionAlertDetails() of alertManagementSystemAction",e);
+			}
+			return Action.SUCCESS;
+		}
 }

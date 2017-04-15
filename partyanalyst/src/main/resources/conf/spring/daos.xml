@@ -3956,5 +3956,8 @@
 	 <bean id="alertIssueSubTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertIssueSubTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="editionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EditionsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 
 </beans>		
