@@ -6713,14 +6713,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	  		 LOG.debug(" in FolderForNotCadre ");
 	  		
 	  		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
-			 String notCadreImagesFoldr = ActivityService.createFolder(staticPath+"/images/"+IConstants.ALERTS_ATTACHMENTS);
+			 String notCadreImagesFoldr = ActivityService.createFolder(staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS);
 			 
 			 String foldrSts = ActivityService.createFolder(notCadreImagesFoldr);
 			 if(!foldrSts.equalsIgnoreCase("SUCCESS")){
 				 return "FAILED";
 			 }
 			 
-			 return staticPath+"/images/"+IConstants.ALERTS_ATTACHMENTS;
+			 return staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS;
 			 
 		} catch (Exception e) {
 			LOG.error(" Failed to Create");
