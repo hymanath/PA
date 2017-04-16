@@ -290,18 +290,26 @@ function buildAlertStatusDetails(result,divId,type,locatinName){
 					str+='<td ><span class="districtCls" style="cursor:pointer;text:bold;" attr_location_name="'+result[i].name+'">&nbsp;'+result[i].name+'</span></td>';
 				}
 				if(type == "district")
-					str+='<td style="text-align:center;"><span attr_location_id="'+result[i].id+'" attr_location_type="district" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls">'+result[i].totalCount+'</td>';
+					str+='<td style="text-align:center;"><span attr_location_id="'+result[i].id+'" attr_location_type="district" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id=0>'+result[i].totalCount+'</td>';
 				else if(type == "mandals")
-					str+='<td style="text-align:center;"><span attr_location_id="'+result[i].id+'" attr_location_type="tehsil" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls">'+result[i].totalCount+'</td>';
+					str+='<td style="text-align:center;"><span attr_location_id="'+result[i].id+'" attr_location_type="tehsil" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id=0>'+result[i].totalCount+'</td>';
 				else if(type == "panchayat")
-					str+='<td style="text-align:center;"><span attr_location_id="'+result[i].id+'" attr_location_type="panchayat" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls">'+result[i].totalCount+'</td>';
+					str+='<td style="text-align:center;"><span attr_location_id="'+result[i].id+'" attr_location_type="panchayat" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id=0>'+result[i].totalCount+'</td>';
 				else if(type == "hamlets")
-					str+='<td style="text-align:center;"><span attr_location_id="'+result[i].id+'" attr_location_type="hamlet" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls">'+result[i].totalCount+'</td>';				
+					str+='<td style="text-align:center;"><span attr_location_id="'+result[i].id+'" attr_location_type="hamlet" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id=0>'+result[i].totalCount+'</td>';				
 				
 				if(result[i].list != null && result[i].list.length > 0){
 					for(var j in result[i].list){
-						if(result[i].list[j].count != null && result[i].list[j].count != 0)
-							str+='<td style="text-align:center">'+result[i].list[j].count+'</td>';
+						if(result[i].list[j].count != null && result[i].list[j].count != 0){
+							if(type == "district")
+								str+='<td style="text-align:center"><span attr_location_id="'+result[i].id+'" attr_location_type="district" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id="'+result[i].list[j].id+'">'+result[i].list[j].count+'</td>';
+							else if(type == "mandals")
+								str+='<td style="text-align:center"><span attr_location_id="'+result[i].id+'" attr_location_type="tehsil" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id="'+result[i].list[j].id+'">'+result[i].list[j].count+'</td>';
+							else if(type == "panchayat")
+								str+='<td style="text-align:center"><span attr_location_id="'+result[i].id+'" attr_location_type="panchayat" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id="'+result[i].list[j].id+'">'+result[i].list[j].count+'</td>';
+							else if(type == "hamlets")
+								str+='<td style="text-align:center"><span attr_location_id="'+result[i].id+'" attr_location_type="hamlet" attr_location_name="'+result[i].name+'" style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id="'+result[i].list[j].id+'">'+result[i].list[j].count+'</td>';
+						}
 						else
 							str+='<td style="text-align:center;"> - </td>';
 					}
@@ -382,9 +390,10 @@ $(document).on("click",".alertDetailsCls",function(){
 	var locationId = $(this).attr("attr_location_id");
 	var locatinType = $(this).attr("attr_location_type");
 	var locationName = $(this).attr("attr_location_name");
-	getGovtGrievanceAlertDetails(locationId,locatinType,locationName);
+	var statusId = $(this).attr("attr_status_id");
+	getGovtGrievanceAlertDetails(locationId,locatinType,locationName,statusId);
 })
-function getGovtGrievanceAlertDetails(locationId,locatinType,locationName){
+function getGovtGrievanceAlertDetails(locationId,locatinType,locationName,statusId){
 		$("#locationReportModalDivId").modal('show');
 		var fromDateStr;
 		var toDateStr;
@@ -401,7 +410,8 @@ function getGovtGrievanceAlertDetails(locationId,locatinType,locationName){
 			locatoinType:locatinType,
 			locationId : locationId,
 			fromDate : fromDateStr,
-			toDate : toDateStr
+			toDate : toDateStr,
+			alertStatusId : statusId
 		}
 		$.ajax({
 			type:'GET',
@@ -431,7 +441,8 @@ function getGovtGrievanceAlertDetails(locationId,locatinType,locationName){
 	str +='<th style="text-transform: uppercase;"> Related To</th>';
 	str +='<th style="text-transform: uppercase;"> Problem</th>';
 	str +='<th style="text-transform: uppercase;"> Status</th>';
-	str +='<th style="text-transform: uppercase;"> Created By</th>';
+	str +='<th style="text-transform: uppercase;"> Caller Name</th>';
+	str +='<th style="text-transform: uppercase;"> Mobile No</th>';
 	str +='</thead>';
 	str +='<tbody>';
 	for(var i in result){		
@@ -495,6 +506,11 @@ function getGovtGrievanceAlertDetails(locationId,locatinType,locationName){
 		}
 		if(result[i].createdBy != null){
 			str+='<td style="text-transform: uppercase;">'+result[i].createdBy+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].mobileNo != null && result[i].mobileNo != ""){
+			str+='<td style="text-transform: uppercase;">'+result[i].mobileNo+'</td>';
 		}else{
 			str+='<td>-</td>';
 		}
