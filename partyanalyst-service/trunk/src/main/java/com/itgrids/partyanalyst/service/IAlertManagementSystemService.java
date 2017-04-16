@@ -108,4 +108,5 @@ public interface IAlertManagementSystemService {
 	public List<GrievanceAlertVO> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,String fromDateStr,String toDateStr);
 	public FilterSectionVO getFilterSectionAlertDetails();
 	public String getDesignationForUser(Long userId);
+	public DistrictOfficeViewAlertVO getDeptDetails(Long userId);
 }
