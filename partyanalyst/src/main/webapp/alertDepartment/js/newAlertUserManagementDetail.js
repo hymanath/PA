@@ -48,7 +48,7 @@ function onLoadClicks()
 		var alertId = $(this).attr("attr_alert_id");
 		var uploadHandler = { 
 			upload: function(o) {
-				uploadResult = o.responseText;
+				var uploadResult = o.responseText;
 				showSbmitStatusNew(uploadResult,alertId);
 			}
 		};
@@ -214,7 +214,7 @@ function onLoadClicks()
 			}else{
 				alert("try again")
 			}
-		});
+		});     
 	});
 	$(document).on("click","#priorityChangeSaveId",function(){
 		
@@ -687,17 +687,47 @@ function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	var jsObj ={
 		alertId : alertId,
-		levelValue: globalUserLevelValues[0],
-		designationId:globalDesignationId,
-		levelId : globalUserLevelId     
+		levelValue : globalUserLevelValues[0],
+		designationId : globalDesignationId,
+		levelId : globalUserLevelId
 	}
 	$.ajax({
 		type:'GET',
 		url: 'getStatusCompletionInfoAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		alertStatus(result,alertId);
-		
+		$('#displayStatusId,#displaySubTaskli,#displayAssignIconId,#displayDueDate1,#displayDueDate2,#displayPriority').hide();
+		$('#displayStatusId').attr('status-icon-block','alertStatus');
+		if(result != null && result.length>0){
+			
+			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
+			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
+			if(buildTypeStr=='own'){  
+				$('#displayStatusId,#displaySubTaskli').show();	
+				$('#displayDueDate1').show();
+				$('#displayDueDate2').hide();
+			}
+			else if(buildTypeStr=='subUser'){	
+				$('#displayDueDate1').hide();
+				$('#displayStatusId').show();
+				$('#displayStatusId').removeAttr('status-icon-block');
+				
+				
+				/*if(sttatusId==4)// the superior can change the status of his sub-ordinator alert if this alert in completed mode.
+					;//$('#displayStatusId').show();
+				else // the superior can view the status of his sub-ordinator alert if this alert not in completed mode.
+					$('#displayStatusId').prop('disabled','disabled');			*/	
+				$('#displayDueDate2,#displayPriority').show();
+				
+			}
+			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
+				$('#displayAssignIconId').show();
+			}
+			alertStatus(result,alertId);			
+		}else{
+			$('#displayStatusId').show(); 
+			
+		}	
 	});
 }
 function rightSideExpandView(alertId)
@@ -716,13 +746,31 @@ function rightSideExpandView(alertId)
 							str+='</div>';
 							str+='<div class="col-sm-8">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
-									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" data-toggle="tooltip" data-placement="top" title="alert status">';
+									
+									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
 									str+='</li>';
-									str+='<li class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date">';
-										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">DUe date</span>';
+									
+									/* str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTaskli" style="display:none;">';
+										str+='<i class="fa fa-level-down" aria-hidden="true"></i>';
+									str+='</li>'; */  
+									
+									str+='<li status-icon-block="subTask" data-toggle="tooltip" class="status-icon-subtask" data-placement="top" title="Sub Task" id="displaySubTaskli" style="display:none;">';
+										str+='<i class="fa fa-mail-forward"></i>';
+										str+='<i class="fa fa-level-down fa-2x"></i>';
 									str+='</li>';
-									str+='<li status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="status change">';
+									
+									str+='<li id="displayDueDate1"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date1">Due date</span>';
+									str+='</li>';
+									
+									str+='<li id="displayDueDate2"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">Due date</span>';
+									str+='</li>';
+									
+
+									
+									 str+='<li id="displayPriority" style="display:none;" status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="pririty change">';
 										str+='<i class="glyphicon glyphicon-cog"></i>';
 										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
 											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
@@ -730,7 +778,9 @@ function rightSideExpandView(alertId)
 											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
 											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="priorityChangeSaveId">SET</button></li>';
 										str+='</ul>';
-									str+='</li>';
+									str+='</li>';  
+									
+									
 									str+='<li status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
 										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
 									str+='</li>';
@@ -794,6 +844,7 @@ function rightSideExpandView(alertId)
 	assignedOfficersDetailsForAlert(alertId);
 	departmentsByAlert(alertId);
 	getAlertData(alertId);
+	getStatusCompletionInfo(alertId);
 	/* var options = {
 	  sourceLanguage:
 		  google.elements.transliteration.LanguageCode.ENGLISH,
@@ -873,6 +924,7 @@ function buildAlertDataNew(result)
 		$('.modal-date').data('daterangepicker').setStartDate(result[0].dueDate);
 		$('.modal-date').data('daterangepicker').setEndDate(result[0].dueDate);
 		$('.modal-date').html(result[0].dueDate);
+		$('.modal-date1').html(result[0].dueDate);
 	}
 	
 	//priorityRadioCls
@@ -1400,6 +1452,7 @@ function getTotalArticledetails(articleId){
 
 
 function showSbmitStatusNew(uploadResult,alertId){
+	alert(1);
 	if(uploadResult !=null && uploadResult.search("success") != -1){
 		getDocumentsForAlert(alertId);
 	}
@@ -1420,7 +1473,7 @@ function getDocumentsForAlert(alertId){
 			str+='<ul class="list-inline imageShowOpen">';
 			for(var i in result){
 				str+='<li class="" attr_doc_id="'+result[i].id+'"  attr_path="'+result[i].name+'" id="imageAttachmentOpen'+result[i].id+'" >';
-					str+='<img src="http://mytdp.com/'+result[i].name+'" style="width: 60px; height: 60px;cursor:pointer" />';
+					str+='<img src="http://localhost:8080/PartyAnalyst/images/'+result[i].name+'" style="width: 60px; height: 60px;cursor:pointer" />';
 				str+='</li>';
 			}
 			str+='</ul>';
@@ -1645,7 +1698,7 @@ function assignUser(alertId)
 			str+='<form id="alertAssign" name="alertAssignForm">';
 				str+='<div class="arrow_box_top">';
 					str+='<div>';
-						str+='<div class="row">';
+						str+='<div class="row">';  
 							str+='<div class="col-sm-12">';
 								str+='<div id="assignErrorDivId"></div>';
 							str+='</div>';
@@ -1690,6 +1743,7 @@ function assignUser(alertId)
 	str+='</div>';
 	$("#assignedUser").html(str);
 	$(".chosenSelect").chosen({width:'100%'});
+	$('#displayAssignIconId').show();
 }
 function alertHistory(result)
 {
@@ -1767,7 +1821,7 @@ function alertStatusHistory(result,alertId)
 					str+='</td>';
 					str+='<td>'+result[i].comment+'</td>';
 				str+='</tr>';
-			}
+			}  
 			
 		str+='</table>';
 		str1+='<div class="text-left">';
@@ -1781,7 +1835,7 @@ function alertStatusHistory(result,alertId)
 		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 		$("#alertManagementPopupBody1").html(str);
 	}else{
-		$("#alertManagementPopupBody1").html("NO DATA AVAILABLE...")
+		$("#alertManagementPopupBody1").html("NO DATA")
 	}
 }
  
