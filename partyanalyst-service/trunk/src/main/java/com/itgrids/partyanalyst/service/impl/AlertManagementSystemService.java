@@ -5230,7 +5230,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
    				}
    			}
-   			
+   			returnVO.setLevelValues(levelValues);
+			returnVO.setLevelId(levelId);
    			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
    			
    			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>(0);
@@ -5248,11 +5249,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    					designationIds.add(commonMethodsUtilService.getLongValueForObject(obj[5]));
    					designationNames.add(commonMethodsUtilService.getStringValueForObject(obj[6]));
    					
-   					returnVO.setLevelValues(departmentIds);
+   					returnVO.setDeptIds(departmentIds);
    					returnVO.setDepartmentNames(departmentNames);
    					returnVO.setGovtDeptDesigOffcrIds(govtDepDesigOffcrIds);
    					returnVO.setGovtOfficerIds(govtOffcrIds);
-   					returnVO.setTodayAlertIds(designationIds);
+   					returnVO.setTodayAlertIds(designationIds);//designationIds
    					returnVO.setDesignationNames(designationNames);
    					
    				}
