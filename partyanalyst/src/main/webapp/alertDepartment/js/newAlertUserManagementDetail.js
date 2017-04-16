@@ -378,8 +378,8 @@ function assignUser(alertId)
 	var str='';
 	str+='<div class="assign-user">';
 		str+='<ul class="list-icons list-inline">';
-			str+='<li>';
-				str+='<i class="glyphicon glyphicon-user"></i>Click To Assignee';
+			str+='<li id="displayAssignIconId" style="display:none;">';
+				str+='<i class="glyphicon glyphicon-user"></i>Click To Assignee  ';
 			str+='</li>';
 		str+='</ul>';
 		str+='<div class="assign-user-body" style="display:none">';
@@ -486,6 +486,8 @@ function alertStatusHistory(result,alertId)
 {
 	var str='';
 	var str1='';
+	
+	
 	if(result != null && result.length>0)
 	{
 		str+='<table class="table border_1">';
@@ -511,9 +513,9 @@ function alertStatusHistory(result,alertId)
 		str+='</table>';
 		str1+='<div class="text-left">';
 			str1+='<label class="checkbox-inline">';
-				str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change"/> I Want to change alert Status';
+				str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';
 			str1+='</label>';
-			str1+='<div  id="updateStatusChangeBody"></div>';
+			str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
 		str1+='</div>';
 		$("#alertManagementPopup1 .modal-footer").show();
 		$("#alertManagementPopup1 .modal-footer").html(str1);
@@ -523,14 +525,28 @@ function alertStatusHistory(result,alertId)
 		$("#alertManagementPopupBody1").html("NO DATA")
 	}
 }
+ 
+ 
+$(document).on("click",".changeStatsCls",function(){
+	$('#updateStatusChangeBody').hide();
+	if($(this).is(':checked')){
+		$('#updateStatusChangeBody').show();
+	}
+	
+});
+
+var glStr='';
 function alertStatus(result,alertId)
 {
+	glStr='';
 	var str1='';
-	
+	 
 		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
 			str1+='<div class="panel-heading">';
 				for(var i in result)
 				{
+					if(i == result.length-1)
+						str1+='<br>';
 					str1+='<label class="radio-inline">';
 						str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
 					str1+='</label>';
@@ -544,6 +560,7 @@ function alertStatus(result,alertId)
 		str1+='</div>';
 	
 	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
-	$("#updateStatusChangeBody").html(str1);
+	glStr=str1;
+	//$("#updateStatusChangeBody").html(str1);
 	
 }

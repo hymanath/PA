@@ -779,6 +779,7 @@ function getAlertStatusHistory(alertId){
 		alertStatusHistory(result,alertId);
 	});
 }
+//swadhin     
 function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	var jsObj ={
@@ -792,10 +793,39 @@ function getStatusCompletionInfo(alertId){
 		url: 'getStatusCompletionInfoAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		alertStatus(result,alertId);
-		
+		$('#displayStatusId,#displaySubTaskli,#displayAssignIconId,#displayDueDate1,#displayDueDate2,#displayPriority').hide();
+		$('#displayStatusId').attr('status-icon-block','alertStatus');
+		if(result != null && result.length>0){
+			
+			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
+			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
+
+			if(buildTypeStr=='own'){
+				$('#displayStatusId,#displaySubTaskli').show();	
+				$('#displayDueDate1').show();
+				$('#displayDueDate2').hide();
+			}
+			else if(buildTypeStr=='subUser'){	
+				$('#displayDueDate1').hide();
+				$('#displayStatusId').show();
+				$('#displayStatusId').removeAttr('status-icon-block');
+				
+				
+				/*if(sttatusId==4)// the superior can change the status of his sub-ordinator alert if this alert in completed mode.
+					;//$('#displayStatusId').show();
+				else // the superior can view the status of his sub-ordinator alert if this alert not in completed mode.
+					$('#displayStatusId').prop('disabled','disabled');			*/	
+				$('#displayDueDate2,#displayPriority').show();
+				
+			}
+			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
+				$('#displayAssignIconId').show();
+			}
+			alertStatus(result,alertId);			
+		}	
 	});
 }
+
 function rightSideExpandView(alertId)
 {
     $("#rightSideExpandView").html(spinner);
@@ -812,13 +842,26 @@ function rightSideExpandView(alertId)
 							str+='</div>';
 							str+='<div class="col-sm-8">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
-									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" data-toggle="tooltip" data-placement="top" title="alert status">';
+									
+									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
 									str+='</li>';
-									str+='<li class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date">';
-										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">DUe date</span>';
+									
+									str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTaskli" style="display:none;">';
+										str+='<i class="fa fa-level-down" aria-hidden="true"></i>';
 									str+='</li>';
-									str+='<li status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="status change">';
+									
+									
+									str+='<li id="displayDueDate1"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date1">Due date</span>';
+									str+='</li>';
+									
+									str+='<li id="displayDueDate2"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">Due date</span>';
+									str+='</li>';
+									
+									
+									 str+='<li id="displayPriority" style="display:none;" status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="pririty change">';
 										str+='<i class="glyphicon glyphicon-cog"></i>';
 										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
 											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
@@ -826,7 +869,9 @@ function rightSideExpandView(alertId)
 											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
 											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="priorityChangeSaveId">SET</button></li>';
 										str+='</ul>';
-									str+='</li>';
+									str+='</li>';  
+									
+									
 									str+='<li status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
 										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
 									str+='</li>';
@@ -968,6 +1013,7 @@ function buildAlertDataNew(result)
 		$('.modal-date').data('daterangepicker').setStartDate(result[0].dueDate);
 		$('.modal-date').data('daterangepicker').setEndDate(result[0].dueDate);
 		$('.modal-date').html(result[0].dueDate);
+		$('.modal-date1').html(result[0].dueDate);
 	}
 	
 	//priorityRadioCls
