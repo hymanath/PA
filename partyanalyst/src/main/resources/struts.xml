@@ -16975,6 +16975,11 @@
 			<result type="json" name="success">
 				<param name="root">districtOfficeViewAlertVO</param>     
 			</result>
-    </action> 	
+    </action>
+    <action name="getStateLevelAlertclickViewAction" class="alertManagementSystemAction" method="getStateLevelAlertclickView">
+			<result type="json" name="success">
+				<param name="root">alertCoreDashBoardVOs</param>     
+			</result>
+    </action>  	
  </package>
 </struts>

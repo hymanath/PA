@@ -2588,7 +2588,11 @@ function getTotalAlertCountDetails(departmentId,levelId,statusId,name,totalCount
 			deptId: departmentId,
 			levelId: levelId,
 			statusId:statusId,
-			type:alertType
+			type:alertType,
+			startDate:currentFromDate,
+			endDate:currentToDate,
+			desigDeptOfficerId:0,
+			officerId:0
 		}
 	$.ajax({
       type:'GET',
