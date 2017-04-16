@@ -1864,7 +1864,8 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	      return query.list();
 	}
 		@SuppressWarnings("unchecked")
-		public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId){
+		public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,
+				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId){
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select distinct model.alert.alertId "+
 					  " from " +
@@ -1880,6 +1881,15 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			if(statusId != null && statusId.longValue() >0){
 				sb.append(" and model.alertSubTaskStatus.alertSubTaskStatusId = :statusId ");
 			}
+			if(fromDate != null && toDate != null){
+				sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
+			}
+			if(desigDeptOfficerId != null && desigDeptOfficerId.longValue() > 0){
+				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId =:desigDeptOfficerId ");
+			}
+			if(officerId != null && officerId.longValue() > 0){
+				sb.append(" and model.subTaskGovtOfficer.govtOfficerId =:officerId ");
+			}
 			Query query = getSession().createQuery(sb.toString());
 			if(deptId != null && deptId.longValue() >0)
 			      query.setParameter("deptId",deptId);
@@ -1888,6 +1898,59 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			if(statusId != null && statusId.longValue() >0){
 				query.setParameter("statusId",statusId);
 			}
+			if(fromDate != null && toDate != null){
+				query.setDate("fromDate",fromDate);
+				query.setDate("toDate",toDate);
+			}
+			if(desigDeptOfficerId != null && desigDeptOfficerId.longValue() > 0){
+				query.setParameter("desigDeptOfficerId",desigDeptOfficerId);
+			}
+			if(officerId != null && officerId.longValue() > 0){
+				query.setParameter("officerId",officerId);
+			}
 			return query.list();
 		}
+		public List<Long> getStateLevelAlertclickViewAlertIds(List<Long> govtDepDesigOffcrIds,
+				List<Long> govtOffcrIds,String type,Long deptId,Long statusId){
+		 	   StringBuilder sb = new StringBuilder();
+		    	
+		    	sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
+		    	
+		    	sb.append(" where model.isDeleted = 'N' " );
+		    	
+		      if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId in(:govtOffcrIds) " );
+	    	  }
+    			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
+	    	  }
+			    
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  sb.append(" and date(model.createdTime) between :todayDate and :todayDate " ); 
+	    	  }
+	    	  if(deptId != null && deptId.longValue() > 0){
+	    		  sb.append(" and  model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId " );
+	    	  }
+	    	  if(statusId != null && statusId.longValue() > 0){
+	    		  sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId " );
+	    	  }
+	    	Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
+	    	  }
+	    	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
+	    	  }
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  }
+	    	  if(statusId != null && statusId.longValue() > 0){
+	    		  query.setParameter("statusId", statusId);
+	    	  }
+	    	  if(deptId != null && deptId.longValue() > 0){
+	    		  query.setParameter("deptId", deptId);
+	    	  }
+			  return query.list();
+		    }
 }
