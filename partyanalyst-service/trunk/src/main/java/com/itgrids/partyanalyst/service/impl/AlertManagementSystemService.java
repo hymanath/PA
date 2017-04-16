@@ -5218,4 +5218,48 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			return officerNameAnddesgnationName;
 		}
+	 public DistrictOfficeViewAlertVO getDeptDetails(Long userId){
+		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
+		 try {
+			 List<Long> levelValues = new ArrayList<Long>();    
+   			Long levelId = 0L;
+   			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+   			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+   				for(Object[] param : lvlValueAndLvlIdList){
+   					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+   					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+   				}
+   			}
+   			
+   			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
+   			
+   			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>(0);
+   			List<Long> govtOffcrIds =  new ArrayList<Long>(0);
+   			List<Long> departmentIds = new ArrayList<Long>(0);
+   			List<String> departmentNames = new ArrayList<String>(0);
+   			List<Long> designationIds = new ArrayList<Long>(0);
+   			List<String> designationNames = new ArrayList<String>(0);
+   			if(commonMethodsUtilService.isListOrSetValid(list1)){
+   				for( Object[]  obj :list1){
+   					govtDepDesigOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+   					govtOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+   					departmentIds.add(commonMethodsUtilService.getLongValueForObject(obj[3]));
+   					departmentNames.add(commonMethodsUtilService.getStringValueForObject(obj[4]));
+   					designationIds.add(commonMethodsUtilService.getLongValueForObject(obj[5]));
+   					designationNames.add(commonMethodsUtilService.getStringValueForObject(obj[6]));
+   					
+   					returnVO.setLevelValues(departmentIds);
+   					returnVO.setDepartmentNames(departmentNames);
+   					returnVO.setGovtDeptDesigOffcrIds(govtDepDesigOffcrIds);
+   					returnVO.setGovtOfficerIds(govtOffcrIds);
+   					returnVO.setTodayAlertIds(designationIds);
+   					returnVO.setDesignationNames(designationNames);
+   					
+   				}
+   			}
+		} catch (Exception e) {
+			LOG.error("Error occured getDeptDetails() method of AlertManagementSystemService",e);
+		}
+		 return returnVO;
+	 }
 }      	

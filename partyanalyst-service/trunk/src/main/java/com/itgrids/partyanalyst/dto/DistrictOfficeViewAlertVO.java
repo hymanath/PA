@@ -38,9 +38,21 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private List<DistrictOfficeViewAlertVO> subList1 = new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<DistrictOfficeViewAlertVO>  subList2= new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<DistrictOfficeViewAlertVO> subList3 = new ArrayList<DistrictOfficeViewAlertVO>(0);
+	private List<String> departmentNames =new ArrayList<String>();
+	private List<String> designationNames =new ArrayList<String>();
 	
-	
-	
+	public List<String> getDesignationNames() {
+		return designationNames;
+	}
+	public void setDesignationNames(List<String> designationNames) {
+		this.designationNames = designationNames;
+	}
+	public List<String> getDepartmentNames() {
+		return departmentNames;
+	}
+	public void setDepartmentNames(List<String> departmentNames) {
+		this.departmentNames = departmentNames;
+	}
 	public List<DistrictOfficeViewAlertVO> getSubList1() {
 		return subList1;
 	}
