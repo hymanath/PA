@@ -122,4 +122,9 @@ public class GovtDepartmentDesignationOfficerNewDAO extends GenericDaoHibernate<
 		return query.list();
 		
 	}
+	public Long getUserIdCount(Long userId){
+		Query query = getSession().createQuery("select count(model) from GovtDepartmentDesignationOfficerNew model where model.userId = :userId ");
+		query.setParameter("userId", userId);
+		return (Long) query.uniqueResult();
+	}
 }

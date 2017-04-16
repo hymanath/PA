@@ -3576,7 +3576,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		String userType = null;
         		
         		List<Long> levelValues = new ArrayList<Long>(0);
-        		levelValues.add(levelValue);
+        		levelValues.add(levelValue);//comming from ui->2
         		
         		List<Long> parentDesigOfficerIdList = govtDepartmentDesignationOfficerNewDAO.getGovtDepartmentDesinationOfficerId(designationId,levelId,levelValues,userId);
         		
@@ -3586,7 +3586,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		}
         		
         		List<Long> alertDeptOfficerList = alertAssignedOfficerNewDAO.getGovtDepartmentDesignationOfficer(alertId);        		
-        		Long alertGovtofficerId = alertDeptOfficerList.get(0);
+        		Long alertGovtofficerId = 0L;
+        		if(commonMethodsUtilService.isListOrSetValid(alertDeptOfficerList))
+        				alertGovtofficerId = alertDeptOfficerList.get(0);
         		
         		
         		List<Long> subDesignations = govtDepartmentDesignationHierarchyDAO.getChildLocationDesignations(designationId);
@@ -3601,7 +3603,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         				childDesignationOfficerId = deptOfficerList.get(0);
         			}
         		}
-        		
+        		//to wheck whether he/she is an admin or not.
+        		Long userCount = govtDepartmentDesignationOfficerNewDAO.getUserIdCount(userId);
+        		String userStatus = "";
+        		if(userCount != null && userCount.longValue() > 0L){
+        			userStatus = "admin";
+        		}else{
+        			userStatus = "officer";
+        		}
         		if(parentDesigOfficerId >0l && parentDesigOfficerId.equals(alertGovtofficerId)){
         			userType ="own";
         			
@@ -3647,6 +3656,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		
         		if(finalList != null && finalList.size() > 0){
         			finalList.get(0).setApplicationStatus(userType+" - "+alert.getAlertStatusId());
+        			finalList.get(0).setUserStatus(userStatus);
         		}
 				
 			} catch (Exception e) {
