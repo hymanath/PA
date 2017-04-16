@@ -686,10 +686,19 @@ public class CommitteeDashBoardAction extends ActionSupport implements ServletRe
 				String villageCheck =  jObj.getString("villageCheck");
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
+				
+				List<Long> committeeEnrollmentIdsLst = new ArrayList<Long>();
+				JSONArray committeeEnrollmentIds=jObj.getJSONArray("committeeEnrollmentIdsArr");
+				if(committeeEnrollmentIds!=null &&  committeeEnrollmentIds.length()>0){
+					for( int i=0;i<committeeEnrollmentIds.length();i++){
+						committeeEnrollmentIdsLst.add(Long.valueOf(committeeEnrollmentIds.getString(i))); 
+					}
+				}
+				
 				if(jObj.getString("task").equalsIgnoreCase("District"))
-				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummaryForDistrict(state, startDate, endDate,regVO.getRegistrationID(),jObj.getString("accessType"),jObj.getLong("accessValue"),mandalCheck,villageCheck);
+				constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummaryForDistrict(state, startDate, endDate,regVO.getRegistrationID(),jObj.getString("accessType"),jObj.getLong("accessValue"),mandalCheck,villageCheck,committeeEnrollmentIdsLst);
 				if(jObj.getString("task").equalsIgnoreCase("Constituency"))
-					constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummaryForMandal(state, startDate, endDate,regVO.getRegistrationID(),jObj.getString("accessType"),jObj.getLong("accessValue"),mandalCheck,villageCheck);	
+					constiWiseSummaryList = cadreCommitteeService.getConstituencyWiseCommittesSummaryForMandal(state, startDate, endDate,regVO.getRegistrationID(),jObj.getString("accessType"),jObj.getLong("accessValue"),mandalCheck,villageCheck,committeeEnrollmentIdsLst);	
 			}
 			
 			
