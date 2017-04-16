@@ -10,7 +10,7 @@ var globalDepartmentIdsArr=[];
 //check
 var globalUserLevelId;
 var globalUserLevelValues = [];	
-var globalDesignationId;
+var globalDesignationIds = [];	
 onLoadCalls();
 
 function getAlertType(){
@@ -78,11 +78,38 @@ function getAlertType(){
 			};
 	}
 	
+	function getDeptDetails(){
+	var jsObj = {};
+	$.ajax({
+      type:'GET',
+      url: 'getDeptDetailsAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null){
+			globalUserLevelId = result.levelId;
+			if(result.todayAlertIds != null && result.todayAlertIds.length > 0)
+			  globalDesignationIds = result.todayAlertIds;
+		   
+			
+			globalDepartmentIdsArr=result.deptIds;
+			
+			if(result.levelValues != null && result.levelValues.length > 0)
+				globalUserLevelValues=result.levelValues;
+		}
+		
+		stateLevelDeptOfficerStatusOverview();
+		stateLevelDeptOfficerLocationLevelOverview();
+		stateLevelDeptOfficerDepartmentWiseAlertsView();
+		
+	});
+}
+
 function onLoadCalls(){
+	getDeptDetails();
 	getIASOfficerMyAlertsCountMainView();
 	getIASOfficerMySubTasksCountView();
 	getIASOfficerMyAssignedSubTasksCountView();
-	getDeptDetails();
+	
 	
 	
 	
@@ -802,7 +829,7 @@ function getStatusCompletionInfo(alertId){
 	var jsObj ={
 		alertId : alertId,
 		levelValue : globalUserLevelValues[0],
-		designationId : globalDesignationId,
+		designationId : globalDesignationIds[0],
 		levelId : globalUserLevelId
 	}
 	$.ajax({
@@ -1593,13 +1620,7 @@ function getIASOfficerMyAlertsCountMainView(){
 }
 function buildIASOfficerMyAlertsCountMainView(result){
 	
-	if(result !=null){
-		globalUserLevelId = result.levelId;
-		globalDesignationId = result.designationId;
-		globalDepartmentIdsArr.push(result.departmentId);
-		if(result.levelValues != null && result.levelValues.length > 0)
-			globalUserLevelValues=result.levelValues;
-	}
+	
 	
 	if(result !=null && result.list1 !=null && result.list1.length>0){
 		var str='';
@@ -1616,7 +1637,7 @@ function buildIASOfficerMyAlertsCountMainView(result){
 						if(result.list1[i].subList1[i].count == 0 || result.list1[i].subList1[i].count == null){
 							str+='<p class="pad_3">No Data Available</p>';
 						}else{
-							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge" style="cursor:pointer">'+result.list1[i].subList1[i].count+'</span></p>';
+							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList1[i].id+'" attr_type="alert" attr_dept_name ="'+result.list1[i].subList1[i].name+'" attr_count ="'+result.list1[i].subList1[i].count+'">'+result.list1[i].subList1[i].count+'</span></p>';
 						}
 							
 						str+='</td>';
@@ -1639,7 +1660,7 @@ function buildIASOfficerMyAlertsCountMainView(result){
 								if(result.list1[i].subList2[i].count == 0 || result.list1[i].subList2[i].count == null){
 									str+='<p class="pad_3">No Data Available</p>';
 								}else{
-									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'">'+result.list1[i].subList2[i].count+'</span></p>';
+									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="alert" attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'">'+result.list1[i].subList2[i].count+'</span></p>';
 								}
 									
 								str+='</td>';
@@ -1774,9 +1795,7 @@ function buildIASOfficerMyAlertsCountMainView(result){
 			 $('#myAlertGraphView').html("No Data Available")
 		}
 		
-		stateLevelDeptOfficerStatusOverview();
-		stateLevelDeptOfficerLocationLevelOverview();
-		stateLevelDeptOfficerDepartmentWiseAlertsView();
+		
 }
 function getIASOfficerMySubTasksCountView(){
 
@@ -1791,13 +1810,7 @@ function getIASOfficerMySubTasksCountView(){
 }
 
 function buildIASOfficerMySubTasksCountView(result){
-	if(result !=null){
-		globalUserLevelId = result.levelId;
-		globalDesignationId = result.designationId;
-		
-		if(result.levelValues != null && result.levelValues.length > 0)
-			globalUserLevelValues=result.levelValues;
-	}
+	
 	
 	if(result !=null && result.list1 !=null && result.list1.length>0){
 		var str='';
@@ -1984,13 +1997,7 @@ function getIASOfficerMyAssignedSubTasksCountView(){
     });
 }
 function buildIASOfficerMyAssignedSubTasksCountView(result){
-	if(result !=null){
-		globalUserLevelId = result.levelId;
-		globalDesignationId = result.designationId;
-		
-		if(result.levelValues != null && result.levelValues.length > 0)
-			globalUserLevelValues=result.levelValues;
-	}
+	
 	
 	if(result !=null && result.list1 !=null && result.list1.length>0){
 		var str='';
@@ -5313,7 +5320,8 @@ $(document).on("click",".alertCountCls",function(){
   var deptId = $(this).attr("attr_dept_id");
   var deptName = $(this).attr("attr_dept_name");
   var count = $(this).attr("attr_count");
- // getTotalAlertCountDetails(deptId,0,0,deptName,count)
+  var type = $(this).attr("attr_type");
+  getTotalAlertCountDetails(deptId,0,0,type,deptName,count)
 });
 //click functionality
 $(document).on("click",".getDtlsCls",function(){
@@ -5359,12 +5367,4 @@ function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName
   });
   
 }
-function getDeptDetails(){
-	var jsObj = {};
-	$.ajax({
-      type:'GET',
-      url: 'getDeptDetailsAction.action',
-	  data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-	});
-}	
+	
