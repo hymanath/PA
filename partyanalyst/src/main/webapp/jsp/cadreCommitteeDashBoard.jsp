@@ -887,17 +887,17 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="radio"><input type="radio" style="vertical-align: text-bottom;" class="stateRd" value="TS" name="selectstate" id="TSId">&nbsp;TS &nbsp;&nbsp;&nbsp;</label>
 					</span>
 					 <span class="btn btn-success btn-xs form-inline" id="areaBtnsDiv">
-						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" >&nbsp;DISTRICT &nbsp;&nbsp;&nbsp;</label>
-						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select" checked="true" >&nbsp;CONSTITUENCY &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" id="districtId" style="vertical-align: text-bottom;" class="levelRd" value="district" name="select" checked="true" >&nbsp;DISTRICT &nbsp;&nbsp;&nbsp;</label>
+						<label class="radio"><input type="radio" id="constiRdId" style="vertical-align: text-bottom;" class="levelRd" value="consti" name="select"  >&nbsp;CONSTITUENCY &nbsp;&nbsp;&nbsp;</label>
 					</span>
                     </div>
                     <div style="display:inline-block; margin-right: 15px;">
                     <h5 class="text-success" style="margin-bottom:5px;border-bottom:1px solid #F00;text-align:center;margin:0px 15px 5px 15px"> COMMITTEE LEVEL </h5>
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"  checked="true"  >&nbsp; VILLAGE / WARD &nbsp;</label>
+						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"    >&nbsp; VILLAGE / WARD &nbsp;</label>
 					</span>&nbsp;&nbsp;
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" >&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" checked="true">&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
 					</span>
 					
 					
@@ -1285,8 +1285,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
                $(document).ready(function() {
 				   getDistrictsForStates(1,"statesDivId",'');
 				   $("#APId").prop("checked", true);
-				  // $("#districtId").prop("checked", true);
-					$("#constiRdId").prop("checked", true);
+				   $("#districtId").prop("checked", true);
+					//$("#constiRdId").prop("checked", true);
 				   //$("#districtCommId").prop("checked", true);
 
 					$('#APStateDiv').hide();
@@ -1352,10 +1352,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			   
                </script>
 	<!----/Bootstrap Date Range Picker Script END---->
-			   
+	
+	
 			   		
 	<script>
-	
+	var GlobalState='AP';
 	$(document).on('click','.rangeButton',function(){
 		
 					getCommitteeDetails("AP","mandalAll");
@@ -1452,7 +1453,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		//alert(2211)	;
 		$.ajax({
           type:'GET',
-          url: 'getDashBoardLocationWiseDetails.action',
+          url: 'getDashBoardLocationWiseDetails.action', 
 		  data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 			
@@ -1466,9 +1467,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
     		      location.reload(); 
     	        }
 			}
+			GlobalState = result.state;
 			if(result != null){
 				//console.log(result.accessState);
-				if(result.accessState == 'AP' || result.accessState == 'TG' || result.accessState == 'ALL')
+				if(result.accessState == 'AP'  || result.accessState == 'TS'  || result.accessState == 'TG' || result.accessState == 'ALL')
 				{				
 				if(state == "AP"){
 					if(level == 'mandal' || level == 'town' || level == 'division' || level == 'mandalAll')
@@ -1479,7 +1481,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						
 						$("#div29").html(result.startedCommitteePerc+"%");
 						if(result.mainCommittees > 0 && result.mainCommittees != null){
-							$("#div2").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
+							$("#div2").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
 						}
 						else{						
 							$("#div2").html('<span style="margin-left:0px;">[0]</span>');
@@ -1490,7 +1492,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div3").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null){
-							$("#div4").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+							$("#div4").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						}
 						else{						
 							$("#div4").html('<span style="margin-left:0px;">[0]</span>');
@@ -1499,12 +1501,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						//$("#div30").html(result.afflCommitteesPerc);
 						//$("#div5").html(result.afflCommittees);
 						if(result.afflCommittees!=0){
-							$("#div5").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+							$("#div5").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
 						}else{
 							$("#div5").html('<span> 0 </span>');
 						}
 						if(result.affliatedCompleted!=0){
-							$("#div6").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div6").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div6").html('<span> 0 </span>');
 						}
@@ -1525,7 +1527,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(result.mainCommittees > 0 && result.mainCommittees != null){
 						
 						
-						$("#div9").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
+						$("#div9").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
 						}
 						else{
 						$("#div9").html('<span style="margin-left:0px;">[0]</span>');
@@ -1535,7 +1537,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
 						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div11").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						$("#div11").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						
 						else{
 						$("#div11").html('<span style="margin-left:0px;">[0]</span>');
@@ -1543,14 +1545,14 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						//$("#div33").html(result.afflCommitteesPerc);
 						//$("#div12").html(result.afflCommittees);
 						if(result.afflCommittees!=0){
-							$("#div12").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+							$("#div12").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
 						}else{
 							$("#div12").html('<span> 0 </span>');
 						}
 						//$("#div13").html(result.affliatedCompleted);
 						//if(result.completedCommittees > 0 && result.completedCommittees != null)
 						if(result.affliatedCompleted!=0){
-							$("#div13").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div13").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div13").html('<span> 0 </span>');
 						}
@@ -1622,7 +1624,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						}
 						
 						str+='<li>';
-					str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title="Village IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+					str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\''+GlobalState+'\');" title="Village IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 						str+=' </li>';
 						str+='</ul>';
 												}
@@ -1693,7 +1695,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 							{
 								str+='<li>';
-								str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title=" Wards IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+								str+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\''+GlobalState+'\');" title=" Wards IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 								str+=' </li>';
 							}
 							
@@ -1716,7 +1718,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						
 						$("#div151").html(result.startedCommitteePerc+"%");
 						if(result.mainCommittees > 0 && result.mainCommittees != null){
-							$("#div152").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
+							$("#div152").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
 						}
 						else{						
 							$("#div152").html('<span style="margin-left:0px;">[0]</span>');
@@ -1727,7 +1729,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div153").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null){
-							$("#div154").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+							$("#div154").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						}
 						else{						
 							$("#div154").html('<span style="margin-left:0px;">[0]</span>');
@@ -1735,12 +1737,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					
 
 						if(result.afflCommittees!=0){
-							$("#div155").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+							$("#div155").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
 						}else{
 							$("#div155").html('<span> 0 </span>');
 						}
 						if(result.affliatedCompleted!=0){
-							$("#div156").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div156").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div156").html('<span> 0 </span>');
 						}
@@ -1755,7 +1757,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						
 						$("#div167").html(result.startedCommitteePerc+"%");
 						if(result.mainCommittees > 0 && result.mainCommittees != null){
-							$("#div168").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
+							$("#div168").html('<a id=\''+level+'IdAPstarted\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+'\,\'started\')" style="cursor:pointer;"><b>['+result.mainCommittees+']</b></a>');
 						}
 						else{						
 							$("#div168").html('<span style="margin-left:0px;">[0]</span>');
@@ -1764,7 +1766,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div169").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null){
-							$("#div170").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+							$("#div170").html('<a id=\''+level+'IdAPcompleted\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+'\,\'completed\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						}
 						else{						
 							$("#div170").html('<span style="margin-left:0px;">[0]</span>');
@@ -1772,12 +1774,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					
 
 						if(result.afflCommittees!=0){
-							$("#div171").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
+							$("#div171").html('<a id=\''+level+'IdAPAfflstarted\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\',\'started\')" style="cursor:pointer;">'+result.afflCommittees+'</a>');
 						}else{
 							$("#div171").html('<span> 0 </span>');
 						}
 						if(result.affliatedCompleted!=0){
-							$("#div172").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div172").html('<a id=\''+level+'IdAPAfflcompleted\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\',\'completed\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div172").html('<span> 0 </span>');
 						}
@@ -2002,7 +2004,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							if(result.committeeSummaryVO.totalWards != null && result.committeeSummaryVO.totalWards > 0)
 							{
 								str1+='<li>';
-								str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\'AP\');" title=" Wards IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
+								str1+='<a style = "cursor: pointer;" class="popOverCls" id="ivrPopOverAP" data-placement="bottom" data-toggle="popover"  onClick="showPopOver(\''+GlobalState+'\');" title=" Wards IVR Details" data-html="true" data-content="<ul class=popOverStyle><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.noAnswer+'</span>No Answer Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.userBusy+'</span>User Busy Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.newtworkError+'</span>Network Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.switchCongestion+'</span>Congestion Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.interworkingCount+'</span>Internetwork Error</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.callRejectedCount+'</span>Rejected Calls</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.unallocatedNumbers+'</span>Unallocated Numbers</li><li  class=list-group-item><span class=badge>'+result.committeeSummaryVO.otherError+'</span>Others</li></ul>" >?</a>';					
 								str1+=' </li>';
 							}
 							
@@ -2121,7 +2123,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#compltdPerc").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null){
-							$("#div41").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+							$("#div41").html('<a id=\''+level+'Id'+GlobalState+'\' class="btn" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+',\'\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						}
 						else{						
 							$("#div41").html('<span style="margin-left:0px;">[0]</span>');
@@ -2131,7 +2133,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div51").html(result.afflCommittees);
 						
 						if(result.affliatedCompleted!=0){
-							$("#div61").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div61").html('<a id=\''+level+'Id'+GlobalState+'Affl\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div61").html('<span> 0 </span>');
 						}
@@ -2155,7 +2157,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
 						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div111").html('<a id=\''+level+'IdAP\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						$("#div111").html('<a id=\''+level+'Id'+GlobalState+'\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+',\'\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						
 						else{
 						$("#div111").html('<span style="margin-left:0px;">[0]</span>');
@@ -2166,7 +2168,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div131").html(result.affliatedCompleted);
 						//if(result.completedCommittees > 0 && result.completedCommittees != null)
 						if(result.affliatedCompleted!=0){
-							$("#div131").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div131").html('<a id=\''+level+'Id'+GlobalState+'Affl\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div131").html('<span> 0 </span>');
 						}
@@ -2190,7 +2192,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
 						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div186").html('<a id=\''+level+'IdAP\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						$("#div186").html('<a id=\''+level+'Id'+GlobalState+'\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+',\'\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						
 						else{
 						$("#div186").html('<span style="margin-left:0px;">[0]</span>');
@@ -2201,7 +2203,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div188").html(result.affliatedCompleted);
 						//if(result.completedCommittees > 0 && result.completedCommittees != null)
 						if(result.affliatedCompleted!=0){
-							$("#div188").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div188").html('<a id=\''+level+'Id'+GlobalState+'Affl\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div188").html('<span> 0 </span>');
 						}
@@ -2229,7 +2231,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#compltdPerc").html(result.completedCommitteePerc+"%");
 						
 						if(result.completedCommittees > 0 && result.completedCommittees != null){
-							$("#div41").html('<a id=\''+level+'IdAP\' class="btn" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+							$("#div41").html('<a id=\''+level+'Id'+GlobalState+'\' class="btn" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+',\'\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						}
 						else{						
 							$("#div41").html('<span style="margin-left:0px;">[0]</span>');
@@ -2239,7 +2241,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div51").html(result.afflCommittees);
 						
 						if(result.affliatedCompleted!=0){
-							$("#div61").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div61").html('<a id=\''+level+'Id'+GlobalState+'Affl\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\')" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div61").html('<span> 0 </span>');
 						}
@@ -2263,7 +2265,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						if(result.completedCommittees > 0 && result.completedCommittees != null)
 						
 						//$("#div11").html('&nbsp;&nbsp;&nbsp;['+result.completedCommittees+']');
-						$("#div111").html('<a id=\''+level+'IdAP\' class="" onClick="getMainCommitteeMembersCount(\'AP\',\''+level+'\',\'main\','+1+')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
+						$("#div111").html('<a id=\''+level+'Id'+GlobalState+'\' class="" onClick="getMainCommitteeMembersCount(\''+GlobalState+'\',\''+level+'\',\'main\','+1+',\'\')" style="cursor:pointer;"><b>['+result.completedCommittees+']</b></a>');
 						
 						else{
 						$("#div111").html('<span style="margin-left:0px;">[0]</span>');
@@ -2274,7 +2276,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						$("#div131").html(result.affliatedCompleted);
 						//if(result.completedCommittees > 0 && result.completedCommittees != null)
 						if(result.affliatedCompleted!=0){
-							$("#div131").html('<a id=\''+level+'IdAPAffl\' onClick="getAflCommitteeCount(\'AP\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
+							$("#div131").html('<a id=\''+level+'Id'+GlobalState+'Affl\' onClick="getAflCommitteeCount(\''+GlobalState+'\',\''+level+'\')" style="cursor:pointer;" style="cursor:pointer;">'+result.affliatedCompleted+'</a>');
 						}else{
 							$("#div131").html('<span> 0 </span>');
 						}
@@ -2290,11 +2292,11 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 			  
 			  
 			}
-			var enrollmentYearId=$("#tdpCommitteeYearId").val();
+			var enrollmentYerId=$("#tdpCommitteeYearId").val();
 			if(enrollmentYerId == 1){
 				$(".ivrdetails").show();
 			}else if(enrollmentYerId == 2)
-		$(".ivrdetails").hide();
+				$(".ivrdetails").hide();
 		});
 	}
 	function getCommitteeCountByState(state){
@@ -2332,7 +2334,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 				str+='<div class="col-md-5 col-md-offset-1 col-xs-3"><span style="font-size:2em;">'+result.totalCommittees+'</span></div>';
 				str+='<div style="" class="col-md-6 col-xs-3 text-left"><small>TOTAL MAIN COMMITTEES</small></div>';
 
-				if(result.accessState == "TG")
+				if(result.accessState == "TG" || result.accessState == "TS")
 				{
 					if(state == "TS"){
 						str+='<div class="myStatTS" data-dimension="180" data-text="'+result.totalCntPerc+'%" data-info="COMPLETED" data-width="10" data-fontsize="34" data-percent="'+result.totalCntPerc+'" data-fgcolor="#349866" data-bgcolor="#6D6024" style="margin-left: 40px;"></div>';
@@ -2520,7 +2522,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		    levelIdsArr.push(10);
 			
 		}
-		var state = state; 
+		var state = state;  
 		var committeeSpanTypeIdsArr = [];
 		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
 		var jObj = {
@@ -2544,6 +2546,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 					  location.reload(); 
 					}
 				}
+				
+				
 				if(type == 'main'){
 					var str='';
 					str+='<ul style="padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;">';					
@@ -2555,6 +2559,8 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 							str+='<li class="list-group-item"><span class="badge">'+result[i].membersCount4+'</span>ABOVE 14 MEMBER COMMITTEES</li>';
 						}
 					str+='</ul>';
+					
+					//alert('#'+level+'Id'+state+committeeType+'');
 					$('#'+level+'Id'+state+committeeType+'').popover({
 						html: true,
 						placement: "bottom",
@@ -5271,6 +5277,8 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 	$('.clearClsTD'+districtId).addClass("selected");
 	$("#ajaxImgStyle1").show();
 	$("#iconDiv"+districtId).show();
+	var committeeSpanTypeIdsArr = [];
+		committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
 		var jObj = {
 			startDate:startDate,
 			endDate:endDate,
@@ -5279,6 +5287,8 @@ if(!$("#"+divId1+divId2+"BodyTR").hasClass("toggleCls12")){
 			villageCheck:villageCheck,
 			accessType:"DISTRICT",
 			accessValue:districtId,
+			committeeEnrollmentIdsArr:committeeSpanTypeIdsArr,
+			
 			task:"District"
 		}
 				//alert(1166)	;
