@@ -687,9 +687,9 @@ function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	var jsObj ={
 		alertId : alertId,
-		levelValue: 1,
-		designationId:1,
-		levelId : 1
+		levelValue: globalUserLevelValues[0],
+		designationId:globalDesignationId,
+		levelId : globalUserLevelId     
 	}
 	$.ajax({
 		type:'GET',
