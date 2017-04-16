@@ -19,6 +19,8 @@
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -96,7 +98,6 @@
 							</div>
 						</div>
 						<div class="row">
-						
 							<div class="col-sm-6">
 								<div class="panel panel-default">
 									<div class="panel-heading headingColor">
@@ -182,161 +183,66 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading headingColor">
-								<h4 class="panel-title text-capital fontColor">status overview</h4>
-							</div>
-									
-						<div class="panel-body">
-						<div class="row">
-							<div class="col-sm-12 col-xs-12 col-md-12 ">
-								<h4>STATE LEVEL</h4>
-								<div class="col-sm-12 col-xs-12 col-md-12">
-									<div id="stateLevelIASDetails" class=""></div>
-								</div>	
-							</div>
-							<div class="col-sm-12 col-xs-12 col-md-12 ">
-								<h4>ZONE LEVEL</h4>
-								<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
-							
-									<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingZone">
-									<li class="active " attr_sorting_type="count" attr_order_type="desc" >
-										<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-									</li>
-									<li class="" attr_sorting_type="count" attr_order_type="asc">
-										<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-									</li>
-									<li class="" attr_sorting_type="name" attr_order_type="asc">
-										A-Z
-									</li>
-									<li class="" attr_sorting_type="name" attr_order_type="desc">
-										Z-A
-									</li>
-									</ul>
+						
+							<div class="panel panel-default">
+								<div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">status level - Department Wise Alerts</h4>
 								</div>
-								<div class="col-sm-12 col-xs-12 col-md-12">
-									<div id="zoneLevelIASDetails" class=""></div>
-								</div>	
-							</div>
-							<div class="col-sm-12 col-xs-12 col-md-12 ">
-								<h4>DISTRICT LEVEL</h4>
-								<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
-							
-									<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDistrict">
-									<li class="active " attr_sorting_type="count" attr_order_type="desc" >
-										<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-									</li>
-									<li class="" attr_sorting_type="count" attr_order_type="asc">
-										<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-									</li>
-									<li class="" attr_sorting_type="name" attr_order_type="asc">
-										A-Z
-									</li>
-									<li class="" attr_sorting_type="name" attr_order_type="desc">
-										Z-A
-									</li>
-									</ul>
-								</div>
-								<div class="col-sm-4 col-xs-12 col-md-2 locationWiseSortingDist">
-									<select class="form-control locationWiseDistOnChange" id="DistrictNamesId" >
-									
-									</select>
-								</div>
-								<div class="col-sm-12 col-xs-12 col-md-12">
-									<div id="districtLevelSubOrdinarteDetails" class=""></div>
-								</div>	
-							</div>
-							<div class="col-sm-12 col-xs-12 col-md-12 ">
-							<h4>DIVISION LEVEL</h4>
-								<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
-								
-									<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDivision">
-									<li class="active " attr_sorting_type="count" attr_order_type="desc" >
-										<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-									</li>
-									<li class="" attr_sorting_type="count" attr_order_type="asc">
-										<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-									</li>
-									<li class="" attr_sorting_type="name" attr_order_type="asc">
-										A-Z
-									</li>
-									<li class="" attr_sorting_type="name" attr_order_type="desc">
-										Z-A
-									</li>
-									</ul>
-								</div>
-								<div class="col-sm-4 col-xs-12 col-md-2 ">
-									<select class="form-control locationWiseDiviDistOnChange" id="DivisionDistNamesId" >
 										
-									</select>
+								<div class="panel-body">
+									<div id="departmentWiseAlertsDetailsId"></div>
 								</div>
-								<div class="col-sm-4 col-xs-12 col-md-2">
-									<select class="form-control locationWiseDiviOnChange" id="DivisionNamesId" >
-										<option value="0">Select Division</option>
-									</select>
-								</div>
-								<div class="col-sm-12 col-xs-12 col-md-12">
-									<div id="divisionLevelSubOrdinarteDetails" class=""></div>
-								</div>	
 							</div>
-							
-							<div class="col-sm-12 col-xs-12 col-md-12 ">
-								<h4>SUB-DIVISION LEVEL</h4>
-								<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
-							
-									<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingSubDivision">
-									<li class="active" attr_sorting_type="count" attr_order_type="desc" >
-										<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-									</li>
-									<li class="" attr_sorting_type="count" attr_order_type="asc">
-										<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-									</li>
-									<li class="" attr_sorting_type="name" attr_order_type="asc">
-										A-Z
-									</li>
-									<li class="" attr_sorting_type="name" attr_order_type="desc">
-										Z-A
-									</li>
-									</ul>
-								</div>
-								<div class="col-sm-4 col-xs-12 col-md-2">
-									<select class="form-control locationWiseSubDiviDistOnChange" id="SubDivisionDistNamesId" >
-									
-									</select>
-								</div>
-								<div class="col-sm-4 col-xs-12 col-md-2">
-									<select class="form-control locationWiseSubDiviDiviOnChange" id="SubDivisionDiviNamesId" >
-									<option value="0">Select Division</option>
-									</select>
-								</div>
-								<div class="col-sm-4 col-xs-12 col-md-2">
-									<select class="form-control locationWiseSubDiviOnChange" id="SubDivisionNamesId" >
-									<option value="0">Select SubDivision</option>
-									</select>
-								</div>
-								<div class="col-sm-12 col-xs-12 col-md-12">
-									<div id="SubdivisionLevelSubOrdinarteDetails" class=""></div>
-									</div>
-									
-							</div>
-						</div>
-						</div>		
-						</div>		
+							<div id="departmentWiseLocationBlockId"></div>
 					</div>
 				</div>
 			</div>			
-		</div>
+		
 	</section>
 	
+</div>
+<div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body modal-insurance">
+				<div id="filter"></div>
+				<div id="alertManagementPopupBody"></div>
+			</div>
+		</div>
+  </div>
+</div>
+<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="alertManagementPopupBody1"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+  </div>
 </div>
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/alertManagementSystemNewUploadIAS.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagement.js" type="text/javascript"></script>
