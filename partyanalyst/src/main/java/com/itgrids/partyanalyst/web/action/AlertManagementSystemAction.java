@@ -1012,7 +1012,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			Long levelId = jObj.getLong("levelId");
 			Long statusId = jObj.getLong("statusId");
 			String type = jObj.getString("type");
-			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type);
+			String formDateStr = jObj.getString("startDate");
+			String endDateStr = jObj.getString("endDate");
+			Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
+			Long officerId = jObj.getLong("officerId");
+			
+			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2205,6 +2210,28 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}catch(Exception e){
 					e.printStackTrace();
 					LOG.error("Exception occured in getDeptDetails() of AlertManagementSystemAction",e);
+				}
+				return Action.SUCCESS;
+			}
+			public String getStateLevelAlertclickView(){
+				try{
+					session = request.getSession();
+				   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+					Long userId = regVo.getRegistrationID();
+					jObj = new JSONObject(getTask());
+					
+					Long deptId = jObj.getLong("deptId");
+					Long statusId = jObj.getLong("statusId");
+					String type = jObj.getString("type");
+					Long officerId = jObj.getLong("officerId");  
+					Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
+					String searchType = jObj.getString("searchType");
+					
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptId,statusId,type,officerId,desigDeptOfficerId,searchType);
+					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+				}catch(Exception e){
+					e.printStackTrace();
+					LOG.error("Exception occured in getDistrictLevelDeptWiseFlterClick() of alertManagementSystemAction",e);
 				}
 				return Action.SUCCESS;
 			}
