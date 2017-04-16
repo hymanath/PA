@@ -37,7 +37,7 @@ function onLoadInitialisations()
 		}
 	});
 	/*alert Assigned Part Start*/
-	$(document).on('click', '.imageShowOpen li', function(){
+	/* $(document).on('click', '.imageShowOpen li', function(){
 		var id = $(this).attr("attr_doc_id");
 		var path = "http://mytdp.com/"+$(this).attr("attr_path");
 		window.open(path);
@@ -210,7 +210,7 @@ function onLoadInitialisations()
 	$(document).on('change','#designationsId', function(evt, params) {
 		var designationId = $(this).val();
 		officersByDesignationAndLevel(designationId)
-	});
+	}); */
 	
 	/*Alert Assigned Part ENd*/
 	$(document).on("click",".switch-btn li",function(){
@@ -226,7 +226,7 @@ function onLoadInitialisations()
 			getDepartmentWiseAlertOverviewCnt('department','0');
 		}
 	});
-	$(document).on("click","#updateStatusChange",function(){
+	/* $(document).on("click","#updateStatusChange",function(){
 		//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
 		var comment = $("#updateStatusChangeComment").val()
 		var alertId = $(this).attr("attr_alert_id");
@@ -307,7 +307,7 @@ function onLoadInitialisations()
 			}
 		});
 			
-	});
+	}); */
 	$(document).on("click",".filtersSubmitDivId",function(){
 		globalNewsPaperIdArr = [];
 		globalChannelIdArr = [];
@@ -512,9 +512,9 @@ $(document).on("click",".documentCloseClass",function(e){
 $(".scrollerBlockDepartments").mCustomScrollbar({setHeight:'300px'});
 
 /*Default Image*/
-function setDefaultImage(img){
+/* function setDefaultImage(img){
     img.src = "images/User.png";
-}
+} */
 /*Default Image*/
 /*global Function and variables End*/
 /* Status OverView Start*/
@@ -1170,7 +1170,7 @@ function getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,depa
 		}
 	});
 }
-function viewAlertHistory(alertId)
+/* function viewAlertHistory(alertId)
 {
 	$("#alertManagementPopupBody1").html(spinner)
 	var jsObj ={
@@ -1189,13 +1189,13 @@ function viewAlertHistory(alertId)
 		}
 	});
 }
-
+ */
 
 /*Alert Assigning Part*/
 
 
 
-function getDepartmentLevels(deptId){
+/* function getDepartmentLevels(deptId){
 	
 	var jsObj = {
 		departmentId : deptId
@@ -1857,7 +1857,7 @@ function buildCommentsForAlert(result)
 		str+='</div>';
 	str+='</div>';
 	$("#alertGeneralComments").html(str);
-}
+} */
 function getDeptNamesForMultiLevel(){   
   $.ajax({
       type:'GET',
@@ -2101,7 +2101,7 @@ function buildDeptNamesForMultiLevel(result){
 	}
 	
 }
-function getTotalArticledetails(articleId){
+/* function getTotalArticledetails(articleId){
 	
 	$("#alertManagementPopupBody1,#alertManagementPopupHeading").html(spinner);
 	$.ajax({
@@ -2128,7 +2128,7 @@ function getTotalArticledetails(articleId){
 			str+='<div class="col-md-12">';
 			if( result.subList != null && result.subList.length > 0){
 				for(var i in result.subList){
-				/* Candidate*/
+				/* Candidate
 				str+='<div class="row ">';
 					str+='<div class="col-md-6">';
 						str+='<div class="panel panel-default panelArticleGroup">';
@@ -2136,7 +2136,7 @@ function getTotalArticledetails(articleId){
 								str+='<h4 class="panel-title">FROM WHOM</h4>';
 							str+='</div>';
 							str+='<div class="panel-body">';
-								/* From Table*/
+								/* From Table
 								if(result.subList[i].fromList != null && result.subList[i].fromList.length > 0){
 									for( var j in result.subList[i].fromList){
 										str+='<table class="table table-bordered m_top10">';
@@ -2215,7 +2215,7 @@ function getTotalArticledetails(articleId){
 								str+='<h4 class="panel-title">TO WHOM</h4>';
 							str+='</div>';
 							str+='<div class="panel-body">';
-							/* TO Table*/
+							/* TO Table
 							if(result.subList[i].toList != null && result.subList[i].toList.length > 0){
 								for( var j in result.subList[i].toList){
 									str+='<table class="table table-bordered m_top10">';
@@ -2301,7 +2301,7 @@ function getTotalArticledetails(articleId){
 
 			str+='</div>';//colmd12
 		str+='</div>';//row
-		/* Article Scope Location */
+		/* Article Scope Location 
 		str+='<div class="col-md-12">';
 			str+='<div class="panel panel-default panelArticleGroup">';
 				str+='<div class="panel-heading">';
@@ -2330,7 +2330,7 @@ function getTotalArticledetails(articleId){
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="row">';
-			/*Lnking*/
+			/*Lnking
 			str+='<div class="col-md-6">';
 				str+='<div class="panel panel-default panelArticleGroup">';
 					str+='<div class="panel-heading">';
@@ -2359,7 +2359,7 @@ function getTotalArticledetails(articleId){
 		$("#alertManagementPopupBody1").html(str);
 		$("#alertManagementPopupHeading").html(heading)
 	});    
-}
+} */
 
 function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
 	{
@@ -4331,7 +4331,7 @@ function getDivisionIdListForDivisionFilter(departmentId){
 			}
     });    
 }	
-function showSbmitStatusNew(uploadResult,alertId){
+/* function showSbmitStatusNew(uploadResult,alertId){
 	if(uploadResult !=null && uploadResult.search("success") != -1){
 		getDocumentsForAlert(alertId);
 	}
@@ -4360,7 +4360,7 @@ function getDocumentsForAlert(alertId){
 		}
     });
 }
-
+ */
 //sub division wise district names
 function getDistrictIdListForSubDivisionFilter(departmentId){
 	$("#SubDivisionDistNamesId").html('');
