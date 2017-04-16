@@ -13,6 +13,7 @@ function onLoadCalls(){
 	getIASOfficerMyAlertsCountMainView();
 	getIASOfficerMySubTasksCountView();
 	getIASOfficerMyAssignedSubTasksCountView();
+	getDeptDetails();
 	
 }
 
@@ -1358,3 +1359,12 @@ function getTotalAlertCountDetails(departmentId,levelId,statusId,name,totalCount
   });
   
 }
+function getDeptDetails(){
+	var jsObj = {};
+	$.ajax({
+      type:'GET',
+      url: 'getDeptDetailsAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+	});
+}	
