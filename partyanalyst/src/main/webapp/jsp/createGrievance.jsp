@@ -1922,7 +1922,8 @@ function showDashboard(){
 			locatoinType:locatoinType,
 			locationId : locationId,
 			fromDate : "",
-			toDate : ""
+			toDate : "",
+			alertStatusId : 0
 		}
 		$.ajax({
 			type:'GET',
@@ -1949,7 +1950,8 @@ function showDashboard(){
 	str +='<th style="text-transform: uppercase;"> Related To</th>';
 	str +='<th style="text-transform: uppercase;"> Problem</th>';
 	str +='<th style="text-transform: uppercase;"> Status</th>';
-	str +='<th style="text-transform: uppercase;"> Created By</th>';
+	str +='<th style="text-transform: uppercase;"> Caller Name</th>';
+	str +='<th style="text-transform: uppercase;"> Mobile No</th>';
 	str +='</thead>';
 	str +='<tbody>';
 	for(var i in result){		
@@ -2013,6 +2015,11 @@ function showDashboard(){
 		}
 		if(result[i].createdBy != null){
 			str+='<td style="text-transform: uppercase;">'+result[i].createdBy+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result[i].mobileNo != null && result[i].mobileNo != ""){
+			str+='<td style="text-transform: uppercase;">'+result[i].mobileNo+'</td>';
 		}else{
 			str+='<td>-</td>';
 		}
