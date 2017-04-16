@@ -53,7 +53,8 @@ public interface IAlertManagementSystemService {
 	public ResultStatus uploadDocumentsForAlert(final Map<File, String> mapfiles,final Long alertId,final Long userId);
 	public List<AlertTrackingVO> viewAlertHistory(Long alertId);
 	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCount(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortType,String order);
-	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId,Long statusId,String type);
+	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId,Long statusId,
+			String type,String fromDateStr,String endDateStr,Long desigIds,Long officerIds);
 	public List<IdNameVO> getDepartmentSubLevels(Long departmentId,Long parentLevelId);
 	public List<IdNameVO> getChildLevelValuesForSubTask(Long departmentId,Long parentLevelId,List<Long> parentLevelValues,Long levelId);
 	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType);
@@ -109,4 +110,5 @@ public interface IAlertManagementSystemService {
 	public FilterSectionVO getFilterSectionAlertDetails();
 	public String getDesignationForUser(Long userId);
 	public DistrictOfficeViewAlertVO getDeptDetails(Long userId);
+	public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(Long deptId,Long statusId,String type,Long govtDeptGovtOffrId,Long govtOffrcrId,String searchType);
 }
