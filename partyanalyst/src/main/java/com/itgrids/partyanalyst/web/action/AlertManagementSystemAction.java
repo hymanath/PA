@@ -2194,4 +2194,18 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;
 		}
+		 public String getDeptDetails(){
+				try{
+					session = request.getSession();
+					RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+					Long userId = regVo.getRegistrationID();
+					jObj = new JSONObject(getTask());
+				   	districtOfficeViewAlertVO = alertManagementSystemService.getDeptDetails(userId);
+					
+				}catch(Exception e){
+					e.printStackTrace();
+					LOG.error("Exception occured in getDeptDetails() of AlertManagementSystemAction",e);
+				}
+				return Action.SUCCESS;
+			}
 }

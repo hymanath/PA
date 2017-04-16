@@ -16970,6 +16970,11 @@
 			<result type="json" name="success">
 				<param name="root">filterDetilsList</param>     
 			</result>
-    </action>       	                   
+    </action>
+    <action name="getDeptDetailsAction" class="alertManagementSystemAction" method="getDeptDetails">
+			<result type="json" name="success">
+				<param name="root">districtOfficeViewAlertVO</param>     
+			</result>
+    </action> 	
  </package>
 </struts>
