@@ -53,6 +53,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String image;
 	private String voterImage;
 	private Long statusId = 0l;
+	private String userStatus;
 
 	private Long constitunecyId;
 	private Long constituencyNo;
@@ -614,5 +615,13 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setCommitteeDesgList(List<IdNameVO> committeeDesgList) {
 		this.committeeDesgList = committeeDesgList;
 	}
-    	
+
+	public String getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(String userStatus) {
+		this.userStatus = userStatus;
+	}
+    
 }
