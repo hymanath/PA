@@ -9538,6 +9538,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alert.setAlertSourceId(5l);
 					alert.setGovtDepartmentId(inputVO.getDepartmentId());
 					alert.setAlertIssueSubTypeId(inputVO.getAlertIssueSubTypeId());
+					alert.setIsMultiple("N");
 
 					alert = alertDAO.save(alert);
 
