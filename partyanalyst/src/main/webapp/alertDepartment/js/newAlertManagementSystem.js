@@ -2101,7 +2101,7 @@ function buildDeptNamesForMultiLevel(result){
 			str+='</div>';
 		str+='</div>';
 		$("#levelWiseDepartmentDetailsId").html(str);
-		var defaultDepartmentID;
+		
 		for(var i in result){
 			if(i == 0){
 				defaultDepartmentID =result[i].id;;
@@ -2123,6 +2123,7 @@ function buildDeptNamesForMultiLevel(result){
 	}
 	
 }
+var defaultDepartmentID;
 /* function getTotalArticledetails(articleId){
 	
 	$("#alertManagementPopupBody1,#alertManagementPopupHeading").html(spinner);
@@ -2501,7 +2502,8 @@ $(document).on("click",".stateWiseInterChange li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var departmentId = $(this).attr("attr_department_id");
-		var groupType = getgroupType();
+		//var groupType = getgroupType();
+		var groupType =  $(this).attr("attr_type");
 		getStateThenGovtDeptScopeWiseAlertCountForStateLevel(departmentId,groupType);
 });
 
@@ -2509,7 +2511,8 @@ $(document).on("click",".districtWiseInterChange li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var departmentId = $(this).attr("attr_department_id");
-		var groupType = getgroupTypeDistrict();
+		//var groupType = getgroupTypeDistrict();
+		var groupType =  $(this).attr("attr_type");
 		var sortingType = getDistrictWiseSorting().districtSortingType; // 'value1'
 		var orderType = getDistrictWiseSorting().districtOrderType; // 'value2'
 		
@@ -2529,8 +2532,8 @@ $(document).on("click",".districtWiseSorting li",function(){
 			var sortingType = $(this).attr("attr_sorting_type");
 			var departmentId = $(this).attr("attr_department_id");
 			var orderType = $(this).attr("attr_order_type");
-			var groupType = getgroupTypeDistrict();
-			
+			//var groupType = getgroupTypeDistrict();
+			var groupType =  $(this).attr("attr_type");
 			$("#districtWiseLevelsDivId"+departmentId).html('');
 			$("#districtWiseLevelsDivId"+departmentId).append('<option value="0">Select District</option>');
 			getDistIdListForDistFilter(departmentId);
@@ -2541,7 +2544,8 @@ $(document).on("click",".districtWiseSorting li",function(){
 	
 $(document).on("change",".districtWiseSortingApplyGraph",function(){
 			var departmentId = $(this).attr("attr_department_id");
-			var groupType = getgroupTypeDistrict();
+			//var groupType = getgroupTypeDistrict();
+			var groupType = $(this).attr("attr_type");
 			var sortingType = getDistrictWiseSorting().districtSortingType; // 'value1'
 			var orderType = getDistrictWiseSorting().districtOrderType; // 'value2'
 			var districtId = $("#districtWiseLevelsDivId"+departmentId).val();
@@ -2554,13 +2558,16 @@ $(document).on("click",".divisionWiseInterChange li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var departmentId = $(this).attr("attr_department_id");
-		var groupType = getgroupTypeDivision();
+		//var groupType = getgroupTypeDivision();
+		var groupType = $(this).attr("attr_type");
+		
 		var sortingType = getDivisionWiseSorting().divisionSortingType; // 'value1'
 		var orderType = getDivisionWiseSorting().divisionOrderType; // 'value2'
 		$("#divisionDistWiseLevelsDivId"+departmentId).html('');
 		$("#divisionDistWiseLevelsDivId"+departmentId).append('<option value="0">Select District</option>');
 		$("#divisionWiseLevelsDivId"+departmentId).html('');
 		$("#divisionWiseLevelsDivId"+departmentId).append('<option value="0">Select Division</option>');
+		
 		getDistIdListForDivisionFilter(departmentId);	
 		getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,groupType,sortingType,orderType,0,0);
 });
@@ -2583,7 +2590,8 @@ $(document).on("click",".divisionWiseSorting li",function(){
 $(document).on("change","#divisionDistWiseLevelsDivId",function(){
 		var departmentId = $(this).attr("attr_department_id")
 		
-		var groupType = getgroupTypeDivision();
+		//var groupType = getgroupTypeDivision();
+		var groupType =  $(this).attr("attr_type");
 		var sortingType = getDivisionWiseSorting().divisionSortingType; // 'value1'
 		var orderType = getDivisionWiseSorting().divisionOrderType; // 'value2'
 		var districtWorkLocationId = $("#divisionDistWiseLevelsDivId"+departmentId).val();
@@ -2592,7 +2600,8 @@ $(document).on("change","#divisionDistWiseLevelsDivId",function(){
 });
 $(document).on("change",".divisionWiseSortingApplyGraph",function(){
 			var departmentId = $(this).attr("attr_department_id");
-			var groupType = getgroupTypeDivision();
+			//var groupType = getgroupTypeDivision();
+			var groupType =  $(this).attr("attr_type");
 			var sortingType = getDivisionWiseSorting().divisionSortingType; // 'value1'
 			var orderType = getDivisionWiseSorting().divisionOrderType; // 'value2'
 			var districtWorkLocationId = $("#divisionDistWiseLevelsDivId"+departmentId).val();
@@ -2606,7 +2615,8 @@ $(document).on("click",".subDivisionWiseInterChange li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var departmentId = $(this).attr("attr_department_id");
-		var groupType = getgroupTypeSubDivision();
+		//var groupType = getgroupTypeSubDivision();
+		var groupType =  $(this).attr("attr_type");
 		var sortingType = getSubDivision().subSortingType; // 'value1'
 		var orderType = getSubDivision().subOrderType; // 'value2'
 		$("#SubDivisionDistNamesId"+departmentId).html('');
@@ -2626,7 +2636,8 @@ $(document).on("click",".subDivisionWiseSorting li",function(){
 			var sortingType = $(this).attr("attr_sorting_type");
 			var departmentId = $(this).attr("attr_department_id");
 			var orderType = $(this).attr("attr_order_type");
-			var groupType = getgroupTypeSubDivision();
+			//var groupType = getgroupTypeSubDivision();
+			var groupType =  $(this).attr("attr_type");
 			$("#SubDivisionDistNamesId"+departmentId).html('');
 			$("#SubDivisionDistNamesId"+departmentId).append('<option value="0">Select District</option>');
 			$("#SubDivisionDiviNamesId"+departmentId).html('');
@@ -2640,7 +2651,8 @@ $(document).on("click",".subDivisionWiseSorting li",function(){
 $(document).on("change",".locationWiseSubDiviDistOnChange",function(){
 			var sortingType = getSubDivision().subSortingType; // 'value1'
 			var orderType = getSubDivision().subOrderType; // 'value2'
-			var groupType = getgroupTypeSubDivision();
+			//var groupType = getgroupTypeSubDivision();
+			var groupType =  $(this).attr("attr_type");
 			var departmentId = $(this).attr("attr_department_id");
 			var districtId =$("#SubDivisionDistNamesId"+departmentId).val();
 			getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId,groupType,sortingType,orderType,districtId,0,0);
@@ -2653,8 +2665,8 @@ $(document).on("change",".locationWiseSubDiviDiviOnChange",function(){
 	var districtDivisionId =$("#SubDivisionDiviNamesId"+departmentId).val();
 	var sortingType = getSubDivision().subSortingType; // 'value1'
 	var orderType = getSubDivision().subOrderType; // 'value2'
-	var groupType = getgroupTypeSubDivision();
-	
+	//var groupType = getgroupTypeSubDivision();
+	var groupType =  $(this).attr("attr_type");
 	getSubDivisionIdListForSubDivisionFilter(departmentId,districtId,districtDivisionId);  
 	getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId,groupType,sortingType,orderType,districtId,districtDivisionId,0);
 });
@@ -2665,8 +2677,8 @@ $(document).on("change",".locationWiseSubDiviOnChange",function(){
 	var districtSubDivisionId =$("#SubDivisionNamesId"+departmentId).val();
 	var sortingType = getSubDivision().subSortingType; // 'value1'
 	var orderType = getSubDivision().subOrderType; // 'value2'
-	var groupType = getgroupTypeSubDivision();
-	
+	//var groupType = getgroupTypeSubDivision();
+	var groupType =  $(this).attr("attr_type");
 	getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId,groupType,sortingType,orderType,districtId,districtDivisionId,districtSubDivisionId);
 	
 });
@@ -2675,6 +2687,7 @@ $(document).on("change",".locationWiseSubDiviOnChange",function(){
 function getStateThenGovtDeptScopeWiseAlertCountForStateLevel(departmentId,groupType){
 
 	$("#stateLevelGraphStausWise"+departmentId).html(spinner);
+	var subLevels = [];
     var jsObj ={
     fromDate:currentFromDate,
     toDate:currentToDate,
@@ -2691,8 +2704,8 @@ function getStateThenGovtDeptScopeWiseAlertCountForStateLevel(departmentId,group
     order : "desc",
 	group:groupType,
 	alertType:"alert",
-	searchType:"statusWise"
-	
+	searchType:"statusWise",
+	subLevels:subLevels
     }
     $.ajax({
     type:'GET',         
@@ -3025,6 +3038,8 @@ function buildStateThenGovtDeptScopeWiseAlertCountForStateLevel(result,groupType
 function getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,groupType,sortType,order,districtId){
  
 	$("#districtLevelGraphStausWise"+departmentId).html(spinner);
+	
+	var subLevels = [];
     var jsObj ={
     fromDate:currentFromDate,
     toDate:currentToDate,
@@ -3041,8 +3056,8 @@ function getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,gr
     order : order,
 	group:groupType,
 	alertType:"alert",
-	searchType:"statusWise"
-	
+	searchType:"statusWise",
+	subLevels:subLevels
     }
     $.ajax({
     type:'GET',         
@@ -3451,6 +3466,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,groupT
 //Division Level
 function getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,groupType,sortType,order,districtWorkLocationId,divisionWorkLocationId){
   $("#divisionLevelGraphStausWise"+departmentId).html(spinner);
+	var subLevels = [];
     var jsObj ={
     fromDate:currentFromDate,
     toDate:currentToDate,
@@ -3467,8 +3483,8 @@ function getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,gr
     order : order,
 	group:groupType,
 	alertType:"alert",
-	searchType:"statusWise"
-	
+	searchType:"statusWise",
+	subLevels:subLevels
     }
     $.ajax({
     type:'GET',         
@@ -3870,6 +3886,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,groupT
 //Sub Division Level
 function getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId,groupType,sortingType,orderType,districtId,districtDivisionId,districtSubDivisionId){
  $("#subDivisionLevelGraphStausWise"+departmentId).html(spinner);
+	var subLevels = [];
     var jsObj ={
     fromDate:currentFromDate,
     toDate:currentToDate,
@@ -3886,7 +3903,8 @@ function getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId
     order : orderType,
 	group:groupType,
 	alertType:"alert",
-	searchType:"statusWise"
+	searchType:"statusWise",
+	subLevels:subLevels
 	
     }
     $.ajax({
