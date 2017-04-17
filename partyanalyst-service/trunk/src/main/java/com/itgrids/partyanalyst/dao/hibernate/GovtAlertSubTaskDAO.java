@@ -82,6 +82,22 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	   query.setParameterList("alertIds", alertIds);
     	   return query.list();
        }
+       
+       public List<Long> getSubTasksIdsList(List<Long> alertIds){
+    	   StringBuilder sb = new StringBuilder();
+    	   sb.append(" select GAST.govt_alert_sub_task_id as id " +
+    	   			 " from govt_alert_sub_task GAST, alert ALT " +
+    	   			 " where " +
+    	   			 " GAST.alert_id = ALT.alert_id " +
+    	   			 " and ALT.is_deleted = 'N' " +
+    	   			 " and GAST.is_deleted = 'N' " +
+    	   			 " and GAST.alert_id in (:alertIds) " +
+    	   			 "  ");
+    	   Query query = getSession().createSQLQuery(sb.toString()).addScalar("id", Hibernate.LONG);
+    	   query.setParameterList("alertIds", alertIds);
+    	   return query.list();
+       }
+       
        @SuppressWarnings("unchecked")
    	public List<Object[]> getSubTaskAlertAssignCountsForDeptWiseDetails(Date fromDate, Date toDate){
      		StringBuilder sb = new StringBuilder();  
@@ -526,7 +542,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     }
     
     public List<Object[]> getSubTaskInfoForAlert(Long alertId){
-    	Query query = getSession().createQuery(" select model.govtAlertSubTaskId,model.title "
+    	Query query = getSession().createQuery(" select model.govtAlertSubTaskId,model.title  "
     			+ " from GovtAlertSubTask model"
     			+ " where model.alertId=:alertId and model.isDeleted='N' ");
     	query.setParameter("alertId", alertId);
