@@ -56,10 +56,20 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long attendedCount = 0L;
 	private String range;
 	private String callerStr;
+	private List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
 	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
 	private List<AlertCoreDashBoardVO> subList1 = new ArrayList<AlertCoreDashBoardVO>(0);
 	private Set<Long> setList = new HashSet<Long>(0);
+
+	
+	public List<KeyValueVO> getSubLevels() {
+		return subLevels;
+	}
+
+	public void setSubLevels(List<KeyValueVO> subLevels) {
+		this.subLevels = subLevels;
+	}
 
 	public String getCallerStr() {
 		return callerStr;
