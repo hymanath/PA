@@ -36,8 +36,11 @@ public interface ITdpCommitteeDAO  extends GenericDao<TdpCommittee, Long>{
 	public List<Object[]> getCommitteesCountByDistrictIdAndLevel(List<Long> districtIds,List<Long> levelIds,List<Long> committeeSpanTypeIdsList);
 	public List<Object[]> getCommitteesCountByConstituencyIdAndLevel(List<Long> constituencyIds,List<Long> levelIds, String reqAreaTypeStr, List<Long> committeeSpanTypeIdsList);
 	public List<Object[]> committeesCountByLocationIds(Long levelId,List<Long> levelValues,Date startDate,Date endDate,String type,String reqLocationTypeStr, List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList);
+	public List<Object[]> committeesCountByLocationIds1(Long levelId,List<Long> levelValues,Date startDate,Date endDate,String type,String reqLocationTypeStr, List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList);
+
 	public List<Object[]> totalCommitteesCountByLocationIds(Long levelId,List<Long> levelValues,String reqLocationTypeStr, List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList);
-	
+	public List<Object[]> totalCommitteesCountByLocationIds1(Long levelId,List<Long> levelValues,String reqLocationTypeStr, List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList);
+
 	public List<Object[]> getTotalCompletedCommitteesCountByLocation(String state,List<Long> levelIds,Date startDate,Date endDate,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList ,List<Long> enrollmentIdsList);
 	
 	public Long getTotalCommitteesCountByLocation(String state,List<Long> levelIds,List<Long> districtIds,List<Long> assemblyIds,List<Long> locationlevelValueList ,List<Long> enrollmentIdsList,Date startDate,Date endDate);
