@@ -16,10 +16,10 @@ function onLoadClicks()
 		var path = "http://mytdp.com/"+$(this).attr("attr_path");
 		window.open(path);
 	});
-	$(document).on("change","#divisionDistWiseLevelsDivId",function(){
+	/*$(document).on("change","#divisionDistWiseLevelsDivId",function(){
 		var defaultDepartmentID = $(this).attr("attr_department_id")
 			getDivisionIdListForDivisionFilter(defaultDepartmentID);
-	});
+	});*/
 	$(document).on('change', '#locationLevelSelectId,#locationLevelSelectId1', function(){
 		
 		getParentLevelsOfLevel($(this).attr('id'));
@@ -175,7 +175,7 @@ function onLoadClicks()
 		$("#assignOfficerId").hide();
 		var uploadHandler = {
 			upload: function(o) {
-				uploadResult = o.responseText;
+				var uploadResult = o.responseText;
 				displayStatus(uploadResult);
 			}
 		};
@@ -290,7 +290,7 @@ function onLoadClicks()
 			//getStatusCompletionInfo(alertId);
 		}else{
 			$(".alert-status-change-body").hide();
-			$("#updateStatusChangeBody").html(" ");
+			//$("#updateStatusChangeBody").html(" ");
 		}
 	}); 
 	$(document).on("click","div.comment-area",function(e){
@@ -387,8 +387,7 @@ function onLoadClicks()
 				$("#alertManagementPopupHeading").html('ALERT HISTORY')
 				$("#alertManagementPopup1 .modal-footer").hide();
 				viewAlertHistory(alertId);
-			}else if(status == 'alertStatus')
-			{
+			}else if(status == 'alertStatus'){
 				$("#alertManagementPopup1").modal({
 					show: true,
 					keyboard: false,
@@ -397,17 +396,13 @@ function onLoadClicks()
 				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY')
 				getAlertStatusHistory(alertId);
 				
-			}else if(status == 'alertStatusChange')
-			{
+			}else if(status == 'alertStatusChange'){
 				$(this).find('ul').toggle();
-			}else if(status == 'task')
-			{
+			}else if(status == 'task'){
 				statusBody(status);
-			}else if(status == 'subTask')
-			{
+			}else if(status == 'subTask'){
 				statusBody(status);
-			}else if(status == 'attachment')
-			{
+			}else if(status == 'attachment'){
 				$(this).find('.alert-status-attachment').toggle();
 			}
 		}
@@ -446,7 +441,7 @@ function onLoadClicks()
 		$("[expand-main]").removeClass("col-sm-4").addClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	});
 	$(document).on("click",".filters-icon",function(){
-		popUpFilter('body')
+		getFilterSectionAlertDetails();
 	});
 }
 /*Default Image*/
@@ -741,6 +736,7 @@ function getAlertStatusHistory(alertId){
 		alertStatusHistory(result,alertId);
 	});
 }
+var isAdmin = "";
 function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	var jsObj ={
@@ -777,13 +773,27 @@ function getStatusCompletionInfo(alertId){
 					$('#displayStatusId').prop('disabled','disabled');			*/	
 				$('#displayDueDate2,#displayPriority').show();
 				
+			}else if(buildTypeStr=='same'){  
+				$('#displayStatusId').show();       
+				$('#displayDueDate1').show();                       
+			}
+			else if(buildTypeStr=='other'){  
+				$('#displayStatusId').show();
+				$('#displayDueDate1').show();                       
 			}
 			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
 				$('#displayAssignIconId').show();
 			}
+			if(result[0].userStatus =='admin'){
+				isAdmin = "true";
+			}else{
+				isAdmin = "false";
+			}
+			
 			alertStatus(result,alertId);			
 		}else{
-			$('#displayStatusId').show(); 
+			$('#displayStatusId').show();
+			$('#displayDueDate2').hide();      
 			
 		}	
 	});
@@ -911,11 +921,11 @@ function rightSideExpandView(alertId)
 									  str+='<i class="glyphicon glyphicon-plus"></i>';
 									str+='</div>';
 									str+='<div class="col-sm-7">';
-									  str+='<input type="text" class="form-control" name="alertAssigningVO.title"/>';
+									  str+='<input type="text" class="form-control" name=""alertAssigningVO.title/>';
 									str+='</div>';
 									str+='<div class="col-sm-4" style="margin-top:11px;">';
 									 str+='<span class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date" style="padding: 9px;border-radius: 20px;margin-left: 40px">';
-										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2" style="" name="alertAssigningVO.dueDate"> Due Date </span>';
+										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2" style=""> Due Date </span>';
 									str+='</span>';
 										str+='<span class="assign-user">';
 										str+='<span id="" style=""><i class="glyphicon glyphicon-user pointerCls"></i> </span>';
@@ -961,7 +971,7 @@ function rightSideExpandView(alertId)
 													str+='</div>';
 												str+='</div>';
 											str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
-												str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button" onclick="saveSubTask();">assign</button>';
+												str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button">assign</button>';
 												str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg1">';
 												str+='<span class="text-success" id="assignSuccess"></span>';
 											str+='</div>';
@@ -1042,47 +1052,15 @@ function rightSideExpandView(alertId)
 	departmentsByAlert(alertId);
 	getAlertData(alertId);
 	getStatusCompletionInfo(alertId);
-	
-	
-	
-	
-	/* var options = {
-	  sourceLanguage:
-		  google.elements.transliteration.LanguageCode.ENGLISH,
-	  destinationLanguage:
-		  [google.elements.transliteration.LanguageCode.TELUGU],
-	  shortcutKey: 'alt+t',
-	  transliterationEnabled: true
-	};
-	var control = new google.elements.transliteration.TransliterationControl(options);
-	control.makeTransliteratable(['alertCommentId']); */
 }
-/* google.load("elements", "1", {
-	packages: "transliteration"
-}); */
-
 
 $(document).on("click","#displaySubTasksli",function(){
 	$('#main_alert_block').hide();
 	$('#alert-block-commentId').hide();
 	$('#sub_task_block').show();
 });
-
-function saveSubTask(){
-	$("#assiningLdngImg1").show();
-		$("#subTaskAssignOfficerId").hide();
-		var uploadHandler = {
-			upload: function(o) {
-				uploadResult = o.responseText;
-				displayStatus(uploadResult);
-			}
-		};
-
-		YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
-		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
-}
 $(document).on("click","#subTaskAssignOfficerId",function(){
-	alert(1111);
+	
 /*	if($("#departmentsId1").val() == null || $("#departmentsId1").val() == "" || $("#departmentsId1").val() == 0)
 		{
 			$("#assignErrorDivId1").html("please select department");
@@ -1194,7 +1172,17 @@ $(document).on("click","#subTaskAssignOfficerId",function(){
 			return;
 		}
 		*/
-		
+		$("#assiningLdngImg1").show();
+		$("#subTaskAssignOfficerId").hide();
+		var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				displayStatus(uploadResult);
+			}
+		};
+
+		YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
 	});
 	
 function assignedOfficersDetailsForAlert(alertId)
@@ -1233,9 +1221,7 @@ function getAlertData(alertId)
 		getSubTaskInfoForAlert(alertId);
 		getCommentsForAlert(alertId);
 		getDocumentsForAlert(alertId);
-		
 		if(result != null && result.length > 0){
-			buildSubTasksInfoForAlert(result[0].subList1)
 			buildAlertDataNew(result)
 			if(result[0].categoryId == 2)
 			{
@@ -1247,41 +1233,6 @@ function getAlertData(alertId)
 	});
 }
   
-  
-function buildSubTasksInfoForAlert(result)
-{
-	var str='';
-	str+='<div class="row m_top20">';
-		str+='<div class="col-sm-1 text-center body-icons">';
-			str+='<i class="fa fa-level-down fa-2x"></i>';
-		str+='</div>';
-		str+='<div class="col-sm-11">';
-			str+='<h4 class="text-muted text-capital">subtask</h4>';
-			str+='<ul class="assign-subtask-list m_top20">';
-				for(var i in result)
-				{
-					str+='<li class="assigned">';
-						str+='<div class="row">';
-							str+='<div class="col-sm-1">';
-								str+='<i class="glyphicon glyphicon-ok"></i>';
-							str+='</div>';
-							str+='<div class="col-sm-9">';
-								str+='<p>'+result[i].userName+'</p>';
-							str+='</div>';
-							str+='<div class="col-sm-2">';
-								//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
-							//	str+='<span class="icon-name icon-primary"></span>';
-								//str+='<span class="label label-default">...</span>';
-							str+='</div>';
-						str+='</div>';
-					str+='</li>';
-				}
-			str+='</ul>';
-		str+='</div>';
-	str+='</div>';
-	$("#alertSubtask").html(str);
-}
-
   
 function buildAlertDataNew(result)
 {
@@ -1458,7 +1409,7 @@ function departmentsByAlert(alertId){
 function getSubTaskInfoForAlert(alertId){
 	
 	var jsObj ={
-		alertId  :alertId
+		alertId  :13817
 	}
 	$.ajax({
 		type:'GET',
@@ -1519,7 +1470,7 @@ function getCommentsForAlert(alertId){
 		{
 			buildCommentsForAlert(result);
 		}else{
-			//$("#alertGeneralComments").html("NO DATA AVAILABLE... ");
+			$("#alertGeneralComments").html("NO DATA AVAILABLE... ");
 		}
 	});
 }
@@ -1827,7 +1778,6 @@ function getTotalArticledetails(articleId){
 
 
 function showSbmitStatusNew(uploadResult,alertId){
-	alert(1);
 	if(uploadResult !=null && uploadResult.search("success") != -1){
 		getDocumentsForAlert(alertId);
 	}
@@ -1857,7 +1807,7 @@ function getDocumentsForAlert(alertId){
     });
 }
 
-function popUpFilter(type)
+function popUpFilter(type,result)
 {
 	var str='';
 	var str1='';
@@ -1889,34 +1839,44 @@ function popUpFilter(type)
 				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize" filters-list-title="impactLevel">Impact Level</h5>';
 					str+='<ul class="filters-list" filters-list="impactLevel">';
-						str+='<li>State</li>';
-						str+='<li>District</li>';
+						for(var i in result.scopesList)
+						{
+							str+='<li>'+result.scopesList[i].name+'</li>';
+						}
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize" filters-list-title="priority">priority</h5>';
 					str+='<ul class="filters-list" filters-list="priority">';
-						str+='<li>State</li>';
-						str+='<li>State</li>';
+						for(var i in result.severityList)
+						{
+							str+='<li>'+result.severityList[i].name+'</li>';
+						}
 					str+='</ul>';
 					str+='<h5 class="text-capitalize m_top20" filters-list-title="alertSourceType">alert source type</h5>';
 					str+='<ul class="filters-list" filters-list="alertSourceType">';
-						str+='<li>State</li>';
-						str+='<li>State</li>';
+						for(var i in result.categoryList)
+						{
+							str+='<li>'+result.categoryList[i].name+'</li>';
+						}
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize" filters-list-title="printMedia">Level</h5>';
 					str+='<ul class="filters-list" filters-list="printMedia">';
-						str+='<li>State</li>';
-						str+='<li>State</li>';
+						for(var i in result.editionsList)
+						{
+							str+='<li>'+result.editionsList[i].name+'</li>';
+						}
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize" filters-list-title="electronicMedia">Level</h5>';
 					str+='<ul class="filters-list" filters-list="electronicMedia">';
-						str+='<li>State</li>';
-						str+='<li>State</li>';
+						for(var i in result.tvNewsChannelList)
+						{
+							str+='<li>'+result.tvNewsChannelList[i].name+'</li>';
+						}
 					str+='</ul>';
 				str+='</div>';
 			str+='</div>';
@@ -1927,10 +1887,11 @@ function popUpFilter(type)
 function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 {
 	var str='';
-	popUpFilter('heading');
+	popUpFilter('heading','');
 	var alertId = '';
-	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount)
-	str+='<div class="row">';
+	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
+	str+='<div id="filter"></div>';
+	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12" expand-main="false">';
 			str+='<div class="panel-group panel-white panel-left" id="accordion" role="tablist" aria-multiselectable="true">';
 			for(var i in result)
@@ -1978,7 +1939,13 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 															str+='<i class="glyphicon glyphicon-menu-right"></i>';
 														str+='</span>';
 														alertId = result[i].subList[j].id;
-														str+='<span class="status-icon pull-right"></span>';
+														if(result[i].subList[j].subTaskCount > 0)
+														{
+															str+='<span class="arrow-icon pull-right" style="margin:0px 4px" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
+																str+='<i class="fa fa-level-down"></i> '+result[i].subList[j].subTaskCount+'';
+															str+='</span>';
+														}
+														str+='<span class="status-icon pull-right" style="background-color:'+result[i].subList[j].statusColor+';margin-right:3px;"></span>';
 														str+='<span class="location-name pull-right" data-toggle="tooltip" data-placement="top" title="'+result[i].subList[j].location+'">'+result[i].subList[j].location+'</span>';
 													str+='</div>';
 												str+='</div>';
@@ -2003,7 +1970,6 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 
 function dateRangePicker(alertId)
 {
-	alert(3)
 	$(function() {
 		var start = moment();
 		
@@ -2046,7 +2012,6 @@ function dateRangePicker(alertId)
 
 function buildAssignedOfficersDetailsForAlert(result)
 {
-	
 	var str='';
 	var splitName = result[0].name.split(" ");
 	str+='<div class="media">';
@@ -2060,10 +2025,10 @@ function buildAssignedOfficersDetailsForAlert(result)
 		str+='</div>';
 	str+='</div>';
 	$("#assignedUser").html(str);
+	$(".assign-user").hide();
 }
 function assignUser(alertId)
 {
-	
 	var str='';
 	str+='<div class="assign-user">';
 		str+='<ul class="list-icons list-inline">';
@@ -2172,8 +2137,10 @@ function alertHistory(result)
 	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertManagementPopupBody1").html(str);
 }
+//alert status 
 function alertStatusHistory(result,alertId)
 {
+
 	var str='';
 	var str1='';
 	
@@ -2201,12 +2168,15 @@ function alertStatusHistory(result,alertId)
 			}  
 			
 		str+='</table>';
-		str1+='<div class="text-left">';
-			str1+='<label class="checkbox-inline">';
-				str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';
-			str1+='</label>';
-			str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
-		str1+='</div>';
+		if(isAdmin == "false"){
+			str1+='<div class="text-left">';
+				str1+='<label class="checkbox-inline">';
+					str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
+				str1+='</label>';
+				str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
+			str1+='</div>';
+		}
+		
 		$("#alertManagementPopup1 .modal-footer").show();
 		$("#alertManagementPopup1 .modal-footer").html(str1);
 		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
@@ -2225,6 +2195,19 @@ $(document).on("click",".changeStatsCls",function(){
 	
 });
 
+function getFilterSectionAlertDetails(){
+	var jsObj={
+		
+	}
+	$.ajax({   
+		type:'GET',
+		url:'getFilterSectionAlertDetailsAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		popUpFilter('body',result);
+	});
+}
 var glStr='';
 function alertStatus(result,alertId)
 {
@@ -2252,5 +2235,4 @@ function alertStatus(result,alertId)
 	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
 	glStr=str1;
 	//$("#updateStatusChangeBody").html(str1);
-	
 }
