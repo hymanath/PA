@@ -1049,7 +1049,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			String alertType =  jObj.getString("alertType");
 			
 			String group = jObj.getString("group");
-			alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,calCntrIdList);
+			JSONArray subLevelsArr = jObj.getJSONArray("subLevels");  
+			List<Long> sublevels = new ArrayList<Long>();
+			if(subLevelsArr != null && subLevelsArr.length() > 0){
+				for (int i = 0; i < subLevelsArr.length(); i++){
+					sublevels.add(Long.parseLong(subLevelsArr.getString(i)));          
+				}  
+			}
+			alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,calCntrIdList,sublevels);
 		} catch (Exception e) {
 			LOG.error("Exception Occured in getStateThenGovtDeptScopeWiseAlertCount() method, Exception - ",e); 
 		}
@@ -2105,10 +2112,17 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String alertType = jObj.getString("alertType");
 				String searchType = jObj.getString("searchType");
 				String group = jObj.getString("group");
+				JSONArray subLevelsArr = jObj.getJSONArray("subLevels");  
+				List<Long> sublevels = new ArrayList<Long>();
+				if(subLevelsArr != null && subLevelsArr.length() > 0){
+					for (int i = 0; i < subLevelsArr.length(); i++){
+						sublevels.add(Long.parseLong(subLevelsArr.getString(i)));          
+					}  
+				}
 				if(searchType.equalsIgnoreCase("statusWise"))
-				 alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,null);
+				 alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,null,sublevels);
 				else if(searchType.equalsIgnoreCase("scopeWise"))
-				  alertCoreDashBoardVOs=alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType);
+				  alertCoreDashBoardVOs=alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType,sublevels);
 					
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getDistrictOfficeGraphicalView() method, Exception - ",e); 
@@ -2150,10 +2164,17 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
 				Long subDivisionWorkLocationId = jObj.getLong("subDivisionWorkLocationId");
 				String group = jObj.getString("group");
+				JSONArray subLevelsArr = jObj.getJSONArray("subLevels");  
+				List<Long> sublevels = new ArrayList<Long>();
+				if(subLevelsArr != null && subLevelsArr.length() > 0){
+					for (int i = 0; i < subLevelsArr.length(); i++){
+						sublevels.add(Long.parseLong(subLevelsArr.getString(i)));          
+					}  
+				}
 				
 				alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDateStr,
 						toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
-						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,null);
+						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,null,sublevels);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview() method, Exception - ",e);
 			}
