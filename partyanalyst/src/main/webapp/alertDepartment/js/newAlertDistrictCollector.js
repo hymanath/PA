@@ -2303,15 +2303,14 @@ function getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,department
     }).done(function(result){
 		$("#departmentStatusCountDivId").html('');
 		if(result !=null && result.length>0){
-			buildDistrictLevelDeptWiseStatusOverView(result);
+			buildDistrictLevelDeptWiseStatusOverView(result,levelId);
 		}else{
 			$("#departmentStatusCountDivId").html('<div class="col-xs-12">NO DATA AVAILABLE</div>');
 		}
 		
 	});
 }
-
-function buildDistrictLevelDeptWiseStatusOverView(result){
+function buildDistrictLevelDeptWiseStatusOverView(result,levelId){
 	
 	if(result !=null && result.length>0){
 			var locationNamesArrDistrict=[];
@@ -2333,30 +2332,30 @@ function buildDistrictLevelDeptWiseStatusOverView(result){
 					for(var j in result[i].subList2){
 							
 						 if(result[i].subList2[j].id==1){
-							 pendingAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count}); 
+							 pendingAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId}); 
 						}else if(result[i].subList2[j].id==2){
-							 notifiedAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 notifiedAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==3){
-							 actionInProgessAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 actionInProgessAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==4){
-							 completedAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 completedAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==5){
-							 unblTRslvAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 unblTRslvAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==6){
-							 actionNotRequiredAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 actionNotRequiredAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==7){
-							 duplicateAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 duplicateAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}
 						else if(result[i].subList2[j].id==8){
-							 WronglyMappedDesignationArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 WronglyMappedDesignationArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==9){
-							 WronglyMappedDepartmentArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 WronglyMappedDepartmentArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==10){
-							 RejoinderArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 RejoinderArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==11){
-							 Incomplete.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 Incomplete.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}else if(result[i].subList2[j].id==12){
-							 Closed.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
+							 Closed.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 						}
 						
 						
@@ -2469,7 +2468,7 @@ function buildDistrictLevelDeptWiseStatusOverView(result){
 									click: function () {
 										var value = (this.extra).split("-");
 										var departmentId = value[0];
-										var levelId = 0;
+										var levelId = value[4];
 										var statusName = value[2];
 										var totalCount = value[3];
 										var statusId=value[1];
