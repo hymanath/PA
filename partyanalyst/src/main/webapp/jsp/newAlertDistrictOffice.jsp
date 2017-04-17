@@ -49,6 +49,9 @@
 {
 	display:none;
 }
+.pointerCls{
+	cursor:pointer  !important;
+}
 </style>
 </head>
 <body>

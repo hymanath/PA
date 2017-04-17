@@ -2808,7 +2808,7 @@ $(document).on("change","#ActivityList",function(){
 	 globalLvelId = $("#activityLevelList").val();
 	if(globalLvelId == 3 || globalLvelId ==5){
 		getUserAccessDistrictList();
-	}else if(globalLvelId == 1){
+	}else if(globalLvelId == 1 || globalLvelId == 2){
 		getConstitiensList();
 	}
 });
@@ -3055,7 +3055,7 @@ function getLocationWiseDetailsForActivity(roundId)
 						//str+='<th>CONSTITUENCY</th>';
 						//str+='<th style="background-color:#00B17D; color:#fff;" > <input type="checkbox" class="allcheckBoxCls" name="activityVO.isChecked"/> Select All </th>';
 						if(activityLevelId == 2)
-							;//str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
+							str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 						else if(activityLevelId == 1){	
 							//str+='<th style="background-color:#00B17D; color:#fff;">MANDAL/ TOWN/ DIVISION</th>';
 							str+='<th style="background-color:#00B17D; color:#fff;">PANCHAYAT/ WARD</th>';
