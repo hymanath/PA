@@ -175,7 +175,7 @@ function onLoadClicks()
 		$("#assignOfficerId").hide();
 		var uploadHandler = {
 			upload: function(o) {
-				uploadResult = o.responseText;
+				var uploadResult = o.responseText;
 				displayStatus(uploadResult);
 			}
 		};
@@ -290,7 +290,7 @@ function onLoadClicks()
 			//getStatusCompletionInfo(alertId);
 		}else{
 			$(".alert-status-change-body").hide();
-			$("#updateStatusChangeBody").html(" ");
+			//$("#updateStatusChangeBody").html(" ");
 		}
 	}); 
 	$(document).on("click","div.comment-area",function(e){
@@ -387,8 +387,7 @@ function onLoadClicks()
 				$("#alertManagementPopupHeading").html('ALERT HISTORY')
 				$("#alertManagementPopup1 .modal-footer").hide();
 				viewAlertHistory(alertId);
-			}else if(status == 'alertStatus')
-			{
+			}else if(status == 'alertStatus'){
 				$("#alertManagementPopup1").modal({
 					show: true,
 					keyboard: false,
@@ -397,17 +396,13 @@ function onLoadClicks()
 				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY')
 				getAlertStatusHistory(alertId);
 				
-			}else if(status == 'alertStatusChange')
-			{
+			}else if(status == 'alertStatusChange'){
 				$(this).find('ul').toggle();
-			}else if(status == 'task')
-			{
+			}else if(status == 'task'){
 				statusBody(status);
-			}else if(status == 'subTask')
-			{
+			}else if(status == 'subTask'){
 				statusBody(status);
-			}else if(status == 'attachment')
-			{
+			}else if(status == 'attachment'){
 				$(this).find('.alert-status-attachment').toggle();
 			}
 		}
@@ -741,6 +736,7 @@ function getAlertStatusHistory(alertId){
 		alertStatusHistory(result,alertId);
 	});
 }
+var isAdmin = "";
 function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	var jsObj ={
@@ -777,13 +773,23 @@ function getStatusCompletionInfo(alertId){
 					$('#displayStatusId').prop('disabled','disabled');			*/	
 				$('#displayDueDate2,#displayPriority').show();
 				
+			}else if(buildTypeStr=='other'){  
+				$('#displayStatusId').show();
+				$('#displayDueDate1').show();                       
 			}
 			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
 				$('#displayAssignIconId').show();
 			}
+			if(result[0].userStatus =='admin'){
+				isAdmin = "true";
+			}else{
+				isAdmin = "false";
+			}
+			
 			alertStatus(result,alertId);			
 		}else{
-			$('#displayStatusId').show(); 
+			$('#displayStatusId').show();
+			$('#displayDueDate2').hide();      
 			
 		}	
 	});
@@ -1782,7 +1788,6 @@ function getTotalArticledetails(articleId){
 
 
 function showSbmitStatusNew(uploadResult,alertId){
-	alert(1);
 	if(uploadResult !=null && uploadResult.search("success") != -1){
 		getDocumentsForAlert(alertId);
 	}
@@ -2125,8 +2130,10 @@ function alertHistory(result)
 	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertManagementPopupBody1").html(str);
 }
+//alert status 
 function alertStatusHistory(result,alertId)
 {
+
 	var str='';
 	var str1='';
 	
@@ -2154,12 +2161,15 @@ function alertStatusHistory(result,alertId)
 			}  
 			
 		str+='</table>';
-		str1+='<div class="text-left">';
-			str1+='<label class="checkbox-inline">';
-				str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';
-			str1+='</label>';
-			str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
-		str1+='</div>';
+		if(isAdmin == "false"){
+			str1+='<div class="text-left">';
+				str1+='<label class="checkbox-inline">';
+					str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
+				str1+='</label>';
+				str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
+			str1+='</div>';
+		}
+		
 		$("#alertManagementPopup1 .modal-footer").show();
 		$("#alertManagementPopup1 .modal-footer").html(str1);
 		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
