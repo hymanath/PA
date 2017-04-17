@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
+import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
@@ -32,7 +35,6 @@ import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.FilterSectionVO;
 
 /**
  * @author Teja
@@ -57,7 +59,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<AlertVO> alertVOs;
 	private List<IdNameVO> idnameVoList;
 	private List<GovtDepartmentVO> govtDeptVoList = new ArrayList<GovtDepartmentVO>(0);
-	
+	private InputStream inputStream;
 	private List<GovtDepartmentVO> govtDeptVoList1;
 	private String successMsg;
 	private AlertAssigningVO alertAssigningVO;	
@@ -78,6 +80,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<GrievanceAlertVO> grievanceAlertVo;
 	private FilterSectionVO filterDetilsList;
 	private String officerNameAnddesgnationName;
+	
+	public InputStream getInputStream() {
+		return inputStream;
+	}
+
+	public void setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+	}
 	
 	public String getOfficerNameAnddesgnationName() {
 		return officerNameAnddesgnationName;
@@ -1160,6 +1170,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			 
 			   
 			   successMsg = alertManagementSystemService.assigningSubTaskToOfficer(alertAssigningVO);
+			   if(successMsg != null && !successMsg.isEmpty())
+				   inputStream = new StringBufferInputStream(successMsg);
 			   
 			} catch (Exception e) {
 				LOG.error("Exception Raised in assigningSubTaskToOfficer() in AlertManagementSystemAction",e);
