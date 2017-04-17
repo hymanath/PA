@@ -114,17 +114,17 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getLocationWiseAssignedAndInvolveAlertCnt(AlertInputsVO alertInputsVO,String resultType,String type);
 	public List<Object[]> getLocationAndImapctLevelWiseAssignedAndInvolveAlertCnt(AlertInputsVO alertInputsVO,String resultType);
 	public List<Object[]> getStateOrGHMCImpcatLevelAlertCntPublicationWise(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String publicationType, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList,List<Long> alertStatusIds,Long discrictId);
-	public List<Object[]> getTotalGovtPendingStatusAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type);
+	public List<Object[]> getTotalGovtPendingStatusAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type,List<Long> calCntrIdList);
 	public Integer updateAlertPriority(Long alertId,Long priorityId,Long userId,Date date);
 	public Object[] getAlertDetailsForSMS(Long alertId);
 	public List<Object[]> getNoOFAlertCreatedList(Date startDate, Date endDate,Long userId);
 	 public List<Object[]> getAlertDetials(String mobileNo,Long alertStatusId,Date startDate,Date endDate,Long deptId,Long feedbackStattusId);
 	 public List<Object[]> getAlertCallerDetails(Long alertId);
 	public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewForAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type);
-	public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId);
+	public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId,List<Long> calCntrIds);
 	public List<Object[]> getStatusCount(Long locationId,String locationType,String searchType,Date startDate,Date endDate);
 	public List<Object[]> getCallerUserAlertDtls(Date fromDate, Date toDate, Long userId);
 	public List<Object[]> getCallerDetailsForAlerts(List<Long> alertIdsList);
 	public List<Object[]> getStatusWiseAlertsCountByDates(Date fromDate ,Date toDate);
-	public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,Date fromDate,Date toDate );
+	public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,Date fromDate,Date toDate,Long statusId );
 }
