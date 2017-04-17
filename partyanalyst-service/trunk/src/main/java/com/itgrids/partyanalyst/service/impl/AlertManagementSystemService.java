@@ -3543,7 +3543,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
         	return voList;
         }
-          /*
+         /*
       	 * Swadhin K Lenka
       	 * overview  click
       	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStateThenGovtDeptScopeWiseAlertCount(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long)
@@ -3648,6 +3648,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		}
         		//to check same level designation.
         		List<Long> govtDeptScopeIdForAlert = alertAssignedOfficerNewDAO.getGovtDeptScopeIdForAlert(alertId);
+        		
         		//to wheck whether he/she is an admin or not.
         		Long userCount = govtDepartmentDesignationOfficerNewDAO.getUserIdCount(userId);
         		String userStatus = "";
@@ -5368,4 +5369,81 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 		}		
 	 		return finalVoList;
 	 	}
+		 /*
+	      	 * Swadhin K Lenka
+	      	 * state overview  and status click
+	      	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStateThenGovtDeptScopeWiseAlertCount(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long) 
+	      	 */
+	      	public List<AlertCoreDashBoardVO> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds){
+	      		try{
+	      			
+	      			Date fromDate = null;  
+	      			Date toDate = null;
+	      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+	      				fromDate = sdf.parse(fromDateStr);
+	      				toDate = sdf.parse(toDateStr);
+	      			}
+	      			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+	      			if(printIdList != null && printIdList.size() > 0){  
+	      				if(electronicIdList != null && electronicIdList.size() == 0){
+	      					electronicIdList.add(0L);
+	      				}
+	      			}else if(electronicIdList != null && electronicIdList.size() > 0){
+	      				if(printIdList != null && printIdList.size() == 0){
+	      					printIdList.add(0L);
+	      				}
+	      			}else{
+	      				electronicIdList.add(0L);
+	      				printIdList.add(0L);
+	      			}
+	      			
+	      			List<Long> levelValues = new ArrayList<Long>();    
+	      			Long levelId = 0L;
+	      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+	      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+	      				for(Object[] param : lvlValueAndLvlIdList){
+	      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+	      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+	      				}
+	      			}
+	      			
+	    			List<Long> alertList = null;
+	    			
+	    			alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,deptScopeId,parentGovtDepartmentScopeId, statusId, calCntrIds);
+
+	      			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+	      			if(alertList != null && alertList.size() > 0){
+	    				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertList));
+	    				setAlertDtls(alertCoreDashBoardVOs, list); 
+	    			}
+	      			//set Subtask into alert logic 
+	    			
+	    			//get subtask count.
+	    			List<Object[]> subtaskCountList = null;
+	    			if(alertList != null && alertList.size() > 0){
+	    				subtaskCountList = govtAlertSubTaskDAO.getSubTaskCount(alertList);
+	    			}
+	    			//create a map from alertId and subtask count.
+	    			Map<Long,Long> alertIdAndSubTaskCountMap = new HashMap<Long,Long>();
+	    			if(subtaskCountList != null && subtaskCountList.size() > 0){
+	    				for(Object[] param : subtaskCountList){
+	    					alertIdAndSubTaskCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
+	    				}
+	    			}
+	    			if(alertCoreDashBoardVOs != null && alertCoreDashBoardVOs.size() > 0){
+	    				for(AlertCoreDashBoardVO alertCoreDashBoardVO : alertCoreDashBoardVOs){
+	    					if(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()) != null){
+	    						alertCoreDashBoardVO.setSubTaskCount(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()));
+	    					}
+	    				}
+	    			}
+	      			
+	      			return alertCoreDashBoardVOs;        
+	      			
+	      		}catch(Exception e){
+	      			e.printStackTrace();    
+	      		}
+	      		return null;
+	      	}
 }      	
