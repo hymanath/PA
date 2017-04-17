@@ -2622,7 +2622,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			 statusIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
         		}
     			
-    			List<Object[]> deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
+    			List<Object[]> deptScopeIdDtlsList = null;
+    			if(deptScopeIds != null && deptScopeIds.size() >0){
+    				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
+    			}
     			
     			
     			
@@ -4142,7 +4145,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(String fromDateStr, String toDateStr, Long stateId, 
         									List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
         									Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
-        									Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,List<Long> calCntrIdList){
+        									Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,List<Long> calCntrIdList,List<Long> sublevels){
     		try{
     			
     			Date fromDate = null;
@@ -4175,14 +4178,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				}
     			}
     			
-    			
+    			List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
     			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
     			List<Long> deptScopeIdList = new ArrayList<Long>();
     			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
     				for(Object [] param : childDeptScopeIdList){
     					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+    					KeyValueVO sublevel = new KeyValueVO();
+    					sublevel.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+    					sublevel.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+    					subLevels.add(sublevel);
     				}
     			}
+    			
+    			if(commonMethodsUtilService.isListOrSetValid(sublevels)){
+    				deptScopeIdList.clear();
+					deptScopeIdList.addAll(sublevels);
+				}
     			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
     			List<Object[]> alertList = null; 
     			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
@@ -4284,6 +4296,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			}
     			
     			if(returnList != null && returnList.size() > 0){
+    				returnList.get(0).getSubLevels().addAll(subLevels);
     				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
     					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
     						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
@@ -4348,6 +4361,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
       				}
       			}
+      			
       			List<Object[]> alertList = null;
       			if(alertType != null && alertType.equalsIgnoreCase("alert"))
     			 alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,group,searchType,calCntrIdList);
@@ -4752,7 +4766,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     	 public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(String fromDateStr, String toDateStr, Long stateId, 
     				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
     				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
-    				Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,String searchType){
+    				Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,String searchType,List<Long> sublevels){
                    try{
                 	   Date fromDate = null;
            			   Date toDate = null;
@@ -4784,14 +4798,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            				}
            			}
            			
-           			
+           			List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
            			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
            			List<Long> deptScopeIdList = new ArrayList<Long>();
            			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
            				for(Object [] param : childDeptScopeIdList){
            					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+           					KeyValueVO sublevel = new KeyValueVO();
+        					sublevel.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+        					sublevel.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+        					subLevels.add(sublevel);
            				}
            			}
+           			
+           			if(commonMethodsUtilService.isListOrSetValid(sublevels)){
+        				deptScopeIdList.clear();
+    					deptScopeIdList.addAll(sublevels);
+    				}
            			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
            			List<Object[]> alertList = null;  
            			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
@@ -4890,6 +4913,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            			}
            			
            			if(returnList != null && returnList.size() > 0){
+           				returnList.get(0).getSubLevels().addAll(subLevels);
            				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
            					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
            						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
