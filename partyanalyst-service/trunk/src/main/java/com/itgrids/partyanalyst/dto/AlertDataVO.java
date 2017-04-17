@@ -54,9 +54,14 @@ public class AlertDataVO {
 	private String department;
 	private String dueDate;
 	private Long severityId;
+	private List<AlertTrackingVO> subList1 = new ArrayList<AlertTrackingVO>(0);
 	
-	
-	
+	public List<AlertTrackingVO> getSubList1() {
+		return subList1;
+	}
+	public void setSubList1(List<AlertTrackingVO> subList1) {
+		this.subList1 = subList1;
+	}
 	public Long getSeverityId() {
 		return severityId;
 	}

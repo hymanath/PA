@@ -18,7 +18,9 @@ public class AlertAssigningVO {
 
 	private Long id;
 	private String name;
-	
+	private String title;
+	private String description;
+	private String dueDate;
 	private Long levelId;
 	private Long levelValue;
 	private Long departmentId;
@@ -35,7 +37,18 @@ public class AlertAssigningVO {
 	
 	private Long alertAssignedOfficerId;
 	
-	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public Long getId() {
 		return id;
 	}
