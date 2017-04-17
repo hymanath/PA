@@ -666,6 +666,47 @@ public List<Object[]> membersCountConstituencyWise(List<Long> levelIds, Date sta
 		return query.list();
 	}
 
+public List<Object[]> totalMainMembersCountLocationsWise1(Long levelId, Date startDate, Date endDate,List<Long> levelValues,String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList){
+	//0 count,1levelId
+//	levelValues.clear();
+//	levelValues.add(195L);
+	StringBuilder sb = new StringBuilder();
+	sb.append(" select count(model.tdpCommitteeMemberId),model.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId " +
+			" from TdpCommitteeMember model " +
+			" where model.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevelId = :levelId and model.isActive ='Y' " +
+			" and model.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId in (:levelValues) ");
+			//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1l ");
+	
+	if(startDate!=null){
+		sb.append(" and date(model.insertedTime) >= :startDate ");
+	}
+	if(endDate!=null){
+		sb.append(" and date(model.insertedTime) <= :endDate");
+	}
+	if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size()>0){
+		sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:committeeEnrollmentIdsLst) ");
+	}
+	sb.append(" group by model.tdpCommitteeRole.tdpCommittee.userAddress.constituency.constituencyId,model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId ");
+	
+	Query query = getSession().createQuery(sb.toString());
+	
+	query.setParameter("levelId", levelId);
+	if(startDate!=null){
+		query.setParameter("startDate", startDate);
+	}
+	if(endDate!=null){
+		query.setParameter("endDate", endDate);
+	}
+	
+	query.setParameterList("levelValues",levelValues);
+	if(committeeEnrollmentIdsLst != null && committeeEnrollmentIdsLst.size()>0){
+		query.setParameterList("committeeEnrollmentIdsLst", committeeEnrollmentIdsLst);
+	}
+	
+	return query.list();
+}
+
+
 public List<Object[]> totalMainMembersCountLocationsWise(Long levelId, Date startDate, Date endDate,List<Long> levelValues,String reqLocationTypeStr,List<Long> committeeEnrollmentIdsLst,List<Long> levelIdsList){
 	//0 count,1levelId
 	StringBuilder sb = new StringBuilder();
