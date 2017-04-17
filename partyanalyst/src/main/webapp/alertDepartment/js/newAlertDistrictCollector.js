@@ -1844,7 +1844,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 		str2+='<div class="row">';
 			str2+='<div class="col-sm-12 col-xs-12 col-md-12">';
 			if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0){
-				if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0 && esult.list3[0].todayCount>0){
+				if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0 && result.list3[0].todayCount>0){
 					totalCoutAlertIds.push(result.list3[0].todayAlertIds);
 				str2+='<p class="pad_5 todayCountCls" attr_todayCunt="'+totalCoutAlertIds+'" attr_name_alert = "TODAY" attr_total_count = "'+result.list3[0].todayCount+'" attr_alert_type="myAssignedSubTasks" >TODAY <span class="pull-right badge" style="cursor:pointer;">'+result.list3[0].todayCount+'</span></p>';
 				}else{
