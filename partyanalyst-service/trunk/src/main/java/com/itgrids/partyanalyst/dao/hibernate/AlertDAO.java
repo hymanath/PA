@@ -6259,7 +6259,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				"  a.alert_source_id as sourceId,rs.scope as scope ,a.alert_status_id as statusId, gd.department_name as deptName,es.entry_source as source , " +
 				" it.issue_type as issueType , ist.issue_type as issueSubType , fs.status as feedbackStattus, d.district_name as districtName," +
 				" c.name as cname, t.tehsil_name as tehsilName, p.panchayat_name as pname, h.hamlet_name as hname , leb.name as lname, " +
-				" w.name as ward ");
+				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo");
 		queryStr.append(" from ");
 		queryStr.append(" alert a ");
 		queryStr.append(" Left Join alert_feedback_status fs on a.alert_feedback_status_id = fs.alert_feedback_status_id ");
@@ -6315,7 +6315,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("pname", Hibernate.STRING)
 				.addScalar("hname", Hibernate.STRING)
 				.addScalar("lname", Hibernate.STRING)
-				.addScalar("ward", Hibernate.STRING);
+				.addScalar("ward", Hibernate.STRING)
+				.addScalar("callerName", Hibernate.STRING)
+				.addScalar("mobileNo", Hibernate.STRING);
 		
 		
 		if(departmentId != null && departmentId.longValue()>0L)
@@ -6744,6 +6746,113 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	}
     	 	return query.list();
     	 		 	
+    }
+    public List<Object[]> getAlertDetials1(String mobileNo,Long alertStatusId,Date startDate,Date endDate,Long departmentId,Long feedbackStattusId){
+    	/*StringBuilder sb = new StringBuilder();
+    		sb.append("select distinct model.alertId," +
+    				" model.title," +
+    				" model.impactLevelId," +
+    				" date(model.createdTime)," +
+    				" model.alertSourceId," +
+    				" model.regionScopes.scope, model.alertStatusId" +
+    				" from Alert model " +
+    				" where model.isDeleted='N' and model.alertCallerId is not null " );
+    				//" model.isDeleted = 'N'");
+    		if(mobileNo != null && !mobileNo.isEmpty())
+    		{
+    			sb.append(" and model.alertCaller.mobileNo = :mobileNo ");
+    		}
+    		if(alertStatusId != null && alertStatusId.longValue() > 0l)
+    		{
+    			sb.append(" and model.alertStatus.alertStatusId = :alertStatusId ");
+    		}
+    		if(startDate != null && endDate != null)
+    		{
+    			sb.append(" and (date(model.createdTime) between :startDate and :endDate) ");
+    		}
+    		*/
+    	
+    	StringBuilder queryStr  = new StringBuilder();
+		queryStr.append(" SELECT  a.alert_id as alert_id ,a.title as title , a.impact_level_id as levelId , date(a.created_time) as time ," +
+				"  a.alert_source_id as sourceId,rs.scope as scope ,a.alert_status_id as statusId, gd.department_name as deptName,es.entry_source as source , " +
+				" it.issue_type as issueType , ist.issue_type as issueSubType , fs.status as feedbackStattus, d.district_name as districtName," +
+				" c.name as cname, t.tehsil_name as tehsilName, p.panchayat_name as pname, h.hamlet_name as hname , leb.name as lname, " +
+				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo");
+		queryStr.append(" from ");
+		queryStr.append(" alert a ");
+		queryStr.append(" Left Join alert_feedback_status fs on a.alert_feedback_status_id = fs.alert_feedback_status_id ");
+		queryStr.append(" Left Join alert_entry_source es on a.alert_entry_source_id = es.alert_entry_source_id ");
+		queryStr.append(" Left Join alert_issue_type it on a.alert_issue_type_id = it.alert_issue_type_id ");
+		queryStr.append(" Left Join alert_issue_sub_type ist on a.alert_issue_sub_type_id = ist.alert_issue_sub_type_id ");
+		queryStr.append(" Left Join region_scopes rs on a.impact_level_id = rs.region_scopes_id ");
+		queryStr.append(" LEFT JOIN alert_status as1 on a.alert_status_id = as1.alert_status_id ");
+		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		queryStr.append(" left join alert_assigned_officer_new a1 on a.alert_id = a1.alert_id  ");
+		queryStr.append(" left join govt_department_designation_officer_new a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
+		queryStr.append(" left join govt_department_designation_new a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
+		queryStr.append(" left join govt_department gd on a3.govt_department_id = gd.govt_department_id  ");
+		queryStr.append(" left join user_address ua on a.address_id = ua.user_address_id  ");
+		queryStr.append(" left join district d on ua.district_id = d.district_id  ");
+		queryStr.append(" left join constituency c on ua.constituency_id = c.constituency_id  ");
+		queryStr.append(" left join tehsil t on ua.tehsil_id = t.tehsil_id  ");
+		queryStr.append(" left join panchayat p on ua.panchayat_id = p.panchayat_id  ");
+		queryStr.append(" left join hamlet h on ua.hamlet_id = h.hamlet_id  ");
+		queryStr.append(" left join local_election_body leb on ua.local_election_body = leb.local_election_body_id  ");
+		queryStr.append(" left join constituency w on ua.ward = w.constituency_id  ");
+		
+		
+		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		if(alertStatusId != null && alertStatusId.longValue() > 0l)
+			queryStr.append(" and a.alert_status_id =:alertStatusId ");
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+			queryStr.append(" and ac.mobile_no =:mobile_no ");
+		if(departmentId != null && departmentId.longValue()>0L)
+			queryStr.append(" and a3.govt_department_id =:departmentId ");
+		if(startDate != null && startDate != null)
+			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
+		if(feedbackStattusId != null && feedbackStattusId.longValue()>0L)
+			queryStr.append(" and a.alert_feedback_status_id =:feedbackStattusId ");
+		
+		queryStr.append(" order BY a.alert_status_id ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alert_id", Hibernate.LONG)
+				.addScalar("title", Hibernate.STRING)
+				.addScalar("levelId", Hibernate.LONG)
+				.addScalar("time", Hibernate.STRING)
+				.addScalar("sourceId", Hibernate.LONG)
+				.addScalar("scope", Hibernate.STRING)
+				.addScalar("statusId", Hibernate.LONG)
+				.addScalar("deptName", Hibernate.STRING)
+				.addScalar("source", Hibernate.STRING)
+				.addScalar("issueType", Hibernate.STRING)
+				.addScalar("issueSubType", Hibernate.STRING)
+				.addScalar("feedbackStattus", Hibernate.STRING)
+				.addScalar("districtName", Hibernate.STRING)//12
+				.addScalar("cname", Hibernate.STRING)
+				.addScalar("tehsilName", Hibernate.STRING)
+				.addScalar("pname", Hibernate.STRING)
+				.addScalar("hname", Hibernate.STRING)
+				.addScalar("lname", Hibernate.STRING)
+				.addScalar("ward", Hibernate.STRING)
+				.addScalar("callerName", Hibernate.STRING)
+				.addScalar("mobileNo", Hibernate.STRING);
+		
+		
+		if(departmentId != null && departmentId.longValue()>0L)
+			query.setParameter("departmentId", departmentId);
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+		query.setParameter("mobileNo", mobileNo);
+		
+		if(startDate != null && startDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(alertStatusId != null && alertStatusId.longValue() > 0l)
+			query.setParameter("alertStatusId", alertStatusId);
+		if(feedbackStattusId != null && feedbackStattusId.longValue()>0L)
+			query.setParameter("feedbackStattusId", feedbackStattusId);
+		
+		return query.list();  
     }
     
 }
