@@ -152,6 +152,7 @@ import com.itgrids.partyanalyst.model.VerificationComments;
 import com.itgrids.partyanalyst.model.VerificationConversation;
 import com.itgrids.partyanalyst.model.VerificationDocuments;
 import com.itgrids.partyanalyst.model.VerificationStatus;
+import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -241,7 +242,17 @@ private IAlertAssignedOfficerTrackingDAO alertAssignedOfficerTrackingDAO;
 private IGovtOfficerDAO govtOfficerDAO;
 private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
 private IAlertIssueSubTypeDAO alertIssueSubTypeDAO;
+private IAlertManagementSystemService alertManagementSystemService;
 
+
+public IAlertManagementSystemService getAlertManagementSystemService() {
+	return alertManagementSystemService;
+}
+
+public void setAlertManagementSystemService(
+		IAlertManagementSystemService alertManagementSystemService) {
+	this.alertManagementSystemService = alertManagementSystemService;
+}
 
 public IBoothDAO getBoothDAO() {
 	return boothDAO;
@@ -1396,6 +1407,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				 
 				 
 			 }
+			 
+			 if(commonMethodsUtilService.isListOrSetValid(returnList)){
+				 AlertDataVO alertVO =  returnList.get(0);
+				 if(alertVO != null){
+					 List<AlertTrackingVO> subTasksList =  alertManagementSystemService.getSubTaskDetails(alertVO.getId());
+					 if(commonMethodsUtilService.isListOrSetValid(subTasksList))
+						 alertVO.setSubList1(subTasksList);
+				 }
+				
+			 }
+			 
 		}
 		catch(Exception e)
 		{
