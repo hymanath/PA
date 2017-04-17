@@ -8,11 +8,12 @@ var globalDepartmentIdArr = [];
 var globalUserLevelId=0;
 var globalUserLevelValues = [0];
 var globalDesignationId=0;
+var globalCallCenterArr = [];
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 
 /* OnLoad Calls Start*/
 onLoadInitialisations();
-onLoadCalls();
+onLoadCalls111();
 
 /* OnLoad Calls ENd*/
 
@@ -37,6 +38,12 @@ function onLoadInitialisations()
 		if($(this).is(":checked"))
 		{
 			globalDepartmentIdArr.push($(this).attr("attr_val"));
+		}
+	});
+	$(".callcenterCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalCallCenterArr.push($(this).attr("attr_val"));
 		}
 	});
 	/*alert Assigned Part Start*/
@@ -330,10 +337,21 @@ function onLoadInitialisations()
 				globalDepartmentIdArr.push($(this).attr("attr_val"));
 			}
 		});
+		$(".callcenterCls").each(function(){
+			if($(this).is(":checked"))
+			{
+				globalCallCenterArr.push($(this).attr("attr_val"));
+			}
+		});
 		var newsPaperIdLen = globalNewsPaperIdArr.length;
 		var channelIdLen = globalChannelIdArr.length;
+		var callCenterIdLen = globalCallCenterArr.length;
 		if(newsPaperIdLen == 0 && channelIdLen == 0){
 			alert("Please Select Atleast One Newspaper or Channel.");   
+			return;
+		}
+		if(callCenterIdLen == 0){
+			alert("Please Select Atleast One Category In Manual Alerts.");   
 			return;
 		}
 		var departmentIdLen = globalDepartmentIdArr.length;
@@ -341,7 +359,7 @@ function onLoadInitialisations()
 			alert("Please Select Atleast One Department.");
 			return;
 		}    
-		onLoadCalls();
+		onLoadCalls111();
 	});
 	$(document).on("click",".selectAlldepartmentsCls",function(){
 		if($(this).prop('checked')) {
@@ -362,6 +380,13 @@ function onLoadInitialisations()
 			$(".newsPaperListCls").prop('checked', true);
 		}else{
 			$(".newsPaperListCls").prop('checked', false);
+		}
+	});
+	$(document).on("click",".selectAllcallcenterCls",function(){
+		if($(this).prop('checked')) {
+			$(".callcenterCls").prop('checked', true);
+		}else{
+			$(".callcenterCls").prop('checked', false);
 		}
 	});
 	
@@ -478,7 +503,7 @@ function responsiveTabs()
 
 
 	
-function onLoadCalls()
+function onLoadCalls111()
 {
 	 
 	responsiveTabs();
@@ -521,14 +546,14 @@ $(".scrollerBlockDepartments").mCustomScrollbar({setHeight:'300px'});
 function getStatusWiseAlertOverviewCnt()
 {
 	$("#statusOverview").html(spinner);
-	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : globalStateId,
       deptIdArr : globalDepartmentIdArr,  
       paperIdArr : globalNewsPaperIdArr,
-      chanelIdArr : globalChannelIdArr
+      chanelIdArr : globalChannelIdArr,
+	  callCenterArr : globalCallCenterArr
     }
     $.ajax({
       type:'GET',
@@ -669,7 +694,8 @@ function getLevelWiseAlertOverviewCnt()
 		stateId : globalStateId,
 		deptIdArr : globalDepartmentIdArr,  
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr
+		chanelIdArr : globalChannelIdArr,
+		callCenterArr : globalCallCenterArr
 	}
 	$.ajax({
 		type:'GET',
@@ -883,6 +909,7 @@ function getDepartmentWiseAlertOverviewCnt(type,id)
 		deptIdArr : globalDepartmentIdArr,  
 		paperIdArr : globalNewsPaperIdArr,
 		chanelIdArr : globalChannelIdArr,
+		callCenterArr : globalCallCenterArr,
 		alertStatusIdArr:alertStatusIdArr,
 		deptScopeLevelIdArr:deptScopeLevelIdArr,
 		resultType:type
@@ -1059,7 +1086,8 @@ function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){
 		stateId : globalStateId,
 		deptIdArr : globalDepartmentIdArr,  
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,                 
+		chanelIdArr : globalChannelIdArr, 
+		callCenterArr : globalCallCenterArr,		
 		statusId : statusId                                
     }
     $.ajax({
@@ -1083,7 +1111,8 @@ function getTotalAlertBylocationLvl(statusId,statusName,statuscount){
 		stateId : globalStateId,
 		deptIdArr : globalDepartmentIdArr,  
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,                 
+		chanelIdArr : globalChannelIdArr,
+		callCenterArr : globalCallCenterArr,		
 		statusId : 0,
 		govtDeptScopeId : statusId
 	}
@@ -1108,7 +1137,8 @@ function getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmen
 		stateId : globalStateId,
 		deptIdArr : globalDepartmentIdArr,  
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,                 
+		chanelIdArr : globalChannelIdArr, 
+		callCenterArr : globalCallCenterArr,	
 		statusId : departmentId,
 		deptId : statusId       
 	}
@@ -1133,7 +1163,8 @@ function getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,depa
 		stateId : globalStateId,
 		deptIdArr : globalDepartmentIdArr,  
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,                 
+		chanelIdArr : globalChannelIdArr,
+		callCenterArr : globalCallCenterArr,		
 		statusId : 0,
 		govtDeptScopeId : departmentId,    
 		deptId : statusId
@@ -2644,7 +2675,8 @@ function getStateThenGovtDeptScopeWiseAlertCountForStateLevel(departmentId,group
     toDate:currentToDate,
     stateId : globalStateId,
     paperIdArr : globalNewsPaperIdArr,
-    chanelIdArr : globalChannelIdArr,  
+    chanelIdArr : globalChannelIdArr,
+	callCenterArr : globalCallCenterArr,
     govtDepartmentId : departmentId,
     parentGovtDepartmentScopeId : 1, 
 	districtWorkLocationId : 0,  
@@ -2992,7 +3024,8 @@ function getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,gr
     toDate:currentToDate,
     stateId : globalStateId,
     paperIdArr : globalNewsPaperIdArr,
-    chanelIdArr : globalChannelIdArr,  
+    chanelIdArr : globalChannelIdArr,
+	callCenterArr : globalCallCenterArr,	
     govtDepartmentId : departmentId,
     parentGovtDepartmentScopeId : 5, 
 	districtWorkLocationId : districtId,  
@@ -3417,7 +3450,8 @@ function getStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(departmentId,gr
     toDate:currentToDate,
     stateId : globalStateId,
     paperIdArr : globalNewsPaperIdArr,
-    chanelIdArr : globalChannelIdArr,  
+    chanelIdArr : globalChannelIdArr, 
+	callCenterArr : globalCallCenterArr,	
     govtDepartmentId : departmentId,
     parentGovtDepartmentScopeId : 6, 
 	districtWorkLocationId : districtWorkLocationId,  
@@ -3834,7 +3868,8 @@ function getStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(departmentId
     toDate:currentToDate,
     stateId : globalStateId,
     paperIdArr : globalNewsPaperIdArr,
-    chanelIdArr : globalChannelIdArr,  
+    chanelIdArr : globalChannelIdArr,
+	callCenterArr : globalCallCenterArr,
     govtDepartmentId : departmentId,
     parentGovtDepartmentScopeId : 7, 
 	districtWorkLocationId : districtId,  
@@ -4258,7 +4293,8 @@ function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,gro
 			toDate:currentToDate,
 			stateId : globalStateId,
 			paperIdArr : globalNewsPaperIdArr,
-			chanelIdArr : globalChannelIdArr,    
+			chanelIdArr : globalChannelIdArr,
+			callCenterArr : globalCallCenterArr,			
 			govtDepartmentId : departmentId,
 			parentGovtDepartmentScopeId : 5,
 			group : groupType,//overview
@@ -4289,7 +4325,8 @@ function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,gro
 		toDate:currentToDate,
 		stateId : globalStateId,
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,    
+		chanelIdArr : globalChannelIdArr,
+		callCenterArr : globalCallCenterArr,		
 		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : 6,
 		group : groupType,
@@ -4323,7 +4360,8 @@ function getDivisionIdListForDivisionFilter(departmentId,districtId){
 		toDate:currentToDate,
 		stateId : globalStateId,
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,    
+		chanelIdArr : globalChannelIdArr,
+		callCenterArr : globalCallCenterArr,		
 		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : 6,
 		districtWorkLocationId : districtId, //district id here
@@ -4384,7 +4422,8 @@ function getDistrictIdListForSubDivisionFilter(departmentId){
 		toDate:currentToDate,
 		stateId : 1,
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,    
+		chanelIdArr : globalChannelIdArr,
+		callCenterArr : globalCallCenterArr,		
 		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : 7,
 		group : groupType,
@@ -4416,7 +4455,8 @@ function getDivisionIdListForSubDivisionFilter(departmentId,districtId){
     toDate:currentToDate,
     stateId : 1,
     paperIdArr : globalNewsPaperIdArr,
-	chanelIdArr : globalChannelIdArr,     
+	chanelIdArr : globalChannelIdArr,
+	callCenterArr : globalCallCenterArr,	
     govtDepartmentId : departmentId,
     parentGovtDepartmentScopeId : 7,
 	districtWorkLocationId : districtId,//district id here, default 0
@@ -4449,7 +4489,8 @@ function getSubDivisionIdListForSubDivisionFilter(departmentId,districtId,distri
 		toDate:currentToDate,
 		stateId : 1,
 		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,     
+		chanelIdArr : globalChannelIdArr,
+		callCenterArr : globalCallCenterArr,		
 		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : 7,
 		districtWorkLocationId :districtId, //district id here ,default 0
@@ -4491,13 +4532,16 @@ function getlevelAndStatusWiseClickForState(statusId,statusName,totalCount,scope
 	//check
 	var paperIdArr=[];
 	var chanelIdArr=[];
+	 var calCntrIdArr = [];
+  
 	
     var jObj = {
     fromDate : currentFromDate, 
     toDate : currentToDate,
     stateId:1,
     paperIdArr:paperIdArr,
-    chanelIdArr:paperIdArr,
+    chanelIdArr:chanelIdArr,
+	callCenterArr :calCntrIdArr,
     parentGovtDepartmentScopeId:1,
     govtDepartmentId:departmentId,
     sortType:sortingType,
@@ -4544,12 +4588,15 @@ function getlevelAndStatusWiseClickForDistrict(statusId,statusName,totalCount,sc
 	//check
 	var paperIdArr=[];
 	var chanelIdArr=[];
+	 var calCntrIdArr = [];
+  
     var jObj = {
     fromDate : currentFromDate, 
     toDate : currentToDate,
     stateId:1,
     paperIdArr:paperIdArr,
     chanelIdArr:chanelIdArr,
+	callCenterArr : calCntrIdArr,
     parentGovtDepartmentScopeId:5,
     govtDepartmentId:departmentId,
     sortType:sortingType,
@@ -4602,6 +4649,7 @@ function getlevelAndStatusWiseClickForDivision(statusId,statusName,totalCount,sc
     stateId:1,
     paperIdArr:globalNewsPaperIdArr,
     chanelIdArr:globalChannelIdArr,
+	callCenterArr : globalCallCenterArr,
     parentGovtDepartmentScopeId:6,
     govtDepartmentId:departmentId,
     sortType:sortingType,
@@ -4654,6 +4702,7 @@ function getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount
     stateId:1,
 	paperIdArr:globalNewsPaperIdArr,
     chanelIdArr:globalChannelIdArr,
+	callCenterArr : globalCallCenterArr,
     parentGovtDepartmentScopeId:7,
     govtDepartmentId:departmentId,
     sortType:sortingType,
