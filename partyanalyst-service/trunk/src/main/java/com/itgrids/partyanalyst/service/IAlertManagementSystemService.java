@@ -111,4 +111,6 @@ public interface IAlertManagementSystemService {
 	public String getDesignationForUser(Long userId);
 	public DistrictOfficeViewAlertVO getDeptDetails(Long userId);
 	public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(Long deptId,Long statusId,String type,Long govtDeptGovtOffrId,Long govtOffrcrId,String searchType);
+	public List<AlertTrackingVO> getSubTaskDetails(Long alertId);
+	
 }
