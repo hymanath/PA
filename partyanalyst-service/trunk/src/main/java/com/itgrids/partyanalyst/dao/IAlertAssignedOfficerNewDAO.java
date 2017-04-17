@@ -51,4 +51,5 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
 	public List<Long> getGovtDepartmentDesignationOfficer(Long alertId);
 	public List<Long> getStateLevelAlertclickViewAlertsIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,
 			 String type,Long deptId,Long statusId);
+	public List<Long> getGovtDeptScopeIdForAlert(Long alertId);
 }

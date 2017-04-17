@@ -3102,4 +3102,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
      }
+	 public List<Long> getGovtDeptScopeIdForAlert(Long alertId){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentScopeId " +
+		 				 " from AlertAssignedOfficerNew model " +
+		 				 " where model.alertId =:alertId");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 query.setParameter("alertId", alertId);
+		 return query.list();
+	 }
 }// GDWL.govt_department_work_location_id, GDS.govt_department_scope_id,AAO.alert_status_id

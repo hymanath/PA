@@ -3608,6 +3608,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         				childDesignationOfficerId = deptOfficerList.get(0);
         			}
         		}
+        		//to check same level designation.
+        		List<Long> govtDeptScopeIdForAlert = alertAssignedOfficerNewDAO.getGovtDeptScopeIdForAlert(alertId);
         		//to wheck whether he/she is an admin or not.
         		Long userCount = govtDepartmentDesignationOfficerNewDAO.getUserIdCount(userId);
         		String userStatus = "";
@@ -3652,7 +3654,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
             			finalList.add(vo);            			
         			}  
         			
-        		}else{
+        		}else if(levelId != null && govtDeptScopeIdForAlert != null && govtDeptScopeIdForAlert.get(0) != null && levelId.equals(govtDeptScopeIdForAlert.get(0))){
+        			userType = "same";
+        			IdNameVO vo = new IdNameVO();        			
+        			finalList.add(vo);
+        		}
+        		else{
         			userType = "other";        			
         			IdNameVO vo = new IdNameVO();        			
         			finalList.add(vo);
