@@ -16,10 +16,7 @@ function onLoadClicks()
 		var path = "http://mytdp.com/"+$(this).attr("attr_path");
 		window.open(path);
 	});
-	$(document).on("change","#divisionDistWiseLevelsDivId",function(){
-		var defaultDepartmentID = $(this).attr("attr_department_id")
-			getDivisionIdListForDivisionFilter(defaultDepartmentID);
-	});
+	
 	$(document).on('change', '#locationLevelSelectId', function(){
 		getParentLevelsOfLevel();
 	});
