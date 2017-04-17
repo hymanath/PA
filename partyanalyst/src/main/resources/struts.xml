@@ -16641,9 +16641,9 @@
 		</action>
 		
 		<action name="assigningSubTaskToOfficerAction" class="alertManagementSystemAction" method="assigningSubTaskToOfficer">
-			<result type="json" name="success">		   
-				<param name="root">successMsg</param>
-			</result>	
+			 <result name="success" type="stream">			   
+				    <param name="inputName">inputStream</param>
+			  </result>	
 		</action>
 		<action name="getGovtSubLevelInfoAction" class="alertManagementSystemAction" method="getGovtSubLevelInfo">
 			<result type="json" name="success">		   
