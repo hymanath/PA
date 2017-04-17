@@ -16,16 +16,23 @@ function onLoadClicks()
 		var path = "http://mytdp.com/"+$(this).attr("attr_path");
 		window.open(path);
 	});
-	
-	$(document).on('change', '#locationLevelSelectId', function(){
-		getParentLevelsOfLevel();
+	/*$(document).on("change","#divisionDistWiseLevelsDivId",function(){
+		var defaultDepartmentID = $(this).attr("attr_department_id")
+			getDivisionIdListForDivisionFilter(defaultDepartmentID);
+	});*/
+	$(document).on('change', '#locationLevelSelectId,#locationLevelSelectId1', function(){
+		
+		getParentLevelsOfLevel($(this).attr('id'));
+	});
+	$(document).on('change','.locationsCls', function(evt, params) {
+		designationsBySubTaskDepartment();
 	});
 	$(document).on('change','.locationCls', function(evt, params) {
 		designationsByDepartment();
 	});
-	$(document).on('change', '#departmentsId', function(){
+	$(document).on('change', '#departmentsId,#departmentsId1', function(){
 		var deptId = $(this).val();
-		getDepartmentLevels(deptId);
+		getDepartmentLevels(deptId,$(this).attr('id'));
 	});
 	$(document).on("click",".closeSecondModal",function(){
 		setTimeout(function(){
@@ -178,9 +185,9 @@ function onLoadClicks()
 		YAHOO.util.Connect.asyncRequest('POST','assigningAlertToOfficerNewAction.action',uploadHandler); 
 	});
 
-	$(document).on('change','#designationsId', function(evt, params) {
+	$(document).on('change','#designationsId,#designationsId1', function(evt, params) {
 		var designationId = $(this).val();
-		officersByDesignationAndLevel(designationId)
+		officersByDesignationAndLevel(designationId,$(this).attr('id'));
 	});
 	
 	
@@ -293,8 +300,14 @@ function onLoadClicks()
 	});
 	$(document).on("click","div.assign-user",function(e){
 		e.stopPropagation()
-		$(this).find(".assign-user-body").show();
+		$(this).find(".assign-user-body1").show();
 	});
+	
+	$(document).on("click",".glyphicon-user",function(e){
+		e.stopPropagation()
+		$(".assign-user-body1").show();
+	});
+	
 	$(document).on("click",".panel-border-white",function(e){
 		e.stopPropagation()
 	});
@@ -467,7 +480,7 @@ function viewAlertHistory(alertId)
 
 
 
-function getDepartmentLevels(deptId){
+function getDepartmentLevels(deptId,buildId){
 	
 	var jsObj = {
 		departmentId : deptId
@@ -478,29 +491,33 @@ function getDepartmentLevels(deptId){
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			buildDepartmentLevels(result);
+			buildDepartmentLevels(result,buildId);
 		}
 	});
 	
 }
-function buildDepartmentLevels(result){
-	
+function buildDepartmentLevels(result,tempBuildId){
+	var buildId='locationLevelSelectId';
+	if(tempBuildId =='departmentsId1')
+		buildId='locationLevelSelectId1';
 	var str='';	
 	str+='<option value="0">Select Level</option>';
 	for(var i in result){
 			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 	}
 	
-	$("#locationLevelSelectId").html(str);
-	$("#locationLevelSelectId").trigger("chosen:updated");
+	$("#"+buildId+"").html(str);
+	$("#"+buildId+"").trigger("chosen:updated");
+	
+	
 }
 
 
-function getParentLevelsOfLevel(){
+function getParentLevelsOfLevel(buildId){
 	departmentId = 49;
 	var jsObj = {
 		departmentId : departmentId,
-		levelId : $("#locationLevelSelectId").val()
+		levelId : $("#"+buildId+"").val()
 	}
 	$.ajax({
       type:'GET',
@@ -508,13 +525,16 @@ function getParentLevelsOfLevel(){
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			buildParentLevelsOfLevel(result,departmentId);
+			buildParentLevelsOfLevel(result,departmentId,buildId);
 		}
 	});
 }
-function buildParentLevelsOfLevel(result,departmentId){
-	var str='';
-		
+function buildParentLevelsOfLevel(result,departmentId,tempbuildId){
+
+	var buildId="parentLevelDivId";
+	if(tempbuildId =='locationLevelSelectId1')
+		buildId="parentLevelDivId1";
+	var str='';		
 		for(var i in result){
 			if(i<result.length-1){
 				str+='<div class="col-sm-6">';
@@ -524,13 +544,15 @@ function buildParentLevelsOfLevel(result,departmentId){
 			}else{
 				str+='<div class="col-sm-6">';
 					str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
-					str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
+					if(tempbuildId =='locationLevelSelectId1')
+						str+='<select  class="chosenSelect locationsCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
+					else
+						str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
 				str+='</div>';
 			}
-			
 		}
-	
-	$("#parentLevelDivId").html(str);
+		
+	$("#"+buildId+"").html(str);
 	$(".chosenSelect").chosen();
 	
 	for(var i in result){
@@ -591,6 +613,37 @@ function buildGovtSubLevelInfoAction(result){
 
 
 
+function designationsBySubTaskDepartment()
+{
+	$("#designationsId1").empty();
+	$("#designationsId1").trigger("chosen:updated");
+	$("#officerNamesId1").empty();
+	$("#officerNamesId1").trigger("chosen:updated");
+	var LevelId = $("#locationLevelSelectId1").chosen().val();
+	var deprtmntId = $("#departmentsId1").chosen().val();
+	var levelValue = $(".locationsCls").chosen().val();
+	
+	var jsObj = {
+		departmentId	: deprtmntId,
+		levelId			: LevelId,
+		levelValue			: levelValue
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDesignationsByDepartmentNewAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		str+='<option value="0">Select Designation</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#designationsId1").html(str);
+		$("#designationsId1").trigger("chosen:updated");
+	});
+}
+
 function designationsByDepartment()
 {
 	$("#designationsId").empty();
@@ -622,12 +675,20 @@ function designationsByDepartment()
 	});
 }
 
-function officersByDesignationAndLevel(designationId)
+function officersByDesignationAndLevel(designationId,tempBuildId)
 {
-	$("#officerNamesId").empty();
-	$("#officerNamesId").trigger("chosen:updated");
+	var buildId = 'officerNamesId';
 	var LevelId = $("#locationLevelSelectId").chosen().val()
 	var LevelValue = $(".locationCls").chosen().val()
+	if(tempBuildId=="designationsId1"){
+		buildId = 'officerNamesId1';
+		LevelId = $("#locationLevelSelectId1").chosen().val()
+		LevelValue = $(".locationsCls").chosen().val()
+	}
+	
+	$("#"+buildId+"").empty();
+	$("#"+buildId+"").trigger("chosen:updated");
+	
 	
 	var jsObj = {
 		levelId				: LevelId,
@@ -645,8 +706,8 @@ function officersByDesignationAndLevel(designationId)
 		{
 			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 		}
-		$("#officerNamesId").html(str);
-		$("#officerNamesId").trigger("chosen:updated");
+		$("#"+buildId+"").html(str);
+		$("#"+buildId+"").trigger("chosen:updated");
 	});
 }
 
@@ -748,15 +809,16 @@ function rightSideExpandView(alertId)
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
 									str+='</li>';
 									
-									/* str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTaskli" style="display:none;">';
-										str+='<i class="fa fa-level-down" aria-hidden="true"></i>';
-									str+='</li>'; */  
+									 str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="" style="">';
+										str+='<i class="fa fa-level-down" aria-hidden="true" id="displaySubTasksli"></i>';
+									str+='</li>';  
 									
+									/*
 									str+='<li status-icon-block="subTask" data-toggle="tooltip" class="status-icon-subtask" data-placement="top" title="Sub Task" id="displaySubTaskli" style="display:none;">';
 										str+='<i class="fa fa-mail-forward"></i>';
 										str+='<i class="fa fa-level-down fa-2x"></i>';
 									str+='</li>';
-									
+									*/
 									str+='<li id="displayDueDate1"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
 										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date1">Due date</span>';
 									str+='</li>';
@@ -795,47 +857,185 @@ function rightSideExpandView(alertId)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="panel-body">';
-						str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
-							str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
-						str+='</p>';
-						str+='<div id="alertDetails"></div>';
-						str+='<div id="articleAttachment"></div>';
-						str+='<div id="alertCategory"></div>';
-						str+='<div id="alertSubtask"></div>';
-						str+='<div id="alertComments"></div>';
-						str+='<div id="alertGeneralComments"></div>';
-						str+='<div status-body="task" class="m_top20"></div>';
-						str+='<div status-body="subTask" class="m_top20"></div>';
-					str+='</div>';
-					str+='<div class="panel-footer">';
-						str+='<div class="row">';
-							str+='<div class="col-sm-1 text-center">';
-								str+='<span class="icon-name icon-primary">Ra</span>';
-							str+='</div>';
-							str+='<div class="col-sm-11">';
-								str+='<div class="panel panel-default panel-border-white">';
-									str+='<div class="panel-heading">';
-										str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
-									str+='</div>';
-									str+='<div class="panel-body">';
-										str+='<div class="comment-area">Comment Here</div>';
-										str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
-									str+='</div>';
-									str+='<div class="panel-footer text-right">';
-										str+='<button class="btn btn-primary comment-btn" attr_alert_id="'+alertId+'" id="commentChangeId">Save</button>';
-										str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
+					
+					str+='<span id="main_alert_block">';
+						str+='<div class="panel-body">';
+							str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
+								str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
+							str+='</p>';
+							str+='<div id="alertDetails"></div>';
+							str+='<div id="articleAttachment"></div>';
+							str+='<div id="alertCategory"></div>';
+							str+='<div id="alertSubtask"></div>';
+							str+='<div id="alertComments"></div>';
+							str+='<div id="alertGeneralComments"></div>';
+							str+='<div status-body="task" class="m_top20"></div>';
+							str+='<div status-body="subTask" class="m_top20"></div>';
+						str+='</div>';
+						str+='<div class="panel-footer">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-1 text-center">';
+									str+='<span class="icon-name icon-primary">Ra</span>';
+								str+='</div>';
+								str+='<div class="col-sm-11">';
+									str+='<div class="panel panel-default panel-border-white">';
+										str+='<div class="panel-heading">';
+											str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
+										str+='</div>';
+										str+='<div class="panel-body">';
+											str+='<div class="comment-area">Comment Here</div>';
+											str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
+										str+='</div>';
+										str+='<div class="panel-footer text-right">';
+											str+='<button class="btn btn-primary comment-btn" attr_alert_id="'+alertId+'" id="commentChangeId">Save</button>';
+											str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
+										str+='</div>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-				str+='</div>';
+				str+='</span>';
+				
+				str+='<span id="sub_task_block"  style="display:none;" >';
+						str+='<div class="panel-body panel-heading ">';
+							str+='<div class="row">';
+								str+='<div style="margin-left:25px"><i class="fa fa-level-down fa-2x" aria-hidden="true"></i> <label style="font-size:20px;margin-left:10px"> ASSIGN SUB TASK </label></div>';
+							str+=' </div>';
+							str+='<div class="col-sm-12">';
+							  str+='<ul class="assign-subtask-list m_top20">';
+							  str+='<form id="subTaskAlertAssign" name="subTaslAlertAssignForm">';
+								str+='<li class="new">';
+								  str+='<div class="row">';
+									str+='<div class="col-sm-1">';
+									  str+='<i class="glyphicon glyphicon-plus"></i>';
+									str+='</div>';
+									str+='<div class="col-sm-7">';
+									  str+='<input type="text" class="form-control" name=""alertAssigningVO.title/>';
+									str+='</div>';
+									str+='<div class="col-sm-4" style="margin-top:11px;">';
+									 str+='<span class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date" style="padding: 9px;border-radius: 20px;margin-left: 40px">';
+										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2" style=""> Due Date </span>';
+									str+='</span>';
+										str+='<span class="assign-user">';
+										str+='<span id="" style=""><i class="glyphicon glyphicon-user pointerCls"></i> </span>';
+										
+										str+='<div class="assign-user-body1" style="display:none;left:-356px;right:0;position:absolute;">';
+												str+='<div class="arrow_box_top" >';
+													str+='<div>';
+														str+='<div class="row">';  
+															str+='<div class="col-sm-12">';
+																str+='<div id="assignErrorDivId1"></div>';
+															str+='</div>';
+															str+='<div class="col-sm-6">';
+																str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId1"></span></label>';
+																str+='<select class="chosenSelect" id="departmentsId1" name="alertAssigningVO.departmentId">	';
+																	str+='<option value="0">Select Department</option>';
+																	str+='<option value="49">RWS</option>';
+																str+='</select>';
+															str+='</div>';
+															
+															str+='<div class="col-sm-6">';
+																str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId1"></span></label>';
+																str+='<select  class="chosenSelect" id="locationLevelSelectId1" name="alertAssigningVO.levelId">	';
+																	str+='<option></option>';
+																str+='</select>';
+															str+='</div>';
+															
+															str+='<div id="parentLevelDivId1"> </div>';
+															
+															str+='<div class="col-sm-6">';
+																str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId1"></span></label>';
+																str+='<select name="alertAssigningVO.designationId" id="designationsId1" class="chosenSelect">';
+																	str+='<option></option>	';
+																str+='</select>';
+															str+='</div>';
+															str+='<div class="col-sm-6">';
+																str+='<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId1"></span></label>';
+																str+='<select name="alertAssigningVO.govtOfficerId" id="officerNamesId1" class="chosenSelect">';
+																	str+='<option></option>';
+																str+='</select>';
+															str+='</div>';
+														str+='</div>';
+														str+='<input type="hidden" id="hiddenAlertId1" value="'+alertId+'" name="alertAssigningVO.alertId"/>';
+													str+='</div>';
+												str+='</div>';
+											str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
+												str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button">assign</button>';
+												str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg1">';
+												str+='<span class="text-success" id="assignSuccess"></span>';
+											str+='</div>';
+											str+='</form>';
+										str+='</div>';
+										
+
+									str+='</span>';
+									
+									  /*str+='<li class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date">';
+										str+=' <i class="glyphicon glyphicon-calendar"></i><span class="modal-date">Due date</span>';
+									str+='</li>';*/
+									   str+='<i class="fa fa-user-circle  fa-2x " aria-hidden="true"></i> ';
+									 // str+='<span class="icon-name icon-primary"></span>';
+									  //str+='<span class="label label-default">...</span>';
+									str+='</div>';
+								  str+='</div>';
+								str+='</li>';
+								str+='</form>';
+							  str+='</ul>';
+							str+='</div>';
+
+						str+='</div>';
+						str+='<div class="panel-footer" id="alert-block-commentId">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-1 text-center">';
+									str+='<span class="icon-name icon-primary">Ra</span>';
+								str+='</div>';
+								str+='<div class="col-sm-11">';
+									str+='<div class="panel panel-default panel-border-white">';
+										str+='<div class="panel-heading">';
+											str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
+										str+='</div>';
+										str+='<div class="panel-body">';
+											str+='<div class="comment-area">Comment Here</div>';
+											str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
+										str+='</div>';
+										str+='<div class="panel-footer text-right">';
+											str+='<button class="btn btn-primary comment-btn" attr_alert_id="'+alertId+'" id="commentChangeId">Save</button>';
+											str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</span>';
+				
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	$("#rightSideExpandView").html(str);
 	$('[data-toggle="tooltip"]').tooltip();
+	$(".chosenSelect").chosen({width:'100%'});
+	
+	$('.modal-date2').data('daterangepicker');
+	
+	$(function() {
+		var start = moment();
+		
+		function cb(start) {
+			$('.modal-date2').html(start.format('DD/MM/YYYY'));
+		}
+       
+		$('.modal-date2').daterangepicker({
+			startDate: start,
+			singleDatePicker:true,
+			locale:{
+				format:"DD/MM/YYYY"
+			}
+			
+		}, cb);		
+	});
+	
 	initializeFile();
 	dateRangePicker(alertId);
 	assignedOfficersDetailsForAlert(alertId);
@@ -856,6 +1056,139 @@ function rightSideExpandView(alertId)
 /* google.load("elements", "1", {
 	packages: "transliteration"
 }); */
+
+
+$(document).on("click","#displaySubTasksli",function(){
+	$('#main_alert_block').hide();
+	$('#alert-block-commentId').hide();
+	$('#sub_task_block').show();
+});
+$(document).on("click","#subTaskAssignOfficerId",function(){
+	
+/*	if($("#departmentsId1").val() == null || $("#departmentsId1").val() == "" || $("#departmentsId1").val() == 0)
+		{
+			$("#assignErrorDivId1").html("please select department");
+			return;
+		}
+		if($("#locationLevelSelectId1").val() == null || $("#locationLevelSelectId1").val() == "" || $("#locationLevelSelectId1").val() == 0)
+		{
+			$("#assignErrorDivId1").html("please select impact level");
+			return;
+		}
+		if($("#locationLevelSelectId1").val() == 1)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select State");
+				return;
+			}
+		}
+		if($("#locationLevelSelectId1").val() == 5)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select location");
+				return;
+			}
+		}
+		if($("#locationLevelSelectId1").val() == 6)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select district");
+				return;
+			}
+			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select location");
+				return;
+			}
+		}
+		if($("#locationLevelSelectId1").val() == 7)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select district");
+				return;
+			}
+			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select division");
+				return;
+			}
+			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select location");
+				return;
+			}
+		}
+		if($("#locationLevelSelectId1").val() == 8)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select district");
+				return;
+			}
+			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select division");
+				return;
+			}
+			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select sub division");
+				return;
+			}
+			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
+			{
+				$("#assignErrorDivId1").html("please select location");
+				return;
+			}
+		}
+		if($("#designationsId1").val() == null || $("#designationsId1").val() == "" || $("#designationsId1").val() == 0)
+		{
+			$("#assignErrorDivId1").html("please select designation");
+			return;
+		}
+		if($("#officerNamesId1").val() == null || $("#officerNamesId1").val() == "" || $("#officerNamesId1").val() == 0)
+		{
+			$("#assignErrorDivId1").html("please select officer name");
+			return;
+		}
+		*/
+		$("#assiningLdngImg1").show();
+		$("#subTaskAssignOfficerId").hide();
+		var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				displayStatus(uploadResult);
+			}
+		};
+
+		YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
+	});
+	
 function assignedOfficersDetailsForAlert(alertId)
 {
 	var jsObj = {
