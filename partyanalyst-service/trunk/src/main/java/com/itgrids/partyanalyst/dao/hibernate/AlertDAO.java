@@ -6025,7 +6025,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		return query.list();   
 	}
-    public List<Object[]> getTotalGovtPendingStatusAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type){
+    public List<Object[]> getTotalGovtPendingStatusAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type,List<Long> calCntrIdList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
 		if(type.equalsIgnoreCase("Department")){
@@ -6063,8 +6063,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		
-		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty())
-			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) )");
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
+			if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" or A.alert_caller_id is null ");
+			}
+			queryStr.append(" )");
+		}
 		
 		if(type.equalsIgnoreCase("Department")){
 			queryStr.append(" group by GD.govt_department_id");
@@ -6348,7 +6355,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	
     }
     
-    public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId){
+    public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId,List<Long> calCntrIds){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");  
 		queryStr.append(" A.alert_id as alert_id, " +//0
@@ -6418,7 +6425,14 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		//queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
 		
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
-			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ))");
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) )");
+		
+			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" or A.alert_caller_id is null ");
+			}
+			queryStr.append(" )");
 		}
 			
 		/*else if(printIdList != null && !printIdList.isEmpty())
@@ -6670,11 +6684,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list();
 		
     }
-    public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,Date fromDate,Date toDate ){
+    public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,Date fromDate,Date toDate,Long statusId){
     	StringBuilder sb = new StringBuilder();
     	 	sb.append(" select model.alertId,model.createdTime,model.title,model.description,model.alertIssueType.issueType," +
     	 			" model.alertIssueSubType.issueType,model.alertStatus.alertStatus,model.alertCaller.callerName, district.districtName, " +
-    	 			" constituency.name, tehsil.tehsilName,panchayat.panchayatName,hamlet.hamletName,leb.name,ward.name ");
+    	 			" constituency.name, tehsil.tehsilName,panchayat.panchayatName,hamlet.hamletName,leb.name,ward.name,model.alertCaller.mobileNo");
     	 				//9					10					11					12					13		14
     	 	sb.append("	from Alert model " );
     		sb.append(" left join model.userAddress userAddress1 ");
@@ -6704,7 +6718,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	if(fromDate != null && toDate != null){
     			sb.append(" (date(model.createdTime) between :fromDate and :toDate) and ");
     		}
-    	 	
+    	 	if(statusId != null && statusId.longValue() > 0l){
+    	 		sb.append(" model.alertStatus.alertStatusId = :statusId and ");
+    	 	}
     	 	sb.append(" model.isDeleted ='N' ");
     	 	Query query = getSession().createQuery(sb.toString());
     	 	if(locatoinType != null && locatoinType.equalsIgnoreCase("district")){
@@ -6723,6 +6739,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     			query.setDate("fromDate", fromDate);
     			query.setDate("toDate", toDate);
     		}
+    	 	if(statusId != null && statusId.longValue() > 0l){
+    	 		query.setParameter("statusId", statusId);
+    	 	}
     	 	return query.list();
     	 		 	
     }

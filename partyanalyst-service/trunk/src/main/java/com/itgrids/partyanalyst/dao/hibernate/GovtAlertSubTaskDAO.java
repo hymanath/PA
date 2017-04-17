@@ -675,7 +675,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    
    public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
 		   List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
-		   Long districtWorkLocationId, String group,String searchType){
+		   Long districtWorkLocationId, String group,String searchType,List<Long> calCntrIds){
    	StringBuilder queryStr = new StringBuilder();
    	queryStr.append(" select ");
    	
@@ -759,7 +759,13 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
-			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
+			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" or A.alert_caller_id is null ");
+			}
+			queryStr.append(" )");
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			queryStr.append(" and GUA.state_id in (:levelValues)");
@@ -836,7 +842,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    
    public List<Object[]> getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
 		   Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
-		   Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group,String searchType){
+		   Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group,String searchType,List<Long> calCntrIds){
    	StringBuilder queryStr = new StringBuilder();
    	queryStr.append(" select ");
    	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
@@ -920,7 +926,13 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
-			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
+			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" or A.alert_caller_id is null ");
+			}
+			queryStr.append(" )");
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			queryStr.append(" and GUA.state_id in (:levelValues)");
@@ -1000,7 +1012,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    public List<Object[]> getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(Date fromDate,Date toDate,Long stateId,
 		   List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
 		   Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,
-		   Long subDivisionWorkLocationId,String filter,String group,String searchType){
+		   Long subDivisionWorkLocationId,String filter,String group,String searchType,List<Long> calCntrIds){
    	StringBuilder queryStr = new StringBuilder();
    	queryStr.append(" select ");
    	queryStr.append(" GDWL1.govt_department_scope_id as parentGovtDepartmentScopeId, ");//0
@@ -1091,7 +1103,13 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
-			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
+			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" or A.alert_caller_id is null ");
+			}
+			queryStr.append(" )");
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			queryStr.append(" and GUA.state_id in (:levelValues)");
@@ -1172,7 +1190,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    }
    public List<Long> getStateAndDistrictWorkLocationGovtDeptScopeWiseSubTaskCountDetails(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
 		   List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
-		   Long districtWorkLocationId, String group,Long statusId,Long govtDeprtMentScopeId){
+		   Long districtWorkLocationId, String group,Long statusId,Long govtDeprtMentScopeId,List<Long> calCntrIds){
    	StringBuilder queryStr = new StringBuilder();
    	queryStr.append(" select ");
     queryStr.append(" distinct AAO.alert_id as alertIds ");
@@ -1240,7 +1258,13 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
-			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
+	    	    if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+	    	    	queryStr.append(" or A.alert_caller_id is not null ");
+				}else{
+					queryStr.append(" or A.alert_caller_id is null ");
+				}
+	    	    queryStr.append(" )");
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			queryStr.append(" and GUA.state_id in (:levelValues)");
@@ -1302,7 +1326,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    }
    public List<Long> getDivisionWorkLocationGovtDeptScopeWiseSubTaskDetails(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
 		   Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
-		   Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group,Long statusId,Long govtDeprtMentScopeId){
+		   Long districtWorkLocationId,Long divisionWorkLocationId,String filter,String group,Long statusId,Long govtDeprtMentScopeId,List<Long> calCntrIds){
    	StringBuilder queryStr = new StringBuilder();
    	queryStr.append(" select ");
     queryStr.append(" distinct AAO.alert_id as alertIds ");
@@ -1371,7 +1395,13 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
-			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
+			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+				queryStr.append(" or (A.alert_caller_id is not null) ");
+			}else{
+				queryStr.append(" or (A.alert_caller_id is null) ");
+			}
+			queryStr.append(" )");
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			queryStr.append(" and GUA.state_id in (:levelValues)");
@@ -1434,7 +1464,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    public List<Long> getSubDivisionWorkLocationDeptScopeWiseSubTaskCountDetails(Date fromDate,Date toDate,Long stateId,
 		   List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
 		   Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,Long districtWorkLocationId,Long divisionWorkLocationId,
-		   Long subDivisionWorkLocationId,String filter,String group,Long statusId,Long govtDeprtMentScopeId){
+		   Long subDivisionWorkLocationId,String filter,String group,Long statusId,Long govtDeprtMentScopeId,List<Long> calCntrIds){
    	StringBuilder queryStr = new StringBuilder();
 	queryStr.append(" select ");
     queryStr.append(" distinct AAO.alert_id as alertIds ");
@@ -1509,7 +1539,13 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
-			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
+			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+				queryStr.append(" or (A.alert_caller_id is not null) ");
+			}else{
+				queryStr.append(" or (A.alert_caller_id is null) ");
+			}
+			queryStr.append(" )");
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			queryStr.append(" and GUA.state_id in (:levelValues)");
