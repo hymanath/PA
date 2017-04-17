@@ -10059,7 +10059,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					vo.setHamlet(commonMethodsUtilService.getStringValueForObject(objects[16]));
 					vo.setLocalBody(commonMethodsUtilService.getStringValueForObject(objects[17]));
 					vo.setWard(commonMethodsUtilService.getStringValueForObject(objects[18]));
-					 
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[19]));
+					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[20]));
 					 
 					returnList.add(vo);
 				}
