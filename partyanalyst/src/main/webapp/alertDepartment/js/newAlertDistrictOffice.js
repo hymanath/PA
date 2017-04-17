@@ -841,7 +841,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 	 $("#DistrictNamesId").html('');
 		var searchType = getSearchType();
 		var alertType = getAlertType(); 
-	
+		var callCenterArr = [];
 		var jsObj ={
 		fromDate:currentFromDate,
 		toDate:currentToDate,
@@ -852,7 +852,8 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 		parentGovtDepartmentScopeId : 5,
 		group : "status",
 		alertType:alertType,//alertType=(alert/subTask)
-		searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+		searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+		callCenterArr:callCenterArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -873,7 +874,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 	$("#DivisionDistNamesId").html('');
 	var searchType = getSearchType();
 	var alertType = getAlertType();
-	
+	var callCenterArr = [];
     var jsObj ={
     fromDate:currentFromDate,
     toDate:currentToDate,
@@ -884,7 +885,8 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
     parentGovtDepartmentScopeId : 6,
 	group : "status",
 	alertType:alertType,//alertType=(alert/subTask)
-	searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+	searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+	callCenterArr:callCenterArr
     }
     $.ajax({
     type:'GET',                  
@@ -906,7 +908,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 		
 		var searchType = getSearchType();
 		var alertType = getAlertType();
-			
+			var callCenterArr = [];
 
 		var jsObj ={
 			fromDate:currentFromDate,
@@ -919,7 +921,8 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			districtWorkLocationId : districtId, //district id here
 			group : "status",
 			alertType:alertType,//alertType=(alert/subTask)
-			searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+			searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+			callCenterArr:callCenterArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -942,7 +945,7 @@ function getDistrictIdListForSubDivisionFilter(globalDepartmentId){
  
 	var searchType = getSearchType();
 	var alertType = getAlertType();
-		
+	var callCenterArr = [];	
 		
     var jsObj ={
 		fromDate:currentFromDate,
@@ -954,7 +957,8 @@ function getDistrictIdListForSubDivisionFilter(globalDepartmentId){
 		parentGovtDepartmentScopeId : 7,
 		group : "status",
 		alertType:alertType,//alertType=(alert/subTask)
-		searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+		searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+		callCenterArr:callCenterArr
     }
     $.ajax({
     type:'GET',                  
@@ -973,7 +977,7 @@ function getDistrictIdListForSubDivisionFilter(globalDepartmentId){
 function getDivisionIdListForSubDivisionFilter(globalDepartmentId,districtId){
 	
 	$("#SubDivisionDiviNamesId").html('');
-	
+	var callCenterArr = [];	
 	var searchType = getSearchType();
 	var alertType = getAlertType();
     var jsObj ={
@@ -987,7 +991,8 @@ function getDivisionIdListForSubDivisionFilter(globalDepartmentId,districtId){
 		districtWorkLocationId : districtId,//district id here, default 0
 		group : "status",
 		alertType:alertType,//alertType=(alert/subTask)
-		searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+		searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+		callCenterArr:callCenterArr
     }
     $.ajax({
     type:'GET',                  
@@ -1006,7 +1011,7 @@ function getDivisionIdListForSubDivisionFilter(globalDepartmentId,districtId){
 function getSubDivisionIdListForSubDivisionFilter(globalDepartmentId,districtId,districtDivisionId){
 	
 	$("#SubDivisionNamesId").html('');
-	
+	var callCenterArr = [];	
 	var searchType = getSearchType();
 	var alertType = getAlertType();
     var jsObj ={
@@ -1021,7 +1026,8 @@ function getSubDivisionIdListForSubDivisionFilter(globalDepartmentId,districtId,
 		divisionWorkLocationId :districtDivisionId, //division id here ,default 0
 		group : "status",
 		alertType:alertType,//alertType=(alert/subTask)
-		searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+		searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+		callCenterArr:callCenterArr
     }
     $.ajax({
     type:'GET',                  
@@ -1040,7 +1046,8 @@ function getSubDivisionIdListForSubDivisionFilter(globalDepartmentId,districtId,
 function getDistrictOfficeGraphicalViewForDistrict(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId){
 	
 	$("#districtLevelSubOrdinarteDetails").html(spinner);
-   
+	var callCenterArr= [];
+   var subLevels = [];
     var jObj = {
 		fromDate : currentFromDate, 
 		toDate : currentToDate,
@@ -1056,7 +1063,9 @@ function getDistrictOfficeGraphicalViewForDistrict(globalDepartmentId,searchType
 		subDivisionWorkLocationId:0,
 		group:"status",//status only
 		alertType:alertType,//alertType=(alert/subTask)
-		searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+		searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+		subLevels:subLevels,
+		callCenterArr:callCenterArr
     }
     $.ajax({
           type:'GET',
@@ -1468,7 +1477,8 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,search
 function getDistrictOfficeGraphicalViewForDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,districtDivisionId){
 	
 	$("#divisionLevelSubOrdinarteDetails").html(spinner);
-    
+	var callCenterArr= [];
+    var subLevels = [];
     var jObj = {
 		fromDate : currentFromDate, 
 		toDate : currentToDate,
@@ -1484,7 +1494,9 @@ function getDistrictOfficeGraphicalViewForDivision(globalDepartmentId,searchType
 		subDivisionWorkLocationId:0,
 		group:"status",//status only
 		alertType:alertType,//alertType=(alert/subTask)
-		searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+		searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+		subLevels:subLevels,
+		callCenterArr:callCenterArr
     }
     $.ajax({
           type:'GET',
@@ -1896,8 +1908,8 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,search
 function getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchType,alertType,sortingType,orderType,districtId,districtDivisionId,districtSubDivisionId){
 	
 	$("#SubdivisionLevelSubOrdinarteDetails").html(spinner);
-	
-	
+	var callCenterArr= [];
+	var subLevels = [];
     var jObj = {
 		fromDate : currentFromDate, 
 		toDate : currentToDate,
@@ -1913,7 +1925,9 @@ function getDistrictOfficeGraphicalViewForSubDivision(globalDepartmentId,searchT
 		subDivisionWorkLocationId:districtSubDivisionId,
 		group:"status",//status only
 		alertType:alertType,//alertType=(alert/subTask)
-		searchType :searchType//locationLevel="scopeWise" or statusOverview="statusWise"
+		searchType :searchType,//locationLevel="scopeWise" or statusOverview="statusWise"
+		subLevels:subLevels,
+		callCenterArr:callCenterArr
     }
     $.ajax({
           type:'GET',
@@ -2404,7 +2418,7 @@ function getlevelAndStatusWiseClickForDistrict(statusId,statusName,totalCount,sc
 	var alertType = getAlertType();
 	var sortingType = getDistrictWiseSorting().districtSortingType; // 'value1'
 	var orderType = getDistrictWiseSorting().districtOrderType; // 'value2'
-	
+	var callCenterArr=[];
 	
     var jObj = {
 		fromDate : currentFromDate, 
@@ -2423,7 +2437,8 @@ function getlevelAndStatusWiseClickForDistrict(statusId,statusName,totalCount,sc
 		alertType:alertType,
 		searchType :searchType,
 		statusId : statusId,
-		govtDeprtMentScopeId : scopeId
+		govtDeprtMentScopeId : scopeId,
+		callCenterArr:callCenterArr
     }
     $.ajax({
           type:'GET',
@@ -2463,7 +2478,7 @@ function getlevelAndStatusWiseClickForDivision(statusId,statusName,totalCount,sc
 	var alertType = getAlertType();
 	var sortingType = getDivisionWiseSorting().divisionSortingType; // 'value1'
 	var orderType = getDivisionWiseSorting().divisionOrderType; // 'value2'
-	
+	var callCenterArr=[];
     var jObj = {
 		fromDate : currentFromDate, 
 		toDate : currentToDate,
@@ -2481,7 +2496,8 @@ function getlevelAndStatusWiseClickForDivision(statusId,statusName,totalCount,sc
 		alertType:alertType,
 		searchType :searchType,
 		statusId : statusId,
-		govtDeprtMentScopeId : scopeId
+		govtDeprtMentScopeId : scopeId,
+		callCenterArr:callCenterArr
     }
     $.ajax({
           type:'GET',
@@ -2522,7 +2538,7 @@ function getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount
 	var alertType = getAlertType();
 	var sortingType = getSubDivision().subSortingType; // 'value1'
 	var orderType = getSubDivision().subOrderType; // 'value2'
-	
+	var callCenterArr=[];
 	
     var jObj = {
 		fromDate : currentFromDate, 
@@ -2541,7 +2557,8 @@ function getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount
 		alertType:alertType,
 		searchType :searchType,
 		statusId : statusId,
-		govtDeprtMentScopeId : scopeId
+		govtDeprtMentScopeId : scopeId,
+		callCenterArr:callCenterArr
     }
     $.ajax({
           type:'GET',
