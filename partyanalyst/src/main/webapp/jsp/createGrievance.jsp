@@ -1764,7 +1764,7 @@ function showDashboard(){
 			endDate:toDateStr,//'01/05/2017',
 			mobileNo:'',
 			status:"",
-			deptId:49,
+			deptId:0,
 			task:""
 		}
 		$.ajax({
