@@ -773,7 +773,11 @@ function getStatusCompletionInfo(alertId){
 					$('#displayStatusId').prop('disabled','disabled');			*/	
 				$('#displayDueDate2,#displayPriority').show();
 				
-			}else if(buildTypeStr=='other'){  
+			}else if(buildTypeStr=='same'){  
+				$('#displayStatusId').show();       
+				$('#displayDueDate1').show();                       
+			}
+			else if(buildTypeStr=='other'){  
 				$('#displayStatusId').show();
 				$('#displayDueDate1').show();                       
 			}
