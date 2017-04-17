@@ -1175,12 +1175,13 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 						" tehsil.tehsilName, " +//21
 						" panchayat.panchayatName , " +//22
 						" localElectionBody.name, " +//23
-						" 4 ," +
-						" alertStatus.color ");//24
+						" alertSeverity.severityColor, " +//24
+						" alertStatus.color ");//25
 		queryStr.append(" from Alert model " +
 						" left join model.alertSource alertSource " +
 		        		" left join model.editionType editionType " +
 		        		" left join model.edition edition " +
+		        		" left join model.alertSeverity alertSeverity " +   
 		        		" left join model.tvNewsChannel tvNewsChannel "+
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
@@ -3015,7 +3016,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" tehsil.tehsilName, " +//21
 						" panchayat.panchayatName , " +//22
 						" localElectionBody.name, " +//23
-						" 1 , " +//24
+						" alertSeverity.severityColor, " +//24
 						" alertStatus.color "); //25 
 	    queryStr.append(" from " +
 	                	" Alert model " +
@@ -3023,6 +3024,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	   	   			 	" left join model.alertSource alertSource " +
 	   	   			 	" left join model.editionType editionType " +
 	   	   			 	" left join model.edition edition " +
+	   	   			 	" left join model.alertSeverity alertSeverity " +   
 	   	   			 	" left join model.tvNewsChannel tvNewsChannel "+
 	                	" left join model.alertStatus alertStatus " +
 	                	" left join model.alertCategory alertCategory " +
@@ -3198,7 +3200,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	   			 " tvNewsChannel.channelName " +//8
 	   			 " from Alert model " +
 	   			 " left join model.alertCategory alertCategory " +
-	   			 " left join model.alertSource alertSource " +
+	   			 " left join model.alertSource alertSmodel.alertSource alertSource " +
 	   			 " left join model.editionType editionType " +
 	   			 " left join model.edition edition " +
 	   			 " left join model.tvNewsChannel tvNewsChannel  where " +
@@ -4371,12 +4373,13 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" tehsil.tehsilName, " +//21
 						" panchayat.panchayatName , " +//22
 						" localElectionBody.name, " +//23
-						" 1 , " +//24
+						" alertSeverity.severityColor, " +//24
 						" alertStatus.color "); //25
 		queryStr.append(" from Alert model " +
 						" left join model.alertSource alertSource " +
 		        		" left join model.editionType editionType " +
 		        		" left join model.edition edition " +
+		        		" left join model.alertSeverity alertSeverity " +   
 		        		" left join model.tvNewsChannel tvNewsChannel "+
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
