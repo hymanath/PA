@@ -56,6 +56,9 @@
 	 height: 33px !important;
 	 width: 47px !important;
 }
+.pointerCls{
+	cursor:pointer  !important;
+}
 </style>
 </head>
 <body>
