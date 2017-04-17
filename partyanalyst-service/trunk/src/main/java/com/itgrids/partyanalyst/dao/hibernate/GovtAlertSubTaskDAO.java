@@ -1923,7 +1923,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 					  " from " +
 					  " GovtAlertSubTask model " +
 					  " where " +
-					  " model.isDeleted = 'N' ");
+					  " model.isDeleted = 'N' and model.alert.isDeleted='N' ");
 			if(deptId != null && deptId.longValue() >0){
 				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId ");
 			}
@@ -1942,6 +1942,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			if(officerId != null && officerId.longValue() > 0){
 				sb.append(" and model.subTaskGovtOfficer.govtOfficerId =:officerId ");
 			}
+			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >= :scopeId " );
 			Query query = getSession().createQuery(sb.toString());
 			if(deptId != null && deptId.longValue() >0)
 			      query.setParameter("deptId",deptId);
@@ -1960,6 +1961,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			if(officerId != null && officerId.longValue() > 0){
 				query.setParameter("officerId",officerId);
 			}
+			query.setParameter("scopeId", 5l);
 			return query.list();
 		}
 		public List<Long> getStateLevelAlertclickViewAlertIds(List<Long> govtDepDesigOffcrIds,
