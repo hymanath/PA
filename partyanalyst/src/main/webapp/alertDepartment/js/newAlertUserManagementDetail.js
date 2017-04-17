@@ -921,11 +921,11 @@ function rightSideExpandView(alertId)
 									  str+='<i class="glyphicon glyphicon-plus"></i>';
 									str+='</div>';
 									str+='<div class="col-sm-7">';
-									  str+='<input type="text" class="form-control" name=""alertAssigningVO.title/>';
+									  str+='<input type="text" class="form-control" name="alertAssigningVO.title"/>';
 									str+='</div>';
 									str+='<div class="col-sm-4" style="margin-top:11px;">';
 									 str+='<span class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date" style="padding: 9px;border-radius: 20px;margin-left: 40px">';
-										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2" style=""> Due Date </span>';
+										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2" style="" name="alertAssigningVO.dueDate"> Due Date </span>';
 									str+='</span>';
 										str+='<span class="assign-user">';
 										str+='<span id="" style=""><i class="glyphicon glyphicon-user pointerCls"></i> </span>';
@@ -971,7 +971,7 @@ function rightSideExpandView(alertId)
 													str+='</div>';
 												str+='</div>';
 											str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
-												str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button">assign</button>';
+												str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button" onclick="saveSubTask();">assign</button>';
 												str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg1">';
 												str+='<span class="text-success" id="assignSuccess"></span>';
 											str+='</div>';
@@ -1059,6 +1059,20 @@ $(document).on("click","#displaySubTasksli",function(){
 	$('#alert-block-commentId').hide();
 	$('#sub_task_block').show();
 });
+
+function saveSubTask(){
+	$("#assiningLdngImg1").show();
+		$("#subTaskAssignOfficerId").hide();
+		var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+				displayStatus(uploadResult);
+			}
+		};
+
+		YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
+		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
+}
 $(document).on("click","#subTaskAssignOfficerId",function(){
 	
 /*	if($("#departmentsId1").val() == null || $("#departmentsId1").val() == "" || $("#departmentsId1").val() == 0)
@@ -1172,7 +1186,7 @@ $(document).on("click","#subTaskAssignOfficerId",function(){
 			return;
 		}
 		*/
-		$("#assiningLdngImg1").show();
+		/*$("#assiningLdngImg1").show();
 		$("#subTaskAssignOfficerId").hide();
 		var uploadHandler = {
 			upload: function(o) {
@@ -1183,6 +1197,7 @@ $(document).on("click","#subTaskAssignOfficerId",function(){
 
 		YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
+*/
 	});
 	
 function assignedOfficersDetailsForAlert(alertId)
@@ -1222,6 +1237,7 @@ function getAlertData(alertId)
 		getCommentsForAlert(alertId);
 		getDocumentsForAlert(alertId);
 		if(result != null && result.length > 0){
+			//buildSubTasksInfoForAlert(result[0].subList1);
 			buildAlertDataNew(result)
 			if(result[0].categoryId == 2)
 			{
@@ -1234,6 +1250,39 @@ function getAlertData(alertId)
 }
   
   
+function buildSubTasksInfoForAlert(result)
+{
+	var str='';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-1 text-center body-icons">';
+			str+='<i class="fa fa-level-down fa-2x"></i>';
+		str+='</div>';
+		str+='<div class="col-sm-11">';
+			str+='<h4 class="text-muted text-capital">subtask</h4>';
+			str+='<ul class="assign-subtask-list m_top20">';
+				for(var i in result)
+				{
+					str+='<li class="assigned">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-1">';
+								str+='<i class="glyphicon glyphicon-ok"></i>';
+							str+='</div>';
+							str+='<div class="col-sm-9">';
+								str+='<p>'+result[i].userName+'</p>';
+							str+='</div>';
+							str+='<div class="col-sm-2">';
+								//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
+							//	str+='<span class="icon-name icon-primary"></span>';
+								//str+='<span class="label label-default">...</span>';
+							str+='</div>';
+						str+='</div>';
+					str+='</li>';
+				}
+			str+='</ul>';
+		str+='</div>';
+	str+='</div>';
+	$("#alertSubtask").html(str);
+}  
 function buildAlertDataNew(result)
 {
 	var str='';
@@ -1409,7 +1458,7 @@ function departmentsByAlert(alertId){
 function getSubTaskInfoForAlert(alertId){
 	
 	var jsObj ={
-		alertId  :13817
+		alertId  :alertId
 	}
 	$.ajax({
 		type:'GET',
@@ -1470,7 +1519,7 @@ function getCommentsForAlert(alertId){
 		{
 			buildCommentsForAlert(result);
 		}else{
-			$("#alertGeneralComments").html("NO DATA AVAILABLE... ");
+			$("#alertGeneralComments").html("NO COMMENTS ARE AVAILABLE... ");
 		}
 	});
 }
