@@ -27,7 +27,8 @@ public class PartyMeetingStatusDAO extends GenericDaoHibernate<PartyMeetingStatu
    	  		         " count(distinct model.partyMeeting.partyMeetingId)  " +
    	  		         " from PartyMeetingStatus model " +
    	  		         " where " +
-   	  		         " model.partyMeeting.isActive='Y' ");
+   	  		         " model.partyMeeting.isActive='Y' " +
+   	  		         " and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = 1");
    	      if(countType.equalsIgnoreCase("commentCount")){
    	    	  queryStr.append(" and model.partyMeeting.remarks is not null ");
    	      }

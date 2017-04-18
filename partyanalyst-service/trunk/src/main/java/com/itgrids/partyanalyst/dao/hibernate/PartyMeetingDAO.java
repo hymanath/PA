@@ -1257,7 +1257,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
     	  queryStr.append(" select model.partyMeetingLevel.partyMeetingLevelId,model.partyMeetingLevel.level,count(distinct model.partyMeetingId)  " +
     	  		" from PartyMeeting model " +
     	  		" where " +
-    	  		" model.isActive='Y' and model.startDate is not null ");
+    	  		" model.isActive='Y' and model.startDate is not null " +
+    	  		" and model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = 1");
     	
     	  if(stateId != null && stateId.longValue() > 0){
 				 queryStr.append(" and model.meetingAddress.state.stateId=:stateId ");
