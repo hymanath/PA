@@ -350,10 +350,11 @@
 	
 	function getInsuraceStatusWiseComplaintsDetails(status,issueType,companyid)
 	{
+		var enrollmentId = $(".yearWiseDtsCls").val();
 		$("#insuraceStatusWiseComplaintsDetails").html(spinner);
 		var jsObj={ 
 			activityMemberId: 44, 
-			cadreYearId		: 4, 
+			cadreYearId		: enrollmentId, 
 			stateId 		: 1, 
 			fromDateStr 	: cadreInsuranceFDate, 
 			toDateStr		: cadreInsuranceTDate,
@@ -490,10 +491,11 @@
 	}
 	function getLagDaysInsuranceComplaintsCounts(status,issueType,companyid)
 	{
+		var enrollmentId = $(".yearWiseDtsCls").val();
 		$("#lagDaysInsuranceComplaintsCounts").html(spinner);
 		var jsObj={ 
 			activityMemberId: 44, 
-			cadreYearId		: 4, 
+			cadreYearId		: enrollmentId, 
 			stateId 		: 1, 
 			statusStr		: status, 
 			companyId		: companyid, 
