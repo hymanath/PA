@@ -139,7 +139,9 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserSurveyBooths> userSurveyBooths = new HashSet<UserSurveyBooths>(0);
 	private String uniqueCode;
 	private String isEnabled;
-	private RedirectUrl redirectUrl; 
+	private RedirectUrl redirectUrl;
+	private String pageTracking;
+	private String requestTracking;
 	
 	public User(){}
 	 
@@ -1145,6 +1147,24 @@ public class User extends BaseModel implements Serializable{
 
 	public void setRedirectUrl(RedirectUrl redirectUrl) {
 		this.redirectUrl = redirectUrl;
+	}
+
+	@Column(name = "page_tracking")
+	public String getPageTracking() {
+		return pageTracking;
+	}
+
+	public void setPageTracking(String pageTracking) {
+		this.pageTracking = pageTracking;
+	}
+
+	@Column(name = "request_tracking")
+	public String getRequestTracking() {
+		return requestTracking;
+	}
+
+	public void setRequestTracking(String requestTracking) {
+		this.requestTracking = requestTracking;
 	}
 
 	

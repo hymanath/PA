@@ -1166,7 +1166,7 @@ public class SchedulerService implements ISchedulerService{
 			staticPath = staticPath + "reports";
 			@SuppressWarnings("unused")
 			String folderCreation1 = commonMethodsUtilService.createFolder(staticPath);
-			staticPath = staticPath + "\\" + emailVo.getDate();
+			staticPath = staticPath + "/" + emailVo.getDate();
 			@SuppressWarnings("unused")
 			String folderCreation2 = commonMethodsUtilService.createFolder(staticPath);
 			
@@ -1174,7 +1174,7 @@ public class SchedulerService implements ISchedulerService{
 			String currentDateString = sdf.format(currentDate);
 			
 			String pdfName = currentDateString+"_"+RandomNumberGeneraion.randomGenerator(5)+".pdf";
-			String pdfFilePath = staticPath+"\\"+pdfName;
+			String pdfFilePath = staticPath+"/"+pdfName;
 			emailVo.setFileName(pdfName);
 			emailVo.setFilePath(staticPath);    
 			emailVo.setTime(dt);
@@ -1753,8 +1753,8 @@ public class SchedulerService implements ISchedulerService{
         	htmlPart.setContent(msgText.toString(),"text/html");
         	multipart.addBodyPart(htmlPart);
         	String pdfFileName = emailAttributesVO.getFileName();
-        	String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "reports" + "\\" + emailAttributesVO.getDate();
-    		String pdfPath = staticPath + "\\"+ pdfFileName;
+        	String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL + "reports" + "/" + emailAttributesVO.getDate();
+    		String pdfPath = staticPath + "/"+ pdfFileName;
     		DataSource source = new FileDataSource(pdfPath);
         	BodyPart  attachment  = new MimeBodyPart();
         	attachment.setDataHandler(new DataHandler(source));
