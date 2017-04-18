@@ -329,7 +329,7 @@ function buildSessionDetails(result)
 									}
 									str+='</ul>';
 								str+='</td>';
-								str+='<td atr_session_day_id="'+result[i].candidateList[j].adminHouseSessionDayId+'" class="sessionCls" style="cursor:pointer;"><u>'+result[i].candidateList[j].count+'</u></td>';
+								str+='<td atr_session_day_id="'+result[i].candidateList[j].adminHouseSessionDayId+'" atr_session_name="'+result[i].name+'" atr_session_date="'+result[i].candidateList[j].date+'" class="sessionCls" style="cursor:pointer;"><u>'+result[i].candidateList[j].count+'</u></td>';
 								str+='<td>'+result[i].candidateList[j].startDate+'</td>';
 							str+='</tr>';
 						}
@@ -342,16 +342,21 @@ function buildSessionDetails(result)
 }
 $(document).on("click",".sessionCls",function(){
 	var sessionDayId = $(this).attr("atr_session_day_id");
+	var sessionName = $(this).attr("atr_session_name");
+	var sessionDate = $(this).attr("atr_session_date");
 	$("#sessionDayId").val(sessionDayId);
+	$("#hidenSessionName").val(sessionName);
+	$("#hiddenSessionDate").val(sessionDate);
 	updateMemberDetials(0,0);
 });
 
 function updateMemberDetials(partyValue,number){
 	 
 	$("#partyListDivId").hide();
-	 //$("#partyId").val('');
-	 //$("#partyId").trigger("chosen:updated");
+	 var sessionName = $("#hidenSessionName").val();
+	 var sessionDate = $("#hiddenSessionDate").val();
 	$("#memberDetailsModalDiv").modal('show');
+	$("#modalTitleId").html('<span>'+sessionName+'-'+sessionDate+'</span>');
 	$('#memberDetailsId').html("<img src='images/Loading-data.gif'/>");
 	var sessionDayId = $("#sessionDayId").val();
 	var partyId;
@@ -367,7 +372,8 @@ function updateMemberDetials(partyValue,number){
 	var jObj = {
 				 adminHouseSessionDayId : sessionDayId,
 				 partyId : partyId
-			};		
+			};
+				
 			$.ajax({
 				  type:'POST',
 				  url: 'getDayWiseDetailsAction.action',
@@ -380,6 +386,7 @@ function updateMemberDetials(partyValue,number){
 					$("#memberDetailsId").html("NO DATA AVAILABLE."); 
 				 }
 			 });
+	
 }
 
 var candidateArr=[];
@@ -463,7 +470,7 @@ function buildMemberDetails(result,sessionDayId){
 					//str+='</td>';
 					
 					str+='<td class=" " ><span class="glyphicon glyphicon-edit updateSessionDetails constantCls'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="cursor:pointer;" title="Click Here to Edit Member Details."></span>';
-					str+='<span class="glyphicon glyphicon-floppy-disk saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" attr_no="'+i+j+'" title="Click Here to update Member Details." attr_admin_hose_mem_id=""></span><span id="errMsgFrSaveId"><span><img src="images/ajaxImg2.gif" style="width:10px;display:none;" id="procesingImg7"></span></span>';
+					str+='<span class="glyphicon glyphicon-floppy-disk saveSessionDetails editClass'+(i+j+1)+'" attr_constant_cls="constantCls'+(i+j+1)+'" attr_edit_cls="editClass'+(i+j+1)+'" style="display:none;cursor:pointer;" attr_no="'+i+j+'" title="Click Here to update Member Details." attr_admin_hose_mem_id="" id="editId"></span><span id="errMsgFrSaveId"><span><img src="images/ajaxImg2.gif" style="width:10px;display:none;" id="procesingImg7"></span></span>';
 					str+='</td>';
 					
 					str+='<td><span class="glyphicon glyphicon-trash deleteMemberDetaCls" attr_no="'+i+j+'" style="cursor:pointer;" title="Click Here to delete a member"></span><span id="errMsgFrDelId"><span><img src="images/ajaxImg2.gif" style="width:10px;display:none;" id="procesingImg8"></span></span></td>';
@@ -496,7 +503,7 @@ $(document).on("click",".saveSessionDetails",function(){
 	var constantCls = $(this).attr('attr_constant_cls');
 	var editClass = $(this).attr('attr_edit_cls');
 	var num  = $(this).attr('attr_no');
-	
+	$("#editId").hide();
 	saveCandDetails(num);
 	//$("."+constantCls+"").show();
 	//$("."+editClass+"").hide();
@@ -939,8 +946,9 @@ function getDatesForSaving(){
 	});
 }
 
+
 function saveCandDetails(num){
-	$("#procesingImg7").show();
+	
 	 var value;
 	var indexArr = ["0","1","2","3"];
 	for(var i in indexArr){
@@ -950,8 +958,16 @@ function saveCandDetails(num){
 			$("#errMsgFrScre").html("<span style='color:red'>Please Enter Score.");
 			return;
 		}
+		
+			/* var numericExpression = /^[0-9]+$/;
+			if(!value.match(numericExpression)){
+				$('#errMsgFrScre').html("<span style='color:red'>Enter Number Digits Only.");
+				return;
+					
+			} */
 	} 
-	
+		
+			$("#procesingImg7").show();
 	var subjScore = $("#editAspectScore"+num+0).val();
 	var presScore = $("#editAspectScore"+num+1).val();
 	var countrScore = $("#editAspectScore"+num+2).val();
@@ -969,11 +985,15 @@ function saveCandDetails(num){
 		
 		
 	}
+	var r=confirm("Are you sure want to update member details")
+	if (r)	
+		{
 	$.ajax({
 				  type:'POST',
 				  url: 'updateMemberDetailsAction.action',
 				 data : {task:JSON.stringify(jObj)} ,
 			 }).done(function(result){
+				 $("#editId").show();
 				 $("#procesingImg7").hide();
 				if(result == "success"){
 					$("#errMsgFrSaveId").html("<span style='color:green'>Updated Successfully..</span>");
@@ -984,6 +1004,7 @@ function saveCandDetails(num){
 					$("#errMsgFrSaveId").html("<span style='color:green'>Updation Failed.Please Try Again.</span>");
 				}
 			 });
+		}
 }
 $(document).on("click",".deleteMemberDetaCls",function(){
 	var num = $(this).attr("attr_no");
@@ -1009,6 +1030,9 @@ function deleteCandDetails(num){
 		
 		
 	}
+	var r=confirm("Are you sure want to Delete member ")
+	if (r)	
+		{
 	$.ajax({
 				  type:'POST',
 				  url: 'deleteMemberDetailsAction.action',
@@ -1024,5 +1048,6 @@ function deleteCandDetails(num){
 					$("#errMsgFrDelId").html("<span style='color:green'>Deleted failed..Please try Again.</span>");
 				}
 			 });
+		}
 }
 
