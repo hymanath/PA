@@ -751,27 +751,26 @@ function getStatusCompletionInfo(alertId){
 		url: 'getStatusCompletionInfoAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		$('#displayStatusId,#displaySubTaskli,#displayAssignIconId,#displayDueDate1,#displayDueDate2,#displayPriority').hide();
+		$('#displayStatusId,#displaySubTaskli,#displayAssignIconId,#displayDueDate1,#displayDueDate2,#displayPriority,#historyId').hide();
 		$('#displayStatusId').attr('status-icon-block','alertStatus');
+		
 		if(result != null && result.length>0){
 			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
+			$('#historyId').show();
+			//buildTypeStr ='own';
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli').show();	
 				$('#displayDueDate1').show();
 				$('#displayDueDate2').hide();
+				
 			}
 			else if(buildTypeStr=='subUser'){	
 				$('#displayDueDate1').hide();
 				$('#displayStatusId').show();
 				$('#displayStatusId').removeAttr('status-icon-block');
 				
-				
-				/*if(sttatusId==4)// the superior can change the status of his sub-ordinator alert if this alert in completed mode.
-					;//$('#displayStatusId').show();
-				else // the superior can view the status of his sub-ordinator alert if this alert not in completed mode.
-					$('#displayStatusId').prop('disabled','disabled');			*/	
 				$('#displayDueDate2,#displayPriority').show();
 				
 			}else if(buildTypeStr=='same'){  
@@ -784,13 +783,22 @@ function getStatusCompletionInfo(alertId){
 			}
 			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
 				$('#displayAssignIconId').show();
+				assignUser(alertId)
 			}
-			if(result[0].userStatus =='admin'){
+			if(result[0].userStatus != null && result[0].userStatus =="admin"){
 				isAdmin = "true";
-				$('#displaySubTasksliId').hide();
-				$('#docAttachmentId').show();         
+				$('#displayStatusId').attr('status-icon-block','');
+				$('#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority').hide(); 
+			if(sttatusId !=1)
+				$('#docAttachmentId').show(); 
 			}else{
+				$('#displayStatusId').attr('status-icon-block','alertStatus');
 				isAdmin = "false";
+			}
+			
+			if(isAdmin=='false'){
+				$('#displaySubTasksliId,#displayPriority,#displayDueDate1,#docAttachmentId').show(); 
+				$('#displayStatusId').attr('status-icon-block','alertStatus');
 			}
 			
 			alertStatus(result,alertId);			
@@ -826,13 +834,7 @@ function rightSideExpandView(alertId)
 									 str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTasksliId" style="">';
 										str+='<i class="fa fa-level-down" aria-hidden="true" id="displaySubTasksli"></i>';
 									str+='</li>';  
-									
-									/*
-									str+='<li status-icon-block="subTask" data-toggle="tooltip" class="status-icon-subtask" data-placement="top" title="Sub Task" id="displaySubTaskli" style="display:none;">';
-										str+='<i class="fa fa-mail-forward"></i>';
-										str+='<i class="fa fa-level-down fa-2x"></i>';
-									str+='</li>';
-									*/
+									//	$(document).on("click","[status-icon] li",function(e){
 									str+='<li id="displayDueDate1"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
 										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date1">Due date</span>';
 									str+='</li>';
@@ -854,10 +856,10 @@ function rightSideExpandView(alertId)
 									str+='</li>';  
 									
 									
-									str+='<li status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
+									str+='<li id="historyId" style="display:none;" status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
 										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
 									str+='</li>';
-									str+='<li id="docAttachmentId" status-icon-block="attachment" attr_alert_id="'+alertId+'">';
+									str+='<li id="docAttachmentId" status-icon-block="attachment" attr_alert_id="'+alertId+'" style="display:none;" >';
 										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
 										str+='<form name="uploadAttachment" method="post" id="uploadAttachment">';
 										str+='<div class="alert-status-attachment arrow_box_top" style="display:none;">';
@@ -911,7 +913,8 @@ function rightSideExpandView(alertId)
 					str+='</div>';
 				str+='</span>';
 				
-				str+='<span id="sub_task_block"  style="display:none;" >';
+				str+='<span id="sub_task_block"  class="sub_task_block" style="display:none;" >';
+						str+='<i attr_class="sub_task_block" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
 						str+='<div class="panel-body panel-heading ">';
 							str+='<div class="row">';
 								str+='<div style="margin-left:25px"><i class="fa fa-level-down fa-2x" aria-hidden="true"></i> <label style="font-size:20px;margin-left:10px"> ASSIGN SUB TASK </label></div>';
@@ -925,19 +928,20 @@ function rightSideExpandView(alertId)
 									  str+='<i class="glyphicon glyphicon-plus"></i>';
 									str+='</div>';
 									str+='<div class="col-sm-7">';
-									  str+='<input type="text" class="form-control" name="alertAssigningVO.title"/>';
+									  str+='<input type="text" class="form-control subTaskTitle" name="alertAssigningVO.title"/>';
 									str+='</div>';
 									str+='<div class="col-sm-4" style="margin-top:11px;">';
 									 str+='<span class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date" style="padding: 9px;border-radius: 20px;margin-left: 40px">';
-										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2" style="" name="alertAssigningVO.dueDate"> Due Date </span>';
+										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2 subTaskDueDate" style="" name="alertAssigningVO.dueDate"> Due Date </span>';
 									str+='</span>';
 										str+='<span class="assign-user">';
 										str+='<span id="" style=""><i class="glyphicon glyphicon-user pointerCls"></i> </span>';
-										
+									
 										str+='<div class="assign-user-body1" style="display:none;left:-356px;right:0;position:absolute;">';
 												str+='<div class="arrow_box_top" >';
 													str+='<div>';
 														str+='<div class="row">';  
+															str+='<i attr_class="assign-user-body1" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
 															str+='<div class="col-sm-12">';
 																str+='<div id="assignErrorDivId1"></div>';
 															str+='</div>';
@@ -946,7 +950,7 @@ function rightSideExpandView(alertId)
 																str+='<select class="chosenSelect" id="departmentsId1" name="alertAssigningVO.departmentId">	';
 																	str+='<option value="0">Select Department</option>';
 																	str+='<option value="49">RWS</option>';
-																str+='</select>';
+																str+='</select>'; 
 															str+='</div>';
 															
 															str+='<div class="col-sm-6">';
@@ -1058,10 +1062,24 @@ function rightSideExpandView(alertId)
 	getStatusCompletionInfo(alertId);
 }
 
+$(document).on("click",".closeCls",function(){
+	
+	
+	var className = $(this).attr('attr_class');
+	$('.'+className+'').hide();
+	if(className=='sub_task_block'){
+		$('#main_alert_block').show();
+		$('#alert-block-commentId').show();
+		$('.subTaskTitle').val('');
+		$('.subTaskDueDate').html('Due Date');
+	}
+});
+
 $(document).on("click","#displaySubTasksli",function(){
 	$('#main_alert_block').hide();
 	$('#alert-block-commentId').hide();
 	$('#sub_task_block').show();
+	$('.assign-user').show();
 });
 
 function saveSubTask(){
@@ -2073,7 +2091,7 @@ function buildAssignedOfficersDetailsForAlert(result)
 		str+='</div>';
 		str+='<div class="media-body">';
 			str+='<p>'+result[0].name+' - '+result[0].department+'</p>';
-			str+='<p> - '+result[0].designation+' (<i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+')</p>';
+			str+='<p> - '+result[0].designation+'<br> (<i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+')</p>';
 			str+='<p></p>';
 		str+='</div>';
 	str+='</div>';
