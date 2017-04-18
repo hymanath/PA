@@ -3694,7 +3694,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
             			finalList.add(vo);            			
         			}  
         			
-        		}else if(levelId != null && govtDeptScopeIdForAlert != null && govtDeptScopeIdForAlert.get(0) != null && levelId.equals(govtDeptScopeIdForAlert.get(0))){
+        		}else if(levelId != null && govtDeptScopeIdForAlert != null && commonMethodsUtilService.isListOrSetValid(govtDeptScopeIdForAlert) && 
+        				 govtDeptScopeIdForAlert.get(0) != null && levelId.equals(govtDeptScopeIdForAlert.get(0))){
         			userType = "same";
         			IdNameVO vo = new IdNameVO();        			
         			finalList.add(vo);
