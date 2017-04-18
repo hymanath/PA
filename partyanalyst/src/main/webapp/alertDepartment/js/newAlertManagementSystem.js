@@ -2123,7 +2123,7 @@ function buildDeptNamesForMultiLevel(result){
 	}
 	
 }
-var defaultDepartmentID;
+//var defaultDepartmentID;
 /* function getTotalArticledetails(articleId){
 	
 	$("#alertManagementPopupBody1,#alertManagementPopupHeading").html(spinner);
@@ -2519,8 +2519,8 @@ $(document).on("click",".districtWiseInterChange li",function(){
 		$("#districtWiseLevelsDivId"+departmentId).html('');
 		$("#districtWiseLevelsDivId"+departmentId).append('<option value="0">Select District</option>');
 		getDistIdListForDistFilter(departmentId);
-		getDistIdListForDivisionFilter(defaultDepartmentID);  	
-			getDistrictIdListForSubDivisionFilter(defaultDepartmentID);		
+		getDistIdListForDivisionFilter(departmentId);  	
+			getDistrictIdListForSubDivisionFilter(departmentId);		
 		getStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(departmentId,groupType,sortingType,orderType,0);
 		
 		
