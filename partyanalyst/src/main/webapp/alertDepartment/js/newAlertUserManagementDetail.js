@@ -786,15 +786,16 @@ function getStatusCompletionInfo(alertId){
 			}
 			if(result[0].userStatus =='admin'){
 				isAdmin = "true";
+				$('#displaySubTasksliId').hide();
 			}else{
 				isAdmin = "false";
 			}
 			
 			alertStatus(result,alertId);			
 		}else{
+			$('#displayAssignIconId').show();
 			$('#displayStatusId').show();
-			$('#displayDueDate2').hide();      
-			
+			$('#displaySubTasksliId').hide();  
 		}	
 	});
 }
@@ -819,7 +820,7 @@ function rightSideExpandView(alertId)
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
 									str+='</li>';
 									
-									 str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="" style="">';
+									 str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTasksliId" style="">';
 										str+='<i class="fa fa-level-down" aria-hidden="true" id="displaySubTasksli"></i>';
 									str+='</li>';  
 									
@@ -2076,6 +2077,11 @@ function buildAssignedOfficersDetailsForAlert(result)
 	$("#assignedUser").html(str);
 	$(".assign-user").hide();
 }
+
+$(document).on("click","#displayAssignIconId",function(){
+	$('.assign-user-body').show();       
+});
+
 function assignUser(alertId)
 {
 	var str='';
