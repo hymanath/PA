@@ -789,8 +789,8 @@ function getStatusCompletionInfo(alertId){
 				isAdmin = "true";
 				$('#displayStatusId').attr('status-icon-block','');
 				$('#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority').hide(); 
-			if(sttatusId !=1)
-				$('#docAttachmentId').show(); 
+				if(sttatusId !=1)
+					$('#docAttachmentId').show(); 
 			}else{
 				$('#displayStatusId').attr('status-icon-block','alertStatus');
 				isAdmin = "false";
@@ -2084,10 +2084,16 @@ function dateRangePicker(alertId)
 function buildAssignedOfficersDetailsForAlert(result)
 {
 	var str='';
-	var splitName = result[0].name.split(" ");
+	var splitNameArr = result[0].name.split(" ");
+	var value = "";
+	if(splitNameArr != null && splitNameArr.length>1)
+		value = splitNameArr[1];
+	else
+		value = splitNameArr[0];  
+	
 	str+='<div class="media">';
 		str+='<div class="media-left">';
-			str+='<span class="icon-name icon-primary">'+result[0].name.substring(0,1)+''+splitName[1].substring(0,1)+'</span>';
+			str+='<span class="icon-name icon-primary">'+result[0].name.substring(0,1)+''+value.substring(0,1)+'</span>';
 		str+='</div>';
 		str+='<div class="media-body">';
 			str+='<p>'+result[0].name+' - '+result[0].department+'</p>';
