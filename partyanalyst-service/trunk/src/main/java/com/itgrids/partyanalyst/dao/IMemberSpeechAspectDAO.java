@@ -12,7 +12,7 @@ public interface IMemberSpeechAspectDAO extends GenericDao<MemberSpeechAspect, L
 	public List<Object[]> getNoOfDaysForSession(Long termId,String sesYear,List<Long> sessionIds,Date startDate,Date endDate);
 	public List<Object[]> getDayWisePartyWiseCount(Long termId,String sesYear,List<Long> sessionIds,Date startDate,Date endDate);
 	public List<Object[]> getDayWiseCountDetails(Long admHsSessDayId,Long partyId);
-	public MemberSpeechAspect updateMemberDetails(Long adminHouseMemberId,Long adminHouseSessionDayId,Long speechAspectId);
+	public  List<MemberSpeechAspect> updateMemberDetails(Long adminHouseMemberId,Long adminHouseSessionDayId,Long speechAspectId);
 	public MemberSpeechAspect getPrimaryKey(Long adminHouseSessionId,Long memberId,Long speechAspectId);
 
 }
