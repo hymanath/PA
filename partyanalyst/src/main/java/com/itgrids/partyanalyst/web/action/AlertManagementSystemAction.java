@@ -2420,5 +2420,21 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				return Action.SUCCESS;
 			}
+			public String getStatusCompletionInfoForSubTask(){
+				try{
+					session = request.getSession();
+				   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+					Long userId = regVo.getRegistrationID();
+					jObj = new JSONObject(getTask());
+					
+					Long alertId = jObj.getLong("alertId");
+					Long subTaskId = jObj.getLong("subTaskId");
+					idnameVoList = alertManagementSystemService.getStatusCompletionInfoForSubTask(alertId,subTaskId,userId);
+				}catch(Exception e){
+					e.printStackTrace();
+					LOG.error("Exception occured in getStatusCompletionInfoForSubTask() of alertManagementSystemAction",e);
+				}
+				return Action.SUCCESS;
+			}
+			
 }
-//public List<AlertCoreDashBoardVO> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds)
