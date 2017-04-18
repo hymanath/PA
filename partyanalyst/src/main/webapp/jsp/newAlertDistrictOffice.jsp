@@ -144,9 +144,14 @@
 												</li>
 												</ul>
 											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2 locationWiseSortingDist">
+											<div class="col-sm-4 col-xs-12 col-md-2">
 												<select class="form-control locationWiseDistOnChange" id="DistrictNamesId" >
-												
+													<option value="0">Select District</option>
+												</select>
+											</div>
+											<div class="col-sm-4 col-xs-12 col-md-2 pull-right distWiseDistLevelShowCls" style="display:none;">
+												<select class="form-control distWiseDistLevelCls" id="distWiseDistLevelId" >
+													<option value="0">Select Level</option>
 												</select>
 											</div>
 											<div class="col-sm-12 col-xs-12 col-md-12">
@@ -174,12 +179,17 @@
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2 ">
 												<select class="form-control locationWiseDiviDistOnChange" id="DivisionDistNamesId" >
-													
+													<option value="0">Select District</option>
 												</select>
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
 												<select class="form-control locationWiseDiviOnChange" id="DivisionNamesId" >
 													<option value="0">Select Division</option>
+												</select>
+											</div>
+											<div class="col-sm-4 col-xs-12 col-md-2 pull-right divisionWiseDistLevelIdShowCls" style="display:none;">
+												<select class="form-control divisionWiseDistLevelIdCls" id="divisionWiseDistLevelId" >
+													<option value="0">Select Level</option>
 												</select>
 											</div>
 											<div class="col-sm-12 col-xs-12 col-md-12">
@@ -208,7 +218,7 @@
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
 												<select class="form-control locationWiseSubDiviDistOnChange" id="SubDivisionDistNamesId" >
-												
+												<option value="0">Select District</option>
 												</select>
 											</div>
 											<div class="col-sm-4 col-xs-12 col-md-2">
