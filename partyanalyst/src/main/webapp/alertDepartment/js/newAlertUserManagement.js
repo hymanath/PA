@@ -2228,7 +2228,7 @@ function buildStatusWiseForStateLevel(result,groupType,alertType,departmentId){
 										var statusName = value[1];
 										var totalCount = value[2];
 										var levelId=0; 
-										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,0)
+										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,1)
 									}
 								}
 							}
@@ -2253,10 +2253,8 @@ function buildStatusWiseForStateLevel(result,groupType,alertType,departmentId){
 			
 				 $.each($('#stateLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
-					$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0)");					
+					$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',1)");					
 				}); 
-				//getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,0)
-			
 		}else{
 			$("#stateLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
 			$("#stateLevelIASDetails").css("height","25px");
@@ -2353,9 +2351,8 @@ function buildStatusWiseForStateLevel(result,groupType,alertType,departmentId){
 											var statusId = 0;
 											var statusName = value[1];
 											var totalCount = value[2];
-											var scopeId=value[0];
-											var districtId = 0
-											//getlevelAndStatusWiseClickForState(statusId,statusName,totalCount,scopeId,districtId,departmentId);
+											var levelId=value[0];
+											getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,1)
 										}
 									}
 								}
@@ -2372,10 +2369,15 @@ function buildStatusWiseForStateLevel(result,groupType,alertType,departmentId){
 					 
 				}]
 			});
-			/* $.each($('#stateLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
-				$(this).attr("style","cursor:pointer;");    
-				$(this).attr("onclick","getlevelAndStatusWiseClickForState(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,0,\'"+departmentId+"\')");	
-			}); */
+			if(result[0].subList !=null && result[0].subList.length>0){
+				for(var j in result[0].subList){
+					$.each($('#stateLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+						$(this).attr("style","cursor:pointer;");    
+						$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[0].subList[index].id+"\',0,\'"+alertType+"\',\'"+result[0].subList[index].name+"\',\'"+result[0].subList[index].totalCount+"\',1)");			
+					}); 
+				}
+			}
+			
 		}else{
 			$("#stateLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
 			$("#stateLevelIASDetails").css("height","25px");
@@ -2836,10 +2838,10 @@ function getStatusWiseForDistrictLevel(departmentId,sortingType,order,alertType,
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 			$("#districtLevelIASDetails").html('');
-			buildStatusWiseForDistrictLevel(result,groupType);
+			buildStatusWiseForDistrictLevel(result,groupType,departmentId,alertType);
 	});
 }
-function buildStatusWiseForDistrictLevel(result,groupType){
+function buildStatusWiseForDistrictLevel(result,groupType,departmentId,alertType){
 	$("#districtLevelIASDetails").removeAttr("style");
 	if(groupType == "status"){
 		if(result !=null && result.length>0){
@@ -2998,13 +3000,13 @@ function buildStatusWiseForDistrictLevel(result,groupType){
 							events: {
 									click: function () {
 										var value = (this.extra).split("-");
-										var value = (this.extra).split("-");
 										var statusId = value[0];
 										var statusName = value[1];
 										var totalCount = value[2];
-										var scopeId=0;
-										var distrctId = value[3];
-										//getlevelAndStatusWiseClickForDistrict(statusId,statusName,totalCount,scopeId,distrctId);
+										var levelId=0;
+										//var distrctId = value[3]; 
+										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,5)
+										
 									}
 								}
 							}
@@ -3027,14 +3029,12 @@ function buildStatusWiseForDistrictLevel(result,groupType){
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 			}
-				 /* $.each($('#districtLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+				 $.each($('#districtLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
-					$(this).attr("onclick","getlevelAndStatusWiseClickForDistrict(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\')");		
-					//$(this).attr("class","getTotaldistrictCls");    
-					//$(this).attr("attr_district_id",result[index].id);         
-					//$(this).attr("attr_district_name",result[index].name);	
-                   //$(this).attr("attr_total_count",result[index].totalCount);		
-				}); */
+				
+					$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',5)");			
+					}); 	
+				
 		}else{
 			$("#districtLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
 			$("#districtLevelIASDetails").css("height","25px");
@@ -3193,9 +3193,9 @@ function buildStatusWiseForDistrictLevel(result,groupType){
 										var statusId = 0;
 										var statusName = value[1];
 										var totalCount = value[2];
-										var scopeId=value[0];
-										var districtId = value[3]
-										//getlevelAndStatusWiseClickForDistrict(statusId,statusName,totalCount,scopeId,districtId);
+										var levelId=value[0];
+										//var districtId = value[3]
+										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,5)
 									}
 								}
 							}
@@ -3218,14 +3218,13 @@ function buildStatusWiseForDistrictLevel(result,groupType){
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 			}
-				/*  $.each($('#districtLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+				  $.each($('#districtLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
-					//$(this).attr("class","getTotaldistrictCls");   
-					$(this).attr("onclick","getlevelAndStatusWiseClickForDistrict(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\')");	
-					//$(this).attr("attr_district_id",result[index].id);         
-					//$(this).attr("attr_district_name",result[index].name);	
-					//$(this).attr("attr_total_count",result[index].totalCount);		
-				}); */
+					
+					$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',5)");			
+					
+						
+				});
 				
 		}else{
 			$("#districtLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
@@ -3261,10 +3260,10 @@ function getStatusWiseForDivisionLevel(departmentId,sortingType,order,alertType,
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		$("#divisionLevelIASDetails").html('');
-			buildStatusWiseForDivisionLevel(result,groupType);
+			buildStatusWiseForDivisionLevel(result,groupType,departmentId,alertType);
 	});
 }
-function buildStatusWiseForDivisionLevel(result,groupType){
+function buildStatusWiseForDivisionLevel(result,groupType,departmentId,alertType){
 	$("#divisionLevelIASDetails").removeAttr("style");
 	if(groupType == "status"){
 		if(result !=null && result.length>0){
@@ -3428,9 +3427,10 @@ function buildStatusWiseForDivisionLevel(result,groupType){
 										var statusId = value[0];
 										var statusName = value[1];
 										var totalCount = value[2];
-										var scopeId=0;
-										var divisionId =value[3];
+										var levelId=0;
+										//var divisionId =value[3];
 										//getlevelAndStatusWiseClickForDivision(statusId,statusName,totalCount,scopeId,divisionId);
+										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,6)
 									}
 								}
 							}
@@ -3453,14 +3453,12 @@ function buildStatusWiseForDivisionLevel(result,groupType){
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 			}	
-				/* $.each($('#divisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+			 $.each($('#divisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");  
-					$(this).attr("onclick","getlevelAndStatusWiseClickForDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\')");		
-					//$(this).attr("class","getTotaldivisionCls");    
-					//$(this).attr("attr_district_id",result[index].id);         
-					//$(this).attr("attr_district_name",result[index].name);	
-					//$(this).attr("attr_total_count",result[index].totalCount);		
-				}); */
+					
+				$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',5)");
+							
+				});
 		}else{
 			$("#divisionLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
 			$("#divisionLevelIASDetails").css("height","25px");
@@ -3620,9 +3618,9 @@ function buildStatusWiseForDivisionLevel(result,groupType){
 										var statusId = 0;
 										var statusName = value[1];
 										var totalCount = value[2];
-										var scopeId=value[0];
-										var divisionId =value[3];
-										//getlevelAndStatusWiseClickForDivision(statusId,statusName,totalCount,scopeId,divisionId);
+										var levelId=value[0];
+										//var divisionId =value[3];
+										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,6)
 									}
 								}
 							}
@@ -3645,14 +3643,11 @@ function buildStatusWiseForDivisionLevel(result,groupType){
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 			}
-				/* $.each($('#divisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+				$.each($('#divisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");  
-					$(this).attr("onclick","getlevelAndStatusWiseClickForDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\')");	
-					//$(this).attr("class","getTotaldivisionCls");    
-					//$(this).attr("attr_district_id",result[index].id);         
-					//$(this).attr("attr_district_name",result[index].name);	
-					//$(this).attr("attr_total_count",result[index].totalCount);	
-				}); */
+					$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',6)");
+						
+				});
 		}else{
 			
 			$("#divisionLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
@@ -3849,13 +3844,12 @@ function buildStatusWiseForSubDivisionLevel(result,groupType){
 							events: {
 									click: function () {
 										var value = (this.extra).split("-");
-										var value = (this.extra).split("-");
 										var statusId = value[0];
 										var statusName = value[1];
 										var totalCount = value[2];
-										var scopeId=0;
-										var subDivisionId = value[3];
-										//getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount,scopeId,subDivisionId);
+										var levelId=0;
+										//var subDivisionId = value[3];
+										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,7)
 									}
 								}
 							}
@@ -3879,14 +3873,11 @@ function buildStatusWiseForSubDivisionLevel(result,groupType){
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 				
 			}
-			/* $.each($('#SubdivisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+			 $.each($('#SubdivisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
-				//	$(this).attr("class","getTotalSubdivisionCls"); 
-					$(this).attr("onclick","getlevelAndStatusWiseClickForSubDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\')"); 					
-					/* $(this).attr("attr_district_id",result[index].id);         
-					$(this).attr("attr_district_name",result[index].name);	
-					$(this).attr("attr_total_count",result[index].totalCount);	 
-				}); */
+				
+				$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',7)");
+				});
 		}else{
 			$("#SubdivisionLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
 			$("#SubdivisionLevelIASDetails").css("height","25px");
@@ -4046,9 +4037,9 @@ function buildStatusWiseForSubDivisionLevel(result,groupType){
 										var statusId = 0;
 										var statusName = value[1];
 										var totalCount = value[2];
-										var scopeId=value[0];
-										var subDivisionId = value[3];
-										//getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount,scopeId,subDivisionId);
+										var levelId=value[0];
+										//var subDivisionId = value[3];
+										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,7)
 									}
 								}
 							}
@@ -4072,14 +4063,10 @@ function buildStatusWiseForSubDivisionLevel(result,groupType){
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 				
 			}
-				/* $.each($('#SubdivisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){
+			 $.each($('#SubdivisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){
 					$(this).attr("style","cursor:pointer;");    
-					//$(this).attr("onclick","getTotalSubdivisionCls");    
-					$(this).attr("onclick","getlevelAndStatusWiseClickForSubDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\')");    
-					/* $(this).attr("attr_district_id",result[index].id);         
-					$(this).attr("attr_district_name",result[index].name);	
-					$(this).attr("attr_total_count",result[index].totalCount);	 
-				}); */
+				$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',7)"); 
+				});
 		}else{
 			$("#SubdivisionLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
 			$("#SubdivisionLevelIASDetails").css("height","25px");
