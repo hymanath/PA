@@ -794,7 +794,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 										 if(totalAlertCnt == 0){
 											return;  
 										 }
-										getDistrictLevelDeptWiseAlertClick(StatusId,StatusName,totalAlertCnt,"mySubTasks");
+										getDistrictLevelDeptWiseAlertClick(StatusId,StatusName,totalAlertCnt,"myAssignedSubTasks");
 									}
 								}
 							}
