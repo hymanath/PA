@@ -150,10 +150,11 @@
 												<select class="form-control locationWiseDistLevelOnChange" id="districtWiseLevelLocId" >
 												</select>
 											</div>
-												<div id="departmentlocationCountDivId" class="departmentlocationShow"></div>
+										</div>
+												<div id="departmentlocationCountDivId" class="departmentlocationShow" style="margin-left:15px;"></div>
 												<div id="departmentStatusCountDivId" class="departmentStatusShow" style="display:none;"></div>
 												<div id="departmentAlertCountDivId" class="departmentAlertCountShow" style="display:none;"></div>
-										</div>
+										
 									</div>
 								</div>
 							</div>
