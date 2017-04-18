@@ -31,6 +31,7 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	private Long subDesignationId;
 	private String  isDeleted;
 	private Long orderNo;
+	private String isImmediate;
 	
 	private GovtDepartmentDesignationNew parentDesignation;
 	private GovtDepartmentDesignationNew subDesignation;
@@ -97,6 +98,13 @@ public class GovtDepartmentDesignationHierarchy extends BaseModel implements Ser
 	}
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
+	}
+	@Column(name="is_immediate")
+	public String getIsImmediate() {
+		return isImmediate;
+	}
+	public void setIsImmediate(String isImmediate) {
+		this.isImmediate = isImmediate;
 	}
 	
 	
