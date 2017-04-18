@@ -13,6 +13,7 @@ var globalUserLevelValues = [];
 var globalDesignationId;	
 var globalOfficerIds = [];	
 var globalGovtDeptDesigOffcrIds = [];
+var subLevels=[];
 onLoadCalls();
 
 function getAlertType(){
@@ -602,7 +603,7 @@ function buildIASOfficerMySubTasksCountView(result){
 						str+='<tr>';
 						str+='<td>';
 						if(result.list1[i].subList1[i].count !=null && result.list1[i].subList1[i].count>0){
-							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList1[i].id+'" attr_dept_name ="'+result.list1[i].subList1[i].name+'" attr_count ="'+result.list1[i].subList1[i].count+'" attr_search_type="today">'+result.list1[i].subList1[i].count+'</span></p>';
+							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="subTask" attr_dept_id ="'+result.list1[i].subList1[i].id+'" attr_dept_name ="'+result.list1[i].subList1[i].name+'" attr_count ="'+result.list1[i].subList1[i].count+'" attr_search_type="today">'+result.list1[i].subList1[i].count+'</span></p>';
 							
 							
 						}else{
@@ -627,7 +628,7 @@ function buildIASOfficerMySubTasksCountView(result){
 								str+='<tr>';
 								str+='<td>';
 								if(result.list1[i].subList2[i].count !=null && result.list1[i].subList2[i].count>0){
-									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'" attr_search_type="completed">'+result.list1[i].subList2[i].count+'</span></p>';
+									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="subTask" attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'" attr_search_type="completed">'+result.list1[i].subList2[i].count+'</span></p>';
 								}else{
 									str+='<p class="pad_3">No Data Available</p>';
 								}
@@ -790,7 +791,7 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 						str+='<tr>';
 						str+='<td>';
 						if(result.list1[i].subList1[i].count !=null && result.list1[i].subList1[i].count>0){
-							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList1[i].id+'" attr_dept_name ="'+result.list1[i].subList1[i].name+'" attr_count ="'+result.list1[i].subList1[i].count+'" attr_search_type="today">'+result.list1[i].subList1[i].count+'</span></p>';
+							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge alertCountCls " attr_type="subTask"  style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList1[i].id+'" attr_dept_name ="'+result.list1[i].subList1[i].name+'" attr_count ="'+result.list1[i].subList1[i].count+'" attr_search_type="today">'+result.list1[i].subList1[i].count+'</span></p>';
 						}else{
 								str+='<p class="pad_3">No Data Available</p>';
 						}
@@ -813,7 +814,7 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 								str+='<tr>';
 								str+='<td>';
 								if(result.list1[i].subList2[i].count !=null &&  result.list1[i].subList2[i].count>0){
-									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'" attr_search_type="completed">'+result.list1[i].subList2[i].count+'</span></p>';
+									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="subTask"  attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'" attr_search_type="completed">'+result.list1[i].subList2[i].count+'</span></p>';
 								}else{
 									str+='<p class="pad_3">No Data Available</p>';
 								}
@@ -1023,7 +1024,7 @@ function buildstateLevelDeptOfficerStatusOverview(result)
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" attr_status_id="'+result[i].id+'" attr_level_id="0" attr_department_id="0">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" attr_district_location_id="0" attr_status_id="'+result[i].id+'" attr_level_id="0" attr_department_id="0">'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -1161,7 +1162,7 @@ function buildstateLevelDeptOfficerLocationLevelOverviewt(result)
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="0" attr_level_id="'+result[i].id+'" attr_department_id="0">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_district_location_id="0" attr_status_id="0" attr_level_id="'+result[i].id+'" attr_department_id="0">'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -1299,7 +1300,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(resul
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].status+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask" attr_status_name="'+result[i].status+'" attr_status_count="'+result[i].alertCnt+'" attr_status_id="'+result[i].id+'" attr_level_id="0" attr_department_id="0">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask" attr_status_name="'+result[i].status+'" attr_status_count="'+result[i].alertCnt+'" attr_district_location_id="0" attr_status_id="'+result[i].id+'" attr_level_id="0" attr_department_id="0">'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -1438,7 +1439,7 @@ function buildstateLevelDeptOfficerLocationLevelOverviewBySubTasks(result)
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="0" attr_level_id="'+result[i].id+'" attr_department_id="0">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" attr_district_location_id="0" attr_status_id="0" attr_level_id="'+result[i].id+'" attr_department_id="0">'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -2035,6 +2036,7 @@ function getdepartmentWiseDetailedInformation(departmentId,departmentName){
 
 
 function getStatusWiseForStateLevel(departmentId,sortingType,orderType,alertType,groupType,districtId,divisionId,subDivisionId){
+	$("#stateLevelIASDetails").html(spinner);
 	var jsObj={
 				fromDateStr:currentFromDate,
 				toDateStr:currentToDate,
@@ -2049,18 +2051,20 @@ function getStatusWiseForStateLevel(departmentId,sortingType,orderType,alertType
 				districtWorkLocationId : districtId,
 				divisionWorkLocationId : divisionId,
 				subDivisionWorkLocationId : subDivisionId,
-				group :groupType
+				group :groupType,
+				subLevels:subLevels
 			}
 	$.ajax({
 		type:'GET',
 		url: 'getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewAction.action',
 		data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){	
-		buildStatusWiseForStateLevel(result,groupType,alertType);
+	}).done(function(result){
+		$("#stateLevelIASDetails").html('');		
+		buildStatusWiseForStateLevel(result,groupType,alertType,departmentId);
 	});
 }
 
-function buildStatusWiseForStateLevel(result,groupType,alertType){
+function buildStatusWiseForStateLevel(result,groupType,alertType,departmentId){
 	$("#stateLevelIASDetails").removeAttr("style");
 	if(groupType == "status"){
 		if(result !=null && result.length>0){
@@ -2223,8 +2227,8 @@ function buildStatusWiseForStateLevel(result,groupType,alertType){
 										var statusId = value[0];
 										var statusName = value[1];
 										var totalCount = value[2];
-										var levelId=0;
-										//getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount)
+										var levelId=0; 
+										getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,0)
 									}
 								}
 							}
@@ -2247,11 +2251,11 @@ function buildStatusWiseForStateLevel(result,groupType,alertType){
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 			
-				/*  $.each($('#stateLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+				 $.each($('#stateLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
-					$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,0,\'"+departmentId+"\')");		
-				});  */
-				//getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount)
+					$(this).attr("onclick","getTotalAlertCountDetailsForStatusAndLocationView(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+alertType+"\',\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0)");					
+				}); 
+				//getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,alertType,statusName,totalCount,0)
 			
 		}else{
 			$("#stateLevelIASDetails").html('<div class="col-md-12 col-xs-12 col-sm-12 m_top10">No Data Available</div>');
@@ -2338,6 +2342,8 @@ function buildStatusWiseForStateLevel(result,groupType,alertType){
 					enabled: false
 				},
 				plotOptions : {
+					bar:{pointWidth: 30,
+						gridLineWidth: 15},
 						series: {
 								cursor: 'pointer',
 								point: {
@@ -2394,7 +2400,8 @@ function getStatusWiseForZoneLevel(departmentId,sortingType,orderType,alertType,
 			districtWorkLocationId : districtId,
 			divisionWorkLocationId : divisionId,
 			subDivisionWorkLocationId : subDivisionId,
-			group :groupType
+			group :groupType,
+			subLevels:subLevels
 			}
 	$.ajax({
 		type:'GET',
@@ -2820,7 +2827,8 @@ function getStatusWiseForDistrictLevel(departmentId,sortingType,order,alertType,
 			districtWorkLocationId : districtId,
 			divisionWorkLocationId : divisionId,
 			subDivisionWorkLocationId : subDivisionId,
-			group :groupType
+			group :groupType,
+			subLevels:subLevels
 			}
 	$.ajax({
 		type:'GET',
@@ -3244,7 +3252,8 @@ function getStatusWiseForDivisionLevel(departmentId,sortingType,order,alertType,
 			districtWorkLocationId :districtId,
 			divisionWorkLocationId :divisionId,
 			subDivisionWorkLocationId :subDivisionId,
-			group :groupType
+			group :groupType,
+			subLevels:subLevels
 			}
 	$.ajax({
 		type:'GET',
@@ -3668,7 +3677,8 @@ function getStatusWiseForSubDivisionLevel(departmentId,sortingType,order,alertTy
 			districtWorkLocationId :districtId,
 			divisionWorkLocationId :divisionId,
 			subDivisionWorkLocationId :subDivisionId,
-			group :groupType
+			group :groupType,
+			subLevels:subLevels
 			}
 	$.ajax({
 		type:'GET',
@@ -4199,11 +4209,12 @@ $(document).on("click",".getDtlsAlertsCls",function(){
 		var type = $(this).attr("attr_type");
 		var levelId = $(this).attr("attr_level_id");
 		var departmentId = $(this).attr("attr_department_id");
-		getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,type,statusName,statuscount)
+		var distLocationId = $(this).attr("attr_district_location_id");
+		getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,type,statusName,statuscount,distLocationId)
 	});
 	
 //click functioality...
-function getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,type,statusName,statuscount){
+function getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,type,statusName,statuscount,distLocationId){
 	$("#alertManagementPopupBody").html('')
 	
 		$("#alertManagementPopup").modal({
@@ -4215,13 +4226,14 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,
 		
 		var jObj = {
 			deptId: departmentId,
-			levelId: levelId,
+			levelId: levelId, //district state Id
 			statusId:statusId,
 			type:type,
 			startDate:currentFromDate,
 			endDate:currentToDate,
 			desigDeptOfficerId:0,
-			officerId:0
+			officerId:0,
+			distLocationId:distLocationId  //parent
 		}
 	$.ajax({
       type:'GET',
