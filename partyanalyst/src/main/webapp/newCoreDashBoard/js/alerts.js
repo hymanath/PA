@@ -3317,10 +3317,10 @@ function getTotalArticledetails(articleId){
 										str+='<div class="table-responsive">';
 									
 								}else{
-									if($(window).width() < 800)
-									{
+									//if($(window).width() < 800)
+									//{
 										str+='<div class="table-responsive">';
-									}
+									//}
 								}  
 									
 									str+='<table class="table">';
@@ -3354,10 +3354,10 @@ function getTotalArticledetails(articleId){
 											str+='</div>';
 										
 									}else{
-										if($(window).width() < 800)
-										{
+										//if($(window).width() < 800)
+										//{
 											str+='</div>';
-										}
+										//}
 									}
 									
 								str+='</div>';
