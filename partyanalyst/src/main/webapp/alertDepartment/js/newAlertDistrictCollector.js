@@ -93,7 +93,7 @@ onLoadCallsAMU();
 		  data: {}
 		}).done(function(result){
 			if(result !=null && result.length>0){
-				$("#govtDepartmentsLocId").append('<option value="0">All</option>');
+				$("#govtDepartmentsLocId").append('<option value="0">select department</option>');
 				for(var i in result){
 					$("#govtDepartmentsLocId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -109,7 +109,7 @@ onLoadCallsAMU();
 		  data: {}
 		}).done(function(result){
 			if(result !=null && result.length>0){
-				$("#districtWiseLevelLocId").append('<option value="0">All</option>');
+				$("#districtWiseLevelLocId").append('<option value="0">District Wise District Level</option>');
 				for(var i in result){
 					$("#districtWiseLevelLocId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
