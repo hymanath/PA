@@ -87,8 +87,26 @@ public class RegistrationVO extends BaseDTO{
 	private String userAccessType;
 	private String task;
 	private List<Long> assignCadreIds = new ArrayList<Long>();
+	private String pageTracking;
+	private String requestTracking;
 	
 	
+	public String getPageTracking() {
+		return pageTracking;
+	}
+
+	public void setPageTracking(String pageTracking) {
+		this.pageTracking = pageTracking;
+	}
+
+	public String getRequestTracking() {
+		return requestTracking;
+	}
+
+	public void setRequestTracking(String requestTracking) {
+		this.requestTracking = requestTracking;
+	}
+
 	public List<Long> getAssignCadreIds() {
 		return assignCadreIds;
 	}
