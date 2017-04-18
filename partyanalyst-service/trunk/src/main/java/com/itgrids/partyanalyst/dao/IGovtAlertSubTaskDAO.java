@@ -57,7 +57,7 @@ public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long>
  	 public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(Date fromDate, Date toDate, Long stateId, 
  			List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,
  			String type,List<Long> alertStatusIds,List<Long> departmentScopeIds);
- 	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,Date startDate,Date endDate,Long desigIds,Long officerIds);
+ 	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,Date startDate,Date endDate,Long desigIds,Long officerIds,Long distLocId);
  	public List<Long> getStateLevelAlertclickViewAlertIds(List<Long> govtDepDesigOffcrIds,
 			List<Long> govtOffcrIds,String type,Long deptId,Long statusId);
  	public List<Long> getSubTasksIdsList(List<Long> alertIds);

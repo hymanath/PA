@@ -2209,7 +2209,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	}
 	
 	public List<AlertCoreDashBoardVO> getDistrictLevelDeptWiseFlterClick(Long scopeId,Long deptId,Long locatonLevelId,
-			Long statusId,String type,String fromDateStr,String toDateStr,Long desigDeptOfficerId,Long officerId){
+			Long statusId,String type,String fromDateStr,String toDateStr,
+			Long desigDeptOfficerId,Long officerId,Long distLocationId){
 		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 		List<Long> alertIds = null;
 		try {
@@ -2221,9 +2222,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				toDate = sdf.parse(toDateStr);
 			}
 			if(type.equalsIgnoreCase("alert")){
-				alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId);
+				alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,distLocationId);
 			}else if(type.equalsIgnoreCase("subTask")){
-				alertIds = govtAlertSubTaskDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId);
+				alertIds = govtAlertSubTaskDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,distLocationId);
 			}
 			
 			if(alertIds != null && alertIds.size() > 0){
