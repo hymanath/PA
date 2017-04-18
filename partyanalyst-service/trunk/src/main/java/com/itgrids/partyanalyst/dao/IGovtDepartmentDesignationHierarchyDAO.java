@@ -10,4 +10,5 @@ public interface IGovtDepartmentDesignationHierarchyDAO extends GenericDao<GovtD
 	public List<Long> getParentDepartment(Long designationId);
 	public List<Long> getOldParentDepartment(Long designationId);
 	public List<Long> getChildLocationDesignations(Long designationId);
+	public List<Object[]> getChildDesigData(List<Long> parentGovtDeptDesigIdList, Long childGovtDeptDesigId2);
 }

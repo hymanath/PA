@@ -2010,6 +2010,13 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    	  }
 			  return query.list();
 		    }
+		public Long getGovtDeptDesigOfficerIdBySubTaskId(Long subTaskId){
+			Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId " +
+					" from  GovtAlertSubTask model " +
+					" where model.govtAlertSubTaskId = :subTaskId ");
+			query.setParameter("subTaskId", subTaskId);
+			return (Long) query.uniqueResult();  
+		}
 		@SuppressWarnings("unchecked")
 		public List<Long> getStateLevelAssignedAlertClickViewAlertIds(List<Long> govtDepDesigOffcrIds,
 				List<Long> govtOffcrIds,String type,Long deptId,Long statusId){

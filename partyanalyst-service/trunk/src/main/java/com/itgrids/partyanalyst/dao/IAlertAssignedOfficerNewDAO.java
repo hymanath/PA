@@ -52,8 +52,10 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
 	public List<Long> getGovtDepartmentDesignationOfficer(Long alertId);
 	public List<Long> getStateLevelAlertclickViewAlertsIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,
 			 String type,Long deptId,Long statusId);
-	public List<Long> getGovtDeptScopeIdForAlert(Long alertId);
+	public Long getGovtDeptScopeIdForAlert(Long alertId);
 	public List<Long> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(Date fromDate,Date toDate,
     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
-    		Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds);        
+    		Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds);  
+	public Long getGovtDeptDesigOfficerIdListByUserId(Long alertId);
+	public Long getGovtDeptDesigIdListByUserId(Long alertId);
 }
