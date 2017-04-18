@@ -2124,7 +2124,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				else if(searchType.equalsIgnoreCase("scopeWise"))
 				  alertCoreDashBoardVOs=alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType,sublevels);
 					
-			} catch (Exception e) {
+			} catch (Exception e) {  
 				LOG.error("Exception Occured in getDistrictOfficeGraphicalView() method, Exception - ",e); 
 			}
 			return Action.SUCCESS;	
@@ -2371,4 +2371,47 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				return Action.SUCCESS;
 			}
+			public String getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(){
+				try{
+					session = request.getSession();
+					RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+					Long userId = regVo.getRegistrationID();
+					jObj = new JSONObject(getTask());
+					String fromDate = jObj.getString("fromDate");
+					String toDate = jObj.getString("toDate");
+					Long stateId = jObj.getLong("stateId");
+					
+					JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+					List<Long> paperIdList = new ArrayList<Long>();
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+					
+					JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+					List<Long> chanelIdList = new ArrayList<Long>();
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
+					
+					JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+					List<Long> calCntrIdList = new ArrayList<Long>();  
+					if(calCntrIdArr != null && calCntrIdArr.length() > 0){
+						for (int i = 0; i < calCntrIdArr.length(); i++){
+							calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+						}
+					}
+					
+					Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+					Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");
+					Long deptScopeId = jObj.getLong("deptScopeId");
+					Long statusId = jObj.getLong("statusId");
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeId,statusId,calCntrIdList);
+					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+				}catch(Exception e){
+					e.printStackTrace();
+					LOG.error("Exception occured in getDistrictLevelDeptWiseFlterClick() of alertManagementSystemAction",e);
+				}
+				return Action.SUCCESS;
+			}
 }
+//public List<AlertCoreDashBoardVO> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds)
