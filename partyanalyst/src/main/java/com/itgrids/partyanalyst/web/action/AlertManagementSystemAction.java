@@ -1081,8 +1081,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			String endDateStr = jObj.getString("endDate");
 			Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
 			Long officerId = jObj.getLong("officerId");
-			
-			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId);
+			Long distLocationId = jObj.getLong("distLocationId");
+			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,distLocationId);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			e.printStackTrace();
