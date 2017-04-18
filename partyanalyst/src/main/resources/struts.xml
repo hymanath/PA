@@ -16985,6 +16985,11 @@
 			<result type="json" name="success">
 				<param name="root">alertCoreDashBoardVOs</param>     
 			</result>
+    </action>
+    <action name="getStatusCompletionInfoForSubTaskAction" class="alertManagementSystemAction" method="getStatusCompletionInfoForSubTask">
+			<result type="json" name="success">
+				<param name="root">idnameVoList</param>     
+			</result>
     </action>   	
  </package>
 </struts>
