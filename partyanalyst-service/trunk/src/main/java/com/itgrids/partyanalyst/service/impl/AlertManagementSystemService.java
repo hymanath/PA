@@ -3784,7 +3784,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
      	public List<AlertCoreDashBoardVO> getDistrictLevelWiseClick(String fromDateStr, String toDateStr, Long stateId, 
 				                             List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
 				                            Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
-				                          Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String group,String searchType,Long statusId,Long govtDeprtMentScopeId,List<Long> calCntrIdList){
+				                          Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String group,String searchType,Long statusId,Long govtDeprtMentScopeId,List<Long> calCntrIdList,List<Long> sublevels){
     		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
     		try {
     			Date fromDate = null;
@@ -3811,6 +3811,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
        				}
        			}
+       			
+       			if(commonMethodsUtilService.isListOrSetValid(sublevels)){
+    				deptScopeIdList.clear();
+					deptScopeIdList.addAll(sublevels);
+				}
     			List<Long> alertIds = null;
     			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 5L){
    				if(alertType != null && alertType.equalsIgnoreCase("alert"))
