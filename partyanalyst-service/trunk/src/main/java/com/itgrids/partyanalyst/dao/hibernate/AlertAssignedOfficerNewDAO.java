@@ -3091,13 +3091,38 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
      }
-	 public List<Long> getGovtDeptScopeIdForAlert(Long alertId){
+	 public Long getGovtDeptScopeIdForAlert(Long alertId){
 		 StringBuilder queryStr = new StringBuilder();
-		 queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentScopeId " +
+		 queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " +
 		 				 " from AlertAssignedOfficerNew model " +
 		 				 " where model.alertId =:alertId");
 		 Query query = getSession().createQuery(queryStr.toString());
 		 query.setParameter("alertId", alertId);
-		 return query.list();
+		 return (Long) query.uniqueResult();
 	 }
-}// GDWL.govt_department_work_location_id, GDS.govt_department_scope_id,AAO.alert_status_id
+	 public Long getGovtDeptDesigOfficerIdListByUserId(Long alertId){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId from AlertAssignedOfficerNew model " +
+		 				 " where " +
+		 				 " model.isDeleted = 'N' " +
+		 				 " and model.isApproved = 'Y' " +
+		 				 " and model.alert.alertId = :alertId " +
+		 				 " and model.alert.isDeleted = 'N' ");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 query.setParameter("alertId", alertId);
+		 return (Long) query.uniqueResult();
+	 }
+	 public Long getGovtDeptDesigIdListByUserId(Long alertId){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId" +
+		 				 " from AlertAssignedOfficerNew model " +
+		 				 " where " +
+		 				 " model.isDeleted = 'N' " +
+		 				 " and model.isApproved = 'Y' " +
+		 				 " and model.alert.alertId = :alertId " +
+		 				 " and model.alert.isDeleted = 'N' ");
+		 Query query = getSession().createQuery(queryStr.toString());  
+		 query.setParameter("alertId", alertId);
+		 return (Long) query.uniqueResult();
+	 }
+}

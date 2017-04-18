@@ -74,6 +74,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private List<String> sessionLevel;
 	
 	private String isInvitee;
+	private String isAccess;
 	private List<String> attendedTimeList;
 	private List<String> attendedDateList;
 	private String remark;
@@ -622,6 +623,14 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 
 	public void setUserStatus(String userStatus) {
 		this.userStatus = userStatus;
+	}
+
+	public String getIsAccess() {
+		return isAccess;
+	}
+
+	public void setIsAccess(String isAccess) {
+		this.isAccess = isAccess;
 	}
     
 }

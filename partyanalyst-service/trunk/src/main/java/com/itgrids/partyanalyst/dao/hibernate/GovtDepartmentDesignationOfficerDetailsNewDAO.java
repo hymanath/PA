@@ -166,4 +166,33 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
   		query.setParameter("userId", userId);
   		return query.list();
   	}
+	public List<Long> getGovtDeptDesigOfficerIdListByUserId(Long userId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId from GovtDepartmentDesignationOfficerDetailsNew model " +
+						" where  model.userId = :userId");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	public List<Long> getGovtDeptDesigIdListByUserId(Long userId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId " +
+						" from " +
+						" GovtDepartmentDesignationOfficerDetailsNew model " +
+						" where  model.userId = :userId");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	public List<Long> getGovtDeptScopeIdsForUserId(Long userId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " +
+						" from " +
+						" GovtDepartmentDesignationOfficerDetailsNew model " +
+						" where  model.userId = :userId");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("userId", userId);
+		return query.list();
+		
+	}
 }

@@ -127,4 +127,5 @@ public class GovtDepartmentDesignationOfficerNewDAO extends GenericDaoHibernate<
 		query.setParameter("userId", userId);
 		return (Long) query.uniqueResult();
 	}
+	
 }
