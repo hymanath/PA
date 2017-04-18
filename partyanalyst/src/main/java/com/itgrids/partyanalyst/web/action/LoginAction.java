@@ -688,6 +688,16 @@ public String ajaxCallForLoginPopup(){
 			
 			userRoles = regVO.getUserRoles();
 			
+			if(regVO.getPageTracking() != null && regVO.getPageTracking().equalsIgnoreCase("Y"))
+				session.setAttribute("PageTrack","Y");
+			else
+				session.setAttribute("PageTrack","N");
+			
+			if(regVO.getRequestTracking() != null && regVO.getRequestTracking().equalsIgnoreCase("Y"))
+				session.setAttribute("RequestTrack","Y");
+			else
+				session.setAttribute("RequestTrack","N");
+			
 			if(userRoles.contains(IConstants.PARTY_ANALYST_USER))
 			{
 				hasPartyAnalystUserRole = true;
