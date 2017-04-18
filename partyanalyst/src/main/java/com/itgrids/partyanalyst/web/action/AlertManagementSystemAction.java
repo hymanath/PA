@@ -1641,6 +1641,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 					}
 				}
+				
+				JSONArray subLevelsArr = jObj.getJSONArray("subLevels");  
+				List<Long> sublevels = new ArrayList<Long>();
+				if(subLevelsArr != null && subLevelsArr.length() > 0){
+					for (int i = 0; i < subLevelsArr.length(); i++){
+						sublevels.add(Long.parseLong(subLevelsArr.getString(i)));          
+					}  
+				}
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				String sortType = jObj.getString("sortType");
@@ -1653,7 +1661,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String group = jObj.getString("group");
 				Long statusId = jObj.getLong("statusId");
 				Long govtDeprtMentScopeId = jObj.getLong("govtDeprtMentScopeId");
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelWiseClick(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType,statusId,govtDeprtMentScopeId,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelWiseClick(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType,statusId,govtDeprtMentScopeId,calCntrIdList,sublevels);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
 				e.printStackTrace();
