@@ -1917,7 +1917,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	}
 		@SuppressWarnings("unchecked")
 		public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,
-				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId){
+				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long distLocationId){
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select distinct model.alert.alertId "+
 					  " from " +
@@ -1942,6 +1942,19 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			if(officerId != null && officerId.longValue() > 0){
 				sb.append(" and model.subTaskGovtOfficer.govtOfficerId =:officerId ");
 			}
+			if(distLocationId != null && distLocationId.longValue() > 0){
+				if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 5l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.districtId = :distLocationId " );
+				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 6l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.divisionId = :distLocationId " );
+				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 7l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.subDivisionId = :distLocationId " );
+				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 8l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.tehsilId = :distLocationId " );
+				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 10l){
+					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.panchayatId = :distLocationId " );
+				}
+			}
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >= :scopeId " );
 			Query query = getSession().createQuery(sb.toString());
 			if(deptId != null && deptId.longValue() >0)
@@ -1960,6 +1973,20 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			}
 			if(officerId != null && officerId.longValue() > 0){
 				query.setParameter("officerId",officerId);
+			}
+			query.setParameter("scopeId", 5l);
+			if(distLocationId != null && distLocationId.longValue() > 0){
+				if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 5l){
+					query.setParameter("distLocationId",distLocationId);
+				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 6l){
+					query.setParameter("distLocationId",distLocationId);
+				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 7l){
+					query.setParameter("distLocationId",distLocationId);
+				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 8l){
+					query.setParameter("distLocationId",distLocationId);
+				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 10l){
+					query.setParameter("distLocationId",distLocationId);
+				}
 			}
 			query.setParameter("scopeId", 5l);
 			return query.list();
