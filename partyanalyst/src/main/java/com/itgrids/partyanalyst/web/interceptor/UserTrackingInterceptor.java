@@ -83,6 +83,32 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		String host = request.getHeader("host");
 		HttpSession session = request.getSession();
 		String url = request.getRequestURL().toString();
+		String requestMethod = request.getHeader("X-Requested-With");
+		RegistrationVO registrationVO = (RegistrationVO)session.getAttribute(IWebConstants.USER);
+		String pageTrack = (String) session.getAttribute("PageTrack");
+		String requestTrack = (String) session.getAttribute("RequestTrack");
+		
+		if(registrationVO != null && registrationVO.getRegistrationID() != null)
+		{	
+			try{
+			if((requestTrack != null && requestTrack.equalsIgnoreCase("Y")) || (pageTrack != null && pageTrack.equalsIgnoreCase("Y") && 
+					(requestMethod == null || (requestMethod != null && !requestMethod.equalsIgnoreCase("XMLHttpRequest")))))
+			{
+				UserTrackingVO userTrackingVO = new UserTrackingVO();
+				userTrackingVO.setRemoteAddress(getClientIp(request));
+	            userTrackingVO.setRequestURI(request.getRequestURI().substring(1).concat(request.getQueryString() != null ? "?"+request.getQueryString():""));
+	            userTrackingVO.setSessionId(session.getId());
+            
+        	if(registrationVO != null)
+        		userTrackingVO.setUserId(registrationVO.getRegistrationID());
+        	
+            	userTrackingService.saveUserTrackingDetails(userTrackingVO);
+			}
+			}catch(Exception e)
+			{
+				LOG.error(e);
+			}
+		}
 		
 		if(url.contains("partyAndLeaderActivitiesAndPerformanceTracking") || url.contains("leadertoleader.in"))
 			return invocation.invoke();
@@ -96,7 +122,7 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		if(url.contains("leadertoleader.in") || url.contains("localhost:8080/PartyAnalyst"))
 			return invocation.invoke();
 		
-		RegistrationVO registrationVO = (RegistrationVO)session.getAttribute(IWebConstants.USER);
+		
 		if( request.getRequestURL().indexOf("loginPopUpsAction") == -1 && checkRequestNeedAuthentication(request.getRequestURL())  && IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
 		{
 			String[] arr = request.getRequestURL().toString().split("/");
@@ -131,18 +157,7 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 	    		}*/
 			}
 		}
-		if(invocation.getProxy().getMethod().equalsIgnoreCase("execute"))
-		{	
-			UserTrackingVO userTrackingVO = new UserTrackingVO();
-			userTrackingVO.setRemoteAddress(request.getRemoteAddr());
-            userTrackingVO.setRequestURI(request.getRequestURI().substring(1).concat(request.getQueryString() != null ? "?"+request.getQueryString():""));
-            userTrackingVO.setSessionId(session.getId());
-            
-        	if(registrationVO != null)
-        		userTrackingVO.setUserId(registrationVO.getRegistrationID());
-        	
-            userTrackingService.saveUserTrackingDetails(userTrackingVO);
-		}				
+						
 		return invocation.invoke();
 		}catch (Exception e) {
 			LOG.error("Exception Occured, Exception is - ",e);
@@ -169,5 +184,25 @@ public class UserTrackingInterceptor extends AbstractInterceptor implements Serv
 		}
 		
 		return needAuth;
+	}
+	
+	private static String getClientIp(HttpServletRequest request) 
+	{
+		try{
+			String clientAddr = "";
+
+			if (request != null) 
+			{
+				clientAddr = request.getHeader("X-FORWARDED-FOR");
+				
+				if(clientAddr == null || "".equals(clientAddr)) 
+					clientAddr = request.getRemoteAddr();
+			}
+			return clientAddr;
+		}catch(Exception e)
+	    {
+	    	LOG.error("Exception Occured, Exception is - ",e);
+	    }
+		return null;
 	}
 }
