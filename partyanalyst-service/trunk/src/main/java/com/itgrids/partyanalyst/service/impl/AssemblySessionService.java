@@ -448,12 +448,13 @@ public class AssemblySessionService implements IAssemblySessionService{
 				List<AdminHouseVO> speechAspectList = adminHouseVO.getCandidateList();
 				if(speechAspectList != null && speechAspectList.size() > 0l){
 					for (AdminHouseVO  adminHousevo: speechAspectList) {
-							MemberSpeechAspect memberSpeechAspect = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
+							List<MemberSpeechAspect> memberSpeechList = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
+							MemberSpeechAspect memberSpeechAspect = memberSpeechList.get(0);
 							if(memberSpeechAspect != null){
-								memberSpeechAspect.setScore(Double.valueOf(adminHousevo.getValue()));								
-								memberSpeechAspect.setUpdatedById(adminHouseVO.getUserId());								
-								memberSpeechAspect.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-								memberSpeechAspectDAO.save(memberSpeechAspect);																
+									memberSpeechAspect.setScore(Double.valueOf(adminHousevo.getValue()));								
+									memberSpeechAspect.setUpdatedById(adminHouseVO.getUserId());								
+									memberSpeechAspect.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+									memberSpeechAspectDAO.save(memberSpeechAspect);		
 								status = "success";
 							}
 						}
@@ -472,7 +473,8 @@ public class AssemblySessionService implements IAssemblySessionService{
 				List<AdminHouseVO> speechAspectList = adminHouseVO.getCandidateList();
 				if(speechAspectList != null && speechAspectList.size() > 0l){
 					for (AdminHouseVO  adminHousevo: speechAspectList) {
-							MemberSpeechAspect memberSpeechAspect = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
+							List<MemberSpeechAspect> memberSpeechList = memberSpeechAspectDAO.updateMemberDetails(adminHouseVO.getAdminHouseMemberId(), adminHouseVO.getAdminHouseSessionDayId(), adminHousevo.getSpeechAsceptId());
+							MemberSpeechAspect memberSpeechAspect = memberSpeechList.get(0);
 							if(memberSpeechAspect != null){
 								memberSpeechAspect.setIsDeleted("Y");
 								memberSpeechAspect.setUpdatedById(adminHouseVO.getUserId());

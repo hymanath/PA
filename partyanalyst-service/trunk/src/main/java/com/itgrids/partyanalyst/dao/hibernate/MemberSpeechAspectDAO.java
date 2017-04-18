@@ -124,7 +124,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		
 	}
 	
-	public MemberSpeechAspect updateMemberDetails(Long adminHouseMemberId,Long adminHouseSessionDayId,Long speechAspectId){
+	public List<MemberSpeechAspect> updateMemberDetails(Long adminHouseMemberId,Long adminHouseSessionDayId,Long speechAspectId){
 		StringBuilder sb = new StringBuilder();
 			sb.append("select model" +
 					" from MemberSpeechAspect model " +
@@ -150,7 +150,7 @@ public class MemberSpeechAspectDAO extends GenericDaoHibernate<MemberSpeechAspec
 		if(speechAspectId != null && speechAspectId.longValue() > 0l)
 			query.setParameter("speechAspectId", speechAspectId);
 		
-		return (MemberSpeechAspect) query.uniqueResult();
+		return  query.list();
 	}
 	
 	public MemberSpeechAspect getPrimaryKey(Long adminHouseSessionId,Long memberId,Long speechAspectId){
