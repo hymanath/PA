@@ -1984,11 +1984,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
         }
-	 //state scope lvl for click
+	 //state scope lvl for click 
 	
     public List<Long> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(Date fromDate,Date toDate,
     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
-    		Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds){
+    		Long deptScopeId,Long parentGovtDepartmentScopeId, Long statusId,List<Long> calCntrIds){
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append(" select distinct AAO.alert_id as count ");  
     	

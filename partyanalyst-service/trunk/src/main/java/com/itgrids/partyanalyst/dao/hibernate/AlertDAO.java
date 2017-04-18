@@ -3200,11 +3200,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 	   			 " tvNewsChannel.channelName " +//8
 	   			 " from Alert model " +
 	   			 " left join model.alertCategory alertCategory " +
-	   			 " left join model.alertSource alertSmodel.alertSource alertSource " +
+	   			 " left join model.alertSource alertSource " +
 	   			 " left join model.editionType editionType " +
 	   			 " left join model.edition edition " +
 	   			 " left join model.tvNewsChannel tvNewsChannel  where " +
-	   			 " model.alertId = :alertId and model.isDeleted = 'N' ");
+	   			 " model.alertId =:alertId and model.isDeleted = 'N' ");
 	   Query query = getSession().createQuery(sb.toString());
 	   query.setParameter("alertId", alertId);
 	   return (Object[]) query.uniqueResult();  
