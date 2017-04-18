@@ -48,6 +48,7 @@ function onLoadClicks()
 		});
 		getTotalArticledetails(articleId);
 	});
+	//document
 	$(document).on("click","#uploadBtnId",function(){
 		var alertId = $(this).attr("attr_alert_id");
 		var uploadHandler = { 
@@ -787,6 +788,7 @@ function getStatusCompletionInfo(alertId){
 			if(result[0].userStatus =='admin'){
 				isAdmin = "true";
 				$('#displaySubTasksliId').hide();
+				$('#docAttachmentId').show();         
 			}else{
 				isAdmin = "false";
 			}
@@ -796,6 +798,7 @@ function getStatusCompletionInfo(alertId){
 			$('#displayAssignIconId').show();
 			$('#displayStatusId').show();
 			$('#displaySubTasksliId').hide();  
+			$('#docAttachmentId').hide();  
 		}	
 	});
 }
@@ -854,7 +857,7 @@ function rightSideExpandView(alertId)
 									str+='<li status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
 										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
 									str+='</li>';
-									str+='<li status-icon-block="attachment" attr_alert_id="'+alertId+'">';
+									str+='<li id="docAttachmentId" status-icon-block="attachment" attr_alert_id="'+alertId+'">';
 										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
 										str+='<form name="uploadAttachment" method="post" id="uploadAttachment">';
 										str+='<div class="alert-status-attachment arrow_box_top" style="display:none;">';
@@ -2291,3 +2294,4 @@ function alertStatus(result,alertId)
 	glStr=str1;
 	//$("#updateStatusChangeBody").html(str1);
 }
+    
