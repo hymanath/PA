@@ -228,7 +228,7 @@
     <div class="modal-content customModal">
       <div class="modal-header">
         <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Party Wise Member Details</h4>
+        <h4 class="modal-title" id="modalTitleId"></h4>
       </div>
 	  <div class="row">
 	  <div class="col-md-2 col-xs-12 col-sm-6" style="margin-left:942px;display:none;" id="partyListDivId">
@@ -333,6 +333,8 @@
 	</div>
 
 <input type="hidden" id="sessionDayId"></input>
+<input type="hidden" id="hidenSessionName"></input>
+<input type="hidden" id="hiddenSessionDate"></input>
 
 <script src="newCoreDashBoard/js/jquery-1.11.3" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
