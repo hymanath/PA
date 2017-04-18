@@ -1917,7 +1917,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	}
 		@SuppressWarnings("unchecked")
 		public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,
-				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long distLocationId){
+				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId){
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select distinct model.alert.alertId "+
 					  " from " +
@@ -1942,19 +1942,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			if(officerId != null && officerId.longValue() > 0){
 				sb.append(" and model.subTaskGovtOfficer.govtOfficerId =:officerId ");
 			}
-			if(distLocationId != null && distLocationId.longValue() > 0){
-				if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 5l){
-					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.districtId = :distLocationId " );
-				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 6l){
-					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.divisionId = :distLocationId " );
-				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 7l){
-					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.subDivisionId = :distLocationId " );
-				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 8l){
-					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.tehsilId = :distLocationId " );
-				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 10l){
-					sb.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.panchayatId = :distLocationId " );
-				}
-			}
+			
 			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >= :scopeId " );
 			Query query = getSession().createQuery(sb.toString());
 			if(deptId != null && deptId.longValue() >0)
@@ -1975,20 +1963,8 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				query.setParameter("officerId",officerId);
 			}
 			query.setParameter("scopeId", 5l);
-			if(distLocationId != null && distLocationId.longValue() > 0){
-				if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 5l){
-					query.setParameter("distLocationId",distLocationId);
-				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 6l){
-					query.setParameter("distLocationId",distLocationId);
-				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 7l){
-					query.setParameter("distLocationId",distLocationId);
-				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 8l){
-					query.setParameter("distLocationId",distLocationId);
-				}else if(locationLevelId != null && locationLevelId > 0 && locationLevelId == 10l){
-					query.setParameter("distLocationId",distLocationId);
-				}
-			}
-			query.setParameter("scopeId", 5l);
+			
+			query.setParameter("scopeId",scopeId);
 			return query.list();
 		}
 		public List<Long> getStateLevelAlertclickViewAlertIds(List<Long> govtDepDesigOffcrIds,
@@ -2014,6 +1990,51 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    	  }
 	    	  if(statusId != null && statusId.longValue() > 0){
 	    		  sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId " );
+	    	  }
+	    	Query query = getSession().createQuery(sb.toString());
+	    	  
+	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
+	    	  }
+	    	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
+	    	  }
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  }
+	    	  if(statusId != null && statusId.longValue() > 0){
+	    		  query.setParameter("statusId", statusId);
+	    	  }
+	    	  if(deptId != null && deptId.longValue() > 0){
+	    		  query.setParameter("deptId", deptId);
+	    	  }
+			  return query.list();
+		    }
+		@SuppressWarnings("unchecked")
+		public List<Long> getStateLevelAssignedAlertClickViewAlertIds(List<Long> govtDepDesigOffcrIds,
+				List<Long> govtOffcrIds,String type,Long deptId,Long statusId){
+		 	   StringBuilder sb = new StringBuilder();
+		    	
+		    	sb.append(" select distinct model.alertAssignedOfficer.alert.alertId from GovtAlertSubTask model ");
+		    	
+		    	sb.append(" where model.isDeleted = 'N' and model.alertAssignedOfficer.isDeleted = 'N' " +
+		    			" and model.alertAssignedOfficer.alert.isDeleted = 'N' " );
+		    	
+		      if(govtOffcrIds != null && govtOffcrIds.size()>0){
+	    		  sb.append(" and  model.alertAssignedOfficer.govtOfficer.govtOfficerId in(:govtOffcrIds) " );
+	    	  }
+    			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+	    		  sb.append(" and model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
+	    	  }
+			    
+	    	  if(type != null && type.equalsIgnoreCase("today")){
+	    		  sb.append(" and date(model.alertAssignedOfficer.insertedTime) between :todayDate and :todayDate " ); 
+	    	  }
+	    	  if(deptId != null && deptId.longValue() > 0){
+	    		  sb.append(" and  model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId " );
+	    	  }
+	    	  if(statusId != null && statusId.longValue() > 0){
+	    		  sb.append(" and  model.alertAssignedOfficer.alertStatus.alertStatusId = :statusId " );
 	    	  }
 	    	Query query = getSession().createQuery(sb.toString());
 	    	  
