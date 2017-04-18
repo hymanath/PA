@@ -16980,6 +16980,11 @@
 			<result type="json" name="success">
 				<param name="root">alertCoreDashBoardVOs</param>     
 			</result>
-    </action>  	
+    </action>
+    <action name="getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClickAction" class="alertManagementSystemAction" method="getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick">
+			<result type="json" name="success">
+				<param name="root">alertCoreDashBoardVOs</param>     
+			</result>
+    </action>   	
  </package>
 </struts>
