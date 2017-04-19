@@ -65,7 +65,7 @@
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
 					</div>
-						<div class="row">
+						<div class="row" id="mainBlockDiv">
 							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
 								<div class="panel panel-default">
 								  <div class="panel-heading headingColor">
@@ -184,7 +184,7 @@
 							</div>
 						</div>
 						
-							<div class="panel panel-default">
+							<div class="panel panel-default" id="deptWiseAlertsDiv">
 								<div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">status level - Department Wise Alerts</h4>
 								</div>
