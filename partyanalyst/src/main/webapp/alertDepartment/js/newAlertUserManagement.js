@@ -14,8 +14,7 @@ var globalDesignationId;
 var globalOfficerIds = [];	
 var globalGovtDeptDesigOffcrIds = [];
 var subLevels=[];
-onLoadCalls();
-
+onLoadCalls(); 
 function getAlertType(){
 		 var alertType = ''; 
 		$('.switch-btn-alertType li').each(function(i, obj){
@@ -95,7 +94,12 @@ function getAlertType(){
 		   
 			
 			globalDepartmentIdsArr=result.deptIds;
-			
+			if(globalDepartmentIdsArr != null && globalDepartmentIdsArr.length == 1){
+				//stateUser
+				$("#mainBlockDiv,#deptWiseAlertsDiv").hide();
+				getdepartmentWiseDetailedInformation(globalDepartmentIdsArr[0],result.departmentNames[0]);
+				getAllDistrictDetails();
+			}
 			if(result.levelValues != null && result.levelValues.length > 0)
 				globalUserLevelValues=result.levelValues;
 			
