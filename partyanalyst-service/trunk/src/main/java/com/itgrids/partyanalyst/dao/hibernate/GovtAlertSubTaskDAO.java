@@ -556,11 +556,11 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	if(type != null && type.equalsIgnoreCase("today")){
 	    		sb.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
 	    				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
-	    				" count(distinct  model.alert.alertId) ");
+	    				" count(distinct  model.govtAlertSubTaskId) ");
 	    	}else if(type != null && type.equalsIgnoreCase("completed")){
 	    		sb.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
 		      		      " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
-		      		      " count(distinct  model.alert.alertId) ");
+		      		      " count(distinct  model.govtAlertSubTaskId) ");
 	    	}
    		sb.append(" from GovtAlertSubTask model ");
    	
@@ -595,11 +595,11 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	if(type != null && type.equalsIgnoreCase("today")){
 	    		sb.append(" select model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
 	    				" model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
-	    				" count(distinct  model.alertAssignedOfficer.alert.alertId) ");
+	    				" count(distinct  model.govtAlertSubTaskId) ");
 	    	}else if(type != null && type.equalsIgnoreCase("completed")){
 	    		sb.append(" select model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
 		      		      " model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
-		      		      " count(distinct  model.alertAssignedOfficer.alert.alertId) ");
+		      		      " count(distinct  model.govtAlertSubTaskId) ");
 	    	}
    		sb.append(" from GovtAlertSubTask model ");
    	
@@ -634,7 +634,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	sb.append(" select model.alertSubTaskStatus.alertSubTaskStatusId," +
    			"  model.alertSubTaskStatus.status," +
    			"  model.alertSubTaskStatus.color," +
-   			"  count(distinct model.alert.alertId) ");
+   			"  count(distinct model.govtAlertSubTaskId) ");
    	
    	sb.append(" from GovtAlertSubTask model ");
    	
@@ -665,7 +665,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	sb.append(" select model.alertAssignedOfficer.alertStatus.alertStatusId," +
    			"  model.alertAssignedOfficer.alertStatus.alertStatus," +
    			"  model.alertAssignedOfficer.alertStatus.color," +
-   			"  count(distinct model.alertAssignedOfficer.alert.alertId) ");
+   			"  count(distinct model.govtAlertSubTaskId) ");
    	
    	sb.append(" from GovtAlertSubTask model ");
    	
