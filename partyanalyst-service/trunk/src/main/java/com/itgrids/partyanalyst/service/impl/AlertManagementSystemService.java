@@ -5309,6 +5309,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					 Vo.setLeb(commonMethodsUtilService.getStringValueForObject(param[13]));
 					 Vo.setWard(commonMethodsUtilService.getStringValueForObject(param[14]));
 					 Vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[15]));
+					 Vo.setAlertId(commonMethodsUtilService.getLongValueForObject(param[16]));
 					 
 					 finalVoList.add(Vo);
 				 }
