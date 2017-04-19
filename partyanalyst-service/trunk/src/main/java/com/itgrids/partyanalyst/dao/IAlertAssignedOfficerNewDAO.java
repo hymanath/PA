@@ -58,4 +58,6 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     		Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds);  
 	public Long getGovtDeptDesigOfficerIdListByUserId(Long alertId);
 	public Long getGovtDeptDesigIdListByUserId(Long alertId);
+	public Integer deleteAssignment(Long alertId);
+	public Long getAssignedDtls(Long alertId);
 }
