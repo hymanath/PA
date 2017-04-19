@@ -24,20 +24,35 @@ public class GovtOfficerSubTaskTrackingDAO extends GenericDaoHibernate<GovtOffic
 	public List<Object[]> getSubTaskStatusHistory(Long subTaskId){
 		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
     	Query query = getSession().createQuery(" select model.alertSubTaskStatus.status,comment.comment,"
-    			+ " date(model.insertedTime),model.govtAlertSubTask.subTaskGovtOfficer.officerName,model.govtAlertSubTask.subTaskGovtOfficer.mobileNo,"
+    			+ " model.insertedTime,model.govtAlertSubTask.subTaskGovtOfficer.officerName,model.govtAlertSubTask.subTaskGovtOfficer.mobileNo,"
     			+ " model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName"
     			+ " ,model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName  "
     			+ " from GovtOfficerSubTaskTracking model "
     			+ " left join model.alertDepartmentComment comment "
-    			+ " where model.govtAlertSubTaskId=:subTaskId");
+    			+ " where model.govtAlertSubTaskId=:subTaskId and comment is not null order by model.insertedTime desc ");
     	query.setParameter("subTaskId", subTaskId);
+    	return query.list();
+	}
+	
+	public List<Object[]> getSubTasksStatusHistory(List<Long> subTaskIdsList){
+		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
+    	Query query = getSession().createQuery(" select  distinct model.govtAlertSubTaskId, model.alertSubTaskStatus.status,comment.comment,"
+    			+ " model.insertedTime,model.govtAlertSubTask.subTaskGovtOfficer.officerName,model.govtAlertSubTask.subTaskGovtOfficer.mobileNo,"
+    			+ " model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName"
+    			+ " ,model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName , " +
+    			" 	alertDepartmentDocument.document  "
+    			+ " from GovtOfficerSubTaskTracking model "
+    			+ " left join model.alertDepartmentComment comment " +
+    			"   left join model.alertDepartmentDocument alertDepartmentDocument "
+    			+ " where model.govtAlertSubTaskId in (:subTaskIdsList) ");
+    	query.setParameterList("subTaskIdsList", subTaskIdsList);
     	return query.list();
 	}
 	
 	public List<Object[]> getCommentsForSubTasks(List<Long> subTaskIds){
 		Query query = getSession().createQuery(" select model.govtAlertSubTaskId,count(model.alertDepartmentCommentId) "
 				+ " from GovtOfficerSubTaskTracking model "
-				+ " where model.govtAlertSubTaskId in (:subTaskIds) and model.isDeleted='N' and model.govtAlertSubTask.isDeleted='N' "
+				+ " where model.govtAlertSubTaskId in (:subTaskIds) and model.isDeleted='N' and model.govtAlertSubTask.isDeleted='N' and model.alertDepartmentCommentId is not null "
 				+ " group by model.govtAlertSubTaskId ");
 		query.setParameterList("subTaskIds", subTaskIds);
 		return query.list();
