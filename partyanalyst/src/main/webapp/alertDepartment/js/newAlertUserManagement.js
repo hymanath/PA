@@ -4294,16 +4294,41 @@ $(document).on("click",".getDtlsAlertsCls",function(){
 			keyboard: false,
 			backdrop: 'static'
 		});
+		
 		var statusId = $(this).attr("attr_status_id");
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
-		var type = $(this).attr("attr_type");
-		var levelId = $(this).attr("attr_level_id");
-		var departmentId = $(this).attr("attr_department_id");
-		
-		getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,type,statusName,statuscount)
+		getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount);
 	});
+function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){ 
+	$("#alertManagementPopupBody").html(spinner);
 	
+	var globalDepartmentIdArr = [];
+	var globalNewsPaperIdArr = [];
+	var globalChannelIdArr = [];
+	var globalCallCenterArr = [];
+    var jsObj ={
+		fromDate:currentFromDate,
+		toDate:currentToDate,
+		stateId : 1,
+		deptIdArr : globalDepartmentIdArr,  
+		paperIdArr : globalNewsPaperIdArr,
+		chanelIdArr : globalChannelIdArr, 
+		callCenterArr : globalCallCenterArr,		
+		statusId : statusId                                
+    }
+    $.ajax({
+		type:'GET',
+		url: 'getTotalAlertByStatusNewAction.action',
+		data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result != null && result.length > 0){
+			buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount);
+		}else{
+			$("#alertManagementPopupBody").html('NO DATA AVAILABLE')
+		}
+    });
+}
 //click functioality...
 function getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,type,statusName,statuscount){
 	$("#alertManagementPopupBody").html('')
