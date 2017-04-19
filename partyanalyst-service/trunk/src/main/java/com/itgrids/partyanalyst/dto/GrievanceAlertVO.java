@@ -50,6 +50,7 @@ public class GrievanceAlertVO {
 	private String hamlet;
 	private String leb;
 	private String ward;
+	private Long alertId;
 	
 	public String getState() {
 		return state;
@@ -314,6 +315,12 @@ public class GrievanceAlertVO {
 	}
 	public void setCreatedBy(String createdBy) {
 		this.createdBy = createdBy;
+	}
+	public Long getAlertId() {
+		return alertId;
+	}
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
 	}
 	
 	

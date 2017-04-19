@@ -39,6 +39,8 @@ public class LocationVO implements Serializable {
 	private String task;
 	private String fromDate2;
 	private String toDate2;
+	private Long hamletId;
+	private String hamletName;
 	
 	
 	public String getTask() {
@@ -209,6 +211,18 @@ public class LocationVO implements Serializable {
 	}
 	public void setToDate2(String toDate2) {
 		this.toDate2 = toDate2;
+	}
+	public Long getHamletId() {
+		return hamletId;
+	}
+	public void setHamletId(Long hamletId) {
+		this.hamletId = hamletId;
+	}
+	public String getHamletName() {
+		return hamletName;
+	}
+	public void setHamletName(String hamletName) {
+		this.hamletName = hamletName;
 	}
 	
 }

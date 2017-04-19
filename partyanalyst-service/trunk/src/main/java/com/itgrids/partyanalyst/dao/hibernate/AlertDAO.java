@@ -218,6 +218,8 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 				  " model.imageUrl, " +
 				  " model.alertCategoryTypeId ");//29-30
 		str.append(",govtDepartment.departmentName,alertStatus.color,alertSeverity.alertSeverityId ");//31-32-33
+		str.append(" ,hamlet.hamletId, " +
+				   " hamlet.hamletName");//35
 		
 		str.append(" from Alert model left join model.userAddress.panchayat panc ");
 		str.append(" left join model.userAddress.tehsil tehsil ");
@@ -227,6 +229,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		str.append(" left join model.userAddress.district district ");
 		str.append(" left join model.userAddress.state state ");
 		str.append(" left join model.userAddress.ward ward ");
+		str.append(" left join model.userAddress.hamlet hamlet ");
 		str.append(" left join model.alertType alertType ");
 		str.append(" left join model.alertSource alertSource ");
 		str.append(" left join model.alertSeverity alertSeverity ");
@@ -6693,7 +6696,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	StringBuilder sb = new StringBuilder();
     	 	sb.append(" select model.alertId,model.createdTime,model.title,model.description,model.alertIssueType.issueType," +
     	 			" model.alertIssueSubType.issueType,model.alertStatus.alertStatus,model.alertCaller.callerName, district.districtName, " +
-    	 			" constituency.name, tehsil.tehsilName,panchayat.panchayatName,hamlet.hamletName,leb.name,ward.name,model.alertCaller.mobileNo");
+    	 			" constituency.name, tehsil.tehsilName,panchayat.panchayatName,hamlet.hamletName,leb.name,ward.name,model.alertCaller.mobileNo,model.alertId");
     	 				//9					10					11					12					13		14
     	 	sb.append("	from Alert model " );
     		sb.append(" left join model.userAddress userAddress1 ");

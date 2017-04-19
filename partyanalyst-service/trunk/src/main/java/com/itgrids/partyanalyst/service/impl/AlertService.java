@@ -1362,6 +1362,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 String eleType = params[18] != null ? params[18].toString() : "";
 					 locationVO.setLocalEleBodyName(params[15] != null ? params[15].toString() +" "+eleType : "");
 					 
+					 locationVO.setHamletId(params[34] != null ? (Long)params[34] : null);
+					 locationVO.setHamletName(params[35] != null ? params[35].toString() : "");
+					 
 					 //category
 					 alertCategoryMap.put((Long)params[0], alertVO.getCategoryId());
 					 
