@@ -76,12 +76,13 @@ public List<Object[]> getParentLevelValuesListInfo(List<Long> levelValues){
    		return query.list();
      }
      @SuppressWarnings("unchecked")
- 	public List<Object[]> getAllDistrictDetails(){
- 		Query query = getSession().createQuery("select model.govtUserAddress.districtId,model.locationName" +
+ 	public List<Object[]> getAllDistrictDetails(Long departmentId){
+ 		Query query = getSession().createQuery("select distinct model.govtUserAddress.districtId,model.locationName" +
  				                            " from  GovtDepartmentWorkLocation model " +
  				                            "where model.govtDepartmentScope.govtDepartmentScopeId =:scopeId " +
- 				                            "and model.isDeleted='N'");   				                          
- 		query.setParameter("scopeId", 5l);   				                            
+ 				                            "and model.isDeleted='N' and model.govtDepartmentId=:departmentId");   				                          
+ 		query.setParameter("scopeId", 5l);   
+ 		query.setParameter("departmentId", departmentId);
  		return query.list();
        }   
 }

@@ -368,10 +368,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
-			}else{
+			}/*else{
 				electronicIdList.add(0L);
 				printIdList.add(0L);
-			}
+			}*/
 			
 			if(deptIdList != null && deptIdList.size() == 0){
 				deptIdList.add(0L);  
@@ -509,10 +509,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
-			}else{
+			}/*else{
 				electronicIdList.add(0L);
 				printIdList.add(0L);
-			}
+			}*/
 			
 			if(deptIdList != null && deptIdList.size() == 0){
 				deptIdList.add(0L);  
@@ -605,10 +605,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
-			}else{
+			}/*else{
 				electronicIdList.add(0L);
 				printIdList.add(0L);
-			}
+			}*/
 			
 			if(deptIdList != null && deptIdList.size() == 0){
 				deptIdList.add(0L);  
@@ -2139,10 +2139,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				if(printIdList != null && printIdList.size() == 0){
 					printIdList.add(0L);
 				}
-			}else{
+			}/*else{
 				electronicIdList.add(0L);
 				printIdList.add(0L);
-			}
+			}*/
 			
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long levelId = 0L;
@@ -2542,11 +2542,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				if(printIdList != null && printIdList.size() == 0){
     					printIdList.add(0L);
     				}
-    			}else{
+    			}/*else{
     				
     				electronicIdList.add(0L);
     				printIdList.add(0L);
-    			}
+    			}*/
     			
     			List<Long> levelValues = new ArrayList<Long>();    
     			Long levelId = 0L;
@@ -3644,10 +3644,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       				if(printIdList != null && printIdList.size() == 0){
       					printIdList.add(0L);
       				}
-      			}else{
+      			}/*else{
       				electronicIdList.add(0L);
       				printIdList.add(0L);
-      			}
+      			}*/
       			
       			List<Long> levelValues = new ArrayList<Long>();    
       			Long levelId = 0L;
@@ -4900,10 +4900,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    		}
    		return null;
     }
-    	public List<AlertVO> getAllDistrictDetails(){
+    	public List<AlertVO> getAllDistrictDetails(Long departmentId){
             List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
         		try {
-        		List<Object[]> districtList = govtDepartmentWorkLocationDAO.getAllDistrictDetails();
+        		List<Object[]> districtList = govtDepartmentWorkLocationDAO.getAllDistrictDetails(departmentId);
         		if (districtList != null && districtList.size() > 0) {
               			for
               			(Object[] objects : districtList) {  
@@ -5554,10 +5554,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      				if(printIdList != null && printIdList.size() == 0){
 	      					printIdList.add(0L);
 	      				}
-	      			}else{
+	      			}/*else{
 	      				electronicIdList.add(0L);
 	      				printIdList.add(0L);
-	      			}
+	      			}*/
 	      			
 	      			List<Long> levelValues = new ArrayList<Long>();    
 	      			Long levelId = 0L;

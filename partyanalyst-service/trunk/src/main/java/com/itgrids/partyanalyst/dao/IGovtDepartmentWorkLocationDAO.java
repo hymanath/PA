@@ -13,6 +13,6 @@ public interface IGovtDepartmentWorkLocationDAO extends GenericDao<GovtDepartmen
 	public List<Object[]> getParentLevelValuesListInfo(List<Long> levelValues);
 	public List<Object[]> getAllDivisionDetails(Long districtId);
 	public List<Object[]> getAllSubDivisionDetails(Long divisionId);
-	public List<Object[]> getAllDistrictDetails();
+	public List<Object[]> getAllDistrictDetails(Long depaertmentId);
 	
 }
