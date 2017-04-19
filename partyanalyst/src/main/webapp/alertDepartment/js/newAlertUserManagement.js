@@ -94,7 +94,7 @@ function getAlertType(){
 		   
 			
 			globalDepartmentIdsArr=result.deptIds;
-			globalDepartmentIdsArr.push(82);
+			//globalDepartmentIdsArr.push(82);
 			if(globalDepartmentIdsArr != null && globalDepartmentIdsArr.length == 1){
 				//stateUser
 				$("#mainBlockDiv,#deptWiseAlertsDiv").hide();
@@ -438,7 +438,7 @@ function buildIASOfficerMyAlertsCountMainView(result){
 				str+='</div>';
 				
 				str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
-					str+='<h5 class="" style="font-weight: bold;">COMPLETED</h5>';
+					str+='<h5 class="" style="font-weight: bold;">OVERALL</h5>';
 					str+='<table class="table  table_styled m_top5">';
 					str+='<tbody>';
 						if(result.list1[i].subList2 !=null && result.list1[i].subList2.length>0){
@@ -656,7 +656,7 @@ function buildIASOfficerMySubTasksCountView(result){
 				str+='</div>';
 				
 				str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
-					str+='<h5 class="" style="font-weight: bold;">COMPLETED</h5>';
+					str+='<h5 class="" style="font-weight: bold;">OVERALL</h5>';
 					str+='<table class="table  table_styled m_top5">';
 					str+='<tbody>';
 						if(result.list1[i].subList2 !=null && result.list1[i].subList2.length>0){
@@ -870,7 +870,7 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 				str+='</div>';
 				
 				str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
-					str+='<h5 class="" style="font-weight: bold;">COMPLETED</h5>';
+					str+='<h5 class="" style="font-weight: bold;">OVERALL</h5>';
 					str+='<table class="table  table_styled m_top5">';
 					str+='<tbody>';
 						if(result.list1[i].subList2 !=null && result.list1[i].subList2.length>0){
@@ -1998,7 +1998,7 @@ function getdepartmentWiseDetailedInformation(departmentId,departmentName){
 					str+='<hr class="m_0"/>';
 				str+='</div>';
 				
-				str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top20">';
+				/*str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top20">';
 					str+='<h4>ZONE LEVEL</h4>';
 					str+='<div class="col-md-2 col-xs-12 col-sm-4 m_top10">';
 						str+='<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingZone">';
@@ -2019,7 +2019,7 @@ function getdepartmentWiseDetailedInformation(departmentId,departmentName){
 					
 					str+='<div id="zoneLevelIASDetails" class=""></div>';
 					str+='<hr class="m_0"/>';
-				str+='</div>';
+				str+='</div>';*/
 			
 				str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top20">';
 					str+='<h4>DISTRICT LEVEL</h4>';
