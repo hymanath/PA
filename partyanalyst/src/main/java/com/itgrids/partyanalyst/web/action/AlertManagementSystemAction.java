@@ -2069,7 +2069,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		public String getAllDistrictDetails(){
 			try {
 				jObj = new JSONObject(getTask());
-				alertVOs = alertManagementSystemService.getAllDistrictDetails();
+				alertVOs = alertManagementSystemService.getAllDistrictDetails(jObj.getLong("departmentId"));
 			} catch (Exception e) {
 				LOG.error("Exception Raised in getAllDistrictDetails() in AlertManagementSystemAction",e);
 			}

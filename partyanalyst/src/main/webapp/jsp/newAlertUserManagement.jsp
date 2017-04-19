@@ -98,7 +98,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-6">
+							<div class="col-sm-6 applyStyleStatus">
 								<div class="panel panel-default">
 									<div class="panel-heading headingColor">
 										<h4 class="panel-title text-capital fontColor">status overview</h4>
