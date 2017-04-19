@@ -37,6 +37,12 @@ public class AlertAssigningVO {
 	
 	private Long alertAssignedOfficerId;
 	
+	public String getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
 	public String getTitle() {
 		return title;
 	}

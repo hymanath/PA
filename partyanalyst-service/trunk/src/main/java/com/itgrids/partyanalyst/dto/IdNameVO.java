@@ -85,7 +85,79 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String time;
 	private List<SessionVO> sessionsList = new ArrayList<SessionVO>(0);
 	
+	private Long alertId;
+	private String title;
+	private String description;
+	private String assignedOfficerStr;
+	private String assignedByOfficerStr;
+	private String designation;
+	private String dueDateStr;
+	private List<AlertTrackingVO> commentList = new ArrayList<AlertTrackingVO>(0);
 	
+	public List<AlertTrackingVO> getCommentList() {
+		return commentList;
+	}
+
+	public void setCommentList(List<AlertTrackingVO> commentList) {
+		this.commentList = commentList;
+	}
+
+	public String getDueDateStr() {
+		return dueDateStr;
+	}
+
+	public void setDueDateStr(String dueDateStr) {
+		this.dueDateStr = dueDateStr;
+	}
+
+	public Long getAlertId() {
+		return alertId;
+	}
+
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
+
+	public String getAssignedOfficerStr() {
+		return assignedOfficerStr;
+	}
+
+	public void setAssignedOfficerStr(String assignedOfficerStr) {
+		this.assignedOfficerStr = assignedOfficerStr;
+	}
+
+	public String getAssignedByOfficerStr() {
+		return assignedByOfficerStr;
+	}
+
+	public void setAssignedByOfficerStr(String assignedByOfficerStr) {
+		this.assignedByOfficerStr = assignedByOfficerStr;
+	}
+
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public List<SessionVO> getSessionsList() {
 		return sessionsList;
 	}
