@@ -16990,6 +16990,13 @@
 			<result type="json" name="success">
 				<param name="root">idnameVoList</param>     
 			</result>
-    </action>   	
+    </action>   
+    
+     <action name="updateSubTaskStatusCommentAction" class="alertManagementSystemAction" method="updateSubTaskStatusComment">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>     
+			</result>
+    </action> 
+    	
  </package>
 </struts>
