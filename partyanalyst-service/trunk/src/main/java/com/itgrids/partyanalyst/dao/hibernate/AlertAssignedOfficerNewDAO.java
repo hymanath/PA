@@ -166,9 +166,6 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
 	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
-	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  sb.append(" and date(model.insertedTime) between :todayDate and :todayDate " ); 
-	    	  }
 	    	  
 	    	  if(fromDate != null && toDate != null){
 	    		  sb.append(" and date(model.insertedTime) between :fromDate and :toDate " );
