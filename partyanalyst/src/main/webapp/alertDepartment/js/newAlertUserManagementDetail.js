@@ -245,6 +245,7 @@ function onLoadClicks()
 			if(result != null && result.exceptionMsg == 'success')
 			{
 				$("#commentPostingSpinner").html("status updated successfully");
+				$("#alertManagementPopup1").hide();
 				if(subTaskId == null || subTaskId.length == 0)
 					getSubAlertsDetails(alertId,subAlertId)
 				else
@@ -1447,7 +1448,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 						str1+='</div>';
 					str1+='</div>';
 				
-				str1+='<button class="btn btn-primary btn-sm text-capital" subTaskId="'+subAlertId+'" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
+				str1+='<button class="btn btn-primary btn-sm text-capital closeSecondModal" subTaskId="'+subAlertId+'" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
 				subTaskglStr=str1;
 		}
 	str+='</div>';
@@ -2730,7 +2731,7 @@ function alertStatus(result,alertId)
 			str1+='</div>';
 		str1+='</div>';
 	
-	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChange">update</button>';
+	str1+='<button class="btn btn-primary btn-sm text-capital closeSecondModal" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChange">update</button>';
 	glStr=str1;
 	//$("#updateStatusChangeBody").html(str1);
 }
