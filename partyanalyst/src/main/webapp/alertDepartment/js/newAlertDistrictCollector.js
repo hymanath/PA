@@ -387,7 +387,7 @@ onLoadCallsAMU();
 			var designationId = $(this).val();
 			officersByDesignationAndLevel(designationId)
 		});
-		
+		/*
 		$(document).on("click","#updateStatusChange",function(){
 			//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
 			var comment = $("#updateStatusChangeComment").val()
@@ -416,6 +416,7 @@ onLoadCallsAMU();
 				}
 			});
 		});
+		*/
 		$(document).on("click","#priorityChangeSaveId",function(){
 			
 			var jsObj ={
@@ -436,6 +437,7 @@ onLoadCallsAMU();
 				}
 			});
 		});
+		/*
 		$(document).on("click","#commentChangeId",function(){
 			$("#commentPostingSpinner").html(spinner);
 			var comment = $("#alertCommentId").val();
@@ -470,7 +472,7 @@ onLoadCallsAMU();
 			});
 				
 		});
-	
+	*/
 		/*alert Assigned Part End*/
 	}
 	
