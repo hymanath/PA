@@ -864,6 +864,7 @@ function getAlertStatusHistory(alertId){
 //swadhin
 var isAdmin = "";
 var globalUserType = "";
+var globalStatusId = 0;
 function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	$("#statusDtlsDiv").html(spinner);
@@ -887,6 +888,7 @@ function getStatusCompletionInfo(alertId){
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
+			globalStatusId = sttatusId;      
 			$('#historyId').show();
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli').show();	
@@ -2665,8 +2667,9 @@ function alertStatusHistory(result,alertId)
 			}  
 			
 		str+='</table>';
+		
 		if(isAdmin == "false"){
-			if(globalUserType != "same"){
+			if(globalUserType != "same" && globalUserType != "other"){
 				str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
 					str1+='<label class="checkbox-inline">';
 						str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
@@ -2678,6 +2681,10 @@ function alertStatusHistory(result,alertId)
 		
 		$("#alertManagementPopup1 .modal-footer").show();
 		$("#alertManagementPopup1 .modal-footer").html(str1);
+		
+		if(globalStatusId == 8 || globalStatusId == 9){
+			$("#changeStatudCheckBoxId").hide();   
+		}
 		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 		$("#alertManagementPopupBody1").html(str);
 	}else{
@@ -2735,4 +2742,4 @@ function alertStatus(result,alertId)
 	glStr=str1;
 	//$("#updateStatusChangeBody").html(str1);
 }
-    
+              
