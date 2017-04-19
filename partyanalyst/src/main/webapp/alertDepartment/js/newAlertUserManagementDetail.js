@@ -897,7 +897,8 @@ function getStatusCompletionInfo(alertId){
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
-			globalStatusId = sttatusId;      
+			globalStatusId = sttatusId;
+			
 			$('#historyId').show();
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
@@ -942,8 +943,12 @@ function getStatusCompletionInfo(alertId){
 				$('#displayStatusId').attr('status-icon-block','alertStatus');
 			}
 			
-			alertStatus(result,alertId);			
-		}else{
+			alertStatus(result,alertId);
+			if(sttatusId == 1){
+				$('#footerCommentId').hide();    
+			}  
+			
+		}else{      
 			$('#displayAssignIconId').show();
 			$('#displayStatusId').show();
 			$('#displaySubTasksliId').hide();  
@@ -1079,7 +1084,7 @@ function rightSideExpandView(alertId)
 							str+='<div status-body="task" class="m_top20"></div>';
 							str+='<div status-body="subTask" class="m_top20"></div>';
 						str+='</div>';
-						str+='<div class="panel-footer">';
+						str+='<div class="panel-footer" id="footerCommentId">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-1 text-center">';
 									str+='<span class="icon-name icon-primary">Ra</span>';
