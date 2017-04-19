@@ -883,22 +883,22 @@ function getStatusCompletionInfo(alertId){
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		$("#statusDtlsDiv").html('');
-		$('#displayStatusId,#displaySubTaskli,#displayAssignIconId,#displayDueDate1,#displayDueDate2,#displayPriority,#historyId').hide();
+		$('#displayStatusId,#displayAssignIconId,#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority,#historyId').hide();
 		$('#displayStatusId').attr('status-icon-block','alertStatus');
 		
 		if(result != null && result.length>0){
-			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
 			globalStatusId = sttatusId;      
 			$('#historyId').show();
 			if(buildTypeStr=='own'){  
-				$('#displayStatusId,#displaySubTaskli').show();	
+				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
 				$('#displayDueDate1').show();
 				$('#displayDueDate2').hide();  
 			}
 			else if(buildTypeStr=='subUser'){	
+				$('#displaySubTasksliId').hide();		
 				$('#displayDueDate1').hide();
 				$('#displayStatusId').show();
 				$('#displayStatusId').removeAttr('status-icon-block');
@@ -906,10 +906,12 @@ function getStatusCompletionInfo(alertId){
 				$('#displayDueDate2,#displayPriority').show();
 				
 			}else if(buildTypeStr=='same'){ 
+				$('#displaySubTasksliId').hide();
 				$('#displayStatusId').show();       
 				$('#displayDueDate1').show();                       
 			}
-			else if(buildTypeStr=='other'){  
+			else if(buildTypeStr=='other'){
+				$('#displaySubTasksliId').hide();				
 				$('#displayStatusId').show();
 				$('#displayDueDate1').show();                       
 			}
@@ -929,7 +931,7 @@ function getStatusCompletionInfo(alertId){
 			}
 			
 			if(isAdmin=='false'){
-				$('#displaySubTasksliId,#displayDueDate1,#docAttachmentId').show(); 
+				$('#displayDueDate1,#docAttachmentId').show(); 
 				$('#displayStatusId').attr('status-icon-block','alertStatus');
 			}
 			
@@ -964,7 +966,7 @@ function rightSideExpandView(alertId)
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
 									str+='</li>';
 									
-									 str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTasksliId" style="">';
+									 str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTasksliId" style="display:none;">';
 										str+='<i class="fa fa-level-down" aria-hidden="true" id="displaySubTasksli"></i>';
 									str+='</li>';  
 									//	$(document).on("click","[status-icon] li",function(e){
