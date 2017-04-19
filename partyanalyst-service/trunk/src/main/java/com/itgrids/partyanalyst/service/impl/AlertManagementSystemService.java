@@ -1197,7 +1197,27 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					alertAssignedOfficer.setAlertStatusId(2l);
 					alertAssignedOfficer.setIsDeleted("N");
 					alertAssignedOfficer.setIsApproved("Y");
-					alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+					//check whether the alert is asigned to somebody or not, if already assigned delete that assignment
+					Long assingedId = alertAssignedOfficerNewDAO.getAssignedDtls(inputvo.getAlertId());
+					
+					if(assingedId != null){
+						AlertAssignedOfficerNew alertAssignedOfficer2 = new AlertAssignedOfficerNew();
+						alertAssignedOfficer2 = alertAssignedOfficerNewDAO.get(assingedId);
+						alertAssignedOfficer2.setAlertId(inputvo.getAlertId());
+						alertAssignedOfficer2.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+						alertAssignedOfficer2.setGovtOfficerId(inputvo.getGovtOfficerId() !=null ? (Long)inputvo.getGovtOfficerId():null);
+						alertAssignedOfficer2.setInsertedBy(inputvo.getUserId());
+						alertAssignedOfficer2.setUpdatedBy(inputvo.getUserId());
+						alertAssignedOfficer2.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficer2.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficer2.setAlertStatusId(2l);
+						alertAssignedOfficer2.setIsDeleted("N");
+						alertAssignedOfficer2.setIsApproved("Y");  
+						alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer2);
+					}else{
+						alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+					}
+					
 					
 					//Officer Assigning Tracking
 					AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
@@ -3759,8 +3779,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		
         		//get govt dept desig off id by alertId
         		Long govtDeptDesigOfficerId = alertAssignedOfficerNewDAO.getGovtDeptDesigOfficerIdListByUserId(alertId);
-        		
-        		
         		
         		//whether this alert is belongs to just subordinate or not.
         		
