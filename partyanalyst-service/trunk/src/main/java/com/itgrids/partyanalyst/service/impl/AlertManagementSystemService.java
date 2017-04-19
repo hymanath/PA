@@ -75,6 +75,7 @@ import com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class AlertManagementSystemService extends AlertService implements IAlertManagementSystemService{
@@ -2317,68 +2318,72 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			status = (String)transactionTemplate.execute(new TransactionCallback() {
 				public Object doInTransaction(TransactionStatus arg0) {
 					
-					
-					//Alert details
-					//Alert alert = alertDAO.get(inputvo.getAlertId());
-					
-					Long alertAssignedOfficerId=null;
-					List<Long> alertAssignedOfficerIds = alertAssignedOfficerNewDAO.getAlertAssignedOfficerId(inputvo.getAlertId());
-					if(alertAssignedOfficerIds !=null && alertAssignedOfficerIds.size()>0)
-						alertAssignedOfficerId = alertAssignedOfficerIds.get(0);
-					
+					try {
+						//Alert details
+						//Alert alert = alertDAO.get(inputvo.getAlertId());
+						
+						Long alertAssignedOfficerId=null;
+						List<Long> alertAssignedOfficerIds = alertAssignedOfficerNewDAO.getAlertAssignedOfficerId(inputvo.getAlertId());
+						if(alertAssignedOfficerIds !=null && alertAssignedOfficerIds.size()>0)
+							alertAssignedOfficerId = alertAssignedOfficerIds.get(0);
+						
 
-					//Get Department Designation Officer Ids
-					Long desigOfficerId = null;
-					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(),
-							inputvo.getGovtOfficerId());
-					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
-						desigOfficerId = designationOfficerIds.get(0);
-					
-					//Subtask Assigning to Officer
-					GovtAlertSubTask govtAlertSubTask = new GovtAlertSubTask();
-					
-					govtAlertSubTask.setAlertId(inputvo.getAlertId());
-					govtAlertSubTask.setTitle(inputvo.getTitle());
-					govtAlertSubTask.setDescription(inputvo.getTitle());
-					govtAlertSubTask.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-					if(inputvo.getAlertAssignedOfficerId() !=null)
-						govtAlertSubTask.setAlertAssignedOfficerId(alertAssignedOfficerId);
-					else
-						govtAlertSubTask.setAlertAssignedOfficerId(alertAssignedOfficerId);
-					
-					govtAlertSubTask.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-					govtAlertSubTask.setSubTaskGovtOfficerId(inputvo.getGovtOfficerId() !=null ? (Long)inputvo.getGovtOfficerId():null);
-					govtAlertSubTask.setCreatedBy(inputvo.getUserId());
-					govtAlertSubTask.setUpdatedBy(inputvo.getUserId());
-					govtAlertSubTask.setCreatedTime(new DateUtilService().getCurrentDateAndTime());
-					govtAlertSubTask.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-					
-					govtAlertSubTask.setAlertSubTaskStatusId(2l);
-					govtAlertSubTask.setIsApproved("Y");
-					govtAlertSubTask.setIsDeleted("N");
-					
-					govtAlertSubTask = govtAlertSubTaskDAO.save(govtAlertSubTask);
-					
-					//Officer Assigning Tracking
-					GovtOfficerSubTaskTracking govtOfficerSubTaskTracking = new GovtOfficerSubTaskTracking();
-					
-					if(inputvo.getAlertAssignedOfficerId() !=null)
-						govtOfficerSubTaskTracking.setAlertAssignedOfficerId(alertAssignedOfficerId);
-					else
-						govtOfficerSubTaskTracking.setAlertAssignedOfficerId(alertAssignedOfficerId);
-					
-					govtOfficerSubTaskTracking.setGovtAlertSubTaskId(govtAlertSubTask.getGovtAlertSubTaskId());
-					govtOfficerSubTaskTracking.setGovtAlertActionTypeId(1l);
-					govtOfficerSubTaskTracking.setAlertSubTaskStatusId(govtAlertSubTask.getAlertSubTaskStatusId());
-					govtOfficerSubTaskTracking.setInsertedById(inputvo.getUserId());
-					govtOfficerSubTaskTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-					govtOfficerSubTaskTracking.setIsDeleted("N");
-					
-					
-					govtOfficerSubTaskTracking = govtOfficerSubTaskTrackingDAO.save(govtOfficerSubTaskTracking);
-					
-					
-					return "success";
+						//Get Department Designation Officer Ids
+						Long desigOfficerId = null;
+						List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(),
+								inputvo.getGovtOfficerId());
+						if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
+							desigOfficerId = designationOfficerIds.get(0);
+						
+						//Subtask Assigning to Officer
+						GovtAlertSubTask govtAlertSubTask = new GovtAlertSubTask();
+						
+						govtAlertSubTask.setAlertId(inputvo.getAlertId());
+						govtAlertSubTask.setTitle(inputvo.getTitle());
+						govtAlertSubTask.setDescription(inputvo.getTitle());
+						govtAlertSubTask.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+						govtAlertSubTask.setDueDate(new SimpleDateFormat("dd/MM/yyyy").parse(inputvo.getDueDate()));
+						if(inputvo.getAlertAssignedOfficerId() !=null)
+							govtAlertSubTask.setAlertAssignedOfficerId(alertAssignedOfficerId);
+						else
+							govtAlertSubTask.setAlertAssignedOfficerId(alertAssignedOfficerId);
+						
+						govtAlertSubTask.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+						govtAlertSubTask.setSubTaskGovtOfficerId(inputvo.getGovtOfficerId() !=null ? (Long)inputvo.getGovtOfficerId():null);
+						govtAlertSubTask.setCreatedBy(inputvo.getUserId());
+						govtAlertSubTask.setUpdatedBy(inputvo.getUserId());
+						govtAlertSubTask.setCreatedTime(new DateUtilService().getCurrentDateAndTime());
+						govtAlertSubTask.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						
+						govtAlertSubTask.setAlertSubTaskStatusId(2l);
+						govtAlertSubTask.setIsApproved("Y");
+						govtAlertSubTask.setIsDeleted("N");
+						
+						govtAlertSubTask = govtAlertSubTaskDAO.save(govtAlertSubTask);
+						
+						//Officer Assigning Tracking
+						GovtOfficerSubTaskTracking govtOfficerSubTaskTracking = new GovtOfficerSubTaskTracking();
+						
+						if(inputvo.getAlertAssignedOfficerId() !=null)
+							govtOfficerSubTaskTracking.setAlertAssignedOfficerId(alertAssignedOfficerId);
+						else
+							govtOfficerSubTaskTracking.setAlertAssignedOfficerId(alertAssignedOfficerId);
+						
+						govtOfficerSubTaskTracking.setGovtAlertSubTaskId(govtAlertSubTask.getGovtAlertSubTaskId());
+						govtOfficerSubTaskTracking.setGovtAlertActionTypeId(1l);
+						govtOfficerSubTaskTracking.setAlertSubTaskStatusId(govtAlertSubTask.getAlertSubTaskStatusId());
+						govtOfficerSubTaskTracking.setInsertedById(inputvo.getUserId());
+						govtOfficerSubTaskTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						govtOfficerSubTaskTracking.setIsDeleted("N");
+						
+						
+						govtOfficerSubTaskTracking = govtOfficerSubTaskTrackingDAO.save(govtOfficerSubTaskTracking);
+						
+						return "success";
+					} catch (Exception e) {
+						LOG.error("Error occured assigningSubTaskToOfficer() method of AlertManagementSystemService",e);
+					}
+					return "failure";
 				}
 			});
 		} catch (Exception e) {
@@ -3187,7 +3192,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         				public void doInTransactionWithoutResult(TransactionStatus status) {
         					
         					GovtAlertSubTask gast = govtAlertSubTaskDAO.get(subTaskId);
-        					if(gast != null){
+        					if(gast != null && statusId != null && statusId.longValue()>0L){
         						gast.setAlertSubTaskStatusId(statusId);
         						gast.setUpdatedBy(userId);
         						gast.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -3314,8 +3319,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
         				public void doInTransactionWithoutResult(TransactionStatus status) {
         		String folderName = folderCreationForAlertsAttachments();
-        		CustomReportFile customReportFile = null;
-        		CustomReport customReport = null;
+        		//CustomReportFile customReportFile = null;
+        		//CustomReport customReport = null;
         		
         		Calendar calendar = Calendar.getInstance();
         		calendar.setTime(new Date());
@@ -3359,7 +3364,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		 }
         		
         		 resultStatus.setResultCode(0);
-        		 resultStatus.setResultState(customReportFile.getCustomReportFileId());
+        		// resultStatus.setResultState(customReportFile.getCustomReportFileId());
         		 resultStatus.setMessage("success");
         				}
         			});
@@ -3520,23 +3525,48 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0); 
         	try {
         		List<Object[]> objList = govtAlertSubTaskDAO.getSubTaskInfoForAlert(alertId);
-        		Map<Long,AlertTrackingVO> tempMap = new HashMap<Long, AlertTrackingVO>(0);
+        		Map<Long,AlertTrackingVO> tempMap = new LinkedHashMap<Long, AlertTrackingVO>(0);
         		
         		if(objList != null && objList.size() > 0){
         			List<Long> subTaskIds = new ArrayList<Long>(0);
         			for (Object[] obj : objList) {
-        				subTaskIds.add((Long)obj[0]);
+        				
         				AlertTrackingVO vo = new AlertTrackingVO();
-        				vo.setUserId((Long)obj[0]);
-        				vo.setUserName(obj[1].toString());
+        				vo.setUserId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+        				vo.setUserName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+        				
+        				vo.setAlertId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+        				vo.setTitle(commonMethodsUtilService.getStringValueForObject(obj[1]));
+        				vo.setDate(commonMethodsUtilService.getStringValueForObject(obj[3]));
         				tempMap.put((Long)obj[0], vo);
+        				subTaskIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
 					}
+        			
+        			List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistory(subTaskIds);
+        			if(officersList != null && officersList.size() > 0){
+        				for (Object[] objects : officersList) {
+							if(tempMap.get((Long)objects[0]) != null){
+								AlertTrackingVO vo  = tempMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+								if(vo != null){
+									if(!commonMethodsUtilService.getStringValueForObject(objects[2]).isEmpty())
+										vo.getCommentList().add(new AlertTrackingVO(commonMethodsUtilService.getLongValueForObject(objects[0]), 
+											 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3])));
+									vo.setUserName(commonMethodsUtilService.getStringValueForObject(objects[4]));
+									vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[5]));
+									vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[6]));
+									vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+									vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[1]));
+								}
+							}
+						}
+        			}
+        			
         			
         			List<Object[]> objectsList = govtOfficerSubTaskTrackingDAO.getCommentsForSubTasks(subTaskIds);
         			if(objectsList != null && objectsList.size() > 0){
         				for (Object[] objects : objectsList) {
 							if(tempMap.get((Long)objects[0]) != null){
-								tempMap.get((Long)objects[0]).setUserId((Long)objects[1]);
+								tempMap.get((Long)objects[0]).setCount((Long)objects[1]);
 							}
 						}
         			}
@@ -3674,10 +3704,41 @@ public class AlertManagementSystemService extends AlertService implements IAlert
             			finalList.add(VO);
 					}
     			}
-    			if(objList != null && objList.size() > 0){
-    				finalList.get(0).setUserStatus(userType);
-    				finalList.get(0).setIsAccess(isAccess);
-    				finalList.get(0).setStatusId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
+    			if(finalList != null && finalList.size() > 0){
+    				IdNameVO vo = finalList.get(0);
+    				vo.setDeptName(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());
+    				vo.setAssignedByOfficerStr(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getOfficerName());
+    				vo.setAssignedOfficerStr(govtAlertSubTask.getSubTaskGovtOfficer().getOfficerName());
+    				vo.setMobileNo(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo() != null ?govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo():"");
+    				vo.setDesignation(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getDesignationName());
+    				vo.setAlertId(subTaskId);
+    				vo.setDescription(govtAlertSubTask.getAlert().getDescription());
+    				vo.setTitle(govtAlertSubTask.getTitle());
+    				vo.setDateStr(govtAlertSubTask.getCreatedTime() != null ? govtAlertSubTask.getCreatedTime().toString().substring(0, 10):"");
+    				vo.setDueDateStr(govtAlertSubTask.getDueDate() != null ? govtAlertSubTask.getDueDate().toString().substring(0, 10):"");
+    				vo.setUserStatus(userType);
+    				vo.setIsAccess(isAccess);
+    				vo.setStatus(govtAlertSubTask.getAlertSubTaskStatus().getStatus());
+    				vo.setStatusId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
+    				
+    				List<Long> subTaskIds = new ArrayList<Long>(0);
+    				subTaskIds.add(vo.getAlertId());
+    				List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistory(subTaskIds);
+        			if(officersList != null && officersList.size() > 0){
+	    				for (Object[] objects : officersList) {
+								if(!commonMethodsUtilService.getStringValueForObject(objects[2]).isEmpty()){
+									vo.getCommentList().add(new AlertTrackingVO(commonMethodsUtilService.getLongValueForObject(objects[0]), 
+										 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3])));
+								}
+								
+								if(!commonMethodsUtilService.getStringValueForObject(objects[8]).isEmpty()){
+									vo.getSubList().add(IConstants.STATIC_CONTENT_FOLDER_URL+"images/"+commonMethodsUtilService.getStringValueForObject(objects[8]));
+								}
+
+							}
+					}
+        			
+        			
     			}
     			return 	finalList;
       		}catch(Exception e){
