@@ -1148,11 +1148,12 @@
 			 var actionNotRequiredAlertArr = [];
 			 var duplicateAlertArr = [];
 			 
-			 var wrnglyMppdDsgntnArr = [];
-			 var wrnglyMppdDprtmnt = [];
-			 var rejoinder = [];
-			 var incomplete = [];
-			 var closed = [];
+			 var wrnglyMppdDsgntnAlertArr = [];
+			 var wrnglyMppdDprtmntAlertArr = [];
+			 var rejoinderAlertArr = [];
+			 var incompleteAlertArr = [];
+			 var closedAlertArr = [];
+			 var proposalAlertArr = [];
 			 
 			 for(var i in result){
 				 for(var j in result[i].subList1){
@@ -1171,15 +1172,17 @@
 					}else if(result[i].subList1[j].statusTypeId==7){
 						 duplicateAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
 					}else if(result[i].subList1[j].statusTypeId==8){
-						 wrnglyMppdDsgntnArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+						 wrnglyMppdDsgntnAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
 					}else if(result[i].subList1[j].statusTypeId==9){
-						 wrnglyMppdDprtmnt.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+						 wrnglyMppdDprtmntAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
 					}else if(result[i].subList1[j].statusTypeId==10){
-						 rejoinder.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+						 rejoinderAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
 					}else if(result[i].subList1[j].statusTypeId==11){
-						 incomplete.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+						 incompleteAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
 					}else if(result[i].subList1[j].statusTypeId==12){
-						 closed.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+						 closedAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==13){
+						 proposalAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
 					}
 				 }
 			 }
@@ -1205,20 +1208,23 @@
 			  if(duplicateAlertArr != null && duplicateAlertArr.length > 0){
 				mainJosnObjArr.push({name:'Duplicate',data:duplicateAlertArr,color:"#CF0001"});  
 			  }
-			   if(wrnglyMppdDsgntnArr != null && wrnglyMppdDsgntnArr.length > 0){
-				mainJosnObjArr.push({name:'Wrongly Mapped Designation',data:wrnglyMppdDsgntnArr,color:"#FE9900"});  
+			  if(wrnglyMppdDsgntnAlertArr != null && wrnglyMppdDsgntnAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Wrongly Mapped Designation',data:wrnglyMppdDsgntnAlertArr,color:"#FE9900"});  
 			  } 
-			  if(wrnglyMppdDprtmnt != null && wrnglyMppdDprtmnt.length > 0){
-				mainJosnObjArr.push({name:'Wrongly Mapped Department',data:wrnglyMppdDprtmnt,color:"#0C9514"});  
+			  if(wrnglyMppdDprtmntAlertArr != null && wrnglyMppdDprtmntAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Wrongly Mapped Department',data:wrnglyMppdDprtmntAlertArr,color:"#0C9514"});  
 			  }
-			  if(rejoinder != null && rejoinder.length > 0){
-				mainJosnObjArr.push({name:'Rejoinder',data:rejoinder,color:"#82CA9C"});  
+			  if(rejoinderAlertArr != null && rejoinderAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Rejoinder',data:rejoinderAlertArr,color:"#82CA9C"});  
 			  } 
-			  if(incomplete != null && incomplete.length > 0){
-				mainJosnObjArr.push({name:'Incomplete',data:incomplete,color:"#C9AC82"});  
+			  if(incompleteAlertArr != null && incompleteAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Incomplete',data:incompleteAlertArr,color:"#C9AC82"});  
 			  } 
-			  if(closed != null && closed.length > 0){
-				mainJosnObjArr.push({name:'Closed',data:closed,color:"#ababab"});  
+			  if(closedAlertArr != null && closedAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Closed',data:closedAlertArr,color:"#ababab"});  
+			  }
+			 if(proposalAlertArr != null && proposalAlertArr.length > 0){
+				mainJosnObjArr.push({name:'Proposal',data:proposalAlertArr,color:"#FFA07A"});  
 			  }
 			  var getWidth = $("#districtOvervwGraph").width();
 			 $("#"+divId).css("width",getWidth);	
