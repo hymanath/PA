@@ -247,10 +247,10 @@ function onLoadClicks()
 		var alertId = $(this).attr("attr_alert_id")
 		if(comment == null || comment.trim() == "")
 		{
-			alert("please enter comment");
-			return;
+			alert("please enter comment");    
+			return;                 
 		}
-		var jsObj ={
+		var jsObj ={  
 			alertId : alertId,
 			comment : comment
 		}
@@ -737,7 +737,9 @@ function getAlertStatusHistory(alertId){
 		alertStatusHistory(result,alertId);
 	});
 }
+//swadhin
 var isAdmin = "";
+var globalUserType = "";
 function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	var jsObj ={
@@ -757,14 +759,13 @@ function getStatusCompletionInfo(alertId){
 		if(result != null && result.length>0){
 			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
+			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
 			$('#historyId').show();
-			//buildTypeStr ='own';
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli').show();	
 				$('#displayDueDate1').show();
-				$('#displayDueDate2').hide();
-				
+				$('#displayDueDate2').hide();  
 			}
 			else if(buildTypeStr=='subUser'){	
 				$('#displayDueDate1').hide();
@@ -773,7 +774,7 @@ function getStatusCompletionInfo(alertId){
 				
 				$('#displayDueDate2,#displayPriority').show();
 				
-			}else if(buildTypeStr=='same'){  
+			}else if(buildTypeStr=='same'){ 
 				$('#displayStatusId').show();       
 				$('#displayDueDate1').show();                       
 			}
@@ -797,7 +798,7 @@ function getStatusCompletionInfo(alertId){
 			}
 			
 			if(isAdmin=='false'){
-				$('#displaySubTasksliId,#displayPriority,#displayDueDate1,#docAttachmentId').show(); 
+				$('#displaySubTasksliId,#displayDueDate1,#docAttachmentId').show(); 
 				$('#displayStatusId').attr('status-icon-block','alertStatus');
 			}
 			
@@ -846,7 +847,7 @@ function rightSideExpandView(alertId)
 
 									
 									 str+='<li id="displayPriority" style="display:none;" status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="pririty change">';
-										str+='<i class="glyphicon glyphicon-cog"></i>';
+										str+='<i class="glyphicon glyphicon-cog"></i>';   
 										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
 											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
 											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right priorityRadioCls" /></li>';
@@ -2251,13 +2252,15 @@ function alertStatusHistory(result,alertId)
 			
 		str+='</table>';
 		if(isAdmin == "false"){
-			str1+='<div class="text-left">';
-				str1+='<label class="checkbox-inline">';
-					str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
-				str1+='</label>';
-				str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
-			str1+='</div>';
-		}
+			if(globalUserType != "same"){
+				str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
+					str1+='<label class="checkbox-inline">';
+						str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
+					str1+='</label>';  
+					str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
+				str1+='</div>';
+			}
+		}  
 		
 		$("#alertManagementPopup1 .modal-footer").show();
 		$("#alertManagementPopup1 .modal-footer").html(str1);
