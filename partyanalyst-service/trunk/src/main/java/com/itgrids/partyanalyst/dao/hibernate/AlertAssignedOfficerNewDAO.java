@@ -3110,7 +3110,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId from AlertAssignedOfficerNew model " +
 		 				 " where " +
 		 				 " model.isDeleted = 'N' " +
-		 				 " and model.isApproved = 'Y' " +
+		 				 //" and model.isApproved = 'Y' " +
 		 				 " and model.alert.alertId = :alertId " +
 		 				 " and model.alert.isDeleted = 'N' ");
 		 Query query = getSession().createQuery(queryStr.toString());
@@ -3123,10 +3123,20 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 				 " from AlertAssignedOfficerNew model " +
 		 				 " where " +
 		 				 " model.isDeleted = 'N' " +
-		 				 " and model.isApproved = 'Y' " +
+		 				 //" and model.isApproved = 'Y' " +
 		 				 " and model.alert.alertId = :alertId " +
 		 				 " and model.alert.isDeleted = 'N' ");
 		 Query query = getSession().createQuery(queryStr.toString());  
+		 query.setParameter("alertId", alertId);
+		 return (Long) query.uniqueResult();
+	 }
+	 public Integer deleteAssignment(Long alertId){
+		 Query query = getSession().createQuery(" delete from AlertAssignedOfficerNew model where model.alertId = :alertId");
+		 query.setParameter("alertId", alertId);  
+		 return (Integer) query.executeUpdate();
+	 }
+	 public Long getAssignedDtls(Long alertId){
+		 Query query = getSession().createQuery(" select model.alertAssignedOfficerId from  AlertAssignedOfficerNew model where model.alertId = :alertId");
 		 query.setParameter("alertId", alertId);
 		 return (Long) query.uniqueResult();
 	 }
