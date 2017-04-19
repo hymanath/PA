@@ -131,7 +131,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     				" ORDER BY model.alertStatus.statusOrder ");
     		return query.list();
       }
-      public List<Object[]> getDepartmentScope(){
+      @SuppressWarnings("unchecked")
+	public List<Object[]> getDepartmentScope(){
     		Query query = getSession().createQuery(" " +
     				" SELECT model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
     				" model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName " +
@@ -142,12 +143,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		return query.list();
       }
       
-      public List<AlertAssignedOfficerNew> getModelForAlert(Long alertId){
+      @SuppressWarnings("unchecked")
+	public List<AlertAssignedOfficerNew> getModelForAlert(Long alertId){
   		Query query = getSession().createQuery(" select model from AlertAssignedOfficerNew model where model.alertId=:alertId and model.isDeleted='N' ");
   		query.setParameter("alertId", alertId);
   		return query.list();
   	}
-        public List<Object[]> getDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type){
+        public List<Object[]> getDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date fromDate,Date toDate){
         	StringBuilder sb = new StringBuilder();
 	    	  
         	if(type != null && type.equalsIgnoreCase("today")){
@@ -168,8 +170,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  sb.append(" and date(model.insertedTime) between :todayDate and :todayDate " ); 
 	    	  }
 	    	  
-	    	  if(type != null && !type.equalsIgnoreCase("today")){
-	    		  sb.append(" group by model.alertStatus.alertStatusId ");
+	    	  if(fromDate != null && toDate != null){
+	    		  sb.append(" and date(model.insertedTime) between :fromDate and :toDate " );
 	    	  }
 	    	  Query query = getSession().createQuery(sb.toString());
 	    	  
@@ -179,9 +181,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(govtOffcrIds != null && govtOffcrIds.size() >0){
 	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
 	    	  }
-	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  if(fromDate != null && toDate != null){
+	    		  query.setDate("fromDate", fromDate);
+	    		  query.setDate("toDate", toDate);
 	    	  }
+	    	  
 	    	  return query.list();
         }
         
