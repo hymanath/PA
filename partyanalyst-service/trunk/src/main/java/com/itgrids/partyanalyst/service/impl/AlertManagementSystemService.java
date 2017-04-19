@@ -5526,7 +5526,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 			}
 	 			setSubListCount(finalVoList, alertIdList);
 	 		} catch (Exception e) {
-	 			LOG.error(" Exception Occured in getDistrictOfficerAlertDetails() method, Exception - ",e);
+	 			LOG.error(" Exception Occured in getStateLevelAlertclickView() method, Exception - ",e);
 	 		}		
 	 		return finalVoList;
 	 	}
