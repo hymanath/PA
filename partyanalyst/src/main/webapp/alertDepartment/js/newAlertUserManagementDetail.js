@@ -63,13 +63,24 @@ function onLoadClicks()
 		var uploadHandler = { 
 			upload: function(o) {
 				var uploadResult = o.responseText;
-				showSbmitStatusNew(uploadResult,alertId);
+				alert(formName);
+				showSbmitSubTaskStatusNew(uploadResult,alertId,subTaskId);
+				if(formName='uploadAttachment')
+					showSbmitStatusNew(uploadResult,alertId);
+				else
+					showSbmitSubTaskStatusNew(uploadResult,alertId,subTaskId);
 			}
 		};
 		YAHOO.util.Connect.setForm(formName,true);  
 		YAHOO.util.Connect.asyncRequest('POST',urlStr,uploadHandler);
 		$("#uploacFilesBtnId").attr("disabled","disabled");
 	});
+	
+	function showSbmitSubTaskStatusNew(uploadResult,alertId,subAlertId){
+		if(uploadResult !=null && uploadResult.search("success") != -1){
+			getSubAlertsDetails(alertId,subAlertId)
+		}
+	}
 	$(document).on("click","#assignOfficerId",function(){
 		if($("#departmentsId").val() == null || $("#departmentsId").val() == "" || $("#departmentsId").val() == 0)
 		{
@@ -206,29 +217,47 @@ function onLoadClicks()
 		//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
 		var comment = $("#updateStatusChangeComment").val()
 		var alertId = $(this).attr("attr_alert_id");
+		var statusId=$('input[name=statusChange]:checked', '#updateStatusChangeBody').val();
+		var subTaskId = $(this).attr("subTaskId");
+		
+		if(subTaskId != null && subTaskId>0)
+		
 		if(comment == null || comment.trim() == "")
 		{
-			alert("please enter comment");
+			alert("Please Enter Comment");
 			return;
 		}
 		var jsObj ={
 			alertId : alertId,
-			statusId : $('input[name=statusChange]:checked', '#updateStatusChangeBody').val(),
+			statusId : statusId,
+			subTaskId:subTaskId,
 			comment: comment
 		}
+		
+			var callURL = 'updateCommentAction.action';
+		if(subTaskId != null && subTaskId>0)
+			callURL = 'updateSubTaskStatusCommentAction.action';
 		$.ajax({
-			type:'GET',
-			url: 'updateAlertStatusCommentAction.action',
+			type:'POST',
+			url: callURL,
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.exceptionMsg == 'success')
 			{
-				alert("status updated successfully")
-				getAlertStatusHistory(alertId);
+				$("#commentPostingSpinner").html("status updated successfully");
+				if(subTaskId == null || subTaskId.length == 0)
+					getSubAlertsDetails(alertId,subAlertId)
+				else
+					getSubAlertsDetails(alertId,subTaskId);
+				
+				setTimeout(function(){
+					$("#commentPostingSpinner").html(" ");
+				},1000);
 			}else{
 				alert("try again")
 			}
-		});     
+		});
+		
 	});
 	$(document).on("click","#priorityChangeSaveId",function(){
 		
@@ -269,7 +298,7 @@ function onLoadClicks()
 			alertId : alertId,
 			comment : comment,
 			subTaskId:subTaskId,
-			statusId:2
+			statusId:0 // not updating status here.
 		}
 		
 		var callURL = 'updateCommentAction.action';
@@ -399,8 +428,9 @@ function onLoadClicks()
 	});
 	$(document).on("click","[status-icon] li",function(e){
         e.stopPropagation();
-		var status = $(this).attr("status-icon-block")
-		var alertId = $(this).attr("attr_alert_id")
+		var status = $(this).attr("status-icon-block");		
+		var alertId = $(this).attr("attr_alert_id");
+		var subalertid = $(this).attr("subalertid");
 		if(status != null && status != undefined)
 		{
 			if(status == 'alertHistory')
@@ -419,8 +449,13 @@ function onLoadClicks()
 					keyboard: false,
 					backdrop: 'static'
 				});
-				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY')
-				getAlertStatusHistory(alertId);
+				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY');
+				
+				if(subalertid != null && subalertid !='' && subalertid>0){
+					getSubTaskStatusHistory(subalertid,alertId);
+				}
+				else
+					getAlertStatusHistory(alertId);
 				
 			}else if(status == 'alertStatusChange'){
 				$(this).find('ul').toggle();
@@ -433,6 +468,69 @@ function onLoadClicks()
 			}
 		}
 	});
+	
+	
+function getSubTaskStatusHistory(subTaskId,alertId){
+	var jsObj ={
+		subTaskId : subTaskId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getSubTaskStatusHistoryAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		alertSubTaskStatusHistory(result,subTaskId,alertId);
+	});
+}
+function alertSubTaskStatusHistory(result,subTaskId,alertId){
+
+	var str='';
+	var str1='';
+	
+	if(result != null && result.length>0)
+	{
+		str+='<table class="table border_1">';
+			str+='<thead class="text-capitalize">';
+				str+='<th>Date</th>';
+				str+='<th>Status</th>';
+				str+='<th>Updated By</th>';
+				str+='<th>Comments</th>';
+			str+='</thead>';
+			for(var i in result)
+			{
+				str+='<tr>';
+					str+='<td>'+result[i].date+'</td>';
+					str+='<td>'+result[i].status+'</td>';
+					str+='<td>';
+						str+='<p class="text-primary text-capitalize">'+result[i].userName+'</p>';
+						str+='<p class="text-muted text-capitalize">-<u>'+result[i].designation+'</u></p>';
+					str+='</td>';
+					str+='<td>'+result[i].comment+'</td>';
+				str+='</tr>';
+			}  
+			
+		str+='</table>';
+		
+		if(isAdmin == "false"){
+			if(globalUserType != "same"){
+				str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
+					str1+='<label class="checkbox-inline">';
+						str1+='<input type="checkbox" attr_alert_id="'+alertId+'" subTaskId="'+subTaskId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
+					str1+='</label>';  
+					str1+='<div  id="updateStatusChangeBody" style="display:none;">'+subTaskglStr+'</div>';
+				str1+='</div>';
+			}
+		}  
+		
+		$("#alertManagementPopup1 .modal-footer").show();
+		$("#alertManagementPopup1 .modal-footer").html(str1);
+		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
+		$("#alertManagementPopupBody1").html(str);
+	}else{
+		$("#alertManagementPopupBody1").html("NO DATA")
+	}
+	
+}
 	$(document).on("click","[expand-icon]",function(){
         var expandBlockName = $(this).attr("expand-icon");
 		var alertId = $(this).attr("attr_alertId");
@@ -911,7 +1009,7 @@ function rightSideExpandView(alertId)
 							str+='<div class="col-sm-8">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
 									
-									str+='<li status-icon-block="alertStatus1" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
+									str+='<li status-icon-block="alertStatus1" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId1" style="" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId1">Pending</span>';
 									str+='</li>';
 									
@@ -1050,7 +1148,8 @@ function rightSideExpandView(alertId)
 									str+='</div>';
 									str+='<div class="col-sm-4" style="margin-top:11px;">';
 									 str+='<span class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date" style="padding: 9px;border-radius: 20px;margin-left: 40px">';
-										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2 subTaskDueDate" style="" name="alertAssigningVO.dueDate"> Due Date </span>';
+										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2 subTaskDueDate" style="" > Due Date </span>';
+										str+='<input id="hiddenDueDate1" type="hidden" value="" name="alertAssigningVO.dueDate" />';
 									str+='</span>';
 										str+='<span class="assign-user">';
 										str+='<span id="" style=""><i class="glyphicon glyphicon-user pointerCls" style="cursor:pointer;"></i> </span>';
@@ -1175,7 +1274,7 @@ $(document).on("click",".subTaskCls",function(){
 function getSubAlertsDetails(alertId,subAlertId){
 	$('#main_alert_block').hide();
 	$("#impactLevel,#priorityBodyId,#displaySubTasksliId,#displayDueDate1,#displayPriority,#mainBlockStates").hide();
-	$('#sub_tasls_View_alert_block,#subAlertDetails,#subBlockStates,#displayDueDate3').show();
+	$('#sub_tasls_View_alert_block,#subAlertDetails,#subBlockStates,#displayDueDate3,#displayStatusId1').show();
 	$('.commentChangeCls').attr('subalertid',''+subAlertId+'');
 	$('#docAttachmentId1').attr('subalertid',''+subAlertId+'');
 	$('#uploadBtnId').attr('subalertid',''+subAlertId+'');
@@ -1203,7 +1302,7 @@ function getSubTaskFullDetailsAction(subAlertId,alertId)
 		//getDocumentsForAlert(alertId);
 		if(result != null && result.length > 0){
 			//buildSubTasksInfoForAlert(result[0].subList1);
-			buildSubTaskAlertDataNew(result,alertId)
+			buildSubTaskAlertDataNew(result,alertId,subAlertId)
 			if(result[0].categoryId == 2)
 			{
 				//getGroupedArticlesInfo(result[0].alertCategoryTypeId)
@@ -1214,7 +1313,8 @@ function getSubTaskFullDetailsAction(subAlertId,alertId)
 	});
 }
 
-function buildSubTaskAlertDataNew(result,alertId)
+var subTaskglStr='';
+function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 {
 	var str='';
 	var str1='';
@@ -1261,74 +1361,100 @@ function buildSubTaskAlertDataNew(result,alertId)
 					str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Due Date  : '+result[i].dueDateStr+'</small></p>';
 				str+='</div>';
 				
+				str1='';
 				
-							
-				str+='<div class="row m_top20">';
+				if(result[i].subList != null && result[i].subList.length>0){
+					str1+='<div class="row m_top20">';
+					str+='<h4 class="text-muted text-capital"> Sub Task Attachments:  </h4>';	
+					for(var k in result[i].subList){
+							str1+='<div class="col-sm-3">';
+							str1+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId="" src="'+result[i].subList[k]+'" style="width: 100px; height: 100px;cursor:pointer"/>';
+							str1+='</div>';
+					}
+					
+				str1+='</div>';
+				}
+				
+
+				$("#subArticleAttachment").html(str1);
+				
+				if(result[i].commentList != null && result[i].commentList.length>0){
+					str+='<div class="row m_top20">';
 					str+='<div class="col-sm-1 text-center body-icons">';
 						str+='<i class="fa fa-comments-o fa-2x"></i>';
 					str+='</div>';
 					str+='<div class="col-sm-11">';
-						str+='<h4 class="text-muted text-capital"> Sub Tasks Comments </h4>';
-						
-							str+='<div class="media">';
-							
+						str+='<h4 class="text-muted text-capital"> Sub Tasks Comments </h4>';						
+							str+='<div class="media">';							
 								str+='<div class="media-body">';
-								if(result[i].commentList != null && result[i].commentList.length>0){
-									for(var k in result[i].commentList){
-										if(result[i].commentList[k].comment != null && result[i].commentList[k].comment.length > 0)
-										{
-											str+='<p class="m_top5">'+result[i].commentList[k].comment+'</p>';
+										for(var k in result[i].commentList){
+											if(result[i].commentList[k].comment != null && result[i].commentList[k].comment.length > 0)
+											{
+												str+='<p class="m_top5">'+result[i].commentList[k].comment+'</p>';
+											}
+											
+											if(result[i].commentList[k].date != null && result[i].commentList[k].date.length > 0)
+											{
+												str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].commentList[k].date+'</p>';
+											}
 										}
-										
-										if(result[i].commentList[k].date != null && result[i].commentList[k].date.length > 0)
-										{
-											str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].commentList[k].date+'</p>';
-										}
-									}
-								}
-									
-								str+='</div>';
+									str+='</div>';
 							str+='</div>';
 						
 					str+='</div>';
 				str+='</div>';
 				
-				str1+='<div class="panel-body" style="font-weight:bold;font-size:15px"> <i class="fa fa-long-arrow-left fa-2x " style="cursor:pointer;margin-right:15px;margin-top:5px" aria-hidden="true" expand-icon="block1" attr_alertId="'+alertId+'" title="Back to Alert View."></i>  <span style="margin-top:-5px">';
+				}			
+				str1="";
+				str1+='<div class="panel-body" style="font-weight:bold;font-size:15px"> <i class="fa fa-long-arrow-left fa-2x " style="cursor:pointer;margin-right:15px;margin-top:5px" aria-hidden="true" expand-icon="block1" attr_alertId="'+alertId+'" title="Back to Main Alert View."></i>  <span style="margin-top:-5px">';
 				if(result[i].description.length>80)
 					str1+=''+result[i].description.substring(0,80) +'... </span></div>';
 				else
 					str1+=''+result[i].description+'... </span></div>';
-			}			
+				
+				$("#mainAlertTitle").html(str1);
+					
+				
+				if(result[i].userStatus=='alertOwnner'){
+					$('#displayStatusId1').attr('status-icon-block','alertStatus');
+					$('#displayStatusId1').attr('subalertid',subAlertId);
+				}
+			}	
+
+
+			
+				subTaskglStr='';
+				var str1='';
+				 
+					str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
+						str1+='<div class="panel-heading">';
+							for(var i in result)
+							{
+								if(i == result.length-1)
+									str1+='<br>';
+								str1+='<label class="radio-inline">';
+									if(result[0].status != null && result[0].status.trim() ==result[i].name.trim())
+										str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
+									else
+										str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
+								str1+='</label>';
+								
+							}
+							
+						str1+='</div>';
+						str1+='<div class="panel-body pad_0">';
+							str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
+						str1+='</div>';
+					str1+='</div>';
+				
+				str1+='<button class="btn btn-primary btn-sm text-capital" subTaskId="'+subAlertId+'" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
+				subTaskglStr=str1;
 		}
 	str+='</div>';
 	
 		$("#subAlertDetails").html(str);
 		
-		$("#mainAlertTitle").html(str1);
 		
-		
-		
-	/*
-	str1+='<div class="row m_top20">';
-		if(result[i].imageUrl !=null && result[i].imageUrl.length>0){
-			str1+='<div class="col-sm-1 text-center body-icons">';
-				str1+='<i class="fa fa-paperclip fa-2x"></i>';
-			str1+='</div>';
-			if(result[i].imageUrl != null){
-				str1+='<div class="col-sm-4">';
-					str1+='<h4 class="text-muted text-capital">article attachment</h4>';
-					str1+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId='+result[i].alertCategoryTypeId+' src="http://mytdp.com/NewsReaderImages/'+result[i].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer"/>';
-				str1+='</div>';
-				str1+='<div class="col-sm-7" id="existingDocsDivId"></div>';
-			}else{
-				str1+='<div class="col-sm-11" id="existingDocsDivId"></div>';
-			}
-			
-		}
-	str1+='</div>';
-
-	$("#subArticleAttachment").html(str1);
-	*/
 }
 
 $(document).on("click",".closeCls",function(){
@@ -1466,7 +1592,9 @@ function saveSubTask(mainAlertId){
 		$("#assiningLdngImg").show();
 		$("#assignOfficerId").hide();
 		
-		
+		var textValue = $('.subTaskDueDate').text().trim();
+		$('#hiddenDueDate1').val(textValue);
+	
 		$("#assiningLdngImg1").show();
 		$("#subTaskAssignOfficerId").hide();
 		var uploadHandler = {
@@ -2602,7 +2730,7 @@ function alertStatus(result,alertId)
 			str1+='</div>';
 		str1+='</div>';
 	
-	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
+	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChange">update</button>';
 	glStr=str1;
 	//$("#updateStatusChangeBody").html(str1);
 }
