@@ -243,7 +243,7 @@ function onLoadClicks()
 				comment: comment
 			}
 		
-		var callURL = 'updateCommentAction.action';
+		var callURL = 'updateAlertStatusCommentAction.action';
 		if(subTaskId != null && subTaskId>0){
 			callURL = 'updateSubTaskStatusCommentAction.action';
 		}
@@ -265,7 +265,7 @@ function onLoadClicks()
 					$("#commentPostingSpinner").html(" ");
 				},1000);
 			}else{
-				alert("try again")
+				alert("try again");
 			}
 		});
 		
@@ -311,7 +311,7 @@ function onLoadClicks()
 			statusId:0 // not updating status here.
 		}
 		
-		var callURL = 'updateCommentAction.action';
+		var callURL = 'updateAlertStatusCommentAction.action';
 		if(subTaskId != null && subTaskId>0)
 			callURL = 'updateSubTaskStatusCommentAction.action';
 		$.ajax({
@@ -521,7 +521,17 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 			
 		str+='</table>';
 		
-		if(isAdmin == "false"){
+		
+		
+		$("#alertManagementPopup1 .modal-footer").show();
+		
+		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
+		$("#alertManagementPopupBody1").html(str);
+	}else{
+		$("#alertManagementPopupBody1").html("NO DATA")
+	}
+	
+	if(isAdmin == "false"){
 			if(globalUserType != "same"){
 				str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
 					str1+='<label class="checkbox-inline">';
@@ -531,15 +541,7 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 				str1+='</div>';
 			}
 		}  
-		
-		$("#alertManagementPopup1 .modal-footer").show();
 		$("#alertManagementPopup1 .modal-footer").html(str1);
-		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
-		$("#alertManagementPopupBody1").html(str);
-	}else{
-		$("#alertManagementPopupBody1").html("NO DATA")
-	}
-	
 }
 	$(document).on("click","[expand-icon]",function(){
         var expandBlockName = $(this).attr("expand-icon");
@@ -897,8 +899,7 @@ function getStatusCompletionInfo(alertId){
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
-			globalStatusId = sttatusId;
-			
+			globalStatusId = sttatusId;      
 			$('#historyId').show();
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
@@ -943,12 +944,8 @@ function getStatusCompletionInfo(alertId){
 				$('#displayStatusId').attr('status-icon-block','alertStatus');
 			}
 			
-			alertStatus(result,alertId);
-			if(sttatusId == 1){
-				$('#footerCommentId').hide();    
-			}  
-			
-		}else{      
+			alertStatus(result,alertId);			
+		}else{
 			$('#displayAssignIconId').show();
 			$('#displayStatusId').show();
 			$('#displaySubTasksliId').hide();  
@@ -1084,7 +1081,7 @@ function rightSideExpandView(alertId)
 							str+='<div status-body="task" class="m_top20"></div>';
 							str+='<div status-body="subTask" class="m_top20"></div>';
 						str+='</div>';
-						str+='<div class="panel-footer" id="footerCommentId">';
+						str+='<div class="panel-footer">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-1 text-center">';
 									str+='<span class="icon-name icon-primary">Ra</span>';
