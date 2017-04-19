@@ -48,16 +48,14 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
        			}
 	    	  
        	}
-	    	  if(countType != null && countType.equalsIgnoreCase("today")){
-	    		  sb.append(" and date(model.createdTime) between  :todayDate and :todayDate " ); 
+       	if(fromDate != null && toDate != null){
+	    		  sb.append(" and date(model.createdTime) between  :fromDate and :toDate " ); 
 	    	  }
 	    	  
 	    	  if(countType != null && !countType.equalsIgnoreCase("today")){
 	    		  sb.append(" group by model.alertSubTaskStatus.alertSubTaskStatusId ");
 	    	  }
-	    	  if(fromDate != null && toDate != null){
-	    		  sb.append(" and date(model.insertedTime) between :fromDate and :toDate " );
-	    	  }
+	    	 
 	    	  Query query = getSession().createQuery(sb.toString());
 	    	  
 	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
@@ -66,9 +64,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
 	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
 	    	  }
-	    	  if(countType != null && countType.equalsIgnoreCase("today")){
-	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
-	    	  }
+	    	  
 	    	  if(fromDate != null && toDate != null){
 	    		  query.setDate("fromDate", fromDate);
 	    		  query.setDate("toDate", toDate);
