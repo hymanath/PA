@@ -235,7 +235,10 @@ function onLoadClicks()
 			alert("Please Enter Comment");
 			return;
 		}
-			
+		
+		if(statusId == null || statusId =='')
+			statusId=globalStatusId;
+		
 			var jsObj ={
 				alertId : alertId,
 				statusId : statusId,
@@ -308,7 +311,7 @@ function onLoadClicks()
 			alertId : alertId,
 			comment : comment,
 			subTaskId:subTaskId,
-			statusId:0 // not updating status here.
+			statusId:globalStatusId // not updating status here.
 		}
 		
 		var callURL = 'updateAlertStatusCommentAction.action';
@@ -899,7 +902,8 @@ function getStatusCompletionInfo(alertId){
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
-			globalStatusId = sttatusId;      
+			globalStatusId = sttatusId;     
+					
 			$('#historyId').show();
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
@@ -926,7 +930,7 @@ function getStatusCompletionInfo(alertId){
 			}
 			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
 				$('#displayAssignIconId').show();
-				assignUser(alertId)
+				assignUser(alertId);
 			}
 			if(result[0].userStatus != null && result[0].userStatus =="admin"){
 				isAdmin = "true";
