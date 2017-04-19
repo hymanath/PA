@@ -1,3 +1,9 @@
+var url = window.location.href;
+var wurl = url.substr(0,(url.indexOf(".com")+4));
+if(wurl.length == 3){
+wurl = url.substr(0,(url.indexOf(".in")+3));
+}
+
 onLoadCalls()
 function onLoadCalls()
 {
@@ -887,6 +893,7 @@ function getStatusCompletionInfo(alertId){
 		$('#displayStatusId').attr('status-icon-block','alertStatus');
 		
 		if(result != null && result.length>0){
+			//displaySubTasksliId
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
@@ -1835,8 +1842,8 @@ function getGroupedArticlesInfo(articleId)
 {
 	$.ajax({
 		  type : 'GET',      
-		  //url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
-		  url: "http://mytdp.com/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		 // url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 	}).then(function(result){
 		console.log(result);
 		//$("#alertDetails").append(str);
@@ -2012,8 +2019,8 @@ function getTotalArticledetails(articleId){
 	$("#alertManagementPopupBody1,#alertManagementPopupHeading").html(spinner);
 	$.ajax({
 		  type : 'GET',      
-		  //url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
-		  url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		  url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		 // url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 	}).then(function(results){
 		var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
 		var result = results[0];
