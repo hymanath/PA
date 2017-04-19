@@ -9,7 +9,7 @@ function onLoadClicks()
 	"use strict";
 	
 	
-	/////////////////////////////////////////
+	
 	/*alert Assigned Part Start*/
 	$(document).on('click', '.imageShowOpen li', function(){
 		var id = $(this).attr("attr_doc_id");
@@ -51,14 +51,23 @@ function onLoadClicks()
 	//document
 	$(document).on("click","#uploadBtnId",function(){
 		var alertId = $(this).attr("attr_alert_id");
+		var subTaskId = $(this).attr("subalertid");
+		var urlStr='uploadDocumentsForAlertAction.action';
+		var formName='uploadAttachment';
+		
+		if(subTaskId != null && subTaskId.length>0){
+			urlStr='uploadDocumentsForSubTaskAction.action';
+			formName='uploadAttachment1';
+		}
+		
 		var uploadHandler = { 
 			upload: function(o) {
 				var uploadResult = o.responseText;
 				showSbmitStatusNew(uploadResult,alertId);
 			}
 		};
-		YAHOO.util.Connect.setForm('uploadAttachment',true);  
-		YAHOO.util.Connect.asyncRequest('POST','uploadDocumentsForAlertAction.action',uploadHandler);
+		YAHOO.util.Connect.setForm(formName,true);  
+		YAHOO.util.Connect.asyncRequest('POST',urlStr,uploadHandler);
 		$("#uploacFilesBtnId").attr("disabled","disabled");
 	});
 	$(document).on("click","#assignOfficerId",function(){
@@ -173,7 +182,7 @@ function onLoadClicks()
 			return;
 		}
 		$("#assiningLdngImg").show();
-		$("#assignOfficerId").hide();
+		
 		var uploadHandler = {
 			upload: function(o) {
 				var uploadResult = o.responseText;
@@ -243,8 +252,14 @@ function onLoadClicks()
 	});
 	$(document).on("click","#commentChangeId",function(){
 		$("#commentPostingSpinner").html(spinner);
-		var comment = $("#alertCommentId").val();
 		var alertId = $(this).attr("attr_alert_id")
+		var subTaskId = $(this).attr("subAlertId")
+
+		var comment = '';
+		if(subTaskId != null && subTaskId>0)
+			comment = $("#alertCommentId2").val();
+		else
+			comment = $("#alertCommentId1").val();		
 		if(comment == null || comment.trim() == "")
 		{
 			alert("please enter comment");    
@@ -252,11 +267,17 @@ function onLoadClicks()
 		}
 		var jsObj ={  
 			alertId : alertId,
-			comment : comment
+			comment : comment,
+			subTaskId:subTaskId,
+			statusId:2
 		}
+		
+		var callURL = 'updateCommentAction.action';
+		if(subTaskId != null && subTaskId>0)
+			callURL = 'updateSubTaskStatusCommentAction.action';
 		$.ajax({
 			type:'POST',
-			url: 'updateCommentAction.action',
+			url: callURL,
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result != null && result.exceptionMsg == 'success')
@@ -265,7 +286,11 @@ function onLoadClicks()
 				$("div.comment-area").show();
 				$(".panel-border-white .panel-heading,.panel-border-white .panel-footer,.panel-border-white textarea").hide();
 				$(".panel-border-white textarea").val('');
-				getCommentsForAlert(alertId);
+				if(subTaskId == null || subTaskId.length == 0)
+					getCommentsForAlert(alertId);
+				else
+					getSubAlertsDetails(alertId,subTaskId);
+				
 				setTimeout(function(){
 					$("#commentPostingSpinner").html(" ");
 				},1000);
@@ -742,6 +767,7 @@ var isAdmin = "";
 var globalUserType = "";
 function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
+	$("#statusDtlsDiv").html(spinner);
 	var jsObj ={
 		alertId : alertId,
 		levelValue : globalUserLevelValues[0],
@@ -753,6 +779,7 @@ function getStatusCompletionInfo(alertId){
 		url: 'getStatusCompletionInfoAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#statusDtlsDiv").html('');
 		$('#displayStatusId,#displaySubTaskli,#displayAssignIconId,#displayDueDate1,#displayDueDate2,#displayPriority,#historyId').hide();
 		$('#displayStatusId').attr('status-icon-block','alertStatus');
 		
@@ -820,7 +847,8 @@ function rightSideExpandView(alertId)
 			str+='<div style="box-shadow:0px 0px 2px 2px rgba(0,0,0,0.2)">';
 				str+='<i class="glyphicon glyphicon-remove pull-right"  expanded-close="block1"></i>';
 				str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading">';
+				
+					str+='<div class="panel-heading" id="mainBlockStates">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-4">';
 								str+='<div id="assignedUser"></div>';
@@ -828,7 +856,7 @@ function rightSideExpandView(alertId)
 							str+='<div class="col-sm-8">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
 									
-									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
+									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
 									str+='</li>';
 									
@@ -852,21 +880,69 @@ function rightSideExpandView(alertId)
 											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
 											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right priorityRadioCls" /></li>';
 											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
-											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="priorityChangeSaveId">SET</button></li>';
+											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subAlertId=""  id="priorityChangeSaveId">SET</button></li>';
 										str+='</ul>';
 									str+='</li>';  
 									
 									
-									str+='<li id="historyId" style="display:none;" status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
+									str+='<li id="historyId" style="display:none;" status-icon-block="alertHistory" attr_alert_id="'+alertId+'" subAlertId="" >';
 										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
 									str+='</li>';
-									str+='<li id="docAttachmentId" status-icon-block="attachment" attr_alert_id="'+alertId+'" style="display:none;" >';
+									str+='<li id="docAttachmentId" status-icon-block="attachment" attr_alert_id="'+alertId+'" style="display:none;" subAlertId="" >';
 										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
 										str+='<form name="uploadAttachment" method="post" id="uploadAttachment">';
 										str+='<div class="alert-status-attachment arrow_box_top" style="display:none;">';
 											str+='<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/>';
-											str+='<input type="hidden" name="alertId" value="'+alertId+'" id="alertHiddenId"/>';
-											str+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" type="button" id="uploadBtnId">upload</button>';
+											str+='<input type="hidden" name="alertId" value="'+alertId+'" subAlertId=""  id="alertHiddenId"/>';
+											str+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" type="button" id="uploadBtnId" subAlertId="" >upload</button>';
+										str+='</div>';
+										str+='</form>';
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="panel-heading" id="subBlockStates" style="display:none;">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-4">';
+								str+='<div id="assignedUser1"></div>';
+							str+='</div>';
+							str+='<div class="col-sm-8">';
+								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
+									
+									str+='<li status-icon-block="alertStatus1" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
+										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId1">Pending</span>';
+									str+='</li>';
+									
+									str+='<li id="displayDueDate3"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date1">Due date</span>';
+									str+='</li>';
+									
+									str+='<li id="displayDueDate4"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">Due date</span>';
+									str+='</li>';
+									
+									 str+='<li id="displayPriority1" style="display:none;" status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="pririty change">';
+										str+='<i class="glyphicon glyphicon-cog"></i>';
+										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
+											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
+											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right priorityRadioCls" /></li>';
+											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
+											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="priorityChangeSaveId" subAlertId="" >SET</button></li>';
+										str+='</ul>';
+									str+='</li>';  
+									
+									str+='<li id="historyId1" style="display:none;" status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
+										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
+									str+='</li>';
+									str+='<li id="docAttachmentId1" status-icon-block="attachment" attr_alert_id="'+alertId+'" style="display:none;" subAlertId="" >';
+										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
+										str+='<form name="uploadAttachment1" method="post" id="uploadAttachment1">';
+										str+='<div class="alert-status-attachment arrow_box_top" style="display:none;">';
+											str+='<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/>';
+											str+='<input type="hidden" name="subTaskId" value="'+alertId+'" subAlertId=""  id="alertHiddenId"/>';
+											str+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" type="button" id="uploadBtnId" subAlertId=""  >upload</button>';
 										str+='</div>';
 										str+='</form>';
 									str+='</li>';
@@ -876,15 +952,16 @@ function rightSideExpandView(alertId)
 					str+='</div>';
 					
 					str+='<span id="main_alert_block">';
-						str+='<div class="panel-body">';
+						str+='<div class="panel-body" >';
 							str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
 								str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
 							str+='</p>';
+							str+='<div id="statusDtlsDiv"></div>';
 							str+='<div id="alertDetails"></div>';
 							str+='<div id="articleAttachment"></div>';
 							str+='<div id="alertCategory"></div>';
 							str+='<div id="alertSubtask"></div>';
-							str+='<div id="alertComments"></div>';
+							//str+='<div id="alertComments"></div>';
 							str+='<div id="alertGeneralComments"></div>';
 							str+='<div status-body="task" class="m_top20"></div>';
 							str+='<div status-body="subTask" class="m_top20"></div>';
@@ -901,10 +978,50 @@ function rightSideExpandView(alertId)
 										str+='</div>';
 										str+='<div class="panel-body">';
 											str+='<div class="comment-area">Comment Here</div>';
-											str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
+											str+='<textarea class="form-control comment-area" id="alertCommentId1" placeholder="Comment here..."></textarea>';
 										str+='</div>';
 										str+='<div class="panel-footer text-right">';
-											str+='<button class="btn btn-primary comment-btn" attr_alert_id="'+alertId+'" id="commentChangeId">Save</button>';
+											str+='<button class="btn btn-primary comment-btn commentChangeCls" attr_alert_id="'+alertId+'"  subAlertId="" id="commentChangeId">Save</button>';
+											str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</span>';
+				
+				str+='<span id="sub_tasls_View_alert_block" style="display:none">';
+						str+='<div id="mainAlertTitle"></div>';
+						str+='<div class="panel-body">';
+							str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
+								str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH </span></span>';
+							str+='</p>';
+							str+='<div id="subAlertDetails"></div>';
+							str+='<div id="subArticleAttachment"></div>';
+							str+='<div id="subAlertCategory"></div>';
+							str+='<div id="subAlertSubtask"></div>';
+							//str+='<div id="subAlertComments"></div>';
+							str+='<div id="subAlertGeneralComments"></div>';
+							//str+='<div status-body="task" class="m_top20"></div>';
+							//str+='<div status-body="subTask" class="m_top20"></div>';
+						str+='</div>';
+						str+='<div class="panel-footer">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-1 text-center">';
+									str+='<span class="icon-name icon-primary">Ra</span>';
+								str+='</div>';
+								str+='<div class="col-sm-11">';
+									str+='<div class="panel panel-default panel-border-white">';
+										str+='<div class="panel-heading">';
+											str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
+										str+='</div>';
+										str+='<div class="panel-body">';
+											str+='<div class="comment-area">Comment Here</div>';
+											str+='<textarea class="form-control comment-area" id="alertCommentId2" placeholder="Comment here..."></textarea>';
+										str+='</div>';
+										str+='<div class="panel-footer text-right">';
+											str+='<button class="btn btn-primary comment-btn commentChangeCls" attr_alert_id="'+alertId+'"   subAlertId=""  id="commentChangeId">Save </button>';
 											str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
 										str+='</div>';
 									str+='</div>';
@@ -936,7 +1053,7 @@ function rightSideExpandView(alertId)
 										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2 subTaskDueDate" style="" name="alertAssigningVO.dueDate"> Due Date </span>';
 									str+='</span>';
 										str+='<span class="assign-user">';
-										str+='<span id="" style=""><i class="glyphicon glyphicon-user pointerCls"></i> </span>';
+										str+='<span id="" style=""><i class="glyphicon glyphicon-user pointerCls" style="cursor:pointer;"></i> </span>';
 									
 										str+='<div class="assign-user-body1" style="display:none;left:-356px;right:0;position:absolute;">';
 												str+='<div class="arrow_box_top" >';
@@ -944,7 +1061,7 @@ function rightSideExpandView(alertId)
 														str+='<div class="row">';  
 															str+='<i attr_class="assign-user-body1" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
 															str+='<div class="col-sm-12">';
-																str+='<div id="assignErrorDivId1"></div>';
+																str+='<div id="assignErrorDivId1" style="color:red;"></div>';
 															str+='</div>';
 															str+='<div class="col-sm-6">';
 																str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId1"></span></label>';
@@ -980,7 +1097,7 @@ function rightSideExpandView(alertId)
 													str+='</div>';
 												str+='</div>';
 											str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
-												str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button" onclick="saveSubTask();">assign</button>';
+												str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button" onclick="saveSubTask('+alertId+');">assign</button>';
 												str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg1">';
 												str+='<span class="text-success" id="assignSuccess"></span>';
 											str+='</div>';
@@ -1003,28 +1120,6 @@ function rightSideExpandView(alertId)
 							  str+='</ul>';
 							str+='</div>';
 
-						str+='</div>';
-						str+='<div class="panel-footer" id="alert-block-commentId">';
-							str+='<div class="row">';
-								str+='<div class="col-sm-1 text-center">';
-									str+='<span class="icon-name icon-primary">Ra</span>';
-								str+='</div>';
-								str+='<div class="col-sm-11">';
-									str+='<div class="panel panel-default panel-border-white">';
-										str+='<div class="panel-heading">';
-											str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
-										str+='</div>';
-										str+='<div class="panel-body">';
-											str+='<div class="comment-area">Comment Here</div>';
-											str+='<textarea class="form-control comment-area" id="alertCommentId" placeholder="Comment here..."></textarea>';
-										str+='</div>';
-										str+='<div class="panel-footer text-right">';
-											str+='<button class="btn btn-primary comment-btn" attr_alert_id="'+alertId+'" id="commentChangeId">Save</button>';
-											str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
-										str+='</div>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</span>';
@@ -1063,6 +1158,179 @@ function rightSideExpandView(alertId)
 	getStatusCompletionInfo(alertId);
 }
 
+$(document).on("click",".subTaskCls",function(){
+	var subAlertId = $(this).attr('attr_sub_alert_Id');
+	var alertId = $(this).attr('attr_alert_id');
+	$('#main_alert_block').hide();
+	$('#docAttachmentId').html('');
+	$("#impactLevel,#priorityBodyId,#displaySubTasksliId,#displayDueDate1,#displayPriority,#mainBlockStates").hide();
+	$('#sub_tasls_View_alert_block,#subAlertDetails,#subBlockStates,#displayDueDate3').show();
+	$('.commentChangeCls').attr('subalertid',''+subAlertId+'');
+	getSubTaskFullDetailsAction(subAlertId,alertId);
+	$('#uploadBtnId').attr('subalertid',subAlertId);
+	$('#alertHiddenId').val(subAlertId);
+	initializeFile();
+});
+
+function getSubAlertsDetails(alertId,subAlertId){
+	$('#main_alert_block').hide();
+	$("#impactLevel,#priorityBodyId,#displaySubTasksliId,#displayDueDate1,#displayPriority,#mainBlockStates").hide();
+	$('#sub_tasls_View_alert_block,#subAlertDetails,#subBlockStates,#displayDueDate3').show();
+	$('.commentChangeCls').attr('subalertid',''+subAlertId+'');
+	$('#docAttachmentId1').attr('subalertid',''+subAlertId+'');
+	$('#uploadBtnId').attr('subalertid',''+subAlertId+'');
+	getSubTaskFullDetailsAction(subAlertId,alertId)
+}
+function getSubTaskFullDetailsAction(subAlertId,alertId)
+{
+	$("#subAlertDetails").html(spinner);
+	var jsObj =
+	{
+		alertId  :alertId,
+		subTaskId:subAlertId,
+		task : ""
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getStatusCompletionInfoForSubTaskAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#subAlertDetails").html('');
+		//getAlertCategortByAlert(alertId);
+		//getInvolvedMembersDetilas(alertId);
+		//getSubTaskInfoForAlert(alertId);
+		//getCommentsForAlert(alertId);
+		//getDocumentsForAlert(alertId);
+		if(result != null && result.length > 0){
+			//buildSubTasksInfoForAlert(result[0].subList1);
+			buildSubTaskAlertDataNew(result,alertId)
+			if(result[0].categoryId == 2)
+			{
+				//getGroupedArticlesInfo(result[0].alertCategoryTypeId)
+			}
+		}else{
+			$("#subAlertDetails").html("NO DATA AVAILABLE...");
+		}
+	});
+}
+
+function buildSubTaskAlertDataNew(result,alertId)
+{
+	var str='';
+	var str1='';
+	
+	str+='<div class="row m_top20">';
+		for(var i in result)
+		{
+			if(i==0){
+				
+				$('#docAttachmentId1').show();
+				$("#statusId1").html(result[0].status);
+				$(".modal-date1").html(result[0].dueDateStr);
+				
+					var str='';
+					var splitNameArr = result[0].name.split(" ");
+					var value = "";
+					if(splitNameArr != null && splitNameArr.length>1)
+						value = splitNameArr[1];
+					else
+						value = splitNameArr[0];  
+					
+					str+='<div class="media">';
+						str+='<div class="media-left">';
+							str+='<span class="icon-name icon-primary">'+result[0].assignedByOfficerStr+'</span>';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<p>'+result[0].assignedOfficerStr+' - '+result[0].deptName+'</p>';
+							str+='<p> - '+result[0].designation+'<br> (<i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+')</p>';
+							str+='<p></p>';
+						str+='</div>';
+					str+='</div>';
+					$("#assignedUser1").html(str);
+					
+					
+				str="";
+				str+='<div class="col-sm-1 text-center body-icons">';
+				str+='<i class="fa fa-check fa-2x"></i>';
+				str+='</div>';
+				str+='<div class="col-sm-11">';
+					str+='<h3> <u> Sub Task </u> : '+result[i].title+'</h3>';
+					str+='<p class="m_top10">'+result[i].description+'</p>';
+					
+					str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created Date : '+result[i].dateStr+'</small></p>';
+					str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Due Date  : '+result[i].dueDateStr+'</small></p>';
+				str+='</div>';
+				
+				
+							
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-1 text-center body-icons">';
+						str+='<i class="fa fa-comments-o fa-2x"></i>';
+					str+='</div>';
+					str+='<div class="col-sm-11">';
+						str+='<h4 class="text-muted text-capital"> Sub Tasks Comments </h4>';
+						
+							str+='<div class="media">';
+							
+								str+='<div class="media-body">';
+								if(result[i].commentList != null && result[i].commentList.length>0){
+									for(var k in result[i].commentList){
+										if(result[i].commentList[k].comment != null && result[i].commentList[k].comment.length > 0)
+										{
+											str+='<p class="m_top5">'+result[i].commentList[k].comment+'</p>';
+										}
+										
+										if(result[i].commentList[k].date != null && result[i].commentList[k].date.length > 0)
+										{
+											str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].commentList[k].date+'</p>';
+										}
+									}
+								}
+									
+								str+='</div>';
+							str+='</div>';
+						
+					str+='</div>';
+				str+='</div>';
+				
+				str1+='<div class="panel-body" style="font-weight:bold;font-size:15px"> <i class="fa fa-long-arrow-left fa-2x " style="cursor:pointer;margin-right:15px;margin-top:5px" aria-hidden="true" expand-icon="block1" attr_alertId="'+alertId+'" title="Back to Alert View."></i>  <span style="margin-top:-5px">';
+				if(result[i].description.length>80)
+					str1+=''+result[i].description.substring(0,80) +'... </span></div>';
+				else
+					str1+=''+result[i].description+'... </span></div>';
+			}			
+		}
+	str+='</div>';
+	
+		$("#subAlertDetails").html(str);
+		
+		$("#mainAlertTitle").html(str1);
+		
+		
+		
+	/*
+	str1+='<div class="row m_top20">';
+		if(result[i].imageUrl !=null && result[i].imageUrl.length>0){
+			str1+='<div class="col-sm-1 text-center body-icons">';
+				str1+='<i class="fa fa-paperclip fa-2x"></i>';
+			str1+='</div>';
+			if(result[i].imageUrl != null){
+				str1+='<div class="col-sm-4">';
+					str1+='<h4 class="text-muted text-capital">article attachment</h4>';
+					str1+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId='+result[i].alertCategoryTypeId+' src="http://mytdp.com/NewsReaderImages/'+result[i].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer"/>';
+				str1+='</div>';
+				str1+='<div class="col-sm-7" id="existingDocsDivId"></div>';
+			}else{
+				str1+='<div class="col-sm-11" id="existingDocsDivId"></div>';
+			}
+			
+		}
+	str1+='</div>';
+
+	$("#subArticleAttachment").html(str1);
+	*/
+}
+
 $(document).on("click",".closeCls",function(){
 	
 	
@@ -1083,36 +1351,23 @@ $(document).on("click","#displaySubTasksli",function(){
 	$('.assign-user').show();
 });
 
-function saveSubTask(){
-	$("#assiningLdngImg1").show();
-		$("#subTaskAssignOfficerId").hide();
-		var uploadHandler = {
-			upload: function(o) {
-				uploadResult = o.responseText;
-				displayStatus(uploadResult);
-			}
-		};
-
-		YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
-		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
-}
-$(document).on("click","#subTaskAssignOfficerId",function(){
+function saveSubTask(mainAlertId){
 	
-/*	if($("#departmentsId1").val() == null || $("#departmentsId1").val() == "" || $("#departmentsId1").val() == 0)
+	if($("#departmentsId1").val() == null || $("#departmentsId1").val() == "" || $("#departmentsId1").val() == 0)
 		{
-			$("#assignErrorDivId1").html("please select department");
+			$("#assignErrorDivId1").html("Please select department");
 			return;
 		}
 		if($("#locationLevelSelectId1").val() == null || $("#locationLevelSelectId1").val() == "" || $("#locationLevelSelectId1").val() == 0)
 		{
-			$("#assignErrorDivId1").html("please select impact level");
+			$("#assignErrorDivId1").html("Please select impact level");
 			return;
 		}
 		if($("#locationLevelSelectId1").val() == 1)
 		{
 			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select State");
+				$("#assignErrorDivId1").html("Please select State");
 				return;
 			}
 		}
@@ -1120,12 +1375,12 @@ $(document).on("click","#subTaskAssignOfficerId",function(){
 		{
 			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select State");
+				$("#assignErrorDivId1").html("Please select State");
 				return;
 			}
 			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select location");
+				$("#assignErrorDivId").html("Please select location");
 				return;
 			}
 		}
@@ -1133,96 +1388,119 @@ $(document).on("click","#subTaskAssignOfficerId",function(){
 		{
 			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select State");
+				$("#assignErrorDivId1").html("Please select State");
 				return;
 			}
 			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select district");
+				$("#assignErrorDivId1").html("Please select district");
 				return;
 			}
 			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select location");
+				$("#assignErrorDivId1").html("Please select location");
 				return;
 			}
 		}
-		if($("#locationLevelSelectId1").val() == 7)
+		if($("#locationLevelSelectId").val() == 7)
 		{
 			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select State");
+				$("#assignErrorDivId1").html("Please select State");
 				return;
 			}
 			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select district");
+				$("#assignErrorDivId1").html("Please select district");
 				return;
 			}
 			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select division");
+				$("#assignErrorDivId1").html("Please select division");
 				return;
 			}
 			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select location");
+				$("#assignErrorDivId1").html("Please select location");
 				return;
 			}
 		}
-		if($("#locationLevelSelectId1").val() == 8)
+		if($("#locationLevelSelectId").val() == 8)
 		{
 			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select State");
+				$("#assignErrorDivId1").html("Please select State");
 				return;
 			}
 			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select district");
+				$("#assignErrorDivId1").html("Please select district");
 				return;
 			}
 			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select division");
+				$("#assignErrorDivId1").html("Please select division");
 				return;
 			}
 			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select sub division");
+				$("#assignErrorDivId1").html("Please select sub division");
 				return;
 			}
 			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
 			{
-				$("#assignErrorDivId1").html("please select location");
+				$("#assignErrorDivId").html("Please select location");
 				return;
 			}
 		}
 		if($("#designationsId1").val() == null || $("#designationsId1").val() == "" || $("#designationsId1").val() == 0)
 		{
-			$("#assignErrorDivId1").html("please select designation");
+			$("#assignErrorDivId1").html("Please select designation");
 			return;
 		}
 		if($("#officerNamesId1").val() == null || $("#officerNamesId1").val() == "" || $("#officerNamesId1").val() == 0)
 		{
-			$("#assignErrorDivId1").html("please select officer name");
+			$("#assignErrorDivId1").html("Please select officer name");
 			return;
 		}
-		*/
-		/*$("#assiningLdngImg1").show();
+		$("#assiningLdngImg").show();
+		$("#assignOfficerId").hide();
+		
+		
+		$("#assiningLdngImg1").show();
 		$("#subTaskAssignOfficerId").hide();
 		var uploadHandler = {
 			upload: function(o) {
 				uploadResult = o.responseText;
-				displayStatus(uploadResult);
+				displaySubStatus(uploadResult,mainAlertId);
 			}
 		};
 
 		YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
 		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
-*/
-	});
-	
+		
+}
+
+function displaySubStatus(result,mainAlertId)
+{
+	var result = (String)(result);
+	if(result.search('success') != -1){
+		$("#assiningLdngImg").hide();
+		$("#assignOfficerId").show();
+		$("#assignSuccess").html('Alert Assigned Successfully')
+		setTimeout(function(){
+			getSubTaskInfoForAlert(mainAlertId) ;
+			$('#sub_task_block').hide();
+			$('#main_alert_block').show();
+			//location.reload();
+		},500);
+	}else{
+		alert("Please Try Again.");
+		$("#assignSuccess").addClass("text-danger");
+		$("#assignSuccess").html('Try Again');
+	}	
+}
+
 function assignedOfficersDetailsForAlert(alertId)
 {
 	var jsObj = {
@@ -1244,6 +1522,7 @@ function assignedOfficersDetailsForAlert(alertId)
 }
 function getAlertData(alertId)
 {
+	$("#alertDetails").html(spinner);
 	var jsObj =
 	{
 		alertId  :alertId,
@@ -1254,13 +1533,13 @@ function getAlertData(alertId)
 		url: 'getAlertsDataAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#alertDetails").html('');
 		getAlertCategortByAlert(alertId);
 		//getInvolvedMembersDetilas(alertId);
 		getSubTaskInfoForAlert(alertId);
 		getCommentsForAlert(alertId);
 		getDocumentsForAlert(alertId);
 		if(result != null && result.length > 0){
-			//buildSubTasksInfoForAlert(result[0].subList1);
 			buildAlertDataNew(result)
 			if(result[0].categoryId == 2)
 			{
@@ -1273,39 +1552,6 @@ function getAlertData(alertId)
 }
   
   
-function buildSubTasksInfoForAlert(result)
-{
-	var str='';
-	str+='<div class="row m_top20">';
-		str+='<div class="col-sm-1 text-center body-icons">';
-			str+='<i class="fa fa-level-down fa-2x"></i>';
-		str+='</div>';
-		str+='<div class="col-sm-11">';
-			str+='<h4 class="text-muted text-capital">subtask</h4>';
-			str+='<ul class="assign-subtask-list m_top20">';
-				for(var i in result)
-				{
-					str+='<li class="assigned">';
-						str+='<div class="row">';
-							str+='<div class="col-sm-1">';
-								str+='<i class="glyphicon glyphicon-ok"></i>';
-							str+='</div>';
-							str+='<div class="col-sm-9">';
-								str+='<p>'+result[i].userName+'</p>';
-							str+='</div>';
-							str+='<div class="col-sm-2">';
-								//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
-							//	str+='<span class="icon-name icon-primary"></span>';
-								//str+='<span class="label label-default">...</span>';
-							str+='</div>';
-						str+='</div>';
-					str+='</li>';
-				}
-			str+='</ul>';
-		str+='</div>';
-	str+='</div>';
-	$("#alertSubtask").html(str);
-}  
 function buildAlertDataNew(result)
 {
 	var str='';
@@ -1367,6 +1613,7 @@ function buildAlertDataNew(result)
 }
 function getAlertCategortByAlert(alertId){
 	$("#categoryId").html('');
+	$("#alertCategory").html(spinner);
 	var jsObj =
 	{
 		alertId  :alertId
@@ -1376,6 +1623,7 @@ function getAlertCategortByAlert(alertId){
 	  url: 'getAlertCategoryByAlertAction.action',
 	  data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
+			$("#alertCategory").html('');
 		if(result != null && result.length > 0)
 		{
 			var str='';
@@ -1479,7 +1727,7 @@ function departmentsByAlert(alertId){
 	});
 }
 function getSubTaskInfoForAlert(alertId){
-	
+	$("#alertSubtask").html(spinner);
 	var jsObj ={
 		alertId  :alertId
 	}
@@ -1488,13 +1736,14 @@ function getSubTaskInfoForAlert(alertId){
 		url: 'getSubTaskInfoForAlertAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#alertSubtask").html('');
 		if(result != null && result.length > 0)
 		{
-			buildSubTaskInfoForAlert(result);
+			buildSubTaskInfoForAlert(result,alertId);
 		}
 	});
 }
-function buildSubTaskInfoForAlert(result)
+function buildSubTaskInfoForAlert(result,alertId)
 {
 	var str='';
 	str+='<div class="row m_top20">';
@@ -1506,13 +1755,13 @@ function buildSubTaskInfoForAlert(result)
 			str+='<ul class="assign-subtask-list m_top20">';
 				for(var i in result)
 				{
-					str+='<li class="assigned">';
+					str+='<li class="assigned subTaskCls " style="cursor:pointer;" attr_sub_alert_Id="'+result[i].alertId+'" attr_alert_id="'+alertId+'">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-1">';
 								str+='<i class="glyphicon glyphicon-ok"></i>';
 							str+='</div>';
-							str+='<div class="col-sm-9">';
-								str+='<p>'+result[i].userName+'</p>';
+							str+='<div class="col-sm-9" >';
+								str+='<p>'+result[i].title+'</p>';
 							str+='</div>';
 							str+='<div class="col-sm-2">';
 								//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
@@ -1521,13 +1770,47 @@ function buildSubTaskInfoForAlert(result)
 							str+='</div>';
 						str+='</div>';
 					str+='</li>';
-				}
+				}	
 			str+='</ul>';
 		str+='</div>';
 	str+='</div>';
+	
+/*
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-1 text-center body-icons">';
+			str+='<i class="fa fa-comments-o fa-2x"></i>';
+		str+='</div>';
+		str+='<div class="col-sm-11">';
+			str+='<h4 class="text-muted text-capital"> Sub Tasks Comments </h4>';
+			for(var i in result)
+			{
+				str+='<div class="media">';
+				
+					str+='<div class="media-body">';
+					if(result[i].commentList != null && result[i].commentList.length>0){
+						for(var k in result[i].commentList){
+							if(result[i].commentList[k].comment != null && result[i].commentList[k].comment.length > 0)
+							{
+								str+='<p class="m_top5">'+result[i].commentList[k].comment+'</p>';
+							}
+							
+							if(result[i].commentList[k].date != null && result[i].commentList[k].date.length > 0)
+							{
+								str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].commentList[k].date+'</p>';
+							}
+						}
+					}
+						
+					str+='</div>';
+				str+='</div>';
+			}
+		str+='</div>';
+	str+='</div>';
+	*/ 
 	$("#alertSubtask").html(str);
 }
 function getCommentsForAlert(alertId){
+	//$("#alertGeneralComments").html(spinner);
 	$("#alertGeneralComments").html(spinner);
 	var jsObj ={
 		alertId  :alertId
@@ -1537,12 +1820,12 @@ function getCommentsForAlert(alertId){
 		url: 'getCommentsForAlertAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		console.log(result);
+		$("#alertGeneralComments").html('');
 		if(result != null && result.length > 0)
 		{
 			buildCommentsForAlert(result);
 		}else{
-			$("#alertGeneralComments").html("NO COMMENTS ARE AVAILABLE... ");
+			$("#alertGeneralComments").html("");
 		}
 	});
 }
@@ -1856,6 +2139,7 @@ function showSbmitStatusNew(uploadResult,alertId){
 }
 function getDocumentsForAlert(alertId){
 	$("#existingDocsDivId").html("");
+	$("#existingDocsDivId").html(spinner);
 	var jsObj ={
 		alertId:alertId 
     }
@@ -1864,6 +2148,7 @@ function getDocumentsForAlert(alertId){
     url: 'getDocumentsForAlertsAction.action',
     data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
+		$("#existingDocsDivId").html('');
 		if(result != null && result.length > 0){
 			var str='';
 			str+='<h4 class="text-muted text-capital">alert attachment</h4>';
