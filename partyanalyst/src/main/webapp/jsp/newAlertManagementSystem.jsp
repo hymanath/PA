@@ -9,8 +9,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Government Core DashBoard</title>
-<link rel="SHORTCUT ICON" type="image/x-icon" href="govtCo#18A75AashBoard/img/fevicon.png">
+<title>IAS OFFICER VIEW & STATE LEVEL DEPARTMENT</title>
+<link rel="SHORTCUT ICON" type="image/x-icon" href="govtCoreDashBoard/img/fevicon.png">
 <link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
@@ -19,11 +19,9 @@
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
-<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
-<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -52,186 +50,154 @@
 {
 	display:none;
 }
-.prev, .next{
-	 height: 33px !important;
-	 width: 47px !important;
-}
-.pointerCls{
-	cursor:pointer  !important;
-}
 </style>
 </head>
 <body>
-<div  class="AMS">
+<div  class="AMS AUMS">
+	
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-default panelNewCustom">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-sm-9">
-									<h4 class="panel-title text-capital">
-										<img src="newCoreDashBoard/img/Alert_icon.png" class="iconClass"/>
-										department wise Alerts 
-									</h4>
+				<div class="col-md-12 col-xs-12 col-sm-12"> 
+					<div class="input-group dateRangePickerCls m_top5 pull-right" style="margin-right: 15px">
+						<input type="text" class="form-control" style="width:180px" id="dateRangePickerAUM">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</span>
+					</div>
+						<div class="row" id="mainBlockDiv">
+							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">My Alerts</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="myAlertsDivID"></div>
+								  </div>
 								</div>
-								<div class="col-sm-3">
-									<span class="settingsIcon pull-right" style="margin-top:7px;">
-										<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
-									</span>
-									<div class="settingsBlockDropDown notesArrow documentCloseClass">
-										<i class="glyphicon glyphicon-remove setClose pull-right"></i>
-										<div class="row">
-											<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
-												<ul class="nav nav-tabs navTabsSettings" role="tablist">
-													<li role="presentation" class="active text-capital"><a href="#printMediaAlerts" aria-controls="printMediaAlerts" role="tab" data-toggle="tab">Print Media</a></li>
-													<li role="presentation" class="text-capital"><a href="#electronicMediaAlerts" aria-controls="electronicMediaAlerts" role="tab" data-toggle="tab">Electronic Media</a></li>
-													<li role="presentation" class="text-capital"><a href="#callcenterAlerts" aria-controls="callcenterAlerts" role="tab" data-toggle="tab">Manual</a></li>
-													<li role="presentation" class="text-capital"><a href="#departmentAlerts" aria-controls="departmentAlerts" role="tab" data-toggle="tab">Department</a></li>
-												</ul>
-											</div>
-											<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-												<div class="tab-content navTabsSettingsContent">
-													<div role="tabpanel" class="tab-pane active" id="printMediaAlerts">
-														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select News Papers</h4>
-														<hr style ="margin-bottom:0px;" />
-														<div class="">
-															<ul class="settingsUl">
-																<li>
-																	<label><input type="checkbox" class="selectAllPaperCls" checked />Select All</label>
-																</li>
-																<c:forEach items="${newsPaperList}"  var="newsPaper">
-																	<li>
-																		<label><input type="checkbox" class="newsPaperListCls" checked attr_val="${newsPaper.id}"/>
-																		${newsPaper.name}</label>
-																	</li>
-																</c:forEach>
-															</ul>
-														</div>
-													</div>
-													<div role="tabpanel" class="tab-pane" id="electronicMediaAlerts">
-														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Tv Channels</h4>
-														<hr style ="margin-bottom:0px;" />
-														<ul class="settingsUl">
-															<li>
-																<label><input type="checkbox" class="selectAllChannelsCls" checked />Select All</label>
-															</li>
-															<c:forEach items="${chanelList}"  var="channels">
-																<li>
-																	<label><input type="checkbox" class="chanelListCls" checked attr_val="${channels.id}"/>
-																	${channels.name}</label>
-																</li>
-															</c:forEach>
-														</ul>
-													</div>
-													<div role="tabpanel" class="tab-pane" id="callcenterAlerts">
-														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Call Center</h4>
-														<hr style ="margin-bottom:0px;" />
-														<div class="scrollerBlockDepartments">
-															<ul class="settingsUl">
-																<li>
-																	<label><input type="checkbox" class="selectAllcallcenterCls" checked/>Select All</label>
-																</li>
-																<li>
-																	<label><input type="checkbox" class="callcenterCls" checked attr_val="1"/>Call Center
-																	</label>
-																</li>
-															</ul>
-														</div>
-													</div>
-													<div role="tabpanel" class="tab-pane" id="departmentAlerts">
-														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Departments</h4>
-														<hr style ="margin-bottom:0px;" />
-														<div class="scrollerBlockDepartments">
-															<ul class="settingsUl">
-																<li>
-																	<label><input type="checkbox" class="selectAlldepartmentsCls" checked/>Select All</label>
-																</li>
-																<c:forEach items="${deptList}"  var="departments">
-																	<li>
-																		<label><input type="checkbox" class="departmentsCls" checked attr_val="${departments.id}"/>
-																		${departments.name}</label>
-																	</li>
-																</c:forEach>
-															</ul>
-														</div>
-													</div>
-												</div>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="mySubTasksDivID"></div>
+								  </div>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-12 col-sm-12">
+								<div class="panel panel-default">
+								  <div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">Assigned Sub Tasks</h4>
+								  </div>
+								  <div class="panel-body">
+									<div id="assignedSubTasksDivID"></div>
+								  </div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6 applyStyleStatus">
+								<div class="panel panel-default">
+									<div class="panel-heading headingColor">
+										<h4 class="panel-title text-capital fontColor">status overview</h4>
+									</div>
+									<div class="panel-body">
+									<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+										<div class="panel panel-default">
+											<div class="" role="tab" id="headingOne" style="padding: 15px;">
+											 
+												<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+												 <h4 class="panel-title"> ALERTS</h4>
+												
+												</a>
 											  
 											</div>
-											<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3 m_top10">
-												<button type="button" class="btn btn-success filtersSubmitDivId">Get Details</button>
+											<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+											  <div class="panel-body">
+												<div id="statusOverview"></div>
+											  </div>
+											</div>
+										</div>
+										<div class="panel panel-default">
+											<div class="" role="tab" id="headingTwo" style="padding: 15px;">
+											
+												<a class="collapsed collapseIconForIAS subTaskViewDts" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+												  <h4 class="panel-title">
+												  SUB TASKS</h4>
+												</a>
+											  
+											</div>
+											<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+											  <div class="panel-body">
+												<div id="statusWiseSubTasksOverview"></div>
+											  </div>
 											</div>
 										</div>
 									</div>
-									<div class="input-group dateRangePickerCls m_top5">
-										<input type="text" class="form-control" style="width:180px" id="dateRangePicker">
-										<span class="input-group-addon">
-											<i class="glyphicon glyphicon-calendar"></i>
-										</span>
+										
 									</div>
 								</div>
 							</div>
-							
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="panel panel-default">
-										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">status overview</h4>
-										</div>
-										<div class="panel-body">
-											<div id="statusOverview"></div>
-										</div>
+							<div class="col-sm-6">
+								<div class="panel panel-default">
+									<div class="panel-heading headingColor">
+										<h4 class="panel-title text-capital fontColor">location level overview</h4>
 									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="panel panel-default">
-										<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">location level overview</h4>
-										</div>
-										<div class="panel-body">
-											<div id="levelWiseAlertOverview"></div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-12">
-									<div class="panel panel-default">
-										<div class="panel-heading headingColor">
-											<div class="row">
-												<div class="col-sm-8">
-													<h4 class="panel-title text-capital fontColor">location level overview</h4>
+									<div class="panel-body">
+										<div class="panel-group" id="accordionL" role="tablist" aria-multiselectable="true">
+											<div class="panel panel-default">
+												<div class="" role="tab" id="headingOneL" style="padding: 15px;">
+												 
+													<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordionL" href="#collapseOneL" aria-expanded="true" aria-controls="collapseOneL">
+													 <h4 class="panel-title"> ALERTS</h4>
+													
+													</a>
+												  
 												</div>
-												<div class="col-sm-4">
-													<ul class="switch-btn pull-right">
-														<li class="active" attr_type="status">status overview</li>
-														<li attr_type="department">location level</li>
-													</ul>
+												<div id="collapseOneL" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneL">
+												  <div class="panel-body">
+													<div id="levelWiseAlertOverview"></div>
+												  </div>
+												</div>
+											</div>
+											<div class="panel panel-default">
+												<div class="" role="tab" id="headingTwoL" style="padding: 15px;">
+												
+													<a class="collapsed collapseIconForIAS subTaskLocViewDts" role="button" data-toggle="collapse" data-parent="#accordionL" href="#collapseTwoL" aria-expanded="false" aria-controls="collapseTwoL">
+													  <h4 class="panel-title">
+													  SUB TASKS</h4>
+													</a>
+												  
+												</div>
+												<div id="collapseTwoL" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoL">
+												  <div class="panel-body">
+													<div id="levelWiseSubTasksAlertOverview"></div>
+												  </div>
 												</div>
 											</div>
 										</div>
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-sm-3">
-													<div id="departmentStatus"></div>
-												</div>
-												<div class="col-sm-9">
-													<div id="departmentWiseAlertOverviewCnt"></div>
-												</div>
-											</div>
-										</div>
+										
 									</div>
 								</div>
-								<!-- Level Wise Department Wise  -->
-									<div id="levelWiseDepartmentDetailsId"></div>
 							</div>
 						</div>
+						
+							<div class="panel panel-default" id="deptWiseAlertsDiv">
+								<div class="panel-heading headingColor">
+									<h4 class="panel-title text-capital fontColor">status level - Department Wise Alerts</h4>
+								</div>
+										
+								<div class="panel-body">
+									<div id="departmentWiseAlertsDetailsId"></div>
+								</div>
+							</div>
+							<div id="departmentWiseLocationBlockId"></div>
 					</div>
 				</div>
-			</div>
-		</div>
+			</div>			
+		
 	</section>
 	
 </div>
@@ -243,11 +209,11 @@
 				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 			</div>
 			<div class="modal-body modal-insurance">
-				<!--<div id="filter"></div>-->
+				<div id="filter"></div>
 				<div id="alertManagementPopupBody"></div>
 			</div>
 		</div>
-	</div>
+  </div>
 </div>
 <div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document" style="width:85%;">
@@ -260,30 +226,30 @@
 				<div id="alertManagementPopupBody1"></div>
 			</div>
 			<div class="modal-footer">
-				<button type="button closeSecondModal" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
   </div>
 </div>
-
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
-<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
-<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-<!-- Custom Script Files Data Start-->
-<script src="alertDepartment/js/newAlertManagementSystem.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertUserManagement.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
-<!-- Custom Script Files Data End-->
+<script type="text/javascript">
+
+
+</script>
 </body>
 </html>
