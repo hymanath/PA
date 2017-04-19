@@ -220,23 +220,27 @@ function onLoadClicks()
 		var statusId=$('input[name=statusChange]:checked', '#updateStatusChangeBody').val();
 		var subTaskId = $(this).attr("subTaskId");
 		
-		if(subTaskId != null && subTaskId>0)
+		if(subTaskId != null && subTaskId>0){
+			comment = $("#updateStatusChangeComment1").val()
+		}
 		
 		if(comment == null || comment.trim() == "")
 		{
 			alert("Please Enter Comment");
 			return;
 		}
-		var jsObj ={
-			alertId : alertId,
-			statusId : statusId,
-			subTaskId:subTaskId,
-			comment: comment
-		}
+			
+			var jsObj ={
+				alertId : alertId,
+				statusId : statusId,
+				subTaskId:subTaskId,
+				comment: comment
+			}
 		
-			var callURL = 'updateCommentAction.action';
-		if(subTaskId != null && subTaskId>0)
+		var callURL = 'updateCommentAction.action';
+		if(subTaskId != null && subTaskId>0){
 			callURL = 'updateSubTaskStatusCommentAction.action';
+		}
 		$.ajax({
 			type:'POST',
 			url: callURL,
@@ -285,14 +289,13 @@ function onLoadClicks()
 		var alertId = $(this).attr("attr_alert_id")
 		var subTaskId = $(this).attr("subAlertId")
 
-		var comment = '';
+		var comment = $("#alertCommentId1").val();	
 		if(subTaskId != null && subTaskId>0)
 			comment = $("#alertCommentId2").val();
-		else
-			comment = $("#alertCommentId1").val();		
+		
 		if(comment == null || comment.trim() == "")
 		{
-			alert("please enter comment");    
+			alert("Please enter comment. ");    
 			return;                 
 		}
 		var jsObj ={  
@@ -1446,7 +1449,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 							
 						str1+='</div>';
 						str1+='<div class="panel-body pad_0">';
-							str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
+							str1+='<textarea class="form-control" id="updateStatusChangeComment1" placeholder="Comment.."></textarea>';
 						str1+='</div>';
 					str1+='</div>';
 				
