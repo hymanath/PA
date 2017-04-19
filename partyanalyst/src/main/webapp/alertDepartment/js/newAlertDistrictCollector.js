@@ -1999,7 +1999,12 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			$('#assignedSubTasksGraphView').html("No Data Available")
 		}
 		
-			 
+	var maxHeight = 0;
+
+	$(".panelheights").each(function(){
+	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+	});
+	$(".panelheights").height(maxHeight);
 }
 
 function getDistrictLevelDeptWiseFilterViewDetails(alertType){
@@ -2510,17 +2515,22 @@ function buildDistrictLevelDeptWiseStatusOverView(result,levelId){
 
 $(document).on("click",".overAllCount",function(){
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-		$("#alertManagementPopup").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
+	$("#alertManagementPopup").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
 		
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name_alert");
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
 	//alertIdArr=($(this).attr("attr_overcunt").split(','));
+	getDistrictLevelOfficerClick(statusName,totalCount,alertType);
+});
+
+function getDistrictLevelOfficerClick(statusName,totalCount,alertType)
+{
 	var jObj = {
 		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
 		govtOfficerId : globalgovtOfficerId,
@@ -2538,8 +2548,7 @@ $(document).on("click",".overAllCount",function(){
 			$("#alertManagementPopupBody").html('NO DATA AVAILABLE')
 		}
 	});
-});
-
+}
 $(document).on("click",".todayCountCls",function(){
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#alertManagementPopup").modal({
