@@ -26,7 +26,28 @@ public class AlertTrackingVO {
 	private Long count;
 	private Long totalCount=0L;
 	private String title;
+	private String mobileNO;
+	private String deptName;
 	
+	public AlertTrackingVO(){}
+	public AlertTrackingVO(Long alertId,String comment,String date){
+		this.alertId=alertId;
+		this.comment = comment;
+		this.date = date;
+	}
+	
+	public String getMobileNO() {
+		return mobileNO;
+	}
+	public void setMobileNO(String mobileNO) {
+		this.mobileNO = mobileNO;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
 	public String getTitle() {
 		return title;
 	}
