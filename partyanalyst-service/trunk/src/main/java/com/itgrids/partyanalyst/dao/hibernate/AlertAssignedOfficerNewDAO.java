@@ -170,6 +170,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(fromDate != null && toDate != null){
 	    		  sb.append(" and date(model.insertedTime) between :fromDate and :toDate " );
 	    	  }
+	    	  
+	    	  if(type != null && !type.equalsIgnoreCase("today")){
+	              sb.append(" group by model.alertStatus.alertStatusId ");
+	            }
 	    	  Query query = getSession().createQuery(sb.toString());
 	    	  
 	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
@@ -668,7 +672,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  
         	  sb.append(" select  distinct model.alert.alertId from AlertAssignedOfficerNew model ");
         	
-        	  sb.append(" where model.isDeleted = 'N' " );
+        	  sb.append(" where model.isDeleted = 'N' and model.isApproved='Y' " );
         	
 	    	  
         	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
@@ -3003,7 +3007,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  
 	    	  sb.append(" select distinct model.alert.alertId from AlertAssignedOfficerNew model ");
 	    	
-	    	  sb.append(" where model.isDeleted = 'N' and  model.alert.isDeleted='N' " );
+	    	  sb.append(" where model.isDeleted = 'N' and  model.alert.isDeleted='N' and model.isApproved='Y' " );
 	    	
 	    	  
 	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){

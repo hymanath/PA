@@ -338,7 +338,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	
     		sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
     	
-    	sb.append(" where model.isDeleted = 'N' " );
+    	sb.append(" where model.isDeleted = 'N' and model.isApproved='Y' " );
     	
     	if(type != null && type.equalsIgnoreCase("mySubTasks")){
     		if(govtOffcrIds != null && govtOffcrIds.size()>0){
@@ -1633,7 +1633,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	
    		sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
    	
-   	sb.append(" where model.isDeleted = 'N'  and model.alert.isDeleted='N' " );
+   	sb.append(" where model.isDeleted = 'N'  and model.alert.isDeleted='N' and model.isApproved='Y' " );
    	
    	if(type != null && type.equalsIgnoreCase("mySubTasks")){
    	  	  if(govtOffceId != null && govtOffceId.longValue() >0l){
@@ -1679,7 +1679,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	   StringBuilder sb = new StringBuilder();
    		sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
    	
-   	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' " );
+   	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' and model.isApproved='Y' " );
    	
    	if(type != null && type.equalsIgnoreCase("mySubTasks")){
    	  	  if(govtOffceId != null && govtOffceId.longValue() >0l){
