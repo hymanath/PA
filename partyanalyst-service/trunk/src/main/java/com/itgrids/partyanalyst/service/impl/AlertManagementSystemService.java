@@ -5269,10 +5269,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
  			//get alert status count and and create a map of alertStatusId and its count
  			List<Object[]> totalList = new ArrayList<Object[]>();
- 			List<Object[]> alertCountList = alertDAO.stateLevelDeptOfficerDepartmentWiseAlertsViewForAlertCnt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,"Status");//for pending status
+ 			/*List<Object[]> alertCountList = alertDAO.stateLevelDeptOfficerDepartmentWiseAlertsViewForAlertCnt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,"Status");//for pending status
  			if(alertCountList != null && alertCountList.size() > 0){
  				totalList.addAll(alertCountList);
- 			}
+ 			}*/
  			List<Long> levelValues = new ArrayList<Long>();    
  			Long levelId = 0L;
  			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
