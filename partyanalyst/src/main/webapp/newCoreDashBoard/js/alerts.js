@@ -1147,7 +1147,13 @@
 			 var unblTRslvAlertArr = [];
 			 var actionNotRequiredAlertArr = [];
 			 var duplicateAlertArr = [];
-			
+			 
+			 var wrnglyMppdDsgntnArr = [];
+			 var wrnglyMppdDprtmnt = [];
+			 var rejoinder = [];
+			 var incomplete = [];
+			 var closed = [];
+			 
 			 for(var i in result){
 				 for(var j in result[i].subList1){
 				    if(result[i].subList1[j].statusTypeId==1){
@@ -1164,6 +1170,16 @@
 						 actionNotRequiredAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
 					}else if(result[i].subList1[j].statusTypeId==7){
 						 duplicateAlertArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==8){
+						 wrnglyMppdDsgntnArr.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==9){
+						 wrnglyMppdDprtmnt.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==10){
+						 rejoinder.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==11){
+						 incomplete.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
+					}else if(result[i].subList1[j].statusTypeId==12){
+						 closed.push({y:result[i].subList1[j].totalAlertCnt,"extra":result[i].subList1[j].statusTypeId+"-"+result[i].id+"-"+result[i].subList1[j].totalAlertCnt+"-"+locationType+"-"+result[i].name});
 					}
 				 }
 			 }
@@ -1188,6 +1204,21 @@
 			  }
 			  if(duplicateAlertArr != null && duplicateAlertArr.length > 0){
 				mainJosnObjArr.push({name:'Duplicate',data:duplicateAlertArr,color:"#CF0001"});  
+			  }
+			   if(wrnglyMppdDsgntnArr != null && wrnglyMppdDsgntnArr.length > 0){
+				mainJosnObjArr.push({name:'Wrongly Mapped Designation',data:wrnglyMppdDsgntnArr,color:"#FE9900"});  
+			  } 
+			  if(wrnglyMppdDprtmnt != null && wrnglyMppdDprtmnt.length > 0){
+				mainJosnObjArr.push({name:'Wrongly Mapped Department',data:wrnglyMppdDprtmnt,color:"#0C9514"});  
+			  }
+			  if(rejoinder != null && rejoinder.length > 0){
+				mainJosnObjArr.push({name:'Rejoinder',data:rejoinder,color:"#82CA9C"});  
+			  } 
+			  if(incomplete != null && incomplete.length > 0){
+				mainJosnObjArr.push({name:'Incomplete',data:incomplete,color:"#C9AC82"});  
+			  } 
+			  if(closed != null && closed.length > 0){
+				mainJosnObjArr.push({name:'Closed',data:closed,color:"#ababab"});  
 			  }
 			  var getWidth = $("#districtOvervwGraph").width();
 			 $("#"+divId).css("width",getWidth);	
@@ -3770,10 +3801,10 @@ function getTotalArticledetails(articleId){
 	}
 	function buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWise(result,locationType,divId){
 	 var str='';
-	  if($(window).width() < 800)
-		{
+	 // if($(window).width() < 800)
+	//	{
 			str+='<div class="table-responsive">';
-		}
+		//}
 		  if(divId=="constituencyLevelTblDivId"){
 		   str+='<table style="background-color:#EDEEF0;border:1px solid #ddd" class="table table-condensed table-bordered text_align_center" id="constituencyAlertDataTblId">'; 
 	     }else if(divId=="districtImpactLevelTblDivId"){
@@ -3813,10 +3844,10 @@ function getTotalArticledetails(articleId){
 			 str+='</tbody>';
 			 str+='</table>';
 	      $("#"+divId).html(str);
-		  if($(window).width() < 800)
-		{
+		 // if($(window).width() < 800)
+		//{
 			str+='</div>';
-		}
+		//}
 		if(divId=="constituencyLevelTblDivId"){
 			 $("#constituencyAlertDataTblId").dataTable({
 			"aaSorting": [],
