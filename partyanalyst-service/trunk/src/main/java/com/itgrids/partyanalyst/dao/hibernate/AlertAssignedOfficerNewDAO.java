@@ -2548,7 +2548,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		}
 		
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
-			queryStr.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) ");
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ");
 	    	    if( calCntrIds !=null && !calCntrIds.isEmpty() ){
 	    	    	queryStr.append(" or A.alert_caller_id is not null ");
 				}else{
