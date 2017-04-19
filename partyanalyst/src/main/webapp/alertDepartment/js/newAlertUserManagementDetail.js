@@ -257,7 +257,7 @@ function onLoadClicks()
 				$("#commentPostingSpinner").html("status updated successfully");
 				$("#alertManagementPopup1").hide();
 				if(subTaskId == null || subTaskId.length == 0)
-					getSubAlertsDetails(alertId,subAlertId)
+					getCommentsForAlert(alertId);
 				else
 					getSubAlertsDetails(alertId,subTaskId);
 				
