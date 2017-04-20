@@ -17002,5 +17002,10 @@
    			<param name="root">alertCoreDashBoardVOs</param>
    		</result>
 	</action>	
+	<action name="getGovtAllDepartmentDetailsAction" class="alertManagementSystemAction" method="getGovtAllDepartmentDetails">
+		<result type="json" name="success">
+   			<param name="root">idnameVoList</param>
+   		</result>
+	</action>
  </package>
 </struts>
