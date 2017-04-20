@@ -2184,10 +2184,18 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						sublevels.add(Long.parseLong(subLevelsArr.getString(i)));          
 					}  
 				}
+				
+				JSONArray callCenterArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> callCenterIds = new ArrayList<Long>();
+				if(callCenterArr != null && callCenterArr.length() > 0){
+					for (int i = 0; i < callCenterArr.length(); i++){
+						callCenterIds.add(Long.parseLong(callCenterArr.getString(i)));          
+					}  
+				}
 				if(searchType.equalsIgnoreCase("statusWise"))
-				 alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,null,sublevels);
+				 alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,callCenterIds,sublevels);
 				else if(searchType.equalsIgnoreCase("scopeWise"))
-				  alertCoreDashBoardVOs=alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType,sublevels);
+				  alertCoreDashBoardVOs=alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType,sublevels,callCenterIds);
 					
 			} catch (Exception e) {  
 				LOG.error("Exception Occured in getDistrictOfficeGraphicalView() method, Exception - ",e); 
