@@ -258,7 +258,7 @@ function onLoadClicks()
 			if(result != null && result.exceptionMsg == 'success')
 			{
 				$("#commentPostingSpinner").html("status updated successfully");
-				$("#alertManagementPopup1").hide();
+				$('#alertManagementPopup1').modal('hide');
 				if(subTaskId == null || subTaskId.length == 0)
 					getCommentsForAlert(alertId);
 				else
@@ -879,13 +879,14 @@ function getAlertStatusHistory(alertId){
 var isAdmin = "";
 var globalUserType = "";
 var globalStatusId = 0;
+var isStatusAvailable=true;
 function getStatusCompletionInfo(alertId){
 	$("#updateStatusChangeBody").html(spinner);
 	$("#statusDtlsDiv").html(spinner);
 	var jsObj ={
 		alertId : alertId,
 		levelValue : globalUserLevelValues[0],
-		designationId : globalDesignationId,
+		designationId : 0,
 		levelId : globalUserLevelId
 	}
 	$.ajax({
@@ -898,6 +899,8 @@ function getStatusCompletionInfo(alertId){
 		$('#displayStatusId').attr('status-icon-block','alertStatus');
 		
 		if(result != null && result.length>0){
+			if(result.length == 1)
+				isStatusAvailable=false;
 			//displaySubTasksliId
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
@@ -944,7 +947,7 @@ function getStatusCompletionInfo(alertId){
 			}
 			
 			if(isAdmin=='false'){
-				$('#displayDueDate1,#docAttachmentId').show(); 
+				$('#docAttachmentId').show(); 
 				$('#displayStatusId').attr('status-icon-block','alertStatus');
 			}
 			
@@ -2686,28 +2689,35 @@ function alertStatusHistory(result,alertId)
 			
 		str+='</table>';
 		
-		if(isAdmin == "false"){
-			if(globalUserType != "same" && globalUserType != "other"){
-				str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
-					str1+='<label class="checkbox-inline">';
-						str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
-					str1+='</label>';  
-					str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
-				str1+='</div>';
-			}
-		}  
 		
 		$("#alertManagementPopup1 .modal-footer").show();
 		$("#alertManagementPopup1 .modal-footer").html(str1);
 		
-		if(globalStatusId == 8 || globalStatusId == 9){
-			$("#changeStatudCheckBoxId").hide();   
-		}
 		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 		$("#alertManagementPopupBody1").html(str);
 	}else{
 		$("#alertManagementPopupBody1").html("NO DATA")
 	}
+	
+	
+	if(isAdmin == "false"){
+		if(globalUserType != "same" && globalUserType != "other"){
+			str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
+				str1+='<label class="checkbox-inline">';
+				
+				if(isStatusAvailable)
+					str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
+				
+				str1+='</label>';  
+				str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
+			str1+='</div>';
+		}
+	}
+	
+	if(globalStatusId == 8 || globalStatusId == 9){
+			$("#changeStatudCheckBoxId").hide();   
+	}
+	
 }
  
  
