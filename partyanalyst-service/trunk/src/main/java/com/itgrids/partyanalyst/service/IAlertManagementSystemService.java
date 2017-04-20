@@ -117,5 +117,6 @@ public interface IAlertManagementSystemService {
 	public List<AlertCoreDashBoardVO> getStateLevelDeptWiseFlterClick(Long userId,List<Long> deptIds,Long locatonLevelId,
 			Long statusId,String type,String fromDateStr,String toDateStr,
 			Long desigDeptOfficerId,Long officerId);
+	public List<IdNameVO> getGovtAllDepartmentDetails();
 	
 }
