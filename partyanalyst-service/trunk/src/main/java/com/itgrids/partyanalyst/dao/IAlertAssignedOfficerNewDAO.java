@@ -60,4 +60,6 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
 	public Long getGovtDeptDesigIdListByUserId(Long alertId);
 	public Integer deleteAssignment(Long alertId);
 	public Long getAssignedDtls(Long alertId);
+	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,Long statusId,
+			Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId);
 }

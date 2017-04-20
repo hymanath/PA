@@ -3140,4 +3140,56 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 query.setParameter("alertId", alertId);
 		 return (Long) query.uniqueResult();
 	 }
+	 @SuppressWarnings("unchecked")
+		public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,Long statusId,
+				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId){
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select distinct model.alert.alertId "+
+					  " from " +
+					  " AlertAssignedOfficerNew model " +
+					  " where " +
+					  " model.isDeleted = 'N' " +
+					  " and model.alert.isDeleted = 'N'");
+			if(deptIds != null && deptIds.size() >0){
+				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds) ");
+			}
+			if(locationLevelId != null && locationLevelId.longValue() > 0){
+				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :locationLevelId ");
+			}
+			if(statusId != null && statusId.longValue() >0){
+				sb.append(" and model.alertStatus.alertStatusId = :statusId ");
+			}
+			if(fromDate != null && toDate != null){
+				sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+			}
+			if(desigDeptOfficerId != null && desigDeptOfficerId.longValue() > 0){
+				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId =:desigDeptOfficerId ");
+			}
+			if(officerId != null && officerId.longValue() > 0){
+				sb.append(" and model.govtOfficer.govtOfficerId = :officerId " );
+			}
+			
+			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >= :scopeId ");
+			Query query = getSession().createQuery(sb.toString());
+			if(deptIds != null && deptIds.size() >0)
+			      query.setParameterList("deptIds",deptIds);
+			if(locationLevelId != null && locationLevelId.longValue() > 0)
+			      query.setParameter("locationLevelId",locationLevelId);
+			if(statusId != null && statusId.longValue() >0){
+				query.setParameter("statusId",statusId);
+			}
+			if(fromDate != null && toDate != null){
+				query.setDate("fromDate",fromDate);
+				query.setDate("toDate",toDate);
+			}
+			if(desigDeptOfficerId != null && desigDeptOfficerId.longValue() > 0){
+				query.setParameter("desigDeptOfficerId",desigDeptOfficerId);
+			}
+			if(officerId != null && officerId.longValue() > 0){
+				query.setParameter("officerId",officerId);
+			}
+			query.setParameter("scopeId",scopeId);
+			
+			return query.list();
+		}
 }
