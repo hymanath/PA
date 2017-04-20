@@ -6860,5 +6860,33 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		return query.list();  
     }
-    
+    @SuppressWarnings("unchecked")
+	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long statusId,Date fromDate,Date toDate){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(" select model.alertId  " +
+    			" from Alert model " +
+    			" where model.isDeleted='N'  ");
+    	if(statusId != null && statusId.longValue() > 0){
+    		sb.append(" and model.alertStatusId = :statusId " );
+    	}
+    	if(deptIds != null && deptIds.size() > 0){
+    		sb.append(" and model.govtDepartmentId in(:deptIds) " );
+    	}
+    	if(fromDate != null && toDate != null){
+    		sb.append(" and date(model.createdTime) between :fromDate and :toDate " );
+    	}
+    	Query query = getSession().createQuery(sb.toString());
+    	if(statusId != null && statusId.longValue() > 0){
+    		query.setParameter("statusId", statusId);
+    	}
+    	if(deptIds != null && deptIds.size() > 0){
+    		query.setParameterList("deptIds", deptIds);
+    	}
+    	if(fromDate != null && toDate != null){
+    		query.setDate("fromDate", fromDate);
+    		query.setDate("toDate", toDate);
+    	}
+    	return query.list(); 
+    	
+    }
 }
