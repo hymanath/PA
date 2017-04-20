@@ -992,26 +992,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		        fromDate = sdf.parse(startDate);
 		        toDate = sdf.parse(endDate);
 		      }
-		      
-		      if(printIdsList != null && printIdsList.size() > 0){  
-	                if(electronicIdsList != null && electronicIdsList.size() == 0){
-	                  electronicIdsList.add(0L);
-	                  if(calCntrIdList != null && calCntrIdList.size() == 0){
-	                    calCntrIdList.add(0L);
-	                    }
-	                }
-	              }else if(electronicIdsList != null && electronicIdsList.size() > 0){
-	                if(printIdsList != null && printIdsList.size() == 0){
-	                  printIdsList.add(0L);
-	                  if(calCntrIdList != null && calCntrIdList.size() == 0){
-	                    calCntrIdList.add(0L);
-	                    }
-	                }
-	              }else{
-	              electronicIdsList.add(0L);
-	                printIdsList.add(0L);
-	                calCntrIdList.add(0L);
-	              }
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long levelId = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -2862,26 +2842,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			govtDepDesigOffcrIds.add(govtDeptGovtOffrId);
         			List<Long> govtOffcrIds = new ArrayList<Long>();
         			govtOffcrIds.add(govtOffrcrId);
-        			if(printIdsList != null && printIdsList.size() > 0){  
-        	            if(electronicIdsList != null && electronicIdsList.size() == 0){
-        	            	electronicIdsList.add(0L);
-        	              if(calCntrIdList != null && calCntrIdList.size() == 0){
-        	                calCntrIdList.add(0L);
-        	                }
-        	            }
-        	          }else if(electronicIdsList != null && electronicIdsList.size() > 0){
-        	            if(printIdsList != null && printIdsList.size() == 0){
-        	            	printIdsList.add(0L);
-        	              if(calCntrIdList != null && calCntrIdList.size() == 0){
-        	                calCntrIdList.add(0L);
-        	                }
-        	            }
-        	          }else{
-        	        	  electronicIdsList.add(0L);
-        	            printIdsList.add(0L);
-        	            calCntrIdList.add(0L);
-        	          }
-        			
         			if(alertType != null && alertType.equalsIgnoreCase("alert")){
         				 alertIdList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,countType,printIdsList,electronicIdsList,calCntrIdList);
         			}else {
@@ -4408,22 +4368,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			if(printIdList != null && printIdList.size() > 0){  
     				if(electronicIdList != null && electronicIdList.size() == 0){
     					electronicIdList.add(0L);
-    					if(calCntrIdList != null && calCntrIdList.size() == 0){
-    						calCntrIdList.add(0L);
-        				}
     				}
     			}else if(electronicIdList != null && electronicIdList.size() > 0){
     				if(printIdList != null && printIdList.size() == 0){
     					printIdList.add(0L);
-    					if(calCntrIdList != null && calCntrIdList.size() == 0){
-    						calCntrIdList.add(0L);
-        				}
     				}
-    			}else{
+    			}/*else{
     				electronicIdList.add(0L);
     				printIdList.add(0L);
-    				calCntrIdList.add(0L);
-    			}
+    			}*/
     			
     			List<Long> levelValues = new ArrayList<Long>();    
     			Long levelId = 0L;
@@ -4661,18 +4614,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			if(printIdList != null && printIdList.size() > 0){  
     				if(electronicIdList != null && electronicIdList.size() == 0){
     					electronicIdList.add(0L);
-    					if(electronicIdList != null && electronicIdList.size() == 0){
-        					electronicIdList.add(0L);
-        				}
     				}
     			}else if(electronicIdList != null && electronicIdList.size() > 0){
     				if(printIdList != null && printIdList.size() == 0){
     					printIdList.add(0L);
     				}
-    			}else{
+    			}/*else{
     				electronicIdList.add(0L);
     				printIdList.add(0L);
-    			}
+    			}*/
     			
     			List<Long> levelValues = new ArrayList<Long>();    
     			Long levelId = 0L;
@@ -4733,22 +4683,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			if(printIdList != null && printIdList.size() > 0){  
     				if(electronicIdList != null && electronicIdList.size() == 0){
     					electronicIdList.add(0L);
-    					if(calCntrIdList != null && calCntrIdList.size() == 0){
-    						calCntrIdList.add(0l);
-    					}
     				}
     			}else if(electronicIdList != null && electronicIdList.size() > 0){
     				if(printIdList != null && printIdList.size() == 0){
     					printIdList.add(0L);
-    					if(calCntrIdList != null && calCntrIdList.size() == 0){
-    						calCntrIdList.add(0l);
-    					}
     				}
-    			}else{
+    			}/*else{
     				electronicIdList.add(0L);
     				printIdList.add(0L);
-    				calCntrIdList.add(0l);
-    			}
+    			}*/
     			
     			List<Long> levelValues = new ArrayList<Long>();    
     			Long levelId = 0L;
@@ -5033,7 +4976,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     	 public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(String fromDateStr, String toDateStr, Long stateId, 
     				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
     				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
-    				Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,String searchType,List<Long> sublevels,List<Long> calCntrIdList){
+    				Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,String searchType,List<Long> sublevels){
                    try{
                 	   Date fromDate = null;
            			   Date toDate = null;
@@ -5043,24 +4986,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            				toDate = sdf.parse(toDateStr);
            			}
            			if(printIdList != null && printIdList.size() > 0){  
-        				if(electronicIdList != null && electronicIdList.size() == 0){
-        					electronicIdList.add(0L);
-        					if(calCntrIdList != null && calCntrIdList.size() == 0){
-        						calCntrIdList.add(0L);
-            				}
-        				}
-        			}else if(electronicIdList != null && electronicIdList.size() > 0){
-        				if(printIdList != null && printIdList.size() == 0){
-        					printIdList.add(0L);
-        					if(calCntrIdList != null && calCntrIdList.size() == 0){
-        						calCntrIdList.add(0L);
-            				}
-        				}
-        			}else{
-        				electronicIdList.add(0L);
-        				printIdList.add(0L);
-        				calCntrIdList.add(0L);
-        			}
+           				if(electronicIdList != null && electronicIdList.size() == 0){
+           					electronicIdList.add(0L);
+           				}
+           			}else if(electronicIdList != null && electronicIdList.size() > 0){
+           				if(printIdList != null && printIdList.size() == 0){
+           					printIdList.add(0L);
+           				}
+           			}/*else{
+           				electronicIdList.add(0L);
+           				printIdList.add(0L);
+           			}*/
            			
            			List<Long> levelValues = new ArrayList<Long>();    
            			Long levelId = 0L;
@@ -5327,26 +5263,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	   				fromDate = sdf.parse(formDateStr);
 	   				toDate = sdf.parse(toDateStr);
 	   			}
-	   			
-	   			if(printIdsList != null && printIdsList.size() > 0){  
-    	            if(electronicIdsList != null && electronicIdsList.size() == 0){
-    	            	electronicIdsList.add(0L);
-    	              if(calCntrIdList != null && calCntrIdList.size() == 0){
-    	                calCntrIdList.add(0L);
-    	                }
-    	            }
-    	          }else if(electronicIdsList != null && electronicIdsList.size() > 0){
-    	            if(printIdsList != null && printIdsList.size() == 0){
-    	            	printIdsList.add(0L);
-    	              if(calCntrIdList != null && calCntrIdList.size() == 0){
-    	                calCntrIdList.add(0L);
-    	                }
-    	            }
-    	          }else{
-    	        	  electronicIdsList.add(0L);
-    	            printIdsList.add(0L);
-    	            calCntrIdList.add(0L);
-    	          }
 				List<Long> alertIds = null;
 				if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() > 0l && govtOffceId != null && govtOffceId.longValue() > 0l){
 				 if(clickType != null && clickType.equalsIgnoreCase("alert"))
@@ -5688,22 +5604,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      			if(printIdList != null && printIdList.size() > 0){  
 	      				if(electronicIdList != null && electronicIdList.size() == 0){
 	      					electronicIdList.add(0L);
-	      					if(calCntrIds != null && calCntrIds.size() == 0){
-	      						calCntrIds.add(0L);
-		      				}
 	      				}
 	      			}else if(electronicIdList != null && electronicIdList.size() > 0){
 	      				if(printIdList != null && printIdList.size() == 0){
 	      					printIdList.add(0L);
-	      					if(calCntrIds != null && calCntrIds.size() == 0){
-	      						calCntrIds.add(0L);
-		      				}
 	      				}
-	      			}else{
+	      			}/*else{
 	      				electronicIdList.add(0L);
 	      				printIdList.add(0L);
-	      				calCntrIds.add(0L);
-	      			}
+	      			}*/
 	      			
 	      			List<Long> levelValues = new ArrayList<Long>();    
 	      			Long levelId = 0L;
@@ -5816,4 +5725,105 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				}
 	      		return finalList;
 	      	}
+	      	
+  			public List<IdNameVO>  getStatusCompletionInfoNew(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId){
+  			            List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+  			            try {
+  			              
+  			              Alert alert  = alertDAO.get(alertId);
+  			              
+  			              String userType = null;
+  			              //whether this alert is belongs to same logedin user or not.
+  			              //get all govt dept desig off ids
+  			              List<Long> govtDeptDesigOfficerIdList = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOfficerIdListByUserId(userId);
+  			              
+  			              //get govt dept desig off id by alertId
+  			              Long govtDeptDesigOfficerId = alertAssignedOfficerNewDAO.getGovtDeptDesigOfficerIdListByUserId(alertId);
+  			              
+  			              //whether this alert is belongs to just subordinate or not.
+  			              
+  			              //get all govt dept desig ids
+  			              List<Long> govtDeptDesigIdList = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigIdListByUserId(userId);
+  			              //get govt dept desig id by alertId
+  			              Long govtDeptDesigId2 = alertAssignedOfficerNewDAO.getGovtDeptDesigIdListByUserId(alertId); 
+  			              
+  			              //now check
+  			              List<Object[]> list2 = null;
+  			              if(govtDeptDesigIdList != null && govtDeptDesigIdList.size() > 0 && govtDeptDesigId2 != null && govtDeptDesigId2.longValue() > 0L){
+  			                list2 = govtDepartmentDesignationHierarchyDAO.getChildDesigDataNew(govtDeptDesigIdList,govtDeptDesigId2);
+  			              }
+  			              
+  			              //to check same level designation.
+  			              //by alert id take scope.
+  			              Long govtDeptScopeIdForAlert = alertAssignedOfficerNewDAO.getGovtDeptScopeIdForAlert(alertId);
+  			              //by user Id take scope.
+  			              List<Long> govtDeptScopeIdsForUserId = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptScopeIdsForUserId(userId);
+  			              
+  			              //to wheck whether he/she is an admin or not.
+  			              Long userCount = govtDepartmentDesignationOfficerNewDAO.getUserIdCount(userId);
+  			              String userStatus = "";
+  			              if(userCount != null && userCount.longValue() > 0L){
+  			                userStatus = "admin";
+  			              }else{
+  			                userStatus = "officer";  
+  			              }
+  			              if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId)){
+  			                userType ="own";
+  			                
+  			                List<Object[]> objList = alertDepartmentStatusDAO.getAlertGovtDepartmentStatus(alert.getGovtDepartmentId());
+  			                if(objList != null && objList.size() > 0){
+  			                  for (Object[] objects : objList) {
+  			                    IdNameVO VO = new IdNameVO();
+  			                    VO.setId((Long)objects[0]);
+  			                        VO.setName(objects[1].toString());
+  			                        VO.setDateStr(objects[2] != null ? objects[2].toString():"");
+  			                        finalList.add(VO);
+  			              }
+  			                }
+  			                
+  			              }else if(list2 != null && list2.size() > 0){ 
+  			                
+  			                userType = "subUser";
+  			                
+  			                if(alert.getAlertStatusId().longValue() == 4l || alert.getAlertStatusId().longValue() == 11l || alert.getAlertStatusId().longValue() == 12l){//Completed Status  
+  			                  //userType = "subUserStatus";
+  			                  List<Object[]> listObj = alertStatusDAO.getAlertStatusInfoForReOpen();
+  			                    if(listObj !=null && listObj.size()>0){
+  			                      for (Object[] objects : listObj) {
+  			                    IdNameVO vo = new IdNameVO();
+  			                    vo.setId((Long)objects[0]);
+  			                    vo.setName(objects[1].toString());
+  			                    vo.setDateStr(objects[2] != null? objects[2].toString():null);
+  			                    finalList.add(vo);
+  			                  }
+  			                    }
+  			                }else{
+
+  			                	IdNameVO vo = new IdNameVO();              
+  			                    finalList.add(vo);                  
+  			                }  
+  			                
+  			              }else if(govtDeptScopeIdsForUserId != null && govtDeptScopeIdsForUserId.size() > 0 && govtDeptScopeIdForAlert != null && govtDeptScopeIdsForUserId.contains(govtDeptScopeIdForAlert)){
+  			                userType = "same";
+  			                IdNameVO vo = new IdNameVO();                
+  			                finalList.add(vo);
+  			              }
+  			              else{
+  			                userType = "subUser";              
+  			                IdNameVO vo = new IdNameVO();              
+  			                finalList.add(vo);
+  			              }
+  			              
+  			              
+  			              if(finalList != null && finalList.size() > 0){
+  			                finalList.get(0).setApplicationStatus(userType+" - "+alert.getAlertStatusId());
+  			                finalList.get(0).setUserStatus(userStatus);
+  			              }
+  			          
+  			        } catch (Exception e) {
+  			          e.printStackTrace();
+  			          LOG.error("Error occured getStatusCompletionInfo() method of AlertManagementSystemService",e);
+  			        }
+  			            return finalList;
+  			  }
 }      	
