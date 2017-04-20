@@ -65,6 +65,13 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
     	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
     	    }
+       	
+        if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	  sb.append(" and  model.alert.alertCallerId is not null ");
+		}else{
+			sb.append(" and  model.alert.alertCallerId is null ");
+		}
+        
        	if(fromDate != null && toDate != null){
 	    		  sb.append(" and date(model.createdTime) between  :fromDate and :toDate " ); 
 	    	  }
@@ -384,6 +391,12 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
     	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
     	    }
+    	
+    	if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	  sb.append(" and  model.alert.alertCallerId is not null ");
+		}else{
+			sb.append(" and  model.alert.alertCallerId is null ");
+		}
     	
     	if(type != null && type.equalsIgnoreCase("mySubTasks")){
     		if(govtOffcrIds != null && govtOffcrIds.size()>0){
@@ -1707,6 +1720,11 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
 	    } 
    	
+   	if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+  	  sb.append(" and  model.alert.alertCallerId is not null ");
+	}else{
+		sb.append(" and  model.alert.alertCallerId is null ");
+	}
    	if(type != null && type.equalsIgnoreCase("mySubTasks")){
    	  	  if(govtOffceId != null && govtOffceId.longValue() >0l){
 	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId = :govtOffceId " );
@@ -1797,6 +1815,12 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
 	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
 	    } 
+   	
+   	if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+  	  sb.append(" and  model.alert.alertCallerId is not null ");
+	}else{
+		sb.append(" and  model.alert.alertCallerId is null ");
+	}
    	if(statusId != null && statusId.longValue() > 0L){
    		sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId");
 		}
