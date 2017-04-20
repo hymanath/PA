@@ -495,10 +495,32 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		   		userId = user.getRegistrationID();
 			}
 			jObj = new JSONObject(getTask());
+			
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			if(paperIdArr != null && paperIdArr.length() > 0){
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			if(chanelIdArr != null && chanelIdArr.length() > 0){
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+				}
+			}
+			
+			JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+			List<Long> calCntrIdList = new ArrayList<Long>();
+			for (int i = 0; i < calCntrIdArr.length(); i++){
+				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+			}
 			//Long userId = jObj.getLong("userId");
 			String startDate =jObj.getString("startDate");
 			String endDate =jObj.getString("endDate");
-		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId,startDate,endDate);
+		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId,startDate,endDate,paperIdList,chanelIdList,calCntrIdList);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1253,6 +1275,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	 
 	 public String alertDistOfficeManagement(){
+		 newsPaperList = cccDashboardService.getNewsPapaerList();
+	      chanelListNew = cccDashboardService.getChannelList();
 		 return Action.SUCCESS; 
 	 }
 	 public String getDeptListForMultiLvl(){    
@@ -1273,12 +1297,35 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				Long scopeId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}
+				}
+				
+				JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> calCntrIdList = new ArrayList<Long>();
+				for (int i = 0; i < calCntrIdArr.length(); i++){
+					calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+				}
+				
 				Long govtDeptGovtOffrId = jObj.getLong("govtDepDesigOffcrId");
 				Long govtOffrcrId = jObj.getLong("govtOfficerId");
 				String countType = jObj.getString("countType");
 				String alertType = jObj.getString("alertType");
 				
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptGovtOffrId,govtOffrcrId,countType,alertType);
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptGovtOffrId,govtOffrcrId,countType,alertType,paperIdList,chanelIdList,calCntrIdList);
 				
 				alertCoreDashBoardVOs =alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
@@ -2227,13 +2274,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				Long scopeId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
+				
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}
+				}
+				
+				JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> calCntrIdList = new ArrayList<Long>();
+				for (int i = 0; i < calCntrIdArr.length(); i++){
+					calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+				}
+				
 				Long govtDeptDesigOffceId = jObj.getLong("govtDeptDesigOffceId");
 				Long govtOffceId = jObj.getLong("govtOffceId");
 				Long statusId = jObj.getLong("statusId");
 				String formDateStr = jObj.getString("formDate");
 				String toDateStr = jObj.getString("toDate");
 				String clickType =  jObj.getString("clickType");
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(govtDeptDesigOffceId,govtOffceId,statusId,formDateStr,toDateStr,clickType);
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(govtDeptDesigOffceId,govtOffceId,statusId,formDateStr,toDateStr,clickType,paperIdList,chanelIdList,calCntrIdList);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
 				e.printStackTrace();
