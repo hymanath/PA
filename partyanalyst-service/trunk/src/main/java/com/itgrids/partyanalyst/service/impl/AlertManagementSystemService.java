@@ -754,7 +754,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 						Alert alert = alertDAO.get(alertId);
-						if(alert != null){
+						if(alert != null && statusId != null && statusId.longValue()>0L){
 							alert.setAlertStatusId(statusId);
 							alert.setUpdatedBy(userId);
 							alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -786,7 +786,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
 						aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
 						aaotn.setGovtAlertActionTypeId(6l);
-						aaotn.setAlertStatusId(statusId);
+						if(statusId != null && statusId.longValue()>0L)
+							aaotn.setAlertStatusId(statusId);
 						
 						if(adcn != null)
 							aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
