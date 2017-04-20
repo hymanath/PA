@@ -368,12 +368,17 @@ $("#dateRangePickerAUM").daterangepicker({
 	$("#myAlertsDivID").html(spinner);
 	$("#mySubTasksDivID").html(spinner);
 	$("#assignedSubTasksDivID").html(spinner);
-	
+	var paperIdArr = [];
+	var chanelIdArr = [];
+	var callCenterArr = [];
 	//var userId=19601;
     var jObj ={
       //userId:userId,
 	  startDate:currentFromDate,
-	  endDate:currentToDate
+	  endDate:currentToDate,
+	  paperIdArr:paperIdArr,
+	  chanelIdArr:chanelIdArr,
+	  callCenterArr:callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -2462,7 +2467,9 @@ $(document).on("click",".overAllCount",function(){
 			keyboard: false,
 			backdrop: 'static'
 		});
-		
+		var paperIdArr = [];
+		var chanelIdArr = [];
+		var callCenterArr = [];
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count");
@@ -2472,7 +2479,10 @@ $(document).on("click",".overAllCount",function(){
 		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
 		govtOfficerId : globalgovtOfficerId,
 		countType: "overAll",
-		alertType : alertType		
+		alertType : alertType,
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		callCenterArr:callCenterArr		
 	}
 	$.ajax({
       type:'GET',
@@ -2494,7 +2504,9 @@ $(document).on("click",".todayCountCls",function(){
 			keyboard: false,
 			backdrop: 'static'
 		});
-		
+		var paperIdArr = [];
+		var chanelIdArr = [];
+		var callCenterArr = [];
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count")
@@ -2504,7 +2516,10 @@ $(document).on("click",".todayCountCls",function(){
 		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
 		govtOfficerId : globalgovtOfficerId,
 		countType: "today",
-		alertType : alertType
+		alertType : alertType,
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		callCenterArr:callCenterArr
 	}
 	$.ajax({
       type:'GET',
@@ -2717,13 +2732,20 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		});
 		$("#alertManagementPopupBody").html(spinner);
 		
+		var paperIdArr = [];
+		var chanelIdArr = [];
+		var callCenterArr = [];
+		
 		var jsObj = {
 		govtDeptDesigOffceId : globalgovtDeptDesigOffcrId,
 		govtOffceId : globalgovtOfficerId,
 		statusId : StatusId,
 		formDate:currentFromDate, 
 		toDate: currentToDate,
-		clickType:clickType //
+		clickType:clickType, //
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		callCenterArr:callCenterArr
 	}
 	$.ajax({
       type:'GET',
