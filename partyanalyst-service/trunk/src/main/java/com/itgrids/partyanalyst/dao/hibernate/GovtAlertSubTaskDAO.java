@@ -368,15 +368,25 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	sb.append(" where model.isDeleted = 'N' and model.isApproved='Y' " );
     	
     	
-    	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-            sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
-            if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
-                sb.append(" or model.alert.alertCallerId is not null ");
-          }else{
-            sb.append(" or model.alert.alertCallerId is null ");
-          }
-              sb.append(" )");
-          }
+    	if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+    	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+	    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	    	  sb.append(" or model.alert.alertCallerId is not null ");
+	  			}else{
+	  				sb.append(" or model.alert.alertCallerId is null ");
+	  			}
+	    	      sb.append(" )");
+    	    }else if(printIdsList != null && printIdsList.size()>0){
+    	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
+    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+    	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
+    	    }
+    	
+    	if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	  sb.append(" and  model.alert.alertCallerId is not null ");
+		}else{
+			sb.append(" and  model.alert.alertCallerId is null ");
+		}
     	
     	if(type != null && type.equalsIgnoreCase("mySubTasks")){
     		if(govtOffcrIds != null && govtOffcrIds.size()>0){
@@ -825,16 +835,15 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0){
+			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
 				queryStr.append(" or A.alert_caller_id is not null ");
 			}else{
 				queryStr.append(" or A.alert_caller_id is null ");
 			}
 			queryStr.append(" )");
 		}
-		
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			queryStr.append(" and GUA.state_id in (:levelValues)");
  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
@@ -993,9 +1002,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0){
+			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
 				queryStr.append(" or A.alert_caller_id is not null ");
 			}else{
 				queryStr.append(" or A.alert_caller_id is null ");
@@ -1179,8 +1188,6 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			}
 			queryStr.append(" )");
 		}
-		
-		
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			queryStr.append(" and GUA.state_id in (:levelValues)");
  	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
@@ -1689,15 +1696,25 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    		
    	sb.append(" where model.isDeleted = 'N'  and model.alert.isDeleted='N' and model.isApproved='Y' " );
    	
-   	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-        sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
-        if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
-            sb.append(" or model.alert.alertCallerId is not null ");
-      }else{
-        sb.append(" or model.alert.alertCallerId is null ");
-      }
-          sb.append(" )");
-      }
+   	if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+    	    	  sb.append(" or model.alert.alertCallerId is not null ");
+  			}else{
+  				sb.append(" or model.alert.alertCallerId is null ");
+  			}
+    	      sb.append(" )");
+	    }else if(printIdsList != null && printIdsList.size()>0){
+	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
+	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
+	    } 
+   	
+   	if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+  	  sb.append(" and  model.alert.alertCallerId is not null ");
+	}else{
+		sb.append(" and  model.alert.alertCallerId is null ");
+	}
    	if(type != null && type.equalsIgnoreCase("mySubTasks")){
    	  	  if(govtOffceId != null && govtOffceId.longValue() >0l){
 	    		  sb.append(" and  model.subTaskGovtOfficer.govtOfficerId = :govtOffceId " );
@@ -1775,15 +1792,25 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  
    	}
    	
-   	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-        sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
-        if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
-            sb.append(" or model.alert.alertCallerId is not null ");
-      }else{
-        sb.append(" or model.alert.alertCallerId is null ");
-      }
-          sb.append(" )");
-      }
+   	if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+    	    	  sb.append(" or model.alert.alertCallerId is not null ");
+  			}else{
+  				sb.append(" or model.alert.alertCallerId is null ");
+  			}
+    	      sb.append(" )");
+	    }else if(printIdsList != null && printIdsList.size()>0){
+	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
+	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
+	    } 
+   	
+   	if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+  	  sb.append(" and  model.alert.alertCallerId is not null ");
+	}else{
+		sb.append(" and  model.alert.alertCallerId is null ");
+	}
    	if(statusId != null && statusId.longValue() > 0L){
    		sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId");
 		}
