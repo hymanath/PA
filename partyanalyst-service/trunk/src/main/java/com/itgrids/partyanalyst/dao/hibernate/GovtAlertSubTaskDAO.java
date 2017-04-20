@@ -52,25 +52,15 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  
        	}
        	
-       	if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+        if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
     	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
-	    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() &&  calCntrIdList.get(0) != 0){
 	    	    	  sb.append(" or model.alert.alertCallerId is not null ");
 	  			}else{
 	  				sb.append(" or model.alert.alertCallerId is null ");
 	  			}
 	    	      sb.append(" )");
-    	    }else if(printIdsList != null && printIdsList.size()>0){
-    	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
-    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
-    	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
     	    }
-       	
-        if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-	    	  sb.append(" and  model.alert.alertCallerId is not null ");
-		}else{
-			sb.append(" and  model.alert.alertCallerId is null ");
-		}
         
        	if(fromDate != null && toDate != null){
 	    		  sb.append(" and date(model.createdTime) between  :fromDate and :toDate " ); 
