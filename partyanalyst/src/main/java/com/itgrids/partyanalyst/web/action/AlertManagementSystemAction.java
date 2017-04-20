@@ -1618,7 +1618,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long alertId = jObj.getLong("alertId");
 				Long levelValue = jObj.getLong("levelValue");
 				
-				idnameVoList = alertManagementSystemService.getStatusCompletionInfo(alertId,levelValue,jObj.getLong("designationId"),jObj.getLong("levelId"),regVo.getRegistrationID());
+				//idnameVoList = alertManagementSystemService.getStatusCompletionInfo(alertId,levelValue,jObj.getLong("designationId"),jObj.getLong("levelId"),regVo.getRegistrationID());
+				idnameVoList = alertManagementSystemService.getStatusCompletionInfoNew(alertId,levelValue,jObj.getLong("designationId"),jObj.getLong("levelId"),regVo.getRegistrationID());
 				
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStatusCompletionInfo() method, Exception - ",e);
@@ -2184,18 +2185,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						sublevels.add(Long.parseLong(subLevelsArr.getString(i)));          
 					}  
 				}
-				
-				JSONArray callCenterArr = jObj.getJSONArray("callCenterArr");  
-				List<Long> callCenterIds = new ArrayList<Long>();
-				if(callCenterArr != null && callCenterArr.length() > 0){
-					for (int i = 0; i < callCenterArr.length(); i++){
-						callCenterIds.add(Long.parseLong(callCenterArr.getString(i)));          
-					}  
-				}
 				if(searchType.equalsIgnoreCase("statusWise"))
-				 alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,callCenterIds,sublevels);
+				 alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,null,sublevels);
 				else if(searchType.equalsIgnoreCase("scopeWise"))
-				  alertCoreDashBoardVOs=alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType,sublevels,callCenterIds);
+				  alertCoreDashBoardVOs=alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,searchType,sublevels);
 					
 			} catch (Exception e) {  
 				LOG.error("Exception Occured in getDistrictOfficeGraphicalView() method, Exception - ",e); 
