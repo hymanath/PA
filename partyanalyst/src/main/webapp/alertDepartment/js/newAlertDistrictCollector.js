@@ -6,6 +6,9 @@ var globalgovtDeptDesigOffcrId;
 var	globalgovtOfficerId;
 var globalDesignationId;
 var globalDepartmentId;
+var paperIdArr = [];
+var chanelIdArr = [];
+var callCenterArr = [];
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
@@ -215,7 +218,7 @@ onLoadCallsAMU();
 		
 		
 		/*alert Assigned Part Start*/
-		$(document).on('click', '.imageShowOpen li', function(){
+		/* $(document).on('click', '.imageShowOpen li', function(){
 			var id = $(this).attr("attr_doc_id");
 			var path = "http://mytdp.com/"+$(this).attr("attr_path");
 			window.open(path);
@@ -388,7 +391,7 @@ onLoadCallsAMU();
 		$(document).on('change','#designationsId', function(evt, params) {
 			var designationId = $(this).val();
 			officersByDesignationAndLevel(designationId)
-		});
+		}); */
 		/*
 		$(document).on("click","#updateStatusChange",function(){
 			//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
@@ -418,7 +421,7 @@ onLoadCallsAMU();
 				}
 			});
 		});
-		*/
+		
 		$(document).on("click","#priorityChangeSaveId",function(){
 			
 			var jsObj ={
@@ -439,7 +442,6 @@ onLoadCallsAMU();
 				}
 			});
 		});
-		/*
 		$(document).on("click","#commentChangeId",function(){
 			$("#commentPostingSpinner").html(spinner);
 			var comment = $("#alertCommentId").val();
@@ -481,7 +483,7 @@ onLoadCallsAMU();
 
 	/*alert Assigned Part Start*/
 	/*Default Image*/
-	function setDefaultImage(img){
+	/* function setDefaultImage(img){
 		img.src = "images/User.png";
 	}
 	
@@ -837,7 +839,7 @@ function rightSideExpandView(alertId)
 	  transliterationEnabled: true
 	};
 	var control = new google.elements.transliteration.TransliterationControl(options);
-	control.makeTransliteratable(['alertCommentId']); */
+	control.makeTransliteratable(['alertCommentId']); 
 }
 
 function assignedOfficersDetailsForAlert(alertId)
@@ -1196,7 +1198,7 @@ function getTotalArticledetails(articleId){
 			str+='<div class="col-md-12">';
 			if( result.subList != null && result.subList.length > 0){
 				for(var i in result.subList){
-				/* Candidate*/
+				/* Candidate
 				str+='<div class="row ">';
 					str+='<div class="col-md-6">';
 						str+='<div class="panel panel-default panelArticleGroup">';
@@ -1204,7 +1206,7 @@ function getTotalArticledetails(articleId){
 								str+='<h4 class="panel-title">FROM WHOM</h4>';
 							str+='</div>';
 							str+='<div class="panel-body">';
-								/* From Table*/
+								/* From Table
 								if(result.subList[i].fromList != null && result.subList[i].fromList.length > 0){
 									for( var j in result.subList[i].fromList){
 										str+='<table class="table table-bordered m_top10">';
@@ -1283,7 +1285,7 @@ function getTotalArticledetails(articleId){
 								str+='<h4 class="panel-title">TO WHOM</h4>';
 							str+='</div>';
 							str+='<div class="panel-body">';
-							/* TO Table*/
+							/* TO Table
 							if(result.subList[i].toList != null && result.subList[i].toList.length > 0){
 								for( var j in result.subList[i].toList){
 									str+='<table class="table table-bordered m_top10">';
@@ -1369,7 +1371,7 @@ function getTotalArticledetails(articleId){
 
 			str+='</div>';//colmd12
 		str+='</div>';//row
-		/* Article Scope Location */
+		/* Article Scope Location 
 		str+='<div class="col-md-12">';
 			str+='<div class="panel panel-default panelArticleGroup">';
 				str+='<div class="panel-heading">';
@@ -1398,7 +1400,7 @@ function getTotalArticledetails(articleId){
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="row">';
-			/*Lnking*/
+			/*Lnking
 			str+='<div class="col-md-6">';
 				str+='<div class="panel panel-default panelArticleGroup">';
 					str+='<div class="panel-heading">';
@@ -1458,7 +1460,7 @@ function getDocumentsForAlert(alertId){
 			$("#existingDocsDivId").html(str);
 		}
     });
-}
+} */
 
 /*alert Assigned Part End*/
 
@@ -1492,7 +1494,10 @@ function getDocumentsForAlert(alertId){
     var jObj ={
     //  userId:userId,
 	  startDate:currentFromDate,
-	  endDate:currentToDate
+	  endDate:currentToDate,
+	  paperIdArr:paperIdArr,
+	  chanelIdArr:chanelIdArr,
+	  callCenterArr:callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -1513,19 +1518,20 @@ function getDocumentsForAlert(alertId){
 }
 
 function buildDistrictOfficerAlertsCountView(result){
-	var str='';
+	
 	if(result !=null){
 		globalUserLevelId = result.levelId;
 		if(result.levelValues != null && result.levelValues.length > 0)
 			globalUserLevelValues=result.levelValues;
 	}
 		if(result !=null && result.list1 !=null && result.list1.length>0){
+			var str='';
 		str+='<div class="row">';
 			str+='<div class="col-sm-12 col-xs-12 col-md-12">';
 			if(result.list1[0].todayCount !=null && result.list1[0].todayCount !=0){
 				if(result.list1[0].todayCount !=null && result.list1[0].todayCount !=0 && result.list1[0].todayCount>0){
 					totalCoutAlertIds.push(result.list1[0].todayAlertIds);
-				str+='<p class="pad_5 todayCountCls" attr_todayCunt="'+totalCoutAlertIds+'" attr_name_alert = "TODAY" attr_total_count = "'+result.list1[0].todayCount+'" attr_alert_type="alert">TODAY <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].todayCount+'</span></p>';
+				str+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_name ="TODAY" attr_total_count = "'+result.list1[0].todayCount+'" attr_alert_type="alert">TODAY <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].todayCount+'</span></p>';
 				}
 			else{
 				str+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list1[0].todayCount+'</span></p>';
@@ -1538,7 +1544,7 @@ function buildDistrictOfficerAlertsCountView(result){
 				
 				if(result.list1[0].overAllCnt !=null && result.list1[0].overAllCnt !=0 && result.list1[0].overAllCnt>0){
 					overAllAlertIds.push(result.list1[0].overAllAlertIds);
-				str+='<p class="pad_5 overAllCount" attr_overCunt="'+overAllAlertIds+'" attr_name_alert = "OVERALL" attr_total_count = "'+result.list1[0].overAllCnt+'" attr_alert_type="alert">OVERALL <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].overAllCnt+'</span></p>';
+				str+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_name ="OVERALL" attr_total_count = "'+result.list1[0].overAllCnt+'" attr_alert_type="alert">OVERALL <span class="pull-right badge" style="cursor:pointer">'+result.list1[0].overAllCnt+'</span></p>';
 				}
 			  else{
 				  str+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list1[0].overAllCnt+'</span></p>';
@@ -1549,8 +1555,11 @@ function buildDistrictOfficerAlertsCountView(result){
 				str+='<div id="myAlertGraphView" style="height:250px"></div>';
 			str+='</div>';
 		str+='</div>';
+		$("#myAlertsDivID").html(str);
+	}else{
+		$("#myAlertsDivID").html("No Data Available");
 	}
-	$("#myAlertsDivID").html(str);
+	
 	
 	if(result !=null && result.list1 !=null && result.list1.length>0){
 		var mainArrTempAT=[];
@@ -1682,14 +1691,15 @@ function buildDistrictOfficerAlertsCountView(result){
 		}
 
 			
-		var str1='';
+		
 		if(result !=null && result.list2 !=null && result.list2.length>0){
+			var str1='';
 		str1+='<div class="row">';
 			str1+='<div class="col-sm-12 col-xs-12 col-md-12">';
 			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0){
 			if(result.list2[0].todayCount !=null && result.list2[0].todayCount !=0 && result.list2[0].todayCount>0){
 				  totalCoutAlertIds.push(result.list2[0].todayAlertIds);
-				str1+='<p class="pad_5 todayCountCls" attr_todayCunt="'+totalCoutAlertIds+'" attr_name_alert = "TODAY" attr_total_count = "'+result.list2[0].todayCount+'" attr_alert_type="mySubTasks">TODAY <span class="pull-right badge" style="cursor:pointer;">'+result.list2[0].todayCount+'</span></p>';
+				str1+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_name ="TODAY" attr_total_count = "'+result.list2[0].todayCount+'" attr_alert_type="mySubTasks">TODAY <span class="pull-right badge" style="cursor:pointer;">'+result.list2[0].todayCount+'</span></p>';
 			}else{
 				str1+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list2[0].todayCount+'</span></p>';
 			}
@@ -1701,7 +1711,7 @@ function buildDistrictOfficerAlertsCountView(result){
 				overAllAlertIds = [];
 			 if(result.list2[0].overAllCnt !=null && result.list2[0].overAllCnt !=0 && result.list2[0].overAllCnt>0){
 				overAllAlertIds.push(result.list2[0].overAllAlertIds);
-				str1+='<p class="pad_5 overAllCount" attr_overCunt="'+overAllAlertIds+'" attr_name_alert = "OVERALL" attr_total_count = "'+result.list2[0].overAllCnt+'" attr_alert_type="mySubTasks">OVERALL <span class="pull-right badge" style="cursor:pointer;">'+result.list2[0].overAllCnt+'</span></p>';
+				str1+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_name ="OVERALL" attr_total_count = "'+result.list2[0].overAllCnt+'" attr_alert_type="mySubTasks">OVERALL <span class="pull-right badge" style="cursor:pointer;">'+result.list2[0].overAllCnt+'</span></p>';
 			 }else{
 				 str1+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list2[0].overAllCnt+'</span></p>';
 			 }
@@ -1711,8 +1721,11 @@ function buildDistrictOfficerAlertsCountView(result){
 				str1+='<div id="mySubTasksGraphView" style="height:250px"></div>';
 			str1+='</div>';
 		str1+='</div>';
+		$("#mySubTasksDivID").html(str1);
+	}else{
+		$("#mySubTasksDivID").html("No Data Available");
 	}
-	$("#mySubTasksDivID").html(str1);
+	
 	
 if(result !=null && result.list2 !=null && result.list2.length>0){
 		var mainArrTempST=[];
@@ -1843,14 +1856,15 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 		}
 		
 			
-			var str2='';
+			
 		if(result !=null && result.list3 !=null && result.list3.length>0){
+			var str2='';
 		str2+='<div class="row">';
 			str2+='<div class="col-sm-12 col-xs-12 col-md-12">';
 			if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0){
 				if(result.list3[0].todayCount !=null && result.list3[0].todayCount !=0 && result.list3[0].todayCount>0){
 					totalCoutAlertIds.push(result.list3[0].todayAlertIds);
-				str2+='<p class="pad_5 todayCountCls" attr_todayCunt="'+totalCoutAlertIds+'" attr_name_alert = "TODAY" attr_total_count = "'+result.list3[0].todayCount+'" attr_alert_type="myAssignedSubTasks" >TODAY <span class="pull-right badge" style="cursor:pointer;">'+result.list3[0].todayCount+'</span></p>';
+				str2+='<p class="pad_5 todayCountCls" attr_todayCunt='+totalCoutAlertIds+' attr_name ="TODAY" attr_total_count = "'+result.list3[0].todayCount+'" attr_alert_type="myAssignedSubTasks" >TODAY <span class="pull-right badge" style="cursor:pointer;">'+result.list3[0].todayCount+'</span></p>';
 				}else{
 				str2+='<p class="pad_5">TODAY <span class="pull-right badge">'+result.list3[0].todayCount+'</span></p>';
 				}
@@ -1862,7 +1876,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 				
 				if(result.list3[0].overAllCnt !=null && result.list3[0].overAllCnt !=0 && result.list3[0].overAllCnt>0){
 					overAllAlertIds.push(result.list3[0].overAllAlertIds);
-				str2+='<p class="pad_5 overAllCount" attr_overCunt="'+overAllAlertIds+'" attr_name_alert = "OVERALL" attr_total_count = "'+result.list3[0].overAllCnt+'" attr_alert_type="myAssignedSubTasks" >OVERALL <span class="pull-right badge" style="cursor:pointer;">'+result.list3[0].overAllCnt+'</span></p>';
+				str2+='<p class="pad_5 overAllCount" attr_overCunt='+overAllAlertIds+' attr_name ="OVERALL" attr_total_count = "'+result.list3[0].overAllCnt+'" attr_alert_type="myAssignedSubTasks" >OVERALL <span class="pull-right badge" style="cursor:pointer;">'+result.list3[0].overAllCnt+'</span></p>';
 				}else{
 				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">'+result.list3[0].overAllCnt+'</span></p>';
 				}
@@ -1872,8 +1886,11 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 				str2+='<div id="assignedSubTasksGraphView" style="height:250px"></div>';
 			str2+='</div>';
 		str2+='</div>';
+		$("#assignedSubTasksDivID").html(str2);
+	}else{
+		$("#assignedSubTasksDivID").html("No Data Available");
 	}
-	$("#assignedSubTasksDivID").html(str2);
+	
 	
 	if(result !=null && result.list3 !=null && result.list3.length>0){
 		var mainArrTemp=[];
@@ -2516,30 +2533,29 @@ function buildDistrictLevelDeptWiseStatusOverView(result,levelId){
 			$("#departmentStatusCountDivId").html('No Data Available');
 		}
 }
-
 $(document).on("click",".overAllCount",function(){
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
-	$("#alertManagementPopup").modal({
-		show: true,
-		keyboard: false,
-		backdrop: 'static'
-	});
-		
+		$("#alertManagementPopup").modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+		var paperIdArr = [];
+		var chanelIdArr = [];
+		var callCenterArr = [];
 	var alertIdArr =[];
-	var statusName = $(this).attr("attr_name_alert");
+	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
 	//alertIdArr=($(this).attr("attr_overcunt").split(','));
-	getDistrictLevelOfficerClick(statusName,totalCount,alertType);
-});
-
-function getDistrictLevelOfficerClick(statusName,totalCount,alertType)
-{
 	var jObj = {
 		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
 		govtOfficerId : globalgovtOfficerId,
 		countType: "overAll",
-		alertType : alertType		
+		alertType : alertType,
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		callCenterArr:callCenterArr		
 	}
 	$.ajax({
       type:'GET',
@@ -2552,7 +2568,8 @@ function getDistrictLevelOfficerClick(statusName,totalCount,alertType)
 			$("#alertManagementPopupBody").html('NO DATA AVAILABLE')
 		}
 	});
-}
+});
+
 $(document).on("click",".todayCountCls",function(){
 	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$("#alertManagementPopup").modal({
@@ -2560,7 +2577,9 @@ $(document).on("click",".todayCountCls",function(){
 			keyboard: false,
 			backdrop: 'static'
 		});
-		
+		var paperIdArr = [];
+		var chanelIdArr = [];
+		var callCenterArr = [];
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count")
@@ -2570,7 +2589,10 @@ $(document).on("click",".todayCountCls",function(){
 		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
 		govtOfficerId : globalgovtOfficerId,
 		countType: "today",
-		alertType : alertType
+		alertType : alertType,
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		callCenterArr:callCenterArr
 	}
 	$.ajax({
       type:'GET',
@@ -2630,6 +2652,8 @@ $(document).on("click",".gettotalLocCls",function(){
 });
 
 
+
+
 function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 {
 	$("#alertManagementPopupBody").html('')
@@ -2641,14 +2665,20 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		});
 		$("#alertManagementPopupBody").html(spinner);
 		
-
-	var jsObj = {
+		var paperIdArr = [];
+		var chanelIdArr = [];
+		var callCenterArr = [];
+		
+		var jsObj = {
 		govtDeptDesigOffceId : globalgovtDeptDesigOffcrId,
 		govtOffceId : globalgovtOfficerId,
 		statusId : StatusId,
 		formDate:currentFromDate, 
 		toDate: currentToDate,
-		clickType:clickType //
+		clickType:clickType, //
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		callCenterArr:callCenterArr
 	}
 	$.ajax({
       type:'GET',
