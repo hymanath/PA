@@ -333,6 +333,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			officerNameAnddesgnationName = alertManagementSystemService.getDesignationForUser(userId);
 			session.setAttribute("officerNameAnddesgnationName", officerNameAnddesgnationName);
 			
+			newsPaperList = cccDashboardService.getNewsPapaerList();
+		    chanelListNew = cccDashboardService.getChannelList();
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
@@ -1275,7 +1278,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	 
 	 public String alertDistOfficeManagement(){
-		 newsPaperList = cccDashboardService.getNewsPapaerList();
+		 
+		  session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			
+			officerNameAnddesgnationName = alertManagementSystemService.getDesignationForUser(userId);
+			session.setAttribute("officerNameAnddesgnationName", officerNameAnddesgnationName);
+			
+		  newsPaperList = cccDashboardService.getNewsPapaerList();
 	      chanelListNew = cccDashboardService.getChannelList();
 		 return Action.SUCCESS; 
 	 }
@@ -2226,9 +2237,16 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					}  
 				}
 				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					} 
+				}
 				alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDateStr,
 						toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
-						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,null,sublevels);
+						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,chanelIdList,sublevels);
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview() method, Exception - ",e);
 			}
