@@ -93,7 +93,17 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String designation;
 	private String dueDateStr;
 	private List<AlertTrackingVO> commentList = new ArrayList<AlertTrackingVO>(0);
+	private Long categoryId=0L;
 	
+	
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
 	public List<AlertTrackingVO> getCommentList() {
 		return commentList;
 	}

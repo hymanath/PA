@@ -28,6 +28,8 @@ public class AlertTrackingVO {
 	private String title;
 	private String mobileNO;
 	private String deptName;
+	private String updatedUserName;
+	
 	
 	public AlertTrackingVO(){}
 	public AlertTrackingVO(Long alertId,String comment,String date){
@@ -36,6 +38,12 @@ public class AlertTrackingVO {
 		this.date = date;
 	}
 	
+	public String getUpdatedUserName() {
+		return updatedUserName;
+	}
+	public void setUpdatedUserName(String updatedUserName) {
+		this.updatedUserName = updatedUserName;
+	}
 	public String getMobileNO() {
 		return mobileNO;
 	}
