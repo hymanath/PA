@@ -2786,24 +2786,53 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               	}
               };
               public List<IdNameVO> getDeptListForMultiLvl(Long userId){
-            	  try{
-            		  List<Object[]> deptList= alertAssignedOfficerNewDAO.getDeptList(userId);
-            		  List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();  
-            		  IdNameVO idNameVO = null;
-            		  if(deptList != null && deptList.size() > 0){
-            			  for(Object[] param : deptList){
-            				  idNameVO = new IdNameVO();
-            				  idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-            				  idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-            				  idNameVOs.add(idNameVO);
-            			  }
-            		  }
-            		  return idNameVOs;
-            	  }catch(Exception e){
-            		  e.printStackTrace();
-            	  }
-            	  return null;
-              }
+                  try{
+                    List<Object[]> deptList= alertAssignedOfficerNewDAO.getDeptList(userId);
+                    List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>(); 
+                    List<Long> deptIds = new ArrayList<Long>();
+                    IdNameVO idNameVO = null;
+                    if(deptList != null && deptList.size() > 0){
+                      for(Object[] param : deptList){
+                        deptIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+                        idNameVO = new IdNameVO();
+                        idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+                        idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+                        idNameVOs.add(idNameVO);
+                      }
+                    }
+                    Map<Long,ArrayList<Long>> deptIdAndLocationScopeIds = new LinkedHashMap<Long,ArrayList<Long>>();
+                    ArrayList<Long> locationScopeIds = null;
+                    if(deptIds != null && deptIds.size() > 0){
+                      List<Object[]> list = govtDepartmentScopeLevelDAO.getAllScopesOfAllDeptInAscOrder(deptIds);
+                      if(list != null && list.size() > 0){
+                        for(Object[] param : list){
+                          locationScopeIds = deptIdAndLocationScopeIds.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+                          if(locationScopeIds == null){
+                            locationScopeIds = new ArrayList<Long>();
+                            deptIdAndLocationScopeIds.put(commonMethodsUtilService.getLongValueForObject(param[0]),locationScopeIds);
+                          }
+                          locationScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+                        }
+                      }
+                    }
+                    
+                    if(idNameVOs != null && idNameVOs.size() > 0){
+                      for(IdNameVO param : idNameVOs){
+                        if(deptIdAndLocationScopeIds != null && deptIdAndLocationScopeIds.get(param.getId()) != null){
+                          if(deptIdAndLocationScopeIds.get(param.getId()).size() > 4){//change for no of level here
+                            param.setLocationScopeIds(deptIdAndLocationScopeIds.get(param.getId()).subList(0, 4));//change for no of level here
+                          }else{
+                            param.setLocationScopeIds(deptIdAndLocationScopeIds.get(param.getId()));  
+                          }
+                        }  
+                      }
+                    }
+                    return idNameVOs;
+                  }catch(Exception e){
+                    e.printStackTrace();
+                  }
+                  return null;
+                }
 
            public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(Long govtDeptGovtOffrId,Long govtOffrcrId,String countType,String alertType, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList){
         		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
@@ -3849,7 +3878,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			
         			userType = "subUser";
         			
-        			if(alert.getAlertStatusId().longValue() == 4l){//Completed Status  
+        			if(alert.getAlertStatusId().longValue() == 4l || alert.getAlertStatusId().longValue() == 11l || alert.getAlertStatusId().longValue() == 12l){//Completed Status  
         				//userType = "subUserStatus";
         				List<Object[]> listObj = alertStatusDAO.getAlertStatusInfoForReOpen();
             			if(listObj !=null && listObj.size()>0){
