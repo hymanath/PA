@@ -2534,4 +2534,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				return Action.SUCCESS;
 			}
+			
+			public String getGovtAllDepartmentDetails(){
+				try {					
+					idnameVoList = alertManagementSystemService.getGovtAllDepartmentDetails();									
+				} catch (Exception e) {
+					e.printStackTrace();
+					LOG.error("Exception occured in getGovtAllDepartmentDetails() of alertManagementSystemAction",e);
+				}
+				return Action.SUCCESS;
+			}
 }
