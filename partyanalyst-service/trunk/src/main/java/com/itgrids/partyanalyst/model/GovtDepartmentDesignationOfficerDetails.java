@@ -32,7 +32,7 @@ public class GovtDepartmentDesignationOfficerDetails extends BaseModel implement
 	
 	private User user;
 	private GovtDepartmentDesignationOfficer govtDepartmentDesignationOfficer;
-	private GovtOfficer govtOfficer;
+	private GovtOfficer govtOfficer; 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

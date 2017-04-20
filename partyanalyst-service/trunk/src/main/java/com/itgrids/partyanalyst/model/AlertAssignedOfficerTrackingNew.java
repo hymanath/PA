@@ -50,6 +50,8 @@ public class AlertAssignedOfficerTrackingNew {
 	private GovtAlertActionType govtAlertActionType;
 	private AlertDepartmentCommentNew alertDepartmentComment;
 	private AlertDepartmentDocumentNew alertDepartmentDocument;
+	private User insertedUser;
+	private User updatedUser;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -261,6 +263,28 @@ public class AlertAssignedOfficerTrackingNew {
 	}
 	public void setAlertSeviority(AlertSeverity alertSeviority) {
 		this.alertSeviority = alertSeviority;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "inserted_by", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getInsertedUser() {
+		return insertedUser;
+	}
+	public void setInsertedUser(User insertedUser) {
+		this.insertedUser = insertedUser;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "updated_by", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getUpdatedUser() {
+		return updatedUser;
+	}
+	public void setUpdatedUser(User updatedUser) {
+		this.updatedUser = updatedUser;
 	}
 	
 	
