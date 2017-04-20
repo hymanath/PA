@@ -2869,10 +2869,9 @@ $(document).on("click",".getImageCls",function(){
 									  //str+=' <option value="2017-03-31 to 2017-04-06"> March: Week-4 (2017-03-31 to 2017-04-06) </option>';
 									 str+='</select>';
 								 str+='</div>';
-								  
-								  str+='<ul class="nav navbar-nav" id="popupDaysDiv1" style="width:900px;">';
-								  
-								  str+='</ul>';
+								 
+								  str+='<div id="popupDaysDiv1" ></div>';
+								 
 								str+='</div>';
 							str+='</nav>';
 							str+='<div class=" pad_10" id="popupImages">';
@@ -3004,7 +3003,7 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 					totalImagesCount=totalImagesCount+parseInt(result[i].totalResult);
 					coveredLocations=coveredLocations+parseInt(result[i].coveredCount);
 				}
-				
+				str+='<ul class="slickApplyPopupDays" style="width:810px;">';
 				for(var i in result)
 				{ 
 					/*if(i==0 && (globlbuildType =='dayswise')){
@@ -3048,14 +3047,15 @@ function getAvailablDates(locationScope,locationValue,day,path,attr_activity_sco
 					
 					}
 				}
+				str+='</ul>';
 				$("#popupDaysDiv1").html(str);
-				/* $('#popupDaysDiv1').slick({
+				$('.slickApplyPopupDays').slick({
+					slide: 'li',
 					slidesToShow: 3,
 					slidesToScroll: 3,
-					slide: 'li',
-					arrows: true,
-					fade: true,
-				}); */
+					infinite: false,
+					variableWidth:true
+				});
 				GlobalPopupScope = jObj.locationScope;
 				GlobalPopuplocation =jObj.locationValue;
 				
@@ -3216,19 +3216,23 @@ function buildDayWisImagesForPopup1(result,jObj,path,attr_activity_scopeid,locat
 					$('#daysListId').find('option').remove();  
 					$("#daysListId").append('<option value="0"> ALL </option>');				
 					//$("#daysListId").append('<option value="0" attr_scope_id="'+globalActivityScope+'" > Select Week </option>');
+					
+					var maxlenght = result[i].subList2.length-1;
+					
 					for(var j in result[i].subList2){
-						if(j == 0){
+						if(parseInt(j) == parseInt(maxlenght)){
 							$("#daysListId").append('<option value="'+result[i].subList2[j].strDate+'" attr_scope_id="'+globalActivityScope+'" attr_location_scope_id="'+locationScope+'" attr_location_value="'+locationScopeValue+'" selected> Week-'+(parseInt(j)+1)+' ('+result[i].subList2[j].strDate+' ) </option>');	
 						}else{
 							$("#daysListId").append('<option value="'+result[i].subList2[j].strDate+'" attr_scope_id="'+globalActivityScope+'" attr_location_scope_id="'+locationScope+'" attr_location_value="'+locationScopeValue+'"> Week-'+(parseInt(j)+1)+' ('+result[i].subList2[j].strDate+' ) </option>');
 						}
+						
+					}
 						var weekDays = $("#daysListId").val();
 						var datesArr = [];
 						if(weekDays != null){
 							datesArr = weekDays.split('to');
 						}
 						getTempAvailablDates(globallocationScope,globallocationValue,0,'',globalActivityScope,datesArr[0].trim(),datesArr[1].trim());
-					}
 				}
 			  
 			}
@@ -3384,6 +3388,7 @@ function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity
          data : {task:JSON.stringify(jObj)} ,
         }).done(function(result){
 				var str ='';
+				str+='<ul class="slickApplyPopupDays" style="width:810px;">';
 				for(var i in result)
 				{ 
 					/*if(i==0 && (globlbuildType =='dayswise')){
@@ -3427,14 +3432,15 @@ function getTempAvailablDates(locationScope,locationValue,day,path,attr_activity
 					
 					}
 				}
+				str+='</ul>';
 				$("#popupDaysDiv1").html(str);
-				/* $('#popupDaysDiv1').slick({
+				$('.slickApplyPopupDays').slick({
+					slide: 'li',
 					slidesToShow: 3,
 					slidesToScroll: 3,
-					slide: 'li',
-					arrows: true,
-					fade: true,
-				}); */
+					infinite: false,
+					variableWidth:true
+				});
 				GlobalPopupScope = jObj.locationScope;
 				GlobalPopuplocation =jObj.locationValue;
 				
