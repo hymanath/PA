@@ -21,7 +21,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	   super(GovtAlertSubTask.class);
        }
        
-       public List<Object[]> getDistrictOfficerAlertsSubTasksCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String countType,String type,Date fromDate,Date toDate){
+       public List<Object[]> getDistrictOfficerAlertsSubTasksCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String countType,String type,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
     	   StringBuilder sb = new StringBuilder();
 	    	
     	   
@@ -30,6 +30,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
        	}else{
        		sb.append(" select model.alertSubTaskStatus.alertSubTaskStatusId,model.alertSubTaskStatus.status,count(model.govtAlertSubTaskId),model.alertSubTaskStatus.color from GovtAlertSubTask model ");
        	}
+       	
+       	sb.append(" left join model.alert.edition EDS " +
+  	          " left join model.alert.tvNewsChannel TNC ");
        	sb.append(" where model.isDeleted = 'N' " );
        	
        	if(type != null && type.equalsIgnoreCase("mySubTasks")){
@@ -48,6 +51,20 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
        			}
 	    	  
        	}
+       	
+       	if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+    	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+	    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	    	  sb.append(" or model.alert.alertCallerId is not null ");
+	  			}else{
+	  				sb.append(" or model.alert.alertCallerId is null ");
+	  			}
+	    	      sb.append(" )");
+    	    }else if(printIdsList != null && printIdsList.size()>0){
+    	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
+    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+    	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
+    	    }
        	if(fromDate != null && toDate != null){
 	    		  sb.append(" and date(model.createdTime) between  :fromDate and :toDate " ); 
 	    	  }
@@ -69,6 +86,16 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    		  query.setDate("fromDate", fromDate);
 	    		  query.setDate("toDate", toDate);
 	    	  }
+	    	  
+	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	    	      query.setParameterList("printIdList", printIdsList);
+	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	    }  
+	    	    else if(printIdsList != null && printIdsList.size()>0){
+	    	      query.setParameterList("printIdList", printIdsList);
+	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	    }
 	    	  return query.list();
        }
        public List<Object[]> getSubTaskCount(List<Long> alertIds){
@@ -331,14 +358,32 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	
     }
     
-    public List<Long> getDistrictOfficerSubTasksAlertIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String countType,String type){
+    public List<Long> getDistrictOfficerSubTasksAlertIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String countType,String type, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList){
  	   StringBuilder sb = new StringBuilder();
 	    	
  	   
     	
     		sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
     	
+    		sb.append(" left join model.alert.edition EDS " +
+    		          " left join model.alert.tvNewsChannel TNC ");
+    		
     	sb.append(" where model.isDeleted = 'N' and model.isApproved='Y' " );
+    	
+    	
+    	if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+    	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+	    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	    	  sb.append(" or model.alert.alertCallerId is not null ");
+	  			}else{
+	  				sb.append(" or model.alert.alertCallerId is null ");
+	  			}
+	    	      sb.append(" )");
+    	    }else if(printIdsList != null && printIdsList.size()>0){
+    	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
+    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+    	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
+    	    }
     	
     	if(type != null && type.equalsIgnoreCase("mySubTasks")){
     		if(govtOffcrIds != null && govtOffcrIds.size()>0){
@@ -371,6 +416,16 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  if(countType != null && countType.equalsIgnoreCase("today")){
 	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
 	    	  }
+	    	  
+	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	    	      query.setParameterList("printIdList", printIdsList);
+	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	    }  
+	    	    else if(printIdsList != null && printIdsList.size()>0){
+	    	      query.setParameterList("printIdList", printIdsList);
+	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	    }
 	    	  return query.list();
     }
     
@@ -1628,12 +1683,29 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		}
 		return query.list();
    }
-  public List<Long> getDistrictOffcrSubTasksAlertIds(Long govtDeptDesigOffceId,Long govtOffceId,String type,Date fromDate,Date toDate,Long statusId){
+  public List<Long> getDistrictOffcrSubTasksAlertIds(Long govtDeptDesigOffceId,Long govtOffceId,String type,Date fromDate,Date toDate,Long statusId,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
 	   StringBuilder sb = new StringBuilder();
 	    	
    		sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
    	
+   		sb.append(" left join model.alert.edition EDS " +
+  	          " left join model.alert.tvNewsChannel TNC ");
+   		
    	sb.append(" where model.isDeleted = 'N'  and model.alert.isDeleted='N' and model.isApproved='Y' " );
+   	
+   	if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+    	    	  sb.append(" or model.alert.alertCallerId is not null ");
+  			}else{
+  				sb.append(" or model.alert.alertCallerId is null ");
+  			}
+    	      sb.append(" )");
+	    }else if(printIdsList != null && printIdsList.size()>0){
+	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
+	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
+	    } 
    	
    	if(type != null && type.equalsIgnoreCase("mySubTasks")){
    	  	  if(govtOffceId != null && govtOffceId.longValue() >0l){
@@ -1673,12 +1745,25 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    		  query.setDate("fromDate", fromDate);
 	    		  query.setDate("toDate", toDate);
 	    	  }
+	    	  
+	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	    	      query.setParameterList("printIdList", printIdsList);
+	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	    }  
+	    	    else if(printIdsList != null && printIdsList.size()>0){
+	    	      query.setParameterList("printIdList", printIdsList);
+	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	    }
 	    	  return query.list();
    }
-    public List<Long> getDistrictOffcerSubTsksAlertIds(Long govtDeptDesigOffceId,Long govtOffceId,String type,Date fromDate,Date toDate,Long statusId){
+    public List<Long> getDistrictOffcerSubTsksAlertIds(Long govtDeptDesigOffceId,Long govtOffceId,String type,Date fromDate,Date toDate,Long statusId,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
 	   StringBuilder sb = new StringBuilder();
    		sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
    	
+   		sb.append(" left join model.alert.edition EDS " +
+    	          " left join model.alert.tvNewsChannel TNC ");
+   		
    	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' and model.isApproved='Y' " );
    	
    	if(type != null && type.equalsIgnoreCase("mySubTasks")){
@@ -1698,6 +1783,20 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    			}
 	    	  
    	}
+   	
+   	if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+    	      if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+    	    	  sb.append(" or model.alert.alertCallerId is not null ");
+  			}else{
+  				sb.append(" or model.alert.alertCallerId is null ");
+  			}
+    	      sb.append(" )");
+	    }else if(printIdsList != null && printIdsList.size()>0){
+	      sb.append(" and  EDS.newsPaperId in (:printIdList) ");
+	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
+	    } 
    	if(statusId != null && statusId.longValue() > 0L){
    		sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId");
 		}
@@ -1720,6 +1819,16 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    		  query.setDate("fromDate", fromDate);
 	    		  query.setDate("toDate", toDate);
 	    	  }
+	    	  
+	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	    	      query.setParameterList("printIdList", printIdsList);
+	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	    }  
+	    	    else if(printIdsList != null && printIdsList.size()>0){
+	    	      query.setParameterList("printIdList", printIdsList);
+	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	    }
 	    	  return query.list();
    }
   @SuppressWarnings("unchecked")
