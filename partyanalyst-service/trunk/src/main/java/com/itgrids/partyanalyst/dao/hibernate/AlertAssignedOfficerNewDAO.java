@@ -176,7 +176,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
       	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
       	    }    
-        	
+        	 if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	    	  sb.append(" and  model.alert.alertCallerId is not null ");
+	  			}else{
+	  				sb.append(" and  model.alert.alertCallerId is null ");
+	  			}
         	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
 	    		  sb.append(" and model.govtOfficer.govtOfficerId in(:govtOffcrIds) " );
 	    	  }
@@ -716,7 +720,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
           	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
           	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
           	    }
-	    	  
+        	  
+        	  if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+    	    	  sb.append(" and  model.alert.alertCallerId is not null ");
+  			}else{
+  				sb.append(" and  model.alert.alertCallerId is null ");
+  			}
+        	  
         	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
 	    		  sb.append(" and model.govtOfficer.govtOfficerId in(:govtOffcrIds) " );
 	    	  }
@@ -3077,7 +3087,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	      	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
 	      	      sb.append(" and TNC.tvNewsChannelId in (:electronicIdList) ");
 	      	    } 
-	    	  
+	    	  if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	    	  sb.append(" and  model.alert.alertCallerId is not null ");
+	  			}else{
+	  				sb.append(" and  model.alert.alertCallerId is null ");
+	  			}
 	    	  
 	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
 	    		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffceId " );
