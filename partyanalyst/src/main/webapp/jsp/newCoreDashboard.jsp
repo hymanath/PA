@@ -27,7 +27,16 @@
 	display:none;
 }
 
-#popupDaysDiv1 li.active  a  {
+
+
+.slickApplyPopupDays li.active{
+	background: #E29203 none repeat scroll 0 0;
+	 border-radius: 5px 5px 0px 0px;
+	 margin-left:5px;
+	 font-size:11px;
+	 border-bottom:0px;
+}
+.slickApplyPopupDays li.active a{
 	background: #E29203 none repeat scroll 0 0;
 	 border-radius: 5px 5px 0px 0px;
 	 margin-left:5px;
@@ -35,7 +44,7 @@
 	 border-bottom:0px;
 }
 
-#popupDaysDiv1 li  a  {
+.slickApplyPopupDays li{
 	background: #e6e6e6 none repeat scroll 0 0;
 	border-radius: 5px 5px 0px 0px;
 	margin-left:5px;
