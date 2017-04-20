@@ -16997,6 +16997,10 @@
 				<param name="root">resultStatus</param>     
 			</result>
     </action> 
-    	
+    <action name="getStateLevelDeptWiseFlterClickAction" class="alertManagementSystemAction" method="getStateLevelDeptWiseFlterClick">
+		<result type="json" name="success">
+   			<param name="root">alertCoreDashBoardVOs</param>
+   		</result>
+	</action>	
  </package>
 </struts>

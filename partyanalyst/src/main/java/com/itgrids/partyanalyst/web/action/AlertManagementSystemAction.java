@@ -2436,5 +2436,32 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				return Action.SUCCESS;
 			}
-			
+			public String getStateLevelDeptWiseFlterClick(){
+				try{
+					session = request.getSession();
+				   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+					Long scopeId = regVo.getRegistrationID();
+					jObj = new JSONObject(getTask());
+					JSONArray departmentIdsArr = jObj.getJSONArray("departmentIdsArr");  
+					List<Long> deptIdList = new ArrayList<Long>();  
+					if(departmentIdsArr != null && departmentIdsArr.length() > 0){
+						for (int i = 0; i < departmentIdsArr.length(); i++){
+							deptIdList.add(Long.parseLong(departmentIdsArr.getString(i)));        
+						}
+					}
+					Long levelId = jObj.getLong("levelId");
+					Long statusId = jObj.getLong("statusId");
+					String type = jObj.getString("type");
+					String formDateStr = jObj.getString("startDate");
+					String endDateStr = jObj.getString("endDate");
+					Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
+					Long officerId = jObj.getLong("officerId");
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelDeptWiseFlterClick(scopeId,deptIdList,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId);
+					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+				}catch(Exception e){
+					e.printStackTrace();
+					LOG.error("Exception occured in getDistrictLevelDeptWiseFlterClick() of alertManagementSystemAction",e);
+				}
+				return Action.SUCCESS;
+			}
 }
