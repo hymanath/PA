@@ -910,11 +910,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						
 						matchedTimeVO = getMatchedDateVO(matchedDateVO.getTimeList(),timeSdf.format(dbSdf.parse(alertAssignedOfficerTrackingNew.getInsertedTime().toString())));
 						
-						if(alertAssignedOfficerTrackingNew.getAlertDepartmentDocumentId() != null && alertAssignedOfficerTrackingNew.getAlertDepartmentDocumentId() > 0l && alertAssignedOfficerTrackingNew.getAlertDepartmentDocument() != null){
+						if(alertAssignedOfficerTrackingNew.getAlertDepartmentDocumentId() != null && alertAssignedOfficerTrackingNew.getAlertDepartmentDocumentId() > 0l 
+								 && alertAssignedOfficerTrackingNew.getAlertDepartmentDocument() != null){
 							AlertTrackingVO vo = new AlertTrackingVO();
 							vo.getStrList().add(alertAssignedOfficerTrackingNew.getAlertDepartmentDocument().getDocument());
 							vo.setUserName(userName);
 							vo.setDesignation(designation);
+							vo.setUpdatedUserName(alertAssignedOfficerTrackingNew.getUpdatedUser().getUserName());
 							matchedTimeVO.getAttachementsList().add(vo);
 						}
 						
@@ -923,6 +925,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							vo.getStrList().add(alertAssignedOfficerTrackingNew.getAlertDepartmentComment().getComment());
 							vo.setUserName(userName);
 							vo.setDesignation(designation);
+							vo.setUpdatedUserName(alertAssignedOfficerTrackingNew.getUpdatedUser().getUserName());
 							matchedTimeVO.getCommentList().add(vo);
 						}
 						
@@ -931,6 +934,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							vo.getStrList().add(alertAssignedOfficerTrackingNew.getDueDate().toString());
 							vo.setUserName(userName);
 							vo.setDesignation(designation);
+							vo.setUpdatedUserName(alertAssignedOfficerTrackingNew.getUpdatedUser().getUserName());
 							matchedTimeVO.getDueDateList().add(vo);
 						}
 						
@@ -939,6 +943,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							vo.getStrList().add(alertAssignedOfficerTrackingNew.getAlertStatus().getAlertStatus());
 							vo.setUserName(userName);
 							vo.setDesignation(designation);
+							vo.setUpdatedUserName(alertAssignedOfficerTrackingNew.getUpdatedUser().getUserName());
 							matchedTimeVO.getStatusList().add(vo);
 						}
 						
@@ -947,6 +952,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							vo.getStrList().add(alertAssignedOfficerTrackingNew.getAlertSeviority().getSeverity());
 							vo.setUserName(userName);
 							vo.setDesignation(designation);
+							vo.setUpdatedUserName(alertAssignedOfficerTrackingNew.getUpdatedUser().getUserName());
 							matchedTimeVO.getPriorityList().add(vo);
 						}
 						
@@ -2376,7 +2382,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						govtAlertSubTask.setCreatedTime(new DateUtilService().getCurrentDateAndTime());
 						govtAlertSubTask.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 						
-						govtAlertSubTask.setAlertSubTaskStatusId(2l);
+						govtAlertSubTask.setAlertSubTaskStatusId(1l); // default status Notified
 						govtAlertSubTask.setIsApproved("Y");
 						govtAlertSubTask.setIsDeleted("N");
 						
@@ -2874,6 +2880,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        						vo.setDate(objects[2] != null ? objects[2].toString():"");
        						vo.setUserName(objects[3] != null ? objects[3].toString():""+" - "+objects[4] != null ? objects[4].toString():"");
        						vo.setDesignation(objects[5] != null ? objects[5].toString():""+" - "+objects[6] != null ? objects[6].toString():"");
+       						vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
+       						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
+       						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
        						voList.add(vo);
        					}
        				}
@@ -3360,9 +3369,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         				 str = new StringBuilder();
         				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
         				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-        					
-        				 pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
-        				 .append(entry.getValue());
+        				 pathBuilder.append("alerts_attachments/"+randomNumber+"."+entry.getValue());
+        				// pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
+        				// .append(entry.getValue());
         				 str.append(randomNumber).append(".").append(entry.getValue());
         				String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
         				 
@@ -3610,10 +3619,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				if(objList != null && objList.size() > 0){
 					for (Object[] objects : objList) {
 						AlertTrackingVO vo = new AlertTrackingVO();
-						vo.setUserId((Long)objects[0]);
-						vo.setUserName(objects[1].toString());
-						vo.setDate(objects[2].toString());
-						voList.add(vo);
+   						vo.setComment(objects[1] != null ? objects[1].toString():"");
+   						vo.setDate(objects[2] != null ? objects[2].toString():"");
+   						vo.setUserName(objects[3] != null ? objects[3].toString():""+" - "+objects[3] != null ? objects[1].toString():"");
+   						vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
+   						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
+   						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+   						voList.add(vo);
+   						
+						//voList.add(vo);
 					}
 				}
 			} catch (Exception e) {
@@ -3690,8 +3704,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       	public List<IdNameVO> getStatusCompletionInfoForSubTask(Long alertId,Long subTaskId,Long userId){
       		try{
       			List<IdNameVO> finalList = new ArrayList<IdNameVO>();
-      			GovtAlertSubTask govtAlertSubTask = govtAlertSubTaskDAO.get(subTaskId);
       			
+      			GovtAlertSubTask govtAlertSubTask = govtAlertSubTaskDAO.get(subTaskId);
+      			Long currentStatusId = govtAlertSubTask.getAlertSubTaskStatusId();
       			//get all govt dept desig off ids
         		List<Long> govtDeptDesigOfficerIdList = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOfficerIdListByUserId(userId);
         		
@@ -3709,6 +3724,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			if(govtAlertSubTask.getAlertSubTaskStatusId() != null && govtAlertSubTask.getAlertSubTaskStatusId().longValue() == 3L){
         				isAccess = "true";
         			}
+        			
+        			List<AlertSubTaskStatus> objList = alertSubTaskStatusDAO.getAll();
+        			if(objList != null && objList.size() > 0){
+        				for (AlertSubTaskStatus param : objList) {
+        					if(currentStatusId.longValue() > param.getAlertSubTaskStatusId().longValue()){
+	        					IdNameVO VO = new IdNameVO();
+	        					VO.setId(param.getAlertSubTaskStatusId());
+	                			VO.setName(param.getStatus());
+	                			finalList.add(VO);
+        					}
+    					}
+        			}
+        			
         		}else if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId2 != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId2)){
         			userType ="subTaskOwnner";
         		}else{
@@ -3716,15 +3744,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		}
         		Long alertSubStatusId = govtAlertSubTask.getAlertSubTaskStatusId();
         		
-        		List<AlertSubTaskStatus> objList = alertSubTaskStatusDAO.getAll();
-    			if(objList != null && objList.size() > 0){
-    				for (AlertSubTaskStatus param : objList) {
-    					IdNameVO VO = new IdNameVO();
-    					VO.setId(param.getAlertSubTaskStatusId());
-            			VO.setName(param.getStatus());
-            			finalList.add(VO);
-					}
-    			}
+        		
+    			
     			if(finalList != null && finalList.size() > 0){
     				IdNameVO vo = finalList.get(0);
     				vo.setDeptName(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());
@@ -3741,6 +3762,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				vo.setIsAccess(isAccess);
     				vo.setStatus(govtAlertSubTask.getAlertSubTaskStatus().getStatus());
     				vo.setStatusId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
+    				vo.setCategoryId(govtAlertSubTask.getAlert().getAlertCategoryId());
+    				
     				
     				List<Long> subTaskIds = new ArrayList<Long>(0);
     				subTaskIds.add(vo.getAlertId());
@@ -3753,7 +3776,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								}
 								
 								if(!commonMethodsUtilService.getStringValueForObject(objects[8]).isEmpty()){
-									vo.getSubList().add(IConstants.STATIC_CONTENT_FOLDER_URL+"images/"+commonMethodsUtilService.getStringValueForObject(objects[8]));
+									vo.getSubList().add(commonMethodsUtilService.getStringValueForObject(objects[8]));
 								}
 
 							}
