@@ -94,7 +94,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String dueDateStr;
 	private List<AlertTrackingVO> commentList = new ArrayList<AlertTrackingVO>(0);
 	private Long categoryId=0L;
-	
+	private List<Long> locationScopeIds = new ArrayList<Long>();
 	
 	public Long getCategoryId() {
 		return categoryId;
@@ -713,6 +713,14 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 
 	public void setIsAccess(String isAccess) {
 		this.isAccess = isAccess;
+	}
+
+	public List<Long> getLocationScopeIds() {
+		return locationScopeIds;
+	}
+
+	public void setLocationScopeIds(List<Long> locationScopeIds) {
+		this.locationScopeIds = locationScopeIds;
 	}
     
 }
