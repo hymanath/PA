@@ -2270,7 +2270,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				}
 			}
 			if(type.equalsIgnoreCase("alert")){
-				alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId);
+					alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId);
 			}else if(type.equalsIgnoreCase("subTask")){
 				alertIds = govtAlertSubTaskDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId);
 			}
@@ -5608,4 +5608,46 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      		}
 	      		return null;
 	      	}
+	      	public List<AlertCoreDashBoardVO> getStateLevelDeptWiseFlterClick(Long userId,List<Long> deptIds,Long locatonLevelId,
+	    			Long statusId,String type,String fromDateStr,String toDateStr,
+	    			Long desigDeptOfficerId,Long officerId){
+	    		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+	    		List<Long> alertIds = null;
+	    		try {
+	    			Date fromDate = null;
+	    			Date toDate = null;
+	    			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+	    				fromDate = sdf.parse(fromDateStr);
+	    				toDate = sdf.parse(toDateStr);
+	    			}
+	    			List<Long> levelValues = new ArrayList<Long>();    
+	    			Long levelId = 0L;
+	    			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+	    			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+	    				for(Object[] param : lvlValueAndLvlIdList){
+	    					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+	    					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+	    				}
+	    			}
+	    			if(type.equalsIgnoreCase("alert")){
+	    				if(statusId == 1l){
+	    					alertIds = alertDAO.getStateLevelDeptWiseFlterClick(deptIds,statusId,fromDate,toDate);
+	    				}else{
+	    					alertIds = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId);
+	    				}
+	    				
+	    			}else if(type.equalsIgnoreCase("subTask")){
+	    				alertIds = govtAlertSubTaskDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId);
+	    			}
+	    			
+	    			if(alertIds != null && alertIds.size() > 0){
+	    				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+	    				setAlertDtls(finalVoList, list); 
+	    			}
+	    		} catch (Exception e) {
+	    			LOG.error(" Exception Occured in getStateLevelDeptWiseFlterClick() method, Exception - ",e);
+	    		}		
+	    		return finalVoList;
+	    	}
 }      	
