@@ -114,5 +114,8 @@ public interface IAlertManagementSystemService {
 	public List<AlertCoreDashBoardVO> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds);
 	public List<AlertTrackingVO> getSubTaskDetails(Long alertId);
 	public List<IdNameVO> getStatusCompletionInfoForSubTask(Long alertId,Long subTaskId,Long userId);
+	public List<AlertCoreDashBoardVO> getStateLevelDeptWiseFlterClick(Long userId,List<Long> deptIds,Long locatonLevelId,
+			Long statusId,String type,String fromDateStr,String toDateStr,
+			Long desigDeptOfficerId,Long officerId);
 	
 }
