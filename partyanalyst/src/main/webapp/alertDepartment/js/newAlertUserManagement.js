@@ -94,7 +94,6 @@ function getAlertType(){
 		   
 			
 			globalDepartmentIdsArr=result.deptIds;
-			//globalDepartmentIdsArr.push(82);
 			if(globalDepartmentIdsArr != null && globalDepartmentIdsArr.length == 1){
 				//stateUser
 				$("#mainBlockDiv,#deptWiseAlertsDiv").hide();
@@ -1116,7 +1115,7 @@ function buildstateLevelDeptOfficerStatusOverview(result)
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].id+'" attr_level_id="0" attr_department_id="0">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].id+'" attr_level_id="0" >'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -1257,7 +1256,7 @@ function buildstateLevelDeptOfficerLocationLevelOverviewt(result)
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-							str+='<td style="cursor:pointer;" class="getAlertsCls" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"   attr_status_id="'+result[i].id+'" attr_level_id="'+result[i].id+'" attr_department_id="0">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"   attr_status_id="0" attr_level_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -1398,7 +1397,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(resul
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].status+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask" attr_status_name="'+result[i].status+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].statusId+'" attr_level_id="0" attr_department_id="0">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask" attr_status_name="'+result[i].status+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].statusId+'" attr_level_id="0" >'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -1538,7 +1537,7 @@ function buildstateLevelDeptOfficerLocationLevelOverviewBySubTasks(result)
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="0" attr_level_id="'+result[i].id+'" attr_department_id="0">'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="0" attr_level_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -1694,7 +1693,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsView(result){
 													str+='<tr>';
 														str+='<td><span class="label" style="background-color:'+result[i].subList2[j].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].subList2[j].name+'</td>';
 														
-														str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert"  attr_status_name="'+result[i].subList2[j].name+'" attr_status_count="'+result[i].subList2[j].alertCnt+'"  attr_status_id="'+result[i].subList2[j].id+'" attr_level_id="0" attr_department_id="0" >'+result[i].subList2[j].alertCnt+'</td>';
+														str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert"  attr_status_name="'+result[i].subList2[j].name+'" attr_status_count="'+result[i].subList2[j].alertCnt+'"  attr_status_id="'+result[i].subList2[j].id+'" attr_level_id="0" >'+result[i].subList2[j].alertCnt+'</td>';
 														
 														str+='<td>'+result[i].subList2[j].percentage+'%</td>';
 													str+='</tr>';
@@ -1866,7 +1865,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(res
 						totalAlert+=result[i].alertCnt;
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].status+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].statusId+'" attr_level_id="0" attr_department_id="0" >'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].statusId+'" attr_level_id="0"  >'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -4294,87 +4293,18 @@ $(document).on("click",".getDtlsAlertsCls",function(){
 			keyboard: false,
 			backdrop: 'static'
 		});
-		
 		var statusId = $(this).attr("attr_status_id");
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
-		getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount);
-	});
-	//click functionality
-$(document).on("click",".getAlertsCls",function(){
-		$("#totalAlertsModalTabId").html(spinner);
-		$("#alertManagementPopup").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
+		var type = $(this).attr("attr_type");
+		var levelId = $(this).attr("attr_level_id");
+		var departmentIdsArr = globalDepartmentIdsArr;
 		
-		var statusId = $(this).attr("attr_status_id");
-		var statusName = $(this).attr("attr_status_name");
-		var statuscount = $(this).attr("attr_status_count");
-
-		getTotalAlertBylocationLvl(statusId,statusName,statuscount);
+		getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,levelId,statusId,type,statusName,statuscount)
 	});
-function getTotalAlertBylocationLvl(statusId,statusName,statuscount){ 
-	$("#alertManagementPopupBody").html(spinner);
-	var globalDepartmentIdArr = [];
-	var globalNewsPaperIdArr = [];
-	var globalChannelIdArr = [];
-	var globalCallCenterArr = [];
-	var jsObj ={
-		fromDate:currentFromDate,
-		toDate:currentToDate,
-		stateId : 1,
-		deptIdArr : globalDepartmentIdArr,  
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,
-		callCenterArr : globalCallCenterArr,		
-		statusId : 0,
-		govtDeptScopeId : statusId
-	}
-	$.ajax({
-		type:'GET',       
-		url: 'getTotalAlertBylocationLvlAction.action',
-		data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		if(result != null && result.length > 0){
-			buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount);
-		}else{
-			$("#alertManagementPopupBody").html('NO DATA AVAILABLE')
-		}
-	});
-} 
-function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){ 
-	$("#alertManagementPopupBody").html(spinner);
 	
-	var globalDepartmentIdArr = [];
-	var globalNewsPaperIdArr = [];
-	var globalChannelIdArr = [];
-	var globalCallCenterArr = [];
-    var jsObj ={
-		fromDate:currentFromDate,
-		toDate:currentToDate,
-		stateId : 1,
-		deptIdArr : globalDepartmentIdArr,  
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr, 
-		callCenterArr : globalCallCenterArr,		
-		statusId : statusId                                
-    }
-    $.ajax({
-		type:'GET',
-		url: 'getTotalAlertByStatusNewAction.action',
-		data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		if(result != null && result.length > 0){
-			buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount);
-		}else{
-			$("#alertManagementPopupBody").html('NO DATA AVAILABLE')
-		}
-    });
-}
 //click functioality...
-function getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,statusId,type,statusName,statuscount){
+function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,levelId,statusId,type,statusName,statuscount){
 	$("#alertManagementPopupBody").html('')
 	
 		$("#alertManagementPopup").modal({
@@ -4385,7 +4315,7 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,
 		$("#alertManagementPopupBody").html(spinner);
 		
 		var jObj = {
-			deptId: departmentId,
+			departmentIdsArr: departmentIdsArr,
 			levelId: levelId, //district state Id
 			statusId:statusId,
 			type:type,
@@ -4397,7 +4327,7 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentId,levelId,
 		}
 	$.ajax({
       type:'GET',
-      url: 'getDistrictLevelDeptWiseFlterClickAction.action',
+      url: 'getStateLevelDeptWiseFlterClickAction.action',
 	  data: {task :JSON.stringify(jObj)}
     }).done(function(result){
 		if(result != null && result.length > 0){
