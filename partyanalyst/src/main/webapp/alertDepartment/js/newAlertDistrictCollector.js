@@ -109,7 +109,7 @@ onLoadCallsAMU();
 		  data: {}
 		}).done(function(result){
 			if(result !=null && result.length>0){
-				$("#districtWiseLevelLocId").append('<option value="0">District Wise District Level</option>');
+				$("#districtWiseLevelLocId").append('<option value="0">Select Level</option>');
 				for(var i in result){
 					$("#districtWiseLevelLocId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
@@ -199,8 +199,9 @@ onLoadCallsAMU();
 			var alertType = getAlertType();
 			var sortingType = getSortingType();
 			var departmentId = $(this).val();
+			var levelId = $("#districtWiseLevelLocId").val();
 			if(levelType == "status"){
-				getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId,0); 
+				getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,departmentId,levelId); 
 			}else if(levelType == "location"){
 				getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departmentId);
 			}
@@ -208,7 +209,8 @@ onLoadCallsAMU();
 		
 		$(document).on("change","#districtWiseLevelLocId",function(){
 			var levelId = $(this).val();
-			getDistrictLevelDeptWiseStatusOverView("alert","Decending",0,levelId); 
+			var departmentId = $("#govtDepartmentsLocId").val();
+			getDistrictLevelDeptWiseStatusOverView("alert","Decending",departmentId,levelId); 
 		});
 		
 		
