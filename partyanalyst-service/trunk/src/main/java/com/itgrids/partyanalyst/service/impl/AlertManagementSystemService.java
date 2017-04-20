@@ -5675,4 +5675,25 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	    		}		
 	    		return finalVoList;
 	    	}
+	      	
+	      	public List<IdNameVO> getGovtAllDepartmentDetails(){
+	      		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+	      		try {
+	      			
+	      			List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtAllDepartmentDetails();
+	      			if(list !=null && list.size()>0){
+	      				for (Object[] objects : list) {							
+	      					IdNameVO vo = new IdNameVO();
+	      					vo.setId((Long)objects[0]);
+	      					vo.setName(objects[1] !=null ? objects[1].toString():"");
+	      					
+	      					finalList.add(vo);
+						}
+	      			}
+					
+				} catch (Exception e) {
+					LOG.error(" Exception Occured in getGovtDepartmentDetails() method, Exception - ",e);
+				}
+	      		return finalList;
+	      	}
 }      	
