@@ -1664,7 +1664,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					return null;
 				
 				jObj = new JSONObject(getTask());
-				alertTrackingVOList = alertManagementSystemService.getSubTaskInfoForAlert(jObj.getLong("alertId"));
+				alertTrackingVOList = alertManagementSystemService.getSubTaskInfoForAlert(jObj.getLong("alertId"),regVo.getRegistrationID());
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getSubTaskInfoForAlert() method, Exception - ",e); 
 			}
