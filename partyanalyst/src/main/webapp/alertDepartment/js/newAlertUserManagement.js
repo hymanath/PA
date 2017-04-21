@@ -96,6 +96,7 @@ function getAlertType(){
 			globalDepartmentIdsArr=result.deptIds;
 			if(globalDepartmentIdsArr != null && globalDepartmentIdsArr.length == 1){
 				//stateUser
+				alert(6)
 				$("#mainBlockDiv,#deptWiseAlertsDiv").hide();
 				$(".applyStyleStatus").css("margin-top","35px");
 				getdepartmentWiseDetailedInformation(globalDepartmentIdsArr[0],result.departmentNames[0]);
@@ -1069,14 +1070,15 @@ function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
 
 function stateLevelDeptOfficerStatusOverview(){
 	$("#statusOverview").html(spinner);
-	
+	var callCenterArr =[];
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr
+      chanelIdArr :chanelIdArr,
+	  callCenterArr:callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -1211,13 +1213,15 @@ function buildstateLevelDeptOfficerStatusOverview(result)
 function stateLevelDeptOfficerLocationLevelOverview(){
 	
 	$("#levelWiseAlertOverview").html(spinner);
+	var callCenterArr = [];
 	var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr
+      chanelIdArr :chanelIdArr,
+	  callCenterArr:callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -1633,14 +1637,15 @@ function buildstateLevelDeptOfficerLocationLevelOverviewBySubTasks(result)
 
 function stateLevelDeptOfficerDepartmentWiseAlertsView(){
 	
-	
+	var callCenterArr = [];
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr
+      chanelIdArr :chanelIdArr,
+	  callCenterArr:callCenterArr
     }
     $.ajax({
       type:'GET',
@@ -4327,6 +4332,7 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,leve
 		var paperIdList = [];
 		var chanelIdArr = [];
 		var callCenterArr = [];
+		//callCenterArr.push(1);
 		var jObj = {
 			departmentIdsArr: departmentIdsArr,
 			levelId: levelId, //district state Id
