@@ -593,7 +593,8 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     }
     
     public List<Object[]> getSubTaskInfoForAlert(Long alertId){
-    	Query query = getSession().createQuery(" select distinct model.govtAlertSubTaskId,model.title,'',date(model.dueDate)  "
+    	Query query = getSession().createQuery(" select distinct model.govtAlertSubTaskId,model.title,'',date(model.dueDate),model.alertSubTaskStatus.status," +
+    			" model.alertSubTaskStatus.color "
     			+ " from GovtAlertSubTask model"
     			+ " where model.alertId=:alertId and model.isDeleted='N' order by model.govtAlertSubTaskId desc ");
     	query.setParameter("alertId", alertId);
@@ -2116,6 +2117,15 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			query.setParameter("subTaskId", subTaskId);
 			return (Long) query.uniqueResult();  
 		}
+		
+		public List<Object[]> getGovtDeptDesigOfficerIdsListBySubTaskId(List<Long> subTaskIdsList){
+			Query query = getSession().createQuery("select distinct model.govtAlertSubTaskId, model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId " +
+					" from  GovtAlertSubTask model " +
+					" where model.govtAlertSubTaskId in (:subTaskIdsList)  ");
+			query.setParameterList("subTaskIdsList", subTaskIdsList);
+			return query.list();  
+		}
+		
 		@SuppressWarnings("unchecked")
 		public List<Long> getStateLevelAssignedAlertClickViewAlertIds(List<Long> govtDepDesigOffcrIds,
 				List<Long> govtOffcrIds,String type,Long deptId,Long statusId){

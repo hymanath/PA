@@ -26,7 +26,7 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     	//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
     	Query query = getSession().createQuery(" select model.alertStatus.alertStatus,comment.comment,"
     			+ " model.insertedTime,model.updatedUser.userName, model2.govtOfficer.mobileNo , model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "
-    			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName  "
+    			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName,model2.govtOfficer.govtOfficerId  "
     			+ " from GovtDepartmentDesignationOfficerDetailsNew model2, AlertAssignedOfficerTrackingNew model "
     			+ " left join model.alertDepartmentComment comment "
     			+ " where model.alertId=:alertId  and " +
