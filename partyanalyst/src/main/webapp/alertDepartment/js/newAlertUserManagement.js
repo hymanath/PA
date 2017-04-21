@@ -4324,7 +4324,9 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,leve
 			backdrop: 'static'
 		});
 		$("#alertManagementPopupBody").html(spinner);
-		
+		var paperIdList = [];
+		var chanelIdArr = [];
+		var callCenterArr = [];
 		var jObj = {
 			departmentIdsArr: departmentIdsArr,
 			levelId: levelId, //district state Id
@@ -4333,7 +4335,10 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,leve
 			startDate:currentFromDate,
 			endDate:currentToDate,
 			desigDeptOfficerId:0,
-			officerId:0
+			officerId:0,
+			paperIdArr:paperIdList,
+			chanelIdArr:chanelIdArr,
+			callCenterArr:callCenterArr
 			
 		}
 	$.ajax({
