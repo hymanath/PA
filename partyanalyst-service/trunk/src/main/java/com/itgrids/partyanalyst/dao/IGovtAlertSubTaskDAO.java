@@ -27,10 +27,10 @@ public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long>
  	public List<Object[]> getSubTaskInfoForAlert(Long alertId);
  	//public List<Long> getDistrictOfficerAlertsDetails(Date fromDate,Date toDate,Long stateId,Long levelId,List<Long> levelValues,
 		        //Long govtDepartmentId,Long parentGovtDepartmentScopeId,Long govtDeptWorkLocId,Long statusId,Long childGovtScopeId);
- 	public List<Object[]> getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds);
- 	public List<Object[]> getDistrictOfficerMySubTasksStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds);
- 	public List<Object[]> getDistrictOfficerMyAssignedSubTasksCountsView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type);
- 	public List<Object[]> getDistrictOfficerAlertsSubTasksCountsView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type);
+ 	public List<Object[]> getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,Date fromDate,Date toDate);
+ 	public List<Object[]> getDistrictOfficerMySubTasksStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,Date startDate,Date endDate);
+ 	public List<Object[]> getDistrictOfficerMyAssignedSubTasksCountsView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date fromDate,Date toDate);
+ 	public List<Object[]> getDistrictOfficerAlertsSubTasksCountsView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date startDate,Date endDate);
  	public List<Object[]> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
  		   List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
  		   Long districtWorkLocationId, String group,String searchType,List<Long> calCntrIds);
@@ -60,11 +60,11 @@ public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long>
  	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,Date startDate,Date endDate,
  			Long desigIds,Long officerIds,Long scopeId);
  	public List<Long> getStateLevelAlertclickViewAlertIds(List<Long> govtDepDesigOffcrIds,
-			List<Long> govtOffcrIds,String type,Long deptId,Long statusId);
+			List<Long> govtOffcrIds,String type,Long deptId,Long statusId,Date startDate,Date endDate);
  	public List<Long> getSubTasksIdsList(List<Long> alertIds);
  	public Long getGovtDeptDesigOfficerIdBySubTaskId(Long subTaskId);
  	public List<Long> getStateLevelAssignedAlertClickViewAlertIds(List<Long> govtDepDesigOffcrIds,
-			List<Long> govtOffcrIds,String type,Long deptId,Long statusId);
+			List<Long> govtOffcrIds,String type,Long deptId,Long statusId,Date fromDate,Date endDate);
  	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,Long statusId,
 			Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId);
  	public List<Object[]> getGovtDeptDesigOfficerIdsListBySubTaskId(List<Long> subTaskIdsList);
