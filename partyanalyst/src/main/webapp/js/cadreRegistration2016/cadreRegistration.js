@@ -154,7 +154,7 @@ function getNotReceiveRegistrationPerson(constituencyId,currentDate){
 							}  
 						   }
 						 
-							str+='<td><img src="http://mytdp.in/tab_user_images/'+tabUserInfoList[j].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+							str+='<td><img src="http://mytdp.com/CR/tab_user_images/'+tabUserInfoList[j].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 							 if(tabUserInfoList[j].mobileNo != null && tabUserInfoList[j].mobileNo.length > 0){
 							 str+='<td>'+tabUserInfoList[j].mobileNo+'</td> ';	 	 
 							 }else{
@@ -249,7 +249,7 @@ function getTabUserInfoDetails(tabUserIdStr){
 					 }else{
 					 str+='<td> - </td> ';	 
 					  }
-					 str+='<td><img src="http://mytdp.in/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+					 str+='<td><img src="http://mytdp.com/CR/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 				   str+='</tr>';
 				}
 			str+='</tbody>'; 
