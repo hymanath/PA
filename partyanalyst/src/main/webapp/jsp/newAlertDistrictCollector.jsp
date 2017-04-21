@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>District Collector</title>
+<title>District Officer</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="govtCoreDashBoard/img/fevicon.png">
 <link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
@@ -60,7 +60,30 @@
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12"> 
+				<div class="col-md-12 col-xs-12 col-sm-12 panelDropDown"> 
+				<span class="settingsIcon pull-right" style="margin-top:7px;background-color:#4a5863; color: #ffffff">
+								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+					</span>
+					<div class="settingsBlockDropDown notesArrow documentCloseClass" style="width:240px">
+						<i class="glyphicon glyphicon-remove setClose pull-right"></i>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="selectAllCls " checked />Select All</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="newsPaperListCls checkedSelected" checked  />Print Media</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="chanelListCls checkedSelected" checked />Electronic Media</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="1" checked />Call Center</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12  m_top10"> 
+								<button class="btn btn-success btn-sm" onClick="onLoadCallsAMU();">APPLY</button>
+							</div>
+						</div>
+					</div>
 					<div class="input-group dateRangePickerCls m_top5 pull-right" style="margin-right: 15px">
 						<input type="text" class="form-control" style="width:180px" id="dateRangePickerAUM">
 						<span class="input-group-addon">
@@ -69,7 +92,7 @@
 					</div>
 						<div class="row">
 							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
-								<div class="panel panel-default panelheights">
+								<div class="panel panel-default">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">My Alerts</h4>
 								  </div>
@@ -79,7 +102,7 @@
 								</div>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
-								<div class="panel panel-default panelheights">
+								<div class="panel panel-default">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
 								  </div>
@@ -89,7 +112,7 @@
 								</div>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-12">
-								<div class="panel panel-default panelheights">
+								<div class="panel panel-default">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">Assigned Sub Tasks</h4>
 								  </div>
@@ -105,13 +128,13 @@
 								<div class="panel-heading headingColor ">
 									<div class="row">
 										<div class="col-md-4 col-xs-12 col-sm-12">
-											<h4 class="panel-title text-capital fontColor">District Level - Department Wise</h4>
+											<h4 class="panel-title text-capital fontColor">SUBORDINATE - ALERTS OVERVIEW</h4>
 										</div>
 										<div class="col-md-6 col-xs-12 col-sm-12">
 											<ul class="switch-btn pull-right">
-												<li attr_type="status">status overview</li>
-												<li attr_type="location" class="active">location level</li>
-												<!--<li attr_type="filter" >Filter View</li>-->
+												<li attr_type="statusWise">status overview</li>
+												<li attr_type="scopeWise" class="active">location level</li>
+												
 											</ul>
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-12 ">
@@ -126,35 +149,116 @@
 								<div class="panel-body">
 									<div class="row">
 										<div class="col-sm-12 col-xs-12 col-md-12 ">
-											<div class="col-md-2 col-xs-12 col-sm-4 sortingDivCls">
-												<ul class="list-inline activeUlCls  constituencyUl locationWiseSorting">
-												<li class="active " attr_sorting_type="Decending">
+											<h4>DISTRICT LEVEL</h4>
+											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
+										
+												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDistrict">
+												<li class="active " attr_sorting_type="count" attr_order_type="desc" >
 													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
 												</li>
-												<li class="" attr_sorting_type="Ascending">
+												<li class="" attr_sorting_type="count" attr_order_type="asc">
 													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
 												</li>
-												<li class="" attr_sorting_type="AlphabeticalAscending">
+												<li class="" attr_sorting_type="name" attr_order_type="asc">
 													A-Z
 												</li>
-												<li class="" attr_sorting_type="AlphabeticalDescending">
+												<li class="" attr_sorting_type="name" attr_order_type="desc">
 													Z-A
 												</li>
 												</ul>
 											</div>
-											<div class="col-sm-4 col-xs-12 col-md-4 sortingDivClsDept">
-												<select class="form-control locationWiseDeptOnChange" id="govtDepartmentsLocId" >
+											<div class="col-sm-4 col-xs-12 col-md-2">
+												<select class="form-control locationWiseDistOnChange" id="DistrictNamesId" >
+													<option value="0">Select District</option>
 												</select>
 											</div>
-											<div class="col-sm-4 col-xs-12 col-md-3 pull-right sortingDivClsLevel" style="display:none">
-												<select class="form-control locationWiseDistLevelOnChange" id="districtWiseLevelLocId" >
+											<div class="col-sm-4 col-xs-12 col-md-2 pull-right distWiseDistLevelShowCls" style="display:none;">
+												<select class="form-control distWiseDistLevelCls" id="distWiseDistLevelId" >
+													<option value="0">Select Level</option>
 												</select>
 											</div>
+											<div class="col-sm-12 col-xs-12 col-md-12">
+												<div id="districtLevelSubOrdinarteDetails" class=""></div>
+											</div>	
 										</div>
-												<div id="departmentlocationCountDivId" class="departmentlocationShow" style="margin-left:15px;"></div>
-												<div id="departmentStatusCountDivId" class="departmentStatusShow" style="display:none;"></div>
-												<div id="departmentAlertCountDivId" class="departmentAlertCountShow" style="display:none;"></div>
+										<div class="col-sm-12 col-xs-12 col-md-12 ">
+										<h4>DIVISION LEVEL</h4>
+											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
+											
+												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDivision">
+												<li class="active " attr_sorting_type="count" attr_order_type="desc" >
+													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+												</li>
+												<li class="" attr_sorting_type="count" attr_order_type="asc">
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li class="" attr_sorting_type="name" attr_order_type="asc">
+													A-Z
+												</li>
+												<li class="" attr_sorting_type="name" attr_order_type="desc">
+													Z-A
+												</li>
+												</ul>
+											</div>
+											<div class="col-sm-4 col-xs-12 col-md-2 ">
+												<select class="form-control locationWiseDiviDistOnChange" id="DivisionDistNamesId" >
+													<option value="0">Select District</option>
+												</select>
+											</div>
+											<div class="col-sm-4 col-xs-12 col-md-2">
+												<select class="form-control locationWiseDiviOnChange" id="DivisionNamesId" >
+													<option value="0">Select Division</option>
+												</select>
+											</div>
+											<div class="col-sm-4 col-xs-12 col-md-2 pull-right divisionWiseDistLevelIdShowCls" style="display:none;">
+												<select class="form-control divisionWiseDistLevelIdCls" id="divisionWiseDistLevelId" >
+													<option value="0">Select Level</option>
+												</select>
+											</div>
+											<div class="col-sm-12 col-xs-12 col-md-12">
+												<div id="divisionLevelSubOrdinarteDetails" class=""></div>
+											</div>	
+										</div>
 										
+										<div class="col-sm-12 col-xs-12 col-md-12 ">
+											<h4>SUB-DIVISION LEVEL</h4>
+											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
+										
+												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingSubDivision">
+												<li class="active" attr_sorting_type="count" attr_order_type="desc" >
+													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+												</li>
+												<li class="" attr_sorting_type="count" attr_order_type="asc">
+													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+												</li>
+												<li class="" attr_sorting_type="name" attr_order_type="asc">
+													A-Z
+												</li>
+												<li class="" attr_sorting_type="name" attr_order_type="desc">
+													Z-A
+												</li>
+												</ul>
+											</div>
+											<div class="col-sm-4 col-xs-12 col-md-2">
+												<select class="form-control locationWiseSubDiviDistOnChange" id="SubDivisionDistNamesId" >
+												<option value="0">Select District</option>
+												</select>
+											</div>
+											<div class="col-sm-4 col-xs-12 col-md-2">
+												<select class="form-control locationWiseSubDiviDiviOnChange" id="SubDivisionDiviNamesId" >
+												<option value="0">Select Division</option>
+												</select>
+											</div>
+											<div class="col-sm-4 col-xs-12 col-md-2">
+												<select class="form-control locationWiseSubDiviOnChange" id="SubDivisionNamesId" >
+												<option value="0">Select SubDivision</option>
+												</select>
+											</div>
+											<div class="col-sm-12 col-xs-12 col-md-12">
+												<div id="SubdivisionLevelSubOrdinarteDetails" class=""></div>
+												</div>
+												
+										</div>
 									</div>
 								</div>
 							</div>
@@ -199,8 +303,6 @@
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
-<script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
@@ -208,8 +310,159 @@
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
-<script src="alertDepartment/js/newAlertDistrictCollector.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertDistrictOffice.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+
+var globalDepartmentId;
+var overAllAlertIds =[];
+var totalCoutAlertIds =[];
+var globalUserLevelId;
+var globalUserLevelValues = [];	
+var globalgovtDeptDesigOffcrId;
+var	globalgovtOfficerId;
+//var paperIdArr = [];
+//var chanelIdArr = [];
+var newspapersGlobalArr =[];
+var channelGlobalArr =[];
+var callCenterGlobalArr=[];
+
+var globalDesignationId;
+var subLevels = [];
+var distWiseDistLevelArr=[];
+var divisionWiseDistLevelArr=[];
+
+
+$(document).on("click",".settingsIcon",function(e){
+	$(this).closest(".panelDropDown").find(".settingsBlockDropDown").toggle();
+	e.stopPropagation();
+});
+$(document).on("click",".setClose",function(){
+	$(this).closest(".settingsBlockDropDown").hide();
+});
+$(document).on("click",function(){
+	$(".documentCloseClass").hide();
+});
+$(document).on("click",".documentCloseClass",function(e){
+	e.stopPropagation();
+});
+
+$(document).on("click",".selectAllCls",function(){
+	if($(this).prop('checked')) {
+		$(".newsPaperListCls").prop('checked', true);
+		$(".chanelListCls").prop('checked', true);
+		$(".callcenterCls").prop('checked', true);
+		$(".newsPaperListCls").each(function(){
+		newspapersGlobalArr=[];
+		channelGlobalArr=[];
+		callCenterGlobalArr=[];
+		if($(this).is(":checked"))
+		{
+			<c:forEach var="newsPaper" items="${newsPaperList}">
+				var newspapersGlobalObj = '${newsPaper.id}'
+				newspapersGlobalArr.push(newspapersGlobalObj)
+			 </c:forEach>
+		}
+	});
+
+	$(".chanelListCls").each(function(){
+		
+		if($(this).is(":checked"))
+		{
+			 <c:forEach items="${chanelListNew}"  var="channels">
+				var channelGlobalObj = '${channels.id}'
+				channelGlobalArr.push(channelGlobalObj)
+			 </c:forEach>
+		}
+	});
+	$(".callcenterCls").each(function(){
+		
+		if($(this).is(":checked"))
+		{
+			var callCenterObj = $(this).attr("attr_val");
+			callCenterGlobalArr.push(callCenterObj);
+		}
+	}); 
+
+	}else{
+		$(".newsPaperListCls").prop('checked', false);
+		$(".chanelListCls").prop('checked', false);
+		$(".callcenterCls").prop('checked', false);
+		newspapersGlobalArr=[];
+		channelGlobalArr=[];
+		callCenterGlobalArr=[];
+	}
+	
+});
+
+  $(".newsPaperListCls").each(function(){
+	newspapersGlobalArr=[];
+	if($(this).is(":checked"))
+	{
+		<c:forEach var="newsPaper" items="${newsPaperList}">
+			var newspapersGlobalObj = '${newsPaper.id}'
+			newspapersGlobalArr.push(newspapersGlobalObj)
+		 </c:forEach>
+	}
+});
+
+$(".chanelListCls").each(function(){
+	channelGlobalArr=[];
+	if($(this).is(":checked"))
+	{
+		 <c:forEach items="${chanelListNew}"  var="channels">
+			var channelGlobalObj = '${channels.id}'
+			channelGlobalArr.push(channelGlobalObj)
+		 </c:forEach>
+	}
+});
+$(".callcenterCls").each(function(){
+	callCenterGlobalArr=[];
+	if($(this).is(":checked"))
+	{
+		var callCenterObj = $(this).attr("attr_val");
+		callCenterGlobalArr.push(callCenterObj);
+	}
+}); 
+$(document).on("click",".checkedSelected",function(){
+		newspapersGlobalArr=[];
+		channelGlobalArr=[];
+		callCenterGlobalArr=[];
+		$(".newsPaperListCls").each(function(){
+		newspapersGlobalArr=[];
+		if($(this).is(":checked"))
+		{
+			<c:forEach var="newsPaper" items="${newsPaperList}">
+				var newspapersGlobalObj = '${newsPaper.id}'
+				newspapersGlobalArr.push(newspapersGlobalObj)
+			 </c:forEach>
+		}
+	});
+
+	$(".chanelListCls").each(function(){
+		channelGlobalArr=[];
+		if($(this).is(":checked"))
+		{
+			 <c:forEach items="${chanelListNew}"  var="channels">
+				var channelGlobalObj = '${channels.id}'
+				channelGlobalArr.push(channelGlobalObj)
+			 </c:forEach>
+		}
+	});
+	$(".callcenterCls").each(function(){
+		callCenterGlobalArr=[];
+		if($(this).is(":checked"))
+		{
+			var callCenterObj = $(this).attr("attr_val");
+			callCenterGlobalArr.push(callCenterObj);
+		}
+	}); 
+}); 	
+onLoadCallsAMU();	
+</script>
 </body>
 </html>
