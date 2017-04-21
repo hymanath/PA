@@ -198,15 +198,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  query.setDate("fromDate", fromDate);
 	    		  query.setDate("toDate", toDate);
 	    	  }
-	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
 	    	    }  
-	    	    else if(printIdsList != null && printIdsList.size()>0){
+	    	    /*else if(printIdsList != null && printIdsList.size()>0){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
-	    	    }
+	    	    }*/
 	    	  return query.list();
         }
         
@@ -2675,7 +2675,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			query.setParameterList("printIdList", printIdList);  
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
@@ -2810,7 +2810,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			query.setParameterList("printIdList", printIdList);  
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
@@ -2954,7 +2954,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			query.setParameterList("printIdList", printIdList);  
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
