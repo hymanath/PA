@@ -928,7 +928,7 @@ function getStatusCompletionInfo(alertId){
 		$('#displayStatusId').attr('status-icon-block','alertStatus');
 		
 		if(result != null && result.length>0){
-			if(result.length  > 1)
+			if(result.length  == 1)
 				isStatusAvailable=false;
 			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
@@ -943,9 +943,9 @@ function getStatusCompletionInfo(alertId){
 				$('#displayDueDate2').hide(); 
 
 				if(globalStatusId == 4 || globalStatusId == 12 ){
-					isStatusAvailable=false;
-				}else if(result.length > 1){
-					isStatusAvailable=true;
+					//isStatusAvailable=false;
+				}else if(result.length == 1){
+					//isStatusAvailable=true;
 				}					
 			}
 			else if(buildTypeStr=='subUser'){	
@@ -955,18 +955,18 @@ function getStatusCompletionInfo(alertId){
 				$('#displayStatusId').removeAttr('status-icon-block');
 				
 				$('#displayDueDate2,#displayPriority').show();
-				isStatusAvailable=false;
+				//isStatusAvailable=false;
 			}else if(buildTypeStr=='same'){ 
 				$('#displaySubTasksliId').hide();
 				$('#displayStatusId').show();       
 				$('#displayDueDate1').show(); 
-				isStatusAvailable=false;				
+				//isStatusAvailable=false;				
 			}
 			else if(buildTypeStr=='other'){
 				$('#displaySubTasksliId').hide();				
 				$('#displayStatusId').show();
 				$('#displayDueDate1').show(); 
-				isStatusAvailable=false;				
+				//isStatusAvailable=false;				
 			}
 			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
 				$('#displayAssignIconId').show();
@@ -1013,7 +1013,7 @@ function rightSideExpandView(alertId)
 							str+='<div class="col-sm-4">';
 								str+='<div id="assignedUser"></div>';
 							str+='</div>';
-							str+='<div class="col-sm-8">';
+							str+='<div class="col-sm-8 pull-right" style="">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
 									
 									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
@@ -1070,7 +1070,7 @@ function rightSideExpandView(alertId)
 							str+='<div class="col-sm-4">';
 								str+='<div id="assignedUser1"></div>';
 							str+='</div>';
-							str+='<div class="col-sm-8">';
+							str+='<div class="col-sm-8  pull-right" >';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
 									
 									str+='<li status-icon-block="alertStatus1" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId1" style="" > ';
@@ -1955,14 +1955,14 @@ function buildSubTaskInfoForAlert(result,alertId)
 										str+='<div class="col-sm-1">';
 											str+='<i class="glyphicon glyphicon-ok"></i>';
 										str+='</div>';
-										str+='<div class="col-sm-8" >';
+										str+='<div class="col-sm-10" >';
 											str+='<p>'+result[i].attachementsList[k].title+' ';
 											
 											str+='</p>';
 										str+='</div>';
-										str+='<div class="col-sm-3">';
+										str+='<div class="col-sm-1">';
 											str+='<ul class="list-icons list-inline">';
-												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].attachementsList[k].color+'"></span> <span>'+result[i].attachementsList[k].status+' </span></li>';
+												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].attachementsList[k].color+'" title="'+result[i].attachementsList[k].status+'"></span> </li>';
 											str+='</ul>';
 											//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
 										//	str+='<span class="icon-name icon-primary"></span>';
@@ -1991,14 +1991,14 @@ function buildSubTaskInfoForAlert(result,alertId)
 										str+='<div class="col-sm-1">';
 											str+='<i class="glyphicon glyphicon-ok"></i>';
 										str+='</div>';
-										str+='<div class="col-sm-8" >';
+										str+='<div class="col-sm-10" >';
 											str+='<p>'+result[i].commentList[k].title+' ';
 											
 											str+='</p>';
 										str+='</div>';
-										str+='<div class="col-sm-3">';
+										str+='<div class="col-sm-1">';
 											str+='<ul class="list-icons list-inline">';
-												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"></span> <span>'+result[i].commentList[k].status+' </span></li>';
+												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span> </li>';
 											str+='</ul>';
 											//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
 										//	str+='<span class="icon-name icon-primary"></span>';
