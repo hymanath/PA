@@ -60,7 +60,30 @@
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12"> 
+				<div class="col-md-12 col-xs-12 col-sm-12 panelDropDown"> 
+				<span class="settingsIcon pull-right" style="margin-top:7px;background-color:#4a5863; color: #ffffff">
+								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+					</span>
+					<div class="settingsBlockDropDown notesArrow documentCloseClass" style="width:240px">
+						<i class="glyphicon glyphicon-remove setClose pull-right"></i>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="selectAllCls " checked />Select All</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="newsPaperListCls checkedSelected" checked  />Print Media</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="chanelListCls checkedSelected" checked />Electronic Media</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="1" checked />Call Center</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12  m_top10"> 
+								<button class="btn btn-success btn-sm" onClick="onLoadCallsAMU();">APPLY</button>
+							</div>
+						</div>
+					</div>
 					<div class="input-group dateRangePickerCls m_top5 pull-right" style="margin-right: 15px">
 						<input type="text" class="form-control" style="width:180px" id="dateRangePickerAUM">
 						<span class="input-group-addon">
@@ -295,7 +318,151 @@
 
 <script type="text/javascript">
 
+var globalDepartmentId;
+var overAllAlertIds =[];
+var totalCoutAlertIds =[];
+var globalUserLevelId;
+var globalUserLevelValues = [];	
+var globalgovtDeptDesigOffcrId;
+var	globalgovtOfficerId;
+//var paperIdArr = [];
+//var chanelIdArr = [];
+var newspapersGlobalArr =[];
+var channelGlobalArr =[];
+var callCenterGlobalArr=[];
 
+var globalDesignationId;
+var subLevels = [];
+var distWiseDistLevelArr=[];
+var divisionWiseDistLevelArr=[];
+
+
+$(document).on("click",".settingsIcon",function(e){
+	$(this).closest(".panelDropDown").find(".settingsBlockDropDown").toggle();
+	e.stopPropagation();
+});
+$(document).on("click",".setClose",function(){
+	$(this).closest(".settingsBlockDropDown").hide();
+});
+$(document).on("click",function(){
+	$(".documentCloseClass").hide();
+});
+$(document).on("click",".documentCloseClass",function(e){
+	e.stopPropagation();
+});
+
+$(document).on("click",".selectAllCls",function(){
+	if($(this).prop('checked')) {
+		$(".newsPaperListCls").prop('checked', true);
+		$(".chanelListCls").prop('checked', true);
+		$(".callcenterCls").prop('checked', true);
+		$(".newsPaperListCls").each(function(){
+		newspapersGlobalArr=[];
+		channelGlobalArr=[];
+		callCenterGlobalArr=[];
+		if($(this).is(":checked"))
+		{
+			<c:forEach var="newsPaper" items="${newsPaperList}">
+				var newspapersGlobalObj = '${newsPaper.id}'
+				newspapersGlobalArr.push(newspapersGlobalObj)
+			 </c:forEach>
+		}
+	});
+
+	$(".chanelListCls").each(function(){
+		
+		if($(this).is(":checked"))
+		{
+			 <c:forEach items="${chanelListNew}"  var="channels">
+				var channelGlobalObj = '${channels.id}'
+				channelGlobalArr.push(channelGlobalObj)
+			 </c:forEach>
+		}
+	});
+	$(".callcenterCls").each(function(){
+		
+		if($(this).is(":checked"))
+		{
+			var callCenterObj = $(this).attr("attr_val");
+			callCenterGlobalArr.push(callCenterObj);
+		}
+	}); 
+
+	}else{
+		$(".newsPaperListCls").prop('checked', false);
+		$(".chanelListCls").prop('checked', false);
+		$(".callcenterCls").prop('checked', false);
+		newspapersGlobalArr=[];
+		channelGlobalArr=[];
+		callCenterGlobalArr=[];
+	}
+	
+});
+
+  $(".newsPaperListCls").each(function(){
+	newspapersGlobalArr=[];
+	if($(this).is(":checked"))
+	{
+		<c:forEach var="newsPaper" items="${newsPaperList}">
+			var newspapersGlobalObj = '${newsPaper.id}'
+			newspapersGlobalArr.push(newspapersGlobalObj)
+		 </c:forEach>
+	}
+});
+
+$(".chanelListCls").each(function(){
+	channelGlobalArr=[];
+	if($(this).is(":checked"))
+	{
+		 <c:forEach items="${chanelListNew}"  var="channels">
+			var channelGlobalObj = '${channels.id}'
+			channelGlobalArr.push(channelGlobalObj)
+		 </c:forEach>
+	}
+});
+$(".callcenterCls").each(function(){
+	callCenterGlobalArr=[];
+	if($(this).is(":checked"))
+	{
+		var callCenterObj = $(this).attr("attr_val");
+		callCenterGlobalArr.push(callCenterObj);
+	}
+}); 
+$(document).on("click",".checkedSelected",function(){
+		newspapersGlobalArr=[];
+		channelGlobalArr=[];
+		callCenterGlobalArr=[];
+		$(".newsPaperListCls").each(function(){
+		newspapersGlobalArr=[];
+		if($(this).is(":checked"))
+		{
+			<c:forEach var="newsPaper" items="${newsPaperList}">
+				var newspapersGlobalObj = '${newsPaper.id}'
+				newspapersGlobalArr.push(newspapersGlobalObj)
+			 </c:forEach>
+		}
+	});
+
+	$(".chanelListCls").each(function(){
+		channelGlobalArr=[];
+		if($(this).is(":checked"))
+		{
+			 <c:forEach items="${chanelListNew}"  var="channels">
+				var channelGlobalObj = '${channels.id}'
+				channelGlobalArr.push(channelGlobalObj)
+			 </c:forEach>
+		}
+	});
+	$(".callcenterCls").each(function(){
+		callCenterGlobalArr=[];
+		if($(this).is(":checked"))
+		{
+			var callCenterObj = $(this).attr("attr_val");
+			callCenterGlobalArr.push(callCenterObj);
+		}
+	}); 
+}); 	
+onLoadCallsAMU();	
 </script>
 </body>
 </html>
