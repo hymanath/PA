@@ -1190,7 +1190,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     											" model.govtOfficer.officerName ," +
     											" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
     											" model.govtOfficer.mobileNo," +
-    											" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
+    											" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName," +
+    											" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName " +
     											" from AlertAssignedOfficerNew model " +
     											" where model.alert.alertId = :alertId" +
     											" and model.isDeleted = 'N'" +
@@ -3241,27 +3242,17 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 }
 	 @SuppressWarnings("unchecked")
 		public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,Long statusId,
-				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList){
+				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId){
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select distinct model.alert.alertId "+
 					  " from " +
-					  " AlertAssignedOfficerNew model left join model.alert.edition EDS left join model.alert.tvNewsChannel TNC " +
+					  " AlertAssignedOfficerNew model " +
 					  " where " +
 					  " model.isDeleted = 'N' " +
 					  " and model.alert.isDeleted = 'N'");
 			if(deptIds != null && deptIds.size() >0){
 				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds) ");
 			}
-			
-			if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-	             sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
-	             if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
-	                 sb.append(" or model.alert.alertCallerId is not null ");
-	           }else{
-	             sb.append(" or model.alert.alertCallerId is null ");
-	           }
-	               sb.append(" )");
-	           }
 			if(locationLevelId != null && locationLevelId.longValue() > 0){
 				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :locationLevelId ");
 			}
@@ -3291,10 +3282,6 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 				query.setDate("fromDate",fromDate);
 				query.setDate("toDate",toDate);
 			}
-			 if(printIdList != null && printIdList.size()>0 && electronicIdList != null && electronicIdList.size()>0){
-		   	      query.setParameterList("printIdList", printIdList);
-		   	      query.setParameterList("electronicIdList", electronicIdList);
-		   	    }
 			if(desigDeptOfficerId != null && desigDeptOfficerId.longValue() > 0){
 				query.setParameter("desigDeptOfficerId",desigDeptOfficerId);
 			}
