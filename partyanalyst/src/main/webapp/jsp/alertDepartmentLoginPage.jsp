@@ -51,59 +51,47 @@ header
 </style>
 </head>
 <body>
-<div class="header">
-	<div class="container">
-	<h3 class="text-left"><img src="alertDepartment/img/logo.png" alt="logo"/><span>ALERT MANAGEMENT SYSTEM</span></h3>
-	</div>
-</div>
-<section class="main-infograph">
-  <article class="container main-infograph-block m_top30">
-    <div class="col-md-4 col-sm-6 col-md-offset-1 col-xs-12 main-graph-circles-block">
-      <div class="cc main-graph-circles scroll-animate ">
-        <i class="circle"></i>
-        <i class="circle"></i>
-        <i class="circle"></i>
-        <i class="circle"></i>
-        <span class="center-circle ico-Wela"><img src="alertDepartment/img/Fevicon.png" style=""/></span>
-      </div>
-    </div>
+<div class="container">
 	<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">
-		<div class="col-md-4 col-md-offset-2 col-sm-4 col-xs-12 main-infograph-info">
-			<h3 class="main-infograph-title">LOGIN</h3>
-			<div class="loginFormBox">
-				<div class="input-group">
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-user"></i>
-					</span>
-					<input type="text" class="form-control" id="userName1" placeholder="User Name" class="url"/>
+	<div class="row">
+		<div class="m_top20 col-xs-12 col-md-6 col-md-offset-3">
+			<img class="displayed m_top20 m_bottom20 img-responsive" src="alertDepartment/img/AP_Govt_Logo.png" alt="Andhra Pradesh Goverment Logo"/>
+			<div class="m_top20 panel panel-default" style="border:1px solid #ffc019; box-shadow:0 0 30px 10px rgba(0, 0, 0, 0.2)">
+			<div class="m_top20panel-body">
+				<img class="displayed m_top40 m_bottom20 img-responsive" src="alertDepartment/img/Alert_Management_Logo.png" alt="Andhra Pradesh Goverment Logo">
+				<img class="displayed m_top10 image-responsive" src="alertDepartment/img/Officer Login.png" alt="Andhra Pradesh Goverment Logo">
+				
+				<div class="loginFormBox" style="padding: 20px 80px;">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-user"></i>
+						</span>
+						<input type="text" class="form-control m_top10" id="userName1" placeholder="User Name" class="url"/>
+					</div>
+					<div class="input-group m_top20 m_bottom20">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-lock"></i>
+						</span>
+						<input type="password" class="form-control m_top10" id="passWord_Id1" placeholder="Password" class="url"/>
+					</div>			
 				</div>
-				<div class="input-group">
-					<span class="input-group-addon">
-						<i class="glyphicon glyphicon-lock"></i>
-					</span>
-					<input type="password" class="form-control" id="passWord_Id1" placeholder="Password" class="url"/>
-				</div>
-			
+				
+				
 			</div>
-			<input type="submit" class="signin btn btn-success btnWhite" id="submit1" value="LOGIN" style="margin-top:20px;"/>
 			<div id="ajaxcallimage"  style="display:none;margin-top:10px">
 				<font  style="font-size:small;">Sending Your Request. Please wait...</font>
 				<img src="images/icons/loading.gif" width="18" height="11"/>
 			</div>
 			<div id ="LoginErrorMessageDiv" style="color:red; margin-left: 2px;"></div>
+			<div class="panel-footer" style="padding: 0px;">			
+				<!---<input class="btn btn-primary btn-block btn-lg" value="LOGIN" type="submit"></div>-->
+				<input type="submit" class="btn btn-primary btn-block btn-lg signin" id="submit1" value="LOGIN"/>
+				
+			</div>
 		</div>
+	</div>
 	</form>
-  </article>
-  <div class="container">
-  <div class="col-md-12 col-xs-12 col-sm-12 borderLines">
-	  <li class="borderLine"></li>
-	  <li class="borderLine"></li>
-	  <li class="borderLine"></li>
-	  <li class="borderLine"></li>
-	  <li class="borderLine"></li>
-  </div>
-  </div>
-</section>
+</div>
 <script>
 $("#userName1").focus();
 var userip = "";
