@@ -2581,7 +2581,28 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					String endDateStr = jObj.getString("endDate");
 					Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
 					Long officerId = jObj.getLong("officerId");
-					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelDeptWiseFlterClick(scopeId,deptIdList,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId);
+					
+					JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+					List<Long> paperIdList = new ArrayList<Long>();
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+					
+					JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+					List<Long> chanelIdList = new ArrayList<Long>();
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+					}
+					
+					JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+					List<Long> calCntrIdList = new ArrayList<Long>();  
+					if(calCntrIdArr != null && calCntrIdArr.length() > 0){
+						for (int i = 0; i < calCntrIdArr.length(); i++){
+							calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+						}
+					}
+					
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelDeptWiseFlterClick(scopeId,deptIdList,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
