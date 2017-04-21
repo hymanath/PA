@@ -504,18 +504,18 @@ public class GISVisualizationService implements IGISVisualizationService{
 								vo.setRank("WON");
 							    vo.setFirstPositionPartyId(commonMethodsUtilService.getLongValueForObject(param[6]));
 							    vo.setFirstPositionPartyName(commonMethodsUtilService.getStringValueForObject(param[7]));
-							    vo.setFirstPartyImageLogo("http://www.mytdp.in/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
+							    vo.setFirstPartyImageLogo("http://www.mytdp.com/CR/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
 							if(YCPMLAMap.get(locationId) != null)
 								vo.setIsYCPArea("true");	
 						}else{//This section will execute only in the case of assembly.
 							if(rank != null && rank.trim().equalsIgnoreCase("2")){
 								vo.setSecondPositionPartyId(commonMethodsUtilService.getLongValueForObject(param[6]));
 								vo.setSecondPositionPartyName(commonMethodsUtilService.getStringValueForObject(param[7]));
-								vo.setSecondPartyImageLogo("http://www.mytdp.in/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
+								vo.setSecondPartyImageLogo("http://www.mytdp.com/CR/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
 							}else if(rank != null && rank.trim().equalsIgnoreCase("3")){
 							   vo.setThirdPositionPartyId(commonMethodsUtilService.getLongValueForObject(param[6]));
 							   vo.setThirdPositionPartyName(commonMethodsUtilService.getStringValueForObject(param[7]));
-							   vo.setThirdPartyImageLogo("http://www.mytdp.in/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
+							   vo.setThirdPartyImageLogo("http://www.mytdp.com/CR/images/party_flags/"+commonMethodsUtilService.getStringValueForObject(param[8]));
 							}
 						}
 					}
@@ -1054,7 +1054,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[9]));
 							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setImagePath("http://www.mytdp.com/CR/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
 							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 							
 							if(type.equalsIgnoreCase("total")){
@@ -1081,7 +1081,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[9]));
 							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setImagePath("http://www.mytdp.com/CR/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
 							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 							tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
 							
@@ -1120,7 +1120,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[9]));
 							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setImagePath("http://www.mytdp.com/CR/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
 							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 							tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));
 							
@@ -1503,7 +1503,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[9]));
 							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setImagePath("http://www.mytdp.com/CR/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
 							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 							
 							if(type.equalsIgnoreCase("total")){
@@ -1530,7 +1530,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[9]));
 							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setImagePath("http://www.mytdp.com/CR/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
 							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 							tabUser.setTodayCount(commonMethodsUtilService.getLongValueForObject(param[6]));
 							
@@ -1569,7 +1569,7 @@ public class GISVisualizationService implements IGISVisualizationService{
 							tabUser.setLocationName(commonMethodsUtilService.getStringValueForObject(param[1]));
 							tabUser.setId(commonMethodsUtilService.getLongValueForObject(param[9]));
 							tabUser.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
-							tabUser.setImagePath("http://www.mytdp.in/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
+							tabUser.setImagePath("http://www.mytdp.com/CR/tab_user_images/"+(commonMethodsUtilService.getStringValueForObject(param[4])));
 							tabUser.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 							tabUser.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[6]));
 							
