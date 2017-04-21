@@ -86,6 +86,7 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private List<SessionVO> sessionsList = new ArrayList<SessionVO>(0);
 	
 	private Long alertId;
+	private String mainTitle;
 	private String title;
 	private String description;
 	private String assignedOfficerStr;
@@ -95,7 +96,25 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private List<AlertTrackingVO> commentList = new ArrayList<AlertTrackingVO>(0);
 	private Long categoryId=0L;
 	private List<Long> locationScopeIds = new ArrayList<Long>();
+	private String color;
 	
+	
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public String getMainTitle() {
+		return mainTitle;
+	}
+
+	public void setMainTitle(String mainTitle) {
+		this.mainTitle = mainTitle;
+	}
+
 	public Long getCategoryId() {
 		return categoryId;
 	}
