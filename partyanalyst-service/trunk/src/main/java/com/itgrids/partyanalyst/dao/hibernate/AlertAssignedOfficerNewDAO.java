@@ -45,9 +45,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    if(departmentIds != null && !departmentIds.isEmpty())
     	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
     	    
-    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty()){
     	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) ");
-	    	    if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+	    	    if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0 ){
 	    	    	sb.append(" or model.alert.alertCallerId is not null ");
 				}else{
 					sb.append(" or model.alert.alertCallerId is null ");
@@ -2982,7 +2982,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		}
 		return query.list();
     }
-	 public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsView(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,String type,List<Long> alertStatusIds,List<Long> departmentScopeIds){
+	 public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsView(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,String type,List<Long> alertStatusIds,List<Long> departmentScopeIds,List<Long> callCenterIds){
  		StringBuilder sb = new StringBuilder();  
  	    sb.append("select ");
  	    if(type.equalsIgnoreCase("Status")){
@@ -3011,9 +3011,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	    if(departmentIds != null && !departmentIds.isEmpty())
  	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
  	    
- 	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
- 	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");
- 	 
+ 	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty()){
+ 	    	sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+            if( callCenterIds !=null && !callCenterIds.isEmpty() && callCenterIds.get(0) != 0){
+                sb.append(" or model.alert.alertCallerId is not null ");
+          }else{
+            sb.append(" or model.alert.alertCallerId is null ");
+          }
+              sb.append(" )");
+	 }
  	    if(fromDate != null && toDate != null)
  	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
  	    
@@ -3242,11 +3248,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 }
 	 @SuppressWarnings("unchecked")
 		public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,Long statusId,
-				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId){
+				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList){
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select distinct model.alert.alertId "+
 					  " from " +
-					  " AlertAssignedOfficerNew model " +
+					  " AlertAssignedOfficerNew model left join model.alert.edition EDS left join model.alert.tvNewsChannel TNC " +
 					  " where " +
 					  " model.isDeleted = 'N' " +
 					  " and model.alert.isDeleted = 'N'");
@@ -3256,6 +3262,16 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			if(locationLevelId != null && locationLevelId.longValue() > 0){
 				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :locationLevelId ");
 			}
+			if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	             sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+	             if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
+	                 sb.append(" or model.alert.alertCallerId is not null ");
+	           }else{
+	             sb.append(" or model.alert.alertCallerId is null ");
+	           }
+	               sb.append(" )");
+	           }
+			
 			if(statusId != null && statusId.longValue() >0){
 				sb.append(" and model.alertStatus.alertStatusId = :statusId ");
 			}

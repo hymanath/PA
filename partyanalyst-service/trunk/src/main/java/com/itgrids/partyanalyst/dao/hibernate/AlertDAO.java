@@ -6069,9 +6069,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		
-		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty() &&  calCntrIdList !=null && !calCntrIdList.isEmpty()){
 			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-			if( calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+			if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
 				queryStr.append(" or A.alert_caller_id is not null ");
 			}else{
 				queryStr.append(" or A.alert_caller_id is null ");
