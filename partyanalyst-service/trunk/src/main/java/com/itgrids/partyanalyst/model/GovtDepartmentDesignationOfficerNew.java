@@ -34,6 +34,8 @@ public class GovtDepartmentDesignationOfficerNew {
 	private GovtDepartmentScope govtDepartmentScope;
 	private GovtUserAddress govtUserAddress;
 	
+	private GovtDepartmentWorkLocation levelValueGovtDepartmentWorkLocation;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "govt_department_designation_officer_id", unique = true, nullable = false)
@@ -124,5 +126,19 @@ public class GovtDepartmentDesignationOfficerNew {
 	public void setGovtUserAddress(GovtUserAddress govtUserAddress) {
 		this.govtUserAddress = govtUserAddress;
 	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="level_value", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtDepartmentWorkLocation getLevelValueGovtDepartmentWorkLocation() {
+		return levelValueGovtDepartmentWorkLocation;
+	}
+	public void setLevelValueGovtDepartmentWorkLocation(
+			GovtDepartmentWorkLocation levelValueGovtDepartmentWorkLocation) {
+		this.levelValueGovtDepartmentWorkLocation = levelValueGovtDepartmentWorkLocation;
+	}
+	
+	
 	
 }
