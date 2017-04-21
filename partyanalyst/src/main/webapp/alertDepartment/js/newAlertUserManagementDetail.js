@@ -2552,12 +2552,18 @@ function buildAssignedOfficersDetailsForAlert(result)
 		value = splitNameArr[0];  
 	
 	str+='<div class="media">';
-		str+='<div class="media-left">';
+		/* str+='<div class="media-left">';
 			str+='<span class="icon-name icon-primary">'+result[0].name.substring(0,1)+''+value.substring(0,1)+'</span>';
-		str+='</div>';
+		str+='</div>'; */
 		str+='<div class="media-body">';
-			str+='<p>'+result[0].name+' - '+result[0].department+'</p>';
-			str+='<p> - '+result[0].designation+'<br> (<i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+')</p>';
+			/* str+='<p> - '+result[0].designation+'<br> (<i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+')</p>';
+			str+='<p>Location : '+result[0].source+'</p>';
+			
+			str+='<p>'+result[0].name+' - '+result[0].department+'</p>'; */
+			str+='<p>'+result[0].designation+' <br> <i class="glyphicon glyphicon-phone"></i> : '+result[0].mobileNo+'</p>';
+			str+='<p>Location :  '+result[0].source+'</p>';			
+			str+='<p>Dept : '+result[0].department+'</p>'; 
+			
 			str+='<p></p>';
 		str+='</div>';
 	str+='</div>';
