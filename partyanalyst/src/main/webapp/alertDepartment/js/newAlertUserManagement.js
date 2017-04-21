@@ -96,9 +96,9 @@ function getAlertType(){
 			globalDepartmentIdsArr=result.deptIds;
 			if(globalDepartmentIdsArr != null && globalDepartmentIdsArr.length == 1){
 				//stateUser
-				alert(6)
-				$("#mainBlockDiv,#deptWiseAlertsDiv").hide();
-				$(".applyStyleStatus").css("margin-top","35px");
+				
+				$("#deptWiseAlertsDiv").hide();
+				//$(".applyStyleStatus").css("margin-top","35px");
 				getdepartmentWiseDetailedInformation(globalDepartmentIdsArr[0],result.departmentNames[0]);
 				getAllDistrictDetails(globalDepartmentIdsArr[0]);
 			}else{
