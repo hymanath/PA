@@ -94,12 +94,14 @@
 						</span>
 					</div>
 				</div>
+				<div class="row">
     	<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default m_top10">
 				<div class="panel-body bg_EF">
 					<div id="districtDivId"></div>
 				</div>
 			</div>
+		</div>
 		</div>
 	</div>
 </div>
@@ -337,15 +339,15 @@ function buildAlertStatusDetails(result,divId,type,locatinName){
 	var total = 0;
 	if(type == "mandals"){
 		str+='<div class="tableStyledM">';
-		str+='<h4>'+locatinName.toUpperCase()+' DISTRICT - MANDAL WISE</h4>';
+		str+='<h4>'+locatinName.toUpperCase()+' DISTRICT - MANDAL WISE<span class="pull-right clearInnerTableCls" attr_div_id="'+divId+'"><i class="glyphicon glyphicon-remove" style="font-size: 15px;" title="Close"></i></span></h4>';
 	}	
 	else if(type == "panchayat"){
 		str+='<div class="tableStyledP">';
-		str+='<h4>'+locatinName.toUpperCase()+' MANDAL - PANCHAYAT WISE</h4>';
+		str+='<h4>'+locatinName.toUpperCase()+' MANDAL - PANCHAYAT WISE<span class="pull-right clearInnerTableCls" attr_div_id="'+divId+'"><i class="glyphicon glyphicon-remove" style="font-size: 15px;" title="Close"></i></span></h4>';
 	}	
 	else if(type == "hamlets"){
 		str+='<div class="tableStyledH">';
-		str+='<h4>'+locatinName.toUpperCase()+' PANCHAYAT - HABITATION WISE</h4>';
+		str+='<h4>'+locatinName.toUpperCase()+' PANCHAYAT - HABITATION WISE<span class="pull-right clearInnerTableCls" attr_div_id="'+divId+'"><i class="glyphicon glyphicon-remove" style="font-size: 15px;" title="Close"></i></span></h4>';
 	}else{
 		str+='<div class="tableStyled">';
 	}
@@ -354,7 +356,7 @@ function buildAlertStatusDetails(result,divId,type,locatinName){
 		str+='<thead>';
 		str+='<tr>';
 	if(type == "mandals"){
-		str+='<div class="tableStyledM">';
+		//str+='<div class="tableStyledM">';
 		str+='<th  style="text-align:center;width:160px;height:20px;">Mandal/Munci. Name</th>';
 	}	
 	else if(type == "panchayat"){
@@ -380,15 +382,15 @@ function buildAlertStatusDetails(result,divId,type,locatinName){
 				total = total+result[i].totalCount;
 				if(type == "district"){
 					str+='<tr class="districtttCls info" id="mandalWiseTrId'+result[i].id+'">';
-					str+='<td><span class="districtCls glyphicon glyphicon-plus districtPlusCls" style="cursor:pointer;text:bold;" attr_divId="mandalWiseDivId'+result[i].id+'" attr_type="mandals" attr_locaton_id="'+result[i].id+'" attr_trId="mandalWiseTrId'+result[i].id+'" attr_location_name="'+result[i].name+'">&nbsp;'+result[i].name+'</span></td>';
+					str+='<td><span id="mandalWiseTrId'+result[i].id+'First" class="districtCls glyphicon glyphicon-plus districtPlusCls" style="cursor:pointer;text:bold;" attr_divId="mandalWiseDivId'+result[i].id+'" attr_type="mandals" attr_locaton_id="'+result[i].id+'" attr_trId="mandalWiseTrId'+result[i].id+'" attr_location_name="'+result[i].name+'">&nbsp;'+result[i].name+'</span></td>';
 				}
 				else if(type == "mandals"){
 					str+='<tr class="mandallls success" id="panchayatWiseTrId'+result[i].id+'" >';
-					str+='<td ><span class="districtCls glyphicon glyphicon-plus mandalCls" style="cursor:pointer;text:bold;" attr_divId="panchayatWiseDivId'+result[i].id+'" attr_type="panchayat" attr_locaton_id="'+result[i].id+'" attr_trId="panchayatWiseTrId'+result[i].id+'" attr_location_name="'+result[i].name+'">&nbsp;'+result[i].name+'</span></td>';
+					str+='<td ><span id="panchayatWiseTrId'+result[i].id+'First" class="districtCls glyphicon glyphicon-plus mandalCls" style="cursor:pointer;text:bold;" attr_divId="panchayatWiseDivId'+result[i].id+'" attr_type="panchayat" attr_locaton_id="'+result[i].id+'" attr_trId="panchayatWiseTrId'+result[i].id+'" attr_location_name="'+result[i].name+'">&nbsp;'+result[i].name+'</span></td>';
 				}
 				else if(type == "panchayat"){
 					str+='<tr  class="hamlettsCls warning"  id="hamletWiseTrId'+result[i].id+'"  >';
-					str+='<td ><span class="districtCls glyphicon glyphicon-plus panchayatCls" style="cursor:pointer;text:bold;" attr_divId="hamletWiseDivId'+result[i].id+'" attr_type="hamlets" attr_locaton_id="'+result[i].id+'" attr_trId="hamletWiseTrId'+result[i].id+'" attr_location_name="'+result[i].name+'">&nbsp;'+result[i].name+'</span></td>';
+					str+='<td ><span id="hamletWiseTrId'+result[i].id+'First" class="districtCls glyphicon glyphicon-plus panchayatCls" style="cursor:pointer;text:bold;" attr_divId="hamletWiseDivId'+result[i].id+'" attr_type="hamlets" attr_locaton_id="'+result[i].id+'" attr_trId="hamletWiseTrId'+result[i].id+'" attr_location_name="'+result[i].name+'">&nbsp;'+result[i].name+'</span></td>';
 				}
 				else if(type == "hamlets"){
 					str+='<tr class="danger">';
@@ -422,22 +424,22 @@ function buildAlertStatusDetails(result,divId,type,locatinName){
 				str+='</tr>';
 				if(type == "district"){
 					str+='<tr id="dmandalWiseTrId'+result[i].id+'" class="districttCls" style="display:none;">';
-						str+='<td colspan="14">';
-							str+='<div id="mandalWiseDivId'+result[i].id+'"></div>'
+						str+='<td colspan="15">';
+							str+='<div id="mandalWiseDivId'+result[i].id+'" attr_parent_id="dmandalWiseTrId'+result[i].id+'" attr_super_parent_div_id="mandalWiseTrId'+result[i].id+'"></div>'
 						str+='</td>';
 					str+='</tr>';
 				}
 				else if(type == "mandals"){
 					str+='<tr id="dpanchayatWiseTrId'+result[i].id+'"  class="mandallsCls" style="display:none;">';
-						str+='<td colspan="14">';
-							str+='<div id="panchayatWiseDivId'+result[i].id+'" ></div>'
+						str+='<td colspan="15">';
+							str+='<div id="panchayatWiseDivId'+result[i].id+'" attr_parent_id="dpanchayatWiseTrId'+result[i].id+'" attr_super_parent_div_id="panchayatWiseTrId'+result[i].id+'"></div>'
 						str+='</td>';
 					str+='</tr>';
 				}
 				else if(type == "panchayat"){
 					str+='<tr id="dhamletWiseTrId'+result[i].id+'"  class="hamletsCls" style="display:none;">';
-						str+='<td colspan="14">';
-							str+='<div id="hamletWiseDivId'+result[i].id+'" ></div>'
+						str+='<td colspan="15">';
+							str+='<div id="hamletWiseDivId'+result[i].id+'" attr_parent_id="dhamletWiseTrId'+result[i].id+'" attr_super_parent_div_id="hamletWiseTrId'+result[i].id+'"></div>'
 						str+='</td>';
 					str+='</tr>';
 				}
@@ -451,7 +453,7 @@ function buildAlertStatusDetails(result,divId,type,locatinName){
 				else if(type == "panchayat")
 					str+='<td style="text-align:center"><span attr_location_id=0 attr_location_type="tehsil" attr_location_name=0 style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id=0>'+total+'</span></td>';
 				else if(type == "hamlets")
-					str+='<td style="text-align:center"><span attr_location_id=0 attr_location_type="panchayat" attr_location_name=0 style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id=0>'+total+'</span></td>';				
+					str+='<td style="text-align:center"><span attr_location_id=0 attr_location_type="panchayat" attr_location_name=0 style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id=0>'+total+'</span></td>';
 				else
 					str+='<td style="text-align:center"><span attr_location_id=0 attr_location_type="hamlet" attr_location_name=0 style="cursor:pointer;text-decoration:underline;" class="alertDetailsCls" attr_status_id=0>'+total+'</span></td>';
 				if(result[0].subList != null && result[0].subList.length > 0){
@@ -501,8 +503,71 @@ $(document).on("click",".hamlettsCls",function(){
 	$('#d'+id+'').show();
 });
 	
+$(document).on("click",".districtPlusCls",function(){
+	var divId = $(this).attr("attr_divId");
+	 if($(this).hasClass("glyphicon-plus") == true){
+		var type = $(this).attr("attr_type");
+		var locationId = $(this).attr("attr_locaton_id");
+		var locatinTrId = $(this).attr("attr_trId");
+		var locatinName = $(this).attr("attr_location_name");
+		$("#hidenLocationId").val(locationId);
+		$("#hidenLocationName").val(locatinName);
+		getAlertStatusCount(divId,type,locationId,locatinTrId,locatinName);
+		$(".districtPlusCls").addClass("glyphicon-plus").removeClass("glyphicon-minus");     
+	}
+	if($(this).hasClass("glyphicon-minus") == true){
+		$("#"+divId).html("");
+		var parentTrId = $(this).attr("attr_trid");
+		$("#d"+parentTrId).hide();
+		$(this).addClass("glyphicon-plus").removeClass("glyphicon-minus");
+	}else{
+		$(this).addClass("glyphicon-minus").removeClass("glyphicon-plus");
+} 
+});
+$(document).on("click",".mandalCls",function(){
+	var divId = $(this).attr("attr_divId");
+	 if($(this).hasClass("glyphicon-plus") == true){
+		 var type = $(this).attr("attr_type");
+		var locationId = $(this).attr("attr_locaton_id");
+		var locatinTrId = $(this).attr("attr_trId");
+		var locatinName = $(this).attr("attr_location_name");
+		$("#hidenLocationId").val(locationId);
+		$("#hidenLocationName").val(locatinName);
+		getAlertStatusCount(divId,type,locationId,locatinTrId,locatinName);
+		$(".mandalCls").addClass("glyphicon-plus").removeClass("glyphicon-minus");     
+	}
+	if($(this).hasClass("glyphicon-minus") == true){
+		$("#"+divId).html("");
+		var parentTrId = $(this).attr("attr_trid");
+		$("#d"+parentTrId).hide();
+		$(this).addClass("glyphicon-plus").removeClass("glyphicon-minus");
+	}else{
+		$(this).addClass("glyphicon-minus").removeClass("glyphicon-plus");
+} 
+});
+$(document).on("click",".panchayatCls",function(){
+	var divId = $(this).attr("attr_divId");
+	 if($(this).hasClass("glyphicon-plus") == true){
+		  var type = $(this).attr("attr_type");
+		var locationId = $(this).attr("attr_locaton_id");
+		var locatinTrId = $(this).attr("attr_trId");
+		var locatinName = $(this).attr("attr_location_name");
+		$("#hidenLocationId").val(locationId);
+		$("#hidenLocationName").val(locatinName);
+		getAlertStatusCount(divId,type,locationId,locatinTrId,locatinName);
+		$(".panchayatCls").addClass("glyphicon-plus").removeClass("glyphicon-minus");     
+	}
+	if($(this).hasClass("glyphicon-minus") == true){
+		$("#"+divId).html("");
+		var parentTrId = $(this).attr("attr_trid");
+		$("#d"+parentTrId).hide();
+		$(this).addClass("glyphicon-plus").removeClass("glyphicon-minus");
+	}else{
+		$(this).addClass("glyphicon-minus").removeClass("glyphicon-plus");
+} 
+});
 			
-$(document).on("click",".districtCls",function(){
+/* $(document).on("click",".districtCls",function(){
 	var divId = $(this).attr("attr_divId");
 	var type = $(this).attr("attr_type");
 	var locationId = $(this).attr("attr_locaton_id");
@@ -511,7 +576,7 @@ $(document).on("click",".districtCls",function(){
 	$("#hidenLocationId").val(locationId);
 	$("#hidenLocationName").val(locatinName);
 	getAlertStatusCount(divId,type,locationId,locatinTrId,locatinName);
-});
+}); */
 $(document).on("click",".alertDetailsCls",function(){
 	var locationId = $(this).attr("attr_location_id");
 	var locatinType = $(this).attr("attr_location_type");
@@ -1116,6 +1181,15 @@ function getDocumentsForAlert(alertId){
 			}
 		});
 	}
+	
+	$(document).on ("click",".clearInnerTableCls",function(){
+		var divId = $(this).attr("attr_div_id");
+		$("#"+divId).html("");
+		var parentDivId = $("#"+divId).attr("attr_parent_id");
+		$("#"+parentDivId).hide();
+		var superParentId = $("#"+divId).attr("attr_super_parent_div_id");
+		$("#"+superParentId+"First").removeClass("glyphicon-minus").addClass("glyphicon-plus");
+	});
 </script>
 </body>
 </html>
