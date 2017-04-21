@@ -73,7 +73,7 @@ public interface IAlertManagementSystemService {
 	public ResultStatus uploadDocumentsForSubTask(final Map<File, String> mapfiles,final Long subTaskId,final Long userId);
 	public List<AlertTrackingVO> viewSubTaskHistory(Long subTaskId);
 	public List<AlertTrackingVO> getSubTaskStatusHistory(Long subTaskId);
-	public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId);
+	public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId,Long userId);
 	public List<AlertTrackingVO> getCommentsForAlert(Long alertId);
 	public List<IdNameVO>  getStatusCompletionInfo(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId);
 	public AlertVO getSubTaskFullDetails(Long subTaskId);
