@@ -396,7 +396,10 @@ $("#dateRangePickerAUM").daterangepicker({
 	
 function getIASOfficerMyAlertsCountMainView(){
 	$("#myAlertsDivID").html(spinner);
-    var jsObj ={};
+    var jsObj ={
+		fromDate:currentFromDate,
+        toDate:currentToDate
+	};
     $.ajax({
       type:'GET',
       url: 'getIASOfficerMyAlertsCountMainViewAction.action',
@@ -612,7 +615,10 @@ function buildIASOfficerMyAlertsCountMainView(result){
 }
 function getIASOfficerMySubTasksCountView(){
 $("#mySubTasksDivID").html(spinner);
-    var jsObj ={};
+    var jsObj ={
+		fromDate:currentFromDate,
+		toDate:currentToDate
+	};
     $.ajax({
       type:'GET',
       url: 'getIASOfficerMySubTasksCountViewAction.action',
@@ -829,7 +835,10 @@ function buildIASOfficerMySubTasksCountView(result){
 }
 function getIASOfficerMyAssignedSubTasksCountView(){
 	$("#assignedSubTasksDivID").html(spinner);
-    var jsObj ={};
+    var jsObj ={
+		fromDate:currentFromDate,
+		toDate:currentToDate
+	};
     $.ajax({
       type:'GET',
       url: 'getIASOfficerMyAssignedSubTasksCountViewAction.action',
@@ -4284,7 +4293,9 @@ function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName
 		  type:type,
 		  officerId:globalOfficerIds[0],
 		  desigDeptOfficerId:globalGovtDeptDesigOffcrIds[0],
-		  searchType:searchType
+		  searchType:searchType,
+		  fromDate:currentFromDate,
+		  toDate:currentToDate
     }
   $.ajax({
       type:'GET',
