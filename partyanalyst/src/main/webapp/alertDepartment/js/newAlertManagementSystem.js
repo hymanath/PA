@@ -1078,7 +1078,11 @@ function buildDepartmentWiseAlertOverviewCnt(result,type,id)
 }
 function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){ 
 	$("#alertManagementPopupBody").html(spinner);
-	
+	var impactLevelArr =[];
+     var   priorityArr =[];
+     var   alertSourceArr =[];
+     var  printMediaArr =[];
+     var  electronicMediaArr=[];
 
     var jsObj ={
 		fromDate:currentFromDate,
@@ -1088,7 +1092,12 @@ function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){
 		paperIdArr : globalNewsPaperIdArr,
 		chanelIdArr : globalChannelIdArr, 
 		callCenterArr : globalCallCenterArr,		
-		statusId : statusId                                
+		statusId : statusId ,
+		impactLevelArr :impactLevelArr,
+        priorityArr :priorityArr,
+        alertSourceArr:alertSourceArr,
+        printMediaArr :printMediaArr,
+        electronicMediaArr:electronicMediaArr
     }
     $.ajax({
 		type:'GET',
