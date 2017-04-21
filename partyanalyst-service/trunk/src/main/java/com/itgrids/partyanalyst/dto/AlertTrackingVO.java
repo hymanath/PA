@@ -29,7 +29,8 @@ public class AlertTrackingVO {
 	private String mobileNO;
 	private String deptName;
 	private String updatedUserName;
-	
+	private String alertTypeStr;
+	private String color;
 	
 	public AlertTrackingVO(){}
 	public AlertTrackingVO(Long alertId,String comment,String date){
@@ -38,6 +39,19 @@ public class AlertTrackingVO {
 		this.date = date;
 	}
 	
+	
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
+	public String getAlertTypeStr() {
+		return alertTypeStr;
+	}
+	public void setAlertTypeStr(String alertTypeStr) {
+		this.alertTypeStr = alertTypeStr;
+	}
 	public String getUpdatedUserName() {
 		return updatedUserName;
 	}
