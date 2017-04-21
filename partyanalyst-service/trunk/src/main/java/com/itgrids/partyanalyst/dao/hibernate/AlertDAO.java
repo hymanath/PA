@@ -6890,14 +6890,24 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list();  
     }
     @SuppressWarnings("unchecked")
-	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long statusId,Date fromDate,Date toDate){
+	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long statusId,Date fromDate,Date toDate, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList){
     	StringBuilder sb = new StringBuilder();
     	sb.append(" select model.alertId  " +
-    			" from Alert model " +
+    			" from Alert model left join model.edition EDS left join model.tvNewsChannel TNC " +
     			" where model.isDeleted='N'  ");
     	if(statusId != null && statusId.longValue() > 0){
     		sb.append(" and model.alertStatusId = :statusId " );
     	}
+    	
+    	 if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+             sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+             if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
+                 sb.append(" or model.alertCallerId is not null ");
+           }else{
+             sb.append(" or model.alertCallerId is null ");
+           }
+               sb.append(" )");
+           }
     	if(deptIds != null && deptIds.size() > 0){
     		sb.append(" and model.govtDepartmentId in(:deptIds) " );
     	}
@@ -6908,6 +6918,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	if(statusId != null && statusId.longValue() > 0){
     		query.setParameter("statusId", statusId);
     	}
+    	
+    	 if(printIdList != null && printIdList.size()>0 && electronicIdList != null && electronicIdList.size()>0){
+   	      query.setParameterList("printIdList", printIdList);
+   	      query.setParameterList("electronicIdList", electronicIdList);
+   	    }
     	if(deptIds != null && deptIds.size() > 0){
     		query.setParameterList("deptIds", deptIds);
     	}
