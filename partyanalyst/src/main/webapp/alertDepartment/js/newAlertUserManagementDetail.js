@@ -26,7 +26,7 @@ function onLoadClicks()
 		var defaultDepartmentID = $(this).attr("attr_department_id")
 			getDivisionIdListForDivisionFilter(defaultDepartmentID);
 	});*/
-	$(document).on('change', '#locationLevelSelectId,#locationLevelSelectId1', function(){
+	$(document).on('change', '#locationLevelSelectId', function(){
 		
 		getParentLevelsOfLevel($(this).attr('id'));
 	});
@@ -36,7 +36,7 @@ function onLoadClicks()
 	$(document).on('change','.locationCls', function(evt, params) {
 		designationsByDepartment();
 	});
-	$(document).on('change', '#departmentsId,#departmentsId1', function(){
+	$(document).on('change', '#departmentsId', function(){
 		var deptId = $(this).val();
 		getDepartmentLevels(deptId,$(this).attr('id'));
 	});
@@ -1193,55 +1193,9 @@ function rightSideExpandView(alertId)
 										str+='<i class="glyphicon glyphicon-calendar"></i> <span class="modal-date2 subTaskDueDate" style="" > Due Date </span>';
 										str+='<input id="hiddenDueDate1" type="hidden" value="" name="alertAssigningVO.dueDate" />';
 									str+='</span>';
-										str+='<span class="assign-user">';
-										str+='<span id="" style=""><i class="glyphicon glyphicon-user pointerCls" style="cursor:pointer;"></i> </span>';
-									
-										str+='<div class="assign-user-body1" style="display:none;left:-356px;right:0;position:absolute;">';
-												str+='<div class="arrow_box_top" >';
-													str+='<div>';
-														str+='<div class="row">';  
-															str+='<i attr_class="assign-user-body1" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
-															str+='<div class="col-sm-12">';
-																str+='<div id="assignErrorDivId1" style="color:red;"></div>';
-															str+='</div>';
-															str+='<div class="col-sm-6">';
-																str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId1"></span></label>';
-																str+='<select class="chosenSelect" id="departmentsId1" name="alertAssigningVO.departmentId">	';
-																	str+='<option value="0">Select Department</option>';
-																	str+='<option value="49">RWS</option>';
-																str+='</select>'; 
-															str+='</div>';
-															
-															str+='<div class="col-sm-6">';
-																str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId1"></span></label>';
-																str+='<select  class="chosenSelect" id="locationLevelSelectId1" name="alertAssigningVO.levelId">	';
-																	str+='<option></option>';
-																str+='</select>';
-															str+='</div>';
-															
-															str+='<div id="parentLevelDivId1"> </div>';
-															
-															str+='<div class="col-sm-6">';
-																str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId1"></span></label>';
-																str+='<select name="alertAssigningVO.designationId" id="designationsId1" class="chosenSelect">';
-																	str+='<option></option>	';
-																str+='</select>';
-															str+='</div>';
-															str+='<div class="col-sm-6">';
-																str+='<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId1"></span></label>';
-																str+='<select name="alertAssigningVO.govtOfficerId" id="officerNamesId1" class="chosenSelect">';
-																	str+='<option></option>';
-																str+='</select>';
-															str+='</div>';
-														str+='</div>';
-														str+='<input type="hidden" id="hiddenAlertId1" value="'+alertId+'" name="alertAssigningVO.alertId"/>';
-													str+='</div>';
-												str+='</div>';
-											str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
-												str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button" onclick="saveSubTask('+alertId+');">assign</button>';
-												str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg1">';
-												str+='<span class="text-success" id="assignSuccess"></span>';
-											str+='</div>';
+										str+='<span class="assign-user " >';
+										str+='<span class="departmentsForSubTask" attr_alert_id="'+alertId+'" onclick="getAssignUIAttributes('+alertId+');"><i class="glyphicon glyphicon-user pointerCls assigningCls"   style="cursor:pointer;"></i> </span>';
+											str+='<span id="assignUIAttributesId" > </span>';
 											str+='</form>';
 										str+='</div>';
 										
@@ -1297,8 +1251,80 @@ function rightSideExpandView(alertId)
 	departmentsByAlert(alertId);
 	getAlertData(alertId);
 	getStatusCompletionInfo(alertId);
+	getGovtAllDepartmentDetails();
+	buildAssignUIAttributes(alertId);
 }
 
+function buildAssignUIAttributes(alertId){
+	var str='';
+str+='<div class="assign-user-body1" style="display:none;left:-856px;right:0;position:absolute;">';
+str+='<div class="arrow_box_top" >';
+str+='<div>';
+	str+='<div class="row">';  
+		str+='<i attr_class="assign-user-body1" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
+		str+='<div class="col-sm-12">';
+			str+='<div id="assignErrorDivId1" style="color:red;"></div>';
+		str+='</div>';
+		str+='<div class="col-sm-6">';
+			str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId1"></span></label>';
+			str+='<select class="chosenSelect" id="departmentsId1" name="alertAssigningVO.departmentId">	';
+			str+='</select>'; 
+		str+='</div>';
+		
+		str+='<div class="col-sm-6">';
+			str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId1"></span></label>';
+			str+='<select  class="chosenSelect" id="locationLevelSelectId1" name="alertAssigningVO.levelId">	';
+				str+='<option></option>';
+			str+='</select>';
+		str+='</div>';
+		
+		str+='<div id="parentLevelDivId1"> </div>';
+		
+		str+='<div class="col-sm-6">';
+			str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId1"></span></label>';
+			str+='<select name="alertAssigningVO.designationId" id="designationsId1" class="chosenSelect">';
+				str+='<option></option>	';
+			str+='</select>';
+		str+='</div>';
+		str+='<div class="col-sm-6">';
+			str+='<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId1"></span></label>';
+			str+='<select name="alertAssigningVO.govtOfficerId" id="officerNamesId1" class="chosenSelect">';
+				str+='<option></option>';
+			str+='</select>';
+		str+='</div>';
+	str+='</div>';
+	str+='<input type="hidden" id="hiddenAlertId1" value="'+alertId+'" name="alertAssigningVO.alertId"/>';
+str+='</div>';
+str+='</div>';
+str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
+	str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button" onclick="saveSubTask('+alertId+');">assign</button>';
+	str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg1">';
+	str+='<span class="text-success" id="assignSuccess"></span>';
+str+='</div>';
+$('#assignUIAttributesId').html(str);
+
+$('[data-toggle="tooltip"]').tooltip();
+	$(".chosenSelect").chosen({width:'100%'});
+	
+	$('.modal-date2').data('daterangepicker');
+	
+	$(function() {
+		var start = moment();
+		
+		function cb(start) {
+			$('.modal-date2').html(start.format('DD/MM/YYYY'));
+		}
+       
+		$('.modal-date2').daterangepicker({
+			startDate: start,
+			singleDatePicker:true,
+			locale:{
+				format:"DD/MM/YYYY"
+			}
+			
+		}, cb);		
+	});
+}
 $(document).on("click",".subTaskCls",function(){
 	var subAlertId = $(this).attr('attr_sub_alert_Id');
 	var alertId = $(this).attr('attr_alert_id');
@@ -1517,6 +1543,9 @@ $(document).on("click","#displaySubTasksli",function(){
 	$('#alert-block-commentId').hide();
 	$('#sub_task_block').show();
 	$('.assign-user').show();
+	$('.assign-user-body1').hide();
+	$('.subTaskDueDate').html('Due Date');
+	
 });
 
 function saveSubTask(mainAlertId){
@@ -1526,137 +1555,92 @@ function saveSubTask(mainAlertId){
 			$("#assignErrorDivId1").html("Please select department");
 			return;
 		}
+		
 		if($("#locationLevelSelectId1").val() == null || $("#locationLevelSelectId1").val() == "" || $("#locationLevelSelectId1").val() == 0)
 		{
 			$("#assignErrorDivId1").html("Please select impact level");
 			return;
 		}
-		if($("#locationLevelSelectId1").val() == 1)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select State");
-				return;
-			}
-		}
-		if($("#locationLevelSelectId1").val() == 5)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId").html("Please select location");
-				return;
-			}
-		}
-		if($("#locationLevelSelectId1").val() == 6)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select district");
-				return;
-			}
-			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select location");
-				return;
-			}
-		}
-		if($("#locationLevelSelectId").val() == 7)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select district");
-				return;
-			}
-			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select division");
-				return;
-			}
-			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select location");
-				return;
-			}
-		}
-		if($("#locationLevelSelectId").val() == 8)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select district");
-				return;
-			}
-			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select division");
-				return;
-			}
-			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
-			{
-				$("#assignErrorDivId1").html("Please select sub division");
-				return;
-			}
-			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
-			{
-				$("#assignErrorDivId").html("Please select location");
-				return;
-			}
-		}
-		if($("#designationsId1").val() == null || $("#designationsId1").val() == "" || $("#designationsId1").val() == 0)
-		{
-			$("#assignErrorDivId1").html("Please select designation");
-			return;
-		}
-		if($("#officerNamesId1").val() == null || $("#officerNamesId1").val() == "" || $("#officerNamesId1").val() == 0)
-		{
-			$("#assignErrorDivId1").html("Please select officer name");
-			return;
-		}
-		$("#assiningLdngImg").show();
-		$("#assignOfficerId").hide();
 		
-		var textValue = $('.subTaskDueDate').text().trim();
-		$('#hiddenDueDate1').val(textValue);
-	
-		$("#assiningLdngImg1").show();
-		$("#subTaskAssignOfficerId").hide();
-		var uploadHandler = {
-			upload: function(o) {
-				uploadResult = o.responseText;
-				displaySubStatus(uploadResult,mainAlertId);
+		var dynamicLocationValue=$('.dynamicSelectList').val();
+		var hasError=false;
+		var displayName = "";
+		if (typeof(dynamicLocationValue) != "undefined"){
+			
+			
+			$('.dynamicSelectList').each(function(){
+				if(!hasError){
+					displayName = $(this).attr('attr_dyna_name');
+					var id =  $(this).attr('id');				
+					var dynamicLocationValue=$('#'+id+'').val();
+					if(dynamicLocationValue == null || dynamicLocationValue == "" || dynamicLocationValue == 0)
+					{
+						hasError=true;
+						$("#assignErrorDivId1").html("Please select "+displayName+". ");
+						return;
+					}				
+				}else{
+					return;
+				}
+			});	
+			if(hasError)
+				return;
+			
+		}
+		hasError=false;
+		if(!hasError){
+			var locationValue=$('.locationsCls').val();
+			if(locationValue == null || locationValue == "" || locationValue == 0)
+			{
+				$("#assignErrorDivId1").html("Please select Location. ");
+				return;
 			}
-		};
+			
+			if($("#designationsId1").val() == null || $("#designationsId1").val() == "" || $("#designationsId1").val() == 0)
+			{
+				$("#assignErrorDivId1").html("Please select designation");
+				return;
+			}
+			if($("#officerNamesId1").val() == null || $("#officerNamesId1").val() == "" || $("#officerNamesId1").val() == 0)
+			{
+				$("#assignErrorDivId1").html("Please select officer name");
+				return;
+			}
+			//$("#assiningLdngImg").show();
+			//$("#assignOfficerId").hide();
+			
+			var textValue = $('.subTaskDueDate').text().trim();
+			alert(textValue)
+			if(textValue == null || textValue == "" || textValue == 0 || textValue == "Due Date")
+			{
+				$("#assignErrorDivId1").html("Please select Date");
+				return;
+			}else{
+				$('#hiddenDueDate1').val(textValue);
+			}
+			
+			
+		
+			$("#assiningLdngImg1").show();
+			$("#subTaskAssignOfficerId").hide();
+			var uploadHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					displaySubStatus(uploadResult,mainAlertId);
+				}
+			};
 
-		YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
-		YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 
-		
+			YAHOO.util.Connect.setForm('subTaslAlertAssignForm',true);
+			YAHOO.util.Connect.asyncRequest('POST','assigningSubTaskToOfficerAction.action',uploadHandler); 			
+		}		
 }
 
 function displaySubStatus(result,mainAlertId)
 {
 	var result = (String)(result);
 	if(result.search('success') != -1){
-		$("#assiningLdngImg").hide();
-		$("#assignOfficerId").show();
+		$("#assiningLdngImg1").hide();
+		$("#subTaskAssignOfficerId").show();
 		$("#assignSuccess").html('Alert Assigned Successfully')
 		setTimeout(function(){
 			getSubTaskInfoForAlert(mainAlertId) ;
@@ -1666,6 +1650,7 @@ function displaySubStatus(result,mainAlertId)
 		},500);
 	}else{
 		alert("Please Try Again.");
+		$("#assiningLdngImg1").hide();
 		$("#assignSuccess").addClass("text-danger");
 		$("#assignSuccess").html('Try Again');
 	}	
@@ -2810,4 +2795,132 @@ function alertStatus(result,alertId)
 	glStr=str1;
 	//$("#updateStatusChangeBody").html(str1);
 }
-              
+/*
+$(document).on("click",".departmentsForSubTask",function(){
+		//getGovtAllDepartmentDetails();
+});
+*/
+function getAssignUIAttributes(alertId){
+	getGovtAllDepartmentDetails();
+	buildAssignUIAttributes(alertId);
+}
+function getGovtAllDepartmentDetails(){
+	
+	$("#departmentsId1").html('');
+	var jsObj={
+		
+	}
+	$.ajax({   
+		type:'GET',
+		url:'getGovtAllDepartmentDetailsAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			$("#departmentsId1").append("<option value='0'>Select Department</option>")
+			for(var i in result){
+				$("#departmentsId1").append("<option value="+result[i].id+">"+result[i].name+"</option>")
+			}
+			
+			
+		}
+		$("#departmentsId1").chosen();
+			$("#departmentsId1").trigger("chosen:updated");
+	});
+}
+
+$(document).on('change', '#departmentsId1', function(){
+	var deptId = $(this).val();
+	getDepartmentSubLevels(deptId);
+	
+});
+/* var globalUserLevelId;
+var globalUserLevelValues = [];	 */
+function getDepartmentSubLevels(deptId){
+	
+	var jsObj = {
+		departmentId : deptId,
+		levelId:globalUserLevelId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDepartmentSubLevelsAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildDepartmentSubLevels(result);
+		}
+			
+	});
+	
+}
+function buildDepartmentSubLevels(result){
+	
+	var str='';	
+	str+='<option value="0">Select Level</option>';
+	for(var i in result){
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+	}
+	
+	$("#locationLevelSelectId1").html(str);
+	$("#locationLevelSelectId1").trigger("chosen:updated");
+}
+
+$(document).on('change', '#locationLevelSelectId1', function(){
+	getChildLevelValuesForSubTask();
+	
+});
+function getChildLevelValuesForSubTask(){
+	var departmentId = $("#departmentsId1").val();
+	var jsObj = {
+		departmentId : departmentId,
+		levelId : $("#locationLevelSelectId1").val(),
+		parentLevelId : globalUserLevelId,
+		parentLevelValue : globalUserLevelValues[0]
+		
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getChildLevelValuesForSubTaskAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildChildLevelValuesForSubTask(result,departmentId);
+		}
+			
+	});
+}
+function buildChildLevelValuesForSubTask(result,departmentId){
+	var str='';
+		
+		for(var i in result){
+			if(i<result.length-1){
+				str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+					str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+					str+='<select  class="chosenSelect dynamicSelectList" attr_dyna_name="'+result[i].name+'" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
+				str+='</div>';
+			}else{
+				str+='<div class="col-md-3 col-xs-12 col-sm-6">';
+					str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+					str+='<select  class="chosenSelect locationsCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
+				str+='</div>';
+			}
+			
+		}
+	
+	$("#parentLevelDivId1").html(str);
+	$(".chosenSelect").chosen();
+	
+	for(var i in result){
+		
+		if(result[i].idnameList !=null && result[i].idnameList.length>0){
+			var newStr='';		
+			newStr+='<option value="0">Select '+result[i].name+'</option>';
+			for(var j in result[i].idnameList){
+				 newStr+='<option value="'+result[i].idnameList[j].id+'">'+result[i].idnameList[j].name+'</option>';
+			}			
+			$("#locationSubLevelSelectId"+result[i].id+"").html(newStr);
+			$("#locationSubLevelSelectId"+result[i].id+"").trigger("chosen:updated");
+		}
+	}	
+}             
