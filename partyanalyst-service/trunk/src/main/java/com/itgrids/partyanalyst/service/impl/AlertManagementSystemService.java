@@ -4312,11 +4312,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       		}
       		return null;
       	}
-        public DistrictOfficeViewAlertVO getIASOfficerMyAlertsCountView(Long userId){
+        public DistrictOfficeViewAlertVO getIASOfficerMyAlertsCountView(Long userId,String fromDateStr,String toDateStr){
       		
       		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
       		try{
-      			
+      			Date fromDate = null;
+      			Date toDate = null;
+      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+      				fromDate = sdf.parse(fromDateStr);
+      				toDate = sdf.parse(toDateStr);
+      			}
       			List<Long> levelValues = new ArrayList<Long>();    
       			Long levelId = 0L;
       			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -4351,9 +4357,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			List<Object[]> myAlertsCompletedList = null;
       			List<Object[]> myAlertsStatusList = null;
       			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size()>0 && govtOffcrIds != null && govtOffcrIds.size() >0){
-      				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"today");
-      				myAlertsCompletedList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"completed");
-      				myAlertsStatusList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds);
+      				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"today",new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
+      				myAlertsCompletedList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"completed",fromDate,toDate);
+      				myAlertsStatusList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds,fromDate,toDate);
       			}
       			setIASOfficerStatusWiseCountView(myAlertsTodayList,myAlertsCompletedList,myAlertsStatusList,returnVO,"MyAlerts");
       			
@@ -4363,11 +4369,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       		}
       		return returnVO;
       	}
-        public DistrictOfficeViewAlertVO getIASOfficerMySubTasksCountView(Long userId){
+        public DistrictOfficeViewAlertVO getIASOfficerMySubTasksCountView(Long userId,String fromDateStr,String toDateStr){
       		
       		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
       		try{
-      			
+      			Date fromDate = null;
+      			Date toDate = null;
+      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+      				fromDate = sdf.parse(fromDateStr);
+      				toDate = sdf.parse(toDateStr);
+      			}
       			List<Long> levelValues = new ArrayList<Long>();    
       			Long levelId = 0L;
       			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -4402,9 +4414,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			List<Object[]> mySubTasksCompletedList = null;  
       			List<Object[]> mySubTasksStatusList = null;
       			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0 && govtOffcrIds != null && govtOffcrIds.size() >0){
-      				mySubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrIds, govtOffcrIds,"today");
-      				mySubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrIds,govtOffcrIds,"completed");
-      				mySubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMySubTasksStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds);
+      				mySubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrIds, govtOffcrIds,"today",new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
+      				mySubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerAlertsSubTasksCountsView(govtDepDesigOffcrIds,govtOffcrIds,"completed",fromDate,toDate);
+      				mySubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMySubTasksStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds,fromDate,toDate);
       			}
       			setIASOfficerStatusWiseCountView(mySubTasksTodayList,mySubTasksCompletedList,mySubTasksStatusList,returnVO,"MyAlerts");
       			
@@ -4414,11 +4426,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       		}
       		return returnVO;
       	} 
-       public DistrictOfficeViewAlertVO getIASOfficerMyAssignedSubTasksCountView(Long userId){
+       public DistrictOfficeViewAlertVO getIASOfficerMyAssignedSubTasksCountView(Long userId,String fromDateStr,String toDateStr){
       		
       		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
       		try{
-      			
+      			Date fromDate = null;
+      			Date toDate = null;
+      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+      				fromDate = sdf.parse(fromDateStr);
+      				toDate = sdf.parse(toDateStr);
+      			}
       			List<Long> levelValues = new ArrayList<Long>();    
       			Long levelId = 0L;
       			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -4453,9 +4471,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			List<Object[]> myAssignedSubTasksCompletedList = null;
       			List<Object[]> myAssignedSubTasksStatusList = null;
       			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() >0 && govtOffcrIds != null && govtOffcrIds.size() > 0){
-      				myAssignedSubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrIds, govtOffcrIds,"today");
-      				myAssignedSubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrIds,govtOffcrIds,"completed");
-      				myAssignedSubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds);
+      				myAssignedSubTasksTodayList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrIds, govtOffcrIds,"today",new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
+      				myAssignedSubTasksCompletedList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksCountsView(govtDepDesigOffcrIds,govtOffcrIds,"completed",fromDate,toDate);
+      				myAssignedSubTasksStatusList = govtAlertSubTaskDAO.getDistrictOfficerMyAssignedSubTasksStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds,fromDate,toDate);
       			}
       			setIASOfficerStatusWiseCountView(myAssignedSubTasksTodayList,myAssignedSubTasksCompletedList,myAssignedSubTasksStatusList,returnVO,"MyAlerts");
       			
@@ -5894,9 +5912,16 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			 return returnVO;
 		 }
 		 public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(Long deptId,Long statusId,String type,
-				 Long govtDeptGovtOffrId,Long govtOffrcrId,String serachType){
+				 Long govtDeptGovtOffrId,Long govtOffrcrId,String serachType,String fromDateStr,String toDateStr){
 	 		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 	 		try {
+	 			Date fromDate = null;
+	 			Date toDate = null;
+	 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+	 				fromDate = sdf.parse(fromDateStr);
+	 				toDate = sdf.parse(toDateStr);
+	 			}
 	 			List<Long> alertIdList = null;
 	 			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>();
 	 			govtDepDesigOffcrIds.add(govtDeptGovtOffrId);
@@ -5904,21 +5929,21 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 			govtOffcrIds.add(govtOffrcrId);
 	 			if(type != null && type.equalsIgnoreCase("alert")){
 	 				if(serachType != null && serachType.equalsIgnoreCase("today")){
-	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId);
+	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
 	 				}else if(serachType != null && serachType.equalsIgnoreCase("completed")){
-	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId);
+	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId,fromDate,toDate);
 	 				}
 	 			}else if(type.equalsIgnoreCase("subtask")){
 	 				if(serachType != null && serachType.equalsIgnoreCase("today")){
-	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAlertclickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId);
+	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAlertclickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
 	 				}else if(serachType != null && serachType.equalsIgnoreCase("completed")){
-	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAlertclickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId);
+	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAlertclickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId,fromDate,toDate);
 	 				}
 	 			}else if(type.equalsIgnoreCase("assignSubTask")){
 	 				if(serachType != null && serachType.equalsIgnoreCase("today")){
-	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAssignedAlertClickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId);
+	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAssignedAlertClickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
 	 				}else if(serachType != null && serachType.equalsIgnoreCase("completed")){
-	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAssignedAlertClickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId);
+	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAssignedAlertClickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId,fromDate,toDate);
 	 				}
 	 			}
 	 			if(alertIdList != null && alertIdList.size() > 0){
