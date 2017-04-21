@@ -1994,7 +1994,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 
           
     @SuppressWarnings("unchecked")
-    public List<Object[]> getDistrictOfficerMyAlertsCountView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type){
+    public List<Object[]> getDistrictOfficerMyAlertsCountView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date startDate,Date endDate){
         	StringBuilder sb = new StringBuilder();
         	  
         	if(type != null && type.equalsIgnoreCase("today")){
@@ -2017,8 +2017,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
 	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
-	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  sb.append(" and date(model.insertedTime) between  :todayDate and  :todayDate " ); 
+	    	  if(startDate != null && endDate!= null){
+	    		  sb.append(" and date(model.insertedTime) between  :startDate and  :endDate " ); 
 	    	  }
 	    	  
 	    	  sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId ");
@@ -2031,12 +2031,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(govtOffcrIds != null && govtOffcrIds.size() > 0){
 	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
 	    	  }
-	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  if(startDate != null && endDate!= null){
+	    		  query.setDate("startDate", startDate);
+	    		  query.setDate("endDate", endDate);
 	    	  }
 	    	  return query.list();
         }  
-	public List<Object[]> getDistrictOfficerMyAlertsStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds){
+	public List<Object[]> getDistrictOfficerMyAlertsStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,Date startDate,Date endDate){
         	StringBuilder sb = new StringBuilder();
         	sb.append(" select model.alertStatus.alertStatusId," +
         			"  model.alertStatus.alertStatus," +
@@ -2054,7 +2055,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
 	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
-	    	  
+	    	  if(startDate != null && endDate != null){
+	    		  sb.append(" and date(model.insertedTime) between :startDate and :endDate ");
+	    	  }
 	    	  sb.append(" group by model.alertStatus.alertStatusId ");
 	    	 
 	    	  Query query = getSession().createQuery(sb.toString());
@@ -2064,6 +2067,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  if(govtOffcrIds != null && govtOffcrIds.size() > 0){
 	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
+	    	  }
+	    	  if(startDate != null && endDate != null){
+	    		  query.setDate("startDate", startDate);
+	    		  query.setDate("endDate", endDate);
 	    	  }
 	    	  return query.list();
         }
@@ -3159,7 +3166,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      	return query.list();
      }
 	 public List<Long> getStateLevelAlertclickViewAlertsIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,
-			 String type,Long deptId,Long statusId){
+			 String type,Long deptId,Long statusId,Date fromDate,Date endDate){
      	StringBuilder sb = new StringBuilder();
 	    	  
      	  sb.append(" select  distinct model.alert.alertId from AlertAssignedOfficerNew model ");
@@ -3173,8 +3180,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
 	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
-	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  sb.append(" and date(model.insertedTime) between :todayDate  and :todayDate " ); 
+	    	  if(fromDate != null && endDate!= null){
+	    		  sb.append(" and date(model.insertedTime) between :fromDate  and :endDate " ); 
 	    	  }
 	    	  if(deptId != null && deptId.longValue() > 0){
 	    		  sb.append(" and  model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId " );
@@ -3191,8 +3198,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
 	    		  query.setParameterList("govtOffcrIds", govtOffcrIds);  
 	    	  }
-	    	  if(type != null && type.equalsIgnoreCase("today")){
-	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
+	    	  if(fromDate != null && endDate!= null){
+	    		  query.setDate("fromDate", fromDate);
+	    		  query.setDate("endDate", endDate);
 	    	  }
 	    	  if(statusId != null && statusId.longValue() > 0){
 	    		  query.setParameter("statusId", statusId);
