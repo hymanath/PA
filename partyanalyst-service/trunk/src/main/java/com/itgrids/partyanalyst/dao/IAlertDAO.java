@@ -121,7 +121,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	 public List<Object[]> getAlertDetials(String mobileNo,Long alertStatusId,Date startDate,Date endDate,Long deptId,Long feedbackStattusId);
 	 public List<Object[]> getAlertCallerDetails(Long alertId);
 	public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewForAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type);
-	public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId,List<Long> calCntrIds);
+	public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList);
 	public List<Object[]> getStatusCount(Long locationId,String locationType,String searchType,Date startDate,Date endDate);
 	public List<Object[]> getCallerUserAlertDtls(Date fromDate, Date toDate, Long userId);
 	public List<Object[]> getCallerDetailsForAlerts(List<Long> alertIdsList);

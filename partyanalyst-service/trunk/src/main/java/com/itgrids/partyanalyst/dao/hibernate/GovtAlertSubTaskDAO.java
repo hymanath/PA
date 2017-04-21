@@ -827,7 +827,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0){
+			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0 ){
 				queryStr.append(" or A.alert_caller_id is not null ");
 			}else{
 				queryStr.append(" or A.alert_caller_id is null ");
@@ -995,7 +995,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		}
 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0){
+			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0 ){
 				queryStr.append(" or A.alert_caller_id is not null ");
 			}else{
 				queryStr.append(" or A.alert_caller_id is null ");
@@ -1170,9 +1170,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+		  if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0 ){
 				queryStr.append(" or A.alert_caller_id is not null ");
 			}else{
 				queryStr.append(" or A.alert_caller_id is null ");
@@ -1327,9 +1327,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-	    	    if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0 ){
 	    	    	queryStr.append(" or A.alert_caller_id is not null ");
 				}else{
 					queryStr.append(" or A.alert_caller_id is null ");
@@ -1464,9 +1464,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0 ){
 				queryStr.append(" or (A.alert_caller_id is not null) ");
 			}else{
 				queryStr.append(" or (A.alert_caller_id is null) ");
@@ -1608,9 +1608,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and date(AAO.created_time) between :fromDate and :toDate ");
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		 if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
-			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0) != 0 ){
 				queryStr.append(" or (A.alert_caller_id is not null) ");
 			}else{
 				queryStr.append(" or (A.alert_caller_id is null) ");

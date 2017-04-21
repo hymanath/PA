@@ -6363,7 +6363,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	
     }
     
-    public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId,List<Long> calCntrIds){
+    public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct ");  
 		queryStr.append(" A.alert_id as alert_id, " +//0
@@ -6408,6 +6408,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" join alert_status ALTS on A.alert_status_id=ALTS.alert_status_id ");
 		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
 		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");
+		queryStr.append(" join govt_department_scope GDS on GDS.govt_department_scope_id = A.impact_scope_id ");
 		queryStr.append(" where ");
 		queryStr.append(" A.is_deleted='N' and ");
 		if(deptId != null && deptId.longValue() > 0 ){
@@ -6451,7 +6452,21 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(statusId != null && statusId.longValue() > 0L){
 			queryStr.append(" and A.alert_status_id = :statusId  ");
 		}
-		
+		if(impactLevelIdList != null && impactLevelIdList.size()>0){
+			queryStr.append(" and GDS.govt_department_scope_id in (:impactLevelIdList) ");
+		}
+		if(priorityIdList != null && priorityIdList.size()>0){
+			queryStr.append(" and ALTSVR.alert_severity_id in (:priorityIdList) ");
+		}
+		if(alertSourceIdList != null && alertSourceIdList.size()>0){
+			queryStr.append(" and AC.alert_category_id in (:alertSourceIdList) ");
+		}
+		if(printMediaIdList != null && printMediaIdList.size()>0){
+			queryStr.append(" and  EDS.news_paper_id  in (:printMediaIdList) ");
+		}
+		if(electronicMediaIdList != null && electronicMediaIdList.size()>0){
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicMediaIdList) ");
+		}
 		Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("alert_id", Hibernate.LONG)//0
 				.addScalar("created_time", Hibernate.STRING)//1
@@ -6501,7 +6516,21 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(statusId != null && statusId.longValue() > 0L){
 			query.setParameter("statusId", statusId);
 		}
-		
+		if(impactLevelIdList != null && impactLevelIdList.size()>0){
+			query.setParameterList("impactLevelIdList", impactLevelIdList);
+		}
+		if(priorityIdList != null && priorityIdList.size()>0){
+			query.setParameterList("priorityIdList", priorityIdList);
+		}
+		if(alertSourceIdList != null && alertSourceIdList.size()>0){
+			query.setParameterList("alertSourceIdList", alertSourceIdList);
+		}
+		if(printMediaIdList != null && printMediaIdList.size()>0){
+			query.setParameterList("printMediaIdList", printMediaIdList);
+		}
+		if(electronicMediaIdList != null && electronicMediaIdList.size()>0){
+			query.setParameterList("electronicMediaIdList", electronicMediaIdList);
+		}
 		return query.list(); 
 	}
     public List<Object[]> getStatusCount(Long locationId,String locationType,String searchType,Date startDate,Date endDate){
