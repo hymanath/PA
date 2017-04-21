@@ -369,7 +369,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	
     	
     	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-            sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+            sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) )");
             if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
                 sb.append(" or model.alert.alertCallerId is not null ");
           }else{
@@ -410,15 +410,15 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    		  query.setParameter("todayDate", new DateUtilService().getCurrentDateAndTime());
 	    	  }
 	    	  
-	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
-	    	      query.setParameterList("printIdList", printIdsList);
-	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	      query.setParameterList("printIdsList", printIdsList);
+	    	      query.setParameterList("electronicIdsList", electronicIdsList);
 	    	    }  
-	    	    else if(printIdsList != null && printIdsList.size()>0){
+	    	    /*else if(printIdsList != null && printIdsList.size()>0){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
-	    	    }
+	    	    }*/
 	    	  return query.list();
     }
     
@@ -885,7 +885,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			query.setParameterList("printIdList", printIdList);  
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
@@ -1051,7 +1051,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			query.setParameterList("printIdList", printIdList);  
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
@@ -1229,7 +1229,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			query.setParameterList("printIdList", printIdList);  
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
@@ -1690,7 +1690,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	sb.append(" where model.isDeleted = 'N'  and model.alert.isDeleted='N' and model.isApproved='Y' " );
    	
    	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-        sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+        sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) )");
         if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
             sb.append(" or model.alert.alertCallerId is not null ");
       }else{
@@ -1737,15 +1737,15 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    		  query.setDate("toDate", toDate);
 	    	  }
 	    	  
-	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
-	    	      query.setParameterList("printIdList", printIdsList);
-	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	      query.setParameterList("printIdsList", printIdsList);
+	    	      query.setParameterList("electronicIdsList", electronicIdsList);
 	    	    }  
-	    	    else if(printIdsList != null && printIdsList.size()>0){
+	    	    /*else if(printIdsList != null && printIdsList.size()>0){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
-	    	    }
+	    	    }*/
 	    	  return query.list();
    }
     public List<Long> getDistrictOffcerSubTsksAlertIds(Long govtDeptDesigOffceId,Long govtOffceId,String type,Date fromDate,Date toDate,Long statusId,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
@@ -1776,7 +1776,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	}
    	
    	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-        sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+        sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) )");
         if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
             sb.append(" or model.alert.alertCallerId is not null ");
       }else{
@@ -1807,15 +1807,15 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    		  query.setDate("toDate", toDate);
 	    	  }
 	    	  
-	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
-	    	      query.setParameterList("printIdList", printIdsList);
-	    	      query.setParameterList("electronicIdList", electronicIdsList);
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	      query.setParameterList("printIdsList", printIdsList);
+	    	      query.setParameterList("electronicIdsList", electronicIdsList);
 	    	    }  
-	    	    else if(printIdsList != null && printIdsList.size()>0){
+	    	    /*else if(printIdsList != null && printIdsList.size()>0){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
-	    	    }
+	    	    }*/
 	    	  return query.list();
    }
   @SuppressWarnings("unchecked")
