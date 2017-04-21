@@ -2818,7 +2818,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForStateLevel(result,groupType
 				mainJosnObjArrState.push({name:'Closed',data:Closed,color:"#ababab"});  
 			  }
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrState.length ;
 			if(heightOfDiv >10){
@@ -2909,7 +2909,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForStateLevel(result,groupType
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				 $.each($('#stateLevelGraphStausWise'+departmentId).find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
 					$(this).attr("onclick","getStatelevelClick(\'"+departmentId+"\',\'"+result[index].id+"\',0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\')");			
@@ -3171,7 +3171,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,groupT
 				mainJosnObjArrDistrict.push({name:'Closed',data:Closed,color:"#ababab"});  
 			  }
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrDistrict.length ;
 			if(heightOfDiv >10){
@@ -3265,7 +3265,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,groupT
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				$.each($('#districtLevelGraphStausWise'+departmentId).find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
 					$(this).attr("onclick","getlevelAndStatusWiseClickForDistrict(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\',\'"+departmentId+"\')");		
@@ -3358,7 +3358,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,groupT
 				mainJosnObjArrDistrictOverview.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
 			  } 
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrDistrictOverView.length ;
 			if(heightOfDiv >10){
@@ -3451,7 +3451,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDistrictLevel(result,groupT
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				 $.each($('#districtLevelGraphStausWise'+departmentId).find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
 					 
@@ -3595,7 +3595,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,groupT
 			  }
 		
 		
-			
+		}	
 			var heightOfDiv = locationNamesArrDivision.length ;
 			if(heightOfDiv >10){
 				heightOfDiv = heightOfDiv * 50;
@@ -3688,7 +3688,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,groupT
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				$.each($('#divisionLevelGraphStausWise'+departmentId).find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");  
 					$(this).attr("onclick","getlevelAndStatusWiseClickForDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\',\'"+departmentId+"\')");		
@@ -3782,7 +3782,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,groupT
 				mainJosnObjArrDivisionOverview.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
 			  } 
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrDivisionOverView.length ;
 			if(heightOfDiv >10){
@@ -3875,7 +3875,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForDivisionLevel(result,groupT
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				$.each($('#divisionLevelGraphStausWise'+departmentId).find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");  
 					$(this).attr("onclick","getlevelAndStatusWiseClickForDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\',\'"+departmentId+"\')");	
@@ -4016,7 +4016,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,gro
 				mainJosnObjArrsubDivision.push({name:'Closed',data:Closed,color:"#ababab"});  
 			  }
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrsubDivision.length ;
 			if(heightOfDiv >10){
@@ -4112,7 +4112,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,gro
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				$.each($('#subDivisionLevelGraphStausWise'+departmentId).find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
 					$(this).attr("onclick","getlevelAndStatusWiseClickForSubDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\',\'"+departmentId+"\')"); 					
@@ -4207,7 +4207,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,gro
 			  } 
 		
 		
-			
+		}
 			var heightOfDiv = locationNamesArrsubDivisionOverView.length ;
 			if(heightOfDiv >10){
 				heightOfDiv = heightOfDiv * 50;
@@ -4301,7 +4301,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,gro
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				$.each($('#subDivisionLevelGraphStausWise'+departmentId).find(".highcharts-xaxis-labels").find("text"),function(index,item){
 					$(this).attr("style","cursor:pointer;");    
 					$(this).attr("onclick","getlevelAndStatusWiseClickForSubDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\',\'"+departmentId+"\')");    

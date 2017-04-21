@@ -2622,7 +2622,7 @@ function buildStatusWiseForZoneLevel(result,groupType){
 			  }
 		
 		
-			
+		}	
 			var heightOfDiv = locationNamesArrDistrict.length ;
 			if(heightOfDiv >10){
 				heightOfDiv = heightOfDiv * 50;
@@ -2715,7 +2715,7 @@ function buildStatusWiseForZoneLevel(result,groupType){
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				 /* $.each($('#zoneLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
 					$(this).attr("onclick","getlevelAndStatusWiseClickForDistrict(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\')");		
@@ -2814,7 +2814,7 @@ function buildStatusWiseForZoneLevel(result,groupType){
 			  } 
 		
 		
-			
+		}	
 			var heightOfDiv = locationNamesArrDistrictOverView.length ;
 			if(heightOfDiv >10){
 				heightOfDiv = heightOfDiv * 50;
@@ -2906,7 +2906,7 @@ function buildStatusWiseForZoneLevel(result,groupType){
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				/*  $.each($('#zoneLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
 					//$(this).attr("class","getTotaldistrictCls");   
@@ -3050,7 +3050,7 @@ function buildStatusWiseForDistrictLevel(result,groupType,departmentId,alertType
 			  }
 		
 		
-			
+		}	
 			var heightOfDiv = locationNamesArrDistrict.length ;
 			if(heightOfDiv >10){
 				heightOfDiv = heightOfDiv * 50;
@@ -3143,7 +3143,7 @@ function buildStatusWiseForDistrictLevel(result,groupType,departmentId,alertType
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				 $.each($('#districtLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
 					$(this).attr("onclick","getlevelAndStatusWiseClickForDistrict(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\',\'"+departmentId+"\')");		
@@ -3239,7 +3239,7 @@ function buildStatusWiseForDistrictLevel(result,groupType,departmentId,alertType
 				mainJosnObjArrDistrictOverview.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
 			  } 
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrDistrictOverView.length ;
 			if(heightOfDiv >10){
@@ -3332,7 +3332,7 @@ function buildStatusWiseForDistrictLevel(result,groupType,departmentId,alertType
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				 $.each($('#districtLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
 					 
@@ -3472,7 +3472,7 @@ function buildStatusWiseForDivisionLevel(result,groupType,departmentId,alertType
 				mainJosnObjArrDivision.push({name:'Closed',data:Closed,color:"#ababab"});  
 			  }
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrDivision.length ;
 			if(heightOfDiv >10){
@@ -3566,7 +3566,7 @@ function buildStatusWiseForDivisionLevel(result,groupType,departmentId,alertType
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}	
+				
 			 $.each($('#divisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");  
 					
@@ -3664,7 +3664,7 @@ function buildStatusWiseForDivisionLevel(result,groupType,departmentId,alertType
 			  } 
 		
 		
-			
+		}	
 			var heightOfDiv = locationNamesArrDivisionOverView.length ;
 			if(heightOfDiv >10){
 				heightOfDiv = heightOfDiv * 50;
@@ -3756,7 +3756,7 @@ function buildStatusWiseForDivisionLevel(result,groupType,departmentId,alertType
 					shared: true
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
-			}
+			
 				$.each($('#divisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");  
 					$(this).attr("onclick","getlevelAndStatusWiseClickForDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\',\'"+departmentId+"\')");	
@@ -3895,7 +3895,7 @@ function buildStatusWiseForSubDivisionLevel(result,groupType,departmentId){
 				mainJosnObjArrsubDivision.push({name:'Closed',data:Closed,color:"#ababab"});  
 			  }
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrsubDivision.length ;
 			if(heightOfDiv >10){
@@ -3990,7 +3990,7 @@ function buildStatusWiseForSubDivisionLevel(result,groupType,departmentId){
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 				
-			}
+			
 			 $.each($('#SubdivisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;");    
 				
@@ -4086,7 +4086,7 @@ function buildStatusWiseForSubDivisionLevel(result,groupType,departmentId){
 				mainJosnObjArrsubDivisionOverview.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
 			  } 
 		
-		
+		}
 			
 			var heightOfDiv = locationNamesArrsubDivisionOverView.length ;
 			if(heightOfDiv >10){
@@ -4180,7 +4180,7 @@ function buildStatusWiseForSubDivisionLevel(result,groupType,departmentId){
 				};
 				highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip);
 				
-			}
+			
 			 $.each($('#SubdivisionLevelIASDetails').find(".highcharts-xaxis-labels").find("text"),function(index,item){
 					$(this).attr("style","cursor:pointer;");    
 				$(this).attr("onclick","getlevelAndStatusWiseClickForSubDivision(0,\'"+result[index].name+"\',\'"+result[index].totalCount+"\',0,\'"+result[index].id+"\',\'"+departmentId+"\')");  
