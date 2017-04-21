@@ -607,20 +607,48 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			for (int i = 0; i < calCntrIdArr.length(); i++){
 				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 			}
-			
+			//srujana
+			JSONArray impactLevelIdArr = jObj.getJSONArray("impactLevelArr");  
+			List<Long> impactLevelIdList = new ArrayList<Long>();
+			for (int i = 0; i < impactLevelIdArr.length(); i++){
+				impactLevelIdList.add(Long.parseLong(impactLevelIdArr.getString(i)));        
+			}
+			JSONArray priorityIdArr = jObj.getJSONArray("priorityArr");  
+			List<Long> priorityIdList = new ArrayList<Long>();
+			for (int i = 0; i < priorityIdArr.length(); i++){
+				priorityIdList.add(Long.parseLong(priorityIdArr.getString(i)));        
+			}
+			JSONArray alertSourceIdArr = jObj.getJSONArray("alertSourceArr");  
+			List<Long> alertSourceIdList = new ArrayList<Long>();
+			for (int i = 0; i < alertSourceIdArr.length(); i++){
+				alertSourceIdList.add(Long.parseLong(alertSourceIdArr.getString(i)));        
+			}
+			JSONArray printMediaIdArr = jObj.getJSONArray("printMediaArr");  
+			List<Long> printMediaIdList = new ArrayList<Long>();
+			for (int i = 0; i < printMediaIdArr.length(); i++){
+				printMediaIdList.add(Long.parseLong(printMediaIdArr.getString(i)));        
+			}
+			JSONArray electronicMediaIdArr = jObj.getJSONArray("electronicMediaArr");  
+			List<Long> electronicMediaIdList = new ArrayList<Long>();
+			for (int i = 0; i < electronicMediaIdArr.length(); i++){
+				electronicMediaIdList.add(Long.parseLong(electronicMediaIdArr.getString(i)));        
+			}
 			if(statusId != null && statusId.longValue() == 1L){//pending
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,null,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+			}else if(statusId != null && (statusId.longValue() == 4l || statusId.longValue() == 6l || statusId.longValue() == 7l || statusId.longValue() == 10l || statusId.longValue() == 12l)){//other completed,action not required,duplicate,rejoinder,closed
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,null,null,null,null,null);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else{
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,null,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,null,calCntrIdList,null,null,null,null,null);
 				List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
 				if(alertCoreDashBoardVOs != null){
 					list1.addAll(alertCoreDashBoardVOs);
 				}
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,null,null,null,null,null);
 				List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
 				if(alertCoreDashBoardVOs != null ){
 					list2.addAll(alertCoreDashBoardVOs);
@@ -696,7 +724,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			} 
 			Long govtDeptScopeId = jObj.getLong("govtDeptScopeId");
 			
-			alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,govtDeptScopeId,null,calCntrIdList);
+			alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,govtDeptScopeId,null,calCntrIdList,null,null,null,null,null);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
@@ -745,18 +773,18 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			} 
 			Long deptId = jObj.getLong("deptId");
 			if(statusId != null && statusId.longValue() == 1L){//pending
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,deptId,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,deptId,calCntrIdList,null,null,null,null,null);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else{
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,deptId,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,deptId,calCntrIdList,null,null,null,null,null);
 				List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
 				if(alertCoreDashBoardVOs != null){
 					list1.addAll(alertCoreDashBoardVOs);
 				}
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null);
 				List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
 				if(alertCoreDashBoardVOs != null ){
 					list2.addAll(alertCoreDashBoardVOs);
@@ -814,7 +842,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}  
 			Long govtDeptScopeId = jObj.getLong("govtDeptScopeId");      
 			Long deptId = jObj.getLong("deptId");
-			alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,govtDeptScopeId,deptId,calCntrIdList);
+			alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,govtDeptScopeId,deptId,calCntrIdList,null,null,null,null,null);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
@@ -2178,7 +2206,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String alertType = jObj.getString("alertType");
 				String searchType = jObj.getString("searchType");
 				String group = jObj.getString("group");
-				JSONArray subLevelsArr = jObj.getJSONArray("subLevels");  
+				JSONArray subLevelsArr = jObj.getJSONArray("subLevels"); 
 				List<Long> sublevels = new ArrayList<Long>();
 				if(subLevelsArr != null && subLevelsArr.length() > 0){
 					for (int i = 0; i < subLevelsArr.length(); i++){
