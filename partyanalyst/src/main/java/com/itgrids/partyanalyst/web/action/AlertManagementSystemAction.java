@@ -1846,7 +1846,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				Long userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAlertsCountView(userId);
+				String startDateStr = jObj.getString("fromDate");
+				String endDateStr = jObj.getString("toDate");
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAlertsCountView(userId,startDateStr,endDateStr);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -1860,7 +1862,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				Long userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMySubTasksCountView(userId);
+				String startDateStr = jObj.getString("fromDate");
+				String endDateStr = jObj.getString("toDate");
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMySubTasksCountView(userId,startDateStr,endDateStr);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -1874,7 +1878,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				Long userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAssignedSubTasksCountView(userId);
+				String startDateStr = jObj.getString("fromDate");
+				String endDateStr = jObj.getString("toDate");
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAssignedSubTasksCountView(userId,startDateStr,endDateStr);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -2277,7 +2283,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");
 				String sortingType = jObj.getString("sortingType");
 				String order = jObj.getString("order");
-				String alertType = null;
+				String alertType = jObj.getString("alertType");
 				Long districtWorkLocationId = jObj.getLong("districtWorkLocationId");
 				Long divisionWorkLocationId = jObj.getLong("divisionWorkLocationId");
 				Long subDivisionWorkLocationId = jObj.getLong("subDivisionWorkLocationId");
@@ -2518,8 +2524,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					Long officerId = jObj.getLong("officerId");  
 					Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
 					String searchType = jObj.getString("searchType");
+					String startDate = jObj.getString("fromDate");
+					String endDate = jObj.getString("toDate");
 					
-					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptId,statusId,type,officerId,desigDeptOfficerId,searchType);
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptId,statusId,type,officerId,desigDeptOfficerId,searchType,startDate,endDate);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
