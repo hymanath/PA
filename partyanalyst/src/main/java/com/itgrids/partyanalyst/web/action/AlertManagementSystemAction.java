@@ -1784,7 +1784,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 				}
 				
-				alertVOs = alertManagementSystemService.stateLevelDeptOfficerStatusOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
+				JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> calCntrIdList = new ArrayList<Long>();
+				if(calCntrIdArr != null && calCntrIdArr.length() > 0){
+					for (int i = 0; i < calCntrIdArr.length(); i++){
+						calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+					}
+				}
+				
+				alertVOs = alertManagementSystemService.stateLevelDeptOfficerStatusOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,calCntrIdList);
 			}catch(Exception e){
 				LOG.error("Exception occured in getStatusWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
 			}
@@ -1818,7 +1826,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 				}
 				
-				alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
+				JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> calCntrIdList = new ArrayList<Long>();
+				if(calCntrIdArr != null && calCntrIdArr.length() > 0){
+					for (int i = 0; i < calCntrIdArr.length(); i++){
+						calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+					}
+				}
+				
+				alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,calCntrIdList);
 			}catch(Exception e){
 				LOG.error("Exception occured in stateLevelDeptOfficerLocationLevelOverview() of AlertManagementSystemAction",e);
 			}
@@ -2317,7 +2333,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 				}
 				
-				alertVOs = alertManagementSystemService.stateLevelDeptOfficerDepartmentWiseAlertsView(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
+				JSONArray callCenterArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> callCenterIds = new ArrayList<Long>();
+				if(callCenterArr != null && callCenterArr.length() > 0){
+					for (int i = 0; i < callCenterArr.length(); i++){
+						callCenterIds.add(Long.parseLong(callCenterArr.getString(i)));          
+					}  
+				}
+				
+				alertVOs = alertManagementSystemService.stateLevelDeptOfficerDepartmentWiseAlertsView(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIds);
 			}catch(Exception e){
 				LOG.error("Exception occured in getStatusWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
 			}
