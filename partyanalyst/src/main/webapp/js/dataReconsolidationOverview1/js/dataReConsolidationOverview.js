@@ -399,7 +399,7 @@ function buildPopUpModelDetails(result){
 		var actualCount = result[i].actualCount;
 		//var totAmount = result[i].totalAmount;
 		str +='<td class ="text-center">'+result[i].surveyDate+'</td>';
-		str+='<td><img src="http://www.mytdp.in/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+		str+='<td><img src="http://www.mytdp.com/CR/tab_user_images/'+result[i].imagePath+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 		str +='<td class ="text-center">'+result[i].name+'</td>';
 		str +='<td class ="text-center">'+result[i].mobileNo+'</td>';
 		str +='<td class ="text-center">'+result[i].firstRecord+'</td>';
