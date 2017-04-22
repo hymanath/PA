@@ -5600,7 +5600,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     	    }
     	}
         //For status over view sub task for state level page
-        public List<AlertVO> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
+        public List<AlertVO> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> callCenterIdslIst){
       		LOG.info("Entered in stateLevelDeptOfficerLocationLevelOverviewBySubTasks() method of AlertManagementSystemService{}");
       		try{
       			Date fromDate = null;
@@ -5621,7 +5621,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
       				}
       			}
-      			List<Object[]> rtrnObjLst = govtAlertSubTaskDAO.stateLevelDeptOfficerLocationLevelOverviewBySubTasks(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Level",null,null);
+      			List<Object[]> rtrnObjLst = govtAlertSubTaskDAO.stateLevelDeptOfficerLocationLevelOverviewBySubTasks(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Level",null,null,callCenterIdslIst);
       			setAlertCount(rtrnObjLst,finalAlertVOs);
       			return finalAlertVOs; 
       		}catch(Exception e){
@@ -5713,7 +5713,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		
 	 }
 	//For state level page
-     public List<AlertVO> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId){
+     public List<AlertVO> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> callCenterIdsList){
  		LOG.info("Entered in stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick() method of AlertManagementSystemService{}");
  		try{
  			
@@ -5740,7 +5740,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
  				}
  			}
- 			List<Object[]> alertCountList2 = govtAlertSubTaskDAO.stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"status",null,null);
+ 			List<Object[]> alertCountList2 = govtAlertSubTaskDAO.stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"status",null,null,callCenterIdsList);
  			if(alertCountList2 != null && alertCountList2.size() > 0){
  				totalList.addAll(alertCountList2);
  			}

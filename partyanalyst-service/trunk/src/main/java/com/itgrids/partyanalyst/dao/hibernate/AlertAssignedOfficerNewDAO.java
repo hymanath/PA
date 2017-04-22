@@ -96,15 +96,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    Query query = getSession().createQuery(sb.toString());
     	    if(departmentIds != null && !departmentIds.isEmpty())
     	      query.setParameterList("departmentIds", departmentIds);
-    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty()){
     	      query.setParameterList("printIdList", printIdsList);
     	      query.setParameterList("electronicIdList", electronicIdsList);
     	    }  
-    	    else if(printIdsList != null && !printIdsList.isEmpty()){
+    	    /*else if(printIdsList != null && !printIdsList.isEmpty()){
     	      query.setParameterList("printIdList", printIdsList);
     	    }else if(electronicIdsList != null && !electronicIdsList.isEmpty()){
     	      query.setParameterList("electronicIdList", electronicIdsList);
-    	    }
+    	    }*/
     	    if(fromDate != null && toDate != null){
     	        query.setDate("fromDate", fromDate);
     	        query.setDate("toDate", toDate);
@@ -3068,15 +3068,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	    Query query = getSession().createQuery(sb.toString());
  	    if(departmentIds != null && !departmentIds.isEmpty())
  	      query.setParameterList("departmentIds", departmentIds);
- 	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+ 	   if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty()){
  	      query.setParameterList("printIdList", printIdsList);
  	      query.setParameterList("electronicIdList", electronicIdsList);
  	    }  
- 	    else if(printIdsList != null && !printIdsList.isEmpty()){
+ 	    /*else if(printIdsList != null && !printIdsList.isEmpty()){
  	      query.setParameterList("printIdList", printIdsList);
  	    }else if(electronicIdsList != null && !electronicIdsList.isEmpty()){
  	      query.setParameterList("electronicIdList", electronicIdsList);
- 	    }
+ 	    }*/
  	    if(fromDate != null && toDate != null){
  	        query.setDate("fromDate", fromDate);
  	        query.setDate("toDate", toDate);
