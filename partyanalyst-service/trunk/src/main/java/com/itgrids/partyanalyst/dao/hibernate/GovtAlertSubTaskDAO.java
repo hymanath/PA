@@ -1834,7 +1834,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  return query.list();
    }
   @SuppressWarnings("unchecked")
-public List<Object[]> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,String type,List<Long> alertStatusIds,List<Long> departmentScopeIds){
+public List<Object[]> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,String type,List<Long> alertStatusIds,List<Long> departmentScopeIds,List<Long> callCenterIdsList){
 		StringBuilder sb = new StringBuilder();  
 	    sb.append("select ");
 	    if(type.equalsIgnoreCase("Status")){
@@ -1861,9 +1861,19 @@ public List<Object[]> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(Date 
 	    if(departmentIds != null && !departmentIds.isEmpty())
 	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 	    
-	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");
-	 
+	    /*if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
+	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");*/
+	    
+	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && callCenterIdsList !=null && !callCenterIdsList.isEmpty() ){
+			sb.append(" AND ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) ) ");
+			 if( callCenterIdsList !=null && !callCenterIdsList.isEmpty() && callCenterIdsList.get(0) != 0 ){
+				sb.append(" or model.alert.alertCallerId is not null ");
+			}else{
+				sb.append(" or model.alert.alertCallerId is null ");
+			}
+			 sb.append(" )");
+		}
+	    
 	    if(fromDate != null && toDate != null)
 	      sb.append(" and date(model.createdTime) between :fromDate and :toDate");
 	    
@@ -1905,15 +1915,15 @@ public List<Object[]> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(Date 
 	    Query query = getSession().createQuery(sb.toString());
 	    if(departmentIds != null && !departmentIds.isEmpty())
 	      query.setParameterList("departmentIds", departmentIds);
-	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && callCenterIdsList !=null && callCenterIdsList.size() > 0){
 	      query.setParameterList("printIdList", printIdsList);
 	      query.setParameterList("electronicIdList", electronicIdsList);
 	    }  
-	    else if(printIdsList != null && !printIdsList.isEmpty()){
+	   /* else if(printIdsList != null && !printIdsList.isEmpty()){
 	      query.setParameterList("printIdList", printIdsList);
 	    }else if(electronicIdsList != null && !electronicIdsList.isEmpty()){
 	      query.setParameterList("electronicIdList", electronicIdsList);
-	    }
+	    }*/
 	    if(fromDate != null && toDate != null){
 	        query.setDate("fromDate", fromDate);
 	        query.setDate("toDate", toDate);
@@ -1932,7 +1942,7 @@ public List<Object[]> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(Date 
    @SuppressWarnings("unchecked")
 public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(Date fromDate, Date toDate, Long stateId,
 		      List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,
-		      List<Long> levelValues,String type,List<Long> alertSubTaskStatusIds,List<Long> departmentScopeIds){
+		      List<Long> levelValues,String type,List<Long> alertSubTaskStatusIds,List<Long> departmentScopeIds,List<Long> callCenterIdsList){
 		StringBuilder sb = new StringBuilder();  
 	    sb.append("select ");
 	    if(type.equalsIgnoreCase("Status")){
@@ -1961,8 +1971,17 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    if(departmentIds != null && !departmentIds.isEmpty())
 	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 	    
-	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
-	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");
+	    /*if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty())
+	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) )");*/
+	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && callCenterIdsList !=null && callCenterIdsList.size() > 0){
+			sb.append(" AND ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) ) ");
+			 if( callCenterIdsList !=null && !callCenterIdsList.isEmpty() && callCenterIdsList.get(0) != 0 ){
+				sb.append(" or model.alert.alertCallerId is not null ");
+			}else{
+				sb.append(" or model.alert.alertCallerId is null ");
+			}
+			 sb.append(" )");
+		}
 	 
 	    if(fromDate != null && toDate != null)
 	      sb.append(" and date(model.createdTime) between :fromDate and :toDate");
@@ -2005,15 +2024,16 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    Query query = getSession().createQuery(sb.toString());
 	    if(departmentIds != null && !departmentIds.isEmpty())
 	      query.setParameterList("departmentIds", departmentIds);
-	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty()){
+	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && callCenterIdsList !=null && !callCenterIdsList.isEmpty() ){
 	      query.setParameterList("printIdList", printIdsList);
 	      query.setParameterList("electronicIdList", electronicIdsList);
 	    }  
-	    else if(printIdsList != null && !printIdsList.isEmpty()){
+	    /*else if(printIdsList != null && !printIdsList.isEmpty()){
 	      query.setParameterList("printIdList", printIdsList);
 	    }else if(electronicIdsList != null && !electronicIdsList.isEmpty()){
 	      query.setParameterList("electronicIdList", electronicIdsList);
-	    }
+	    }*/
+	    
 	    if(fromDate != null && toDate != null){
 	        query.setDate("fromDate", fromDate);
 	        query.setDate("toDate", toDate);
