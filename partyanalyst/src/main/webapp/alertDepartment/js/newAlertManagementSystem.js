@@ -438,7 +438,8 @@ function onLoadInitialisations()
 		var statusId = $(this).attr("attr_status_id");
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
-		getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount)
+		getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount);
+		getFilterSectionAlertDetails(statusId,statusName,statuscount);
 	});
 	$(document).on("click",".getTotalAlertBylocationLvl",function(){
 		$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -450,7 +451,8 @@ function onLoadInitialisations()
 		var statusId = $(this).attr("attr_status_id");
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
-		getTotalAlertBylocationLvl(statusId,statusName,statuscount)
+		getTotalAlertBylocationLvl(statusId,statusName,statuscount);
+		getFilterSectionAlertDetails(statusId,statusName,statuscount);
 	});
 	$(document).on("click",".getTotalAlertBylocationLvlThenDept",function(){
 		$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -463,7 +465,8 @@ function onLoadInitialisations()
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
-		getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,departmentId)
+		getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,departmentId);
+		getFilterSectionAlertDetails(statusId,statusName,statuscount);
 	});
 	$(document).on("click",".getTotalAlertByStatusThenDept",function(){
 		$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
@@ -476,7 +479,8 @@ function onLoadInitialisations()
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
-		getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmentId)
+		getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmentId);
+		getFilterSectionAlertDetails(statusId,statusName,statuscount);
 	});
 	
 }

@@ -10,8 +10,7 @@
 	
 placeholder{color:#ffc019;}
   
-  //form
-  .loginFormBox .input-group
+.loginFormBox .input-group
 {
 	margin-top:25px;
 }
@@ -51,4 +50,19 @@ placeholder{color:#ffc019;}
     border-radius: 0 0 4px 4px !important;
     color: rgb(255, 255, 255);
     padding: 25px !important;
+}
+footer
+{
+	display:none;
+}
+.footer
+{
+	display:block;
+	background-color:rgba(0,0,0,0.2);
+	color:#333;
+	width:100%;
+	position:fixed;
+	bottom:0px;
+	right:0px;
+	left:0px;
 }
