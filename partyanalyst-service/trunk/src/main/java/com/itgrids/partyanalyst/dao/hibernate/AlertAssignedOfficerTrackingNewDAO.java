@@ -22,7 +22,19 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     	return query.list();
     }
     
-    public List<Object[]> getAlertStatusHistory(Long alertId){
+    public List<Object[]> getAlertStatusForAdminHistory(Long alertId,Long trackTypeId){
+    	//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
+    	Query query = getSession().createQuery(" select model.alertStatus.alertStatus,comment.comment,"
+    			+ " model.insertedTime,model.updatedUser.userName, '', ''  ,'',''  "
+    			+ " from  AlertAssignedOfficerTrackingNew model "
+    			+ " left join model.alertDepartmentComment comment "
+    			+ " where model.alertId=:alertId and model.govtAlertActionTypeId =:trackTypeId  order by model.insertedTime desc ");
+    	query.setParameter("alertId", alertId);
+    	query.setParameter("trackTypeId", trackTypeId);
+    	return query.list();
+    }
+    
+    public List<Object[]> getAlertStatusHistory(Long alertId,Long trackTypeId){
     	//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
     	Query query = getSession().createQuery(" select model.alertStatus.alertStatus,comment.comment,"
     			+ " model.insertedTime,model.updatedUser.userName, model2.govtOfficer.mobileNo , model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "
@@ -30,8 +42,9 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     			+ " from GovtDepartmentDesignationOfficerDetailsNew model2, AlertAssignedOfficerTrackingNew model "
     			+ " left join model.alertDepartmentComment comment "
     			+ " where model.alertId=:alertId  and " +
-    			"  model.updatedBy = model2.userId  order by model.insertedTime desc ");
+    			"  model.updatedBy = model2.userId and model.govtAlertActionTypeId =:trackTypeId order by model.insertedTime desc ");
     	query.setParameter("alertId", alertId);
+    	query.setParameter("trackTypeId", trackTypeId);
     	return query.list();
     }
     
@@ -49,7 +62,7 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     }
     */
     public List<Object[]> getCommentsForAlert(Long alertId){//0														//1
-    	 Query query = getSession().createQuery(" select model.alertDepartmentComment.alertDepartmentCommentId,model.alertDepartmentComment.comment, " +
+    	Query query = getSession().createQuery(" select model.alertDepartmentComment.alertDepartmentCommentId,model.alertDepartmentComment.comment, " +
     	 		" model.alertDepartmentComment.insertedTime, model.updatedUser.userName , model2.govtOfficer.mobileNo , model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "
 			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName "
     	 		+ " from AlertAssignedOfficerTrackingNew model , GovtDepartmentDesignationOfficerDetailsNew model2  "
@@ -58,8 +71,21 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     	 return query.list();
     }
     
+    public List<Object[]> getCommentsForAdminCommentsAlert(Long alertId){//0														//1
+    	
+    	 Query query = getSession().createQuery(" select distinct alertDepartmentComment.alertDepartmentCommentId,alertDepartmentComment.comment, " +
+     	 		" alertDepartmentComment.insertedTime, model.updatedUser.userName , '' ,'' ,'' "
+     	 		+ " from AlertAssignedOfficerTrackingNew model" +
+     	 		" left join  model.alertDepartmentComment alertDepartmentComment "
+     	 		+ " where model.alertId=:alertId and " +
+     	 		"  alertDepartmentComment.alertDepartmentCommentId is not null order by model.insertedTime desc ");
+     	 		
+    	 query.setParameter("alertId", alertId);
+    	 return query.list();
+    }
+    
     public List<Object[]> getDocumentsForAlert(Long alertId){
-    	Query query = getSession().createQuery(" select model.alertDepartmentDocument.alertDepartmentDocumentId,model.alertDepartmentDocument.document "
+    	Query query = getSession().createQuery(" select distinct model.alertDepartmentDocument.alertDepartmentDocumentId,model.alertDepartmentDocument.document "
     			+ " from AlertAssignedOfficerTrackingNew model "
     			+ " where model.alertId=:alertId ");
     	query.setParameter("alertId", alertId);
@@ -67,7 +93,7 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     }
     public List<String> getAlertDueDate (Long alertId){
   	  Query query = getSession().createSQLQuery("select distinct date(model.due_date) as dateStr from alert_assigned_officer_tracking_new model where model.alert_id=:alertId and " +
-  	  		" model.due_date is not null").addScalar("dateStr", Hibernate.STRING);
+  	  		" model.due_date is not null order by model.updated_time desc ").addScalar("dateStr", Hibernate.STRING);
   	  query.setParameter("alertId", alertId);
   	  return query.list();
   			  
