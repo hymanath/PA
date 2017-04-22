@@ -2424,7 +2424,13 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 					}
 					
-					alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverviewBySubTasks(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
+					JSONArray callCenterIdsArr = jObj.getJSONArray("callCenterIdsArr");  
+					List<Long> callCenterIdsList = new ArrayList<Long>(0);
+					for (int i = 0; i < callCenterIdsArr.length(); i++){
+						callCenterIdsList.add(Long.parseLong(callCenterIdsArr.getString(i)));        
+					}
+					
+					alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverviewBySubTasks(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIdsList);
 				}catch(Exception e){
 					LOG.error("Exception occured in stateLevelDeptOfficerLocationLevelOverviewBySubTasks() of AlertManagementSystemAction",e);
 				}
@@ -2458,7 +2464,13 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 					}
 					
-					alertVOs = alertManagementSystemService.stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId);
+					JSONArray callCenterIdsArr = jObj.getJSONArray("callCenterIdsArr");  
+					List<Long> callCenterIdsList = new ArrayList<Long>();
+					for (int i = 0; i < callCenterIdsArr.length(); i++){
+						callCenterIdsList.add(Long.parseLong(callCenterIdsArr.getString(i)));        
+					}
+					
+					alertVOs = alertManagementSystemService.stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIdsList);
 				}catch(Exception e){
 					LOG.error("Exception occured in stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick() of AlertManagementSystemAction",e);
 				}

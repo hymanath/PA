@@ -1,20 +1,11 @@
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
-var deptIdArr =[];
-var paperIdArr =[];
-var chanelIdArr =[];
-var printIdArr =[];
-var electronicIdArr =[];
-var globalDepartmentIdsArr=[];
-//check
-var globalUserLevelId;
-var globalUserLevelValues = [];	
-var globalDesignationId;	
-var globalOfficerIds = [];	
-var globalGovtDeptDesigOffcrIds = [];
-var subLevels=[];
-onLoadCalls(); 
+onLoadCallsForState(); 
+$(document).on("click",".filterSubmitBtnCls",function(){
+	onLoadCallsForState();
+});
+
 function getAlertType(){
 		 var alertType = ''; 
 		$('.switch-btn-alertType li').each(function(i, obj){
@@ -122,7 +113,7 @@ function getAlertType(){
 	});
 }
 
-function onLoadCalls(){
+function onLoadCallsForState(){
 	getDeptDetails();
 	getIASOfficerMyAlertsCountMainView();
 	getIASOfficerMySubTasksCountView();
@@ -390,7 +381,7 @@ $("#dateRangePickerAUM").daterangepicker({
 			$("#dateRangePickerAUM").val('All');
 		}
 		
-		onLoadCalls();
+		onLoadCallsForState();
 		getDeptDetails();
 	});
 	
@@ -1079,15 +1070,15 @@ function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip)
 
 function stateLevelDeptOfficerStatusOverview(){
 	$("#statusOverview").html(spinner);
-	var callCenterArr =[];
+	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr,
-	  callCenterArr:callCenterArr
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr :channelGlobalArr,
+	  callCenterArr:callCenterGlobalArr
     }
     $.ajax({
       type:'GET',
@@ -1222,15 +1213,15 @@ function buildstateLevelDeptOfficerStatusOverview(result)
 function stateLevelDeptOfficerLocationLevelOverview(){
 	
 	$("#levelWiseAlertOverview").html(spinner);
-	var callCenterArr = [];
+	
 	var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr,
-	  callCenterArr:callCenterArr
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr :channelGlobalArr,
+	  callCenterArr:callCenterGlobalArr
     }
     $.ajax({
       type:'GET',
@@ -1374,8 +1365,8 @@ function stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(){
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr :channelGlobalArr
     }
     $.ajax({
       type:'GET',
@@ -1515,8 +1506,9 @@ $("#levelWiseSubTasksAlertOverview").html(spinner);
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr :channelGlobalArr,
+	  callCenterIdsArr : callCenterGlobalArr
     }
     $.ajax({
       type:'GET',
@@ -1646,15 +1638,15 @@ function buildstateLevelDeptOfficerLocationLevelOverviewBySubTasks(result)
 
 function stateLevelDeptOfficerDepartmentWiseAlertsView(){
 	
-	var callCenterArr = [];
+	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr,
-	  callCenterArr:callCenterArr
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr :channelGlobalArr,
+	  callCenterArr:callCenterGlobalArr
     }
     $.ajax({
       type:'GET',
@@ -1848,8 +1840,9 @@ function stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(){
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : deptIdArr,  
-      paperIdArr : paperIdArr,
-      chanelIdArr :chanelIdArr
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr :channelGlobalArr,
+	  callCenterIdsArr : callCenterGlobalArr
     }
     $.ajax({
       type:'GET',
@@ -2151,14 +2144,14 @@ function getdepartmentWiseDetailedInformation(departmentId,departmentName){
 
 function getStatusWiseForStateLevel(departmentId,sortingType,orderType,alertType,groupType,districtId,divisionId,subDivisionId){
 	$("#stateLevelIASDetails").html(spinner);
-	var chanelIdArr = [];
+	
 
 	var jsObj={
 				fromDateStr:currentFromDate,
 				toDateStr:currentToDate,
 				stateId : 1,
-				printIdArr : printIdArr,
-				electronicIdArr : electronicIdArr,		
+				printIdArr : newspapersGlobalArr,
+				electronicIdArr : channelGlobalArr,		
 				govtDepartmentId : departmentId,
 				parentGovtDepartmentScopeId : 1,
 				sortingType :sortingType,
@@ -2169,7 +2162,7 @@ function getStatusWiseForStateLevel(departmentId,sortingType,orderType,alertType
 				subDivisionWorkLocationId : subDivisionId,
 				group :groupType,
 				subLevels:subLevels,
-				chanelIdArr:chanelIdArr
+				chanelIdArr:callCenterGlobalArr
 			}
 	$.ajax({
 		type:'GET',
@@ -2508,13 +2501,13 @@ function buildStatusWiseForStateLevel(result,groupType,alertType,departmentId){
 
 function getStatusWiseForZoneLevel(departmentId,sortingType,orderType,alertType,groupType,districtId,divisionId,subDivisionId){
 	$("#zoneLevelIASDetails").html(spinner);
-	var chanelIdArr = [];
+
 	var jsObj={
 			fromDateStr:currentFromDate,
 			toDateStr:currentToDate,
 			stateId : 1,
-			printIdArr : printIdArr,
-			electronicIdArr : electronicIdArr,		
+			printIdArr : newspapersGlobalArr,
+			electronicIdArr : channelGlobalArr,		
 			govtDepartmentId :departmentId,
 			parentGovtDepartmentScopeId : 2,
 			sortingType :sortingType,
@@ -2525,7 +2518,7 @@ function getStatusWiseForZoneLevel(departmentId,sortingType,orderType,alertType,
 			subDivisionWorkLocationId : subDivisionId,
 			group :groupType,
 			subLevels:subLevels,
-			chanelIdArr:chanelIdArr
+			chanelIdArr:callCenterGlobalArr
 			}
 	$.ajax({
 		type:'GET',
@@ -2937,13 +2930,13 @@ function buildStatusWiseForZoneLevel(result,groupType){
 
 function getStatusWiseForDistrictLevel(departmentId,sortingType,order,alertType,groupType,districtId,divisionId,subDivisionId){
 	$("#districtLevelIASDetails").html(spinner);
-	var chanelIdArr = [];
+	
 	var jsObj={
 			fromDateStr:currentFromDate,
 			toDateStr:currentToDate,
 			stateId : 1,
-			printIdArr : printIdArr,
-			electronicIdArr : electronicIdArr,		
+			printIdArr : newspapersGlobalArr,
+			electronicIdArr : channelGlobalArr,		
 			govtDepartmentId : departmentId,
 			parentGovtDepartmentScopeId : 5,
 			sortingType :sortingType,
@@ -2954,7 +2947,7 @@ function getStatusWiseForDistrictLevel(departmentId,sortingType,order,alertType,
 			subDivisionWorkLocationId : subDivisionId,
 			group :groupType,
 			subLevels:subLevels,
-			chanelIdArr:chanelIdArr
+			chanelIdArr:callCenterGlobalArr
 			}
 	$.ajax({
 		type:'GET',
@@ -3359,13 +3352,13 @@ function buildStatusWiseForDistrictLevel(result,groupType,departmentId,alertType
 }
 function getStatusWiseForDivisionLevel(departmentId,sortingType,order,alertType,groupType,districtId,divisionId,subDivisionId){
 	$("#divisionLevelIASDetails").html(spinner);
-	var chanelIdArr = [];
+	
 	var jsObj={
 			fromDateStr:currentFromDate,
 			toDateStr:currentToDate,
 			stateId : 1,
-			printIdArr : printIdArr,
-			electronicIdArr : electronicIdArr,		
+			printIdArr : newspapersGlobalArr,
+			electronicIdArr : channelGlobalArr,		
 			govtDepartmentId :departmentId,
 			parentGovtDepartmentScopeId : 6,
 			sortingType :sortingType,
@@ -3376,7 +3369,7 @@ function getStatusWiseForDivisionLevel(departmentId,sortingType,order,alertType,
 			subDivisionWorkLocationId :subDivisionId,
 			group :groupType,
 			subLevels:subLevels,
-			chanelIdArr:chanelIdArr
+			chanelIdArr:callCenterGlobalArr
 			}
 	$.ajax({
 		type:'GET',
@@ -3782,13 +3775,13 @@ function buildStatusWiseForDivisionLevel(result,groupType,departmentId,alertType
 }
 function getStatusWiseForSubDivisionLevel(departmentId,sortingType,order,alertType,groupType,districtId,divisionId,subDivisionId){
 		$("#SubdivisionLevelIASDetails").html(spinner);
-		var chanelIdArr = [];
+		
 	var jsObj={
 			fromDateStr:currentFromDate,
 			toDateStr:currentToDate,
 			stateId : 1,
-			printIdArr : printIdArr,
-			electronicIdArr : electronicIdArr,		
+			printIdArr : newspapersGlobalArr,
+			electronicIdArr : channelGlobalArr,		
 			govtDepartmentId : departmentId,
 			parentGovtDepartmentScopeId : 7,
 			sortingType :sortingType,
@@ -3799,7 +3792,7 @@ function getStatusWiseForSubDivisionLevel(departmentId,sortingType,order,alertTy
 			subDivisionWorkLocationId :subDivisionId,
 			group :groupType,
 			subLevels:subLevels,
-			chanelIdArr:chanelIdArr
+			chanelIdArr:callCenterGlobalArr
 			}
 	$.ajax({
 		type:'GET',
@@ -4340,9 +4333,7 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,leve
 			backdrop: 'static'
 		});
 		$("#alertManagementPopupBody").html(spinner);
-		var paperIdList = [];
-		var chanelIdArr = [];
-		var callCenterArr = [];
+	
 		//callCenterArr.push(1);
 		var jObj = {
 			departmentIdsArr: departmentIdsArr,
@@ -4353,9 +4344,9 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,leve
 			endDate:currentToDate,
 			desigDeptOfficerId:0,
 			officerId:0,
-			paperIdArr:paperIdList,
-			chanelIdArr:chanelIdArr,
-			callCenterArr:callCenterArr
+			paperIdArr:newspapersGlobalArr,
+			chanelIdArr:channelGlobalArr,
+			callCenterArr:callCenterGlobalArr
 			
 		}
 	$.ajax({
@@ -4397,9 +4388,9 @@ function getlevelAndStatusWiseClickForDistrict(statusId,statusName,totalCount,sc
     fromDate : currentFromDate, 
     toDate : currentToDate,
     stateId:1,
-    paperIdArr:paperIdArr,
-    chanelIdArr:chanelIdArr,
-	callCenterArr : calCntrIdArr,
+    paperIdArr:newspapersGlobalArr,
+    chanelIdArr:channelGlobalArr,
+	callCenterArr : callCenterGlobalArr,
     parentGovtDepartmentScopeId:5,
     govtDepartmentId:departmentId,
     sortType:sortingType,
@@ -4452,9 +4443,9 @@ function getlevelAndStatusWiseClickForDivision(statusId,statusName,totalCount,sc
     fromDate : currentFromDate, 
     toDate : currentToDate,
     stateId:1,
-    paperIdArr:paperIdArr,
-    chanelIdArr:chanelIdArr,
-	callCenterArr : calCntrIdArr,
+    paperIdArr:newspapersGlobalArr,
+    chanelIdArr:channelGlobalArr,
+	callCenterArr : callCenterGlobalArr,
     parentGovtDepartmentScopeId:6,
     govtDepartmentId:departmentId,
     sortType:sortingType,
@@ -4501,14 +4492,14 @@ function getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount
 	var sortingType = getSubDivision().subSortingType; // 'value1'
 	var orderType = getSubDivision().subOrderType; // 'value2'
 	var alertType = getAlertType();
-	var calCntrIdArr = [];
+	
     var jObj = {
     fromDate : currentFromDate, 
     toDate : currentToDate,
     stateId:1,
-	paperIdArr:paperIdArr,
-    chanelIdArr:chanelIdArr,
-	callCenterArr : calCntrIdArr,
+	paperIdArr:newspapersGlobalArr,
+    chanelIdArr:channelGlobalArr,
+	callCenterArr : callCenterGlobalArr,
     parentGovtDepartmentScopeId:7,
     govtDepartmentId:departmentId,
     sortType:sortingType,
@@ -4554,13 +4545,13 @@ function getStatelevelClick(departmentId,levelId,statusId,statusName,totalCount)
     fromDate:currentFromDate,
     toDate:currentToDate,
     stateId : 1,
-    paperIdArr:paperIdArr,
-    chanelIdArr:chanelIdArr,
+    paperIdArr:newspapersGlobalArr,
+    chanelIdArr:channelGlobalArr,
     govtDepartmentId : departmentId,
     parentGovtDepartmentScopeId : 1,
 	deptScopeId : levelId,    
 	statusId:statusId,   
-	callCenterArr:callCenterArr               
+	callCenterArr:callCenterGlobalArr               
     }
     $.ajax({
     type:'GET',                        
