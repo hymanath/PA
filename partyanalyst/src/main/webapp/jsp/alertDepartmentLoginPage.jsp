@@ -92,6 +92,21 @@ header
 	</div>
 	</form>
 </div>
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<p class="m_top20">All &copy; Government Of Andhra Pradesh</p>
+			</div>
+			<div class="col-sm-6">
+				<img src="alertDepartment/img/log_itgrids.png" class="img-responsive pull-right"/>
+			</div>
+			<div class="col-sm-12 text-right">
+				<p>Powered By ITGRIDS INDIA PVT LTD</p>
+			</div>
+		</div>
+	</div>
+</footer>
 <script>
 $("#userName1").focus();
 var userip = "";
