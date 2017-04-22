@@ -325,8 +325,6 @@ var globalUserLevelId;
 var globalUserLevelValues = [];	
 var globalgovtDeptDesigOffcrId;
 var	globalgovtOfficerId;
-//var paperIdArr = [];
-//var chanelIdArr = [];
 var newspapersGlobalArr =[];
 var channelGlobalArr =[];
 var callCenterGlobalArr=[];
@@ -350,43 +348,14 @@ $(document).on("click",function(){
 $(document).on("click",".documentCloseClass",function(e){
 	e.stopPropagation();
 });
-
+onLoadPrintAndChannelAndCallCen();
 $(document).on("click",".selectAllCls",function(){
 	if($(this).prop('checked')) {
 		$(".newsPaperListCls").prop('checked', true);
 		$(".chanelListCls").prop('checked', true);
 		$(".callcenterCls").prop('checked', true);
-		$(".newsPaperListCls").each(function(){
-		newspapersGlobalArr=[];
-		channelGlobalArr=[];
-		callCenterGlobalArr=[];
-		if($(this).is(":checked"))
-		{
-			<c:forEach var="newsPaper" items="${newsPaperList}">
-				var newspapersGlobalObj = '${newsPaper.id}'
-				newspapersGlobalArr.push(newspapersGlobalObj)
-			 </c:forEach>
-		}
-	});
-
-	$(".chanelListCls").each(function(){
 		
-		if($(this).is(":checked"))
-		{
-			 <c:forEach items="${chanelListNew}"  var="channels">
-				var channelGlobalObj = '${channels.id}'
-				channelGlobalArr.push(channelGlobalObj)
-			 </c:forEach>
-		}
-	});
-	$(".callcenterCls").each(function(){
-		
-		if($(this).is(":checked"))
-		{
-			var callCenterObj = $(this).attr("attr_val");
-			callCenterGlobalArr.push(callCenterObj);
-		}
-	}); 
+		onLoadPrintAndChannelAndCallCen();
 
 	}else{
 		$(".newsPaperListCls").prop('checked', false);
@@ -398,9 +367,11 @@ $(document).on("click",".selectAllCls",function(){
 	}
 	
 });
-
-  $(".newsPaperListCls").each(function(){
+function onLoadPrintAndChannelAndCallCen(){
 	newspapersGlobalArr=[];
+	channelGlobalArr=[];
+	callCenterGlobalArr=[];
+	$(".newsPaperListCls").each(function(){
 	if($(this).is(":checked"))
 	{
 		<c:forEach var="newsPaper" items="${newsPaperList}">
@@ -411,7 +382,6 @@ $(document).on("click",".selectAllCls",function(){
 });
 
 $(".chanelListCls").each(function(){
-	channelGlobalArr=[];
 	if($(this).is(":checked"))
 	{
 		 <c:forEach items="${chanelListNew}"  var="channels">
@@ -421,46 +391,17 @@ $(".chanelListCls").each(function(){
 	}
 });
 $(".callcenterCls").each(function(){
-	callCenterGlobalArr=[];
 	if($(this).is(":checked"))
 	{
 		var callCenterObj = $(this).attr("attr_val");
 		callCenterGlobalArr.push(callCenterObj);
 	}
 }); 
-$(document).on("click",".checkedSelected",function(){
-		newspapersGlobalArr=[];
-		channelGlobalArr=[];
-		callCenterGlobalArr=[];
-		$(".newsPaperListCls").each(function(){
-		newspapersGlobalArr=[];
-		if($(this).is(":checked"))
-		{
-			<c:forEach var="newsPaper" items="${newsPaperList}">
-				var newspapersGlobalObj = '${newsPaper.id}'
-				newspapersGlobalArr.push(newspapersGlobalObj)
-			 </c:forEach>
-		}
-	});
+}
 
-	$(".chanelListCls").each(function(){
-		channelGlobalArr=[];
-		if($(this).is(":checked"))
-		{
-			 <c:forEach items="${chanelListNew}"  var="channels">
-				var channelGlobalObj = '${channels.id}'
-				channelGlobalArr.push(channelGlobalObj)
-			 </c:forEach>
-		}
-	});
-	$(".callcenterCls").each(function(){
-		callCenterGlobalArr=[];
-		if($(this).is(":checked"))
-		{
-			var callCenterObj = $(this).attr("attr_val");
-			callCenterGlobalArr.push(callCenterObj);
-		}
-	}); 
+
+$(document).on("click",".checkedSelected",function(){
+		onLoadPrintAndChannelAndCallCen();
 }); 	
 onLoadCallsAMU();	
 </script>
