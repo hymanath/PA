@@ -3933,7 +3933,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			List<AlertSubTaskStatus> objList = alertSubTaskStatusDAO.getAll();
         			if(objList != null && objList.size() > 0){
         				for (AlertSubTaskStatus param : objList) {
-        					if(currentStatusId.longValue() < param.getAlertSubTaskStatusId().longValue()){
+        					if(currentStatusId.longValue() != param.getAlertSubTaskStatusId().longValue()){
 	        					IdNameVO VO = new IdNameVO();
 	        					VO.setId(param.getAlertSubTaskStatusId());
 	                			VO.setName(param.getStatus());
@@ -3954,7 +3954,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			List<AlertSubTaskStatus> objList = alertSubTaskStatusDAO.getAll();
         			if(objList != null && objList.size() > 0){
         				for (AlertSubTaskStatus param : objList) {
-        					if(currentStatusId.longValue() < param.getAlertSubTaskStatusId().longValue()){
+        					if(currentStatusId.longValue() != param.getAlertSubTaskStatusId().longValue()){
 	        					IdNameVO VO = new IdNameVO();
 	        					VO.setId(param.getAlertSubTaskStatusId());
 	                			VO.setName(param.getStatus());
