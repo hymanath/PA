@@ -71,6 +71,7 @@ function onLoadClicks()
 	//document
 	$(document).on("click","#uploadBtnId",function(){
 		
+		
 		var alertId = $(this).attr("attr_alert_id");
 		var subTaskId = $(this).attr("subalertid");
 		var urlStr='uploadDocumentsForAlertAction.action';
@@ -98,100 +99,12 @@ function onLoadClicks()
 		YAHOO.util.Connect.asyncRequest('POST',urlStr,uploadHandler);
 		
 	});
-	$(document).on("click",".changeStatsCls",function(){
-		$('#updateStatusChangeBody').hide();
-		if($(this).is(':checked')){
-			$('#updateStatusChangeBody').show();
-		}
-	});
-	$(document).on("click",".subTaskCls",function(){
-		var subAlertId = $(this).attr('attr_sub_alert_Id');
-		var alertId = $(this).attr('attr_alert_id');
-		$('#main_alert_block').hide();
-		$('#docAttachmentId').html('');
-		$("#impactLevel,#priorityBodyId,#displaySubTasksliId,#displayDueDate1,#displayPriority,#mainBlockStates").hide();
-		$('#sub_tasls_View_alert_block,#subAlertDetails,#subBlockStates,#displayDueDate3').show();
-		$('.commentChangeCls').attr('subalertid',''+subAlertId+'');
-		getSubTaskFullDetailsAction(subAlertId,alertId);
-		$('#uploadBtnId').attr('subalertid',subAlertId);
-		$('#alertHiddenId').val(subAlertId);
-		initializeFile();
-	});
-	$(document).on("click",".closeCls",function(){
-		var className = $(this).attr('attr_class');
-		$('.'+className+'').hide();
-		if(className=='sub_task_block'){
-			$('#main_alert_block').show();
-			$('#alert-block-commentId').show();
-			$('.subTaskTitle').val('');
-			$('.subTaskDueDate').html('Due Date');
-		}else if(className=='alert-status-attachment'){
-			$('.alert-status-attachment').hide();
-		}
-	});
-
-	$(document).on("click","#displaySubTasksli",function(){
-		$('#main_alert_block').hide();
-		$('#alert-block-commentId').hide();
-		$('#sub_task_block').show();
-		$('.assign-user').show();
-		$('.assign-user-body1').hide();
-		$('.subTaskDueDate').html('Due Date');
-	});
-
-	$(document).on("click",".filters-apply",function(){
-		var impactLevelArr =[];
-		var priorityArr =[];
-		var alertSourceArr =[];
-		var printMediaArr =[];
-		var electronicMediaArr=[];
-		var blockName = '';
-		var statusId = $(this).attr("attr_status_id");
-		var statusName = $(this).attr("attr_status_name");
-		var statusCount = $(this).attr("attr_status_count");
-		$(".filters-list").each(function(){
-			blockName = $(this).attr("filters-list");
-			if(blockName == 'electronicMedia')
-			{
-				var  id = '';
-				$("[filters-list="+blockName+"] li.active").each(function(){
-					id = $(this).attr("attr_id");
-					electronicMediaArr.push(id);
-				});
-				
-			}else if(blockName == 'printMedia')
-			{
-				var  id = '';
-				$("[filters-list="+blockName+"] li.active").each(function(){
-					id = $(this).attr("attr_id");
-					printMediaArr.push(id);
-				});
-			}else if(blockName == 'priority')
-			{
-				var  id = '';
-				$("[filters-list="+blockName+"] li.active").each(function(){
-					id = $(this).attr("attr_id");
-					priorityArr.push(id);
-				});
-			}else if(blockName == 'impactLevel')
-			{
-				var  id = '';
-				$("[filters-list="+blockName+"] li.active").each(function(){
-					id = $(this).attr("attr_id");
-					impactLevelArr.push(id);
-				});
-			}else if(blockName == 'alertSourceType')
-			{
-				var  id = '';
-				$("[filters-list="+blockName+"] li.active").each(function(){
-					id = $(this).attr("attr_id");
-					alertSourceArr.push(id);
-				});
-			}
-		})
-		getAlertDtlsBasedOnStatusFilterClick(statusId,statusName,statusCount,impactLevelArr,priorityArr,alertSourceArr,printMediaArr,electronicMediaArr);
-	});
 	
+	function showSbmitSubTaskStatusNew(uploadResult,alertId,subAlertId){
+		if(uploadResult !=null && uploadResult.search("success") != -1){
+			getSubAlertsDetails(alertId,subAlertId)
+		}
+	}
 	$(document).on("click","#assignOfficerId",function(){
 		if($("#departmentsId").val() == null || $("#departmentsId").val() == "" || $("#departmentsId").val() == 0)
 		{
@@ -351,7 +264,7 @@ function onLoadClicks()
 				subTaskId:subTaskId,
 				comment: comment
 			}
-		
+		//1111
 		var callURL = 'updateAlertStatusCommentAction.action';
 		if(subTaskId != null && subTaskId>0){
 			callURL = 'updateSubTaskStatusCommentAction.action';
@@ -368,10 +281,7 @@ function onLoadClicks()
 				
 				if(subTaskId == null || subTaskId.length == 0){
 					getCommentsForAlert(alertId);
-					$("[expand-icon=block"+alertId+"]").trigger("click");
-					setTimeout(function(){
-						$("body").addClass("modal-open")
-					},1000);
+					//rightSideExpandView(alertId);
 				}else{
 					getSubAlertsDetails(alertId,subTaskId);
 				}
@@ -456,6 +366,12 @@ function onLoadClicks()
 		});
 			
 	});
+	
+	
+	
+	
+	
+	
 	
 	$(document).on("click",".alert-status-change",function(){
 		var alertId = $(this).attr("attr_alert_id");
@@ -592,52 +508,6 @@ function onLoadClicks()
 			}
 		}
 	});
-
-	$(document).on("click","[expand-icon]",function(){
-        var expandBlockName = $(this).attr("expand-icon");
-		var alertId = $(this).attr("attr_alertId");
-		$("[expand-icon]").closest("li").removeClass("active");
-		$("[expand-icon]").removeClass("text-primary");
-		$(this).addClass("text-primary");
-		$(this).closest("li").addClass("active");
-		rightSideExpandView(alertId);
-		
-		setTimeout(function(){
-			$("[expanded-block="+expandBlockName+"]").show().css("transition"," ease-in, width 0.7s ease-in-out");
-		},750);
-		setTimeout(function(){
-			$("#alertManagementPopup").scrollTop(0);
-		},780);
-		if($("[expand-main]").attr("expand-main") === 'false')
-		{	
-			$("[expand-main]").attr("expand-main","true");
-			$("[expanded-channel]").attr("expanded-channel","true");
-			$("[expand-main]").addClass("col-sm-4").removeClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
-		}
-	});
-    $(document).on("click","[expanded-close]",function(){
-		var expandBlockName = $(this).attr("expanded-close");
-		if($("[expand-main]").attr("expand-main") === 'true')
-		{
-			$("[expand-main]").attr("expand-main","false");
-		}else{
-			$("[expand-main]").attr("expand-main","true");
-		}
-		$("[expanded-block="+expandBlockName+"]").hide();
-		$(".alerts-list li").removeClass("active").find(".arrow-icon").removeClass("text-primary");
-		$("[expand-main]").removeClass("col-sm-4").addClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
-	});
-	$(document).on("click",".filters-icon",function(){
-		$("#filter").toggle();
-	});
-}
-
-
-function showSbmitSubTaskStatusNew(uploadResult,alertId,subAlertId){
-	if(uploadResult !=null && uploadResult.search("success") != -1){
-		getSubAlertsDetails(alertId,subAlertId)
-	}
-}
 	
 	
 function getSubTaskStatusHistory(subTaskId,alertId){
@@ -707,6 +577,43 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 			}
 		}  
 		$("#alertManagementPopup1 .modal-footer").html(str1);
+}
+	$(document).on("click","[expand-icon]",function(){
+        var expandBlockName = $(this).attr("expand-icon");
+		var alertId = $(this).attr("attr_alertId");
+		$("[expand-icon]").closest("li").removeClass("active");
+		$("[expand-icon]").removeClass("text-primary");
+		$(this).addClass("text-primary");
+		$(this).closest("li").addClass("active");
+		rightSideExpandView(alertId);
+		
+		setTimeout(function(){
+			$("[expanded-block="+expandBlockName+"]").show().css("transition"," ease-in, width 0.7s ease-in-out");
+		},750);
+		setTimeout(function(){
+			$("#alertManagementPopup").scrollTop(0);
+		},780);
+		if($("[expand-main]").attr("expand-main") === 'false')
+		{	
+			$("[expand-main]").attr("expand-main","true");
+			$("[expanded-channel]").attr("expanded-channel","true");
+			$("[expand-main]").addClass("col-sm-4").removeClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
+		}
+	});
+    $(document).on("click","[expanded-close]",function(){
+		var expandBlockName = $(this).attr("expanded-close");
+		if($("[expand-main]").attr("expand-main") === 'true')
+		{
+			$("[expand-main]").attr("expand-main","false");
+		}else{
+			$("[expand-main]").attr("expand-main","true");
+		}
+		$("[expanded-block="+expandBlockName+"]").hide();
+		$("[expand-main]").removeClass("col-sm-4").addClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
+	});
+	$(document).on("click",".filters-icon",function(){
+		getFilterSectionAlertDetails();
+	});
 }
 /*Default Image*/
 function setDefaultImage(img){
@@ -1028,22 +935,6 @@ function getStatusCompletionInfo(alertId){
 			if(result.length  == 1)
 				isStatusAvailable=false;
 			
-			if(result[0].callerName != null && result[0].callerName.length > 0 && result[0].mobileNo != null && result[0].mobileNo.length > 0)
-			{
-				var str='';
-				str+='<div class="row m_top20">';
-					str+='<div class="col-sm-1 text-center body-icons"><i class="fa fa-volume-control-phone fa-2x"></i></div>';
-					str+='<div class="col-sm-11">';
-						str+='<h3>Caller Details </h3>';
-						str+='<p class="m_top10">Name : '+result[0].callerName+' </p>';
-						str+='<p> Mobile No : '+result[0].mobileNo+' </p>';
-						str+='<p> Caller : '+result[0].userType+'</p>';
-					str+='</div>';
-				str+='</div>';
-				$("#callerDetailsDIv").append(str);
-			}
-			
-			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			//buildTypeStr="other";
 			globalUserType = buildTypeStr;
@@ -1058,7 +949,7 @@ function getStatusCompletionInfo(alertId){
 				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
 				$('#displayDueDate1').show();
 				$('#displayDueDate2').hide(); 
-
+				
 				if(globalStatusId == 12 ){ // closed
 					isStatusAvailable=false;
 					$('#displaySubTasksliId,#docAttachmentId').hide();
@@ -1118,6 +1009,7 @@ function getStatusCompletionInfo(alertId){
 			if(globalStatusId == 12 ){ // closed
 				$('#displaySubTasksliId,#docAttachmentId,#displayPriority').hide();
 			}
+				
 		}else{
 			$('#displayAssignIconId').show();
 			$('#displayStatusId').show();
@@ -1130,10 +1022,10 @@ function rightSideExpandView(alertId)
 {
     $("#rightSideExpandView").html(spinner);
 	var str='';
-	str+='<div class="col-sm-8 pad_left0" expanded-block="block'+alertId+'" style="display: none;">';
+	str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
 		str+='<div class="panel-right">';
 			str+='<div style="box-shadow:0px 0px 2px 2px rgba(0,0,0,0.2)">';
-				str+='<i class="glyphicon glyphicon-remove pull-right"  expanded-close="block'+alertId+'"></i>';
+				str+='<i class="glyphicon glyphicon-remove pull-right"  expanded-close="block1"></i>';
 				str+='<div class="panel panel-default">';
 				
 					str+='<div class="panel-heading" id="mainBlockStates">';
@@ -1243,12 +1135,11 @@ function rightSideExpandView(alertId)
 						str+='</div>';
 					str+='</div>';
 					
-					str+='<div id="main_alert_block">';
+					str+='<span id="main_alert_block">';
 						str+='<div class="panel-body" >';
 							str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
 								str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
 							str+='</p>';
-							str+='<div id="callerDetailsDIv"></div>';
 							str+='<div id="statusDtlsDiv"></div>';
 							str+='<div id="alertDetails"></div>';
 							str+='<div id="articleAttachment"></div>';
@@ -1262,7 +1153,7 @@ function rightSideExpandView(alertId)
 						str+='<div class="panel-footer">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-1 text-center">';
-									str+='<span class="icon-name icon-primary" >ME</span>';
+									str+='<span class="icon-name icon-primary">Ra</span>';
 								str+='</div>';
 								str+='<div class="col-sm-11">';
 									str+='<div class="panel panel-default panel-border-white">';
@@ -1282,9 +1173,9 @@ function rightSideExpandView(alertId)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-				str+='</div>';
+				str+='</span>';
 				
-				str+='<div id="sub_tasls_View_alert_block" style="display:none">';
+				str+='<span id="sub_tasls_View_alert_block" style="display:none">';
 						str+='<div id="mainAlertTitle"></div>';
 						str+='<div class="panel-body">';
 							//str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
@@ -1322,9 +1213,9 @@ function rightSideExpandView(alertId)
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
-				str+='</div>';
+				str+='</span>';
 				
-				str+='<div id="sub_task_block"  class="sub_task_block" style="display:none;" >';
+				str+='<span id="sub_task_block"  class="sub_task_block" style="display:none;" >';
 						str+='<i attr_class="sub_task_block" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
 						str+='<div class="panel-body panel-heading ">';
 							str+='<div class="row">';
@@ -1370,7 +1261,7 @@ function rightSideExpandView(alertId)
 
 						str+='</div>';
 					str+='</div>';
-				str+='</div>';
+				str+='</span>';
 				
 			str+='</div>';
 		str+='</div>';
@@ -1478,7 +1369,19 @@ $('[data-toggle="tooltip"]').tooltip();
 		}, cb);		
 	});
 }
-
+$(document).on("click",".subTaskCls",function(){
+	var subAlertId = $(this).attr('attr_sub_alert_Id');
+	var alertId = $(this).attr('attr_alert_id');
+	$('#main_alert_block').hide();
+	$('#docAttachmentId').html('');
+	$("#impactLevel,#priorityBodyId,#displaySubTasksliId,#displayDueDate1,#displayPriority,#mainBlockStates").hide();
+	$('#sub_tasls_View_alert_block,#subAlertDetails,#subBlockStates,#displayDueDate3,#displayStatusId1').show();
+	$('.commentChangeCls').attr('subalertid',''+subAlertId+'');
+	getSubTaskFullDetailsAction(subAlertId,alertId);
+	$('#uploadBtnId').attr('subalertid',subAlertId);
+	$('#alertHiddenId').val(subAlertId);
+	initializeFile();
+});
 
 function getSubAlertsDetails(alertId,subAlertId){
 	$('#main_alert_block').hide();
@@ -1522,10 +1425,12 @@ function getSubTaskFullDetailsAction(subAlertId,alertId)
 	});
 }
 
+
 var subTaskglStr='';
 var subTaskStatusChangAvailable=true;
 function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 {
+	
 	var str='';
 	var str1='';
 	subTaskStatusChangAvailable=true;
@@ -1537,21 +1442,19 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				
 				var subTaskBuildType=result[0].userType;
 				var statusId = result[0].statusId;	
-				//statusId=2;
+				$('#displayStatusId1').attr('subalertid',subAlertId);
 				//alert(subTaskBuildType);
 				if(subTaskBuildType=="other"){
 					$('#docAttachmentId1').hide();
 					subTaskStatusChangAvailable=false;
 				}
-				else if(subTaskBuildType=='assignedTo'){					
-					$('#displayStatusId1').attr('subalertid',subAlertId);
+				else if(subTaskBuildType=='assignedTo'){
 					if(statusId != 7 )
 						subTaskStatusChangAvailable=true;
 					else
 						subTaskStatusChangAvailable=false;	
 				}
-				else if(subTaskBuildType=='assignedBy'){					
-					$('#displayStatusId1').attr('subalertid',subAlertId);
+				else if(subTaskBuildType=='assignedBy'){	
 					if(statusId == 3 || statusId == 6 || statusId == 7 )// 3 - completed, 6-
 						subTaskStatusChangAvailable=true;
 					else
@@ -1573,7 +1476,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 					
 					str+='<div class="media">';
 						str+='<div class="media-left">';
-							str+='<span class="icon-name icon-primary text-capital">'+result[0].assignedByOfficerStr.substring(0,2)+'</span>';
+							str+='<span class="icon-name icon-primary">'+result[0].assignedByOfficerStr+'</span>';
 						str+='</div>';
 						str+='<div class="media-body">';
 							str+='<p>'+result[0].assignedOfficerStr+' - '+result[0].deptName+'</p>';
@@ -1641,11 +1544,11 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				
 				}			
 				str1="";
-				str1+='<div class="panel-body"><h3> <i class="fa fa-long-arrow-left fa-1x " style="cursor:pointer;margin-right:5px" aria-hidden="true" expand-icon="block'+alertId+'" attr_alertId="'+alertId+'" data-toggle="tooltip" data-placement="top"  title="Back to Main Alert View."></i>  ';
+				str1+='<div class="panel-body" style="font-weight:bold;font-size:15px"> <i class="fa fa-long-arrow-left fa-2x " style="cursor:pointer;margin-right:15px;margin-top:5px" aria-hidden="true" expand-icon="block1" attr_alertId="'+alertId+'" title="Back to Main Alert View."></i>  <span style="margin-top:-5px">';
 				if(result[i].description.length>80)
-					str1+=''+result[i].mainTitle +'... </h3></div>';
+					str1+=''+result[i].mainTitle +'... </span></div>';
 				else
-					str1+=''+result[i].mainTitle+'... </h3></div>';
+					str1+=''+result[i].mainTitle+'... </span></div>';
 				
 				$("#mainAlertTitle").html(str1);
 					
@@ -1653,25 +1556,24 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				
 			}	
 
-			
 				subTaskglStr='';
 				var str1='';
 				 
 					str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
 						str1+='<div class="panel-heading">';
-							str1+='<div class="row">';
 							for(var i in result)
 							{
-								str1+='<div class="col-sm-3">';
-									str1+='<label class="radio-inline">';
-										if(result[0].status != null && result[0].status.trim() ==result[i].name.trim())
-											str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
-										else
-											str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
-									str1+='</label>';
-								str1+='</div>';
+								if(i == result.length-1)
+									str1+='<br>';
+								str1+='<label class="radio-inline">';
+									if(result[0].status != null && result[0].status.trim() ==result[i].name.trim())
+										str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
+									else
+										str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
+								str1+='</label>';
+								
 							}
-							str1+='</div>';
+							
 						str1+='</div>';
 						str1+='<div class="panel-body pad_0">';
 							str1+='<textarea class="form-control" id="updateStatusChangeComment1" placeholder="Comment.."></textarea>';
@@ -1684,10 +1586,34 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 	str+='</div>';
 	
 		$("#subAlertDetails").html(str);
-		$("[data-toggle='tooltip']").tooltip();
 		
 		
 }
+
+$(document).on("click",".closeCls",function(){
+	
+	
+	var className = $(this).attr('attr_class');
+	$('.'+className+'').hide();
+	if(className=='sub_task_block'){
+		$('#main_alert_block').show();
+		$('#alert-block-commentId').show();
+		$('.subTaskTitle').val('');
+		$('.subTaskDueDate').html('Due Date');
+	}else if(className=='alert-status-attachment'){
+		$('.alert-status-attachment').hide();
+	}
+});
+
+$(document).on("click","#displaySubTasksli",function(){
+	$('#main_alert_block').hide();
+	$('#alert-block-commentId').hide();
+	$('#sub_task_block').show();
+	$('.assign-user').show();
+	$('.assign-user-body1').hide();
+	$('.subTaskDueDate').html('Due Date');
+	
+});
 
 function saveSubTask(mainAlertId){
 	
@@ -1881,12 +1807,13 @@ function buildAlertDataNew(result)
 			str+='<div class="col-sm-11">';
 				str+='<h3>'+result[i].title+'</h3>';
 				str+='<p class="m_top10">'+result[i].desc+'</p>';
-				str+='<p class="m_top10"><small> <i class="fa fa-map-marker"></i> '+result[i].locationVO.state+'(S) , '+result[i].locationVO.districtName+'(D) , '+result[i].locationVO.constituencyName+'(C) , '+result[i].locationVO.tehsilName+' (M) '+result[i].locationVO.wardName+' , '+result[i].locationVO.villageName+'(P) , '+result[i].locationVO.hamletName+'(H)</small></p>';
+				str+='<p class="m_top10"><small> <i class="fa fa-map-marker"></i> '+result[i].locationVO.state+'(S),'+result[i].locationVO.districtName+'(D),'+result[i].locationVO.constituencyName+'(C),'+result[i].locationVO.tehsilName+'(M)'+result[i].locationVO.wardName+','+result[i].locationVO.villageName+'(P),'+result[i].locationVO.hamletName+'(H)</small></p>';
 				str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created : '+result[i].date+'</small></p>';
 			str+='</div>';
 		}
 	str+='</div>';
 	str1+='<div class="row m_top20">';
+	
 		if(result[i].imageUrl !=null && result[i].imageUrl.length>0){
 			str1+='<div class="col-sm-1 text-center body-icons">';
 				str1+='<i class="fa fa-paperclip fa-2x"></i>';
@@ -2060,10 +1987,10 @@ function buildSubTaskInfoForAlert(result,alertId)
 					str+='<div class="col-sm-11">';
 						str+='<h4 class="text-muted text-capital"> My Sub Tasks : </h4>';
 					str+='</div>';
-					str+='<div class="col-sm-11 col-sm-offset-1">';
+					str+='<div class="row col-sm-12">';
 						str+='<ul class="assign-subtask-list m_top20">';
 						for(var k in result[i].attachementsList){
-							str+='<li class="assigned" attr_sub_alert_Id="'+result[i].attachementsList[k].alertId+'" attr_alert_id="'+alertId+'">';
+							str+='<li class="assigned subTaskCls " style="cursor:pointer;margin-left: 5px" attr_sub_alert_Id="'+result[i].attachementsList[k].alertId+'" attr_alert_id="'+alertId+'">';
 									str+='<div class="row">';
 										str+='<div class="col-sm-1">';
 											str+='<i class="glyphicon glyphicon-ok"></i>';
@@ -2073,29 +2000,33 @@ function buildSubTaskInfoForAlert(result,alertId)
 											
 											str+='</p>';
 										str+='</div>';
-										str+='<div class="col-sm-1 text-right">';
-											str+='<i class="glyphicon glyphicon-menu-right subTaskCls" style="cursor:pointer" attr_sub_alert_Id="'+result[i].attachementsList[k].alertId+'" attr_alert_id="'+alertId+'"></i>';
-											str+='<span class="icon-name icon-primary" style="position:relative;top:6px;background-color: '+result[i].attachementsList[k].color+'" title="'+result[i].attachementsList[k].status+'"></span>';
+										str+='<div class="col-sm-1">';
+											str+='<ul class="list-icons list-inline">';
+												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].attachementsList[k].color+'" title="'+result[i].attachementsList[k].status+'"></span> </li>';
+											str+='</ul>';
+											//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
+										//	str+='<span class="icon-name icon-primary"></span>';
+											//str+='<span class="label label-default">...</span>';
 										str+='</div>';
 									str+='</div>';
 							str+='</li>';
 						}
 						str+='</ul>';
 					str+='</div>';
-				str+='</div>';
+				
 			}
 			if(result[i].commentList != null && result[i].commentList.length>0){
 				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-1 text-center body-icons">';
 						str+='<i class="fa fa-level-down fa-2x"></i>';
 					str+='</div>';
-					str+='<div class="col-sm-11 ">';
-						str+='<h4 class="text-muted text-capital"> Others Sub Tasks : </h4>';
+				str+='<div class="col-sm-11 ">';
+					str+='<h4 class="text-muted text-capital"> Others Sub Tasks : </h4>';
 					str+='</div>';
-					str+='<div class="col-sm-11 col-sm-offset-1">';
+					str+='<div class="row col-sm-12">';
 						str+='<ul class="assign-subtask-list m_top20">';
 						for(var k in result[i].commentList){
-							str+='<li class="assigned">';
+							str+='<li class="assigned subTaskCls " style="cursor:pointer;margin-left:20px; width: 716px;" attr_sub_alert_Id="'+result[i].commentList[k].alertId+'" attr_alert_id="'+alertId+'">';
 									str+='<div class="row">';
 										str+='<div class="col-sm-1">';
 											str+='<i class="glyphicon glyphicon-ok"></i>';
@@ -2105,19 +2036,23 @@ function buildSubTaskInfoForAlert(result,alertId)
 											
 											str+='</p>';
 										str+='</div>';
-										str+='<div class="col-sm-1 text-right">';
-											str+='<i class="glyphicon glyphicon-menu-right subTaskCls" style="cursor:pointer" attr_sub_alert_Id="'+result[i].commentList[k].alertId+'" attr_alert_id="'+alertId+'"></i>';
-											str+='<span class="icon-name icon-primary" style="position:relative;top:6px;background-color: '+result[i].commentList[k].color+'" title="'+result[i].commentList[k].status+'"></span>';
+										str+='<div class="col-sm-1">';
+											str+='<ul class="list-icons list-inline">';
+												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span> </li>';
+											str+='</ul>';
+											//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
+										//	str+='<span class="icon-name icon-primary"></span>';
+											//str+='<span class="label label-default">...</span>';
 										str+='</div>';
 									str+='</div>';
 							str+='</li>';
 						}
 						str+='</ul>';
 					str+='</div>';
-				str+='</div>';	
+				
 			}
 		}	
-		
+	str+='</div>';	
 /*
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-1 text-center body-icons">';
@@ -2526,7 +2461,7 @@ function getDocumentsForAlert(alertId){
     });
 }
 
-function popUpFilter(type,result,statusId,statusName,statuscount)
+function popUpFilter(type,result)
 {
 	var str='';
 	var str1='';
@@ -2538,7 +2473,7 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 			str1+='</div>';
 			str1+='<div class="col-sm-4">';
 				str1+='<ul class="list-icons pull-right list-inline">';
-					str1+='<li class="filters-icon"><i class="glyphicon glyphicon-filter"></i></li>';
+					str1+='<li><i class="glyphicon glyphicon-filter filters-icon"></i></li>';
 					str1+='<li data-dismiss="modal" aria-label="Close"><i class="glyphicon glyphicon-remove"></i></li>';
 				str1+='</ul>';
 			str1+='</div>';
@@ -2556,85 +2491,58 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 			str+='</div>';
 			str+='<div class="row">';
 				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="impactLevel"><b>Impact Level</b></h5>';
+					str+='<h5 class="text-capitalize" filters-list-title="impactLevel">Impact Level</h5>';
 					str+='<ul class="filters-list" filters-list="impactLevel">';
 						for(var i in result.scopesList)
 						{
-							str+='<li class="active" attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+							str+='<li>'+result.scopesList[i].name+'</li>';
 						}
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="priority"><b>priority</b></h5>';
+					str+='<h5 class="text-capitalize" filters-list-title="priority">priority</h5>';
 					str+='<ul class="filters-list" filters-list="priority">';
 						for(var i in result.severityList)
 						{
-							str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+							str+='<li>'+result.severityList[i].name+'</li>';
 						}
 					str+='</ul>';
-					str+='<h5 class="text-capitalize m_top20" filters-list-title="alertSourceType"><b>alert source type</b></h5>';
+					str+='<h5 class="text-capitalize m_top20" filters-list-title="alertSourceType">alert source type</h5>';
 					str+='<ul class="filters-list" filters-list="alertSourceType">';
 						for(var i in result.categoryList)
 						{
-							str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+							str+='<li>'+result.categoryList[i].name+'</li>';
 						}
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="printMedia"><b>Print Media</b></h5>';
-					str+='<div class="scroller-print">';
-						str+='<ul class="filters-list" filters-list="printMedia">';
-							for(var i in result.editionsList)
-							{
-								str+='<li class="active" attr_id='+result.editionsList[i].id+'>'+result.editionsList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-							}
-						str+='</ul>';
-					str+='</div>';
+					str+='<h5 class="text-capitalize" filters-list-title="printMedia">Level</h5>';
+					str+='<ul class="filters-list" filters-list="printMedia">';
+						for(var i in result.editionsList)
+						{
+							str+='<li>'+result.editionsList[i].name+'</li>';
+						}
+					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="electronicMedia"><b>Electronic Media</b></h5>';
-					str+='<div class="scroller-electronic">';
-						str+='<ul class="filters-list" filters-list="electronicMedia">';
-							for(var i in result.tvNewsChannelList)
-							{
-								str+='<li class="active" attr_id='+result.tvNewsChannelList[i].id+'>'+result.tvNewsChannelList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-							}
-						str+='</ul>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-9 m_top10">';
-					str+='<h5 class="text-capitalize" filters-list-title="lagDays"><b>Lag Days</b><small class="clear" filer-selection-clear="lagDays">(Clear All)</small></h5>';
-					str+='<div id="tourSlider"></div>';
-					str+='<label class="checkbox-inline pull-right"><input type="checkbox"/>More than 365 Days</label>';
-				str+='</div>';
-			str+='</div>';
-			str+='<div class="row">';
-				str+='<div class="col-sm-3 m_top20">';
-					str+='<button class="btn btn-primary btn-block filters-apply" attr_status_id="'+statusId+'" attr_status_count="'+statuscount+'" attr_status_name="'+statusName+'" type="button">APPLY FILTERS</button>';
-				str+='</div>';
-				str+='<div class="col-sm-3 m_top20">';
-					str+='<button class="btn btn-default btn-block">CANCEL/CLEAR FILTERS</button>';
+					str+='<h5 class="text-capitalize" filters-list-title="electronicMedia">Level</h5>';
+					str+='<ul class="filters-list" filters-list="electronicMedia">';
+						for(var i in result.tvNewsChannelList)
+						{
+							str+='<li>'+result.tvNewsChannelList[i].name+'</li>';
+						}
+					str+='</ul>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 		$("#filter").html(str);
-		if(result.editionsList.length > 7)
-		{
-			$(".scroller-print").mCustomScrollbar({setHeight : '210px'});
-		}
-		if(result.tvNewsChannelList.length > 7)
-		{
-			$(".scroller-electronic").mCustomScrollbar({setHeight : '210px'});
-		}
-		$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 0, max: 365},defaultValues:{min: 0, max: 180}});
 	}
 }
-
 function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 {
 	var str='';
-	popUpFilter('heading','','','','');
-	
+	popUpFilter('heading','');
+	var alertId = '';
 	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
 	str+='<div id="filter"></div>';
 	str+='<div class="row m_top20">';
@@ -2681,14 +2589,13 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 														str+='</h4>';
 													str+='</div>';
 													str+='<div class="col-sm-5">';
-														str+='<span class="arrow-icon pull-right" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block'+result[i].subList[j].id+'">';
+														str+='<span class="arrow-icon pull-right" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
 															str+='<i class="glyphicon glyphicon-menu-right"></i>';
 														str+='</span>';
-														
 														alertId = result[i].subList[j].id;
 														if(result[i].subList[j].subTaskCount > 0)
 														{
-															str+='<span class="arrow-icon pull-right" style="margin:0px 4px" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block'+result[i].subList[j].id+'">';
+															str+='<span class="arrow-icon pull-right" style="margin:0px 4px" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
 																str+='<i class="fa fa-level-down"></i> '+result[i].subList[j].subTaskCount+'';
 															str+='</span>';
 														}
@@ -2949,6 +2856,7 @@ function alertStatusHistory(result,alertId)
 	
 	if(isAdmin == "false"){
 		if(globalUserType != "same" && globalUserType != "other"){
+			
 			str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
 				str1+='<label class="checkbox-inline">';
 				
@@ -2969,9 +2877,15 @@ function alertStatusHistory(result,alertId)
 }
  
  
+$(document).on("click",".changeStatsCls",function(){
+	$('#updateStatusChangeBody').hide();
+	if($(this).is(':checked')){
+		$('#updateStatusChangeBody').show();
+	}
+	
+});
 
-
-function getFilterSectionAlertDetails(statusId,statusName,statuscount){
+function getFilterSectionAlertDetails(){
 	var jsObj={
 		
 	}
@@ -2981,7 +2895,7 @@ function getFilterSectionAlertDetails(statusId,statusName,statuscount){
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		popUpFilter('body',result,statusId,statusName,statuscount);
+		popUpFilter('body',result);
 	});
 }
 var glStr='';
@@ -2991,20 +2905,28 @@ function alertStatus(result,alertId)
 	var str1='';
 	 
 		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
-			str1+='<div class="panel-heading">';
-				str1+='<div class="row">';
+			str1+='<div class="panel-heading" style="margin-left: 20px;">';
 				for(var i in result)
 				{
-					str1+='<div class="col-sm-3">';
-						str1+='<label class="radio-inline">';
-						if(globalStatusId == parseInt(result[i].id))
-							str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
-						else
-							str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
-						str1+='</label>';
-					str1+='</div>';
-				}
-				str1+='</div>';
+					if(i==0)
+						str1+='<div class="row">';
+					if(i%5==0){
+						str1+='</div>';
+						str1+='<div class="row">';
+					}
+					
+					/*if(i == result.length-1)
+						str1+='<br>';*/
+					str1+='<label class="radio-inline">';
+					if(globalStatusId == parseInt(result[i].id))
+						str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
+					else
+						str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
+					str1+='</label>';
+					
+					if(i==result.length-1)
+						str1+='</div>';
+				}				
 			str1+='</div>';
 			str1+='<div class="panel-body pad_0">';
 				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
@@ -3144,117 +3066,3 @@ function buildChildLevelValuesForSubTask(result,departmentId){
 		}
 	}	
 }             
-function getAlertDtlsBasedOnStatusFilterClick(statusId,statusName,statusCount,impactLevelArr,priorityArr,alertSourceArr,printMediaArr,electronicMediaArr){
-	$("#alertManagementPopupBody").html(spinner);
-	var fromDays = $(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html();
-	var toDays = $(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html();
-	
-    var jsObj ={
-		fromDate:			currentFromDate,
-		toDate:				currentToDate,
-		stateId : 			1,
-		deptIdArr : 		globalDepartmentIdArr,  
-		paperIdArr : 		globalNewsPaperIdArr,
-		chanelIdArr : 		globalChannelIdArr, 
-		callCenterArr : 	globalCallCenterArr,		
-		statusId : 			statusId,
-        impactLevelArr :	impactLevelArr,
-        priorityArr :		priorityArr,
-        alertSourceArr:		alertSourceArr,
-        printMediaArr :		printMediaArr,
-        electronicMediaArr:	electronicMediaArr
-    }
-    $.ajax({
-		type:'GET',
-		url: 'getTotalAlertByStatusNewAction.action',
-		data: {task :JSON.stringify(jsObj)}
-    }).done(function(result){
-		if(result != null && result.length > 0){
-			buildAlertDtlsBasedOnStatusClick(result,statusName,statusCount);
-		}else{
-			$("#alertManagementPopupBody").html('NO DATA AVAILABLE')
-		}
-    });
-}
-function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
-{
-	var str='';
-	popUpFilter('heading','','','','');
-	var alertId = '';
-	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
-	str+='<div class="row m_top20">';
-		str+='<div class="col-sm-12" expand-main="false">';
-			str+='<div class="panel-group panel-white panel-left" id="accordion" role="tablist" aria-multiselectable="true">';
-			for(var i in result)
-			{
-				str+='<div class="panel panel-default">';
-					str+='<div class="panel-heading" role="tab" id="heading'+result[i].id+'">';
-					if(i == 0)
-					{
-						str+='<a role="button" data-toggle="collapse" class="collapseArrow" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-expanded="true" aria-controls="collapse'+result[i].id+'">';
-					}else{
-						str+='<a role="button" data-toggle="collapse" class="collapsed collapseArrow" data-parent="#accordion" href="#collapse'+result[i].id+'" aria-expanded="true" aria-controls="collapse'+result[i].id+'">';
-					}
-						
-							str+='<h4 class="panel-title">';
-								str+=''+result[i].name+'';
-								str+='<small> - '+result[i].createdDate+'</small>';
-								str+='<small><span class="pull-right">1 - '+result[i].subList.length+' of About '+result[i].subList.length+'</span></small>';
-							str+='</h4>';
-						str+='</a>';
-					str+='</div>';
-					if(i == 0)
-					{
-						str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
-					}else{
-						str+='<div id="collapse'+result[i].id+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+result[i].id+'">';
-					}
-					
-						str+='<div class="panel-body pad_0">';
-							str+='<div class="row">';
-								str+='<div class="col-sm-12">';
-									str+='<ul class="alerts-list">';
-										for(var j in result[i].subList)
-										{
-											str+='<li>';
-												str+='<div class="row">';
-													str+='<div class="col-sm-7">';
-														str+='<h4>';
-															str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].subList[j].severtyColor+';margin-right:3px;"></i>';
-															str+='<span class="alert-title">'+result[i].subList[j].title+'</span>';
-															str+='<span class="label label-default channel-name" data-toggle="tooltip" data-placement="top" title="'+result[i].subList[j].source+'">'+result[i].subList[j].source+'</span>';
-														str+='</h4>';
-													str+='</div>';
-													str+='<div class="col-sm-5">';
-														str+='<span class="arrow-icon pull-right" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block'+result[i].subList[j].id+'">';
-															str+='<i class="glyphicon glyphicon-menu-right"></i>';
-														str+='</span>';
-														alertId = result[i].subList[j].id;
-														if(result[i].subList[j].subTaskCount > 0)
-														{
-															str+='<span class="arrow-icon pull-right" style="margin:0px 4px" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block'+result[i].subList[j].id+'">';
-																str+='<i class="fa fa-level-down"></i> '+result[i].subList[j].subTaskCount+'';
-															str+='</span>';
-														}
-														str+='<span class="status-icon pull-right" style="background-color:'+result[i].subList[j].statusColor+';margin-right:3px;"></span>';
-														str+='<span class="location-name pull-right" data-toggle="tooltip" data-placement="top" title="'+result[i].subList[j].location+'">'+result[i].subList[j].location+'</span>';
-													str+='</div>';
-												str+='</div>';
-											str+='</li>';
-											
-										}
-									str+='</ul>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-				  str+='</div>';
-			}
-			str+='</div>';
-		str+='</div>';
-		str+='<div id="rightSideExpandView"></div>';
-	str+='</div>';
-	$("#alertManagementPopupBody").html(str);
-	$('[data-toggle="tooltip"]').tooltip();
-	getAlertData(alertId);
-}
