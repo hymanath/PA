@@ -97,8 +97,25 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private Long categoryId=0L;
 	private List<Long> locationScopeIds = new ArrayList<Long>();
 	private String color;
+	private String callerName;
+	private String userType;
 	
-	
+	public String getCallerName() {
+		return callerName;
+	}
+
+	public void setCallerName(String callerName) {
+		this.callerName = callerName;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	public String getColor() {
 		return color;
 	}

@@ -770,22 +770,29 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							adcn = alertDepartmentCommentNewDAO.save(adcn);
 						}
 						
-						AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
-						if(statusId == 8l || statusId == 9l)
-							aaon.setIsApproved("N");
-						aaon.setAlertStatusId(statusId);
-						aaon.setUpdatedBy(userId);
-						aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-						alertAssignedOfficerNewDAO.save(aaon);
-						
+						List<AlertAssignedOfficerNew> alertAssignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
 						AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+						if(commonMethodsUtilService.isListOrSetValid(alertAssignedOfficersList)){
+							AlertAssignedOfficerNew aaon = alertAssignedOfficersList.get(0);
+							if(statusId.longValue() == 8l || statusId.longValue() == 9l)// 8 - Wrongly Mapped Designation, 9 - Wrongly Mapped Department
+								aaon.setIsApproved("N");
+							aaon.setAlertStatusId(statusId);
+							aaon.setUpdatedBy(userId);
+							aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							alertAssignedOfficerNewDAO.save(aaon);
+							
+							
 							if(statusId == 8l || statusId == 9l)
 								aaon.setIsApproved("N");
-						aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
-						aaotn.setAlertId(aaon.getAlertId());
-						aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
-						aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
-						aaotn.setGovtAlertActionTypeId(6l);
+							aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+							aaotn.setAlertId(aaon.getAlertId());
+							aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+							aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+							aaotn.setIsApproved(aaon.getIsApproved());
+							aaotn.setAlertStatusId(aaon.getAlertStatusId());
+						}
+						
+						aaotn.setGovtAlertActionTypeId(6l);//Status Change
 						if(statusId != null && statusId.longValue()>0L)
 							aaotn.setAlertStatusId(statusId);
 						
@@ -793,11 +800,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
 						
 						aaotn.setInsertedBy(userId);
-						aaotn.setAlertStatusId(aaon.getAlertStatusId());
 						aaotn.setUpdatedBy(userId);
 						aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 						aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-						aaotn.setIsApproved(aaon.getIsApproved());
 						alertAssignedOfficerTrackingNewDAO.save(aaotn);
 						rs.setExceptionMsg("success");
 					}
@@ -2951,7 +2956,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
               	try {
               		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
-       				List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getAlertStatusHistory(alertId);
+              		
+              		List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getAlertStatusForAdminHistory(alertId,6L);//status change Id - 6
+              		if(!commonMethodsUtilService.isListOrSetValid(objList))
+              			objList = new ArrayList<Object[]>(0);
+              			
+       				List<Object[]> statusCommentsList = alertAssignedOfficerTrackingNewDAO.getAlertStatusHistory(alertId,6L);
+       				if(commonMethodsUtilService.isListOrSetValid(statusCommentsList))
+       					objList.addAll(statusCommentsList);
        				
        				Map<String,AlertTrackingVO> alertMap = new HashMap<String, AlertTrackingVO>(0);
        				if(objList != null && objList.size() > 0){
@@ -2978,6 +2990,21 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        					
        					if(commonMethodsUtilService.isMapValid(alertMap)){
        						voList.addAll(alertMap.values());
+       						
+       						if(commonMethodsUtilService.isListOrSetValid(voList)){
+       							Collections.sort(voList, new Comparator<AlertTrackingVO>() {
+									public int compare(AlertTrackingVO o1,AlertTrackingVO o2) {
+										int i =0;
+										try {
+											SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+											i = sdf.parse(o1.getDate()).compareTo(sdf.parse(o2.getDate()));
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+										return i;
+									}
+								});
+       						}
        					}
        				}
        			} catch (Exception e) {
@@ -3767,7 +3794,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         public List<AlertTrackingVO> getCommentsForAlert(Long alertId){
         	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
         	try {
-				List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getCommentsForAlert(alertId);
+				List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getCommentsForAdminCommentsAlert(alertId);
+				
+				if(!commonMethodsUtilService.isListOrSetValid(objList))
+					objList = new ArrayList<Object[]>();
+				
+				List<Object[]> commentsList = alertAssignedOfficerTrackingNewDAO.getCommentsForAlert(alertId);
+				if(commonMethodsUtilService.isListOrSetValid(commentsList))
+					objList.addAll(commentsList);
+				
 				if(objList != null && objList.size() > 0){
 					for (Object[] objects : objList) {
 						AlertTrackingVO vo = new AlertTrackingVO();
@@ -3778,8 +3813,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
    						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
    						voList.add(vo);
-   						
-						//voList.add(vo);
 					}
 				}
 			} catch (Exception e) {
@@ -3787,6 +3820,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
         	return voList;
         }
+        
          /*
       	 * Swadhin K Lenka
       	 * overview  click
@@ -3896,7 +3930,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		}
         		Long alertSubStatusId = govtAlertSubTask.getAlertSubTaskStatusId();
         		
-        		
+        		if(!commonMethodsUtilService.isListOrSetValid(finalList)){
+        			IdNameVO VO = new IdNameVO();
+					VO.setId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
+        			VO.setName(govtAlertSubTask.getAlertSubTaskStatus().getStatus());
+        			finalList.add(VO);
+        		}
     			
     			if(finalList != null && finalList.size() > 0){
     				IdNameVO vo = finalList.get(0);
@@ -6184,7 +6223,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			                        VO.setDateStr(objects[2] != null ? objects[2].toString():"");
   			                        if(alert.getAlertStatusId().longValue() != VO.getId().longValue())
   			                        finalList.add(VO);
-  			              }
+  			                  }
   			                }
   			                
   			              }else if(list2 != null && list2.size() > 0){ 
@@ -6200,7 +6239,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		  			                    vo.setId((Long)objects[0]);
 		  			                    vo.setName(objects[1].toString());
 		  			                    vo.setDateStr(objects[2] != null? objects[2].toString():null);
-		  			                    if(alert.getAlertStatusId().longValue() < vo.getId().longValue())
+		  			                    if(alert.getAlertStatusId().longValue() != vo.getId().longValue())
 		  			                    	finalList.add(vo);
   			                      }
   			                    }
@@ -6221,8 +6260,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			              
   			              
   			              if(finalList != null && finalList.size() > 0){
-  			                finalList.get(0).setApplicationStatus(userType+" - "+alert.getAlertStatusId());
-  			                finalList.get(0).setUserStatus(userStatus);
+  			            	IdNameVO vo  =finalList.get(0);
+  			            	vo.setApplicationStatus(userType+" - "+alert.getAlertStatusId());
+  			            	vo.setUserStatus(userStatus);
+  			            	vo.setUserType(alert.getAlertCallerType() != null ? alert.getAlertCallerType().getCallerType():"");// citizen/chief minister...etc
+  			            	vo.setCallerName(alert.getAlertCaller() != null ? alert.getAlertCaller().getCallerName():"");
+  			            	vo.setMobileNo(alert.getAlertCaller() != null ? alert.getAlertCaller().getMobileNo():"");
+  			                List<String> dueDatesList = alertAssignedOfficerTrackingNewDAO.getAlertDueDate(alertId);
+  			                if(commonMethodsUtilService.isListOrSetValid(dueDatesList))
+  			                	vo.setDueDateStr(dueDatesList.get(0).toString());
   			              }
   			          
   			        } catch (Exception e) {
