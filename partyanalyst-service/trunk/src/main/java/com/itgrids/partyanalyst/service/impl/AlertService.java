@@ -10540,6 +10540,69 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			LOG.error("Error occured getEfficiencyOfDatesForEachStatus() method of AlertService",e);
 		}
 	}
+	
+	public List<KeyValueVO> getStatusWiseViewWiseCounts(Long viewType,Long departmentId,Long locationId,String locationType,String searchType,String startDate,String endDate){
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			if(viewType == 1l){//day wise viwe
+				getDayWiseAlertsCounts(departmentId,locationId,locationType,searchType,startDate,endDate,voList);
+			}else if(viewType == 2l){//week wise view
+				
+			}else if(viewType == 3l){//month wise view
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getStatusWiseOverAllCounts", e);
+		}
+		return voList;
+	}
+	
+	public void getDayWiseAlertsCounts(Long departmentId,Long locationId,String locationType,String searchType,String startDate,String endDate,List<KeyValueVO> voList){
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(startDate != null && endDate != null){
+				Date fromDate = sdf.parse(startDate),toDate = sdf.parse(endDate);
+				List<Date> dates = commonMethodsUtilService.getBetweenDates(fromDate,toDate);
+				if(dates != null && dates.size() > 0){
+					//0-statusId,1-status,2-date,3-count
+					List<Object[]> objList = alertDAO.getDayWiseAlertsCounts(departmentId,fromDate,toDate);
+					if(objList != null && objList.size() > 0){
+						for (Object[] objects : objList) {
+							KeyValueVO matchedStatusVO = getMatchedVO(voList,objects[0].toString());
+							if(matchedStatusVO == null){
+								matchedStatusVO = new KeyValueVO();
+								matchedStatusVO.setId((Long)objects[0]);
+								matchedStatusVO.setName(objects[1].toString());
+								voList.add(matchedStatusVO);
+							}
+							matchedStatusVO = getMatchedVO(voList,objects[0].toString());
+							KeyValueVO matchedDateVO = getMatchedVO(matchedStatusVO.getSubList(),objects[2].toString());
+							if(matchedDateVO == null){
+								matchedDateVO = new KeyValueVO();
+								matchedDateVO.setName(objects[2].toString());
+								matchedDateVO.setCount((Long)objects[3]);
+								matchedStatusVO.getSubList().add(matchedDateVO);
+							}
+							
+						}
+					}
+				}
+			}
+				
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDayWiseAlertsCounts", e);
+		}
+	}
+	
+	public KeyValueVO getMatchedVO(List<KeyValueVO> voList,String id){
+		if(voList != null && voList.size() > 0){
+			for (KeyValueVO keyValueVO : voList) {
+				if(keyValueVO.getId().toString().equalsIgnoreCase(id))
+					return keyValueVO;
+			}
+		}
+		return null;
+	}
 }
 
 

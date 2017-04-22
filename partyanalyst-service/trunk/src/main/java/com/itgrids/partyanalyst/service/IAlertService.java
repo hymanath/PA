@@ -127,4 +127,5 @@ public interface IAlertService {
     public List<KeyValueVO> getStatusCount(Long locationId,String locationType,String searchType,String startDateStr,String endDateStr);
     public AlertCoreDashBoardVO getUserLogingDtls(Long userId, String fromDateStr, String toDateStr);
     public List<AlertsSummeryVO> getStatusWiseAlertsCountSummery(List<Integer> daysLst);
+    public List<KeyValueVO> getStatusWiseViewWiseCounts(Long viewType,Long departmentId,Long locationId,String locationType,String searchType,String startDate,String endDate);
 }

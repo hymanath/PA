@@ -6933,4 +6933,35 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	return query.list(); 
     	
     }
+    
+    public List<Object[]> getDayWiseAlertsCounts(Long departmentId,Date startDate,Date endDate){
+
+    	StringBuilder sb = new StringBuilder();
+    		sb.append("select distinct ");
+    		sb.append(" model.alertStatus.alertStatusId,model.alertStatus.alertStatus,date(model.createdTime),count(model.alertId)" ) ;
+    		sb.append("from Alert model ");
+    		sb.append(" where model.isDeleted = 'N' ");
+    		
+    		if(departmentId != null && departmentId > 0l)
+    			sb.append(" and model.govtDepartmentId = :departmentId ");
+    		
+    		if(startDate != null && endDate != null)
+    			sb.append(" and (date(model.createdTime) between :startDate and :endDate) ");
+    		
+    		sb.append(" group by model.alertStatus.alertStatusId,date(model.createdTime) order by model.alertStatus.alertStatusId");
+    		
+    		Query query = getSession().createQuery(sb.toString());
+    		
+    		if(departmentId != null && departmentId > 0l)
+    			query.setParameter("departmentId", departmentId);
+    		
+    		if(startDate != null && endDate != null){
+    			query.setDate("startDate", startDate);
+    			query.setDate("endDate", endDate);
+    		}
+    		
+    		return query.list();
+    	
+    
+    }
 }
