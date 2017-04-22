@@ -17007,5 +17007,13 @@
    			<param name="root">idnameVoList</param>
    		</result>
 	</action>
+	<action name="locationWiseReportActionNew" class="createAlertAction" method="locationReport">
+		  <result name="success">/jsp/locationWiseReportNew.jsp</result>                
+	</action>
+	<action name="getAlertStatusCountNewAction" class="createAlertAction" method="getAlertStatusCountNew">
+		<result type="json" name="success">
+				<param name="root">keyValueVOList</param>
+		</result>
+	</action>
  </package>
 </struts>

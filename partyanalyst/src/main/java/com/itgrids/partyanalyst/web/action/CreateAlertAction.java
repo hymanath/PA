@@ -2591,4 +2591,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		   return Action.SUCCESS;
 	}
+	
+	public String getAlertStatusCountNew(){
+		try {
+			jObj = new JSONObject(getTask());
+			keyValueVOList = alertService.getStatusWiseViewWiseCounts(jObj.getLong("viewType"),jObj.getLong("departmentId"),jObj.getLong("locationId"),jObj.getString("locationType"),jObj.getString("searchType"),jObj.getString("startDate"),jObj.getString("endDate"));
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getAlertStatusCount",e);
+		}
+		return Action.SUCCESS;
+	}
 }
