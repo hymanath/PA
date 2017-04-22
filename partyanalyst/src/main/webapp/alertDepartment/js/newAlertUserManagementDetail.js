@@ -935,6 +935,21 @@ function getStatusCompletionInfo(alertId){
 			if(result.length  == 1)
 				isStatusAvailable=false;
 			
+			if(result[0].callerName != null && result[0].callerName.length > 0 && result[0].mobileNo != null && result[0].mobileNo.length > 0)
+			{
+				var str='';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-1 text-center body-icons"><i class="fa fa-volume-control-phone fa-2x"></i></div>';
+					str+='<div class="col-sm-11">';
+						str+='<h3>Caller Details </h3>';
+						str+='<p class="m_top10">Name : '+result[0].callerName+' </p>';
+						str+='<p> Mobile No : '+result[0].mobileNo+' </p>';
+						str+='<p> Caller : '+result[0].userType+'</p>';
+					str+='</div>';
+				str+='</div>';
+				$("#callerDetailsDIv").append(str);
+			}
+			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			//buildTypeStr="other";
 			globalUserType = buildTypeStr;
@@ -1140,6 +1155,7 @@ function rightSideExpandView(alertId)
 							str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
 								str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
 							str+='</p>';
+							str+='<div id="callerDetailsDIv"></div>';
 							str+='<div id="statusDtlsDiv"></div>';
 							str+='<div id="alertDetails"></div>';
 							str+='<div id="articleAttachment"></div>';
@@ -2452,7 +2468,7 @@ function getDocumentsForAlert(alertId){
 			str+='<ul class="list-inline imageShowOpen">';
 			for(var i in result){
 				str+='<li class="" style="margin-top:25px;" attr_doc_id="'+result[i].id+'"  attr_path="'+result[i].name+'" id="imageAttachmentOpen'+result[i].id+'" >';
-					str+='<img src="http://localhost:8080/PartyAnalyst/images/'+result[i].name+'" style="width: 100px; height: 100px;cursor:pointer" />';
+					str+='<img src="http://www.mytdp.com/images/'+result[i].name+'" style="width: 100px; height: 100px;cursor:pointer" />';
 				str+='</li>';
 			}
 			str+='</ul>';
