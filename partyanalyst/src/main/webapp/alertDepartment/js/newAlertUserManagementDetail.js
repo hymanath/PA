@@ -398,6 +398,7 @@ function onLoadClicks()
 		}).done(function(result){
 			if(result != null && result.exceptionMsg == 'success')
 			{
+				$('.alert-status-change-list').hide();
 				alert("Priority Updated Successfully.");
 				$("#priorityBodyId").html($('input[name=alert-status-change-list]:checked', '.alert-status-change-list').attr("attr_value"));
 			}else{
@@ -570,13 +571,16 @@ function onLoadClicks()
 					backdrop: 'static'
 				});
 				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY');
+				getAlertStatusHistory(alertId);
+			}else if(status == 'alertStatus1'){// sub task status popup
+				$("#alertManagementPopup1").modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+				});
 				
-				if(subalertid != null && subalertid !='' && subalertid>0){
-					getSubTaskStatusHistory(subalertid,alertId);
-				}
-				else
-					getAlertStatusHistory(alertId);
-				
+				$("#alertManagementPopupHeading").html('SUB TASK STATUS HISTORY');
+				getSubTaskStatusHistory(subalertid,alertId);				
 			}else if(status == 'alertStatusChange'){
 				$(this).find('ul').toggle();
 			}else if(status == 'task'){
@@ -1041,13 +1045,11 @@ function getStatusCompletionInfo(alertId){
 			
 			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
+			//buildTypeStr="other";
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
 			globalStatusId = sttatusId;  
 			$('#historyId').show();
-			//buildTypeStr="subUser";
-			//alert("user Type :"+buildTypeStr);
-			
 			if(result[0].dueDateStr != null && result[0].dueDateStr.trim().length>0){
 				$('.modal-date').html(result[0].dueDateStr)
 				$('.modal-date1').html(result[0].dueDateStr)
@@ -1059,6 +1061,7 @@ function getStatusCompletionInfo(alertId){
 
 				if(globalStatusId == 12 ){ // closed
 					isStatusAvailable=false;
+					$('#displaySubTasksliId,#docAttachmentId').hide();
 				}else if(result.length == 1){
 					;//isStatusAvailable=true;
 				}					
@@ -1070,17 +1073,25 @@ function getStatusCompletionInfo(alertId){
 				$('#displayStatusId').removeAttr('status-icon-block');
 				
 				$('#displayDueDate2,#displayPriority').show();
-				isStatusAvailable=false;
+				
+				// closed-12, completed-4, reopen-11
+				if(globalStatusId == 12 || globalStatusId == 4 || globalStatusId == 11){
+					isStatusAvailable=true;
+				}
+				if(globalStatusId != 12){ // for not closed status alerts 
+					$('#displaySubTasksliId,#docAttachmentId').show();					
+				}
 			}else if(buildTypeStr=='same'){ 
-				$('#displaySubTasksliId').hide();
+				$('#displaySubTasksliId,#docAttachmentId,#displayPriority').show();
 				$('#displayStatusId').show();       
 				$('#displayDueDate1').show(); 
-				isStatusAvailable=false;				
+				isStatusAvailable=false;
 			}
 			else if(buildTypeStr=='other'){
 				$('#displaySubTasksliId').hide();				
+				$('#displayDueDate1').hide();				
+				$('#displayDueDate2').hide();				
 				$('#displayStatusId').show();
-				$('#displayDueDate1').show(); 
 				isStatusAvailable=false;				
 			}
 			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
@@ -1099,12 +1110,14 @@ function getStatusCompletionInfo(alertId){
 				isAdmin = "false";
 			}
 			
-			if(isAdmin=='false'){
-				$('#docAttachmentId').show(); 
+			if(isAdmin=='false'){				
 				$('#displayStatusId').attr('status-icon-block','alertStatus');
-				
 			}
-			alertStatus(result,alertId);			
+			alertStatus(result,alertId);	
+
+			if(globalStatusId == 12 ){ // closed
+				$('#displaySubTasksliId,#docAttachmentId,#displayPriority').hide();
+			}
 		}else{
 			$('#displayAssignIconId').show();
 			$('#displayStatusId').show();
@@ -1516,17 +1529,36 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 	var str='';
 	var str1='';
 	subTaskStatusChangAvailable=true;
+	$('#docAttachmentId1').show();
 	str+='<div class="row m_top20">';
 		for(var i in result)
 		{
 			if(i==0){
 				
-				var subTaskBuildType=result[0].userStatus;				
-				if(subTaskBuildType=="subTaskOwnner" && statusId == 6){
-					subTaskStatusChangAvailable=true;
+				var subTaskBuildType=result[0].userType;
+				var statusId = result[0].statusId;	
+				//statusId=2;
+				//alert(subTaskBuildType);
+				if(subTaskBuildType=="other"){
+					$('#docAttachmentId1').hide();
+					subTaskStatusChangAvailable=false;
+				}
+				else if(subTaskBuildType=='assignedTo'){					
+					$('#displayStatusId1').attr('subalertid',subAlertId);
+					if(statusId != 7 )
+						subTaskStatusChangAvailable=true;
+					else
+						subTaskStatusChangAvailable=false;	
+				}
+				else if(subTaskBuildType=='assignedBy'){					
+					$('#displayStatusId1').attr('subalertid',subAlertId);
+					if(statusId == 3 || statusId == 6 || statusId == 7 )// 3 - completed, 6-
+						subTaskStatusChangAvailable=true;
+					else
+						subTaskStatusChangAvailable=false;					
 				}
 				
-				$('#docAttachmentId1').show();
+				
 				$("#statusId1Color").attr('style','background-color:'+result[0].color+'');
 				$("#statusId1").html(result[0].status);
 				$(".modal-date1").html(result[0].dueDateStr);
@@ -1568,7 +1600,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				
 				if(result[i].subList != null && result[i].subList.length>0){
 					str1+='<div class="row m_top20">';
-					str+='<h4 class="text-muted text-capital"> Sub Task Attachments:  </h4>';	
+					str1+='<h4 class="text-muted text-capital"> Sub Task Attachments:  </h4>';	
 					for(var k in result[i].subList){
 							str1+='<div class="col-sm-3">';
 							str1+='<img class="displayImgCls img-responsive m_top20" attr_articleId="" src="http://www.mytdp.com/images/'+result[i].subList[k]+'" style="width: 100px; height: 100px;cursor:pointer"/>';
@@ -1618,12 +1650,8 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				$("#mainAlertTitle").html(str1);
 					
 				
-				if(result[i].userStatus=='alertOwnner'){
-					$('#displayStatusId1').attr('status-icon-block','alertStatus');
-					$('#displayStatusId1').attr('subalertid',subAlertId);
-				}
+				
 			}	
-
 
 			
 				subTaskglStr='';
@@ -1723,7 +1751,7 @@ function saveSubTask(mainAlertId){
 			//$("#assignOfficerId").hide();
 			
 			var textValue = $('.subTaskDueDate').text().trim();
-			alert(textValue)
+			
 			if(textValue == null || textValue == "" || textValue == 0 || textValue == "Due Date")
 			{
 				$("#assignErrorDivId1").html("Please select Date");
@@ -1872,8 +1900,13 @@ function buildAlertDataNew(result)
 			}else{
 				str1+='<div class="col-sm-11" id="existingDocsDivId"></div>';
 			}
-			
+		}else{
+			str1+='<div class="col-sm-1 text-center body-icons">';
+				str1+='<i class="fa fa-paperclip fa-2x"></i>';
+			str1+='</div>';
+			str1+='<div class="col-sm-11" id="existingDocsDivId"></div>';
 		}
+		
 	str1+='</div>';
 	$("#alertDetails").html(str);
 	$("#articleAttachment").html(str1);
