@@ -619,7 +619,7 @@ public String saveUserSessionDetails(String status)
 		UserTrackingVO userTrackingVO = new UserTrackingVO();
 		
 		userTrackingVO.setRegistrationId(regVO.getRegistrationID());
-		userTrackingVO.setRemoteAddress(request.getRemoteAddr());
+		userTrackingVO.setRemoteAddress(getClientIp(request));
 		userTrackingVO.setStatus(status);
 		userTrackingVO.setSessionId(session.getId());
 		loginService.saveUserSessionDetails(userTrackingVO);
@@ -629,6 +629,23 @@ public String saveUserSessionDetails(String status)
 		return IWebConstants.FAILURE;
 	}
 }
+
+	private static String getClientIp(HttpServletRequest request) 
+	{
+		try{
+			String clientAddr = "";
+			if (request != null){
+				clientAddr = request.getHeader("X-FORWARDED-FOR");
+				
+				if(clientAddr == null || "".equals(clientAddr)) 
+					clientAddr = request.getRemoteAddr();
+			}
+			return clientAddr;
+		}catch(Exception e){
+	    	LOG.error("Exception Occured, Exception is - ",e);
+	    }
+		return null;
+	}
 
 public String getIpaddress() {
 	return ipaddress;
