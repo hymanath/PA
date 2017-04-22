@@ -2264,21 +2264,40 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String toDateStr = jObj.getString("toDateStr");
 				Long stateId = jObj.getLong("stateId");
 				
-				JSONArray printIdArr = jObj.getJSONArray("printIdArr");  
-				List<Long> printIdList = new ArrayList<Long>();
+				JSONArray printIdArr = null;
+				JSONArray electronicIdArr = null;
+				JSONArray chanelIdArr = null;
+				
+				List<Long> printIdList = new ArrayList<Long>(0);
+				List<Long> electronicIdList = new ArrayList<Long>();
+				List<Long> chanelIdList = new ArrayList<Long>();
+				
+				try{
+					printIdArr = jObj.getJSONArray("printIdArr");  
+				}catch(Exception e)
+				{
+					LOG.error(e);
+				}
+				
 				if(printIdArr != null && printIdArr.length() > 0){
 					for (int i = 0; i < printIdArr.length(); i++){
 						printIdList.add(Long.parseLong(printIdArr.getString(i)));        
 					} 
 				}
 				
-				JSONArray electronicIdArr = jObj.getJSONArray("electronicIdArr");  
-				List<Long> electronicIdList = new ArrayList<Long>();
+				try{
+					electronicIdArr = jObj.getJSONArray("electronicIdArr");
+				}catch(Exception e)
+				{
+					LOG.error(e);
+				}
+				
 				if(electronicIdArr != null && electronicIdArr.length() > 0){
 					for (int i = 0; i < electronicIdArr.length(); i++){
 						electronicIdList.add(Long.parseLong(electronicIdArr.getString(i)));        
 					} 
 				}
+				
 				Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 				Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");
 				String sortingType = jObj.getString("sortingType");
@@ -2296,13 +2315,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					}  
 				}
 				
-				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
-				List<Long> chanelIdList = new ArrayList<Long>();
+				chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				
 				if(chanelIdArr != null && chanelIdArr.length() > 0){
 					for (int i = 0; i < chanelIdArr.length(); i++){
 						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
 					} 
 				}
+				
 				alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(fromDateStr,
 						toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
 						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,chanelIdList,sublevels);
