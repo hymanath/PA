@@ -2154,11 +2154,18 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 		}
 		
 		public List<Object[]> getGovtDeptDesigOfficerIdsListBySubTaskId(List<Long> subTaskIdsList){
-			Query query = getSession().createQuery("select distinct model.govtAlertSubTaskId, model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId " +
+			/*Query query = getSession().createQuery("select distinct model.govtAlertSubTaskId, model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId " +
+					" from  GovtAlertSubTask model " +
+					" where model.govtAlertSubTaskId in (:subTaskIdsList)  ");
+			query.setParameterList("subTaskIdsList", subTaskIdsList);
+			return query.list(); */ 
+			
+			Query query = getSession().createQuery("select distinct model.govtAlertSubTaskId, model.subTaskGovtOfficerId " +
 					" from  GovtAlertSubTask model " +
 					" where model.govtAlertSubTaskId in (:subTaskIdsList)  ");
 			query.setParameterList("subTaskIdsList", subTaskIdsList);
 			return query.list();  
+			
 		}
 		
 		@SuppressWarnings("unchecked")

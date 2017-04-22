@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -3892,10 +3893,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			List<IdNameVO> finalList = new ArrayList<IdNameVO>();
       			
       			GovtAlertSubTask govtAlertSubTask = govtAlertSubTaskDAO.get(subTaskId);
-      			Long currentStatusId = govtAlertSubTask.getAlertSubTaskStatusId();
+      			
+      			Long assignedByOfficerId=govtAlertSubTask.getCreatedBy();//sub task assigned by 
+      			Long assignedToOfficerId = govtAlertSubTask.getSubTaskGovtOfficerId();
+      			String subTaskUserTypeStr ="other";
+      			
       			//get all govt dept desig off ids
         		List<Long> govtDeptDesigOfficerIdList = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOfficerIdListByUserId(userId);
-        		
+      			
+      			if(assignedByOfficerId != null && userId != null && assignedByOfficerId.longValue() == userId.longValue()){
+      				subTaskUserTypeStr="assignedBy";//setting sub task owner is owner of this subtask , by comparing login userid
+				}
+      			else if(govtDeptDesigOfficerIdList.contains(assignedToOfficerId)){
+      				subTaskUserTypeStr="assignedTo";//setting sub task owner is owner of this subtask , by comparing login userid
+				}
+      			
+      			Long currentStatusId = govtAlertSubTask.getAlertSubTaskStatusId();
+      			
         		//get govt dept desig off id by alertId
         		Long govtDeptDesigOfficerId = alertAssignedOfficerNewDAO.getGovtDeptDesigOfficerIdListByUserId(alertId);
         		
@@ -3903,13 +3917,18 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		
         		Long govtDeptDesigOfficerId2 = govtAlertSubTaskDAO.getGovtDeptDesigOfficerIdBySubTaskId(subTaskId);
         		
-        		String userType = "";
+        		
         		String isAccess = "";
-        		if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId)){
-        			userType ="alertOwnner";
+        		//if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId)){
+        		if(subTaskUserTypeStr.equalsIgnoreCase("assignedBy")){
         			if(govtAlertSubTask.getAlertSubTaskStatusId() != null && govtAlertSubTask.getAlertSubTaskStatusId().longValue() == 3L){
         				isAccess = "true";
         			}
+        			
+        			Long[] availableIdsArr = {6L,7L};// reopen, closed 
+        			
+        			List<Long> availableIdsList = new ArrayList<Long>(0);
+        			availableIdsList.addAll(Arrays.asList(availableIdsArr));
         			
         			List<AlertSubTaskStatus> objList = alertSubTaskStatusDAO.getAll();
         			if(objList != null && objList.size() > 0){
@@ -3918,15 +3937,33 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	        					IdNameVO VO = new IdNameVO();
 	        					VO.setId(param.getAlertSubTaskStatusId());
 	                			VO.setName(param.getStatus());
-	                			finalList.add(VO);
+	                			if(availableIdsList.contains(VO.getId()))
+	                				finalList.add(VO);
         					}
     					}
         			}
         			
-        		}else if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId2 != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId2)){
-        			userType ="subTaskOwnner";
-        		}else{
-        			userType ="other";
+        		//}else if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId2 != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId2)){
+        		}if(subTaskUserTypeStr.equalsIgnoreCase("assignedTo")){
+        			
+        			Long[] availableIdsArr = {1L,2L,3L,4L,5L};
+        			
+        			List<Long> availableIdsList = new ArrayList<Long>(0);
+        			availableIdsList.addAll(Arrays.asList(availableIdsArr));
+        			
+        			List<AlertSubTaskStatus> objList = alertSubTaskStatusDAO.getAll();
+        			if(objList != null && objList.size() > 0){
+        				for (AlertSubTaskStatus param : objList) {
+        					if(currentStatusId.longValue() < param.getAlertSubTaskStatusId().longValue()){
+	        					IdNameVO VO = new IdNameVO();
+	        					VO.setId(param.getAlertSubTaskStatusId());
+	                			VO.setName(param.getStatus());
+	                			if(availableIdsList.contains(VO.getId()))
+	                				finalList.add(VO);
+        					}
+    					}
+        			}
+        			
         		}
         		Long alertSubStatusId = govtAlertSubTask.getAlertSubTaskStatusId();
         		
@@ -3950,7 +3987,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				vo.setTitle(govtAlertSubTask.getTitle());
     				vo.setDateStr(govtAlertSubTask.getCreatedTime() != null ? govtAlertSubTask.getCreatedTime().toString().substring(0, 10):"");
     				vo.setDueDateStr(govtAlertSubTask.getDueDate() != null ? govtAlertSubTask.getDueDate().toString().substring(0, 10):"");
-    				vo.setUserStatus(userType);
+    				
     				vo.setIsAccess(isAccess);
     				vo.setStatus(govtAlertSubTask.getAlertSubTaskStatus().getStatus());
     				vo.setStatusId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
@@ -3975,6 +4012,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							}
 					}
         			
+        			vo.setUserType(subTaskUserTypeStr);// assignedBy user or assignedTo user
         			
     			}
     			return 	finalList;
