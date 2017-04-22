@@ -71,6 +71,7 @@ function onLoadClicks()
 	//document
 	$(document).on("click","#uploadBtnId",function(){
 		
+		
 		var alertId = $(this).attr("attr_alert_id");
 		var subTaskId = $(this).attr("subalertid");
 		var urlStr='uploadDocumentsForAlertAction.action';
@@ -263,7 +264,7 @@ function onLoadClicks()
 				subTaskId:subTaskId,
 				comment: comment
 			}
-		
+		//1111
 		var callURL = 'updateAlertStatusCommentAction.action';
 		if(subTaskId != null && subTaskId>0){
 			callURL = 'updateSubTaskStatusCommentAction.action';
@@ -279,10 +280,9 @@ function onLoadClicks()
 				$('#alertManagementPopup1').modal('hide');
 				
 				if(subTaskId == null || subTaskId.length == 0){
-					
 					getCommentsForAlert(alertId);
+					//rightSideExpandView(alertId);
 				}else{
-					
 					getSubAlertsDetails(alertId,subTaskId);
 				}
 				
@@ -308,7 +308,7 @@ function onLoadClicks()
 		}).done(function(result){
 			if(result != null && result.exceptionMsg == 'success')
 			{
-				alert("status updated successfully")
+				alert("Priority Updated Successfully.");
 				$("#priorityBodyId").html($('input[name=alert-status-change-list]:checked', '.alert-status-change-list').attr("attr_value"));
 			}else{
 				alert("try again")
@@ -936,16 +936,22 @@ function getStatusCompletionInfo(alertId){
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
 			globalStatusId = sttatusId;  
 			$('#historyId').show();
+			//buildTypeStr="subUser";
+			//alert("user Type :"+buildTypeStr);
 			
+			if(result[0].dueDateStr != null && result[0].dueDateStr.trim().length>0){
+				$('.modal-date').html(result[0].dueDateStr)
+				$('.modal-date1').html(result[0].dueDateStr)
+			}
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
 				$('#displayDueDate1').show();
 				$('#displayDueDate2').hide(); 
-
-				if(globalStatusId == 4 || globalStatusId == 12 ){
-					//isStatusAvailable=false;
+				//alert("own-block");
+				if(globalStatusId == 12 ){ // closed
+					isStatusAvailable=false;
 				}else if(result.length == 1){
-					//isStatusAvailable=true;
+					;//isStatusAvailable=true;
 				}					
 			}
 			else if(buildTypeStr=='subUser'){	
@@ -955,18 +961,21 @@ function getStatusCompletionInfo(alertId){
 				$('#displayStatusId').removeAttr('status-icon-block');
 				
 				$('#displayDueDate2,#displayPriority').show();
-				//isStatusAvailable=false;
+				//alert("subuser-block");
+				isStatusAvailable=false;
 			}else if(buildTypeStr=='same'){ 
+				//alert("same-block");
 				$('#displaySubTasksliId').hide();
 				$('#displayStatusId').show();       
 				$('#displayDueDate1').show(); 
-				//isStatusAvailable=false;				
+				isStatusAvailable=false;				
 			}
 			else if(buildTypeStr=='other'){
+					//alert("other-block");
 				$('#displaySubTasksliId').hide();				
 				$('#displayStatusId').show();
 				$('#displayDueDate1').show(); 
-				//isStatusAvailable=false;				
+				isStatusAvailable=false;				
 			}
 			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
 				$('#displayAssignIconId').show();
@@ -989,6 +998,7 @@ function getStatusCompletionInfo(alertId){
 				$('#displayStatusId').attr('status-icon-block','alertStatus');
 				
 			}
+			//alert(isStatusAvailable);
 			alertStatus(result,alertId);			
 		}else{
 			$('#displayAssignIconId').show();
@@ -1102,7 +1112,7 @@ function rightSideExpandView(alertId)
 										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
 										str+='<form name="uploadAttachment1" method="post" id="uploadAttachment1">';
 										str+='<div class="alert-status-attachment arrow_box_top" style="display:none;">';
-										//str+='<i attr_class="alert-status-attachment1" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
+										str+='<i attr_class="alert-status-attachment" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
 											str+='<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/>';
 											str+='<input type="hidden" name="subTaskId" value="'+alertId+'" subAlertId=""  id="alertHiddenId"/>';
 											str+='<button class="btn btn-primary btn-sm text-capital uploadBtnIdCls " attr_alert_id="'+alertId+'" type="button" id="uploadBtnId" subAlertId=""  >upload</button>';
@@ -2643,6 +2653,7 @@ function buildAssignedOfficersDetailsForAlert(result)
 			str+='<p>Location : '+result[0].source+'</p>';
 			
 			str+='<p>'+result[0].name+' - '+result[0].department+'</p>'; */
+			str+='<p> ASSIGN TO: <i class="fa fa-level-down "></i></p> ';
 			str+='<p>'+result[0].designation+' <br> <i class="glyphicon glyphicon-phone"></i> : '+result[0].mobileNo+'</p>';
 			str+='<p>Location :  '+result[0].source+'</p>';			
 			str+='<p>Dept : '+result[0].department+'</p>'; 
@@ -2809,10 +2820,10 @@ function alertStatusHistory(result,alertId)
 		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 		$("#alertManagementPopupBody1").html(str);
 	}else{
-		$("#alertManagementPopupBody1").html("NO DATA")
+		$("#alertManagementPopupBody1").html(" NO HISTORY AVAILABLE...")
 	}
 	
-	
+	//alert("build here : "+isStatusAvailable);
 	if(isAdmin == "false"){
 		if(globalUserType != "same" && globalUserType != "other"){
 			str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
@@ -2863,11 +2874,18 @@ function alertStatus(result,alertId)
 	var str1='';
 	 
 		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
-			str1+='<div class="panel-heading">';
+			str1+='<div class="panel-heading" style="margin-left: 20px;">';
 				for(var i in result)
 				{
-					if(i == result.length-1)
-						str1+='<br>';
+					if(i==0)
+						str1+='<div class="row">';
+					if(i%5==0){
+						str1+='</div>';
+						str1+='<div class="row">';
+					}
+					
+					/*if(i == result.length-1)
+						str1+='<br>';*/
 					str1+='<label class="radio-inline">';
 					if(globalStatusId == parseInt(result[i].id))
 						str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
@@ -2875,8 +2893,9 @@ function alertStatus(result,alertId)
 						str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
 					str1+='</label>';
 					
-				}
-				
+					if(i==result.length-1)
+						str1+='</div>';
+				}				
 			str1+='</div>';
 			str1+='<div class="panel-body pad_0">';
 				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
