@@ -141,7 +141,7 @@
 								</div>
 								<div class="col-sm-3 m_top10">
 									<label>Mobile No<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMobileNoId"></span></label>
-									<input id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo" style="width: 230px" type="text"><span class="glyphicon glyphicon-search pull-right govtGrievanceCls" style="margin-top: -34px;background-color: lightgrey;padding:10px;margin-right: -10px;: 2px;cursor:pointer;" attr_id="mobile" title=" Click here to get existing Grievance requests with this mobile no"></span>
+									<input id="mobileNoId" class="form-control" name="grievanceAlertVO.mobileNo" style="width: 230px" type="text"/><!--<span class="glyphicon glyphicon-search pull-right govtGrievanceCls" style="margin-top: -34px;background-color: lightgrey;padding:10px;margin-right: -10px;: 2px;cursor:pointer;" attr_id="mobile" title=" Click here to get existing Grievance requests with this mobile no"></span>-->
 								</div>
 								<div class="col-sm-3 m_top10">
 									<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgNameId"></span></label>
@@ -211,8 +211,9 @@
 										<option value="0">Select Habitation</option>
 									</select>
 								</div>
-								<div class="col-md-2 col-xs-12 col-sm-6">
-                                 <input type="button" class="btn btn-success govtGrievanceCls" value="SEARCH" id="" onclick="" style="margin-top: 35px;"  attr_id="location"></input>
+								<div class="col-md-3 col-xs-12 col-sm-6" style="margin-left: 10px; margin-top: 45px;">
+                                 <!--<input type="button" class="btn btn-success govtGrievanceCls" value="SEARCH" id="" onclick="" style="margin-top: 35px;"  attr_id="location"></input>-->
+								 <a class="govtGrievanceCls" attr_id="location" style="cursor:pointer;">Click here to view Alerts in this location</a>
                                  </div>
 							</div>
 							
@@ -225,6 +226,12 @@
 							<div class="row">
 								<div class="col-sm-8 m_top10">
 									<label>Grievance Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgTitleId"></span></label>
+									<label class="radio-inline" style="margin-bottom: 5px;">
+										<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+									</label>
+									<label class="radio-inline" style="margin-bottom: 5px;">
+										<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+									</label>
 									<input type="text" class="form-control" id="alertTitleId" name="grievanceAlertVO.alertTitle"/>
 								</div>
 								<!--<div class="col-sm-4 m_top10">
@@ -233,12 +240,12 @@
 								</div>-->
 								<div class="col-sm-12 m_top10">
 									<label>Grievance Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDescId"></span></label>
-									<label class="radio-inline">
+									<!--<label class="radio-inline">
 										<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
 									</label>
 									<label class="radio-inline">
 										<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-									</label>
+									</label>-->
 								</div>
 							</div>
 							<div class="row">
@@ -309,7 +316,7 @@
 				</div>
 				<div id="dashboardGrevanceDivId" style="display:none;">
 					<div id="summaryDiv"></div>
-					<div id="alertDataDivId"></div>
+					<div class="table-responsive" id="alertDataDivId"></div>
 				<div>
             </div>
         </div>
@@ -941,6 +948,9 @@ function onLoad() {
 	// Create an instance on TransliterationControl with the required options.
 	control = new google.elements.transliteration.TransliterationControl(options);
 	// Enable transliteration in the textbox with id 'descrptionId'.
+	if ($('#alertTitleId').length){
+		control.makeTransliteratable(['alertTitleId']);
+	}
 	if ($('#alertdescriptionId').length){
 		control.makeTransliteratable(['alertdescriptionId']);
 	}
@@ -1626,6 +1636,7 @@ function buildAlertDetails(result,status,alertStatusId){
 			str+='<th  style="text-align:center">LOCATION</th>';
 			str+='<th  style="text-align:center"> CREATED ON</th>'; 
 			str+='<th  style="text-align:center"> CALLER DETAILS</th>'; 
+			str+='<th  style="text-align:center"> CREATED BY</th>'; 
 			str+='<th  style="text-align:center"> FEEDBACK STATUS  </th>'; 
 			str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
 		str+='</thead>';
@@ -1664,7 +1675,7 @@ function buildAlertDetails(result,status,alertStatusId){
 				str+='<td style="">'+locationName+'</td>';
 				str+='<td>'+result[i].createdTime+'</td>';
 				str+='<td>'+result[i].name+'<br>MobileNo:'+result[i].mobileNo+'</td>';
-				
+				str+='<td>'+result[i].userName+'</td>';
 				str+='<td>';
 				if(result[i].feedbackStatus != null){
 					if(result[i].feedbackStatus == 	"Received" || result[i].feedbackStatus == 	"Not Received"){
@@ -1758,13 +1769,13 @@ function showDashboard(){
 			  fromDateStr = dateArray[0];
 			 toDateStr = dateArray[1];
 		  }
-		  
+		  var deptId = $("#departmentsId").val();
 		var jsObj ={
 			startDate:fromDateStr,//'01/04/2017',
 			endDate:toDateStr,//'01/05/2017',
 			mobileNo:'',
 			status:"",
-			deptId:0,
+			deptId:deptId,
 			task:""
 		}
 		$.ajax({
