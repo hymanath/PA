@@ -11,6 +11,7 @@ public class AlertTrackingVO {
 	private Long alertUserTypeId;
 	private Long userId;
 	private Long alertTrackingActionId;
+	private String alertTrackingActionType;
 	private String date;
 	private String designation;
 	private List<AlertTrackingVO> attachementsList = new ArrayList<AlertTrackingVO>(0);
@@ -197,6 +198,12 @@ public class AlertTrackingVO {
 	}
 	public void setAlertTrackingActionId(Long alertTrackingActionId) {
 		this.alertTrackingActionId = alertTrackingActionId;
+	}
+	public String getAlertTrackingActionType() {
+		return alertTrackingActionType;
+	}
+	public void setAlertTrackingActionType(String alertTrackingActionType) {
+		this.alertTrackingActionType = alertTrackingActionType;
 	}
 
 }
