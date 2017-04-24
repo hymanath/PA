@@ -2160,7 +2160,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			query.setParameterList("subTaskIdsList", subTaskIdsList);
 			return query.list(); */ 
 			
-			Query query = getSession().createQuery("select distinct model.govtAlertSubTaskId, model.subTaskGovtOfficerId " +
+			Query query = getSession().createQuery("select distinct model.govtAlertSubTaskId, model.govtDepartmentDesignationOfficerId " +
 					" from  GovtAlertSubTask model " +
 					" where model.govtAlertSubTaskId in (:subTaskIdsList)  ");
 			query.setParameterList("subTaskIdsList", subTaskIdsList);
