@@ -238,7 +238,7 @@ function onLoadClicks()
 	
 	
 	$(document).on("click","#updateStatusChange",function(){
-	
+		
 		//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
 		var comment = $("#updateStatusChangeComment").val()
 		var alertId = $(this).attr("attr_alert_id");
@@ -258,6 +258,8 @@ function onLoadClicks()
 		if(statusId == null || statusId =='')
 			statusId=globalStatusId;
 		
+		$("#updateStatusChangeAjaxSymbol").html(spinner);
+		
 			var jsObj ={
 				alertId : alertId,
 				statusId : statusId,
@@ -274,25 +276,36 @@ function onLoadClicks()
 			url: callURL,
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
+			
+			$("#updateStatusChangeAjaxSymbol").html('');
 			if(result != null && result.exceptionMsg == 'success')
 			{
+				$("#updateStatusChangeMsg").html("status updated successfully");
 				$("#commentPostingSpinner").html("status updated successfully");
-				$('#alertManagementPopup1').modal('hide');
 				
 				if(subTaskId == null || subTaskId.length == 0){
 					getCommentsForAlert(alertId);
-					//rightSideExpandView(alertId);
+					
 				}else{
 					getSubAlertsDetails(alertId,subTaskId);
 				}
 				
 				setTimeout(function(){
 					$("#commentPostingSpinner").html(" ");
-				},1000);
+					$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
+					$('#alertManagementPopup1').modal('hide');
+					
+					
+				},1500);
+				rightSideExpandView(alertId);
+					setTimeout(function(){
+						$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
+					},750);
 			}else{
 				alert("try again");
 			}
 		});
+		
 		
 	});
 	$(document).on("click","#priorityChangeSaveId",function(){
@@ -927,6 +940,7 @@ function getStatusCompletionInfo(alertId){
 		url: 'getStatusCompletionInfoAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#updateStatusChangeBody").html('');
 		$("#statusDtlsDiv").html('');
 		$('#displayStatusId,#displayAssignIconId,#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority,#historyId').hide();
 		$('#displayStatusId').attr('status-icon-block','alertStatus');
@@ -1031,6 +1045,9 @@ function getStatusCompletionInfo(alertId){
 			$('#displaySubTasksliId').hide();  
 			$('#docAttachmentId').hide();  
 		}	
+		setTimeout(function(){
+			$("body").addClass("modal-open");
+		},1000);
 	});
 }
 function rightSideExpandView(alertId)
@@ -1596,7 +1613,9 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 						str1+='</div>';
 					str1+='</div>';
 				
-				str1+='<button class="btn btn-primary btn-sm text-capital closeSecondModal" subTaskId="'+subAlertId+'" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
+				str1+='<button class="btn btn-primary btn-sm text-capital" subTaskId="'+subAlertId+'" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
+				str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
+				str1+='<span id="updateStatusChangeMsg"></span>';
 				subTaskglStr=str1;
 		}
 	str+='</div>';
@@ -2949,7 +2968,9 @@ function alertStatus(result,alertId)
 			str1+='</div>';
 		str1+='</div>';
 	
-	str1+='<button class="btn btn-primary btn-sm text-capital closeSecondModal" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChange">update</button>';
+	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChange">update</button>';
+	str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
+	str1+='<span id="updateStatusChangeMsg"></span>';
 	glStr=str1;
 	//$("#updateStatusChangeBody").html(str1);
 }
