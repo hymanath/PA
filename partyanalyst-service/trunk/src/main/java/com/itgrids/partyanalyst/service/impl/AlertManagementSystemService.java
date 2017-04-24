@@ -6328,4 +6328,31 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			        }
   			            return finalList;
   			  }
+  	public String getOfficernameDesignationForUser(Long userId){
+          String officerName = null;
+          String desgnationName = null;
+          Long departMntscopeId = 0l;
+          List<Long> lvlValueList = new ArrayList<Long>();
+          String locationName = null;
+          String officerNameAnddesgnationName = null;
+	          try {
+	            List<Object[]> LocationList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+	            if(commonMethodsUtilService.isListOrSetValid(LocationList)){
+	              lvlValueList.add((Long) LocationList.get(0)[1]);
+	            }
+	            List<Object[]> usrNameList = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigNameForUser(userId);
+	            if(commonMethodsUtilService.isListOrSetValid(usrNameList)){
+	              officerName = (String) usrNameList.get(0)[0];
+	              desgnationName = (String) usrNameList.get(0)[1];
+	            }
+	             List<Object[]> locNameList = govtDepartmentWorkLocationDAO.getParentLevelValuesListInfo(lvlValueList);
+	             if(commonMethodsUtilService.isListOrSetValid(locNameList)){
+	              locationName = (String) locNameList.get(0)[1];
+	             }
+	              officerNameAnddesgnationName = officerName+"/"+desgnationName+"/"+locationName;
+	          } catch (Exception e) {
+	            LOG.error("Error occured getOfficernameDesignationForUser() method of AlertManagementSystemService",e);
+	          }
+          return officerNameAnddesgnationName;
+        }
 }      	
