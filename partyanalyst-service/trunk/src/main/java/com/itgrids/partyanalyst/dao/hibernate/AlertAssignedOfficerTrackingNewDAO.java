@@ -62,7 +62,7 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     }
     */
     public List<Object[]> getCommentsForAlert(Long alertId){//0														//1
-    	Query query = getSession().createQuery(" select model.alertDepartmentComment.alertDepartmentCommentId,model.alertDepartmentComment.comment, " +
+    	Query query = getSession().createQuery(" select distinct model.alertDepartmentComment.alertDepartmentCommentId,model.alertDepartmentComment.comment, " +
     	 		" model.alertDepartmentComment.insertedTime, model.updatedUser.userName , model2.govtOfficer.mobileNo , model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "
 			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName "
     	 		+ " from AlertAssignedOfficerTrackingNew model , GovtDepartmentDesignationOfficerDetailsNew model2  "

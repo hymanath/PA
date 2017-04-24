@@ -2998,7 +2998,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 										int i =0;
 										try {
 											SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-											i = sdf.parse(o1.getDate()).compareTo(sdf.parse(o2.getDate()));
+											i = sdf.parse(o2.getDate()).compareTo(sdf.parse(o1.getDate()));
 										} catch (Exception e) {
 											e.printStackTrace();
 										}
@@ -3795,6 +3795,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         public List<AlertTrackingVO> getCommentsForAlert(Long alertId){
         	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
         	try {
+        		Set<Long> uniqueCommentIds = new HashSet<Long>();
 				List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getCommentsForAdminCommentsAlert(alertId);
 				
 				if(!commonMethodsUtilService.isListOrSetValid(objList))
@@ -3806,14 +3807,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				
 				if(objList != null && objList.size() > 0){
 					for (Object[] objects : objList) {
-						AlertTrackingVO vo = new AlertTrackingVO();
-   						vo.setComment(objects[1] != null ? objects[1].toString():"");
-   						vo.setDate(objects[2] != null ? objects[2].toString():"");
-   						vo.setUserName(objects[3] != null ? objects[3].toString():""+" - "+objects[3] != null ? objects[1].toString():"");
-   						vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
-   						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
-   						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
-   						voList.add(vo);
+						Long commentId = Long.valueOf(objects[0] != null ? objects[0].toString():"0");
+						if(!uniqueCommentIds.contains(commentId)){
+							AlertTrackingVO vo = new AlertTrackingVO();
+	   						vo.setComment(objects[1] != null ? objects[1].toString():"");
+	   						vo.setDate(objects[2] != null ? objects[2].toString():"");
+	   						vo.setUserName(objects[3] != null ? objects[3].toString():""+" - "+objects[3] != null ? objects[1].toString():"");
+	   						vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
+	   						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
+	   						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+	   						voList.add(vo);
+	   						uniqueCommentIds.add(commentId);
+						}
+						
 					}
 				}
 			} catch (Exception e) {
