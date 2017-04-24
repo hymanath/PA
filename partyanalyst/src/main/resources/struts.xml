@@ -16725,8 +16725,8 @@
    		</result>
 	</action>
 	<action name="uploadDocumentsForSubTaskAction" class="alertManagementSystemAction" method="uploadDocumentsForSubTask">			
-		<result name="success" type="stream">			   
-		    <param name="inputName">inputStream</param>
+		 <result type="json" name="success">
+			<param name="root">resultStatus</param>
 		</result>								
 	</action>
 	<action name="viewSubTaskHistoryAction" class="alertManagementSystemAction" method="viewSubTaskHistory">		
