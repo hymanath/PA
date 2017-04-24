@@ -76,23 +76,35 @@ function onLoadClicks()
 		var subTaskId = $(this).attr("subalertid");
 		var urlStr='uploadDocumentsForAlertAction.action';
 		var formName='uploadAttachment';
-		
+		var errorDiv='errorDiv';
 		if(subTaskId != null && subTaskId.length>0){
 			urlStr='uploadDocumentsForSubTaskAction.action';
 			formName='uploadAttachment1';
+			errorDiv='errorDiv1';
 		}
+		var totalImages=0;
+		$('.jFiler-item').each(function(){
+			totalImages = totalImages+1;			
+		});
+		if(totalImages == 0){
+			$('.'+errorDiv+'').html(' Please upload atleast one file.');
+			return;
+		}
+		
 		$('.imagesUploadSpinner').show();
 		$(".uploadBtnIdCls").hide();
+		
 		var uploadHandler = { 
 			upload: function(o) {
 				var uploadResult = o.responseText;
 				$('.jFiler-item').html('');
 				$('.imagesUploadSpinner').hide();
 				$(".uploadBtnIdCls").show();
-				if(formName='uploadAttachment')
-					showSbmitStatusNew(uploadResult,alertId);
-				else
+				if(subTaskId != null && subTaskId.length>0){
 					showSbmitSubTaskStatusNew(uploadResult,alertId,subTaskId);
+				}else if(formName='uploadAttachment')
+					showSbmitStatusNew(uploadResult,alertId);
+					
 			}
 		};
 		YAHOO.util.Connect.setForm(formName,true);  
@@ -102,7 +114,7 @@ function onLoadClicks()
 	
 	function showSbmitSubTaskStatusNew(uploadResult,alertId,subAlertId){
 		if(uploadResult !=null && uploadResult.search("success") != -1){
-			getSubAlertsDetails(alertId,subAlertId)
+			getSubAlertsDetails(alertId,subAlertId);
 		}
 	}
 	$(document).on("click","#assignOfficerId",function(){
@@ -347,12 +359,12 @@ function onLoadClicks()
 			alertId : alertId,
 			comment : comment,
 			subTaskId:subTaskId,
-			statusId:globalStatusId // not updating status here.
+			statusId:0 // not updating status here.
 		}
 		
-		var callURL = 'updateAlertStatusCommentAction.action';
+		var callURL = 'updateCommentAction.action';
 		if(subTaskId != null && subTaskId>0)
-			callURL = 'updateSubTaskStatusCommentAction.action';
+			callURL = 'updateSubTaskCommentAction.action';
 		$.ajax({
 			type:'POST',
 			url: callURL,
@@ -517,6 +529,8 @@ function onLoadClicks()
 			}else if(status == 'subTask'){
 				statusBody(status);
 			}else if(status == 'attachment'){
+				var filerKit = $("#imageId").prop("jFiler");
+				filerKit.reset();
 				$(this).find('.alert-status-attachment').toggle();
 			}
 		}
@@ -944,6 +958,7 @@ function getStatusCompletionInfo(alertId){
 		$("#statusDtlsDiv").html('');
 		$('#displayStatusId,#displayAssignIconId,#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority,#historyId').hide();
 		$('#displayStatusId').attr('status-icon-block','alertStatus');
+		$('#docAttachmentId').hide();	
 		
 		if(result != null && result.length>0){
 			if(result.length  == 1)
@@ -965,26 +980,32 @@ function getStatusCompletionInfo(alertId){
 			}
 			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
-			//buildTypeStr="other";
+			//buildTypeStr="own";
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
-			globalStatusId = sttatusId;  
+			globalStatusId = sttatusId; 
+			//alert(" buildTypeStr :"+buildTypeStr);
 			$('#historyId').show();
 			if(result[0].dueDateStr != null && result[0].dueDateStr.trim().length>0){
 				$('.modal-date').html(result[0].dueDateStr)
 				$('.modal-date1').html(result[0].dueDateStr)
+			}else{
+				$('#displayDueDate2').hide();
+				$('#displayDueDate1').hide();
 			}
+			//alert("buildTypeStr :"+buildTypeStr);
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
+				$('#docAttachmentId').show();	
 				$('#displayDueDate1').show();
 				$('#displayDueDate2').hide(); 
 				
 				if(globalStatusId == 12 ){ // closed
 					isStatusAvailable=false;
 					$('#displaySubTasksliId,#docAttachmentId').hide();
-				}else if(result.length == 1){
-					;//isStatusAvailable=true;
-				}					
+				}else {
+					isStatusAvailable=true;
+				}				
 			}
 			else if(buildTypeStr=='subUser'){	
 				$('#displaySubTasksliId').hide();		
@@ -995,7 +1016,7 @@ function getStatusCompletionInfo(alertId){
 				$('#displayDueDate2,#displayPriority').show();
 				
 				// closed-12, completed-4, reopen-11
-				if(globalStatusId == 12 || globalStatusId == 4 || globalStatusId == 11){
+				if( globalStatusId == 12 || globalStatusId == 4 || globalStatusId == 11){
 					isStatusAvailable=true;
 				}
 				if(globalStatusId != 12){ // for not closed status alerts 
@@ -1016,6 +1037,7 @@ function getStatusCompletionInfo(alertId){
 			}
 			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
 				$('#displayAssignIconId').show();
+				$('#docAttachmentId').show();	
 				 assignUser(alertId);
 			}
 		
@@ -1036,9 +1058,11 @@ function getStatusCompletionInfo(alertId){
 			alertStatus(result,alertId);	
 
 			if(globalStatusId == 12 ){ // closed
-				$('#displaySubTasksliId,#docAttachmentId,#displayPriority').hide();
+				$('#displaySubTasksliId,#docAttachmentId,#displayPriority,#displayDueDate2').hide();
+				$('#displayDueDate1').show();
 			}
-				
+			
+			//alert(" isStatusAvailable :"+isStatusAvailable);
 		}else{
 			$('#displayAssignIconId').show();
 			$('#displayStatusId').show();
@@ -1108,6 +1132,7 @@ function rightSideExpandView(alertId)
 											str+='<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/>';
 											str+='<input type="hidden" name="alertId" value="'+alertId+'" subAlertId=""  id="alertHiddenId"/>';
 											str+='<button class="btn btn-primary btn-sm text-capital uploadBtnIdCls" attr_alert_id="'+alertId+'" type="button" id="uploadBtnId" subAlertId="" >upload</button>';
+											str+='<span id="ErrorMsg"></span>';
 											str+='<span id="imagesUploadSpinner" class="imagesUploadSpinner" style="height:50px;width:50px"></span>';
 										str+='</div>';
 										str+='</form>';
@@ -1158,6 +1183,7 @@ function rightSideExpandView(alertId)
 											str+='<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/>';
 											str+='<input type="hidden" name="subTaskId" value="'+alertId+'" subAlertId=""  id="alertHiddenId"/>';
 											str+='<button class="btn btn-primary btn-sm text-capital uploadBtnIdCls " attr_alert_id="'+alertId+'" type="button" id="uploadBtnId" subAlertId=""  >upload</button>';
+											str+='<span id="ErrorMsg1"></span>';
 											str+='<span id="imagesUploadSpinner" class="imagesUploadSpinner" style="height:50px;width:50px"></span>';
 										str+='</div>';
 										str+='</form>';
@@ -1198,7 +1224,7 @@ function rightSideExpandView(alertId)
 											str+='<textarea class="form-control comment-area" id="alertCommentId1" placeholder="Comment here..."></textarea>';
 										str+='</div>';
 										str+='<div class="panel-footer text-right">';
-											str+='<button class="btn btn-primary comment-btn commentChangeCls" attr_alert_id="'+alertId+'"  subAlertId="" id="commentChangeId">Save</button>';
+											str+='<button class="btn btn-primary comment-btn commentChangeCls" attr_alert_id="'+alertId+'"  subAlertId="" id="commentChangeId">Save  </button>';
 											str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
 										str+='</div>';
 									str+='</div>';
@@ -1238,7 +1264,7 @@ function rightSideExpandView(alertId)
 											str+='<textarea class="form-control comment-area" id="alertCommentId2" placeholder="Comment here..."></textarea>';
 										str+='</div>';
 										str+='<div class="panel-footer text-right">';
-											str+='<button class="btn btn-primary comment-btn commentChangeCls" attr_alert_id="'+alertId+'"   subAlertId=""  id="commentChangeId">Save </button>';
+											str+='<button class="btn btn-primary comment-btn commentChangeCls" attr_alert_id="'+alertId+'"   subAlertId=""  id="commentChangeId">Save  </button>';
 											str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
 										str+='</div>';
 									str+='</div>';
@@ -1476,7 +1502,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				var subTaskBuildType=result[0].userType;
 				var statusId = result[0].statusId;	
 				$('#displayStatusId1').attr('subalertid',subAlertId);
-				//alert(subTaskBuildType);
+				//alert(" subTaskBuildType :"+subTaskBuildType)
 				if(subTaskBuildType=="other"){
 					$('#docAttachmentId1').hide();
 					subTaskStatusChangAvailable=false;
@@ -1488,7 +1514,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 						subTaskStatusChangAvailable=false;	
 				}
 				else if(subTaskBuildType=='assignedBy'){	
-					if(statusId == 3 || statusId == 6 || statusId == 7 )// 3 - completed, 6-
+					if( statusId == 3 || statusId == 6 || statusId == 7 )// 3 - completed, 6-
 						subTaskStatusChangAvailable=true;
 					else
 						subTaskStatusChangAvailable=false;					
@@ -1626,17 +1652,13 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 }
 
 $(document).on("click",".closeCls",function(){
-	
-	
 	var className = $(this).attr('attr_class');
-	$('.'+className+'').hide();
 	if(className=='sub_task_block'){
+		$('.'+className+'').hide();
 		$('#main_alert_block').show();
 		$('#alert-block-commentId').show();
 		$('.subTaskTitle').val('');
 		$('.subTaskDueDate').html('Due Date');
-	}else if(className=='alert-status-attachment'){
-		$('.alert-status-attachment').hide();
 	}
 });
 
@@ -1820,13 +1842,18 @@ function buildAlertDataNew(result)
 		$("#priorityBodyId").html(result[0].severity);
 	}
 	$("#statusIdColor").css("background-color",result[0].statusColor);
-	if(result[0].dueDate != null)
+	if(result[0].dueDate != null && result[0].dueDate.length>0)
 	{
 		$('.modal-date').data('daterangepicker').setStartDate(result[0].dueDate);
 		$('.modal-date').data('daterangepicker').setEndDate(result[0].dueDate);
-		$('.modal-date').html(result[0].dueDate);
-		$('.modal-date1').html(result[0].dueDate);
-	}
+		if(result[0].dueDate != null && result[0].dueDate.length>0){
+			$('.modal-date').html(result[0].dueDate);
+			$('.modal-date1').html(result[0].dueDate);
+		}
+	}else{
+			$('#displayDueDate2').hide();
+			$('#displayDueDate1').hide();
+		}
 	
 	//priorityRadioCls
 	if(result[0].severityId != null && result[0].severityId > 0){
@@ -2800,33 +2827,100 @@ function alertHistory(result)
 	for(var i in result)
 	{
 		str+='<ul class="alert-history">';
-			str+='<span class="alert-history-date">'+result[i].date+'</span>';
+			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i].date+'</span>';
 			if(result[i].timeList != null && result[i].timeList.length > 0)
 			{
 				for(var j in result[i].timeList)
 				{
 					str+='<li>';
-						str+='<span class="alert-history-time">'+result[i].timeList[j].date+'</span>';
+						str+='<span class="alert-history-time" >'+result[i].timeList[j].date+'</span>';
 						if(result[i].timeList[j].statusList != null && result[i].timeList[j].statusList.length > 0)
-						{
+						{							
 							for(var k in result[i].timeList[j].statusList)
 							{
+								var actionType = result[i].timeList[j].statusList[k].alertTrackingActionType;
+								if(actionType != null && actionType.length>0)
+									str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;" ><span class="status-icon arrow-icon"></span>Action : '+actionType+'</p>';
+								
+								if(actionType == 'Comment'){									
+									if(result[i].timeList[j].commentList != null && result[i].timeList[j].commentList.length > 0)
+									{
+										for(var k in result[i].timeList[j].commentList)
+										{
+											str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Comment </span>: '+result[i].timeList[j].commentList[k].strList+'</p>';
+										}
+									}
+									
+								}
+								else if(actionType == 'Attachment'){
+									if(result[i].timeList[j].attachementsList != null && result[i].timeList[j].attachementsList.length > 0)
+									{
+										for(var k in result[i].timeList[j].attachementsList)
+										{
+											if(result[i].timeList[j].attachementsList[k].strList != null && result[i].timeList[j].attachementsList[k].strList.length>0){
+												for(var h in result[i].timeList[j].attachementsList[k].strList){
+													str+='<span class="alert-history-body text-capital"><img src="http://www.mytdp.com/images/'+result[i].timeList[j].attachementsList[k].strList[h]+'" width="25%" style="margin-left: 25px;" class="m_top5" /></span>';
+												}
+											}
+										}
+									}
+								}
+								else if(actionType == 'Due Date'){
+									if(result[i].timeList[j].dueDateList != null && result[i].timeList[j].dueDateList.length > 0)
+									{
+										for(var l in result[i].timeList[j].dueDateList)
+										{
+											if(result[i].timeList[j].dueDateList[l].strList != null && result[i].timeList[j].dueDateList[l].strList.length>0){
+												for(var c in result[i].timeList[j].dueDateList[l].strList)
+													str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Changed Date </span> : '+result[i].timeList[j].dueDateList[l].strList[c]+'</p>';
+											}
+											
+										}										
+									}  
+								}
+								else if(actionType == 'Priority'){
+									if(result[i].timeList[j].priorityList != null && result[i].timeList[j].priorityList.length > 0)
+									{
+										for(var l in result[i].timeList[j].priorityList)
+										{
+											if(result[i].timeList[j].priorityList[l].strList != null && result[i].timeList[j].priorityList[l].strList.length>0){
+												for(var c in result[i].timeList[j].priorityList[l].strList)
+													str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Priority </span> : '+result[i].timeList[j].priorityList[l].strList[c]+'</p>';
+											}
+											
+										}										
+									}
+								}
+								
+								
 								if(result[i].timeList[j].statusList[k].strList != null && result[i].timeList[j].statusList[k].strList.length > 0)
 								{
 									for(var l in result[i].timeList[j].statusList[k].strList)
 									{
-										str+='<p class="alert-history-status m_top20 text-capital"><span class="status-icon arrow-icon"></span>status: '+result[i].timeList[j].statusList[k].strList+'</p>';
+										if(actionType == 'Status Change')
+											str+='<p class="alert-history-status m_top20 text-capital ">  <span style="margin-left: 20px">  STATUS </span> :  <span style="font-size:10px;">'+result[i].timeList[j].statusList[k].strList+' </span></p>';
+										
+										str+='<p class=" alert-history-user m_top20 text-capital ">';
+										if(result[i].timeList[j].statusList[k].updatedUserName != null && result[i].timeList[j].statusList[k].updatedUserName.length>0){
+											str+=' <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i].timeList[j].statusList[k].updatedUserName+'  </span>';
+										}
+										if(result[i].timeList[j].statusList[k].deptName != null && result[i].timeList[j].statusList[k].deptName.length>0){
+											str+=' , <span style="color:slategrey;font-weight:bold;margin-left: 25px">  Dept </span>: <span style="font-size:10px"> '+result[i].timeList[j].statusList[k].deptName+'  </span>';
+										}
+										if(result[i].timeList[j].statusList[k].designation != null && result[i].timeList[j].statusList[k].designation.length>0){
+											str+=', <span style="color:slategrey;font-weight:bold;margin-left: 25px"> designation </span>: <span style="font-size:10px"> '+result[i].timeList[j].statusList[k].designation+' </span>';
+										}
+										if(result[i].timeList[j].statusList[k].mobileNO != null && result[i].timeList[j].statusList[k].mobileNO.length>0){
+											//str+=', <span style="color:slategrey;font-weight:bold;margin-left: 25px"> , Mobile No </span>: '+result[i].timeList[j].statusList[k].mobileNO+'';
+										}
+										str+='</p>';
 									}
 								}
 							}
 						}
-						if(result[i].timeList[j].commentList != null && result[i].timeList[j].commentList.length > 0)
-						{
-							for(var k in result[i].timeList[j].commentList)
-							{
-								str+='<p class="alert-history-body m_top5 text-capital">'+result[i].timeList[j].commentList[k].strList+'</p>';
-							}
-						}
+						
+						/*
+						strList
 						if(result[i].timeList[j].statusList != null && result[i].timeList[j].statusList.length > 0)
 						{
 							for(var k in result[i].timeList[j].statusList)
@@ -2835,6 +2929,7 @@ function alertHistory(result)
 								str+='<p class="alert-history-user m_top5 text-capital">'+result[i].timeList[j].statusList[k].userName+'</p>';
 							}
 						}
+						*/
 					str+='</li>';
 				}
 			}
