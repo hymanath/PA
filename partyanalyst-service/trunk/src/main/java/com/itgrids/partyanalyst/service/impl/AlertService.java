@@ -101,7 +101,6 @@ import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
-import com.itgrids.partyanalyst.dto.AdminHouseVO;
 import com.itgrids.partyanalyst.dto.AlertClarificationVO;
 import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
@@ -127,7 +126,9 @@ import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssigned;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficer;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerTracking;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
 import com.itgrids.partyanalyst.model.AlertCaller;
 import com.itgrids.partyanalyst.model.AlertCandidate;
 import com.itgrids.partyanalyst.model.AlertCategory;
@@ -145,6 +146,7 @@ import com.itgrids.partyanalyst.model.AlertTrackingDocuments;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
 import com.itgrids.partyanalyst.model.GovtDepartment;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignation;
+import com.itgrids.partyanalyst.model.GovtDepartmentDesignationNew;
 import com.itgrids.partyanalyst.model.GovtOfficer;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -9593,43 +9595,83 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 
 					saveAlertTrackingDetails(alertTrackingVO);	
 
+					String callCenterVersion = IConstants.CALL_CENTER_VERSION.toString();
 					//Get Department Designation Officer Ids
 					Long desigOfficerId = null;
-					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationOfficerIdsNew(inputVO.getLevelId(), inputVO.getMandalId(), inputVO.getDesignationId(),
-							inputVO.getGovtOfficerId());
+					List<Long> designationOfficerIds = null;
+					
+					if(callCenterVersion.trim().equalsIgnoreCase("old"))
+						designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationOfficerIds(inputVO.getLevelId(), inputVO.getMandalId(), inputVO.getDesignationId(), inputVO.getGovtOfficerId());
+					else if(callCenterVersion.trim().equalsIgnoreCase("new"))
+						designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationOfficerIdsNew(inputVO.getLevelId(), inputVO.getMandalId(), inputVO.getDesignationId(), inputVO.getGovtOfficerId());
+					
 					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
 						desigOfficerId = designationOfficerIds.get(0);
 
 					//Officer Assigning
-					AlertAssignedOfficer alertAssignedOfficer = new AlertAssignedOfficer();
-					alertAssignedOfficer.setAlertId(alert.getAlertId());
-					alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-					alertAssignedOfficer.setGovtOfficerId(inputVO.getGovtOfficerId() !=null ? (Long)inputVO.getGovtOfficerId():null);
-					alertAssignedOfficer.setInsertedBy(userId);
-					alertAssignedOfficer.setUpdatedBy(userId);
-					alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-					alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-					alertAssignedOfficer.setAlertStatusId(2l);
-					alertAssignedOfficer.setIsDeleted("N");
-					alertAssignedOfficer.setIsApproved("Y");
-					alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
+					if(callCenterVersion.trim().equalsIgnoreCase("old")){
+						AlertAssignedOfficer alertAssignedOfficer = new AlertAssignedOfficer();
+						alertAssignedOfficer.setAlertId(alert.getAlertId());
+						alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+						alertAssignedOfficer.setGovtOfficerId(inputVO.getGovtOfficerId() !=null ? (Long)inputVO.getGovtOfficerId():null);
+						alertAssignedOfficer.setInsertedBy(userId);
+						alertAssignedOfficer.setUpdatedBy(userId);
+						alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficer.setAlertStatusId(2l);
+						alertAssignedOfficer.setIsDeleted("N");
+						alertAssignedOfficer.setIsApproved("Y");
+						alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
 
-					//Officer Assigning Tracking
-					AlertAssignedOfficerTracking alertAssignedOfficerTracking = new AlertAssignedOfficerTracking();
-					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
-					alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
-					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-					alertAssignedOfficerTracking.setGovtOfficerId(inputVO.getGovtOfficerId());
-					alertAssignedOfficerTracking.setInsertedBy(userId);
-					alertAssignedOfficerTracking.setUpdatedBy(userId);
-					alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-					alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-					alertAssignedOfficerTracking.setAlertStatusId(2l);
-					//alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
-					alertAssignedOfficerTracking.setIsApproved("Y");
-					//alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+						//Officer Assigning Tracking
+						AlertAssignedOfficerTracking alertAssignedOfficerTracking = new AlertAssignedOfficerTracking();
+						alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+						alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
+						alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+						alertAssignedOfficerTracking.setGovtOfficerId(inputVO.getGovtOfficerId());
+						alertAssignedOfficerTracking.setInsertedBy(userId);
+						alertAssignedOfficerTracking.setUpdatedBy(userId);
+						alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficerTracking.setAlertStatusId(2l);
+						//alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
+						alertAssignedOfficerTracking.setIsApproved("Y");
+						//alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
 
-					alertAssignedOfficerTracking = alertAssignedOfficerTrackingDAO.save(alertAssignedOfficerTracking);
+						alertAssignedOfficerTracking = alertAssignedOfficerTrackingDAO.save(alertAssignedOfficerTracking);
+					}
+					else if(callCenterVersion.trim().equalsIgnoreCase("new")){
+						AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
+						alertAssignedOfficer.setAlertId(alert.getAlertId());
+						alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+						alertAssignedOfficer.setGovtOfficerId(inputVO.getGovtOfficerId() !=null ? (Long)inputVO.getGovtOfficerId():null);
+						alertAssignedOfficer.setInsertedBy(userId);
+						alertAssignedOfficer.setUpdatedBy(userId);
+						alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficer.setAlertStatusId(2l);
+						alertAssignedOfficer.setIsDeleted("N");
+						alertAssignedOfficer.setIsApproved("Y");
+						alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+
+						//Officer Assigning Tracking
+						AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
+						alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+						alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
+						alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+						alertAssignedOfficerTracking.setGovtOfficerId(inputVO.getGovtOfficerId());
+						alertAssignedOfficerTracking.setInsertedBy(userId);
+						alertAssignedOfficerTracking.setUpdatedBy(userId);
+						alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+						alertAssignedOfficerTracking.setAlertStatusId(2l);
+						alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
+						alertAssignedOfficerTracking.setIsApproved("Y");
+						alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+
+						alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+					}
+					
 
 					String officerName = "";
 					String officerMobileNo = "";
@@ -9641,26 +9683,44 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						officerName = govtOfficer.getOfficerName();
 						officerMobileNo = govtOfficer.getMobileNo();
 					}
+					
 					Alert testAlert = alertDAO.get(14850L);
-					GovtDepartmentDesignation govtDepartmentDesignation = govtDepartmentDesignationDAO.get(inputVO.getDesignationId());
-					if(govtDepartmentDesignation != null)
-						designationName = govtDepartmentDesignation.getDesignationName();
-
+					
+					if(callCenterVersion.trim().equalsIgnoreCase("old")){
+						GovtDepartmentDesignation govtDepartmentDesignation = govtDepartmentDesignationDAO.get(inputVO.getDesignationId());
+						if(govtDepartmentDesignation != null)
+							designationName = govtDepartmentDesignation.getDesignationName();
+					}
+					else if(callCenterVersion.trim().equalsIgnoreCase("new")){
+						GovtDepartmentDesignationNew govtDepartmentDesignation = govtDepartmentDesignationNewDAO.get(inputVO.getDesignationId());
+						if(govtDepartmentDesignation != null)
+							designationName = govtDepartmentDesignation.getDesignationName();
+					}
+					
 					GovtDepartment govtDepartment = govtDepartmentDAO.get(inputVO.getDepartmentId());
 					if(govtDepartment != null)
-						departmentName = govtDepartment.getDepartmentName();
+						departmentName = govtDepartment.getDepartmentName();                                                                            
 
 					GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
 					/* The Hamlet next superior officer level is constituency*/
 					Long levelValue=userAddress.getConstituency() != null ? userAddress.getConstituency() .getConstituencyId():999999L;
 					
-					List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getOldParentDepartment(inputVO.getDesignationId());
+					List<Long> parentDesigIds = null;
+					if(callCenterVersion.trim().equalsIgnoreCase("old"))
+						parentDesigIds = govtDepartmentDesignationHierarchyDAO.getOldParentDepartment(inputVO.getDesignationId());
+					else if(callCenterVersion.trim().equalsIgnoreCase("new"))
+						parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(inputVO.getDesignationId());
+					
 					if(parentDesigIds != null && parentDesigIds.size() > 0){
 						//get high level officer mobile nums
 						List<Long> firstDesignsListIds = new ArrayList<Long>(0);
 						firstDesignsListIds.add(parentDesigIds.get(0));
 						
-						List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getOldHigherOfficerMobileNums(parentDesigIds,inputVO.getLocationLevelId(),levelValue);
+						List<String> mobilenums = null;
+						if(callCenterVersion.trim().equalsIgnoreCase("old"))	
+							mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getOldHigherOfficerMobileNums(parentDesigIds,inputVO.getLocationLevelId(),levelValue);
+						/*else if(callCenterVersion.trim().equalsIgnoreCase("new"))	
+							mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getNewHigherOfficerMobileNums(parentDesigIds,inputVO.getLocationLevelId(),levelValue);*/
 
 						if(mobilenums != null && mobilenums.size() > 0){
 							/* Grievance request hiegher authority pesron*/
@@ -9674,7 +9734,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							}
 							if(testAlert.getDescription()!= null && !testAlert.getDescription().isEmpty())
 								mobileNums = testAlert.getDescription().trim();
-							govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
+							//govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
 						}
 					}
 					/* request responsible person*/ 
@@ -9682,10 +9742,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					String callerMessage = "Respected officer, Grievance request is assigned to you. Please follow up and resolve." +
 							" \n Issue Title: "+inputVO.getAlertTitle()+"\n" +
 							" Assigned officer: "+designationName+" ("+officerMobileNo+") \n Dept: "+departmentName+" \n Raised by: "+inputVO.getMobileNo()+" ("+inputVO.getName()+")";
-					if(testAlert.getDescription()!= null && !testAlert.getDescription().isEmpty())
+					/*if(testAlert.getDescription()!= null && !testAlert.getDescription().isEmpty())
 						govtSMSAPIService.senedSMSForGovtAlert(testAlert.getDescription().trim(),callerMessage);
 					else
-						govtSMSAPIService.senedSMSForGovtAlert(officerMobileNo,callerMessage);
+						govtSMSAPIService.senedSMSForGovtAlert(officerMobileNo,callerMessage);*/
 
 
 					/* request raised person*/ 
@@ -9732,7 +9792,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				}
 			 }
 			 
-			List<Object[]> objList1 = alertTrackingDAO.getStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
+			 List<Object[]> objList1 = null;
+			 if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("old"))
+				 objList1 = alertTrackingDAO.getStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
+			 else if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("new"))
+				 objList1 = alertTrackingDAO.getStatuswiseAlertsDetails1(mobileNo,userId, startDate, endDate,departmentId);
+			
 			Map<Long,Long> statusWiseMap = new HashMap<Long, Long>(0);
 			if(objList1 != null && objList1.size() > 0){
 				for (Object[] param : objList1) {
@@ -9765,8 +9830,13 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 }
 				}
 			 }
-				 
-			List<Object[]> objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
+				
+			 List<Object[]> objList = null;
+			 if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("old"))
+				 objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
+			 else if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("new"))
+				 objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetails1(mobileNo,userId, startDate, endDate,departmentId);
+			 
 			if(objList != null && objList.size() > 0 && commonMethodsUtilService.isListOrSetValid(feedbacksStatusList)){
 				for (Object[] param : objList) {
 					AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(feedbacksStatusList, "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[1]).toString());
@@ -10060,7 +10130,12 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Object[]> alertList = alertDAO.getAlertDetials(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStattusId);
+			List<Object[]> alertList = null;
+			if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("old"))
+				alertList = alertDAO.getAlertDetials(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStattusId);
+			else if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("new"))
+				alertList = alertDAO.getAlertDetials1(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStattusId);
+			
 			if(alertList != null && alertList.size() > 0l){
 				for (Object[] objects : alertList) {
 					AlertVO vo = new AlertVO();
@@ -10086,6 +10161,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					vo.setWard(commonMethodsUtilService.getStringValueForObject(objects[18]));
 					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[19]));
 					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[20]));
+					
+					vo.setUserName(commonMethodsUtilService.getStringValueForObject(objects[21]));
 					 
 					returnList.add(vo);
 				}

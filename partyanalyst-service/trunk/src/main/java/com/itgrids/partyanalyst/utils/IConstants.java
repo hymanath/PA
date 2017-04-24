@@ -1298,4 +1298,6 @@ public interface IConstants {
 	
 	public static final List<Long>  AMS_REOPEN_ALERT_STATUS = Arrays.asList(11l,12l);
 	
+	public static final String CALL_CENTER_VERSION = "old";    //old - new
+	
 }

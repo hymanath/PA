@@ -220,4 +220,46 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		
 		return query.list();
 	}
+	
+	public List<String> getNewHigherOfficerMobileNums(List<Long> designationIds,Long locationTypeId,Long locationValue){
+		locationTypeId=4L;
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct  model.govtOfficer.mobileNo from GovtDepartmentDesignationOfficerDetailsNew model  ");
+		queryStr.append(" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId in (:designationIds) and " +
+				" model.isDeleted = 'N' and model.govtOfficer.mobileNo is not null ");
+		
+		/*if(locationTypeId != null && locationTypeId.longValue()>0L){
+			if(locationTypeId.longValue() ==11L)//village
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.userAddress.tehsil.tehsilId=:locationValue ");
+			else if(locationTypeId.longValue() ==7L)//ward
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.userAddress.localElectionBody.localElectionBodyId=:locationValue ");
+				 
+		}*/
+		
+		if(locationTypeId != null && locationValue != null && locationValue.longValue() > 0){
+			if( locationTypeId.longValue() == 2L){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.userAddress.state.stateId =:locationValue ");
+			}else if(locationTypeId.longValue() == 3L){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.userAddress.district.districtId  =:locationValue ");
+			}else if(locationTypeId.longValue() == 4l){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.userAddress.constituency.constituencyId  =:locationValue ");
+			}else if(locationTypeId.longValue() == 5l){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.userAddress.tehsil.tehsilId  =:locationValue ");
+			}else if(locationTypeId.longValue() == 6l){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.userAddress.panchayat.panchayatId  =:locationValue ");
+			}else if(locationTypeId.longValue() == 7l){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.userAddress.localElectionBody.localElectionBodyId  =:locationValue ");
+			}else if(locationTypeId.longValue() == 8l){
+				queryStr.append(" and  model.govtDepartmentDesignationOfficer.userAddress.ward.constituencyId  =:locationValue ");
+			}
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		query.setParameterList("designationIds", designationIds);
+		if(locationValue != null && locationValue.longValue()>0L)
+			query.setParameter("locationValue", locationValue);
+		
+		return query.list();
+	}
 }
