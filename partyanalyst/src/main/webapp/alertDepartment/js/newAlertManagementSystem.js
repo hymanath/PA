@@ -4094,7 +4094,7 @@ function buildStateThenGovtDeptScopeWiseAlertCountForSubDivisionLevel(result,gro
 										var totalCount = value[2];
 										var scopeId=0;
 										var subDivisionId = value[3];
-										getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount,scopeId,subDivisionId);
+										getlevelAndStatusWiseClickForSubDivision(statusId,statusName,totalCount,scopeId,subDivisionId,departmentId);
 									}
 								}
 							}
