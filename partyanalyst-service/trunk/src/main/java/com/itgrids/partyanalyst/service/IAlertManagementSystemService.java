@@ -119,5 +119,6 @@ public interface IAlertManagementSystemService {
 			Long desigDeptOfficerId,Long officerId, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList);
 	public List<IdNameVO> getGovtAllDepartmentDetails();
 	public List<IdNameVO>  getStatusCompletionInfoNew(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId);
+	public String getOfficernameDesignationForUser(Long userId);
 	
 }
