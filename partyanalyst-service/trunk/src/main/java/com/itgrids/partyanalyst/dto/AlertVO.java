@@ -78,8 +78,15 @@ public class AlertVO {
 	private String issueType;
 	private String issueSubType;
 	private String feedbackStatus;
+	private String userName;
 	
 	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public String getState() {
 		return state;
 	}

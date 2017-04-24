@@ -104,7 +104,7 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
   	}
       
       public List<Object[]> getOldDesignationsForDepartmentAndLevelLocation(Long govtDepartmentId,Long levelId,Long levelValue){
-    		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
+    		/*Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
     												" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
     												" from GovtDepartmentDesignationOfficerDetails model" +
     												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentId = :govtDepartmentId" +
@@ -114,11 +114,23 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
     		query.setParameter("govtDepartmentId", govtDepartmentId);
     		query.setParameter("levelId", levelId);
     		query.setParameter("levelValue", levelValue);
-    		return query.list();
+    		return query.list();*/
+    	  
+    	  Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
+								" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
+								" from GovtDepartmentDesignationOfficerDetailsNew model" +
+								" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentId = :govtDepartmentId" +
+								" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.alertRegionScopes.alertRegionScopesId = :levelId " +
+								" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationValue = :levelValue ");
+			
+			query.setParameter("govtDepartmentId", govtDepartmentId);
+			query.setParameter("levelId", levelId);
+			query.setParameter("levelValue", levelValue);
+			return query.list();
     	}
       
       public List<Object[]> getOldOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId){
-    		Query query = getSession().createQuery("select distinct model.govtOfficer.govtOfficerId," +
+    		/*Query query = getSession().createQuery("select distinct model.govtOfficer.govtOfficerId," +
     												" model.govtOfficer.officerName,model.govtOfficer.mobileNo " +
     												" from GovtDepartmentDesignationOfficerDetails model" +
     												" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId = :designationId" +
@@ -129,25 +141,68 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
     		query.setParameter("levelId", levelId);
     		query.setParameter("levelValue", levelValue);
     		
-    		return query.list();
+    		return query.list();*/
+    	  
+    	  Query query = getSession().createQuery("select distinct model.govtOfficer.govtOfficerId," +
+								" model.govtOfficer.officerName,model.govtOfficer.mobileNo " +
+								" from GovtDepartmentDesignationOfficerDetailsNew model" +
+								" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId = :designationId" +
+								" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.alertRegionScopes.alertRegionScopesId = :levelId" +
+								" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationValue = :levelValue" +
+								" and model.isDeleted = 'N'");
+			query.setParameter("designationId", designationId);
+			query.setParameter("levelId", levelId);
+			query.setParameter("levelValue", levelValue);
+				
+			return query.list();
     	}
       
+      public List<Long> getOldDesignationOfficerIds(Long levelId,Long levelValue,Long designationId,Long officerId){
+    		
+    		StringBuilder sb = new StringBuilder();
+    		sb.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
+    											" from GovtDepartmentDesignationOfficerDetails model" +
+    											" where model.govtDepartmentDesignationOfficer.govtDepartmentLevelId = :levelId" +
+    											" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +
+    											" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId " +
+    											" and model.govtOfficerId = :officerId " +
+    											" and model.isDeleted = 'N'  " );
+    		
+    		/*sb.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
+  								" from GovtDepartmentDesignationOfficerDetailsNew model" +
+  								" where model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.alertRegionScopes.alertRegionScopesId = :levelId" +
+  								" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationValue = :levelValue" +
+  								" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId " +
+  								" and model.govtOfficerId = :officerId " +
+  								" and model.isDeleted = 'N'  " );*/
+    		
+    		Query query = getSession().createQuery(sb.toString());
+    		
+    		query.setParameter("levelId", levelId);
+    		query.setParameter("levelValue", levelValue);
+    		query.setParameter("designationId", designationId);
+    		query.setParameter("officerId", officerId);
+    		return query.list();
+    	}
       public List<Long> getOldDesignationOfficerIdsNew(Long levelId,Long levelValue,Long designationId,Long officerId){
   		
   		StringBuilder sb = new StringBuilder();
-  		
-  		sb.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
+  		/*sb.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
   											" from GovtDepartmentDesignationOfficerDetails model" +
   											" where model.govtDepartmentDesignationOfficer.govtDepartmentLevelId = :levelId" +
   											" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +
   											" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId " +
   											" and model.govtOfficerId = :officerId " +
-  											" and model.isDeleted = 'N'  " );
+  											" and model.isDeleted = 'N'  " );*/
   		
-  		/*if(officerId !=null && officerId.longValue()>0l){
-  			sb.append(" ");
-  		}*/
-  	
+  		sb.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
+								" from GovtDepartmentDesignationOfficerDetailsNew model" +
+								" where model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.alertRegionScopes.alertRegionScopesId = :levelId" +
+								" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationValue = :levelValue" +
+								" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId = :designationId " +
+								" and model.govtOfficerId = :officerId " +
+								" and model.isDeleted = 'N'  " );
+  		
   		Query query = getSession().createQuery(sb.toString());
   		
   		query.setParameter("levelId", levelId);

@@ -6812,9 +6812,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				"  a.alert_source_id as sourceId,rs.scope as scope ,a.alert_status_id as statusId, gd.department_name as deptName,es.entry_source as source , " +
 				" it.issue_type as issueType , ist.issue_type as issueSubType , fs.status as feedbackStattus, d.district_name as districtName," +
 				" c.name as cname, t.tehsil_name as tehsilName, p.panchayat_name as pname, h.hamlet_name as hname , leb.name as lname, " +
-				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo");
+				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo,user.username as username");
 		queryStr.append(" from ");
-		queryStr.append(" alert a ");
+		queryStr.append(" user user,alert a ");
 		queryStr.append(" Left Join alert_feedback_status fs on a.alert_feedback_status_id = fs.alert_feedback_status_id ");
 		queryStr.append(" Left Join alert_entry_source es on a.alert_entry_source_id = es.alert_entry_source_id ");
 		queryStr.append(" Left Join alert_issue_type it on a.alert_issue_type_id = it.alert_issue_type_id ");
@@ -6836,7 +6836,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" left join constituency w on ua.ward = w.constituency_id  ");
 		
 		
-		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null" +
+						" and a.created_by = user.user_id");
 		if(alertStatusId != null && alertStatusId.longValue() > 0l)
 			queryStr.append(" and a.alert_status_id =:alertStatusId ");
 		if(mobileNo != null && !mobileNo.isEmpty()) 
@@ -6870,7 +6871,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("lname", Hibernate.STRING)
 				.addScalar("ward", Hibernate.STRING)
 				.addScalar("callerName", Hibernate.STRING)
-				.addScalar("mobileNo", Hibernate.STRING);
+				.addScalar("mobileNo", Hibernate.STRING)
+				.addScalar("username", Hibernate.STRING);
 		
 		
 		if(departmentId != null && departmentId.longValue()>0L)
