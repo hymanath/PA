@@ -261,4 +261,12 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		return query.list();
 		
 	}
+	public List<Object[]> getDesigNameForUser(Long userId){
+	    Query query = getSession().createQuery("select model.user.userName," +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
+	        " from GovtDepartmentDesignationOfficerDetailsNew model" +
+	        " where model.userId = :userId");
+	    query.setParameter("userId", userId);
+	    return query.list();
+	  }
 }
