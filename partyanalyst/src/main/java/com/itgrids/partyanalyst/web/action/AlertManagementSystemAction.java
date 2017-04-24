@@ -325,23 +325,26 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		  
 	  }
 	public String getDepartmentDetails(){
-		try{
-			session = request.getSession();
-		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-			Long userId = regVo.getRegistrationID();
-			
-			officerNameAnddesgnationName = alertManagementSystemService.getDesignationForUser(userId);
-			session.setAttribute("officerNameAnddesgnationName", officerNameAnddesgnationName);
-			
-			newsPaperList = cccDashboardService.getNewsPapaerList();
-		    chanelListNew = cccDashboardService.getChannelList();
-			
-		}catch(Exception e){
-			e.printStackTrace();
-			LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
-		}
-		return Action.SUCCESS;
-	}
+	    try{
+	      session = request.getSession();
+	         RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+	      Long userId = regVo.getRegistrationID();
+	      
+	      officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
+	      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
+	      session.setAttribute("officerName", usrDesLocArr[0]);
+	      session.setAttribute("designationName", usrDesLocArr[1]);
+	      session.setAttribute("LocationNameForUser", usrDesLocArr[2]);
+	      
+	      newsPaperList = cccDashboardService.getNewsPapaerList();
+	        chanelListNew = cccDashboardService.getChannelList();
+	      
+	    }catch(Exception e){
+	      e.printStackTrace();
+	      LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
+	    }
+	    return Action.SUCCESS;
+	  }
 	public String getStatusWiseAlertOverviewCnt(){
 		try{
 			session = request.getSession();
@@ -1290,34 +1293,39 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			return Action.SUCCESS;	
 		}
 		
-		
-	 public String alertDistManagement(){
-		 try {
-			 session = request.getSession();
-			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-				Long userId = regVo.getRegistrationID();
-				
-				officerNameAnddesgnationName = alertManagementSystemService.getDesignationForUser(userId);
-				session.setAttribute("officerNameAnddesgnationName", officerNameAnddesgnationName);
-		} catch (Exception e) {
-			LOG.error("Exception Occured in alertDistManagement() method, Exception - ",e);
-		}
-		return Action.SUCCESS;
-	}
+		public String alertDistManagement(){
+		     try {
+		       session = request.getSession();
+		           RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		        Long userId = regVo.getRegistrationID();
+		        
+		        officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
+		        String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
+			      session.setAttribute("officerName", usrDesLocArr[0]);
+			      session.setAttribute("designationName", usrDesLocArr[1]);
+			      session.setAttribute("LocationNameForUser", usrDesLocArr[2]);
+		    } catch (Exception e) {
+		      LOG.error("Exception Occured in alertDistManagement() method, Exception - ",e);
+		    }
+		    return Action.SUCCESS;
+		  }
 	 
-	 public String alertDistOfficeManagement(){
-		 
-		  session = request.getSession();
-		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-			Long userId = regVo.getRegistrationID();
-			
-			officerNameAnddesgnationName = alertManagementSystemService.getDesignationForUser(userId);
-			session.setAttribute("officerNameAnddesgnationName", officerNameAnddesgnationName);
-			
-		  newsPaperList = cccDashboardService.getNewsPapaerList();
-	      chanelListNew = cccDashboardService.getChannelList();
-		 return Action.SUCCESS; 
-	 }
+		public String alertDistOfficeManagement(){
+		     
+		      session = request.getSession();
+		         RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		      Long userId = regVo.getRegistrationID();
+		      
+		      officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
+		      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
+		      session.setAttribute("officerName", usrDesLocArr[0]);
+		      session.setAttribute("designationName", usrDesLocArr[1]);
+		      session.setAttribute("LocationNameForUser", usrDesLocArr[2]);
+		      
+		      newsPaperList = cccDashboardService.getNewsPapaerList();
+		        chanelListNew = cccDashboardService.getChannelList();
+		     return Action.SUCCESS; 
+		   }
 	 public String getDeptListForMultiLvl(){    
 		 try{
 			 session = request.getSession();
