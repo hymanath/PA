@@ -28,9 +28,9 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     			+ " model.insertedTime,model.updatedUser.userName, '', ''  ,'',''  "
     			+ " from  AlertAssignedOfficerTrackingNew model "
     			+ " left join model.alertDepartmentComment comment "
-    			+ " where model.alertId=:alertId and model.govtAlertActionTypeId =:trackTypeId  order by model.insertedTime desc ");
+    			+ " where model.alertId=:alertId  order by model.insertedTime desc ");
     	query.setParameter("alertId", alertId);
-    	query.setParameter("trackTypeId", trackTypeId);
+    //	query.setParameter("trackTypeId", trackTypeId);
     	return query.list();
     }
     
@@ -42,9 +42,9 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     			+ " from GovtDepartmentDesignationOfficerDetailsNew model2, AlertAssignedOfficerTrackingNew model "
     			+ " left join model.alertDepartmentComment comment "
     			+ " where model.alertId=:alertId  and " +
-    			"  model.updatedBy = model2.userId and model.govtAlertActionTypeId =:trackTypeId order by model.insertedTime desc ");
+    			"  model.updatedBy = model2.userId  order by model.insertedTime desc ");
     	query.setParameter("alertId", alertId);
-    	query.setParameter("trackTypeId", trackTypeId);
+    //	query.setParameter("trackTypeId", trackTypeId);
     	return query.list();
     }
     
