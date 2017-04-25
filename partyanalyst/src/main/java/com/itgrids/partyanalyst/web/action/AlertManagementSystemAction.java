@@ -331,25 +331,25 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		  
 	  }
 	public String getDepartmentDetails(){
-	    try{
-	      session = request.getSession();
-	         RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-	      Long userId = regVo.getRegistrationID();
-	      
-	      officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
-	      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
-	      session.setAttribute("officerName", usrDesLocArr[0]);
-	      session.setAttribute("designationAndLocation", usrDesLocArr[1]);
-	      
-	      newsPaperList = cccDashboardService.getNewsPapaerList();
-	        chanelListNew = cccDashboardService.getChannelList();
-	      
-	    }catch(Exception e){
-	      e.printStackTrace();
-	      LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
-	    }
-	    return Action.SUCCESS;
-	  }
+		 try{
+		      session = request.getSession();
+		         RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		      Long userId = regVo.getRegistrationID();
+		      
+		      officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
+		      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
+		      session.setAttribute("officerName", usrDesLocArr[0]);
+		      session.setAttribute("designationAndLocation", usrDesLocArr[1]);
+		      
+		      newsPaperList = cccDashboardService.getNewsPapaerList();
+		        chanelListNew = cccDashboardService.getChannelList();
+		      
+		    }catch(Exception e){
+		      e.printStackTrace();
+		      LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
+		    }
+		    return Action.SUCCESS;
+		  }
 	public String getStatusWiseAlertOverviewCnt(){
 		try{
 			session = request.getSession();
@@ -870,7 +870,29 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			Long deptId = jObj.getLong("deptId");
 			String sortingType = jObj.getString("sortingType");
 			Long levelId = jObj.getLong("levelId");
-			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseStatusOverView(scopeId,startDateStr,fromDateStr,type,deptId,sortingType,levelId);
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			if(paperIdArr != null && paperIdArr.length() > 0){
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			if(chanelIdArr != null && chanelIdArr.length() > 0){
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+				}  
+			}
+			
+			JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+			List<Long> calCntrIdList = new ArrayList<Long>();
+			for (int i = 0; i < calCntrIdArr.length(); i++){
+				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+			}  
+			
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseStatusOverView(scopeId,startDateStr,fromDateStr,type,deptId,sortingType,levelId,paperIdList,chanelIdList,calCntrIdList);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -890,7 +912,30 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			String type = jObj.getString("type");
 			Long deptId = jObj.getLong("deptId");
 			String sortingType = jObj.getString("sortingType");
-			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptId,sortingType);
+			
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			if(paperIdArr != null && paperIdArr.length() > 0){
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			if(chanelIdArr != null && chanelIdArr.length() > 0){
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+				}  
+			}
+			
+			JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+			List<Long> calCntrIdList = new ArrayList<Long>();
+			for (int i = 0; i < calCntrIdArr.length(); i++){
+				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+			}  
+			
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptId,sortingType,paperIdList,chanelIdList,calCntrIdList);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1142,7 +1187,29 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			String endDateStr = jObj.getString("endDate");
 			Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
 			Long officerId = jObj.getLong("officerId");
-			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId);
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			if(paperIdArr != null && paperIdArr.length() > 0){
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			if(chanelIdArr != null && chanelIdArr.length() > 0){
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+				}  
+			}
+			
+			JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+			List<Long> calCntrIdList = new ArrayList<Long>();
+			for (int i = 0; i < calCntrIdArr.length(); i++){
+				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+			}
+			
+			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1298,8 +1365,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			return Action.SUCCESS;	
 		}
 		
-		public String alertDistManagement(){
-		     try {
+		
+	 public String alertDistManagement(){
+		 try {
 		       session = request.getSession();
 		           RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 		        Long userId = regVo.getRegistrationID();
@@ -1315,21 +1383,21 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		    return Action.SUCCESS;
 		  }
 	 
-		public String alertDistOfficeManagement(){
-		     
-		      session = request.getSession();
-		         RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-		      Long userId = regVo.getRegistrationID();
-		      
-		      officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
-		      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
-		      session.setAttribute("officerName", usrDesLocArr[0]);
-		      session.setAttribute("designationAndLocation", usrDesLocArr[1]);
-		     
-		      newsPaperList = cccDashboardService.getNewsPapaerList();
-		        chanelListNew = cccDashboardService.getChannelList();
-		     return Action.SUCCESS; 
-		   }
+	 public String alertDistOfficeManagement(){
+	     
+	      session = request.getSession();
+	         RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+	      Long userId = regVo.getRegistrationID();
+	      
+	      officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
+	      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
+	      session.setAttribute("officerName", usrDesLocArr[0]);
+	      session.setAttribute("designationAndLocation", usrDesLocArr[1]);
+	     
+	      newsPaperList = cccDashboardService.getNewsPapaerList();
+	        chanelListNew = cccDashboardService.getChannelList();
+	     return Action.SUCCESS; 
+	   }
 	 public String getDeptListForMultiLvl(){    
 		 try{
 			 session = request.getSession();
