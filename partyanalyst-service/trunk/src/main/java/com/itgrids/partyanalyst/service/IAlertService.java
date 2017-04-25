@@ -131,5 +131,5 @@ public interface IAlertService {
 
     public List<KeyValueVO> getRelatedDepartmentsForIssueType(Long issueTypeId);
     public List<KeyValueVO> getUrbanLocalitiesForMuncipality(Long lebId);
-    public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds );
+    public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal);
 }

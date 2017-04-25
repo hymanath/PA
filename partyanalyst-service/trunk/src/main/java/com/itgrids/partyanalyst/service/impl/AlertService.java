@@ -10766,7 +10766,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	}*/
 	
 	
-	public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds ){
+	public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal){
 		LOG.debug(" Entered Into getAlertEfficiencyList");
 		List<AlertsSummeryVO> finalList = new ArrayList<AlertsSummeryVO>();
 		 
@@ -10781,7 +10781,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					temp.setDays(day);
 					Date today 	 =  dateUtilService.getCurrentDateAndTime();
 					if(today!=null){
-						getEfficiencyOfDates(today, temp, day, departmentIds,sourceIds);
+						getEfficiencyOfDates(today, temp, day, departmentIds,sourceIds,includeProposal);
 					}
 					
 					finalList.add(temp);
@@ -10793,7 +10793,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			temp.setEffcncyPrcnt("0.0");
 			temp.setClrFrEffcncy("red");
 			temp.setDays(0);
-			getEfficiencyOfDates(null, temp, 0, departmentIds,sourceIds);
+			getEfficiencyOfDates(null, temp, 0, departmentIds,sourceIds,includeProposal);
 			finalList.add(temp);
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -10802,14 +10802,21 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		return finalList;
 	}
 	
-	public void getEfficiencyOfDates(Date today, AlertsSummeryVO temp, int days,  List<Long> departmentIds,List<Long> sourceIds){
+	public void getEfficiencyOfDates(Date today, AlertsSummeryVO temp, int days,  List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal){
 		Date prevDay =  null;
 		if(today!=null){
 			prevDay =  getPrevDayForNoOfDays(days, today);
 		}
 		
 		List<Long> alertStatusIds = new ArrayList<Long>();
-		Long totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,IConstants.ALERT_STATUS_IDS);
+		List<Long> totalAlertStatusIds = new ArrayList<Long>(0);
+		
+		totalAlertStatusIds.addAll(IConstants.ALERT_STATUS_IDS);
+		
+		if(includeProposal)
+			totalAlertStatusIds.add(13L);
+		
+		Long totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,totalAlertStatusIds);
 		
 		alertStatusIds.add(4l);
 		Long completedAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,alertStatusIds);
