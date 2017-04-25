@@ -10710,6 +10710,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		return null;
 	}
 	
+
 	public List<KeyValueVO> getRelatedDepartmentsForIssueType(Long issueTypeId){
 		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
 		try {
@@ -10763,6 +10764,89 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 		return returnList;
 	}*/
+	
+	
+	public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds ){
+		LOG.debug(" Entered Into getAlertEfficiencyList");
+		List<AlertsSummeryVO> finalList = new ArrayList<AlertsSummeryVO>();
+		 
+		try{
+			
+			if(daysLst!=null && daysLst.size()>0){
+				for(Integer day:daysLst){
+					AlertsSummeryVO temp = new AlertsSummeryVO();
+					temp.setEffcncyType("Last "+day+" Days");
+					temp.setEffcncyPrcnt("0.0");
+					temp.setClrFrEffcncy("red");
+					temp.setDays(day);
+					Date today 	 =  dateUtilService.getCurrentDateAndTime();
+					if(today!=null){
+						getEfficiencyOfDates(today, temp, day, departmentIds,sourceIds);
+					}
+					
+					finalList.add(temp);
+				}
+			}
+			
+			AlertsSummeryVO temp = new AlertsSummeryVO();
+			temp.setEffcncyType(" Overall ");
+			temp.setEffcncyPrcnt("0.0");
+			temp.setClrFrEffcncy("red");
+			temp.setDays(0);
+			getEfficiencyOfDates(null, temp, 0, departmentIds,sourceIds);
+			finalList.add(temp);
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Raised in getAlertEfficiencyList");
+		}
+		return finalList;
+	}
+	
+	public void getEfficiencyOfDates(Date today, AlertsSummeryVO temp, int days,  List<Long> departmentIds,List<Long> sourceIds){
+		Date prevDay =  null;
+		if(today!=null){
+			prevDay =  getPrevDayForNoOfDays(days, today);
+		}
+		
+		List<Long> alertStatusIds = new ArrayList<Long>();
+		Long totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,IConstants.ALERT_STATUS_IDS);
+		
+		alertStatusIds.add(4l);
+		Long completedAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,alertStatusIds);
+			/*if(list!=null && list.size()>0){
+				for(Object[] obj:list){
+					indiTtlCnt = indiTtlCnt+Long.valueOf(obj[0].toString());
+					if(sttsLst.contains(obj[1].toString().toUpperCase())){
+						indiEffcncyCnt = indiEffcncyCnt+Long.valueOf(obj[0].toString());
+					}
+				}
+			}*/
+			
+			temp.setTtlAlrtss(totalAlerts);
+			temp.setEffcncyAlerts(completedAlerts);
+			
+			String percentage = "0.0";
+			if(totalAlerts != null && totalAlerts.longValue() >0l)
+			 percentage = (new BigDecimal(completedAlerts*(100.0)/totalAlerts)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+			
+			if(percentage != null){
+			float prcntgeFlt = Float.parseFloat(percentage);
+			
+			if(temp.getDays()==30){
+				if(prcntgeFlt>=90.0f){
+					temp.setClrFrEffcncy("green");
+				}
+			}else{
+				if(prcntgeFlt>=95.0f){
+					temp.setClrFrEffcncy("green");
+				}
+			}
+			}
+			
+			temp.setEffcncyPrcnt(percentage);
+		
+		
+	}
 }
 
 
