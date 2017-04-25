@@ -262,7 +262,7 @@
 								<div class="col-sm-3 m_top10">
 									<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
 									<select  class="chosenSelect" id="locationLevelSelectId" disabled>  
-										<option value="13">MANDAL</option>
+										<option value="5">MANDAL</option>
 									</select>
 								</div>
 								<div id="parentLevelDivId"> </div>
@@ -310,7 +310,7 @@
 						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.issueTypeId"/>
 						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.entrySourceId"/>
 						<input type="hidden" class="form-control" value="49" name="grievanceAlertVO.departmentId"/>
-						<input type="hidden" class="form-control" value="13" name="grievanceAlertVO.levelId"/>
+						<input type="hidden" class="form-control" value="5" name="grievanceAlertVO.levelId"/>
 						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.stateId"/>
 					</form>
 				</div>
@@ -322,42 +322,6 @@
         </div>
     </div>
 </div>
-
-<!-- PopUp -->
-<!--<div class="modal fade" id="updateAlertModalDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document"  id="slick-modal" style="width:90%">
-    <div class="modal-content customModal">
-      <div class="modal-header">
-        <button type="button" class="close " data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Feedback Status Updation</h4>
-      </div>
-      <div class="modal-body" style="padding:0px 15px 0px 0px;">
-       <div id="buildUpdateDivId"></div>
-	    <div class="row">
-		   <div class="col-sm-4">
-			   <label>Comment</label><br>
-			   <textarea id="comntId"  ></textarea>
-		   </div>
-		</div>
-		<div class="row">
-		    <div class="col-sm-3">
-			   <label>FeedBack Status :</label><br>
-			  <select id="feedbackStatusList" class="form-control">
-				<option value="0"> Select Feedback Status</option>
-			  </select>
-		   </div>
-		</div>
-		<div class="row">
-		   <div class="col-sm-4">
-				<button type="button" class="btn btn-success" onClick="saveAlertStatusDetails();" style="margin-top:22px;">Save</button>
-				<span id="saveMsgId"></span>
-		   </div>
-	   </div>
-      </div>
-    </div>
-  </div>
-</div>-->
-
 
 <div class="modal fade" id="updateAlertModalDivId" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
@@ -492,67 +456,6 @@ $("#dateRangeIdForEvents").daterangepicker({
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
 });
-function getAlertType(){
-	$("#alertTypeId").html('');
-	var jsObj ={
-		task:""
-	}
-	$.ajax({
-		type:'GET',
-		url: 'getAlertTypeAction.action',
-		data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		$('#alertTypeId').append('<option value="0"> Select Alert Type </option>');
-		if(result != null){
-			for(var i in result){			
-				$('#alertTypeId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			}
-		}
-		$("#alertTypeId").trigger('chosen:updated');	  
-	});
-}
-
-function getAlertImpactScope(){
-	$("#alertImpactId").html('');
-	var jsObj ={
-		task:""
-	}
-	$.ajax({
-		type:'GET',
-		url: 'getAlertImpactScopeAction.action',
-		data: {task :JSON.stringify(jsObj)}
-   }).done(function(result){
-		$('#alertImpactId').append('<option value="0"> Select Alert Impact </option>');
-		if(result != null){
-			for(var i in result){			
-				$('#alertImpactId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			}
-		}
-		$("#alertImpactId").trigger('chosen:updated');
-	});
-}
-
-function getAlertsource(){
-	$("#alertSourceId").html('');
-	var jsObj ={
-		userId : loginUserId,
-		task:""
-	}
-	$.ajax({
-		type:'GET',
-		url: 'getAlertSourceForUserAction.action',
-		data: {task :JSON.stringify(jsObj)}
-	}).done(function(result){
-		$('#alertSourceId').append('<option value="0"> Select Alert Source </option>');
-		if(result != null){
-			for(var i in result){			
-				$('#alertSourceId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
-			}
-		}
-		$("#alertSourceId").trigger('chosen:updated');	  
-	});
-}
-
 
 function getDistrictsForReferPopup() {
 	var stateId = $("#stateId").val();
@@ -621,49 +524,6 @@ function getDistrictsForReferPopup() {
 		} 
 	});  
   }
- /*function getConstituenciesBydistrictForReferPopup(){
-	 var districtId = $("#referdistrictId").val();
-	 $("#designationId").empty();
-	 $("#designationId").trigger('chosen:updated');
-	 $("#officerId").empty();
-	 $("#officerId").trigger('chosen:updated');
-	 $("#villageDiv").hide();
-	var jobj = {
-		districtId : districtId
-	}
-		$.ajax({
-			type : "POST",
-			url  : "getConstituenciesByDistrictAction.action",
-			data : {task:JSON.stringify(jobj)}
-		}).done(function(result){
-			var constiStr='';
-			if(result != null && result.length > 0){
-				constiStr +='<option value="0">Select Assembly</option>';
-				for(var i in result){
-					if(result[i].id > 0)
-					constiStr +='<option value='+result[i].id+'>'+result[i].name+'</option>';
-				}
-				$("#referconstituencyId").html(constiStr);
-				$("#referconstituencyId").trigger('chosen:updated');
-				//for mandal/municipality
-				$("#refermandalNameId").html('<option value="0">Select Mandal/Muncipality</option>');
-				$("#refermandalNameId").trigger('chosen:updated');
-				//for panchayat
-				$("#referpanchayatId").html('<option value="0">Select Panchayat</option>');
-				$("#referpanchayatId").trigger('chosen:updated');           
-			}else{
-				//for const
-				$("#referconstituencyId").html('<option value="0">Select Assembly</option>');
-				$("#referconstituencyId").trigger('chosen:updated');
-				//for mandal/municipality
-				$("#refermandalNameId").html('<option value="0">Select Mandal/Muncipality</option>');
-				$("#refermandalNameId").trigger('chosen:updated');
-				//for panchayat
-				$("#referpanchayatId").html('<option value="0">Select Panchayat</option>');
-				$("#referpanchayatId").trigger('chosen:updated'); 
-			}
-		});
- }*/
 
  function getMandalsByConstituencyForReferPopup(){
 	 var districtId = $('#referdistrictId').val();
