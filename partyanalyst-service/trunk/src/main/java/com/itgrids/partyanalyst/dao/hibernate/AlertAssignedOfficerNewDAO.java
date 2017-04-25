@@ -289,7 +289,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	   	      
     	    }
     	   if(impactLevelIdList != null && impactLevelIdList.size()>0){
-    		   sb.append(" and model.alert.govtDepartmentScope.govtDepartmentScopeId in (:impactLevelIdList) ");
+    		   sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentScope.govtDepartmentScopeId in (:impactLevelIdList) ");
     	   }
     	   if(priorityIdList != null && priorityIdList.size()>0){
     		   sb.append(" and model.alert.alertSeverity.alertSeverityId in (:priorityIdList) ");
@@ -2208,7 +2208,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
 			query.setParameterList("printIdList", printIdList);  
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
@@ -3301,6 +3301,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			      query.setParameter("locationLevelId",locationLevelId);
 			if(statusId != null && statusId.longValue() >0){
 				query.setParameter("statusId",statusId);
+			}
+			if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+				query.setParameterList("printIdList",printIdList);
+				query.setParameterList("electronicIdList",electronicIdList);
 			}
 			if(fromDate != null && toDate != null){
 				query.setDate("fromDate",fromDate);

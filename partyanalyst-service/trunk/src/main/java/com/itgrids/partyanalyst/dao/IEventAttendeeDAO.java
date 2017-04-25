@@ -102,6 +102,12 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getLocationWiseEventAttendedCntBasedOnUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds,String locationType);
 	public List<Object[]> getLocationWiseEventInviteeAttendedCntBasedOnUserType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,List<Long> eventIds,String locationType);
 	public List<Object[]> getEventAttendeeSummary(List<Long> cadreIds,List<Long> eventIds);
-	
 	public List<Object[]> getMahanaduEventCadreDetails(List<Long> eventIds,Long tdpCadreId);
+	public List<Object[]> getCadreDetailedReportEventAttendee(Long parentEventId,Long cadreId);
+	public List<Object[]> getCadreDetailedReportEventAttendeeDetailsDayWise(Long parentEventId,Long cadreId);
+	public List<Object[]> getCadreDetailedReportEventAttendeeMaxTime(List<Long> extraEventIdsList);
+	public List<Object[]> getCadreDetailedReportEventAttendeeMinTime(List<Long> extraEventIdsList);
+	public String getCadreDetailedReportEventAttendeeMaxTime1(List<Long> extraEventIdsList);
+	public String  getCadreDetailedReportEventAttendeeMinTime1(List<Long> extraEventIdsList);
+	
 }

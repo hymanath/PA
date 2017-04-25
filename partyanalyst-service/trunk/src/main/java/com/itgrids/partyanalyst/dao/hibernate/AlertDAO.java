@@ -6099,12 +6099,13 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0){
-			query.setParameterList("printIdList", printIdList);   
-		}
-		if(electronicIdList != null && electronicIdList.size() > 0){
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty() &&  calCntrIdList !=null && !calCntrIdList.isEmpty()){
+			query.setParameterList("printIdList", printIdList);
 			query.setParameterList("electronicIdList", electronicIdList);
 		}
+		/*if(electronicIdList != null && electronicIdList.size() > 0){
+			query.setParameterList("electronicIdList", electronicIdList);
+		}*/
 		if(deptIdList != null && deptIdList.size() > 0){
 			query.setParameterList("deptIdList", deptIdList);
 		}
@@ -6408,7 +6409,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" join alert_status ALTS on A.alert_status_id=ALTS.alert_status_id ");
 		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
 		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");
-		queryStr.append(" join govt_department_scope GDS on GDS.govt_department_scope_id = A.impact_scope_id ");
+		//queryStr.append(" join govt_department_scope GDS on GDS.govt_department_scope_id = A.impact_scope_id ");
 		queryStr.append(" where ");
 		queryStr.append(" A.is_deleted='N' and ");
 		if(deptId != null && deptId.longValue() > 0 ){
@@ -6453,7 +6454,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			queryStr.append(" and A.alert_status_id = :statusId  ");
 		}
 		if(impactLevelIdList != null && impactLevelIdList.size()>0){
-			queryStr.append(" and GDS.govt_department_scope_id in (:impactLevelIdList) ");
+			queryStr.append(" and A.impact_level_id in (:impactLevelIdList) ");
 		}
 		if(priorityIdList != null && priorityIdList.size()>0){
 			queryStr.append(" and ALTSVR.alert_severity_id in (:priorityIdList) ");
@@ -6921,7 +6922,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     		query.setParameter("statusId", statusId);
     	}
     	
-    	 if(printIdList != null && printIdList.size()>0 && electronicIdList != null && electronicIdList.size()>0){
+    	if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
    	      query.setParameterList("printIdList", printIdList);
    	      query.setParameterList("electronicIdList", electronicIdList);
    	    }
