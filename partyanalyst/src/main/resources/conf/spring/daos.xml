@@ -3959,5 +3959,11 @@
 	 <bean id="editionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.EditionsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="govtSmsTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSmsTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtSmsActionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSmsActionTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 
 </beans>		
