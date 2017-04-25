@@ -3944,6 +3944,16 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 	 
+	 <bean id="urbanLocalityDAO" class="com.itgrids.partyanalyst.dao.hibernate.UrbanLocalityDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="urbanBlockDAO" class="com.itgrids.partyanalyst.dao.hibernate.UrbanBlockDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentIssueTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentIssueTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 	 <!--  Govt Alert DAO'S END -->
 	 
 	 <bean id="redirectUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.RedirectUrlDAO">

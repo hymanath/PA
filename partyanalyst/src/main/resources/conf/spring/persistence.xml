@@ -1245,6 +1245,10 @@
 					   <value>com.itgrids.partyanalyst.model.AlertIssueType</value>
 					   <value>com.itgrids.partyanalyst.model.AlertFeedbackStatus</value>
 					   
+					   <value>com.itgrids.partyanalyst.model.UrbanLocality</value>
+					   <value>com.itgrids.partyanalyst.model.UrbanBlock</value>
+					   <value>com.itgrids.partyanalyst.model.GovtDepartmentIssueType</value>
+					   
 	                   <!--  Govt Alert module end-->
 	                   
 	                   <value>com.itgrids.partyanalyst.model.RedirectUrl</value>

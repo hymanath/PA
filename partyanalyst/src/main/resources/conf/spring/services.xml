@@ -3619,6 +3619,8 @@
 		<property name="govtDepartmentDesignationDAO" ref="govtDepartmentDesignationDAO"></property>
 		<property name="alertIssueSubTypeDAO" ref="alertIssueSubTypeDAO"></property>
 		<property name="alertManagementSystemService" ref="alertManagementSystemService"></property>
+		<property name="govtDepartmentIssueTypeDAO" ref="govtDepartmentIssueTypeDAO"></property>
+		<property name="urbanLocalityDAO" ref="urbanLocalityDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	
