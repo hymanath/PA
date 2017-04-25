@@ -4209,7 +4209,8 @@
 		<property name="editionsDAO" ref="editionsDAO" ></property>
 		<property name="tvNewsChannelDAO" ref="tvNewsChannelDAO" ></property>
 		<property name="newsPaperDAO" ref="newsPaperDAO" ></property> 
-		<property name="alertSubTaskStatusDAO" ref="alertSubTaskStatusDAO" ></property>  
+		<property name="alertSubTaskStatusDAO" ref="alertSubTaskStatusDAO" ></property>
+		<property name="userDAO" ref="userDAO" ></property>  
    </bean>
 </beans>			
 	
