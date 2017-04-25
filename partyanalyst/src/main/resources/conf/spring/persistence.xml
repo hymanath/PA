@@ -1254,7 +1254,8 @@
 	                   <value>com.itgrids.partyanalyst.model.RedirectUrl</value>
 	                   <value>com.itgrids.partyanalyst.model.AlertIssueSubType</value>
 	                   <value>com.itgrids.partyanalyst.model.GovtSmsType</value>
-		      		   <value>com.itgrids.partyanalyst.model.GovtSmsActionType</value>	
+		      		   <value>com.itgrids.partyanalyst.model.GovtSmsActionType</value>
+		      		   <value>com.itgrids.partyanalyst.model.GovtUserType</value>	
 				  </list>
 			
 		</property>
