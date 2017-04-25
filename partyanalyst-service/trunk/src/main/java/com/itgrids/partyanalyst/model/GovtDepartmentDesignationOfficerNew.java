@@ -33,6 +33,7 @@ public class GovtDepartmentDesignationOfficerNew {
 	private GovtDepartmentDesignationNew govtDepartmentDesignation;
 	private GovtDepartmentScope govtDepartmentScope;
 	private GovtUserAddress govtUserAddress;
+	private User user;
 	
 	private GovtDepartmentWorkLocation levelValueGovtDepartmentWorkLocation;
 	
@@ -137,6 +138,17 @@ public class GovtDepartmentDesignationOfficerNew {
 	public void setLevelValueGovtDepartmentWorkLocation(
 			GovtDepartmentWorkLocation levelValueGovtDepartmentWorkLocation) {
 		this.levelValueGovtDepartmentWorkLocation = levelValueGovtDepartmentWorkLocation;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	
