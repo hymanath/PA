@@ -42,7 +42,7 @@
 		.tableStyledP thead{background-color:#e5fafc !important;padding:5px!important}
 		.tableStyledH thead{background-color:#fff !important;padding:5px!important}
 		
-		
+		#efficiencyId td{font-weight:bold;}
 	</style>
 </head>
 <body>
@@ -83,8 +83,14 @@
 		</div>
 	</div>
 	<div class="row">
+		
 		<div class="col-md-12 col-xs-12 col-sm-6">
-			<h4 class="panel-title" >LOCATION WISE GRIEVANCE REPORT <a class="btn btn-success pull-right" href="agentWiseReportAction.action" style="margin-top: -8px;" > User Tracking View  </a></h4>
+			<h4 class="m_0" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency </h4>
+			<div id="efficiencyId"></div>
+		</div>
+		<div class="col-md-12 col-xs-12 col-sm-6 m_top20">
+		
+			<h4>LOCATION WISE GRIEVANCE REPORT <a class="btn btn-success pull-right btn-sm" href="agentWiseReportAction.action" style="margin-top: -8px;" > User Tracking View  </a></h4>
 		</div>
 		<div class="col-md-1 col-xs-12 col-sm-4 pull-right m_top20">
 					<div class="input-group dateRangePickerCls m_top5 pull-right" >
@@ -1190,6 +1196,55 @@ function getDocumentsForAlert(alertId){
 		var superParentId = $("#"+divId).attr("attr_super_parent_div_id");
 		$("#"+superParentId+"First").removeClass("glyphicon-minus").addClass("glyphicon-plus");
 	});
+	
+	getCadreGreivienceEfficiency();
+function getCadreGreivienceEfficiency(){
+	$("#efficiencyId").html("");
+	$("#efficiencyId").html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
+    
+	var deptIds=[];
+	var sourceIds =[];
+	deptIds.push(49);
+	sourceIds.push(2);
+    var jobj = {
+      
+      daysArr : [5,10,30,60,90,180,365],
+	  deptIds :deptIds,
+	  sourceIds:sourceIds
+      
+    }
+    $.ajax({
+      type : "POST",
+      url  : "getAlertEfficiencyListAction.action",
+      dataType: 'json',
+      data: {task:JSON.stringify(jobj)},
+    }).done(function(result){
+      if(result!=null){
+				var str = "";
+				str +="<table class='table table-bordered bg-white' style='margin-bottom:20px;'>";
+					str +="<tbody>";
+						str +="<tr>";
+							for(var i in result){
+								str+="<td>"+result[i].effcncyType+"</td>";
+							}
+							str +="</tr>";
+							str +="<tr>";
+							for(var i in result){
+								if(result[i].clrFrEffcncy=="red"){
+									str+="<td class='text-danger'>"+result[i].effcncyPrcnt+" %</td>";
+								}else{
+									str+="<td class='text-success'>"+result[i].effcncyPrcnt+" %</td>";
+								}
+							}
+						str +="</tr>";
+					str +="</tbody>";
+				str +="</table>";
+			}
+			
+			$("#efficiencyId").html(str);
+    });
+}
+
 </script>
 </body>
 </html>

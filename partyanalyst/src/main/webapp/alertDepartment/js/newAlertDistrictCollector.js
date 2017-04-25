@@ -2103,7 +2103,10 @@ function getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departm
 	    fromDate: currentToDate,
 		type:alertType,
 		deptId:departmentId,
-		sortingType:sortingType
+		sortingType:sortingType,
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		callCenterArr:callCenterArr
 		
 	}
 	$.ajax({
@@ -2319,7 +2322,10 @@ function getDistrictLevelDeptWiseStatusOverView(alertType,sortingType,department
 		type:alertType,
 		deptId:departmentId,
 		sortingType:sortingType,
-		levelId:levelId
+		levelId:levelId,
+		paperIdArr:paperIdArr,
+		chanelIdArr:chanelIdArr,
+		callCenterArr:callCenterArr
 		
 	}
 	$.ajax({
@@ -2626,7 +2632,10 @@ function getTotalAlertCountDetails(departmentId,levelId,statusId,name,totalCount
 			startDate:currentFromDate,
 			endDate:currentToDate,
 			desigDeptOfficerId:0,
-			officerId:0
+			officerId:0,
+			paperIdArr:paperIdArr,
+			chanelIdArr:chanelIdArr,
+			callCenterArr:callCenterArr
 		}
 	$.ajax({
       type:'GET',
