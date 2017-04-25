@@ -74,6 +74,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationHierarchyDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -90,6 +91,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
+import com.itgrids.partyanalyst.dao.IUrbanLocalityDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
@@ -245,7 +247,26 @@ private IGovtOfficerDAO govtOfficerDAO;
 private IGovtDepartmentDesignationDAO govtDepartmentDesignationDAO;
 private IAlertIssueSubTypeDAO alertIssueSubTypeDAO;
 private IAlertManagementSystemService alertManagementSystemService;
+private IGovtDepartmentIssueTypeDAO govtDepartmentIssueTypeDAO;
+private IUrbanLocalityDAO urbanLocalityDAO;
 
+
+public IUrbanLocalityDAO getUrbanLocalityDAO() {
+	return urbanLocalityDAO;
+}
+
+public void setUrbanLocalityDAO(IUrbanLocalityDAO urbanLocalityDAO) {
+	this.urbanLocalityDAO = urbanLocalityDAO;
+}
+
+public IGovtDepartmentIssueTypeDAO getGovtDepartmentIssueTypeDAO() {
+	return govtDepartmentIssueTypeDAO;
+}
+
+public void setGovtDepartmentIssueTypeDAO(
+		IGovtDepartmentIssueTypeDAO govtDepartmentIssueTypeDAO) {
+	this.govtDepartmentIssueTypeDAO = govtDepartmentIssueTypeDAO;
+}
 
 public IAlertManagementSystemService getAlertManagementSystemService() {
 	return alertManagementSystemService;
@@ -10259,8 +10280,12 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	public List<GovtDepartmentVO> getDesignationsByDepartment(Long departmentId,Long levelId,Long levelValue){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
+			List<Object[]> list = null;
+			if(IConstants.CALL_CENTER_VERSION.trim().equalsIgnoreCase("old"))
+				list = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationsForDepartmentAndLevelLocation(departmentId,levelId,levelValue);
+			else if(IConstants.CALL_CENTER_VERSION.trim().equalsIgnoreCase("new"))
+				list = govtDepartmentDesignationOfficerDetailsNewDAO.getNewDesignationsForDepartmentAndLevelLocation(departmentId,levelId,levelValue);
 			
-			List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationsForDepartmentAndLevelLocation(departmentId,levelId,levelValue);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					GovtDepartmentVO vo = new GovtDepartmentVO();
@@ -10279,8 +10304,12 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	public List<GovtDepartmentVO> getOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId){
 		List<GovtDepartmentVO> returnList = new ArrayList<GovtDepartmentVO>();
 		try {
+			List<Object[]> list = null;
+			if(IConstants.CALL_CENTER_VERSION.trim().equalsIgnoreCase("old"))
+				list = govtDepartmentDesignationOfficerDetailsNewDAO.getOldOfficersByDesignationAndLevel(levelId, levelValue, designationId);
+			else if(IConstants.CALL_CENTER_VERSION.trim().equalsIgnoreCase("new"))
+				list = govtDepartmentDesignationOfficerDetailsNewDAO.getNewOfficersByDesignationAndLevel(levelId, levelValue, designationId);
 			
-			List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getOldOfficersByDesignationAndLevel(levelId, levelValue, designationId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					GovtDepartmentVO vo = new GovtDepartmentVO();					
@@ -10680,6 +10709,60 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 		return null;
 	}
+	
+	public List<KeyValueVO> getRelatedDepartmentsForIssueType(Long issueTypeId){
+		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+		try {
+			List<Object[]> list = govtDepartmentIssueTypeDAO.getRelatedDepartmentsForIssueType(issueTypeId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getRelatedDepartmentsForIssueType() method of AlertService{}",e);
+		}
+		return returnList;
+	}
+	
+	public List<KeyValueVO> getUrbanLocalitiesForMuncipality(Long lebId){
+		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+		try {
+			List<Object[]> list = urbanLocalityDAO.getUrbanLocalitiesForMuncipality(lebId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getUrbanLocalitiesForMuncipality() method of AlertService{}",e);
+		}
+		return returnList;
+	}
+	
+	/*public List<KeyValueVO> getRelatedDepartmentsForIssueType(Long issueTypeId){
+		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+		try {
+			List<Object[]> list = govtDepartmentIssueTypeDAO.getRelatedDepartmentsForIssueType(issueTypeId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getRelatedDepartmentsForIssueType() method of AlertService{}",e);
+		}
+		return returnList;
+	}*/
 }
 
 
