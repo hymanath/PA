@@ -85,7 +85,10 @@
 	<div class="row">
 		
 		<div class="col-md-12 col-xs-12 col-sm-6">
-			<h4 class="m_0" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency </h4>
+			<h4 class="m_0" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency 
+			<div style="text-align:right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
+			<span style="font-size:12px;">Include Proposal</span></div>
+			</h4>
 			<div id="efficiencyId"></div>
 		</div>
 		<div class="col-md-12 col-xs-12 col-sm-6 m_top20">
@@ -1204,14 +1207,18 @@ function getCadreGreivienceEfficiency(){
     
 	var deptIds=[];
 	var sourceIds =[];
+	var includeProposal = $("#proposalId").prop('checked');;
+
 	deptIds.push(49);
+	sourceIds.push(1);
 	sourceIds.push(2);
+	sourceIds.push(3);
     var jobj = {
       
       daysArr : [5,10,30,60,90,180,365],
 	  deptIds :deptIds,
-	  sourceIds:sourceIds
-      
+	  sourceIds:sourceIds,
+      includeProposal : includeProposal
     }
     $.ajax({
       type : "POST",
