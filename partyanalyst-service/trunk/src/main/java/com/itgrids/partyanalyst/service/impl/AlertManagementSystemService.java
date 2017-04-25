@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -3005,55 +3006,27 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               	    return name2.compareTo(name1);
               	}
               };
-              public List<IdNameVO> getDeptListForMultiLvl(Long userId){
-                  try{
-                    List<Object[]> deptList= alertAssignedOfficerNewDAO.getDeptList(userId);
-                    List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>(); 
-                    List<Long> deptIds = new ArrayList<Long>();
-                    IdNameVO idNameVO = null;
-                    if(deptList != null && deptList.size() > 0){
-                      for(Object[] param : deptList){
-                        deptIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-                        idNameVO = new IdNameVO();
-                        idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-                        idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-                        idNameVOs.add(idNameVO);
-                      }
-                    }
-                    Map<Long,ArrayList<Long>> deptIdAndLocationScopeIds = new LinkedHashMap<Long,ArrayList<Long>>();
-                    ArrayList<Long> locationScopeIds = null;
-                    if(deptIds != null && deptIds.size() > 0){
-                      List<Object[]> list = govtDepartmentScopeLevelDAO.getAllScopesOfAllDeptInAscOrder(deptIds);
-                      if(list != null && list.size() > 0){
-                        for(Object[] param : list){
-                          locationScopeIds = deptIdAndLocationScopeIds.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-                          if(locationScopeIds == null){
-                            locationScopeIds = new ArrayList<Long>();
-                            deptIdAndLocationScopeIds.put(commonMethodsUtilService.getLongValueForObject(param[0]),locationScopeIds);
-                          }
-                          locationScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-                        }
-                      }
-                    }
-                    
-                    if(idNameVOs != null && idNameVOs.size() > 0){
-                      for(IdNameVO param : idNameVOs){
-                        if(deptIdAndLocationScopeIds != null && deptIdAndLocationScopeIds.get(param.getId()) != null){
-                          if(deptIdAndLocationScopeIds.get(param.getId()).size() > 4){//change for no of level here
-                            param.setLocationScopeIds(deptIdAndLocationScopeIds.get(param.getId()).subList(0, 4));//change for no of level here
-                          }else{
-                            param.setLocationScopeIds(deptIdAndLocationScopeIds.get(param.getId()));  
-                          }
-                        }  
-                      }
-                    }
-                    return idNameVOs;
-                  }catch(Exception e){
-                    e.printStackTrace();
-                  }
-                  return null;
-                }
-
+              
+            /*  public List<IdNameVO> getDeptListForMultiLvl(Long userId){
+            	  try{
+            		  List<Object[]> deptList= alertAssignedOfficerNewDAO.getDeptList(userId);
+            		  List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();  
+            		  IdNameVO idNameVO = null;
+            		  if(deptList != null && deptList.size() > 0){
+            			  for(Object[] param : deptList){
+            				  idNameVO = new IdNameVO();
+            				  idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+            				  idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+            				  idNameVOs.add(idNameVO);
+            			  }
+            		  }
+            		  return idNameVOs;  
+            	  }catch(Exception e){
+            		  e.printStackTrace();
+            	  }
+            	  return null;
+              }*/
+             
            public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(Long govtDeptGovtOffrId,Long govtOffrcrId,String countType,String alertType, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList){
         		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
         		try {
@@ -4279,7 +4252,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						}
         			}
         			
-        		}else if(list2 != null && list2.size() > 0){ 
+        		}else if(list2 != null && list2.size() > 0 ){ 
         			
         			userType = "subUser";
         			
@@ -4377,6 +4350,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
       		return voList;
       	}
+
       	
       	//district officer graphical click click
      	public List<AlertCoreDashBoardVO> getDistrictLevelWiseClick(String fromDateStr, String toDateStr, Long stateId, 
@@ -4438,24 +4412,44 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				deptScopeIdList.clear();
 					deptScopeIdList.addAll(sublevels);
 				}
+       			//start
+    			List<Object[]> deptAndLvlList = govtDepartmentScopeLevelDAO.getAllScopesInAscOrder(govtDepartmentId);
+    			//for level position create a map for scope and its position
+    			Map<Long,Long> scopeIdAndLevelMap = new HashMap<Long,Long>();
+    			Map<Long,Long> levelAndScopeIdMap = new HashMap<Long,Long>();
+    			long position = 0l;
+    			if(deptAndLvlList != null && deptAndLvlList.size() > 0){
+    				for(Object[] param : deptAndLvlList){
+    					position+=1;
+    					scopeIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), position);
+    					levelAndScopeIdMap.put(position, commonMethodsUtilService.getLongValueForObject(param[1]));
+    				}
+    			}
+    			//based on the dept scope get its position
+    			position = scopeIdAndLevelMap.get(parentGovtDepartmentScopeId);
+    			//end
+       			
     			List<Long> alertIds = null;
-    			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 5L){
-   				if(alertType != null && alertType.equalsIgnoreCase("alert"))
-   						alertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues
-   								,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,statusId,govtDeprtMentScopeId,calCntrIdList);
-   				else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-   						alertIds = govtAlertSubTaskDAO.getStateAndDistrictWorkLocationGovtDeptScopeWiseSubTaskCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,
-   								parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,statusId,govtDeprtMentScopeId,calCntrIdList);
-       			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 6L){
+    			if(position == 2l){
+	   				if(alertType != null && alertType.equalsIgnoreCase("alert"))
+	   						alertIds = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues
+	   								,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,statusId,govtDeprtMentScopeId,calCntrIdList);
+	   				else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
+	   						alertIds = govtAlertSubTaskDAO.getStateAndDistrictWorkLocationGovtDeptScopeWiseSubTaskCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,
+	   								parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,statusId,govtDeprtMentScopeId,calCntrIdList);
+       			}else if(position == 3l){
+       				Long justUpperLvl = levelAndScopeIdMap.get(position-1);
        				if(alertType != null && alertType.equalsIgnoreCase("alert"))
-       					alertIds = alertAssignedOfficerNewDAO.getDivisionWorkLocationGovtDeptScopeWiseAlertCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId,calCntrIdList);
-       			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-       					alertIds = govtAlertSubTaskDAO.getDivisionWorkLocationGovtDeptScopeWiseSubTaskDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId,calCntrIdList);
-       			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 7L){
-       				if(alertType != null && alertType.equalsIgnoreCase("alert"))
-       					alertIds = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationDeptScopeWiseAlertCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId,calCntrIdList);
+       					alertIds = alertAssignedOfficerNewDAO.getDivisionWorkLocationGovtDeptScopeWiseAlertCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId,calCntrIdList,justUpperLvl);
        				else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-       					alertIds = govtAlertSubTaskDAO.getSubDivisionWorkLocationDeptScopeWiseSubTaskCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId,calCntrIdList);
+       					alertIds = govtAlertSubTaskDAO.getDivisionWorkLocationGovtDeptScopeWiseSubTaskDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId,calCntrIdList,justUpperLvl);
+       			}else if(position == 4l){
+       				Long levelTwo = levelAndScopeIdMap.get(position-2);
+					Long levelThree = levelAndScopeIdMap.get(position-1);
+       				if(alertType != null && alertType.equalsIgnoreCase("alert"))
+       					alertIds = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationDeptScopeWiseAlertCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId,calCntrIdList,levelTwo,levelThree);
+       				else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
+       					alertIds = govtAlertSubTaskDAO.getSubDivisionWorkLocationDeptScopeWiseSubTaskCountDetails(fromDate,toDate,stateId,electronicIdList,printIdList,levlId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,statusId,govtDeprtMentScopeId,calCntrIdList,levelTwo,levelThree);
        			}	
     		 if(alertIds != null && alertIds.size() > 0){
     				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
@@ -4849,7 +4843,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
          * overview and Status new
          * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStateThenGovtDeptScopeWiseAlertCountStatusWise(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
          */
-        public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(String fromDateStr, String toDateStr, Long stateId, 
+       /* public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(String fromDateStr, String toDateStr, Long stateId, 
         									List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
         									Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
         									Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,List<Long> calCntrIdList,List<Long> sublevels){
@@ -4863,6 +4857,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				toDate = sdf.parse(toDateStr);
     			}
     			if(printIdList != null && printIdList.size() > 0){  
+    				if(electronicIdList != null && electronicIdList.size() == 0){
+    					electronicIdList.add(0L);
+    				}
+    			}else if(electronicIdList != null && electronicIdList.size() > 0){
+    				if(printIdList != null && printIdList.size() == 0){
+    					printIdList.add(0L);
+    				}
+    			}else{
                     if(electronicIdList != null && electronicIdList.size() == 0){
                       electronicIdList.add(0L);
                       if(calCntrIdList != null && calCntrIdList.size() == 0){
@@ -4891,8 +4893,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				printIdList.add(0L);
     			if(electronicIdList == null || electronicIdList.size() == 0)
     				electronicIdList.add(0L);
+    				printIdList.add(0L);
+    			}
     			if(calCntrIdList == null || calCntrIdList.size() == 0)
-    				calCntrIdList.add(0L);*/
+    				calCntrIdList.add(0L);
     			
     			List<Long> levelValues = new ArrayList<Long>();    
     			Long levelId = 0L;
@@ -5054,7 +5058,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			e.printStackTrace();
     		}
     		return null;
-    	}
+    	}*/
       //Regarding filter. district
         public List<IdNameVO> getDistIdListForDistFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String group,String alertType,String searchType,List<Long> calCntrIdList){
       		try{
@@ -5110,7 +5114,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       				}
       			}
       			
-      			List<Object[]> alertList = null;
+      			List<Object[]> alertList = null;  
       			if(alertType != null && alertType.equalsIgnoreCase("alert"))
     			 alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,group,searchType,calCntrIdList);
       			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
@@ -5184,6 +5188,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				}
     			}
     			
+    			//start
+    			List<Object[]> deptAndLvlList = govtDepartmentScopeLevelDAO.getAllScopesInAscOrder(govtDepartmentId);
+    			//for level position create a map for scope and its position
+    			Map<Long,Long> scopeIdAndLevelMap = new HashMap<Long,Long>();
+    			Map<Long,Long> levelAndScopeIdMap = new HashMap<Long,Long>();
+    			long position = 0l;
+    			if(deptAndLvlList != null && deptAndLvlList.size() > 0){
+    				for(Object[] param : deptAndLvlList){
+    					position+=1;
+    					scopeIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), position);
+    					levelAndScopeIdMap.put(position, commonMethodsUtilService.getLongValueForObject(param[1]));
+    				}
+    			}
+    			//based on the dept scope get its position
+    			position = scopeIdAndLevelMap.get(parentGovtDepartmentScopeId);
+    			//end
+    			
     			
     			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
     			List<Long> deptScopeIdList = new ArrayList<Long>();
@@ -5193,11 +5214,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				}
     			}
     			List<Object[]> alertList = null;
-    			if(alertType != null && alertType.equalsIgnoreCase("alert"))
-    			   alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,"true",group,searchType,calCntrIdList);
-    			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-    				alertList = govtAlertSubTaskDAO.getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,"true",group,searchType,calCntrIdList);
-    			Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
+    			Long justUpperLvl = levelAndScopeIdMap.get(position-1);
+    			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+    				
+    				alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,"true",group,searchType,calCntrIdList,justUpperLvl);
+    			}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+    				alertList = govtAlertSubTaskDAO.getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,"true",group,searchType,calCntrIdList,justUpperLvl);
+    			}
+    				Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
     			if(alertList != null && alertList.size() > 0){
       				for(Object[] param : alertList){
       					idAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getStringValueForObject(param[2]));
@@ -5273,12 +5297,34 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
     				}
     			}
+    			
+    			//start
+    			List<Object[]> deptAndLvlList = govtDepartmentScopeLevelDAO.getAllScopesInAscOrder(govtDepartmentId);
+    			//for level position create a map for scope and its position
+    			Map<Long,Long> scopeIdAndLevelMap = new HashMap<Long,Long>();
+    			Map<Long,Long> levelAndScopeIdMap = new HashMap<Long,Long>();
+    			long position = 0l;
+    			if(deptAndLvlList != null && deptAndLvlList.size() > 0){
+    				for(Object[] param : deptAndLvlList){
+    					position+=1;
+    					scopeIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), position);
+    					levelAndScopeIdMap.put(position, commonMethodsUtilService.getLongValueForObject(param[1]));
+    				}
+    			}
+    			//based on the dept scope get its position
+    			position = scopeIdAndLevelMap.get(parentGovtDepartmentScopeId);
+    			//end
+    			
+    			
     			List<Object[]> alertList = null;
-    			if(alertType != null && alertType.equalsIgnoreCase("alert"))
-    			   alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,null,"true",group,searchType,calCntrIdList);
-    			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-    			   alertList = govtAlertSubTaskDAO.getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,null,"true",group,searchType,calCntrIdList);
-    			Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
+    			Long justUpperLvl = levelAndScopeIdMap.get(position-1);
+    			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+    				
+    			   alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,null,"true",group,searchType,calCntrIdList,justUpperLvl);
+    			}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+    			   alertList = govtAlertSubTaskDAO.getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,null,"true",group,searchType,calCntrIdList,justUpperLvl);
+    			}
+    			   Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
     			if(alertList != null && alertList.size() > 0){
       				for(Object[] param : alertList){
       					idAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getStringValueForObject(param[4]));
@@ -5357,11 +5403,33 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 				}
 			}
+			
+			//start
+			List<Object[]> deptAndLvlList = govtDepartmentScopeLevelDAO.getAllScopesInAscOrder(govtDepartmentId);
+			//for level position create a map for scope and its position
+			Map<Long,Long> scopeIdAndLevelMap = new HashMap<Long,Long>();
+			Map<Long,Long> levelAndScopeIdMap = new HashMap<Long,Long>();
+			long position = 0l;
+			if(deptAndLvlList != null && deptAndLvlList.size() > 0){
+				for(Object[] param : deptAndLvlList){
+					position+=1;
+					scopeIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), position);
+					levelAndScopeIdMap.put(position, commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			//based on the dept scope get its position
+			position = scopeIdAndLevelMap.get(parentGovtDepartmentScopeId);
+			//end
+			
+			
 			List<Object[]> alertList = null;
-			if(alertType != null && alertType.equalsIgnoreCase("alert"))
-			    alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType,calCntrIdList);
-			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-				alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType,calCntrIdList);
+			Long levelTwo = levelAndScopeIdMap.get(position-2);
+			Long levelThree = levelAndScopeIdMap.get(position-1);
+			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+			    alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType,calCntrIdList,levelTwo,levelThree);
+			}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+				alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType,calCntrIdList,levelTwo,levelThree);
+       	 	}
 			Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
 			if(alertList != null && alertList.size() > 0){
   				for(Object[] param : alertList){
@@ -5441,11 +5509,32 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    				}
    			}
    			
+   			
+   			//start
+			List<Object[]> deptAndLvlList = govtDepartmentScopeLevelDAO.getAllScopesInAscOrder(govtDepartmentId);
+			//for level position create a map for scope and its position
+			Map<Long,Long> scopeIdAndLevelMap = new HashMap<Long,Long>();
+			Map<Long,Long> levelAndScopeIdMap = new HashMap<Long,Long>();
+			long position = 0l;
+			if(deptAndLvlList != null && deptAndLvlList.size() > 0){
+				for(Object[] param : deptAndLvlList){
+					position+=1;
+					scopeIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), position);
+					levelAndScopeIdMap.put(position, commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			//based on the dept scope get its position
+			position = scopeIdAndLevelMap.get(parentGovtDepartmentScopeId);
+			//end
+   			
+   			
    			List<Object[]> alertList = null;
+   			Long levelTwo = levelAndScopeIdMap.get(position-2);
+			Long levelThree = levelAndScopeIdMap.get(position-1);
 			if(alertType != null && alertType.equalsIgnoreCase("alert"))
-			   alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,null,null,"true",group,searchType,calCntrIdList);
+			   alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,null,null,"true",group,searchType,calCntrIdList,levelTwo,levelThree);
 			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-			 alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType,calCntrIdList);
+			 alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType,calCntrIdList,levelTwo,levelThree);
    			Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
    			if(alertList != null && alertList.size() > 0){
      				for(Object[] param : alertList){
@@ -5525,11 +5614,31 @@ public class AlertManagementSystemService extends AlertService implements IAlert
    				}
    			}
    			
+   			//start
+			List<Object[]> deptAndLvlList = govtDepartmentScopeLevelDAO.getAllScopesInAscOrder(govtDepartmentId);
+			//for level position create a map for scope and its position
+			Map<Long,Long> scopeIdAndLevelMap = new HashMap<Long,Long>();
+			Map<Long,Long> levelAndScopeIdMap = new HashMap<Long,Long>();
+			long position = 0l;
+			if(deptAndLvlList != null && deptAndLvlList.size() > 0){
+				for(Object[] param : deptAndLvlList){
+					position+=1;
+					scopeIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), position);
+					levelAndScopeIdMap.put(position, commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			//based on the dept scope get its position
+			position = scopeIdAndLevelMap.get(parentGovtDepartmentScopeId);
+			//end
+   			
+   			
    			List<Object[]> alertList = null;
-			if(alertType != null && alertType.equalsIgnoreCase("alert"))
-   			 alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,"true",group,searchType,calCntrIdList);
+   			Long levelTwo = levelAndScopeIdMap.get(position-2);
+			Long levelThree = levelAndScopeIdMap.get(position-1);
+			if(alertType != null && alertType.equalsIgnoreCase("alert")) //s3
+				alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,"true",group,searchType,calCntrIdList,levelTwo,levelThree);
 			else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-			alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType,calCntrIdList);
+				alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,null,null,null,"true",group,searchType,calCntrIdList,levelTwo,levelThree);
    			Map<Long,String> idAndNameMap = new HashMap<Long,String>(); 
    			if(alertList != null && alertList.size() > 0){
      				for(Object[] param : alertList){
@@ -5571,6 +5680,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       			}    	
               	return finalVoList;
           } 
+    	//optional
     	 public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCount(String fromDateStr, String toDateStr, Long stateId, 
     				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
     				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
@@ -5635,36 +5745,62 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         				deptScopeIdList.clear();
     					deptScopeIdList.addAll(sublevels);
     				}
+           			
+           			//start
+	    			List<Object[]> deptAndLvlList = govtDepartmentScopeLevelDAO.getAllScopesInAscOrder(govtDepartmentId);
+	    			//for level position create a map for scope and its position
+	    			Map<Long,Long> scopeIdAndLevelMap = new HashMap<Long,Long>();
+	    			Map<Long,Long> levelAndScopeIdMap = new HashMap<Long,Long>();
+	    			long position = 0l;
+	    			if(deptAndLvlList != null && deptAndLvlList.size() > 0){
+	    				for(Object[] param : deptAndLvlList){
+	    					position+=1;
+	    					scopeIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), position);
+	    					levelAndScopeIdMap.put(position, commonMethodsUtilService.getLongValueForObject(param[1]));
+	    				}
+	    			}
+	    			//based on the dept scope get its position
+	    			position = scopeIdAndLevelMap.get(parentGovtDepartmentScopeId);
+	    			//end
+           			
+           			
+           			
            			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
            			List<Object[]> alertList = null;  
            			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
-           				if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+           				if(position == 1l && parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
                    			alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,null,calCntrIds);
                    			prepareResultForState(alertList,returnList,sortingType,order);
                				return returnList;
-           				}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 5L){
+           				}else if(position == 2l){
            					if(alertType != null && alertType.equalsIgnoreCase("alert"))
-               				alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,searchType,calCntrIds);
+           						alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,searchType,calCntrIds);
            					else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-           					 alertList = govtAlertSubTaskDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,searchType,calCntrIds);
-               			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 6L){
+           						alertList = govtAlertSubTaskDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,searchType,calCntrIds);
+               			}else if(position == 3L){
+               				Long justUpperLvl = levelAndScopeIdMap.get(position-1);
                				if(alertType != null && alertType.equalsIgnoreCase("alert"))
-                   			alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,searchType,calCntrIds);
+               					alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,searchType,calCntrIds,justUpperLvl);
                				else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-               				alertList = govtAlertSubTaskDAO.getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,searchType,calCntrIds);
-               			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 7L){
-               				if(alertType != null && alertType.equalsIgnoreCase("alert"))
-                   			alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,searchType,calCntrIds);
+               					alertList = govtAlertSubTaskDAO.getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,searchType,calCntrIds,justUpperLvl);
+               			}else if(position == 4l){
+               				Long levelTwo = levelAndScopeIdMap.get(position-2);
+            				Long levelThree = levelAndScopeIdMap.get(position-1);
+               				if(alertType != null && alertType.equalsIgnoreCase("alert"))//s4
+               					alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,searchType,calCntrIds,levelTwo,levelThree);
                				else if(alertType != null && alertType.equalsIgnoreCase("subTask"))
-               				alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,searchType,calCntrIds);
+               					alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,searchType,calCntrIds,levelTwo,levelThree);
                			}
-           			}else{
-           				if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L || parentGovtDepartmentScopeId.longValue() == 5L){
+           			}else{  
+           				if(position == 1l || position == 2l){
                    			alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,null,calCntrIds);
-               			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 6L){
-                   			alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,null,calCntrIds);
-               			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 7L){
-                   			alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,null,calCntrIds);
+               			}else if(position == 3l){
+               				Long justUpperLvl = levelAndScopeIdMap.get(position-1);
+                   			alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,null,calCntrIds,justUpperLvl);
+               			}else if(position == 4l){
+               				Long levelTwo = levelAndScopeIdMap.get(position-2);
+            				Long levelThree = levelAndScopeIdMap.get(position-1);
+                   			alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,null,calCntrIds,levelTwo,levelThree);
                			}
            			}
            			
@@ -6211,6 +6347,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			return officerNameAnddesgnationName;
 		}
+	 //New Dept Teja
 	 public DistrictOfficeViewAlertVO getDeptDetails(Long userId){
 			DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
 			 try {
@@ -6588,147 +6725,895 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			        }
   			            return finalList;
   			  }
-  	public String getOfficernameDesignationForUser(Long userId){
-          String officerName = null;
-          String desgnationName = null;
-          Long departMntscopeId = 0l;
-          List<Long> lvlValueList = new ArrayList<Long>();
-          String locationName = null;
-          String officerNameAnddesgnationName = null;
-	          try {
-	            List<Object[]> LocationList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
-	            if(commonMethodsUtilService.isListOrSetValid(LocationList)){
-	              lvlValueList.add((Long) LocationList.get(0)[1]);
-	            }
-	            List<Object[]> usrNameList	 = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigNameForUser(userId);
-	            if(usrNameList.isEmpty()){
-	            	List<Object[]>	usrName = userDAO.getUserNameById(userId);
-	            	if(commonMethodsUtilService.isListOrSetValid(usrName)){
-		            	officerName = (String) usrName.get(0)[1];
-			          }
-	            }
-	            if(commonMethodsUtilService.isListOrSetValid(usrNameList)){
-	            	officerName = (String) usrNameList.get(0)[0];
-	              desgnationName = (String) usrNameList.get(0)[1];
-	            }
-	            
-	             List<Object[]> locNameList = govtDepartmentWorkLocationDAO.getParentLevelValuesListInfo(lvlValueList);
-	             if(commonMethodsUtilService.isListOrSetValid(locNameList)){
-	              locationName = (String) locNameList.get(0)[1];
-	             }
-	             if(desgnationName  != null){
-	            	 officerNameAnddesgnationName = officerName+"/"+desgnationName+","+locationName; 
-	             }else{
-	            	 officerNameAnddesgnationName = officerName+"/"+locationName;
-	             }
-	              
-	          } catch (Exception e) {
-	            LOG.error("Error occured getOfficernameDesignationForUser() method of AlertManagementSystemService",e);
-	          }
-          return officerNameAnddesgnationName;
+  			
+  			
+  			public String getOfficernameDesignationForUser(Long userId){
+  	          String officerName = null;
+  	          String desgnationName = null;
+  	          Long departMntscopeId = 0l;
+  	          List<Long> lvlValueList = new ArrayList<Long>();
+  	          String locationName = null;
+  	          String officerNameAnddesgnationName = null;
+  		          try {
+  		            List<Object[]> LocationList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+  		            if(commonMethodsUtilService.isListOrSetValid(LocationList)){
+  		              lvlValueList.add((Long) LocationList.get(0)[1]);
+  		            }
+  		            List<Object[]> usrNameList	 = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigNameForUser(userId);
+  		            if(usrNameList.isEmpty()){
+  		            	List<Object[]>	usrName = userDAO.getUserNameById(userId);
+  		            	if(commonMethodsUtilService.isListOrSetValid(usrName)){
+  			            	officerName = (String) usrName.get(0)[1];
+  				          }
+  		            }
+  		            if(commonMethodsUtilService.isListOrSetValid(usrNameList)){
+  		            	officerName = (String) usrNameList.get(0)[0];
+  		              desgnationName = (String) usrNameList.get(0)[1];
+  		            }
+  		            
+  		             List<Object[]> locNameList = govtDepartmentWorkLocationDAO.getParentLevelValuesListInfo(lvlValueList);
+  		             if(commonMethodsUtilService.isListOrSetValid(locNameList)){
+  		              locationName = (String) locNameList.get(0)[1];
+  		             }
+  		             if(desgnationName  != null){
+  		            	 officerNameAnddesgnationName = officerName+"/"+desgnationName+","+locationName; 
+  		             }else{
+  		            	 officerNameAnddesgnationName = officerName+"/"+locationName;
+  		             }
+  		              
+  		          } catch (Exception e) {
+  		            LOG.error("Error occured getOfficernameDesignationForUser() method of AlertManagementSystemService",e);
+  		          }
+  	          return officerNameAnddesgnationName;
+  	        }
+  	  		public List<AlertCoreDashBoardVO> prepareResultForStateNew(List<Object[]> alertList,List<AlertCoreDashBoardVO> returnList,String sortingType,String order,String group,String alertType){
+  	  			try{
+  		        		
+  		        		Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
+  		    			Map<Long,String> statusIdAndStatusName = new LinkedHashMap<Long,String>();
+  		    			Map<Long,String> statusIdAndColor = new LinkedHashMap<Long,String>();    
+  		    			
+  		    			Map<Long,LinkedHashMap<Long,Long>> lvlIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+  		    			LinkedHashMap<Long,Long> statusIdThenAlertCount = null;
+  		    			
+  		    			
+  		    			Set<Long> deptScopeIds = new HashSet<Long>();
+  		    			Set<Long> statusIds = new HashSet<Long>();
+  		    			if(alertList != null && alertList.size() > 0){
+  		    				for(Object[] param : alertList){
+  		    					deptScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+  		    				}
+  		    			}
+  		    			
+  		    			if(alertList != null && alertList.size() > 0){
+  		    				for(Object[] param : alertList){
+  		    					statusIds.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+  		    				}
+  		    			}
+  		    			List<Object[]> statusIdDtlsList = null;
+  		    			if(statusIds != null && statusIds.size() > 0 && group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && alertType != null && !alertType.trim().isEmpty() && alertType.equalsIgnoreCase("alert")){
+  		    			 statusIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
+  		        		}else{
+  		        		  statusIdDtlsList = alertSubTaskStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
+  		        		}
+  		    			
+  		    			List<Object[]> deptScopeIdDtlsList = null;
+  		    			if(deptScopeIds != null && deptScopeIds.size() >0){
+  		    				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
+  		    			}
+  		    			
+  		    			
+  		    			
+  		    			if(deptScopeIdDtlsList != null && deptScopeIdDtlsList.size() > 0){
+  		    				for(Object[] param : deptScopeIdDtlsList){
+  		    					lvlIdAndLvlName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+  		    				}  
+  		    			}
+  		    			if(statusIdDtlsList != null && statusIdDtlsList.size() > 0){
+  		    				for(Object[] param : statusIdDtlsList){
+  		        				statusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+  		        				statusIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+  		    				}  
+  		    			}
+  		    			
+  		    			
+  		    			
+  		        		if(alertList != null && alertList.size() > 0){
+  		        			for(Object[] param : alertList){
+  		        				statusIdThenAlertCount = lvlIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+  		    					if(statusIdThenAlertCount == null){
+  		    						statusIdThenAlertCount = new LinkedHashMap<Long,Long>();
+  		    						lvlIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[3]), statusIdThenAlertCount);
+  		    					}
+  		    					statusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
+  		    				}
+  		        		}
+  		    			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+  		    			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
+  		    				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+  		    					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+  		    					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+  		    					alertCoreDashBoardVO.setName(lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+  		    					buildStatusWiseTemplate(alertCoreDashBoardVO,statusIdAndStatusName,statusIdAndColor);
+  		    					Long total = new Long(0L);
+  		    					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
+  		    						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+  		    							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+  		    							total = total + outerEntry.getValue().get(boardVO.getId());
+  		    						}
+  		    					}
+  		    					alertCoreDashBoardVO.setTotalCount(total);
+  		    					returnList.add(alertCoreDashBoardVO);
+  		    				}
+  		    			}
+  		    			if(returnList != null && returnList.size() > 0){
+  		    				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+  		    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+  		    						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+  		    					}else{
+  		    						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+  		    					}
+  		    				}
+  		    				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+  		    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+  		    						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+  		    					}else{
+  		    						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+  		    					}
+  		    				}
+  		    			}
+  		    			
+  		    			return returnList;
+  		        	}catch(Exception e){
+  		        		e.printStackTrace();
+  		        	}
+  		        	return null;
+  		        }
+  			//New Service
+  			//Santosh
+  			 public List<IdNameVO> getDeptListForMultiLvl(Long userId){
+                 try{
+                   List<Object[]> deptList= alertAssignedOfficerNewDAO.getDeptList(userId);
+                   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>(); 
+                   List<Long> deptIds = new ArrayList<Long>();
+                   IdNameVO idNameVO = null;
+                   if(deptList != null && deptList.size() > 0){
+                     for(Object[] param : deptList){
+                       deptIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+                       idNameVO = new IdNameVO();
+                       idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+                       idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+                       idNameVOs.add(idNameVO);
+                     }
+                   }
+                     Map<Long,Map<Long,IdNameVO>> deptLevelMap = new HashMap<Long, Map<Long,IdNameVO>>();
+                     List<Object[]> rtrnDeptLevelObjLst = govtDepartmentScopeLevelDAO.getAllScopesOfAllDeptInAscOrder(deptIds);
+                     setDepartmentWiseLevel(rtrnDeptLevelObjLst,deptLevelMap);    
+                     if(idNameVOs != null && idNameVOs.size() > 0){
+                    	 for(IdNameVO vo:idNameVOs){
+                    		 if(deptLevelMap != null){
+                    			 vo.getSubList1().addAll(deptLevelMap.get(vo.getId()).values());
+                    		 }
+                    	 }
+                     }
+                     return idNameVOs;
+                 }catch(Exception e){
+                	 e.printStackTrace();
+			          LOG.error("Error occured getDeptListForMultiLvl() method of AlertManagementSystemService",e);
+                 }
+                 return null;
+               }
+  			 public List<IdNameVO> getDepartmentDetailsByDepartmentId(Long userId,Long departmentId,String designationType){
+                 try{
+                   List<Object[]> deptList= alertAssignedOfficerNewDAO.getDepartmentDetaislByDeptIds(departmentId);
+                   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>(); 
+                   List<Long> deptIds = new ArrayList<Long>();
+                   IdNameVO idNameVO = null;
+                   
+                   if(deptList != null && deptList.size() > 0){
+                     for(Object[] param : deptList){
+                       deptIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+                       idNameVO = new IdNameVO();
+                       idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+                       idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+                       idNameVOs.add(idNameVO);
+                     }
+                   }
+                     Map<Long,Map<Long,IdNameVO>> deptLevelMap = new HashMap<Long, Map<Long,IdNameVO>>();
+                     List<Object[]> rtrnDeptLevelObjLst = null;
+                     if(designationType != null && designationType.equalsIgnoreCase("levelWiseOfficer")){
+                       Long levelId = 0L;
+       	      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+       	      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+       	      				for(Object[] param : lvlValueAndLvlIdList){
+       	      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+       	      				}
+       	      			}
+       	      			List<Object[]> rtrnObjList = govtDepartmentScopeLevelDAO.getChildGovtScopesLevelByParentScopeLevel(levelId, departmentId);//levelId means Access Level 
+       	      			Set<Long> scopeIdsSet = new HashSet<Long>();
+       	      			if(rtrnObjList != null && rtrnObjList.size() > 0){
+       	      				for(Object[] param:rtrnObjList){
+       	      				scopeIdsSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+       	      				}
+       	      			}
+                           rtrnDeptLevelObjLst = govtDepartmentScopeLevelDAO.getRequiredDeptScopeByScopeIds(deptIds, scopeIdsSet);
+                       }else{
+                    	   rtrnDeptLevelObjLst = govtDepartmentScopeLevelDAO.getAllScopesOfAllDeptInAscOrder(deptIds);
+                       }
+                     setDepartmentWiseLevel(rtrnDeptLevelObjLst,deptLevelMap);    
+                     if(idNameVOs != null && idNameVOs.size() > 0){
+                    	 for(IdNameVO vo:idNameVOs){
+                    		 if(deptLevelMap != null){
+                    			 vo.getSubList1().addAll(deptLevelMap.get(vo.getId()).values());
+                    		 }
+                    	 }
+                     }
+                     return idNameVOs;
+                 }catch(Exception e){
+                	 e.printStackTrace();
+			          LOG.error("Error occured getDepartmentDetailsByDepartmentId() method of AlertManagementSystemService",e);
+                 }
+                 return null;
+               }
+  			 public void setDepartmentWiseLevel(List<Object[]> objList,Map<Long,Map<Long,IdNameVO>> deptLocationLevelMap){
+  				 try{
+  					 Map<Long,Map<Long,Long>> deptLevelPositionMap = new HashMap<Long, Map<Long,Long>>();
+  					 Map<Long,Map<Long,Long>> deptLevelReversePositionMap = new HashMap<Long, Map<Long,Long>>();
+  					 Map<Long,String> levelIdAndNameMap = new HashMap<Long, String>();
+  					 if(objList != null && objList.size() > 0){
+  						Long position = 0l;
+  						Long position1 = 0l;
+  						 for(Object[] param:objList){
+  							 
+  							  Long departmentId = commonMethodsUtilService.getLongValueForObject(param[0]);
+  							  Map<Long,IdNameVO> deptLevelMap = deptLocationLevelMap.get(departmentId);
+  							   if(deptLevelMap == null){
+  								 deptLevelMap = new LinkedHashMap<Long, IdNameVO>(0);
+  								 deptLocationLevelMap.put(departmentId,deptLevelMap);
+  							   }
+  							   
+  							    Map<Long,Long> positionLevelMap  = deptLevelPositionMap.get(departmentId);
+  							    if(positionLevelMap == null){
+  							    	 position = 0l;
+  	  								 position = position+1l;
+  							    	 positionLevelMap = new LinkedHashMap<Long, Long>(0);
+  							    	 deptLevelPositionMap.put(departmentId,positionLevelMap);
+  							    }
+  							 
+  							   Map<Long,Long> positionReverseLevelMap = deptLevelReversePositionMap.get(departmentId);
+  							   if(positionReverseLevelMap == null){
+  								 position1 = 0l;
+	  							 position1 = position1+1l;
+  								 positionReverseLevelMap = new LinkedHashMap<Long, Long>(0);
+  								 deptLevelReversePositionMap.put(departmentId,positionReverseLevelMap);
+  							   }
+  							 
+  							   IdNameVO deptLevelVO = new IdNameVO();
+  							   deptLevelVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+  							   deptLevelVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+  							   deptLevelVO.setColor(commonMethodsUtilService.getStringValueForObject(param[3]));
+  							   levelIdAndNameMap.put(deptLevelVO.getId(), deptLevelVO.getName());
+  							   deptLevelMap.put(deptLevelVO.getId(), deptLevelVO);
+  							 
+  							   positionLevelMap.put(deptLevelVO.getId(), position);
+  							   positionReverseLevelMap.put(position1,deptLevelVO.getId());
+  							   position = position+1l;
+  							   position1 = position1+1l;
+  							  
+  						 }
+  					 }
+  					 if(deptLocationLevelMap != null && deptLocationLevelMap.size() > 0){
+  						  for(Entry<Long,Map<Long,IdNameVO>> deptEntry:deptLocationLevelMap.entrySet()){
+  							   if(deptEntry.getValue() != null && deptEntry.getValue().size() > 0){
+  								    for(Entry<Long,IdNameVO> levelEntry:deptEntry.getValue().entrySet()){
+  								    	if(deptLevelPositionMap.get(deptEntry.getKey()) != null){
+  								    		if(levelEntry.getKey() != null && levelEntry.getKey().longValue() != 1l){//For State Level We are not sending filter
+  								    			Long levelPosition = deptLevelPositionMap.get(deptEntry.getKey()).get(levelEntry.getKey());
+  	  								    		List<IdNameVO> upperLevelList = getUpperLevelList(levelPosition,deptEntry.getKey(),deptLevelReversePositionMap,levelIdAndNameMap);
+  	  								    		if(upperLevelList != null && upperLevelList.size() > 0){
+  	  								    		    IdNameVO lastLevelVO = upperLevelList.get(upperLevelList.size()-1);
+  	  								    		    lastLevelVO.setChildLevelId(0l);
+  	  								    			levelEntry.getValue().getSubList1().addAll(upperLevelList);
+  	  								    		}
+  								    		}
+  								    	}
+  								    }
+  							   }
+  						  }
+  					 }
+  				 }catch(Exception e){
+  					  e.printStackTrace();
+ 			          LOG.error("Error occured setDepartmentWiseLevel() method of AlertManagementSystemService",e);
+  				 }
+  			 }
+  			 public List<IdNameVO> getUpperLevelList(Long levelPosition,Long deptId,Map<Long,Map<Long,Long>> deptLevelReversePositionMap,Map<Long,String> levelIdAndNameMap){
+  				 List<IdNameVO> upperLevelList = new ArrayList<IdNameVO>();
+  				 try{
+  					 if(deptLevelReversePositionMap != null && deptLevelReversePositionMap.size() > 0){
+  						 Map<Long,Long> levelMap = deptLevelReversePositionMap.get(deptId);
+  						   if(levelMap != null && levelMap.size() > 0){
+  							   for(Long position =1l;position <=levelPosition;){
+  								   IdNameVO levelVO = new IdNameVO();
+  								   Long levelId = levelMap.get(position);
+  								   levelVO.setId(levelId);
+  								   levelVO.setName(levelIdAndNameMap.get(levelId));
+  								   Long childLevelId = levelMap.get(position+1);
+  								    if(childLevelId != null && childLevelId.longValue() > 0){
+  								    	levelVO.setChildLevelId(childLevelId);
+  								    }
+  								    position = position+1;
+  								    if(levelId != null && levelId.longValue() != 1l){////State We are not Adding in filter list
+  								    	upperLevelList.add(levelVO);	
+  								    }
+  							   }
+  						   }
+  					 }
+  				 }catch(Exception e){
+  					  e.printStackTrace();
+ 			          LOG.error("Error occured getUpperLevelList() method of AlertManagementSystemService",e);
+  				 }
+  				 return upperLevelList;
+  			 }
+  		 public List<IdNameVO> getLocationBasedOnDepartmentLevel(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String alertType,List<Long> calCntrIdList){
+  	      		try{
+  	      			
+  	      			Date fromDate = null;
+  	      			Date toDate = null;
+  	      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+  	      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+  	      				fromDate = sdf.parse(fromDateStr);
+  	      				toDate = sdf.parse(toDateStr);
+  	      			}
+  	      			if(printIdList != null && printIdList.size() > 0){  
+  	      				if(electronicIdList != null && electronicIdList.size() == 0){
+  	      					electronicIdList.add(0L);
+  	      				}
+  	      			}else if(electronicIdList != null && electronicIdList.size() > 0){
+  	      				if(printIdList != null && printIdList.size() == 0){
+  	      					printIdList.add(0L);
+  	      				}
+  	      			}/*else{
+  	      				electronicIdList.add(0L);
+  	      				printIdList.add(0L);
+  	      			}*/
+  	      			
+  	      			List<Long> levelValues = new ArrayList<Long>();    
+  	      			Long levelId = 0L;
+  	      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+  	      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+  	      				for(Object[] param : lvlValueAndLvlIdList){
+  	      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+  	      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+  	      				}
+  	      			}
+  	      			
+  	      			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+  	      			List<Long> deptScopeIdList = new ArrayList<Long>();
+  	      			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+  	      				for(Object [] param : childDeptScopeIdList){
+  	      					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+  	      				}
+  	      			}
+  	      			
+  	      			List<Object[]> alertList = null;  
+  	      			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+  	      			  alertList = alertAssignedOfficerNewDAO.getLocationBasedOnDepartmentLevelId(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, deptScopeIdList, calCntrIdList);	
+  	      			}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+  	    			  alertList = govtAlertSubTaskDAO.getSubTaskAlertLocationLevelWise(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, deptScopeIdList, calCntrIdList);	
+  	      			}
+  	      		   List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();  
+  	      		   setRequiredLocation(alertList,idNameVOs);	
+  	      		   return idNameVOs;
+  	      		}catch(Exception e){
+  	      			e.printStackTrace();
+  	      		}
+  	      		return null;
+  	        }
+		 public List<IdNameVO> getChildLocationBasedOnParentLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long parentGovtDepartmentScopeValue,Long childLevelId,String alertType ,List<Long> calCntrIdList){
+      		try{
+      			Date fromDate = null;
+      			Date toDate = null;
+      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+      				fromDate = sdf.parse(fromDateStr);
+      				toDate = sdf.parse(toDateStr);
+      			}
+      			if(printIdList != null && printIdList.size() > 0){  
+      				if(electronicIdList != null && electronicIdList.size() == 0){
+      					electronicIdList.add(0L);
+      				}
+      			}else if(electronicIdList != null && electronicIdList.size() > 0){
+      				if(printIdList != null && printIdList.size() == 0){
+      					printIdList.add(0L);
+      				}
+      			}
+      			List<Long> levelValues = new ArrayList<Long>();    
+      			Long levelId = 0L;
+      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+      				for(Object[] param : lvlValueAndLvlIdList){
+      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+      				}
+      			}
+      			
+      			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+      			List<Long> deptScopeIdList = new ArrayList<Long>();
+      			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+      				for(Object [] param : childDeptScopeIdList){
+      					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+      				}
+      			}
+      			
+      			List<Object[]> alertList = null;  
+      			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+      			 alertList = alertAssignedOfficerNewDAO.getChildLocationBasedOnParentLocation(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, deptScopeIdList, parentGovtDepartmentScopeId, parentGovtDepartmentScopeValue, childLevelId, calCntrIdList);		
+      			}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+      			  alertList = govtAlertSubTaskDAO.getSubTaskChildLocationByParentLocation(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, parentGovtDepartmentScopeValue, childLevelId, deptScopeIdList, calCntrIdList);
+      			}
+    			List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+    			setRequiredLocation(alertList,idNameVOs);
+    	       return idNameVOs;
+      		}catch(Exception e){
+      			 e.printStackTrace();
+      			 LOG.error("Error occured getChildLocationBasedOnParentLocation() method of AlertManagementSystemService",e);
+      		}
+      		return null;
         }
-  		public List<AlertCoreDashBoardVO> prepareResultForStateNew(List<Object[]> alertList,List<AlertCoreDashBoardVO> returnList,String sortingType,String order,String group,String alertType){
-  			try{
-	        		
-	        		Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
-	    			Map<Long,String> statusIdAndStatusName = new LinkedHashMap<Long,String>();
-	    			Map<Long,String> statusIdAndColor = new LinkedHashMap<Long,String>();    
+		 public void setRequiredLocation(List<Object[]> objList,List<IdNameVO> idNameVOs){
+			 try{
+				if(objList != null && objList.size() > 0){
+    				for(Object[] param:objList){
+    					      IdNameVO idNameVO = new IdNameVO();
+	          				  idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+	          				  idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+	          				  idNameVOs.add(idNameVO);
+    				}
+    			}
+		    }catch(Exception e){
+				 e.printStackTrace();
+      			 LOG.error("Error occured getChildLocationBasedOnParentLocation() method of AlertManagementSystemService",e);
+      		 }
+		 }
+		 public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew(String fromDateStr, String toDateStr, Long stateId, 
+					List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+					Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+					Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, 
+					String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,Long filterScopeValue,String searchType){
+			try{
+			
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			if(printIdList != null && printIdList.size() > 0){  
+				if(electronicIdList != null && electronicIdList.size() == 0){
+				  electronicIdList.add(0L);
+				}
+			}else if(electronicIdList != null && electronicIdList.size() > 0){
+				if(printIdList != null && printIdList.size() == 0){
+				printIdList.add(0L);
+				}
+			}/*else{
+				electronicIdList.add(0L);
+				printIdList.add(0L);
+			}*/
+			
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long levelId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+			
+			List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
+			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+			List<Long> deptScopeIdList = new ArrayList<Long>();
+			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+				for(Object [] param : childDeptScopeIdList){
+					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					KeyValueVO sublevel = new KeyValueVO();
+					sublevel.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					sublevel.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					subLevels.add(sublevel);
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(sublevels)){
+				deptScopeIdList.clear();
+				deptScopeIdList.addAll(sublevels);
+			}
+			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = null; 
+			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
+					if(alertType != null && alertType.equalsIgnoreCase("alert")){
+					alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue);
+					}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+					 alertList = govtAlertSubTaskDAO.getSubTaskAlertCntBasedOnDepartmentLevel(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, deptScopeIdList, group, searchType, calCntrIdList, filterParentScopeId, filterScopeValue);
+					}
+					if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+						prepareResultForState(alertList,returnList,sortingType,order);
+						return returnList;
+					}
+				}else{
+					if(alertType != null && alertType.equalsIgnoreCase("subTask") && parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+						alertList = govtAlertSubTaskDAO.getSubTaskAlertCntBasedOnDepartmentLevel(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, deptScopeIdList, group, searchType, calCntrIdList, filterParentScopeId, filterScopeValue);
+					}else{
+						alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,null,calCntrIdList,filterParentScopeId,filterScopeValue);
+					}
+				}
+			}
+			
+			Map<Long,String> locIdAndLocNameMap = new LinkedHashMap<Long,String>();
+			Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
+			Map<Long,String> lvlIdAndColor = new LinkedHashMap<Long,String>();
+			Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+			LinkedHashMap<Long,Long> levelIdAndAlertCountMap = null;
+			
+			Set<Long> deptScopeIds = new HashSet<Long>();
+			if(alertList != null && alertList.size() > 0){
+				for(Object[] param : alertList){
+					deptScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+			if(searchType != null && searchType.equalsIgnoreCase("scopewise")){
+				group = "Overview";
+			}
+			List<Object[]> deptScopeIdDtlsList = null;
+			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && deptScopeIds != null && deptScopeIds.size() >0){
+				deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));
+			}else if(deptScopeIds != null && deptScopeIds.size() >0){ 
+				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
+			}
+			
+			if(deptScopeIdDtlsList != null && deptScopeIdDtlsList.size() > 0){
+				for(Object[] param : deptScopeIdDtlsList){
+					lvlIdAndLvlName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					lvlIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+				}  
+			}
+			
+			if(alertList != null && alertList.size() > 0){   
+				for(Object[] param : alertList){
+					locIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),commonMethodsUtilService.getStringValueForObject(param[2]));
+					levelIdAndAlertCountMap = locIdThenLvlIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(levelIdAndAlertCountMap == null){
+						levelIdAndAlertCountMap = new LinkedHashMap<Long,Long>();
+						locIdThenLvlIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[1]), levelIdAndAlertCountMap);
+					}
+					levelIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+			if(locIdThenLvlIdThenAlertCount != null && locIdThenLvlIdThenAlertCount.size() > 0){
+				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenLvlIdThenAlertCount.entrySet()){
+					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+					buildStatusWiseTemplate(alertCoreDashBoardVO,lvlIdAndLvlName,lvlIdAndColor);
+					Long total = new Long(0L);
+					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
+						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+							total = total + outerEntry.getValue().get(boardVO.getId());
+						}
+					}
+					alertCoreDashBoardVO.setTotalCount(total);
+					returnList.add(alertCoreDashBoardVO);
+				}
+			}
+			
+			if(returnList != null && returnList.size() > 0){
+				returnList.get(0).getSubLevels().addAll(subLevels);
+				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+					}else{
+						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+					}
+				}
+				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+					}else{
+						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+					}
+				}
+			}   
+			return returnList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew() method of AlertManagementSystemService",e);
+	 }
+			return null;
+		}
+	public List<AlertCoreDashBoardVO> getAlertDetailsBasedOnLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long alertStatusId,List<Long> calCntrIds,Long locationValue,String alertType){
+	      		try{
+	      			
+	      			Date fromDate = null;  
+	      			Date toDate = null;
+	      			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	      			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+	      				fromDate = sdf.parse(fromDateStr);
+	      				toDate = sdf.parse(toDateStr);
+	      			}
+	      			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+	      			if(printIdList != null && printIdList.size() > 0){  
+	      				if(electronicIdList != null && electronicIdList.size() == 0){
+	      					electronicIdList.add(0L);
+	      				}
+	      			}else if(electronicIdList != null && electronicIdList.size() > 0){
+	      				if(printIdList != null && printIdList.size() == 0){
+	      					printIdList.add(0L);
+	      				}
+	      			}/*else{
+	      				electronicIdList.add(0L);
+	      				printIdList.add(0L);
+	      			}*/
+	      			
+	      			List<Long> levelValues = new ArrayList<Long>();    
+	      			Long levelId = 0L;
+	      			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+	      			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+	      				for(Object[] param : lvlValueAndLvlIdList){
+	      					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+	      					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+	      				}
+	      			}
+	      			
+	    			List<Long> alertList = null;
+	    			if(alertType != null && alertType.equalsIgnoreCase("alert"))
+	    			{
+	    			  alertList = alertAssignedOfficerNewDAO.getAlertIdsBasedOnRequiredParameter(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, locationValue,calCntrIds, deptScopeId, alertStatusId);
+	    			}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+	    				alertList = govtAlertSubTaskDAO.getSubTaskAlertIdsBasedOnLocation(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, locationValue, deptScopeId, alertStatusId, calCntrIds);
+	    			}
+	    		 	List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+	      			if(alertList != null && alertList.size() > 0){
+	    				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertList));
+	    				setAlertDtls(alertCoreDashBoardVOs, list); 
+	    			}
+	      			//set Subtask into alert logic 
 	    			
-	    			Map<Long,LinkedHashMap<Long,Long>> lvlIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
-	    			LinkedHashMap<Long,Long> statusIdThenAlertCount = null;
-	    			
-	    			
-	    			Set<Long> deptScopeIds = new HashSet<Long>();
-	    			Set<Long> statusIds = new HashSet<Long>();
+	    			//get subtask count.
+	    			List<Object[]> subtaskCountList = null;
 	    			if(alertList != null && alertList.size() > 0){
-	    				for(Object[] param : alertList){
-	    					deptScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+	    				subtaskCountList = govtAlertSubTaskDAO.getSubTaskCount(alertList);
+	    			}
+	    			//create a map from alertId and subtask count.
+	    			Map<Long,Long> alertIdAndSubTaskCountMap = new HashMap<Long,Long>();
+	    			if(subtaskCountList != null && subtaskCountList.size() > 0){
+	    				for(Object[] param : subtaskCountList){
+	    					alertIdAndSubTaskCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
 	    				}
 	    			}
-	    			
-	    			if(alertList != null && alertList.size() > 0){
-	    				for(Object[] param : alertList){
-	    					statusIds.add(commonMethodsUtilService.getLongValueForObject(param[4]));
-	    				}
-	    			}
-	    			List<Object[]> statusIdDtlsList = null;
-	    			if(statusIds != null && statusIds.size() > 0 && group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && alertType != null && !alertType.trim().isEmpty() && alertType.equalsIgnoreCase("alert")){
-	    			 statusIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
-	        		}else{
-	        		  statusIdDtlsList = alertSubTaskStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
-	        		}
-	    			
-	    			List<Object[]> deptScopeIdDtlsList = null;
-	    			if(deptScopeIds != null && deptScopeIds.size() >0){
-	    				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
-	    			}
-	    			
-	    			
-	    			
-	    			if(deptScopeIdDtlsList != null && deptScopeIdDtlsList.size() > 0){
-	    				for(Object[] param : deptScopeIdDtlsList){
-	    					lvlIdAndLvlName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-	    				}  
-	    			}
-	    			if(statusIdDtlsList != null && statusIdDtlsList.size() > 0){
-	    				for(Object[] param : statusIdDtlsList){
-	        				statusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-	        				statusIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
-	    				}  
-	    			}
-	    			
-	    			
-	    			
-	        		if(alertList != null && alertList.size() > 0){
-	        			for(Object[] param : alertList){
-	        				statusIdThenAlertCount = lvlIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[3]));
-	    					if(statusIdThenAlertCount == null){
-	    						statusIdThenAlertCount = new LinkedHashMap<Long,Long>();
-	    						lvlIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[3]), statusIdThenAlertCount);
-	    					}
-	    					statusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
-	    				}
-	        		}
-	    			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
-	    			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
-	    				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
-	    					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
-	    					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
-	    					alertCoreDashBoardVO.setName(lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? lvlIdAndLvlName.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
-	    					buildStatusWiseTemplate(alertCoreDashBoardVO,statusIdAndStatusName,statusIdAndColor);
-	    					Long total = new Long(0L);
-	    					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
-	    						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
-	    							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
-	    							total = total + outerEntry.getValue().get(boardVO.getId());
-	    						}
-	    					}
-	    					alertCoreDashBoardVO.setTotalCount(total);
-	    					returnList.add(alertCoreDashBoardVO);
-	    				}
-	    			}
-	    			if(returnList != null && returnList.size() > 0){
-	    				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
-	    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
-	    						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
-	    					}else{
-	    						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
-	    					}
-	    				}
-	    				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
-	    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
-	    						Collections.sort(returnList, alphabeticalAscSortLvlWise);
-	    					}else{
-	    						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+	    			if(alertCoreDashBoardVOs != null && alertCoreDashBoardVOs.size() > 0){
+	    				for(AlertCoreDashBoardVO alertCoreDashBoardVO : alertCoreDashBoardVOs){
+	    					if(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()) != null){
+	    						alertCoreDashBoardVO.setSubTaskCount(alertIdAndSubTaskCountMap.get(alertCoreDashBoardVO.getId()));
 	    					}
 	    				}
 	    			}
-	    			
-	    			return returnList;
-	        	}catch(Exception e){
-	        		e.printStackTrace();
-	        	}
-	        	return null;
-	        }
-		
+	      			
+	      			return alertCoreDashBoardVOs;        
+	      			
+	      		}catch(Exception e){
+	      			e.printStackTrace();    
+	      		}
+	      		return null;
+	      	}
+  	/*
+     * Swadhin K Lenka
+     * overview and Status new
+     * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getStateThenGovtDeptScopeWiseAlertCountStatusWise(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamic(String fromDateStr, String toDateStr, Long stateId, 
+    									List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+    									Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+    									Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,List<Long> calCntrIdList,List<Long> sublevels){
+		try{
+			
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			if(printIdList != null && printIdList.size() > 0){  
+				if(electronicIdList != null && electronicIdList.size() == 0){
+					electronicIdList.add(0L);
+				}
+			}else if(electronicIdList != null && electronicIdList.size() > 0){
+				if(printIdList != null && printIdList.size() == 0){
+					printIdList.add(0L);
+				}
+			}/*else{
+				electronicIdList.add(0L);
+				printIdList.add(0L);
+			}*/
+			
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long levelId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+			
+			List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
+			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+			List<Long> deptScopeIdList = new ArrayList<Long>();
+			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+				for(Object [] param : childDeptScopeIdList){
+					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					KeyValueVO sublevel = new KeyValueVO();
+					sublevel.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					sublevel.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					subLevels.add(sublevel);
+				}
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(sublevels)){
+				deptScopeIdList.clear();
+				deptScopeIdList.addAll(sublevels);
+			}
+			//start
+			List<Object[]> deptAndLvlList = govtDepartmentScopeLevelDAO.getAllScopesInAscOrder(govtDepartmentId);
+			//for level position create a map for scope and its position
+			Map<Long,Long> scopeIdAndLevelMap = new HashMap<Long,Long>();
+			Map<Long,Long> levelAndScopeIdMap = new HashMap<Long,Long>();
+			long position = 0l;
+			if(deptAndLvlList != null && deptAndLvlList.size() > 0){
+				for(Object[] param : deptAndLvlList){
+					position+=1;
+					scopeIdAndLevelMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), position);
+					levelAndScopeIdMap.put(position, commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			//based on the dept scope get its position
+			position = scopeIdAndLevelMap.get(parentGovtDepartmentScopeId);
+			//end
+			
+			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = null; 
+			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
+    				if(position == 1l && parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+            			alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,null,calCntrIdList);
+            			prepareResultForState(alertList,returnList,sortingType,order);
+        				return returnList;
+    				}else if(position == 2l){
+    					if(alertType != null && alertType.equalsIgnoreCase("alert")){
+    						alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,"statusWise",calCntrIdList);
+    					}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+    						alertList = govtAlertSubTaskDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,"statusWise",calCntrIdList);
+    					}
+        			}else if(position == 3l){
+        				Long justUpperLvl = levelAndScopeIdMap.get(position-1);
+        				if(alertType != null && alertType.equalsIgnoreCase("alert")){
+        					alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,"statusWise",calCntrIdList,justUpperLvl);
+        				}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+        					alertList = govtAlertSubTaskDAO.getDivisionWorkLocationThenGovtDeptScopeWiseSubTaskForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,"statusWise",calCntrIdList,justUpperLvl);
+        				}
+        			}else if(position == 4l){
+        				Long levelTwo = levelAndScopeIdMap.get(position-2);
+        				Long levelThree = levelAndScopeIdMap.get(position-1);
+        				if(alertType != null && alertType.equalsIgnoreCase("alert")){
+        					alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,"statusWise",calCntrIdList,levelTwo,levelThree);
+        				}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+        					alertList = govtAlertSubTaskDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseSubTaskCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,"statusWise",calCntrIdList,levelTwo,levelThree);
+        				}  
+        			}
+    			}else{
+    				if(position == 1l || position == 2l){
+            			alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,null,calCntrIdList);
+        			}else if(position == 3l){
+        				Long justUpperLvl = levelAndScopeIdMap.get(position-1);
+            			alertList = alertAssignedOfficerNewDAO.getDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,null,group,null,calCntrIdList,justUpperLvl);
+        			}else if(position == 4l){
+        				Long levelTwo = levelAndScopeIdMap.get(position-2);
+        				Long levelThree = levelAndScopeIdMap.get(position-1);
+            			alertList = alertAssignedOfficerNewDAO.getSubDivisionWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,null,group,null,calCntrIdList,levelTwo,levelThree);
+        			}
+    			}
+    			
+			}
+			
+			Map<Long,String> locIdAndLocNameMap = new LinkedHashMap<Long,String>();
+			Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
+			Map<Long,String> lvlIdAndColor = new LinkedHashMap<Long,String>();
+			Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+			LinkedHashMap<Long,Long> levelIdAndAlertCountMap = null;
+			
+			Set<Long> deptScopeIds = new HashSet<Long>();
+			if(alertList != null && alertList.size() > 0){
+				for(Object[] param : alertList){
+					deptScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+			List<Object[]> deptScopeIdDtlsList = null;
+			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && deptScopeIds != null && deptScopeIds.size() >0){
+				deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));
+			}else if(deptScopeIds != null && deptScopeIds.size() >0){ 
+				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
+			}
+			
+			
+			if(deptScopeIdDtlsList != null && deptScopeIdDtlsList.size() > 0){
+				for(Object[] param : deptScopeIdDtlsList){
+					lvlIdAndLvlName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					lvlIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+
+				}  
+			}
+			
+			if(alertList != null && alertList.size() > 0){   
+				for(Object[] param : alertList){
+					locIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),commonMethodsUtilService.getStringValueForObject(param[2]));
+					
+					levelIdAndAlertCountMap = locIdThenLvlIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(levelIdAndAlertCountMap == null){
+						levelIdAndAlertCountMap = new LinkedHashMap<Long,Long>();
+						locIdThenLvlIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[1]), levelIdAndAlertCountMap);
+					}
+					levelIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+			if(locIdThenLvlIdThenAlertCount != null && locIdThenLvlIdThenAlertCount.size() > 0){
+				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenLvlIdThenAlertCount.entrySet()){
+					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+					buildStatusWiseTemplate(alertCoreDashBoardVO,lvlIdAndLvlName,lvlIdAndColor);
+					Long total = new Long(0L);
+					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
+						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+							total = total + outerEntry.getValue().get(boardVO.getId());
+						}
+					}
+					alertCoreDashBoardVO.setTotalCount(total);
+					returnList.add(alertCoreDashBoardVO);
+				}
+			}
+			
+			if(returnList != null && returnList.size() > 0){
+				returnList.get(0).getSubLevels().addAll(subLevels);  
+				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+					}else{
+						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+					}
+				}
+				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+					}else{
+						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+					}
+				}
+			}   
+			return returnList;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
 }      	
