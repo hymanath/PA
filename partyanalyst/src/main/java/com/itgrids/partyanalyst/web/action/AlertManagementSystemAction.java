@@ -316,6 +316,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		    session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			Long userId = regVo.getRegistrationID();
+			
+			 officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
+		      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
+		      session.setAttribute("officerName", usrDesLocArr[0]);
+		      session.setAttribute("designationAndLocation", usrDesLocArr[1]);
+		      
 			newsPaperList = cccDashboardService.getNewsPapaerList();
 			chanelListNew = cccDashboardService.getChannelList();
 			chanelList = cccDashboardService.getChannelListForUser(userId);  
@@ -333,8 +339,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	      officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
 	      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
 	      session.setAttribute("officerName", usrDesLocArr[0]);
-	      session.setAttribute("designationName", usrDesLocArr[1]);
-	      session.setAttribute("LocationNameForUser", usrDesLocArr[2]);
+	      session.setAttribute("designationAndLocation", usrDesLocArr[1]);
 	      
 	      newsPaperList = cccDashboardService.getNewsPapaerList();
 	        chanelListNew = cccDashboardService.getChannelList();
@@ -1302,8 +1307,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		        officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
 		        String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
 			      session.setAttribute("officerName", usrDesLocArr[0]);
-			      session.setAttribute("designationName", usrDesLocArr[1]);
-			      session.setAttribute("LocationNameForUser", usrDesLocArr[2]);
+			      session.setAttribute("designationAndLocation", usrDesLocArr[1]);
+			     
 		    } catch (Exception e) {
 		      LOG.error("Exception Occured in alertDistManagement() method, Exception - ",e);
 		    }
@@ -1319,9 +1324,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		      officerNameAnddesgnationName = alertManagementSystemService.getOfficernameDesignationForUser(userId);
 		      String[] usrDesLocArr = officerNameAnddesgnationName.split("/");
 		      session.setAttribute("officerName", usrDesLocArr[0]);
-		      session.setAttribute("designationName", usrDesLocArr[1]);
-		      session.setAttribute("LocationNameForUser", usrDesLocArr[2]);
-		      
+		      session.setAttribute("designationAndLocation", usrDesLocArr[1]);
+		     
 		      newsPaperList = cccDashboardService.getNewsPapaerList();
 		        chanelListNew = cccDashboardService.getChannelList();
 		     return Action.SUCCESS; 
