@@ -83,7 +83,6 @@ public class Alert extends BaseModel implements Serializable {
 	private AlertIssueSubType alertIssueSubType;
 	private Long alertIssueSubTypeId;
 	private User userId;
-	private GovtDepartmentScope govtDepartmentScope;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -596,17 +595,5 @@ public class Alert extends BaseModel implements Serializable {
 		this.userId = userId;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "impact_scope_id", insertable = false, updatable = false)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-	public GovtDepartmentScope getGovtDepartmentScope() {
-		return govtDepartmentScope;
-	}
-
-	public void setGovtDepartmentScope(GovtDepartmentScope govtDepartmentScope) {
-		this.govtDepartmentScope = govtDepartmentScope;
-	}
-	
 	
 }
