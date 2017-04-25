@@ -3965,5 +3965,8 @@
 	 <bean id="govtSmsActionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtSmsActionTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="govtUserTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtUserTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 
 </beans>		
