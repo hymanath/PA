@@ -82,10 +82,7 @@ public interface IAlertManagementSystemService {
 	public DistrictOfficeViewAlertVO getIASOfficerMyAlertsCountView(Long userId,String startdateStr,String endDateStr);
 	public DistrictOfficeViewAlertVO getIASOfficerMyAssignedSubTasksCountView(Long userId,String startDateStr,String endDateStr);
 	public DistrictOfficeViewAlertVO getIASOfficerMySubTasksCountView(Long userId,String startDateStr,String endDateStr);
-	public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(String fromDateStr, String toDateStr, Long stateId, 
-				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
-				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
-				Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId,String group,List<Long> calCntrIdList,List<Long> sublevels);
+	
 	public List<IdNameVO> getDistIdListForDistFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String group,String alertType,String searchType,List<Long> calCntrIdList);
 	public List<IdNameVO> getDistIdListForDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String group,String alertType,String searchType,List<Long> calCntrIdList);
 	public List<IdNameVO> getDivisionIdListForDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long districtWorkLocationId,String group,String alertType,String searchType,List<Long> calCntrIdList);
@@ -118,7 +115,19 @@ public interface IAlertManagementSystemService {
 			Long statusId,String type,String fromDateStr,String toDateStr,
 			Long desigDeptOfficerId,Long officerId, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList);
 	public List<IdNameVO> getGovtAllDepartmentDetails();
+	public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamic(String fromDateStr, String toDateStr, Long stateId, 
+			List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+			Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,List<Long> calCntrIdList,List<Long> sublevels);
 	public List<IdNameVO>  getStatusCompletionInfoNew(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId);
 	public String getOfficernameDesignationForUser(Long userId);
 	
-}
+	 //Santosh
+	 public List<IdNameVO> getLocationBasedOnDepartmentLevel(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String alertType,List<Long> calCntrIdList);
+	 public List<IdNameVO> getChildLocationBasedOnParentLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long parentGovtDepartmentScopeValue,Long childLevelId,String alertType ,List<Long> calCntrIdList);
+	 public List<AlertCoreDashBoardVO> getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew(String fromDateStr, String toDateStr, Long stateId,List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, 
+				String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,Long filterScopeValue,String searchType);
+	 public List<AlertCoreDashBoardVO> getAlertDetailsBasedOnLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long alertStatusId,List<Long> calCntrIds,Long locationValue,String alertType);
+	 public List<IdNameVO> getDepartmentDetailsByDepartmentId(Long userId,Long departmentId,String designationType);
+}        
