@@ -2624,7 +2624,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				sourceIdList.add(Long.parseLong(sourceIdArr.getString(i)));
 			}
 			
-			alertsSummeryVOList = alertService.getAlertEfficiencyList(daysList,deptIdList,sourceIdList);
+			boolean includeProposal = jObj.getBoolean("includeProposal");
+			
+			alertsSummeryVOList = alertService.getAlertEfficiencyList(daysList,deptIdList,sourceIdList,includeProposal);
 	   } catch (Exception e) {
 		   LOG.error("Exception Raised in getAlertEfficiencyList() in CreateAlertAction",e);
 		}
