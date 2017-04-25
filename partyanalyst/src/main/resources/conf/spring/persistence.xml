@@ -1216,7 +1216,7 @@
 	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentScope</value>
 	                    <value>com.itgrids.partyanalyst.model.AlertSubTaskStatus</value>
 	                    <value>com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking</value>
-	                    <value>com.itgrids.partyanalyst.model.GovtSubTaskActionType</value>
+	                 
 	                    <value>com.itgrids.partyanalyst.model.GovtOfficerSubTaskAction</value>
 	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeRelation</value>
 	                    <value>com.itgrids.partyanalyst.model.GovtDepartmentScopeDetails</value>
@@ -1249,7 +1249,8 @@
 	                   
 	                   <value>com.itgrids.partyanalyst.model.RedirectUrl</value>
 	                   <value>com.itgrids.partyanalyst.model.AlertIssueSubType</value>
-	                   
+	                   <value>com.itgrids.partyanalyst.model.GovtSmsType</value>
+		      		   <value>com.itgrids.partyanalyst.model.GovtSmsActionType</value>	
 				  </list>
 			
 		</property>
