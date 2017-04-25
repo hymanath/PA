@@ -94,9 +94,10 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	private String designation;
 	private String dueDateStr;
 	private List<AlertTrackingVO> commentList = new ArrayList<AlertTrackingVO>(0);
-	private Long categoryId=0L;
 	private List<Long> locationScopeIds = new ArrayList<Long>();
+	private Long categoryId=0L;
 	private String color;
+	private Long childLevelId=0l;
 	private String callerName;
 	private String userType;
 	
@@ -750,7 +751,6 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setIsAccess(String isAccess) {
 		this.isAccess = isAccess;
 	}
-
 	public List<Long> getLocationScopeIds() {
 		return locationScopeIds;
 	}
@@ -758,5 +758,12 @@ public class IdNameVO implements Serializable,Comparator<IdNameVO>{
 	public void setLocationScopeIds(List<Long> locationScopeIds) {
 		this.locationScopeIds = locationScopeIds;
 	}
-    
+	public Long getChildLevelId() {
+		return childLevelId;
+	}
+
+	public void setChildLevelId(Long childLevelId) {
+		this.childLevelId = childLevelId;
+	}
+	
 }
