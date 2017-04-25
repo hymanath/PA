@@ -128,7 +128,8 @@ public interface IAlertService {
     public AlertCoreDashBoardVO getUserLogingDtls(Long userId, String fromDateStr, String toDateStr);
     public List<AlertsSummeryVO> getStatusWiseAlertsCountSummery(List<Integer> daysLst);
     public List<KeyValueVO> getStatusWiseViewWiseCounts(Long viewType,Long departmentId,Long locationId,String locationType,String searchType,String startDate,String endDate);
-    
+
     public List<KeyValueVO> getRelatedDepartmentsForIssueType(Long issueTypeId);
     public List<KeyValueVO> getUrbanLocalitiesForMuncipality(Long lebId);
+    public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds );
 }
