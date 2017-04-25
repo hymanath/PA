@@ -2791,8 +2791,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 		return query.list();
 	}
-	
-	public List<Object[]> getMahanaduEventCadreDetails(List<Long> eventIds,Long tdpCadreId){
+public List<Object[]> getMahanaduEventCadreDetails(List<Long> eventIds,Long tdpCadreId){
 		
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -2813,5 +2812,57 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			qry.setParameter("tdpCadreId", tdpCadreId);
 		}
 		return qry.list();
+	}
+
+	public List<Object[]> getCadreDetailedReportEventAttendeeDetailsDayWise(Long parentEventId,Long cadreId){
+		Query query = getSession().createQuery(" select  model.event.eventId, model.event.name," +
+				   " model.attendedTime  " +
+				   " from EventAttendee model " +
+				   " where  model.event.parentEventId =:parentEventId and  model.tdpCadreId =:cadreId " +
+				   " group by  date(model.attendedTime) ");
+		query.setParameter("parentEventId", parentEventId);
+		query.setParameter("cadreId", cadreId);
+		return query.list();
+	}
+	public List<Object[]> getCadreDetailedReportEventAttendee(Long parentEventId,Long cadreId){
+		Query query = getSession().createQuery(" select  model.event.eventId, model.event.name," +
+				   " model.attendedTime  " +
+				   " from EventAttendee model " +
+				   " where  model.event.parentEventId =:parentEventId and  model.tdpCadreId =:cadreId ");
+		query.setParameter("parentEventId", parentEventId);
+		query.setParameter("cadreId", cadreId);
+		return query.list();
+	}
+	public List<Object[]> getCadreDetailedReportEventAttendeeMaxTime(List<Long> extraEventIdsList)
+	{
+		Query query = getSession().createQuery(" select  date(model.attendedTime),max(hour(model.attendedTime))" +
+				   " from EventAttendee model " +
+				   " where  model.event.eventId in(:extraEventIdsList) group by  date(model.attendedTime) ");
+		query.setParameterList("extraEventIdsList", extraEventIdsList);
+		return query.list();
+	}
+	public List<Object[]>  getCadreDetailedReportEventAttendeeMinTime(List<Long> extraEventIdsList)
+	{
+		Query query = getSession().createQuery(" select  date(model.attendedTime),min(hour(model.attendedTime))" +
+				   " from EventAttendee model " +
+				   " where  model.event.eventId in(:extraEventIdsList) group by  date(model.attendedTime) ");
+		query.setParameterList("extraEventIdsList", extraEventIdsList);
+		return query.list();
+	}
+	public String getCadreDetailedReportEventAttendeeMaxTime1(List<Long> extraEventIdsList)
+	{
+		Query query = getSession().createQuery(" select max(model.attendedTime)" +
+				   " from EventAttendee model " +
+				   " where  model.event.eventId in(:extraEventIdsList) group by  date(model.attendedTime) ");
+		query.setParameterList("extraEventIdsList", extraEventIdsList);
+		return (String)query.uniqueResult();
+	}
+	public String  getCadreDetailedReportEventAttendeeMinTime1(List<Long> extraEventIdsList)
+	{
+		Query query = getSession().createQuery(" select  min(model.attendedTime)" +
+				   " from EventAttendee model " +
+				   " where  model.event.eventId in(:extraEventIdsList) group by  date(model.attendedTime) ");
+		query.setParameterList("extraEventIdsList", extraEventIdsList);
+		return (String)query.uniqueResult();
 	}
 }
