@@ -21,6 +21,7 @@
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
+<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -122,148 +123,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12"> 	
-							<div class="panel panel-default">
-								<div class="panel-heading headingColor ">
-									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-12">
-											<h4 class="panel-title text-capital fontColor">SUBORDINATE - ALERTS OVERVIEW</h4>
-										</div>
-										<div class="col-md-6 col-xs-12 col-sm-12">
-											<ul class="switch-btn pull-right">
-												<li attr_type="statusWise">status overview</li>
-												<li attr_type="scopeWise" class="active">location level</li>
-												
-											</ul>
-										</div>
-										<div class="col-md-2 col-xs-12 col-sm-12 ">
-											<ul class="switch-btn-alertType pull-right">
-												<li  attr_type="alert" class="active">Alerts</li>
-												<li attr_type="subTask">Sub Tasks</li>
-												
-											</ul>
-										</div>
-									</div>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-										<div class="col-sm-12 col-xs-12 col-md-12 ">
-											<h4>DISTRICT LEVEL</h4>
-											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
-										
-												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDistrict">
-												<li class="active " attr_sorting_type="count" attr_order_type="desc" >
-													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-												</li>
-												<li class="" attr_sorting_type="count" attr_order_type="asc">
-													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-												</li>
-												<li class="" attr_sorting_type="name" attr_order_type="asc">
-													A-Z
-												</li>
-												<li class="" attr_sorting_type="name" attr_order_type="desc">
-													Z-A
-												</li>
-												</ul>
-											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2">
-												<select class="form-control locationWiseDistOnChange" id="DistrictNamesId" >
-													<option value="0">Select District</option>
-												</select>
-											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2 pull-right distWiseDistLevelShowCls" style="display:none;">
-												<select class="form-control distWiseDistLevelCls" id="distWiseDistLevelId" >
-													<option value="0">Select Level</option>
-												</select>
-											</div>
-											<div class="col-sm-12 col-xs-12 col-md-12">
-												<div id="districtLevelSubOrdinarteDetails" class=""></div>
-											</div>	
-										</div>
-										<div class="col-sm-12 col-xs-12 col-md-12 ">
-										<h4>DIVISION LEVEL</h4>
-											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
-											
-												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingDivision">
-												<li class="active " attr_sorting_type="count" attr_order_type="desc" >
-													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-												</li>
-												<li class="" attr_sorting_type="count" attr_order_type="asc">
-													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-												</li>
-												<li class="" attr_sorting_type="name" attr_order_type="asc">
-													A-Z
-												</li>
-												<li class="" attr_sorting_type="name" attr_order_type="desc">
-													Z-A
-												</li>
-												</ul>
-											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2 ">
-												<select class="form-control locationWiseDiviDistOnChange" id="DivisionDistNamesId" >
-													<option value="0">Select District</option>
-												</select>
-											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2">
-												<select class="form-control locationWiseDiviOnChange" id="DivisionNamesId" >
-													<option value="0">Select Division</option>
-												</select>
-											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2 pull-right divisionWiseDistLevelIdShowCls" style="display:none;">
-												<select class="form-control divisionWiseDistLevelIdCls" id="divisionWiseDistLevelId" >
-													<option value="0">Select Level</option>
-												</select>
-											</div>
-											<div class="col-sm-12 col-xs-12 col-md-12">
-												<div id="divisionLevelSubOrdinarteDetails" class=""></div>
-											</div>	
-										</div>
-										
-										<div class="col-sm-12 col-xs-12 col-md-12 ">
-											<h4>SUB-DIVISION LEVEL</h4>
-											<div class="col-md-2 col-xs-12 col-sm-4 m_top10">
-										
-												<ul class="list-inline activeUlCls  constituencyUl locationWiseSortingSubDivision">
-												<li class="active" attr_sorting_type="count" attr_order_type="desc" >
-													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-												</li>
-												<li class="" attr_sorting_type="count" attr_order_type="asc">
-													<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-												</li>
-												<li class="" attr_sorting_type="name" attr_order_type="asc">
-													A-Z
-												</li>
-												<li class="" attr_sorting_type="name" attr_order_type="desc">
-													Z-A
-												</li>
-												</ul>
-											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2">
-												<select class="form-control locationWiseSubDiviDistOnChange" id="SubDivisionDistNamesId" >
-												<option value="0">Select District</option>
-												</select>
-											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2">
-												<select class="form-control locationWiseSubDiviDiviOnChange" id="SubDivisionDiviNamesId" >
-												<option value="0">Select Division</option>
-												</select>
-											</div>
-											<div class="col-sm-4 col-xs-12 col-md-2">
-												<select class="form-control locationWiseSubDiviOnChange" id="SubDivisionNamesId" >
-												<option value="0">Select SubDivision</option>
-												</select>
-											</div>
-											<div class="col-sm-12 col-xs-12 col-md-12">
-												<div id="SubdivisionLevelSubOrdinarteDetails" class=""></div>
-												</div>
-												
-										</div>
-									</div>
-								</div>
-							</div>
-							</div>
-						</div>
+						<div id="departmentWiseLocationBlockId"></div>
 					</div>
 				</div>
 			</div>			
