@@ -165,8 +165,7 @@
 		      <class>com.itgrids.partyanalyst.model.EventGenderDayInfo</class>
 		      <class>com.itgrids.partyanalyst.model.AlertAssigned</class>
 		      <class>com.itgrids.partyanalyst.model.PaymentTransactionInfo</class>
-		      <class>com.itgrids.partyanalyst.model.GovtSmsType</class>
-		      <class>com.itgrids.partyanalyst.model.GovtSmsActionType</class>	
+
 		 <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/party_analyst_schema" />
