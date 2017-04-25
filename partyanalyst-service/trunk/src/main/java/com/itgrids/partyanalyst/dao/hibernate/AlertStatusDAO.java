@@ -30,7 +30,7 @@ public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 		Query query = getSession().createQuery(" select model.alertStatusId,model.alertStatus,model.color from AlertStatus model" +
 				" where model.alertStatusId in (:statusIds) ");
 		query.setParameterList("statusIds", statusIds);  
-		return query.list();
+		return query.list();    
 	}
 
 }

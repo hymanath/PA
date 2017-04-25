@@ -6936,6 +6936,81 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	return query.list(); 
     	
     }
+    public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,String step){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		if(filterType != null && filterType.equalsIgnoreCase("District")){
+			queryStr.append(" district.districtId, " +//0
+					       " district.districtName, ");//1
+		}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
+			queryStr.append(" constituency.constituencyId, " +//0
+							" constituency.name, ");//1
+		}
+		if(step.equalsIgnoreCase("two")){
+			queryStr.append(" model.alertStatus.alertStatusId," +//2  
+							" model.alertStatus.alertStatus,");//3
+		}else if(step.equalsIgnoreCase("day")){
+			queryStr.append(" date(model.createdTime), ");
+		}
+		queryStr.append(" count(distinct model.alertId) " +  //4  
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency " +
+						" , AlertDepartmentStatus model1 " +
+						" , govtDepartment GD " +
+						" where  model1.alertType.alertTypeId = model.alertType.alertTypeId" +
+						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId " + 
+						" and model.isDeleted ='N' " +
+						" and model.govtDepartment.govtDepartmentId = :departmentId ");
+		if(sourceId != null && sourceId.longValue() > 0 && sourceId.longValue() == 1L){
+			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId and model.alertCaller is not null");
+		}else{
+			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
+		}
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+		}
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) ");
+			}
+		}
+		if(step.equalsIgnoreCase("one")){
+			if(filterType != null && filterType.equalsIgnoreCase("District")){
+				queryStr.append(" group by district.districtId order by district.districtId ");
+			}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
+				queryStr.append(" group by constituency.constituencyId order by constituency.constituencyId ");
+			}
+		}else if(step.equalsIgnoreCase("two")){
+			if(filterType != null && filterType.equalsIgnoreCase("District")){
+				queryStr.append(" group by district.districtId,model.alertStatus.alertStatusId order by district.districtId  ");
+			}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
+				queryStr.append(" group by constituency.constituencyId,model.alertStatus.alertStatusId order by constituency.constituencyId ");
+			}
+		}else{
+			if(filterType != null && filterType.equalsIgnoreCase("District")){
+				queryStr.append(" group by district.districtId,date(model.createdTime) order by district.districtId  ");
+			}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
+				queryStr.append(" group by constituency.constituencyId,date(model.createdTime) order by constituency.constituencyId  ");
+			}
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(fromDate != null && toDate != null){  
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		}    
+		
+		return query.list();   
+	}
+	
     
     public List<Object[]> getDayWiseAlertsCounts(Long departmentId,Date startDate,Date endDate){
 
