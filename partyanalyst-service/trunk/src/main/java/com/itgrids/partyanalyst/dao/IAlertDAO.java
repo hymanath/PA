@@ -118,8 +118,8 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public Integer updateAlertPriority(Long alertId,Long priorityId,Long userId,Date date);
 	public Object[] getAlertDetailsForSMS(Long alertId);
 	public List<Object[]> getNoOFAlertCreatedList(Date startDate, Date endDate,Long userId);
-	 public List<Object[]> getAlertDetials(String mobileNo,Long alertStatusId,Date startDate,Date endDate,Long deptId,Long feedbackStattusId);
-	 public List<Object[]> getAlertCallerDetails(Long alertId);
+	public List<Object[]> getAlertDetials(String mobileNo,Long alertStatusId,Date startDate,Date endDate,Long deptId,Long feedbackStattusId);
+	public List<Object[]> getAlertCallerDetails(Long alertId);
 	public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewForAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type);
 	public List<Object[]> getTotalAlertByStatusNew(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long statusId,Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList);
 	public List<Object[]> getStatusCount(Long locationId,String locationType,String searchType,Date startDate,Date endDate);
@@ -131,4 +131,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptId,Long statusId,Date fromDate,Date toDate, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList);
 	public List<Object[]> getDayWiseAlertsCounts(Long departmentId,Date fromDate,Date toDate);
 	public Long getTotalAlertsByStatusIdsAndDates(Date prevDay,Date today,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds);
+	public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,String step);
 }
