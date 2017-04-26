@@ -96,7 +96,7 @@
 					</div>
 						<div class="row">
 							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
-								<div class="panel panel-default">
+								<div class="panel panel-default panelheights">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">My Alerts</h4>
 								  </div>
@@ -106,7 +106,7 @@
 								</div>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
-								<div class="panel panel-default">
+								<div class="panel panel-default panelheights">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
 								  </div>
@@ -116,7 +116,7 @@
 								</div>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-12">
-								<div class="panel panel-default">
+								<div class="panel panel-default panelheights">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">Assigned Sub Tasks</h4>
 								  </div>

@@ -54,6 +54,10 @@ $(document).on("click",".filterSubmitBtnCls",function(){
 			
 			}
 		
+			getIASOfficerMyAlertsCountMainView();
+			getIASOfficerMySubTasksCountView();
+			getIASOfficerMyAssignedSubTasksCountView();
+			getStatusAndLocationWiseDetailsBlock();
 			stateLevelDeptOfficerStatusOverview();
 			stateLevelDeptOfficerLocationLevelOverview();
 			stateLevelDeptOfficerDepartmentWiseAlertsView();
@@ -63,10 +67,6 @@ $(document).on("click",".filterSubmitBtnCls",function(){
 
 function onLoadCallsForState(){
 	getDeptDetails();
-	getIASOfficerMyAlertsCountMainView();
-	getIASOfficerMySubTasksCountView();
-	getIASOfficerMyAssignedSubTasksCountView();
-		
 }
 
 $("#dateRangePickerAUM").daterangepicker({
@@ -104,7 +104,6 @@ $("#dateRangePickerAUM").daterangepicker({
 		}
 		
 		onLoadCallsForState();
-		getDeptDetails();
 	});
 	
 function getIASOfficerMyAlertsCountMainView(){
@@ -174,7 +173,7 @@ function buildIASOfficerMyAlertsCountMainView(result){
 					str+='</table>';
 					str+='</div>';	
 					str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
-					str+='<div id="myAlertGraphView" style="height:250px"></div>';
+					str+='<div id="myAlertGraphView" ></div>';
 					str+='</div>';	
 		}
 			str+='</div>';
@@ -324,6 +323,12 @@ function buildIASOfficerMyAlertsCountMainView(result){
 			 $('#myAlertGraphView').html("No Data Available")
 		}
 		
+		var maxHeight = 0;
+
+		$(".panelheights").each(function(){
+		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+		});
+		$(".panelheights").height(maxHeight);
 		
 }
 function getIASOfficerMySubTasksCountView(){
@@ -396,7 +401,7 @@ function buildIASOfficerMySubTasksCountView(result){
 					str+='</table>';
 					str+='</div>';	
 					str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
-					str+='<div id="mySubTasksGraphView" style="height:250px"></div>';
+					str+='<div id="mySubTasksGraphView" ></div>';
 					str+='</div>';	
 		}
 			str+='</div>';
@@ -545,6 +550,12 @@ function buildIASOfficerMySubTasksCountView(result){
 		}else{
 			 $('#mySubTasksGraphView').html("No Data Available")
 		}
+		var maxHeight = 0;
+
+		$(".panelheights").each(function(){
+		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+		});
+		$(".panelheights").height(maxHeight);
 }
 function getIASOfficerMyAssignedSubTasksCountView(){
 	$("#assignedSubTasksDivID").html(spinner);
@@ -614,7 +625,7 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 					str+='</div>';	
 					
 					str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
-					str+='<div id="assignedSubTasksGraphView" style="height:250px"></div>';
+					str+='<div id="assignedSubTasksGraphView" ></div>';
 					str+='</div>';
 		}
 			str+='</div>';
@@ -765,11 +776,16 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 		}else{
 			 $('#assignedSubTasksGraphView').html("No Data Available")
 		}
+		var maxHeight = 0;
+
+	$(".panelheights").each(function(){
+	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+	});
+	$(".panelheights").height(maxHeight);
 }
 function stateLevelDeptOfficerStatusOverview(){
 	$("#statusOverview").html(spinner);
-	
-    var jsObj ={
+	var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
@@ -803,6 +819,7 @@ function buildstateLevelDeptOfficerStatusOverview(result)
 			str+='<div id="statusOverViewTotal"></div>';
 		str+='</div>';
 		str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+			str+='<div class="scrollerDivCls">';
 			str+='<table class="table tableGraph">';
 				str+='<thead>';
 					str+='<th>Status</th>';
@@ -821,11 +838,16 @@ function buildstateLevelDeptOfficerStatusOverview(result)
 					}
 				str+='</tbody>';  
 			str+='</table>';
+			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	$("#statusOverview").html(str);
 	$("#statusOverViewTotal").html("<h4 class='text-center'>TOTAL "+totalAlert+"</h4>")
 	var statusOverviewArr =[];
+	if(result.length > 6)
+	{
+		$(".scrollerDivCls").mCustomScrollbar({setHeight:'300px'});
+	}
 	for(var i in result)
 	{
 		statusPercent = result[i].percentage;
@@ -946,6 +968,7 @@ function buildstateLevelDeptOfficerLocationLevelOverviewt(result)
 			str+='<div id="levelWiseAlertOverviewCntTotal"></div>';
 		str+='</div>';
 		str+='<div class="col-md-6 col-xs-12 col-sm-6">';
+		str+='<div class="scrollerDivClsLevel">';
 			str+='<table class="table tableGraph">';
 				str+='<thead>';
 					str+='<th>Status</th>';
@@ -964,9 +987,15 @@ function buildstateLevelDeptOfficerLocationLevelOverviewt(result)
 					}
 				str+='</tbody>';  
 			str+='</table>';
+			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	$("#levelWiseAlertOverview").html(str);
+	if(result.length > 6)
+	{
+		$(".scrollerDivClsLevel").mCustomScrollbar({setHeight:'300px'});
+	}
+	
 	$("#levelWiseAlertOverviewCntTotal").html("<h4 class='text-center'>TOTAL "+totalAlert+"</h4>")
 	var locationOverviewArr =[];
 	for(var i in result)
@@ -1827,8 +1856,8 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-4">';
 							str+='<ul class="switch-btn pull-right">';
-								str+='<li attr_type="statuswise" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status overview</li>';
-								str+='<li attr_type="scopewise" class="active" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location level</li>';
+								str+='<li class="active" attr_type="statuswise" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status overview</li>';
+								str+='<li attr_type="scopewise"  attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location level</li>';
 							str+='</ul>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-4 ">';
@@ -1897,7 +1926,7 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 		var deptObj = result[0];
 		 if(deptObj.subList1 != null && deptObj.subList1.length > 0){
 			 for(var i in deptObj.subList1){
-				getStateThenGovtDeptScopeWiseAlertCount(deptObj.id,deptObj.subList1[i].id,"scopewise","alert","levelWiseGraphView","count","desc",0,0);
+				getStateThenGovtDeptScopeWiseAlertCount(deptObj.id,deptObj.subList1[i].id,"statuswise","alert","levelWiseGraphView","count","desc",0,0);
 				if(deptObj.subList1[i].subList1 !=null && deptObj.subList1[i].subList1.length>0){
 					for(var j in deptObj.subList1[i].subList1){
 						if(j==0){
@@ -2751,4 +2780,94 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 		$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
 	}
     }); 
+}
+
+function getStatusAndLocationWiseDetailsBlock(){
+	var str='';
+	str+='<div class="col-sm-6 applyStyleStatus">';
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading headingColor">';
+				str+='<h4 class="panel-title text-capital fontColor">status overview</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+			str+='<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">';
+				str+='<div class="panel panel-default">';
+					str+='<div class="" role="tab" id="headingOne" style="padding: 15px;">';
+					 
+						str+='<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">';
+						str+=' <h4 class="panel-title"> ALERTS</h4>';
+						
+						str+='</a>';
+					
+					str+='</div>';
+					str+='<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">';
+					  str+='<div class="panel-body">';
+						str+='<div id="statusOverview"></div>';
+					  str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="panel panel-default">';
+					str+='<div class="" role="tab" id="headingTwo" style="padding: 15px;">';
+					
+						str+='<a class="collapsed collapseIconForIAS subTaskViewDts" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">';
+						 str+='<h4 class="panel-title">';
+						  str+='SUB TASKS</h4>';
+						str+='</a>';
+					  
+					str+='</div>';
+					str+='<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">';
+					  str+='<div class="panel-body">';
+						str+='<div id="statusWiseSubTasksOverview"></div>';
+					 str+=' </div>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+				
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="col-sm-6">';
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-heading headingColor">';
+				str+='<h4 class="panel-title text-capital fontColor">location level overview</h4>';
+			str+='</div>';
+			str+='<div class="panel-body">';
+				str+='<div class="panel-group" id="accordionL" role="tablist" aria-multiselectable="true">';
+					str+='<div class="panel panel-default">';
+						str+='<div class="" role="tab" id="headingOneL" style="padding: 15px;">';
+						 
+							str+='<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordionL" href="#collapseOneL" aria-expanded="true" aria-controls="collapseOneL">';
+							 str+='<h4 class="panel-title"> ALERTS</h4>';
+							
+							str+='</a>';
+						  
+						str+='</div>';
+						str+='<div id="collapseOneL" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneL">';
+						  str+='<div class="panel-body">';
+							str+='<div id="levelWiseAlertOverview"></div>';
+						 str+=' </div>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="panel panel-default">';
+						str+='<div class="" role="tab" id="headingTwoL" style="padding: 15px;">';
+						
+							str+='<a class="collapsed collapseIconForIAS subTaskLocViewDts" role="button" data-toggle="collapse" data-parent="#accordionL" href="#collapseTwoL" aria-expanded="false" aria-controls="collapseTwoL">';
+							  str+='<h4 class="panel-title">';
+							  str+='SUB TASKS</h4>';
+							str+='</a>';
+						  
+						str+='</div>';
+						str+='<div id="collapseTwoL" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoL">';
+						  str+='<div class="panel-body">';
+							str+='<div id="levelWiseSubTasksAlertOverview"></div>';
+						  str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	
+	$("#statusAndLocationWiseDetialsDiv").html(str);
 }

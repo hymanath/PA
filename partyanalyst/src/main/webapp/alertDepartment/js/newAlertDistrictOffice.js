@@ -152,7 +152,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			}else{
 				str+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
-				str+='<div id="myAlertGraphView" style="height:250px"></div>';
+				str+='<div id="myAlertGraphView" ></div>';
 			str+='</div>';
 		str+='</div>';
 		$("#myAlertsDivID").html(str);
@@ -318,7 +318,7 @@ function buildDistrictOfficerAlertsCountView(result){
 			}else{
 				str1+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
-				str1+='<div id="mySubTasksGraphView" style="height:250px"></div>';
+				str1+='<div id="mySubTasksGraphView" ></div>';
 			str1+='</div>';
 		str1+='</div>';
 		$("#mySubTasksDivID").html(str1);
@@ -482,7 +482,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			}else{
 				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
-				str2+='<div id="assignedSubTasksGraphView" style="height:250px"></div>';
+				str2+='<div id="assignedSubTasksGraphView" ></div>';
 			str2+='</div>';
 		str2+='</div>';
 		$("#assignedSubTasksDivID").html(str2);
@@ -619,7 +619,12 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			$('#assignedSubTasksGraphView').html("No Data Available")
 		}
 		
-			 
+		var maxHeight = 0;
+
+		$(".panelheights").each(function(){
+		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
+		});
+		$(".panelheights").height(maxHeight);	 
 }
 	
 	
@@ -751,8 +756,8 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-4">';
 							str+='<ul class="switch-btn pull-right">';
-								str+='<li attr_type="statuswise" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status overview</li>';
-								str+='<li attr_type="scopewise" class="active" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location level</li>';
+								str+='<li class="active" attr_type="statuswise" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status overview</li>';
+								str+='<li attr_type="scopewise"  attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location level</li>';
 							str+='</ul>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-4 ">';
@@ -821,7 +826,7 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 		var deptObj = result[0];
 		 if(deptObj.subList1 != null && deptObj.subList1.length > 0){
 			 for(var i in deptObj.subList1){
-				getStateThenGovtDeptScopeWiseAlertCount(deptObj.id,deptObj.subList1[i].id,"scopewise","alert","levelWiseGraphView","count","desc",0,0);
+				getStateThenGovtDeptScopeWiseAlertCount(deptObj.id,deptObj.subList1[i].id,"statuswise","alert","levelWiseGraphView","count","desc",0,0);
 				if(deptObj.subList1[i].subList1 !=null && deptObj.subList1[i].subList1.length>0){
 					for(var j in deptObj.subList1[i].subList1){
 						if(j==0){

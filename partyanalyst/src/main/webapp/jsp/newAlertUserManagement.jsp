@@ -90,7 +90,7 @@
 					</div>
 						<div class="row" id="mainBlockDiv">
 							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
-								<div class="panel panel-default">
+								<div class="panel panel-default panelheights">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">My Alerts</h4>
 								  </div>
@@ -100,7 +100,7 @@
 								</div>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
-								<div class="panel panel-default">
+								<div class="panel panel-default panelheights">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
 								  </div>
@@ -110,7 +110,7 @@
 								</div>
 							</div>
 							<div class="col-md-4 col-xs-12 col-sm-12">
-								<div class="panel panel-default">
+								<div class="panel panel-default panelheights">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">Assigned Sub Tasks</h4>
 								  </div>
@@ -121,90 +121,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-6 applyStyleStatus">
-								<div class="panel panel-default">
-									<div class="panel-heading headingColor">
-										<h4 class="panel-title text-capital fontColor">status overview</h4>
-									</div>
-									<div class="panel-body">
-									<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-										<div class="panel panel-default">
-											<div class="" role="tab" id="headingOne" style="padding: 15px;">
-											 
-												<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-												 <h4 class="panel-title"> ALERTS</h4>
-												
-												</a>
-											  
-											</div>
-											<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-											  <div class="panel-body">
-												<div id="statusOverview"></div>
-											  </div>
-											</div>
-										</div>
-										<div class="panel panel-default">
-											<div class="" role="tab" id="headingTwo" style="padding: 15px;">
-											
-												<a class="collapsed collapseIconForIAS subTaskViewDts" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-												  <h4 class="panel-title">
-												  SUB TASKS</h4>
-												</a>
-											  
-											</div>
-											<div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-											  <div class="panel-body">
-												<div id="statusWiseSubTasksOverview"></div>
-											  </div>
-											</div>
-										</div>
-									</div>
-										
-									</div>
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class="panel panel-default">
-									<div class="panel-heading headingColor">
-										<h4 class="panel-title text-capital fontColor">location level overview</h4>
-									</div>
-									<div class="panel-body">
-										<div class="panel-group" id="accordionL" role="tablist" aria-multiselectable="true">
-											<div class="panel panel-default">
-												<div class="" role="tab" id="headingOneL" style="padding: 15px;">
-												 
-													<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordionL" href="#collapseOneL" aria-expanded="true" aria-controls="collapseOneL">
-													 <h4 class="panel-title"> ALERTS</h4>
-													
-													</a>
-												  
-												</div>
-												<div id="collapseOneL" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOneL">
-												  <div class="panel-body">
-													<div id="levelWiseAlertOverview"></div>
-												  </div>
-												</div>
-											</div>
-											<div class="panel panel-default">
-												<div class="" role="tab" id="headingTwoL" style="padding: 15px;">
-												
-													<a class="collapsed collapseIconForIAS subTaskLocViewDts" role="button" data-toggle="collapse" data-parent="#accordionL" href="#collapseTwoL" aria-expanded="false" aria-controls="collapseTwoL">
-													  <h4 class="panel-title">
-													  SUB TASKS</h4>
-													</a>
-												  
-												</div>
-												<div id="collapseTwoL" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwoL">
-												  <div class="panel-body">
-													<div id="levelWiseSubTasksAlertOverview"></div>
-												  </div>
-												</div>
-											</div>
-										</div>
-										
-									</div>
-								</div>
-							</div>
+							<div id="statusAndLocationWiseDetialsDiv"></div>
 						</div>
 						
 							<div class="panel panel-default" id="deptWiseAlertsDiv">
