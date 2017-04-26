@@ -3427,13 +3427,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	      query.setParameterList("printIdsList", printIdsList);
 	    	      query.setParameterList("electronicIdsList", electronicIdsList);
 	    	    }  
-	    	    /*else if(printIdsList != null && printIdsList.size()>0){
-	    	      query.setParameterList("printIdList", printIdsList);
-	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
-	    	      query.setParameterList("electronicIdList", electronicIdsList);
-	    	    }*/
+	    	   
 	    	  
-	    	  if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0){
+	    	  /*if(printIdsList != null && printIdsList.size()>0 && electronicIdsList != null && electronicIdsList.size()>0  && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
 	    	    }  
@@ -3441,7 +3437,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
-	    	    }
+	    	    }*/
 	    	  return query.list();
 	    }
 	 
