@@ -133,4 +133,5 @@ public interface IAlertService {
     public List<KeyValueVO> getUrbanLocalitiesForMuncipality(Long lebId);
     public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal);
     public List<AlertOverviewVO> getGrievanceReport(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType);
+    public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds);
 }

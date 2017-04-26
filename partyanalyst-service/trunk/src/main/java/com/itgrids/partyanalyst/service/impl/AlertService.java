@@ -10818,16 +10818,9 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		
 		Long totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,totalAlertStatusIds);
 		
-		alertStatusIds.add(4l);
+		alertStatusIds.add(12l);
 		Long completedAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,alertStatusIds);
-			/*if(list!=null && list.size()>0){
-				for(Object[] obj:list){
-					indiTtlCnt = indiTtlCnt+Long.valueOf(obj[0].toString());
-					if(sttsLst.contains(obj[1].toString().toUpperCase())){
-						indiEffcncyCnt = indiEffcncyCnt+Long.valueOf(obj[0].toString());
-					}
-				}
-			}*/
+			
 			
 			temp.setTtlAlrtss(totalAlerts);
 			temp.setEffcncyAlerts(completedAlerts);
@@ -11029,6 +11022,63 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		return null;
 	}     
 	
+	
+	public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds){
+		KeyValueVO vo = null;
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Long> alertStatusIds = new ArrayList<Long>();
+			alertStatusIds.add(12l);
+			Long diffSum = 0l;
+			
+			List<Object[]> alertDiffTime = alertDAO.getDifferenceTime(fromDate,toDate,departmentIds,sourceIds,alertStatusIds);
+			if(commonMethodsUtilService.isListOrSetValid(alertDiffTime)){
+				for(Object[] obj :alertDiffTime){
+					diffSum = diffSum+commonMethodsUtilService.getLongValueForObject(obj[4]);
+				}
+			}
+			Double avgTime = 0.0d;
+			if(diffSum != null && diffSum.longValue() >0l && commonMethodsUtilService.isListOrSetValid(alertDiffTime)){
+				avgTime = Double.valueOf(diffSum/alertDiffTime.size());
+			}
+			if(avgTime != null && avgTime.doubleValue() > 0.0d){
+				Double avgDays = avgTime/24;
+				if(avgDays != null && avgDays.doubleValue()>0.0d){
+					//Long iPart = Long.valueOf(avgDays.toString());
+					//Double fPart = avgDays-iPart;
+					String days = Double.toString(avgDays);
+				     String[] convert = days.split("\\.");
+
+				     int a = Integer.parseInt(convert[0]);
+				     Double b = avgDays-a;
+				     int a1= 0;
+					if( b>0.0d){
+						Double hours =b*24;
+						String hrs = Double.toString(hours);
+					     String[] convert1 = hrs.split("\\.");
+
+					      a1 = Integer.parseInt(convert1[0]);
+						 //iPart1 =Long.valueOf(hours.toString());
+					}
+					vo = new KeyValueVO();
+					vo.setCount(Long.valueOf(a));//
+					vo.setTotalCount(Long.valueOf(a1));
+					
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAverageIssuePendingDays() method of AlertService{}");
+		}
+		return vo;
+	}
 }
 
 

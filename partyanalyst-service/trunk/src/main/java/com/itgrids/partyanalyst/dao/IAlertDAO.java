@@ -132,4 +132,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getDayWiseAlertsCounts(Long departmentId,Date fromDate,Date toDate);
 	public Long getTotalAlertsByStatusIdsAndDates(Date prevDay,Date today,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds);
 	public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,String step);
+	public List<Object[]> getDifferenceTime(Date fromDate ,Date toDate,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds );
 }
