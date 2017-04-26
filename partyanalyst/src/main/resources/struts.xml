@@ -17050,5 +17050,10 @@
 		<param name="root">resultList</param>
 		</result>
 	</action>
+	<action name="getAverageIssuePendingDaysAction" class="createAlertAction"  method="getAverageIssuePendingDays">
+		<result type="json" name="success">    
+			<param name="root">keyValueVO</param>       
+		</result> 
+	</action> 
  </package>
 </struts>

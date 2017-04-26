@@ -86,6 +86,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private AlertVerificationVO alertVerificationVO;
 	private List<AlertVerificationVO> alertVerificationList;
 	private List<KeyValueVO> keyValueVOList = new ArrayList<KeyValueVO>(0);
+	private KeyValueVO keyValueVO;
 	private List<Long> cadreIds=new ArrayList<Long>(0);
 	private List<UserTypeVO> activityMembersList;
 	private GrievanceAlertVO grievanceAlertVO;
@@ -96,6 +97,15 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private AlertCoreDashBoardVO alertCoreDashBoardVO;
 	
 	
+	
+	public KeyValueVO getKeyValueVO() {
+		return keyValueVO;
+	}
+
+	public void setKeyValueVO(KeyValueVO keyValueVO) {
+		this.keyValueVO = keyValueVO;
+	}
+
 	public AlertCoreDashBoardVO getAlertCoreDashBoardVO() {
 		return alertCoreDashBoardVO;
 	}
@@ -2654,5 +2664,31 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Excpetion raised at getGrievanceReport Method",e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getAverageIssuePendingDays(){
+		try {
+			jObj = new JSONObject(getTask());
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIds");
+			List<Long> deptIdList = new ArrayList<Long>();
+			for (int i = 0; i < deptIdArr.length(); i++) {
+				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));
+			}
+			
+			JSONArray sourceIdArr = jObj.getJSONArray("sourceIds");
+			List<Long> sourceIdList = new ArrayList<Long>();
+			for (int i = 0; i < sourceIdArr.length(); i++) {
+				sourceIdList.add(Long.parseLong(sourceIdArr.getString(i)));
+			}
+			
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			
+			keyValueVO = alertService.getAverageIssuePendingDays(fromDate,toDate,deptIdList,sourceIdList);
+	   } catch (Exception e) {
+		   LOG.error("Exception Raised in getAverageIssuePendingDays() in CreateAlertAction",e);
+		}
+		   return Action.SUCCESS;
 	}
 }
