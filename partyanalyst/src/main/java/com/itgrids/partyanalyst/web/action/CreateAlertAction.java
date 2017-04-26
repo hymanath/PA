@@ -2649,7 +2649,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long sourceId=jObj.getLong("sourceId");
 			String rangeType=jObj.getString("rangeType");
 			Long stateId=jObj.getLong("stateId");
-			resultList = alertService.getGrievanceReport(fromDate,toDateStr,deptId,sourceId,rangeType,stateId);
+			resultList = alertService.getGrievanceReport(fromDate,toDateStr,stateId,deptId,sourceId,rangeType);
 		}catch(Exception e){
 			LOG.error("Excpetion raised at getGrievanceReport Method",e);
 		}
