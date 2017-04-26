@@ -22,6 +22,7 @@ public class GovtDepartment extends BaseModel implements Serializable{
 	private String color;
 	
 	private Long cnpGovtDepartmentId;
+	private String shortName;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,6 +55,13 @@ public class GovtDepartment extends BaseModel implements Serializable{
 	}
 	public void setColor(String color) {
 		this.color = color;
+	}
+	@Column(name = "short_name")
+	public String getShortName() {
+		return shortName;
+	}
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 	
 	
