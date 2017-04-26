@@ -291,6 +291,11 @@ var newspapersGlobalArr =[];
 var channelGlobalArr =[];
 var callCenterGlobalArr=[];
 
+google.load("elements", "1", {
+	packages: "transliteration"
+});
+
+
 $(document).on("click",".settingsIcon",function(e){
 	$(this).closest(".panelDropDown").find(".settingsBlockDropDown").toggle();
 	e.stopPropagation();
