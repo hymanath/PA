@@ -53,6 +53,9 @@
 .pointerCls{
 	cursor:pointer  !important;
 }
+.myfontStyle{
+	font-size:10px !important;
+}
 </style>
 </head>
 <body>
@@ -193,6 +196,10 @@ var globalDesignationId;
 var subLevels = [];
 var distWiseDistLevelArr=[];
 var divisionWiseDistLevelArr=[];
+
+google.load("elements", "1", {
+	packages: "transliteration"
+});
 
 
 $(document).on("click",".settingsIcon",function(e){
