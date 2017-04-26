@@ -604,6 +604,18 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 			}
 		}  
 		$("#alertManagementPopup1 .modal-footer").html(str1);
+		
+		var options = {
+	  sourceLanguage:
+		  google.elements.transliteration.LanguageCode.ENGLISH,
+	  destinationLanguage:
+		  [google.elements.transliteration.LanguageCode.TELUGU],
+	  shortcutKey: 'alt+t',
+	  transliterationEnabled: true
+	};
+	var control = new google.elements.transliteration.TransliterationControl(options);
+	control.makeTransliteratable(['updateStatusChangeComment1']);
+	
 }
 	$(document).on("click","[expand-icon]",function(){
         var expandBlockName = $(this).attr("expand-icon");
@@ -970,7 +982,7 @@ function getStatusCompletionInfo(alertId){
 				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-1 text-center body-icons"><i class="fa fa-volume-control-phone fa-2x"></i></div>';
 					str+='<div class="col-sm-11">';
-						str+='<h4 class="text-muted text-capital">Caller Details </h4>';
+						str+='<h3>Caller Details </h3>';
 						str+='<p class="m_top10">Name : '+result[0].callerName+' </p>';
 						str+='<p> Mobile No : '+result[0].mobileNo+' </p>';
 						str+='<p> Caller : '+result[0].userType+'</p>';
@@ -980,11 +992,11 @@ function getStatusCompletionInfo(alertId){
 			}
 			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
-			//buildTypeStr="own";
+		
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
 			globalStatusId = sttatusId; 
-			//alert(" buildTypeStr :"+buildTypeStr);
+			
 			$('#historyId').show();
 			if(result[0].dueDateStr != null && result[0].dueDateStr.trim().length>0){
 				$('.modal-date').html(result[0].dueDateStr)
@@ -993,7 +1005,7 @@ function getStatusCompletionInfo(alertId){
 				$('#displayDueDate2').hide();
 				$('#displayDueDate1').hide();
 			}
-			//alert("buildTypeStr :"+buildTypeStr);
+			
 			if(buildTypeStr=='own'){  
 				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
 				$('#docAttachmentId').show();	
@@ -1212,7 +1224,7 @@ function rightSideExpandView(alertId)
 						str+='<div class="panel-footer">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-1 text-center">';
-									str+='<span class="icon-name icon-primary">ME</span>';
+									str+='<span class="icon-name icon-primary">Ra</span>';
 								str+='</div>';
 								str+='<div class="col-sm-11">';
 									str+='<div class="panel panel-default panel-border-white">';
@@ -1289,7 +1301,7 @@ function rightSideExpandView(alertId)
 									  str+='<i class="glyphicon glyphicon-plus"></i>';
 									str+='</div>';
 									str+='<div class="col-sm-7">';
-									  str+='<input type="text" class="form-control subTaskTitle" name="alertAssigningVO.title"/>';
+									  str+='<input type="text" id="subTaskTitleId" class="form-control subTaskTitle" name="alertAssigningVO.title"/>';
 									str+='</div>';
 									str+='<div class="col-sm-4" style="margin-top:11px;">';
 									 str+='<span class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="due date" style="padding: 9px;border-radius: 20px;margin-left: 40px">';
@@ -1356,6 +1368,21 @@ function rightSideExpandView(alertId)
 	getStatusCompletionInfo(alertId);
 	getGovtAllDepartmentDetails();
 	buildAssignUIAttributes(alertId);
+	
+	
+	var options = {
+	  sourceLanguage:
+		  google.elements.transliteration.LanguageCode.ENGLISH,
+	  destinationLanguage:
+		  [google.elements.transliteration.LanguageCode.TELUGU],
+	  shortcutKey: 'alt+t',
+	  transliterationEnabled: true
+	};
+	var control = new google.elements.transliteration.TransliterationControl(options);
+	control.makeTransliteratable(['alertCommentId1']);
+	control.makeTransliteratable(['alertCommentId2']);
+	control.makeTransliteratable(['subTaskTitleId']);
+	
 }
 
 function buildAssignUIAttributes(alertId){
@@ -1548,7 +1575,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 					
 				str="";
 				str+='<div class="col-sm-1 text-center body-icons">';
-					str+='<i class="fa fa-check fa-2x"></i>';
+				str+='<i class="fa fa-check fa-2x"></i>';
 				str+='</div>';
 				str+='<div class="col-sm-11">';
 					str+='<h3> <u> Sub Task </u> : '+result[i].title+'</h3>';
@@ -1561,25 +1588,22 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				str1='';
 				
 				if(result[i].subList != null && result[i].subList.length>0){
-					str1+='<div class="col-sm-1 text-center body-icons">';
-						str1+='<i class="fa fa-paperclip fa-2x"></i>';
-					str1+='</div>';
-					str1+='<div class="col-sm-11">';
-						str1+='<h4 class="text-muted text-capital"> Sub Task Attachments:  </h4>';	
-						for(var k in result[i].subList){
+					str1+='<div class="row m_top20">';
+					str1+='<h4 class="text-muted text-capital"> Sub Task Attachments:  </h4>';	
+					for(var k in result[i].subList){
 							str1+='<div class="col-sm-3">';
-								str1+='<img class="displayImgCls img-responsive m_top20" attr_articleId="" src="http://www.mytdp.com/images/'+result[i].subList[k]+'" style="width: 100px; height: 100px;cursor:pointer"/>';
+							str1+='<img class="displayImgCls img-responsive m_top20" attr_articleId="" src="http://www.mytdp.com/images/'+result[i].subList[k]+'" style="width: 100px; height: 100px;cursor:pointer"/>';
 							str1+='</div>';
-						}
-						
-					str1+='</div>';
+					}
+					
+				str1+='</div>';
 				}
 				
 
 				$("#subArticleAttachment").html(str1);
 				
 				if(result[i].commentList != null && result[i].commentList.length>0){
-					
+					str+='<div class="row m_top20">';
 					str+='<div class="col-sm-1 text-center body-icons">';
 						str+='<i class="fa fa-comments-o fa-2x"></i>';
 					str+='</div>';
@@ -1602,15 +1626,15 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 							str+='</div>';
 						
 					str+='</div>';
-				
+				str+='</div>';
 				
 				}			
 				str1="";
-				str1+='<div class="panel-body"><h3><i class="fa fa-long-arrow-left fa-1x " aria-hidden="true" expand-icon="block1" attr_alertId="'+alertId+'" title="Back to Main Alert View."></i>  <span style="margin-top:-5px">';
+				str1+='<div class="panel-body" style="font-weight:bold;font-size:15px"> <i class="fa fa-long-arrow-left fa-2x " style="cursor:pointer;margin-right:15px;margin-top:5px" aria-hidden="true" expand-icon="block1" attr_alertId="'+alertId+'" title="Back to Main Alert View."></i>  <span style="margin-top:-5px">';
 				if(result[i].description.length>80)
-					str1+=''+result[i].mainTitle +'... </span></h3></div>';
+					str1+=''+result[i].mainTitle +'... </span></div>';
 				else
-					str1+=''+result[i].mainTitle+'... </span></h3></div>';
+					str1+=''+result[i].mainTitle+'... </span></div>';
 				
 				$("#mainAlertTitle").html(str1);
 					
@@ -1870,7 +1894,7 @@ function buildAlertDataNew(result)
 				str+='<i class="fa fa-check fa-2x"></i>';
 			str+='</div>';
 			str+='<div class="col-sm-11">';
-				str+='<h4 class="text-capital text-muted">'+result[i].title+'</h4>';
+				str+='<h3>'+result[i].title+'</h3>';
 				str+='<p class="m_top10">'+result[i].desc+'</p>';
 				str+='<p class="m_top10"><small> <i class="fa fa-map-marker"></i> '+result[i].locationVO.state+'(S),'+result[i].locationVO.districtName+'(D),'+result[i].locationVO.constituencyName+'(C),'+result[i].locationVO.tehsilName+'(M)'+result[i].locationVO.wardName+','+result[i].locationVO.villageName+'(P),'+result[i].locationVO.hamletName+'(H)</small></p>';
 				str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created : '+result[i].date+'</small></p>';
@@ -2052,7 +2076,7 @@ function buildSubTaskInfoForAlert(result,alertId)
 					str+='<div class="col-sm-11">';
 						str+='<h4 class="text-muted text-capital"> My Sub Tasks : </h4>';
 					str+='</div>';
-					str+='<div class="col-sm-11 col-sm-offset-1">';
+					str+='<div class="row col-sm-12">';
 						str+='<ul class="assign-subtask-list m_top20">';
 						for(var k in result[i].attachementsList){
 							str+='<li class="assigned subTaskCls " style="cursor:pointer;margin-left: 5px" attr_sub_alert_Id="'+result[i].attachementsList[k].alertId+'" attr_alert_id="'+alertId+'">';
@@ -2088,10 +2112,10 @@ function buildSubTaskInfoForAlert(result,alertId)
 				str+='<div class="col-sm-11 ">';
 					str+='<h4 class="text-muted text-capital"> Others Sub Tasks : </h4>';
 					str+='</div>';
-					str+='<div class="col-sm-11 col-sm-offset-1">'; 
+					str+='<div class="row col-sm-12">';
 						str+='<ul class="assign-subtask-list m_top20">';
 						for(var k in result[i].commentList){
-							str+='<li class="assigned ">';
+							str+='<li class="assigned subTaskCls " style="cursor:pointer;margin-left:20px; width: 716px;" attr_sub_alert_Id="'+result[i].commentList[k].alertId+'" attr_alert_id="'+alertId+'">';
 									str+='<div class="row">';
 										str+='<div class="col-sm-1">';
 											str+='<i class="glyphicon glyphicon-ok"></i>';
@@ -2102,8 +2126,12 @@ function buildSubTaskInfoForAlert(result,alertId)
 											str+='</p>';
 										str+='</div>';
 										str+='<div class="col-sm-1">';
-											str+='<i class="glyphicon glyphicon-menu-right pull-right subTaskCls"  attr_sub_alert_Id="'+result[i].commentList[k].alertId+'" attr_alert_id="'+alertId+'"></i>';
-											str+='<span class="icon-name icon-primary" style="position: relative;top:6px ;background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span>';
+											str+='<ul class="list-icons list-inline">';
+												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span> </li>';
+											str+='</ul>';
+											//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
+										//	str+='<span class="icon-name icon-primary"></span>';
+											//str+='<span class="label label-default">...</span>';
 										str+='</div>';
 									str+='</div>';
 							str+='</li>';
@@ -2605,7 +2633,6 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 	popUpFilter('heading','');
 	var alertId = '';
 	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
-	str+='<div id="filter"></div>';
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-12" expand-main="false">';
 			str+='<div class="panel-group panel-white panel-left" id="accordion" role="tablist" aria-multiselectable="true">';
@@ -3002,7 +3029,16 @@ function alertStatusHistory(result,alertId)
 	if(globalStatusId == 8 || globalStatusId == 9){
 			$("#changeStatudCheckBoxId").hide();   
 	}
-	
+		var options = {
+	  sourceLanguage:
+		  google.elements.transliteration.LanguageCode.ENGLISH,
+	  destinationLanguage:
+		  [google.elements.transliteration.LanguageCode.TELUGU],
+	  shortcutKey: 'alt+t',
+	  transliterationEnabled: true
+	};
+	var control = new google.elements.transliteration.TransliterationControl(options);
+	control.makeTransliteratable(['updateStatusChangeComment']);
 }
  
  
