@@ -19,7 +19,7 @@ function onLoadClicks()
 	/*alert Assigned Part Start*/
 	$(document).on('click', '.imageShowOpen li', function(){
 		var id = $(this).attr("attr_doc_id");
-		var path = "http://mytdp.com/"+$(this).attr("attr_path");
+		var path = "http://mytdp.com/images/"+$(this).attr("attr_path");
 		window.open(path);
 	});
 	/*$(document).on("change","#divisionDistWiseLevelsDivId",function(){
