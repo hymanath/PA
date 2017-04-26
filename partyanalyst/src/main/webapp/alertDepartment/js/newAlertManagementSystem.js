@@ -100,13 +100,9 @@ function onLoadInitialisations()
 			alert("Please Select Atleast One Option.");   
 			return;
 		}
-		if(globalNewsPaperIdArr.length == 0 && globalChannelIdArr.length == 0){
+		/* if(globalNewsPaperIdArr.length == 0 && globalChannelIdArr.length == 0){
 			globalNewsPaperIdArr.push(0);
 			globalChannelIdArr.push(0);
-		}
-		/* if(callCenterIdLen == 0){
-			alert("Please Select Atleast One Category In Manual Alerts.");   
-			return;
 		} */
 		var departmentIdLen = globalDepartmentIdArr.length;
 		if(departmentIdLen == 0){
