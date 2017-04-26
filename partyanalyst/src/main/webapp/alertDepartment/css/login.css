@@ -12,7 +12,7 @@ placeholder{color:#ffc019;}
   
 .loginFormBox .input-group
 {
-	margin-top:25px;
+	margin-top:15px;
 }
 .loginFormBox .input-group-addon{
 	border-top:0px;
@@ -44,12 +44,12 @@ placeholder{color:#ffc019;}
 	border-radius:0px;
 }
 
-.btn-primary {
-    background-color: rgb(255, 192, 25);
-    border-color: rgb(255, 192, 25);
+.btn-primary , .btn-primary:active , .btn-primary :hover, .btn-primary :focus{
+    background-color: rgb(255, 192, 25) !important;
+    border-color: rgb(255, 192, 25) !important;
     border-radius: 0 0 4px 4px !important;
     color: rgb(255, 255, 255);
-    padding: 25px !important;
+    padding: 15px !important;
 }
 footer
 {
