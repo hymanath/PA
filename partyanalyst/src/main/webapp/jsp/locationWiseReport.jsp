@@ -86,6 +86,8 @@
 		
 		<div class="col-md-12 col-xs-12 col-sm-6">
 			<h4 class="m_0" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency 
+			<span style="margin-left:300px;font-size:13px;">AVERAGE ISSUE PENDING DAYS : 
+			<span id="issuePendingCntId"></span></span>
 			<div style="text-align:right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
 			<span style="font-size:12px;">Include Proposal</span></div>
 			</h4>
@@ -1251,7 +1253,7 @@ function getCadreGreivienceEfficiency(){
 			$("#efficiencyId").html(str);
     });
 }
-//getAverageIssuePendingDays();
+getAverageIssuePendingDays();
 function getAverageIssuePendingDays(){
 	
 	var deptIds=[];
@@ -1274,7 +1276,11 @@ function getAverageIssuePendingDays(){
       dataType: 'json',
       data: {task:JSON.stringify(jobj)},
     }).done(function(result){
-    	
+		var str='';
+    	if(result != null){
+			str +=''+result.count+'Days '+result.totalCount+'Hours';
+		}
+		$('#issuePendingCntId').text(str);
     });
     
     }
