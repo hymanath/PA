@@ -1251,7 +1251,33 @@ function getCadreGreivienceEfficiency(){
 			$("#efficiencyId").html(str);
     });
 }
+//getAverageIssuePendingDays();
+function getAverageIssuePendingDays(){
+	
+	var deptIds=[];
+	var sourceIds =[];
+	
 
+	deptIds.push(49);
+	sourceIds.push(1);
+	sourceIds.push(2);
+	sourceIds.push(3);
+    var jobj = {
+      deptIds :deptIds,
+	  sourceIds:sourceIds,
+	  fromDate : "01/11/2016",//2016-11-01
+	  toDate:"01/05/2017"//2017-05-01
+    }
+    $.ajax({
+      type : "POST",
+      url  : "getAverageIssuePendingDaysAction.action",
+      dataType: 'json',
+      data: {task:JSON.stringify(jobj)},
+    }).done(function(result){
+    	
+    });
+    
+    }
 </script>
 </body>
 </html>
