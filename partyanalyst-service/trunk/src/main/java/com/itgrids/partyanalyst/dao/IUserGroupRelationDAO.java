@@ -21,4 +21,5 @@ public interface IUserGroupRelationDAO extends
 	public List checkTheRelationBetweenUserAndGroup(Long userId);
 	
 	public Integer deleteAllUser(Long userId);
+	public List<String> getUserIdCount(Long userId);
 }
