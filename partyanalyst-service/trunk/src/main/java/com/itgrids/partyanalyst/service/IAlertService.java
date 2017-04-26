@@ -132,5 +132,5 @@ public interface IAlertService {
     public List<KeyValueVO> getRelatedDepartmentsForIssueType(Long issueTypeId);
     public List<KeyValueVO> getUrbanLocalitiesForMuncipality(Long lebId);
     public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal);
-    public List<AlertOverviewVO> getGrievanceReport(String fromDate, String toDateStr,Long deptId,Long sourceId,String rangeType,Long stateId);
+    public List<AlertOverviewVO> getGrievanceReport(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType);
 }
