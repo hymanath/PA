@@ -2562,7 +2562,7 @@ function popUpFilter(type,result)
 			str1+='</div>';
 			str1+='<div class="col-sm-4">';
 				str1+='<ul class="list-icons pull-right list-inline">';
-					str1+='<li><i class="glyphicon glyphicon-filter filters-icon"></i></li>';
+					//str1+='<li><i class="glyphicon glyphicon-filter filters-icon"></i></li>';
 					str1+='<li data-dismiss="modal" aria-label="Close"><i class="glyphicon glyphicon-remove"></i></li>';
 				str1+='</ul>';
 			str1+='</div>';
