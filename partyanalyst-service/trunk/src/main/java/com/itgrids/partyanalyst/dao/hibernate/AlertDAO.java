@@ -6963,7 +6963,6 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" left join userAddress.district district  " +
 						" left join userAddress.constituency constituency " +
 						" , AlertDepartmentStatus model1 " +
-						" , govtDepartment GD " +
 						" where  model1.alertType.alertTypeId = model.alertType.alertTypeId" +
 						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId " + 
 						" and model.isDeleted ='N' " +

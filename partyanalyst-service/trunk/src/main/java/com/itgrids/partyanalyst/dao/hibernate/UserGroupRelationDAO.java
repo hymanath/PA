@@ -52,5 +52,10 @@ public class UserGroupRelationDAO extends GenericDaoHibernate<UserGroupRelation,
 		return queryObject.executeUpdate();
 		
 	}
-
+	public List<String> getUserIdCount(Long userId){
+		Query query = getSession().createQuery("select distinct model.userGroup.notes from UserGroupRelation model where " +
+				" model.user.userId = :userId " );
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }

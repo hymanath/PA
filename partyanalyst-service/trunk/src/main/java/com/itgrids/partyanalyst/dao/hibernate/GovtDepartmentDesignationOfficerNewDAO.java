@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -126,6 +127,18 @@ public class GovtDepartmentDesignationOfficerNewDAO extends GenericDaoHibernate<
 		Query query = getSession().createQuery("select count(model) from GovtDepartmentDesignationOfficerNew model where model.userId = :userId ");
 		query.setParameter("userId", userId);
 		return (Long) query.uniqueResult();
+	}
+	
+	public List<Object[]> getDataAvailableDepts(Set<Long> depts){
+		
+		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName "
+				+ " from AlertAssignedOfficerNew model "
+				+ " where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentId in (:depts) ") ;
+		
+		query.setParameterList("depts",depts);
+		
+		return query.list();
 	}
 	
 }
