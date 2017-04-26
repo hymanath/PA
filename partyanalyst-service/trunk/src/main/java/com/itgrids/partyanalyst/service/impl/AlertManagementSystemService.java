@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IGovtOfficerSubTaskTrackingDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
@@ -115,8 +116,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private ITvNewsChannelDAO tvNewsChannelDAO;
 	private INewsPaperDAO newsPaperDAO;
 	private IUserDAO userDAO;
+	private IUserGroupRelationDAO userGroupRelationDAO;
 	
 	
+	public IUserGroupRelationDAO getUserGroupRelationDAO() {
+		return userGroupRelationDAO;
+	}
+
+	public void setUserGroupRelationDAO(IUserGroupRelationDAO userGroupRelationDAO) {
+		this.userGroupRelationDAO = userGroupRelationDAO;
+	}
+
 	public IAlertSubTaskStatusDAO getAlertSubTaskStatusDAO() {
 		return alertSubTaskStatusDAO;
 	}
@@ -4231,13 +4241,18 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		List<Long> govtDeptScopeIdsForUserId = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptScopeIdsForUserId(userId);
         		
         		//to wheck whether he/she is an admin or not.
-        		Long userCount = govtDepartmentDesignationOfficerNewDAO.getUserIdCount(userId);
-        		String userStatus = "";
-        		if(userCount != null && userCount.longValue() > 0L){
-        			userStatus = "admin";
-        		}else{
-        			userStatus = "officer";
-        		}
+        		//Long userCount = govtDepartmentDesignationOfficerNewDAO.getUserIdCount(userId);
+        		List<String> entitlement = userGroupRelationDAO.getUserIdCount(userId);
+	              String entlmnt = "";
+	              if(entitlement != null && entitlement.size() > 0){
+	            	 entlmnt = entitlement.get(0);
+	              }
+	              String userStatus = "";
+	              if(entlmnt != null && !entlmnt.isEmpty() && entlmnt.equalsIgnoreCase("GOVT_DEPARTMENT_ADMIN_USER_GROUP_ENTITLEMENT_NEW")){
+	                userStatus = "admin";
+	              }else{
+	                userStatus = "officer";    
+	              }
         		if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId)){
         			userType ="own";
         			
@@ -6652,12 +6667,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			              List<Long> govtDeptScopeIdsForUserId = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptScopeIdsForUserId(userId);
   			              
   			              //to wheck whether he/she is an admin or not.
-  			              Long userCount = govtDepartmentDesignationOfficerNewDAO.getUserIdCount(userId);
+  			              //Long userCount = govtDepartmentDesignationOfficerNewDAO.getUserIdCount(userId);
+  			              List<String> entitlement = userGroupRelationDAO.getUserIdCount(userId);
+  			              String entlmnt = "";
+  			              if(entitlement != null && entitlement.size() > 0){
+  			            	 entlmnt = entitlement.get(0);
+  			              }
   			              String userStatus = "";
-  			              if(userCount != null && userCount.longValue() > 0L){
+  			              if(entlmnt != null && !entlmnt.isEmpty() && entlmnt.equalsIgnoreCase("GOVT_DEPARTMENT_ADMIN_USER_GROUP_ENTITLEMENT_NEW")){
   			                userStatus = "admin";
   			              }else{
-  			                userStatus = "officer";  
+  			                userStatus = "officer";    
   			              }
   			              if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId)){
   			                userType ="own";
@@ -6879,29 +6899,54 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			//Santosh
   			 public List<IdNameVO> getDeptListForMultiLvl(Long userId){
                  try{
-                   List<Object[]> deptList= alertAssignedOfficerNewDAO.getDeptList(userId);
+                	 
+                	Set<Long> deptSet = new HashSet<Long>();
+                	
+                   List<Object[]> deptList= govtAlertDepartmentLocationNewDAO.getDeptIdAndNameForUserAccessLevel(userId);
                    List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>(); 
-                   List<Long> deptIds = new ArrayList<Long>();
-                   IdNameVO idNameVO = null;
+                   IdNameVO idNameVO = null; 
                    if(deptList != null && deptList.size() > 0){
                      for(Object[] param : deptList){
-                       deptIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-                       idNameVO = new IdNameVO();
-                       idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-                       idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
-                       idNameVOs.add(idNameVO);
+                    	 if(param[0] !=null){
+                    	   deptSet.add((Long)param[0]);//All Depts Realted to logging user
+                       }
                      }
                    }
+                   
+                   // Data Available depts
+                   
+                   List<Long> deptIds =new ArrayList<Long>(0);
+                   if(deptSet !=null && deptSet.size()>0){
+                	  List<Object[]> deptObj = govtDepartmentDesignationOfficerNewDAO.getDataAvailableDepts(deptSet);
+                	   
+                	   if(deptObj != null && deptObj.size() > 0){
+                           for(Object[] param : deptObj){
+		                	   deptIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+		                       idNameVO = new IdNameVO();
+		                       idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+		                       idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+		                       idNameVOs.add(idNameVO);
+                           }
+                	   }
+                   }
+                   
+                   
+                   
                      Map<Long,Map<Long,IdNameVO>> deptLevelMap = new HashMap<Long, Map<Long,IdNameVO>>();
                      List<Object[]> rtrnDeptLevelObjLst = govtDepartmentScopeLevelDAO.getAllScopesOfAllDeptInAscOrder(deptIds);
                      setDepartmentWiseLevel(rtrnDeptLevelObjLst,deptLevelMap);    
                      if(idNameVOs != null && idNameVOs.size() > 0){
                     	 for(IdNameVO vo:idNameVOs){
+                    		 
                     		 if(deptLevelMap != null){
-                    			 vo.getSubList1().addAll(deptLevelMap.get(vo.getId()).values());
+                    			 if(vo.getId() != null && deptLevelMap.get(vo.getId()) != null && deptLevelMap.get(vo.getId()).values() != null){
+                    				 vo.getSubList1().addAll(deptLevelMap.get(vo.getId()).values());
+                    			 }
                     		 }
                     	 }
-                     }
+                     }  
+                     
+                     
                      return idNameVOs;
                  }catch(Exception e){
                 	 e.printStackTrace();
