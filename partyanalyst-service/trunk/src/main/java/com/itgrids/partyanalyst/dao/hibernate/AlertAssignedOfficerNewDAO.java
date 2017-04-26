@@ -3542,10 +3542,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 query.setParameter("alertId", alertId);  
 		 return (Integer) query.executeUpdate();
 	 }
-	 public Long getAssignedDtls(Long alertId){
-		 Query query = getSession().createQuery(" select model.alertAssignedOfficerId from  AlertAssignedOfficerNew model where model.alertId = :alertId");
+	 public List<Long> getAssignedDtls(Long alertId){
+		 Query query = getSession().createQuery(" select distinct model.alertAssignedOfficerId from  AlertAssignedOfficerNew model where model.alertId = :alertId and " +
+		 		" model.isDeleted='N'  ");
 		 query.setParameter("alertId", alertId);
-		 return (Long) query.uniqueResult();
+		 return query.list();
 	 }
 	 @SuppressWarnings("unchecked")
 		public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,Long statusId,
@@ -3613,6 +3614,20 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			
 			return query.list();
 		}
+	 
+	 public List<Object[]> getAlertAssignedLevelDetails(Long alertId){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select distinct model.govtDepartmentDesignationOfficer.govtDepartmentScopeId, model.govtDepartmentDesignationOfficer.levelValue " +
+		 				 " from AlertAssignedOfficerNew model " +
+		 				 " where model.isDeleted = 'N' " +
+		 				 " and model.isApproved = 'Y' " +
+		 				 " and model.alert.alertId = :alertId " +
+		 				 " and model.alert.isDeleted = 'N' ");
+		 Query query = getSession().createQuery(queryStr.toString());  
+		 query.setParameter("alertId", alertId);
+		 return  query.list();
+	 }
+	 
 	//sub division scope lvl //Santosh
 		//state and district scope lvl
 	     public List<Object[]> getLocationBasedOnDepartmentLevelId(Date fromDate,Date toDate,

@@ -2559,6 +2559,22 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			query.setParameter("scopeId",scopeId);
 			return query.list();
 		}
+		
+		 public List<Long> getAssignedSubTaskOfficerIdsDtls(Long govtAlertSubTaskId){
+			 Query query = getSession().createQuery(" select distinct model.subTaskGovtOfficerId from  GovtAlertSubTask model where model.govtAlertSubTaskId = :govtAlertSubTaskId and " +
+			 		" model.isDeleted='N' and model.isApproved='Y' ");
+			 query.setParameter("govtAlertSubTaskId", govtAlertSubTaskId);
+			 return query.list();
+		 }
+		 public Object[] getSubTaskDetailsForSMS(Long govtAlertSubTaskId){
+		    	Query query = getSession().createQuery(" select model.title, " +
+		    			" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId, " +
+		    			" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName "
+		    			+ " from GovtAlertSubTask model "
+		    			+ " where model.govtAlertSubTaskId=:govtAlertSubTaskId and model.isDeleted='N' ");
+		    	query.setParameter("govtAlertSubTaskId", govtAlertSubTaskId);
+		    	return (Object[])query.uniqueResult();
+		    }
 		//Santosh
 		 public List<Object[]> getSubTaskAlertLocationLevelWise(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
 				   List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,
