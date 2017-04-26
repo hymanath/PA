@@ -6964,14 +6964,17 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId " + 
 						" and model.isDeleted ='N' " +
 						" and model.govtDepartment.govtDepartmentId = :departmentId ");
-		if(sourceId != null && sourceId.longValue() > 0 && sourceId.longValue() == 1L){
-			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId and model.alertCaller is not null");
-		}else{
-			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
+		if(sourceId != null && sourceId.longValue() != 0L){
+			if(sourceId != null && sourceId.longValue() > 0 && sourceId.longValue() == 1L){
+				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId and model.alertCaller is not null");
+			}else{
+				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
+			}
 		}
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
 		}
+		
 		if(stateId != null && stateId.longValue() >= 0L){
 			if(stateId.longValue() == 1L){
 				queryStr.append(" and state.stateId = 1 ");
@@ -6995,23 +6998,27 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			}
 		}else{
 			if(filterType != null && filterType.equalsIgnoreCase("District")){
-				queryStr.append(" group by district.districtId,date(model.createdTime) order by district.districtId  ");
+				queryStr.append(" group by district.districtId,date(model.createdTime) order by district.districtId, date(model.createdTime) desc");
 			}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
-				queryStr.append(" group by constituency.constituencyId,date(model.createdTime) order by constituency.constituencyId  ");
+				queryStr.append(" group by constituency.constituencyId,date(model.createdTime) order by constituency.constituencyId ,date(model.createdTime) desc ");
 			}
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
+		
+		if(departmentId != null && departmentId.longValue() > 0L){
+			query.setParameter("departmentId",departmentId);
+		}
+		if(sourceId != null && sourceId.longValue() > 0L){
+			query.setParameter("sourceId",sourceId);
+		}
 		if(fromDate != null && toDate != null){  
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);    
-		}    
-		
+		}
 		return query.list();   
 	}
-	
-    
     public List<Object[]> getDayWiseAlertsCounts(Long departmentId,Date startDate,Date endDate){
 
     	StringBuilder sb = new StringBuilder();
