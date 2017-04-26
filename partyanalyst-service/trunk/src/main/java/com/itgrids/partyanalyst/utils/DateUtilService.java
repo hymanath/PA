@@ -552,19 +552,52 @@ public class DateUtilService {
 			int noOfWeek = length / 7;
 			int rem = length % 7;
 			if(rem > 0){
-				noOfWeek += noOfWeek;
+				noOfWeek += 1;
 			}
 			List<String> weekList = new ArrayList<String>();
 			for(int i = 1 ; i <= noOfWeek ; i++ ){
 				weekList.add("week_"+i);
 			}
-			//CopyOnWriteArrayList<String> dayListNew = new CopyOnWriteArrayList<String>(dayList);
 			LinkedHashMap<String,List<String>> weekAndDaysMap = new LinkedHashMap<String,List<String>>();
 			List<String> days = null;
 			int j = 0;
 			for(String str : weekList){
 				days = new ArrayList<String>();
 				for(int k=1;k<=7;k++){
+					if(dayList.size() == j){
+						break;
+					}
+					days.add(dayList.get(j));
+					weekAndDaysMap.put(str, days);
+					j++;
+				}
+			}
+			return weekAndDaysMap;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static LinkedHashMap<String,List<String>> getTotalMonthsMap(Date startdate, Date enddate){
+		try{
+			List<String> dayList = getDaysBetweenDatesStringFormat(startdate,enddate);
+			Collections.reverse(dayList);
+			int length = dayList.size();
+			int noOfWeek = length / 30;
+			int rem = length % 30;
+			if(rem > 0){
+				noOfWeek += 1;
+			}
+			List<String> weekList = new ArrayList<String>();
+			for(int i = 1 ; i <= noOfWeek ; i++ ){
+				weekList.add("month_"+i);
+			}
+			LinkedHashMap<String,List<String>> weekAndDaysMap = new LinkedHashMap<String,List<String>>();
+			List<String> days = null;
+			int j = 0;
+			for(String str : weekList){
+				days = new ArrayList<String>();
+				for(int k=1;k<=30;k++){
 					if(dayList.size() == j){
 						break;
 					}
