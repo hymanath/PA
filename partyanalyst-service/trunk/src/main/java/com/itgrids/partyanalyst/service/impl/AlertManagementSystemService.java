@@ -4759,30 +4759,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           				fromDate = sdf.parse(fromDateStr);
           				toDate = sdf.parse(toDateStr);
           			}
-          			if(printIdList != null && printIdList.size() > 0){  
-                        if(electronicIdList != null && electronicIdList.size() == 0){
-                          electronicIdList.add(0L);
-                          if(calCntrIdList != null && calCntrIdList.size() == 0){
-                            calCntrIdList.add(0L);
-                            }
-                        }
-                      } 
-          			if(electronicIdList != null && electronicIdList.size() > 0){
-                        if(printIdList != null && printIdList.size() == 0){
-                          printIdList.add(0L);
-                          if(calCntrIdList != null && calCntrIdList.size() == 0){
-                            calCntrIdList.add(0L);
-                            }
-                        }
-                      }
-          			if(calCntrIdList != null && calCntrIdList.size() > 0){
-                        if(printIdList != null && printIdList.size() == 0){
-                          printIdList.add(0L);
-                          if(electronicIdList != null && electronicIdList.size() == 0){
-                            electronicIdList.add(0L);
-                            }
-                        }
-                      }
+          			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Setting Parameter
           			
           			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
           			//get alert status count and and create a map of alertStatusId and its count
@@ -4822,31 +4799,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       				fromDate = sdf.parse(fromDateStr);
       				toDate = sdf.parse(toDateStr);
       			}
-      			
-      			if(printIdList != null && printIdList.size() > 0){  
-                    if(electronicIdList != null && electronicIdList.size() == 0){
-                      electronicIdList.add(0L);
-                      if(calCntrIdList != null && calCntrIdList.size() == 0){
-                        calCntrIdList.add(0L);
-                        }
-                    }
-                  } 
-      			if(electronicIdList != null && electronicIdList.size() > 0){
-                    if(printIdList != null && printIdList.size() == 0){
-                      printIdList.add(0L);
-                      if(calCntrIdList != null && calCntrIdList.size() == 0){
-                        calCntrIdList.add(0L);
-                        }
-                    }
-                  }
-      			if(calCntrIdList != null && calCntrIdList.size() > 0){
-                    if(printIdList != null && printIdList.size() == 0){
-                      printIdList.add(0L);
-                      if(electronicIdList != null && electronicIdList.size() == 0){
-                        electronicIdList.add(0L);
-                        }
-                    }
-                  }
+      			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Setting Parameter
       			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
       			//get all the alert status and build the template
       			List<Long> levelValues = new ArrayList<Long>();    
@@ -6798,8 +6751,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	    				fromDate = sdf.parse(fromDateStr);
 	    				toDate = sdf.parse(toDateStr);
 	    			}
-	    			
-	    			if(printIdList != null && printIdList.size() > 0){  
+	    			/*if(printIdList != null && printIdList.size() > 0){  
 	                    if(electronicIdList != null && electronicIdList.size() == 0){
 	                      electronicIdList.add(0L);
 	                      if(calCntrIdList != null && calCntrIdList.size() == 0){
@@ -6822,7 +6774,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	                        electronicIdList.add(0L);
 	                        }
 	                    }
-	                  }
+	                  }*/
+	    			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Setting Parameter
 	    			
 	    			List<Long> levelValues = new ArrayList<Long>();    
 	    			Long levelId = 0L;
