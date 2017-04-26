@@ -10,4 +10,5 @@ public interface IGovtDepartmentWorkLocationRelationDAO extends GenericDao<GovtD
 
 	public List<Object[]> getGovtSubLevelInfo(Long levelValue);
 	public List<Long> getChildLocations(Long levelValue);
+	public List<Object[]> getParentGovtSuperLevelInfo(Long levelValue);
 }
