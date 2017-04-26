@@ -1,9 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.model.AlertStatus;
@@ -32,5 +36,32 @@ public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 		query.setParameterList("statusIds", statusIds);  
 		return query.list();    
 	}
+	  public List<String> getMonthAndYear(Date fromDate,Date toDate){
+	        StringBuilder queryStr = new StringBuilder();
+	        
+	        queryStr.append(" select CONCAT(DATE_FORMAT(m1, '%M'),'-',year(m1)) as monthYear " +
+	                           "    from ( " +
+	                               "    select " +
+	                               "    (:fromDate - INTERVAL DAYOFMONTH(:fromDate)-1 DAY)  " +
+	                               "        +INTERVAL m MONTH as m1 " +
+	                               "    from ( " +
+	                                   "    select @rownum /*'*/:=/*'*/ @rownum+1 as m from " +
+	                                   "    (select 1 union select 2 union select 3 union select 4 union select 5) t1, " +
+	                                   "     (select 1 union select 2 union select 3 union select 4 union select 5) t2, " +
+	                                   "     (select 1 union select 2 union select 3 union select 4 union select 5) t3,  " +
+	                                   "     (select 1 union select 2 union select 3 union select 4 union select 5) t4, " +
+	                                   "     (select @rownum /*'*/:=/*'*/ -1) t0  " +
+	                                   "      ) d1 " +
+	                               " ) d2 " +
+	                               "  where m1<=:toDate " +
+	                               " order by m1");
+	        
+	          Session session = getSession();
+	          SQLQuery sqlQuery = session.createSQLQuery(queryStr.toString());
+	          sqlQuery.addScalar("monthYear",Hibernate.STRING);
+	          sqlQuery.setDate("fromDate", fromDate);
+	          sqlQuery.setDate("toDate", toDate);
+	          return sqlQuery.list();
+	   }
 
 }
