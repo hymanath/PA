@@ -173,7 +173,7 @@
 				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 			</div>
 			<div class="modal-body modal-insurance">
-				<div id="filter"></div>
+				<!--<div id="filter"></div>-->
 				<div id="alertManagementPopupBody"></div>
 			</div>
 		</div>
@@ -211,5 +211,11 @@
 <script src="alertDepartment/js/newAlertDistrictCollector.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+google.load("elements", "1", {
+	packages: "transliteration"
+});
+
+</script>
 </body>
 </html>
