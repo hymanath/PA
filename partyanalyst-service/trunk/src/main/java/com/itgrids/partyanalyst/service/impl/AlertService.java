@@ -10950,6 +10950,13 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 		return null;
 	}     */
+	@Override
+	public List<AlertOverviewVO> getGrievanceReport(String fromDate,
+			String toDateStr, Long deptId, Long sourceId, String rangeType,
+			Long stateId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
 
 
