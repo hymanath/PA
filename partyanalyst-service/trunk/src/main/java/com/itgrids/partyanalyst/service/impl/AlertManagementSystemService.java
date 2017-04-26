@@ -13,7 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7665,6 +7664,72 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return null;
 	}
-
+    public Map<String,List<String>> getMonthWeekAndDays(String startDate,String endDate,String type){
+    	Map<String,List<String>> returnDays = new LinkedHashMap<String, List<String>>();
+    	try{
+		
+		List<String> wkDays = new ArrayList<String>();
+		List<String> daysArr = new ArrayList<String>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM-yyyy");
+		if(type != null && type.trim().equalsIgnoreCase("month")){
+		 List<String> mntDays = alertStatusDAO.getMonthAndYear(sdf.parse(startDate),sdf.parse(endDate));
+			int i = 1;
+			for (String string : mntDays) {
+				Date dateee = sdf1.parse(string);
+				cal.setTime(dateee);
+				cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+				Date monthStart = cal.getTime();
+				
+				cal.setTime(dateee);
+				cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+				Date monthEnd = cal.getTime();
+				 
+				cal.setTime(sdf.parse(startDate));
+				Date  strDate = cal.getTime();
+				cal.setTime(sdf.parse(endDate));
+				Date  edDate = cal.getTime();
+				
+				if(i == 1){
+					if(strDate.compareTo(monthStart) > 0){
+						monthStart = strDate;
+					}
+				}
+				if(i == mntDays.size()){
+					if(monthEnd.compareTo(edDate) > 0){
+						monthEnd = edDate;
+					}
+				}
+				
+				daysArr = dateUtilService.getDaysBetweenDatesStringFormat(monthStart,monthEnd);
+				returnDays.put(string,daysArr);
+				i++;
+			}
+		}else if(type != null && type.trim().equalsIgnoreCase("week")){
+			wkDays  = commonMethodsUtilService.getBetweenWeeks(sdf.parse(startDate),sdf.parse(endDate),"yyyy-MM-dd");
+			int i=1;
+				for (String string : wkDays) {
+					String[] days = string.split("to");
+					daysArr = dateUtilService.getDaysBetweenDatesStringFormat(sdf.parse(days[0]),sdf.parse(days[1]));
+					returnDays.put("week"+i,daysArr);
+					i++;
+			}
+		}else if(type != null && type.trim().equalsIgnoreCase("today")){
+			List<String> noOfDays = dateUtilService.getDaysBetweenDatesStringFormat(sdf.parse(startDate),sdf.parse(endDate));
+			int i=1;
+				for (String string : noOfDays) {
+					daysArr = dateUtilService.getDaysBetweenDatesStringFormat(sdf.parse(string),sdf.parse(string));
+					returnDays.put("day"+i, daysArr);
+					i++;
+				}
+		   }
+    	}catch(Exception e){
+    		LOG.error("Error occured getMonthWeekAndDays() method of AlertManagementSystemService",e);
+    	}
+		
+		return returnDays;
+	}
 
 }      	
