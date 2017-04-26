@@ -6462,12 +6462,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(alertSourceIdList != null && alertSourceIdList.size()>0){
 			queryStr.append(" and AC.alert_category_id in (:alertSourceIdList) ");
 		}
-		if(printMediaIdList != null && printMediaIdList.size()>0){
+		if(printMediaIdList != null && printMediaIdList.size()>0 && electronicMediaIdList != null && electronicMediaIdList.size()>0){
+			queryStr.append(" and  (EDS.news_paper_id  in (:printMediaIdList) or (TNC.tv_news_channel_id in (:electronicMediaIdList) ) ) ");
+		}else if(printMediaIdList != null && printMediaIdList.size()>0){
 			queryStr.append(" and  EDS.news_paper_id  in (:printMediaIdList) ");
-		}
-		if(electronicMediaIdList != null && electronicMediaIdList.size()>0){
+		}else if(electronicMediaIdList != null && electronicMediaIdList.size()>0){
 			queryStr.append(" and TNC.tv_news_channel_id in (:electronicMediaIdList) ");
 		}
+		/*if(electronicMediaIdList != null && electronicMediaIdList.size()>0){
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicMediaIdList) ");
+		}*/
 		Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("alert_id", Hibernate.LONG)//0
 				.addScalar("created_time", Hibernate.STRING)//1
