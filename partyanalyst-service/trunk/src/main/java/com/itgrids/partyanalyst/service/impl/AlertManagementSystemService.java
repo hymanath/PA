@@ -6730,10 +6730,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			public String getOfficernameDesignationForUser(Long userId){
   	          String officerName = null;
   	          String desgnationName = null;
-  	          Long departMntscopeId = 0l;
   	          List<Long> lvlValueList = new ArrayList<Long>();
   	          String locationName = null;
   	          String officerNameAnddesgnationName = null;
+  	          String deptName = null;
   		          try {
   		            List<Object[]> LocationList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
   		            if(commonMethodsUtilService.isListOrSetValid(LocationList)){
@@ -6748,7 +6748,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   		            }
   		            if(commonMethodsUtilService.isListOrSetValid(usrNameList)){
   		            	officerName = (String) usrNameList.get(0)[0];
-  		              desgnationName = (String) usrNameList.get(0)[1];
+  		            	desgnationName = (String) usrNameList.get(0)[1];
+  		            	if(usrNameList.size() <= 1){
+  		            			deptName = (String) usrNameList.get(0)[2];
+  		            	}
   		            }
   		            
   		             List<Object[]> locNameList = govtDepartmentWorkLocationDAO.getParentLevelValuesListInfo(lvlValueList);
@@ -6756,7 +6759,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   		              locationName = (String) locNameList.get(0)[1];
   		             }
   		             if(desgnationName  != null){
-  		            	 officerNameAnddesgnationName = officerName+"/"+desgnationName+","+locationName; 
+  		            	if(deptName != null)
+  		            		officerNameAnddesgnationName = officerName+"/"+desgnationName+"-"+deptName+"-"+locationName; 
+  		            	else
+  		            		officerNameAnddesgnationName = officerName+"/"+desgnationName+"-"+locationName;
   		             }else{
   		            	 officerNameAnddesgnationName = officerName+"/"+locationName;
   		             }
