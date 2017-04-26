@@ -399,19 +399,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				toDate = sdf.parse(toDateStr);
 			}
 			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-			if(printIdList != null && printIdList.size() > 0){  
-				if(electronicIdList != null && electronicIdList.size() == 0){
-					electronicIdList.add(0L);
-				}
-			}else if(electronicIdList != null && electronicIdList.size() > 0){
-				if(printIdList != null && printIdList.size() == 0){
-					printIdList.add(0L);
-				}
-			}/*else{
-				electronicIdList.add(0L);
-				printIdList.add(0L);
-			}*/
-			
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);
 			if(deptIdList != null && deptIdList.size() == 0){
 				deptIdList.add(0L);  
 			}
@@ -540,18 +528,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				toDate = sdf.parse(toDateStr);
 			}
 			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-			if(printIdList != null && printIdList.size() > 0){  
-				if(electronicIdList != null && electronicIdList.size() == 0){
-					electronicIdList.add(0L);
-				}
-			}else if(electronicIdList != null && electronicIdList.size() > 0){
-				if(printIdList != null && printIdList.size() == 0){
-					printIdList.add(0L);
-				}
-			}/*else{
-				electronicIdList.add(0L);
-				printIdList.add(0L);
-			}*/
+			
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Prepare Parameter
 			
 			if(deptIdList != null && deptIdList.size() == 0){
 				deptIdList.add(0L);  
@@ -636,18 +614,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				toDate = sdf.parse(toDateStr);
 			}
 			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-			if(printIdList != null && printIdList.size() > 0){  
-				if(electronicIdList != null && electronicIdList.size() == 0){
-					electronicIdList.add(0L);
-				}
-			}else if(electronicIdList != null && electronicIdList.size() > 0){
-				if(printIdList != null && printIdList.size() == 0){
-					printIdList.add(0L);
-				}
-			}/*else{
-				electronicIdList.add(0L);
-				printIdList.add(0L);
-			}*/
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Prepare Parameter
 			
 			if(deptIdList != null && deptIdList.size() == 0){
 				deptIdList.add(0L);  
@@ -1339,8 +1306,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		        fromDate = sdf.parse(startDate);
 		        toDate = sdf.parse(endDate);
 		      }
-		      
-		      if(printIdsList != null && printIdsList.size() > 0){  
+		     
+		     /* if(printIdsList != null && printIdsList.size() > 0){  
 		            if(electronicIdsList != null && electronicIdsList.size() == 0){
 		            	electronicIdsList.add(0L);
 		              if(calCntrIdList != null && calCntrIdList.size() == 0){
@@ -1363,7 +1330,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			            	 electronicIdsList.add(0L);
 			                }
 			            }
-			        }
+			        }*/
+		      prepareRequiredParameter(printIdsList,electronicIdsList,calCntrIdList); //Setting Parameter
+		      
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long levelId = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -1754,6 +1723,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);
 			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = alertDAO.getTotalAlertByStatusNew(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusId,deptId,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList);
 			setAlertDtls(alertCoreDashBoardVOs, alertList); 
@@ -1804,6 +1774,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);
 			List<Long> levelValuesList = new ArrayList<Long>();    
 			Long levelId = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -3280,31 +3251,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			govtDepDesigOffcrIds.add(govtDeptGovtOffrId);
         			List<Long> govtOffcrIds = new ArrayList<Long>();
         			govtOffcrIds.add(govtOffrcrId);
-        			if(printIdsList != null && printIdsList.size() > 0){  
-        	            if(electronicIdsList != null && electronicIdsList.size() == 0){
-        	            	electronicIdsList.add(0L);
-        	              if(calCntrIdList != null && calCntrIdList.size() == 0){
-        	                calCntrIdList.add(0L);
-        	                }
-        	            }
-        	          }
-        			if(electronicIdsList != null && electronicIdsList.size() > 0){
-        	            if(printIdsList != null && printIdsList.size() == 0){
-        	            	printIdsList.add(0L);
-        	              if(calCntrIdList != null && calCntrIdList.size() == 0){
-        	                calCntrIdList.add(0L);
-        	                }
-        	            }
-        	          }
-        			if(calCntrIdList != null && calCntrIdList.size() > 0){
-        	            if(printIdsList != null && printIdsList.size() == 0){
-        	            	printIdsList.add(0L);
-        	              if(electronicIdsList != null && electronicIdsList.size() == 0){
-        	            	  electronicIdsList.add(0L);
-        	                }
-        	            }
-        	          }
-        			
+        			prepareRequiredParameter(printIdsList,electronicIdsList,calCntrIdList);//Setting Parameter
         			if(alertType != null && alertType.equalsIgnoreCase("alert")){
         				 alertIdList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,countType,printIdsList,electronicIdsList,calCntrIdList);
         			}else {
@@ -6393,31 +6340,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	   				fromDate = sdf.parse(formDateStr);
 	   				toDate = sdf.parse(toDateStr);
 	   			}
-	   			
-	   			if(printIdsList != null && printIdsList.size() > 0){  
-    	            if(electronicIdsList != null && electronicIdsList.size() == 0){
-    	            	electronicIdsList.add(0L);
-    	              if(calCntrIdList != null && calCntrIdList.size() == 0){
-    	                calCntrIdList.add(0L);
-    	                }
-    	            }
-    	          }
-	   			if(electronicIdsList != null && electronicIdsList.size() > 0){
-    	            if(printIdsList != null && printIdsList.size() == 0){
-    	            	printIdsList.add(0L);
-    	              if(calCntrIdList != null && calCntrIdList.size() == 0){
-    	                calCntrIdList.add(0L);
-    	                }
-    	            }
-    	          }
-	   			if(calCntrIdList != null && calCntrIdList.size() > 0){
-    	            if(printIdsList != null && printIdsList.size() == 0){
-    	            	printIdsList.add(0L);
-    	              if(electronicIdsList != null && electronicIdsList.size() == 0){
-    	            	  electronicIdsList.add(0L);
-    	                }
-    	            }
-    	          }
+	   			prepareRequiredParameter(printIdsList,electronicIdsList,calCntrIdList);
+	   		
 				List<Long> alertIds = null;
 				if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() > 0l && govtOffceId != null && govtOffceId.longValue() > 0l){
 				 if(clickType != null && clickType.equalsIgnoreCase("alert"))
@@ -7434,18 +7358,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   	      				fromDate = sdf.parse(fromDateStr);
   	      				toDate = sdf.parse(toDateStr);
   	      			}
-  	      			if(printIdList != null && printIdList.size() > 0){  
-  	      				if(electronicIdList != null && electronicIdList.size() == 0){
-  	      					electronicIdList.add(0L);
-  	      				}
-  	      			}else if(electronicIdList != null && electronicIdList.size() > 0){
-  	      				if(printIdList != null && printIdList.size() == 0){
-  	      					printIdList.add(0L);
-  	      				}
-  	      			}/*else{
-  	      				electronicIdList.add(0L);
-  	      				printIdList.add(0L);
-  	      			}*/
+  	      		   prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Prepare Parameter
   	      			
   	      			List<Long> levelValues = new ArrayList<Long>();    
   	      			Long levelId = 0L;
@@ -7488,15 +7401,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
       				fromDate = sdf.parse(fromDateStr);
       				toDate = sdf.parse(toDateStr);
       			}
-      			if(printIdList != null && printIdList.size() > 0){  
-      				if(electronicIdList != null && electronicIdList.size() == 0){
-      					electronicIdList.add(0L);
-      				}
-      			}else if(electronicIdList != null && electronicIdList.size() > 0){
-      				if(printIdList != null && printIdList.size() == 0){
-      					printIdList.add(0L);
-      				}
-      			}
+      			
+      			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Prepare Parameter
+      			
       			List<Long> levelValues = new ArrayList<Long>();    
       			Long levelId = 0L;
       			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -7559,18 +7466,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			if(printIdList != null && printIdList.size() > 0){  
-				if(electronicIdList != null && electronicIdList.size() == 0){
-				  electronicIdList.add(0L);
-				}
-			}else if(electronicIdList != null && electronicIdList.size() > 0){
-				if(printIdList != null && printIdList.size() == 0){
-				printIdList.add(0L);
-				}
-			}/*else{
-				electronicIdList.add(0L);
-				printIdList.add(0L);
-			}*/
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Prepare Parameter
 			
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long levelId = 0L;
@@ -7715,19 +7611,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      				fromDate = sdf.parse(fromDateStr);
 	      				toDate = sdf.parse(toDateStr);
 	      			}
-	      			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-	      			if(printIdList != null && printIdList.size() > 0){  
-	      				if(electronicIdList != null && electronicIdList.size() == 0){
-	      					electronicIdList.add(0L);
-	      				}
-	      			}else if(electronicIdList != null && electronicIdList.size() > 0){
-	      				if(printIdList != null && printIdList.size() == 0){
-	      					printIdList.add(0L);
-	      				}
-	      			}/*else{
-	      				electronicIdList.add(0L);
-	      				printIdList.add(0L);
-	      			}*/
+	      			prepareRequiredParameter(printIdList,electronicIdList,calCntrIds);//Prepare Parameter
 	      			
 	      			List<Long> levelValues = new ArrayList<Long>();    
 	      			Long levelId = 0L;
@@ -7776,7 +7660,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      			return alertCoreDashBoardVOs;        
 	      			
 	      		}catch(Exception e){
-	      			e.printStackTrace();    
+	      			e.printStackTrace();
+	    			LOG.error("Error occured getAlertDetailsBasedOnLocation() method of AlertManagementSystemService",e);
+	    	
 	      		}
 	      		return null;
 	      	}
@@ -8051,5 +7937,34 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		
 		return returnDays;
 	}
-
+    public void prepareRequiredParameter(List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList)
+    {
+    	try{
+    		 if(printIdsList != null && printIdsList.size() > 0){  
+		            if(electronicIdsList != null && electronicIdsList.size() == 0){
+		            	electronicIdsList.add(0L);
+		            }
+		            if(calCntrIdList != null && calCntrIdList.size() == 0){
+		                calCntrIdList.add(0L);
+		             }
+		      }else if(electronicIdsList != null && electronicIdsList.size() > 0){
+		            if(printIdsList != null && printIdsList.size() == 0){
+		            	printIdsList.add(0L);
+		            }
+		            if(calCntrIdList != null && calCntrIdList.size() == 0){
+		                calCntrIdList.add(0L);
+		             }
+		       }else if(calCntrIdList != null && calCntrIdList.size() > 0){
+		           if(printIdsList != null && printIdsList.size() == 0){
+		            	printIdsList.add(0L);
+		           }
+		           if(electronicIdsList != null && electronicIdsList.size() == 0){
+		            	 electronicIdsList.add(0L);
+		           }
+		      }
+    	}catch(Exception e){
+    		e.printStackTrace();
+			LOG.error("Error occured prepareRequiredParameter() method of AlertManagementSystemService",e);
+    	}
+    }
 }      	
