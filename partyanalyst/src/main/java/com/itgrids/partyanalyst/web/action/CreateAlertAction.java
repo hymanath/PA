@@ -2632,4 +2632,27 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		   return Action.SUCCESS;
 	}
+	public String locationWiseGrivenceReport(){
+		try{
+			return Action.SUCCESS;
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getGrievanceReport Method",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getGrievanceReport(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDateStr=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			String rangeType=jObj.getString("rangeType");
+			Long stateId=jObj.getLong("stateId");
+			resultList = alertService.getGrievanceReport(fromDate,toDateStr,deptId,sourceId,rangeType,stateId);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getGrievanceReport Method",e);
+		}
+		return Action.SUCCESS;
+	}
 }
