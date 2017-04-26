@@ -39,6 +39,7 @@ public class AlertOverviewVO {
 	private List<AlertOverviewVO> categoryList;
 	private List<AlertOverviewVO> subList;
 	private List<AlertOverviewVO> subList1;
+	private List<AlertOverviewVO> subList2;
 	private List<AlertOverviewVO> editionList;
 	private Set<Long> alertIdSet;
     private Long locationTypeId;
@@ -63,6 +64,7 @@ public class AlertOverviewVO {
 	private List<Long> locationIdList;
 	private Long assignedAlertCnt=0l;
 	private Long involveAlertCnt=0l;
+	private String day;
 	
 	public Long getGovtAlertCnt() {
 		return govtAlertCnt;
@@ -230,6 +232,14 @@ public class AlertOverviewVO {
 	public void setSubList1(List<AlertOverviewVO> subList1) {
 		this.subList1 = subList1;
 	}
+	
+	public List<AlertOverviewVO> getSubList2() {
+		return subList2;
+	}
+	public void setSubList2(List<AlertOverviewVO> subList2) {
+		this.subList2 = subList2;
+	}
+	
 	public Set<Long> getAlertIdSet() {
 		if(alertIdSet == null){
 			alertIdSet = new HashSet<Long>(0);
@@ -338,6 +348,12 @@ public class AlertOverviewVO {
 	}
 	public void setInvolveAlertCnt(Long involveAlertCnt) {
 		this.involveAlertCnt = involveAlertCnt;
+	}
+	public String getDay() {
+		return day;
+	}
+	public void setDay(String day) {
+		this.day = day;
 	}
 	
 }                                                          
