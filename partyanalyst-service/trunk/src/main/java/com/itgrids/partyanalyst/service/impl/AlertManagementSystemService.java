@@ -47,7 +47,9 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentScopeLevelDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationRelationDAO;
+import com.itgrids.partyanalyst.dao.IGovtOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerSubTaskTrackingDAO;
+import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -73,6 +75,8 @@ import com.itgrids.partyanalyst.model.AlertDepartmentDocumentNew;
 import com.itgrids.partyanalyst.model.AlertSubTaskStatus;
 import com.itgrids.partyanalyst.model.CustomReport;
 import com.itgrids.partyanalyst.model.GovtAlertSubTask;
+import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
+import com.itgrids.partyanalyst.model.GovtDepartmentWorkLocation;
 import com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -114,10 +118,28 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IEditionsDAO editionsDAO; 
 	private ITvNewsChannelDAO tvNewsChannelDAO;
 	private INewsPaperDAO newsPaperDAO;
+	private IGovtOfficerNewDAO govtOfficerNewDAO;
 	private IUserDAO userDAO;
+	private IGovtSmsActionTypeDAO govtSmsActionTypeDAO;
 	private IUserGroupRelationDAO userGroupRelationDAO;
 	
 	
+	public IGovtSmsActionTypeDAO getGovtSmsActionTypeDAO() {
+		return govtSmsActionTypeDAO;
+	}
+
+	public void setGovtSmsActionTypeDAO(IGovtSmsActionTypeDAO govtSmsActionTypeDAO) {
+		this.govtSmsActionTypeDAO = govtSmsActionTypeDAO;
+	}
+
+	public IGovtOfficerNewDAO getGovtOfficerNewDAO() {
+		return govtOfficerNewDAO;
+	}
+
+	public void setGovtOfficerNewDAO(IGovtOfficerNewDAO govtOfficerNewDAO) {
+		this.govtOfficerNewDAO = govtOfficerNewDAO;
+	}
+
 	public IUserGroupRelationDAO getUserGroupRelationDAO() {
 		return userGroupRelationDAO;
 	}
@@ -688,6 +710,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							
 							//save record in tracking
 							saveRecordIntoTracking(aaon,userId,adcn.getAlertDepartmentCommentId()+"",7l);
+							getAlertDetailsAndSendSMS(alertId,7L,userId,"",comment);
 						}
 						rs.setExceptionMsg("success");
 					}
@@ -709,7 +732,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						if(count != null && count > 0){
 							//save record in tracking
 							saveRecordIntoTracking(alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0),userId,priorityId+"",5l);
-							
+							getAlertDetailsAndSendSMS(alertId,5L,userId,alertSeverityDAO.get(priorityId).getSeverity(),"");
 							rs.setExceptionMsg("success");
 						}
 					}
@@ -757,6 +780,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			ResultStatus rs = new ResultStatus();
 			try {
 				saveRecordIntoTracking(alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0),userId,date,4l);
+				//getAlertDetailsAndSendSMS(alertId,4l,userId);
 				rs.setExceptionMsg("success");
 			} catch (Exception e) {
 				rs.setExceptionMsg("failure");
@@ -816,6 +840,22 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						aaotn.setIsApproved(aaon.getIsApproved());
 						alertAssignedOfficerTrackingNewDAO.save(aaotn);
+						
+						/* SMS sending while assigning a new alert to any officer */
+						
+						List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(alertId);
+						if(commonMethodsUtilService.isListOrSetValid(assingedIdsList)){//assingedId != null){
+							for (Long assingedId : assingedIdsList) {
+								AlertAssignedOfficerNew alertAssignedOfficer2 = alertAssignedOfficerNewDAO.get(assingedId);
+								Long designationId = alertAssignedOfficer2.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartmentDesignationId();
+								Long govtofficerId = alertAssignedOfficer2.getGovtOfficerId();
+								
+								List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(govtofficerId);
+								sendSMSTOAlertAssignedOfficer(designationId,govtofficerId,mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),6L,userId,alertStatusDAO.get(statusId).getAlertStatus(),comment);
+									
+							}
+						}
+						
 						rs.setExceptionMsg("success");
 					}
 				});	
@@ -823,11 +863,46 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				
 			} catch (Exception e) {
 				rs.setExceptionMsg("failure");
-				LOG.error("Exception Occured in updateAlertStatusComment of  updateAlertDueDate() ", e);
+				LOG.error("Exception Occured in updateAlertStatusComment  ", e);
 			}
 			return rs;
 		}
 		
+		/**
+		 * * 
+		 *  @author Srishailam Pittala
+		 *  @Date 25th April,2017
+		 * 	@param alertId
+		 * 	@return success/failure
+		 */
+		public String getAlertDetailsAndSendSMS(Long alertId,Long actionTypeId,Long userId,String status,String comment){
+			try {
+				/* SMS sending while assigning a new alert to any officer */
+				
+				List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(alertId);
+				if(commonMethodsUtilService.isListOrSetValid(assingedIdsList)){//assingedId != null){
+					for (Long assingedId : assingedIdsList) {
+						AlertAssignedOfficerNew alertAssignedOfficer2 = alertAssignedOfficerNewDAO.get(assingedId);
+						Long designationId = alertAssignedOfficer2.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartmentDesignationId();
+						Long govtofficerId = alertAssignedOfficer2.getGovtOfficerId();
+						
+						List<String> mobileNoList = govtOfficerNewDAO.getOfficerDetailsByOfficerId(govtofficerId);
+						String mobileNos="";
+						if(commonMethodsUtilService.isListOrSetValid(mobileNoList)){
+							for (String mobileNo : mobileNoList) {
+								mobileNos = mobileNos+","+mobileNo;
+							}
+						}
+						sendSMSTOAlertAssignedOfficer(designationId,govtofficerId,mobileNos,alertId,actionTypeId,userId,status,comment);
+					}
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getAlertDetailsAndSendSMS  ", e);
+				return "failure";
+			}
+			return "success";
+		}
 		public ResultStatus uploadDocumentsForAlert(final Map<File, String> mapfiles,final Long alertId,final Long userId){
 
 			final ResultStatus resultStatus = new ResultStatus();
@@ -874,7 +949,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						
 						//save record in tracking
 						saveRecordIntoTracking(aaon,userId,addn.getAlertDepartmentDocumentId()+"",3l);
-						
+						//getAlertDetailsAndSendSMS(alertId,3L,userId);
 				 }
 			 }
 			
@@ -889,6 +964,150 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		
 		}
 		
+		/**
+		 * * 
+		 *  @author Srishailam Pittala
+		 *  @Date 25th April,2017
+		 * 	@param alertId
+		 * 	@return success/failure
+		 */
+		public String getSubTaskDetailsAndSendSMS(Long designationId,Long govtofficerId, Long subTaskId,Long actionTypeId,Long userId,String status,String comment){
+			try {
+				/* SMS sending while assigning a new alert to any officer */
+				if(designationId == null || designationId.longValue()==0L){
+					GovtAlertSubTask govtAlertSubTask = govtAlertSubTaskDAO.get(subTaskId);
+					designationId = govtAlertSubTask.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartmentDesignationId();
+					govtofficerId = govtAlertSubTask.getSubTaskGovtOfficerId();
+				}
+				
+				List<String> mobileNoList = govtOfficerNewDAO.getOfficerDetailsByOfficerId(govtofficerId);
+				String mobileNos="";
+				if(commonMethodsUtilService.isListOrSetValid(mobileNoList)){
+					for (String mobileNo : mobileNoList) {
+						mobileNos = mobileNos+","+mobileNo;
+					}
+				}
+				sendSMSTOSubTaskAssignedOfficer(designationId,govtofficerId,mobileNos,subTaskId,actionTypeId,userId,status,comment);
+			} catch (Exception e) {
+				LOG.error("Exception Occured in getAlertDetailsAndSendSMS  ", e);
+				return "failure";
+			}
+			return "success";
+		}
+		
+		 public ResultStatus sendSMSTOSubTaskAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long subTaskId,Long actionTypeId,Long userId,String status,String comment){
+           	ResultStatus rs = new ResultStatus();
+           	try {
+           		
+           		String userNameStr="ADMIN";
+				String departmentStr=" - ";
+				String designationStr=" - ";
+				String location="";
+				if(userId != null && userId.longValue()>0L){
+					List<Object[]> userdtls = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigNameForUser(userId);
+					if(commonMethodsUtilService.isListOrSetValid(userdtls)){
+						for (Object[] param : userdtls) {
+							userNameStr = commonMethodsUtilService.getStringValueForObject(param[0]);
+							designationStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+							departmentStr = commonMethodsUtilService.getStringValueForObject(param[2]);
+							
+							Long locationTypeId = commonMethodsUtilService.getLongValueForObject(param[3]);
+							Long scopeValue = commonMethodsUtilService.getLongValueForObject(param[4]);
+							
+							if(locationTypeId != null && locationTypeId.longValue()>0L){
+								GovtDepartmentWorkLocation workLocation = govtDepartmentWorkLocationDAO.get(scopeValue);
+								if(workLocation != null)
+									location=workLocation.getLocationName()+" "+workLocation.getGovtDepartmentScope().getLevelName();
+							}
+						}
+					}
+				}
+				
+           		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
+           		//get asigned officer dept, alert title
+           		//0-title,1-deptId,2-deptName
+           		Alert tempSMSAlert = alertDAO.get(16894L);
+           		GovtAlertSubTask task1 = govtAlertSubTaskDAO.get(subTaskId);
+           		GovtDepartmentDesignationOfficerNew designationOfficeNew = govtDepartmentDesignationOfficerNewDAO.get(task1.getGovtDepartmentDesignationOfficerId());
+          		Long levelId= designationOfficeNew.getGovtDepartmentScopeId();
+          		Long levelValue=designationOfficeNew.getLevelValue();
+          		
+          		List<Long> levelValuesList = new ArrayList<Long>(0);
+          		List<Object[]> alertAssignedScopeDtls = govtDepartmentWorkLocationRelationDAO.getParentGovtSuperLevelInfo(levelValue);
+          		if(commonMethodsUtilService.isListOrSetValid(alertAssignedScopeDtls)){
+          			for (Object[] objects : alertAssignedScopeDtls) {
+          				levelId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+          				Long tempLevelValue=commonMethodsUtilService.getLongValueForObject(objects[1]);
+              			levelValuesList.add(tempLevelValue);
+					}
+          		}
+          		
+           		Object[] objArr = govtAlertSubTaskDAO.getSubTaskDetailsForSMS(subTaskId);
+           		if(objArr != null){
+           			List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,2L,1L,1L);
+           			String message ="Alert is assigned to you,Please follow up and resolve.\nTitle : "+objArr[0].toString()+" \nDept"+objArr[2].toString();
+           			
+           			if(commonMethodsUtilService.isListOrSetValid(smsText)){
+           				message = smsText.get(0) != null ? smsText.get(0).toString():message;
+           				message=message.replace("flag0", "\n");
+           				message=message.replace("flag1", objArr[0].toString()+"\n");
+           				message=message.replace("flag2", userNameStr.toString()+"\n");
+           				message=message.replace("flag3", designationStr.toString()+"\n");
+           				message=message.replace("flag4", location.toString()+"\n");
+           				message=message.replace("flag5", departmentStr.toString());
+           				message=message.replace("flag6", comment.toString()+"\n");
+           				message=message.replace("flag7", status.toString()+"\n");
+           				message=message.replace("flag8", status.toString()+"\n");
+           				
+           			}
+           			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
+           				mobileNo=tempSMSAlert.getDescription().trim();
+           			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
+           		}
+           		mobileNo="";
+           		//get parent designation Id
+           		List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(designationOfficeNew.getGovtDepartmentDesignationId());
+           		if(parentDesigIds != null && parentDesigIds.size() > 0){
+           			//get high level officer mobile nums
+           			//List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getHigherOfficerMobileNums(parentDesigIds);
+           			List<String> mobilenums = govtDepartmentDesignationOfficerDetailsNewDAO.getHigherOfficerMobileNums(parentDesigIds,levelId,levelValuesList);
+          			
+           			if(mobilenums != null && mobilenums.size() > 0){
+           				String message = "Alert is assigned to "+objArr[2].toString()+" - "+govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo+".\n Please follow up.";
+           				mobileNo = "";
+           				for (String tempMobleNo : mobilenums) {
+           					mobileNo = mobileNo.equalsIgnoreCase("")?tempMobleNo:mobileNo+","+tempMobleNo;
+           				}
+           				
+           				List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,2L,1L,2L);//2 immidiate superior type id 
+               			
+               			if(commonMethodsUtilService.isListOrSetValid(smsText)){
+               				message = smsText.get(0) != null ? smsText.get(0).toString():message;
+               				message=message.replace("flag0", "\n");
+               				message=message.replace("flag1", objArr[0].toString()+"\n");
+               				message=message.replace("flag2", userNameStr.toString()+"\n");
+               				message=message.replace("flag3", designationStr.toString()+"\n");
+               				message=message.replace("flag4", location.toString()+"\n");
+               				message=message.replace("flag5", departmentStr.toString());
+               				message=message.replace("flag6", comment.toString()+"\n");
+               				message=message.replace("flag7", status.toString()+"\n");
+               				message=message.replace("flag8", status.toString()+"\n");
+               			}
+               			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
+               				mobileNo=tempSMSAlert.getDescription().trim();
+               			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
+               			
+           			}
+           		}
+           		
+           		rs.setExceptionMsg("success");
+           	} catch (Exception e) {
+           		rs.setExceptionMsg("failure");
+           		LOG.error("Error occured sendSMSTOSubTaskAssignedOfficer() method of AlertManagementSystemService{}");
+           	}
+           	return rs;
+           }  
+		 
 		public List<AlertTrackingVO> viewAlertHistory(Long alertId){
 			List<AlertTrackingVO> finalList = new ArrayList<AlertTrackingVO>(0);
 			SimpleDateFormat dbSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -1358,22 +1577,26 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					alertAssignedOfficer.setIsDeleted("N");
 					alertAssignedOfficer.setIsApproved("Y");
 					//check whether the alert is asigned to somebody or not, if already assigned delete that assignment
-					Long assingedId = alertAssignedOfficerNewDAO.getAssignedDtls(inputvo.getAlertId());
+					List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(inputvo.getAlertId());
 					
-					if(assingedId != null){
-						AlertAssignedOfficerNew alertAssignedOfficer2 = new AlertAssignedOfficerNew();
-						alertAssignedOfficer2 = alertAssignedOfficerNewDAO.get(assingedId);
-						alertAssignedOfficer2.setAlertId(inputvo.getAlertId());
-						alertAssignedOfficer2.setGovtDepartmentDesignationOfficerId(desigOfficerId);
-						alertAssignedOfficer2.setGovtOfficerId(inputvo.getGovtOfficerId() !=null ? (Long)inputvo.getGovtOfficerId():null);
-						alertAssignedOfficer2.setInsertedBy(inputvo.getUserId());
-						alertAssignedOfficer2.setUpdatedBy(inputvo.getUserId());
-						alertAssignedOfficer2.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-						alertAssignedOfficer2.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
-						alertAssignedOfficer2.setAlertStatusId(2l);
-						alertAssignedOfficer2.setIsDeleted("N");
-						alertAssignedOfficer2.setIsApproved("Y");  
-						alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer2);
+					if(commonMethodsUtilService.isListOrSetValid(assingedIdsList)){//assingedId != null){
+						for (Long assingedId : assingedIdsList) {
+							AlertAssignedOfficerNew alertAssignedOfficer2 = new AlertAssignedOfficerNew();
+							alertAssignedOfficer2 = alertAssignedOfficerNewDAO.get(assingedId);
+							alertAssignedOfficer2.setAlertId(inputvo.getAlertId());
+							alertAssignedOfficer2.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+							alertAssignedOfficer2.setGovtOfficerId(inputvo.getGovtOfficerId() !=null ? (Long)inputvo.getGovtOfficerId():null);
+							alertAssignedOfficer2.setInsertedBy(inputvo.getUserId());
+							alertAssignedOfficer2.setUpdatedBy(inputvo.getUserId());
+							alertAssignedOfficer2.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+							alertAssignedOfficer2.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+							alertAssignedOfficer2.setAlertStatusId(2l);// setting present status of alert 
+							alertAssignedOfficer2.setIsDeleted("N");
+							alertAssignedOfficer2.setIsApproved("Y");  
+							alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer2);
+							
+							alertAssignedOfficer2.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartmentDesignationId();
+						}
 					}else{
 						alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
 					}
@@ -1390,13 +1613,20 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 					alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					alertAssignedOfficerTracking.setAlertStatusId(2l);
-					//alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
-					alertAssignedOfficerTracking.setGovtAlertActionTypeId(6l); // change status pending to notified
+					alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
 					alertAssignedOfficerTracking.setIsApproved("Y");
 					alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
 					
-					alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+					alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
 					
+					/* SMS sending while assigning a new alert to any officer */
+					
+					List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(inputvo.getGovtOfficerId());
+					List<Long> userIdsList = govtDepartmentDesignationOfficerDetailsNewDAO.getuserIdDtlsForDesignationOfficerId(desigOfficerId);
+					if(commonMethodsUtilService.isListOrSetValid(userIdsList)){
+						Long assignedToUserID = userIdsList.get(0);
+						sendSMSTOAlertAssignedOfficer(inputvo.getDesignationId(),alertAssignedOfficer.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),alertAssignedOfficerTracking.getGovtAlertActionTypeId(),assignedToUserID,"","");
+					}
 					
 					return "success";
 				}
@@ -2636,6 +2866,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						
 						govtOfficerSubTaskTracking = govtOfficerSubTaskTrackingDAO.save(govtOfficerSubTaskTracking);
 						
+						List<Long> userIdsList = govtDepartmentDesignationOfficerDetailsNewDAO.getuserIdDtlsForDesignationOfficerId(desigOfficerId);
+						if(commonMethodsUtilService.isListOrSetValid(userIdsList)){
+							Long assignedToUserID = userIdsList.get(0);
+							getSubTaskDetailsAndSendSMS(desigOfficerId,govtAlertSubTask.getSubTaskGovtOfficerId(),govtAlertSubTask.getGovtAlertSubTaskId(),1L,assignedToUserID,"","");
+						}
+						
 						return "success";
 					} catch (Exception e) {
 						LOG.error("Error occured assigningSubTaskToOfficer() method of AlertManagementSystemService",e);
@@ -3084,32 +3320,113 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		}		
         		return finalVoList;
         	}
-           public ResultStatus senedSMSTOAlertAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long alertId){
+           public ResultStatus sendSMSTOAlertAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long alertId,Long actionTypeId,Long userId,String status,String comment){
               	ResultStatus rs = new ResultStatus();
               	try {
-              		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
               		
+              		String userNameStr="ADMIN";
+    				String departmentStr=" - ";
+    				String designationStr=" - ";
+    				String location="";
+    				if(userId != null && userId.longValue()>0L){
+    					List<Object[]> userdtls = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigNameForUser(userId);
+    					if(commonMethodsUtilService.isListOrSetValid(userdtls)){
+    						for (Object[] param : userdtls) {
+    							userNameStr = commonMethodsUtilService.getStringValueForObject(param[0]);
+    							designationStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+    							departmentStr = commonMethodsUtilService.getStringValueForObject(param[2]);
+    							
+    							Long locationTypeId = commonMethodsUtilService.getLongValueForObject(param[3]);
+    							Long scopeValue = commonMethodsUtilService.getLongValueForObject(param[4]);
+    							
+    							if(locationTypeId != null && locationTypeId.longValue()>0L){
+    								GovtDepartmentWorkLocation workLocation = govtDepartmentWorkLocationDAO.get(scopeValue);
+    								if(workLocation != null){
+    									location=workLocation.getLocationName()+" "+(workLocation.getGovtDepartmentScope() != null? workLocation.getGovtDepartmentScope().getLevelName():"");
+    								}
+    							}
+    						}
+    					}
+    				}
+    				
+              		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
               		//get asigned officer dept, alert title
               		//0-title,1-deptId,2-deptName
+              		Alert tempSMSAlert = alertDAO.get(16894L);// for temp mobile nos details
               		Object[] objArr = alertDAO.getAlertDetailsForSMS(alertId);
+              		List<Object[]> levelDetails = alertAssignedOfficerNewDAO.getAlertAssignedLevelDetails(alertId);
+              		Long levelId=0L;
+              		Long levelValue=0L;
+              		List<Long> levelValuesList = new ArrayList<Long>(0);
+              		if(commonMethodsUtilService.isListOrSetValid(levelDetails)){
+              			levelId=commonMethodsUtilService.getLongValueForObject(levelDetails.get(0)[0]);
+                  		levelValue=commonMethodsUtilService.getLongValueForObject(levelDetails.get(0)[1]);
+                  		
+                  		List<Object[]> alertAssignedScopeDtls = govtDepartmentWorkLocationRelationDAO.getParentGovtSuperLevelInfo(levelValue);
+                  		if(commonMethodsUtilService.isListOrSetValid(alertAssignedScopeDtls)){
+                  			for (Object[] objects : alertAssignedScopeDtls) {
+                  				levelId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+                  				Long tempLevelValue=commonMethodsUtilService.getLongValueForObject(objects[1]);
+                      			levelValuesList.add(tempLevelValue);
+							}
+                  		}
+              		}
               		if(objArr != null){
               			String message = "Alert is assigned to you,Please follow up and resolve.\nTitle : "+objArr[0].toString()+" \nDept"+objArr[2].toString();
+              			List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,1L,1L,1L);//1 
+               			
+               			if(commonMethodsUtilService.isListOrSetValid(smsText)){
+               				message = smsText.get(0) != null ? smsText.get(0).toString():message;
+               				message=message.replace("flag0", "\n");
+               				message=message.replace("flag1", objArr[0].toString()+"\n");
+               				message=message.replace("flag2", userNameStr.toString()+"\n");
+               				message=message.replace("flag3", designationStr.toString()+"\n");
+               				message=message.replace("flag4", location.toString()+"\n");
+               				message=message.replace("flag5", departmentStr.toString());
+               				message=message.replace("flag6", comment.toString()+"\n");
+               				message=message.replace("flag7", status.toString()+"\n");
+               				message=message.replace("flag8", status.toString()+"\n");
+               			}
+               			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
+               				mobileNo=tempSMSAlert.getDescription().trim();
               			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
               		}
-              		
+              		mobileNo="";
               		//get parent designation Id
               		List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(designationId);
               		if(parentDesigIds != null && parentDesigIds.size() > 0){
               			//get high level officer mobile nums
-              			List<String> mobilenums = govtDepartmentDesignationOfficerDetailsDAO.getHigherOfficerMobileNums(parentDesigIds);
+              			List<String> mobilenums = govtDepartmentDesignationOfficerDetailsNewDAO.getHigherOfficerMobileNums(parentDesigIds,levelId,levelValuesList);
               			
               			if(mobilenums != null && mobilenums.size() > 0){
               				String message = "Alert is assigned to "+objArr[2].toString()+" - "+govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo+".\n Please follow up.";
-              				String mobileNums = "";
-              				for (String string : mobilenums) {
-              					mobileNums = mobileNums.equalsIgnoreCase("")?string:mobileNums+","+string;
+              			
+              				for (String tempMobileNo : mobilenums) {
+              					mobileNo = mobileNo.equalsIgnoreCase("")?tempMobileNo:mobileNo+","+tempMobileNo;
               				}
-              				govtSMSAPIService.senedSMSForGovtAlert(mobileNums,message);
+              				
+              				List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,1L,1L,2L);//2 immidiate superior 
+                   			
+                   			if(commonMethodsUtilService.isListOrSetValid(smsText)){
+                   				message = smsText.get(0) != null ? smsText.get(0).toString():message;
+                   				//message=message.replace("flag3", objArr[2].toString());
+                   				//message=message.replace("flag4", govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo);
+                   				message=message.replace("flag0", "\n");
+                   				message=message.replace("flag1", objArr[0].toString()+"\n");
+                   				message=message.replace("flag2", userNameStr.toString()+"\n");
+                   				message=message.replace("flag3", designationStr.toString()+"\n");
+                   				message=message.replace("flag4", location.toString()+"\n");
+                   				message=message.replace("flag5", departmentStr.toString());
+                   				message=message.replace("flag6", comment.toString()+"\n");
+                   				message=message.replace("flag7", status.toString()+"\n");
+                   				message=message.replace("flag8", status.toString()+"\n");
+                   			}
+                   			
+                   			
+                   			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
+                   				mobileNo=tempSMSAlert.getDescription().trim();
+                   			
+              				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
               			}
               		}
               		
@@ -3117,7 +3434,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               		rs.setExceptionMsg("success");
               	} catch (Exception e) {
               		rs.setExceptionMsg("failure");
-              		LOG.error("Error occured senedSMSTOAlertAssignedOfficer() method of AlertManagementSystemService{}");
+              		LOG.error("Error occured sendSMSTOAlertAssignedOfficer() method of AlertManagementSystemService{}");
               	}
               	return rs;
               }    
@@ -3494,6 +3811,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         					if(gast != null){
         						//save record in tracking
         						saveRecordIntoSubTaskTracking(gast,userId,adcn.getAlertDepartmentCommentId()+"",7l);
+        						getSubTaskDetailsAndSendSMS(null,null,subTaskId,7L,userId,"",comment);
         					}
         					rs.setExceptionMsg("success");
         				}
@@ -3545,6 +3863,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         					gostt.setIsDeleted("N");
         					govtOfficerSubTaskTrackingDAO.save(gostt);
         					
+        					getSubTaskDetailsAndSendSMS(null,null,subTaskId,gostt.getGovtAlertActionTypeId(),userId,alertSubTaskStatusDAO.get(statusId).getStatus(),comment);
+        					
         					rs.setExceptionMsg("success");
         				}
         			});	
@@ -3566,7 +3886,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         					if(count != null && count > 0){
         						//save record in tracking
         						saveRecordIntoSubTaskTracking(govtAlertSubTaskDAO.get(subTaskId),userId,priorityId+"",5l);
-        						
+        						getSubTaskDetailsAndSendSMS(null,null,subTaskId,5L,userId,alertSeverityDAO.get(priorityId).getSeverity(),"");
         						rs.setExceptionMsg("success");
         					}
         				}
@@ -3590,7 +3910,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         						if(count != null && count > 0){
         							//save record in tracking
         							saveRecordIntoSubTaskTracking(govtAlertSubTaskDAO.get(subTaskId),userId,dueDate,4l);
-        							
+        							//getSubTaskDetailsAndSendSMS(null,null,subTaskId,4L,userId);
         							rs.setExceptionMsg("success");
         						}
         					} catch (ParseException e) {
@@ -3681,7 +4001,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         					
         					//save record in tracking
         					saveRecordIntoSubTaskTracking(gast,userId,addn.getAlertDepartmentDocumentId()+"",3l);
-        					
+        					//getSubTaskDetailsAndSendSMS(null,null,subTaskId,3L,userId);
         			 }
         		 }
         		
@@ -6769,7 +7089,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   		            	officerName = (String) usrNameList.get(0)[0];
   		            	desgnationName = (String) usrNameList.get(0)[1];
   		            	if(usrNameList.size() <= 1){
-  		            			deptName = (String) usrNameList.get(0)[2];
+  		            			deptName = (String) usrNameList.get(0)[5];// dept short name 
   		            	}
   		            }
   		            
