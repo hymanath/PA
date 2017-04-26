@@ -184,7 +184,7 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 	}
 	
 	public List<String> getHigherOfficerMobileNums(List<Long> designationIds){
-		Query query = getSession().createQuery(" select model.govtOfficer.mobileNo "
+		Query query = getSession().createQuery(" select distinct model.govtOfficer.mobileNo "
 				+ " from GovtDepartmentDesignationOfficerDetailsNew model "
 				+ " where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId in (:designationIds) and model.isDeleted = 'N' ");
 		

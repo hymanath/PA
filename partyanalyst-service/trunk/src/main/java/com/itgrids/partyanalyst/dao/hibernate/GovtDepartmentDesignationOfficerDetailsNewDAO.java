@@ -316,12 +316,63 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		
 	}
 	public List<Object[]> getDesigNameForUser(Long userId){
-	    Query query = getSession().createQuery("select distinct model.user.userName," +
-	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName," +
+	    Query query = getSession().createQuery("select distinct model.user.userName , " +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName, " +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentScopeId, model.govtDepartmentDesignationOfficer.levelValue ," +
 	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.shortName" +
-	        " from GovtDepartmentDesignationOfficerDetailsNew model" +
+	        " from GovtDepartmentDesignationOfficerDetailsNew model " +
 	        " where model.userId = :userId");
 	    query.setParameter("userId", userId);
 	    return query.list();
 	  }
+	
+	public List<String> getHigherOfficerMobileNums(List<Long> designationIds,Long locationTypeId,List<Long> levelValuesList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct  model.govtOfficer.mobileNo from GovtDepartmentDesignationOfficerDetailsNew model  ");
+		queryStr.append(" where model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId in (:designationIds) and " +
+				" model.isDeleted = 'N' and model.govtOfficer.mobileNo is not null ");
+		
+		
+		if(locationTypeId != null && levelValuesList != null && levelValuesList.size() > 0){
+			if( locationTypeId.longValue() == 1L){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.stateId in (:levelValuesList) ");
+			}else if(locationTypeId.longValue() == 2L){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.zoneId  in (:levelValuesList) ");
+			}else if(locationTypeId.longValue() == 3l){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.regionId in (:levelValuesList)  ");
+			}else if(locationTypeId.longValue() == 4l){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.circleId in (:levelValuesList)  ");
+			}else if(locationTypeId.longValue() == 5l){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.districtId in (:levelValuesList) ");
+			}else if(locationTypeId.longValue() == 6l){
+				queryStr.append(" and model.govtDepartmentDesignationOfficer.govtUserAddress.divisionId  in (:levelValuesList)  ");
+			}else if(locationTypeId.longValue() == 7l){
+				queryStr.append(" and  model.govtDepartmentDesignationOfficer.govtUserAddress.subDivisionId in (:levelValuesList)  ");
+			}else if(locationTypeId.longValue() == 8l){
+				queryStr.append(" and  model.govtDepartmentDesignationOfficer.govtUserAddress.tehsilId  in (:levelValuesList)  ");
+			}else if(locationTypeId.longValue() == 9l){
+				queryStr.append(" and  model.govtDepartmentDesignationOfficer.govtUserAddress.localElectionBodyId  in (:levelValuesList)  ");
+			}else if(locationTypeId.longValue() == 10l){
+				queryStr.append(" and  model.govtDepartmentDesignationOfficer.govtUserAddress.panchayatId  in (:levelValuesList)  ");
+			}else if(locationTypeId.longValue() == 11l){
+				queryStr.append(" and  model.govtDepartmentDesignationOfficer.govtUserAddress.wardId  in (:levelValuesList)  ");
+			}
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("designationIds", designationIds);
+		if(locationTypeId !=null && levelValuesList != null && levelValuesList.size()>0L)
+			query.setParameterList("levelValuesList", levelValuesList);
+		
+		return query.list();
+	}
+	
+	public List<Long> getuserIdDtlsForDesignationOfficerId(Long assignedOfficerId){
+		Query query = getSession().createQuery("select distinct model.userId from GovtDepartmentDesignationOfficerDetailsNew model ,AlertAssignedOfficerNew model2  where " +
+				" model.govtDepartmentDesignationOfficerId = :assignedOfficerId and model.govtDepartmentDesignationOfficerId = model2.govtDepartmentDesignationOfficerId and model2.isDeleted='N'  ");
+		query.setParameter("assignedOfficerId", assignedOfficerId);
+		return query.list();
+	}
+	
 }

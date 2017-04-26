@@ -40,5 +40,15 @@ public class GovtDepartmentWorkLocationRelationDAO extends GenericDaoHibernate<G
 		
 	}
 	
-	
+	public List<Object[]> getParentGovtSuperLevelInfo(Long levelValue){
+		
+		Query query = getSession().createQuery( " SELECT model.parentGovtDepartmentWorkLocation.govtDepartmentScopeId,model.parentGovtDepartmentWorkLocationId " +
+												" " +
+												" FROM GovtDepartmentWorkLocationRelation model " +
+												" WHERE model.isDeleted ='N' " +
+												" and model.govtDepartmentWorkLocationId =:levelValue " );
+		query.setParameter("levelValue", levelValue);
+		return query.list();
+		
+	}
 }
