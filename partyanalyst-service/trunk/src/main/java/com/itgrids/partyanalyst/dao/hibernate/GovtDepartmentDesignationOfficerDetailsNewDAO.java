@@ -316,8 +316,9 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		
 	}
 	public List<Object[]> getDesigNameForUser(Long userId){
-	    Query query = getSession().createQuery("select model.user.userName," +
-	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
+	    Query query = getSession().createQuery("select distinct model.user.userName," +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName," +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.shortName" +
 	        " from GovtDepartmentDesignationOfficerDetailsNew model" +
 	        " where model.userId = :userId");
 	    query.setParameter("userId", userId);
