@@ -7086,4 +7086,37 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		return (Long)query.uniqueResult();
     }
+    
+    public List<Object[]> getDifferenceTime(Date fromDate ,Date toDate,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds ){
+    	
+    	StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT A.alert_id,T.govt_alert_action_type_id,A.created_time,T.updated_time,TIMESTAMPDIFF(HOUR,A.created_time,T.updated_time) "+
+					"	FROM alert_assigned_officer_tracking_new T,alert A "+
+					"	WHERE "+
+					"	T.alert_id = A.alert_id AND "+
+					"	A.alert_status_id IN  (:alertStatusIds) AND "+
+					"	A.govt_department_id IN (:departmentIds) AND"+
+					"	A.alert_category_id IN (:sourceIds) AND"+
+					"	T.alert_status_id IN (:alertStatusIds) AND"+
+					"	T.govt_alert_action_type_id = 6 AND"+
+					"	DATE(A.created_time) BETWEEN :fromDate AND :toDate "+
+					"	GROUP BY A.alert_id "+
+					"	ORDER BY T.alert_id ");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+				
+		if(departmentIds != null && departmentIds.size()>0)
+			query.setParameterList("departmentIds", departmentIds);
+		if(sourceIds != null && sourceIds.size()>0) 
+			query.setParameterList("sourceIds", sourceIds);
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(alertStatusIds != null && alertStatusIds.size() > 0)
+			query.setParameterList("alertStatusIds", alertStatusIds);
+		
+		return query.list();
+    }
 }
