@@ -6074,7 +6074,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
 				queryStr.append(" or A.alert_caller_id is not null ");
 			}else{
-				queryStr.append(" or A.alert_caller_id is null ");
+				queryStr.append(" and A.alert_caller_id is null ");
 			}
 			queryStr.append(" )");
 		}
@@ -6437,10 +6437,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
 			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) )");
 		
-			if( calCntrIds !=null && !calCntrIds.isEmpty() ){
+			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0).longValue()!=0l ){
 				queryStr.append(" or A.alert_caller_id is not null ");
 			}else{
-				queryStr.append(" or A.alert_caller_id is null ");
+				queryStr.append(" and A.alert_caller_id is null ");
 			}
 			queryStr.append(" )");
 		}
@@ -6503,13 +6503,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
-		if(printIdList != null && printIdList.size() > 0){
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
 			query.setParameterList("printIdList", printIdList);   
-		}
-		if(electronicIdList != null && electronicIdList.size() > 0){
 			query.setParameterList("electronicIdList", electronicIdList);
+			
 		}
-		
 		
 		if(deptId != null && deptId.longValue() > 0 ){
 			query.setParameter("deptId", deptId);
