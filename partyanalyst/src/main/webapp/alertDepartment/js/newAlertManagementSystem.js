@@ -975,6 +975,7 @@ function buildDeptNamesForMultiLevel(result){
 					var levelIdStr = '';
 					var subLevelIdStr = '';
 					var districtLevelId ='';
+					var childLevelIdsStr='';
 					for(var j in result[i].subList1){
 					   if(j == 0){
 						   levelIdStr = result[i].subList1[j].id;
@@ -986,8 +987,10 @@ function buildDeptNamesForMultiLevel(result){
 						  if(k == 0){
 							  subLevelIdStr = result[i].subList1[j].subList1[k].id;
 							  districtLevelId = result[i].subList1[j].subList1[0].id;
+							  childLevelIdsStr = result[i].subList1[j].subList1[k].childLevelId;
 						  }else{
 							   subLevelIdStr = subLevelIdStr+','+result[i].subList1[j].subList1[k].id;
+							    childLevelIdsStr = childLevelIdsStr+','+result[i].subList1[j].subList1[k].childLevelId;
 						  }
 								
 					   } 
@@ -996,12 +999,12 @@ function buildDeptNamesForMultiLevel(result){
 					if(i == 0)
 					{
 					
-						str+='<a role="button" class="collapseIconForMulti departmentLevelWiseDetails" attr_level_idstr='+levelIdStr+' attr_departmentId="'+result[i].id+'"  attr_district_level_id = "'+districtLevelId+'" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+						str+='<a role="button" class="collapseIconForMulti departmentLevelWiseDetails" attr_level_idstr='+levelIdStr+' attr_departmentId="'+result[i].id+'"  attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 						str+='<h4 class="panel-title fontColor" >'+result[i].name+'<span style="margin-left:20px"></span>';
 						  str+='</h4>';
 						str+='</a>';
 					}else{
-						str+='<a role="button" class="collapsed collapseIconForMulti departmentLevelWiseDetails" attr_level_idstr='+levelIdStr+'  attr_departmentId="'+result[i].id+'"  attr_district_level_id = "'+districtLevelId+'"  data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+						str+='<a role="button" class="collapsed collapseIconForMulti departmentLevelWiseDetails" attr_level_idstr='+levelIdStr+'  attr_departmentId="'+result[i].id+'"  attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'" data-toggle="collapse" data-parent="#departmentOverview" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
 						  str+='<h4 class="panel-title fontColor">'+result[i].name+'<span style="margin-left:20px"></span>';
 						  str+='</h4>';
 						str+='</a>';
@@ -1027,8 +1030,8 @@ function buildDeptNamesForMultiLevel(result){
 										
 										str+='<div class="col-md-3 col-xs-12 col-sm-12 pull-right">';
 											str+='<ul class="switch_btn_multiLevel locationAndStatusWiseInterchange">';
-												str+='<li  class="statusChangeCls'+result[i].id+''+result[i].subList1[j].id+'" attr_type="overview"  attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'">location</li>';
-												str+='<li class="active addActiveCls statusChangeCls'+result[i].id+''+result[i].subList1[j].id+'" attr_type="status" attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'">status</li>';
+												str+='<li  class="statusChangeCls'+result[i].id+''+result[i].subList1[j].id+'" attr_type="overview"  attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location</li>';
+												str+='<li class="active addActiveCls statusChangeCls'+result[i].id+''+result[i].subList1[j].id+'" attr_type="status" attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status</li>';
 											str+='</ul>';
 										str+='</div>';
 									str+='</div>';
@@ -1036,16 +1039,16 @@ function buildDeptNamesForMultiLevel(result){
 										str+='<div class="row m_top20">';
 											str+='<div class="col-md-2 col-xs-12 col-sm-12">';
 												str+='<ul class="list-inline activeUlCls  constituencyUl locationAndStatusWiseSorting">';
-												str+='<li class="active sortingCls'+result[i].id+''+result[i].subList1[j].id+'" attr_sorting_type="count" attr_order_type="desc" attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'">';
+												str+='<li class="active sortingCls'+result[i].id+''+result[i].subList1[j].id+'" attr_sorting_type="count" attr_order_type="desc" attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">';
 													str+='<i class="glyphicon glyphicon-sort-by-attributes" ></i>';
 												str+='</li>';
-												str+='<li class="sortingCls'+result[i].id+''+result[i].subList1[j].id+'" attr_sorting_type="count" attr_order_type="asc" attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'" attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'">';
+												str+='<li class="sortingCls'+result[i].id+''+result[i].subList1[j].id+'" attr_sorting_type="count" attr_order_type="asc" attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'" attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">';
 													str+='<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>';
 												str+='</li>';
-												str+='<li class="sortingCls'+result[i].id+''+result[i].subList1[j].id+'" attr_sorting_type="name" attr_order_type="asc"  attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'">';
+												str+='<li class="sortingCls'+result[i].id+''+result[i].subList1[j].id+'" attr_sorting_type="name" attr_order_type="asc"  attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">';
 													str+='A-Z';
 												str+='</li>';
-												str+='<li class="sortingCls'+result[i].id+''+result[i].subList1[j].id+'" attr_sorting_type="name" attr_order_type="desc" attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'" attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'">';
+												str+='<li class="sortingCls'+result[i].id+''+result[i].subList1[j].id+'" attr_sorting_type="name" attr_order_type="desc" attr_department_id="'+result[i].id+'" attr_parent_id="'+result[i].subList1[j].id+'" attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">';
 													str+='Z-A';
 												str+='</li>';
 												str+='</ul>';
@@ -1088,7 +1091,9 @@ function buildDeptNamesForMultiLevel(result){
 				if(deptObj.subList1[i].subList1 !=null && deptObj.subList1[i].subList1.length>0){
 					for(var j in deptObj.subList1[i].subList1){
 						if(j==0){
-							getLocationBasedOnDepartmentLevel(deptObj.id,deptObj.subList1[i].id,deptObj.subList1[i].subList1[0].id);
+							getLocationBasedOnDepartmentLevel(deptObj.id,deptObj.subList1[i].id,deptObj.subList1[i].subList1[0].id,deptObj.subList1[i].subList1[0].childLevelId);
+						}else{
+							getLocationBasedOnDepartmentLevel(deptObj.id,deptObj.subList1[i].id,deptObj.subList1[i].subList1[0].id,deptObj.subList1[i].subList1[j].childLevelId);
 						}
 					}
 				}
@@ -1100,6 +1105,7 @@ function buildDeptNamesForMultiLevel(result){
 }
 	$(document).on("click",".departmentLevelWiseDetails",function(){
 		var levelIdsStr = $(this).attr("attr_level_idstr").split(',');
+		var childLevelIdsStr = $(this).attr("attr_child_id").split(',');
 		var departmentId = $(this).attr("attr_departmentId");
 		var districtLevelId = $(this).attr("attr_district_level_id");
 		$(".locationAndStatusWiseInterchange").find("li").removeClass("active");
@@ -1107,7 +1113,8 @@ function buildDeptNamesForMultiLevel(result){
 		
 		for(var i in levelIdsStr){
 			getStateThenGovtDeptScopeWiseAlertCount(departmentId,levelIdsStr[i],"status","levelWiseGraphView","count","desc",0,0);
-			getLocationBasedOnDepartmentLevel(departmentId,levelIdsStr[i],districtLevelId)
+			getLocationBasedOnDepartmentLevel(departmentId,levelIdsStr[i],districtLevelId,childLevelIdsStr[0]);
+			
 		}
 		
 	});
@@ -1130,14 +1137,19 @@ $(document).on("click",".locationAndStatusWiseInterchange li",function(){
 			 }
 		});
 		var districtLevelId = $(this).attr("attr_district_level_id");
+		var childLevelIdsStr = $(this).attr("attr_child_id").split(',');
+		
 		for(var i in subLevelIdStr){
 			$("#locationNamesId"+departmentId+parentId+subLevelIdStr[i]).html('');
 			$("#locationNamesId"+departmentId+parentId+subLevelIdStr[i]).append('<option value="0">SELECT '+globalLevelObj[subLevelIdStr[i]]+'</option>');
+			$("#locationNamesId"+departmentId+parentId+subLevelIdStr[i]).trigger('chosen:updated');
 			
 		}
 		
 		getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentId,groupType,"levelWiseGraphView",sortingType,orderType,0,0);
-		getLocationBasedOnDepartmentLevel(departmentId,parentId,districtLevelId)
+		getLocationBasedOnDepartmentLevel(departmentId,parentId,districtLevelId,childLevelIdsStr[0]);
+		
+		
 });
 
 $(document).on("click",".locationAndStatusWiseSorting li",function(){
@@ -1156,14 +1168,17 @@ $(document).on("click",".locationAndStatusWiseSorting li",function(){
 			 }
 		});
 		var districtLevelId = $(this).attr("attr_district_level_id");
+		var childLevelIdsStr = $(this).attr("attr_child_id").split(',');
 		for(var i in subLevelIdStr){
 			$("#locationNamesId"+departmentId+parentId+subLevelIdStr[i]).html('');
 			$("#locationNamesId"+departmentId+parentId+subLevelIdStr[i]).append('<option value="0">SELECT '+globalLevelObj[subLevelIdStr[i]]+'</option>');
+			$("#locationNamesId"+departmentId+parentId+subLevelIdStr[i]).trigger('chosen:updated');
 			
 		}
 	
 		getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentId,groupType,"levelWiseGraphView",sortingType,orderType,0,0);
-		getLocationBasedOnDepartmentLevel(departmentId,parentId,districtLevelId)
+		getLocationBasedOnDepartmentLevel(departmentId,parentId,districtLevelId,childLevelIdsStr[0]);
+		
 });
 
 
@@ -1743,7 +1758,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 	}
 }
 
-	function getLocationBasedOnDepartmentLevel(departmentId,parentScopeId,districtLevelId){
+	function getLocationBasedOnDepartmentLevel(departmentId,parentScopeId,districtLevelId,childLevelId){
 	  $("#locationNamesId"+departmentId+parentScopeId+districtLevelId).html('');
 	   var groupType = '';
 		$('.statusChangeCls'+departmentId+parentScopeId).each(function(i, obj){
@@ -1774,6 +1789,10 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 			  $("#locationNamesId"+departmentId+parentScopeId+districtLevelId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 			}
 		  }
+			$("#locationNamesId"+departmentId+parentScopeId+districtLevelId).chosen();
+			$("#locationNamesId"+departmentId+parentScopeId+districtLevelId).trigger("chosen:updated");
+			$("#locationNamesId"+departmentId+parentScopeId+childLevelId).chosen();
+			$("#locationNamesId"+departmentId+parentScopeId+childLevelId).trigger("chosen:updated");
 		});    
 	}
 	
@@ -1835,6 +1854,8 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 					$("#locationNamesId"+departmentId+levelId+childLevelId).append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
 			}
+			$("#locationNamesId"+departmentId+levelId+childLevelId).chosen();
+			$("#locationNamesId"+departmentId+levelId+childLevelId).trigger("chosen:updated");
 		});    
 	}
 
