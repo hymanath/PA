@@ -27,6 +27,7 @@ public class GovtDepartmentDesignationOfficerDetailsNew {
 	private Long govtOfficerId;
 	private String isDeleted;
 	private Long userId;
+	private String deptActive;
 	
 	private User user;
 	private GovtDepartmentDesignationOfficerNew govtDepartmentDesignationOfficer;
@@ -108,4 +109,14 @@ public class GovtDepartmentDesignationOfficerDetailsNew {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	@Column(name = "dept_active")
+	public String getDeptActive() {
+		return deptActive;
+	}
+	public void setDeptActive(String deptActive) {
+		this.deptActive = deptActive;
+	}
+	
+	
 }

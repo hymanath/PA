@@ -310,7 +310,7 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		Query query = getSession().createQuery(" SELECT distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
 												" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName " +
 												" FROM GovtDepartmentDesignationOfficerDetailsNew model " +
-												" WHERE model.isDeleted ='N' ") ;
+												" WHERE model.isDeleted ='N' and model.deptActive = 'Y' ") ;
 		
 		return query.list();
 		
