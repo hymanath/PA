@@ -17042,5 +17042,13 @@
 			<param name="root">alertsSummeryVOList</param>       
 		</result> 
 	</action> 
+	<action name="locationWiseGrivenceReportAction" class="createAlertAction" method="locationWiseGrivenceReport">
+		  <result name="success">/jsp/grievanceReport.jsp</result>                
+	</action>
+	<action name="getGrievanceReportAction" class="createAlertAction" method="getGrievanceReport">
+		<result type="json" name="success">
+		<param name="root">resultList</param>
+		</result>
+	</action>
  </package>
 </struts>
