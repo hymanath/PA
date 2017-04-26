@@ -4214,6 +4214,8 @@
 		<property name="alertSubTaskStatusDAO" ref="alertSubTaskStatusDAO" ></property>
 		<property name="userDAO" ref="userDAO" ></property>
 		<property name="userGroupRelationDAO" ref="userGroupRelationDAO" ></property>  
+		<property name="govtOfficerNewDAO" ref="govtOfficerNewDAO" ></property>  
+		<property name="govtSmsActionTypeDAO" ref="govtSmsActionTypeDAO" ></property>  
    </bean>
 </beans>			
 	
