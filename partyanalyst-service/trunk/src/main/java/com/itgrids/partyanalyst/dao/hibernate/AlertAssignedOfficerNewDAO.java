@@ -3569,7 +3569,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	             if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
 	                 sb.append(" or model.alert.alertCallerId is not null ");
 	           }else{
-	             sb.append(" or model.alert.alertCallerId is null ");
+	             sb.append(" and model.alert.alertCallerId is null ");
 	           }
 	               sb.append(" )");
 	           }

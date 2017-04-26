@@ -6909,7 +6909,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
              if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
                  sb.append(" or model.alertCallerId is not null ");
            }else{
-             sb.append(" or model.alertCallerId is null ");
+             sb.append(" and model.alertCallerId is null ");
            }
                sb.append(" )");
            }
