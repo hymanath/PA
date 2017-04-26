@@ -10854,6 +10854,10 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		
 		
 	}
+	/*
+	 * Swadhin K Lenka
+	 * @see com.itgrids.partyanalyst.service.IAlertService#getGrievanceReport(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String)
+	 */
 	public List<AlertOverviewVO> getGrievanceReport(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
@@ -10864,8 +10868,6 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Long> alertTypeList = new ArrayList<Long>();
-			List<Long> editionList = new ArrayList<Long>();
 			
 			AlertOverviewVO alertVO = null;    
 			List<AlertOverviewVO> alertVOs = null;//new ArrayList<AlertVO>();
@@ -10873,16 +10875,10 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			Map<Long,Long> locationIdAndCountMap = new HashMap<Long,Long>();
 			//get all the alert status for  building the template
 			List<Object[]> statusList = alertDepartmentStatusDAO.getAlertStatusByDepartmentId(departmentId);
-			List<String> dayList = null;
-			if(rangeType != null && !rangeType.isEmpty() && rangeType.length() > 0 && rangeType.equalsIgnoreCase("day")){
-				dayList = dateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
-				Collections.reverse(dayList);
-			}else if(rangeType != null && !rangeType.isEmpty() && rangeType.length() > 0 && rangeType.equalsIgnoreCase("week")){
-				
-			}else{
-				
-			}
-	 
+			//for day
+			List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+			Collections.reverse(dayList);
+			
 			//get alert status count and and create a map of LocationId and its corresponding  alert count
 			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, departmentId,sourceId,"District","One");
 			if(alertCountList != null && alertCountList.size() > 0){
@@ -10971,13 +10967,38 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 								}
 							}
 							innerListAlertVO.setSubList2(alertVOs2);
-						}else if(rangeType != null && !rangeType.isEmpty() && rangeType.length() > 0 && rangeType.equalsIgnoreCase("week")){
-							
 						}else{
+							LinkedHashMap<String,List<String>> weekAndDaysMap = null;
+							if(rangeType != null && !rangeType.isEmpty() && rangeType.length() > 0 && rangeType.equalsIgnoreCase("week")){
+								weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
+							}else{
+								weekAndDaysMap = DateUtilService.getTotalMonthsMap(fromDate, toDate);
+							}
 							
+							if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
+								alertVOs2 = new ArrayList<AlertOverviewVO>();
+								//innerListAlertVO = new AlertOverviewVO();
+								for(Entry<String,List<String>> entry2 : weekAndDaysMap.entrySet()){
+									alertVO = new AlertOverviewVO();
+									alertVO.setDay(commonMethodsUtilService.getStringValueForObject(entry2.getKey()));
+									alertVOs2.add(alertVO);  
+								}
+							}
+							for(AlertOverviewVO param : alertVOs2){
+								if(weekAndDaysMap.get(param.getDay()) != null){
+									Long total = 0l;
+									for(String day:weekAndDaysMap.get(param.getDay())){
+										if(dayAndCountMap.get(day) != null){
+											total += dayAndCountMap.get(day);
+										}
+									}
+									param.setTotalAlertCnt(total);  
+								}else{
+									param.setTotalAlertCnt(0l);  
+								}
+							}
+							innerListAlertVO.setSubList2(alertVOs2);
 						}
-						
-						
 						
 						for(AlertOverviewVO param : alertVOs){
 							if(statusIdAndCountMap.get(param.getStatusTypeId()) != null){
@@ -11007,13 +11028,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	  }
 		return null;
 	}     
-	@Override
-	public List<AlertOverviewVO> getGrievanceReport(String fromDate,
-			String toDateStr, Long deptId, Long sourceId, String rangeType,
-			Long stateId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 }
 
 
