@@ -295,4 +295,9 @@ google.load("elements", "1", {
 });
 </script>
 </body>
+<script>
+google.load("elements", "1", {
+	packages: "transliteration"
+});
+</script>
 </html>
