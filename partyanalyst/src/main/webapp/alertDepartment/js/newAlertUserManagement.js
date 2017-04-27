@@ -173,7 +173,9 @@ function buildIASOfficerMyAlertsCountMainView(result){
 					str+='</table>';
 					str+='</div>';	
 					str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
+					str+='<div class="scrollerAlert">';
 					str+='<div id="myAlertGraphView" ></div>';
+					str+='</div>';	
 					str+='</div>';	
 		}
 			str+='</div>';
@@ -198,7 +200,13 @@ function buildIASOfficerMyAlertsCountMainView(result){
 				
 							mainArrTempAT.push(tempArrAT);
 					}
-					
+					if(namesArrAT.length > 4)
+					{
+						$(".scrollerAlert").mCustomScrollbar({setHeight:'270px'});
+					}else{
+						$(".scrollerAlert").removeAttr('style');
+						$(".scrollerAlert").mCustomScrollbar({setHeight:'auto'});
+					}
 					$('#myAlertGraphView').highcharts({
 							
 							chart: {
@@ -401,7 +409,9 @@ function buildIASOfficerMySubTasksCountView(result){
 					str+='</table>';
 					str+='</div>';	
 					str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
+					str+='<div class="scrollerSubTask">';
 					str+='<div id="mySubTasksGraphView" ></div>';
+					str+='</div>';	
 					str+='</div>';	
 		}
 			str+='</div>';
@@ -426,7 +436,13 @@ function buildIASOfficerMySubTasksCountView(result){
 				
 							mainArrTempAT.push(tempArrAT);
 					}
-					
+					if(namesArrAT.length > 4)
+					{
+						$(".scrollerSubTask").mCustomScrollbar({setHeight:'270px'});
+					}else{
+						$(".scrollerSubTask").removeAttr('style');
+						$(".scrollerSubTask").mCustomScrollbar({setHeight:'auto'});
+					}
 					$('#mySubTasksGraphView').highcharts({
 							
 							chart: {
@@ -625,7 +641,9 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 					str+='</div>';	
 					
 					str+='<div class="col-sm-12 col-xs-12 col-md-12 m_top10">';
+					str+='<div class="scrollerAssSubTask">';
 					str+='<div id="assignedSubTasksGraphView" ></div>';
+					str+='</div>';
 					str+='</div>';
 		}
 			str+='</div>';
@@ -651,7 +669,13 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 				
 							mainArrTempAT.push(tempArrAT);
 					}
-					
+					if(namesArrAT.length > 4)
+					{
+						$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'270px'});
+					}else{
+						$(".scrollerAssSubTask").removeAttr('style');
+						$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'auto'});
+					}
 					$('#assignedSubTasksGraphView').highcharts({
 							
 							chart: {
@@ -1093,7 +1117,8 @@ function stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(){
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : newspapersGlobalArr,
-      chanelIdArr :channelGlobalArr
+      chanelIdArr :channelGlobalArr,
+	  callCenterIdsArr:callCenterGlobalArr
     }
     $.ajax({
       type:'GET',
