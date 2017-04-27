@@ -39,8 +39,12 @@ public class AlertGovtOfficerSmsDetails extends BaseModel implements Serializabl
 	private Date insertTime;
 	private Alert alert;
 	private User user;
-	private GovtOfficer govtOfficer;
+	private GovtOfficerNew govtOfficer;
 	private AlertStatus alertStatus;
+	private GovtAlertSubTask govtAlertSubTask;
+	private GovtAlertActionType govtAlertActionType;
+	private Long govtAlertSubTaskId;
+	private Long govtAlertActionTypeId;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -130,7 +134,7 @@ public class AlertGovtOfficerSmsDetails extends BaseModel implements Serializabl
 		this.user = user;
 	}
 	
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	/*@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "govt_officer_id" ,insertable = false ,updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -139,7 +143,7 @@ public class AlertGovtOfficerSmsDetails extends BaseModel implements Serializabl
 	}
 	public void setGovtOfficer(GovtOfficer govtOfficer) {
 		this.govtOfficer = govtOfficer;
-	}
+	}*/
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "alert_status_id" ,insertable = false ,updatable = false)
@@ -148,8 +152,54 @@ public class AlertGovtOfficerSmsDetails extends BaseModel implements Serializabl
 	public AlertStatus getAlertStatus() {
 		return alertStatus;
 	}
+	
 	public void setAlertStatus(AlertStatus alertStatus) {
 		this.alertStatus = alertStatus;
 	}
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_officer_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtOfficerNew getGovtOfficer() {
+		return govtOfficer;
+	}
+	public void setGovtOfficer(GovtOfficerNew govtOfficer) {
+		this.govtOfficer = govtOfficer;
+	}
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_alert_sub_task_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtAlertSubTask getGovtAlertSubTask() {
+		return govtAlertSubTask;
+	}
+	public void setGovtAlertSubTask(GovtAlertSubTask govtAlertSubTask) {
+		this.govtAlertSubTask = govtAlertSubTask;
+	}
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_alert_action_type_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtAlertActionType getGovtAlertActionType() {
+		return govtAlertActionType;
+	}
+	public void setGovtAlertActionType(GovtAlertActionType govtAlertActionType) {
+		this.govtAlertActionType = govtAlertActionType;
+	}
+	@Column(name="govt_alert_sub_task_id")
+	public Long getGovtAlertSubTaskId() {
+		return govtAlertSubTaskId;
+	}
+	public void setGovtAlertSubTaskId(Long govtAlertSubTaskId) {
+		this.govtAlertSubTaskId = govtAlertSubTaskId;
+	}
+	@Column(name="govt_alert_action_type_id")
+	public Long getGovtAlertActionTypeId() {
+		return govtAlertActionTypeId;
+	}
+	public void setGovtAlertActionTypeId(Long govtAlertActionTypeId) {
+		this.govtAlertActionTypeId = govtAlertActionTypeId;
+	}
+	
 	
 }
