@@ -824,7 +824,7 @@ function buildDepartmentLevels(result,tempBuildId){
 
 
 function getParentLevelsOfLevel(buildId){
-	departmentId = 49;
+	departmentId = $("#departmentsId").val();
 	var jsObj = {
 		departmentId : departmentId,
 		levelId : $("#"+buildId+"").val()
@@ -2918,7 +2918,7 @@ function assignUser(alertId)
 								str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
 								str+='<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	';
 									str+='<option value="0">Select Department</option>';
-									str+='<option value="49">RWS</option>';
+									//str+='<option value="49">RWS</option>';
 								str+='</select>';
 							str+='</div>';
 							str+='<div class="col-sm-6">';
