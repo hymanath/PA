@@ -1093,7 +1093,7 @@ function getStatusCompletionInfo(alertId){
 						str+='<p> Caller : '+result[0].userType+'</p>';
 					str+='</div>';
 				str+='</div>';
-				$("#callerDetailsDIv").append(str);
+				$("#callerDetailsDIv").html(str);
 			}
 			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
@@ -1647,9 +1647,10 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 					
 					str+='<div class="media">';
 						str+='<div class="media-left">';
-							str+='<span class="icon-name icon-primary">'+result[0].assignedByOfficerStr+'</span>';
+							str+='<span class="icon-name icon-primary">'+result[0].assignedOfficerStr.substring(0,2)+'</span>';
 						str+='</div>';
 						str+='<div class="media-body">';
+							str+='<p> SUB TASK ASSIGN TO: <i class="fa fa-level-down "></i></p> ';
 							str+='<p>'+result[0].assignedOfficerStr+' - '+result[0].deptName+'</p>';
 							str+='<p> - '+result[0].designation+'<br> (<i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+')</p>';
 							str+='<p></p>';
@@ -1668,6 +1669,24 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 					
 					str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created Date : '+result[i].dateStr+'</small></p>';
 					str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Due Date  : '+result[i].dueDateStr+'</small></p>';
+					if(result[i].assignedByOfficerStr != null && result[i].assignedByOfficerStr.length > 0)
+					{
+						str+='<p class="m_top5"> Updated By: '+result[i].assignedByOfficerStr+'</p>';
+					}
+					if(result[i].deptName != null && result[i].deptName.length > 0)
+					{
+						str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].deptName+'</p>';
+					}
+					if(result[i].designation != null && result[i].designation.length > 0)
+					{
+						str+='<p class="m_top5"><i class="glyphicon"></i> Designation :'+result[i].designation+'</p>';
+					}
+					/*if(result[i].mobileNO != null && result[i].mobileNO.length > 0)
+					{
+						str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].mobileNO+'</p>';
+					}
+					*/
+					
 				str+='</div>';
 				
 				str1='';
@@ -1706,6 +1725,23 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 											{
 												str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].commentList[k].date+'</p>';
 											}
+											if(result[i].commentList[k].userName != null && result[i].commentList[k].userName.length > 0)
+											{
+												str+='<p class="m_top5"> Updated By: '+result[i].commentList[k].userName+'</p>';
+											}
+											if(result[i].commentList[k].deptName != null && result[i].commentList[k].deptName.length > 0)
+											{
+												str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].commentList[k].deptName+'</p>';
+											}
+											if(result[i].commentList[k].designation != null && result[i].commentList[k].designation.length > 0)
+											{
+												str+='<p class="m_top5"><i class="glyphicon"></i> Designation :'+result[i].commentList[k].designation+'</p>';
+											}
+											/*if(result[i].mobileNO != null && result[i].mobileNO.length > 0)
+											{
+												str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].mobileNO+'</p>';
+											}
+											*/
 										}
 									str+='</div>';
 							str+='</div>';
@@ -2995,102 +3031,103 @@ function alertHistory(result)
 				{
 					str+='<li>';
 						str+='<span class="alert-history-time" >'+result[i].timeList[j].date+'</span>';
-						if(result[i].timeList[j].statusList != null && result[i].timeList[j].statusList.length > 0)
-						{							
-							for(var k in result[i].timeList[j].statusList)
-							{
-								var actionType = result[i].timeList[j].statusList[k].alertTrackingActionType;
-								if(actionType != null && actionType.length>0)
-									str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;" ><span class="status-icon arrow-icon"></span>Action : '+actionType+'</p>';
-								
-								if(actionType == 'Comment'){									
-									if(result[i].timeList[j].commentList != null && result[i].timeList[j].commentList.length > 0)
-									{
-										for(var k in result[i].timeList[j].commentList)
-										{
-											str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Comment </span>: '+result[i].timeList[j].commentList[k].strList+'</p>';
-										}
-									}
-									
-								}
-								else if(actionType == 'Attachment'){
-									if(result[i].timeList[j].attachementsList != null && result[i].timeList[j].attachementsList.length > 0)
-									{
-										for(var k in result[i].timeList[j].attachementsList)
-										{
-											if(result[i].timeList[j].attachementsList[k].strList != null && result[i].timeList[j].attachementsList[k].strList.length>0){
-												for(var h in result[i].timeList[j].attachementsList[k].strList){
-													str+='<span class="alert-history-body text-capital"><img src="http://www.mytdp.com/images/'+result[i].timeList[j].attachementsList[k].strList[h]+'" width="25%" style="margin-left: 25px;" class="m_top5" /></span>';
-												}
-											}
-										}
-									}
-								}
-								else if(actionType == 'Due Date'){
-									if(result[i].timeList[j].dueDateList != null && result[i].timeList[j].dueDateList.length > 0)
-									{
-										for(var l in result[i].timeList[j].dueDateList)
-										{
-											if(result[i].timeList[j].dueDateList[l].strList != null && result[i].timeList[j].dueDateList[l].strList.length>0){
-												for(var c in result[i].timeList[j].dueDateList[l].strList)
-													str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Changed Date </span> : '+result[i].timeList[j].dueDateList[l].strList[c]+'</p>';
-											}
-											
-										}										
-									}  
-								}
-								else if(actionType == 'Priority'){
-									if(result[i].timeList[j].priorityList != null && result[i].timeList[j].priorityList.length > 0)
-									{
-										for(var l in result[i].timeList[j].priorityList)
-										{
-											if(result[i].timeList[j].priorityList[l].strList != null && result[i].timeList[j].priorityList[l].strList.length>0){
-												for(var c in result[i].timeList[j].priorityList[l].strList)
-													str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Priority </span> : '+result[i].timeList[j].priorityList[l].strList[c]+'</p>';
-											}
-											
-										}										
-									}
-								}
-								
-								
-								if(result[i].timeList[j].statusList[k].strList != null && result[i].timeList[j].statusList[k].strList.length > 0)
-								{
-									for(var l in result[i].timeList[j].statusList[k].strList)
-									{
-										if(actionType == 'Status Change')
-											str+='<p class="alert-history-status m_top20 text-capital ">  <span style="margin-left: 20px">  STATUS </span> :  <span style="font-size:10px;">'+result[i].timeList[j].statusList[k].strList+' </span></p>';
-										
-										str+='<p class=" alert-history-user m_top20 text-capital ">';
-										if(result[i].timeList[j].statusList[k].updatedUserName != null && result[i].timeList[j].statusList[k].updatedUserName.length>0){
-											str+=' <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i].timeList[j].statusList[k].updatedUserName+'  </span>';
-										}
-										if(result[i].timeList[j].statusList[k].deptName != null && result[i].timeList[j].statusList[k].deptName.length>0){
-											str+=' , <span style="color:slategrey;font-weight:bold;margin-left: 25px">  Dept </span>: <span style="font-size:10px"> '+result[i].timeList[j].statusList[k].deptName+'  </span>';
-										}
-										if(result[i].timeList[j].statusList[k].designation != null && result[i].timeList[j].statusList[k].designation.length>0){
-											str+=', <span style="color:slategrey;font-weight:bold;margin-left: 25px"> designation </span>: <span style="font-size:10px"> '+result[i].timeList[j].statusList[k].designation+' </span>';
-										}
-										if(result[i].timeList[j].statusList[k].mobileNO != null && result[i].timeList[j].statusList[k].mobileNO.length>0){
-											//str+=', <span style="color:slategrey;font-weight:bold;margin-left: 25px"> , Mobile No </span>: '+result[i].timeList[j].statusList[k].mobileNO+'';
-										}
-										str+='</p>';
-									}
-								}
-							}
-						}
 						
-						/*
-						strList
 						if(result[i].timeList[j].statusList != null && result[i].timeList[j].statusList.length > 0)
 						{
-							for(var k in result[i].timeList[j].statusList)
-							{
-								str+='<p class="alert-history-user m_top5 text-capital">'+result[i].timeList[j].statusList[k].designation+'</p>';
-								str+='<p class="alert-history-user m_top5 text-capital">'+result[i].timeList[j].statusList[k].userName+'</p>';
+							var actionType = result[i].timeList[j].statusList[0].alertTrackingActionType;
+							if(actionType != null && actionType.length>0)
+								str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;" ><span class="status-icon arrow-icon"></span>Action : '+actionType+'</p>';
+							
+							if(actionType == 'Comment'){									
+								if(result[i].timeList[j].commentList != null && result[i].timeList[j].commentList.length > 0)
+								{
+									for(var k in result[i].timeList[j].commentList)
+									{
+										str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Comment </span>: '+result[i].timeList[j].commentList[k].strList+'</p>';
+									}
+								}
+								
 							}
-						}
-						*/
+							else if(actionType == 'Attachment'){
+								if(result[i].timeList[j].attachementsList != null && result[i].timeList[j].attachementsList.length > 0)
+								{
+									for(var k in result[i].timeList[j].attachementsList)
+									{
+										if(result[i].timeList[j].attachementsList[k].strList != null && result[i].timeList[j].attachementsList[k].strList.length>0){
+											for(var h in result[i].timeList[j].attachementsList[k].strList){
+												str+='<span class="alert-history-body text-capital"><img src="http://www.mytdp.com/images/'+result[i].timeList[j].attachementsList[k].strList[h]+'" width="25%" style="margin-left: 25px;" class="m_top5" /></span>';
+											}
+										}
+									}
+								}
+							}
+							else if(actionType == 'Due Date'){
+								if(result[i].timeList[j].dueDateList != null && result[i].timeList[j].dueDateList.length > 0)
+								{
+									for(var l in result[i].timeList[j].dueDateList)
+									{
+										if(result[i].timeList[j].dueDateList[l].strList != null && result[i].timeList[j].dueDateList[l].strList.length>0){
+											for(var c in result[i].timeList[j].dueDateList[l].strList)
+												str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Changed Date </span> : '+result[i].timeList[j].dueDateList[l].strList[c]+'</p>';
+										}
+										
+									}										
+								}  
+							}
+							else if(actionType == 'Priority'){
+								if(result[i].timeList[j].priorityList != null && result[i].timeList[j].priorityList.length > 0)
+								{
+									for(var l in result[i].timeList[j].priorityList)
+									{
+										if(result[i].timeList[j].priorityList[l].strList != null && result[i].timeList[j].priorityList[l].strList.length>0){
+											for(var c in result[i].timeList[j].priorityList[l].strList)
+												str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Priority </span> : '+result[i].timeList[j].priorityList[l].strList[c]+'</p>';
+										}
+										
+									}										
+								}
+							}
+							
+								
+								if(result[i].timeList[j].statusList != null && result[i].timeList[j].statusList.length>0 && result[i].timeList[j].statusList[0].strList != null && result[i].timeList[j].statusList[0].strList.length > 0)
+								{
+									if(actionType == 'Status Change'){
+										str+='<p class="alert-history-status m_top20 text-capital ">  <span style="margin-left: 20px">  STATUS </span> :  <span style="font-size:10px;">'+result[i].timeList[j].statusList[0].strList+' </span></p>';
+										
+										
+									}
+								}
+								if(result[i].timeList[j].commentList != null && result[i].timeList[j].commentList.length>0 && result[i].timeList[j].commentList[0].strList != null && result[i].timeList[j].commentList[0].strList.length > 0)
+								{										
+									if(actionType == 'Status Change'){
+										str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i].timeList[j].commentList[0].strList+'</p>';
+									}
+								}
+									
+							}
+							
+							if(result[i].timeList[j].statusList[0].strList != null && result[i].timeList[j].statusList[0].strList.length > 0)
+							{
+								for(var l in result[i].timeList[j].statusList[0].strList)
+								{
+									
+									str+='<p class=" alert-history-user m_top20 text-capital ">';
+									if(result[i].timeList[j].statusList[0].updatedUserName != null && result[i].timeList[j].statusList[0].updatedUserName.length>0){
+										str+=' <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i].timeList[j].statusList[0].updatedUserName+'  </span>';
+									}
+									if(result[i].timeList[j].statusList[0].deptName != null && result[i].timeList[j].statusList[0].deptName.length>0){
+										str+=' , <span style="color:slategrey;font-weight:bold;margin-left: 25px">  Dept </span>: <span style="font-size:10px"> '+result[i].timeList[j].statusList[0].deptName+'  </span>';
+									}
+									if(result[i].timeList[j].statusList[0].designation != null && result[i].timeList[j].statusList[0].designation.length>0){
+										str+=', <span style="color:slategrey;font-weight:bold;margin-left: 25px"> designation </span>: <span style="font-size:10px"> '+result[i].timeList[j].statusList[0].designation+' </span>';
+									}
+									if(result[i].timeList[j].statusList[0].mobileNO != null && result[i].timeList[j].statusList[0].mobileNO.length>0){
+										//str+=', <span style="color:slategrey;font-weight:bold;margin-left: 25px"> , Mobile No </span>: '+result[i].timeList[j].statusList[0].mobileNO+'';
+									}
+									str+='</p>';
+								}
+							}
+							
 					str+='</li>';
 				}
 			}
