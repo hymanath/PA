@@ -1333,5 +1333,49 @@ public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> d
 		    query.setParameter("locationId",locationId);
 		    return query.list();
 		}
+		public List<Object[]> getDocumentsCuntForScopeId(Long activityScopeId,List<Long> mandalIdList,List<Long> muncipIdsList){
+			StringBuilder sb = new StringBuilder();
+			sb.append("select locationInfo.activityLocationInfoId,count(distinct model.activityDocument.activityDocumentId)," +
+					" conductedInfo.activityConductedInfoId " +
+					" from ActivityInfoDocument model " +
+					" left join model.activityLocationInfo locationInfo " +
+					" left join model.activityConductedInfo conductedInfo " +
+					" where model.activityDocument.activityScope.activityScopeId = :activityScopeId "+
+					" and model.isDeleted = 'N' and model.activityDocument.activityScope.activity.isActive = 'Y'" +
+					" and model.activityDocument.activityScope.isDeleted = 'N' " );
+			
+			if(mandalIdList != null && mandalIdList.size() > 0) {
+				if(muncipIdsList.isEmpty()){
+					sb.append(" and model.userAddress.tehsil.tehsilId in (:mandalIdList) ");
+				}else{
+					sb.append(" and model.userAddress.tehsil.tehsilId in (:mandalIdList) ");
+					if(muncipIdsList != null && muncipIdsList.size() > 0)
+						sb.append(" or  model.userAddress.localElectionBody.localElectionBodyId in (:muncipIdsList) ");
+				}
+					
+			} else if(muncipIdsList != null && muncipIdsList.size() > 0){
+				if(muncipIdsList != null && muncipIdsList.size() > 0){
+					sb.append(" and  model.userAddress.localElectionBody.localElectionBodyId in (:muncipIdsList) ");
+				}else{
+					sb.append(" and model.userAddress.localElectionBody.localElectionBodyId in (:muncipIdsList) ");
+				}
+			}
+			
+			sb.append(" group by model.activityLocationInfo.activityLocationInfoId ");
+			if(mandalIdList != null && mandalIdList.size() > 0){
+				sb.append(", model.userAddress.tehsil.tehsilId ");
+			}else if(muncipIdsList != null && muncipIdsList.size() > 0){
+				sb.append(", model.userAddress.localElectionBody.localElectionBodyId ");
+			}
+			
+			Query query = getSession().createQuery(sb.toString());
+				query.setParameter("activityScopeId", activityScopeId);
+			if(mandalIdList != null && mandalIdList.size() > 0) {
+				query.setParameterList("mandalIdList", mandalIdList);
+			}if(muncipIdsList != null && muncipIdsList.size() > 0){
+				query.setParameterList("muncipIdsList", muncipIdsList);
+			} 
+			return query.list();
+		}
 	
 }
