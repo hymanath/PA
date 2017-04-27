@@ -6901,7 +6901,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     			" from Alert model left join model.edition EDS left join model.tvNewsChannel TNC " +
     			" where model.isDeleted='N'  ");
     	if(statusId != null && statusId.longValue() > 0){
-    		sb.append(" and model.alertStatusId = :statusId 1 " );
+    		sb.append(" and model.alertStatusId = :statusId " );
     	}
     	if(stateId != null && stateId.longValue() > 0){
     		sb.append(" and model.userAddress.state.stateId=:stateId " );
