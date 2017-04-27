@@ -88,15 +88,13 @@ function buildGrievanceReport(result) {
 					   $('#grivenaceTableId').html(str);
 	
 }	
-}
+
 
 getAverageIssuePendingDays();
 function getAverageIssuePendingDays(){
-	
 	var deptIds=[];
 	var sourceIds =[];
 	
-
 	deptIds.push(49);
 	sourceIds.push(1);
 	sourceIds.push(2);
