@@ -1079,14 +1079,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            			String[] mobileNOArr = mobileNo.split(",");
            			if(mobileNOArr != null && mobileNOArr.length>0){
            				for (int i = 0; i < mobileNOArr.length; i++) {
-           			GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
-           			smsDetailsVO.setUserId(mainUserId);
-           			smsDetailsVO.setGovtOfficerId(govtOfficerId);
-           			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
-           			smsDetailsVO.setGovtSubTaskId(subTaskId);
-           			smsDetailsVO.setSmsText(message);
-           			smsDetailsVO.setActionTypeId(actionTypeId);
-           			saveGovtOfficerSmsDetails(smsDetailsVO);
+		           			GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
+		           			smsDetailsVO.setUserId(mainUserId);
+		           			smsDetailsVO.setGovtOfficerId(govtOfficerId);
+		           			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
+		           			smsDetailsVO.setGovtSubTaskId(subTaskId);
+		           			smsDetailsVO.setSmsText(message);
+		           			smsDetailsVO.setActionTypeId(actionTypeId);
+		           			saveGovtOfficerSmsDetails(smsDetailsVO);
            				}
            			}
            		 }
@@ -1103,7 +1103,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            				String message = "Alert is assigned to "+objArr[2].toString()+" - "+govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo+".\n Please follow up.";
            				mobileNo = "";
            				for (String tempMobleNo : mobilenums) {
-           					mobileNo = mobileNo.equalsIgnoreCase("")?tempMobleNo:mobileNo+","+tempMobleNo;
+           					if(tempMobleNo != null && !tempMobleNo.trim().isEmpty())
+           						mobileNo = mobileNo.equalsIgnoreCase("")?tempMobleNo:mobileNo+","+tempMobleNo;
            				}
            				
            				List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,2L,1L,2L);//2 immidiate superior type id 
@@ -1131,7 +1132,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                				for (int i = 0; i < mobileNOArr.length; i++) {
                					GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
                        			smsDetailsVO.setUserId(mainUserId);
-                       			smsDetailsVO.setGovtOfficerId(govtOfficerId);
+                       			//smsDetailsVO.setGovtOfficerId(govtOfficerId);
                        			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
                        			smsDetailsVO.setGovtSubTaskId(subTaskId);
                        			smsDetailsVO.setSmsText(message);
@@ -3448,7 +3449,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               				String message = "Alert is assigned to "+objArr[2].toString()+" - "+govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo+".\n Please follow up.";
               			
               				for (String tempMobileNo : mobilenums) {
-              					mobileNo = mobileNo.equalsIgnoreCase("")?tempMobileNo:mobileNo+","+tempMobileNo;
+              					if(tempMobileNo != null && !tempMobileNo.trim().isEmpty())
+              						mobileNo = mobileNo.equalsIgnoreCase("")?tempMobileNo:mobileNo+","+tempMobileNo;
               				}
               				
               				List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,1L,1L,2L);//2 immidiate superior 
@@ -3479,14 +3481,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                    			String[] mobileNOArr = mobileNo.split(",");
                    			if(mobileNOArr != null && mobileNOArr.length>0){
                    				for (int i = 0; i < mobileNOArr.length; i++) {
-              				GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
-              				smsDetailsVO.setUserId(mainUserId);
-                   			smsDetailsVO.setGovtOfficerId(govtOfficerId);
-                   			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
-                   			smsDetailsVO.setAlertId(alertId);
-                   			smsDetailsVO.setSmsText(message);
-                   			smsDetailsVO.setActionTypeId(actionTypeId);
-                   			saveGovtOfficerSmsDetails(smsDetailsVO);
+		              				GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
+		              				smsDetailsVO.setUserId(mainUserId);
+		                   			//smsDetailsVO.setGovtOfficerId(govtOfficerId);
+		                   			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
+		                   			smsDetailsVO.setAlertId(alertId);
+		                   			smsDetailsVO.setSmsText(message);
+		                   			smsDetailsVO.setActionTypeId(actionTypeId);
+		                   			saveGovtOfficerSmsDetails(smsDetailsVO);
                    				}
                    			}
                    		 }
@@ -7985,7 +7987,7 @@ public ResultStatus saveGovtOfficerSmsDetails(final GovtOfficerSmsDetailsVO smsD
 		final ResultStatus rs = new ResultStatus();
 		try {
 			
-		        	Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
+		        	//Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
 		        	AlertGovtOfficerSmsDetails smsDetails =new AlertGovtOfficerSmsDetails();
 		        	if(smsDetailsVO.getUserId() != null){
 		        		smsDetails.setUserId(smsDetailsVO.getUserId());
