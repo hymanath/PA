@@ -152,7 +152,9 @@ function buildDistrictOfficerAlertsCountView(result){
 			}else{
 				str+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
-				str+='<div id="myAlertGraphView" ></div>';
+				str+='<div class="scrollerAlert">';
+				str+='<div id="myAlertGraphView"></div>';
+			str+='</div>';
 			str+='</div>';
 		str+='</div>';
 		$("#myAlertsDivID").html(str);
@@ -179,7 +181,13 @@ function buildDistrictOfficerAlertsCountView(result){
 			mainArrTempAT.push(tempArrAT);
 		}
 	
-	
+	if(namesArrAT.length > 4)
+	{
+		$(".scrollerAlert").mCustomScrollbar({setHeight:'270px'});
+	}else{
+		$(".scrollerAlert").removeAttr('style');
+		$(".scrollerAlert").mCustomScrollbar({setHeight:'auto'});
+	}
 	 $('#myAlertGraphView').highcharts({
 			
 			chart: {
@@ -318,7 +326,9 @@ function buildDistrictOfficerAlertsCountView(result){
 			}else{
 				str1+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
+				str+='<div class="scrollerSubTask">';
 				str1+='<div id="mySubTasksGraphView" ></div>';
+			str1+='</div>';
 			str1+='</div>';
 		str1+='</div>';
 		$("#mySubTasksDivID").html(str1);
@@ -344,6 +354,14 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			
 			mainArrTempST.push(tempArrST);
 		}
+	
+	if(namesArrST.length > 4)
+	{
+		$(".scrollerSubTask").mCustomScrollbar({setHeight:'270px'});
+	}else{
+		$(".scrollerSubTask").removeAttr('style');
+		$(".scrollerSubTask").mCustomScrollbar({setHeight:'auto'});
+	}
 	
 	 $('#mySubTasksGraphView').highcharts({
 			
@@ -482,7 +500,9 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			}else{
 				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
+				str2+='<div class="scrollerAssSubTask">';
 				str2+='<div id="assignedSubTasksGraphView" ></div>';
+				str2+='</div>';
 			str2+='</div>';
 		str2+='</div>';
 		$("#assignedSubTasksDivID").html(str2);
@@ -508,7 +528,13 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			mainArrTemp.push(tempArr);
 		}
 	
-	
+	if(namesArr.length > 4)
+	{
+		$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'270px'});
+	}else{
+		$(".scrollerAssSubTask").removeAttr('style');
+		$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'auto'});
+	}
 	 $('#assignedSubTasksGraphView').highcharts({
 			
 			chart: {
@@ -624,7 +650,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 		$(".panelheights").each(function(){
 		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 		});
-		$(".panelheights").height(maxHeight);	 
+		$(".panelheights").height(maxHeight);
 }
 	
 	
