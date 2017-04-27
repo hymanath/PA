@@ -7821,13 +7821,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return null;
+		return null;  
 	}
     public Map<String,List<String>> getMonthWeekAndDays(String startDate,String endDate,String type){
     	Map<String,List<String>> returnDays = new LinkedHashMap<String, List<String>>();
-    	try{
+    	try{    
 		
-		List<String> wkDays = new ArrayList<String>();
+		List<String> wkDays = new ArrayList<String>();  
 		List<String> daysArr = new ArrayList<String>();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

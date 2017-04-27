@@ -10961,13 +10961,9 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 								}
 							}
 							innerListAlertVO.setSubList2(alertVOs2);
-						}else{
+						}else if(rangeType != null && !rangeType.isEmpty() && rangeType.length() > 0 && rangeType.equalsIgnoreCase("week")){
 							LinkedHashMap<String,List<String>> weekAndDaysMap = null;
-							if(rangeType != null && !rangeType.isEmpty() && rangeType.length() > 0 && rangeType.equalsIgnoreCase("week")){
-								weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
-							}else{
-								weekAndDaysMap = DateUtilService.getTotalMonthsMap(fromDate, toDate);
-							}
+							weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
 							
 							if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
 								alertVOs2 = new ArrayList<AlertOverviewVO>();
@@ -10992,6 +10988,33 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 								}
 							}
 							innerListAlertVO.setSubList2(alertVOs2);
+						}else if(rangeType != null && !rangeType.isEmpty() && rangeType.length() > 0 && rangeType.equalsIgnoreCase("month")){
+							LinkedHashMap<String,List<String>> weekAndDaysMap = null;
+							weekAndDaysMap = getMonthWeekAndDaysList(fromDateStr, toDateStr,"month");
+							if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
+								alertVOs2 = new ArrayList<AlertOverviewVO>();
+								//innerListAlertVO = new AlertOverviewVO();
+								for(Entry<String,List<String>> entry2 : weekAndDaysMap.entrySet()){
+									alertVO = new AlertOverviewVO();
+									alertVO.setDay(commonMethodsUtilService.getStringValueForObject(entry2.getKey()));
+									alertVOs2.add(alertVO);
+								}
+							}
+							for(AlertOverviewVO param : alertVOs2){
+								if(weekAndDaysMap.get(param.getDay()) != null){
+									Long total = 0l;
+									for(String day:weekAndDaysMap.get(param.getDay())){
+										if(dayAndCountMap.get(day) != null){
+											total += dayAndCountMap.get(day);
+										}
+									}
+									param.setTotalAlertCnt(total);  
+								}else{
+									param.setTotalAlertCnt(0l);  
+								}
+							}
+							Collections.reverse(alertVOs2);
+							innerListAlertVO.setSubList2(alertVOs2);
 						}
 						
 						for(AlertOverviewVO param : alertVOs){
@@ -11013,15 +11036,135 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						finalList.add(innerListAlertVO);     
 					}
 				}
-			}  
+			} 
+			// collect status wise count
+			Map<Long,Long> sttusIdAndCountMap = new HashMap<Long,Long>();
+			if(locationIdAndStatusIdAndCountMap != null && locationIdAndStatusIdAndCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> param : locationIdAndStatusIdAndCountMap.entrySet()){
+					Map<Long,Long> map = param.getValue();
+					if(map != null && map.size() > 0){
+						for(Entry<Long,Long> param2 : map.entrySet()){
+							Long cnt = sttusIdAndCountMap.get(param2.getKey());
+							if(cnt != null){
+								sttusIdAndCountMap.put(param2.getKey(), cnt+param2.getValue());
+							}else{
+								sttusIdAndCountMap.put(param2.getKey(), param2.getValue());
+							}
+						}
+					}
+				}
+			}
+			if(finalList != null && finalList.get(0) != null && finalList.get(0).getSubList1() != null ){
+				for(AlertOverviewVO param : finalList.get(0).getSubList1()){
+					Long statusId = param.getStatusTypeId();
+					if(sttusIdAndCountMap != null && sttusIdAndCountMap.get(statusId) != null){
+						param.setGrandTotal(sttusIdAndCountMap.get(statusId));
+					}
+				}
+			}
+			// collect day wise count
+			Map<String,Long> dateAndCountMap = new HashMap<String,Long>();
+			if(finalList != null && finalList.get(0) != null && finalList.get(0).getSubList2() != null ){
+				for(AlertOverviewVO param : finalList.get(0).getSubList2()){
+					dateAndCountMap.put(param.getDay(), 0L);
+				}
+			}
 			
+			if(finalList != null && finalList.size() > 0){
+				for(AlertOverviewVO param : finalList){      
+					if(param.getSubList2() != null && param.getSubList2().size() > 0){
+						for(AlertOverviewVO param2 : param.getSubList2()){
+							String dayName = param2.getDay();
+							Long alertCount = param2.getTotalAlertCnt();
+							dateAndCountMap.put(dayName, alertCount+dateAndCountMap.get(dayName));
+						}
+					}
+					
+				}
+			}
+			if(finalList != null && finalList.get(0) != null && finalList.get(0).getSubList2() != null ){
+				for(AlertOverviewVO param : finalList.get(0).getSubList2()){
+					String dt = param.getDay();
+					if(dateAndCountMap != null && dateAndCountMap.get(dt) != null){
+						param.setGrandTotal(dateAndCountMap.get(dt));
+					}
+				}
+			}
 			return finalList;
 	  }catch(Exception e){
 			e.printStackTrace();
 			LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 	  }
 		return null;
-	}     
+	}   
+	public LinkedHashMap<String,List<String>> getMonthWeekAndDaysList(String startDate,String endDate,String type){
+		LinkedHashMap<String,List<String>> returnDays = new LinkedHashMap<String, List<String>>();
+    	try{
+		
+		List<String> wkDays = new ArrayList<String>();
+		List<String> daysArr = new ArrayList<String>();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");  
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf1 = new SimpleDateFormat("MMM-yyyy");
+		if(type != null && type.trim().equalsIgnoreCase("month")){
+		 List<String> mntDays = alertStatusDAO.getMonthAndYear(sdf.parse(startDate),sdf.parse(endDate));
+			int i = 1;
+			for (String string : mntDays) {
+				Date dateee = sdf1.parse(string);
+				cal.setTime(dateee);
+				cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+				Date monthStart = cal.getTime();
+				
+				cal.setTime(dateee);
+				cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+				Date monthEnd = cal.getTime();
+				 
+				cal.setTime(sdf.parse(startDate));
+				Date  strDate = cal.getTime();
+				cal.setTime(sdf.parse(endDate));
+				Date  edDate = cal.getTime();
+				
+				if(i == 1){
+					if(strDate.compareTo(monthStart) > 0){
+						monthStart = strDate;
+					}
+				}
+				if(i == mntDays.size()){
+					if(monthEnd.compareTo(edDate) > 0){
+						monthEnd = edDate;
+					}
+				}
+				
+				daysArr = dateUtilService.getDaysBetweenDatesStringFormat(monthStart,monthEnd);
+				returnDays.put(string,daysArr);
+				i++;
+			}
+		}else if(type != null && type.trim().equalsIgnoreCase("week")){
+			wkDays  = commonMethodsUtilService.getBetweenWeeks(sdf.parse(startDate),sdf.parse(endDate),"yyyy-MM-dd");
+			int i=1;
+				for (String string : wkDays) {
+					String[] days = string.split("to");
+					daysArr = dateUtilService.getDaysBetweenDatesStringFormat(sdf.parse(days[0]),sdf.parse(days[1]));
+					returnDays.put("week"+i,daysArr);
+					i++;
+			}
+		}else if(type != null && type.trim().equalsIgnoreCase("today")){
+			List<String> noOfDays = dateUtilService.getDaysBetweenDatesStringFormat(sdf.parse(startDate),sdf.parse(endDate));
+			int i=1;
+				for (String string : noOfDays) {
+					daysArr = dateUtilService.getDaysBetweenDatesStringFormat(sdf.parse(string),sdf.parse(string));
+					returnDays.put("day"+i, daysArr);
+					i++;
+				}
+		   }
+    	}catch(Exception e){
+    		LOG.error("Error occured getMonthWeekAndDays() method of AlertManagementSystemService",e);
+    	}
+		
+		return returnDays;
+	}
+
 	
 	
 	public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds){
@@ -11079,6 +11222,15 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			LOG.error("Error occured getAverageIssuePendingDays() method of AlertService{}");
 		}
 		return vo;
+	}
+	public List<AlertOverviewVO> getGrievanceReportBasedOnLocation(String fromDate,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String group,String pattern){
+		try{
+			
+		}catch(Exception e){  
+			e.printStackTrace();
+			LOG.error("Error occured getGrievanceReportBasedOnLocation() method of AlertService{}");
+		}
+		return null;
 	}
 }
 
