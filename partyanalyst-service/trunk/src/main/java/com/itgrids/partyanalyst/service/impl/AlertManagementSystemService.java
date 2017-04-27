@@ -4873,7 +4873,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           public List<AlertVO> stateLevelDeptOfficerStatusOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList){
           		LOG.info("Entered in stateLevelDeptOfficerStatusOverview() method of AlertManagementSystemService{}");
           		try{
-          			
           			Date fromDate = null;
           			Date toDate = null;
           			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -6802,7 +6801,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      	}
 	      	public List<AlertCoreDashBoardVO> getStateLevelDeptWiseFlterClick(Long userId,List<Long> deptIds,Long locatonLevelId,
 	    			Long statusId,String type,String fromDateStr,String toDateStr,
-	    			Long desigDeptOfficerId,Long officerId, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList){
+	    			Long desigDeptOfficerId,Long officerId, List<Long> printIdList, 
+	    			List<Long> electronicIdList,List<Long> calCntrIdList,Long stateId){
 	    		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 	    		List<Long> alertIds = null;
 	    		try {
@@ -6826,7 +6826,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	    			}
 	    			if(type.equalsIgnoreCase("alert")){
 	    				if(statusId == 1l){
-	    					alertIds = alertDAO.getStateLevelDeptWiseFlterClick(deptIds,statusId,fromDate,toDate,printIdList,electronicIdList,calCntrIdList);
+	    					alertIds = alertDAO.getStateLevelDeptWiseFlterClick(deptIds,statusId,fromDate,toDate,printIdList,electronicIdList,calCntrIdList,stateId);
 	    				}else{
 	    					alertIds = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId,printIdList,electronicIdList,calCntrIdList);
 	    				}

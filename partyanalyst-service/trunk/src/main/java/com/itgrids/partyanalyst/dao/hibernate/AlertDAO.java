@@ -6895,13 +6895,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list();  
     }
     @SuppressWarnings("unchecked")
-	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long statusId,Date fromDate,Date toDate, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList){
+	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long statusId,Date fromDate,Date toDate, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList,Long stateId){
     	StringBuilder sb = new StringBuilder();
-    	sb.append(" select model.alertId  " +
+    	sb.append(" select distinct model.alertId  " +
     			" from Alert model left join model.edition EDS left join model.tvNewsChannel TNC " +
     			" where model.isDeleted='N'  ");
     	if(statusId != null && statusId.longValue() > 0){
-    		sb.append(" and model.alertStatusId = :statusId " );
+    		sb.append(" and model.alertStatusId = :statusId 1 " );
+    	}
+    	if(stateId != null && stateId.longValue() > 0){
+    		sb.append(" and model.userAddress.state.stateId=:stateId " );
     	}
     	
     	 if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
@@ -6934,6 +6937,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	if(fromDate != null && toDate != null){
     		query.setDate("fromDate", fromDate);
     		query.setDate("toDate", toDate);
+    	}
+    	if(stateId != null && stateId.longValue() > 0){
+    		query.setParameter("stateId", stateId);
     	}
     	return query.list(); 
     	
