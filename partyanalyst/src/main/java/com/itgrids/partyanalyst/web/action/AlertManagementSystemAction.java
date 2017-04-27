@@ -2927,4 +2927,16 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				 }
 				 return Action.SUCCESS;
 			 }
+			 
+			 public String getDepartmentDetailsOfAlert(){				 
+				try {
+					
+					Long alertId= jObj.getLong("alertId");
+					idnameVoList = alertManagementSystemService.getDepartmentDetailsOfAlert(alertId);
+					
+				}catch (Exception e) {
+					LOG.error("Exception Occured in getDepartmentDetailsOfAlert() method, Exception - ",e);
+				}
+				return Action.SUCCESS;
+			 }
 }
