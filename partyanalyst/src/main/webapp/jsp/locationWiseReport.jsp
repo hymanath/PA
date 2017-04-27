@@ -21,7 +21,7 @@
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 	<link href="dist/activityDashboard/SelectDropDown/dropkick.css" rel="stylesheet" type="text/css">
-	
+	<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
 	
 	<style>
 		.m_top20{margin-top:20px}
@@ -91,6 +91,27 @@
 			<div style="text-align:right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
 			<span style="font-size:12px;">Include Proposal</span></div>
 			</h4>
+			
+		</div>
+		
+		<div class="col-md-3 col-xs-12 col-sm-4">
+			<label>Select Status</label>
+			<select class="chosenSelect" multiple id="statusId" onchange="getCadreGreivienceEfficiency();">
+				<option value="1">Pending</option>
+				<option value="2">Notified</option>
+				<option value="3">Action In Progess</option>
+				<option value="4" selected>Completed</option>
+				<option value="5">Unable to Resolve</option>
+				<option value="6">Action Not Required</option>
+				<option value="7">Duplicate</option>
+				<option value="8">Wrongly Mapped Designation</option>
+				<option value="9">Wrongly Mapped Department</option>
+				<option value="10">Rejoinder</option>
+				<option value="11">Reopen</option>
+				<option value="12" selected>Closed</option>
+			</select>
+		</div>
+		<div class="col-md-12 col-xs-12 col-sm-12">
 			<div id="efficiencyId"></div>
 		</div>
 		<div class="col-md-12 col-xs-12 col-sm-6 m_top20">
@@ -243,8 +264,10 @@
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/Appointment/DropkickNew/dropkick.2.1.8.min.js" type="text/javascript"></script>
 <script type="text/javascript">
+$(".chosenSelect").chosen({width:'100%'})
 var currentFromDate=moment().format("DD/MM/YYYY");
 var currentToDate=moment().format("DD/MM/YYYY");
 $("#dateRangePickerAUM").daterangepicker({
@@ -1206,21 +1229,22 @@ function getDocumentsForAlert(alertId){
 function getCadreGreivienceEfficiency(){
 	$("#efficiencyId").html("");
 	$("#efficiencyId").html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
-    
+    var alertstatusIds = [];
+	
 	var deptIds=[];
 	var sourceIds =[];
 	var includeProposal = $("#proposalId").prop('checked');;
 
 	deptIds.push(49);
 	sourceIds.push(1);
-	sourceIds.push(2);
-	sourceIds.push(3);
+	
     var jobj = {
       
       daysArr : [5,10,30,60,90,180,365],
 	  deptIds :deptIds,
 	  sourceIds:sourceIds,
-      includeProposal : includeProposal
+      includeProposal : includeProposal,
+	  alertstatusIds:$("#statusId").val()
     }
     $.ajax({
       type : "POST",
@@ -1258,8 +1282,6 @@ function getAverageIssuePendingDays(){
 	
 	var deptIds=[];
 	var sourceIds =[];
-	
-
 	deptIds.push(49);
 	sourceIds.push(1);
 	sourceIds.push(2);

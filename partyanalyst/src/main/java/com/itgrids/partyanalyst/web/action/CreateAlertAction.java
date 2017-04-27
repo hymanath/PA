@@ -2633,10 +2633,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < sourceIdArr.length(); i++) {
 				sourceIdList.add(Long.parseLong(sourceIdArr.getString(i)));
 			}
-			
+			JSONArray alertstatusIdsArr = jObj.getJSONArray("alertstatusIds");
+			List<Long> alertstatusIds = new ArrayList<Long>();
+			for (int i = 0; i < alertstatusIdsArr.length(); i++) {
+				alertstatusIds.add(Long.parseLong(alertstatusIdsArr.getString(i)));
+			}
 			boolean includeProposal = jObj.getBoolean("includeProposal");
 			
-			alertsSummeryVOList = alertService.getAlertEfficiencyList(daysList,deptIdList,sourceIdList,includeProposal);
+			alertsSummeryVOList = alertService.getAlertEfficiencyList(daysList,deptIdList,sourceIdList,includeProposal,alertstatusIds);
 	   } catch (Exception e) {
 		   LOG.error("Exception Raised in getAlertEfficiencyList() in CreateAlertAction",e);
 		}
