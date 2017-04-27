@@ -3288,6 +3288,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 			  if (!theDir.exists()) {
 			    boolean result = false;
 			    try{
+			    	theDir.getParentFile().mkdirs();
 			        theDir.mkdir();
 			        result = true;
 			     } catch(SecurityException se){
