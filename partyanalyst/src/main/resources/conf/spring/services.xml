@@ -3620,7 +3620,8 @@
 		<property name="alertIssueSubTypeDAO" ref="alertIssueSubTypeDAO"></property>
 		<property name="alertManagementSystemService" ref="alertManagementSystemService"></property>
 		<property name="govtDepartmentIssueTypeDAO" ref="govtDepartmentIssueTypeDAO"></property>
-		<property name="urbanLocalityDAO" ref="urbanLocalityDAO"></property>
+		<property name="urbanLocalityDAO" ref="urbanLocalityDAO"></property> 
+		<!--<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO"></property>-->
 	</bean>            
 	<!-- Debate End -->
 	
@@ -4215,7 +4216,8 @@
 		<property name="userDAO" ref="userDAO" ></property>
 		<property name="userGroupRelationDAO" ref="userGroupRelationDAO" ></property>  
 		<property name="govtOfficerNewDAO" ref="govtOfficerNewDAO" ></property>  
-		<property name="govtSmsActionTypeDAO" ref="govtSmsActionTypeDAO" ></property>  
+		<property name="govtSmsActionTypeDAO" ref="govtSmsActionTypeDAO" ></property>
+		<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO" ></property>   
    </bean>
 </beans>			
 	
