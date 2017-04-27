@@ -84,6 +84,7 @@ import com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class AlertManagementSystemService extends AlertService implements IAlertManagementSystemService{
@@ -882,6 +883,34 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			return "success";
 		}
+		
+		public static String folderCreationForAlertsAttachmentNew(){
+		  	 try {
+		  		 LOG.debug(" in FolderForNotCadre ");
+		  		
+		  		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+		  		 
+		  		Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				int year = calendar.get(Calendar.YEAR);
+				SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+				String dateStr = sdf.format(new Date());
+				 
+				 String notCadreImagesFoldr = ActivityService.createFolder(staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr);
+				 
+				 String foldrSts = ActivityService.createFolder(notCadreImagesFoldr);
+				 if(!foldrSts.equalsIgnoreCase("SUCCESS")){
+					 return "FAILED";
+				 }
+				 
+				 return staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr;
+				 
+			} catch (Exception e) {
+				LOG.error(" Failed to Create");
+				return "FAILED";
+			}
+		}
+		
 		public ResultStatus uploadDocumentsForAlert(final Map<File, String> mapfiles,final Long alertId,final Long userId){
 
 			final ResultStatus resultStatus = new ResultStatus();
@@ -889,7 +918,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
-			String folderName = folderCreationForAlertsAttachments();
+			String folderName = folderCreationForAlertsAttachmentNew();
 			CustomReport customReport = null;
 			
 			Calendar calendar = Calendar.getInstance();
@@ -899,7 +928,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			// int day = calendar.get(Calendar.DAY_OF_MONTH);
 			 int temp = month+1;
 			 String monthText = getMonthForInt(temp);
-			
+			 SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+			 String dateStr = sdf.format(new Date());
+			 String yearStr = String.valueOf(year);
 			 
 			 StringBuilder str ;
 			 
@@ -910,7 +941,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
 					 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
 					 StringBuilder pathBuilder = new StringBuilder();
-					  pathBuilder.append("alerts_attachments/").append(randomNumber).append(".").append(entry.getValue());
+					  pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(entry.getValue());
 					 str.append(randomNumber).append(".").append(entry.getValue());
 					String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
 					 
@@ -3986,7 +4017,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			
         			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
         				public void doInTransactionWithoutResult(TransactionStatus status) {
-        		String folderName = folderCreationForAlertsAttachments();
+        		String folderName = folderCreationForAlertsAttachmentNew();
         		//CustomReportFile customReportFile = null;
         		//CustomReport customReport = null;
         		
@@ -3997,6 +4028,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		// int day = calendar.get(Calendar.DAY_OF_MONTH);
         		 int temp = month+1;
         		 String monthText = getMonthForInt(temp);
+        		 SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+ 				 String dateStr = sdf.format(new Date());
+ 				 String yearStr = String.valueOf(year);
         		
         		 StringBuilder pathBuilder = new StringBuilder();
         		 StringBuilder str ;
@@ -4007,7 +4041,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         				 str = new StringBuilder();
         				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
         				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
-        				 pathBuilder.append("alerts_attachments/"+randomNumber+"."+entry.getValue());
+        				 pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(entry.getValue());
+        				 //pathBuilder.append("alerts_attachments/"+randomNumber+"."+entry.getValue());
         				// pathBuilder.append(monthText).append("-").append(year).append("/").append(randomNumber).append(".")
         				// .append(entry.getValue());
         				 str.append(randomNumber).append(".").append(entry.getValue());
