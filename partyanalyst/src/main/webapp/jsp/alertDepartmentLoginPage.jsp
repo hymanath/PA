@@ -58,10 +58,10 @@ header
 			<img class="displayed m_top20 m_bottom20 img-responsive" src="alertDepartment/img/AP_Govt_Logo.png" alt="Andhra Pradesh Goverment Logo"/>
 			<div class="m_top20 panel panel-default" style="border:1px solid #ffc019; box-shadow:0 0 30px 10px rgba(0, 0, 0, 0.2)">
 			<div class="m_top20panel-body">
-				<img class="displayed m_top40 m_bottom20 img-responsive" src="alertDepartment/img/Alert_Management_Logo.png" alt="Andhra Pradesh Goverment Logo">
+				<img class="displayed m_top20 m_bottom20 img-responsive" src="alertDepartment/img/Alert_Management_Logo.png" alt="Andhra Pradesh Goverment Logo">
 				<img class="displayed m_top10 image-responsive" src="alertDepartment/img/Officer Login.png" alt="Andhra Pradesh Goverment Logo">
 				
-				<div class="loginFormBox" style="padding: 20px 80px;">
+				<div class="loginFormBox" style="padding: 10px 80px;">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-user"></i>
