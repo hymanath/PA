@@ -10819,6 +10819,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		Long totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,totalAlertStatusIds);
 		
 		alertStatusIds.add(12l);
+		alertStatusIds.add(4l);
 		Long completedAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(prevDay,today,departmentIds,sourceIds,alertStatusIds);
 			
 			
