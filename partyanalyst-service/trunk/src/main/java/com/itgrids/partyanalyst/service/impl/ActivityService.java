@@ -3115,7 +3115,7 @@ public void buildResultForAttendance(List<Object[]> activitiesList,Map<String,Ac
 		    }
 		    
 		    if(activityInfoDocument.getDay() == null || activityInfoDocument.getDay().longValue()==0L)// setting default day
-		    	activityInfoDocument.setDay(eventFileUploadVO.getDay());
+		    	activityInfoDocument.setDay(1l);
 		    
 		    activityInfoDocument.setIsDeleted("N");
 		    activityInfoDocument.setInsertType(eventFileUploadVO.getInsertType());
