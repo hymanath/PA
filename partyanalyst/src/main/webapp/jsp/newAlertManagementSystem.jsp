@@ -285,5 +285,10 @@
 <script src="alertDepartment/js/newAlertManagementSystem.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->
+<script type="text/javascript">
+google.load("elements", "1", {
+	packages: "transliteration"
+});
+</script>
 </body>
 </html>
