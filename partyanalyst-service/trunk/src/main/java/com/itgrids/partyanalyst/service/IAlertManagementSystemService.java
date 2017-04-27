@@ -60,7 +60,7 @@ public interface IAlertManagementSystemService {
 	public List<IdNameVO> getChildLevelValuesForSubTask(Long departmentId,Long parentLevelId,List<Long> parentLevelValues,Long levelId);
 	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCountStatusWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType);
 	public List<IdNameVO> getDeptListForMultiLvl(Long userId);
-	public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(Long govtDeptGovtOffrId,Long govtOffrcrId,String countType,String alertType, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList);
+	public List<AlertCoreDashBoardVO> getDistrictOfficerAlertDetails(Long govtDeptGovtOffrId,Long govtOffrcrId,String countType,String alertType, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList,String fromDate,String toDate);
 	public List<AlertTrackingVO> getAlertStatusHistory(Long alertId);
 	public List<GovtDepartmentVO> getAssignedOfficersDetails(Long alertId);
 	public List<AlertCoreDashBoardVO> getDistrictOfficerScopesWiseAlerts(String fromDateStr, String toDateStr, Long stateId, Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType);
@@ -80,9 +80,9 @@ public interface IAlertManagementSystemService {
 	public AlertVO getSubTaskFullDetails(Long subTaskId);
 	public List<AlertVO> stateLevelDeptOfficerStatusOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList);
 	public List<AlertVO> stateLevelDeptOfficerLocationLevelOverview(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList);
-	public DistrictOfficeViewAlertVO getIASOfficerMyAlertsCountView(Long userId,String startdateStr,String endDateStr);
-	public DistrictOfficeViewAlertVO getIASOfficerMyAssignedSubTasksCountView(Long userId,String startDateStr,String endDateStr);
-	public DistrictOfficeViewAlertVO getIASOfficerMySubTasksCountView(Long userId,String startDateStr,String endDateStr);
+	public DistrictOfficeViewAlertVO getIASOfficerMyAlertsCountView(Long userId,String startdateStr,String endDateStr,List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList);
+	public DistrictOfficeViewAlertVO getIASOfficerMyAssignedSubTasksCountView(Long userId,String startDateStr,String endDateStr,List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList);
+	public DistrictOfficeViewAlertVO getIASOfficerMySubTasksCountView(Long userId,String startDateStr,String endDateStr,List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList);
 	
 	public List<IdNameVO> getDistIdListForDistFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String group,String alertType,String searchType,List<Long> calCntrIdList);
 	public List<IdNameVO> getDistIdListForDivisionFilter(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String group,String alertType,String searchType,List<Long> calCntrIdList);
