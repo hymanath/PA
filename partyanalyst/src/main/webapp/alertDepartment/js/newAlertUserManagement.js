@@ -1457,7 +1457,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsView(result){
 											str+='<tr>';
 												str+='<td><span class="label" style="background-color:'+result[i].subList2[j].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].subList2[j].name+'</td>';
 												
-												str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert"  attr_status_name="'+result[i].subList2[j].name+'" attr_status_count="'+result[i].subList2[j].alertCnt+'"  attr_status_id="'+result[i].subList2[j].id+'" attr_level_id="0" >'+result[i].subList2[j].alertCnt+'</td>';
+												str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_department_id ="'+result[i].id+'" attr_type="alert"  attr_status_name="'+result[i].subList2[j].name+'" attr_status_count="'+result[i].subList2[j].alertCnt+'"  attr_status_id="'+result[i].subList2[j].id+'" attr_level_id="0" >'+result[i].subList2[j].alertCnt+'</td>';
 												
 												str+='<td>'+result[i].subList2[j].percentage+'%</td>';
 											str+='</tr>';
@@ -1633,7 +1633,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(res
 						
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].status+'</td>';
-							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].statusId+'" attr_level_id="0"  >'+result[i].alertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_department_id = "'+departmentId+'" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].statusId+'" attr_level_id="0"  >'+result[i].alertCnt+'</td>';
 							str+='<td>'+result[i].percentage+'%</td>';
 						str+='</tr>';
 					}
@@ -1783,7 +1783,8 @@ $(document).on("click",".getDtlsAlertsCls",function(){
 		var statuscount = $(this).attr("attr_status_count");
 		var type = $(this).attr("attr_type");
 		var levelId = $(this).attr("attr_level_id");
-		var departmentIdsArr = globalDepartmentIdsArr;
+		var departmentIds = $(this).attr("attr_department_id");
+		var departmentIdsArr = [departmentIds];
 		
 		getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,levelId,statusId,type,statusName,statuscount)
 	});
