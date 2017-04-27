@@ -108,9 +108,12 @@ $("#dateRangePickerAUM").daterangepicker({
 	
 function getIASOfficerMyAlertsCountMainView(){
 	$("#myAlertsDivID").html(spinner);
-    var jsObj ={
+    var jsObj ={ 
 		fromDate:currentFromDate,
-        toDate:currentToDate
+        toDate:currentToDate,
+		paperIdArr : newspapersGlobalArr,
+        chanelIdArr :channelGlobalArr,
+	    callCenterArr:callCenterGlobalArr
 	};
     $.ajax({
       type:'GET',
@@ -343,7 +346,10 @@ function getIASOfficerMySubTasksCountView(){
 $("#mySubTasksDivID").html(spinner);
     var jsObj ={
 		fromDate:currentFromDate,
-		toDate:currentToDate
+		toDate:currentToDate,
+		paperIdArr : newspapersGlobalArr,
+        chanelIdArr :channelGlobalArr,
+	    callCenterArr:callCenterGlobalArr
 	};
     $.ajax({
       type:'GET',
@@ -577,7 +583,10 @@ function getIASOfficerMyAssignedSubTasksCountView(){
 	$("#assignedSubTasksDivID").html(spinner);
     var jsObj ={
 		fromDate:currentFromDate,
-		toDate:currentToDate
+		toDate:currentToDate,
+		paperIdArr : newspapersGlobalArr,
+        chanelIdArr :channelGlobalArr,
+	    callCenterArr:callCenterGlobalArr
 	};
     $.ajax({
       type:'GET',
