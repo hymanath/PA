@@ -3236,10 +3236,12 @@ function getLocationWiseDetailsForActivity(roundId)
 										
 											if(activityLevelId == 5){
 												str+=' attr_location_Value="'+result[i].constituencyId+'" attr_location_Name=\''+result[i].constituencyName+'\'  id="uploadImagesId"  src="images/imageUpload.png"  title="Upload Images"  attr_table_name="'+result[i].tableName+'" attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].constituencyId+'"  attr_info_id="'+result[i].activityLocatInfoId+'"';
-											}else if(activityLevelId == 1 || activityLevelId == 2){
+											}else if(activityLevelId == 1){
 												str+=' attr_location_Value="'+result[i].villageId+'" attr_location_Name=\''+result[i].villageName+'\' id="uploadImagesId" src="images/imageUpload.png"  title="Upload Images"  attr_table_name="'+result[i].tableName+'"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].villageId+'" attr_info_id="'+result[i].activityLocatInfoId+'"';
 											}else if(activityLevelId == 3){
 												str+=' attr_location_Value="'+result[i].districtId+'" attr_location_Name=\''+result[i].districtName+'\' id="uploadImagesId"  src="images/imageUpload.png"  title="Upload Images"   attr_table_name="'+result[i].tableName+'" attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].districtId+'"  attr_info_id="'+result[i].activityLocatInfoId+'"';
+											}else if(activityLevelId == 2){
+												str+=' attr_location_Value="'+result[i].mandalId+'" attr_location_Name=\''+result[i].mandalName+'\' id="uploadImagesId" src="images/imageUpload.png"  title="Upload Images"  attr_table_name="'+result[i].tableName+'"  attr_act_location_info_id="'+result[i].activityLocatInfoId+'" attr_date="dateId'+result[i].mandalId+'" attr_info_id="'+result[i].activityLocatInfoId+'"';
 											}
 										
 										str+='/></td>';
@@ -3252,6 +3254,8 @@ function getLocationWiseDetailsForActivity(roundId)
 												str+='<i class="getImagesCls glyphicon glyphicon-camera"  id="images'+result[i].activityLocatInfoId+'"style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].villageId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"  attr_location_nam="'+locationName+'"></i>';
 											}else if(activityLevelId == 3){
 												str+='<i class="getImagesCls glyphicon glyphicon-camera"  id="images'+result[i].activityLocatInfoId+'"style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].districtId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"  attr_location_nam="'+locationName+'"></i>';
+											}else if(activityLevelId == 2){
+												str+='<i class="getImagesCls glyphicon glyphicon-camera"  id="images'+result[i].activityLocatInfoId+'"style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].mandalId+'" attr_scope_id = "'+activityScopeId+'" attr_value="'+1+'" attr_activity_lvl_id="'+activityLevelId+'" attr_search_type="'+searchBy+'"title="View Images"  attr_location_nam="'+locationName+'"></i>';
 											}
 											str+='</span></td>';
 										}else{

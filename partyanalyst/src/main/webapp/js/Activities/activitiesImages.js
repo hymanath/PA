@@ -4323,7 +4323,9 @@ $(document).on("click",".getImagesCls",function(){
 		getPanchayatList(cnstitncyId,attr_activity_scopeid,value);
 	} *//* else if(searchType == "villageWard" ||  searchType == "onlyvillage"){
 		str +='<th class="text-capital">Village/Ward name</th>';
-	} */
+	} else if(activityLevelId == 2){
+		getPanchayatList(cnstitncyId,2,value,attr_activity_scopeid);
+	}*/
 	
 	var str='';
 		str+='<div class="row">';
@@ -4351,32 +4353,31 @@ $(document).on("click",".getImagesCls",function(){
 		
 //buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
 //getAvailableDates(globallocationScope,globallocationValue,day,path);
-if(activityLevelId == 1 || activityLevelId == 2){
+if(activityLevelId == 1){
 	globalActivityScope = attr_activity_scopeid;
 	getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
 	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 	getEventsDocuments("","",attr_activity_scopeid);
 	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
-}/* else if(searchType == "mandal"){
-	globalActivityScope = attr_activity_scopeid;
-	getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
-	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
-	getEventsDocuments("","",attr_activity_scopeid);
-	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
-}else if(searchType == "panchayat"){
-	globalActivityScope = attr_activity_scopeid;
-	getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
-	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
-	getEventsDocuments("","",attr_activity_scopeid);
-	getEventDocumentForPopup("village",1,0,0,'',attr_activity_scopeid,"village",cnstitncyId,"");
-} */else if(activityLevelId == 5){
+}else if(activityLevelId == 5){
 	globalActivityScope = attr_activity_scopeid;
 	getAvailablDates('constituency',cnstitncyId,1,'',attr_activity_scopeid)
 	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 	getEventsDocuments("","",attr_activity_scopeid);
 	getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId,"");
+}else if(activityLevelId == 2){
+	globalActivityScope = attr_activity_scopeid;
+	getAvailablDates('mandal',cnstitncyId,1,'',attr_activity_scopeid)
+	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
+	getEventDocumentForPopup("mandal",1,0,0,'',attr_activity_scopeid,"mandal",cnstitncyId,"");
+}else if(activityLevelId == 3){
+	globalActivityScope = attr_activity_scopeid;
+	getAvailablDates('district',cnstitncyId,1,'',attr_activity_scopeid)
+	//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+	getEventsDocuments("","",attr_activity_scopeid);
+	getEventDocumentForPopup("district",1,0,0,'',attr_activity_scopeid,"district",cnstitncyId,"");
 }
-
 });
 $(document).on("click",".radioBtnCls",function(){
 	var searchType="constituency";
@@ -4644,7 +4645,7 @@ function refreshEventsActivities(){
 				
 		//buildDayWiseImagesForPopup(globalPopupresult,$(this).attr("imgpath"),$(this).attr("dayattr"));
 		//getAvailableDates(globallocationScope,globallocationValue,day,path);
-		if(activityLevelId == 1 || activityLevelId == 2){
+		if(activityLevelId == 1){
 			globalActivityScope = attr_activity_scopeid;
 			getAvailablDates('village',cnstitncyId,1,'',attr_activity_scopeid)
 			//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
@@ -4668,6 +4669,12 @@ function refreshEventsActivities(){
 			//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
 			getEventsDocuments("","",attr_activity_scopeid);
 			getEventDocumentForPopup("constituency",1,0,0,'',attr_activity_scopeid,"constituency",cnstitncyId,"");
+		}else if(activityLevelId == 2){
+			globalActivityScope = attr_activity_scopeid;
+			getAvailablDates('mandal',cnstitncyId,1,'',attr_activity_scopeid)
+			//buildLocationForPopup(globallocationScope,globallocationValue,attr_activity_scopeid);
+			getEventsDocuments("","",attr_activity_scopeid);
+			getEventDocumentForPopup("mandal",1,0,0,'',attr_activity_scopeid,"mandal",cnstitncyId,"");
 		}
 
   }

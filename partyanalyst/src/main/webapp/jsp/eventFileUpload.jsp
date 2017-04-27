@@ -795,7 +795,7 @@ function clickView(){
 									str+='<td>'+result[i].date+' ( '+result[i].count+' '+format+' Day )</td>';
 									str+='<td>'+result[i].id+'';
 									
-									 str+='<i class="getImagesPopUpCls glyphicon glyphicon-camera" id="images'+result[i].activityLocatInfoId+'"  style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].constituencyId+'" attr_scope_id = "" attr_value="'+0+'" attr_activity_lvl_id="" attr_search_type=""title="View Images" attr_location_nam="'+locationName+'" attr_day="'+result[i].count+'"></i>';
+									 str+='<i class="getImagesPopUpCls glyphicon glyphicon-camera"   style="cursor:pointer;font-size:18px;margin-left:8px;"  attr_constituency_id ="'+result[i].constituencyId+'" attr_scope_id = "" attr_value="'+0+'" attr_activity_lvl_id="" attr_search_type=""title="View Images" attr_location_nam="'+locationName+'" attr_day="'+result[i].count+'"></i>';
 									 
 									 
 									 /* str+='<i class="getImagesCls glyphicon glyphicon-camera" style="cursor:pointer;font-size:18px;margin-left:8px;" attr_date="'+result[i].date+'" attr_info_id="'+locationId+'" attr_location_Name="'+attr_location_Name+'" attr_location_Value="'+attr_location_Value+'" attr_table_name="'+attr_table_name+'" attr_act_location_info_id="'+locationId+'"></i>'; */
@@ -813,14 +813,12 @@ function clickView(){
 			});
 }
 
-	$(document).on("click",".getImagesPopUpCls",function(){
-		
+$(document).on("click",".getImagesPopUpCls",function(){
 		$('#imagesModalDivId').modal({
 		show: true,
 		keyboard: false,
 		backdrop: 'static'
 	});
-	
 	var attr_location_nam = '${locationName}'
 	var activityLevelTextId = '${activityLevelTextId}'
 	var attr_day = $(this).attr('attr_day');
@@ -856,9 +854,11 @@ function clickView(){
 		getAvailablDates("district",locationValueID,attr_day,'',actScopeId);
 		getEventsDocuments("","",actScopeId);
 		getEventDocumentForPopup("district",1,attr_day,0,'',actScopeId,"district",locationValueID,"",1);
+	}else if(activityLevelTextId == "Mandal/Town/Division"){
+		getAvailablDates("mandal",locationValueID,attr_day,'',actScopeId);
+		getEventsDocuments("","",actScopeId);
+		getEventDocumentForPopup("mandal",1,attr_day,0,'',actScopeId,"mandal",locationValueID,"",1);
 	}
-		
-
 	});
 </script>
 </body>
