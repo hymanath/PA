@@ -73,7 +73,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<AlertCommentVO> alertCommentVOs;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	private AlertOverviewVO alertOverviewVO;
-	private List<AlertOverviewVO> resultList;
+	private List<AlertOverviewVO> resultList;  
 	
 	private List<File> imageForDisplay = new ArrayList<File>();
 	private List<String> imageForDisplayContentType = new ArrayList<String>();
@@ -2691,4 +2691,23 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		   return Action.SUCCESS;
 	}
+	public String getGrievanceReportBasedOnLocation(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDateStr=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			Long stateId=jObj.getLong("stateId");
+			Long locationId=jObj.getLong("locationId");
+			Long statusId=jObj.getLong("statusId");
+			String group=jObj.getString("group");
+			String pattern=jObj.getString("pattern");
+			resultList = alertService.getGrievanceReportBasedOnLocation(fromDate,toDateStr,stateId,deptId,sourceId,locationId,statusId,group,pattern);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getGrievanceReport Method",e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }

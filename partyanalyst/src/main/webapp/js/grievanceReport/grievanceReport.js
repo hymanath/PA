@@ -22,20 +22,19 @@ $('#reportrange').daterangepicker({
 cb(start, end); 
     
 	
-    $('#table1').DataTable();
+    
 	
     $('#table2').DataTable();
 
-getGrievanceReport();
+getGrievanceReport();      
  
 function getGrievanceReport(){
-	
 	 	var jsObj ={
-			fromDate: "01/04/2016",                       
+			fromDate: "01/01/2017",                       
 			toDateStr:"01/04/2017",  
 			deptId:49,
 			sourceId:0,
-			rangeType:"week",
+			rangeType:"week",                                         
 			stateId:1
 	    }
 	    $.ajax({
@@ -51,42 +50,58 @@ function getGrievanceReport(){
 }	 
 function buildGrievanceReport(result) {
 	var str='';
-		 str+='<table id="table1" class="table table-bordered " cellspacing="0">';
-		 str+='<colgroup>'
-			str+='</colgroup>'   
-			     str+=' <thead>';
-                       str+='<tr>';
-                       str+=' <th>District</th>';
-                       str+=' <th>Total</th>';
-                      
-                       for(var i in result[0].subList1){       
-						    str+=' <th>'+result[0].subList1[i].statusType+'</th>';
-					   }
-					   for(var j in result[0].subList2){         
-						    str+=' <th style="background-color:#ecebd6">'+result[0].subList2[j].day+'</th>';
-					   }
-                       str+=' </tr>';
-                      str+='</thead>';
-					   str+='<tbody>';
-					   for(var i in result){
-						   str+='<tr>'; 
-						  str+='<td>  <a class="js-open-modal " href="#" data-toggle="modal" data-target="#myModal2" >'+
-						  ' <i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</a></td>';
-						  str+='<td>'+result[i].totalAlertCnt+'</td>';
-						  for(var j in result[i].subList1){ 
-							str+='<td>'+result[i].subList1[j].totalAlertCnt+'</td>';
-						  }
-						  for(var j in result[i].subList2){ 
-							str+='<td>'+result[i].subList2[j].totalAlertCnt+'</td>';
-						  }     
+	str+='<table id="grievanceReportTableId" class="table table-bordered " cellspacing="0">';
+			str+='<thead>';
+			str+='<tr>';
+			str+='<th>District</th>';
+			str+='<th>Total</th>';
 						  
-							str+='</tr>';   
-					    }
-	
-					   str+='</tbody>';
-					   str+='</table>';
-					   $('#grivenaceTableId').html(str);
-	
+			for(var i in result[0].subList1){       
+				str+='<th>'+result[0].subList1[i].statusType+'</th>';
+			}
+			for(var j in result[0].subList2){         
+				str+='<th style="background-color:#ecebd6">'+result[0].subList2[j].day+'</th>';
+			}
+			str+=' </tr>';
+			str+='</thead>';
+		str+='<tbody>';
+		var locTotal = 0;
+		for(var i in result){
+			str+='<tr>'; 
+				str+='<td>  <a class="js-open-modal " href="#" data-toggle="modal" data-target="#myModal2" >'+
+					 ' <i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</a></td>';
+				str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_location_id="'+result[i].id+'">'+result[i].totalAlertCnt+'</td>';
+				locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
+				for(var j in result[i].subList1){
+					if(result[i].subList1[j].totalAlertCnt != 0){
+						str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="'+result[i].id+'" attr_group_type="status">'+result[i].subList1[j].totalAlertCnt+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}      
+				}
+				for(var j in result[i].subList2){  
+					if(result[i].subList2[j].totalAlertCnt != 0){        
+						str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_pattern="'+result[i].subList2[j].day+'" attr_location_id="'+result[i].id+'" attr_group_type="day">'+result[i].subList2[j].totalAlertCnt+'</td>';
+					}else{      
+						str+='<td>-</td>';
+					}
+				} 
+			str+='</tr>';
+		}  
+		str+='<tr>';
+			str+='<td>Total</td>';
+			str+='<td>'+locTotal+'</td>';
+			for(var i in result[0].subList1){
+				str+='<td>'+result[0].subList1[i].grandTotal+'</td>';    
+			}
+			for(var i in result[0].subList2){
+				str+='<td>'+result[0].subList2[i].grandTotal+'</td>';    
+			}   
+		str+='</tr>';
+		str+='</tbody>';
+	str+='</table>';
+	$('#grivenaceTableId').html(str);
+	$('#grievanceReportTableId').DataTable();  
 }	
 
 
@@ -118,4 +133,38 @@ function getAverageIssuePendingDays(){
 		$('#issuePendingCntId').text(str);
     });
     
-    }	   		
+}
+onLoadInitialisations();  	  
+function onLoadInitialisations(){                     
+	$(document).on("click",".getAlertDtlsCls",function(){
+		 var locationId = $(this).attr("attr_location_id");
+		 var group = $(this).attr("attr_group_type");
+		 var statusId = $(this).attr("attr_status_id");
+		 var pattern = $(this).attr("attr_pattern");
+		 alert(locationId+":"+statusId+":"+group+":"+pattern);
+		 var jobj = {
+			fromDate: "01/01/2017",                       
+			toDateStr:"01/04/2017",  
+			deptId:49,
+			sourceId:0,                                      
+			stateId:1,
+			locationId:locationId,
+			statusId:statusId,
+			group:group,
+			pattern:pattern
+			
+		}
+		$.ajax({
+			type : "POST",
+			url  : ".action",
+			dataType: 'json',
+			data: {task:JSON.stringify(jobj)},
+		}).done(function(result){
+			var str ='';
+			if(result != null){
+				
+			}
+		});
+		 
+	});        
+}     
