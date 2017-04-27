@@ -9,6 +9,7 @@ import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class GovtSMSAPIService {
 	private final static Logger LOG =  Logger.getLogger(GovtSMSAPIService.class);
@@ -16,6 +17,9 @@ public class GovtSMSAPIService {
 	public ResultStatus senedSMSForGovtAlert(String mobileNos,String message){
 		ResultStatus rs = new ResultStatus();
 		try {
+			if(!IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+				return null;
+			
 			String username = "APGOVT";
 			String password = "esd@123";
 			String senderid = "GOVTAP";
