@@ -50,4 +50,5 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public Integer deleteEventUploadFilebyActivityInfoId(List<Long> activityInfoIdList);
 	public List<Object[]> setDayWiseImagesDetails(Long locationId);
 	public List<Object[]> getEventsDocumentsCountByLocationInbfo(EventDocumentVO inputVO,Date startDate,Date endDate,Long userAccessLevelId,Set<Long> userAccessLevelValues);
+	public List<Object[]> getDocumentsCuntForScopeId(Long activityScopeId,List<Long> mandalIdList,List<Long> muncipIdsList);
 }
