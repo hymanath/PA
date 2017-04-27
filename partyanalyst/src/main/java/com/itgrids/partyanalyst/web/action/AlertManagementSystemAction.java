@@ -1451,8 +1451,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long govtOffrcrId = jObj.getLong("govtOfficerId");
 				String countType = jObj.getString("countType");
 				String alertType = jObj.getString("alertType");
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
 				
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptGovtOffrId,govtOffrcrId,countType,alertType,paperIdList,chanelIdList,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptGovtOffrId,govtOffrcrId,countType,alertType,paperIdList,chanelIdList,calCntrIdList,fromDate,toDate);
 				
 				alertCoreDashBoardVOs =alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
@@ -1928,7 +1930,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 			return Action.SUCCESS;
 		}
-	 public String getIASOfficerMyAlertsCountMainView(){
+	   public String getIASOfficerMyAlertsCountMainView(){
 			try{
 				session = request.getSession();
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
@@ -1936,8 +1938,28 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				jObj = new JSONObject(getTask());
 				String startDateStr = jObj.getString("fromDate");
 				String endDateStr = jObj.getString("toDate");
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAlertsCountView(userId,startDateStr,endDateStr);
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
 				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				
+				JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> calCntrIdList = new ArrayList<Long>();
+				for (int i = 0; i < calCntrIdArr.length(); i++){
+					calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+				}
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAlertsCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList);
 			}catch(Exception e){
 				e.printStackTrace();
 				LOG.error("Exception occured in getIASOfficerMyAlertsCountView() of AlertManagementSystemAction",e);
@@ -1952,7 +1974,28 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				jObj = new JSONObject(getTask());
 				String startDateStr = jObj.getString("fromDate");
 				String endDateStr = jObj.getString("toDate");
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMySubTasksCountView(userId,startDateStr,endDateStr);
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				
+				JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> calCntrIdList = new ArrayList<Long>();
+				for (int i = 0; i < calCntrIdArr.length(); i++){
+					calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+				}
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMySubTasksCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -1968,11 +2011,32 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				jObj = new JSONObject(getTask());
 				String startDateStr = jObj.getString("fromDate");
 				String endDateStr = jObj.getString("toDate");
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAssignedSubTasksCountView(userId,startDateStr,endDateStr);
+				JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+				List<Long> paperIdList = new ArrayList<Long>();
+				if(paperIdArr != null && paperIdArr.length() > 0){
+					for (int i = 0; i < paperIdArr.length(); i++){
+						paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+				List<Long> chanelIdList = new ArrayList<Long>();
+				if(chanelIdArr != null && chanelIdArr.length() > 0){
+					for (int i = 0; i < chanelIdArr.length(); i++){
+						chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+					}  
+				}
+				
+				JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+				List<Long> calCntrIdList = new ArrayList<Long>();
+				for (int i = 0; i < calCntrIdArr.length(); i++){
+					calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+				}
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAssignedSubTasksCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList);
 				
 			}catch(Exception e){
 				e.printStackTrace();
-				LOG.error("Exception occured in getIASOfficerMySubTasksCountView() of AlertManagementSystemAction",e);
+				LOG.error("Exception occured in getIASOfficerMyAssignedSubTasksCountView() of AlertManagementSystemAction",e);
 			}
 			return Action.SUCCESS;
 		}
