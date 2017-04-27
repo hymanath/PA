@@ -17055,5 +17055,10 @@
 			<param name="root">keyValueVO</param>       
 		</result> 
 	</action> 
+	<action name="getDepartmentDetailsOfAlertAction" class="alertManagementSystemAction"  method="getDepartmentDetailsOfAlert">
+		<result type="json" name="success">    
+			<param name="root">idnameVoList</param>       
+		</result> 
+	</action>
  </package>
 </struts>
