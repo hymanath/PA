@@ -14,6 +14,9 @@
 <!-- Include Date Range Picker -->
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" href="css/grievanceReport.css" type="text/css"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
 <style>
 .dateColorCls{
 	background-color:#FFCF2D;
@@ -533,8 +536,80 @@
       
     </div>
   </div>
+  <div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
+		  <div class="modal-dialog modal-lg">       
+			<div class="modal-content" style="border-radius:0px">
+			  <div class="modal-header" style="background-color:#999999">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="tourDocHeadingId">Cadre Registration Comparison Details</h4>  
+			  </div>
+			  <div class="modal-body">   
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="cdrModelId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDestId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="sourceHeadingId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="headingNameId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertDocHeadingId"></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertDocId" ></div>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertAttachTitId"></div>    
+					</div> 
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertAttachImgId"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertGroupAttachTitId"></div>    
+					</div> 
+					<div class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertGroupAttachImgId"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertInvolvedCandidates"></div>        
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertAssignedCandidates"></div>  
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertStatusDiv" ></div>    
+					</div>
+					<div  class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertCommentsDiv"></div>  
+					</div> 
+					<div  class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
+						<div id="alertVerificationDiv"></div>    
+					</div>
+					<div  class="col-md-12 col-xs-12 col-sm-12"> 
+						<div id="alertVerificationDtlsDiv"></div>  
+					</div>
+				</div>
+			  </div>
+			  <div class="modal-footer">     
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
+			</div><!-- /.modal-content -->
+		  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<div class="modal fade" id="myModalShowNew">
+	<div class="modal-dialog modal-lg" role="document" style="width:90%">
+		<div class="modal-content">
+			<div id="myModalShowNewId"></div>
+		</div>
+	</div>  
+</div> 
     
-    <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
@@ -545,11 +620,13 @@
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/grievanceReport/grievanceReport.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 
-
-
-
-    <script type="text/javascript">
+	<script type="text/javascript">
+	var windowUrl = window.location.href;
+	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
+	
      
 </script>
 </body>
