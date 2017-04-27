@@ -2831,8 +2831,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 						}
 					}
-					
-					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelDeptWiseFlterClick(scopeId,deptIdList,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList);
+					Long stateId = jObj.getLong("stateId");
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelDeptWiseFlterClick(scopeId,deptIdList,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList,stateId);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();

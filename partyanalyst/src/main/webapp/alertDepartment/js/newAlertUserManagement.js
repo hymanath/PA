@@ -1819,7 +1819,8 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,leve
 			officerId:0,
 			paperIdArr:newspapersGlobalArr,
 			chanelIdArr:channelGlobalArr,
-			callCenterArr:callCenterGlobalArr
+			callCenterArr:callCenterGlobalArr,
+			stateId :1
 			
 		}
 	$.ajax({
