@@ -15,8 +15,12 @@
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link rel="stylesheet" href="css/grievanceReport.css" type="text/css"/>
 <style>
+.dateColorCls{
+	background-color:#FFCF2D;
+}
 </style>
 </head>
+<body>
 <body>
 <nav>
         <div class="row nav-gov-dark">
@@ -28,36 +32,42 @@
         <div class=" bg-gov-dark">
         
             <div class="container">
-                <div id="menu1" class="col-md-7">
+                <div id="menu1" class="col-md-6">       
                     <div class="col-md-6">
-                        <ul class="nav navbar-nav">
-                            <li> <a href="#">MONTH</a> </li>
-                            <li> <a href="#">WEEK</a> </li>
-                            <li> <a href="#">DAY</a> </li>
+                        <ul class="nav navbar-nav">        
+                            <li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
+                            <li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
+                            <li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
                         </ul>
-                    </div>
+                    </div>      
                     <div style="padding-top: 8px" class="col-md-6">
-                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%"> 
-                            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp; <span></span> <b class="caret"></b> </div>
+                        <!--<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%"> 
+                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp; <span></span> <b class="caret"></b> </div> -->
+							 <div class="input-group">
+							<input type="text" class="form-control" id="reportrange"/>
+							<span class="input-group-addon">
+							<i class="glyphicon glyphicon-calendar"></i>
+							</span>   							 
+						</div>
                     </div>
                 </div>
                  
-				<div class="col-md-2">
+				<div class="col-md-3">
                     <div style="padding-top: 8px" class=" dropdown">
-                        <select class="selectpicker">
-                        <option>Select Department Name</option>
-                        <option>Ketchup</option>
-                        <option>Relish</option>
+                        <select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
+							<option value="0">All</option>
+							<option value="1">Call Center</option>
+							<option value="2">Print Media</option>
+						    <option value="3">Electronic Media</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div style="padding-top: 8px" class=" dropdown pull-right">
-                        <select class="selectpicker">
-                        <option>Select Department Name</option>
-                        <option>Ketchup</option>
-                        <option>Relish</option>
-                        </select>
+                    <div style="padding-top: 8px" class=" dropdown pull-right" >
+                        <select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
+							<option value="0">Select Department</option>
+							<option value="49">Ruler Water Supply</option>
+                      </select>
                     </div>
                 </div>
                 
@@ -70,16 +80,15 @@
     <div class="container-fluid bg-gov-dark">
         <div class="row">
             <div class="col-md-2">
-               <div style="padding-top: 80px" >
-				  <!--<h4 class="text-center issue-title">TYPE OF ISSUES</h4>
-				  <h3 class=" text-center issue-title">35</h3>
-				  <h4 class="text-center issue-title">MAX ISSUES IN</h4>
-				  <h4 class="text-center issue-title"> REVENUE DEPT</h4>
-				  <h3 class=" text-center issue-title">35</h3>-->
-				  <h4 class="text-center issue-title">AVERAGE ISSUE <br>
-					PENDING DAYS</h4>
-				  <h3 class=" text-center issue-title" id="issuePendingCntId"></h3>
-				</div>
+                <div style="padding-top: 80px">
+                    <h4 class="text-center issue-title">TYPE OF ISSUES</h4>
+                    <h3 class=" text-center issue-title">35</h3>
+                    <h4 class="text-center issue-title">MAX ISSUES IN</h4>
+                    <h4 class="text-center issue-title"> REVENUE DEPT</h4>
+                    <h3 class=" text-center issue-title">35</h3>
+                    <h4 class="text-center issue-title">AVERAGE ISSUE <br> PENDING DAYS</h4>
+                    <h3 class=" text-center issue-title">6 DAYS</h3>
+                </div>
             </div>
             <div class="col-md-8">
                 <div>
@@ -541,141 +550,7 @@
 
 
     <script type="text/javascript">
-        Highcharts.chart('barGraph', {
-            colors: ['#FFCF2C'],
-            chart: {
-                backgroundColor: '#3C3D41',
-
-                type: 'column'
-            },
-            title: {
-                text: 'TDP',
-                align: 'left'
-            },
-            xAxis: {
-
-                min: 0,
-                lineColor: 'transparent',
-                gridLineWidth: 0,
-                minorGridLineWidth: 0,
-                type: 'category'
-            },
-            yAxis: {
-                title: {
-                    text: "aaa",
-                    align: "left"
-                },
-                lineWidth: 0,
-                gridLineWidth: 0,
-                minorGridLineWidth: 0,
-                allowDecimals: true,
-                title: {
-                    enabled: false
-                },
-                stackLabels: {
-                    enabled: false,
-                    style: {
-                        fontWeight: 'bold',
-                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                    }
-                }
-            },
-
-            tooltip: {
-                enabled: true
-            },
-
-
-            legend: {
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    borderWidth: 0,
-                    dataLabels: {
-                        enabled: true,
-
-                    }
-                }
-            },
-
-            plotOptions: {
-                series: {
-                    borderRadius: 7.5,
-                    pointWidth: 15
-                }
-            },
-
-            exporting: {
-                buttons: {
-                    contextButton: {
-                        enabled: false
-                    },
-
-                }
-            },
-
-            series: [{
-                name: 'Brands',
-                colorByPoint: false,
-                lineWidth: 1,
-                data: [{
-                    name: 'PENDING',
-                    y: 4,
-
-                }, {
-                    name: 'NOTIFIED',
-                    y: 3.5,
-
-                }, {
-                    name: 'ACTION IN PROGRESS',
-                    y: 2,
-
-                }, {
-                    name: 'COMPLETED',
-                    y: 3,
-
-                }, {
-                    name: 'UNABLE TO RESOLVE',
-                    y: 4,
-
-                }, {
-                    name: 'ACTION NOT REQUIRED',
-                    y: 1,
-
-                }, {
-                    name: 'DUPLICATE',
-                    y: 1,
-
-                }, {
-                    name: 'WRONGLY MAPPED DESIGNATION',
-                    y: 4,
-
-                }, {
-                    name: 'WRONGLY MAPPED DEPARTMENT',
-                    y: 3,
-
-                }, {
-                    name: 'REJOINER',
-                    y: 2,
-
-                }, {
-                    name: 'REOPEN',
-                    y: 3.5,
-
-                }, {
-                    name: 'CLOSED',
-                    y: 3,
-
-                }, {
-                    name: 'PROPOSAL',
-                    y: 4,
-
-                }]
-
-            }],
-
-        });
+     
 </script>
 </body>
 </html>
