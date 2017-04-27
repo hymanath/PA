@@ -1413,86 +1413,76 @@ function stateLevelDeptOfficerDepartmentWiseAlertsView(){
 function buildstateLevelDeptOfficerDepartmentWiseAlertsView(result){
 	var str='';
 	if(result !=null && result.length>0){
-		var totalAlert = 0;
-		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-			str+='<div class="row">';
-			for(var i in result){
-				
-				str+='<div class="col-sm-4">';
-					str+='<div class="panel panel-default">';
-						str+='<div class="pad_5">';
+		for(var i in result){
+			var totalAlert = 0;
+			if(result[i].subList2 !=null && result[i].subList2.length>0){
+					for(var k in result[i].subList2){
+						totalAlert+=result[i].subList2[k].alertCnt;
+					}
+			}
+			str+='<div class="col-sm-4">';
+				str+='<div class="panel panel-default">';
+					str+='<div class="pad_5">';
 							str+='<h4 class="panel-title text-capital fontColor">'+result[i].name+'</h4>';
-						str+='</div>';
-						str+='<div class="panel-body">';
-							str+='<div class="panel-group" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
-								str+='<div class="panel panel-default">';
-									str+='<div class="" role="tab" id="headingOne'+i+'" style="padding: 15px;">';
-									 
-										str+='<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
-										str+=' <h4 class="panel-title"> ALERTS</h4>';
-										
-										str+='</a>';
-									  
-									str+='</div>';
-									str+='<div id="collapseOne'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+i+'">';
-									  str+='<div class="panel-body">';
-									  str+='<div id="departmentWiseAlertGraphViewId" style="height:250px"></div>';
-									str+='<div id="departmentAlertOverviewCntTotal"></div>';
-									  str+='<table class="table tableGraph">';
+					str+='</div>';
+					str+='<div class="panel-body">';
+						str+='<div class="panel-group" id="accordion'+i+'" role="tablist" aria-multiselectable="true">';
+							str+='<div class="panel panel-default">';
+								str+='<div class="" role="tab" id="headingOne'+i+'" style="padding: 15px;">';
+									str+='<a class ="collapseIconForIAS" role="button" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOne'+i+'" aria-expanded="true" aria-controls="collapseOne'+i+'">';
+										str+=' <h4 class="panel-title"> ALERTS</h4></a>';
+							str+='</div>';
+							str+='<div id="collapseOne'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne'+i+'">';
+								str+='<div class="panel-body">';
+									str+='<div id="departmentWiseAlertGraphViewId'+result[i].id+'" style="height:250px"></div>';
+										str+='<h4 class="text-center">TOTAL - '+totalAlert+'</h4>';
+										str+='<table class="table tableGraph">';
 											str+='<thead>';
 												str+='<th>Status</th>';
 												str+='<th>Total</th>';
 												str+='<th>%</th>';
 											str+='</thead>';
 											str+='<tbody>';
-											 if(result[i].subList2 !=null && result[i].subList2.length>0){
-												for(var j in result[i].subList2){
-													totalAlert+=result[i].subList2[j].alertCnt;
-													str+='<tr>';
-														str+='<td><span class="label" style="background-color:'+result[i].subList2[j].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].subList2[j].name+'</td>';
-														
-														str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert"  attr_status_name="'+result[i].subList2[j].name+'" attr_status_count="'+result[i].subList2[j].alertCnt+'"  attr_status_id="'+result[i].subList2[j].id+'" attr_level_id="0" >'+result[i].subList2[j].alertCnt+'</td>';
-														
-														str+='<td>'+result[i].subList2[j].percentage+'%</td>';
-													str+='</tr>';
-												}
-											}
+									if(result[i].subList2 !=null && result[i].subList2.length>0){
+										for(var j in result[i].subList2){
+											str+='<tr>';
+												str+='<td><span class="label" style="background-color:'+result[i].subList2[j].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].subList2[j].name+'</td>';
 												
-											str+='</tbody>';  
+												str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="alert"  attr_status_name="'+result[i].subList2[j].name+'" attr_status_count="'+result[i].subList2[j].alertCnt+'"  attr_status_id="'+result[i].subList2[j].id+'" attr_level_id="0" >'+result[i].subList2[j].alertCnt+'</td>';
+												
+												str+='<td>'+result[i].subList2[j].percentage+'%</td>';
+											str+='</tr>';
+											
+										}
+									}
+									str+='</tbody>';  
 										str+='</table>';
-									  str+='</div>';
-									str+='</div>';
-								str+='</div>';
-								
-								str+='<div class="panel panel-default">';
-									str+='<div class="" role="tab" id="headingTwo'+i+'" style="padding: 15px;">';
-									
-										str+='<a class="collapsed collapseIconForIAS departmentSubTask" role="button" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseTwo'+i+'" aria-expanded="false" aria-controls="collapseTwo'+i+'">';
-										  str+='<h4 class="panel-title">';
-										 str+=' SUB TASKS</h4>';
-										str+='</a>';
-									  
-									str+='</div>';
-									str+='<div id="collapseTwo'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo'+i+'">';
-									  str+='<div class="panel-body">';
-										str+='<div id="departmentWiseSubTaskGraphViewId" style="height:250px"></div>';
-										str+='<div id="departmentSubTaskOverviewCntTotal"></div>';
-										str+='<div id="departmentSubTaskTableView"></div>';
-									  str+='</div>';
-									str+='</div>';
-										
-								str+='</div>';
+								str+='</div>';	  
+							str+='</div>';	  
+						str+='</div>';			
+					
+							str+='<div class="panel panel-default">';
+								str+='<div class="" role="tab" id="headingTwo'+i+'" style="padding: 15px;">';
+									str+='<a class ="collapsed collapseIconForIAS departmentSubTask" attr_department_id = '+result[i].id+' role="button" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseTwo'+i+'" aria-expanded="true" aria-controls="collapseTwo'+i+'">';
+										str+=' <h4 class="panel-title"> SUB TASK</h4></a>';
 							str+='</div>';
-							str+='<div class="m_top20" style="text-align:center;"><button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedBlockDiv" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'">Detailed Information</button></div>';
-						str+='</div>';
+							str+='<div id="collapseTwo'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo'+i+'">';
+								str+='<div class="panel-body">';
+									str+='<div id="departmentWiseSubTaskDetailsId'+result[i].id+'"></div>';
+									str+='<div id="departmentWiseSubTaskTableView'+result[i].id+'"></div>';
+								str+='</div>';	  
+							str+='</div>';	  
+						str+='</div>';			
 					str+='</div>';
 				str+='</div>';
-			}
+				
+				str+='<div class="" style="text-align:center;"><button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedBlockDiv" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'">Detailed Information</button></div>';
 			str+='</div>';
-		str+='</div>';
-		$("#departmentWiseAlertsDetailsId").html(str);
-		$("#departmentAlertOverviewCntTotal").html("<h4 class='text-center'>TOTAL "+totalAlert+"</h4>");
+			str+='</div>';
+		}
 	}
+	$("#departmentWiseAlertsDetailsId").html(str);
+	
 	if(result !=null && result.length>0){
 		var deptStatusOverviewArr =[];
 		for(var i in result)
@@ -1516,10 +1506,10 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsView(result){
 					deptStatusOverviewArr.push(obj);
 				}
 			}
-		}
 		
 		
-			$("#departmentWiseAlertGraphViewId").highcharts({
+		
+			$("#departmentWiseAlertGraphViewId"+result[i].id).highcharts({
 				chart: {
 					type: 'pie',
 					options3d: {
@@ -1579,19 +1569,25 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsView(result){
 					data: deptStatusOverviewArr
 				}]
 			});
+		}
 		
 	}
+	
 }
 
 $(document).on("click",".departmentSubTask",function(){
-	stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss();
+	var departmentId = $(this).attr("attr_department_id");
+	stateLevelDepartmentWiseSubTaskDetails(departmentId);
 });	
-function stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(){
+function stateLevelDepartmentWiseSubTaskDetails(departmentId){
+	
+	var deptIdStrArr = [];
+	deptIdStrArr.push(departmentId);
 	var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
-      deptIdArr : deptIdArr,  
+      deptIdArr : deptIdStrArr,  
       paperIdArr : newspapersGlobalArr,
       chanelIdArr :channelGlobalArr,
 	  callCenterIdsArr : callCenterGlobalArr
@@ -1601,17 +1597,21 @@ function stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(){
       url: 'stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickAction.action',
       data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(result);
+		buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(result,departmentId);
     });
 }
 
-function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(result)
+function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(result,departmentId)
 {
 	var str='';
-	var totalAlert = 0;
-	
-	str+='<div class="row">';
-		
+	if(result !=null && result.length>0){
+		var totalAlert = 0;
+			for(var i in result)
+			{
+				
+				totalAlert+=result[i].alertCnt;
+			}
+			str+='<h4 class="text-center">TOTAL - '+totalAlert+'</h4>';
 			str+='<table class="table tableGraph">';
 				str+='<thead>';
 					str+='<th>Status</th>';
@@ -1621,7 +1621,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(res
 				str+='<tbody>';
 					for(var i in result)
 					{	
-						totalAlert+=result[i].alertCnt;
+						
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].status+'</td>';
 							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_type="subTask"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].statusId+'" attr_level_id="0"  >'+result[i].alertCnt+'</td>';
@@ -1630,32 +1630,32 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(res
 					}
 				str+='</tbody>';  
 			str+='</table>';
-		
-	str+='</div>';
-	$("#departmentSubTaskTableView").html(str);
-	$("#departmentSubTaskOverviewCntTotal").html("<h4 class='text-center'>TOTAL "+totalAlert+"</h4>")
-	var departmentstatusSubTaskOverviewArr =[];
-	for(var i in result)
-	{
-		statusPercent = result[i].percentage;
-		statusName = result[i].status;
-		var cnt = result[i].alertCnt;
-		var stsId = result[i].id;
-		var colorsId = result[i].color
-		//var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
-		
-		var obj = {
-			name: statusName,
-			y:statusPercent,
-			count:cnt,   
-			sts:stsId,
-			color:colorsId
-		}
-		departmentstatusSubTaskOverviewArr.push(obj);
 	}
+	$("#departmentWiseSubTaskTableView"+departmentId).html(str);
+	
+	var departmentstatusSubTaskOverviewArr =[];
+	if(result !=null && result.length>0){
+		for(var i in result)
+		{
+			statusPercent = result[i].percentage;
+			statusName = result[i].status;
+			var cnt = result[i].alertCnt;
+			var stsId = result[i].id;
+			var colorsId = result[i].color
+			//var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
+			
+			var obj = {
+				name: statusName,
+				y:statusPercent,
+				count:cnt,   
+				sts:stsId,
+				color:colorsId
+			}
+			departmentstatusSubTaskOverviewArr.push(obj);
+		}
 	
 	
-		$("#departmentWiseSubTaskGraphViewId").highcharts({
+		$("#departmentWiseSubTaskDetailsId"+departmentId).highcharts({
 			chart: {
 				type: 'pie',
 				options3d: {
@@ -1715,7 +1715,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(res
 				data: departmentstatusSubTaskOverviewArr
 			}]
 		});
-	
+	}
 }
 
 $(document).on("click",".alertCountCls",function(){
