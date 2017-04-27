@@ -6951,7 +6951,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(step.equalsIgnoreCase("two")){
 			queryStr.append(" model.alertStatus.alertStatusId," +//2  
 							" model.alertStatus.alertStatus,");//3
-		}else if(step.equalsIgnoreCase("day")){
+		}else if(step.equalsIgnoreCase("day")){  
 			queryStr.append(" date(model.createdTime), ");
 		}
 		queryStr.append(" count(distinct model.alertId) " +  //4  
@@ -6971,6 +6971,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			}else{
 				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 			}
+		}else{
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
 		}
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
