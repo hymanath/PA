@@ -2930,7 +2930,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			 
 			 public String getDepartmentDetailsOfAlert(){				 
 				try {
-					
+					jObj = new JSONObject(getTask());
+					 
 					Long alertId= jObj.getLong("alertId");
 					idnameVoList = alertManagementSystemService.getDepartmentDetailsOfAlert(alertId);
 					
