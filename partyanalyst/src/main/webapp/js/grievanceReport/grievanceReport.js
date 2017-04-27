@@ -1,9 +1,9 @@
 
-var start = moment().subtract(29, 'days');
+/* var start = moment().subtract(29, 'days');
 var end = moment();
 
 function cb(start, end) {
-	$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+	$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
 }
 
 $('#reportrange').daterangepicker({
@@ -19,23 +19,59 @@ $('#reportrange').daterangepicker({
 	}
 }, cb);
 
-cb(start, end); 
+cb(start, end);   */
     
-	
-    
-	
-    $('#table2').DataTable();
+	var callCenterUserFDate=moment().format("DD/MM/YYYY");
+	var callCenterUserTDate=moment().format("DD/MM/YYYY");
 
-getGrievanceReport();      
+	   
+	
+	$("#reportrange").daterangepicker({  
+	opens: 'left',
+	startDate: callCenterUserFDate,
+	endDate: callCenterUserTDate,
+	locale: {
+	  format: 'DD/MM/YYYY'
+	},
+	ranges: {
+	'Today': [moment(), moment()],
+	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+	   'This Month': [moment().startOf('month'), moment().endOf('month')],
+	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]            
+		
+	}
+});
+
+$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+	callCenterUserFDate = picker.startDate.format('DD/MM/YYYY');
+	callCenterUserTDate = picker.endDate.format('DD/MM/YYYY');
+	getTotalLocationWiseGrivenaceReport();
+});
+
+	
+    $('#table1').DataTable(); 
+	 
+$(document).on("click",".daterangeClorCls",function(){ 
+         $(".daterangeClorCls").removeClass("dateColorCls");
+}); 
+
+getGrievanceReport();
  
 function getGrievanceReport(){
+
+	var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+
 	 	var jsObj ={
-			fromDate: "01/01/2017",                       
-			toDateStr:"01/04/2017",  
-			deptId:49,
-			sourceId:0,
-			rangeType:"week",                                         
+			fromDate: callCenterUserFDate,                       
+			toDateStr:callCenterUserTDate,  
+			deptId:deptId,
+			sourceId:sourceId,
+			rangeType:"day",
 			stateId:1
+	    
 	    }
 	    $.ajax({
 	    type:'GET',         
@@ -50,58 +86,42 @@ function getGrievanceReport(){
 }	 
 function buildGrievanceReport(result) {
 	var str='';
-	str+='<table id="grievanceReportTableId" class="table table-bordered " cellspacing="0">';
-			str+='<thead>';
-			str+='<tr>';
-			str+='<th>District</th>';
-			str+='<th>Total</th>';
+		 str+='<table id="table1" class="table table-bordered " cellspacing="0">';
+		 str+='<colgroup>'
+			str+='</colgroup>'   
+			     str+=' <thead>';
+                       str+='<tr>';
+                       str+=' <th>District</th>';
+                       str+=' <th>Total</th>';
+                      
+                       for(var i in result[0].subList1){       
+						    str+=' <th>'+result[0].subList1[i].statusType+'</th>';
+					   }
+					   for(var j in result[0].subList2){         
+						    str+=' <th style="background-color:#ecebd6">'+result[0].subList2[j].day+'</th>';
+					   }
+                       str+=' </tr>';
+                      str+='</thead>';
+					   str+='<tbody>';
+					   for(var i in result){
+						   str+='<tr>'; 
+						  str+='<td>  <a class="js-open-modal " href="#" data-toggle="modal" data-target="#myModal2" >'+
+						  ' <i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</a></td>';
+						  str+='<td>'+result[i].totalAlertCnt+'</td>';
+						  for(var j in result[i].subList1){ 
+							str+='<td>'+result[i].subList1[j].totalAlertCnt+'</td>';
+						  }
+						  for(var j in result[i].subList2){ 
+							str+='<td>'+result[i].subList2[j].totalAlertCnt+'</td>';
+						  }     
 						  
-			for(var i in result[0].subList1){       
-				str+='<th>'+result[0].subList1[i].statusType+'</th>';
-			}
-			for(var j in result[0].subList2){         
-				str+='<th style="background-color:#ecebd6">'+result[0].subList2[j].day+'</th>';
-			}
-			str+=' </tr>';
-			str+='</thead>';
-		str+='<tbody>';
-		var locTotal = 0;
-		for(var i in result){
-			str+='<tr>'; 
-				str+='<td>  <a class="js-open-modal " href="#" data-toggle="modal" data-target="#myModal2" >'+
-					 ' <i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</a></td>';
-				str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_location_id="'+result[i].id+'">'+result[i].totalAlertCnt+'</td>';
-				locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
-				for(var j in result[i].subList1){
-					if(result[i].subList1[j].totalAlertCnt != 0){
-						str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="'+result[i].id+'" attr_group_type="status">'+result[i].subList1[j].totalAlertCnt+'</td>';
-					}else{
-						str+='<td>-</td>';
-					}      
-				}
-				for(var j in result[i].subList2){  
-					if(result[i].subList2[j].totalAlertCnt != 0){        
-						str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_pattern="'+result[i].subList2[j].day+'" attr_location_id="'+result[i].id+'" attr_group_type="day">'+result[i].subList2[j].totalAlertCnt+'</td>';
-					}else{      
-						str+='<td>-</td>';
-					}
-				} 
-			str+='</tr>';
-		}  
-		str+='<tr>';
-			str+='<td>Total</td>';
-			str+='<td>'+locTotal+'</td>';
-			for(var i in result[0].subList1){
-				str+='<td>'+result[0].subList1[i].grandTotal+'</td>';    
-			}
-			for(var i in result[0].subList2){
-				str+='<td>'+result[0].subList2[i].grandTotal+'</td>';    
-			}   
-		str+='</tr>';
-		str+='</tbody>';
-	str+='</table>';
-	$('#grivenaceTableId').html(str);
-	$('#grievanceReportTableId').DataTable();  
+							str+='</tr>';   
+					    }
+	
+					   str+='</tbody>';
+					   str+='</table>';
+					   $('#grivenaceTableId').html(str);
+	
 }	
 
 
@@ -117,8 +137,8 @@ function getAverageIssuePendingDays(){
     var jobj = {
       deptIds :deptIds,
 	  sourceIds:sourceIds,
-	  fromDate : "01/11/2016",//2016-11-01
-	  toDate:"01/05/2017"//2017-05-01
+	  fromDate : callCenterUserFDate,//2016-11-01
+	  toDate:callCenterUserTDate//2017-05-01
     }
     $.ajax({
       type : "POST",
@@ -133,38 +153,233 @@ function getAverageIssuePendingDays(){
 		$('#issuePendingCntId').text(str);
     });
     
+    }	   	
+function getMediaInformation(){
+	  
+   var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+	 
+	 var jobj = {
+          fromDate: callCenterUserFDate,                       
+		  toDateStr:callCenterUserTDate,  
+			deptId:deptId,
+			sourceId:sourceId,
+			rangeType:"day",
+			stateId:1
+	 }
+	$.ajax({
+      type : "GET",
+      url  : "getGrievanceReportAction.action",
+      dataType: 'json',
+      data: {task:JSON.stringify(jobj)},
+    }).done(function(result){
+		
+		
+		
+	});
 }
-onLoadInitialisations();  	  
-function onLoadInitialisations(){                     
-	$(document).on("click",".getAlertDtlsCls",function(){
-		 var locationId = $(this).attr("attr_location_id");
-		 var group = $(this).attr("attr_group_type");
-		 var statusId = $(this).attr("attr_status_id");
-		 var pattern = $(this).attr("attr_pattern");
-		 alert(locationId+":"+statusId+":"+group+":"+pattern);
-		 var jobj = {
-			fromDate: "01/01/2017",                       
-			toDateStr:"01/04/2017",  
-			deptId:49,
-			sourceId:0,                                      
-			stateId:1,
-			locationId:locationId,
-			statusId:statusId,
-			group:group,
-			pattern:pattern
-			
-		}
-		$.ajax({
-			type : "POST",
-			url  : ".action",
-			dataType: 'json',
-			data: {task:JSON.stringify(jobj)},
-		}).done(function(result){
-			var str ='';
-			if(result != null){
-				
-			}
-		});
-		 
-	});        
-}     
+//on dept change
+function getDepartmentInformation(){
+	
+	 var sourceId=$("#selectMediaId").val();
+     var deptId=$("#selecDepartmentId").val();
+	
+	 var jobj = {
+          fromDate: callCenterUserFDate,                       
+		  toDateStr:callCenterUserTDate,  
+			deptId:deptId,
+			sourceId:sourceId,
+			rangeType:"day",
+			stateId:1
+	  }
+	  $.ajax({
+      type : "GET",
+      url  : "getGrievanceReportAction.action",
+      dataType: 'json',
+      data: {task:JSON.stringify(jobj)},
+    }).done(function(result){
+		
+	});
+}
+function getTotalLocationWiseGrivenaceReport(){  
+
+    var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+    var jsObj ={
+		fromDate:callCenterUserFDate,                         
+		toDateStr:callCenterUserTDate,
+        sourceId :sourceId,  
+        deptId:deptId,
+        stateId:1		 
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getGrievanceReportAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		
+	});
+}
+ 
+ $(document).on("click",".rangeTypeCls",function(){     
+	var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val(); 
+	var rangeType=$(this).attr("attr_range_val");
+	alert(rangeType);   
+	var jsObj ={
+		fromDate:callCenterUserFDate,                         
+		toDateStr:callCenterUserTDate,
+        sourceId :sourceId,  
+        deptId:deptId,
+		rangeType:rangeType,
+        stateId:1                     
+	}
+	$.ajax({
+		type:'GET',         
+		url: 'getGrievanceReportAction.action',
+		data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		
+	});
+});
+buildLocationWiseGrivenacereportGraph();
+function buildLocationWiseGrivenacereportGraph(){
+	
+	
+	alert(44)
+	  Highcharts.chart('barGraph', {
+            colors: ['#FFCF2C'],
+            chart: {
+                backgroundColor: '#3C3D41',
+
+                type: 'column'
+            },
+            title: {
+                text: 'TDP',
+                align: 'left'
+            },
+            xAxis: {
+
+                min: 0,
+                lineColor: 'transparent',
+                gridLineWidth: 0,
+                minorGridLineWidth: 0,
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: "aaa",
+                    align: "left"
+                },
+                lineWidth: 0,
+                gridLineWidth: 0,
+                minorGridLineWidth: 0,
+                allowDecimals: true,
+                title: {
+                    enabled: false
+                },
+                stackLabels: {
+                    enabled: false,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+
+            tooltip: {
+                enabled: true
+            },
+
+
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+
+                    }
+                }
+            },
+
+            plotOptions: {
+                series: {
+                    borderRadius: 7.5,
+                    pointWidth: 15
+                }
+            },
+
+            exporting: {
+                buttons: {
+                    contextButton: {
+                        enabled: false
+                    },
+
+                }
+            },
+
+            series: [{
+                name: '',
+                colorByPoint: false,
+                lineWidth: 1,
+                data: [{
+                    name: 'PENDING',
+                    y: 4,
+
+                }, {
+                    name: 'NOTIFIED',
+                    y: 3.5,
+
+                }, {
+                    name: 'ACTION IN PROGRESS',
+                    y: 2,
+
+                }, {
+                    name: 'COMPLETED',
+                    y: 3,
+
+                }, {
+                    name: 'UNABLE TO RESOLVE',
+                    y: 4,
+
+                }, {
+                    name: 'ACTION NOT REQUIRED',
+                    y: 1,
+
+                }, {
+                    name: 'DUPLICATE',
+                    y: 1,
+
+                }, {
+                    name: 'WRONGLY MAPPED DESIGNATION',
+                    y: 4,
+
+                }, {
+                    name: 'WRONGLY MAPPED DEPARTMENT',
+                    y: 3,
+
+                }, {
+                    name: 'REJOINER',
+                    y: 2,
+
+                }, {
+                    name: 'REOPEN',
+                    y: 3.5,
+
+                }, {
+                    name: 'CLOSED',
+                    y: 3,
+
+                }, {
+                    name: 'PROPOSAL',
+                    y: 4,
+
+                }]
+
+            }],
+
+        });
+}
