@@ -7926,7 +7926,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
     	
     	try {
-			List<Object[]> obj = alertAssignedOfficerNewDAO.getDepartmentDetailsOfAlert(alertId);
+			List<Object[]> obj = alertDAO.getDepartmentDetailsOfAlert(alertId);
 			
 			if(obj !=null && obj.size()>0){
 				for (Object[] objects : obj) {					
