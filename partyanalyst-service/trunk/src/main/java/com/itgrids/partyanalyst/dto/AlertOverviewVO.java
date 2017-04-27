@@ -65,6 +65,7 @@ public class AlertOverviewVO {
 	private Long assignedAlertCnt=0l;
 	private Long involveAlertCnt=0l;
 	private String day;
+	private Long grandTotal = 0L;
 	
 	public Long getGovtAlertCnt() {
 		return govtAlertCnt;
@@ -355,5 +356,12 @@ public class AlertOverviewVO {
 	public void setDay(String day) {
 		this.day = day;
 	}
+	public Long getGrandTotal() {
+		return grandTotal;
+	}
+	public void setGrandTotal(Long grandTotal) {
+		this.grandTotal = grandTotal;
+	}
+	
 	
 }                                                          
