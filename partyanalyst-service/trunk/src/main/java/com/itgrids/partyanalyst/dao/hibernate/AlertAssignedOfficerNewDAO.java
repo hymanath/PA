@@ -4309,4 +4309,16 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	     	query.setParameter("departmentId", departmentId);
 	     	return query.list();
 	     }
+	     
+	     public List<Object[]> getDepartmentDetailsOfAlert(Long alertId){
+	    	 Query query = getSession().createQuery(" SELECT distinct " +
+		     			" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+		     			" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName " +
+		     			" FROM AlertAssignedOfficerNew model " +
+		     			" WHERE " +
+		     			" model.alertId =:alertId " +
+		     			" and model.isDeleted='N'");
+		     	query.setParameter("alertId", alertId);
+		     	return query.list();
+	     }
 }

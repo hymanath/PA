@@ -7920,4 +7920,28 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			LOG.error("Error occured prepareRequiredParameter() method of AlertManagementSystemService",e);
     	}
     }
+    
+    public List<IdNameVO> getDepartmentDetailsOfAlert(Long alertId){
+    	
+    	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+    	
+    	try {
+			List<Object[]> obj = alertAssignedOfficerNewDAO.getDepartmentDetailsOfAlert(alertId);
+			
+			if(obj !=null && obj.size()>0){
+				for (Object[] objects : obj) {					
+					IdNameVO vo = new IdNameVO();
+					vo.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					vo.setName(objects[1] !=null ? objects[1].toString():"");					
+					finalList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error occured getDepartmentDetailsOfAlert() method of AlertManagementSystemService",e);
+		}
+    	return finalList;
+    }
+    
 }      	
