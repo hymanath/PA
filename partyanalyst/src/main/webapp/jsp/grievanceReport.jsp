@@ -70,15 +70,16 @@
     <div class="container-fluid bg-gov-dark">
         <div class="row">
             <div class="col-md-2">
-                <div style="padding-top: 80px">
-                    <h4 class="text-center issue-title">TYPE OF ISSUES</h4>
-                    <h3 class=" text-center issue-title">35</h3>
-                    <h4 class="text-center issue-title">MAX ISSUES IN</h4>
-                    <h4 class="text-center issue-title"> REVENUE DEPT</h4>
-                    <h3 class=" text-center issue-title">35</h3>
-                    <h4 class="text-center issue-title">AVERAGE ISSUE <br> PENDING DAYS</h4>
-                    <h3 class=" text-center issue-title">6 DAYS</h3>
-                </div>
+               <div style="padding-top: 80px" >
+				  <!--<h4 class="text-center issue-title">TYPE OF ISSUES</h4>
+				  <h3 class=" text-center issue-title">35</h3>
+				  <h4 class="text-center issue-title">MAX ISSUES IN</h4>
+				  <h4 class="text-center issue-title"> REVENUE DEPT</h4>
+				  <h3 class=" text-center issue-title">35</h3>-->
+				  <h4 class="text-center issue-title">AVERAGE ISSUE <br>
+					PENDING DAYS</h4>
+				  <h3 class=" text-center issue-title" id="issuePendingCntId"></h3>
+				</div>
             </div>
             <div class="col-md-8">
                 <div>
