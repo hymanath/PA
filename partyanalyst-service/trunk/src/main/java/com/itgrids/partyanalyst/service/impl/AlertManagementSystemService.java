@@ -1086,7 +1086,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		           			smsDetailsVO.setGovtSubTaskId(subTaskId);
 		           			smsDetailsVO.setSmsText(message);
 		           			smsDetailsVO.setActionTypeId(actionTypeId);
-		           			saveGovtOfficerSmsDetails(smsDetailsVO);
+		           			//saveGovtOfficerSmsDetails(smsDetailsVO);
            				}
            			}
            		 }
@@ -1137,7 +1137,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                        			smsDetailsVO.setGovtSubTaskId(subTaskId);
                        			smsDetailsVO.setSmsText(message);
                        			smsDetailsVO.setActionTypeId(actionTypeId);
-                       			saveGovtOfficerSmsDetails(smsDetailsVO);
+                       			//saveGovtOfficerSmsDetails(smsDetailsVO);
 							}
                			}
                		 }
@@ -3433,7 +3433,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		               			smsDetailsVO.setAlertId(alertId);
 		               			smsDetailsVO.setSmsText(message);
 		               			smsDetailsVO.setActionTypeId(actionTypeId);
-		               			saveGovtOfficerSmsDetails(smsDetailsVO);
+		               			//saveGovtOfficerSmsDetails(smsDetailsVO);
                				}
                			}
                			}
@@ -3488,7 +3488,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		                   			smsDetailsVO.setAlertId(alertId);
 		                   			smsDetailsVO.setSmsText(message);
 		                   			smsDetailsVO.setActionTypeId(actionTypeId);
-		                   			saveGovtOfficerSmsDetails(smsDetailsVO);
+		                   			//saveGovtOfficerSmsDetails(smsDetailsVO);
                    				}
                    			}
                    		 }
