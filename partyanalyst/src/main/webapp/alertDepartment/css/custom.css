@@ -1561,3 +1561,89 @@ small.clear
 	border-left: 0px;
 	border-right: 0px;
 }
+
+
+
+
+
+#first {
+  background-color: #4B4D65;
+}
+#second {
+  background-color: #FF8A66;
+}
+.radioStyling input[type="radio"],
+.radioStyling input[type="checkbox"]{
+  display: none;
+}
+.radioStyling {
+	padding-left:40px;
+}
+.radioStyling label {
+  position: relative;
+}
+
+/* Base styles for spans */
+.radioStyling span::before,
+.radioStyling span::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+/* Radio buttons */
+.radioStyling span.radio:hover {
+  cursor: pointer;
+}
+.radioStyling span.radio::before {
+  left: -52px;
+  width: 45px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 50px;
+  border:1px solid #ddd;
+  box-shadow:0px 0px 1px 1px rgba(0,0,0,0.2)
+}
+.radioStyling span.radio::after {
+  left: -49px;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+  background:linear-gradient(to right top, #fc7279 10%, #ff7b9c 65%, #ffc019 125%);
+  transition: left .25s, background-color .25s;
+}
+input[type="radio"]:checked + label span.radio::after {
+  left: -27px;
+  background:linear-gradient(to right top, #fc7279 10%, #ff7b9c 65%, #ffc019 125%)
+}
+
+/* Check-boxes */
+.radioStyling span.checkbox::before {
+  width: 27px;
+  height: 27px;
+  background-color: #fff;
+  left: -35px;
+  box-sizing: border-box;
+  border: 3px solid transparent;
+  transition: border-color .2s;
+}
+.radioStyling span.checkbox:hover::before {
+  border: 3px solid #F0FF76;
+}
+.radioStyling span.checkbox::after {
+  content: '\f00c';
+  font-family: 'FontAwesome';
+  left: -31px;
+  top: 2px;
+  color: transparent;
+  transition: color .2s;
+}
+input[type="checkbox"]:checked + label span.checkbox::after {
+  color: #62AFFF;
+}
+.filter-block
+{
+	margin-bottom:20px;
+}

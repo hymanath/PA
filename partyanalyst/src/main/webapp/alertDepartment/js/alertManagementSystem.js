@@ -6,6 +6,7 @@ var globalNewsPaperIdArr = [];
 var globalChannelIdArr = [];
 var globalDepartmentIdArr = [];
 var globalCallCenterArr = [];
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 /* Global Filter Arreys Start*/
 
 $(".newsPaperListCls").each(function(){
@@ -179,7 +180,7 @@ function setDefaultImage(img){
 /* Status OverView Start*/
 function totalAlertGroupByStatusForGovt()
 {
-	$("#statusOverview").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#statusOverview").html(spinner);
 	var deptIdArr = globalDepartmentIdArr;
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
@@ -341,7 +342,7 @@ function buildTotalAlertGroupByStatusForGovt(result)
 /* DEPARTMENT WISE STATUS OVERVIEW START*/
 function totalAlertGroupByStatusThenDepartment()
 {
-	$("#departmentWiseStatusOvrVw").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#departmentWiseStatusOvrVw").html(spinner);
     var deptIdArr = globalDepartmentIdArr;
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
@@ -539,7 +540,7 @@ function buildtotalAlertGroupByStatusThenDepartment(result)
 
 /* Total Alerts Modal Start CLick Based*/
 $(document).on("click",".getDtlsCls",function(){
-	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModalTabId").html(spinner);
 	$("#totalAlertsModal").modal({
 		show: true,
 		keyboard: false,
@@ -625,7 +626,7 @@ function getData(count, alertStatusId){
 }	
 function buildtotalAlertsModalTabId(result){
 	var len = result.length;
-	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModalTabId").html(spinner);
 	var str='';
 	if($(window).width() < 500)
 	{
@@ -758,7 +759,7 @@ function getAlertCategortByAlert(alertId){
 
 function getAlertData(alertId)
 {
-	$("#alertCandidateDataId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#alertCandidateDataId").html(spinner);
 	var jsObj =
 	{
 		alertId  :alertId,
@@ -928,7 +929,7 @@ function buildAlertCandidateData(result)
 function getAlertStatusCommentsTrackingDetails()
 {
 	var alertId = $("#hiddenAlertId").val();
-	$("#alertCommentsDivIdNew").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#alertCommentsDivIdNew").html(spinner);
 	var jsObj={
 				alertId:alertId,
 				task:""
@@ -1677,7 +1678,7 @@ function buildDistrictWiseArticleRelatedToProblem(result){
 }
 /* Alert DepartMents Wise*/
 function getDistrictWiseTotalForAlertOverview(){
-	$("#alertDepartmentWise").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#alertDepartmentWise").html(spinner);
 	var deptIdArr = [];
 	var deptId = $(this).attr("attr_dept_id");
 	if(deptId != null){
@@ -1714,7 +1715,7 @@ function getDistrictWiseTotalForAlertOverview(){
 }
 function getDistrictTotalForAlertStatus(id,departmentId)
 {
-	$(".statusOverviewGraph").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$(".statusOverviewGraph").html(spinner);
 	
 	var deptIDArr = [];
 	if(departmentId == 0 && departmentId == null){  
@@ -2612,7 +2613,7 @@ function getLocationLevels(departmentId){
 }
 //District wise total alerts click action 
 $(document).on("click",".totAlertsStsCls",function(){
-	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModalTabId").html(spinner);
 	$("#totalAlertsModal").modal({
 		show: true,
 		keyboard: false,
@@ -2670,7 +2671,7 @@ $(document).on("click",".detailedInfoBlockDiv",function(){
 
 function getDesigAndStatusWiseAlertsCounts(departmentId){
 	$("#designationDetailedReport"+departmentId).html(' ');
-	$("#designationDetailedReport"+departmentId).html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#designationDetailedReport"+departmentId).html(spinner);
 
     var paperIdArr = globalNewsPaperIdArr;
     var chanelIdArr = globalChannelIdArr;
@@ -2795,7 +2796,7 @@ function buildDesigAndStatusWiseAlertsCounts(result,departmentId)
 	}
 }
 $(document).on("click",".totalAlertsOnDetInfo",function(){
-	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModalTabId").html(spinner);
 	$("#totalAlertsModal").modal({
 		show: true,
 		keyboard: false,
@@ -2837,7 +2838,7 @@ function getDesigAndStatusWiseAlertDetails(statusId,designationId,departmentId)
 function getDepartmentAndDistrictWiseAlertsCountsAlerts(val,stIndex)
 {
 	
-	$("#totalAlertsModalTabGraphClickId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModalTabGraphClickId").html(spinner);
 	//$(".paginationId").html("");
 	$("#totalAlertsModalGraphClick").modal({
 		show: true,

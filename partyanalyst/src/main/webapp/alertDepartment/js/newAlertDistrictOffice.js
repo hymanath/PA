@@ -657,7 +657,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 	
 
 $(document).on("click",".overAllCount",function(){
-	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModalTabId").html(spinner);
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
@@ -694,7 +694,7 @@ $(document).on("click",".overAllCount",function(){
 });
 
 $(document).on("click",".todayCountCls",function(){
-	$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#totalAlertsModalTabId").html(spinner);
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
