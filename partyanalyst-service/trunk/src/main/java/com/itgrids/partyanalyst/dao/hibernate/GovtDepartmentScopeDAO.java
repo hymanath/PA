@@ -35,10 +35,10 @@ public class GovtDepartmentScopeDAO extends GenericDaoHibernate<GovtDepartmentSc
    		return query.list();
      }
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getGovtDeptScopeDetails(){
+	public List<Object[]> getGovtDeptScopeDetails(Long levelId){
    		Query query = getSession().createQuery("select model.govtDepartmentScopeId,model.levelName " +
    				"from  GovtDepartmentScope model where model.govtDepartmentScopeId >=:scopeId ");
-   		query.setParameter("scopeId",5l);	
+   		query.setParameter("scopeId",levelId);	
    		return query.list();
      }
 	@SuppressWarnings("unchecked")

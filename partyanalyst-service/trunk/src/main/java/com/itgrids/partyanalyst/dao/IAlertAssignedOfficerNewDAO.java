@@ -79,4 +79,5 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
      		Long parentGovtDepartmentScopeId,Long locationValue,List<Long> calCntrIds,Long deptLevelId,Long alertStatusId);
     public List<Object[]> getDepartmentDetaislByDeptIds(Long departmentId);
     public List<Object[]> getDepartmentDetailsOfAlert(Long alertId);
+    public List<Object[]> getAllDepartmentHasData();
 }
