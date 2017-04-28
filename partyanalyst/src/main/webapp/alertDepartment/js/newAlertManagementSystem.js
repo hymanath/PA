@@ -949,11 +949,13 @@ function getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,depa
 	
 	
 function getDeptNamesForMultiLevel(){ 
+$("#levelWiseDepartmentDetailsId").html(spinner);
   $.ajax({
       type:'GET',
       url: 'getDeptListForMultiLvlAction.action',
     data: {}
     }).done(function(result){
+		$("#levelWiseDepartmentDetailsId").html('');
 		buildDeptNamesForMultiLevel(result);
 	});
 }
@@ -1220,6 +1222,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 	
 	
 	if(groupType == "status"){
+		$("#departmentWiseBlocks"+departmentId+parentGovtDepartmentScopeId).show();
 		if(result !=null && result.length>0){
 			var statusNamesArr=[];
 			 var pendingAlertArr = [];
@@ -1445,6 +1448,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 			$("#"+divId+departmentId+parentGovtDepartmentScopeId).css('height',"25px;"); */
 		}
 	}else if(groupType == "overview" && parentGovtDepartmentScopeId != 1){
+		$("#departmentWiseBlocks"+departmentId+parentGovtDepartmentScopeId).show();
 		if(result !=null && result.length>0){
 			
 			var locationNamesArr=[];
@@ -1651,7 +1655,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 			$("#"+divId+departmentId+parentGovtDepartmentScopeId).css("height","25px"); */
 		}
 	}else if(groupType == "overview" && parentGovtDepartmentScopeId == 1){
-		
+		$("#departmentWiseBlocks"+departmentId+parentGovtDepartmentScopeId).show();
 		if(result !=null && result.length>0){
 				var mainlocationArr =[];
 					var nmaesArr =[];
