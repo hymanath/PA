@@ -34,25 +34,31 @@
         </div>
         <div class=" bg-gov-dark">
         
-            <div class="container">
+               
+            <div class="container">  
                 <div id="menu1" class="col-md-6">       
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <ul class="nav navbar-nav">        
                             <li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
                             <li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
                             <li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
+                            <li style="padding:14px 16px;color:#95989A;"> 
+								<div id="reportrange"> 
+									&nbsp; <span>Custom Date Range</span>
+								</div>
+							</li>
                         </ul>
                     </div>      
-                    <div style="padding-top: 8px" class="col-md-6">
-                        <!--<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%"> 
+                    <!--<div style="padding-top: 8px" class="col-md-6">
+                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%"> 
                              <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp; <span></span> <b class="caret"></b> </div> -->
-							 <div class="input-group">
+							 <!--<div class="input-group">
 							<input type="text" class="form-control" id="reportrange"/>
 							<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 							</span>   							 
 						</div>
-                    </div>
+                    </div>-->
                 </div>
                  
 				<div class="col-md-3">
@@ -68,7 +74,6 @@
                 <div class="col-md-3">
                     <div style="padding-top: 8px" class=" dropdown pull-right" >
                         <select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
-							<option value="0">Select Department</option>
 							<option value="49">Ruler Water Supply</option>
                       </select>
                     </div>
@@ -80,17 +85,12 @@
 
     <!-- /.container-fluid -->
 
-    <div class="container-fluid bg-gov-dark">
+      <div class="container-fluid bg-gov-dark">
         <div class="row">
             <div class="col-md-2">
                 <div style="padding-top: 80px">
-                    <h4 class="text-center issue-title">TYPE OF ISSUES</h4>
-                    <h3 class=" text-center issue-title">35</h3>
-                    <h4 class="text-center issue-title">MAX ISSUES IN</h4>
-                    <h4 class="text-center issue-title"> REVENUE DEPT</h4>
-                    <h3 class=" text-center issue-title">35</h3>
-                    <h4 class="text-center issue-title">AVERAGE ISSUE <br> PENDING DAYS</h4>
-                    <h3 class=" text-center issue-title">6 DAYS</h3>
+                   <h4 class="text-center issue-title">AVERAGE ISSUE <br> PENDING DAYS</h4>
+                    <h3 class=" text-center issue-title"><span id="averageIssueId"></span></h3>
                 </div>
             </div>
             <div class="col-md-8">
@@ -103,41 +103,41 @@
             <div class="col-md-2">
                 <div style="padding-top: 80px">
                     <h4 class="text-center issue-title total">TOTAL</h4>
-                    <h1 style="font-size: 6em ;" class=" text-center issue-title">250</h1>
+                    <h1 style="font-size: 6em ;" class=" text-center issue-title"><span id="totalAlertCountId"></span></h1>
                 </div>
             </div>
         </div>
     </div>
+    
 
-    <section class="container">
+       <section class="container">
         <div  class="row">
             <div>
                 <h3> Location wise Grevince Report </h3>
-                <h5> (1 April 2017 to 25 April 2017)</h5>
             </div>
             <div class="table-responsive" id="grivenaceTableId">
                
             </div>
         </div>
     </section>
+	<input type="hidden" id="dateRangeId" value="day"></input>  
 
   
   <!-- Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
+   <div class="modal fade" id="grievanceDtlsModalId" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+         <div id="grivenaceModalHeedingId"> </div> 
         </div>
         <div class="modal-body">
-                      <div class="table-responsive">
-                <table class=" table">
+                    <div class="table-responsive" id="totalAlertDistricTableId"> </div>
+        <!--      <table class=" table">
                     <col span="1" style="background-color:#ebf4fb">
                     <col span="8" style="background-color:#ebecd5">
                     <thead>
                         <tr>
-                            <th>District</th>
                             <th>Total</th>
                             <th>Action In Progress</th>
                             <th>Action Not Required</th>
@@ -145,209 +145,83 @@
                             <th>Completed</th>
                             <th>Notified</th>
                             <th>Proposal</th>
-                            <th>Rejoinder</th>
+                            <th>Wrongly Mapped Designation</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td>10</td>
+                            <td>02</td>
                             <td>20</td>
                             <td>20</td>
                             <td>20</td>
                             <td>20</td>
                             <td>20</td>
-                            <td>20</td>
-                            <td>20</td>
-                            <td>20</td>
-                            <td>20</td>
+                            <td>02</td>
                         </tr>
                     </tbody>
-                </table>
-            </div>
-            <div class="table-responsive">
-                <table id="table2" class="table  table-bordered" cellspacing="0" width="100%">
+                </table>-->
+           
+			<div class="panel panel-default">
+			<div clss="panel-heading m_top20" id="grivancHeadinId">
+			</div>
+			<div class="panel-body">
+            <div id="grevinceDetailsId"  class="table-responsive">
+			   
+			</div>
+			</div>
+			</div>
+                 <!-- <table id="table2" class="table  table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th>District</th>
-                            <th>Total</th>
-                            <th>Action In Progress</th>
-                            <th>Action Not Required</th>
-                            <th>Closed</th>
-                            <th>Completed</th>
-                            <th>Notified</th>
-                            <th>Proposal</th>
-                            <th>Rejoinder</th>
+                            <th>ComplentId</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Title</th>
+                            <th>Discription</th>
+                            <th>Related to</th>
+                            <th>Problem</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
-                    <tfoot>
+                   <tbody>
                         <tr>
-                            <th>Total</th>
-                            <th> 23 </th>
-                            <th>32</th>
-                            <th>14</th>
-                            <th>05</th>
-                            <th>33</th>
-                            <th>10</th>
-                            <th>11</th>
-                            <th>25</th>
+                            <td>#17455</td>
+                            <td>11 Apr 2017</td>
+                            <td>9:00pm</td>
+                            <td>East godavari</td>
+                            <td>Grevince Title</td>
+                            <td>Grevince Discription</td>
+                            <td>Drinking Water</td>
+                            <td>Water Problem</td>
+                            <td>Action Progress</td>
                         </tr>
-                    </tfoot>
-                    <tbody>
-                        <tr>
-                            <td><i class="glyphicon glyphicon-plus-sign"></i>East Godavari</td>
-                            <td>11</td>
-                            <td>23</td>
-                            <td>61</td>
-                            <td>25</td>
-                            <td>8</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>21</td>
+						<tr>
+                            <td>#17455</td>
+                            <td>11 Apr 2017</td>
+                            <td>9:00pm</td>
+                            <td>East godavari</td>
+                            <td>Grevince Title</td>
+                            <td>Grevince Discription</td>
+                            <td>Drinking Water</td>
+                            <td>Water Problem</td>
+                            <td>Action Progress</td>
                         </tr>
-                        <tr>
-                            <td><i class="glyphicon glyphicon-plus-sign"></i>West Godavari</td>
-                            <td>11</td>
-                            <td>23</td>
-                            <td>61</td>
-                            <td>25</td>
-                            <td>8</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>21</td>
+						<tr>
+                            <td>#17455</td>
+                            <td>11 Apr 2017</td>
+                            <td>9:00pm</td>
+                            <td>East godavari</td>
+                            <td>Grevince Title</td>
+                            <td>Grevince Discription</td>
+                            <td>Drinking Water</td>
+                            <td>Water Problem</td>
+                            <td>Action Progress</td>
                         </tr>
-                        <tr>
-                            <td><i class="glyphicon glyphicon-plus-sign"></i>Krishna</td>
-                            <td>11</td>
-                            <td>23</td>
-                            <td>61</td>
-                            <td>25</td>
-                            <td>8</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>21</td>
-                        </tr>
-                        <tr>
-                            <td><i class="glyphicon glyphicon-plus-sign"></i>Guntur</td>
-                            <td>11</td>
-                            <td>23</td>
-                            <td>61</td>
-                            <td>25</td>
-                            <td>8</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>21</td>
-                        </tr>
-                        <tr>
-                            <td><i class="glyphicon glyphicon-plus-sign"></i>Prakasam</td>
-                            <td>11</td>
-                            <td>23</td>
-                            <td>61</td>
-                            <td>25</td>
-                            <td>8</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>21</td>
-                        </tr>
-                        <tr>
-                            <td><i class="glyphicon glyphicon-plus-sign"></i>Nellore</td>
-                            <td>11</td>
-                            <td>23</td>
-                            <td>61</td>
-                            <td>25</td>
-                            <td>8</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>21</td>
-                        </tr>
-                        <tr>
-                            <td><i class="glyphicon glyphicon-plus-sign"></i>Srikakulam</td>
-                            <td>11</td>
-                            <td>23</td>
-                            <td>61</td>
-                            <td>25</td>
-                            <td>8</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>21</td>
-                        </tr>
-                        <tr>
-                            <td><i class="glyphicon glyphicon-plus-sign"></i>Vizianagaram</td>
-                            <td>11</td>
-                            <td>23</td>
-                            <td>61</td>
-                            <td>25</td>
-                            <td>8</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>21</td>
-                            <tr>
-                                <td><i class="glyphicon glyphicon-plus-sign"></i>Visakhapatnam</td>
-                                <td>11</td>
-                                <td>23</td>
-                                <td>61</td>
-                                <td>25</td>
-                                <td>8</td>
-                                <td>32</td>
-                                <td>20</td>
-                                <td>21</td>
-                            </tr>
-                            <tr>
-                                <td><i class="glyphicon glyphicon-plus-sign"></i>Kurnool</td>
-                                <td>11</td>
-                                <td>23</td>
-                                <td>61</td>
-                                <td>25</td>
-                                <td>8</td>
-                                <td>32</td>
-                                <td>20</td>
-                                <td>21</td>
-                            </tr>
-                            <tr>
-                                <td><i class="glyphicon glyphicon-plus-sign"></i>Chittoor</td>
-                                <td>11</td>
-                                <td>23</td>
-                                <td>61</td>
-                                <td>25</td>
-                                <td>8</td>
-                                <td>32</td>
-                                <td>20</td>
-                                <td>21</td>
-                            </tr>
-                            <tr>
-                                <td><i class="glyphicon glyphicon-plus-sign"></i>Kadapa</td>
-                                <td>11</td>
-                                <td>23</td>
-                                <td>61</td>
-                                <td>25</td>
-                                <td>8</td>
-                                <td>32</td>
-                                <td>20</td>
-                                <td>21</td>
-                            </tr>
-                            <tr>
-                                <td><i class="glyphicon glyphicon-plus-sign"></i>Anantapur</td>
-                                <td>11</td>
-                                <td>23</td>
-                                <td>61</td>
-                                <td>25</td>
-                                <td>8</td>
-                                <td>32</td>
-                                <td>20</td>
-                                <td>21</td>
-                            </tr>
-                            <tr>
-                                <td><i class="glyphicon glyphicon-plus-sign"></i>Rayalaseema</td>
-                                <td>11</td>
-                                <td>23</td>
-                                <td>61</td>
-                                <td>25</td>
-                                <td>8</td>
-                                <td>32</td>
-                                <td>20</td>
-                                <td>21</td>
-                            </tr>
                     </tbody>
-                </table>
-            </div>
+                </table>-->
+            
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -361,7 +235,7 @@
     
     
       <!-- Modal -->
-  <div class="modal fade" id="myModal2" role="dialog">
+<div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog modal-lg">
     
       <!-- Modal content-->
@@ -371,7 +245,7 @@
           <h4 class="modal-title">Modal Header</h4>
         </div>
         <div class="modal-body">
-                     <div class="table-responsive">
+            <div class="table-responsive">
                 <table class="table table-inr-x" style="border-collapse:collapse;">
                     <thead>
                         <tr>
