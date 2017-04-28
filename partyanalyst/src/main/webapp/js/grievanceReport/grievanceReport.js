@@ -334,8 +334,7 @@ function onLoadInitialisations(){
 		$("#totalAlertDistricTableId").html("");  
 		$("#grievanceDtlsModalId").modal("show");     
 		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
-
-		var rangeType=$("#dateRangeId").attr("value");
+var rangeType=$("#dateRangeId").attr("value");
 		var locationId = $(this).attr("attr_location_id");
 		var group = $(this).attr("attr_group_type");
 		var statusId = $(this).attr("attr_status_id");
@@ -378,17 +377,45 @@ function onLoadInitialisations(){
 		}).done(function(result){
 		  var str ='';
 		  if(result != null){
-				if(group=="status"){
-					buildTotalAlertDistrictTable(result);
+				if(group=="day"){ 
+				buildTotalAlertDistrictTable(result);
 				}
 				buildGrivenceDetailsTable(result,group);
 		  }
 		});
      
-	}); 
+	});
+	
 	$(document).on("click",".rangeTypeCls",function(){
 		$("#dateRangeId").attr("value",$(this).attr("attr_range_val"));
 	});
+	$(document).on("click",".getAlertDtlsOnLocCls",function(){
+		var locationId = $(this).attr("attr_location_id");
+		var statusId = $(this).attr("attr_status_id");
+		var sourceId=$("#selectMediaId").val();
+        var deptId=$("#selecDepartmentId").val();
+	    var rangeType=$("#dateRangeId").attr("value");
+		alert(statusId);
+		var jobj = {
+		  fromDate: callCenterUserFDate,                       
+		  toDateStr:callCenterUserTDate,  
+		  deptId:deptId,
+		  sourceId:sourceId,                                      
+		  stateId:1,
+		  locationId:locationId,
+		  statusId : statusId,      
+		  rangeType:rangeType        
+		  }
+		$.ajax({    
+		  type : "POST",
+		  url  : "getGrievanceReportBasedOnLocationAndStatus.action",  
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jobj)},
+		}).done(function(result){
+			
+		});
+	});
+	
 }
 
 //getAlertData(17179);
@@ -527,7 +554,6 @@ function buildAlertData(result){
 	
 	function getGroupedArticlesInfo(articleId)
 	{
-		
 		$.ajax({
 			  type : 'GET',      
 			  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
@@ -662,7 +688,7 @@ function getAlertStatusCommentsTrackingDetails(alertId,alertStatus){
 		});
 	}
 	
-	function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
+function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 {
 	var docName = '';
 	var extName = [];
@@ -681,7 +707,6 @@ function getAlertStatusCommentsTrackingDetails(alertId,alertStatus){
 				}else{
 					str+='<li role="presentation" class="active m_top10"><a href="#commentStatus'+i+'" aria-controls="commentStatus'+i+'" role="tab" data-toggle="tab"><span>'+result[i].status+'</span><span class="glyphicon glyphicon-ok pull-right" style="font-size: 22px;color: #777 !important;margin-left: 15px;"></span><br/><span class="color_FF">'+result[i].sublist2[0].date+'<span></a></li>';
 				}        
-				
 			}
 			str+='</ul>';
 			str+='<div class="tab-content alertComment">';
@@ -826,7 +851,6 @@ function getVerificationDtls(alertId){
 			$("#alertVerificationDtlsDiv").html(str);
 		}
    }
-   
    
 	function getMonth(month){
 	if(month=="01"){
@@ -1192,23 +1216,23 @@ function buildGrivenceDetailsTable(result,group){
 				   $("#grevinceDetailsId").html(str);
 				   $("#alertIdListTableId").dataTable();
 }
-
 function buildTotalAlertDistrictTable(result){
      var str='';
 	    str+='<table class=" table table-bordered">';
 	    str+='<thead>';
         str+='<tr>'; 
+		str+='<th>Total</th>';
 	    for(var i in result[0].subList1){       
-           str+='<th >'+result[0].subList1[i].statusType+'</th>';
-		  }
+           str+='<th  style="background-color:#ecebd6;">'+result[0].subList1[i].statusType+'</th>';
+		}
 	        str+='<tr>';	 
 	        str+='</thead>';	
 			str+='<tbody>'
 			str+='<tr>';
 			str+='<td>'+result[0].totalAlertCnt+'</td>';
 		for( var i in result[0].subList1){
-			str+='<td style="background-color:#ecebd6">'+result[0].subList1[i].totalAlertCnt+'</td>';
-		}
+		    str+='<td  class="getAlertDtlsOnLocCls" attr_status_id="'+result[0].subList1[i].statusTypeId+'" attr_location_id="'+result[0].id+'" style="background-color:#ecebd6;">'+result[0].subList1[i].totalAlertCnt+'</td>';
+       }
 			str+='<tr>'; 
 	        str+='</tbody>'
 			str+='</table>';
