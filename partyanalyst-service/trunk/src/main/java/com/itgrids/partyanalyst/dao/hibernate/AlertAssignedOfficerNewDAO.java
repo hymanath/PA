@@ -3702,9 +3702,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
  			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
  		}
- 		if(stateId != null && stateId.longValue() > 0){
+ 		/*if(stateId != null && stateId.longValue() > 0){
  			queryStr.append(" and GUA.state_id = :stateId ");
- 		}
+ 		}*/
 		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 			queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 		}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -3793,9 +3793,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
  			query.setParameter("govtDepartmentId",govtDepartmentId);
  		}
- 		if(stateId != null && stateId.longValue() > 0){
+ 		/*if(stateId != null && stateId.longValue() > 0){
  			query.setParameter("stateId",stateId);
- 		}
+ 		}*/
  		return query.list();
      }
      public List<Object[]> getChildLocationBasedOnParentLocation(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
@@ -3846,9 +3846,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
  			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
  		}
- 		if(stateId != null && stateId.longValue() > 0){
+ 	/*	if(stateId != null && stateId.longValue() > 0){
  			queryStr.append(" and GUA.state_id = :stateId ");
- 		}
+ 		}*/
  		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
 			queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.zone_id ");
 		}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 3L){
@@ -3962,9 +3962,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(parentGovtDepartmentScopeValue != null && parentGovtDepartmentScopeValue.longValue() > 0L){
  			query.setParameter("parentGovtDepartmentScopeValue",parentGovtDepartmentScopeValue);
  		}
- 		if(stateId != null && stateId.longValue() > 0){
+ 		/*if(stateId != null && stateId.longValue() > 0){
  			query.setParameter("stateId",stateId);
- 		}
+ 		}*/
  		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
  			query.setParameter("govtDepartmentId",govtDepartmentId);
  		}
@@ -4037,9 +4037,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
  			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
  		}
- 		if(stateId != null && stateId.longValue() > 0){
+ 		/*if(stateId != null && stateId.longValue() > 0){
  			queryStr.append(" and GUA.state_id = :stateId ");
- 		}
+ 		}*/
 			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 				queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -4178,9 +4178,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(filterScopeValue != null && filterScopeValue.longValue() > 0L){
  			query.setParameter("filterScopeValue",filterScopeValue);
  		}
- 		if(stateId != null && stateId.longValue() > 0){
+ 		/*if(stateId != null && stateId.longValue() > 0){
  			query.setParameter("stateId",stateId);
- 		}
+ 		}*/
  		return query.list();
      }
      public List<Long> getAlertIdsBasedOnRequiredParameter(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
@@ -4219,9 +4219,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   		queryStr.append(" and GUA.user_address_id = GDWL.govt_user_address_id  ");
   		queryStr.append(" and GDDO.address_id = GUA.user_address_id  ");
   		
-  		if(stateId != null && stateId.longValue() > 0){
+  		/*if(stateId != null && stateId.longValue() > 0){
   			queryStr.append(" and GUA.state_id = :stateId ");
-  		}
+  		}*/
 		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 			queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 		}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -4316,9 +4316,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
   			query.setParameter("govtDepartmentId",govtDepartmentId);
   		}
-  		if(stateId != null && stateId.longValue() > 0){
+  		/*if(stateId != null && stateId.longValue() > 0){
   			query.setParameter("stateId",stateId);
-  		}
+  		}*/
   		if(locationValue != null && locationValue.longValue() > 0){
   			query.setParameter("locationValue",locationValue);
   		}
