@@ -2328,7 +2328,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	public List<AlertVO> getGovtDepartmentDetails(){
 		 List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
-			List<Object[]> deptList = govtDepartmentDAO.getAllDepartment();
+			//List<Object[]> deptList = govtDepartmentDAO.getAllDepartment();
+			List<Object[]> deptList = alertAssignedOfficerNewDAO.getAllDepartmentHasData();
 			if (deptList != null && deptList.size() > 0) {
 			 for (Object[] objects : deptList) {
 				 AlertVO alertVO = new AlertVO();
@@ -2342,12 +2343,31 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return finalVoList;
 	}
-	public List<AlertVO> getGovtDeptScopeDetails(){
+	public List<AlertVO> getGovtDeptScopeDetails(Long departmentId,Long userId){
 		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
 		try {
-			List<Object[]> scopeList = govtDepartmentScopeDAO.getGovtDeptScopeDetails();
-			if (scopeList != null && scopeList.size() > 0 ){
-				for (Object[] objects : scopeList) {
+			Long levelId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+			List<Object[]> scopeDetlsLst = null;
+			if(departmentId != null && departmentId > 0){
+				   List<Object[]> rtrnObjList = govtDepartmentScopeLevelDAO.getChildGovtScopesLevelByParentScopeLevel(levelId, departmentId);//levelId means Access Level 
+	      			Set<Long> scopeIdsSet = new HashSet<Long>();
+	      			if(rtrnObjList != null && rtrnObjList.size() > 0){
+	      				for(Object[] param:rtrnObjList){
+	      				   scopeIdsSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+	      				}
+	      				scopeDetlsLst = govtDepartmentScopeLevelDAO.getChildGovtScopeByParentScope(scopeIdsSet,departmentId);
+	      			}
+	     	}else{
+	     		    scopeDetlsLst = govtDepartmentScopeDAO.getGovtDeptScopeDetails(levelId);;	
+			}
+			if(scopeDetlsLst != null && scopeDetlsLst.size() > 0 ){
+				for (Object[] objects : scopeDetlsLst) {
 					AlertVO alertVO = new AlertVO();
 					alertVO.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 					alertVO.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));

@@ -44,7 +44,7 @@ public interface IAlertManagementSystemService {
 	public  List<AlertVO> getDistrictLevelDeptWiseStatusOverView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingtype,Long levelId,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList);
 	public  List<AlertVO> getDistrictLevelDeptWiseLocationLevelView(Long scopeId,String startDateStr,String fromDateStr,String type,Long deptId,String sortingType,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList);
 	public List<AlertVO> getGovtDepartmentDetails();
-	public List<AlertVO> getGovtDeptScopeDetails();
+	public List<AlertVO> getGovtDeptScopeDetails(Long departmentId,Long userId);
 	public  List<IdAndNameVO> getSubOrdinateLevels(Long designationId);
 	public List<AlertCoreDashBoardVO> groupAlertsTimeWise(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs);
 	public List<DistrictOfficeViewAlertVO> getSubOrdinateAlertsOverview(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
