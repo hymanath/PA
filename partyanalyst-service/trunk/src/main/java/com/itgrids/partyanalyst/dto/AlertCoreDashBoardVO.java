@@ -23,6 +23,7 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long count=0l;
 	
 	private Double countPerc=0.0;
+	private Long stateId=0l;
 	private Long categoryId;
 	private String category;
 	
@@ -422,6 +423,14 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setProblem(String problem) {
 		this.problem = problem;
+	}
+
+	public Long getStateId() {
+		return stateId;
+	}
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 	
 	
