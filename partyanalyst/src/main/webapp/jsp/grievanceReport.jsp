@@ -49,16 +49,7 @@
 							</li>
                         </ul>
                     </div>      
-                    <!--<div style="padding-top: 8px" class="col-md-6">
-                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%"> 
-                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp; <span></span> <b class="caret"></b> </div> -->
-							 <!--<div class="input-group">
-							<input type="text" class="form-control" id="reportrange"/>
-							<span class="input-group-addon">
-							<i class="glyphicon glyphicon-calendar"></i>
-							</span>   							 
-						</div>
-                    </div>-->
+                    
                 </div>
                  
 				<div class="col-md-3">
@@ -133,34 +124,7 @@
         </div>
         <div class="modal-body">
                     <div class="table-responsive" id="totalAlertDistricTableId"> </div>
-        <!--      <table class=" table">
-                    <col span="1" style="background-color:#ebf4fb">
-                    <col span="8" style="background-color:#ebecd5">
-                    <thead>
-                        <tr>
-                            <th>Total</th>
-                            <th>Action In Progress</th>
-                            <th>Action Not Required</th>
-                            <th>Closed</th>
-                            <th>Completed</th>
-                            <th>Notified</th>
-                            <th>Proposal</th>
-                            <th>Wrongly Mapped Designation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>10</td>
-                            <td>02</td>
-                            <td>20</td>
-                            <td>20</td>
-                            <td>20</td>
-                            <td>20</td>
-                            <td>20</td>
-                            <td>02</td>
-                        </tr>
-                    </tbody>
-                </table>-->
+        
            
 			<div class="panel panel-default">
 			<div clss="panel-heading m_top20" id="grivancHeadinId">
@@ -171,56 +135,7 @@
 			</div>
 			</div>
 			</div>
-                 <!-- <table id="table2" class="table  table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>ComplentId</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>Location</th>
-                            <th>Title</th>
-                            <th>Discription</th>
-                            <th>Related to</th>
-                            <th>Problem</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                   <tbody>
-                        <tr>
-                            <td>#17455</td>
-                            <td>11 Apr 2017</td>
-                            <td>9:00pm</td>
-                            <td>East godavari</td>
-                            <td>Grevince Title</td>
-                            <td>Grevince Discription</td>
-                            <td>Drinking Water</td>
-                            <td>Water Problem</td>
-                            <td>Action Progress</td>
-                        </tr>
-						<tr>
-                            <td>#17455</td>
-                            <td>11 Apr 2017</td>
-                            <td>9:00pm</td>
-                            <td>East godavari</td>
-                            <td>Grevince Title</td>
-                            <td>Grevince Discription</td>
-                            <td>Drinking Water</td>
-                            <td>Water Problem</td>
-                            <td>Action Progress</td>
-                        </tr>
-						<tr>
-                            <td>#17455</td>
-                            <td>11 Apr 2017</td>
-                            <td>9:00pm</td>
-                            <td>East godavari</td>
-                            <td>Grevince Title</td>
-                            <td>Grevince Discription</td>
-                            <td>Drinking Water</td>
-                            <td>Water Problem</td>
-                            <td>Action Progress</td>
-                        </tr>
-                    </tbody>
-                </table>-->
+               
             
         </div>
         <div class="modal-footer">
