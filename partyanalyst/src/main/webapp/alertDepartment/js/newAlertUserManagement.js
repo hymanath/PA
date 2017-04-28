@@ -336,10 +336,10 @@ function buildIASOfficerMyAlertsCountMainView(result){
 		
 		var maxHeight = 0;
 
-		$(".panelheights").each(function(){
+		$(".panelheightsAlert").each(function(){
 		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 		});
-		$(".panelheights").height(maxHeight);
+		$(".panelheightsAlert").height(maxHeight);
 		
 }
 function getIASOfficerMySubTasksCountView(){
@@ -574,10 +574,10 @@ function buildIASOfficerMySubTasksCountView(result){
 		}
 		var maxHeight = 0;
 
-		$(".panelheights").each(function(){
+		$(".panelheightsSub").each(function(){
 		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 		});
-		$(".panelheights").height(maxHeight);
+		$(".panelheightsSub").height(maxHeight);
 }
 function getIASOfficerMyAssignedSubTasksCountView(){
 	$("#assignedSubTasksDivID").html(spinner);
@@ -811,10 +811,10 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 		}
 		var maxHeight = 0;
 
-	$(".panelheights").each(function(){
+	$(".panelheightsAss").each(function(){
 	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 	});
-	$(".panelheights").height(maxHeight);
+	$(".panelheightsAss").height(maxHeight);
 }
 function stateLevelDeptOfficerStatusOverview(){
 	$("#statusOverview").html(spinner);
