@@ -154,11 +154,24 @@ function onLoadClicks()
 
 	$(document).on('change', '#departmentsId1', function(){
 		var deptId = $(this).val();
-		getDepartmentSubLevels(deptId);
+		if(deptId == globalSubTaskAlertId){
+			getDepartmentSubLevels(deptId);
+		}else{
+			getDepartmentLevelsForSubTask(deptId);
+		}
+			
 	});
 
 	$(document).on('change', '#locationLevelSelectId1', function(){
-		getChildLevelValuesForSubTask();	
+		
+		var deptId = $("#departmentsId1").val();
+		if(deptId == globalSubTaskAlertId){
+			getChildLevelValuesForSubTask();
+		}else{
+			getParentLevelsOfLevelForSubTask();
+		}
+		
+			
 	});
 
 	$(document).on("click",".filters-apply",function(){
@@ -2144,6 +2157,7 @@ function getGroupedArticlesInfo(articleId)
 	});
 }
 
+var globalSubTaskAlertId=0;
 function departmentsByAlert(alertId){
 	var jsObj = {
 		alertId : alertId
@@ -2158,6 +2172,7 @@ function departmentsByAlert(alertId){
 			for(var i in result)
 			{
 				str+='<span class="label label-default label-category">'+result[i].name+'</span>';
+				globalSubTaskAlertId=result[i].id;
 			}
 		str+='</p>';
 		$("#alertDetails").append(str);
@@ -3300,6 +3315,11 @@ function getGovtAllDepartmentDetails(){
 var globalUserLevelValues = [];	 */
 function getDepartmentSubLevels(deptId){
 	
+	$("#designationsId1").empty();
+	$("#designationsId1").trigger("chosen:updated");
+	$("#officerNamesId1").empty();
+	$("#officerNamesId1").trigger("chosen:updated");
+	
 	var jsObj = {
 		departmentId : deptId,
 		levelId:globalUserLevelId
@@ -3415,3 +3435,48 @@ function getAlertDtlsBasedOnStatusFilterClick(statusId,statusName,statusCount,im
     });
 }
 
+function getDepartmentLevelsForSubTask(deptId){
+	
+	$("#designationsId1").empty();
+	$("#designationsId1").trigger("chosen:updated");
+	$("#officerNamesId1").empty();
+	$("#officerNamesId1").trigger("chosen:updated");
+	
+	var jsObj = {
+		departmentId : deptId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDepartmentLevelsAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildDepartmentSubLevels(result);
+		}
+	});
+	
+}
+
+function getParentLevelsOfLevelForSubTask(){
+	var departmentId = $("#departmentsId1").val();
+	var levelId = $("#locationLevelSelectId1").val();
+	
+	$("#designationsId1").empty();
+	$("#designationsId1").trigger("chosen:updated");
+	$("#officerNamesId1").empty();
+	$("#officerNamesId1").trigger("chosen:updated");
+	
+	var jsObj = {
+		departmentId : departmentId,
+		levelId : levelId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getParentLevelsOfLevelAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildChildLevelValuesForSubTask(result,departmentId);
+		}
+	});
+}
