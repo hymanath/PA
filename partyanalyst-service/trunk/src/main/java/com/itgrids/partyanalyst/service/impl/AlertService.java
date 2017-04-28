@@ -5906,7 +5906,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Date today = dateUtilService.getCurrentDateAndTime();
 			String td = myFormat.format(today);
 			Long dist = 0l;
-			Long statusId = 0L;
+			Long statusId = 0L;  
 			AlertCoreDashBoardVO alertCoreDashBoardVO = null;  
 			String alertSource = "";
 			if(alertList != null && alertList.size() > 0){  
@@ -5919,6 +5919,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertCoreDashBoardVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
 					alertCoreDashBoardVO.setSevertyColor(commonMethodsUtilService.getStringValueForObject(param[24]));
 					alertCoreDashBoardVO.setStatusColor(commonMethodsUtilService.getStringValueForObject(param[25]));
+					if(param.length > 26){
+						alertCoreDashBoardVO.setProblem(commonMethodsUtilService.getStringValueForObject(param[26]));
+						alertCoreDashBoardVO.setRelatedTo(commonMethodsUtilService.getStringValueForObject(param[27]));
+					}
 					statusId = commonMethodsUtilService.getLongValueForObject(param[3]);
 					if(param[1] != null && param[2] != null){
 						if(statusId == 4L || statusId == 5L || statusId == 6L || statusId == 7L){
@@ -10852,7 +10856,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	 * Swadhin K Lenka
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getGrievanceReport(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String)
 	 */
-	public List<AlertOverviewVO> getGrievanceReport(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType){
+	public List<AlertOverviewVO> getGrievanceReport(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType,Long LocationId,Long stsId){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
 			Date fromDate = null;        
@@ -10874,7 +10878,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			Collections.reverse(dayList);
 			
 			//get alert status count and and create a map of LocationId and its corresponding  alert count
-			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, departmentId,sourceId,"District","One");
+			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, departmentId,sourceId,"District","One",LocationId,stsId);
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
 					if(param[0] != null)
@@ -10885,7 +10889,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
 			Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
 			Map<Long,Map<Long,Long>> locationIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
-			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, departmentId,sourceId,"District","two");    
+			List<Object[]> alertCountGrpByLocList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, departmentId,sourceId,"District","two",LocationId,stsId);    
 			if(alertCountGrpByLocList != null && alertCountGrpByLocList.size() > 0){
 				for(Object[] param : alertCountGrpByLocList){  
 					if(param[0] != null){
@@ -10907,7 +10911,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			Map<String,Long> dayAndCountMap = null;//new HashMap<Long, Long>();  
 			Map<Long,Map<String,Long>> locationIdAndDayAndCountMap = new HashMap<Long,Map<String,Long>>();
 			
-			List<Object[]> alertCountGrpByDayList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, departmentId,sourceId,"District","day");    
+			List<Object[]> alertCountGrpByDayList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, departmentId,sourceId,"District","day",LocationId,stsId);    
 			if(alertCountGrpByDayList != null && alertCountGrpByDayList.size() > 0){
 				for(Object[] param : alertCountGrpByDayList){  
 					if(param[0] != null){
@@ -10922,7 +10926,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					}
 				}
 			}
-			
+			  
 			//build final vo to sent to ui
 			List<AlertOverviewVO> finalList = new ArrayList<AlertOverviewVO>();
 			AlertOverviewVO innerListAlertVO = null;
@@ -11223,14 +11227,119 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 		return vo;
 	}
-	public List<AlertOverviewVO> getGrievanceReportBasedOnLocation(String fromDate,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String group,String pattern){
+	public List<AlertOverviewVO> getGrievanceReportBasedOnLocation(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String group,String pattern,String rangeType){
 		try{
-			
+			List<AlertOverviewVO> alertOverviewvoList1 = new ArrayList<AlertOverviewVO>();
+			List<AlertCoreDashBoardVO> dtlsList = new ArrayList<AlertCoreDashBoardVO>();
+			Date fromDate = null;        
+			Date toDate = null; 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			if(group != null && !group.isEmpty() && group.equalsIgnoreCase("day") ){
+				if(rangeType != null && !rangeType.isEmpty() && rangeType.equalsIgnoreCase("day") ){
+					
+					fromDate = sdf2.parse(pattern.trim());
+					toDate = sdf2.parse(pattern.trim());
+					fromDateStr = sdf.format(fromDate);
+					toDateStr = sdf.format(toDate);
+					alertOverviewvoList1 = getGrievanceReport(fromDateStr, toDateStr, stateId,deptId, sourceId, rangeType,locationId,null);
+					alertOverviewvoList1.get(0).setFromDateStr(fromDateStr);
+					alertOverviewvoList1.get(0).setToDateStr(toDateStr);
+				}else if(rangeType != null && !rangeType.isEmpty() && rangeType.equalsIgnoreCase("week")){
+					Map<String,List<String>> weekAndDaysMap = dateUtilService.getTotalWeeksMap(fromDate,toDate);
+					List<String> daysList = null;
+					if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
+						daysList = weekAndDaysMap.get(pattern.trim());
+						if(daysList != null && daysList.size() > 1){
+							int len = daysList.size();
+							fromDate = sdf2.parse(daysList.get(len-1).trim());
+							toDate = sdf2.parse(daysList.get(0).trim());
+							fromDateStr = sdf.format(fromDate);
+							toDateStr = sdf.format(toDate);
+							alertOverviewvoList1 = getGrievanceReport(fromDateStr, toDateStr, stateId,deptId, sourceId, rangeType,locationId,null);
+							alertOverviewvoList1.get(0).setFromDateStr(fromDateStr);
+							alertOverviewvoList1.get(0).setToDateStr(toDateStr);
+						}else{
+							fromDate = sdf2.parse(daysList.get(0).trim());
+							toDate = sdf2.parse(daysList.get(0).trim());
+							fromDateStr = sdf.format(fromDate);
+							toDateStr = sdf.format(toDate);
+							alertOverviewvoList1 = getGrievanceReport(fromDateStr, toDateStr, stateId,deptId, sourceId, rangeType,locationId,null);
+							alertOverviewvoList1.get(0).setFromDateStr(fromDateStr);
+							alertOverviewvoList1.get(0).setToDateStr(toDateStr);
+						}
+					}
+				}else if(rangeType != null && !rangeType.isEmpty() && rangeType.equalsIgnoreCase("month")){
+					LinkedHashMap<String,List<String>> monthAndDaysMap = null;
+					monthAndDaysMap = getMonthWeekAndDaysList(fromDateStr, toDateStr,"month");
+					List<String> daysList = null;
+					if(monthAndDaysMap != null && monthAndDaysMap.size() > 0){
+						daysList = monthAndDaysMap.get(pattern.trim());
+						if(daysList != null && daysList.size() > 1){
+							int len = daysList.size();
+							fromDate = sdf2.parse(daysList.get(0).trim());
+							toDate = sdf2.parse(daysList.get(len-1).trim());
+							fromDateStr = sdf.format(fromDate);
+							toDateStr = sdf.format(toDate);
+							alertOverviewvoList1 = getGrievanceReport(fromDateStr, toDateStr, stateId,deptId, sourceId, rangeType,locationId,null);
+							alertOverviewvoList1.get(0).setFromDateStr(fromDateStr);
+							alertOverviewvoList1.get(0).setToDateStr(toDateStr);
+						}else{
+							fromDate = sdf2.parse(daysList.get(0).trim());
+							toDate = sdf2.parse(daysList.get(0).trim());
+							fromDateStr = sdf.format(fromDate);
+							toDateStr = sdf.format(toDate);
+							alertOverviewvoList1 = getGrievanceReport(fromDateStr, toDateStr, stateId,deptId, sourceId, rangeType,locationId,null);
+							alertOverviewvoList1.get(0).setFromDateStr(fromDateStr);
+							alertOverviewvoList1.get(0).setToDateStr(toDateStr);
+						}
+					}
+				}
+				//get alertIds here
+				List<Long> alertIdList = alertDAO.getTotalAlertForGrievance(fromDate, toDate, stateId, deptId, sourceId, "district", locationId,null);
+				List<Object[]> altDtlsList = alertDAO.getAlertDtlsForGrievance(alertIdList);
+				setAlertDtls(dtlsList,altDtlsList);
+				//merge here.
+				alertOverviewvoList1.get(0).getAlertCoreDashBoardVOs().addAll(dtlsList);
+				
+			}else{
+				alertOverviewvoList1 = getGrievanceReport(fromDateStr, toDateStr, stateId,deptId, sourceId, rangeType,locationId,statusId);
+				List<Long> alertIdList = alertDAO.getTotalAlertForGrievance(fromDate, toDate, stateId, deptId, sourceId, "district", locationId,statusId);
+				List<Object[]> altDtlsList = alertDAO.getAlertDtlsForGrievance(alertIdList);
+				setAlertDtls(dtlsList,altDtlsList);
+				//merge here.
+				alertOverviewvoList1.get(0).getAlertCoreDashBoardVOs().addAll(dtlsList);
+			}
+			return alertOverviewvoList1;  
 		}catch(Exception e){  
 			e.printStackTrace();
 			LOG.error("Error occured getGrievanceReportBasedOnLocation() method of AlertService{}");
 		}
 		return null;
+	}
+	public List<AlertCoreDashBoardVO> getGrievanceReportBasedOnLocationAndStatus(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId){
+		try{
+			List<AlertCoreDashBoardVO> dtlsList = new ArrayList<AlertCoreDashBoardVO>();
+			Date fromDate = null;        
+			Date toDate = null; 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Long> alertIdList = alertDAO.getTotalAlertForGrievance(fromDate, toDate, stateId, deptId, sourceId, "district", locationId,statusId);
+			List<Object[]> altDtlsList = alertDAO.getAlertDtlsForGrievance(alertIdList);
+			setAlertDtls(dtlsList,altDtlsList);
+			return dtlsList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getGrievanceReportBasedOnLocationAndStatus() method of AlertService{}");
+		}
+		return null;  
 	}
 }
 
