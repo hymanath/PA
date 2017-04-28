@@ -955,8 +955,11 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	}
 	public String getGovtDeptScopeDetails(){
 		try {
-			//jObj = new JSONObject(getTask());
-			alertVOs = alertManagementSystemService.getGovtDeptScopeDetails();
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			alertVOs = alertManagementSystemService.getGovtDeptScopeDetails(jObj.getLong("departmentId"),userId);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getGovtDeptScopeDetails() of alertManagementSystemAction",e);
 		}
