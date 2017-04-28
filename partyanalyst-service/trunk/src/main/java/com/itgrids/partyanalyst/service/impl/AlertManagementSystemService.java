@@ -3178,9 +3178,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			
     			Set<Long> deptScopeIds = new HashSet<Long>();
     			Set<Long> statusIds = new HashSet<Long>();
+    			Long stateId = 0l;
     			if(alertList != null && alertList.size() > 0){
     				for(Object[] param : alertList){
     					deptScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+    					stateId = commonMethodsUtilService.getLongValueForObject(param[1]);
     				}
     			}
     			
@@ -3240,6 +3242,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     						}
     					}
     					alertCoreDashBoardVO.setTotalCount(total);
+    					alertCoreDashBoardVO.setStateId(stateId);
     					returnList.add(alertCoreDashBoardVO);
     				}
     			}
