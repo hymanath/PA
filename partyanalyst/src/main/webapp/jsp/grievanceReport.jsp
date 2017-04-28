@@ -6,17 +6,24 @@
 <head>
 <meta charset="utf-8">
 <title>Location wise Grevince Reports</title>
-<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
+
+<link rel="SHORTCUT ICON" type="image/x-icon" href="govtCo#18A75AashBoard/img/fevicon.png">
+<link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link rel="stylesheet" href="dist/css/font-awesome.css">
-<link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
-<!-- Include Date Range Picker -->
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
+<link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
+<link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+<link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/grievanceReport.css" type="text/css"/>
-<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <style>
 .dateColorCls{
 	background-color:#FFCF2D;
@@ -26,12 +33,7 @@
 <body>
 <body>
 <nav>
-        <div class="row nav-gov-dark">
-            
-            <div class="container">
-                <div class="logo-gov" href="#"> <img src="img/logo.png" class="img-responsive" alt="logo"> </div>
-            </div>
-        </div>
+      
         <div class=" bg-gov-dark">
         
                
