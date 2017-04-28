@@ -2680,9 +2680,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(deptScopeIdList != null && deptScopeIdList.size() > 0){
 					queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
 				}
-				if(stateId != null && stateId.longValue() > 0){
+				/*if(stateId != null && stateId.longValue() > 0){
 		 			queryStr.append(" and GUA.state_id = :stateId ");
-		 		}
+		 		}*/
 				if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 					queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 				}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -2774,9 +2774,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
 					query.setParameter("govtDepartmentId",govtDepartmentId);
 				}
-				if(stateId != null && stateId.longValue() > 0){
+				/*if(stateId != null && stateId.longValue() > 0){
 		 			query.setParameter("stateId",stateId);
-		 		}
+		 		}*/
 				return query.list();
 		   }
 		 public List<Object[]> getSubTaskChildLocationByParentLocation(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
@@ -2827,9 +2827,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(stateId != null && stateId.longValue() > 0){
 		 			queryStr.append(" and GUA.state_id = :stateId ");
 		 		}
-				if(stateId != null && stateId.longValue() > 0){
+				/*if(stateId != null && stateId.longValue() > 0){
 		 			queryStr.append(" and GUA.state_id = :stateId ");
-		 		}
+		 		}*/
 				if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 					queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 				}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -2945,9 +2945,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
 					query.setParameter("govtDepartmentId",govtDepartmentId);
 				}
-				if(stateId != null && stateId.longValue() > 0){
+				/*if(stateId != null && stateId.longValue() > 0){
 		 			query.setParameter("stateId",stateId);
-		 		}
+		 		}*/
 				if(childLevelId != null && childLevelId.longValue() > 0L){
 					query.setParameter("childLevelId",childLevelId); 
 				}
@@ -3016,9 +3016,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(deptScopeIdList != null && deptScopeIdList.size() > 0){
 					queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
 				}
-				if(stateId != null && stateId.longValue() > 0){
+				/*if(stateId != null && stateId.longValue() > 0){
 		 			queryStr.append(" and GUA.state_id = :stateId ");
-		 		}
+		 		}*/
 				if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 					queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 				}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -3157,9 +3157,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(filterScopeValue != null && filterScopeValue.longValue() > 0L){
 		 			query.setParameter("filterScopeValue",filterScopeValue);
 		 		}
-				if(stateId != null && stateId.longValue() > 0){
+				/*if(stateId != null && stateId.longValue() > 0){
 		 			query.setParameter("stateId",stateId);
-		 		}
+		 		}*/
 				return query.list();
 		   }
 		 public List<Long> getSubTaskAlertIdsBasedOnLocation(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
@@ -3190,12 +3190,11 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 				queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 				
-				queryStr.append(" and AAO.is_deleted='N' ");//and AAO.is_approved = 'Y'
+				queryStr.append(" and AAO.is_deleted='N' ");
 				queryStr.append(" and AAO.alert_sub_task_status_id = ALTS.alert_sub_task_status_id  ");
 				queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 				
 				queryStr.append(" and GDWL.govt_department_scope_id = GDDO.govt_department_scope_id ");
-				//queryStr.append(" and GDDO.govt_department_designation_officer_id = AAO.govt_department_designation_officer_id ");
 				
 				queryStr.append(" and GUA.user_address_id = GDWL.govt_user_address_id  ");
 				queryStr.append(" and GDDO.address_id = GUA.user_address_id  ");
@@ -3204,9 +3203,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(deptLevelId != null && deptLevelId > 0){
 					queryStr.append(" and GDWL.govt_department_scope_id =:deptLevelId ");
 				}
-				if(stateId != null && stateId.longValue() > 0){
+				/*if(stateId != null && stateId.longValue() > 0){
 		 			queryStr.append(" and GUA.state_id = :stateId ");
-		 		}
+		 		}*/
 				if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 					queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 				}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -3310,9 +3309,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(locationValue != null && locationValue.longValue() > 0L){
 					query.setParameter("locationValue",locationValue);
 				}
-				if(stateId != null && stateId.longValue() > 0){
+				/*if(stateId != null && stateId.longValue() > 0){
 		 			query.setParameter("stateId",stateId);
-		 		}
+		 		}*/
 				return query.list();
 		   }
 }
