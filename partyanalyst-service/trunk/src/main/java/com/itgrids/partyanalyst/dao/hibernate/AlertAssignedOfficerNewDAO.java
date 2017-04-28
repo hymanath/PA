@@ -3613,7 +3613,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 StringBuilder queryStr = new StringBuilder();
 		 queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " +
 		 				 " from AlertAssignedOfficerNew model " +
-		 				 " where model.alertId =:alertId");
+		 				 " where model.alertId =:alertId" +
+				 		 " and model.alert.isDeleted = 'N' " +
+				 		 " and model.isDeleted = 'N' ");
 		 Query query = getSession().createQuery(queryStr.toString());
 		 query.setParameter("alertId", alertId);
 		 return (Long) query.uniqueResult();
