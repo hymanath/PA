@@ -80,7 +80,7 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
      var locTotal = 0;
      for(var i in result){
  		str+='<tr>'; 
-         str+='<td>'+result[i].name+'</td>';       
+         str+='<td style="cursor:pointer;" attr_location_id="'+result[i].id+'" class="bellowLvlLocCls"><i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</td>';         
          str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_group_type="status" attr_location_id="'+result[i].id+'">'+result[i].totalAlertCnt+'</td>';
          locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
  		for(var j in result[i].subList1){
@@ -415,10 +415,19 @@ var rangeType=$("#dateRangeId").attr("value");
 			
 		});
 	});
-	
+	$(document).on("click",".getAlertDtls",function(){
+		var alertId = $(this).attr("attr_alert_id");
+		var alertStatus = $(this).attr("attr_alert_status");
+		getAlertData(alertId);
+		getAlertAssignedCandidates(alertId);
+		getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
+		getVerificationDtls(alertId);
+	});
+	$(document).on("click",".bellowLvlLocCls",function(){
+		$("#bellowLvlLocId").modal("show");
+	});
 }
 
-//getAlertData(17179);
 function getAlertData(alertId){ 
 $("#cdrModelDivId").modal("show");   
 		var jsObj ={
@@ -574,7 +583,6 @@ function buildAlertData(result){
 			$("#alertGroupAttachImgId").html(str);
 		});
 	}
-	//getAlertAssignedCandidates(17179)
 	function getAlertAssignedCandidates(alertId){
 		GlobalAlertData = [];
 		var jsObj ={
@@ -671,7 +679,6 @@ function buildAlertData(result){
 		  ]
 	});  
 }
-//getAlertStatusCommentsTrackingDetails(17179,"Notified");
 function getAlertStatusCommentsTrackingDetails(alertId,alertStatus){  
 		var jsObj={
 			alertId:alertId,
@@ -690,6 +697,7 @@ function getAlertStatusCommentsTrackingDetails(alertId,alertStatus){
 	
 function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 {
+	alert("cmt");
 	var docName = '';
 	var extName = [];
 	$("#alertStatusDiv").html("<h4 class='text-muted headingColorStyling' style='font-size:15px;'>ALERT STATUS</h4>");          
@@ -798,8 +806,7 @@ function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 	}//glyphicon glyphicon-ok
 	//alertStatus
 }
-//getVerificationDtls(17179);
-function getVerificationDtls(alertId){
+function getVerificationDtls(alertId){  
 		var jsObj={
 			alertId:alertId
 		}
@@ -881,6 +888,7 @@ function getVerificationDtls(alertId){
 }
 
 $(document).on("click",".articleImgDetailsCls",function(){
+	alert("image");
 	var articleId= $(this).attr("attr_articleId");
 	getTotalArticledetails(articleId);
 });
@@ -1181,7 +1189,7 @@ function buildGrivenceDetailsTable(result,group){
 				   
 				   for(var i in result[0].alertCoreDashBoardVOs){
 					 str+='<tr>';
-					 str+='<td>'+result[0].alertCoreDashBoardVOs[i].id+'</td>';
+					 str+='<td style="cursor:pointer;" class="getAlertDtls" attr_alert_id="'+result[0].alertCoreDashBoardVOs[i].id+'" attr_alert_status="'+result[0].alertCoreDashBoardVOs[i].status+'">'+result[0].alertCoreDashBoardVOs[i].id+'</td>';
 					 str+='<td>'+result[0].alertCoreDashBoardVOs[i].createdDate+'</td>';
 					 if(result[0].alertCoreDashBoardVOs[i].location != null && result[0].alertCoreDashBoardVOs[i].location.length >0){
 						str+='<td>'+result[0].alertCoreDashBoardVOs[i].location+'</td>';
