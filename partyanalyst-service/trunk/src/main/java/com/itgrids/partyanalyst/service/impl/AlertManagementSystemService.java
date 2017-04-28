@@ -2165,15 +2165,28 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					scopeId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				}
 			}
-			List<Object[]> scopeDetlsLst = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetails(scopeId);
+			List<Object[]> scopeDetlsLst = null;
+			if(deptId != null && deptId > 0){
+				   List<Object[]> rtrnObjList = govtDepartmentScopeLevelDAO.getChildGovtScopesLevelByParentScopeLevel(scopeId, deptId);//levelId means Access Level 
+	      			Set<Long> scopeIdsSet = new HashSet<Long>();
+	      			if(rtrnObjList != null && rtrnObjList.size() > 0){
+	      				for(Object[] param:rtrnObjList){
+	      				   scopeIdsSet.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+	      				}
+	      				scopeDetlsLst = govtDepartmentScopeLevelDAO.getChildGovtScopeByParentScope(scopeIdsSet,deptId);
+	      			}
+	     	}else{
+				   scopeDetlsLst = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetails(scopeId);	
+			}
+			
 			if(type.equalsIgnoreCase("alert")){
 				//deptId-0,deptname-1,scopeId-2,level-3,,color-4,count-4
-				List<Object[]> deptWiseLocationLvlLList = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseLocationLevelView(fromDate, toDate,deptId,printIdsList,electronicIdsList,calCntrIdList);
+				List<Object[]> deptWiseLocationLvlLList = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseLocationLevelView(fromDate, toDate,deptId,printIdsList,electronicIdsList,calCntrIdList,scopeId,levelValues);
 				if(deptWiseLocationLvlLList != null && deptWiseLocationLvlLList.size() > 0){
 					setDeptWiseGraphView(deptWiseLocationLvlLList,finalVoList,scopeDetlsLst);
 				}
 			}else if(type.equalsIgnoreCase("subTask")){
-				List<Object[]> deptWiseSubTaskList = govtAlertSubTaskDAO.getDistrictLevelDeptWiseLocationLevelViewForSubtask(fromDate, toDate, deptId,printIdsList,electronicIdsList,calCntrIdList);
+				List<Object[]> deptWiseSubTaskList = govtAlertSubTaskDAO.getDistrictLevelDeptWiseLocationLevelViewForSubtask(fromDate, toDate, deptId,printIdsList,electronicIdsList,calCntrIdList,scopeId,levelValues);
 				if(deptWiseSubTaskList != null && deptWiseSubTaskList.size() > 0){
 					setDeptWiseGraphView(deptWiseSubTaskList,finalVoList,scopeDetlsLst);
 				}
@@ -2188,9 +2201,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						finalVo.setCount(totalCount);
 					}
 				}
-					if(sortingType != null && !sortingType.trim().isEmpty()){
-						sortListBasedRequiredType(finalVoList,sortingType);
-					}
+				if(sortingType != null && !sortingType.trim().isEmpty()){
+					sortListBasedRequiredType(finalVoList,sortingType);
+				}
 			   }
 		} catch (Exception e) {
 			LOG.error(" Exception Occured in getDistrictLevelDeptWiseLocationLevelView() method, Exception - ",e);
@@ -2245,13 +2258,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			
 			if(type.equalsIgnoreCase("alert")){
 				//deptId-0,deptName-1,statusId-2,statusName-3,color-4,Count-5
-				List<Object[]> deptWiseStatusViewLst = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseStatusOverView(fromDate, toDate,scopeId,deptId,levelId,printIdsList,electronicIdsList,calCntrIdList);
+				List<Object[]> deptWiseStatusViewLst = alertAssignedOfficerNewDAO.getDistrictLevelDeptWiseStatusOverView(fromDate, toDate,scopeId,deptId,levelId,printIdsList,electronicIdsList,calCntrIdList,levelValues);
 				if(deptWiseStatusViewLst != null && deptWiseStatusViewLst.size() > 0){
 					setDeptWiseGraphView(deptWiseStatusViewLst,finalVoList,statusList);
 				}
 			}else if(type.equalsIgnoreCase("subTask")){
 				//deptId-0,deptName-1,statusId-2,statusName-3,color-4,Count-5
-				List<Object[]> deptWiseSubtaskLst = govtAlertSubTaskDAO.getDistrictLevelDeptWiseStatusOverViewForSubTask(fromDate, toDate, scopeId,deptId,levelId,printIdsList,electronicIdsList,calCntrIdList);
+				List<Object[]> deptWiseSubtaskLst = govtAlertSubTaskDAO.getDistrictLevelDeptWiseStatusOverViewForSubTask(fromDate, toDate, scopeId,deptId,levelId,printIdsList,electronicIdsList,calCntrIdList,levelValues);
 				if(deptWiseSubtaskLst != null && deptWiseSubtaskLst.size() > 0){
 					setDeptWiseGraphView(deptWiseSubtaskLst,finalVoList,statusList);
 				}
@@ -2783,15 +2796,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				}
 			}
 			if(type.equalsIgnoreCase("alert")){
-					alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId,printIdsList,electronicIdsList,calCntrIdList);
+					alertIds = alertAssignedOfficerNewDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId,levelValues,printIdsList,electronicIdsList,calCntrIdList);
 			}else if(type.equalsIgnoreCase("subTask")){
-				alertIds = govtAlertSubTaskDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId,printIdsList,electronicIdsList,calCntrIdList);
+				alertIds = govtAlertSubTaskDAO.getAlertIdsForDeptAndLevelId(deptId,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId,levelValues,printIdsList,electronicIdsList,calCntrIdList);
 			}
-			
 			if(alertIds != null && alertIds.size() > 0){
 				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
 				setAlertDtls(finalVoList, list); 
 			}
+			setSubListCount(finalVoList, alertIds);
 		} catch (Exception e) {
 			LOG.error(" Exception Occured in getDistrictLevelDeptWiseFlterClick() method, Exception - ",e);
 		}		

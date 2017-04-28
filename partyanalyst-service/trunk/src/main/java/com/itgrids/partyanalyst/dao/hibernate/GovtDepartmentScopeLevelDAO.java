@@ -115,7 +115,8 @@ public class GovtDepartmentScopeLevelDAO extends GenericDaoHibernate<GovtDepartm
 											   " model.govtDepartmentScopeId " +
 											   " from GovtDepartmentScopeLevel model " +
 											   " where " +
-											   " model.govtDepartment.govtDepartmentId =:deptId and model.parentGovtDepartmentScopeId=:parentScopeId " +
+											   " model.govtDepartment.govtDepartmentId =:deptId " +
+											   " and model.parentGovtDepartmentScopeId=:parentScopeId " +
 											   " order by model.govtDepartment.govtDepartmentId,model.parentGovtDepartmentScopeId ");
 		query.setParameter("deptId", deptId);
 		query.setParameter("parentScopeId", parentScopeId);
@@ -134,6 +135,20 @@ public class GovtDepartmentScopeLevelDAO extends GenericDaoHibernate<GovtDepartm
 		query.setParameterList("deptIds", deptIds);
 		query.setParameterList("scopeIds", scopeIds);
 		  
+		return query.list();
+	}
+	public List<Object[]> getChildGovtScopeByParentScope(Set<Long> parentScopeIds,Long deptId){
+		Query query = getSession().createQuery(" select distinct " +
+											   " model.govtDepartmentScope.govtDepartmentScopeId," +
+											   " model.govtDepartmentScope.levelName," +
+											   " model.govtDepartmentScope.color " +
+											   " from GovtDepartmentScopeLevel model " +
+											   " where " +
+											   " model.govtDepartment.govtDepartmentId =:deptId " +
+											   " and model.parentGovtDepartmentScopeId in(:parentScopeIds) " +
+											   " order by model.govtDepartment.govtDepartmentId,model.parentGovtDepartmentScopeId ");
+		query.setParameter("deptId", deptId);
+		query.setParameterList("parentScopeIds", parentScopeIds);
 		return query.list();
 	}
 }
