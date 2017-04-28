@@ -214,3 +214,7 @@ a.close:hover {
 	background-color: white;
 
 }
+.navbar-default {
+    border: 0px;
+    border-radius: 0px;
+}
