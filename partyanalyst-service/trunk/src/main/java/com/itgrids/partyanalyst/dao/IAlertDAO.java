@@ -131,8 +131,10 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptId,Long statusId,Date fromDate,Date toDate, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList,Long stateId);
 	public List<Object[]> getDayWiseAlertsCounts(Long departmentId,Date fromDate,Date toDate);
 	public Long getTotalAlertsByStatusIdsAndDates(Date prevDay,Date today,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds);
-	public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,String step);
+	public List<Object[]> getTotalAlertGroupByLocationThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,String step,Long locationId,Long statusId);
 	public List<Object[]> getDifferenceTime(Date fromDate ,Date toDate,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds );
+	public List<Long> getTotalAlertForGrievance(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,Long locationId,Long statusId);
+	public List<Object[]> getAlertDtlsForGrievance(List<Long> alertSet);
 	
 	public List<Object[]> getDepartmentDetailsOfAlert(Long alertId);
 }
