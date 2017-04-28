@@ -641,7 +641,7 @@ function onLoadClicks()
 		$(this).addClass("text-primary");
 		$(this).closest("li").addClass("active");
 		rightSideExpandView(alertId);
-		
+		glStr = '';
 		setTimeout(function(){
 			$("[expanded-block="+expandBlockName+"]").show().css("transition"," ease-in, width 0.7s ease-in-out");
 		},750);
@@ -729,7 +729,7 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 		$("#alertManagementPopupBody1").html("NO DATA")
 	}
 	
-	if(isAdmin == "false"){
+		if(isAdmin == "false"){
 			if(globalUserType != "same"){
 				str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
 					str1+='<label class="checkbox-inline">';
@@ -1771,7 +1771,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 							for(var i in result)
 							{
 								if(i == result.length-1)
-									str1+='<br>';
+								
 								str1+='<label class="radio-inline">';
 									if(result[0].status != null && result[0].status.trim() ==result[i].name.trim())
 										str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
@@ -2232,10 +2232,10 @@ function buildSubTaskInfoForAlert(result,alertId)
 				str+='<div class="col-sm-11 ">';
 					str+='<h4 class="text-muted text-capital"> Others Sub Tasks : </h4>';
 					str+='</div>';
-					str+='<div class="row col-sm-12">';
+					str+='<div class="col-sm-11 col-sm-offset-1">';
 						str+='<ul class="assign-subtask-list m_top20">';
 						for(var k in result[i].commentList){
-							str+='<li class="assigned subTaskCls " style="cursor:pointer;margin-left:20px; width: 716px;" attr_sub_alert_Id="'+result[i].commentList[k].alertId+'" attr_alert_id="'+alertId+'">';
+							str+='<li class="assigned subTaskCls " style="cursor:pointer;" attr_sub_alert_Id="'+result[i].commentList[k].alertId+'" attr_alert_id="'+alertId+'">';
 									str+='<div class="row">';
 										str+='<div class="col-sm-1">';
 											str+='<i class="glyphicon glyphicon-ok"></i>';
@@ -2246,9 +2246,10 @@ function buildSubTaskInfoForAlert(result,alertId)
 											str+='</p>';
 										str+='</div>';
 										str+='<div class="col-sm-1">';
-											str+='<ul class="list-icons list-inline">';
+											str+='<span class="icon-name icon-primary" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span>';
+											/* str+='<ul class="list-icons list-inline">';
 												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span> </li>';
-											str+='</ul>';
+											str+='</ul>'; */
 											//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
 										//	str+='<span class="icon-name icon-primary"></span>';
 											//str+='<span class="label label-default">...</span>';
@@ -3180,8 +3181,7 @@ function alertStatusHistory(result,alertId)
 	}else{
 		$("#alertManagementPopupBody1").html(" NO HISTORY AVAILABLE...")
 	}
-	
-	
+	$("#alertManagementPopup1 .modal-footer").html(' ');	
 	if(isAdmin == "false"){
 		if(globalUserType != "same" && globalUserType != "other"){
 			
@@ -3195,11 +3195,12 @@ function alertStatusHistory(result,alertId)
 				str1+='</label>';  
 				str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
 			str1+='</div>';
+			$("#alertManagementPopup1 .modal-footer").html(str1);	
 		}
 	}
-		$("#alertManagementPopup1 .modal-footer").html(str1);
+		
 	if(globalStatusId == 8 || globalStatusId == 9){
-			$("#changeStatudCheckBoxId").hide();   
+		$("#changeStatudCheckBoxId").hide();   
 	}
 		var options = {
 	  sourceLanguage:
@@ -3236,27 +3237,24 @@ function alertStatus(result,alertId)
 	 
 		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
 			str1+='<div class="panel-heading" style="margin-left: 20px;">';
+				str1+='<div class="row">';
 				for(var i in result)
 				{
-					if(i==0)
-						str1+='<div class="row">';
-					if(i%5==0){
-						str1+='</div>';
-						str1+='<div class="row">';
-					}
 					
-					/*if(i == result.length-1)
-						str1+='<br>';*/
-					str1+='<label class="radio-inline">';
-					if(globalStatusId == parseInt(result[i].id))
-						str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
-					else
-						str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
-					str1+='</label>';
-					
-					if(i==result.length-1)
+					str1+='<div class="col-sm-4">';
+						str1+='<div class="radioStyling">';
+							if(globalStatusId == parseInt(result[i].id))
+							{
+								str1+='<input type="radio" name="group1" id="radio-'+i+'">';
+							}else
+							{
+								str1+='<input type="radio" name="group1" id="radio-'+i+'">';
+							}
+							str1+='<label for="radio-'+i+'"><span class="radio">'+result[i].name+'</span></label>';
 						str1+='</div>';
+					str1+='</div>';
 				}				
+				str1+='</div>';
 			str1+='</div>';
 			str1+='<div class="panel-body pad_0">';
 				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
@@ -3416,3 +3414,4 @@ function getAlertDtlsBasedOnStatusFilterClick(statusId,statusName,statusCount,im
 		}
     });
 }
+

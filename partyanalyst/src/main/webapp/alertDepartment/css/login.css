@@ -1,4 +1,12 @@
- body{background:linear-gradient(to right top, #fc7279 10%, #ff7b9c 65%, #ffc019 125%); min-height:100vh;}
+ body
+{
+	background-color: #fff;
+	background-image: linear-gradient(to right top, #fc7279 10%, #ff7b9c 65%, #ffc019 125%);
+	background-image: -webkit-linear-gradient(to  #fc7279 10%, right  #ff7b9c 65%,top #ffc019 125%);
+	background-image:    -moz-linear-gradient(to  #fc7279 10%, right  #ff7b9c 65%,top #ffc019 125%);
+	background-image:      -o-linear-gradient(to  #fc7279 10%, right  #ff7b9c 65%,top #ffc019 125%);
+	min-height:100vh;
+}
   .m_top10{margin-top:10px;}
   .m_top20{margin-top:20px;}
   .m_top40{margin-top:40px;}

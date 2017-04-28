@@ -191,7 +191,7 @@ function onLoadInitialisations()
 		getFilterSectionAlertDetails(statusId,statusName,statuscount);
 	});
 	$(document).on("click",".getTotalAlertBylocationLvl",function(){
-		$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#totalAlertsModalTabId").html(spinner);
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
@@ -204,7 +204,7 @@ function onLoadInitialisations()
 		getFilterSectionAlertDetails(statusId,statusName,statuscount);
 	});
 	$(document).on("click",".getTotalAlertBylocationLvlThenDept",function(){
-		$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#totalAlertsModalTabId").html(spinner);
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
@@ -218,7 +218,7 @@ function onLoadInitialisations()
 		getFilterSectionAlertDetails(statusId,statusName,statuscount);
 	});
 	$(document).on("click",".getTotalAlertByStatusThenDept",function(){
-		$("#totalAlertsModalTabId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+		$("#totalAlertsModalTabId").html(spinner);
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
