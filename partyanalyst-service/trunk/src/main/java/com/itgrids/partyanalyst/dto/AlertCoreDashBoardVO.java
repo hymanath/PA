@@ -48,6 +48,8 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String logoutTime;
 	private String totalHours;
 	private Long noOfAlertCreated = 0L;
+	private String relatedTo;
+	private String problem;
 	
 	
 	private Long totalAgent = 0L;
@@ -404,6 +406,22 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setRange(String range) {
 		this.range = range;
+	}
+
+	public String getRelatedTo() {
+		return relatedTo;
+	}
+
+	public void setRelatedTo(String relatedTo) {
+		this.relatedTo = relatedTo;
+	}
+
+	public String getProblem() {
+		return problem;
+	}
+
+	public void setProblem(String problem) {
+		this.problem = problem;
 	}
 	
 	

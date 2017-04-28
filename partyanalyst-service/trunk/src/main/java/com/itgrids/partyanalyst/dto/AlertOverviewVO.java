@@ -66,6 +66,9 @@ public class AlertOverviewVO {
 	private Long involveAlertCnt=0l;
 	private String day;
 	private Long grandTotal = 0L;
+	private String fromDateStr;
+	private String toDateStr;
+	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	
 	public Long getGovtAlertCnt() {
 		return govtAlertCnt;
@@ -362,6 +365,24 @@ public class AlertOverviewVO {
 	public void setGrandTotal(Long grandTotal) {
 		this.grandTotal = grandTotal;
 	}
-	
+	public List<AlertCoreDashBoardVO> getAlertCoreDashBoardVOs() {
+		if(alertCoreDashBoardVOs==null){
+			alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			return alertCoreDashBoardVOs;
+		}
+		return alertCoreDashBoardVOs;
+	}
+	public String getFromDateStr() {
+		return fromDateStr;
+	}
+	public void setFromDateStr(String fromDateStr) {
+		this.fromDateStr = fromDateStr;
+	}
+	public String getToDateStr() {
+		return toDateStr;
+	}
+	public void setToDateStr(String toDateStr) {
+		this.toDateStr = toDateStr;
+	}
 	
 }                                                          
