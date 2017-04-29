@@ -68,9 +68,9 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
         str+='<tr>';
         str+='<th>District</th>';
         str+='<th>Total</th>';
-     for(var i in result[0].subList1){       
+		for(var i in result[0].subList1){       
            str+='<th>'+result[0].subList1[i].statusType+'</th>';
-       }
+		}
        for(var j in result[0].subList2){         
           str+='<th style="background-color:#ecebd6">'+result[0].subList2[j].day+'</th>';
        }
@@ -80,7 +80,7 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
      var locTotal = 0;
      for(var i in result){
  		str+='<tr>'; 
-         str+='<td style="cursor:pointer;" attr_location_id="'+result[i].id+'" class="bellowLvlLocCls"><i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</td>';         
+         str+='<td style="cursor:pointer;" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" class="bellowLvlLocCls"><i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</td>';         
          str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_group_type="status" attr_location_id="'+result[i].id+'">'+result[i].totalAlertCnt+'</td>';
          locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
  		for(var j in result[i].subList1){
@@ -334,7 +334,7 @@ function onLoadInitialisations(){
 		$("#totalAlertDistricTableId").html("");  
 		$("#grievanceDtlsModalId").modal("show");     
 		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
-var rangeType=$("#dateRangeId").attr("value");
+		var rangeType=$("#dateRangeId").attr("value");
 		var locationId = $(this).attr("attr_location_id");
 		var group = $(this).attr("attr_group_type");
 		var statusId = $(this).attr("attr_status_id");
@@ -346,7 +346,7 @@ var rangeType=$("#dateRangeId").attr("value");
 		if(locationId==undefined){
 		   locationId=0;      
 		}
-		if(statusId==undefined){
+		if(statusId==undefined){  
 		   statusId=0;      
 		}
 		if(group==undefined){
@@ -390,15 +390,17 @@ var rangeType=$("#dateRangeId").attr("value");
 		$("#dateRangeId").attr("value",$(this).attr("attr_range_val"));
 	});
 	$(document).on("click",".getAlertDtlsOnLocCls",function(){
+		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');  
 		var locationId = $(this).attr("attr_location_id");
 		var statusId = $(this).attr("attr_status_id");
+		var fromDate = $(this).attr("attr_from_date");
+		var toDate = $(this).attr("attr_to_date");  
 		var sourceId=$("#selectMediaId").val();
         var deptId=$("#selecDepartmentId").val();
 	    var rangeType=$("#dateRangeId").attr("value");
-		alert(statusId);
 		var jobj = {
-		  fromDate: callCenterUserFDate,                       
-		  toDateStr:callCenterUserTDate,  
+		  fromDate: fromDate,                       
+		  toDateStr:toDate,  
 		  deptId:deptId,
 		  sourceId:sourceId,                                      
 		  stateId:1,
@@ -412,7 +414,7 @@ var rangeType=$("#dateRangeId").attr("value");
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},
 		}).done(function(result){
-			
+			buildGrivenceDetailsTableOld(result);  
 		});
 	});
 	$(document).on("click",".getAlertDtls",function(){
@@ -425,9 +427,128 @@ var rangeType=$("#dateRangeId").attr("value");
 	});
 	$(document).on("click",".bellowLvlLocCls",function(){
 		$("#bellowLvlLocId").modal("show");
+		var deptId=$("#selecDepartmentId").val();
+		var sourceId=$("#selectMediaId").val();
+		var locationId = $(this).attr("attr_location_id");
+		var groupType = $(this).attr("attr_group_type");  
+		   
+		var jobj = {
+		  fromDate: callCenterUserFDate,                          
+		  toDateStr:callCenterUserTDate, 
+		  deptId:deptId,
+		  sourceId:sourceId,
+		  rangeType:"",		  
+		  stateId:1,
+		  LocationId:locationId,        
+		  groupType : groupType   
+		  }
+		$.ajax({    
+		  type : "POST",
+		  url  : "getGrievanceReportForBellowLocationAction.action",  
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jobj)},    
+		}).done(function(result){
+			buildGrievanceReportForBellowLocation(result);  
+		});
 	});
+	$(document).on("click",".panchayatDataCls",function(){
+		var deptId=$("#selecDepartmentId").val();
+		var sourceId=$("#selectMediaId").val();
+		var locationId = $(this).attr("attr_location_id");
+		var groupType = $(this).attr("attr_group_type");  
+		var positionValue = $(this).attr("attr_position");  
+		   
+		var jobj = {
+		  fromDate: callCenterUserFDate,                          
+		  toDateStr:callCenterUserTDate, 
+		  deptId:deptId,
+		  sourceId:sourceId,
+		  rangeType:"",		  
+		  stateId:1,
+		  LocationId:locationId,        
+		  groupType : groupType   
+		  }   
+		$.ajax({    
+		  type : "POST",
+		  url  : "getGrievanceReportForBellowLocationAction.action",  
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jobj)},    
+		}).done(function(result){
+			buildGrievanceReportForPanchayat(result,positionValue);         
+		});
+	});
+}   
+function buildGrievanceReportForBellowLocation(result){
+	var str = '';
+	str+='<div class="table-responsive">';
+		str+='<table class="table table-inr-x table-bordered" style="border-collapse:collapse;">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>Location Name</th>';
+					str+='<th>Total</th>';
+					for(var i in result[0].subList1){       
+						str+='<th>'+result[0].subList1[i].statusType+'</th>';
+					}
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			for(var i in result){
+				str+='<tr data-toggle="collapse" data-target="#demo'+i+'" class="accordion-toggle">';
+					str+='<td><button class="btn btn-default btn-xs panchayatDataCls" attr_position="'+i+'" attr_location_id="'+result[i].id+'" attr_group_type="panchayat"><span class="glyphicon glyphicon-plus-sign " ></span></button>'+result[i].name+'</td>'; 
+					str+='<td><a href="#">'+result[i].totalAlertCnt+'</a></td>';
+					var len = result[i].subList1.length;
+					len=parseInt(len)+2;
+					for(var j in result[i].subList1){
+						if(result[i].subList1[j].totalAlertCnt != 0){
+							str+='<td>'+result[i].subList1[j].totalAlertCnt+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}      
+					}
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td colspan="'+len+'" class="hiddenRow">';
+						str+='<div class="accordian-body collapse" id="demo'+i+'">';
+						str+='</div>';
+					str+='</td>';
+				str+='</tr>';
+			}	
+			str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
+	$("#tehsilTableId").html(str);
+	  
 }
-
+function buildGrievanceReportForPanchayat(result,positionValue){
+	var str = '';
+	str+='<table class="table table-inr">';
+		str+='<thead>';
+			str+='<tr>';
+				str+='<th>Location Name</th>';
+				str+='<th>Total</th>';
+				for(var i in result[0].subList1){       
+					str+='<th>'+result[0].subList1[i].statusType+'</th>';
+				}
+			str+='</tr>';
+		str+='</thead>';
+		str+='<tbody>';
+		for(var i in result){
+			str+='<tr>';
+				str+='<td>'+result[i].name+'</td>';
+				str+='<td>'+result[i].totalAlertCnt+'</td>';
+				for(var j in result[i].subList1){
+					if(result[i].subList1[j].totalAlertCnt != 0){
+						str+='<td>'+result[i].subList1[j].totalAlertCnt+'</td>';
+					}else{
+						str+='<td>-</td>';
+					}      
+				}
+			str+='</tr>';
+		}
+		str+='</tbody>';
+	str+='</table>';
+	$("#demo"+positionValue).html(str);          
+}
 function getAlertData(alertId){ 
 $("#cdrModelDivId").modal("show");   
 		var jsObj ={
@@ -697,7 +818,6 @@ function getAlertStatusCommentsTrackingDetails(alertId,alertStatus){
 	
 function buildAlertStatusCommentsTrackingDetails(result,alertStatus)
 {
-	alert("cmt");
 	var docName = '';
 	var extName = [];
 	$("#alertStatusDiv").html("<h4 class='text-muted headingColorStyling' style='font-size:15px;'>ALERT STATUS</h4>");          
@@ -888,7 +1008,6 @@ function getVerificationDtls(alertId){
 }
 
 $(document).on("click",".articleImgDetailsCls",function(){
-	alert("image");
 	var articleId= $(this).attr("attr_articleId");
 	getTotalArticledetails(articleId);
 });
@@ -1164,12 +1283,13 @@ function getTotalArticledetails(articleId){
 }
 
 function buildGrivenceDetailsTable(result,group){
- $("#grivancHeadinId").html('<h3>Grievance Details</h3>');
- if(group=="day"){
-	 $("#grivenaceModalHeedingId").html('<h4 class="modal-title" >'+result[0].name+'</h4><span>'+result[0].fromDateStr+'-'+result[0].toDateStr+'</span>');
- }else{
-	 $("#grivenaceModalHeedingId").html('<h4 class="modal-title" >'+result[0].name+'</h4>');
- }
+	 $("#grivancHeadinId").html('<h3>Grievance Details</h3>');
+	 if(group=="day"){
+		
+		$("#grivenaceModalHeedingId").html('<h4 class="modal-title" >'+result[0].name+'</h4><span>'+result[0].fromDateStr+'-'+result[0].toDateStr+'</span>');
+	 }else{
+		 $("#grivenaceModalHeedingId").html('<h4 class="modal-title" >'+result[0].name+'</h4>');
+	 }
   
 	var str='';
 	
@@ -1224,6 +1344,61 @@ function buildGrivenceDetailsTable(result,group){
 				   $("#grevinceDetailsId").html(str);
 				   $("#alertIdListTableId").dataTable();
 }
+function buildGrivenceDetailsTableOld(result){
+	 $("#grivancHeadinId").html('<h3>Grievance Details</h3>');
+	 var str='';
+	
+	str+='<table id="alertIdListTableId" class="table  table-bordered" cellspacing="0" width="100%">';
+                    str+='<thead>';
+                     str+='<tr>';
+				     str+=' <th>ComplentId</th>';
+					 str+=' <th>Date</th>';
+				     str+=' <th>Location</th>';
+				     str+=' <th>Title</th>';
+					 str+=' <th>Related to</th>';
+				     str+=' <th>Problem</th>';
+					 str+='<th>Status</th>';
+                     str+='</tr>';
+                   str+=' </thead>';
+                   str+='<tbody>';
+				   
+				   for(var i in result){
+					 str+='<tr>';
+					 str+='<td style="cursor:pointer;" class="getAlertDtls" attr_alert_id="'+result[i].id+'" attr_alert_status="'+result[i].status+'">'+result[i].id+'</td>';
+					 str+='<td>'+result[i].createdDate+'</td>';
+					 if(result[i].location != null && result[i].location.length >0){
+						str+='<td>'+result[i].location+'</td>';
+					 }else{
+						 str+='<td>-</td>';
+					 }
+					 if(result[i].title != null && result[i].title.length >0){
+						str+='<td>'+result[i].title+'</td>';
+					 }else{
+						str+='<td>-</td>'; 
+					 }
+					  if(result[i].relatedTo != null && result[i].relatedTo.length >0){
+					   str+='<td>'+result[i].relatedTo+'</td>';
+					  }else{
+						  str+='<td>-</td>'; 
+					  }
+					   if(result[i].problem != null && result[i].problem.length >0){
+					 str+='<td>'+result[i].problem+'</td>';
+					   }else{
+						    str+='<td>-</td>'; 
+					   }
+					    if(result[i].status != null && result[i].status.length >0){
+					 str+='<td>'+result[i].status+'</td>';
+						}else{
+							    str+='<td>-</td>';       
+						}
+					 str+='</tr>';
+				    }
+				   str+='</tbody>';    
+				   str+='</table>';
+				   
+				   $("#grevinceDetailsId").html(str);
+				   $("#alertIdListTableId").dataTable();
+}
 function buildTotalAlertDistrictTable(result){
      var str='';
 	    str+='<table class=" table table-bordered">';
@@ -1239,7 +1414,12 @@ function buildTotalAlertDistrictTable(result){
 			str+='<tr>';
 			str+='<td>'+result[0].totalAlertCnt+'</td>';
 		for( var i in result[0].subList1){
-		    str+='<td  class="getAlertDtlsOnLocCls" attr_status_id="'+result[0].subList1[i].statusTypeId+'" attr_location_id="'+result[0].id+'" style="background-color:#ecebd6;">'+result[0].subList1[i].totalAlertCnt+'</td>';
+			if(result[0].subList1[i].totalAlertCnt != 0){
+				str+='<td  style="cursor:pointer;" class="getAlertDtlsOnLocCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="'+result[0].subList1[i].statusTypeId+'" attr_location_id="'+result[0].id+'" style="background-color:#ecebd6;">'+result[0].subList1[i].totalAlertCnt+'</td>';
+			}else{
+				str+='<td>-</td>'; 
+			}
+		    
        }
 			str+='<tr>'; 
 	        str+='</tbody>'
