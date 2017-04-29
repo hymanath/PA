@@ -2663,7 +2663,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long sourceId=jObj.getLong("sourceId");
 			String rangeType=jObj.getString("rangeType");
 			Long stateId=jObj.getLong("stateId");
-			resultList = alertService.getGrievanceReport(fromDate,toDateStr,stateId,deptId,sourceId,rangeType,null,null);
+			resultList = alertService.getGrievanceReport(fromDate,toDateStr,stateId,deptId,sourceId,rangeType,null,null,null);
 		}catch(Exception e){
 			LOG.error("Excpetion raised at getGrievanceReport Method",e);
 		}
@@ -2726,6 +2726,23 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long statusId=jObj.getLong("statusId");
 			
 			alertCoreDashBoardVOs = alertService.getGrievanceReportBasedOnLocationAndStatus(fromDate,toDateStr,stateId,deptId,sourceId,locationId,statusId);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getGrievanceReport Method",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getGrievanceReportForBellowLocation(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDateStr=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			String rangeType=jObj.getString("rangeType");
+			Long stateId=jObj.getLong("stateId");
+			Long LocationId=jObj.getLong("LocationId");
+			String groupType = jObj.getString("groupType");
+			resultList = alertService.getGrievanceReport(fromDate,toDateStr,stateId,deptId,sourceId,rangeType,LocationId,null,groupType);
 		}catch(Exception e){
 			LOG.error("Excpetion raised at getGrievanceReport Method",e);
 		}
