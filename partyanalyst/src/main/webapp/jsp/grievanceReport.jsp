@@ -33,7 +33,12 @@
 <body>
 <body>
 <nav>
-      
+<!--        <div class="row nav-gov-dark">
+            
+            <div class="container">
+                <div class="logo-gov" href="#"> <img src="img/logo.png" class="img-responsive" alt="logo"> </div>
+            </div>
+        </div>-->
         <div class=" bg-gov-dark">
         
                
@@ -152,7 +157,7 @@
     
     
       <!-- Modal -->
-<div class="modal fade" id="myModal2" role="dialog">
+<div class="modal fade" id="bellowLvlLocId" role="dialog">  
     <div class="modal-dialog modal-lg">
     
       <!-- Modal content-->
@@ -161,165 +166,7 @@
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Modal Header</h4>
         </div>
-        <div class="modal-body">
-            <div class="table-responsive">
-                <table class="table table-inr-x" style="border-collapse:collapse;">
-                    <thead>
-                        <tr>
-                            <th>Location Name</th>
-                            <th>Total</th>
-                            <th>Action in progress</th>
-                            <th>Action not required</th>
-                            <th>Closed</th>
-                            <th>Notified</th>
-                            <th>Proposal</th>
-                            <th>Rejoiner</th>
-                            <th>Wrongly mapped destination</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
-                            <td><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus-sign"></span></button> Mandal
-                            </td>
-                            <td><a href="#">25</a></td>
-                            <td>12</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>5</td>
-                            <td>9</td>
-                            <td>2</td>
-                            <td>13</td>
-                        </tr>
-                        <tr>
-                            <td colspan="12" class="hiddenRow">
-                                <div class="accordian-body collapse" id="demo1">
-                                    <table class="table table-inr">
-                                        <thead>
-                                            <tr>
-                                                <th>Location Name</th>
-                                                <th>Total</th>
-                                                <th>Action in progress</th>
-                                                <th>Action not required</th>
-                                                <th>Closed</th>
-                                                <th>Notified</th>
-                                                <th>Proposal</th>
-                                                <th>Rejoiner</th>
-                                                <th>Wrongly mapped destination</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Location Name</td>
-                                                <td>25</td>
-                                                <td>12</td>
-                                                <td>32</td>
-                                                <td>20</td>
-                                                <td>5</td>
-                                                <td>9</td>
-                                                <td>2</td>
-                                                <td>13</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
-                            <td><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus-sign"></span></button> Mandal
-                            </td>
-                            <td><a href="#">25</a></td>
-                            <td>12</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>5</td>
-                            <td>9</td>
-                            <td>2</td>
-                            <td>13</td>
-                        </tr>
-                        <tr>
-                            <td colspan="12" class="hiddenRow">
-                                <div id="demo2" class="accordian-body collapse">
-                                    <table class="table table-striped table-inr">
-                                        <thead>
-                                            <tr>
-                                                <th>Location Name</th>
-                                                <th>Total</th>
-                                                <th>Action in progress</th>
-                                                <th>Action not required</th>
-                                                <th>Closed</th>
-                                                <th>Notified</th>
-                                                <th>Proposal</th>
-                                                <th>Rejoiner</th>
-                                                <th>Wrongly mapped destination</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Location Name</td>
-                                                <td>25</td>
-                                                <td>12</td>
-                                                <td>32</td>
-                                                <td>20</td>
-                                                <td>5</td>
-                                                <td>9</td>
-                                                <td>2</td>
-                                                <td>13</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr data-toggle="collapse" data-target="#demo3" class="accordion-toggle">
-                            <td><button class="btn btn-default btn-xs"><span class="glyphicon glyphicon-plus-sign"></span></button> Mandal
-                            </td>
-                            <td><a href="#">25</a></td>
-                            <td>12</td>
-                            <td>32</td>
-                            <td>20</td>
-                            <td>5</td>
-                            <td>9</td>
-                            <td>2</td>
-                            <td>13</td>
-                        </tr>
-                        <tr>
-                            <td colspan="12" class="hiddenRow">
-                                <div id="demo3" class="accordian-body collapse">
-                                    <table class="table table-striped table-inr">
-                                        <thead>
-                                            <tr>
-                                                <th>Location Name</th>
-                                                <th>Total</th>
-                                                <th>Action in progress</th>
-                                                <th>Action not required</th>
-                                                <th>Closed</th>
-                                                <th>Notified</th>
-                                                <th>Proposal</th>
-                                                <th>Rejoiner</th>
-                                                <th>Wrongly mapped destination</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Location Name</td>
-                                                <td>25</td>
-                                                <td>12</td>
-                                                <td>32</td>
-                                                <td>20</td>
-                                                <td>5</td>
-                                                <td>9</td>
-                                                <td>2</td>
-                                                <td>13</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <div class="modal-body" id="tehsilTableId"></div>   
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
