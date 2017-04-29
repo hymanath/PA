@@ -1781,8 +1781,8 @@ function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName
 		  deptId: departmentId,//status and location 0
 		  statusId:statusId,
 		  type:type,
-		  officerId:globalOfficerIds[0],
-		  desigDeptOfficerId:globalGovtDeptDesigOffcrIds[0],
+		  officerIdsArr:globalOfficerIds,
+		  desigDeptOfficerIdsArr:globalGovtDeptDesigOffcrIds,
 		  searchType:searchType,
 		  fromDate:currentFromDate,
 		  toDate:currentToDate

@@ -2722,13 +2722,23 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					Long deptId = jObj.getLong("deptId");
 					Long statusId = jObj.getLong("statusId");
 					String type = jObj.getString("type");
-					Long officerId = jObj.getLong("officerId");  
-					Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
+					//Long officerId = jObj.getLong("officerId");  
+					//Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
 					String searchType = jObj.getString("searchType");
 					String startDate = jObj.getString("fromDate");
 					String endDate = jObj.getString("toDate");
+					JSONArray officerIdsArr = jObj.getJSONArray("officerIdsArr");  
+					List<Long> officerIdList = new ArrayList<Long>();
+					for (int i = 0; i < officerIdsArr.length(); i++){
+						officerIdList.add(Long.parseLong(officerIdsArr.getString(i)));        
+					} 
 					
-					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptId,statusId,type,officerId,desigDeptOfficerId,searchType,startDate,endDate);
+					JSONArray desigDeptOfficerIdsArr = jObj.getJSONArray("desigDeptOfficerIdsArr");  
+					List<Long> desigDeptOfficerIds = new ArrayList<Long>();
+					for (int i = 0; i < desigDeptOfficerIdsArr.length(); i++){
+						desigDeptOfficerIds.add(Long.parseLong(desigDeptOfficerIdsArr.getString(i)));        
+					}
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptId,statusId,type,desigDeptOfficerIds,officerIdList,searchType,startDate,endDate);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
