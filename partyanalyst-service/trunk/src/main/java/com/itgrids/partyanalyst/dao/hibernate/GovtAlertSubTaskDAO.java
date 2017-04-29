@@ -2919,9 +2919,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(deptScopeIdList != null && deptScopeIdList.size() > 0){
 					queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
 				}
-				if(stateId != null && stateId.longValue() > 0){
-		 			queryStr.append(" and GUA.state_id = :stateId ");
-		 		}
+				
 				/*if(stateId != null && stateId.longValue() > 0){
 		 			queryStr.append(" and GUA.state_id = :stateId ");
 		 		}*/
