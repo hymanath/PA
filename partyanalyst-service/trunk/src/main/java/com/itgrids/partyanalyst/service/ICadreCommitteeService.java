@@ -200,4 +200,6 @@ public interface ICadreCommitteeService {
 	 public String saveActivityLocationDetails(final ActivityVO activityVO,final Long userId);
 	 public List<ActivityVO> asemblyConstWiseActivitiesCount(Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
 	 public List<ActivityVO> getDistrictWiseActivitiesCount(Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
+	 
+	 public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,final Long userId);
 }
