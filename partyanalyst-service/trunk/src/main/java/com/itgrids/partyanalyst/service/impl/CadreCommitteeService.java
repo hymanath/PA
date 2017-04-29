@@ -21547,6 +21547,24 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					
 					TdpCommitteeMember tdpCommitteeMember = tdpCommitteeMemberDAO.get(tdpCommitteeMemberId);
 					if(tdpCommitteeMember != null){
+						
+						TdpCommitteeMemberHistory tdpCommitteeMemberHistory = new TdpCommitteeMemberHistory();
+						tdpCommitteeMemberHistory.setTdpCommitteeMemberId(tdpCommitteeMember.getTdpCommitteeMemberId());
+						tdpCommitteeMemberHistory.setTdpCommitteeRoleId(tdpCommitteeMember.getTdpCommitteeRoleId());
+						tdpCommitteeMemberHistory.setTdpCadreId(tdpCommitteeMember.getTdpCadreId());
+						tdpCommitteeMemberHistory.setStartDate(tdpCommitteeMember.getStartDate());
+						tdpCommitteeMemberHistory.setEndDate(tdpCommitteeMember.getEndDate());
+						tdpCommitteeMemberHistory.setIsActive(tdpCommitteeMember.getIsActive());
+						tdpCommitteeMemberHistory.setTdpCommitteeEnrollmentId(tdpCommitteeMember.getTdpCommitteeEnrollmentId());
+						tdpCommitteeMemberHistory.setInsertedUserId(tdpCommitteeMember.getInsertedUserId());
+						tdpCommitteeMemberHistory.setUpdatedUserId(tdpCommitteeMember.getUpdatedUserId());
+						tdpCommitteeMemberHistory.setInsertedTime(tdpCommitteeMember.getInsertedTime());
+						tdpCommitteeMemberHistory.setUpdatedTime(tdpCommitteeMember.getUpdatedTime());
+						tdpCommitteeMemberHistory.setHistoryInsertedTime(dateUtilService.getCurrentDateAndTime());
+						tdpCommitteeMemberHistory.setUserId(userId);
+						
+						tdpCommitteeMemberHistory = tdpCommitteeMemberHistoryDAO.save(tdpCommitteeMemberHistory);
+						
 						tdpCommitteeMember.setIsActive("N");
 						tdpCommitteeMember.setUpdatedUserId(userId);
 						tdpCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
