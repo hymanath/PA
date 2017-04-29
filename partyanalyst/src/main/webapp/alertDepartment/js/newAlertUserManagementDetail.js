@@ -3,7 +3,7 @@ var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3){
 wurl = url.substr(0,(url.indexOf(".in")+3));
 }
-
+var alertStatusGlobalId = 0;  
 onLoadCalls()
 function onLoadCalls()
 {
@@ -357,7 +357,9 @@ function onLoadClicks()
 		officersByDesignationAndLevel(designationId,$(this).attr('id'));
 	});
 	
-	
+	$(document).on("click",".alertStatusCls",function(){
+		alertStatusGlobalId= $(this).attr("attr_id");
+	});
 	
 	$(document).on("click","#updateStatusChange",function(){
 		
@@ -379,7 +381,7 @@ function onLoadClicks()
 		
 		if(statusId == null || statusId =='')
 			statusId=globalStatusId;
-		
+		 
 		$("#updateStatusChangeAjaxSymbol").html(spinner);
 		
 			var jsObj ={
@@ -429,7 +431,7 @@ function onLoadClicks()
 		});
 		
 		
-	});
+	});	
 	$(document).on("click","#priorityChangeSaveId",function(){
 		
 		var jsObj ={
@@ -3244,6 +3246,7 @@ function getFilterSectionAlertDetails(statusId,statusName,statuscount){
 		popUpFilter('body',result,statusId,statusName,statuscount);
 	});
 }
+//swadhin
 var glStr='';
 function alertStatus(result,alertId)
 {
@@ -3260,12 +3263,12 @@ function alertStatus(result,alertId)
 						str1+='<div class="radioStyling">';
 							if(globalStatusId == parseInt(result[i].id))
 							{
-								str1+='<input type="radio" name="group1" id="radio-'+i+'">';
+								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+i+'">';
 							}else
 							{
-								str1+='<input type="radio" name="group1" id="radio-'+i+'">';
+								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+i+'">';
 							}
-							str1+='<label for="radio-'+i+'"><span class="radio">'+result[i].name+'</span></label>';
+							str1+='<label for="radio-'+i+'"><span class="radio" >'+result[i].name+'</span></label>';
 						str1+='</div>';
 					str1+='</div>';
 				}				
@@ -3276,7 +3279,7 @@ function alertStatus(result,alertId)
 			str1+='</div>';
 		str1+='</div>';
 	
-	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChange">update</button>';
+	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChangeId">update</button>';
 	str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
 	str1+='<span id="updateStatusChangeMsg"></span>';
 	glStr=str1;
@@ -3480,3 +3483,75 @@ function getParentLevelsOfLevelForSubTask(){
 		}
 	});
 }
+
+$(document).on("click","#updateStatusChangeId",function(){
+		
+		//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
+		var comment = $("#updateStatusChangeComment").val()
+		var alertId = $(this).attr("attr_alert_id");
+		//var statusId=$('input[name=statusChange]:checked', '#updateStatusChangeBody').val();
+		var subTaskId = $(this).attr("subTaskId");
+		
+		if(subTaskId != null && subTaskId>0){
+			comment = $("#updateStatusChangeComment1").val()
+		}
+		
+		if(comment == null || comment.trim() == "")
+		{
+			alert("Please Enter Comment");
+			return;
+		}
+		
+		/* if(statusId == null || statusId =='')
+			statusId=globalStatusId;
+		 */
+		$("#updateStatusChangeAjaxSymbol").html(spinner);
+		
+			var jsObj ={
+				alertId : alertId,
+				statusId : alertStatusGlobalId,
+				subTaskId:subTaskId,
+				comment: comment
+			}
+		//1111
+		var callURL = 'updateAlertStatusCommentAction.action';
+		if(subTaskId != null && subTaskId>0){
+			callURL = 'updateSubTaskStatusCommentAction.action';
+		}
+		$.ajax({
+			type:'POST',
+			url: callURL,
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			$("#updateStatusChangeAjaxSymbol").html('');
+			if(result != null && result.exceptionMsg == 'success')
+			{
+				$("#updateStatusChangeMsg").html("status updated successfully");
+				$("#commentPostingSpinner").html("status updated successfully");
+				
+				if(subTaskId == null || subTaskId.length == 0){
+					getCommentsForAlert(alertId);
+					
+				}else{
+					getSubAlertsDetails(alertId,subTaskId);
+				}
+				
+				setTimeout(function(){
+					$("#commentPostingSpinner").html(" ");
+					$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
+					$('#alertManagementPopup1').modal('hide');
+					
+					
+				},1500);
+				rightSideExpandView(alertId);
+					setTimeout(function(){
+						$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
+					},750);
+			}else{
+				alert("try again");
+			}
+		});
+		
+		
+	});
