@@ -17042,6 +17042,27 @@
 			<param name="root">alertsSummeryVOList</param>       
 		</result> 
 	</action> 
+	
+	<action name="getRelatedDepartmentsForIssueTypeAction" class="createAlertAction" method="getRelatedDepartmentsForIssueType">
+		<result type="json" name="success">
+				<param name="root">keyValueVOList</param>
+		</result>
+	</action>
+	<action name="getUrbanLocalitiesForMuncipalityAction" class="createAlertAction" method="getUrbanLocalitiesForMuncipality">
+		<result type="json" name="success">
+				<param name="root">keyValueVOList</param>
+		</result>
+	</action>
+	<action name="getUrbanBlocksForLocalityAction" class="createAlertAction" method="getUrbanBlocksForLocality">
+		<result type="json" name="success">
+				<param name="root">keyValueVOList</param>
+		</result>
+	</action>
+	<action name="getAllLebsByDistrictIDAction" class="createAlertAction" method="getAllLebsByDistrictID">
+  	  <result type="json" name="success">
+           <param name="root">idNameVOList</param>
+      </result>
+   </action>
 	<action name="locationWiseGrivenceReportAction" class="createAlertAction" method="locationWiseGrivenceReport">
 		  <result name="success">/jsp/grievanceReport.jsp</result>                
 	</action>
@@ -17069,6 +17090,11 @@
 		<result type="json" name="success">    
 			<param name="root">alertCoreDashBoardVOs</param>       
 		</result> 
+	</action>
+	<action name="updateCommitteeMemberDesignationByCadreIdAction" class="cadreCommitteeAction" method="updateCommitteeMemberDesignationByCadreId">
+	    <result type="json" name="success">		   
+		    <param name="root">finalStatus</param>
+		</result>
 	</action>
 	<action name="getGrievanceReportForBellowLocationAction" class="createAlertAction"  method="getGrievanceReportForBellowLocation">
 		<result type="json" name="success">    

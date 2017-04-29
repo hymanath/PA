@@ -102,12 +102,14 @@
 			$("#printBtnDiv").hide();
 			$("#addMembrsBtn").show();
 			$("#viewMembrsBtn").show();
+			$("#mandalMainDivId").show();
 		}
 		
 		else if(areaTypeId == 2) // Mandal / Town / GHMC 
 		{				
 			$('#areaTypeId').val(areaTypeId);
 			$("#affiliCommitteeAllInfoDivId").html("");
+			$("#mandalMainDivId").hide();
 		}
 	}
 	
@@ -578,10 +580,10 @@
 					//showing current designation in committees.
 					if(result[i].committeeMemberStatus != null && result[i].committeeMemberStatus.trim().length > 0){
 						if(result[i].committeeMemberStatus.trim() == 'F'){
-							str+='<li style="font-weight:bold;">Current Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+							str+='<li style="font-weight:bold;">Current Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<!--<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer;font-size:12px; border-radius:50%; padding:3px; "></i>--></li>';	
 							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
 						}else if(result[i].committeeMemberStatus.trim() == 'P'){
-							str+='<li style="font-weight:bold;">Current Designation : Proposed For '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+							str+='<li style="font-weight:bold;">Current Designation : Proposed For '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<!--<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer; font-size:12px; border-radius:50%; padding:3px; "></i>--></li>';	
 							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' Proposed as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
 						}
 					}
@@ -1436,3 +1438,20 @@
 			});
 			
 	}
+	
+$(document).on("click",".updateMemberCls",function(){
+	var tdpCadreId = $(this).attr("attr_tdp_cadre_id");
+	if(confirm("Are you sure want to Delete his Current Designation?")){
+		var jsObj = {
+		   tdpCadreId :tdpCadreId
+		}
+	    $.ajax({
+			type : "POST",
+			url : "updateCommitteeMemberDesignationByCadreIdAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null && result == "success")
+				alert("Current Designation Deleted Successfully...")
+		});
+	}
+});
