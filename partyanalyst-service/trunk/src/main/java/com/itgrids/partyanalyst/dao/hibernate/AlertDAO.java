@@ -6980,6 +6980,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}else{
 			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
 		}
+		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
 		}
@@ -6994,7 +6995,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			}
 		}
 		
-		if(statusId != null && statusId.longValue() >= 0L){
+		if(statusId != null && statusId.longValue() > 0L){
 			queryStr.append(" and model.alertStatus.alertStatusId = :statusId");
 		}
 		if(filterType != null && filterType.equalsIgnoreCase("District") && locationId != null && locationId.longValue() > 0L){
@@ -7038,7 +7039,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(locationId != null && locationId.longValue() > 0L){
 			query.setParameter("locationId",locationId);
 		}
-		if(statusId != null && statusId.longValue() >= 0L){
+		if(statusId != null && statusId.longValue() > 0L){
 			query.setParameter("statusId",statusId);
 		}
 		return query.list();   
@@ -7161,6 +7162,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" left join userAddress.state state  " +
 						" left join userAddress.district district  " +
 						" left join userAddress.constituency constituency " +
+						" left join userAddress.tehsil tehsil " +
+						" left join model.userAddress.panchayat panc " +
 						" , AlertDepartmentStatus model1 " +
 						" where  model1.alertType.alertTypeId = model.alertType.alertTypeId" +
 						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId " + 
@@ -7175,6 +7178,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}else{
 			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
 		}
+		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
 		}
@@ -7188,13 +7192,17 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				queryStr.append(" and state.stateId in (1,36) ");
 			}
 		}
-		if(statusId != null && statusId.longValue() >= 0L){
+		if(statusId != null && statusId.longValue() > 0L){
 			queryStr.append(" and model.alertStatus.alertStatusId = :statusId ");
 		}
 		if(filterType != null && filterType.equalsIgnoreCase("District") && locationId != null && locationId.longValue() > 0L){
 			queryStr.append(" and district.districtId = :locationId");
 		}else if(filterType != null && filterType.equalsIgnoreCase("Constituency") && locationId != null && locationId.longValue() > 0L){
 			queryStr.append(" and constituency.constituencyId = :locationId ");
+		}else if(filterType != null && filterType.equalsIgnoreCase("tehsil") && locationId != null && locationId.longValue() > 0L){
+			queryStr.append(" and tehsil.tehsilId = :locationId ");
+		}else if(filterType != null && filterType.equalsIgnoreCase("panchayat") && locationId != null && locationId.longValue() > 0L){
+			queryStr.append(" and panc.panchayatId = :locationId ");
 		}
 		
 		Query query = getSession().createQuery(queryStr.toString());
@@ -7213,7 +7221,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(locationId != null && locationId.longValue() > 0L){
 			query.setParameter("locationId",locationId);
 		}
-		if(statusId != null && statusId.longValue() >= 0L){
+		if(statusId != null && statusId.longValue() > 0L){
 			query.setParameter("statusId",statusId);
 		}
 		return query.list();   
@@ -7303,5 +7311,98 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.setParameterList("alertSet", alertSet);   
 		}
 		return query.list(); 
+	}
+    public List<Object[]> getTotalAlertGroupByBellowLocationThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String groupType,String step, Long locationId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("tehsil")){
+			queryStr.append(" tehsil.tehsilId, " +//0
+				       		" tehsil.tehsilName, ");//1
+		}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("panchayat")){
+			queryStr.append(" panc.panchayatId, " +//0
+							" panc.panchayatName, ");//1
+		}
+		if(step.equalsIgnoreCase("two")){
+			queryStr.append(" model.alertStatus.alertStatusId," +//2  
+							" model.alertStatus.alertStatus,");//3
+		}
+		
+		queryStr.append(" count(distinct model.alertId) " +  //4  
+						" from Alert model " +
+						" left join model.userAddress userAddress " +
+						" left join userAddress.state state  " +
+						" left join userAddress.district district  " +
+						" left join userAddress.constituency constituency " +
+						" left join userAddress.tehsil tehsil  ");
+		if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("panchayat")){
+			queryStr.append(" left join model.userAddress.panchayat panc ");
+		}
+		queryStr.append(" , AlertDepartmentStatus model1 " +
+						" where  model1.alertType.alertTypeId = model.alertType.alertTypeId" +
+						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId " + 
+						" and model.isDeleted ='N' " +
+						" and model.govtDepartment.govtDepartmentId = :departmentId ");
+		if(sourceId != null && sourceId.longValue() != 0L){
+			if(sourceId != null && sourceId.longValue() > 0 && sourceId.longValue() == 1L){
+				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId and model.alertCaller is not null");
+			}else{
+				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
+			}
+		}else{
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
+		}
+		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+		if(fromDate != null && toDate != null){
+			queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+		}
+		
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" and state.stateId = 1 ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" and state.stateId = 36 ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" and state.stateId in (1,36) ");
+			}
+		}
+		if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("tehsil") && locationId != null &&  locationId.longValue() > 0L){
+			queryStr.append(" and district.districtId = :locationId ");
+		}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("panchayat") && locationId != null &&  locationId.longValue() > 0L){
+			queryStr.append(" and tehsil.tehsilId = :locationId  ");
+		}
+		
+		if(step.equalsIgnoreCase("two")){
+			if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("tehsil")){
+				queryStr.append(" group by tehsil.tehsilId,model.alertStatus.alertStatusId order by tehsil.tehsilId  ");
+			}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("panchayat")){
+				queryStr.append(" group by panc.panchayatId,model.alertStatus.alertStatusId order by panc.panchayatId ");
+			}
+		}else{
+			if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("tehsil")){
+				queryStr.append(" group by tehsil.tehsilId order by tehsil.tehsilId ");
+			}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("panchayat")){
+				queryStr.append(" group by panc.panchayatId order by panc.panchayatId ");
+			}
+		}
+		
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		
+		if(departmentId != null && departmentId.longValue() > 0L){
+			query.setParameter("departmentId",departmentId);
+		}
+		if(sourceId != null && sourceId.longValue() > 0L){
+			query.setParameter("sourceId",sourceId);
+		}
+		if(fromDate != null && toDate != null){  
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);    
+		}
+		if(locationId != null && locationId.longValue() > 0L){
+			query.setParameter("locationId",locationId);
+		}
+		
+		return query.list();   
 	}
 }
