@@ -108,7 +108,7 @@ public interface IAlertManagementSystemService {
 	public FilterSectionVO getFilterSectionAlertDetails();
 	public String getDesignationForUser(Long userId);
 	public DistrictOfficeViewAlertVO getDeptDetails(Long userId);
-	public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(Long deptId,Long statusId,String type,Long govtDeptGovtOffrId,Long govtOffrcrId,String searchType,String startdateStr,String endDateStr);
+	public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(Long deptId,Long statusId,String type,List<Long> govtDeptGovtOffrIds,List<Long> govtOffrcrIds,String searchType,String startdateStr,String endDateStr);
 	public List<AlertCoreDashBoardVO> getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long statusId,List<Long> calCntrIds);
 	public List<AlertTrackingVO> getSubTaskDetails(Long alertId);
 	public List<IdNameVO> getStatusCompletionInfoForSubTask(Long alertId,Long subTaskId,Long userId);
