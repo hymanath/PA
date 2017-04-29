@@ -17070,5 +17070,10 @@
 			<param name="root">alertCoreDashBoardVOs</param>       
 		</result> 
 	</action>
+	<action name="getGrievanceReportForBellowLocationAction" class="createAlertAction"  method="getGrievanceReportForBellowLocation">
+		<result type="json" name="success">    
+			<param name="root">resultList</param>       
+		</result> 
+	</action>
  </package>
 </struts>
