@@ -6344,7 +6344,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				 }
     				 for(Object[] param : objList){
     					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
-    					 AlertVO VO = getMatchVO1(finalAlertVOs,id);
+    					 AlertVO VO = getAlertStatusMatchVO(finalAlertVOs,id);
     					 if(VO == null){
     						 VO = new AlertVO();
     						 VO.setStatusId(id);
@@ -6365,6 +6365,22 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			e.printStackTrace();
     			LOG.error("Error occured setStatusWiseAlertCnt() method of CccDashboardService{}");
     	    }
+    	}
+    	public AlertVO getAlertStatusMatchVO(List<AlertVO> finalAlertVOs,Long id){
+    		try{
+    			if(finalAlertVOs == null || finalAlertVOs.size() ==0)
+    				return null;
+    			for(AlertVO VO:finalAlertVOs){
+    				if(VO.getStatusId().equals(id))
+    				{
+    					return VO;
+    				}
+    			}
+    		}catch(Exception e){
+    			e.printStackTrace();
+    			LOG.error("Error occured getAlertStatusMatchVO() method of CccDashboardService{}");
+    		}
+    		return null;
     	}
         //For status over view sub task for state level page
         public List<AlertVO> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> callCenterIdslIst){
@@ -6703,7 +6719,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			 return returnVO;
 		 }
 		 public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(Long deptId,Long statusId,String type,
-				 Long govtDeptGovtOffrId,Long govtOffrcrId,String serachType,String fromDateStr,String toDateStr){
+				 List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String serachType,String fromDateStr,String toDateStr){
 	 		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 	 		try {
 	 			Date fromDate = null;
@@ -6714,10 +6730,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 				toDate = sdf.parse(toDateStr);
 	 			}
 	 			List<Long> alertIdList = null;
-	 			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>();
-	 			govtDepDesigOffcrIds.add(govtDeptGovtOffrId);
-	 			List<Long> govtOffcrIds = new ArrayList<Long>();
-	 			govtOffcrIds.add(govtOffrcrId);
+	 			//List<Long> govtDepDesigOffcrIds = new ArrayList<Long>();
+	 			//govtDepDesigOffcrIds.add(govtDeptGovtOffrId);
+	 			//List<Long> govtOffcrIds = new ArrayList<Long>();
+	 			//govtOffcrIds.add(govtOffrcrId);
 	 			if(type != null && type.equalsIgnoreCase("alert")){
 	 				if(serachType != null && serachType.equalsIgnoreCase("today")){
 	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
@@ -6840,8 +6856,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	    			Long statusId,String type,String fromDateStr,String toDateStr,
 	    			Long desigDeptOfficerId,Long officerId, List<Long> printIdList, 
 	    			List<Long> electronicIdList,List<Long> calCntrIdList,Long stateId){
-	    		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
-	    		List<Long> alertIds = null;
+	      		
+	    		   List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+	    		   List<Long> alertIds = null;
 	    		try {
 	    			Date fromDate = null;
 	    			Date toDate = null;
@@ -6865,11 +6882,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	    				if(statusId == 1l){
 	    					alertIds = alertDAO.getStateLevelDeptWiseFlterClick(deptIds,statusId,fromDate,toDate,printIdList,electronicIdList,calCntrIdList,stateId);
 	    				}else{
-	    					alertIds = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId,printIdList,electronicIdList,calCntrIdList);
+	    					alertIds = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,levelId,levelValues,printIdList,electronicIdList,calCntrIdList);
 	    				}
-	    				
 	    			}else if(type.equalsIgnoreCase("subTask")){
-	    				alertIds = govtAlertSubTaskDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,desigDeptOfficerId,officerId,levelId,printIdList,electronicIdList,calCntrIdList);
+	    				alertIds = govtAlertSubTaskDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,levelId,levelValues,printIdList,electronicIdList,calCntrIdList);
 	    			}
 	    			
 	    			if(alertIds != null && alertIds.size() > 0){

@@ -3658,67 +3658,87 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 }
 	 @SuppressWarnings("unchecked")
 		public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,Long statusId,
-				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long scopeId, List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList){
-			StringBuilder sb = new StringBuilder();
+				Date fromDate,Date toDate,Long levelId,List<Long> levelValues,List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList){
+			 StringBuilder sb = new StringBuilder();
 			sb.append(" select distinct model.alert.alertId "+
 					  " from " +
-					  " AlertAssignedOfficerNew model left join model.alert.edition EDS left join model.alert.tvNewsChannel TNC " +
+					  " AlertAssignedOfficerNew model " +
+					  " left join model.alert.edition EDS " +
+					  " left join model.alert.tvNewsChannel TNC " +
+					  " left join model.govtDepartmentDesignationOfficer.govtUserAddress UA  " +
 					  " where " +
 					  " model.isDeleted = 'N' " +
 					  " and model.alert.isDeleted = 'N'");
+				if(deptIds != null && deptIds.size() >0){
+					sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds) ");
+				}
+				if(locationLevelId != null && locationLevelId.longValue() > 0){
+					sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :locationLevelId ");
+				}
+				if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+		             sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+		             if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
+		                 sb.append(" or model.alert.alertCallerId is not null ");
+		           }else{
+		             sb.append(" and model.alert.alertCallerId is null ");
+		           }
+		               sb.append(" )");
+		        }
+			
+				if(statusId != null && statusId.longValue() >0){
+					sb.append(" and model.alertStatus.alertStatusId = :statusId ");
+				}
+				if(fromDate != null && toDate != null){
+					sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+				}
+			   if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+	    	      sb.append(" and UA.stateId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+	    	      sb.append(" and UA.zoneId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+	    	      sb.append(" and UA.regionId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+	    	      sb.append(" and UA.circleId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+	    	      sb.append(" and UA.districtId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+	    	      sb.append(" and UA.divisionId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+	    	      sb.append(" and UA.subDivisionId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+	      	      sb.append(" and UA.tehsilId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+	      	      sb.append(" and UA.localElectionBodyId in (:levelValues)");
+	    	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+	      	      sb.append(" and UA.panchayatId in (:levelValues)");
+			 
+			//sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >= :scopeId ");
+			 Query query = getSession().createQuery(sb.toString());
+			
 			if(deptIds != null && deptIds.size() >0){
-				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds) ");
-			}
-			if(locationLevelId != null && locationLevelId.longValue() > 0){
-				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :locationLevelId ");
-			}
-			if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-	             sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
-	             if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
-	                 sb.append(" or model.alert.alertCallerId is not null ");
-	           }else{
-	             sb.append(" and model.alert.alertCallerId is null ");
-	           }
-	               sb.append(" )");
-	           }
-			
-			if(statusId != null && statusId.longValue() >0){
-				sb.append(" and model.alertStatus.alertStatusId = :statusId ");
-			}
-			if(fromDate != null && toDate != null){
-				sb.append(" and date(model.insertedTime) between :fromDate and :toDate ");
-			}
-			if(desigDeptOfficerId != null && desigDeptOfficerId.longValue() > 0){
-				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId =:desigDeptOfficerId ");
-			}
-			if(officerId != null && officerId.longValue() > 0){
-				sb.append(" and model.govtOfficer.govtOfficerId = :officerId " );
-			}
-			
-			sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >= :scopeId ");
-			Query query = getSession().createQuery(sb.toString());
-			if(deptIds != null && deptIds.size() >0)
-			      query.setParameterList("deptIds",deptIds);
-			if(locationLevelId != null && locationLevelId.longValue() > 0)
-			      query.setParameter("locationLevelId",locationLevelId);
-			if(statusId != null && statusId.longValue() >0){
+				query.setParameterList("deptIds",deptIds);
+			 }
+			      
+			 if(locationLevelId != null && locationLevelId.longValue() > 0){
+				 query.setParameter("locationLevelId",locationLevelId);
+			 }
+			     
+			 if(statusId != null && statusId.longValue() >0){
 				query.setParameter("statusId",statusId);
-			}
-			if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+			  }
+			 if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
 				query.setParameterList("printIdList",printIdList);
 				query.setParameterList("electronicIdList",electronicIdList);
-			}
-			if(fromDate != null && toDate != null){
+			 }
+			 if(fromDate != null && toDate != null){
 				query.setDate("fromDate",fromDate);
 				query.setDate("toDate",toDate);
-			}
-			if(desigDeptOfficerId != null && desigDeptOfficerId.longValue() > 0){
-				query.setParameter("desigDeptOfficerId",desigDeptOfficerId);
-			}
-			if(officerId != null && officerId.longValue() > 0){
-				query.setParameter("officerId",officerId);
-			}
-			query.setParameter("scopeId",scopeId);
+			 }
+			 if(levelId != null && levelValues != null && levelValues.size() > 0){
+				query.setParameterList("levelValues",levelValues);
+			 }
+			
+			//query.setParameter("scopeId",scopeId);
 			
 			return query.list();
 		}
