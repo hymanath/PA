@@ -1330,7 +1330,9 @@ $(document).on("click",".overAllCount",function(){
 		alertType : alertType,
 		paperIdArr:paperIdArr,
 		chanelIdArr:chanelIdArr,
-		callCenterArr:callCenterArr		
+		callCenterArr:callCenterArr,
+		fromDate:currentFromDate,
+		toDate:currentToDate		
 	}
 	$.ajax({
       type:'GET',
@@ -1367,7 +1369,9 @@ $(document).on("click",".todayCountCls",function(){
 		alertType : alertType,
 		paperIdArr:paperIdArr,
 		chanelIdArr:chanelIdArr,
-		callCenterArr:callCenterArr
+		callCenterArr:callCenterArr,
+		fromDate:currentFromDate,
+		toDate:currentToDate	
 	}
 	$.ajax({
       type:'GET',
