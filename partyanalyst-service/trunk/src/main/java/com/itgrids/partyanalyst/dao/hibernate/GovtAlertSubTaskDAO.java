@@ -885,7 +885,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
    	  if(fromDate != null && toDate != null){
    		sb.append(" and date(model.alertAssignedOfficer.insertedTime) between :fromDate and :toDate "); 
    	  }
-   	  sb.append(" group by model.alertAssignedOfficer.alertStatus.alertStatusId ");
+   	  sb.append(" group by model.alertSubTaskStatus.alertSubTaskStatusId ");
    	 
    	  Query query = getSession().createQuery(sb.toString());
    	  
