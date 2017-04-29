@@ -897,7 +897,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
 				String dateStr = sdf.format(new Date());
 				 
-				 String notCadreImagesFoldr = ActivityService.createFolder(staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr);
+				 String notCadreImagesFoldr = staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr;
 				 
 				 String foldrSts = ActivityService.createFolder(notCadreImagesFoldr);
 				 if(!foldrSts.equalsIgnoreCase("SUCCESS")){
