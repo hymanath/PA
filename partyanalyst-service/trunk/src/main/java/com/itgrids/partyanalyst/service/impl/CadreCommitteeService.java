@@ -21531,4 +21531,43 @@ public List<ActivityVO> getDistrictWiseActivitiesCount(Long activityScopeId,Long
 	}
 	return finalList;
 }
+
+public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,final Long userId){
+	String status = null;
+	try {
+		status = (String)transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus arg0) {
+				
+				List<Object[]> list = tdpCommitteeMemberDAO.getActiveMemberDetailsByCadreId(tdpCadreId);
+				if(list != null && !list.isEmpty()){
+					Object[] obj = list.get(0);
+					Long tdpCommitteeMemberId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					Long tdpCommitteeRoleId = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+					Long tdpCommitteeId = Long.valueOf(obj[2] != null ? obj[2].toString():"0");
+					
+					TdpCommitteeMember tdpCommitteeMember = tdpCommitteeMemberDAO.get(tdpCommitteeMemberId);
+					if(tdpCommitteeMember != null){
+						tdpCommitteeMember.setIsActive("N");
+						tdpCommitteeMember.setUpdatedUserId(userId);
+						tdpCommitteeMember.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						
+						tdpCommitteeMember = tdpCommitteeMemberDAO.save(tdpCommitteeMember);
+					}
+					
+					TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteeId);
+					if(tdpCommittee != null){
+						tdpCommittee.setIsCommitteeConfirmed("N");
+						tdpCommittee = tdpCommitteeDAO.save(tdpCommittee);
+					}
+							
+					return "success";
+				}
+				return "failure";
+			}
+		});
+	} catch (Exception e) {
+		LOG.error("Exception raised in updateCommitteeMemberDesignationByCadreId", e);
+	}
+	return status;
+}
 }
