@@ -831,8 +831,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								Long govtofficerId = alertAssignedOfficer2.getGovtOfficerId();
 								
 								List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(govtofficerId);
-								sendSMSTOAlertAssignedOfficer(designationId,govtofficerId,mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),6L,userId,alertStatusDAO.get(statusId).getAlertStatus(),comment,userId);
-									
+								if(mobileNos != null && mobileNos.size() > 0 && mobileNos.get(0).trim().length() > 0 && !mobileNos.get(0).trim().isEmpty()){
+					                  sendSMSTOAlertAssignedOfficer(designationId,govtofficerId,mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),6L,userId,alertStatusDAO.get(statusId).getAlertStatus(),comment,userId);  
+					            }
 							}
 						}
 						
