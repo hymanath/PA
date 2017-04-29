@@ -1451,7 +1451,8 @@ $(document).on("click",".updateMemberCls",function(){
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 			if(result != null && result == "success")
-				alert("Current Designation Deleted Successfully...")
+				alert("Current Designation Deleted Successfully...");
+			getCadreDetailsBySearchCriteria();
 		});
 	}
 });
