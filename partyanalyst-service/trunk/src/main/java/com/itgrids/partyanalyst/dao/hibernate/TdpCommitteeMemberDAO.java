@@ -3148,4 +3148,19 @@ public List<Object[]> getTotalEligibleMembersForTrainingCampProgramByUserType(Lo
 		query.setParameter("tdpCommitteeId", tdpCommitteeId);
 		return query.list();
 	}
+	
+	public List<Object[]> getActiveMemberDetailsByCadreId(Long tdpCadreId){
+		Query query = getSession().createQuery("select distinct model.tdpCommitteeMemberId," +
+											" model.tdpCommitteeRole.tdpCommitteeRoleId," +
+											" model.tdpCommitteeRole.tdpCommittee.tdpCommitteeId" +
+											" from TdpCommitteeMember model,TdpCadreEnrollmentYear model1" +
+											" where model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId" +
+											" and model.tdpCadre.tdpCadreId = :tdpCadreId" +
+											" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
+											" and model1.isDeleted = 'N' and model1.enrollmentYear.enrollmentYearId = 4" +
+											" and model.isActive = 'Y' and model.tdpCommitteeEnrollment.tdpCommitteeEnrollmentId = 2");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return query.list();
+		
+	}
 }
