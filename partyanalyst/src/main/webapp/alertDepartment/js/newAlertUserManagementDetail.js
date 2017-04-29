@@ -766,7 +766,7 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 	  transliterationEnabled: true
 	};
 	var control = new google.elements.transliteration.TransliterationControl(options);
-	control.makeTransliteratable(['updateStatusChangeComment1']);
+	//control.makeTransliteratable(['updateStatusChangeComment1']);
 	
 }
 function showSbmitSubTaskStatusNew(uploadResult,alertId,subAlertId){
@@ -1350,7 +1350,7 @@ function rightSideExpandView(alertId)
 								str+='<div class="col-sm-11">';
 									str+='<div class="panel panel-default panel-border-white">';
 										str+='<div class="panel-heading">';
-											str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
+											//str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
 										str+='</div>';
 										str+='<div class="panel-body">';
 											str+='<div class="comment-area">Comment Here</div>';
@@ -1390,7 +1390,7 @@ function rightSideExpandView(alertId)
 								str+='<div class="col-sm-11">';
 									str+='<div class="panel panel-default panel-border-white">';
 										str+='<div class="panel-heading">';
-											str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
+											//str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
 										str+='</div>';
 										str+='<div class="panel-body">';
 											str+='<div class="comment-area">Comment Here</div>';
@@ -1490,9 +1490,9 @@ function rightSideExpandView(alertId)
 	  transliterationEnabled: true
 	};
 	var control = new google.elements.transliteration.TransliterationControl(options);
-	control.makeTransliteratable(['alertCommentId1']);
-	control.makeTransliteratable(['alertCommentId2']);
-	control.makeTransliteratable(['subTaskTitleId']);
+	//control.makeTransliteratable(['alertCommentId1']);
+	//control.makeTransliteratable(['alertCommentId2']);
+	//control.makeTransliteratable(['subTaskTitleId']);
 	
 }
 
@@ -3228,7 +3228,7 @@ function alertStatusHistory(result,alertId)
 	  transliterationEnabled: true
 	};
 	var control = new google.elements.transliteration.TransliterationControl(options);
-	control.makeTransliteratable(['updateStatusChangeComment']);
+	//control.makeTransliteratable(['updateStatusChangeComment']);
 }
  
  
