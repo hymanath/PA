@@ -2584,4 +2584,25 @@ public String saveActivityLocationDetails(){
 		
 		return Action.SUCCESS;
 	}
+
+public String updateCommitteeMemberDesignationByCadreId(){
+	
+	try {
+		RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+		if(regVO==null){
+			return "input";
+		}
+		Long userId = regVO.getRegistrationID();
+		
+		jObj = new JSONObject(getTask());
+		Long tdpCadreId = jObj.getLong("tdpCadreId");
+		
+		finalStatus = cadreCommitteeService.updateCommitteeMemberDesignationByCadreId(tdpCadreId,userId);
+		
+	} catch (Exception e) {
+		LOG.error("Exception occured in updateCommitteeMemberDesignationByCadreId() At CadreCommitteeAction",e);
+	}
+	
+	return Action.SUCCESS;
+}
 }
