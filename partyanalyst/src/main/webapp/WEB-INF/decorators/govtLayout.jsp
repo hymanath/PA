@@ -49,7 +49,10 @@
           	<li class="dropdown profileDropDown">
               <a class="dropdown-toggle" style="color:#fff;" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">${sessionScope.officerName}<span class="caret"></span></br> ${sessionScope.designationAndLocation}</a>
               <ul class="dropdown-menu">
-                <li><a href="govtLogoutAction.action">LOGOUT</a>  </li>
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'AP_GOVT_LOCATION_WISE_GRIEVANCE_REPORT' )}">
+					<li><a href="locationWiseGrivenceReportAction.action">Location Wise Report</a>  </li>
+				</c:if>
+				<li><a href="govtLogoutAction.action">LOGOUT</a>  </li>
               </ul>
             </li>
           </ul>
