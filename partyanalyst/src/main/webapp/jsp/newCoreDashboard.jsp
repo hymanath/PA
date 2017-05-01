@@ -1690,7 +1690,7 @@
 							<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="meetings">
 								<h4 class="panel-title text-capital">
 									<img src="newCoreDashBoard/img/meetings.png" class="iconClass"/>
-									meetings - <small class="text-muted" id="dateMeetingHeadingId"> this month</small>
+									meetings - <small class="text-muted" id="dateMeetingHeadingId"> last month</small>
 								</h4>
 							</div>
 							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="meetings">
@@ -1764,8 +1764,8 @@
 								</div>
 								<div id="customMeetingsDiv"></div>
 								<div class="col-md-5 col-xs-12 col-sm-5 pull-right" style="margin-top: 15px;">
-									<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
-									<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
+									<button class="btn btn-default text-capital btn-xs specialMeetingBtnClsNew  defalutSpecialMeetingCls" attr_date="default" attr_startDate="" attr_endDate="">this month</button>
+									<button class="btn btn-default btn-primary text-capital btn-xs specialMeetingBtnClsNew specialMeetingsDate lastMonthSpecialCls" attr_date="lastMonth" attr_startDate="" attr_endDate="">last month</button>
 								</div>
 								<div class="panelBlock m_top20">
 									<div class="row">
@@ -4385,7 +4385,7 @@
 <script src="newCoreDashBoard/js/electronicMedia.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/cadreInsurance.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
-<!--<script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>-->
+<script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
 <script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>

@@ -580,10 +580,10 @@
 					//showing current designation in committees.
 					if(result[i].committeeMemberStatus != null && result[i].committeeMemberStatus.trim().length > 0){
 						if(result[i].committeeMemberStatus.trim() == 'F'){
-							str+='<li style="font-weight:bold;">Current Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer;font-size:12px; border-radius:50%; padding:3px; " title="Click here to delete current designation"></i></li>';	
+							str+='<li style="font-weight:bold;">Current Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer;font-size:12px; border-radius:50%; padding:3px; " title="Click here to delete current designation"></i><img style="width: 25px; height: 20px;display:none;" src="images/icons/loading.gif" class="dataLoadingImgCls"></li>';	
 							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
 						}else if(result[i].committeeMemberStatus.trim() == 'P'){
-							str+='<li style="font-weight:bold;">Current Designation : Proposed For '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer; font-size:12px; border-radius:50%; padding:3px;" title="Click here to delete current designation"></i></li>';	
+							str+='<li style="font-weight:bold;">Current Designation : Proposed For '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer; font-size:12px; border-radius:50%; padding:3px;" title="Click here to delete current designation"></i><img style="width: 25px; height: 20px;display:none;" src="images/icons/loading.gif" class="dataLoadingImgCls"></li>';	
 							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' Proposed as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
 						}
 					}
@@ -1442,6 +1442,7 @@
 $(document).on("click",".updateMemberCls",function(){
 	var tdpCadreId = $(this).attr("attr_tdp_cadre_id");
 	if(confirm("Are you sure want to Delete his Current Designation?")){
+		$(".dataLoadingImgCls").show();
 		var jsObj = {
 		   tdpCadreId :tdpCadreId
 		}
@@ -1450,9 +1451,15 @@ $(document).on("click",".updateMemberCls",function(){
 			url : "updateCommitteeMemberDesignationByCadreIdAction.action",
 			data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-			if(result != null && result == "success")
+			if(result != null && result == "success"){
 				alert("Current Designation Deleted Successfully...");
-			getCadreDetailsBySearchCriteria();
+				$(".dataLoadingImgCls").hide();
+				getCadreDetailsBySearchCriteria();
+			}
+			else{
+				alert("Sorry,Exception Occured.Please Try Again...");
+				$(".dataLoadingImgCls").hide();
+			}
 		});
 	}
 });
