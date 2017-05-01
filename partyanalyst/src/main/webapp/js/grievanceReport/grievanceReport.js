@@ -72,21 +72,23 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 			if(result !=null && result.length>0){
 				buildGrievanceReport(result);
 				buildLocationWiseGrivenacereportGraph(result);
-				getAverageIssuePendingDays(result);
-				getAverageIssuePendingDays(result);
-		    }
+				
+		    }else{
+				$("#statusWiseAlertCntId").html('No Data Available');
+				$("#grivenaceTableId").html('No Data Available');
+			}
 	}); 
 	    
 }	
 //location wise table
  function buildGrievanceReport(result) {
-	$("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	$("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	$("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var str='';
         str+='<table id="grievanceReportTableId" class="table table-bordered " cellspacing="0">';
         str+='<thead>';
         str+='<tr>';
-        str+='<th>District</th>';
+        str+='<th>District</th>';     
         str+='<th>Total</th>';
 		for(var i in result[0].subList1){       
            str+='<th>'+result[0].subList1[i].statusType+'</th>';
@@ -141,12 +143,23 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 
  getAverageIssuePendingDays();
  function getAverageIssuePendingDays(){
+	var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+	
  	var deptIds=[];
  	var sourceIds =[];
- 	deptIds.push(49);
- 	sourceIds.push(1);
- 	sourceIds.push(2);
- 	sourceIds.push(3);
+ 	deptIds.push(deptId);  
+	if(sourceId==0){
+		sourceIds.push(1);
+		sourceIds.push(2);
+		sourceIds.push(3);
+	}else if(sourceId==1){
+		sourceIds.push(1);
+	}else if(sourceId==2){
+		sourceIds.push(2);
+	}else if(sourceId==3){
+		sourceIds.push(3);
+	}
      var jobj = {
        deptIds :deptIds,
  	  sourceIds:sourceIds,
@@ -170,7 +183,8 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
      }	  	   	
 //on change media 	
  function getMediaInformation(){
- $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	 getAverageIssuePendingDays();
+ $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
  $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
@@ -189,15 +203,21 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  		 dataType: 'json',
  		 data: {task:JSON.stringify(jobj)},
      }).done(function(result){
- 		 buildGrievanceReport(result);
- 	     buildLocationWiseGrivenacereportGraph(result);
- 		 getAverageIssuePendingDays(result);
+		 if(result != null && result.length > 0){
+			buildGrievanceReport(result);
+			buildLocationWiseGrivenacereportGraph(result);
+		 }else{
+			 $("#statusWiseAlertCntId").html('No Data Available');
+			 $("#grivenaceTableId").html('No Data Available');
+		 }
+
  	});
  }
 
 //on dept change
  function getDepartmentInformation(){
- $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	 getAverageIssuePendingDays();
+ $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
  $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
@@ -216,15 +236,20 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
         dataType: 'json',
         data: {task:JSON.stringify(jobj)},
      }).done(function(result){
- 		buildGrievanceReport(result);
- 		buildLocationWiseGrivenacereportGraph(result);
- 		getAverageIssuePendingDays(result);
+		if(result !=null && result.length>0){
+			buildGrievanceReport(result);
+			buildLocationWiseGrivenacereportGraph(result);
+		}else{
+			$("#statusWiseAlertCntId").html('No Data Available');
+			$("#grivenaceTableId").html('No Data Available');
+		}
  	});
  }
 //on change daterangepicker
  function getTotalLocationWiseGrivenaceReport(){
+	 getAverageIssuePendingDays();
  $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
- $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+ $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
 	 var rangeType=$("#dateRangeId").attr("value");
@@ -241,14 +266,19 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
      url: 'getGrievanceReportAction.action',
      data: {task :JSON.stringify(jsObj)}
      }).done(function(result){
- 		buildGrievanceReport(result);
- 		buildLocationWiseGrivenacereportGraph(result);
- 		getAverageIssuePendingDays(result);
+ 		if(result !=null && result.length>0){
+			buildGrievanceReport(result);
+			buildLocationWiseGrivenacereportGraph(result);
+		}else{
+			$("#statusWiseAlertCntId").html('No Data Available');
+			$("#grivenaceTableId").html('No Data Available');
+		}
  	});
  }
  //on click month week day btn
- $(document).on("click",".rangeTypeCls",function(){  
-$("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+ $(document).on("click",".rangeTypeCls",function(){ 
+
+$("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val(); 
@@ -266,9 +296,13 @@ var sourceId=$("#selectMediaId").val();
 		url: 'getGrievanceReportAction.action',
 		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		buildGrievanceReport(result);
-		buildLocationWiseGrivenacereportGraph(result);
-		getAverageIssuePendingDays(result);
+		if(result !=null && result.length>0){
+			buildGrievanceReport(result);
+			buildLocationWiseGrivenacereportGraph(result);
+		}else{
+			$("#statusWiseAlertCntId").html('No Data Available');
+			$("#grivenaceTableId").html('No Data Available');
+		}
 	});
 });
 //Graph building
@@ -351,11 +385,12 @@ var sourceId=$("#selectMediaId").val();
          });
  }
  function getAlertStatusWise(statusId,status){
+	$("#totalAlertDistricTableId").html("");   
 	$("#grievanceDtlsModalId").modal("show");     
 	$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
 	var sourceId=$("#selectMediaId").val();
 	var deptId=$("#selecDepartmentId").val();
-	var rangeType=$("#dateRangeId").attr("value");
+	var rangeType=$("#dateRangeId").attr("value");  
 	var jobj = {
 	  fromDate: callCenterUserFDate,                       
 	  toDateStr:callCenterUserTDate,  
@@ -548,7 +583,7 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},    
 		}).done(function(result){
-			buildGrievanceReportForBellowLocation(result,locationId,locationName);  
+			buildGrievanceReportForBellowLocation(result,locationId,locationName,groupType);  
 		});
 	});
 	$(document).on("click",".panchayatDataCls",function(){
@@ -574,7 +609,7 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},    
 		}).done(function(result){
-			buildGrievanceReportForPanchayat(result,positionValue,locationId);         
+			buildGrievanceReportForPanchayat(result,positionValue,locationId,groupType);         
 		});
 	});
 	$(document).on("click",".bellowLvlCls",function(){
@@ -622,13 +657,20 @@ function onLoadInitialisations(){
 	});
 }
 //swadhin   
-function buildGrievanceReportForBellowLocation(result,locationId,locationName){
+function buildGrievanceReportForBellowLocation(result,locationId,locationName,groupType){
 	var str = '';
 	str+='<div class="table-responsive">';
 		str+='<table class="table table-inr-x table-bordered" style="border-collapse:collapse;">';
 			str+='<thead>';
 				str+='<tr>';
-					str+='<th>Location Name</th>';
+					if(groupType=="tehsil"){
+						str+='<th>Mandal</th>';
+					}else if(groupType=="panchayat"){
+						str+='<th>Panchayat</th>';  
+					}else{
+						str+='<th>Location Name</th>';
+					}
+					
 					str+='<th>Total</th>';
 					for(var i in result[0].subList1){       
 						str+='<th>'+result[0].subList1[i].statusType+'</th>';
@@ -677,12 +719,16 @@ function buildGrievanceReportForBellowLocation(result,locationId,locationName){
 	$("#tehsilTableId").html(str);
 	  
 }
-function buildGrievanceReportForPanchayat(result,positionValue,locationId){
+function buildGrievanceReportForPanchayat(result,positionValue,locationId,groupType){
 	var str = '';
 	str+='<table class="table table-inr">';
 		str+='<thead>';
 			str+='<tr>';
-				str+='<th>Location Name</th>';
+				if(groupType=="panchayat"){
+					str+='<th>Panchayat</th>';  
+				}else{
+					str+='<th>Location Name</th>';
+				}
 				str+='<th>Total</th>';
 				for(var i in result[0].subList1){       
 					str+='<th>'+result[0].subList1[i].statusType+'</th>';
