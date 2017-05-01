@@ -10151,37 +10151,40 @@ public Map<String,PartyMeetingsVO> getLvelWiseUpdationCount(Date startDate,Date 
 	 public Map<Long,List<String>> getDesignationsForCadreIds(List<Long> tdpCadreIds){
 		 Map<Long,List<String>> designationMap = new LinkedHashMap<Long, List<String>>();
 		 try {
-			List<Object[]> list = trainingCampAttendanceDAO.getMembersDetails(tdpCadreIds);
-			if(list != null && !list.isEmpty()){
-				for (Object[] obj : list) {
-					Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
-					List<String> designList = designationMap.get(id);
-					if(designList == null){
-						designList = new ArrayList<String>();
-						String status;
-						if(obj[2] != null){
-							status = obj[2].toString();
-							designList.add(status);
+			 if(tdpCadreIds != null && !tdpCadreIds.isEmpty()){
+				 List<Object[]> list = trainingCampAttendanceDAO.getMembersDetails(tdpCadreIds);
+					if(list != null && !list.isEmpty()){
+						for (Object[] obj : list) {
+							Long id = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+							List<String> designList = designationMap.get(id);
+							if(designList == null){
+								designList = new ArrayList<String>();
+								String status;
+								if(obj[2] != null){
+									status = obj[2].toString();
+									designList.add(status);
+								}
+								else if(obj[3] != null){
+									status = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+									designList.add(status);
+								}
+								designationMap.put(id, designList);
+							}
+							else{
+								String status;
+								if(obj[2] != null){
+									status = obj[2].toString();
+									designList.add(status);
+								}
+								else if(obj[3] != null){
+									status = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
+									designList.add(status);
+								}
+							}
 						}
-						else if(obj[3] != null){
-							status = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
-							designList.add(status);
-						}
-						designationMap.put(id, designList);
 					}
-					else{
-						String status;
-						if(obj[2] != null){
-							status = obj[2].toString();
-							designList.add(status);
-						}
-						else if(obj[3] != null){
-							status = (obj[4] != null ? obj[4].toString() : "")+" "+(obj[3] != null ? obj[3].toString() : "");
-							designList.add(status);
-						}
-					}
-				}
-			}
+			 }
+				 
 		} catch (Exception e) {
 			LOG.error("Error occured at getDesignationsForCadreIds() in CoreDashboardPartyMeetingService {}",e);
 		}

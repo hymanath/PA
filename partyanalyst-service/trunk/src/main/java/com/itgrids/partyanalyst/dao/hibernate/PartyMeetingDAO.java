@@ -3939,7 +3939,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	         		         " left join meetingAddress.tehsil tehsil  " +
 	         		         " left join meetingAddress.localElectionBody localElectionBody " +
 	         " where model2.partyMeeting.partyMeetingId = model.partyMeeting.partyMeetingId" +
-	         " and model1.isActive='Y' and model2.isDeleted = 'N'");
+	         " and model1.isActive='Y' and model2.isDeleted = 'N'" +
+	         " and model1.partyMeetingType.partyMeetingMainTypeId = 1");
 	  		         
 	    if(meetingStatus != null && meetingStatus.trim().length() > 0){
 	     	queryStr.append(" and model.mettingStatus=:mettingStatus"); 
