@@ -1970,6 +1970,10 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result,isCl
 		var legend = {
 			enabled: false,
 		}
+		var tooltip = {
+			valueSuffix: ' %',
+			shared : true,
+		}
 		var yAxis = {
 			min: 0,
 			gridLineWidth: 0,
@@ -2174,28 +2178,28 @@ function buildCommitteesAndPublicRepresentativeMembersInvitedAndDtls(result,isCl
 			}
 		};
 		if(inviteeArr != 0 && inviteeArr.length > 0){
-			highcharts('stateLevelMeetingBlockIdGr'+i,type,xAxis1,yAxis,legend,inviteeArr,plotOptions1);
+			highcharts('stateLevelMeetingBlockIdGr'+i,type,xAxis1,yAxis,legend,inviteeArr,plotOptions1,tooltip);
 		}else{
 		   $('#stateLevelMeetingBlockIdGr'+i).html("No Data Available")
 		}
 		if(attendedArr != 0 && attendedArr.length > 0){
-			highcharts('stateLevelMeetingBlockIdGr1'+i,type,xAxis2,yAxis,legend,attendedArr,plotOptions2)
+			highcharts('stateLevelMeetingBlockIdGr1'+i,type,xAxis2,yAxis,legend,attendedArr,plotOptions2,tooltip)
 		}else{
 		   $('#stateLevelMeetingBlockIdGr1'+i).html("No Data Available")
 		}
 		
 		if(lateAttendedArr != null && lateAttendedArr.length > 0){
-			highcharts('stateLevelMeetingBlockIdGr2'+i,type,xAxis3,yAxis,legend,lateAttendedArr,plotOptions3)
+			highcharts('stateLevelMeetingBlockIdGr2'+i,type,xAxis3,yAxis,legend,lateAttendedArr,plotOptions3,tooltip)
 		}else{
 		   $('#stateLevelMeetingBlockIdGr2'+i).html("No Data Available")
 		}
 		if(absentArr != null && absentArr.length > 0){
-			highcharts('stateLevelMeetingBlockIdGr3'+i,type,xAxis,yAxis,legend,absentArr,plotOptions);
+			highcharts('stateLevelMeetingBlockIdGr3'+i,type,xAxis,yAxis,legend,absentArr,plotOptions,tooltip);
 		}else{
 			$('#stateLevelMeetingBlockIdGr3'+i).html("No Data Available")
 		}
 		
-		highcharts('stateLevelMeetingBlockIdGr4'+i,type,xAxis4,yAxis,legend,nonInviteesAttArr,plotOptions4);
+		highcharts('stateLevelMeetingBlockIdGr4'+i,type,xAxis4,yAxis,legend,nonInviteesAttArr,plotOptions4,tooltip);
   }
 }
 function buildMeetingMemberDtls(result,position,isNonInvitee,status,desgSearchRequired,searchDesignation)
@@ -4452,3 +4456,230 @@ function getConstituenciesForDistricts(distId){
 			}
 		});
 	}
+	var globalCount = 0;
+$(document).on("click",".attendanceClass",function(){
+	globalCount = 1;
+	var cadreType = $(this).attr("attr_cadreType");
+	//var sessionId = $(this).attr("attr_sessionId");
+	//var levelId = $(this).attr("attr_levelId");
+	var meetingGrpId = $(this).attr("attr_meeting_group_id");
+	//var partyMeetingMainTypeId = $(this).attr("attr_meeting_mainType_id");
+	var partyMeetingId = $(this).attr("attr_partyMeetingId");
+	//alert(levelId);
+	getAttendedCadreDetails(cadreType,0,2,meetingGrpId,0,1,partyMeetingId);
+});
+
+$(document).on('click','.closeBtnCls',function(){  
+	if(globalCount > 0){
+		setTimeout(function(){
+			$('body').addClass("modal-open");
+		}, 500);
+	}
+});
+var globalImgsMdlCnt = 0;
+$(document).on('click','.imageCloseBtnCls',function(){ 
+	if(globalImgsMdlCnt > 0){
+		setTimeout(function(){
+			$('body').addClass("modal-open");
+		}, 500);
+	}
+});
+
+$(document).on("click",".getModalImagesCls",function(){
+	$("#myModalImageId").modal("show");
+	var location = $(this).attr('attr_location');
+	if(location != null && location != 'undefined')
+		$("#myModalLabelId").html(location+" "+"IMAGE DETAILS");
+	else
+		$("#myModalLabelId").html("IMAGE DETAILS");
+	globalImgsMdlCnt = $(this).attr("attr_count");
+	var levelId = $(this).attr('attr_Meeting_level_id');
+	var meetingId = $(this).attr('attr_Meeting_id');
+	var locationValue = $(this).attr("attr_location_value");
+	getDistrictsForCustomMeetingImges(levelId,meetingId,locationValue);
+	var str='';
+		str+='<div class="row">';
+			str+='<div class="col-md-9">';
+				str+='<nav class="navbar navbar-default navbarCollapseCustom">';
+					str+='<div class="collapse navbar-collapse " id="bs-example-navbar-collapse-1">';
+					  str+='<ul class="nav navbar-nav" id="popupDaysDiv">';
+					 
+					  str+='</ul>';
+					str+='</div>';
+				str+='</nav>';
+				str+='<div class="pad_10" id="popupImages">';
+				
+				str+='</div>';
+				str+=' <div id="paginationDivId"></div>';
+			str+='</div>';
+			str+='<div class="col-md-3" style="box-shadow:0 2px 10px 0 rgba(0, 0, 0, 0.35);padding:0px">';
+				str+='<div id="districtsUlId"></div>';
+			str+='</div>';
+		str+='</div>';
+
+	$("#buildPoupupImage").html(str);
+	getEventDocumentForPopupForMultiLocation(levelId,meetingId,0,locationValue);
+	getDistrictsForCustomMeetingImges(levelId,meetingId,locationValue);	
+});
+
+function getDistrictsForCustomMeetingImges(levelId,meetingId,locationValue){
+	var meetingLevelId = levelId;
+	var meetingId = meetingId;
+	var jObj = {
+		partyMeetingLevelId:meetingLevelId,
+		activityMemberId : globalActivityMemberId,
+	    stateId : globalStateId,
+		fromDate : '01/01/2017',
+		toDate : '01/02/2018',
+		meetingId:meetingId,
+		meetingGrpId :0,
+		locationValue : locationValue
+	};
+	
+	$.ajax({
+	  type:'GET',
+	  url: 'getDistrictsForCustomMeetingImgesAction.action',
+	 data : {task:JSON.stringify(jObj)} ,
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			buildDistrictNamesForCustomMeetings(result,meetingLevelId,meetingId);
+		}
+	});
+}
+function buildDistrictNamesForCustomMeetings(result,meetingLevelId,meetingId){
+	var str='';
+	str+='<div class="panel-group" id="accordionModalMeeting" role="tablist" aria-multiselectable="true">';
+	for(var i in result)
+	{
+	  str+='<div class="panel panel-default panel-custommodal">';
+		str+='<div class="panel-heading panel-headingModal" role="tab" id="headingModalMeetings'+i+'">';
+			str+='<a role="button" class="constituencyClsMeetings accordionmodal-toggle collapsed" data-toggle="collapse" data-parent="#accordionModalMeeting" attr_distId="'+result[i].districtId+'" href="#collapseModalMeetings'+i+'" aria-expanded="true" attr_level_id="'+meetingLevelId+'" attr_meeting_id ="'+meetingId+'" aria-controls="collapseModalMeetings'+i+'">';
+				str+='<h4 class="panel-title">'+result[i].name+'('+result[i].count+')</h4>';
+			  str+='</a>';
+		str+='</div>';
+		str+='<div id="collapseModalMeetings'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingModalMeetings'+i+'">';
+		  str+='<div class="panel-body pad_0">';
+			str+='<div id="constituenciesBlockMeeting'+result[i].districtId+'"></div>';
+		  str+='</div>';
+		str+='</div>';
+	  str+='</div>';
+	}
+	str+='</div>';
+	$("#districtsUlId").html(str);
+}
+
+function getEventDocumentForPopupForMultiLocation(levelId,meetingId,num,locationValue){
+	 $("#popupImages").html('<img src="./images/Loading-data.gif" />');
+	 var dates=$('.searchDateCls ').val();
+
+		var jObj = {
+			fromDateStr : '01/01/2017',
+		    toDateStr : '01/02/2018',
+			activityMemberId : globalActivityMemberId,
+			stateId : globalStateId,
+			partyMeetingLevelId:levelId,
+			startIndex:num,
+			maxIndex:10,
+			meetingGrpId :0,
+			meetingId :meetingId,
+			locationValue : locationValue
+		};
+		
+		$.ajax({
+          type:'GET',
+          url: 'getCustomWisePartyMeetingDocumentsAction.action',
+         data : {task:JSON.stringify(jObj)} ,
+        }).done(function(result){
+			buildDayWisImagesForPopup1ForMultiLocation(result,jObj,locationValue);
+		});
+}
+function buildDayWisImagesForPopup1ForMultiLocation(result,jObj,locationValue){
+	
+	//$("#buildPoupupImage").html('');
+	var str ='';
+	$('.slider-for,.slider-nav').slick('unslick');
+	if(result != null)
+	{
+	
+	str+='<div class="row">';	
+		str+='<div class="col-md-12 col-xs-12 col-sm-12">';	
+		str+='<ul class="slider-forparty_meeting slider-for">';
+		//if(path != null && path.length>0)
+			//str+='<li><img src="https://mytdp.com/DocFiles/' +path+'"></li>';
+			for(var i in result)
+			{
+				/* for(var j in result[i])
+				{ */
+					
+					str+='<li><img src="https://mytdp.com/party_meetings/' +result[i].path+'" style="min-width: 100px;min-height:300px; margin-left: 12px;"></li>';
+					
+				//str+='<li><img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg" style="min-width: 100px;min-height:300px; margin-left: 12px;"></li>';
+				//}
+			}
+			  str+='</ul>';
+		str+='<ul class="slider-nav m_top20">';	
+		//if(path != null && path.length>0)
+			//str+='<li><img src="https://mytdp.com/DocFiles/' +path+'" style="cursor:pointer;"></li>';
+		for(var i in result)
+		{	 
+			//for(var j in result[i])
+		//	{
+				str+='<li><img src="https://mytdp.com/party_meetings/' +result[i].path+'" style="cursor:pointer;"/></li>';	
+				//str+='<li><img src="https://www.mytdp.com/party_meetings/ea18acce-756a-4fc2-aec9-6d8090a27dcd_Tulips.jpg"style="cursor:pointer;" ></li>';
+				
+			//}
+		}
+				str+='</ul>';
+			str+='</div>';	
+		str+='</div>';	
+			$("#popupImages").html(str);
+			
+			setTimeout(function(){		
+			$('.slider-for').slick({
+			  slidesToShow: 1,
+			  slidesToScroll: 1,
+			  slide: 'li',
+			  arrows: false,
+			  fade: true,
+			  asNavFor: '.slider-nav'
+			});
+			$('.slider-nav').slick({
+			  slidesToShow: 11,
+			  slidesToScroll: 0,
+			  slide: 'li',
+			  asNavFor: '.slider-for',
+			  dots: false,
+			 // centerMode: true,
+			focusOnSelect: true,
+			  variableWidth: true
+
+				})
+			$(".slick-list").css("margin-left","17px;");	
+			$(".slick-list").css("margin-right","17px;");	
+			//$('.slider-nav li:first-child').trigger('click');
+			//$('.slider-nav li:first-child').trigger('click');
+		},300);
+		
+			var itemsCount=result[0].totalCount;
+			
+	    var maxResults=jObj.maxIndex;
+	   if(jObj.startIndex==0){
+		   $("#paginationDivId").html('');
+		   $("#paginationDivId").pagination({
+				items: itemsCount,
+				itemsOnPage: maxResults,
+				cssStyle: 'light-theme',
+				
+				onPageClick: function(pageNumber, event) {
+					var num=(pageNumber-1)*10;
+					 getEventDocumentForPopupForMultiLocation(jObj.levelId,jObj.meetingId,num,locationValue); 
+				}
+			});
+			$("#paginationDivId").find("ul").addClass("pagination");
+		}
+		
+	GlobalPopupScope = globallocationScope;
+	GlobalPopuplocation =globallocationValue;
+	
+	}
+}
