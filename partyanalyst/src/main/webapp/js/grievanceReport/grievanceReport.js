@@ -382,7 +382,7 @@ var sourceId=$("#selectMediaId").val();
 	str+='<table id="alertIdListTableId" class="table  table-bordered" cellspacing="0" width="100%">';
                     str+='<thead>';
                      str+='<tr>';
-				     str+=' <th>ComplentId</th>';
+				     str+=' <th>Complaint Id</th>';
 					 str+=' <th>Date</th>';
 				     str+=' <th>Location</th>';
 				     str+=' <th>Title</th>';
@@ -1411,7 +1411,7 @@ function buildGrivenceDetailsTable(result,group){
 	str+='<table id="alertIdListTableId" class="table  table-bordered" cellspacing="0" width="100%">';
                     str+='<thead>';
                      str+='<tr>';
-				     str+=' <th>ComplentId</th>';
+				     str+=' <th>Complaint Id</th>';
 					 str+=' <th>Date</th>';
 				     str+=' <th>Location</th>';
 				     str+=' <th>Title</th>';
@@ -1466,8 +1466,8 @@ function buildGrivenceDetailsTableOld(result){
 	str+='<table id="alertIdListTableId" class="table  table-bordered" cellspacing="0" width="100%">';
                     str+='<thead>';
                      str+='<tr>';
-				     str+=' <th>ComplentId</th>';
-					 str+=' <th>Date</th>';
+				     str+=' <th>Complaint Id</th>';
+					 str+=' <th>Date</th>';      
 				     str+=' <th>Location</th>';
 				     str+=' <th>Title</th>';
 					 str+=' <th>Related to</th>';
@@ -1527,8 +1527,8 @@ function buildTotalAlertDistrictTable(result){
 	        str+='</thead>';	
 			str+='<tbody>'
 			str+='<tr>';
-			str+='<td>'+result[0].totalAlertCnt+'</td>';
-		for( var i in result[0].subList1){
+			str+='<td style="cursor:pointer;" class="getAlertDtlsOnLocCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="0" attr_location_id="'+result[0].id+'">'+result[0].totalAlertCnt+'</td>';
+		for( var i in result[0].subList1){   
 			if(result[0].subList1[i].totalAlertCnt != 0){
 				str+='<td  style="cursor:pointer;" class="getAlertDtlsOnLocCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="'+result[0].subList1[i].statusTypeId+'" attr_location_id="'+result[0].id+'" style="background-color:#ecebd6;">'+result[0].subList1[i].totalAlertCnt+'</td>';
 			}else{
@@ -1561,15 +1561,6 @@ function rightSideExpandView(alertId){
 									
 									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId"> ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span attr_alert_id="'+alertId+'" id="statusId">Pending</span>';
-									str+='</li>';   
-									 str+='<li id="displayPriority" style="display:none;" status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="pririty change">';
-										str+='<i class="glyphicon glyphicon-cog"></i>';   
-										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
-											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
-											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right priorityRadioCls" /></li>';
-											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
-											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subAlertId=""  id="priorityChangeSaveId">SET</button></li>';
-										str+='</ul>';
 									str+='</li>';
 								str+='</ul>';
 							str+='</div>';
@@ -1595,17 +1586,7 @@ function rightSideExpandView(alertId){
 									str+='<li id="displayDueDate4"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
 										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">Due date</span>';
 									str+='</li>';
-									
-									 str+='<li id="displayPriority1" style="display:none;" status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="pririty change">';
-										str+='<i class="glyphicon glyphicon-cog"></i>';
-										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
-											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
-											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right priorityRadioCls" /></li>';
-											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
-											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="priorityChangeSaveId" subAlertId="" >SET</button></li>';
-										str+='</ul>';
-									str+='</li>';  
-									
+									  
 									str+='<li id="historyId1" style="display:none;" status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
 										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
 									str+='</li>';
