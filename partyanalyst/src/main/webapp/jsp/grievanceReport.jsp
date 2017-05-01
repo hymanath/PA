@@ -113,7 +113,7 @@
             <div>
                 <h3> Location wise Grievance Report </h3>  
             </div>
-            <div class="table-responsive" id="grivenaceTableId">
+            <div class="table-responsive m_top20" id="grivenaceTableId">
                
             </div>
         </div>
@@ -206,8 +206,6 @@
 		</div>
   </div>
 </div>
-	
-	
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 
@@ -226,7 +224,6 @@
 	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
 	wurl = wurl.replace("/PartyAnalyst","");
 	
-     
 </script>
 </body>
 </html>
