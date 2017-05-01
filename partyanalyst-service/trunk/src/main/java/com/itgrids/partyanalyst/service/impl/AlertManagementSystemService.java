@@ -1671,7 +1671,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					List<Long> userIdsList = govtDepartmentDesignationOfficerDetailsNewDAO.getuserIdDtlsForDesignationOfficerId(desigOfficerId);
 					if(commonMethodsUtilService.isListOrSetValid(userIdsList)){
 						Long assignedToUserID = userIdsList.get(0);
-						sendSMSTOAlertAssignedOfficer(inputvo.getDesignationId(),alertAssignedOfficer.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),alertAssignedOfficerTracking.getGovtAlertActionTypeId(),assignedToUserID,"","",inputvo.getUserId());
+						if(mobileNos != null && mobileNos.size() > 0 && mobileNos.get(0).trim().length() > 0 && !mobileNos.get(0).trim().isEmpty()){
+							 sendSMSTOAlertAssignedOfficer(inputvo.getDesignationId(),alertAssignedOfficer.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),alertAssignedOfficerTracking.getGovtAlertActionTypeId(),assignedToUserID,"","",inputvo.getUserId());	
+						}
 					}
 					
 					return "success";
@@ -2246,7 +2248,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	            }
 	          }
 			//statuisId-0,status-1,color-2,shortName-3
-			List<Object[]> statusList = alertDepartmentStatusDAO.getAllStatuses();
+   			List<Object[]> statusList = null;
+   			if(type.equalsIgnoreCase("alert")){
+   				 statusList = alertDepartmentStatusDAO.getAllStatuses();	
+   			}else if(type.equalsIgnoreCase("subTask")){
+   				 statusList = alertSubTaskStatusDAO.getAllSubTaskStatus();	
+   			}
+			
 			List<Long> levelValues = new ArrayList<Long>();    
 			Long scopeId = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -3129,7 +3137,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			}
     			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
     			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
-    				prepareResultForState(alertList,returnList,sortingType,order);
+    				prepareResultForState(alertList,returnList,sortingType,order,null,null);
     				return returnList;
     			}
     			
@@ -3199,7 +3207,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         /*
          * Swadhin K Lenka
          */
-        public List<AlertCoreDashBoardVO> prepareResultForState(List<Object[]> alertList,List<AlertCoreDashBoardVO> returnList,String sortingType,String order){
+        public List<AlertCoreDashBoardVO> prepareResultForState(List<Object[]> alertList,List<AlertCoreDashBoardVO> returnList,String sortingType,String order,String alertType,String searchType){
         	try{
         		
         		Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
@@ -3227,7 +3235,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			}
     			List<Object[]> statusIdDtlsList = null;
     			if(statusIds != null && statusIds.size() > 0){
-    			 statusIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));
+    				if(alertType != null && alertType.equalsIgnoreCase("subTask") && searchType != null && searchType.equalsIgnoreCase("statuswise")){
+    					 statusIdDtlsList=alertSubTaskStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));    					
+    				}else{
+    					 statusIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(statusIds));	
+    				}
+    			 
         		}
     			
     			List<Object[]> deptScopeIdDtlsList = null;
@@ -3642,7 +3655,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           			}
           			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
         			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
-        				prepareResultForState(alertList,returnList,sortingType,order);
+        				prepareResultForState(alertList,returnList,sortingType,order,null,null);
         				return returnList;
         			}
         			
@@ -6166,7 +6179,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
            				if(position == 1l && parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
                    			alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,null,calCntrIds);
-                   			prepareResultForState(alertList,returnList,sortingType,order);
+                   			prepareResultForState(alertList,returnList,sortingType,order,null,null);
                				return returnList;
            				}else if(position == 2l){
            					if(alertType != null && alertType.equalsIgnoreCase("alert"))
@@ -6719,7 +6732,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			 return returnVO;
 		 }
-		 public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(Long deptId,Long statusId,String type,
+		 public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(List<Long> deptIds,Long statusId,String type,
 				 List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String serachType,String fromDateStr,String toDateStr){
 	 		List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 	 		try {
@@ -6737,21 +6750,21 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 			//govtOffcrIds.add(govtOffrcrId);
 	 			if(type != null && type.equalsIgnoreCase("alert")){
 	 				if(serachType != null && serachType.equalsIgnoreCase("today")){
-	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
+	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptIds,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
 	 				}else if(serachType != null && serachType.equalsIgnoreCase("completed")){
-	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId,fromDate,toDate);
+	 					alertIdList = alertAssignedOfficerNewDAO.getStateLevelAlertclickViewAlertsIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptIds,statusId,fromDate,toDate);
 	 				}
 	 			}else if(type.equalsIgnoreCase("subtask")){
 	 				if(serachType != null && serachType.equalsIgnoreCase("today")){
-	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAlertclickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
+	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAlertclickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptIds,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
 	 				}else if(serachType != null && serachType.equalsIgnoreCase("completed")){
-	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAlertclickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId,fromDate,toDate);
+	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAlertclickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptIds,statusId,fromDate,toDate);
 	 				}
 	 			}else if(type.equalsIgnoreCase("assignSubTask")){
 	 				if(serachType != null && serachType.equalsIgnoreCase("today")){
-	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAssignedAlertClickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptId,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
+	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAssignedAlertClickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"today",deptIds,statusId,new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime());
 	 				}else if(serachType != null && serachType.equalsIgnoreCase("completed")){
-	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAssignedAlertClickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptId,statusId,fromDate,toDate);
+	 					alertIdList = govtAlertSubTaskDAO.getStateLevelAssignedAlertClickViewAlertIds(govtDepDesigOffcrIds,govtOffcrIds,"",deptIds,statusId,fromDate,toDate);
 	 				}
 	 			}
 	 			if(alertIdList != null && alertIdList.size() > 0){
@@ -7551,7 +7564,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					 alertList = govtAlertSubTaskDAO.getSubTaskAlertCntBasedOnDepartmentLevel(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, deptScopeIdList, group, searchType, calCntrIdList, filterParentScopeId, filterScopeValue);
 					}
 					if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
-						prepareResultForState(alertList,returnList,sortingType,order);
+						prepareResultForState(alertList,returnList,sortingType,order,alertType,searchType);
 						return returnList;
 					}
 				}else{
@@ -7580,7 +7593,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}
 			List<Object[]> deptScopeIdDtlsList = null;
 			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && deptScopeIds != null && deptScopeIds.size() >0){
-				deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));
+				if(alertType != null && alertType.equalsIgnoreCase("subTask") && searchType != null && searchType.equalsIgnoreCase("statuswise")){
+					deptScopeIdDtlsList=alertSubTaskStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds)); 
+				}else{
+					deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));	
+				}
 			}else if(deptScopeIds != null && deptScopeIds.size() >0){ 
 				deptScopeIdDtlsList = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetailsBasedOnScopeIds(new ArrayList<Long>(deptScopeIds));
 			}
@@ -7793,7 +7810,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
     				if(position == 1l && parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
             			alertList = alertAssignedOfficerNewDAO.getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverview(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,districtWorkLocationId,group,null,calCntrIdList);
-            			prepareResultForState(alertList,returnList,sortingType,order);
+            			prepareResultForState(alertList,returnList,sortingType,order,null,null);
         				return returnList;
     				}else if(position == 2l){
     					if(alertType != null && alertType.equalsIgnoreCase("alert")){
