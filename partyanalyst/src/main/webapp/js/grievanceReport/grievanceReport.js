@@ -1,3 +1,5 @@
+var globalUserLevelValues = [0]; 
+var globalUserLevelId = 0;
 var start = moment().subtract(29, 'days');
 var end = moment();
 function cb(start, end){
@@ -29,7 +31,25 @@ $(document).on("click",".daterangeClorCls",function(){
     $(".daterangeClorCls").removeClass("dateColorCls");
 }); 
 
-
+/* getDeptListAction();
+function getDeptListAction(){
+	$("#selecDepartmentId").html('');
+	var jsObj ={
+		
+	}
+	$.ajax({
+			type:'GET',         
+			url: 'getDeptListAction.action',
+			data: {}
+			}).done(function(result){
+			if(result !=null && result.length>0){
+				$("#selecDepartmentId").append("<option value='0'>Select Department</option>")
+				for(var i in result){
+					$("#selecDepartmentId").append("<option value="+result[i].id+">"+result[i].name+"</option>")
+				}
+		    }    
+	}); 
+}  */         
 getGrievanceReport();
  function getGrievanceReport(){
 $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -80,7 +100,7 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
      var locTotal = 0;
      for(var i in result){
  		str+='<tr>'; 
-         str+='<td style="cursor:pointer;" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" class="bellowLvlLocCls"><i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</td>';         
+         str+='<td style="cursor:pointer;" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_location_name="'+result[i].name+'"class="bellowLvlLocCls"><i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</td>';         
          str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_group_type="status" attr_location_id="'+result[i].id+'">'+result[i].totalAlertCnt+'</td>';
          locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
  		for(var j in result[i].subList1){
@@ -113,7 +133,9 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  		   str+='</table>';
  		  $('#grivenaceTableId').html(str);
  		  $("#totalAlertCountId").html(locTotal);
- 		  $('#grievanceReportTableId').DataTable();  
+ 		  $('#grievanceReportTableId').DataTable({
+				"order": [[ 1, "asc" ]]  
+			});  
  }
 
 
@@ -251,14 +273,13 @@ var sourceId=$("#selectMediaId").val();
 });
 //Graph building
  function buildLocationWiseGrivenacereportGraph(result){
- 	var mainArry=[];
+	var statusNamesArray =[];
+	var statusIdNameArr=[];
  	    for(var i in result[0].subList1){
- 			var locationWiseReport=[];
- 				 locationWiseReport.push(result[0].subList1[i].statusType)    //result[0].subList1[i].grandTotal
- 				 locationWiseReport.push(result[0].subList1[i].grandTotal) 
- 				 mainArry.push(locationWiseReport);
+				 statusNamesArray.push(result[0].subList1[i].statusType);
+				 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId});
  	    }
- Highcharts.chart('barGraph', {
+ Highcharts.chart('statusWiseAlertCntId', {
              colors: ['#FFCF2C'],
              chart: {
                  backgroundColor:'transparent',
@@ -271,8 +292,8 @@ var sourceId=$("#selectMediaId").val();
              xAxis: {
                  min: 0,
                  gridLineWidth: 0,
-                 minorGridLineWidth: 0,
-                 type: 'category'
+                 minorGridLineWidth: 0,         
+                 categories: statusNamesArray,
              },
              yAxis: {
                  lineWidth: 0,
@@ -305,29 +326,110 @@ var sourceId=$("#selectMediaId").val();
                      dataLabels: {
                          enabled: true,
 
-                     }
-                 }
-             },
-             plotOptions: {
-                 series: {
-                     borderRadius: 2.5,
-                     pointWidth: 15
+                     },
+					 point: {
+						events: {
+							 click: function () {
+								getAlertStatusWise(this.id,this.status);
+							 }
+						 }
+					 }
                  }
              },
              exporting: {
                  buttons: {
                      contextButton: {
                          enabled: false
-                     },
+                     },  
                  }
              },
              series: [{
  				colorByPoint: false,
                  lineWidth: 1,
-                 data:mainArry
+                 data:statusIdNameArr     
              }],
          });
  }
+ function getAlertStatusWise(statusId,status){
+	$("#grievanceDtlsModalId").modal("show");     
+	$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
+	var sourceId=$("#selectMediaId").val();
+	var deptId=$("#selecDepartmentId").val();
+	var rangeType=$("#dateRangeId").attr("value");
+	var jobj = {
+	  fromDate: callCenterUserFDate,                       
+	  toDateStr:callCenterUserTDate,  
+	  deptId:deptId,
+	  sourceId:sourceId,                                      
+	  stateId:1,
+	  locationId:0,
+	  statusId : statusId      
+	  }
+	$.ajax({    
+	  type : "POST",
+	  url  : "getGrievanceReportBasedOnLocationAndStatus.action",  
+	  dataType: 'json',
+	  data: {task:JSON.stringify(jobj)},
+	}).done(function(result){
+		buildAlertStatusWise(result,status);      
+	});
+ }
+ function buildAlertStatusWise(result,status){
+	$("#grivancHeadinId").html('<h3>Grievance Details</h3>');
+	$("#grivenaceModalHeedingId").html('<h4 class="modal-title" >'+status+'</h4>');
+	var str='';  
+	
+	str+='<table id="alertIdListTableId" class="table  table-bordered" cellspacing="0" width="100%">';
+                    str+='<thead>';
+                     str+='<tr>';
+				     str+=' <th>ComplentId</th>';
+					 str+=' <th>Date</th>';
+				     str+=' <th>Location</th>';
+				     str+=' <th>Title</th>';
+					 str+=' <th>Related to</th>';
+				     str+=' <th>Problem</th>';
+					 str+='<th>Status</th>';
+                     str+='</tr>';
+                   str+=' </thead>';
+                   str+='<tbody>';
+				   
+				   for(var i in result){       
+					 str+='<tr>';
+					 str+='<td style="cursor:pointer;" class="getAlertDtls" attr_alert_id="'+result[i].id+'" attr_alert_status="'+result[i].status+'">'+result[i].id+'</td>';
+					 str+='<td>'+result[i].createdDate+'</td>';
+					 if(result[i].location != null && result[i].location.length >0){
+						str+='<td>'+result[i].location+'</td>';
+					 }else{
+						 str+='<td>-</td>';
+					 }
+					 if(result[i].title != null &&result[i].title.length >0){
+						str+='<td>'+result[i].title+'</td>';
+					 }else{
+						str+='<td>-</td>'; 
+					 }
+					  if(result[i].relatedTo != null &&result[i].relatedTo.length >0){
+					   str+='<td>'+result[i].relatedTo+'</td>';
+					  }else{
+						  str+='<td>-</td>'; 
+					  }
+					   if(result[i].problem != null &&result[i].problem.length >0){
+					 str+='<td>'+result[i].problem+'</td>';
+					   }else{
+						    str+='<td>-</td>'; 
+					   }
+					    if(result[i].status != null &&result[i].status.length >0){
+					 str+='<td>'+result[i].status+'</td>';
+						}else{
+							    str+='<td>-</td>'; 
+						}
+					 str+='</tr>';
+				    }
+				   str+='</tbody>';    
+				   str+='</table>';
+				   
+				   $("#grevinceDetailsId").html(str);
+				   $("#alertIdListTableId").dataTable();
+}
 onLoadInitialisations();        
 function onLoadInitialisations(){                     
 	$(document).on("click",".getAlertDtlsCls",function(){
@@ -418,20 +520,18 @@ function onLoadInitialisations(){
 		});
 	});
 	$(document).on("click",".getAlertDtls",function(){
-		var alertId = $(this).attr("attr_alert_id");
-		var alertStatus = $(this).attr("attr_alert_status");
-		getAlertData(alertId);
-		getAlertAssignedCandidates(alertId);
-		getAlertStatusCommentsTrackingDetails(alertId,alertStatus);
-		getVerificationDtls(alertId);
+		var alertId = $(this).attr("attr_alert_id");  
+		rightSideExpandView(alertId);  
 	});
+ 
 	$(document).on("click",".bellowLvlLocCls",function(){
 		$("#bellowLvlLocId").modal("show");
 		var deptId=$("#selecDepartmentId").val();
 		var sourceId=$("#selectMediaId").val();
 		var locationId = $(this).attr("attr_location_id");
+		var locationName = $(this).attr("attr_location_name");
 		var groupType = $(this).attr("attr_group_type");  
-		   
+		$("#bellowLvlLocationId").html(locationName);    
 		var jobj = {
 		  fromDate: callCenterUserFDate,                          
 		  toDateStr:callCenterUserTDate, 
@@ -448,7 +548,7 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},    
 		}).done(function(result){
-			buildGrievanceReportForBellowLocation(result);  
+			buildGrievanceReportForBellowLocation(result,locationId,locationName);  
 		});
 	});
 	$(document).on("click",".panchayatDataCls",function(){
@@ -474,11 +574,47 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},    
 		}).done(function(result){
-			buildGrievanceReportForPanchayat(result,positionValue);         
+			buildGrievanceReportForPanchayat(result,positionValue,locationId);         
 		});
 	});
-}   
-function buildGrievanceReportForBellowLocation(result){
+	$(document).on("click",".bellowLvlCls",function(){
+		$("#grievanceDtlsModalId").modal("show");     
+		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
+		var deptId=$("#selecDepartmentId").val();
+		var sourceId=$("#selectMediaId").val();
+		var locationId = $(this).attr("attr_location_id");
+		var statusId = $(this).attr("attr_status_id"); 
+		var areaType = $(this).attr("attr_area_type"); 
+		var groupType = $(this).attr("attr_group_type"); 
+		var status = $(this).attr("attr_status"); 
+		var jobj = {
+		  fromDate: callCenterUserFDate,                          
+		  toDateStr:callCenterUserTDate, 
+		  deptId:deptId,
+		  sourceId:sourceId, 
+		  stateId:1,
+		  LocationId:locationId,
+		  statusId:statusId,
+		  areaType:areaType,
+		  groupType:groupType   
+		}   
+		$.ajax({    
+		  type : "POST",
+		  url  : "getGrievanceReportDtlsForBellowLocationAction.action",  
+		  dataType: 'json',       
+		  data: {task:JSON.stringify(jobj)},    
+		}).done(function(result){
+			buildAlertStatusWise(result,status);  
+		});
+	});
+	$(document).on("click","#statusId",function(){
+		var alertId = $(this).attr("attr_alert_id");
+		getAlertStatusHistory(alertId);
+	});
+	
+}
+//swadhin   
+function buildGrievanceReportForBellowLocation(result,locationId,locationName){
 	var str = '';
 	str+='<div class="table-responsive">';
 		str+='<table class="table table-inr-x table-bordered" style="border-collapse:collapse;">';
@@ -493,14 +629,28 @@ function buildGrievanceReportForBellowLocation(result){
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
-				str+='<tr data-toggle="collapse" data-target="#demo'+i+'" class="accordion-toggle">';
+				if(result[i].name == "OTHER"){
+					str+='<tr>';
+					str+='<td>'+result[i].name+'</td>'; 
+				}else{
+					str+='<tr data-toggle="collapse" data-target="#demo'+i+'" class="accordion-toggle">';
 					str+='<td><button class="btn btn-default btn-xs panchayatDataCls" attr_position="'+i+'" attr_location_id="'+result[i].id+'" attr_group_type="panchayat"><span class="glyphicon glyphicon-plus-sign " ></span></button>'+result[i].name+'</td>'; 
-					str+='<td><a href="#">'+result[i].totalAlertCnt+'</a></td>';
+				}
+				if(result[i].name == "OTHER"){
+					str+='<td class="bellowLvlCls" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';  
+				}else{
+					str+='<td class="bellowLvlCls" attr_area_type="tehsil" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';  
+				}
+					 
 					var len = result[i].subList1.length;
 					len=parseInt(len)+2;
 					for(var j in result[i].subList1){
-						if(result[i].subList1[j].totalAlertCnt != 0){
-							str+='<td>'+result[i].subList1[j].totalAlertCnt+'</td>';
+						if(result[i].subList1[j].totalAlertCnt != 0){        
+							if(result[i].name == "OTHER"){
+								str+='<td class="bellowLvlCls" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
+							}else{
+								str+='<td class="bellowLvlCls" attr_area_type="tehsil" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
+							}
 						}else{
 							str+='<td>-</td>';
 						}      
@@ -519,7 +669,7 @@ function buildGrievanceReportForBellowLocation(result){
 	$("#tehsilTableId").html(str);
 	  
 }
-function buildGrievanceReportForPanchayat(result,positionValue){
+function buildGrievanceReportForPanchayat(result,positionValue,locationId){
 	var str = '';
 	str+='<table class="table table-inr">';
 		str+='<thead>';
@@ -535,10 +685,20 @@ function buildGrievanceReportForPanchayat(result,positionValue){
 		for(var i in result){
 			str+='<tr>';
 				str+='<td>'+result[i].name+'</td>';
-				str+='<td>'+result[i].totalAlertCnt+'</td>';
-				for(var j in result[i].subList1){
+				if(result[i].name == "OTHER"){
+					str+='<td class="bellowLvlCls" attr_area_type="panchayat" attr_group_type="tehsil" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';
+				}else{
+					str+='<td class="bellowLvlCls" attr_area_type="panchayat" attr_group_type="panchayat" attr_location_id="'+result[i].id+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';
+				}
+				
+				for(var j in result[i].subList1){           
 					if(result[i].subList1[j].totalAlertCnt != 0){
-						str+='<td>'+result[i].subList1[j].totalAlertCnt+'</td>';
+						if(result[i].name == "OTHER"){
+							str+='<td class="bellowLvlCls" attr_area_type="panchayat" attr_group_type="tehsil" attr_location_id="'+locationId+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
+						}else{
+							str+='<td class="bellowLvlCls" attr_area_type="panchayat" attr_group_type="panchayat" attr_location_id="'+result[i].id+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
+						}
+						
 					}else{
 						str+='<td>-</td>';
 					}      
@@ -549,27 +709,6 @@ function buildGrievanceReportForPanchayat(result,positionValue){
 	str+='</table>';
 	$("#demo"+positionValue).html(str);          
 }
-function getAlertData(alertId){ 
-$("#cdrModelDivId").modal("show");   
-		var jsObj ={
-			alertId  :alertId,
-			task : ""
-		}
-		$.ajax({
-			type:'GET',
-			url: 'getAlertsDataAction.action',
-			data: {task :JSON.stringify(jsObj)}
-		}).done(function(result){
-			$("#alertGroupAttachTitId,#alertGroupAttachImgId").html(' ');
-			if(result != null && result.length > 0){
-				buildAlertData(result);
-				if(result[0].categoryId == 2)
-				{
-					getGroupedArticlesInfo(result[0].alertCategoryTypeId)
-				}
-			}    
-		});
-	} 
 
 function buildAlertData(result){
 		var docName = '';
@@ -680,29 +819,6 @@ function buildAlertData(result){
 				
 			  ]  
 		}); 
-	}	
-	
-	function getGroupedArticlesInfo(articleId)
-	{
-		$.ajax({
-			  type : 'GET',      
-			  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
-			  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
-		}).then(function(result){
-			$("#alertGroupAttachTitId").html("<h5 class='text-muted headingColorStyling'>GROUPED ARTICLES</h5>");
-			var str='';
-			if(result !=null && result.length>0){
-				str+='<ul class="list-inline imageUrlUlCls" style="border: 1px solid rgb(211, 211, 211); padding:5px;">';
-				for(var i in result)
-				{
-					if(articleId != result[i].id){
-						str+='<li class="articleImgDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
-					}
-				}
-				str+='</ul>';
-			}
-			$("#alertGroupAttachImgId").html(str);
-		});
 	}
 	function getAlertAssignedCandidates(alertId){
 		GlobalAlertData = [];
@@ -1425,4 +1541,1009 @@ function buildTotalAlertDistrictTable(result){
 	        str+='</tbody>'
 			str+='</table>';
 		 $("#totalAlertDistricTableId").html(str);
+}
+function rightSideExpandView(alertId){
+	$("#cdrModelDivId").modal("show");     
+    $("#rightSideExpandView").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var str='';
+	str+='<div class="col-sm-12 pad_left0" expanded-block="block1">';        
+		str+='<div class="panel-right">';
+			str+='<div style="box-shadow:0px 0px 2px 2px rgba(0,0,0,0.2)">';  
+				str+='<i class=""  expanded-close="block1"></i>';
+				str+='<div class="panel panel-default">';
+				
+					str+='<div class="panel-heading" id="mainBlockStates">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-4">';
+								str+='<div id="assignedUser"></div>';
+							str+='</div>';
+							str+='<div class="col-sm-8 pull-right" style="">';
+								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
+									
+									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId"> ';
+										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span attr_alert_id="'+alertId+'" id="statusId">Pending</span>';
+									str+='</li>';   
+									 str+='<li id="displayPriority" style="display:none;" status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="pririty change">';
+										str+='<i class="glyphicon glyphicon-cog"></i>';   
+										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
+											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
+											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right priorityRadioCls" /></li>';
+											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
+											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subAlertId=""  id="priorityChangeSaveId">SET</button></li>';
+										str+='</ul>';
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div class="panel-heading" id="subBlockStates" style="display:none;">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-4">';
+								str+='<div id="assignedUser1"></div>';
+							str+='</div>';
+							str+='<div class="col-sm-8  pull-right" >';
+								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
+									
+									str+='<li status-icon-block="alertStatus1" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId1" style="" > ';
+										str+='<span class="status-icon arrow-icon" id="statusId1Color"></span><span id="statusId1">Pending</span>';
+									str+='</li>';
+									
+									str+='<li id="displayDueDate3"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date1">Due date</span>';
+									str+='</li>';
+									
+									str+='<li id="displayDueDate4"  style="display:none;"  class="list-icons-calendar" data-toggle="tooltip" data-placement="top" title="Due date">';
+										str+='<i class="glyphicon glyphicon-calendar"></i><span class="modal-date">Due date</span>';
+									str+='</li>';
+									
+									 str+='<li id="displayPriority1" style="display:none;" status-icon-block="alertStatusChange" data-toggle="tooltip" data-placement="top" title="pririty change">';
+										str+='<i class="glyphicon glyphicon-cog"></i>';
+										str+='<ul class="alert-status-change-list arrow_box_top" style="display:none;">';
+											str+='<li>high <input type="radio" name="alert-status-change-list" value="1" attr_value="high" class="pull-right priorityRadioCls" /></li>';
+											str+='<li>medium <input type="radio" name="alert-status-change-list" attr_value="medium" value="2" class="pull-right priorityRadioCls" /></li>';
+											str+='<li>low <input type="radio" name="alert-status-change-list" attr_value="low" value="3" class="pull-right priorityRadioCls" /></li>';
+											str+='<li><button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" id="priorityChangeSaveId" subAlertId="" >SET</button></li>';
+										str+='</ul>';
+									str+='</li>';  
+									
+									str+='<li id="historyId1" style="display:none;" status-icon-block="alertHistory" attr_alert_id="'+alertId+'">';
+										str+='<i class="fa fa-road" data-toggle="tooltip" data-placement="top" title="Alert History"></i>';
+									str+='</li>';
+									str+='<li id="docAttachmentId1" status-icon-block="attachment" attr_alert_id="'+alertId+'" style="display:none;" subAlertId="" >';
+										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
+										str+='<form name="uploadAttachment1" method="post" id="uploadAttachment1">';
+										str+='<div class="alert-status-attachment arrow_box_top" style="display:none;">';
+										str+='<i attr_class="alert-status-attachment" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
+											str+='<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/>';
+											str+='<input type="hidden" name="subTaskId" value="'+alertId+'" subAlertId=""  id="alertHiddenId"/>';
+											str+='<button class="btn btn-primary btn-sm text-capital uploadBtnIdCls " attr_alert_id="'+alertId+'" type="button" id="uploadBtnId" subAlertId=""  >upload</button>';
+											str+='<span id="ErrorMsg1"></span>';
+											str+='<span id="imagesUploadSpinner" class="imagesUploadSpinner" style="height:50px;width:50px"></span>';
+										str+='</div>';
+										str+='</form>';
+									str+='</li>';
+								str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+					
+					str+='<div id="main_alert_block">';
+						str+='<div class="panel-body" >';
+							str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
+								str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH</span></span>';
+							str+='</p>';
+							str+='<div id="callerDetailsDIv"></div>';
+							str+='<div id="statusDtlsDiv"></div>';
+							str+='<div id="alertDetails"></div>';
+							str+='<div id="articleAttachment"></div>';
+							str+='<div id="alertCategory"></div>';
+							str+='<div id="alertSubtask"></div>';
+							//str+='<div id="alertComments"></div>';
+							str+='<div id="alertGeneralComments"></div>';
+							str+='<div status-body="task" class="m_top20"></div>';
+							str+='<div status-body="subTask" class="m_top20"></div>';
+						str+='</div>';
+					str+='</div>';
+				
+				
+				str+='<div id="sub_tasls_View_alert_block" style="display:none">';
+						str+='<div id="mainAlertTitle"></div>';
+						str+='<div class="panel-body">';
+							//str+='<p><i class="fa fa-fire"></i> Impact Level : <span id="impactLevel"></span>';
+								//str+='<span class="text-danger pull-right"><i class="glyphicon glyphicon-cog"></i> Priority:<span id="priorityBodyId"> HIGH </span></span>';
+							str+='</p>';
+							str+='<div id="subAlertDetails"></div>';
+							str+='<div id="subArticleAttachment"></div>';
+							str+='<div id="subAlertCategory"></div>';
+							str+='<div id="subAlertSubtask"></div>';
+							//str+='<div id="subAlertComments"></div>';
+							str+='<div id="subAlertGeneralComments"></div>';
+							//str+='<div status-body="task" class="m_top20"></div>';
+							//str+='<div status-body="subTask" class="m_top20"></div>';
+						str+='</div>';
+						str+='<div class="panel-footer">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-1 text-center">';
+									str+='<span class="icon-name icon-primary">Ra</span>';
+								str+='</div>';
+								str+='<div class="col-sm-11">';
+									str+='<div class="panel panel-default panel-border-white">';
+										str+='<div class="panel-heading">';
+											str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
+										str+='</div>';
+										str+='<div class="panel-body">';
+											str+='<div class="comment-area">Comment Here</div>';
+											str+='<textarea class="form-control comment-area" id="alertCommentId2" placeholder="Comment here..."></textarea>';
+										str+='</div>';
+										str+='<div class="panel-footer text-right">';
+											str+='<button class="btn btn-primary comment-btn commentChangeCls" attr_alert_id="'+alertId+'"   subAlertId=""  id="commentChangeId">Save  </button>';
+											str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				
+				str+='<div id="sub_task_block"  class="sub_task_block" style="display:none;" >';
+						str+='<i attr_class="sub_task_block" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
+						str+='<div class="panel-body panel-heading ">';
+							str+='<div class="row">';
+								str+='<div style="margin-left:25px"><i class="fa fa-level-down fa-2x" aria-hidden="true"></i> <label style="font-size:20px;margin-left:10px"> ASSIGN SUB TASK </label></div>';
+							str+=' </div>';
+							str+='<div class="col-sm-12">';
+							  str+='<ul class="assign-subtask-list m_top20">';
+							  str+='<form id="subTaskAlertAssign" name="subTaslAlertAssignForm">';
+								str+='<li class="new">';
+								  str+='<div class="row">';
+									str+='<div class="col-sm-1">';
+									  str+='<i class="glyphicon glyphicon-plus"></i>';
+									str+='</div>';
+									str+='<div class="col-sm-7">';
+									  str+='<input type="text" id="subTaskTitleId" class="form-control subTaskTitle" placeholder="Enter Title Here" name="alertAssigningVO.title"/>';
+									str+='</div>';
+									str+='<div class="col-sm-4">';
+									str+='<ul class="list-icons list-inline pull-right">';
+										str+='<li class="list-icons-calendar" style="display:table-cell">';
+											str+=' <i class="glyphicon glyphicon-calendar"></i><span  data-toggle="tooltip" data-placement="top" title="due date" class="modal-date2 subTaskDueDate" style="" > Due Date </span>';
+											str+='<input id="hiddenDueDate1" type="hidden" value="" name="alertAssigningVO.dueDate" />';
+										str+='</li>';
+										str+='<li style="display:table-cell">';
+											str+='<div class="assign-user">';
+											str+='<div class="departmentsForSubTask" attr_alert_id="'+alertId+'" onclick="getAssignUIAttributes('+alertId+');"><i class="glyphicon glyphicon-user pointerCls assigningCls"></i> </div></div><div id="assignUIAttributesId" > </div>';
+										str+='</li>';
+									str+='</ul>';
+									str+='</div>';
+								  str+='</div>';
+								str+='</li>';
+								str+='</form>';
+							  str+='</ul>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#rightSideExpandView").html(str);
+	$('[data-toggle="tooltip"]').tooltip();
+	$(".chosenSelect").chosen({width:'100%'});
+	assignedOfficersDetailsForAlert(alertId);
+	departmentsByAlert(alertId);
+	getAlertData(alertId);
+	getStatusCompletionInfo(alertId);  
+	//getGovtAllDepartmentDetails();
+	buildAssignUIAttributes(alertId);  
+	
+}
+function assignedOfficersDetailsForAlert(alertId)
+{
+	var jsObj = {
+		alertId : alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAssignedOfficersDetailsAction.action',
+	data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			buildAssignedOfficersDetailsForAlert(result);
+		}else{
+			assignUser(alertId);
+		}
+		
+	});
+}
+function buildAssignedOfficersDetailsForAlert(result)
+{
+	var str='';
+	var splitNameArr = result[0].name.split(" ");
+	var value = "";
+	if(splitNameArr != null && splitNameArr.length>1)
+		value = splitNameArr[1];
+	else
+		value = splitNameArr[0];  
+	
+	str+='<div class="media">';
+		str+='<div class="media-body">';
+			
+			str+='<p> ASSIGN TO: <i class="fa fa-level-down "></i></p> ';
+			str+='<p>'+result[0].designation+' <br> <i class="glyphicon glyphicon-phone"></i> : '+result[0].mobileNo+'</p>';
+			str+='<p>Location :  '+result[0].source+'</p>';			
+			str+='<p>Dept : '+result[0].department+'</p>'; 
+			
+			str+='<p></p>';
+		str+='</div>';
+	str+='</div>';
+	$("#assignedUser").html(str);
+	$(".assign-user").hide();
+}
+function assignUser(alertId)
+{
+	var str='';
+	str+='<div class="assign-user">';
+		str+='<ul class="list-icons list-inline">';
+		str+='</ul>';
+		str+='<div class="assign-user-body" style="display:none">';
+			str+='<form id="alertAssign" name="alertAssignForm">';
+				str+='<div class="arrow_box_top">';
+					str+='<div>';
+						str+='<div class="row">';  
+							str+='<div class="col-sm-12">';
+								str+='<div id="assignErrorDivId"></div>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
+								str+='<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	';
+									str+='<option value="0">Select Department</option>';
+									//str+='<option value="49">RWS</option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+								str+='<select  class="chosenSelect" id="locationLevelSelectId" name="alertAssigningVO.levelId">	';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div id="parentLevelDivId"> </div>';
+							
+							str+='<div class="col-sm-6">';
+								str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId"></span></label>';
+								str+='<select name="alertAssigningVO.designationId" id="designationsId" class="chosenSelect">';
+									str+='<option></option>	';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId"></span></label>';
+								str+='<select name="alertAssigningVO.govtOfficerId" id="officerNamesId" class="chosenSelect">';
+									str+='<option></option>';
+								str+='</select>';
+							str+='</div>';
+						str+='</div>';
+						str+='<input type="hidden" id="hiddenAlertId" value="'+alertId+'" name="alertAssigningVO.alertId"/>';
+					str+='</div>';
+				str+='</div>';
+			str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
+				str+='<button class="btn btn-primary btn-sm text-capital" id="assignOfficerId" type="button">assign</button>';
+				str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">';
+				str+='<span class="text-success" id="assignSuccess"></span>';
+			str+='</div>';
+			str+='</form>';
+		str+='</div>';
+	str+='</div>';
+	$("#assignedUser").html(str);
+	$(".chosenSelect").chosen({width:'100%'});
+	getDepartmentDetailsOfAlert(alertId);
+}
+function getDepartmentDetailsOfAlert(alertId)
+{
+	
+	var jsObj={
+		alertId : alertId
+	}
+	$.ajax({   
+		type:'GET',
+		url:'getDepartmentDetailsOfAlertAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		for(var i in result){
+			
+			if(result[i].name !=null && result[i].name.length>0){
+				var newStr='';		
+				newStr+='<option value="0">Select Department</option>';
+				newStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				$("#departmentsId").html(newStr);
+				$("#departmentsId").trigger("chosen:updated");
+			}
+		}	
+	});
+}
+var globalSubTaskAlertId=0;
+function departmentsByAlert(alertId){
+	var jsObj = {
+		alertId : alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getDepartmentsByAlertAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		var str='';
+		str+='<p class="m_top20">';
+			for(var i in result)
+			{
+				str+='<span class="label label-default label-category">'+result[i].name+'</span>';
+				globalSubTaskAlertId=result[i].id;
+			}
+		str+='</p>';
+		$("#alertDetails").append(str);
+	});
+}
+function getAlertData(alertId)
+{
+	$("#alertDetails").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var jsObj =
+	{
+		alertId  :alertId,
+		task : ""
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAlertsDataAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#alertDetails").html('');
+		getAlertCategortByAlert(alertId);
+		//getInvolvedMembersDetilas(alertId);
+		getSubTaskInfoForAlert(alertId);
+		getCommentsForAlert(alertId);
+		getDocumentsForAlert(alertId);
+		if(result != null && result.length > 0){
+			buildAlertDataNew(result)
+			if(result[0].categoryId == 2)
+			{
+				getGroupedArticlesInfo(result[0].alertCategoryTypeId)
+			}
+		}else{
+			$("#alertDetails").html("NO DATA AVAILABLE...");
+		}
+	});
+}
+function getAlertCategortByAlert(alertId){
+	$("#categoryId").html('');
+	$("#alertCategory").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var jsObj =
+	{
+		alertId  :alertId
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getAlertCategoryByAlertAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+			$("#alertCategory").html('');
+		if(result != null && result.length > 0)
+		{
+			var str='';
+			str+='<div class="row m_top20">';
+				str+='<div class="col-sm-1 text-center body-icons">';
+					str+='<i class="fa fa-tags fa-2x"></i>';
+				str+='</div>';
+				str+='<div class="col-sm-11">';
+					str+='<h4 class="text-muted text-capital">category</h4>';
+					str+='<p class="m_top20"><span class="label label-default label-category">'+result+'</span></p>';
+				str+='</div>';
+			str+='</div>';
+			
+			$("#alertCategory").append(str);
+		}
+		
+	});
+}
+function getSubTaskInfoForAlert(alertId){
+	$("#alertSubtask").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var jsObj ={
+		alertId  :alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getSubTaskInfoForAlertAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#alertSubtask").html('');
+		if(result != null && result.length > 0)
+		{
+			buildSubTaskInfoForAlert(result,alertId);
+		}
+	});
+}
+function buildSubTaskInfoForAlert(result,alertId)
+{
+	var str='';
+	
+		
+		for(var i in result)
+		{
+			if(result[i].attachementsList != null && result[i].attachementsList.length>0){
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-1 text-center body-icons">';
+						str+='<i class="fa fa-level-down fa-2x"></i>';
+					str+='</div>';
+					
+					str+='<div class="col-sm-11">';
+						str+='<h4 class="text-muted text-capital"> My Sub Tasks : </h4>';
+					str+='</div>';
+					str+='<div class="row col-sm-12">';
+						str+='<ul class="assign-subtask-list m_top20">';
+						for(var k in result[i].attachementsList){
+							str+='<li class="assigned subTaskCls " style="cursor:pointer;margin-left: 5px" attr_sub_alert_Id="'+result[i].attachementsList[k].alertId+'" attr_alert_id="'+alertId+'">';
+									str+='<div class="row">';
+										str+='<div class="col-sm-1">';
+											str+='<i class="glyphicon glyphicon-ok"></i>';
+										str+='</div>';
+										str+='<div class="col-sm-10" >';
+											str+='<p>'+result[i].attachementsList[k].title+' ';
+											
+											str+='</p>';
+										str+='</div>';
+										str+='<div class="col-sm-1">';
+											str+='<ul class="list-icons list-inline">';
+												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].attachementsList[k].color+'" title="'+result[i].attachementsList[k].status+'"></span> </li>';
+											str+='</ul>';
+										
+										str+='</div>';
+									str+='</div>';
+							str+='</li>';
+						}
+						str+='</ul>';
+					str+='</div>';
+				
+			}
+			if(result[i].commentList != null && result[i].commentList.length>0){
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-1 text-center body-icons">';
+						str+='<i class="fa fa-level-down fa-2x"></i>';
+					str+='</div>';
+				str+='<div class="col-sm-11 ">';
+					str+='<h4 class="text-muted text-capital"> Others Sub Tasks : </h4>';
+					str+='</div>';
+					str+='<div class="col-sm-11 col-sm-offset-1">';
+						str+='<ul class="assign-subtask-list m_top20">';
+						for(var k in result[i].commentList){
+							str+='<li class="assigned subTaskCls " style="cursor:pointer;" attr_sub_alert_Id="'+result[i].commentList[k].alertId+'" attr_alert_id="'+alertId+'">';
+									str+='<div class="row">';
+										str+='<div class="col-sm-1">';
+											str+='<i class="glyphicon glyphicon-ok"></i>';
+										str+='</div>';
+										str+='<div class="col-sm-10" >';
+											str+='<p>'+result[i].commentList[k].title+' ';
+											
+											str+='</p>';
+										str+='</div>';
+										str+='<div class="col-sm-1">';
+											str+='<span class="icon-name icon-primary" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span>';
+											
+										str+='</div>';
+									str+='</div>';
+							str+='</li>';
+						}
+						str+='</ul>';
+					str+='</div>';
+				
+			}
+		}	
+	str+='</div>';	
+
+	$("#alertSubtask").html(str);
+}
+function getCommentsForAlert(alertId){
+	//$("#alertGeneralComments").html(spinner);  
+	$("#alertGeneralComments").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var jsObj ={
+		alertId  :alertId  
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getCommentsForAlertAction.action',  
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#alertGeneralComments").html('');
+		if(result != null && result.length > 0)
+		{
+			buildCommentsForAlert(result);
+		}else{
+			$("#alertGeneralComments").html("");
+		}
+	});
+}
+function buildCommentsForAlert(result)
+{
+	var str='';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-1 text-center body-icons">';
+			str+='<i class="fa fa-comments-o fa-2x"></i>';
+		str+='</div>';
+		str+='<div class="col-sm-11">';
+			str+='<h4 class="text-muted text-capital">comments</h4>';
+			for(var i in result)
+			{
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						if(result[i].userName != null && result[i].userName.length > 0)
+						{
+							str+='<span class="icon-name icon-primary text-capital">'+result[i].userName.substring(0,2)+'</span>';
+						}else{
+							str+='<span class="icon-name icon-primary">ME</span>';
+						}
+					str+='</div>';
+					str+='<div class="media-body">';
+						if(result[i].comment != null && result[i].comment.length > 0)
+						{
+							str+='<p class="m_top5">'+result[i].comment+'</p>';
+						}
+						if(result[i].attachementsList != null && result[i].attachementsList.length > 0)
+						{
+							str+='<p class="m_top5">Attachments : '+result[i].attachementsList+'</p>';
+						}
+						if(result[i].date != null && result[i].date.length > 0)
+						{
+							str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].date+'</p>';
+						}
+						if(result[i].userName != null && result[i].userName.length > 0)
+						{
+							str+='<p class="m_top5"> Updated By: '+result[i].userName+'</p>';
+						}
+						if(result[i].deptName != null && result[i].deptName.length > 0)
+						{
+							str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].deptName+'</p>';
+						}
+						if(result[i].designation != null && result[i].designation.length > 0)
+						{
+							str+='<p class="m_top5"><i class="glyphicon"></i> Designation :'+result[i].designation+'</p>';
+						}
+						/*if(result[i].mobileNO != null && result[i].mobileNO.length > 0)
+						{
+							str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].mobileNO+'</p>';
+						}
+						*/
+					str+='</div>';
+				str+='</div>';
+			}
+		str+='</div>';
+	str+='</div>';
+	$("#alertGeneralComments").html(str);
+}
+function getDocumentsForAlert(alertId){
+	$("#existingDocsDivId").html("");
+	$("#existingDocsDivId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var jsObj ={
+		alertId:alertId 
+    }
+    $.ajax({
+    type:'GET',         
+    url: 'getDocumentsForAlertsAction.action',
+    data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		$("#existingDocsDivId").html('');
+		if(result != null && result.length > 0){
+			var str='';
+			str+='<h4 class="text-muted text-capital">alert attachment</h4>';
+			str+='<ul class="list-inline imageShowOpen">';
+			for(var i in result){
+				str+='<li class="" style="margin-top:25px;" attr_doc_id="'+result[i].id+'"  attr_path="'+result[i].name+'" id="imageAttachmentOpen'+result[i].id+'" >';
+					str+='<img src="http://www.mytdp.com/images/'+result[i].name+'" style="width: 100px; height: 100px;cursor:pointer" />';
+				str+='</li>';
+			}
+			str+='</ul>';
+			$("#existingDocsDivId").html(str);
+		}
+    });
+}
+function buildAlertDataNew(result)
+{
+	var str='';
+	var str1='';
+	$("#statusId").html(result[0].status);
+	$("#statusId").attr("attr_status_id",result[0].statusId);
+	$("#impactLevel").html(result[0].regionScope);
+	if(result[0].severity != null)
+	{
+		$("#priorityBodyId").html(result[0].severity);
+	}
+	$("#statusIdColor").css("background-color",result[0].statusColor);
+	if(result[0].dueDate != null && result[0].dueDate.length>0)
+	{
+		$('.modal-date').data('daterangepicker').setStartDate(result[0].dueDate);
+		$('.modal-date').data('daterangepicker').setEndDate(result[0].dueDate);
+		if(result[0].dueDate != null && result[0].dueDate.length>0){
+			$('.modal-date').html(result[0].dueDate);
+			$('.modal-date1').html(result[0].dueDate);
+		}
+	}else{
+			$('#displayDueDate2').hide();
+			$('#displayDueDate1').hide();
+		}
+	
+	//priorityRadioCls
+	if(result[0].severityId != null && result[0].severityId > 0){
+		$("input[name=alert-status-change-list][value='"+result[0].severityId+"']").prop("checked",true);
+	}
+	
+	str+='<div class="row m_top20">';
+		for(var i in result)
+		{
+			str+='<div class="col-sm-1 text-center body-icons">';
+				str+='<i class="fa fa-check fa-2x"></i>';
+			str+='</div>';
+			str+='<div class="col-sm-11">';
+				str+='<h3>'+result[i].title+'</h3>';
+				str+='<p class="m_top10">'+result[i].desc+'</p>';
+				str+='<p class="m_top10"><small> <i class="fa fa-map-marker"></i> '+result[i].locationVO.state+'(S),'+result[i].locationVO.districtName+'(D),'+result[i].locationVO.constituencyName+'(C),'+result[i].locationVO.tehsilName+'(M)'+result[i].locationVO.wardName+','+result[i].locationVO.villageName+'(P),'+result[i].locationVO.hamletName+'(H)</small></p>';
+				str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created : '+result[i].date+'</small></p>';
+			str+='</div>';
+		}
+	str+='</div>';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-1 text-center body-icons">';
+			str+='<i class="fa fa-paperclip fa-2x"></i>';
+		str+='</div>';
+		str+='<div class="col-sm-11">';
+			for(var i in result.documentList)
+			{
+				str+='<img class="articleDetailsCls img-responsive m_top20" src="http://mytdp.com/Reports/'+result.documentList[i]+'" style="width: 150px; height: 150px;cursor:pointer"/>';
+			}
+		str+='</div>';
+	str+='</div>';
+	str1+='<div class="row m_top20">';
+	
+		if(result[i].imageUrl !=null && result[i].imageUrl.length>0){
+			str1+='<div class="col-sm-1 text-center body-icons">';
+				str1+='<i class="fa fa-paperclip fa-2x"></i>';
+			str1+='</div>';
+			if(result[i].imageUrl != null){
+				str1+='<div class="col-sm-4">';
+					str1+='<h4 class="text-muted text-capital">article attachment</h4>';
+					str1+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId='+result[i].alertCategoryTypeId+' src="http://mytdp.com/NewsReaderImages/'+result[i].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer"/>';
+				str1+='</div>';
+				str1+='<div class="col-sm-7" id="existingDocsDivId"></div>';
+			}else{
+				str1+='<div class="col-sm-11" id="existingDocsDivId"></div>';
+			}
+		}else{
+			str1+='<div class="col-sm-1 text-center body-icons">';
+				str1+='<i class="fa fa-paperclip fa-2x"></i>';
+			str1+='</div>';
+			str1+='<div class="col-sm-11" id="existingDocsDivId"></div>';
+		}
+		
+	str1+='</div>';
+	$("#alertDetails").html(str);
+	$("#articleAttachment").html(str1);
+	
+}
+function getGroupedArticlesInfo(articleId)  
+{
+	$.ajax({
+		  type : 'GET',      
+		  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		 // url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+	}).then(function(result){
+		console.log(result);
+		//$("#alertDetails").append(str);
+	});
+}
+var isAdmin = "";
+var globalUserType = "";
+var globalStatusId = 0;
+var isStatusAvailable=true;
+function getStatusCompletionInfo(alertId){
+	isStatusAvailable=true;
+	$("#updateStatusChangeBody").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	$("#statusDtlsDiv").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var jsObj ={
+		alertId : alertId,
+		levelValue : globalUserLevelValues[0],
+		designationId : 0,
+		levelId : globalUserLevelId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getStatusCompletionInfoAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#updateStatusChangeBody").html('');
+		$("#statusDtlsDiv").html('');
+		$('#displayStatusId,#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority,#historyId').hide();
+		$('#displayStatusId').attr('status-icon-block','alertStatus');
+		$('#docAttachmentId').hide();  	
+		
+		if(result != null && result.length>0){
+			if(result.length  == 1)
+				isStatusAvailable=false;
+			
+			if(result[0].callerName != null && result[0].callerName.length > 0 && result[0].mobileNo != null && result[0].mobileNo.length > 0)
+			{
+				var str='';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-1 text-center body-icons"><i class="fa fa-volume-control-phone fa-2x"></i></div>';
+					str+='<div class="col-sm-11">';
+						str+='<h3>Caller Details </h3>';
+						str+='<p class="m_top10">Name : '+result[0].callerName+' </p>';
+						str+='<p> Mobile No : '+result[0].mobileNo+' </p>';
+						str+='<p> Caller : '+result[0].userType+'</p>';
+					str+='</div>';
+				str+='</div>';
+				$("#callerDetailsDIv").html(str);
+			}
+			
+			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
+		
+			globalUserType = buildTypeStr;
+			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
+			globalStatusId = sttatusId; 
+			
+			$('#historyId').show();
+			if(result[0].dueDateStr != null && result[0].dueDateStr.trim().length>0){
+				$('.modal-date').html(result[0].dueDateStr)
+				$('.modal-date1').html(result[0].dueDateStr)
+			}else{
+				$('#displayDueDate2').hide();
+				$('#displayDueDate1').hide();
+			}
+			
+			if(buildTypeStr=='own'){  
+				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
+				$('#docAttachmentId').show();	
+				$('#displayDueDate1').show();
+				$('#displayDueDate2').hide(); 
+				
+				if(globalStatusId == 12 ){ // closed
+					isStatusAvailable=false;
+					$('#displaySubTasksliId,#docAttachmentId').hide();
+				}else {
+					isStatusAvailable=true;
+				}				
+			}
+			else if(buildTypeStr=='subUser'){	
+				$('#displaySubTasksliId').hide();		
+				$('#displayDueDate1').hide();
+				$('#displayStatusId').show();
+				$('#displayStatusId').removeAttr('status-icon-block');
+				
+				$('#displayDueDate2,#displayPriority').show();
+				
+				// closed-12, completed-4, reopen-11
+				if( globalStatusId == 12 || globalStatusId == 4 || globalStatusId == 11){
+					isStatusAvailable=true;
+				}
+				if(globalStatusId != 12){ // for not closed status alerts 
+					$('#displaySubTasksliId,#docAttachmentId').show();					
+				}
+			}else if(buildTypeStr=='same'){ 
+				$('#displaySubTasksliId,#docAttachmentId,#displayPriority').show();
+				$('#displayStatusId').show();       
+				$('#displayDueDate1').show(); 
+				isStatusAvailable=false;
+			}
+			else if(buildTypeStr=='other'){
+				$('#displaySubTasksliId').hide();				
+				$('#displayDueDate1').hide();				
+				$('#displayDueDate2').hide();				
+				$('#displayStatusId').show();
+				isStatusAvailable=false;				
+			}
+			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
+				
+				$('#docAttachmentId').show();	
+				 assignUser(alertId);
+				 
+			}
+		
+			if(result[0].userStatus != null && result[0].userStatus =="admin"){
+				isAdmin = "true";
+				//$('#displayStatusId').attr('status-icon-block','');
+				$('#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority').hide(); 
+				if(sttatusId !=1)
+					$('#docAttachmentId').show(); 
+			}else{
+				$('#displayStatusId').attr('status-icon-block','alertStatus');
+				isAdmin = "false";
+			}
+			
+			if(isAdmin=='false'){				
+				$('#displayStatusId').attr('status-icon-block','alertStatus');
+			}
+			alertStatus(result,alertId);	
+
+			if(globalStatusId == 12 ){ // closed
+				$('#displaySubTasksliId,#docAttachmentId,#displayPriority,#displayDueDate2').hide();
+				$('#displayDueDate1').show();
+			}
+			
+			//alert(" isStatusAvailable :"+isStatusAvailable);
+		}else{
+			
+			$('#displayStatusId').show();
+			$('#displaySubTasksliId').hide();  
+			$('#docAttachmentId').hide();  
+		}	
+		setTimeout(function(){
+			$("body").addClass("modal-open");
+		},1000);
+	});
+}
+var glStr='';
+function alertStatus(result,alertId)
+{
+	glStr='';
+	var str1='';
+	 
+		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
+			str1+='<div class="panel-heading" style="margin-left: 20px;">';
+				str1+='<div class="row">';
+				for(var i in result)
+				{
+					
+					str1+='<div class="col-sm-4">';
+						str1+='<div class="radioStyling">';
+							if(globalStatusId == parseInt(result[i].id))
+							{
+								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+i+'">';
+							}else
+							{
+								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+i+'">';
+							}
+							str1+='<label for="radio-'+i+'"><span class="radio" >'+result[i].name+'</span></label>';
+						str1+='</div>';
+					str1+='</div>';
+				}				
+				str1+='</div>';
+			str1+='</div>';
+			str1+='<div class="panel-body pad_0">';
+				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
+			str1+='</div>';
+		str1+='</div>';
+	
+	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChangeId">update</button>';
+	str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
+	str1+='<span id="updateStatusChangeMsg"></span>';
+	glStr=str1;
+	//$("#updateStatusChangeBody").html(str1);
+}
+function buildAssignUIAttributes(alertId){
+	var str='';
+	str+='<div class="assign-subtask" style="width:600px;position:absolute;right:0;top:33px">';
+		str+='<div class="arrow_box_top" >';
+			str+='<div>';
+				str+='<div class="row">';  
+					str+='<div class="col-sm-12">';
+						str+='<i attr_class="assign-subtask" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
+						str+='<div id="assignErrorDivId1" style="color:red;"></div>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+						str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId1"></span></label>';
+						str+='<select class="chosenSelect" id="departmentsId1" name="alertAssigningVO.departmentId">	';
+						str+='</select>'; 
+					str+='</div>';
+					
+					str+='<div class="col-sm-6">';
+						str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId1"></span></label>';
+						str+='<select  class="chosenSelect" id="locationLevelSelectId1" name="alertAssigningVO.levelId">	';
+							str+='<option></option>';
+						str+='</select>';
+					str+='</div>';
+					
+					str+='<div id="parentLevelDivId1"> </div>';
+					
+					str+='<div class="col-sm-6">';
+						str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId1"></span></label>';
+						str+='<select name="alertAssigningVO.designationId" id="designationsId1" class="chosenSelect">';
+							str+='<option></option>	';
+						str+='</select>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+						str+='<label>Officer Name<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgOffcrId1"></span></label>';
+						str+='<select name="alertAssigningVO.govtOfficerId" id="officerNamesId1" class="chosenSelect">';
+							str+='<option></option>';
+						str+='</select>';
+					str+='</div>';
+				str+='</div>';
+				str+='<input type="hidden" id="hiddenAlertId1" value="'+alertId+'" name="alertAssigningVO.alertId"/>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
+			str+='<button class="btn btn-primary btn-sm text-capital" id="subTaskassignOfficerId" type="button" onclick="saveSubTask('+alertId+');">assign</button>';
+			str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg1">';
+			str+='<span class="text-success" id="assignSuccess"></span>';
+		str+='</div>';
+	str+='</div>';
+$('#assignUIAttributesId').html(str);
+
+$('[data-toggle="tooltip"]').tooltip();
+	$(".chosenSelect").chosen({width:'100%'});
+	
+	$('.modal-date2').data('daterangepicker');
+	
+	$(function() {
+		var start = moment();
+		
+		function cb(start) {
+			$('.modal-date2').html(start.format('DD/MM/YYYY'));
+		}
+       
+		$('.modal-date2').daterangepicker({
+			startDate: start,
+			singleDatePicker:true,
+			locale:{
+				format:"DD/MM/YYYY"
+			}
+			
+		}, cb);		
+	});
+}
+function getAlertStatusHistory(alertId){
+	$("#alertManagementPopup1").modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+	var jsObj ={
+		alertId : alertId
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getAlertStatusHistoryAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		alertStatusHistory(result,alertId);
+	});
+}
+function alertStatusHistory(result,alertId)
+{
+
+	var str='';
+	var str1='';
+	
+	
+	if(result != null && result.length>0)
+	{
+		str+='<table class="table border_1">';
+			str+='<thead class="text-capitalize">';
+				str+='<th>Date</th>';
+				str+='<th>Status</th>';
+				str+='<th>Updated By</th>';
+				str+='<th>Comments</th>';
+			str+='</thead>';
+			for(var i in result)  
+			{
+				str+='<tr>';
+					str+='<td>'+result[i].date+'</td>';
+					str+='<td>'+result[i].status+'</td>';
+					str+='<td>';
+						str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
+						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';						
+						str+='<p class="text-primary text-capitalize"><u> Designation:  <span style="color:black;"> '+result[i].designation+' </span></u></p>';
+						//str+='<p class="text-primary text-capitalize">Dept Name: '+result[i].mobileNO+'</p>';
+					str+='</td>';
+					str+='<td>'+result[i].comment+'</td>';
+				str+='</tr>';
+			}  
+			
+		str+='</table>';
+		
+		
+		$("#alertManagementPopup1 .modal-footer").show();
+	
+		
+		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
+		$("#alertManagementPopupBody1").html(str);
+	}else{  
+		$("#alertManagementPopupBody1").html(" NO HISTORY AVAILABLE...")  
+	}
+	$("#alertManagementPopup1 .modal-footer").html(' ');
 }

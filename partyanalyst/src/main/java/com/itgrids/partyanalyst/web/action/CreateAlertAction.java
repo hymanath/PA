@@ -2748,5 +2748,30 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getGrievanceReportDtlsForBellowLocation(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDateStr=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			Long stateId=jObj.getLong("stateId");
+			Long LocationId=jObj.getLong("LocationId");
+			Long statusId=jObj.getLong("statusId");
+			String areaType = jObj.getString("areaType");
+			String groupType = jObj.getString("groupType");
+			alertCoreDashBoardVOs = alertService.getGrievanceReportDtlsForBellowLocation(fromDate,toDateStr,stateId,deptId,sourceId,LocationId,statusId,areaType,groupType);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getGrievanceReport Method",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getDeptList(){
+		try{
+			idNameVOList = alertService.getDeptListForGrievance();
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getDeptList Method",e);
+		}
+		return Action.SUCCESS;
+	}
 }
