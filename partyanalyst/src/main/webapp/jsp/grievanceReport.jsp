@@ -72,7 +72,7 @@
                 <div class="col-md-3">
                     <div style="padding-top: 8px" class=" dropdown pull-right" >
                         <select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
-							<option value="49">Ruler Water Supply</option>
+							<option value="49">Rural Water Supply</option>  
                       </select>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
             <div class="col-md-8">
                 <div>
                     <h1 class="text-center">
-                        <div id="barGraph" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
+                        <div id="statusWiseAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
                     </h1>
                 </div>
             </div>
@@ -111,17 +111,34 @@
        <section class="container">
         <div  class="row">
             <div>
-                <h3> Location wise Grevince Report </h3>
+                <h3> Location wise Grievance Report </h3>  
             </div>
             <div class="table-responsive" id="grivenaceTableId">
                
             </div>
         </div>
     </section>
-	<input type="hidden" id="dateRangeId" value="day"></input>  
-
-  
-  <!-- Modal -->
+	<input type="hidden" id="dateRangeId" value="day"></input> 
+</div>
+      <!-- Modal -->
+<div class="modal fade" id="bellowLvlLocId" role="dialog">  
+    <div class="modal-dialog modal-lg">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" id="bellowLvlLocationId">Modal Header</h4>
+        </div>
+        <div class="modal-body" id="tehsilTableId"></div>   
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+<!-- Modal -->
    <div class="modal fade" id="grievanceDtlsModalId" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -151,91 +168,17 @@
       </div>
     </div>
   </div>
-</div>
 
-    
-    
-    
-      <!-- Modal -->
-<div class="modal fade" id="bellowLvlLocId" role="dialog">  
-    <div class="modal-dialog modal-lg">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
-        </div>
-        <div class="modal-body" id="tehsilTableId"></div>   
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
   <div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
 		  <div class="modal-dialog modal-lg">       
-			<div class="modal-content" style="border-radius:0px">
-			  <div class="modal-header" style="background-color:#999999">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="tourDocHeadingId">Cadre Registration Comparison Details</h4>  
-			  </div>
-			  <div class="modal-body">   
-				<div class="row">
-					<div class="col-md-12 col-xs-12 col-sm-12"> 
-						<div id="cdrModelId"></div>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12"> 
-						<div id="alertDestId" ></div>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="sourceHeadingId"></div>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12"> 
-						<div id="headingNameId" ></div>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="alertDocHeadingId"></div>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12"> 
-						<div id="alertDocId" ></div>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="alertAttachTitId"></div>    
-					</div> 
-					<div class="col-md-12 col-xs-12 col-sm-12"> 
-						<div id="alertAttachImgId"></div>  
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="alertGroupAttachTitId"></div>    
-					</div> 
-					<div class="col-md-12 col-xs-12 col-sm-12"> 
-						<div id="alertGroupAttachImgId"></div>  
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="alertInvolvedCandidates"></div>        
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="alertAssignedCandidates"></div>  
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="alertStatusDiv" ></div>    
-					</div>
-					<div  class="col-md-12 col-xs-12 col-sm-12"> 
-						<div id="alertCommentsDiv"></div>  
-					</div> 
-					<div  class="col-md-12 col-xs-12 col-sm-12 m_top10"> 
-						<div id="alertVerificationDiv"></div>    
-					</div>
-					<div  class="col-md-12 col-xs-12 col-sm-12"> 
-						<div id="alertVerificationDtlsDiv"></div>  
-					</div>
+			<div class="modal-content" >
+				<div class="modal-body">
+					<div id="rightSideExpandView">
+					</div>     
 				</div>
-			  </div>
-			  <div class="modal-footer">     
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			  </div>
+				<div class="modal-footer">     
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
 			</div><!-- /.modal-content -->
 		  </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
@@ -246,7 +189,26 @@
 		</div>
 	</div>  
 </div> 
-    
+
+<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="alertManagementPopupHeading">Alert Status History</h4>
+			</div>
+			<div class="modal-body">
+				<div id="alertManagementPopupBody1"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Save changes</button>
+			</div>
+		</div>
+  </div>
+</div>
+	
+	
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 
