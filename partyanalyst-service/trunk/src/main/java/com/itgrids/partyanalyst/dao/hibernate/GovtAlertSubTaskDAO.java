@@ -2435,7 +2435,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 					  " GovtAlertSubTask model left join model.alert.edition EDS " +
 					  " left join model.alert.tvNewsChannel TNC,GovtUserAddress UA " +
 					  " where UA.userAddressId=model.govtDepartmentDesignationOfficer.govtUserAddress.userAddressId " +
-					  " model.isDeleted = 'N' and model.alert.isDeleted='N' ");
+					  " and model.isDeleted = 'N' and model.alert.isDeleted='N' ");
 			if(deptId != null && deptId.longValue() >0){
 				sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId ");
 			}
@@ -2519,7 +2519,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			return query.list();
 		}
 		public List<Long> getStateLevelAlertclickViewAlertIds(List<Long> govtDepDesigOffcrIds,
-				List<Long> govtOffcrIds,String type,Long deptId,Long statusId,Date fromDate,Date endDate){
+				List<Long> govtOffcrIds,String type,List<Long> deptIds,Long statusId,Date fromDate,Date endDate){
 		 	   StringBuilder sb = new StringBuilder();
 		    	
 		    	sb.append(" select distinct model.alert.alertId from GovtAlertSubTask model ");
@@ -2536,8 +2536,8 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    	  if(fromDate != null && endDate != null){
 	    		  sb.append(" and date(model.createdTime) between :fromDate and :endDate " ); 
 	    	  }
-	    	  if(deptId != null && deptId.longValue() > 0){
-	    		  sb.append(" and  model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId " );
+	    	  if(deptIds != null && deptIds.size() > 0){
+	    		  sb.append(" and  model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds) " );
 	    	  }
 	    	  if(statusId != null && statusId.longValue() > 0){
 	    		  sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId " );
@@ -2557,8 +2557,8 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    	  if(statusId != null && statusId.longValue() > 0){
 	    		  query.setParameter("statusId", statusId);
 	    	  }
-	    	  if(deptId != null && deptId.longValue() > 0){
-	    		  query.setParameter("deptId", deptId);
+	    	  if(deptIds != null && deptIds.size() > 0){
+	    		  query.setParameterList("deptIds", deptIds);
 	    	  }
 			  return query.list();
 		    }
@@ -2587,7 +2587,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 		
 		@SuppressWarnings("unchecked")
 		public List<Long> getStateLevelAssignedAlertClickViewAlertIds(List<Long> govtDepDesigOffcrIds,
-				List<Long> govtOffcrIds,String type,Long deptId,Long statusId,Date fromDate,Date endDate){
+				List<Long> govtOffcrIds,String type,List<Long> deptIds,Long statusId,Date fromDate,Date endDate){
 		 	   StringBuilder sb = new StringBuilder();
 		    	
 		    	sb.append(" select distinct model.alertAssignedOfficer.alert.alertId from GovtAlertSubTask model ");
@@ -2605,8 +2605,8 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    	  if(fromDate != null && endDate != null){
 	    		  sb.append(" and date(model.alertAssignedOfficer.insertedTime) between :fromDate and :endDate " ); 
 	    	  }
-	    	  if(deptId != null && deptId.longValue() > 0){
-	    		  sb.append(" and  model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId " );
+	    	  if(deptIds != null && deptIds.size() > 0){
+	    		  sb.append(" and  model.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds) " );
 	    	  }
 	    	  if(statusId != null && statusId.longValue() > 0){
 	    		  //sb.append(" and  model.alertAssignedOfficer.alertStatus.alertStatusId = :statusId " );
@@ -2627,8 +2627,8 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    	  if(statusId != null && statusId.longValue() > 0){
 	    		  query.setParameter("statusId", statusId);
 	    	  }
-	    	  if(deptId != null && deptId.longValue() > 0){
-	    		  query.setParameter("deptId", deptId);
+	    	  if(deptIds != null && deptIds.size() > 0){
+	    		  query.setParameterList("deptIds", deptIds);
 	    	  }
 			  return query.list();
 		    }

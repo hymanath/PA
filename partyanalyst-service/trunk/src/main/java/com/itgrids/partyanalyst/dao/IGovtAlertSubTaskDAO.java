@@ -60,11 +60,11 @@ public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long>
  	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,Date startDate,Date endDate,
  			Long desigIds,Long officerIds,Long levelId,List<Long> levelValues,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList);
  	public List<Long> getStateLevelAlertclickViewAlertIds(List<Long> govtDepDesigOffcrIds,
-			List<Long> govtOffcrIds,String type,Long deptId,Long statusId,Date startDate,Date endDate);
+			List<Long> govtOffcrIds,String type,List<Long> deptIds,Long statusId,Date startDate,Date endDate);
  	public List<Long> getSubTasksIdsList(List<Long> alertIds);
  	public Long getGovtDeptDesigOfficerIdBySubTaskId(Long subTaskId);
  	public List<Long> getStateLevelAssignedAlertClickViewAlertIds(List<Long> govtDepDesigOffcrIds,
-			List<Long> govtOffcrIds,String type,Long deptId,Long statusId,Date fromDate,Date endDate);
+			List<Long> govtOffcrIds,String type,List<Long> deptIds,Long statusId,Date fromDate,Date endDate);
  	
  	public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,Long statusId,
 			Date fromDate,Date toDate,Long levelId,List<Long> levelValues,List<Long> printIdList,List<Long> electronicIdList,List<Long> calCntrIdList);
