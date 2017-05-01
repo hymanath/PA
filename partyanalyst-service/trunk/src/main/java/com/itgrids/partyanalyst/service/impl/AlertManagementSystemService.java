@@ -6344,7 +6344,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				 }
     				 for(Object[] param : objList){
     					Long id = commonMethodsUtilService.getLongValueForObject(param[0]);
-    					 AlertVO VO = getAlertStatusMatchVO(finalAlertVOs,id);
+    					 AlertVO VO = getAlertStatusMatchVO2(finalAlertVOs,id);
     					 if(VO == null){
     						 VO = new AlertVO();
     						 VO.setStatusId(id);
@@ -6366,7 +6366,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			LOG.error("Error occured setStatusWiseAlertCnt() method of CccDashboardService{}");
     	    }
     	}
-    	public AlertVO getAlertStatusMatchVO(List<AlertVO> finalAlertVOs,Long id){
+        
+    	public AlertVO getAlertStatusMatchVO2(List<AlertVO> finalAlertVOs,Long id){
     		try{
     			if(finalAlertVOs == null || finalAlertVOs.size() ==0)
     				return null;
