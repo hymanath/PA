@@ -743,9 +743,9 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 	}else{
 		$("#alertManagementPopupBody1").html("NO DATA")
 	}
-	
+	    //santosh
 		if(isAdmin == "false"){
-			if(globalUserType != "same"){
+			//if(globalUserType != "same"){
 				str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
 					str1+='<label class="checkbox-inline">';
 					if(subTaskStatusChangAvailable)
@@ -753,7 +753,7 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 					str1+='</label>';  
 					str1+='<div  id="updateStatusChangeBody" style="display:none;">'+subTaskglStr+'</div>';
 				str1+='</div>';
-			}
+			//}
 		}  
 		$("#alertManagementPopup1 .modal-footer").html(str1);
 		
