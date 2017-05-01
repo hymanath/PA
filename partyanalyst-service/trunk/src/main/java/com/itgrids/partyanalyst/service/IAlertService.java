@@ -136,4 +136,6 @@ public interface IAlertService {
     public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds);
     public List<AlertOverviewVO> getGrievanceReportBasedOnLocation(String fromDate,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String group,String pattern,String rangeType);
     public List<AlertCoreDashBoardVO> getGrievanceReportBasedOnLocationAndStatus(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId);
+    public List<AlertCoreDashBoardVO> getGrievanceReportDtlsForBellowLocation(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String areaType,String groupType);
+    public List<IdNameVO> getDeptListForGrievance();
 }
