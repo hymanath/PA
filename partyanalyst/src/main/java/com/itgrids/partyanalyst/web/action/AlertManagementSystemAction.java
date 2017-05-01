@@ -2719,7 +2719,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					Long userId = regVo.getRegistrationID();
 					jObj = new JSONObject(getTask());
 					
-					Long deptId = jObj.getLong("deptId");
+					JSONArray deptIdsArr = jObj.getJSONArray("deptIdsArr");  
+					List<Long> deptList = new ArrayList<Long>();
+					for (int i = 0; i < deptIdsArr.length(); i++){
+						deptList.add(Long.parseLong(deptIdsArr.getString(i)));        
+					}
+					//Long deptId = jObj.getLong("deptId");
 					Long statusId = jObj.getLong("statusId");
 					String type = jObj.getString("type");
 					//Long officerId = jObj.getLong("officerId");  
@@ -2738,7 +2743,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					for (int i = 0; i < desigDeptOfficerIdsArr.length(); i++){
 						desigDeptOfficerIds.add(Long.parseLong(desigDeptOfficerIdsArr.getString(i)));        
 					}
-					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptId,statusId,type,desigDeptOfficerIds,officerIdList,searchType,startDate,endDate);
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptList,statusId,type,desigDeptOfficerIds,officerIdList,searchType,startDate,endDate);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();

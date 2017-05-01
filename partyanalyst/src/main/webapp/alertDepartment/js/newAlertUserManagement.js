@@ -19,7 +19,7 @@ $(document).on("click",".filterSubmitBtnCls",function(){
 });
 
 
-	
+	var globalDepartmentIdsArr = [];
 	function getDeptDetails(){
 		var jsObj = {};
 		$.ajax({
@@ -141,8 +141,8 @@ function buildIASOfficerMyAlertsCountMainView(result){
 					for(var j in result.list1[i].subList1){
 						str+='<tr>';
 						str+='<td>';
-						if(result.list1[i].subList1[i].count !=null && result.list1[i].subList1[i].count>0){
-							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList1[i].id+'" attr_type="alert" attr_dept_name ="'+result.list1[i].subList1[i].name+'" attr_count ="'+result.list1[i].subList1[i].count+'" attr_search_type="today">'+result.list1[i].subList1[i].count+'</span></p>';
+						if(result.list1[i].subList1[j].count !=null && result.list1[i].subList1[j].count>0){
+							str+='<p class="pad_3">'+result.list1[i].subList1[j].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList1[j].id+'" attr_type="alert" attr_dept_name ="'+result.list1[i].subList1[j].name+'" attr_count ="'+result.list1[i].subList1[j].count+'" attr_search_type="today">'+result.list1[i].subList1[j].count+'</span></p>';
 						}
 						str+='</td>';
 						str+='</tr>';
@@ -163,8 +163,8 @@ function buildIASOfficerMyAlertsCountMainView(result){
 							for(var j in result.list1[i].subList2){
 								str+='<tr>';
 								str+='<td>';
-								if(result.list1[i].subList2[i].count !=null && result.list1[i].subList2[i].count>0){
-									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="alert" attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'" attr_search_type="completed">'+result.list1[i].subList2[i].count+'</span></p>';
+								if(result.list1[i].subList2[j].count !=null && result.list1[i].subList2[j].count>0){
+									str+='<p class="pad_3">'+result.list1[i].subList2[j].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="alert" attr_dept_id ="'+result.list1[i].subList2[j].id+'" attr_dept_name ="'+result.list1[i].subList2[j].name+'" attr_count ="'+result.list1[i].subList2[j].count+'" attr_search_type="completed">'+result.list1[i].subList2[j].count+'</span></p>';
 								}
 								str+='</td>';
 								str+='</tr>';
@@ -287,7 +287,7 @@ function buildIASOfficerMyAlertsCountMainView(result){
 													 if(statuscount == 0){
 														return;  
 													 }  
-													getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType)
+													getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType,'OverAll');
 												}
 											}
 										}
@@ -322,7 +322,7 @@ function buildIASOfficerMyAlertsCountMainView(result){
 					}); 
 					$.each($('#myAlertGraphView').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 						$(this).attr("style","cursor:pointer;");    
-						$(this).attr("onclick","getTotalAlertCountDetails(\'"+result.departmentId+"\',\'"+result.list1[i].subList3[index].id+"\',0,'alert',\'"+result.list1[i].subList3[index].name+"\',\'"+result.list1[i].subList3[index].count+"\','completed')");
+						$(this).attr("onclick","getTotalAlertCountDetails(\'"+result.departmentId+"\',\'"+result.list1[i].subList3[index].id+"\',0,'alert',\'"+result.list1[i].subList3[index].name+"\',\'"+result.list1[i].subList3[index].count+"\','completed','OverAll')");
 					});
 					
 				}else{
@@ -376,8 +376,8 @@ function buildIASOfficerMySubTasksCountView(result){
 					for(var j in result.list1[i].subList1){
 						str+='<tr>';
 						str+='<td>';
-						if(result.list1[i].subList1[i].count !=null && result.list1[i].subList1[i].count>0){
-							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="subTask" attr_dept_id ="'+result.list1[i].subList1[i].id+'" attr_dept_name ="'+result.list1[i].subList1[i].name+'" attr_count ="'+result.list1[i].subList1[i].count+'" attr_search_type="today">'+result.list1[i].subList1[i].count+'</span></p>';
+						if(result.list1[i].subList1[j].count !=null && result.list1[i].subList1[j].count>0){
+							str+='<p class="pad_3">'+result.list1[i].subList1[j].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="subTask" attr_dept_id ="'+result.list1[i].subList1[j].id+'" attr_dept_name ="'+result.list1[i].subList1[j].name+'" attr_count ="'+result.list1[i].subList1[j].count+'" attr_search_type="today">'+result.list1[i].subList1[j].count+'</span></p>';
 							
 							
 						}
@@ -401,8 +401,8 @@ function buildIASOfficerMySubTasksCountView(result){
 							for(var j in result.list1[i].subList2){
 								str+='<tr>';
 								str+='<td>';
-								if(result.list1[i].subList2[i].count !=null && result.list1[i].subList2[i].count>0){
-									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="subTask" attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'" attr_search_type="completed">'+result.list1[i].subList2[i].count+'</span></p>';
+								if(result.list1[i].subList2[j].count !=null && result.list1[i].subList2[j].count>0){
+									str+='<p class="pad_3">'+result.list1[i].subList2[j].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="subTask" attr_dept_id ="'+result.list1[i].subList2[j].id+'" attr_dept_name ="'+result.list1[i].subList2[j].name+'" attr_count ="'+result.list1[i].subList2[j].count+'" attr_search_type="completed">'+result.list1[i].subList2[j].count+'</span></p>';
 								}
 									
 								str+='</td>';
@@ -526,7 +526,7 @@ function buildIASOfficerMySubTasksCountView(result){
 													 if(statuscount == 0){
 														return;  
 													 }  
-													getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType)
+													getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType,'OverAll');
 												}
 											}
 										}
@@ -561,7 +561,7 @@ function buildIASOfficerMySubTasksCountView(result){
 					}); 
 					$.each($('#mySubTasksGraphView').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 						$(this).attr("style","cursor:pointer;");    
-						$(this).attr("onclick","getTotalAlertCountDetails(\'"+result.departmentId+"\',\'"+result.list1[i].subList3[index].id+"\',0,'subTask',\'"+result.list1[i].subList3[index].name+"\',\'"+result.list1[i].subList3[index].count+"\','completed')");
+						$(this).attr("onclick","getTotalAlertCountDetails(\'"+result.departmentId+"\',\'"+result.list1[i].subList3[index].id+"\',0,'subTask',\'"+result.list1[i].subList3[index].name+"\',\'"+result.list1[i].subList3[index].count+"\','completed','OverAll')");
 					});
 		
 				}else{
@@ -612,8 +612,8 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 					for(var j in result.list1[i].subList1){
 						str+='<tr>';
 						str+='<td>';
-						if(result.list1[i].subList1[i].count !=null && result.list1[i].subList1[i].count>0){
-							str+='<p class="pad_3">'+result.list1[i].subList1[i].name+'<span class="pull-right badge alertCountCls " attr_type="assignSubTask"  style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList1[i].id+'" attr_dept_name ="'+result.list1[i].subList1[i].name+'" attr_count ="'+result.list1[i].subList1[i].count+'" attr_search_type="today">'+result.list1[i].subList1[i].count+'</span></p>';
+						if(result.list1[i].subList1[j].count !=null && result.list1[i].subList1[j].count>0){
+							str+='<p class="pad_3">'+result.list1[i].subList1[j].name+'<span class="pull-right badge alertCountCls " attr_type="assignSubTask"  style="cursor:pointer;" attr_dept_id ="'+result.list1[i].subList1[j].id+'" attr_dept_name ="'+result.list1[i].subList1[j].name+'" attr_count ="'+result.list1[i].subList1[j].count+'" attr_search_type="today">'+result.list1[i].subList1[j].count+'</span></p>';
 						}
 							
 						str+='</td>';
@@ -635,8 +635,8 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 							for(var j in result.list1[i].subList2){
 								str+='<tr>';
 								str+='<td>';
-								if(result.list1[i].subList2[i].count !=null &&  result.list1[i].subList2[i].count>0){
-									str+='<p class="pad_3">'+result.list1[i].subList2[i].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="assignSubTask"  attr_dept_id ="'+result.list1[i].subList2[i].id+'" attr_dept_name ="'+result.list1[i].subList2[i].name+'" attr_count ="'+result.list1[i].subList2[i].count+'" attr_search_type="completed">'+result.list1[i].subList2[i].count+'</span></p>';
+								if(result.list1[i].subList2[j].count !=null &&  result.list1[i].subList2[j].count>0){
+									str+='<p class="pad_3">'+result.list1[i].subList2[j].name+'<span class="pull-right badge alertCountCls " style="cursor:pointer;" attr_type="assignSubTask"  attr_dept_id ="'+result.list1[i].subList2[j].id+'" attr_dept_name ="'+result.list1[i].subList2[j].name+'" attr_count ="'+result.list1[i].subList2[j].count+'" attr_search_type="completed">'+result.list1[i].subList2[j].count+'</span></p>';
 								}
 									
 								str+='</td>';
@@ -762,7 +762,7 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 													 if(statuscount == 0){
 														return;  
 													 }  
-													getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType)
+													getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType,"OverAll");
 												}
 											}
 										}
@@ -798,7 +798,7 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 					
 					$.each($('#assignedSubTasksGraphView').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 						$(this).attr("style","cursor:pointer;");    
-						$(this).attr("onclick","getTotalAlertCountDetails(\'"+result.departmentId+"\',\'"+result.list1[i].subList3[index].id+"\',0,'assignSubTask',\'"+result.list1[i].subList3[index].name+"\',\'"+result.list1[i].subList3[index].count+"\','completed')");
+						$(this).attr("onclick","getTotalAlertCountDetails(\'"+result.departmentId+"\',\'"+result.list1[i].subList3[index].id+"\',0,'assignSubTask',\'"+result.list1[i].subList3[index].name+"\',\'"+result.list1[i].subList3[index].count+"\','completed','OverAll')");
 					});
 					
 				}else{
@@ -1767,8 +1767,7 @@ $(document).on("click",".alertCountCls",function(){
   var searchType = $(this).attr("attr_search_type");
   getTotalAlertCountDetails(deptId,0,0,type,deptName,count,searchType)
 });
-
-function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType){
+function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType,resultType){
   $("#alertManagementPopupBody").html('')
   
     $("#alertManagementPopup").modal({
@@ -1776,9 +1775,15 @@ function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName
       keyboard: false,
       backdrop: 'static'
     });
+	var deptArr = [];
+	 if(resultType != null && resultType=="OverAll"){
+		 deptArr = globalDepartmentIdsArr;
+	 }else{
+	   deptArr.push(departmentId);	 
+	 }
     $("#alertManagementPopupBody").html(spinner);
     var jObj = {
-		  deptId: departmentId,//status and location 0
+		  deptIdsArr: deptArr,//status and location 0
 		  statusId:statusId,
 		  type:type,
 		  officerIdsArr:globalOfficerIds,
