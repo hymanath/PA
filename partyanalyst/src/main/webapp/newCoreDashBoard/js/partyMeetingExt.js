@@ -327,7 +327,7 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result,position,searchRe
 	str+='<div class="row m_top10">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
 		  str+='<div class="table-responsive">';
-		  str+='<table class="table border_top_apply table-condensed table-bordered" id="cmtMemberDtlsTableId">';
+		  str+='<table class="table border_top_apply table-condensed table-bordered" id="cmtMemberDtlsTableId11">';
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th>District Name</th>';
@@ -415,7 +415,7 @@ function buildPartyLevelIdWiseMeetingsAttendanceDetails(result,position,searchRe
 		str+='</div>';
 		
 	$("#meetingMemDetailsBodyId").html(str);
-	$("#cmtMemberDtlsTableId").dataTable();   
+	$("#cmtMemberDtlsTableId11").dataTable();   
 			
 }
 
