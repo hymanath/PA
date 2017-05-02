@@ -141,4 +141,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Long> getGrievanceReportDtlsForBellowLocation(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId,String areaType,String groupType);
 	public List<Object[]> getTotalAlertGroupByDateThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,String step,Long locationId,Long statusId);
 	public List<Object[]> getDeptList(); 
+	 public List<Object[]> getTotalAlertGroupByCategoryThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId,String step,Long locationId,Long statusId);
 }
