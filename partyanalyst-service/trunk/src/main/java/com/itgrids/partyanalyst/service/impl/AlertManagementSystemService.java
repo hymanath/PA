@@ -7111,7 +7111,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			                finalList.add(vo);
   			              }
   			              else{
-  			                userType = "subUser";              
+  			                userType = "other";              
   			                IdNameVO vo = new IdNameVO();              
   			                finalList.add(vo);
   			              }
@@ -7131,7 +7131,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			          
   			        } catch (Exception e) {
   			          e.printStackTrace();
-  			          LOG.error("Error occured getStatusCompletionInfo() method of AlertManagementSystemService",e);
+  			          LOG.error("Error occured getStatusCompletionInfoNew() method of AlertManagementSystemService",e);
   			        }
   			            return finalList;
   			  }
