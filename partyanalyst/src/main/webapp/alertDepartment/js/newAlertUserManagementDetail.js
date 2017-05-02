@@ -54,6 +54,14 @@ function onLoadClicks()
 		
 		$('#alertManagementPopupHeading').html(' Sub Task Uploaded Attachment');
 	});
+	$(document).bind('keydown',"Shift+s", function assets() {
+		$('#displaySubTasksli').trigger("click");
+		return false;
+	});
+	$(document).bind('keydown',"Shift+x", function assets() {
+		$('.closeCls').trigger("click");
+		return false;
+	});
 	
 	$(document).on("click",".articleDetailsCls",function(){
 		var articleId= $(this).attr("attr_articleId");
@@ -2880,7 +2888,6 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 													str+='</div>';
 												str+='</div>';
 											str+='</li>';
-											
 										}
 									str+='</ul>';
 								str+='</div>';
@@ -2990,7 +2997,7 @@ function assignUser(alertId)
 					str+='<div>';
 						str+='<div class="row">';  
 							str+='<div class="col-sm-12">';
-								str+='<div id="assignErrorDivId"></div>';
+								str+='<div id="assignErrorDivId" class="text-danger text-capitalize" style="margin-bottom:10px;"></div>';
 							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';

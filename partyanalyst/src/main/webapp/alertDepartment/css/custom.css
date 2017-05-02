@@ -82,7 +82,12 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	border-bottom:1px solid #5cb85c;
 	border-radius:0px;
 }
-
+.form-control:focus {
+    border-color: 2px solid #EFA5B6;
+    outline: 0;
+    -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 8px rgba(239,165,182,.6) !important;
+    box-shadow: inset 0 2px 2px rgba(0,0,0,.075),0 0 8px rgba(239,165,182,.6) !important;
+}
 .navbarHeader {
     background: #555555 none repeat scroll 0 0;
     height: 60px !important;
@@ -107,7 +112,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	text-decoration:none;
 }
 .collapseIconForIAS, .collapseIconForIAS:active, .collapseIconForIAS:hover, .collapseIconForIAS:focus{
-	 color: rgb(102, 102, 102) !important;
+	color: rgb(102, 102, 102) !important;
 	text-decoration:none;
 }
 .collapseIcon::before {
@@ -121,9 +126,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-left: -4px;
     margin-top: -4px;
     padding: 3px 5px;
+	transition: box-shadow 200ms,color 200ms;
 }
 .collapseIcon.collapsed::before {
     content: "\2b";
+	transition: box-shadow 200ms,color 200ms;
 }
 .collapseArrow::before {
     color: rgb(75, 87, 99);
@@ -138,6 +145,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 }
 .collapseArrow.collapsed::before {
     content: "\e250";
+	transition: box-shadow 200ms,color 200ms;
 }
 .collapseIconForMulti::before {
    border: 1px solid #fff;
@@ -150,6 +158,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-left: -4px;
     margin-top: -4px;
     padding: 3px 5px;
+	transition: box-shadow 200ms,color 200ms;
 }
 .collapseIconForMulti.collapsed::before {
      content: "\2b";
@@ -165,9 +174,11 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
     margin-left: -4px;
     margin-top: -4px;
     padding: 3px 5px;
+	transition: box-shadow 200ms,color 200ms;
 }
 .collapseIconForIAS.collapsed::before {
      content: "\2b";
+	 transition: box-shadow 200ms,color 200ms;
 }
 .navTabs li a
 {
@@ -1041,6 +1052,18 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	cursor:pointer;
 	position:relative;
 }
+.list-icons li:hover i, .list-icons li:focus i
+{
+	color:#EFA5B6 !important;
+}
+.list-icons li:hover , .list-icons li:focus
+{
+	box-shadow:0 0 0 3px #EFA5B6;
+	transition:border 200ms,box-shadow 200ms,color 200ms;
+	border:1px solid #EFA5B6;
+	color:#EFA5B6 !important;
+}
+
 .list-icons li .alert-status-attachment ul li
 {
 	border:0px;
@@ -1102,6 +1125,7 @@ div[expand-main='true'] .alert-title
 .panel-border-white textarea
 {
 	display:none;
+	border:0px !important;
 }
 .panel-border-white .input-group .input-group-addon
 {
@@ -1117,6 +1141,7 @@ div.comment-area
 	height:50px;
 	width:100%;
 	padding:10px;
+	border:0px !important;
 }
 .pad_left0
 {
@@ -1382,8 +1407,12 @@ small.clear
 }
 .assign-subtask-list li.new .form-control
 {
-	border:0px;
+	border:1px solid transparent;
 	box-shadow:none;
+}
+.assign-subtask-list li.new .form-control:hover
+{
+	border:1px solid #ddd;
 }
 /* .assign-subtask-list li.new .glyphicon-user , .assign-subtask-list li.new .glyphicon-calendar 
 {
