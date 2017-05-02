@@ -404,7 +404,10 @@ function onLoadClicks()
 		if(subTaskId != null && subTaskId>0){
 			comment = $("#updateStatusChangeComment1").val()
 		}
-		
+		if(statusId == null || statusId==undefined || statusId==""){
+				alert("Please Select Status");
+			    return;
+		}
 		if(comment == null || comment.trim() == "")
 		{
 			alert("Please Enter Comment");
@@ -3562,7 +3565,10 @@ $(document).on("click","#updateStatusChangeId",function(){
 		if(subTaskId != null && subTaskId>0){
 			comment = $("#updateStatusChangeComment1").val()
 		}
-		
+		if(alertStatusGlobalId != null && alertStatusGlobalId==0){
+			alert("Please Select Status");
+			return;
+		}
 		if(comment == null || comment.trim() == "")
 		{
 			alert("Please Enter Comment");
