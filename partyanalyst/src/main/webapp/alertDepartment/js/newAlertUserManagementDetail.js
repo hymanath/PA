@@ -317,9 +317,32 @@ function onLoadClicks()
 				$("#assignErrorDivId").html("please select division");
 				return;
 			}
-			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
+			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
 			{
-				$("#assignErrorDivId").html("please select sub division");
+				$("#assignErrorDivId").html("please select location");
+				return;
+			}
+		}
+		if($("#locationLevelSelectId").val() == 10)
+		{
+			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+			{
+				$("#assignErrorDivId").html("please select State");
+				return;
+			}
+			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
+			{
+				$("#assignErrorDivId").html("please select district");
+				return;
+			}
+			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
+			{
+				$("#assignErrorDivId").html("please select division");
+				return;
+			}
+			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
+			{
+				$("#assignErrorDivId").html("please select mandal");
 				return;
 			}
 			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
