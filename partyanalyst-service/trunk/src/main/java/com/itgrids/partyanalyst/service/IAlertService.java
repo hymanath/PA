@@ -138,5 +138,6 @@ public interface IAlertService {
     public List<AlertCoreDashBoardVO> getGrievanceReportBasedOnLocationAndStatus(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId);
     public List<AlertCoreDashBoardVO> getGrievanceReportDtlsForBellowLocation(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String areaType,String groupType);
     public List<IdNameVO> getDeptListForGrievance();
-    public List<Object[]> getTotalAlertGroupByCategoryThenStatus(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId);
+    public List<AlertOverviewVO> getGrievanceReportDayWise(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType,Long LocationId,Long stsId,String groupType);
+    public List<AlertOverviewVO> getTotalAlertGroupByCategoryThenStatus(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId);
 }
