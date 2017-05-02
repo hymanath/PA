@@ -158,7 +158,6 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary">Save changes</button>
 			</div>
 		</div>
   </div>
@@ -166,6 +165,7 @@
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="alertDepartment/js/jquery.hotkeys.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
