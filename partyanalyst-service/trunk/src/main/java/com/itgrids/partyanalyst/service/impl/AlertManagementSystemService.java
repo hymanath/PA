@@ -3613,7 +3613,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        				if(commonMethodsUtilService.isListOrSetValid(statusCommentsList))
        					objList.addAll(statusCommentsList);
        				
-       				Map<String,AlertTrackingVO> alertMap = new HashMap<String, AlertTrackingVO>(0);
+       				Map<String,AlertTrackingVO> alertMap = new LinkedHashMap<String, AlertTrackingVO>(0);
        				if(objList != null && objList.size() > 0){
        					for (Object[] objects : objList) {
        						AlertTrackingVO vo = new AlertTrackingVO();
@@ -4325,7 +4325,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         				}
         			}*/
         			
-        			Map<String,AlertTrackingVO> alertMap = new HashMap<String, AlertTrackingVO>(0);
+        			Map<String,AlertTrackingVO> alertMap = new LinkedHashMap<String, AlertTrackingVO>(0);
        				if(objList != null && objList.size() > 0){
        					for (Object[] objects : objList) {
        						AlertTrackingVO vo = new AlertTrackingVO();
