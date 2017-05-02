@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -78,5 +80,51 @@ public class GovtSMSAPIService {
 			LOG.error("Exception raised while sending message", e);
 		}
 		return rs;
+	}
+	
+	public static void main(String[] args)
+	{
+		try{
+			GovtSMSAPIService senedSMSForGovtAlert = new GovtSMSAPIService();
+			
+			BufferedReader reader = new BufferedReader(new FileReader("E:\\RWS_LOGIN.txt"));
+			String str = "";
+			int index = 0;
+			int index2 = 0;
+			
+			while((str = reader.readLine()) != null )
+			{  
+				try{
+					index++;
+					//System.out.println(index+")"+str);
+					String[] arr = str.split("\t");
+					
+					if(arr != null && arr.length == 3)
+					{
+						index2++;
+						String username = arr[0].trim();
+						String password = arr[1].trim();
+						String mobile = arr[2].trim();
+						
+						//System.out.println(index2+") username : "+username+"\tpassword : "+password+"\tmobile : "+mobile);
+						
+						if(mobile.length() == 10 && index2 == 873)
+						{
+							System.out.println(index+"-"+index2+"- Sending Mesg for - "+mobile);
+							senedSMSForGovtAlert.senedSMSForGovtAlert(mobile,"Your existing login details are changed for " +
+									"WWW.MYDEPARTMENTS.IN, Please use the following logins, Username : "+username+", Password : "+password+".");
+						}
+					}
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+		    }  
+			reader.close();    
+			//senedSMSForGovtAlert.senedSMSForGovtAlert("9966542524","Your existing login details are changed for WWW.MYDEPARTMENTS.IN, please use the following logins, username: kamal,password:kamal. ");
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
