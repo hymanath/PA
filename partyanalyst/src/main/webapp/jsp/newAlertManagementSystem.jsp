@@ -204,7 +204,7 @@
 										<div class="panel-heading headingColor">
 											<div class="row">
 												<div class="col-sm-8">
-													<h4 class="panel-title text-capital fontColor">location level overview</h4>
+													<h4 class="panel-title text-capital fontColor">Department overview</h4>
 												</div>
 												<div class="col-sm-4">
 													<ul class="switch-btn pull-right">
