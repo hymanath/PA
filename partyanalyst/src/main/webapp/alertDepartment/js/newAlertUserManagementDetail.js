@@ -154,7 +154,8 @@ function onLoadClicks()
 
 	$(document).on('change', '#departmentsId1', function(){
 		var deptId = $(this).val();
-		if(deptId == globalSubTaskAlertId){
+		
+		if(deptId == globalSubTaskDeptId){
 			getDepartmentSubLevels(deptId);
 		}else{
 			getDepartmentLevelsForSubTask(deptId);
@@ -165,7 +166,7 @@ function onLoadClicks()
 	$(document).on('change', '#locationLevelSelectId1', function(){
 		
 		var deptId = $("#departmentsId1").val();
-		if(deptId == globalSubTaskAlertId){
+		if(deptId == globalSubTaskDeptId){
 			getChildLevelValuesForSubTask();
 		}else{
 			getParentLevelsOfLevelForSubTask();
@@ -2182,7 +2183,7 @@ function getGroupedArticlesInfo(articleId)
 	});
 }
 
-var globalSubTaskAlertId=0;
+var globalSubTaskDeptId=0;
 function departmentsByAlert(alertId){
 	var jsObj = {
 		alertId : alertId
@@ -2197,7 +2198,7 @@ function departmentsByAlert(alertId){
 			for(var i in result)
 			{
 				str+='<span class="label label-default label-category">'+result[i].name+'</span>';
-				globalSubTaskAlertId=result[i].id;
+				globalSubTaskDeptId=result[i].id;
 			}
 		str+='</p>';
 		$("#alertDetails").append(str);
@@ -3376,11 +3377,12 @@ function buildDepartmentSubLevels(result){
 
 function getChildLevelValuesForSubTask(){
 	var departmentId = $("#departmentsId1").val();
+		
 	var jsObj = {
 		departmentId : departmentId,
 		levelId : $("#locationLevelSelectId1").val(),
 		parentLevelId : globalUserLevelId,
-		parentLevelValue : globalUserLevelValues[0]
+		parentLevelValueArr : globalUserLevelValues
 		
 	}
 	$.ajax({
