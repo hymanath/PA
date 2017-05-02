@@ -30,26 +30,7 @@ $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 $(document).on("click",".daterangeClorCls",function(){ 
     $(".daterangeClorCls").removeClass("dateColorCls");
 }); 
-
-/* getDeptListAction();
-function getDeptListAction(){
-	$("#selecDepartmentId").html('');
-	var jsObj ={
-		
-	}
-	$.ajax({
-			type:'GET',         
-			url: 'getDeptListAction.action',
-			data: {}
-			}).done(function(result){
-			if(result !=null && result.length>0){
-				$("#selecDepartmentId").append("<option value='0'>Select Department</option>")
-				for(var i in result){
-					$("#selecDepartmentId").append("<option value="+result[i].id+">"+result[i].name+"</option>")
-				}
-		    }    
-	}); 
-}  */         
+     
 getGrievanceReport();
  function getGrievanceReport(){
 $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -78,7 +59,6 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 				$("#grivenaceTableId").html('No Data Available');
 			}
 	}); 
-	    
 }	
 //location wise table
  function buildGrievanceReport(result) {
@@ -184,6 +164,8 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 //on change media 	
  function getMediaInformation(){
 	 getAverageIssuePendingDays();
+	 getGrievanceReportDayWise();
+	 getTotalAlertGroupByCategoryThenStatus(); 
  $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
  $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
@@ -217,6 +199,8 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 //on dept change
  function getDepartmentInformation(){
 	 getAverageIssuePendingDays();
+	 getGrievanceReportDayWise();
+	 getTotalAlertGroupByCategoryThenStatus(); 
  $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
  $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
@@ -248,6 +232,9 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 //on change daterangepicker
  function getTotalLocationWiseGrivenaceReport(){
 	 getAverageIssuePendingDays();
+	 getGrievanceReportDayWise();
+	 getTotalAlertGroupByCategoryThenStatus(); 
+	 
  $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
  $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
@@ -277,12 +264,13 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  }
  //on click month week day btn
  $(document).on("click",".rangeTypeCls",function(){ 
-
-$("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
-$("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
-var sourceId=$("#selectMediaId").val();
+	$("#dayWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	$("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	$("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val(); 
 	var rangeType=$(this).attr("attr_range_val");
+	     
     var jsObj ={
 		fromDate:callCenterUserFDate,                         
 		toDateStr:callCenterUserTDate,
@@ -296,6 +284,8 @@ var sourceId=$("#selectMediaId").val();
 		url: 'getGrievanceReportAction.action',
 		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
+		getGrievanceReportDayWise();
+		getTotalAlertGroupByCategoryThenStatus(); 
 		if(result !=null && result.length>0){
 			buildGrievanceReport(result);
 			buildLocationWiseGrivenacereportGraph(result);
@@ -551,7 +541,7 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},
 		}).done(function(result){
-			buildGrivenceDetailsTableOld(result);  
+			buildGrivenceDetailsTableOld(result);    
 		});
 	});
 	$(document).on("click",".getAlertDtls",function(){
@@ -653,7 +643,80 @@ function onLoadInitialisations(){
 			keyboard: false,
 			backdrop: 'static'  
 		});
-		getTotalArticledetails(articleId);
+		getTotalArticledetails(articleId);  
+	});
+	$(document).on("click",".closeSecondModal",function(){
+		setTimeout(function(){
+			$("body").addClass("modal-open");
+		},1000);             
+	});
+	$(document).on("click",".dtlsCloseCls",function(){
+		setTimeout(function(){
+			$("body").addClass("modal-open");
+		},1000);                    
+	});
+	$(document).on("click","#totalAlertCountId",function(){
+		getAlertStatusWise(0,"All Status");      
+	});
+	$(document).on("click",".getAlertDtlsOnDateWise",function(){
+		$("#totalAlertDistricTableId").html("");  
+		$("#grivenaceModalHeedingId").html("");    
+		$("#grievanceDtlsModalId").modal("show");     
+		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+		var locationId = $(this).attr("attr_location_id");
+		var statusId = $(this).attr("attr_status_id");
+		var fromDate = $(this).attr("attr_from_date");
+		var toDate = $(this).attr("attr_to_date");  
+		var sourceId=$("#selectMediaId").val();
+        var deptId=$("#selecDepartmentId").val();
+	    var rangeType=$("#dateRangeId").attr("value");
+		var jobj = {
+		  fromDate: fromDate,                       
+		  toDateStr:toDate,  
+		  deptId:deptId,
+		  sourceId:sourceId,                                      
+		  stateId:1,
+		  locationId:locationId,
+		  statusId : statusId,      
+		  rangeType:rangeType        
+		  }
+		$.ajax({    
+		  type : "POST",
+		  url  : "getGrievanceReportBasedOnLocationAndStatus.action",  
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jobj)},
+		}).done(function(result){
+			  buildGrivenceDetailsTableOld(result);
+		});
+	});
+	$(document).on("click",".getAlertDtlsOnCategoryWise",function(){
+		$("#totalAlertDistricTableId").html("");  
+		$("#grivenaceModalHeedingId").html("");
+		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+		$("#grievanceDtlsModalId").modal("show");     
+		var locationId = $(this).attr("attr_location_id");
+		var statusId = $(this).attr("attr_status_id");
+		var sourceId=$(this).attr("attr_source_id");
+        var deptId=$("#selecDepartmentId").val();
+	    var rangeType=$("#dateRangeId").attr("value");
+		var jobj = {
+		  fromDate: callCenterUserFDate,                       
+		  toDateStr:callCenterUserTDate,  
+		  deptId:deptId,
+		  sourceId:sourceId,                                      
+		  stateId:1,
+		  locationId:locationId,
+		  statusId : statusId,      
+		  rangeType:rangeType        
+		  }
+		$.ajax({    
+		  type : "POST",
+		  url  : "getGrievanceReportBasedOnLocationAndStatus.action",  
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jobj)},
+		}).done(function(result){
+			  buildGrivenceDetailsTableOld(result);
+		});
 	});
 }
 //swadhin   
@@ -1994,7 +2057,7 @@ function buildSubTaskInfoForAlert(result,alertId)
 	
 		
 		for(var i in result)
-		{
+		{     
 			if(result[i].attachementsList != null && result[i].attachementsList.length>0){
 				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-1 text-center body-icons">';
@@ -2573,3 +2636,158 @@ function alertStatusHistory(result,alertId)
 	}
 	$("#alertManagementPopup1 .modal-footer").html(' ');
 }
+//date wise report
+getGrievanceReportDayWise();  
+function getGrievanceReportDayWise(){
+	$("#dayWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var rangeType=$("#dateRangeId").attr("value");
+    var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+    var jsObj ={
+		fromDate: callCenterUserFDate,                       
+		toDateStr:callCenterUserTDate,  
+		deptId:deptId,
+		sourceId:sourceId,
+		locationId:0,  
+		rangeType:rangeType,             
+		stateId:1
+	}
+	$.ajax({
+		type:'GET',         
+		url: 'getGrievanceReportDayWiseAction.action',
+		data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildGrievanceReportDayWise(result,rangeType);
+			}else{
+				$("#dayWiseGrivenaceTableId").html('No Data Available.');
+			}
+		}); 
+}
+function buildGrievanceReportDayWise(result,rangeType) {  
+	$("#dayWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+     var str='';
+        str+='<table id="dayWiseGrievanceReportTableId" class="table table-bordered " cellspacing="0">';
+        str+='<thead>';
+        str+='<tr>';
+		if(rangeType=="day"){
+			str+='<th>Day</th>'; 
+		}else if(rangeType=="week"){
+			str+='<th>Week</th>'; 
+		}else if(rangeType=="month"){
+			str+='<th>Month</th>';   
+		}else{
+			str+='<th>Category</th>'; 
+		}
+            
+        str+='<th>Total</th>';
+		for(var i in result[0].subList1){       
+           str+='<th>'+result[0].subList1[i].statusType+'</th>';
+		}
+        str+=' </tr>';
+        str+='</thead>';
+		str+='<tbody>';
+		var locTotal = 0;
+		for(var i in result){
+			str+='<tr>'; 
+				str+='<td>'+result[i].day+'</td>';           
+				str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="0" attr_location_id="0">'+result[i].totalAlertCnt+'</td>';
+				locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
+			for(var j in result[i].subList1){
+				if(result[i].subList1[j].totalAlertCnt != 0){
+					str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="0">'+result[i].subList1[j].totalAlertCnt+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}      
+			}
+         
+			str+='</tr>';
+		}  
+ 		str+='<tr>';
+ 			str+='<td>Grand Total</td>';
+ 			str+='<td>'+locTotal+'</td>';
+			for(var i in result[0].subList1){
+				str+='<td>'+result[0].subList1[i].grandTotal+'</td>';//  result[0].subList1[i].statusType  
+			}
+		str+='</tr>';
+		str+='</tbody>';
+		str+='</table>';
+		$('#dayWiseGrivenaceTableId').html(str);  
+		 $('#dayWiseGrievanceReportTableId').DataTable({
+			
+		});
+ }
+//category wise count
+getTotalAlertGroupByCategoryThenStatus();  
+function getTotalAlertGroupByCategoryThenStatus(){
+	$("#CategoryWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var rangeType=$("#dateRangeId").attr("value");
+    var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+    var jsObj ={
+		fromDate: callCenterUserFDate,                       
+		toDateStr:callCenterUserTDate,  
+		deptId:deptId,
+		sourceId:sourceId,
+		LocationId:0,
+		statusId:0,		
+		stateId:1
+	}
+	$.ajax({
+		type:'GET',         
+		url: 'getTotalAlertGroupByCategoryThenStatusAction.action',
+		data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildTotalAlertGroupByCategoryThenStatus(result);
+			}else{
+				$("#CategoryWiseGrivenaceTableId").html('No Data Available.');
+			}
+		}); 
+}
+function buildTotalAlertGroupByCategoryThenStatus(result) {  
+	$("#CategoryWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+     var str='';
+        str+='<table id="CatWiseGrievanceReportTableId" class="table table-bordered " cellspacing="0">';
+        str+='<thead>';
+        str+='<tr>';
+		
+		str+='<th>Category</th>';
+            
+        str+='<th>Total</th>';
+		for(var i in result[0].subList1){       
+           str+='<th>'+result[0].subList1[i].statusType+'</th>';
+		}
+        str+=' </tr>';
+        str+='</thead>';
+		str+='<tbody>';
+		var locTotal = 0;
+		for(var i in result){
+			str+='<tr>'; 
+				str+='<td>'+result[i].name+'</td>';             
+				str+='<td style="cursor:pointer;" class="getAlertDtlsOnCategoryWise" attr_status_id="0" attr_location_id="0" attr_source_id="'+result[i].id+'">'+result[i].totalAlertCnt+'</td>';
+				locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
+			for(var j in result[i].subList1){
+				if(result[i].subList1[j].totalAlertCnt != 0){
+					str+='<td style="cursor:pointer;" class="getAlertDtlsOnCategoryWise" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="0" attr_source_id="'+result[i].id+'">'+result[i].subList1[j].totalAlertCnt+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}      
+			}
+         
+			str+='</tr>';
+		}  
+ 		/* str+='<tr>';
+ 			str+='<td>Grand Total</td>';
+ 			str+='<td>'+locTotal+'</td>';
+			for(var i in result[0].subList1){
+				str+='<td>'+result[0].subList1[i].grandTotal+'</td>';//  result[0].subList1[i].statusType  
+			}
+		str+='</tr>'; */
+		str+='</tbody>';
+		str+='</table>';
+		$('#CategoryWiseGrivenaceTableId').html(str);  
+		 $('#CatWiseGrievanceReportTableId').DataTable({
+			
+		});
+ } 

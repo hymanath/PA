@@ -30,8 +30,7 @@
 }
 </style>
 </head>
-<body>
-<body>
+<body>           
 <nav>
 <!--        <div class="row nav-gov-dark">
             
@@ -91,7 +90,7 @@
                     <h3 class=" text-center issue-title"><span id="averageIssueId"></span></h3>
                 </div>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8">   
                 <div>
                     <h1 class="text-center">
                         <div id="statusWiseAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
@@ -101,7 +100,7 @@
             <div class="col-md-2">
                 <div style="padding-top: 80px">
                     <h4 class="text-center issue-title total">TOTAL</h4>
-                    <h1 style="font-size: 6em ;" class=" text-center issue-title"><span id="totalAlertCountId"></span></h1>
+                    <h1 style="font-size: 6em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
                 </div>
             </div>
         </div>
@@ -109,12 +108,27 @@
     
 
        <section class="container">
+	   <div  class="row">
+			<div class="col-md-10 m_top20">   
+                <h3 style="color:#0000FF;"> Category Wise Grievance Report </h3>  
+            </div>
+			<div class="col-md-2">
+				<button class="btn btn-success btn-lg" onclick="generateExcel3();">
+					<span class="glyphicon glyphicon-download-alt"></span> Download
+				</button>   
+			</div>
+		</div>
+		<div  class="row">  
+            <div class="table-responsive m_top20" id="CategoryWiseGrivenaceTableId">
+               
+            </div>
+        </div>
         <div  class="row">
             <div class="col-md-10">   
                 <h3 style="color:#0000FF;"> Location wise Grievance Report </h3>  
             </div>
 			<div class="col-md-2">
-				<button class="btn btn-success btn-lg" onclick="generateExcel();">
+				<button class="btn btn-success btn-lg" onclick="generateExcel1();">
 					<span class="glyphicon glyphicon-download-alt"></span> Download
 				</button>   
 			</div>
@@ -125,9 +139,23 @@
                
             </div>
         </div>
+		<div  class="row">
+			<div class="col-md-10 m_top20">   
+                <h3 style="color:#0000FF;"> Date wise Grievance Report </h3>  
+            </div>
+			<div class="col-md-2">
+				<button class="btn btn-success btn-lg" onclick="generateExcel2();">
+					<span class="glyphicon glyphicon-download-alt"></span> Download
+				</button>   
+			</div>
+		</div>
+		<div  class="row">
+            <div class="table-responsive m_top20" id="dayWiseGrivenaceTableId">
+               
+            </div>
+        </div>
     </section>
 	<input type="hidden" id="dateRangeId" value="day"></input> 
-</div>
       <!-- Modal -->
 <div class="modal fade" id="bellowLvlLocId" role="dialog">  
     <div class="modal-dialog modal-lg">
@@ -145,7 +173,7 @@
       </div>
       
     </div>
-  </div>
+ </div>
 <!-- Modal -->
    <div class="modal fade" id="grievanceDtlsModalId" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -178,19 +206,19 @@
   </div>
 
   <div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
-		  <div class="modal-dialog modal-lg">       
-			<div class="modal-content" >
-				<div class="modal-body">
-					<div id="rightSideExpandView">
-					</div>     
-				</div>
-				<div class="modal-footer">     
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div><!-- /.modal-content -->
-		  </div><!-- /.modal-dialog -->
-		</div><!-- /.modal -->
-		<div class="modal fade" id="myModalShowNew">
+	  <div class="modal-dialog modal-lg">       
+		<div class="modal-content" >
+			<div class="modal-body">
+				<div id="rightSideExpandView">
+				</div>     
+			</div>
+			<div class="modal-footer">     
+				<button type="button" class="btn btn-default dtlsCloseCls" data-dismiss="modal">Close</button>
+			</div>
+		</div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade" id="myModalShowNew">
 	<div class="modal-dialog modal-lg" role="document" style="width:90%">
 		<div class="modal-content">
 			<div id="myModalShowNewId"></div>
@@ -227,15 +255,21 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 
-	<script type="text/javascript">
+<script type="text/javascript">
 	var windowUrl = window.location.href;
 	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
 	wurl = wurl.replace("/PartyAnalyst","");
 	
 </script>
 <script>
-function generateExcel(){
+function generateExcel1(){
 	tableToExcel('grievanceReportTableId', 'Grievance Report');
+}
+function generateExcel2(){
+	tableToExcel('dayWiseGrievanceReportTableId', 'Grievance Report Day Wise');
+}
+function generateExcel3(){
+	tableToExcel('CatWiseGrievanceReportTableId', 'Grievance Report');
 }
 var tableToExcel = (function() {
   var uri = 'data:application/vnd.ms-excel;base64,'
