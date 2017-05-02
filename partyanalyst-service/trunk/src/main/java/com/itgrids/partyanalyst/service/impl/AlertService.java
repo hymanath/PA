@@ -11744,7 +11744,54 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	  }
 		return null;
 	} 
-	
+
+	 public List<Object[]> getTotalAlertGroupByCategoryThenStatus(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId){
+		 try{  
+				Date fromDate = null;        
+				Date toDate = null; 
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				Map<Long,Long> categoryIdAndCountMap = new HashMap<Long,Long>();
+				Map<Long,String> categoryIdAndCategoryNameMap = new HashMap<Long,String>();
+				List<Object[]> statusList=alertDAO.getTotalAlertGroupByCategoryThenStatus(fromDate, toDate,  stateId,  departmentId,sourceId, "one", locationId, statusId);
+				if(statusList != null && statusList.size() > 0){
+				for(Object[] param : statusList){
+					categoryIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					categoryIdAndCategoryNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}}
+				
+				Map<Long,Long> stausIdAndCountMap = null;//new HashMap<Long, Long>();  
+				Map<Long,Map<Long,Long>> categoryIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+				List<Object[]> stepList=alertDAO.getTotalAlertGroupByCategoryThenStatus(fromDate, toDate,  stateId,  departmentId,sourceId, "two", locationId, statusId);
+				{
+					if(stepList != null && stepList.size() > 0){
+						for(Object[] param : stepList){ 
+							if(param[0] != null){
+								stausIdAndCountMap = categoryIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+								if(stausIdAndCountMap != null){
+									stausIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+								}else{
+									stausIdAndCountMap = new HashMap<Long, Long>();
+									stausIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+									categoryIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),stausIdAndCountMap);
+								}
+							}
+						}
+					}
+				}
+						
+				List<Object[]> statusLists = alertDepartmentStatusDAO.getAlertStatusByDepartmentId(departmentId);
+				return statusLists;
+	 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
+	  }
+		return null;
+}
+	 
 }
 
 
