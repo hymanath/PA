@@ -348,7 +348,14 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
                  series: {
                      borderWidth: 0,
                      dataLabels: {
-                         enabled: true,
+                      	enabled: true,
+						formatter: function() {
+							if (this.y === 0) {
+								return null;
+							} else {
+								return this.y;
+							}
+						}
 
                      },
 					 point: {
