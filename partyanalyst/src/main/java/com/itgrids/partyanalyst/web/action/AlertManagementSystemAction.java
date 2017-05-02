@@ -1534,12 +1534,16 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			 jObj = new JSONObject(getTask());
 			   	Long departmentId = jObj.getLong("departmentId");
 			   	Long parentLevelId = jObj.getLong("parentLevelId");
-			   	Long parentLevelValue = jObj.getLong("parentLevelValue");
+			   	JSONArray parentLevelValueArr = jObj.getJSONArray("parentLevelValueArr");
 			   	Long levelId = jObj.getLong("levelId");
 			   	
-			   	List<Long> parentLevelValues = new ArrayList<Long>();
-			   	parentLevelValues.add(parentLevelValue);
-			   	
+				List<Long> parentLevelValues = new ArrayList<Long>();
+				if(parentLevelValueArr != null && parentLevelValueArr.length() > 0){
+					for (int i = 0; i < parentLevelValueArr.length(); i++){
+						parentLevelValues.add(Long.parseLong(parentLevelValueArr.getString(i)));        
+					} 
+				}
+			   				   			   
 			   	idnameVoList = alertManagementSystemService.getChildLevelValuesForSubTask(departmentId,parentLevelId,parentLevelValues,levelId);
 			 
 		} catch (Exception e) {
