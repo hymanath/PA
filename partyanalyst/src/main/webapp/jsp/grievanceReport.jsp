@@ -28,6 +28,18 @@
 .dateColorCls{
 	background-color:#FFCF2D;
 }
+.table thead th , .table tr td
+{
+	font-size:12px !important;
+}
+.m_top10
+{
+	margin-top:10px !important;
+}
+.m_top5
+{
+	margin-top:5px
+}
 </style>
 </head>
 <body>           
@@ -42,38 +54,36 @@
         
                
             <div class="container">  
-                <div id="menu1" class="col-md-6">       
-                    <div class="col-md-12">
-                        <ul class="nav navbar-nav">        
-                            <li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
-                            <li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
-                            <li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
-                            <li style="padding:14px 16px;color:#95989A;"> 
-								<div id="reportrange"> 
-									&nbsp; <span>Custom Date Range</span>
-								</div>
-							</li>
-                        </ul>
-                    </div>      
-                    
-                </div>
-                 
-				<div class="col-md-3">
-                    <div style="padding-top: 8px" class=" dropdown">
-                        <select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
+				<div class="row">
+					<div id="menu1" class="col-md-6">       
+						<div class="col-md-12">
+							<ul class="nav navbar-nav">        
+								<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
+								<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
+								<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
+								<li style="padding:14px 16px;color:#95989A;"> 
+									<div id="reportrange"> 
+										&nbsp; <span>Custom Date Range</span>
+									</div>
+								</li>
+							</ul>
+						</div>      
+						
+					</div>
+					 
+					<div class="col-md-3 m_top10">
+						<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
 							<option value="0">All</option>
 							<option value="1">Call Center</option>
 							<option value="2">Print Media</option>
-						    <option value="3">Electronic Media</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div style="padding-top: 8px" class=" dropdown pull-right" >
-                        <select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
+							<option value="3">Electronic Media</option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
 							<option value="49">Rural Water Supply</option>  
-                      </select>
-                    </div>
+						</select>
+					</div>
                 </div>
                 
             </div>
@@ -107,53 +117,78 @@
     </div>
     
 
-       <section class="container">
-	   <div  class="row">
-			<div class="col-md-10 m_top20">   
-                <h3 style="color:#0000FF;"> Category Wise Grievance Report </h3>  
-            </div>
-			<div class="col-md-2">
-				<button class="btn btn-success btn-lg" onclick="generateExcel3();">
-					<span class="glyphicon glyphicon-download-alt"></span> Download
-				</button>   
+       <section class="container m_top20">
+	   <div class="panel panel-default">
+			<div class="panel-heading headingColor">
+				<div class="row">
+					<div class="col-md-10 m_top5">   
+						<h4 class="panel-title text-capital fontColor">Category Wise Grievance Report </h4>  
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-success btn-sm" onclick="generateExcel3();">
+							<i class="glyphicon glyphicon-download-alt"></i> Download
+						</button>   
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				
+				<div  class="row">  
+					<div class="col-md-12">
+						<div class="table-responsive m_top20" id="CategoryWiseGrivenaceTableId"></div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div  class="row">  
-            <div class="table-responsive m_top20" id="CategoryWiseGrivenaceTableId">
-               
-            </div>
-        </div>
-        <div  class="row">
-            <div class="col-md-10">   
-                <h3 style="color:#0000FF;"> Location wise Grievance Report </h3>  
-            </div>
-			<div class="col-md-2">
-				<button class="btn btn-success btn-lg" onclick="generateExcel1();">
-					<span class="glyphicon glyphicon-download-alt"></span> Download
-				</button>   
+		<div class="panel panel-default">
+			<div class="panel-heading headingColor">
+				<div  class="row">
+					<div class="col-md-10 m_top5">   
+						<h4 class="panel-title text-capital fontColor">Location wise Grievance Report </h4>  
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-success btn-sm" onclick="generateExcel1();">
+							<i class="glyphicon glyphicon-download-alt"></i> Download
+						</button>   
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div  class="row">
+					<div class="col-md-12">
+						<div class="table-responsive m_top20" id="grivenaceTableId"></div>
+					</div>
+				</div>
 			</div>
 		</div>
-		    
-		<div  class="row">
-            <div class="table-responsive m_top20" id="grivenaceTableId">
-               
-            </div>
-        </div>
-		<div  class="row">
-			<div class="col-md-10 m_top20">   
-                <h3 style="color:#0000FF;"> Date wise Grievance Report </h3>  
-            </div>
-			<div class="col-md-2">
-				<button class="btn btn-success btn-lg" onclick="generateExcel2();">
-					<span class="glyphicon glyphicon-download-alt"></span> Download
-				</button>   
+		<div class="panel panel-default">
+			<div class="panel-heading headingColor">
+				<div class="row">
+					<div class="col-md-10 m_top5">   
+						<h4 class="panel-title text-capital fontColor">Date wise Grievance Report </h4>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-success btn-sm" onclick="generateExcel2();">
+							<i class="glyphicon glyphicon-download-alt"></i> Download
+						</button>   
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div  class="row">
+					<div class="col-md-12">
+						<div class="table-responsive m_top20" id="dayWiseGrivenaceTableId"></div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div  class="row">
-            <div class="table-responsive m_top20" id="dayWiseGrivenaceTableId">
-               
-            </div>
-        </div>
+					
+				
+				
+				
+			
+	   </div>
+		
     </section>
 	<input type="hidden" id="dateRangeId" value="day"></input> 
       <!-- Modal -->
