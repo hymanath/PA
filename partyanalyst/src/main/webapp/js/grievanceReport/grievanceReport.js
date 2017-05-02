@@ -2714,7 +2714,7 @@ function buildGrievanceReportDayWise(result,rangeType) {
 		str+='</table>';
 		$('#dayWiseGrivenaceTableId').html(str);  
 		 $('#dayWiseGrievanceReportTableId').DataTable({
-			
+			"order": [[ 1, "asc" ]] 
 		});
  }
 //category wise count
@@ -2787,7 +2787,7 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 		str+='</tbody>';
 		str+='</table>';
 		$('#CategoryWiseGrivenaceTableId').html(str);  
-		 $('#CatWiseGrievanceReportTableId').DataTable({
-			
+		 $('#CatWiseGrievanceReportTableId').DataTable({  
+			"order": [[ 1, "asc" ]]  
 		});
  } 
