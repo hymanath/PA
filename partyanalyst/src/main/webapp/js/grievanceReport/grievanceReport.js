@@ -603,7 +603,9 @@ function onLoadInitialisations(){
 		});
 	});
 	$(document).on("click",".bellowLvlCls",function(){
-		$("#grievanceDtlsModalId").modal("show");     
+		$("#grievanceDtlsModalId").modal("show");
+		
+		$("#totalAlertDistricTableId").html('');     
 		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
 		var deptId=$("#selecDepartmentId").val();
 		var sourceId=$("#selectMediaId").val();
