@@ -17111,9 +17111,14 @@
 			<param name="root">idNameVOList</param>                
 		</result> 
 	</action>
+	<action name="getGrievanceReportDayWiseAction" class="createAlertAction"  method="getGrievanceReportDayWise">
+		<result type="json" name="success">    
+			<param name="root">resultList</param>       
+		</result> 
+	</action>
 	<action name="getTotalAlertGroupByCategoryThenStatusAction" class="createAlertAction"  method="getTotalAlertGroupByCategoryThenStatus">
 		<result type="json" name="success">     
-			<param name="root">count</param>                
+			<param name="root">resultList</param>                
 		</result> 
 	</action>
  </package>
