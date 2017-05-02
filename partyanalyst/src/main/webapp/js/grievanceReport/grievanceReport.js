@@ -160,9 +160,37 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  		$('#issuePendingCntId').text(str);
      });
      
-     }	  	   	
+     }
+function getDistrintInformation(){
+	$("#dayWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var rangeType=$("#dateRangeId").attr("value");
+    var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+	var locationId=$("#selectDistrictId").val();
+    var jsObj ={
+		fromDate: callCenterUserFDate,                       
+		toDateStr:callCenterUserTDate,  
+		deptId:deptId,
+		sourceId:sourceId,
+		locationId:locationId,    
+		rangeType:rangeType,             
+		stateId:1
+	}
+	$.ajax({
+		type:'GET',         
+		url: 'getGrievanceReportDayWiseAction.action',
+		data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildGrievanceReportDayWise(result,rangeType);
+			}else{
+				$("#dayWiseGrivenaceTableId").html('No Data Available.');
+			}
+	}); 
+}	 
 //on change media 	
  function getMediaInformation(){
+	 $("#selectDistrictId").val(0);
 	 getAverageIssuePendingDays();
 	 getGrievanceReportDayWise();
 	 getTotalAlertGroupByCategoryThenStatus(); 
@@ -198,6 +226,7 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 
 //on dept change
  function getDepartmentInformation(){
+	 $("#selectDistrictId").val(0);
 	 getAverageIssuePendingDays();
 	 getGrievanceReportDayWise();
 	 getTotalAlertGroupByCategoryThenStatus(); 
@@ -231,6 +260,7 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  }
 //on change daterangepicker
  function getTotalLocationWiseGrivenaceReport(){
+	 $("#selectDistrictId").val(0);
 	 getAverageIssuePendingDays();
 	 getGrievanceReportDayWise();
 	 getTotalAlertGroupByCategoryThenStatus(); 
@@ -263,7 +293,8 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  	});
  }
  //on click month week day btn
- $(document).on("click",".rangeTypeCls",function(){ 
+ $(document).on("click",".rangeTypeCls",function(){
+	$("#selectDistrictId").val(0);  
 	$("#dayWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	$("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	$("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -348,14 +379,14 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
                  series: {
                      borderWidth: 0,
                      dataLabels: {
-                      	enabled: true,
-						formatter: function() {
-							if (this.y === 0) {
-								return null;
-							} else {
-								return this.y;
+                         enabled: true,
+							 formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return this.y;
+								}
 							}
-						}
 
                      },
 					 point: {
@@ -672,7 +703,7 @@ function onLoadInitialisations(){
 		$("#grivenaceModalHeedingId").html("");    
 		$("#grievanceDtlsModalId").modal("show");     
 		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
-		var locationId = $(this).attr("attr_location_id");
+		var locationId = $("#selectDistrictId").val();
 		var statusId = $(this).attr("attr_status_id");
 		var fromDate = $(this).attr("attr_from_date");
 		var toDate = $(this).attr("attr_to_date");  
@@ -2799,4 +2830,4 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 		 $('#CatWiseGrievanceReportTableId').DataTable({  
 			"order": [[ 1, "asc" ]]  
 		});
- } 
+ }   
