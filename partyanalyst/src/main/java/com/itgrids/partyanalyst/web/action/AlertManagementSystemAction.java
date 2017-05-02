@@ -6,6 +6,7 @@ import java.io.StringBufferInputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -3014,7 +3015,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					 LOG.error("Exception Occured in getDepartmentDetailsByDepartmentId() method, Exception - ",e); 
 				 }
 				 return Action.SUCCESS;
-			 }
+			 } 
 			 
 			 public String getDepartmentDetailsOfAlert(){				 
 				try {
@@ -3028,4 +3029,35 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				return Action.SUCCESS;
 			 }
+	public String getLevelsForDepartmnt(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			Long departmentId = jObj.getLong("departmentId");
+			
+			idnameVoList = alertManagementSystemService.getLvlsForDepatmnt(userId,departmentId);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getDepartmentLevels() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getStatusByType(){
+		try {
+			
+			jObj = new JSONObject(getTask());
+			String type = jObj.getString("type");
+			
+			idnameVoList = alertManagementSystemService.getStatusByType(type);
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getStatusByType() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }
