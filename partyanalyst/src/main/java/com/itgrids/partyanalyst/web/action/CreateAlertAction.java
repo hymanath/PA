@@ -2774,6 +2774,22 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getGrievanceReportDayWise(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDateStr=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			String rangeType=jObj.getString("rangeType");
+			Long stateId=jObj.getLong("stateId");
+			Long locationId=jObj.getLong("locationId");
+			resultList = alertService.getGrievanceReportDayWise(fromDate,toDateStr,stateId,deptId,sourceId,rangeType,locationId,null,null);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getGrievanceReport Method",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String getTotalAlertGroupByCategoryThenStatus(){
 		try{
 			jObj = new JSONObject(getTask());
@@ -2784,7 +2800,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long stateId=jObj.getLong("stateId");
 			Long LocationId=jObj.getLong("LocationId");
 			Long statusId=jObj.getLong("statusId");
-			List<Object[]> count = alertService.getTotalAlertGroupByCategoryThenStatus( fromDateStr,toDateStr,stateId,  deptId,sourceId, LocationId, statusId);
+			resultList = alertService.getTotalAlertGroupByCategoryThenStatus( fromDateStr,toDateStr,stateId,  deptId,sourceId, LocationId, statusId);
 		}catch(Exception e){
 			LOG.error("Excpetion raised at getTotalAlertGroupByCategoryThenStatus Method",e);
 		}
