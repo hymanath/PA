@@ -32,6 +32,7 @@ public class AlertTrackingVO {
 	private String updatedUserName;
 	private String alertTypeStr;
 	private String color;
+	private String location;
 	
 	public AlertTrackingVO(){}
 	public AlertTrackingVO(Long alertId,String comment,String date){
@@ -40,7 +41,15 @@ public class AlertTrackingVO {
 		this.date = date;
 	}
 	
-	
+	public AlertTrackingVO(Long alertId,String comment,String date,String userName,String designation,String department,String location){
+		this.alertId=alertId;
+		this.comment = comment;
+		this.date = date;
+		this.userName=userName;
+		this.designation = designation;
+		this.deptName = department;
+		this.location = location;
+	}
 	public String getColor() {
 		return color;
 	}
@@ -204,6 +213,12 @@ public class AlertTrackingVO {
 	}
 	public void setAlertTrackingActionType(String alertTrackingActionType) {
 		this.alertTrackingActionType = alertTrackingActionType;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 }

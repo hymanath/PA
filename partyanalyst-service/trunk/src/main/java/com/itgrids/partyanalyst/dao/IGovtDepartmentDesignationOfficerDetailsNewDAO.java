@@ -27,4 +27,5 @@ public interface IGovtDepartmentDesignationOfficerDetailsNewDAO extends GenericD
 	public List<Object[]> getNewOfficersByDesignationAndLevel(Long levelId,Long levelValue,Long designationId);
 	public List<String> getHigherOfficerMobileNums(List<Long> designationIds,Long locationTypeId,List<Long> levelValuesList);
 	public List<Long> getuserIdDtlsForDesignationOfficerId(Long assignedOfficerId);
+	public String getLocationNameByAssignedOficer(Long officerId);
 }

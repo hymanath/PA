@@ -1639,7 +1639,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							alertAssignedOfficer2.setAlertStatusId(2l);// setting present status of alert 
 							alertAssignedOfficer2.setIsDeleted("N");
 							alertAssignedOfficer2.setIsApproved("Y");  
-							alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer2);
+							alertAssignedOfficer2 = alertAssignedOfficerNewDAO.save(alertAssignedOfficer2);
 							
 							alertAssignedOfficer2.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartmentDesignationId();
 						}
@@ -1663,7 +1663,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					alertAssignedOfficerTracking.setIsApproved("Y");
 					alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
 					
-					alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+					alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
 					
 					/* SMS sending while assigning a new alert to any officer */
 					
@@ -3605,11 +3605,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               	try {
               		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
               		
-              		List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getAlertStatusForAdminHistory(alertId,6L);//status change Id - 6
+              		List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getAlertStatusForAdminHistory1(alertId,6L);//status change Id - 6
               		if(!commonMethodsUtilService.isListOrSetValid(objList))
               			objList = new ArrayList<Object[]>(0);
               			
-       				List<Object[]> statusCommentsList = alertAssignedOfficerTrackingNewDAO.getAlertStatusHistory(alertId,6L);
+       				List<Object[]> statusCommentsList = alertAssignedOfficerTrackingNewDAO.getAlertStatusHistory1(alertId,6L);
        				if(commonMethodsUtilService.isListOrSetValid(statusCommentsList))
        					objList.addAll(statusCommentsList);
        				
@@ -3626,6 +3626,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
        						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
        						vo.setUserId(commonMethodsUtilService.getLongValueForObject(objects[7]));
+       						vo.setLocation(commonMethodsUtilService.getStringValueForObject(objects[8]));
        						
        						AlertTrackingVO tempVO = alertMap.get(vo.getDate()+"-"+vo.getComment());
        						if( tempVO!= null && tempVO.getDate().equalsIgnoreCase(vo.getDate()) && tempVO.getComment().equalsIgnoreCase(vo.getComment()))
@@ -4337,6 +4338,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
        						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
        						//vo.setUserId(commonMethodsUtilService.getLongValueForObject(objects[7]));
+       						vo.setLocation(commonMethodsUtilService.getStringValueForObject(objects[7]));
        						
        						AlertTrackingVO tempVO = alertMap.get(vo.getDate()+"-"+vo.getComment());
        						if( tempVO!= null && tempVO.getDate().equalsIgnoreCase(vo.getDate()) && tempVO.getComment().equalsIgnoreCase(vo.getComment()))
@@ -4463,6 +4465,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	   						vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
 	   						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
 	   						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+	   						vo.setLocation(commonMethodsUtilService.getStringValueForObject(objects[7]));
 	   						voList.add(vo);
 	   						uniqueCommentIds.add(commentId);
 						}
@@ -4480,6 +4483,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	   						vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[4]));
 	   						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[5]));
 	   						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+	   						vo.setLocation(commonMethodsUtilService.getStringValueForObject(objects[7]));
 	   						voList.add(vo);
 	   						uniqueCommentIds.add(commentId);
 						}
@@ -4643,7 +4647,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			VO.setName(govtAlertSubTask.getAlertSubTaskStatus().getStatus());
         			finalList.add(VO);
         		}
-    			
+    			String lcationName = govtDepartmentDesignationOfficerDetailsNewDAO.getLocationNameByAssignedOficer(assignedByOfficerId);
     			if(finalList != null && finalList.size() > 0){
     				IdNameVO vo = finalList.get(0);
     				vo.setDeptName(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());
@@ -4663,6 +4667,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				vo.setStatusId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
     				vo.setColor(alertSubTaskStatusDAO.get(currentStatusId).getColor());
     				vo.setCategoryId(govtAlertSubTask.getAlert().getAlertCategoryId());
+    				vo.setPositionName(lcationName);//LocationName for Assigned By
+    				vo.setCallerName(govtAlertSubTask.getGovtDepartmentDesignationOfficer().getLevelValueGovtDepartmentWorkLocation().getLocationName());//Location for assignedTo
     				
     				
     				List<Long> subTaskIds = new ArrayList<Long>(0);
@@ -4672,7 +4678,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	    				for (Object[] objects : officersList) {
 								if(!commonMethodsUtilService.getStringValueForObject(objects[2]).isEmpty()){
 									vo.getCommentList().add(new AlertTrackingVO(commonMethodsUtilService.getLongValueForObject(objects[0]), 
-										 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3])));
+										 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3]),
+										 commonMethodsUtilService.getStringValueForObject(objects[4]),commonMethodsUtilService.getStringValueForObject(objects[6]),commonMethodsUtilService.getStringValueForObject(objects[7]),commonMethodsUtilService.getStringValueForObject(objects[10])));
 								}
 								
 								if(!commonMethodsUtilService.getStringValueForObject(objects[8]).isEmpty()){
@@ -6451,7 +6458,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			}
     		}catch(Exception e){
     			e.printStackTrace();
-    			LOG.error("Error occured getAlertStatusMatchVO() method of CccDashboardService{}");
+    			LOG.error("Error occured getAlertStatusMatchVO2() method of CccDashboardService{}");
     		}
     		return null;
     	}

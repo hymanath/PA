@@ -64,9 +64,10 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     public List<Object[]> getCommentsForAlert(Long alertId){//0														//1
     	Query query = getSession().createQuery(" select distinct model.alertDepartmentComment.alertDepartmentCommentId,model.alertDepartmentComment.comment, " +
     	 		" model.alertDepartmentComment.insertedTime, model.updatedUser.userName , model2.govtOfficer.mobileNo , model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "
-			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName "
+			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+			" model2.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName  "
     	 		+ " from AlertAssignedOfficerTrackingNew model , GovtDepartmentDesignationOfficerDetailsNew model2  "
-    	 		+ " where model.alertId=:alertId and model.updatedBy = model2.userId order by model.insertedTime desc ");
+    	 		+ " where model.alertId=:alertId and model.govtAlertActionType.govtAlertActionTypeId = 7l and model.updatedBy = model2.userId order by model.insertedTime desc ");
     	 query.setParameter("alertId", alertId);
     	 return query.list();
     }
@@ -74,11 +75,13 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     public List<Object[]> getCommentsForAdminCommentsAlert(Long alertId){//0														//1
     	
     	 Query query = getSession().createQuery(" select distinct alertDepartmentComment.alertDepartmentCommentId,alertDepartmentComment.comment, " +
-     	 		" alertDepartmentComment.insertedTime, model.updatedUser.userName , '' ,'' ,'' "
-     	 		+ " from AlertAssignedOfficerTrackingNew model" +
+     	 		" alertDepartmentComment.insertedTime, model.updatedUser.userName , '' ,'' ,''," +
+     	 		" model1.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName "
+     	 		+ " from AlertAssignedOfficerTrackingNew model,GovtDepartmentDesignationOfficerDetailsNew model1" +
      	 		" left join  model.alertDepartmentComment alertDepartmentComment "
-     	 		+ " where model.alertId=:alertId and " +
-     	 		"  alertDepartmentComment.alertDepartmentCommentId is not null order by model.insertedTime desc ");
+     	 		+ " where model.updatedBy = model1.userId and" +
+     	 		" model.alertId=:alertId and model.govtAlertActionType.govtAlertActionTypeId = 7l" +
+     	 		"  and alertDepartmentComment.alertDepartmentCommentId is not null order by model.insertedTime desc ");
      	 		
     	 query.setParameter("alertId", alertId);
     	 return query.list();
@@ -97,5 +100,32 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
   	  query.setParameter("alertId", alertId);
   	  return query.list();
   			  
+    }
+    public List<Object[]> getAlertStatusForAdminHistory1(Long alertId,Long trackTypeId){
+    	//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
+    	Query query = getSession().createQuery(" select model.alertStatus.alertStatus,comment.comment,"
+    			+ " model.insertedTime,model.updatedUser.userName, '', ''  ,'',''," +
+    			" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName  "
+    			+ " from  AlertAssignedOfficerTrackingNew model "
+    			+ " left join model.alertDepartmentComment comment "
+    			+ " where model.alertId=:alertId  " +
+    			" and model.govtAlertActionType.govtAlertActionTypeId = :trackTypeId order by model.insertedTime desc ");
+    	query.setParameter("alertId", alertId);
+        query.setParameter("trackTypeId", trackTypeId);
+    	return query.list();
+    }
+    public List<Object[]> getAlertStatusHistory1(Long alertId,Long trackTypeId){
+    	//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
+    	Query query = getSession().createQuery(" select model.alertStatus.alertStatus,comment.comment,"
+    			+ " model.insertedTime,model.updatedUser.userName, model2.govtOfficer.mobileNo , model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "
+    			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName,model2.govtOfficer.govtOfficerId," +
+    			" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName "
+    			+ " from GovtDepartmentDesignationOfficerDetailsNew model2, AlertAssignedOfficerTrackingNew model "
+    			+ " left join model.alertDepartmentComment comment "
+    			+ " where model.alertId=:alertId  and " +
+    			"  model.govtAlertActionType.govtAlertActionTypeId = :trackTypeId and model.updatedBy = model2.userId  order by model.insertedTime desc ");
+    	query.setParameter("alertId", alertId);
+    	query.setParameter("trackTypeId", trackTypeId);
+    	return query.list();
     }
 }

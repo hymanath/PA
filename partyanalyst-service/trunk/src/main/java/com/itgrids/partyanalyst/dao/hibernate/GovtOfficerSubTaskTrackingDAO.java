@@ -25,11 +25,12 @@ public class GovtOfficerSubTaskTrackingDAO extends GenericDaoHibernate<GovtOffic
 		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
     	Query query = getSession().createQuery(" select model.alertSubTaskStatus.status,comment.comment,"
     			+ " model.insertedTime,model.insertedBy.userName,model2.govtOfficer.mobileNo , model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "
-	    		+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName  "
+	    		+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+	    		" model2.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName"
     			+ " from  GovtDepartmentDesignationOfficerDetailsNew model2,GovtOfficerSubTaskTracking model "
     			+ " left join model.alertDepartmentComment comment "
-    			+ " where model.govtAlertSubTaskId=:subTaskId and comment is not null and " +
-	    			"  model.insertedById = model2.userId order by model.insertedTime desc ");
+    			+ " where model.govtAlertSubTaskId=:subTaskId and model.govtAlertActionType.govtAlertActionTypeId = 6l" +
+	    			" and model.insertedById = model2.userId order by model.insertedTime desc ");
     	query.setParameter("subTaskId", subTaskId);
     	return query.list();
 	}
@@ -50,15 +51,16 @@ public class GovtOfficerSubTaskTrackingDAO extends GenericDaoHibernate<GovtOffic
 	 
 	public List<Object[]> getSubTasksStatusHistory(List<Long> subTaskIdsList){
 		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
-    	Query query = getSession().createQuery(" select  distinct model.govtAlertSubTaskId, model.govtAlertSubTask.alertSubTaskStatus.status,comment.comment,"
+    	Query query = getSession().createQuery(" select  distinct model.govtAlertSubTaskId, model.govtAlertSubTask.alertSubTaskStatus.status," +
+    			"comment.comment,"
     			+ " model.insertedTime,model.govtAlertSubTask.subTaskGovtOfficer.officerName,model.govtAlertSubTask.subTaskGovtOfficer.mobileNo,"
     			+ " model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName"
-    			+ " ,model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName , " +
-    			" 	alertDepartmentDocument.document , model.govtAlertSubTask.alertSubTaskStatus.color "
+    			+ " ,model.govtAlertSubTask.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName , " +
+    			" 	alertDepartmentDocument.document , model.govtAlertSubTask.alertSubTaskStatus.color,model.govtAlertSubTask.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName "
     			+ " from GovtOfficerSubTaskTracking model "
     			+ " left join model.alertDepartmentComment comment " +
     			"   left join model.alertDepartmentDocument alertDepartmentDocument "
-    			+ " where model.govtAlertSubTaskId in (:subTaskIdsList) ");
+    			+ " where model.govtAlertSubTaskId in (:subTaskIdsList) and model.govtAlertActionType.govtAlertActionTypeId = 7l");
     	query.setParameterList("subTaskIdsList", subTaskIdsList);
     	return query.list();
 	}
