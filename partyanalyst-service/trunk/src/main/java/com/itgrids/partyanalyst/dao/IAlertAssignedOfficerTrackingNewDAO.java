@@ -14,4 +14,6 @@ public interface IAlertAssignedOfficerTrackingNewDAO extends GenericDao<AlertAss
 	public List<String> getAlertDueDate(Long alertId);
 	public List<Object[]> getCommentsForAdminCommentsAlert(Long alertId);
 	public List<Object[]> getAlertStatusForAdminHistory(Long alertId,Long trackTypeId);
+	public List<Object[]> getAlertStatusForAdminHistory1(Long alertId,Long trackTypeId);
+	public List<Object[]> getAlertStatusHistory1(Long alertId,Long trackTypeId);
 }

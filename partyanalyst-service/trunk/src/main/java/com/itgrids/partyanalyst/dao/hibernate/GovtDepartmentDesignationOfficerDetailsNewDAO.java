@@ -375,5 +375,12 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		query.setParameter("assignedOfficerId", assignedOfficerId);
 		return query.list();
 	}
+	public String getLocationNameByAssignedOficer(Long officerId){
+		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName" +
+				" from GovtDepartmentDesignationOfficerDetailsNew model " +
+				" where model.userId = :officerId");
+		query.setParameter("officerId", officerId);
+		return (String) query.uniqueResult();
+	}
 	
 }
