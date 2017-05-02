@@ -7496,13 +7496,13 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     public List<Object[]> getTotalAlertGroupByDateThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,String step,Long locationId,Long statusId){
 		StringBuilder queryStr = new StringBuilder();  
 		queryStr.append(" select ");
-		if(step.equalsIgnoreCase("one")){
-			queryStr.append(" date(model.createdTime), ");
-		}else if(step.equalsIgnoreCase("two")){ 
-			queryStr.append(" model.alertStatus.alertStatusId," +//2  
-							" model.alertStatus.alertStatus,");//3
+		
+		queryStr.append(" date(model.createdTime), ");//0
+		if(step.equalsIgnoreCase("two")){ 
+			queryStr.append(" model.alertStatus.alertStatusId," +//1 
+							" model.alertStatus.alertStatus,");//2
 		}
-		queryStr.append(" count(distinct model.alertId) " +  //4  
+		queryStr.append(" count(distinct model.alertId) " +  //3 
 						" from Alert model " +
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
@@ -7587,13 +7587,13 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		StringBuilder queryStr = new StringBuilder();  
 		queryStr.append(" select ");
 		
-			queryStr.append(" model.alertCategory.alertCategoryId," +//2  
-							" model.alertCategory.category,");//3
+			queryStr.append(" model.alertCategory.alertCategoryId," +//0 
+							" model.alertCategory.category,");//1
 		if(step.equalsIgnoreCase("two")){ 
 			queryStr.append(" model.alertStatus.alertStatusId," +//2  
 							" model.alertStatus.alertStatus,");//3
 		}
-		queryStr.append(" count(distinct model.alertId) " +  //4  
+		queryStr.append(" count(distinct model.alertId) " +  //4 
 						" from Alert model " +
 						" left join model.userAddress userAddress " +
 						" left join userAddress.state state  " +
@@ -7635,6 +7635,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 
 		if(locationId != null && locationId.longValue() == 0L){
 			queryStr.append(" and district.districtId is not null");
+		}else{
+			queryStr.append(" and district.districtId =:locationId");
 		}
 		
 		if(step.equalsIgnoreCase("one")){
