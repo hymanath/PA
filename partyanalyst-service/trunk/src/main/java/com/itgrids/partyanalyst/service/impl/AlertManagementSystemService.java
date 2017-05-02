@@ -1853,7 +1853,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Preparing Parameter
+			
 			List<Long> levelValuesList = new ArrayList<Long>();    
 			Long levelId = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -3294,12 +3295,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				}
     			}
     			if(returnList != null && returnList.size() > 0){
+    				
     				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
-    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
-    						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+    					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("Default")){
+    						Collections.sort(returnList, ascendingSortingByScopeIds);
     					}else{
-    						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
-    					}
+    						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+        						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+        					}else{
+        						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+        					}
+        				}
     				}
     				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
     					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
@@ -3316,6 +3322,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         	}
         	return null;
         }
+        public static Comparator<AlertCoreDashBoardVO> ascendingSortingByScopeIds = new Comparator<AlertCoreDashBoardVO>() {
+           	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+           	Long id2 = location2.getId();
+           	Long id1 = location1.getId();
+           	//ascending order by id.
+           	 return id2.compareTo(id1);
+           	}
+         };
         public static Comparator<AlertCoreDashBoardVO> alertAscendingCountWiseSortingLvlWise = new Comparator<AlertCoreDashBoardVO>() {
          	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
          	Long count2 = location2.getTotalCount();
@@ -3328,7 +3342,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
            	Long count2 = location2.getTotalCount();
            	Long count1 = location1.getTotalCount();
-           	//ascending order of percantages.
+           	//desc order of percantages.
            	 return count1.compareTo(count2);
            	}
          };
@@ -3348,7 +3362,39 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               	    return name2.compareTo(name1);
               	}
               };
-              
+              //State level soring 
+              public static Comparator<AlertCoreDashBoardVO> alertStateAscendingCountWiseSortingLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+               	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+               	Long count2 = location2.getCount();
+               	Long count1 = location1.getCount();
+               	//ascending order of percantages.
+               	 return count2.compareTo(count1);
+               	}
+              };
+              public static Comparator<AlertCoreDashBoardVO> alertStateDescCountWiseSortingLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+                 	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+                 	Long count2 = location2.getCount();
+                 	Long count1 = location1.getCount();
+                 	//desc order of percantages.
+                 	 return count1.compareTo(count2);
+                 	}
+               };
+               public static Comparator<AlertCoreDashBoardVO> alphabeticalStateDescendingSortLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+               public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+                  	String name2 = location2.getName();
+                 	    String name1 = location1.getName();
+                 	    //descending order of percantages.
+                 	    return name1.compareTo(name2);
+               	}
+               };
+               public static Comparator<AlertCoreDashBoardVO> alphabeticalStateAscSortLvlWise = new Comparator<AlertCoreDashBoardVO>() {
+                    	public int compare(AlertCoreDashBoardVO location2, AlertCoreDashBoardVO location1) {
+                    		String name2 = location2.getName();
+                    	    String name1 = location1.getName();
+                    	    //descending order of percantages.
+                    	    return name2.compareTo(name1);
+                    	}
+                    };
             /*  public List<IdNameVO> getDeptListForMultiLvl(Long userId){
             	  try{
             		  List<Object[]> deptList= alertAssignedOfficerNewDAO.getDeptList(userId);
@@ -4936,9 +4982,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           			//get alert status count and and create a map of alertStatusId and its count
           			List<Object[]> totalList = new ArrayList<Object[]>();
           			List<Object[]> alertCountList = alertDAO.getTotalGovtPendingStatusAlertCnt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,"Status",calCntrIdList);//for pending status
-          			if(alertCountList != null && alertCountList.size() > 0){
+          		/*	if(alertCountList != null && alertCountList.size() > 0){
           				totalList.addAll(alertCountList);
-          			}
+          			}*/
           			List<Long> levelValues = new ArrayList<Long>();    
           			Long levelId = 0L;
           			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -4953,6 +4999,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
           				totalList.addAll(alertCountList2);
           			}
           			setAlertCount(totalList,finalAlertVOs); 
+          			if(alertCountList != null && alertCountList.size() > 0){//Adding Pending Alert Count
+          				AlertVO VO = null;
+          				for(Object[] param:alertCountList){
+          					 VO = new AlertVO();
+          					 VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+    						 VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+    						 VO.setColor(commonMethodsUtilService.getStringValueForObject(param[2])); 
+    						 VO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[3]));
+          				}
+          				if(finalAlertVOs != null && finalAlertVOs.size() > 0){
+          					finalAlertVOs.add(0, VO);
+          				}
+          			}
           			return finalAlertVOs; 
           		}catch(Exception e){
           			e.printStackTrace();
@@ -6869,7 +6928,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      	public List<AlertCoreDashBoardVO> getStateLevelDeptWiseFlterClick(Long userId,List<Long> deptIds,Long locatonLevelId,
 	    			Long statusId,String type,String fromDateStr,String toDateStr,
 	    			Long desigDeptOfficerId,Long officerId, List<Long> printIdList, 
-	    			List<Long> electronicIdList,List<Long> calCntrIdList,Long stateId){
+	    			List<Long> electronicIdList,List<Long> calCntrIdList,Long stateId,String levelType,String assignType){
 	      		
 	    		   List<AlertCoreDashBoardVO> finalVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 	    		   List<Long> alertIds = null;
@@ -6895,8 +6954,30 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	    			if(type.equalsIgnoreCase("alert")){
 	    				if(statusId == 1l){
 	    					alertIds = alertDAO.getStateLevelDeptWiseFlterClick(deptIds,statusId,fromDate,toDate,printIdList,electronicIdList,calCntrIdList,stateId);
+	    				}else if(statusId == 0l && locatonLevelId==0l){
+	    					if(levelType != null && levelType.equalsIgnoreCase("status")){
+	    						if(assignType != null && assignType.equalsIgnoreCase("assigned")){
+	    							List<Long> otherThanPendingCnt = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,levelId,levelValues,printIdList,electronicIdList,calCntrIdList);
+			    					alertIds = new ArrayList<Long>();
+			    					if(otherThanPendingCnt != null && otherThanPendingCnt.size() > 0){
+			    						alertIds.addAll(otherThanPendingCnt);
+			    					}
+	    						}else{
+	    							List<Long> pendingAlertCnt = alertDAO.getStateLevelDeptWiseFlterClick(deptIds,1l,fromDate,toDate,printIdList,electronicIdList,calCntrIdList,stateId);
+			    					List<Long> otherThanPendingCnt = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,levelId,levelValues,printIdList,electronicIdList,calCntrIdList);
+			    					alertIds = new ArrayList<Long>();
+			    					if(pendingAlertCnt != null && pendingAlertCnt.size() > 0){
+			    						alertIds.addAll(pendingAlertCnt);
+			    					}
+			    					if(otherThanPendingCnt != null && otherThanPendingCnt.size() > 0){
+			    						alertIds.addAll(otherThanPendingCnt);
+			    					}
+								}
+	    	 				}else{
+								alertIds = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,levelId,levelValues,printIdList,electronicIdList,calCntrIdList);
+	    					}
 	    				}else{
-	    					alertIds = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,levelId,levelValues,printIdList,electronicIdList,calCntrIdList);
+	    					 alertIds = alertAssignedOfficerNewDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,levelId,levelValues,printIdList,electronicIdList,calCntrIdList);	
 	    				}
 	    			}else if(type.equalsIgnoreCase("subTask")){
 	    				alertIds = govtAlertSubTaskDAO.getStateLevelDeptWiseFlterClick(deptIds,locatonLevelId,statusId,fromDate,toDate,levelId,levelValues,printIdList,electronicIdList,calCntrIdList);
@@ -7639,24 +7720,44 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					returnList.add(alertCoreDashBoardVO);
 				}
 			}
+			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+				if(returnList != null && returnList.size() > 0){
+					returnList.get(0).getSubLevels().addAll(subLevels);
+					if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+							Collections.sort(returnList.get(0).getSubList(), alertStateAscendingCountWiseSortingLvlWise);
+						}else{
+							Collections.sort(returnList.get(0).getSubList(), alertStateDescCountWiseSortingLvlWise);
+						}
+					}
+					if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+							Collections.sort(returnList.get(0).getSubList(), alphabeticalStateAscSortLvlWise);
+						}else{
+							Collections.sort(returnList.get(0).getSubList(), alphabeticalStateDescendingSortLvlWise);
+						}
+					}
+				}   
+			}else{
+				if(returnList != null && returnList.size() > 0){
+					returnList.get(0).getSubLevels().addAll(subLevels);
+					if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+							Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+						}else{
+							Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+						}
+					}
+					if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+						if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+							Collections.sort(returnList, alphabeticalAscSortLvlWise);
+						}else{
+							Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+						}
+					}
+				}   
+			}
 			
-			if(returnList != null && returnList.size() > 0){
-				returnList.get(0).getSubLevels().addAll(subLevels);
-				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
-					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
-						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
-					}else{
-						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
-					}
-				}
-				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
-					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
-						Collections.sort(returnList, alphabeticalAscSortLvlWise);
-					}else{
-						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
-					}
-				}
-			}   
 			return returnList;
 		}catch(Exception e){
 			e.printStackTrace();
