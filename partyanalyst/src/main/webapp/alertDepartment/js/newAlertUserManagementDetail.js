@@ -756,8 +756,10 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 						//str+='<p class="text-primary text-capitalize">'+result[i].userName+'</p>';
 						//str+='<p class="text-muted text-capitalize">-<u>'+result[i].designation+'</u></p>';
 						str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
-						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';						
 						str+='<p class="text-primary text-capitalize"><u> Designation:  <span style="color:black;"> '+result[i].designation+' </span></u></p>';
+						str+='<p class="text-primary text-capitalize"><u> Location:  <span style="color:black;"> '+result[i].location+' </span></u></p>';
+						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';						
+						
 						//str+='<p class="text-primary text-capitalize">Dept Name: '+result[i].mobileNO+'</p>';
 					str+='</td>';
 					str+='<td>'+result[i].comment+'</td>';
@@ -1698,8 +1700,12 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 						str+='</div>';
 						str+='<div class="media-body">';
 							str+='<p> SUB TASK ASSIGN TO: <i class="fa fa-level-down "></i></p> ';
-							str+='<p>'+result[0].assignedOfficerStr+' - '+result[0].deptName+'</p>';
-							str+='<p> - '+result[0].designation+'<br> (<i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+')</p>';
+							//str+='<p>'+result[0].assignedOfficerStr+' - '+result[0].deptName+'</p>';
+							str+='<p>'+result[0].assignedOfficerStr+'</p>';
+							str+='<p><i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+'</p>';
+							str+='<p><b>Location :</b>'+result[0].callerName+'</p>';
+							str+='<p><b> Dept:</b> '+result[0].deptName+'</p>';
+							//str+='<p><b>Location :</b>'+result[0].positionName+'</p>';
 							str+='<p></p>';
 						str+='</div>';
 					str+='</div>';
@@ -1714,26 +1720,29 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 					str+='<h3> <u> Sub Task </u> : '+result[i].title+'</h3>';
 					str+='<p class="m_top10">'+result[i].description+'</p>';
 					
-					str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created Date : '+result[i].dateStr+'</small></p>';
-					str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Due Date  : '+result[i].dueDateStr+'</small></p>';
+					str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created Date : '+result[i].dateStr+'</small>';
+					str+='&nbsp;&nbsp;<small><i class="fa fa-calendar"></i> Due Date  : '+result[i].dueDateStr+'</small></p>';
 					if(result[i].assignedByOfficerStr != null && result[i].assignedByOfficerStr.length > 0)
 					{
-						str+='<p class="m_top5"> Updated By: '+result[i].assignedByOfficerStr+'</p>';
+						str+='<b> Assigned By: </b>'+result[i].assignedByOfficerStr+'&nbsp;&nbsp;&nbsp;';
 					}
 					if(result[i].deptName != null && result[i].deptName.length > 0)
 					{
-						str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].deptName+'</p>';
+						str+='<i class="glyphicon "></i><b> Dept Name: </b>'+result[i].deptName+'</br>';
 					}
 					if(result[i].designation != null && result[i].designation.length > 0)
 					{
-						str+='<p class="m_top5"><i class="glyphicon"></i> Designation :'+result[i].designation+'</p>';
+						str+='<i class="glyphicon"></i><b> Designation :</b>'+result[i].designation+'&nbsp;&nbsp;&nbsp;';
 					}
 					/*if(result[i].mobileNO != null && result[i].mobileNO.length > 0)
 					{
 						str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].mobileNO+'</p>';
 					}
 					*/
-					
+					if(result[i].positionName != null && result[i].positionName.length > 0)
+					{
+						str+='<i class="glyphicon"></i><b> Location : </b>'+result[i].positionName+'</p>';
+					}
 				str+='</div>';
 				
 				str1='';
@@ -1759,10 +1768,18 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 						str+='<i class="fa fa-comments-o fa-2x"></i>';
 					str+='</div>';
 					str+='<div class="col-sm-11">';
-						str+='<h4 class="text-muted text-capital"> Sub Tasks Comments </h4>';						
-							str+='<div class="media">';							
+						str+='<h4 class="text-muted text-capital m_top10"> Sub Tasks Comments </h4>';	
+						for(var k in result[i].commentList){
+							str+='<div class="media">';	
+							str+='<div class="media-left">';
+								if(result[i].commentList[k].userName != null && result[i].commentList[k].userName.length > 0)
+								{
+									str+='<span class="icon-name icon-primary text-capital">'+result[i].commentList[k].userName.substring(0,2)+'</span>';
+								}else{
+									str+='<span class="icon-name icon-primary">ME</span>';
+								}
+								str+='</div>';
 								str+='<div class="media-body">';
-										for(var k in result[i].commentList){
 											if(result[i].commentList[k].comment != null && result[i].commentList[k].comment.length > 0)
 											{
 												str+='<p class="m_top5">'+result[i].commentList[k].comment+'</p>';
@@ -1774,25 +1791,33 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 											}
 											if(result[i].commentList[k].userName != null && result[i].commentList[k].userName.length > 0)
 											{
-												str+='<p class="m_top5"> Updated By: '+result[i].commentList[k].userName+'</p>';
-											}
-											if(result[i].commentList[k].deptName != null && result[i].commentList[k].deptName.length > 0)
-											{
-												str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].commentList[k].deptName+'</p>';
+												//str+='<p class="m_top5"> Updated By: '+result[i].commentList[k].userName+'</p>';
+												str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].commentList[k].userName+' </span></p>';
 											}
 											if(result[i].commentList[k].designation != null && result[i].commentList[k].designation.length > 0)
 											{
-												str+='<p class="m_top5"><i class="glyphicon"></i> Designation :'+result[i].commentList[k].designation+'</p>';
+												//str+='<p class="m_top5"><i class="glyphicon"></i> Designation :'+result[i].commentList[k].designation+'</p>';
+												str+='<p class="text-primary text-capitalize">Designation: <span style="color:black;">'+result[i].commentList[k].designation+' </span></p>';
+											}
+											if(result[i].commentList[k].location != null && result[i].commentList[k].location.length > 0)
+											{
+												//str+='<p class="m_top5"><i class="glyphicon"></i> Location :'+result[i].commentList[k].location+'</p>';
+												str+='<p class="text-primary text-capitalize">Location: <span style="color:black;">'+result[i].commentList[k].location+' </span></p>';
+											}
+											if(result[i].commentList[k].deptName != null && result[i].commentList[k].deptName.length > 0)
+											{
+												//str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].commentList[k].deptName+'</p>';
+												str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;">'+result[i].commentList[k].deptName+' </span></p>';
 											}
 											/*if(result[i].mobileNO != null && result[i].mobileNO.length > 0)
 											{
 												str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].mobileNO+'</p>';
 											}
 											*/
-										}
+										
 									str+='</div>';
 							str+='</div>';
-						
+						}
 					str+='</div>';
 				str+='</div>';
 				
@@ -2401,15 +2426,23 @@ function buildCommentsForAlert(result)
 						}
 						if(result[i].userName != null && result[i].userName.length > 0)
 						{
-							str+='<p class="m_top5"> Updated By: '+result[i].userName+'</p>';
-						}
-						if(result[i].deptName != null && result[i].deptName.length > 0)
-						{
-							str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].deptName+'</p>';
+							//str+='<p class="m_top5"> Updated By: '+result[i].userName+'</p>';
+							str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
 						}
 						if(result[i].designation != null && result[i].designation.length > 0)
 						{
-							str+='<p class="m_top5"><i class="glyphicon"></i> Designation :'+result[i].designation+'</p>';
+							//str+='<p class="m_top5"><i class="glyphicon"></i> Designation :'+result[i].designation+'</p>';
+							str+='<p class="text-primary text-capitalize">Designation: <span style="color:black;">'+result[i].designation+' </span></p>';
+						}
+						if(result[i].location != null && result[i].location.length > 0)
+						{
+							//str+='<p class="m_top5"><i class="glyphicon"></i> Location :'+result[i].location+'</p>';
+							str+='<p class="text-primary text-capitalize">Location: <span style="color:black;">'+result[i].location+' </span></p>';
+						}
+						if(result[i].deptName != null && result[i].deptName.length > 0)
+						{
+							//str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].deptName+'</p>';
+							str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;">'+result[i].deptName+' </span></p>';
 						}
 						/*if(result[i].mobileNO != null && result[i].mobileNO.length > 0)
 						{
@@ -3210,8 +3243,10 @@ function alertStatusHistory(result,alertId)
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
 						str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
-						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';						
 						str+='<p class="text-primary text-capitalize"><u> Designation:  <span style="color:black;"> '+result[i].designation+' </span></u></p>';
+						str+='<p class="text-primary text-capitalize"><u> Location:  <span style="color:black;"> '+result[i].location+' </span></u></p>';
+						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';						
+						
 						//str+='<p class="text-primary text-capitalize">Dept Name: '+result[i].mobileNO+'</p>';
 					str+='</td>';
 					str+='<td>'+result[i].comment+'</td>';
