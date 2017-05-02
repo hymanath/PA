@@ -164,8 +164,27 @@
 		<div class="panel panel-default">
 			<div class="panel-heading headingColor">
 				<div class="row">
-					<div class="col-md-10 m_top5">   
+					<div class="col-md-8 m_top5">   
 						<h4 class="panel-title text-capital fontColor">Date wise Grievance Report </h4>
+					</div>
+					<div class="col-md-2">
+						<select id="selectDistrictId" class="selectpicker" onChange="getDistrintInformation();">  
+							<option value="0">All</option>
+							<option value="11">Srikakulam</option>
+							<option value="12">Vizianagaram</option>
+							<option value="13">Visakhapatnam</option>
+							<option value="14">East Godavari</option>
+							<option value="15">West Godavari</option>
+							<option value="16">Krishna</option>
+							<option value="17">Guntur</option>
+							<option value="18">Prakasam</option>
+							<option value="19">Nellore</option>
+							<option value="20">Kadapa</option>
+							<option value="21">Kurnool</option>
+							<option value="22">Anantapur</option>
+							<option value="23">Chittoor</option>
+							<option value="517">Visakhapatnam Rural</option>
+						</select>
 					</div>
 					<div class="col-md-2">
 						<button class="btn btn-success btn-sm" onclick="generateExcel2();">
