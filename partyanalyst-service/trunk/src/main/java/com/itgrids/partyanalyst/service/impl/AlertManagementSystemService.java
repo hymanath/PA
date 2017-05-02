@@ -1696,7 +1696,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					   VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					   resultList.add(VO);
 				}				 
-			}			
+			}
 			
 		} catch (Exception e) {
 			LOG.error("Error occured getDepartmentLevels(Long departmentId) method of AlertManagementSystemService",e);
@@ -8210,5 +8210,63 @@ public ResultStatus saveGovtOfficerSmsDetails(final GovtOfficerSmsDetailsVO smsD
 		
 		 
 	 }
+public List<IdNameVO> getLvlsForDepatmnt(Long userId,Long departmentId){
+	List<IdNameVO> resultList = new ArrayList<IdNameVO>();
+	try {						
+		/*List<Object[]> levelObj = govtDepartmentScopeLevelDAO.getDepartmentLevels(departmentId);
+		if(levelObj != null && levelObj.size()>0){
+			for (Object[] param : levelObj) {
+				IdNameVO VO = new IdNameVO();
+				   VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				   resultList.add(VO);
+			}				 
+		}*/	
+		
+		Long levelId = 0L;
+        List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+           if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+             for(Object[] param : lvlValueAndLvlIdList){
+               levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+             }
+           }
+           List<Object[]> rtrnObjList = govtDepartmentScopeLevelDAO.getChildGovtScopesLevelNamesByParentScopeLevel(levelId, departmentId);//levelId means Access Level 
+           if(rtrnObjList != null && rtrnObjList.size() > 0){
+             for(Object[] param:rtrnObjList){
+            	 IdNameVO VO = new IdNameVO();
+				   VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+				   VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				   resultList.add(VO);
+             }
+           }
+	} catch (Exception e) {
+		LOG.error("Error occured getLvlsForDepatmnt() method of AlertManagementSystemService",e);
+	}
+	return resultList;
+}
+public List<IdNameVO> getStatusByType(String type){
+	List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+	try{
+		List<Object[]> statusList = null;
+		if(type != null && type.trim().equalsIgnoreCase("alerts")){
+			statusList = alertStatusDAO.getAllStatus();
+		}else if(type != null && type.trim().equalsIgnoreCase("subTask")){
+			statusList = alertSubTaskStatusDAO.getAllSubTaskStatus1();
+		}
+		
+		if(statusList != null && statusList.size() > 0l){
+			for (Object[] objects : statusList) {
+				IdNameVO vo = new IdNameVO();
+				vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+				finalList.add(vo);
+			}
+		}
+		
+	}catch(Exception e){
+		LOG.error("Error occured getStatusByType() method of AlertManagementSystemService",e);
+	}
+	return finalList;
+}
     
 }      	
