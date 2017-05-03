@@ -140,4 +140,5 @@ public interface IAlertService {
     public List<IdNameVO> getDeptListForGrievance();
     public List<AlertOverviewVO> getGrievanceReportDayWise(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType,Long LocationId,Long stsId,String groupType);
     public List<AlertOverviewVO> getTotalAlertGroupByCategoryThenStatus(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId);
+    public List<IdNameVO> getDistrictList(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId);
 }
