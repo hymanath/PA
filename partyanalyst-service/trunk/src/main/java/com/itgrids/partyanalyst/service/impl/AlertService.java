@@ -11761,12 +11761,41 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				}
 				
 				return finalList;
-	 }catch(Exception e){
-			e.printStackTrace();
-			LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
-	  }
-		return null;
-}
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
+			}
+		 	return null;
+	 }
+	 public List<IdNameVO> getDistrictList(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId){
+		 try{
+			 Date fromDate = null;        
+			 Date toDate = null; 
+			 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			 if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				 fromDate = sdf.parse(fromDateStr);
+				 toDate = sdf.parse(toDateStr);
+			 }
+			 List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByLocationThenStatus(fromDate, toDate, stateId, departmentId,sourceId,"District","One",null,null);
+			 List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+			 IdNameVO idNameVO = null;
+			 if(alertCountList != null && alertCountList.size() > 0){
+				 for(Object[] param : alertCountList){
+					 if(param[0] != null){
+						 idNameVO = new IdNameVO();
+						 idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						 idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						 idNameVOs.add(idNameVO);
+					 }
+				 }
+			 }
+			 return idNameVOs;
+		 }catch(Exception e){
+			 e.printStackTrace();
+			 LOG.error("Error occured getDistrictList() method of AlertService{}");
+		 }
+		 return null;
+	 }
 	 
 }
 
