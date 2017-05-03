@@ -648,9 +648,6 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
 				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
-			}else if(statusId != null && (statusId.longValue() == 4l || statusId.longValue() == 6l || statusId.longValue() == 7l || statusId.longValue() == 10l || statusId.longValue() == 12l)){//other completed,action not required,duplicate,rejoinder,closed
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,null,null,null,null,null);
-				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else{
 				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,null,calCntrIdList,null,null,null,null,null);
 				List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
@@ -3061,8 +3058,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					return Action.SUCCESS;
 				}
 				
-			 
-			 public String getSubOrdinateFilterAlertsOverview(){
+				 
+				 public String getSubOrdinateFilterAlertsOverview(){
 					try {
 						session = request.getSession();
 					   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
@@ -3141,6 +3138,135 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 								lagStartCnt,lagEndCnt,alertType,isMoreThanYrChkd,isLagChkd,paperIdList,chanelIdList,calCntrIdList);
 					} catch (Exception e) {
 						LOG.error("Exception occured in getSubOrdinateFilterAlertsOverview() of alertManagementSystemAction",e);
+					}
+					return Action.SUCCESS;
+				}
+			 public String getTotalAlertByStatusNew(){
+					try{
+						session = request.getSession();
+						RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+						Long userId = regVo.getRegistrationID();
+						jObj = new JSONObject(getTask());
+						String fromDate = jObj.getString("fromDate");
+						String toDate = jObj.getString("toDate");
+						Long stateId = jObj.getLong("stateId");
+						//Long statusId = jObj.getLong("statusId");
+						JSONArray statusIdArr = jObj.getJSONArray("statusId");  
+						List<Long> statusIdList = new ArrayList<Long>();
+						if(statusIdArr != null && statusIdArr.length() > 0){
+							for (int i = 0; i < statusIdArr.length(); i++){
+								statusIdList.add(Long.parseLong(statusIdArr.getString(i)));        
+							} 
+						}
+						JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+						List<Long> deptIdList = new ArrayList<Long>();
+						if(deptIdArr != null && deptIdArr.length() > 0){
+							for (int i = 0; i < deptIdArr.length(); i++){
+								deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+							} 
+						}
+						 
+						JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+						List<Long> paperIdList = new ArrayList<Long>();
+						if(paperIdArr != null && paperIdArr.length() > 0){
+							for (int i = 0; i < paperIdArr.length(); i++){
+								paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+							} 
+						}
+						
+						JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+						List<Long> chanelIdList = new ArrayList<Long>();
+						if(chanelIdArr != null && chanelIdArr.length() > 0){
+							for (int i = 0; i < chanelIdArr.length(); i++){
+								chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+							}
+						}
+						
+						JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+						List<Long> calCntrIdList = new ArrayList<Long>();
+						for (int i = 0; i < calCntrIdArr.length(); i++){
+							calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+						}
+						JSONArray impactLevelIdArr = jObj.getJSONArray("impactLevelArr");  
+						List<Long> impactLevelIdList = new ArrayList<Long>();
+						for (int i = 0; i < impactLevelIdArr.length(); i++){
+							impactLevelIdList.add(Long.parseLong(impactLevelIdArr.getString(i)));        
+						}
+						JSONArray priorityIdArr = jObj.getJSONArray("priorityArr");  
+						List<Long> priorityIdList = new ArrayList<Long>();
+						for (int i = 0; i < priorityIdArr.length(); i++){
+							priorityIdList.add(Long.parseLong(priorityIdArr.getString(i)));        
+						}
+						JSONArray alertSourceIdArr = jObj.getJSONArray("alertSourceArr");  
+						List<Long> alertSourceIdList = new ArrayList<Long>();
+						for (int i = 0; i < alertSourceIdArr.length(); i++){
+							alertSourceIdList.add(Long.parseLong(alertSourceIdArr.getString(i)));        
+						}
+						JSONArray printMediaIdArr = jObj.getJSONArray("printMediaArr");  
+						List<Long> printMediaIdList = new ArrayList<Long>();
+						for (int i = 0; i < printMediaIdArr.length(); i++){
+							printMediaIdList.add(Long.parseLong(printMediaIdArr.getString(i)));        
+						}
+						JSONArray electronicMediaIdArr = jObj.getJSONArray("electronicMediaArr");  
+						List<Long> electronicMediaIdList = new ArrayList<Long>();
+						for (int i = 0; i < electronicMediaIdArr.length(); i++){
+							electronicMediaIdList.add(Long.parseLong(electronicMediaIdArr.getString(i)));        
+						}
+						Long startDay = jObj.getLong("startDay");
+						Long endDay = jObj.getLong("endDay");
+						Long scopeId =jObj.getLong("levelId");
+						JSONArray locationIdArr = jObj.getJSONArray("levelValues");  
+						List<Long> locationIdList = new ArrayList<Long>();
+						for (int i = 0; i < locationIdArr.length(); i++){
+							locationIdList.add(Long.parseLong(locationIdArr.getString(i)));        
+						}
+						JSONArray subTaskStatusIdArr = jObj.getJSONArray("subTaskStatusIdList");  
+						List<Long> subTaskStatusIdList = new ArrayList<Long>();
+						for (int i = 0; i < subTaskStatusIdArr.length(); i++){
+							subTaskStatusIdList.add(Long.parseLong(subTaskStatusIdArr.getString(i)));        
+						}
+						//if(statusId != null && statusId.longValue() == 1L){//pending
+						if(statusIdList != null && statusIdList.contains(1L)){
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList);
+							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+						}
+						//else if(statusId != null && statusId.longValue() > 1L){//other than pending
+						if(statusIdList != null && !statusIdList.contains(1L)){
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList);
+							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+						}else{
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,null,calCntrIdList,null,null,null,null,null);
+							List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
+							if(alertCoreDashBoardVOs != null){
+								list1.addAll(alertCoreDashBoardVOs);
+							}
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,null,null,null,null,null,null,null,null,null,null);
+							List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
+							if(alertCoreDashBoardVOs != null ){
+								list2.addAll(alertCoreDashBoardVOs);
+							}
+							alertCoreDashBoardVOs.clear();
+							alertCoreDashBoardVOs.addAll(list1);
+							alertCoreDashBoardVOs.addAll(list2);
+							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+						}
+						
+					}catch(Exception e){
+						LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
+					}
+					return Action.SUCCESS;
+				}
+			 public String getFilterSectionAlertNewDetails(){
+					try{
+						session = request.getSession();
+					   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+						Long userId = regVo.getRegistrationID();
+						jObj = new JSONObject(getTask());
+						
+						filterDetilsList = alertManagementSystemService.getFilterSectionAlertNewDetails();
+					}catch(Exception e){
+						e.printStackTrace();
+						LOG.error("Exception occured in getFilterSectionAlertDetails() of alertManagementSystemAction",e);
 					}
 					return Action.SUCCESS;
 				}
