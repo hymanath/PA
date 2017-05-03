@@ -3029,35 +3029,119 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				}
 				return Action.SUCCESS;
 			 }
-	public String getLevelsForDepartmnt(){
-		try {
-			session = request.getSession();
-			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-			Long userId = regVo.getRegistrationID();
-			
-			jObj = new JSONObject(getTask());
-			Long departmentId = jObj.getLong("departmentId");
-			
-			idnameVoList = alertManagementSystemService.getLvlsForDepatmnt(userId,departmentId);
-			
-			
-		} catch (Exception e) {
-			LOG.error("Exception occured in getDepartmentLevels() of AlertManagementSystemAction",e);
-		}
-		return Action.SUCCESS;
-	}
-	public String getStatusByType(){
-		try {
-			
-			jObj = new JSONObject(getTask());
-			String type = jObj.getString("type");
-			
-			idnameVoList = alertManagementSystemService.getStatusByType(type);
-			
-			
-		} catch (Exception e) {
-			LOG.error("Exception occured in getStatusByType() of AlertManagementSystemAction",e);
-		}
-		return Action.SUCCESS;
-	}
+			 public String getLevelsForDepartmnt(){
+					try {
+						session = request.getSession();
+						RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+						Long userId = regVo.getRegistrationID();
+						
+						jObj = new JSONObject(getTask());
+						Long departmentId = jObj.getLong("departmentId");
+						
+						idnameVoList = alertManagementSystemService.getLvlsForDepatmnt(userId,departmentId);
+						
+						
+					} catch (Exception e) {
+						LOG.error("Exception occured in getDepartmentLevels() of AlertManagementSystemAction",e);
+					}
+					return Action.SUCCESS;
+				}
+				public String getStatusByType(){
+					try {
+						
+						jObj = new JSONObject(getTask());
+						String type = jObj.getString("type");
+						
+						idnameVoList = alertManagementSystemService.getStatusByType(type);
+						
+						
+					} catch (Exception e) {
+						LOG.error("Exception occured in getStatusByType() of AlertManagementSystemAction",e);
+					}
+					return Action.SUCCESS;
+				}
+				
+			 
+			 public String getSubOrdinateFilterAlertsOverview(){
+					try {
+						session = request.getSession();
+					   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+						Long userId = regVo.getRegistrationID();
+						jObj = new JSONObject(getTask());			
+						//Long userId = jObj.getLong("userId");
+						String fromDateStr = jObj.getString("fromDate");
+						String toDateStr = jObj.getString("toDateStr");
+						
+						
+						JSONArray govtScopeIds = jObj.getJSONArray("govtLevelIds");  
+						List<Long> govtScopeIdsList = new ArrayList<Long>();
+						if(govtScopeIds != null && govtScopeIds.length() > 0){
+							for (int i = 0; i < govtScopeIds.length(); i++){
+								govtScopeIdsList.add(Long.parseLong(govtScopeIds.getString(i)));        
+							} 
+						} 
+						JSONArray locationValues = jObj.getJSONArray("locationValues");  
+						List<Long> locationValuesList = new ArrayList<Long>();
+						if(locationValues != null && locationValues.length() > 0){
+							for (int i = 0; i < locationValues.length(); i++){
+								locationValuesList.add(Long.parseLong(locationValues.getString(i)));        
+							} 
+						} 
+						JSONArray desigIds = jObj.getJSONArray("desigIds");  
+						List<Long> desigIdsList = new ArrayList<Long>();
+						if(desigIds != null && desigIds.length() > 0){
+							for (int i = 0; i < desigIds.length(); i++){
+								desigIdsList.add(Long.parseLong(desigIds.getString(i)));        
+							} 
+						} 
+						
+						JSONArray statusIdsArr = jObj.getJSONArray("statusIds");  
+						List<Long> statusIds = new ArrayList<Long>();
+						if(statusIdsArr != null && statusIdsArr.length() > 0){
+							for (int i = 0; i < statusIdsArr.length(); i++){
+								statusIds.add(Long.parseLong(statusIdsArr.getString(i)));        
+							} 
+						} 
+						
+						JSONArray deptIdsArr = jObj.getJSONArray("deptIds");  
+						List<Long> deptIds = new ArrayList<Long>();
+						if(deptIdsArr != null && deptIdsArr.length() > 0){
+							for (int i = 0; i < deptIdsArr.length(); i++){
+								deptIds.add(Long.parseLong(deptIdsArr.getString(i)));        
+							} 
+						} 
+						
+						JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+						List<Long> paperIdList = new ArrayList<Long>();
+						for (int i = 0; i < paperIdArr.length(); i++){
+							paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+						} 
+						
+						JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+						List<Long> chanelIdList = new ArrayList<Long>();
+						for (int i = 0; i < chanelIdArr.length(); i++){
+							chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+						}
+						
+						JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+						List<Long> calCntrIdList = new ArrayList<Long>();  
+						if(calCntrIdArr != null && calCntrIdArr.length() > 0){
+							for (int i = 0; i < calCntrIdArr.length(); i++){
+								calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+							}
+						}
+						Long priorityId = jObj.getLong("priorityId");
+						Long lagStartCnt = jObj.getLong("lagStartCnt");
+						Long lagEndCnt = jObj.getLong("lagEndCnt");
+						String alertType = jObj.getString("alertType");
+						String isMoreThanYrChkd = jObj.getString("isMoreThanYrChkd");
+						String isLagChkd = jObj.getString("isLagChkd");
+						
+						districtOfficeViewAlertVOList = alertManagementSystemService.getSubOrdinateFilterAlertsOverview(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId,statusIds,deptIds,
+								lagStartCnt,lagEndCnt,alertType,isMoreThanYrChkd,isLagChkd,paperIdList,chanelIdList,calCntrIdList);
+					} catch (Exception e) {
+						LOG.error("Exception occured in getSubOrdinateFilterAlertsOverview() of alertManagementSystemAction",e);
+					}
+					return Action.SUCCESS;
+				}
 }
