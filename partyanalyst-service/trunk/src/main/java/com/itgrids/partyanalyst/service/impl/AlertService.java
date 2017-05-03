@@ -11797,6 +11797,28 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		 return null;
 	 }
 	 
+	 public List<IdNameVO> getAllDepts(){
+		 List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		 try {
+			 
+			 List<Object[]> listObj = govtDepartmentDAO.getAllDepartment();
+			 if(listObj !=null && listObj.size()>0){
+				 for (Object[] objects : listObj) {
+					IdNameVO idNameVO = new IdNameVO();
+					idNameVO.setId(objects[0] !=null ? (Long)objects[0]:0l);
+					idNameVO.setName(objects[1] !=null ? objects[1].toString():"");
+					finalList.add(idNameVO);
+				}
+			 }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error occured getAllDepts() method of AlertService{}");
+		}
+		 return finalList;
+	 }
+	 
+	 
 }
 
 
