@@ -105,10 +105,18 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 	 				str+='<td>Total</td>';
 	 				str+='<td>'+locTotal+'</td>';
 	 				for(var i in result[0].subList1){
-	 					str+='<td>'+result[0].subList1[i].grandTotal+'</td>';//  result[0].subList1[i].statusType  
+						if(result[0].subList1[i].grandTotal == 0){
+							str+='<td>-</td>';
+						}else{
+							str+='<td>'+result[0].subList1[i].grandTotal+'</td>';
+						}
 	 				}
 	 				for(var i in result[0].subList2){
-	 					str+='<td>'+result[0].subList2[i].grandTotal+'</td>';    
+						if(result[0].subList2[i].grandTotal == 0){
+							str+='<td>-</td>';
+						}else{
+							str+='<td>'+result[0].subList2[i].grandTotal+'</td>';
+						}  
 	 				}   
 	 		   str+='</tr>';
 	 		str+='</tbody>';
@@ -2747,7 +2755,11 @@ function buildGrievanceReportDayWise(result,rangeType) {
  			str+='<td>Grand Total</td>';
  			str+='<td>'+locTotal+'</td>';
 			for(var i in result[0].subList1){
-				str+='<td>'+result[0].subList1[i].grandTotal+'</td>';//  result[0].subList1[i].statusType  
+				if(result[0].subList1[i].grandTotal == 0){
+					str+='<td>-</td>';
+				}else{
+					str+='<td>'+result[0].subList1[i].grandTotal+'</td>';
+				}
 			}
 		str+='</tr>';
 		str+='</tbody>';
