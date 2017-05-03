@@ -17136,10 +17136,19 @@
   			<param name="root">idnameVoList</param>
   		</result>
    </action>
-	<action name="getSubOrdinateFilterAlertsOverviewAction" class="alertManagementSystemAction" method="getSubOrdinateFilterAlertsOverview">
+   <action name="getSubOrdinateFilterAlertsOverviewAction" class="alertManagementSystemAction" method="getSubOrdinateFilterAlertsOverview">
 			<result type="json" name="success">		   
 				<param name="root">districtOfficeViewAlertVOList</param>
 			</result>	
-		</action>
+	</action>
+  <action name="createSocialAlert" class="createAlertAction" method="createSocialAlert">
+			<result name="success">/jsp/createSocialAlert.jsp</result>
+			<result name="error" type="redirect">login.action</result>
+  </action>
+  <action name="getAllDeptsAction" class="createAlertAction" method="getAllDepts">
+	    <result type="json" name="success">
+  			<param name="root">idNameVOList</param>
+  		</result>
+   </action>
  </package>
 </struts>

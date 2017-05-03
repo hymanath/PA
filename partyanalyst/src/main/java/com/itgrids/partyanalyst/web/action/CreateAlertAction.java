@@ -2820,4 +2820,23 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS; 
 	}
+	public String createSocialAlert(){
+		session = request.getSession();
+		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		if(regVo != null)
+			return Action.SUCCESS;
+		else
+			return Action.ERROR;
+	}
+	
+	public String getAllDepts(){
+		try {
+			
+			idNameVOList = alertService.getAllDepts();
+			
+		} catch (Exception e) {
+			LOG.error("Excpetion raised at getAllDepts Method in CreateAlertAction class",e);
+		}
+		return Action.SUCCESS;
+	}
 }
