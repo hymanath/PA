@@ -80,4 +80,9 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Object[]> getDepartmentDetaislByDeptIds(Long departmentId);
     public List<Object[]> getDepartmentDetailsOfAlert(Long alertId);
     public List<Object[]> getAllDepartmentHasData();
+    public List<Object[]> getSubOrdinateFilterAlertsDetails(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
+			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList);
+    public List<Object[]> getSubOrdinateFilterAlertsDetailsForUser(Date fromDate,Date toDate,
+     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,List<Long> govtDepartmentIds,
+     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> filterLocationValues,List<Long> desigIds);
 }

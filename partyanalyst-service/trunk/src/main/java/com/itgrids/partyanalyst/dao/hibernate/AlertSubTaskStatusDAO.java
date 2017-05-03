@@ -16,9 +16,15 @@ public class AlertSubTaskStatusDAO extends GenericDaoHibernate<AlertSubTaskStatu
 	}
 	
 	public List<Object[]> getAlertStatusDtlsBasidOnAlertIds(List<Long> statusIds){
-		Query query = getSession().createQuery(" SELECT model.alertSubTaskStatusId,model.status,model.color FROM AlertSubTaskStatus model" +
-				" WHERE model.alertSubTaskStatusId in (:statusIds) ");
-		query.setParameterList("statusIds", statusIds);  
+		StringBuilder sb = new StringBuilder();
+		sb.append("  SELECT model.alertSubTaskStatusId,model.status,model.color FROM AlertSubTaskStatus model ");
+		
+		if(statusIds != null && statusIds.size() >0)
+			sb.append("WHERE model.alertSubTaskStatusId in (:statusIds) ");
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(statusIds != null && statusIds.size() >0)
+		query.setParameterList("statusIds", statusIds);
 		return query.list();
 	}
 	public List<Object[]> getAllSubTaskStatus(){

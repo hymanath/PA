@@ -134,6 +134,8 @@ public interface IAlertManagementSystemService {
 	 public List<IdNameVO> getDepartmentDetailsByDepartmentId(Long userId,Long departmentId,String designationType);
 	 public Map<String,List<String>> getMonthWeekAndDays(String startDate,String endDate,String type);
 	 public List<IdNameVO> getDepartmentDetailsOfAlert(Long alertId);
+	 public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
+				List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> deptIds , Long lagStartCnt, Long lagEndCnt,String alertType,String isMoreThanYrChkd,String isLagChkd,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList);
 	 public List<IdNameVO> getLvlsForDepatmnt(Long userId,Long departmentId);
 	 public List<IdNameVO> getStatusByType(String type);
 }        
