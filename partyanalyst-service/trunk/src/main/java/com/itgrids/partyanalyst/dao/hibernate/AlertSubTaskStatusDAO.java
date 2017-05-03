@@ -37,5 +37,8 @@ public class AlertSubTaskStatusDAO extends GenericDaoHibernate<AlertSubTaskStatu
 				"model.color from AlertSubTaskStatus model order by model.statusOrder asc");
 		return query.list();
 	}
-	
+	public List<Object[]> getAlertSubStatusDtls(){
+		Query query = getSession().createQuery(" SELECT model.alertSubTaskStatusId,model.status,model.color FROM AlertSubTaskStatus model ");  
+		return query.list();
+	}
 }
