@@ -43,191 +43,153 @@
 </style>
 </head>
 <body>           
-<nav>
-<!--        <div class="row nav-gov-dark">
-            
-            <div class="container">
-                <div class="logo-gov" href="#"> <img src="img/logo.png" class="img-responsive" alt="logo"> </div>
-            </div>
-        </div>-->
-        <div class=" bg-gov-dark">
-        
-               
-            <div class="container">  
-				<div class="row">
-					<div id="menu1" class="col-md-6">       
-						<div class="col-md-12">
-							<ul class="nav navbar-nav">        
-								<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
-								<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
-								<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
-								<li style="padding:14px 16px;color:#95989A;"> 
-									<div id="reportrange"> 
-										&nbsp; <span>Custom Date Range</span>
-									</div>
-								</li>
-							</ul>
-						</div>      
-						
+		<nav>
+			<div class=" bg-gov-dark">
+				<div class="container">  
+					<div class="row">
+						<div id="menu1" class="col-md-6">       
+							<div class="col-md-12">
+								<ul class="nav navbar-nav">        
+									<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
+									<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
+									<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
+									<li style="padding:14px 16px;color:#95989A;"> 
+										<div id="reportrange"> 
+											&nbsp; <span>Custom Date Range</span>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-md-3 m_top10">
+							<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
+								<option value="0">All</option>
+								<option value="1">Call Center</option>
+								<option value="2">Print Media</option>
+								<option value="3">Electronic Media</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
+								<option value="49">Rural Water Supply</option>  
+							</select>
+						</div>
 					</div>
-					 
-					<div class="col-md-3 m_top10">
-						<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
-							<option value="0">All</option>
-							<option value="1">Call Center</option>
-							<option value="2">Print Media</option>
-							<option value="3">Electronic Media</option>
-						</select>
-					</div>
-					<div class="col-md-3">
-						<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
-							<option value="49">Rural Water Supply</option>  
-						</select>
-					</div>
-                </div>
-                
-            </div>
-        </div>
-    </nav>
+				</div>
+			</div>
+		</nav>
 
-    <!-- /.container-fluid -->
-
-      <div class="container-fluid bg-gov-dark">
-        <div class="row">
-            <div class="col-md-2">
-                <div style="padding-top: 80px">
-                   <h4 class="text-center issue-title">AVERAGE ISSUE <br> PENDING DAYS</h4>
-                    <h3 class=" text-center issue-title"><span id="averageIssueId"></span></h3>
-                </div>
-            </div>
-            <div class="col-md-8">   
-                <div>
-                    <h1 class="text-center">
-                        <div id="statusWiseAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
-                    </h1>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div style="padding-top: 80px">
-                    <h4 class="text-center issue-title total">TOTAL</h4>
-                    <h1 style="font-size: 6em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="container-fluid bg-gov-dark">
+			<div class="row">
+				<div class="col-md-2">
+					<div style="padding-top: 80px">
+						<h4 class="text-center issue-title">AVERAGE ISSUE <br> PENDING DAYS</h4>
+						<h3 class=" text-center issue-title"><span id="averageIssueId"></span></h3>
+					</div>
+				</div>
+				<div class="col-md-8">   
+					<div>
+						<h1 class="text-center">
+							<div id="statusWiseAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
+						</h1>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div style="padding-top: 80px">
+						<h4 class="text-center issue-title total">TOTAL</h4>
+						<h1 style="font-size: 6em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
+					</div>
+				</div>
+			</div>
+		</div>
     
 
        <section class="container m_top20">
-	   <div class="panel panel-default">
-			<div class="panel-heading headingColor">
-				<div class="row">
-					<div class="col-md-10 m_top5">   
-						<h4 class="panel-title text-capital fontColor">Category Wise Grievance Report </h4>  
+		   <div class="panel panel-default">
+				<div class="panel-heading headingColor">
+					<div class="row">
+						<div class="col-md-10 m_top5">   
+							<h4 class="panel-title text-capital fontColor">Category Wise Grievance Report </h4>  
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-success btn-sm" onclick="generateExcel3();">
+								<i class="glyphicon glyphicon-download-alt"></i> Download
+							</button>   
+						</div>
 					</div>
-					<div class="col-md-2">
-						<button class="btn btn-success btn-sm" onclick="generateExcel3();">
-							<i class="glyphicon glyphicon-download-alt"></i> Download
-						</button>   
+				</div>
+				<div class="panel-body">
+					<div  class="row">  
+						<div class="col-md-12">
+							<div class="table-responsive m_top20" id="CategoryWiseGrivenaceTableId"></div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="panel-body">
-				
-				<div  class="row">  
-					<div class="col-md-12">
-						<div class="table-responsive m_top20" id="CategoryWiseGrivenaceTableId"></div>
+			<div class="panel panel-default">
+				<div class="panel-heading headingColor">
+					<div  class="row">
+						<div class="col-md-10 m_top5">   
+							<h4 class="panel-title text-capital fontColor">Location wise Grievance Report </h4>  
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-success btn-sm" onclick="generateExcel1();">
+								<i class="glyphicon glyphicon-download-alt"></i> Download
+							</button>   
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div  class="row">
+						<div class="col-md-12">
+							<div class="table-responsive m_top20" id="grivenaceTableId"></div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading headingColor">
-				<div  class="row">
-					<div class="col-md-10 m_top5">   
-						<h4 class="panel-title text-capital fontColor">Location wise Grievance Report </h4>  
+			<div class="panel panel-default">
+				<div class="panel-heading headingColor">
+					<div class="row">
+						<div class="col-md-8 m_top5">   
+							<h4 class="panel-title text-capital fontColor">Date wise Grievance Report </h4>
+						</div>
+						<div class="col-md-2">
+							<select id="selectDistrictId" class="selectpicker" onChange="getDistrintInformation();"></select>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-success btn-sm" onclick="generateExcel2();">
+								<i class="glyphicon glyphicon-download-alt"></i> Download
+							</button>   
+						</div>
 					</div>
-					<div class="col-md-2">
-						<button class="btn btn-success btn-sm" onclick="generateExcel1();">
-							<i class="glyphicon glyphicon-download-alt"></i> Download
-						</button>   
+				</div>
+				<div class="panel-body">
+					<div  class="row">
+						<div class="col-md-12">
+							<div class="table-responsive m_top20" id="dayWiseGrivenaceTableId"></div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="panel-body">
-				<div  class="row">
-					<div class="col-md-12">
-						<div class="table-responsive m_top20" id="grivenaceTableId"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="panel panel-default">
-			<div class="panel-heading headingColor">
-				<div class="row">
-					<div class="col-md-8 m_top5">   
-						<h4 class="panel-title text-capital fontColor">Date wise Grievance Report </h4>
-					</div>
-					<div class="col-md-2">
-						<select id="selectDistrictId" class="selectpicker" onChange="getDistrintInformation();">  
-							<option value="0">All</option>
-							<option value="11">Srikakulam</option>
-							<option value="12">Vizianagaram</option>
-							<option value="13">Visakhapatnam</option>
-							<option value="14">East Godavari</option>
-							<option value="15">West Godavari</option>
-							<option value="16">Krishna</option>
-							<option value="17">Guntur</option>
-							<option value="18">Prakasam</option>
-							<option value="19">Nellore</option>
-							<option value="20">Kadapa</option>
-							<option value="21">Kurnool</option>
-							<option value="22">Anantapur</option>
-							<option value="23">Chittoor</option>
-							<option value="517">Visakhapatnam Rural</option>
-						</select>
-					</div>
-					<div class="col-md-2">
-						<button class="btn btn-success btn-sm" onclick="generateExcel2();">
-							<i class="glyphicon glyphicon-download-alt"></i> Download
-						</button>   
-					</div>
-				</div>
-			</div>
-			<div class="panel-body">
-				<div  class="row">
-					<div class="col-md-12">
-						<div class="table-responsive m_top20" id="dayWiseGrivenaceTableId"></div>
-					</div>
-				</div>
-			</div>
-		</div>
-					
-				
-				
-				
-			
-	   </div>
-		
-    </section>
-	<input type="hidden" id="dateRangeId" value="day"></input> 
+		</section>
+		<input type="hidden" id="dateRangeId" value="day"></input> 
       <!-- Modal -->
-<div class="modal fade" id="bellowLvlLocId" role="dialog">  
-    <div class="modal-dialog modal-lg">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" id="bellowLvlLocationId">Modal Header</h4>
-        </div>
-        <div class="modal-body" id="tehsilTableId"></div>   
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
- </div>
+	<div class="modal fade" id="bellowLvlLocId" role="dialog">  
+		<div class="modal-dialog modal-lg">
+		  <!-- Modal content-->
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			  <h4 class="modal-title" id="bellowLvlLocationId">Modal Header</h4>
+			</div>
+			<div class="modal-body" id="tehsilTableId"></div>   
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		  </div>
+		  
+		</div>
+	</div>
 <!-- Modal -->
    <div class="modal fade" id="grievanceDtlsModalId" role="dialog">
     <div class="modal-dialog modal-lg">
