@@ -8294,6 +8294,38 @@ public List<IdNameVO> getStatusByType(String type){
 	}
 	return finalList;
 }
+public List<IdNameVO> getDeptListForGreivanceReport(Long userId){
+	try{
+		List<Object[]> deptList = govtAlertDepartmentLocationNewDAO.getDeptIdAndNameForUserAccessLevel(userId);
+		Set<Long> deptIdList = new HashSet<Long>();
+		if(deptList != null && deptList.size() > 0){
+			for(Object[] param : deptList){
+				deptIdList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+			}
+		}
+		List<Object[]> list = null;
+		if(deptIdList != null && deptIdList.size() > 0){
+			list = govtDepartmentDesignationOfficerDetailsNewDAO.getDeptListForGreivanceReport(deptIdList);
+		}
+		List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+		 IdNameVO idNameVO = null;
+		 if(list != null && list.size() > 0){
+			 for(Object[] param : list){
+				 if(param[0] != null){
+					 idNameVO = new IdNameVO();
+					 idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					 idNameVOs.add(idNameVO);
+				 }
+			 }
+		 }
+		 return idNameVOs;
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured getDeptListForGreivanceReport() method of AlertManagementSystemService",e);
+	}
+	return null;
+}
 public FilterSectionVO getFilterSectionAlertNewDetails(){
 	 FilterSectionVO filterVo =new FilterSectionVO();
 	try {
