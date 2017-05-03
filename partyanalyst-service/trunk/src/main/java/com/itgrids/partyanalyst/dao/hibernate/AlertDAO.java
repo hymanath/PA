@@ -7676,9 +7676,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        if(statusIdList != null && statusIdList.size()>0){
 				        	queryStr.append(" A.alert_status_id as alert_status_id, " );//3
 				        }
-				       /* if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
-				        	queryStr.append(" ASTS.alert_sub_task_status_id as alert_sub_task_status_id,"); //3
-				        }*/
+				        if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
+				        	queryStr.append(" ASTS.alert_sub_task_status_id as alert_status_id,"); //3
+				        }
 				        queryStr.append("  ALTS.alert_status as alert_status, " +//4
 				        " A.alert_category_id as alert_category_id, " +//5
 				        " AC.category as category, " +//6
