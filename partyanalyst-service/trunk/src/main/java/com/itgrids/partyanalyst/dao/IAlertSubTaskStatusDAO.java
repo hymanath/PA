@@ -10,4 +10,5 @@ public interface IAlertSubTaskStatusDAO extends GenericDao<AlertSubTaskStatus, L
 	public List<Object[]> getAlertStatusDtlsBasidOnAlertIds(List<Long> statusIds);
 	public List<Object[]> getAllSubTaskStatus();
 	public List<Object[]> getAllSubTaskStatus1();
+	public List<Object[]> getAlertSubStatusDtls();
 }
