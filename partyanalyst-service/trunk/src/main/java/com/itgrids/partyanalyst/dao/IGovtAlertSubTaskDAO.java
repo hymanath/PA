@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import java.util.List;
 
@@ -86,4 +87,5 @@ public interface IGovtAlertSubTaskDAO extends GenericDao<GovtAlertSubTask, Long>
 			   ,Long statusId,List<Long> calCntrIds);
  	public List<Object[]> getSubOrdinateFilterSubTasksDetails(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
 			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList);
+ 	 public List<Object[]> getSubTaskStatusIds(Set<Long> alertSet);
 }
