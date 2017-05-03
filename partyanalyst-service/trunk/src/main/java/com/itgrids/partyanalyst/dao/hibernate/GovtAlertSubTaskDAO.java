@@ -3588,34 +3588,35 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	   				        " A.updated_time as updated_time, " +//2
 	   				        " A.alert_sub_task_status_id as alert_status_id, " +//3
 	   				        " ALTS.status as alert_status, " +//4
-	   				        " A.alert_category_id as alert_category_id, " +//5
+	   				        " model.alert_category_id as alert_category_id, " +//5
 	   				        " AC.category as category, " +//6
 	   				        " AIS.alert_impact_scope_id as alert_impact_scope_id, " +//7
 	   				        " AIS.impact_scope as impact_scope, " +//8
-	   				        " A.title as title, " +//9
+	   				        " model.title as title, " +//9
 	   				        " C.name as name, " +//10
 	   				        " D.district_name as district_name, " +//11
-	   				        " A.alert_sub_task_status_id as alert_source_id, " +//12
+	   				        " model.alert_source_id as alert_source_id, " +//12
 	   				        " ALTSRC.source as source, " +//13
 	   				        " 0 as edition_type_id, " +//14
 	   				        " '' as edition_type, " +//15
 	   				        " EDS.edition_id as edition_id, " +//16
 	   				        " EDS.edition_alias as edition_alias, " +//17
-	   				        " A.tv_news_channel_id as tv_news_channel_id, " +//18
+	   				        " model.tv_news_channel_id as tv_news_channel_id, " +//18
 	   				        " TNC.channel_name as channel_name," + //19
 	   				        " S.state_name, "+ //20
 	   					 	" T.tehsil_name as tehsilName, " +//21
 	   				        " P.panchayat_name as panchayatName, " +//22
 	   				        " LEB.name as localElectionBodyNeme, " +//23
 	   				        " ALTSVR.severity_color as severityColor, "+ //24
-	   						" ALTS.alert_color as color"); //25
-	   		queryStr.append(" from govt_alert_sub_task A ");  
-	   		queryStr.append(" left outer join tv_news_channel TNC on A.tv_news_channel_id = TNC.tv_news_channel_id ");//
-	   		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");//
-	   		queryStr.append(" left outer join alert_sub_task_status ALTSRC on ALTSRC.alert_sub_task_status_id = A.alert_sub_task_status_id ");//
-	   		queryStr.append(" left outer join alert_impact_scope AIS on AIS.alert_impact_scope_id = A.impact_scope_id ");//
-	   		queryStr.append(" left outer join alert_severity ALTSVR on ALTSVR.alert_severity_id = A.alert_severity_id ");//
-	   		queryStr.append(" left outer join user_address UA on A.address_id=UA.user_address_id ");//
+	   						" ALTS.color as color"); //25
+	   		queryStr.append(" from govt_alert_sub_task A ");
+	   		queryStr.append(" left outer join alert model on model.alert_id = A.alert_id ");//
+	   		queryStr.append(" left outer join tv_news_channel TNC on model.tv_news_channel_id = TNC.tv_news_channel_id ");//
+	   		queryStr.append(" left outer join editions EDS on EDS.edition_id =model.edition_id ");//
+	   		queryStr.append(" left outer join alert_source ALTSRC on ALTSRC.alert_source_id = model.alert_source_id ");//
+	   		queryStr.append(" left outer join alert_impact_scope AIS on AIS.alert_impact_scope_id = model.impact_scope_id ");//
+	   		queryStr.append(" left outer join alert_severity ALTSVR on ALTSVR.alert_severity_id = model.alert_severity_id ");//
+	   		queryStr.append(" left outer join user_address UA on model.address_id=UA.user_address_id ");//
 	   		queryStr.append(" left outer join state S on UA.state_id=S.state_id ");//
 	   		queryStr.append(" left outer join district D on D.district_id = UA.district_id ");//
 	   		queryStr.append(" left outer join constituency C on C.constituency_id = UA.constituency_id ");//
@@ -3623,9 +3624,10 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	   		queryStr.append(" left outer join panchayat P on P.panchayat_id = UA.panchayat_id ");//
 	   		queryStr.append(" left outer join local_election_body LEB on LEB.local_election_body_id = UA.local_election_body ");//
 	   		queryStr.append(" join alert_sub_task_status ALTS on A.alert_sub_task_status_id=ALTS.alert_sub_task_status_id ");//
-	   		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
-	   		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");//
-	   		queryStr.append(" join alert model on model.alert_id = A.alert_id ");
+	   		queryStr.append(" join govt_department GD on GD.govt_department_id = model.govt_department_id ");
+	   		queryStr.append(" join alert_category AC on AC.alert_category_id = model.alert_category_id ");//
+	   		//queryStr.append(" join alert model on model.alert_id = A.alert_id ");
+	   		//queryStr.append(" join tv_news_channel TNC on model.tv_news_channel_id = TNC.tv_news_channel_id ");
 	   		queryStr.append(" where ");
 	   		queryStr.append(" A.alert_id in (:alertSet) ");
 	   		Query query = getSession().createSQLQuery(queryStr.toString())
