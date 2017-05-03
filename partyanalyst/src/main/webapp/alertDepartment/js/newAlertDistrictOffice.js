@@ -115,7 +115,7 @@ $("#dateRangePickerAUM").daterangepicker({
 		
 		}
 		buildDistrictOfficerAlertsCountView(result);
-		
+		//getDepartmentLevels1();
     });
 }
 
@@ -939,6 +939,8 @@ $(document).on("click",".switch-btn-alertType li",function(){
 $(document).on("click",".switch-btn li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
+		//$("#filterMainDiv").show();
+		//assignUser1();
 		var departmentId = $(this).attr("attr_department_id");
 		var parentIdStr = $(this).attr("attr_level_idstr").split(',');
 		var searchType =  $(this).attr("attr_type");
@@ -1781,3 +1783,376 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		}
 	});
 }
+
+//getSubOrdinateFilterAlertsOverview();
+function getSubOrdinateFilterAlertsOverview(){
+	
+  var lvelIds = [];
+  var deginaIds = [];
+  var levelValues = [];
+  var deptIds = [];
+  var statusIds = [];
+  
+  var paperIdArr = [];
+  var chanelIdArr = [];
+  var callCenterArr = [];
+  //lvelIds.push(7);
+  //levelValues.push(2);
+  deptIds.push(49);
+  //statusIds.push(3);
+ // deginaIds.push(1);
+  
+  var lvelIds = [];
+	var deginaIds = [];
+	var levelValues = [];
+	var deptIds = [];
+	var statusIds = [];
+	
+	/* var priorityId = $("#PriorityId").val();
+	var lagChckedValue =$("#lagDaysId").is(':checked') ? 1 : 0;
+	var checkedValue;
+		if(lagChckedValue == 1){
+			checkedValue = "true";
+		}else{
+			checkedValue = "false";
+		}
+		alert(lagChckedValue);
+	var moreDAysChckedValue =$("#moreDaysId").is(':checked') ? 1 : 0;
+ 	  if(moreDAysChckedValue == 1){
+			checkedValue = "true";
+		}else{
+			checkedValue = "false";
+		}
+	lvelIds.push($("#locationLevelSelectedId").val());
+	levelValues.push($("#locationSubLevelSelectedId").val());
+	deptIds.push(49);
+	statusIds.push($("#statusSelectedId").val());
+	deginaIds.push($("#designationsWiseId").val()); */
+  
+  var jsObj = {
+    fromDate : "01/01/2016",
+    toDateStr : "28/04/2017",
+    govtLevelIds :lvelIds ,
+    locationValues : levelValues,
+    desigIds : deginaIds,
+    statusIds : statusIds,
+    deptIds : deptIds,
+    priorityId : 0,
+    lagStartCnt : 0,
+    lagEndCnt : 0,
+    alertType : "alert",
+    isMoreThanYrChkd : "false",
+    isLagChkd : "false",
+	paperIdArr:paperIdArr,
+	chanelIdArr:chanelIdArr,
+	callCenterArr:callCenterArr
+    
+  }
+	$.ajax({
+		type:'GET',
+		url: 'getSubOrdinateFilterAlertsOverviewAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildSubOrdinateFilterAlertsOverview(result);
+		}
+	});
+}
+function buildSubOrdinateFilterAlertsOverview(result)
+{
+	var str='';
+	str+='<table class="table table-bordered">';
+		str+='<thead>';
+			str+='<th>Level</th>';
+			str+='<th>Location</th>';
+			str+='<th>Designation</th>';
+			str+='<th>Total</th>';
+			for(var i in result[0].list1[0].list2[0].subList1)
+			{
+				str+='<th>'+result[0].list1[0].list2[0].subList1[i].name+'</th>';
+			}
+			
+		str+='</thead>';
+			for(var i in result)
+			{
+				
+				for(var j in result[i].list1)
+				{
+					
+					for(var k in result[i].list1[j].list2)
+					{
+						str+='<tr>';
+								str+='<td>'+result[i].list1[j].name+'</td>';
+								str+='<td>'+result[i].list1[j].list2[k].name+'</td>';
+								str+='<td>'+result[i].name+'</td>';
+								str+='<td>0</td>';
+						for(var l in result[i].list1[j].list2[k].subList1)
+						{
+							
+								str+='<td>'+result[i].list1[j].list2[k].subList1[l].count+'</td>';
+							
+						}
+						str+='</tr>';
+					}
+				}
+			}
+		
+	str+='</table>';
+	$("#testingDemo").html(str);
+}
+
+//assignUser1();
+function assignUser1()
+{
+	var str='';
+	str+='<div class="row" id="filterMainDiv">';
+	
+				str+='<div id="filterDivId">';  
+					str+='<div class="col-sm-12">';
+						str+='<div id="assignErrorDivId"></div>';
+					str+='</div>';
+					/* str+='<div class="col-sm-3 m_top10">';
+						str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
+						str+='<select  class="chosenSelect" id="departmentSelectedId">';
+							str+='<option></option>';
+						str+='</select>';
+					str+='</div>'; */
+					str+='<div class="col-sm-3 m_top10">';
+						str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+						str+='<select  class="chosenSelect" id="locationLevelSelectedId" name="alertAssigningVO.levelId">	';
+							str+='<option></option>';
+						str+='</select>';
+					str+='</div>';
+					str+='<div id="parentLevelDivId"> </div>';
+					str+='<div class="col-sm-3 m_top10">';
+						str+='<label>Status<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgStusId"></span></label>';
+						str+='<select  class="chosenSelect" id="statusSelectedId">';
+							str+='<option></option>';
+						str+='</select>';
+					str+='</div>';
+					str+='<div class="col-sm-3 m_top10">';
+						str+='<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDesgId"></span></label>';
+						str+='<select  id="designationsWiseId" class="chosenSelect">';
+							str+='<option></option>	';
+						str+='</select>';
+					str+='</div>';
+					str+='<div class="col-sm-3 m_top10">';
+						str+='<label>Priority<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
+						str+='<select class="chosenSelect" id="PriorityId" >	';
+							str+='<option value="0">Select Priority</option>';
+							str+='<option value="1">High</option>';
+							str+='<option value="2">Medium</option>';
+							str+='<option value="3">Low</option>';
+						str+='</select>';
+					str+='</div>';
+					str+='<div class="col-sm-3 m_top10">';
+						str+='<label>Date<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDateId"></span></label>';
+						str+='<div class="input-group">';
+							str+='<span class="input-group-addon">';
+								str+='<i class="glyphicon glyphicon-calendar"></i>';
+							str+='</span>';
+							str+='<input type="text" class="form-control" id="dateRangeId"/>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-12 m_top20">';
+						str+='<label class="checkbox-inline"><input type="checkbox" name="lagDays" id="lagDaysId"/>Lag Days</label>';
+						str+='<div id="tourSlider"></div>';
+						str+='<label class="checkbox-inline pull-right"><input type="checkbox" name="MoreDays" id="moreDaysId"/>More than 365 Days</label>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		
+		
+	//str+='<div class="panel-footer text-right pad_5 border_1 bg_EE">';
+		//str+='<button class="btn btn-primary btn-sm text-capital" id="assignOfficerId" type="button">getDeatils</button>';
+		//str+='<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="assiningLdngImg">';
+		//str+='<span class="text-success" id="assignSuccess"></span>';
+	
+	str+='</div>';
+	$("#assignedUser1").html(str);
+	$(".chosenSelect").chosen({width:'100%'});
+	//$('#displayAssignIconId').show();
+	$("#dateRangeId").daterangepicker({
+		singleDatePicker : true
+	});
+	$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 0, max: 365},defaultValues:{min: 0, max: 180}});
+}
+$(document).on('change', '#locationLevelSelectedId', function(){
+		
+		getParentLevelsOfLevel1($(this).attr('id'));
+	});
+$(document).on('change','.locationCls1', function(evt, params) {
+		//designationsByDepartments();
+		getStatus();
+});
+function getParentLevelsOfLevel1(buildId){
+	var jsObj = {
+		departmentId : globalDepartmentId,
+		levelId : $("#"+buildId+"").val()
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getParentLevelsOfLevelAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildParentLevelsOfLevel1(result,globalDepartmentId,buildId);
+		}
+	});
+}
+function buildParentLevelsOfLevel1(result,globalDepartmentId,tempbuildId){
+	var buildId="parentLevelDivId";
+	var str='';		
+		for(var i in result){
+			if(i<result.length-1){
+				str+='<div class="col-sm-3 m_top10">';
+					str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+					str+='<select  class="chosenSelect" id="locationSubLevelSelectedId'+result[i].id+'" onchange="getGovtSubLevelInfo1('+globalDepartmentId+','+result[i].id+')"  ></select>';
+				str+='</div>';
+			}else{
+				str+='<div class="col-sm-3 m_top10">';
+					str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
+					str+='<select class="chosenSelect locationCls1" id="locationSubLevelSelectedId'+result[i].id+'"></select>';
+				str+='</div>';
+			}
+		}
+		
+	$("#"+buildId+"").html(str);
+	$(".chosenSelect").chosen();
+	
+	for(var i in result){
+		
+		if(result[i].idnameList !=null && result[i].idnameList.length>0){
+			var newStr='';		
+			newStr+='<option value="0">Select '+result[i].name+'</option>';
+			for(var j in result[i].idnameList){
+				 newStr+='<option value="'+result[i].idnameList[j].id+'">'+result[i].idnameList[j].name+'</option>';
+			}			
+			$("#locationSubLevelSelectedId"+result[i].id+"").html(newStr);
+			$("#locationSubLevelSelectedId"+result[i].id+"").trigger("chosen:updated");
+		}
+	}
+	
+}
+
+function getDepartmentLevels1(){
+	var jsObj = {
+		departmentId : globalDepartmentId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getlevlsForDepartmntAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildDepartmentLevels1(result);
+		}
+	});
+	
+}
+function buildDepartmentLevels1(result){
+	var str='';	
+	str+='<option value="0">Select Level</option>';
+	for(var i in result){
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+	}	
+	$("#locationLevelSelectedId").html(str);
+	$("#locationLevelSelectedId").trigger("chosen:updated");
+		
+}
+function designationsByDepartments()
+{
+	$("#designationsWiseId").empty();
+	$("#designationsWiseId").trigger("chosen:updated");
+	var LevelId = $("#locationLevelSelectedId").chosen().val();
+	var deprtmntId = globalDepartmentId;
+	var levelValue = $(".locationCls1").chosen().val();
+	var jsObj = {
+		departmentId	: deprtmntId,
+		levelId			: LevelId,
+		levelValue			: levelValue
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getDesignationsByDepartmentNewAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		var str='';
+		str+='<option value="0">Select Designation</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#designationsWiseId").html(str);
+		$("#designationsWiseId").trigger("chosen:updated");
+	});
+}
+function getGovtSubLevelInfo1(departmentId,levelId){
+	$("#designationsWiseId").empty();
+	$("#designationsWiseId").trigger("chosen:updated");	
+	
+	var levelValue=$("#locationSubLevelSelectedId"+levelId+"").val();	
+	
+	var jsObj = {
+		departmentId : departmentId,
+		levelId :levelId,
+		levelValue:levelValue
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getGovtSubLevelInfoAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null){
+			buildGovtSubLevelInfoAction1(result);
+		}
+			
+	});
+}
+function buildGovtSubLevelInfoAction1(result){
+	
+	var str='';
+	if(result !=null){		
+		if(result.idnameList !=null && result.idnameList.length>0){
+			str+='<option value="0">Select '+result.name+'</option>';
+			for(var i in result.idnameList){
+				str+='<option value="'+result.idnameList[i].id+'">'+result.idnameList[i].name+'</option>';
+			}
+		}
+		
+		$("#locationSubLevelSelectedId"+result.id+"").html(str);
+		$("#locationSubLevelSelectedId"+result.id+"").trigger("chosen:updated");
+	}
+}
+//$(document).on('change', '#departmentSelectedId', function(){
+	//getDepartmentLevels1();
+//});
+function getStatus(){
+	
+	var jsObj = {
+		type : "alerts"
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getStatusByTypeAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildStatusForLevls(result);
+		}
+	});
+}
+function buildStatusForLevls(result){
+	var str='';	
+	str+='<option value="0">Select Status</option>';
+	for(var i in result){
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+	}	
+	$("#statusSelectedId").html(str);
+	$("#statusSelectedId").trigger("chosen:updated");
+}
+$(document).on("change","#statusSelectedId",function(){
+	designationsByDepartments();
+});
+
+

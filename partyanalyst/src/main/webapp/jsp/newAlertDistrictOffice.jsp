@@ -12,16 +12,18 @@
 <title>District Officer</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="govtCoreDashBoard/img/fevicon.png">
 <link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
-<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link rel="stylesheet" href="dist/css/font-awesome.css">
+<link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
+<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -127,11 +129,47 @@
 							</div>
 						</div>
 						<div id="departmentWiseLocationBlockId"></div>
+						<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12"> 	
+							<!--<div class="panel panel-default">-->
+								<!--<div class="panel-heading headingColor ">
+									<div class="row">
+										<div class="col-md-4 col-xs-12 col-sm-12">
+											<h4 class="panel-title text-capital fontColor">SUBORDINATE - ALERTS OVERVIEW</h4>
+										</div>
+										<div class="col-md-6 col-xs-12 col-sm-12">
+											<ul class="switch-btn pull-right">
+												<li attr_type="statusWise">status overview</li>
+												<li attr_type="scopeWise" class="active">location level</li>
+												
+											</ul>
+										</div>
+										<div class="col-md-2 col-xs-12 col-sm-12 ">
+											<ul class="switch-btn-alertType pull-right">
+												<li  attr_type="alert" class="active">Alerts</li>
+												<li attr_type="subTask">Sub Tasks</li>
+												
+											</ul>
+										</div>
+									</div>
+								</div>-->
+								<div class="panel panel-default" style="display:none;">
+									<div class="panel-body">
+										<div class="row">
+											<div class="col-sm-12 col-xs-12 col-md-12"><!--srujana-->
+												<div id="assignedUser1"></div>
+											</div>	
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>			
 		</div>
 	</section>
+	<div id="testingDemo"></div>
 <div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document" style="width:85%;">
 		<div class="modal-content">
@@ -170,6 +208,8 @@
 <!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>

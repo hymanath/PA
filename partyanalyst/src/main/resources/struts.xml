@@ -17131,5 +17131,10 @@
   			<param name="root">idnameVoList</param>
   		</result>
    </action>
+	<action name="getSubOrdinateFilterAlertsOverviewAction" class="alertManagementSystemAction" method="getSubOrdinateFilterAlertsOverview">
+			<result type="json" name="success">		   
+				<param name="root">districtOfficeViewAlertVOList</param>
+			</result>	
+		</action>
  </package>
 </struts>
