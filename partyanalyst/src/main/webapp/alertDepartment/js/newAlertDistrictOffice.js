@@ -1805,7 +1805,7 @@ function getSubOrdinateFilterAlertsOverview(){
   var lvelIds = [];
 	var deginaIds = [];
 	var levelValues = [];
-	var deptIds = [];
+	
 	var statusIds = [];
 	
 	/* var priorityId = $("#PriorityId").val();
