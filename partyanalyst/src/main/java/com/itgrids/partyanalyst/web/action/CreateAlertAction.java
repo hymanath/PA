@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -95,9 +96,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<GovtDepartmentVO> govtDeptVoList = new ArrayList<GovtDepartmentVO>(0);
 	private List<AlertsSummeryVO> alertsSummeryVOList;
 	private AlertCoreDashBoardVO alertCoreDashBoardVO;
+	private IAlertManagementSystemService alertManagementSystemService;
 	
 	
 	
+	public IAlertManagementSystemService getAlertManagementSystemService() {
+		return alertManagementSystemService;
+	}
+
+	public void setAlertManagementSystemService(
+			IAlertManagementSystemService alertManagementSystemService) {
+		this.alertManagementSystemService = alertManagementSystemService;
+	}
+
 	public KeyValueVO getKeyValueVO() {
 		return keyValueVO;
 	}
@@ -2648,6 +2659,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	}
 	public String locationWiseGrivenceReport(){
 		try{
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			idNameVOList = alertManagementSystemService.getDeptListForGreivanceReport(userId);  
 			return Action.SUCCESS;
 		}catch(Exception e){
 			LOG.error("Excpetion raised at getGrievanceReport Method",e);
