@@ -15,6 +15,9 @@ public class FilterSectionVO implements Serializable{
 	private List<FilterSectionVO> categoryList = new ArrayList<FilterSectionVO>(0);
 	private List<FilterSectionVO> editionsList = new ArrayList<FilterSectionVO>(0);
 	private List<FilterSectionVO> tvNewsChannelList = new ArrayList<FilterSectionVO>(0);
+	private List<FilterSectionVO> locationLevelList = new ArrayList<FilterSectionVO>(0);
+	private List<FilterSectionVO> alertStatusList = new ArrayList<FilterSectionVO>(0);
+	private List<FilterSectionVO> alertSubTaskStatusList = new ArrayList<FilterSectionVO>(0);
 	public Long getId() {
 		return id;
 	}
@@ -56,6 +59,25 @@ public class FilterSectionVO implements Serializable{
 	}
 	public void setTvNewsChannelList(List<FilterSectionVO> tvNewsChannelList) {
 		this.tvNewsChannelList = tvNewsChannelList;
+	}
+	public List<FilterSectionVO> getLocationLevelList() {
+		return locationLevelList;
+	}
+	public void setLocationLevelList(List<FilterSectionVO> locationLevelList) {
+		this.locationLevelList = locationLevelList;
+	}
+	public List<FilterSectionVO> getAlertStatusList() {
+		return alertStatusList;
+	}
+	public void setAlertStatusList(List<FilterSectionVO> alertStatusList) {
+		this.alertStatusList = alertStatusList;
+	}
+	public List<FilterSectionVO> getAlertSubTaskStatusList() {
+		return alertSubTaskStatusList;
+	}
+	public void setAlertSubTaskStatusList(
+			List<FilterSectionVO> alertSubTaskStatusList) {
+		this.alertSubTaskStatusList = alertSubTaskStatusList;
 	}
 	
 	
