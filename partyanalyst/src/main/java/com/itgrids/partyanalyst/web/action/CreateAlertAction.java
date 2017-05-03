@@ -2806,4 +2806,18 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS; 
 	}
+	public String getDistIdAndNameList(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDateStr=jObj.getString("fromDate");
+			String toDateStr=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			Long stateId=jObj.getLong("stateId");
+			idNameVOList = alertService.getDistrictList( fromDateStr,toDateStr,stateId,  deptId,sourceId);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getTotalAlertGroupByCategoryThenStatus Method",e);
+		}
+		return Action.SUCCESS; 
+	}
 }
