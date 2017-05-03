@@ -5013,26 +5013,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				  setAlertStatusByAlertType(rtrnAlertStatusObjLst,alertStatusIds);
 			    }
 			   
-			  prepareTemplate(rtrnAlertCategoryObjLst,implactLevelList,rtrnAlertStatusObjLst,categoryMap);////Prepare Template 
-			  /*  boolean isGhmcImpactLeve = false;
-				if(impactScopeIds.contains(8l)){
-					impactScopeIds.remove(8l);
-					isGhmcImpactLeve = true;
-				}
-				if(impactScopeIds.size() > 0){*/
+			  		 prepareTemplate(rtrnAlertCategoryObjLst,implactLevelList,rtrnAlertStatusObjLst,categoryMap);////Prepare Template 
+			
+			  
 					  List<Object[]> rtrnImpactLevelCntObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds,"allImpact");
 					  setAlertImpactLevelWiseAlertCnt(rtrnImpactLevelCntObjLst,categoryMap); 
 					  List<Object[]> rtrnImpctLvlSttusWsCntObjLst = alertDAO.getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds,"allImpact");
 					  setStatusWiseAlertCnt(rtrnImpctLvlSttusWsCntObjLst,categoryMap);
-				//}
-			/*	if(isGhmcImpactLeve){
-					  impactScopeIds.clear();
-					  impactScopeIds.add(8l);
-					  List<Object[]> rtrnGHMCObjLst = alertDAO.getAlertCntByAlertCategoryAndImpactLevelWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds,"GHMC");
-					  setAlertImpactLevelWiseAlertCnt(rtrnGHMCObjLst,categoryMap); 
-					  List<Object[]> rtrnGHMCSttusWsCntObjLst = alertDAO.getAlertCntByAlertCategoryImpactLevelAndStatusWiseBasedOnUserAccessLevel(locationAccessLevelId,locationValues,stateId,fromDate, toDate,alertTypeList,editionList,alertStatusIds,impactScopeIds,"GHMC");
-					  setStatusWiseAlertCnt(rtrnGHMCSttusWsCntObjLst,categoryMap);
-				}*/
+		
 			  //remove alert category which does not contain any alert count in all impact level.
 			  if(categoryMap != null && categoryMap.size() > 0){
 				  for(Entry<Long,AlertOverviewVO> entry:categoryMap.entrySet()){
@@ -8554,19 +8542,12 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  				inputVO.setFromDate(fromDate);
  				inputVO.setToDate(toDate);
  				inputVO.setImpactLevelIds(new ArrayList<Long>(impactLevelIds));
- 			/*	boolean isGhmcImpactLeve = false;
- 				if(inputVO.getImpactLevelIds().contains(8l)){
-					inputVO.getImpactLevelIds().remove(8l);
-					isGhmcImpactLeve = true;
-				}*/
  				inputVO.setEditionList(getEditionList(editionId));
  				inputVO.setAlertStatusIds(alertStatusIds);
  				inputVO.setAlertTypeId(alertTypeId);
  				//Preparing required templated
  				resultVO.setName("STATE OVERVIEW - IMPACT ALERTS");
- 			/*	if(isGhmcImpactLeve){
-					impactLevelIds.add(8l);
-				}*/
+ 			
  				prepareImpactLevelWiseTemplate(getAlertImpactLevelWiseLocationSubTemplate(impactLevelIds),resultVO);
  				//if(inputVO.getImpactLevelIds().size() > 0){
  					List<Object[]> rtrnObjLst = alertDAO.getImpactLevelByAlertCount(inputVO,"State","");
@@ -8575,17 +8556,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  	 						setAlertAlertCount(resultVO,commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
  	 					}
  	 				}
- 	 			//}
- 				/*if(isGhmcImpactLeve){
- 					inputVO.getImpactLevelIds().clear();
-					inputVO.getImpactLevelIds().add(8l);
-					List<Object[]> ghmcOjLst = alertDAO.getImpactLevelByAlertCount(inputVO,"State","GHMC");
-	 				if(ghmcOjLst != null && ghmcOjLst.size() > 0){
-	 					for(Object[] param:ghmcOjLst){
-	 						setAlertAlertCount(resultVO,commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
-	 					}
-	 				}
-				}*/
+ 	 			
  				//Calculating overall alert
  				if(resultVO.getSubList1() != null && resultVO.getSubList1().size() > 0){
  					for(AlertOverviewVO impactVO:resultVO.getSubList1()){
@@ -8644,33 +8615,15 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
  				inputVO.setAlertStatusIds(alertStatusIds);
 				inputVO.setAlertTypeId(alertTypeId);
 				inputVO.setDistrictId(disctrictId);
-				//boolean isGhmcImpactLeve = false;
 				if(resultType != null && resultType.equalsIgnoreCase("District")){
-					/*if(inputVO.getImpactLevelIds().contains(8l)){
-						inputVO.getImpactLevelIds().remove(8l);
-						isGhmcImpactLeve = true;
-					}*/
 					resultVO.setName("DISTRICT OVERVIEW - IMPACT ALERTS");
 					inputVO.setDistrictId(locationValue);	
 				}else if(resultType.equalsIgnoreCase("Constituency")){
 					resultVO.setName("CONSTITUENCY OVERVIEW - IMPACT ALERTS");
 					inputVO.setConstituencyId(locationValue);
 				}
-				//if(inputVO.getImpactLevelIds().size() > 0){
 					List<Object[]> rtrnObjLst = alertDAO.getImpactLevelByAlertCount(inputVO,resultType,"");
 					setLocationLevelWiseData(rtrnObjLst,locationMap,impactLevelIds);
-				//}
-				/*if(resultType != null && resultType.equalsIgnoreCase("District")){
-					if(isGhmcImpactLeve){
-						List<Long> impactLevelIdList = new ArrayList<Long>(0);
-						impactLevelIdList.addAll(impactLevelIds);
-						inputVO.getImpactLevelIds().clear();
-						inputVO.getImpactLevelIds().add(8l);
-						List<Object[]> ghmcData = alertDAO.getImpactLevelByAlertCount(inputVO,resultType,"GHMC");
-						impactLevelIdList.add(8l);
-						setLocationLevelWiseData(ghmcData,locationMap,impactLevelIdList);
-					}
-				}*/
 				
 				if(locationMap != null && locationMap.size() > 0){
 					 resultVO.setSubList1(new ArrayList<AlertOverviewVO>(locationMap.values()));
