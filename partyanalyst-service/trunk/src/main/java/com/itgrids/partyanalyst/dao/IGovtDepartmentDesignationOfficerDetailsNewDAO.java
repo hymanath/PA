@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -28,4 +29,5 @@ public interface IGovtDepartmentDesignationOfficerDetailsNewDAO extends GenericD
 	public List<String> getHigherOfficerMobileNums(List<Long> designationIds,Long locationTypeId,List<Long> levelValuesList);
 	public List<Long> getuserIdDtlsForDesignationOfficerId(Long assignedOfficerId);
 	public String getLocationNameByAssignedOficer(Long officerId);
+	public List<Object[]> getDeptListForGreivanceReport(Set<Long> deptIdList);
 }
