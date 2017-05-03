@@ -753,6 +753,7 @@
 		<pattern>/agentWiseReportAction*</pattern> 
 		<pattern>/locationWiseReportAction*</pattern>
 		<pattern>/createGrievance*</pattern>
-		<pattern>/locationWiseGrivenceReportAction*</pattern>      
+		<pattern>/locationWiseGrivenceReportAction*</pattern>
+		<pattern>/createSocialAlert*</pattern>      
 	 </decorator>
 </decorators>
