@@ -17150,5 +17150,15 @@
   			<param name="root">idNameVOList</param>
   		</result>
    </action>
+	<action name="getTotalAlertByStatusNewAction1" class="alertManagementSystemAction" method="getTotalAlertByStatusNew">
+  	  	<result type="json" name="success">		   
+		    	<param name="root">alertCoreDashBoardVOs</param>
+	  	</result>	
+  	</action>
+  	<action name="getFilterSectionAlertNewDetailsAction" class="alertManagementSystemAction" method="getFilterSectionAlertNewDetails">
+			<result type="json" name="success">
+				<param name="root">filterDetilsList</param>     
+			</result>
+    </action>
  </package>
 </struts>
