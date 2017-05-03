@@ -1,13 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerDetailsNew;
-import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
 
 public class GovtDepartmentDesignationOfficerDetailsNewDAO extends GenericDaoHibernate<GovtDepartmentDesignationOfficerDetailsNew, Long>
 		implements IGovtDepartmentDesignationOfficerDetailsNewDAO {
@@ -382,5 +382,17 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		query.setParameter("officerId", officerId);
 		return (String) query.uniqueResult();
 	}
-	
+	public List<Object[]> getDeptListForGreivanceReport(Set<Long> deptIdList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId, " +
+						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName " +
+						" from GovtDepartmentDesignationOfficerDetailsNew model " +
+						" where" +
+						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:deptIdList)" +
+						" and model.isDeleted = 'N' ");
+		//queryStr.append(" and model.deptActive = 'Y' ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("deptIdList", deptIdList);
+		return query.list();
+	}
 }
