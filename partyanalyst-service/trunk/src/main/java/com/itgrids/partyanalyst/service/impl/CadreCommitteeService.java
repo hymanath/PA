@@ -15548,7 +15548,7 @@ return mandalList;
 
 												committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
 												
-												//committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
+												committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
 												committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 												committeeVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 												committeeVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
