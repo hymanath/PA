@@ -144,4 +144,5 @@ public interface IAlertService {
     public List<AlertOverviewVO> getTotalAlertGroupByCategoryThenStatus(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId);
     public List<IdNameVO> getDistrictList(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId);
     public List<IdNameVO> getAllDepts();
+    public String saveSocialAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
 }

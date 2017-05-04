@@ -51,16 +51,10 @@ public class GrievanceAlertVO {
 	private String leb;
 	private String ward;
 	private Long alertId;
-	
 	private String locationTypeStr;
+	private Long socialMediaTypeId;
+	private String accountId;
 	
-	
-	public String getLocationTypeStr() {
-		return locationTypeStr;
-	}
-	public void setLocationTypeStr(String locationTypeStr) {
-		this.locationTypeStr = locationTypeStr;
-	}
 	public String getState() {
 		return state;
 	}
@@ -330,6 +324,24 @@ public class GrievanceAlertVO {
 	}
 	public void setAlertId(Long alertId) {
 		this.alertId = alertId;
+	}
+	public String getLocationTypeStr() {
+		return locationTypeStr;
+	}
+	public void setLocationTypeStr(String locationTypeStr) {
+		this.locationTypeStr = locationTypeStr;
+	}
+	public String getAccountId() {
+		return accountId;
+	}
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
+	public Long getSocialMediaTypeId() {
+		return socialMediaTypeId;
+	}
+	public void setSocialMediaTypeId(Long socialMediaTypeId) {
+		this.socialMediaTypeId = socialMediaTypeId;
 	}
 	
 	

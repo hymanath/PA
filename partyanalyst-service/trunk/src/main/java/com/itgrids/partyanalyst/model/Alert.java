@@ -84,6 +84,10 @@ public class Alert extends BaseModel implements Serializable {
 	private Long alertIssueSubTypeId;
 	private User userId;
 	
+	private Long socialMediaTypeId;
+	private SocialMediaType socialMediaType;
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "alert_id", unique = true, nullable = false)
@@ -594,6 +598,29 @@ public class Alert extends BaseModel implements Serializable {
 	public void setUserId(User userId) {
 		this.userId = userId;
 	}
+
+	@Column(name = "social_media_type_id")
+	public Long getSocialMediaTypeId() {
+		return socialMediaTypeId;
+	}
+
+	public void setSocialMediaTypeId(Long socialMediaTypeId) {
+		this.socialMediaTypeId = socialMediaTypeId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "social_media_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public SocialMediaType getSocialMediaType() {
+		return socialMediaType;
+	}
+
+	public void setSocialMediaType(SocialMediaType socialMediaType) {
+		this.socialMediaType = socialMediaType;
+	}
+	
+	
 
 	
 }
