@@ -60,6 +60,22 @@ public class GovtOfficerSubTaskTrackingDAO extends GenericDaoHibernate<GovtOffic
     			+ " from GovtOfficerSubTaskTracking model "
     			+ " left join model.alertDepartmentComment comment " +
     			"   left join model.alertDepartmentDocument alertDepartmentDocument "
+    			+ " where model.govtAlertSubTaskId in (:subTaskIdsList) ");
+    	query.setParameterList("subTaskIdsList", subTaskIdsList);
+    	return query.list();
+	}
+	
+	public List<Object[]> getSubTasksCommentsAndStatusHistory(List<Long> subTaskIdsList){
+		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
+    	Query query = getSession().createQuery(" select  distinct model.govtAlertSubTaskId, model.govtAlertSubTask.alertSubTaskStatus.status," +
+    			"comment.comment,"
+    			+ " model.insertedTime,model.govtAlertSubTask.subTaskGovtOfficer.officerName,model.govtAlertSubTask.subTaskGovtOfficer.mobileNo,"
+    			+ " model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName"
+    			+ " ,model.govtAlertSubTask.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName , " +
+    			" 	alertDepartmentDocument.document , model.govtAlertSubTask.alertSubTaskStatus.color,model.govtAlertSubTask.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName "
+    			+ " from GovtOfficerSubTaskTracking model "
+    			+ " left join model.alertDepartmentComment comment " +
+    			"   left join model.alertDepartmentDocument alertDepartmentDocument "
     			+ " where model.govtAlertSubTaskId in (:subTaskIdsList) and model.govtAlertActionType.govtAlertActionTypeId = 7l");
     	query.setParameterList("subTaskIdsList", subTaskIdsList);
     	return query.list();

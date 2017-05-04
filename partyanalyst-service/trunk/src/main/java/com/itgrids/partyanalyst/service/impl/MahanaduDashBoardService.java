@@ -584,12 +584,6 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				month = Integer.parseInt(datesList[0].toString().split("-")[1]);
 			}
 			
-			
-		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
-		Long entryEventId = entryExitInfo.getEntryId();
-		Long exitEventId = entryExitInfo.getExitId();
-		Long parentEventId = entryExitInfo.getParentEventId();
-		reqParentEventId = parentEventId;
 		
 		Calendar fromDateCal = Calendar.getInstance();
 		fromDateCal.setTime(fromDate);
@@ -598,11 +592,18 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		toDateCal.setTime(toDate);
 		
 		Date todayDate = dateUtilService.getCurrentDateAndTime();
-		totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);
-		currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
-		currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
-		
-		
+		Long parentEventId = 0L;
+		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+		if(entryExitInfo != null){
+			
+			Long entryEventId = entryExitInfo.getEntryId();
+			Long exitEventId = entryExitInfo.getExitId();
+			parentEventId = entryExitInfo.getParentEventId();
+			reqParentEventId = parentEventId;
+			totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);
+			currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
+			currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
+		}
 			if(!(toDate.before(fromDate))){
 			    int from = fromDateCal.get(Calendar.DAY_OF_MONTH);
 			    int to   = toDateCal.get(Calendar.DAY_OF_MONTH);
