@@ -17,6 +17,7 @@ public class GovtDepartmentIssueTypeDAO extends GenericDaoHibernate<GovtDepartme
 
 	public List<Object[]> getRelatedDepartmentsForIssueType(Long issueType){
 		Query query = getSession().createQuery("select distinct model.govtDepartment.govtDepartmentId," +
+										" concat(model.govtDepartment.shortName,'-',model.areaType)," +
 										" concat(model.govtDepartment.departmentName,'-',model.areaType)" +
 										" from GovtDepartmentIssueType model" +
 										" where model.alertIssueType.alertIssueTypeId = :issueType");

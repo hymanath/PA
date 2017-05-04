@@ -75,6 +75,11 @@ public class UserAddress implements java.io.Serializable,Cloneable {
 	private String addressLane2;
 	private String landmark;
 	private String deliveryLocation;
+	private Long urbanLocalityId;
+	private Long urbanBlockId;
+	
+	private UrbanLocality urbanLocality;
+	private UrbanBlock urbanBlock;
 	
 	public UserAddress() {
 		super();		
@@ -366,6 +371,42 @@ public class UserAddress implements java.io.Serializable,Cloneable {
 	public void setDeliveryLocation(String deliveryLocation) {
 		this.deliveryLocation = deliveryLocation;
 	}
-	
-	
+
+	@Column(name="urban_locality_id")
+	public Long getUrbanLocalityId() {
+		return urbanLocalityId;
+	}
+	public void setUrbanLocalityId(Long urbanLocalityId) {
+		this.urbanLocalityId = urbanLocalityId;
+	}
+
+	@Column(name="urban_block_id")
+	public Long getUrbanBlockId() {
+		return urbanBlockId;
+	}
+	public void setUrbanBlockId(Long urbanBlockId) {
+		this.urbanBlockId = urbanBlockId;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "urban_locality_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UrbanLocality getUrbanLocality() {
+		return urbanLocality;
+	}
+	public void setUrbanLocality(UrbanLocality urbanLocality) {
+		this.urbanLocality = urbanLocality;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY )
+	@JoinColumn(name = "urban_block_id" , insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UrbanBlock getUrbanBlock() {
+		return urbanBlock;
+	}
+	public void setUrbanBlock(UrbanBlock urbanBlock) {
+		this.urbanBlock = urbanBlock;
+	}
 }

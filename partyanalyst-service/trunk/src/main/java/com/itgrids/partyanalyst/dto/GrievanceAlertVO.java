@@ -52,6 +52,15 @@ public class GrievanceAlertVO {
 	private String ward;
 	private Long alertId;
 	
+	private String locationTypeStr;
+	
+	
+	public String getLocationTypeStr() {
+		return locationTypeStr;
+	}
+	public void setLocationTypeStr(String locationTypeStr) {
+		this.locationTypeStr = locationTypeStr;
+	}
 	public String getState() {
 		return state;
 	}
