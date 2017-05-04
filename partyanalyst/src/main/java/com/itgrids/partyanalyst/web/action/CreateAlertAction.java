@@ -2657,6 +2657,54 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		   return Action.SUCCESS;
 	}
+	
+	public String getRelatedDepartmentsForIssueType(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long issueTypeId = jObj.getLong("issueTypeId");
+				
+				keyValueVOList = alertService.getRelatedDepartmentsForIssueType(issueTypeId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getRelatedDepartmentsForIssueType() in CreateAlertAction",e);
+			}
+			   return Action.SUCCESS;
+	}
+	
+	public String getUrbanLocalitiesForMuncipality(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long lebId = jObj.getLong("mandalId");
+				
+				keyValueVOList = alertService.getUrbanLocalitiesForMuncipality(lebId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getUrbanLocalitiesForMuncipality() in CreateAlertAction",e);
+			}
+			   return Action.SUCCESS;
+	}
+	
+	public String getUrbanBlocksForLocality(){
+		   try {
+				jObj = new JSONObject(getTask());
+				Long localityId = jObj.getLong("panchayatId");
+				
+				keyValueVOList = alertService.getUrbanBlocksForLocality(localityId);
+		   } catch (Exception e) {
+			   LOG.error("Exception Raised in getUrbanBlocksForLocality() in CreateAlertAction",e);
+			}
+			   return Action.SUCCESS;
+	}
+	
+	public String getAllLebsByDistrictID()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = alertService.getAllLebsByDistrictID(jObj.getLong("districtId"));			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in getAllLebsByDistrictID",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String locationWiseGrivenceReport(){
 		try{
 			session = request.getSession();

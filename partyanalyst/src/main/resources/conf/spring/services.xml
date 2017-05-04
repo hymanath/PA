@@ -3622,6 +3622,7 @@
 		<property name="govtDepartmentIssueTypeDAO" ref="govtDepartmentIssueTypeDAO"></property>
 		<property name="urbanLocalityDAO" ref="urbanLocalityDAO"></property> 
 		<!--<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO"></property>-->
+		<property name="urbanBlockDAO" ref="urbanBlockDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	
