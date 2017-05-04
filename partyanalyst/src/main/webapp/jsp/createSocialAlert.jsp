@@ -90,9 +90,9 @@
 						<div class="panel-body bg_EF">
 							<div class="row">
 								<div class="col-sm-3 m_top10">
-									<label>Category<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCategoryId"></span></label>
-									<select class="chosenSelect" id="alertCategoryId" name="grievanceAlertVO.alertCategory" >  
-										<option value="0">Select Category</option>
+									<label>Social Media Type<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgCategoryId"></span></label>
+									<select class="chosenSelect" id="socialMediaTypeId" name="grievanceAlertVO.socialMediaTypeId" >  
+										<option value="0">Select Type</option>
 										<option value="5">Facebook</option> 
 										<option value="6">Twitter</option> 
 									</select>
@@ -142,7 +142,7 @@
 										<option value="4">Constituency</option>
 										<option value="5">Mandal/Muncipality</option>
 										<option value="6">Village/Ward</option>
-										<!--<option value="7">Habitation</option>-->
+										<option value="7">Habitation</option>
 									</select>
 								</div>
 								<div class="col-sm-3 m_top10" id="stateDiv">
