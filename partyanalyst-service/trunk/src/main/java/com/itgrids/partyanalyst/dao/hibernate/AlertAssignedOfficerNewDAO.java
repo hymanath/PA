@@ -4921,6 +4921,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    				sb.append(" and UA.tehsilId in (:locationList) ");
 	    			}else if(scopeId != null && scopeId.longValue() == 6L ){
 	    				sb.append(" and UA.panchayatId in (:locationList) ");
+	    			}else if(scopeId != null && scopeId.longValue() == 4L ){
+	    				sb.append(" and UA.parliamentConstituencyId in (:locationIdList) ");
+	    			}else if(scopeId != null && scopeId.longValue() == 8L ){
+	    				sb.append(" and UA.localElectionBody in (:locationIdList) ");
+	    			}else if(scopeId != null && scopeId.longValue() == 7L ){
+	    				sb.append(" and UA.hamletId in (:locationIdList) ");
 	    			}
 	    			}
 	    	    Query query = getSession().createQuery(sb.toString());

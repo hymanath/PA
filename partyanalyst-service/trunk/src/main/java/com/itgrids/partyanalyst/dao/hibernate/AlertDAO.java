@@ -7783,15 +7783,21 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}*/
 		if(locationIdList != null && locationIdList.size()>0){
 		if(scopeId != null && scopeId.longValue() == 1L ){
-			queryStr.append(" and S.state_id in (:locationIdList) ");
+			queryStr.append(" and UA.state_id in (:locationIdList) ");
 		}else if(scopeId != null && scopeId.longValue() == 2L ){
-			queryStr.append(" and D.district_id in (:locationIdList) ");
+			queryStr.append(" and UA.district_id in (:locationIdList) ");
 		}else if(scopeId != null && scopeId.longValue() == 3L ){
-			queryStr.append(" and C.constituency_id in (:locationIdList) ");
+			queryStr.append(" and UA.constituency_id in (:locationIdList) ");
 		}else if(scopeId != null && scopeId.longValue() == 5L ){
-			queryStr.append(" and  T.tehsil_id in (:locationIdList) ");
+			queryStr.append(" and  UA.tehsil_id in (:locationIdList) ");
 		}else if(scopeId != null && scopeId.longValue() == 6L ){
-			queryStr.append(" and P.panchayat_id in (:locationIdList) ");
+			queryStr.append(" and UA.panchayat_id in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 4L ){
+			queryStr.append(" and UA.parliament_constituency_id in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 8L ){
+			queryStr.append(" and UA.local_election_body in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 7L ){
+			queryStr.append(" and UA.hamlet_id in (:locationIdList) ");
 		}
 		}
 		if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
