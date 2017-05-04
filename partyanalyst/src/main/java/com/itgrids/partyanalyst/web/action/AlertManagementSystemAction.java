@@ -3226,8 +3226,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							subTaskStatusIdList.add(Long.parseLong(subTaskStatusIdArr.getString(i)));        
 						}
 						//if(statusId != null && statusId.longValue() == 1L){//pending
-						if(statusIdList != null && statusIdList.contains(1L)){
+						if(statusIdList != null && statusIdList.contains(1L) && !statusIdList.isEmpty()){
 							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList);
+							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+							//statusIdList.remove(1L);
+							statusIdList.remove(1L);
+						}
+						if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList);
 							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 						}
 						//else if(statusId != null && statusId.longValue() > 1L){//other than pending
@@ -3235,12 +3241,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList);
 							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 						}else{
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,null,calCntrIdList,null,null,null,null,null);
+							//if(statusIdList != null && statusIdList.contains(1L))
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList);
 							List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
 							if(alertCoreDashBoardVOs != null){
 								list1.addAll(alertCoreDashBoardVOs);
 							}
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,null,null,null,null,null,null,null,null,null,null);
+							//if(statusIdList != null && !statusIdList.contains(1L))
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList);
 							List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
 							if(alertCoreDashBoardVOs != null ){
 								list2.addAll(alertCoreDashBoardVOs);
