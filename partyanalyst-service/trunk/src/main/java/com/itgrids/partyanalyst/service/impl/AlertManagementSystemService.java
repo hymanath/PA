@@ -4409,7 +4409,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			}
         			
         			
-        			List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistory(subTaskIds);
+        			List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksCommentsAndStatusHistory(subTaskIds);
         			if(officersList != null && officersList.size() > 0){
         				for (Object[] objects : officersList) {
 							if(tempMap.get((Long)objects[0]) != null){
