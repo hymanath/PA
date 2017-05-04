@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.AlertCaller;
 
 public interface IAlertCallerDAO extends GenericDao<AlertCaller, Long>{
 	public List<Long> checkIsExist(String mobileNO,String callerName);
+	public List<Long> checkIsExistSocialCaller(String mobileNo,String account,Long socialMediaTypeId);
 }

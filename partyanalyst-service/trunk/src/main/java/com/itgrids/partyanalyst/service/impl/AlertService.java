@@ -11861,6 +11861,92 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		 return finalList;
 	 }
 	 
+	 public String saveSocialAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
+		{
+			String resultStatus = null;
+			try {
+				resultStatus = (String) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						String rs = new String();
+						DateUtilService date = new DateUtilService();
+						Alert alert = new Alert();
+
+						List<Long> existingList = alertCallerDAO.checkIsExistSocialCaller(inputVO.getMobileNo(),inputVO.getAccountId(),inputVO.getSocialMediaTypeId());
+												
+						if(!commonMethodsUtilService.isListOrSetValid(existingList)){
+							AlertCaller alertCaller = new AlertCaller();
+							alertCaller.setCallerName(inputVO.getName() !=null ? inputVO.getName():null);
+							alertCaller.setAddress(inputVO.getAddress() !=null ? inputVO.getAddress():null);
+							alertCaller.setMobileNo(inputVO.getMobileNo() !=null ? inputVO.getMobileNo():null);
+							alertCaller.setEmail(inputVO.getEmailId() !=null ? inputVO.getEmailId():null);
+							alertCaller.setAccountId(inputVO.getAccountId() !=null ? inputVO.getAccountId():null);
+							alertCaller.setSocialMediaTypeId(inputVO.getSocialMediaTypeId() !=null ? inputVO.getSocialMediaTypeId():null);
+							
+							alertCaller = alertCallerDAO.save(alertCaller);
+							alert.setAlertCallerId(alertCaller.getAlertCallerId());
+						}
+						else{
+							alert.setAlertCallerId(existingList.get(0));
+						}
+						
+						alert.setAlertSeverityId(2l);
+						alert.setAlertTypeId(2l);
+						alert.setImpactLevelId(inputVO.getLocationLevelId() !=null ? inputVO.getLocationLevelId():null);
+						alert.setImpactLevelValue(inputVO.getLocationValue() !=null ? inputVO.getLocationValue():null);
+						alert.setDescription(inputVO.getDescription() !=null ? inputVO.getDescription().toString():null);
+						alert.setCreatedBy(userId);
+						alert.setUpdatedBy(userId);
+						alert.setImpactScopeId(inputVO.getLocationLevelId() !=null ? inputVO.getLocationLevelId():null);
+
+						alert.setAlertStatusId(1l);// default pending status
+
+						alert.setAlertSourceId(6l);
+						alert.setCreatedTime(date.getCurrentDateAndTime());
+						alert.setUpdatedTime(date.getCurrentDateAndTime());
+						alert.setIsDeleted("N");
+						alert.setAlertCategoryId(5l);// Social Media
+						alert.setTitle(inputVO.getAlertTitle());
+
+						UserAddress userAddress = saveUserAddressForGrievanceAlert(inputVO);
+						alert.setAddressId(userAddress.getUserAddressId());
+
+						
+						alert.setGovtDepartmentId(inputVO.getDepartmentId());
+						alert.setIsMultiple("N");
+						
+						alert.setSocialMediaTypeId(inputVO.getSocialMediaTypeId() !=null ? inputVO.getSocialMediaTypeId():null);
+
+						alert = alertDAO.save(alert);
+						
+						//balu
+				    	
+						//Document Saving
+						saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+						
+						//Alert Tracking
+						AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+						
+						alertTrackingVO.setUserId(userId);
+						alertTrackingVO.setAlertStatusId(1l);	
+						alertTrackingVO.setAlertId(alert.getAlertId());
+						alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+						
+						saveAlertTrackingDetails(alertTrackingVO);	
+						
+						
+						rs = "success";
+						return rs;
+					}
+
+				});
+			} catch (Exception e) {
+				resultStatus = "failure";
+				LOG.error("Error occured saveSocialAlert() method of AlertService{}",e);
+			}
+
+			return resultStatus;
+		}
+	 
 	 
 }
 
