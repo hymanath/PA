@@ -4466,7 +4466,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	        	 sb.append("select ");
 	        	
 	        	sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
-	    	    		"model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName,  model.alert.alertId ");
+	    	    		"model1.designationName,  model.alert.alertId ");
 	    	    
 	    	    
 	    	    	if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
@@ -4493,7 +4493,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    	sb.append(" ,model.alertStatus.alertStatusId,model.insertedTime,model.updatedTime ");
 	        	
 	    	    	
-	        	sb.append(" from AlertAssignedOfficerNew model " +
+	        	sb.append(" from GovtDepartmentDesignation model1,AlertAssignedOfficerNew model " +
 	        			" left join model.govtDepartmentDesignationOfficer.govtUserAddress UA " +
 	    	          " left join UA.state S  " +
 	    	          " left join UA.zone Z " +
@@ -4506,16 +4506,16 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	          " left join UA.localElectionBody LEB " +
 	    	          " left join UA.panchayat P " +
 	    	          " left join  model.govtDepartmentDesignationOfficer.govtDepartmentScope GDS " );
-	        	/*sb.append(" left join model.alert.edition EDS " +
-		  	    		   " left join model.alert.tvNewsChannel TNC  ");*/
-	    	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
+	        	sb.append(" left join model.alert.edition EDS " +
+		  	    		   " left join model.alert.tvNewsChannel TNC  ");
+	    	    sb.append(" where model1.govtDepartmentDesignationId=model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId and   model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
 	  	    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+")   ");
 	    	    
 	    	    if(desigIds != null && !desigIds.isEmpty())
 	      	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId in (:desigIds)");
 	    	    
 	    	    if(locationValues != null && !locationValues.isEmpty()){
-	    	    	if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+	    	    		if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 		        	      sb.append(" and  S.govtDepartmentWorkLocationId in (:locationValues)  ");
 		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
 		        	      sb.append(" and Z.govtDepartmentWorkLocationId in (:locationValues)  ");
@@ -4558,7 +4558,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
 	          	      sb.append(" and GDS.govtDepartmentScopeId = P.govtDepartmentScope.govtDepartmentScopeId  and P.govtDepartmentScope.govtDepartmentScopeId in (:govtScopeIds) ");
 	    	    
-	    	    /*if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
 	       	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
 	       	     if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
 	   	    	    	  sb.append(" or model.alert.alertCallerId is not null ");
@@ -4566,7 +4566,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	   	  				sb.append(" and model.alert.alertCallerId is null ");
 	   	  			}
 	   	    	      sb.append(" )");
-	       	    }*/
+	       	    }
 	    	    
 	    	    if(priorityId != null && priorityId.longValue() >0l)
 	    	    	sb.append("  and model.alert.alertSeverityId = :priorityId " );
@@ -4622,10 +4622,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    if(statusIds != null && statusIds.size() > 0){
 	    	    	query.setParameterList("statusIds", statusIds);
 	    	    }
-	    	    /*if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+	    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
 	      	      query.setParameterList("printIdList", printIdsList);
 	      	      query.setParameterList("electronicIdList", electronicIdsList);
-	      	    }*/
+	      	    }
 	    	    
 	    	    return query.list();
 	    	    	
