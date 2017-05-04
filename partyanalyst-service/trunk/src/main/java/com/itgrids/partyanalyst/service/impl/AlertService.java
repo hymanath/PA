@@ -91,6 +91,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
+import com.itgrids.partyanalyst.dao.IUrbanBlockDAO;
 import com.itgrids.partyanalyst.dao.IUrbanLocalityDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
@@ -249,7 +250,16 @@ private IAlertIssueSubTypeDAO alertIssueSubTypeDAO;
 private IAlertManagementSystemService alertManagementSystemService;
 private IGovtDepartmentIssueTypeDAO govtDepartmentIssueTypeDAO;
 private IUrbanLocalityDAO urbanLocalityDAO;
+private IUrbanBlockDAO urbanBlockDAO;
 
+
+public IUrbanBlockDAO getUrbanBlockDAO() {
+	return urbanBlockDAO;
+}
+
+public void setUrbanBlockDAO(IUrbanBlockDAO urbanBlockDAO) {
+	this.urbanBlockDAO = urbanBlockDAO;
+}
 
 public IUrbanLocalityDAO getUrbanLocalityDAO() {
 	return urbanLocalityDAO;
@@ -9523,7 +9533,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alert.setDescription(inputVO.getDescription().toString());
 					alert.setCreatedBy(userId);
 					alert.setUpdatedBy(userId);
-					alert.setImpactScopeId(7l);
+					if(inputVO.getLocationTypeStr() != null && inputVO.getLocationTypeStr().trim().equalsIgnoreCase("Rural"))
+						alert.setImpactScopeId(7l);
+					else if(inputVO.getLocationTypeStr() != null && inputVO.getLocationTypeStr().trim().equalsIgnoreCase("Urban"))
+						alert.setImpactScopeId(13l);
 
 					alert.setAlertStatusId(2l);// default pending status
 
@@ -9908,6 +9921,19 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
 				userAddress.setPanchayatId(inputVO.getPanchayatId());
 				userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
+			}
+			else if(inputVO.getLocationLevelId().toString().equalsIgnoreCase("13"))
+			{
+				userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+				//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));
+				userAddress.setUrbanLocalityId(inputVO.getPanchayatId());
+				userAddress.setUrbanBlockId(inputVO.getHamletId());
+				//userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+				//userAddress.setPanchayatId(inputVO.getPanchayatId());
+				//userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
 			}
 			
 			userAddress = userAddressDAO.save(userAddress);
@@ -10704,23 +10730,40 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		return returnList;
 	}
 	
-	/*public List<KeyValueVO> getRelatedDepartmentsForIssueType(Long issueTypeId){
+	public List<KeyValueVO> getUrbanBlocksForLocality(Long localityId){
 		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
 		try {
-			List<Object[]> list = govtDepartmentIssueTypeDAO.getRelatedDepartmentsForIssueType(issueTypeId);
+			List<Object[]> list = urbanBlockDAO.getUrbanBlocksForLocality(localityId);
 			if(list != null && !list.isEmpty()){
 				for (Object[] obj : list) {
 					KeyValueVO vo = new KeyValueVO();
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setName(obj[1] != null ? obj[1].toString():"");
+					vo.setName(obj[1] != null ? "Block-"+obj[1].toString():"");
 					returnList.add(vo);
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Error occured getRelatedDepartmentsForIssueType() method of AlertService{}",e);
+			LOG.error("Error occured getUrbanBlocksForLocality() method of AlertService{}",e);
 		}
 		return returnList;
-	}*/
+	}
+	
+	public List<IdNameVO> getAllLebsByDistrictID(Long districtId){
+
+		List<IdNameVO> returnList = new ArrayList<IdNameVO>();
+		List<Object[]> mandals = localElectionBodyDAO.findByDistrictId(districtId);
+		if(mandals != null && mandals.size() > 0)
+		{
+			for(Object[] obj : mandals){
+				IdNameVO objVO = new IdNameVO();
+				objVO.setId((Long)obj[0]);
+				objVO.setName(obj[1].toString() +" " +obj[2].toString());
+				returnList.add(objVO);
+			}
+		}
+		
+		return returnList;
+	}
 	
 	
 	public List<AlertsSummeryVO> getAlertEfficiencyList(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal,List<Long> alertstatusIds){
