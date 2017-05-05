@@ -85,4 +85,14 @@ public List<Object[]> getParentLevelValuesListInfo(List<Long> levelValues){
  		query.setParameter("departmentId", departmentId);
  		return query.list();
        }   
+ 	 @SuppressWarnings("unchecked")
+  	public List<Object[]> getRegionScopeIdAndValue(Long govtDeptScopeId,List<Long> scopeValues){
+  		Query query = getSession().createQuery("select distinct model.alertRegionScopesId,model.locationValue" +
+  				                            " from  GovtDepartmentWorkLocation model " +
+  				                            "where model.govtDepartmentScope.govtDepartmentScopeId =:govtDeptScopeId " +
+  				                            "and model.isDeleted='N' and model.govtDepartmentWorkLocationId in(:scopeValues)");   				                          
+  		query.setParameter("govtDeptScopeId", govtDeptScopeId);   
+  		query.setParameterList("scopeValues", scopeValues);
+  		return query.list();
+        }   
 }

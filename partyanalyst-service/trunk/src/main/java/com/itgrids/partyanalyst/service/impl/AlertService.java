@@ -5958,7 +5958,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[20]));
 					}
 					//hiii
-						if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 1L){//manual
+						if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 4L){//call Center
 							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
 						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 2L){//print
 							if(param[17] != null){
@@ -9557,7 +9557,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alert.setCreatedTime(date.getCurrentDateAndTime());
 					alert.setUpdatedTime(date.getCurrentDateAndTime());
 					alert.setIsDeleted("N");
-					alert.setAlertCategoryId(1L);//default Manual alert
+					alert.setAlertCategoryId(4L);//default Manual alert
 					alert.setTitle(inputVO.getAlertTitle());
 
 					UserAddress userAddress = saveUserAddressForGrievanceAlert(inputVO);
