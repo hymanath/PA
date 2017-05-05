@@ -153,15 +153,15 @@
 										</div>
 									</div>
 								</div>-->
-								<div class="panel panel-default" style="display:none;">
+								<!--<div class="panel panel-default" style="display:none;">
 									<div class="panel-body">
 										<div class="row">
-											<div class="col-sm-12 col-xs-12 col-md-12"><!--srujana-->
+											<div class="col-sm-12 col-xs-12 col-md-12">
 												<div id="assignedUser1"></div>
 											</div>	
 										</div>
 									</div>
-								</div>
+								</div>-->
 							</div>
 						</div>
 					</div>
@@ -169,7 +169,7 @@
 			</div>			
 		</div>
 	</section>
-	<div id="testingDemo"></div>
+<!--	<div id="testingDemo"></div>-->
 <div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document" style="width:85%;">
 		<div class="modal-content">
