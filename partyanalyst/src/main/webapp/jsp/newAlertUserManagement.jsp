@@ -79,7 +79,7 @@
 								<label class="checkbox-inline"><input type="checkbox" class="chanelListCls checkedSelected" checked />Electronic Media</label>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12"> 
-								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="1" checked />Call Center</label>
+								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="4" checked />Call Center</label>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12  m_top10"> 
 								<input class="btn btn-success btn-sm filterSubmitBtnCls" value="APPLY" type="button" />
@@ -124,6 +124,16 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="panel panel-default">
+							<div class="panel-heading headingColor">
+										<h4 class="panel-title text-capital fontColor">Alert Source Wise - Details</h4>
+							</div>
+							<div class="panel-body">
+								<div id="alertSourceWiseDetilsDivId"></div>
+							</div>
+						</div>
+					
 						<div class="row">
 							<div id="statusAndLocationWiseDetialsDiv"></div>
 						</div>
@@ -197,7 +207,7 @@
 
 
 
-var deptIdArr =[];
+//var deptIdArr =[];
 /* var paperIdArr =[];
 var chanelIdArr =[];
 var printIdArr =[];
