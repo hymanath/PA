@@ -10,6 +10,8 @@ import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLocalElectionBody, Long> implements IAssemblyLocalElectionBodyDAO {
 
@@ -395,5 +397,12 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		 }
 		 return sqlQuery.list();
 	} 
-	
+  public List<Constituency> getConstituencyByAssemblyLocalEleBodyId(Long localEleBodyId)
+	{
+		Query query = getSession().createQuery("select distinct model.constituency from AssemblyLocalElectionBody model where model.localElectionBody.localElectionBodyId =:localEleBodyId " +
+				" and model.year = :year ");
+		query.setParameter("localEleBodyId", localEleBodyId);
+		query.setParameter("year", IConstants.DELIMITATION_YEAR);
+		return query.list();
+	}
 }
