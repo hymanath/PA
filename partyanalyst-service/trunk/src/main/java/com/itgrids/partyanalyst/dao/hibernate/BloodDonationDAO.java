@@ -98,36 +98,36 @@ public List<Object[]> gettotalCollectedBloodDetails(Date fromDate,Date toDate){
 		return query.list();
 	}
 	
-	public Long getBloodDonatedOtherThanBloodBank(){
+	public Long getBloodDonatedOtherThanBloodBank(Long campId ){
 		
 		Query query = getSession().createQuery("select count(distinct bdi.tdpCadreId)" +
 												" from BloodDonation bd,BloodDonorInfo bdi" +
 												" where bd.bloodDonorInfoId = bdi.bloodDonorInfoId" +
 												" and bd.donationsInOtherPlaces= 'Yes'" +
-												" and bdi.isDeleted = 'N'");
-												
+												" and bdi.isDeleted = 'N' and bd.bloodDonationCampId=:campId ");
+		query.setParameter("campId", campId);								
 		return (Long) query.uniqueResult();
 	}
 	
-	public Long getBloodDonarCountInEmergency(){
+	public Long getBloodDonarCountInEmergency(Long campId ){
 		
 		Query query = getSession().createQuery("select count(distinct bdi.tdpCadreId)" +
 												" from BloodDonation bd,BloodDonorInfo bdi" +
 												" where bd.bloodDonorInfoId = bdi.bloodDonorInfoId" +
 												" and bd.emergencyDonation= 'Yes'" +
-												" and bdi.isDeleted = 'N'");
-												
+												" and bdi.isDeleted = 'N'and bd.bloodDonationCampId=:campId ");
+		query.setParameter("campId", campId);													
 		return (Long) query.uniqueResult();
 	}
 	
-	public Long getCalledForDonationCount(){
+	public Long getCalledForDonationCount(Long campId ){
 		
 		Query query = getSession().createQuery("select count(distinct bdi.tdpCadreId)" +
 												" from BloodDonation bd,BloodDonorInfo bdi" +
 												" where bd.bloodDonorInfoId = bdi.bloodDonorInfoId" +
 												" and bd.willingToCallDonation= 'Yes'" +
-												" and bdi.isDeleted = 'N'");
-												
+												" and bdi.isDeleted = 'N'and bd.bloodDonationCampId=:campId ");
+		query.setParameter("campId", campId);		
 		return (Long) query.uniqueResult();
 	}
 	
@@ -309,7 +309,7 @@ public List<Object[]> getDistrictWiseBloodDonorCounts(Long campId){
 	return query.list();
 }
 
-public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List<Date> datesList){
+public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List<Date> datesList,Long campId){
 	StringBuilder sb = new StringBuilder();
 	
 	sb.append("select model.bloodDonorInfo.tdpCadre.memberShipNo, " +
@@ -325,7 +325,7 @@ public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List
 			" model.bloodDonorInfo.tdpCadre.userAddress.district.districtId, " +
 			" model.bloodDonorInfo.tdpCadre.userAddress.district.districtName " +
 			" from BloodDonation model " +
-			" where model.bloodDonorInfo.isDeleted ='N' " );
+			" where model.bloodDonorInfo.isDeleted ='N' and model.bloodDonationCampId = :campId " );
 	
 	if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim() !=""){
 		sb.append(" and (model.bloodDonorInfo.donorName like '%"+searchType+"%' or model.bloodDonorInfo.tdpCadre.memberShipNo=:searchType or model.bloodDonorInfo.mobileNo=:searchType) ");
@@ -338,6 +338,7 @@ public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List
 	}
 	
 	Query query = getSession().createQuery(sb.toString());
+	query.setParameter("campId", campId);
 	if(searchType !=null && !searchType.trim().isEmpty() && searchType.trim() !=""){
 		query.setParameter("searchType",searchType);
 	}
