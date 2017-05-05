@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.AlertCategory;
 public interface IAlertCategoryDAO extends GenericDao<AlertCategory, Long> {
 	public List<Object[]> getAllCategory();
 	public List<Object[]> getAllCategoryOrderBy();
+	public List<Object[]> getAllCategory1();
 }

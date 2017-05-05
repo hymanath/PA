@@ -20,4 +20,5 @@ public interface IGovtDepartmentScopeLevelDAO extends GenericDao<GovtDepartmentS
 	public List<Object[]> getRequiredDeptScopeByScopeIds(List<Long> deptIds,Set<Long> scopeIds);
 	public List<Object[]> getChildGovtScopeByParentScope(Set<Long> parentScopeIds,Long deptId);
 	public List<Object[]> getChildGovtScopesLevelNamesByParentScopeLevel(Long parentScopeId,Long deptId);
+	public List<Object[]> getGovtScopesLevelByParentScopeLevel(Long parentScopeId,List<Long> deptIdList);
 }
