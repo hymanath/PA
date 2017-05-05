@@ -52,7 +52,8 @@ public class TdpCadreCandidateDAO extends GenericDaoHibernate<TdpCadreCandidate,
 	
 	public List<Object[]> getTdpCadreCandidateIds(List<Long> finalCadreIDsList)
 	{
-		Query query=getSession().createQuery("select model.tdpCadre.tdpCadreId, model.candidate.candidateId from TdpCadreCandidate model where " +
+		Query query=getSession().createQuery("select model.tdpCadre.tdpCadreId, model.candidate.candidateId," +
+				" model.tdpCadre.memberShipNo,model.tdpCadre.voter.voterIDCardNo from TdpCadreCandidate model where " +
 				" model.candidate.candidateId in (:finalCadreIDsList)  and model.tdpCadre.isDeleted ='N' and model.tdpCadre.enrollmentYear = 2014 ");
 		query.setParameterList("finalCadreIDsList", finalCadreIDsList);
 		return query.list();
