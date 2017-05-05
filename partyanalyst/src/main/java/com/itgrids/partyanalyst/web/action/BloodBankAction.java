@@ -303,8 +303,9 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	
 	public String getBloodDonatedOtherThanBloodBank(){
 		try {
-			
-			count = bloodBankService.getBloodDonatedOtherThanBloodBank();
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("bloodBankCampId");
+			count = bloodBankService.getBloodDonatedOtherThanBloodBank(campId);
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getBloodDonatedOtherThanBloodBank", e);
 		}
@@ -313,8 +314,9 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	
 	public String getBloodDonorInEmergency(){
 		try {
-			
-			count = bloodBankService.getBloodDonorInEmergency();
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("bloodBankCampId");
+			count = bloodBankService.getBloodDonorInEmergency(campId);
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getBloodDonorInEmergency", e);
 		}
@@ -323,8 +325,9 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 	
 	public String getCalledForDonationCount(){
 		try {
-			
-			count = bloodBankService.getCalledForDonationCount();
+			jObj= new JSONObject(getTask());
+			Long campId = jObj.getLong("bloodBankCampId");
+			count = bloodBankService.getCalledForDonationCount(campId);
 		} catch (Exception e) {
 			LOG.error("Exception eaised at  getCalledForDonationCount", e);
 		}
@@ -499,7 +502,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 			jObj = new JSONObject(getTask());
 			String searchType = jObj.getString("searchType");
 			
-			bloodBankVOList = bloodBankService.getPrePopulateDataDetails(searchType,jObj.getLong("statusId"),jObj.getString("date"));
+			bloodBankVOList = bloodBankService.getPrePopulateDataDetails(searchType,jObj.getLong("statusId"),jObj.getString("date"),jObj.getLong("campId"));
 		}catch (Exception e) {
 			 LOG.info("Error raised at getPrePopulateTehDataDetails() in BloodBankAction",e);
 		}
