@@ -8555,7 +8555,7 @@ public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatusNew(String fromDateS
  */
 public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
 		List<Long> desigIds,Long priorityId,List<Long> statusIds ,List<Long> deptIds, Long lagStartCnt, 
-		Long lagEndCnt,String alertType,String isMoreThanYrChkd,String isLagChkd,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList){
+		Long lagEndCnt,String alertType,String isMoreThanYrChkd,String isLagChkd,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId){
 	
 	List<DistrictOfficeViewAlertVO> returnList = new ArrayList<DistrictOfficeViewAlertVO>();
 	
@@ -8595,7 +8595,7 @@ public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long u
 				for(Long parentGovtDepartmentScopeId : govtScopeIds){
 					List<Long> scopeIds = new ArrayList<Long>();
 					scopeIds.add(parentGovtDepartmentScopeId);
-				List<Object[]> list = alertAssignedOfficerNewDAO.getSubOrdinateFilterAlertsDetails(userId,fromDate,toDate,scopeIds,locationValues,levelId,levelValues,desigIds,priorityId,statusIds,paperIdList,chanelIdList,calCntrIdList);
+				List<Object[]> list = alertAssignedOfficerNewDAO.getSubOrdinateFilterAlertsDetails(userId,fromDate,toDate,scopeIds,locationValues,levelId,levelValues,desigIds,priorityId,statusIds,paperIdList,chanelIdList,calCntrIdList,childLevelVals,childLevelId);
 			 //List<Object[]> list = alertAssignedOfficerNewDAO.getSubOrdinateFilterAlertsDetailsForUser(fromDate,toDate,null,null,null,levelId,levelValues,deptIds,
     	     	//	 parentGovtDepartmentScopeId,null, null, locationValues, desigIds);
 				setFilterDetails(list,scopWiseMap,alertType,lagStartCnt,lagEndCnt,statusIds,isMoreThanYrChkd,isLagChkd);
@@ -8606,7 +8606,7 @@ public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long u
 				for(Long parentGovtDepartmentScopeId : govtScopeIds){
 					List<Long> scopeIds = new ArrayList<Long>();
 					scopeIds.add(parentGovtDepartmentScopeId);
-				List<Object[]> totalTasks = govtAlertSubTaskDAO.getSubOrdinateFilterSubTasksDetails(userId,fromDate,toDate,scopeIds,locationValues,levelId,levelValues,desigIds,priorityId,statusIds,paperIdList,chanelIdList,calCntrIdList);
+				List<Object[]> totalTasks = govtAlertSubTaskDAO.getSubOrdinateFilterSubTasksDetails(userId,fromDate,toDate,scopeIds,locationValues,levelId,levelValues,desigIds,priorityId,statusIds,paperIdList,chanelIdList,calCntrIdList,childLevelVals,childLevelId);
 				setFilterDetails(totalTasks,scopWiseMap,alertType,lagStartCnt,lagEndCnt,statusIds,isMoreThanYrChkd,isLagChkd);
 				}
 			}
