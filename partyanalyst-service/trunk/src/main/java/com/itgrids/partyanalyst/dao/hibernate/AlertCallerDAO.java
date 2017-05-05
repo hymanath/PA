@@ -20,7 +20,7 @@ public class AlertCallerDAO extends GenericDaoHibernate<AlertCaller, Long> imple
 	}
 	@SuppressWarnings("unchecked")
 	public List<Long> checkIsExistSocialCaller(String mobileNo,String account,Long socialMediaTypeId){
-		return getSession().createQuery(" select distinct model.alertCallerId from AlertCaller model where model.mobileNo like '"+mobileNo+"' and model.accountId = "+account+" " +
+		return getSession().createQuery(" select distinct model.alertCallerId from AlertCaller model where model.mobileNo like '"+mobileNo+"' and model.accountId like '"+account+"' " +
 				" and model.socialMediaTypeId ="+socialMediaTypeId+" ").list();
 	}
 	
