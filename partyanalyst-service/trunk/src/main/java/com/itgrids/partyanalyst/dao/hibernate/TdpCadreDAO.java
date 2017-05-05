@@ -6923,7 +6923,8 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 				            " constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName,"+//19
 							" ward.constituencyId,ward.name,panchayat.panchayatId,panchayat.panchayatName,"+//23
 				            " localElectionBody.localElectionBodyId,localElectionBody.name"+ //25
-							" from  TdpCadre  model " +
+							" from  TdpCadreEnrollmentYear  model1 " +
+							" left join model1.tdpCadre model " +
 							" left join model.userAddress.state state" +
 							" left join model.userAddress.district district" +
 							" left join model.userAddress.constituency constituency" +
@@ -6932,7 +6933,8 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 							" left join model.userAddress.panchayat panchayat" +
 							" left join model.userAddress.localElectionBody localElectionBody  " +
 							" where " +
-							" model.isDeleted='N' and model.enrollmentYear=:enrollmentYear and model.memberShipNo=:memberShipNo ");
+							" model.isDeleted='N' and model.enrollmentYear=:enrollmentYear and model.memberShipNo=:memberShipNo " +
+							"  and model1.isDeleted='N' and model1.enrollmentYearId = 4 ");
 		
 			Query query=getSession().createQuery(queryString.toString());
 			
@@ -6944,11 +6946,11 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 	
  public Long getCadreIdByMemberShip(String memberShipNo){
 	 
-	 Query query = getSession().createQuery("select model.tdpCadreId from TdpCadre model" +
+	 Query query = getSession().createQuery("select model.tdpCadreId from TdpCadreEnrollmentYear model " +
 	 		" where " +
-	 		" model.memberShipNo = :memberShipNo " +
-	 		" and model.isDeleted = 'N'" +
-	 		" and model.enrollmentYear = :enrollmentYear ");
+	 		" model.tdpCadre.memberShipNo = :memberShipNo " +
+	 		" and model.tdpCadre.isDeleted = 'N' and model.isDeleted='N' and model.enrollmentYearId = 4 " +
+	 		" and model.tdpCadre.enrollmentYear = :enrollmentYear ");
 	 
 	 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
 	 query.setParameter("memberShipNo", memberShipNo);
