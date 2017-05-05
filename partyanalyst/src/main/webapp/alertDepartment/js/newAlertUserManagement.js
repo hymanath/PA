@@ -1439,6 +1439,7 @@ function stateLevelDeptOfficerDepartmentWiseAlertsView(){
 function buildstateLevelDeptOfficerDepartmentWiseAlertsView(result){
 	var str='';
 	if(result !=null && result.length>0){
+		str+='<ul class="slickApply list-inline">';
 		for(var i in result){
 			var totalAlert = 0;
 			var statusNamesArr=[];
@@ -1448,7 +1449,7 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsView(result){
 						statusNamesArr.push(result[i].subList2[k].name);
 					}
 			}
-			str+='<div class="col-sm-4">';
+			str+='<li class="col-sm-4">';
 				str+='<div class="panel panel-default">';
 					str+='<div class="pad_5">';
 							str+='<h4 class="panel-title text-capital fontColor">'+result[i].name+'</h4>';
@@ -1508,10 +1509,20 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsView(result){
 				
 				str+='<div class="" style="text-align:center;"><button type="button" class="btn btn-default btn-sm buttonCustomStyle detailedBlockDiv" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'">Detailed Information</button></div>';
 			str+='</div>';
-			str+='</div>';
+			str+='</li>';
 		}
+		str+='</ul>';
 	}
 	$("#departmentWiseAlertsDetailsId").html(str);
+	$('.slickApply').slick({
+	   slide: 'li',
+	  slidesToShow: 3,
+	  slidesToScroll: 1,
+	  infinite: false,
+	  swipe:false,
+	 touchMove:false,
+	  variableWidth: false
+	});
 	if(statusNamesArr.length > 6)
 	{
 		$(".departmentWiseScrollerAlert").mCustomScrollbar({setHeight:'300px'});
