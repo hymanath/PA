@@ -11889,9 +11889,9 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						if(!commonMethodsUtilService.isListOrSetValid(existingList)){
 							AlertCaller alertCaller = new AlertCaller();
 							alertCaller.setCallerName(inputVO.getName() !=null ? inputVO.getName():null);
-							alertCaller.setAddress(inputVO.getAddress() !=null ? inputVO.getAddress():null);
+							alertCaller.setAddress(inputVO.getAddress() !=null && !inputVO.getAddress().trim().isEmpty() ? inputVO.getAddress():null);
 							alertCaller.setMobileNo(inputVO.getMobileNo() !=null ? inputVO.getMobileNo():null);
-							alertCaller.setEmail(inputVO.getEmailId() !=null ? inputVO.getEmailId():null);
+							alertCaller.setEmail(inputVO.getEmailId() !=null && !inputVO.getEmailId().trim().isEmpty() ? inputVO.getEmailId():null);
 							alertCaller.setAccountId(inputVO.getAccountId() !=null ? inputVO.getAccountId():null);
 							alertCaller.setSocialMediaTypeId(inputVO.getSocialMediaTypeId() !=null ? inputVO.getSocialMediaTypeId():null);
 							
