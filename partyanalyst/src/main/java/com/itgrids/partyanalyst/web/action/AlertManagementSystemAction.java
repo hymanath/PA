@@ -3133,9 +3133,18 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						String alertType = jObj.getString("alertType");
 						String isMoreThanYrChkd = jObj.getString("isMoreThanYrChkd");
 						String isLagChkd = jObj.getString("isLagChkd");
+						Long childLevelId = jObj.getLong("childLevelId");
+						
+						JSONArray childLevelValsArr = jObj.getJSONArray("childLevelVals");  
+						List<Long> childLevelVals = new ArrayList<Long>();
+						if(childLevelValsArr != null && childLevelValsArr.length() > 0){
+							for (int i = 0; i < childLevelValsArr.length(); i++){
+								childLevelVals.add(Long.parseLong(childLevelValsArr.getString(i)));        
+							} 
+						} 
 						
 						districtOfficeViewAlertVOList = alertManagementSystemService.getSubOrdinateFilterAlertsOverview(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId,statusIds,deptIds,
-								lagStartCnt,lagEndCnt,alertType,isMoreThanYrChkd,isLagChkd,paperIdList,chanelIdList,calCntrIdList);
+								lagStartCnt,lagEndCnt,alertType,isMoreThanYrChkd,isLagChkd,paperIdList,chanelIdList,calCntrIdList,childLevelVals,childLevelId);
 					} catch (Exception e) {
 						LOG.error("Exception occured in getSubOrdinateFilterAlertsOverview() of alertManagementSystemAction",e);
 					}
