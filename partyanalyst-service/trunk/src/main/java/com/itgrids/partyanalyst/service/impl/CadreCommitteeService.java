@@ -15015,7 +15015,7 @@ return mandalList;
 							 
 							 if(finalCadreIDsList != null && finalCadreIDsList.size()>0)
 							 {
-								 //0.tdpCadreId, 1.candidateId
+								 //0.tdpCadreId, 1.candidateId,membershipId -2,voterId-3
 								 tdpCadreIdssList = tdpCadreCandidateDAO.getTdpCadreCandidateIds(finalCadreIDsList);
 								 List<Object[]> representativeDetails = publicRepresentativeDAO.getCandidateInfoByCandidateIds(finalCadreIDsList);
 									
@@ -15045,6 +15045,9 @@ return mandalList;
 														{
 															tdpCadreCommitteeId = tdpCadre[0] != null ? Long.valueOf(tdpCadre[0].toString().trim()):0L;
 															committeeVO.setTdpCadreCommitteeId(tdpCadreCommitteeId);
+															committeeVO.setMemberShipCardId(tdpCadre[2] != null ? tdpCadre[2].toString().trim():"");
+															committeeVO.setVoterCardNo(tdpCadre[3] != null ? tdpCadre[3].toString().trim():"");
+															
 														}
 													}
 												}
@@ -15548,7 +15551,8 @@ return mandalList;
 
 												committeeVO.setTdpCadreId(cadre[0] != null ? Long.valueOf(cadre[0].toString().trim()):0L);
 												
-												//committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString().substring(4):"");
+												committeeVO.setMemberShipCardId(cadre[4] != null ? cadre[4].toString():"");
+												committeeVO.setVoterCardNo(cadre[19] != null ? cadre[19].toString():"");
 												committeeVO.setCadreName(cadre[1] != null ? cadre[1].toString():"");
 												committeeVO.setRelativeName(cadre[2] != null ? cadre[2].toString():"");
 												committeeVO.setMobileNo(cadre[6] != null ? cadre[6].toString():"");
