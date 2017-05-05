@@ -6700,14 +6700,22 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  			LOG.error("Error occured setStatusWiseAlertCnt() method of AlertManagementSystemService{}");
  	    }
  	}
-	 public FilterSectionVO getFilterSectionAlertDetails(){
+	 public FilterSectionVO getFilterSectionAlertDetails(Long userId,List<Long> deptIdList){
 		 FilterSectionVO filterVo =new FilterSectionVO();
 		try {
-			List<Object[]> scopeIds = govtDepartmentScopeDAO.getFilterSectionDetailsOnScopeIds();
+			Long levelId = 0L;
+            List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+            if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+              for(Object[] param : lvlValueAndLvlIdList){
+                levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+              }
+            }
+            List<Object[]> scopeIds = govtDepartmentScopeLevelDAO.getGovtScopesLevelByParentScopeLevel(levelId, deptIdList);//levelId means Access Level 
+			//List<Object[]> scopeIds = govtDepartmentScopeDAO.getFilterSectionDetailsOnScopeIds();
 			 setFilterSectionAlertDetails(scopeIds,filterVo,"scopes");
 			List<Object[]> severityIds = alertSeverityDAO.getFilterSectionDetailsOnSeverity();
 			 setFilterSectionAlertDetails(severityIds,filterVo,"severity");
-			List<Object[]> categoryIds = alertCategoryDAO.getAllCategory();
+			List<Object[]> categoryIds = alertCategoryDAO.getAllCategory1();
 			 setFilterSectionAlertDetails(categoryIds,filterVo,"category");
 			List<Object[]> editionsIds = newsPaperDAO.getNewPaperList();
 			 setFilterSectionAlertDetails(editionsIds,filterVo,"editions");
@@ -8326,10 +8334,18 @@ public List<IdNameVO> getDeptListForGreivanceReport(Long userId){
 	}
 	return null;
 }
-public FilterSectionVO getFilterSectionAlertNewDetails(){
+public FilterSectionVO getFilterSectionAlertNewDetails(Long userId,List<Long> deptIdList){
 	 FilterSectionVO filterVo =new FilterSectionVO();
 	try {
-		List<Object[]> scopeIds = govtDepartmentScopeDAO.getFilterSectionDetailsOnScopeIds();
+		Long levelId = 0L;
+        List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+        if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+          for(Object[] param : lvlValueAndLvlIdList){
+            levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+          }
+        }
+        List<Object[]> scopeIds = govtDepartmentScopeLevelDAO.getGovtScopesLevelByParentScopeLevel(levelId, deptIdList);//levelId means Access Level 
+		//List<Object[]> scopeIds = govtDepartmentScopeDAO.getFilterSectionDetailsOnScopeIds();
 		 setFilterSectionAlertDetails(scopeIds,filterVo,"scopes");
 		List<Object[]> severityIds = alertSeverityDAO.getFilterSectionDetailsOnSeverity();
 		 setFilterSectionAlertDetails(severityIds,filterVo,"severity");	

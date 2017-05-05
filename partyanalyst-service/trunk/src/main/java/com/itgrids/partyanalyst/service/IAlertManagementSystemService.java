@@ -105,7 +105,7 @@ public interface IAlertManagementSystemService {
 	public List<AlertVO> stateLevelDeptOfficerLocationLevelOverviewBySubTasks(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> callCenterIdsList);
 	public List<AlertVO> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> callCenterIdsList);
 	public List<GrievanceAlertVO> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,String fromDateStr,String toDateStr,Long statusId);
-	public FilterSectionVO getFilterSectionAlertDetails();
+	public FilterSectionVO getFilterSectionAlertDetails(Long userId,List<Long> deptIdList);
 	public String getDesignationForUser(Long userId);
 	public DistrictOfficeViewAlertVO getDeptDetails(Long userId);
 	public List<AlertCoreDashBoardVO> getStateLevelAlertclickView(List<Long> deptIds,Long statusId,String type,List<Long> govtDeptGovtOffrIds,List<Long> govtOffrcrIds,String searchType,String startdateStr,String endDateStr);
@@ -140,6 +140,6 @@ public interface IAlertManagementSystemService {
 	 public List<IdNameVO> getStatusByType(String type);
 	 public List<IdNameVO> getDeptListForGreivanceReport(Long userId);
 	 public List<AlertCoreDashBoardVO> getTotalAlertByStatusNew(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,List<Long> statusIdList,Long deptId,List<Long> calCntrIdList,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long startDay,Long endDay,Long scopeId,List<Long> locationIdList,List<Long> subTaskStatusIdList);
-	 public FilterSectionVO getFilterSectionAlertNewDetails();
+	 public FilterSectionVO getFilterSectionAlertNewDetails(Long userId,List<Long> deptIdList);
 	 public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatusNew(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,List<Long> statusIdList,Long userId,Long govtDeptScopeId,Long deptId,List<Long> calCntrIdList,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long startDay,Long endDay,Long scopeId,List<Long> locationList,List<Long> subTaskStatusIdList);
 }        
