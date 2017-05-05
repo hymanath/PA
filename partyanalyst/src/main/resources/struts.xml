@@ -17167,5 +17167,11 @@
 				<param name="root">filterDetilsList</param>     
 			</result>
     </action>
+    
+    <action name="saveSocialAlertAction" class="createAlertAction" method="saveSocialAlert">
+		 <result name="success" type="stream">			   
+		    <param name="inputName">inputStream</param>
+	  </result>	
+	</action>
  </package>
 </struts>
