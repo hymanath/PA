@@ -6,6 +6,7 @@ var acceptanceStr = '';
 var bloodBagStr = '';
 var bloodBagQuantityStr = '';
 var acceptanceStatusJsonArr = [];
+var globalCampId = 2;
 function getAcceptanceStatus(){
 	var jsObj = {};
 	$.ajax({
@@ -65,7 +66,7 @@ function buildStatusList(result){
 	}
 	$(".totalStatusCls").html(str);
 	var statusIdList = [];
-	var campId = 1;
+	var campId = globalCampId;
 	var statusId = $(".totalStatusCls").val();   
 	if(statusId !=null && statusId>0){
 		statusIdList.push({"id":statusId});   
@@ -461,7 +462,7 @@ $(document).on("change","#totalStatusId",function(){
 	$("#searchInputId").html("");
 	//$("#datesSelId").val("0,");
 	var statusIdList = [];  
-	var campId=1;
+	var campId=globalCampId;
 	var statusId=$("#totalStatusId").val();
 	var status=$("#totalStatusId option:selected").text();
 	 
@@ -479,7 +480,7 @@ $(document).on("change","#totalStatusId",function(){
 getBloodBankCampDates();
 function getBloodBankCampDates(){
 	var jObj={
-		campId:1
+		campId:globalCampId // 1-Mahanadu-2016, 2-Mahanadu-2017
 	};
 	$.ajax({
 		type:"GET",
@@ -530,7 +531,8 @@ function getPrePopulateTheDataDetails(flag){
 	var jObj={
 		searchType:search,
 		statusId : $("#totalStatusId").val(),
-		date : selectedDate
+		date : selectedDate,
+		campId : globalCampId
 	};
 	$.ajax({
 		type:"GET",
@@ -542,8 +544,9 @@ function getPrePopulateTheDataDetails(flag){
 		if(result!=null && result.length>0){
 			buildBleedingCadreDetails(result);
 		}else{
-		 $("#statusCount").html(0); 	
-         $("#exportToExcelId").hide();		 
+			$("#statusCount").html(0); 	
+			$("#exportToExcelId").hide();		 
+			$("#BleedingCadreDetailsId").html('No data available...');
 		}
 	});
 }
