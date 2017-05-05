@@ -2692,8 +2692,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				Long userId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
-				
-				filterDetilsList = alertManagementSystemService.getFilterSectionAlertDetails();
+				JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+				List<Long> deptIdList = new ArrayList<Long>();
+				for (int i = 0; i < deptIdArr.length(); i++){
+					deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+				}  
+				filterDetilsList = alertManagementSystemService.getFilterSectionAlertDetails(userId,deptIdList);
 			}catch(Exception e){
 				e.printStackTrace();
 				LOG.error("Exception occured in getFilterSectionAlertDetails() of alertManagementSystemAction",e);
@@ -3279,8 +3283,12 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 						Long userId = regVo.getRegistrationID();
 						jObj = new JSONObject(getTask());
-						
-						filterDetilsList = alertManagementSystemService.getFilterSectionAlertNewDetails();
+						JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+						List<Long> deptIdList = new ArrayList<Long>();
+						for (int i = 0; i < deptIdArr.length(); i++){
+							deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+						} 
+						filterDetilsList = alertManagementSystemService.getFilterSectionAlertNewDetails(userId,deptIdList);
 					}catch(Exception e){
 						e.printStackTrace();
 						LOG.error("Exception occured in getFilterSectionAlertDetails() of alertManagementSystemAction",e);
