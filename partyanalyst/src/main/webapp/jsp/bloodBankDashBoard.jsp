@@ -99,24 +99,6 @@
                 <div class="panel-body">
                 	<h4 class="text-capitalise">total colleceted blood</h4>
 					<div id="collectedBloodDiv"></div>
-                    <!--<table class="table table-condensed m_top10">
-                    	<tr>
-                        	<td>All Days</td>
-                            <td>16,00000ml</td>
-                        </tr>
-                        <tr>
-                        	<td>Day 1</td>
-                            <td>16,00000ml</td>
-                        </tr>
-                        <tr>
-                        	<td>Day 1</td>
-                            <td>16,00000ml</td>
-                        </tr>
-                        <tr>
-                        	<td>Day 1</td>
-                            <td>16,00000ml</td>
-                        </tr>
-                    </table>-->
                 </div>
             </div>
         </div>
@@ -166,91 +148,6 @@
             </div>
         </div>
     </div>
-    <!--<div class="row">
-		<div class="col-md-3">
-			<div class="panel panel-default panelDefaultCustom">
-            	<div class="panel-heading">
-                	<h4 class="panel-title text-capitalise">Single Bag</h4>
-                </div>
-                <div class="panel-body">
-                	<h4 class="text-capitalise">total single bags - <span id="totalSingleBags">0</span></h4>
-                    <div id="singleBagsDivId"></div>
-					<!--<table class="table table-condensed  m_top10">
-                    	<tr>
-                        	<td>With Sagm 350ml</td>
-                            <td>10 Bags</td>
-                        </tr>
-                        <tr>
-                        	<td>Without Sagm 350ml</td>
-                            <td>10 Bags</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-        	<div class="panel panel-default panelDefaultCustom">
-            	<div class="panel-heading">
-                	<h4 class="panel-title text-capitalise">double Bag</h4>
-                </div>
-                <div class="panel-body">
-                	<h4 class="text-capitalise">total double bags - <span id="totalDoubleBags">0</span></h4>
-                    <div id="doubleBagsDivId"></div>
-					<!--<table class="table table-condensed m_top10">
-                    	<tr>
-                        	<td>With Sagm 350ml</td>
-                            <td>10 Bags</td>
-                        </tr>
-                        <tr>
-                        	<td>Without Sagm 350ml</td>
-                            <td>10 Bags</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-        	<div class="panel panel-default panelDefaultCustom">
-            	<div class="panel-heading">
-                	<h4 class="panel-title text-capitalise">triple Bag</h4>
-                </div>
-                <div class="panel-body">
-                	<h4 class="text-capitalise">total triple bags - <span id="totalTripleBags">0</span></h4>
-					<div id="tripleBagsDivId"></div>
-                    <!--<table class="table table-condensed m_top10">
-                    	<tr>
-                        	<td>With Sagm 350ml</td>
-                            <td>10 Bags</td>
-                        </tr>
-                        <tr>
-                        	<td>Without Sagm 350ml</td>
-                            <td>10 Bags</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-        	<div class="panel panel-default panelDefaultCustom">
-            	<div class="panel-heading">
-                	<h4 class="panel-title text-capitalise">Quadruple Bag</h4>
-                </div>
-                <div class="panel-body">
-                	<h4 class="text-capitalise" style="font-size:17px;">total Quadruple bags - <span id="totalQuadrateBags">0</span></h4>
-                    <div id="quadrateBagsDivId"></div>
-					<!--<table class="table table-condensed m_top10">
-                    	<tr>
-                        	<td>With Sagm 350ml</td>
-                            <td>10 Bags</td>
-                        </tr>
-                        <tr>
-                        	<td>Without Sagm 350ml</td>
-                            <td>10 Bags</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>-->
     </div>
 </div>
 
@@ -261,6 +158,7 @@
 $(function () {
 	 
 });
+var bloodBankCampId = 2;
 gettotalCollectedBloodDetails();
 getBloodDonatedOtherThanBloodBank();
 getBloodDonorInEmergency();
@@ -268,7 +166,7 @@ getCalledForDonationCount();
 //gettotalCollectedBloodBagsInfo();
 
 function gettotalCollectedBloodDetails(){
-	var bloodBankCampId = 1;
+	//var bloodBankCampId = 1;
 	
 	var jObj = {
 			bloodBankCampId : bloodBankCampId
@@ -315,6 +213,7 @@ function gettotalCollectedBloodDetails(){
 
 function getBloodDonatedOtherThanBloodBank(){
 	var jObj = {
+			bloodBankCampId : bloodBankCampId
 		};
 		
 		$.ajax({
@@ -329,6 +228,7 @@ function getBloodDonatedOtherThanBloodBank(){
 
 function getBloodDonorInEmergency(){
 	var jObj = {
+			bloodBankCampId : bloodBankCampId
 		};
 		
 		$.ajax({
@@ -343,6 +243,7 @@ function getBloodDonorInEmergency(){
 
 function getCalledForDonationCount(){
 	var jObj = {
+			bloodBankCampId : bloodBankCampId
 		};
 		
 		$.ajax({
@@ -356,7 +257,7 @@ function getCalledForDonationCount(){
 }
 
 function gettotalCollectedBloodBagsInfo(){
-	var bloodBankCampId = 1;
+	//var bloodBankCampId = 1;
 	
 	var jObj = {
 			bloodBankCampId : bloodBankCampId
@@ -452,7 +353,7 @@ function gettotalCollectedBloodBagsInfo(){
 }
 getBloodDonorDetailsByAgeGroupingInfo();
 function getBloodDonorDetailsByAgeGroupingInfo(){
-	var bloodBankCampId = 1;
+	//var bloodBankCampId = 1;
 	
 	var jObj = {
 			bloodBankCampId : bloodBankCampId
@@ -542,7 +443,7 @@ getBloodDonorsCountsSummary();
 function getBloodDonorsCountsSummary(){
 	//var campId = $("#").val();
 	var jsObj={
-			campId : 1
+			campId : bloodBankCampId
 			}
 	$.ajax({
 			  type:'GET',
@@ -560,7 +461,7 @@ function getNumberOfTimesCollectedBlood(){
 	$("#numberOfTimesBloodDiv").html('');
 	//var campId = $("#").val();
 	var jsObj={
-			bloodBankCampId : 1
+			bloodBankCampId : bloodBankCampId
 			}
 	$.ajax({
 			  type:'GET',
@@ -869,7 +770,7 @@ function getApDistrictWiseBloodDonorCounts(){
 	$("#districtWiseBloodCountDiv").html('');
 	$("#districtWiseBloodCountajaxImage").show();
 	var jObj={
-			bloodBankCampId : 1,
+			bloodBankCampId : bloodBankCampId,
 			stateId : 1,
 			type :"Andhra Pradesh"
 			}
@@ -920,7 +821,7 @@ function getTsDistrictWiseBloodDonorCounts(){
 	$("#TsdistrictWiseBloodCountDiv").html('');
 	$("#TsdistrictWiseBloodCountajaxImage").show();
 	var jObj={
-			bloodBankCampId : 1,
+			bloodBankCampId : bloodBankCampId,
 			stateId : 1,
 			type :"Telangana"
 			}

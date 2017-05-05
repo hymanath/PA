@@ -377,7 +377,7 @@
         </div>
     </div>
 	<!-- hidden Variables -->
-	<div><input type="hidden" id="hiddenCampId" value="1"></div>
+	<div><input type="hidden" id="hiddenCampId" value="2"></div>
 </div>
 <div class="modal fade myModalprintView " id="" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-sm">
@@ -788,7 +788,7 @@ var GmembershipNo;
 		locationLevel:2,
 		locationValue:0,
 		mobileNo:"",
-		memberShipCardNo:membserShipId,
+		memberShipNo:membserShipId,
 		voterCardNo:"",
 		startIndex:0,
 		maxIndex:5000,
@@ -800,7 +800,7 @@ var GmembershipNo;
 		GmembershipNo = membserShipId;
 		$.ajax({
 		  type:'GET',
-		  url: 'getCadreDetailsAction.action',
+		  url: 'getCadreBloodBankSearchDetailsAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
 			 $("#cdrDtlsSrchPrcssngImgId").hide();
