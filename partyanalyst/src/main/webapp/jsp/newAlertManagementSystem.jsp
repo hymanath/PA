@@ -136,7 +136,7 @@
 																	<label><input type="checkbox" class="selectAllcallcenterCls" checked/>Select All</label>
 																</li>
 																<li>
-																	<label><input type="checkbox" class="callcenterCls" checked attr_val="1"/>Call Center
+																	<label><input type="checkbox" class="callcenterCls" checked attr_val="4"/>Call Center
 																	</label>
 																</li>
 															</ul>
@@ -196,6 +196,16 @@
 										</div>
 										<div class="panel-body">
 											<div id="levelWiseAlertOverview"></div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading headingColor">
+													<h4 class="panel-title text-capital fontColor">Alert Source Wise - Details</h4>
+										</div>
+										<div class="panel-body">
+											<div id="alertSourceWiseDetilsDivId"></div>
 										</div>
 									</div>
 								</div>

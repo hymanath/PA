@@ -62,7 +62,31 @@
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12 col-xs-12 col-sm-12"> 
+				<div class="col-md-12 col-xs-12 col-sm-12 panelDropDown"> 
+					
+					<span class="settingsIcon pull-right" style="margin-top:7px;background-color:#4a5863; color: #ffffff">
+								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
+					</span>
+					<div class="settingsBlockDropDown notesArrow documentCloseClass" style="width:240px">
+						<i class="glyphicon glyphicon-remove setClose pull-right"></i>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="selectAllCls " checked />Select All</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="newsPaperListCls checkedSelected" checked  />Print Media</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="chanelListCls checkedSelected" checked />Electronic Media</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="4" checked />Call Center</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12  m_top10"> 
+								<input class="btn btn-success btn-sm" value="APPLY" type="button" onClick="onLoadCallsAMU();" />
+							</div>
+						</div>
+					</div>
 					<div class="input-group dateRangePickerCls m_top5 pull-right" style="margin-right: 15px">
 						<input type="text" class="form-control" style="width:180px" id="dateRangePickerAUM">
 						<span class="input-group-addon">
@@ -101,6 +125,14 @@
 								</div>
 							</div>
 						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading headingColor">
+										<h4 class="panel-title text-capital fontColor">Alert Source Wise - Details</h4>
+							</div>
+							<div class="panel-body">
+								<div id="alertSourceWiseDetilsDivId"></div>
+							</div>
+						</div>
 						<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12"> 	
 							<div class="panel panel-default">
@@ -110,9 +142,9 @@
 											<h4 class="panel-title text-capital fontColor">District Level - Department Wise</h4>
 										</div>
 										<div class="col-md-6 col-xs-12 col-sm-12">
-											<ul class="switch-btn pull-right">
-												<li attr_type="status">status overview</li>
-												<li attr_type="location" class="active">location level</li>
+											<ul class="switch-btn pull-right activeCls">
+												<li attr_type="status" class="statusOverview">status overview</li>
+												<li attr_type="location" class="active locationOverview" >location level</li>
 												<!--<li attr_type="filter" >Filter View</li>-->
 											</ul>
 										</div>
@@ -204,7 +236,6 @@
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
@@ -216,11 +247,91 @@
 <script src="alertDepartment/js/newAlertDistrictCollector.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script>
+<script type="text/javascript">
+var paperIdArr =[];
+var chanelIdArr =[];
+var callCenterArr=[];
+var overAllAlertIds =[];
+var totalCoutAlertIds =[];
+var globalUserLevelId;
+var globalUserLevelValues = [];	
+var globalgovtDeptDesigOffcrId;
+var	globalgovtOfficerId;
+var globalDesignationId;
+var globalDepartmentId;
+var departmentIdsForAlertSoutceArr=[];
+
 google.load("elements", "1", {
 	packages: "transliteration"
 });
+$(document).on("click",".settingsIcon",function(e){
+	$(this).closest(".panelDropDown").find(".settingsBlockDropDown").toggle();
+	e.stopPropagation();
+});
+$(document).on("click",".setClose",function(){
+	$(this).closest(".settingsBlockDropDown").hide();
+});
+$(document).on("click",function(){
+	$(".documentCloseClass").hide();
+});
+$(document).on("click",".documentCloseClass",function(e){
+	e.stopPropagation();
+});
+onLoadPrintAndChannelAndCallCen();
+$(document).on("click",".selectAllCls",function(){
+	if($(this).prop('checked')) {
+		$(".newsPaperListCls").prop('checked', true);
+		$(".chanelListCls").prop('checked', true);
+		$(".callcenterCls").prop('checked', true);
+		
+		onLoadPrintAndChannelAndCallCen();
 
+	}else{
+		$(".newsPaperListCls").prop('checked', false);
+		$(".chanelListCls").prop('checked', false);
+		$(".callcenterCls").prop('checked', false);
+		paperIdArr=[];
+		chanelIdArr=[];
+		callCenterArr=[];
+	}
+	
+});
+function onLoadPrintAndChannelAndCallCen(){
+	paperIdArr=[];
+	chanelIdArr=[];
+	callCenterArr=[];
+	$(".newsPaperListCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		<c:forEach var="newsPaper" items="${newsPaperList}">
+			var newspapersGlobalObj = '${newsPaper.id}'
+			paperIdArr.push(newspapersGlobalObj)
+		 </c:forEach>
+	}
+});
+$(".chanelListCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		 <c:forEach items="${chanelListNew}"  var="channels">
+			var channelGlobalObj = '${channels.id}'
+			chanelIdArr.push(channelGlobalObj)
+		 </c:forEach>
+	}
+});
+$(".callcenterCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		var callCenterObj = $(this).attr("attr_val");
+		callCenterArr.push(callCenterObj);
+	}
+}); 
+}
+
+
+$(document).on("click",".checkedSelected",function(){
+		onLoadPrintAndChannelAndCallCen();
+});
+onLoadCallsAMU();
 </script>
 </body>
 </html>

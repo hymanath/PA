@@ -83,7 +83,7 @@
 								<label class="checkbox-inline"><input type="checkbox" class="chanelListCls checkedSelected" checked />Electronic Media</label>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12"> 
-								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="1" checked />Call Center</label>
+								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="4" checked />Call Center</label>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12  m_top10"> 
 								<button class="btn btn-success btn-sm" onClick="onLoadCallsAMU();">APPLY</button>
