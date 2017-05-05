@@ -4459,7 +4459,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 	}
 	     
 	     public List<Object[]> getSubOrdinateFilterAlertsDetails(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
-	    			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
+	    			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId){
 	        	
 	        	StringBuilder sb = new StringBuilder();  
 	        	
@@ -4514,27 +4514,27 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    if(desigIds != null && !desigIds.isEmpty())
 	      	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId in (:desigIds)");
 	    	    
-	    	    if(locationValues != null && !locationValues.isEmpty()){
-	    	    		if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
-		        	      sb.append(" and  S.govtDepartmentWorkLocationId in (:locationValues)  ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
-		        	      sb.append(" and Z.govtDepartmentWorkLocationId in (:locationValues)  ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
-		        	      sb.append(" and R.govtDepartmentWorkLocationId in (:locationValues)  ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
-		        	      sb.append(" and C.govtDepartmentWorkLocationId in (:locationValues) ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
-		        	      sb.append(" and D.govtDepartmentWorkLocationId in (:locationValues) ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
-		        	      sb.append(" and DIV.govtDepartmentWorkLocationId in (:locationValues)  ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
-		        	      sb.append(" and SUBDIV.govtDepartmentWorkLocationId in (:locationValues)   ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
-		          	      sb.append(" and T.govtDepartmentWorkLocationId in (:locationValues) ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
-		          	      sb.append(" and LEB.govtDepartmentWorkLocationId in (:locationValues)  ");
-		        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
-		          	      sb.append(" and P.govtDepartmentWorkLocationId in (:locationValues)   ");
+	    	    if(childLevelVals != null && !childLevelVals.isEmpty()){
+	    	    		if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+		        	      sb.append(" and  S.govtDepartmentWorkLocationId in (:childLevelVals)  ");
+		        	    else if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+		        	      sb.append(" and Z.govtDepartmentWorkLocationId in (:childLevelVals)  ");
+		        	    else if(childLevelId != null && childLevelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+		        	      sb.append(" and R.govtDepartmentWorkLocationId in (:childLevelVals)  ");
+		        	    else if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+		        	      sb.append(" and C.govtDepartmentWorkLocationId in (:childLevelVals) ");
+		        	    else if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+		        	      sb.append(" and D.govtDepartmentWorkLocationId in (:childLevelVals) ");
+		        	    else if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+		        	      sb.append(" and DIV.govtDepartmentWorkLocationId in (:childLevelVals)  ");
+		        	    else if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+		        	      sb.append(" and SUBDIV.govtDepartmentWorkLocationId in (:childLevelVals)   ");
+		        	    else if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+		          	      sb.append(" and T.govtDepartmentWorkLocationId in (:childLevelVals) ");
+		        	    else if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+		          	      sb.append(" and LEB.govtDepartmentWorkLocationId in (:childLevelVals)  ");
+		        	    else if(childLevelId != null && childLevelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+		          	      sb.append(" and P.govtDepartmentWorkLocationId in (:childLevelVals)   ");
 	    	    }
 	    	    	
 	    	    if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
@@ -4598,6 +4598,29 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    if(statusIds != null && statusIds.size() > 0){
 	    	    	sb.append("  and model.alertStatus.alertStatusId in (:statusIds) ");
 	    	    }
+	    	    
+	    	    sb.append(" group by ");
+	    	    	if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+	        	      sb.append("   S.govtDepartmentWorkLocationId  ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+	        	      sb.append("  Z.govtDepartmentWorkLocationId   ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+	        	      sb.append("  R.govtDepartmentWorkLocationId   ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+	        	      sb.append("  C.govtDepartmentWorkLocationId  ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+	        	      sb.append("  D.govtDepartmentWorkLocationId  ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+	        	      sb.append("  DIV.govtDepartmentWorkLocationId   ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+	        	      sb.append("  SUBDIV.govtDepartmentWorkLocationId    ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+	          	      sb.append("  T.govtDepartmentWorkLocationId  ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+	          	      sb.append("  LEB.govtDepartmentWorkLocationId   ");
+	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+	          	      sb.append("  P.govtDepartmentWorkLocationId    ");
+	    	    
 	    	    Query query = getSession().createQuery(sb.toString());
 	    	    
 	    	    if(govtScopeIds != null && !govtScopeIds.isEmpty())
@@ -4606,8 +4629,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    if(desigIds != null && !desigIds.isEmpty())
 	    	    	 query.setParameterList("desigIds", desigIds);
 	    	    
-	    	    if(locationValues != null && !locationValues.isEmpty())
-	    	    	query.setParameterList("locationValues", locationValues);
+	    	    if(childLevelVals != null && !childLevelVals.isEmpty())
+	    	    	query.setParameterList("childLevelVals", childLevelVals);
 	    	    
 	    	    if(fromDate != null && endDate != null){
 	    	    	query.setDate("fromDate", fromDate);
