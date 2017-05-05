@@ -64,100 +64,8 @@
                             	<h4 class="panel-title text-capitalise"><span  id="tableHdngId">all applications</span> - <span id="statusCount">0</span></h4>
 						    </div>
 							<div class="panel-body pad_0">
-							 <img id="cadreDetailsLoadingId" src="images/Loading-data.gif" style="width: 70px; height: 60px;margin-left: 533px"";display:none;/>
+							 <img id="cadreDetailsLoadingId" src="images/Loading-data.gif" style="width: 70px; height: 60px;margin-left: 533px;display:none;"/>
 								<div id="BleedingCadreDetailsId"></div>
-                            	
-								<!--swadhin
-                                	<thead style="background:#EBEBEB">
-                                    	<th>Membership No</th>
-                                        <th>Name</th>
-                                        <th>Mobile No</th>
-                                        <th>Registration Status</th>
-                                        <th>Blood Bag No</th>
-                                        <th>Blood Bag Type	</th>
-										<th>Blood Bag Quantity	</th>
-                                        <th>Quantity</th>
-                                        <th></th>
-                                    </thead>
-                                    <tbody>
-                                    	<tr>
-                                        	<td>565654</td>
-                                            <td>Santhosh</td>
-                                            <td>9654894654</td>
-                                            <td>
-                                            	<select class="form-control">
-													
-                                                	<option>Approved</option>
-													<option>Rejected</option>
-													<option>pending</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                            	<input type="text" class="form-control" style="width:100px"/>
-                                            </td>
-                                            <td>
-                                            	<select class="form-control">
-                                                	<option>Approved</option>
-													
-                                                </select>
-                                            </td>
-											<td>
-                                            	<select class="form-control">
-                                                	<option>With Sagm 350ml</option>
-													<option>With Sagm 450ml</option>
-                                                </select>
-                                            </td>
-											<td>
-												<select class="form-control">
-                                                	<option>350ml</option>
-													<option>450ml</option>
-                                                </select>
-											</td>
-                                            <td>
-                                            	<button class="btn btn-success btn-sm">SUBMIT</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                        	<td>565654</td>
-                                            <td>Santhosh</td>
-                                            <td>9654894654</td>
-                                            <td>
-                                            	<select class="form-control">
-													<option>Rejected</option>
-                                                </select>
-                                            </td>
-											<td>
-                                            	<input type="text" class="form-control" style="width:100px"/>
-                                            </td>
-                                            <td colspan="3">
-                                            	<input type="text" placeholder="remarks" class="form-control"/>
-                                            </td>
-                                            <td>
-                                            	<button class="btn btn-success btn-sm">SUBMIT</button>
-                                            </td>
-                                        </tr>
-										<tr>
-                                        	<td>565654</td>
-                                            <td>Santhosh</td>
-                                            <td>9654894654</td>
-                                            <td>
-                                            	<select class="form-control">
-													<option>pending</option>
-                                                </select>
-                                            </td>
-											<td>
-                                            	<input type="text" class="form-control" style="width:100px"/>
-                                            </td>
-                                            <td colspan="3">
-                                            	<input type="text" placeholder="remarks" class="form-control"/>
-                                            </td>
-                                            <td>
-                                            	<button class="btn btn-success btn-sm">SUBMIT</button>
-                                            </td>
-                                        </tr>
-                                    </tbody></table>
-									swadhin-->
-                                
                             </div>
                         </div>
                    </div>
@@ -180,10 +88,11 @@
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script>
 
+var globalCampId=2;
 getBloodBankCampDates();
 function getBloodBankCampDates(){
 	var jObj={
-		campId:1
+		campId:globalCampId
 	};
 	$.ajax({
 		type:"GET",
@@ -202,7 +111,7 @@ $( "#searchInputId" ).blur(function() {
 		if(statusId !=null && statusId>0){
 			statusIdList.push({"id":statusId});   
 		}
-		getBleedingCadreDetails(statusIdList,1);
+		getBleedingCadreDetails(statusIdList,globalCampId);
 	}
 });	
 </script>
