@@ -6031,7 +6031,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		return query.list();   
 	}
-    public List<Object[]> getTotalGovtPendingStatusAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type,List<Long> calCntrIdList){
+    public List<Object[]> getTotalGovtPendingStatusAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type,List<Long> calCntrIdList,Long regionScopeId,List<Long> scopeValues){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select ");
 		if(type.equalsIgnoreCase("Department")){
@@ -6040,6 +6040,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}else if(type.equalsIgnoreCase("Status")){
 			queryStr.append(" A.alert_status_id as alert_status_id, ");
 			queryStr.append(" ALTS.alert_status as alert_status,ALTS.alert_color as color, ");
+		}else if(type.equalsIgnoreCase("alertSource")){
+			queryStr.append(" AC.alert_category_id as alertCategoryId,AC.category as category,' ' as color," );
 		}
 		queryStr.append(" count(distinct A.alert_id) as count ");
 		queryStr.append(" from ");
@@ -6078,11 +6080,18 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			}
 			queryStr.append(" )");
 		}
-		
+		/*if(regionScopeId != null && regionScopeId.longValue() ==2l && scopeValues!= null && scopeValues.size() >0){//State
+		  queryStr.append(" and UA.state_id in(:scopeValues)");	
+		}else if(regionScopeId != null && regionScopeId.longValue() ==3l && scopeValues!= null && scopeValues.size() >0){//district
+		  queryStr.append(" and UA.district_id in(:scopeValues)");
+		}*/
+			
 		if(type.equalsIgnoreCase("Department")){
 			queryStr.append(" group by GD.govt_department_id");
 		}else if(type.equalsIgnoreCase("Status")){
 			queryStr.append(" group by ALTS.alert_status_id order by ALTS.alert_status_id ");
+		}else if(type.equalsIgnoreCase("alertSource")){
+			queryStr.append(" group by AC.alert_category_id order by AC.order asc");
 		}
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
 		if(type.equalsIgnoreCase("Department")){
@@ -6093,12 +6102,21 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.addScalar("alert_status_id", Hibernate.LONG);
 			query.addScalar("alert_status", Hibernate.STRING);
 			query.addScalar("color",Hibernate.STRING);
+		}else if(type.equalsIgnoreCase("alertSource")){
+			query.addScalar("alertCategoryId", Hibernate.LONG);
+			query.addScalar("category", Hibernate.STRING);
+			query.addScalar("color",Hibernate.STRING);
 		}
 		query.addScalar("count", Hibernate.LONG);
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
 		}
+		/* if(regionScopeId != null && regionScopeId.longValue() ==2l || regionScopeId.longValue() ==3l){
+			  if(scopeValues!= null && scopeValues.size() >0){
+				  query.setParameterList("scopeValues", scopeValues);
+			  }
+		 }*/
 		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty() &&  calCntrIdList !=null && !calCntrIdList.isEmpty()){
 			query.setParameterList("printIdList", printIdList);
 			query.setParameterList("electronicIdList", electronicIdList);
@@ -7676,9 +7694,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        if(statusIdList != null && statusIdList.size()>0){
 				        	queryStr.append(" A.alert_status_id as alert_status_id, " );//3
 				        }
-				        if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
-				        	queryStr.append(" ASTS.alert_sub_task_status_id as alert_status_id,"); //3
-				        }
+				       /* if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
+				        	queryStr.append(" ASTS.alert_sub_task_status_id as alert_sub_task_status_id,"); //3
+				        }*/
 				        queryStr.append("  ALTS.alert_status as alert_status, " +//4
 				        " A.alert_category_id as alert_category_id, " +//5
 				        " AC.category as category, " +//6
@@ -7873,6 +7891,80 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			
 			query.setParameterList("subTaskStatusIdList", subTaskStatusIdList);
 		}
+		return query.list(); 
+	}
+    public List<Long> getPendingAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long alertCategoryId,List<Long> calCntrIdList,Long regionScopeId,List<Long> scopeValues){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select ");
+		queryStr.append(" distinct A.alert_id as alertId ");
+		queryStr.append(" from ");
+		queryStr.append(" alert A ");
+		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N') ");
+		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");
+		queryStr.append(" left outer join user_address UA on A.address_id=UA.user_address_id ");
+		queryStr.append(" left outer join state S on UA.state_id=S.state_id ");
+		queryStr.append(" join alert_status ALTS on A.alert_status_id=ALTS.alert_status_id ");
+		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
+		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");
+		queryStr.append(" where ");
+		queryStr.append(" A.is_deleted='N' and A.alert_status_id = 1 and ");
+		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
+		if(deptIdList != null && deptIdList.size() > 0)
+			queryStr.append(" A.govt_department_id in (:deptIdList) and ");
+		if(fromDate != null && toDate != null)
+			queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" S.state_id = 1 and ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" S.state_id = 36 and ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" S.state_id in (1,36) and ");
+			}
+		}
+		/*if(regionScopeId != null && regionScopeId.longValue() ==2l && scopeValues!= null && scopeValues.size() >0){//State
+			  queryStr.append("  UA.state_id in(:scopeValues) and ");	
+		}else if(regionScopeId != null && regionScopeId.longValue() ==3l && scopeValues!= null && scopeValues.size() >0){//district
+			  queryStr.append("  UA.district_id in(:scopeValues) and ");
+		}*/
+			
+		if(alertCategoryId != null && alertCategoryId.longValue() > 0l){
+			queryStr.append("  AC.alert_category_id=:alertCategoryId and ");
+		}
+		queryStr.append("  A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+		
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty() &&  calCntrIdList !=null && !calCntrIdList.isEmpty()){
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) ) ");
+			if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" and A.alert_caller_id is null ");
+			}
+			queryStr.append(" )");
+		}
+		
+		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
+		  query.addScalar("alertId", Hibernate.LONG);
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty() &&  calCntrIdList !=null && !calCntrIdList.isEmpty()){
+			query.setParameterList("printIdList", printIdList);
+			query.setParameterList("electronicIdList", electronicIdList);
+		}
+		if(deptIdList != null && deptIdList.size() > 0){
+			query.setParameterList("deptIdList", deptIdList);
+		}
+		if(alertCategoryId != null && alertCategoryId.longValue() > 0){
+			query.setParameter("alertCategoryId", alertCategoryId);
+		}
+		/* if(regionScopeId != null && regionScopeId.longValue() ==2l || regionScopeId.longValue() ==3l){
+			  if(scopeValues!= null && scopeValues.size() >0){
+				  query.setParameterList("scopeValues", scopeValues);
+			  }
+		 }*/
 		return query.list(); 
 	}
 }

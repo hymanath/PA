@@ -112,7 +112,7 @@ public class AlertDepartmentStatusDAO extends GenericDaoHibernate<AlertDepartmen
 	      return query.list();   
    }
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAllStatuses(){
+	public List<Object[]> getAllStatuses(List<Long> alertStatusIds){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct" +
 						" alertDepartmentStatus.alertStatus.alertStatusId, " +
@@ -122,10 +122,12 @@ public class AlertDepartmentStatusDAO extends GenericDaoHibernate<AlertDepartmen
 						" from " +
 						" AlertDepartmentStatus alertDepartmentStatus " +
 						" where " +
-						" alertDepartmentStatus.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+						" alertDepartmentStatus.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") " +
+						" and alertDepartmentStatus.alertStatus.alertStatusId in(:alertStatusIds)");
 		
 		queryStr.append(" order by alertDepartmentStatus.alertStatus.statusOrder ");
 		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("alertStatusIds", alertStatusIds);
 		return query.list();
 	}
 	

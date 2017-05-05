@@ -114,7 +114,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getLocationWiseAssignedAndInvolveAlertCnt(AlertInputsVO alertInputsVO,String resultType,String type);
 	public List<Object[]> getLocationAndImapctLevelWiseAssignedAndInvolveAlertCnt(AlertInputsVO alertInputsVO,String resultType);
 	public List<Object[]> getStateOrGHMCImpcatLevelAlertCntPublicationWise(Date fromDate, Date toDate, Long stateId, List<Long> scopeIdList, String publicationType, Long userAccessLevelId, List<Long> userAccessLevelValues,List<Long> alertTypeList, List<Long> editionList,List<Long> alertStatusIds,Long discrictId);
-	public List<Object[]> getTotalGovtPendingStatusAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type,List<Long> calCntrIdList);
+	public List<Object[]> getTotalGovtPendingStatusAlertCnt(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,String type,List<Long> calCntrIdList,Long regionScopeId,List<Long> regionScopeVaues);
 	public Integer updateAlertPriority(Long alertId,Long priorityId,Long userId,Date date);
 	public Object[] getAlertDetailsForSMS(Long alertId);
 	public List<Object[]> getNoOFAlertCreatedList(Date startDate, Date endDate,Long userId);
@@ -141,6 +141,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Long> getGrievanceReportDtlsForBellowLocation(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId,String areaType,String groupType);
 	public List<Object[]> getTotalAlertGroupByDateThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String filterType,String step,Long locationId,Long statusId);
 	public List<Object[]> getDeptList(); 
-	 public List<Object[]> getTotalAlertGroupByCategoryThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId,String step,Long locationId,Long statusId);
+	public List<Object[]> getTotalAlertGroupByCategoryThenStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId,String step,Long locationId,Long statusId);
 	public List<Object[]> getTotalAlertByStatusNew1(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,List<Long> statusIdList,Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long levelId,List<Long> levelValues,List<Long> subTaskStatusIdList);
+	public List<Long> getPendingAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,Long alertCategoryId,List<Long> calCntrIdList,Long regionScopeId,List<Long> scopeValues);
 }
