@@ -394,7 +394,7 @@ public class BloodBankService implements IBloodBankService{
 				    BloodDonation bloodDonation = new BloodDonation();
 				    
 				    
-				    bloodDonation.setBloodDonationCampId(1l);
+				    bloodDonation.setBloodDonationCampId(bloodBanKVO.getId());//campId
 				    bloodDonation.setBloodDonorInfoId(donorInfo.getBloodDonorInfoId());
 				    bloodDonation.setDonorAge(bloodBanKVO.getAge());
 				    
@@ -543,30 +543,30 @@ public class BloodBankService implements IBloodBankService{
 		return returnvo;
 	}
 	
-	public Long getBloodDonatedOtherThanBloodBank(){
+	public Long getBloodDonatedOtherThanBloodBank(Long campId){
 		Long donatedInOtherBanks = 0l;
 		try {
-			donatedInOtherBanks = bloodDonationDAO.getBloodDonatedOtherThanBloodBank();
+			donatedInOtherBanks = bloodDonationDAO.getBloodDonatedOtherThanBloodBank(campId);
 		} catch (Exception e) {
 			LOG.error("Exception riased at getBloodDonatedOtherThanBloodBank", e);
 		}
 		return donatedInOtherBanks;
 	}
 	
-	public Long getBloodDonorInEmergency(){
+	public Long getBloodDonorInEmergency(Long campId){
 		Long emergencyDonors = 0l;
 		try {
-			emergencyDonors = bloodDonationDAO.getBloodDonarCountInEmergency();
+			emergencyDonors = bloodDonationDAO.getBloodDonarCountInEmergency(campId);
 		} catch (Exception e) {
 			LOG.error("Exception riased at getBloodDonorInEmergency", e);
 		}
 		return emergencyDonors;
 	}
 	
-	public Long getCalledForDonationCount(){
+	public Long getCalledForDonationCount(Long campId){
 		Long count = 0l;
 		try {
-			count = bloodDonationDAO.getCalledForDonationCount();
+			count = bloodDonationDAO.getCalledForDonationCount(campId);
 		} catch (Exception e) {
 			LOG.error("Exception riased at getCalledForDonationCount", e);
 		}
@@ -1120,7 +1120,7 @@ public class BloodBankService implements IBloodBankService{
 		}
 		return finalResult;
 	}
-public List<BloodBankVO> getPrePopulateDataDetails(String searchType,Long statusId,String date){
+public List<BloodBankVO> getPrePopulateDataDetails(String searchType,Long statusId,String date,Long campId){
 		
 		List<BloodBankVO> returnList = new ArrayList<BloodBankVO>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
@@ -1140,7 +1140,7 @@ public List<BloodBankVO> getPrePopulateDataDetails(String searchType,Long status
 			}
 			
 				
-		List<Object[]> prepopulateLst = bloodDonationDAO.getThePrePopulateData(searchType,statusId,datesList);
+		List<Object[]> prepopulateLst = bloodDonationDAO.getThePrePopulateData(searchType,statusId,datesList,campId);
 			if(prepopulateLst != null && prepopulateLst.size()>0){
 				for (Object[] obj : prepopulateLst) {
 					BloodBankVO vo = new BloodBankVO();
