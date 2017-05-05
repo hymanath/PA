@@ -22,6 +22,8 @@
 <link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -50,6 +52,8 @@
 {
 	display:none;
 }
+.slick-next{ margin-right: 15px;}
+.slick-prev{ margin-left: 15px;}
 </style>
 </head>
 <body>
@@ -187,6 +191,7 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagement.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 
