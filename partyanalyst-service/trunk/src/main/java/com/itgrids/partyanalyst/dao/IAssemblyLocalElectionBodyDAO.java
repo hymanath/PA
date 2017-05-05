@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
+import com.itgrids.partyanalyst.model.Constituency;
 
 public interface IAssemblyLocalElectionBodyDAO  extends GenericDao<AssemblyLocalElectionBody, Long> {
 	
@@ -80,5 +81,6 @@ public interface IAssemblyLocalElectionBodyDAO  extends GenericDao<AssemblyLocal
 	public List<Object[]> getConstitencyWiseTowns(Long constituencyId);
 	public List<Object[]> getLocalElectionBodyStateWise(Long stateId,List<Long> localElectionBodyIds);
 	public List<Long> getLocalElectionBodyIdsStateWise(Long stateId);
+	public List<Constituency> getConstituencyByAssemblyLocalEleBodyId(Long localEleBodyId);
 	
 }

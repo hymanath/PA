@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dao.IAlertTrackingDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertUserDAO;
 import com.itgrids.partyanalyst.dao.IAlertVerificationUserTypeUserDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IClarificationRequiredDAO;
@@ -147,6 +148,7 @@ import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.AlertTrackingDocuments;
 import com.itgrids.partyanalyst.model.ClarificationRequired;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.GovtDepartment;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignation;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationNew;
@@ -252,6 +254,17 @@ private IGovtDepartmentIssueTypeDAO govtDepartmentIssueTypeDAO;
 private IUrbanLocalityDAO urbanLocalityDAO;
 private IUrbanBlockDAO urbanBlockDAO;
 
+private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+
+
+public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+	return assemblyLocalElectionBodyDAO;
+}
+
+public void setAssemblyLocalElectionBodyDAO(
+		IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+	this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+}
 
 public IUrbanBlockDAO getUrbanBlockDAO() {
 	return urbanBlockDAO;
@@ -11907,7 +11920,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						alert.setAlertCategoryId(5l);// Social Media
 						alert.setTitle(inputVO.getAlertTitle());
 
-						UserAddress userAddress = saveUserAddressForGrievanceAlert(inputVO);
+						UserAddress userAddress = saveUserAddressForGrievanceAlertNew(inputVO);
 						alert.setAddressId(userAddress.getUserAddressId());
 
 						
@@ -11945,6 +11958,96 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}
 
 			return resultStatus;
+		}
+	 public UserAddress saveUserAddressForGrievanceAlertNew(final GrievanceAlertVO inputVO)
+		{
+			UserAddress userAddress = new UserAddress();
+			try{
+				
+				if(inputVO.getLocationLevelId().longValue() == 2l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				}
+				else if(inputVO.getLocationLevelId().longValue() == 3l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					
+				}
+				
+				else if(inputVO.getLocationLevelId().longValue() == 4l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				}
+				else if(inputVO.getLocationLevelId().longValue() == 5l || inputVO.getLocationLevelId().longValue() == 7l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					
+					if(inputVO.getLocationLevelId() ==  5l){
+						userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+						userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+					}					
+					else{	
+						List<Constituency> constituencyList = assemblyLocalElectionBodyDAO.getConstituencyByAssemblyLocalEleBodyId(inputVO.getMandalId());
+						if(constituencyList !=null && constituencyList.size()>0){
+							userAddress.setConstituency(constituencyList.get(0));
+						}
+						userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));
+					}
+							
+				}
+				
+				else if(inputVO.getLocationLevelId().longValue() == 6l || inputVO.getLocationLevelId().longValue() == 8l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					
+					if(inputVO.getLocationLevelId() ==  6l)
+					{
+						userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+						userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+						userAddress.setPanchayatId(inputVO.getPanchayatId());
+					}
+					else
+					{
+						List<Constituency> constituencyList = assemblyLocalElectionBodyDAO.getConstituencyByAssemblyLocalEleBodyId(inputVO.getMandalId());
+						if(constituencyList !=null && constituencyList.size()>0){
+							userAddress.setConstituency(constituencyList.get(0));
+						}
+						userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));	
+						userAddress.setWard(constituencyDAO.get(inputVO.getPanchayatId()));
+					}
+				}
+				else if(inputVO.getLocationLevelId().toString().equalsIgnoreCase("11"))
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+					userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+					userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+					userAddress.setPanchayatId(inputVO.getPanchayatId());
+					userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
+				}
+				else if(inputVO.getLocationLevelId().toString().equalsIgnoreCase("13"))
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+					userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));
+					userAddress.setUrbanLocalityId(inputVO.getPanchayatId());
+					userAddress.setUrbanBlockId(inputVO.getHamletId());
+				}
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return userAddress;
 		}
 	 
 	 
