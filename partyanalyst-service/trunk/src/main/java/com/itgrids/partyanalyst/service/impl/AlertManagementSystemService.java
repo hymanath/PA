@@ -2300,9 +2300,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					 deptLst.add(commonMethodsUtilService.getLongValueForObject(param[0]));
 				 }
 			 }
+			    Long levelId = 0L;
+			    List<Long> levelVaue = new ArrayList<Long>(0);
+				List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+				if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+					for(Object[] param : lvlValueAndLvlIdList){
+						levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						levelVaue.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+				
 			  List<Object[]> deptList = null;
 			 if(deptLst != null && deptLst.size() > 0){
-				 deptList = alertAssignedOfficerNewDAO.getAllDepartmentHasData(deptLst);
+				 deptList = alertAssignedOfficerNewDAO.getAllDepartmentHasData(deptLst,levelId,levelVaue);
 			 }
 			if (deptList != null && deptList.size() > 0) {
 			 for (Object[] objects : deptList) {

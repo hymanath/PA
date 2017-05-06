@@ -4460,14 +4460,41 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		     	query.setParameter("alertId", alertId);
 		     	return query.list();
 	     }
-	     
-	     public List<Object[]> getAllDepartmentHasData(List<Long> deptIds){
-		 		
-		 		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
-		 				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName "
-		 				+ " from AlertAssignedOfficerNew model where model.isDeleted='N' " +
-		 				" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds)") ;
-		 		    query.setParameterList("deptIds", deptIds);
+	     public List<Object[]> getAllDepartmentHasData(List<Long> deptIds,Long levelId,List<Long> levelValues){
+		 		StringBuilder queryStr = new StringBuilder();
+		 		queryStr.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+		 				"    model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName "
+		 				+ "  from AlertAssignedOfficerNew model " +
+		 				"    left join model.govtDepartmentDesignationOfficer.govtUserAddress UA " +
+		 				"    where model.isDeleted='N' " +
+		 				"    and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds)") ;
+		 		    
+		 		    if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+		 		    	queryStr.append(" and UA.stateId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
+		     	    	queryStr.append(" and UA.zoneId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID)
+		     	    	queryStr.append(" and UA.regionId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID)
+		     	    	queryStr.append(" and UA.circleId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID)
+		     	    	queryStr.append(" and UA.districtId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID)
+		     	    	queryStr.append(" and UA.divisionId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID)
+		     	    	queryStr.append(" and UA.subDivisionId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID)
+		     	    	queryStr.append(" and UA.tehsilId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
+		     	    	queryStr.append(" and UA.localElectionBodyId in (:levelValues)");
+		     	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
+		     	    	queryStr.append(" and UA.panchayatId in (:levelValues)");
+		 		    
+		 		    Query query = getSession().createQuery(queryStr.toString());
+		 		   query.setParameterList("deptIds", deptIds);
+		 		    if(levelId != null && levelValues != null && !levelValues.isEmpty())
+		    	        query.setParameterList("levelValues", levelValues);
+		    	   
 		 		return query.list();
 		 	}
 	     
