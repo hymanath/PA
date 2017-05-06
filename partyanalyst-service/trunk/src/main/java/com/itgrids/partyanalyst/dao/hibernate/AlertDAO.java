@@ -6996,7 +6996,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 			}
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
@@ -7194,7 +7194,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 			}
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
@@ -7369,7 +7369,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 			}
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
@@ -7448,7 +7448,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 			}
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");    
 		if(fromDate != null && toDate != null){
@@ -7538,7 +7538,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 			}
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
@@ -7954,7 +7954,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.setParameterList("deptIdList", deptIdList);
 		}
 		if(alertCategoryId != null && alertCategoryId.longValue() > 0){
-			query.setParameter("alertCategoryId", alertCategoryId);
+			query.setParameter("alertCategoryId", alertCategoryId);   
 		}
 		/* if(regionScopeId != null && regionScopeId.longValue() ==2l || regionScopeId.longValue() ==3l){
 			  if(scopeValues!= null && scopeValues.size() >0){
