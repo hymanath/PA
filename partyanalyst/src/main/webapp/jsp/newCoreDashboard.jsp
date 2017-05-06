@@ -4964,7 +4964,7 @@ var globalImages;
 		commonNewsBasicCalls();
 		getAllNewsPapers();
 		//getAlertOverviewDetails();
-		getAlertDtlsBasedOnSelection('default');
+		//getAlertDtlsBasedOnSelection('default');
 	  }
 	  else{
 		   $("#mainHeadinId").html("KALA VENKATA RAO");
