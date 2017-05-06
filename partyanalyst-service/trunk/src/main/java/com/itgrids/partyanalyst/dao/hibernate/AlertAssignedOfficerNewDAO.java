@@ -3487,7 +3487,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	      return query.list();
  	}
 	 
-	 public List<Long> getDistrictOffrAlertsIds(Long govtDeptDesigOffceId,Long govtOffceId,Date fromDate,Date toDate,Long statusId,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
+	 public List<Long> getDistrictOffrAlertsIds(List<Long> govtDeptDesigOffceIds,List<Long> govtOffceIds,Date fromDate,Date toDate,Long statusId,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
 	    	StringBuilder sb = new StringBuilder();
 	    	  
 	    	  sb.append(" select distinct model.alert.alertId from AlertAssignedOfficerNew model ");
@@ -3507,11 +3507,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	                sb.append(" )");
 	            }
 	    	  
-	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
-	    		  sb.append(" and model.govtOfficer.govtOfficerId = :govtOffceId " );
+	    	  if(govtOffceIds != null && govtOffceIds.size() >0){
+	    		  sb.append(" and model.govtOfficer.govtOfficerId in(:govtOffceIds) " );
 	    	  }
-	    	  if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
-	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId = :govtDeptDesigOffceId " );
+	    	  if(govtDeptDesigOffceIds != null && govtDeptDesigOffceIds.size() >0){
+	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDeptDesigOffceIds) " );
 	    	  }
 	    	  if(statusId != null && statusId.longValue() > 0L){
 	    		  sb.append(" and  model.alertStatus.alertStatusId = :statusId");
@@ -3522,11 +3522,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  
 	    	  Query query = getSession().createQuery(sb.toString());
 	    	  
-	    	  if(govtDeptDesigOffceId != null && govtDeptDesigOffceId.longValue() >0l){
-	    		  query.setParameter("govtDeptDesigOffceId", govtDeptDesigOffceId);  
+	    	  if(govtDeptDesigOffceIds != null && govtDeptDesigOffceIds.size() >0){
+	    		  query.setParameterList("govtDeptDesigOffceIds", govtDeptDesigOffceIds);  
 	    	  }
-	    	  if(govtOffceId != null && govtOffceId.longValue() >0l){
-	    		  query.setParameter("govtOffceId", govtOffceId);  
+	    	  if(govtOffceIds != null && govtOffceIds.size() >0){
+	    		  query.setParameterList("govtOffceIds", govtOffceIds);  
 	    	  }
 	    	  if(statusId != null && statusId.longValue() > 0L){
 	    		  query.setParameter("statusId", statusId); 
@@ -4101,9 +4101,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      				queryStr.append(" A.alert_category_id as govtDepartmentScopeId, ");//3
      			}
      		}
-     	}/*else{
-     		queryStr.append(" GDWL.govt_department_scope_id as govtDepartmentScopeId, ");//3
-     	}*/
+     	}
      	
      	queryStr.append(" count(distinct AAO.alert_id) as count");
      	
@@ -4143,9 +4141,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
  			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
  		}
- 		/*if(stateId != null && stateId.longValue() > 0){
- 			queryStr.append(" and GUA.state_id = :stateId ");
- 		}*/
+ 		
 			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 				queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 			}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -4253,9 +4249,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      				queryStr.append(" group by GDWL1.govt_department_work_location_id,A.alert_category_id ");
      			}
      		}
- 	 	}/*else{
-     		queryStr.append(" group by GDWL1.govt_department_work_location_id , GDWL.govt_department_scope_id ");
-     	}*/
+ 	 	}
  		
  		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
  		query.addScalar("parentGovtDepartmentScopeId", Hibernate.LONG);
@@ -4294,9 +4288,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(filterScopeValue != null && filterScopeValue.longValue() > 0L){
  			query.setParameter("filterScopeValue",filterScopeValue);
  		}
- 		/*if(stateId != null && stateId.longValue() > 0){
- 			query.setParameter("stateId",stateId);
- 		}*/
+ 		
  		return query.list();
      }
      public List<Long> getAlertIdsBasedOnRequiredParameter(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
