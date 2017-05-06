@@ -4506,7 +4506,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    	sb.append(" ,model.alertStatus.alertStatusId,model.insertedTime,model.updatedTime ");
 	        	
 	    	    	
-	        	sb.append(" from GovtDepartmentDesignation model1,AlertAssignedOfficerNew model " +
+	        	sb.append(" from GovtDepartmentDesignationNew model1,AlertAssignedOfficerNew model " +
 	        			" left join model.govtDepartmentDesignationOfficer.govtUserAddress UA " +
 	    	          " left join UA.state S  " +
 	    	          " left join UA.zone Z " +
@@ -4612,7 +4612,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    	sb.append("  and model.alertStatus.alertStatusId in (:statusIds) ");
 	    	    }
 	    	    
-	    	    sb.append(" group by ");
+	    	    /*sb.append(" group by ");
 	    	    	if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 	        	      sb.append("   S.govtDepartmentWorkLocationId  ");
 	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
@@ -4632,7 +4632,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
 	          	      sb.append("  LEB.govtDepartmentWorkLocationId   ");
 	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
-	          	      sb.append("  P.govtDepartmentWorkLocationId    ");
+	          	      sb.append("  P.govtDepartmentWorkLocationId    ");*/
 	    	    
 	    	    Query query = getSession().createQuery(sb.toString());
 	    	    

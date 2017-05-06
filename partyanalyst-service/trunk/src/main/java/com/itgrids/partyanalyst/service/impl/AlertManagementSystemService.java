@@ -8597,6 +8597,22 @@ public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long u
 				}else{
 					returnList.add(vo);
 				}
+				if(commonMethodsUtilService.isListOrSetValid(vo.getList1())){
+					for(DistrictOfficeViewAlertVO locVO :vo.getList1()){
+						if(commonMethodsUtilService.isListOrSetValid(locVO.getList2())){
+							for(DistrictOfficeViewAlertVO desigVO :locVO.getList2()){
+								if(commonMethodsUtilService.isListOrSetValid(desigVO.getSubList1())){
+									for(DistrictOfficeViewAlertVO statusVo :desigVO.getSubList1()){
+										if(statusVo.getCount() != null && statusVo.getCount().longValue() >0l){
+											desigVO.setCount(desigVO.getCount()+statusVo.getCount());
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				
 			}
 		}
 		
@@ -8667,7 +8683,8 @@ public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAler
 						lagStatusIds.add(8l);
 					}
 				if(statusVO != null){
-					statusVO.setCount(statusVO.getCount()+1);
+					statusVO.setCount(statusVO.getCount()+1l);
+					
 					Long dist = 0l;
 					if(lagStartCnt != null && lagStartCnt > 0l && lagEndCnt != null && lagEndCnt> 0l){
 						if(commonMethodsUtilService.getStringValueForObject(obj[8]) != null && commonMethodsUtilService.getStringValueForObject(obj[9]) != null){
