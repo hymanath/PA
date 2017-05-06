@@ -8685,7 +8685,7 @@ public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAler
 						lagStatusIds.add(7l);
 						lagStatusIds.add(10l);
 						lagStatusIds.add(12l);
-					}else if(alertType != null && alertType.equalsIgnoreCase("alert")){
+					}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
 						lagStatusIds.add(4l);
 						lagStatusIds.add(5l);
 						lagStatusIds.add(6l);
@@ -8696,6 +8696,7 @@ public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAler
 					statusVO.setCount(statusVO.getCount()+1l);
 					
 					Long dist = 0l;
+					if(isLagChkd != null && isLagChkd.equalsIgnoreCase("true")){
 					if(lagStartCnt != null && lagStartCnt >= 0l && lagEndCnt != null && lagEndCnt> 0l){
 						if(commonMethodsUtilService.getStringValueForObject(obj[8]) != null && commonMethodsUtilService.getStringValueForObject(obj[9]) != null){
 							if(lagStatusIds.contains(statusId) ){
@@ -8706,8 +8707,8 @@ public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAler
 							
 						}
 						scopeVO.setTaskCnt(dist);
-						
 					}
+				  }
 				}
 			}
 		}
