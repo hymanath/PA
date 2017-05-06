@@ -8585,7 +8585,7 @@ public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long u
 				DistrictOfficeViewAlertVO vo = entry.getValue();
 				//returnList.add(vo);
 				if(isLagChkd != null && isLagChkd.equalsIgnoreCase("true")){
-					if(lagStartCnt != null && lagStartCnt > 0l && lagEndCnt != null && lagEndCnt> 0l){
+					if(lagStartCnt != null && lagStartCnt >= 0l && lagEndCnt != null && lagEndCnt> 0l){
 						if(vo.getTaskCnt() >= lagStartCnt && vo.getTaskCnt() <= lagEndCnt){
 							returnList.add(vo);
 						}
@@ -8686,9 +8686,9 @@ public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAler
 					statusVO.setCount(statusVO.getCount()+1l);
 					
 					Long dist = 0l;
-					if(lagStartCnt != null && lagStartCnt > 0l && lagEndCnt != null && lagEndCnt> 0l){
+					if(lagStartCnt != null && lagStartCnt >= 0l && lagEndCnt != null && lagEndCnt> 0l){
 						if(commonMethodsUtilService.getStringValueForObject(obj[8]) != null && commonMethodsUtilService.getStringValueForObject(obj[9]) != null){
-							if(statusIds.contains(statusId) ){
+							if(lagStatusIds.contains(statusId) ){
 								dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(obj[8]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(obj[9]).substring(0, 10));
 							}else{
 								dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(commonMethodsUtilService.getStringValueForObject(obj[8])).substring(0, 10), td);
