@@ -529,7 +529,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			for (int i = 0; i < calCntrIdArr.length(); i++){
 				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 			}
-			//Long userId = jObj.getLong("userId");
+			
 			String startDate =jObj.getString("startDate");
 			String endDate =jObj.getString("endDate");
 		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId,startDate,endDate,paperIdList,chanelIdList,calCntrIdList);
@@ -1463,14 +1463,26 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 				}
 				
-				Long govtDeptGovtOffrId = jObj.getLong("govtDepDesigOffcrId");
-				Long govtOffrcrId = jObj.getLong("govtOfficerId");
+				JSONArray govtDepDesigOffcrIds = jObj.getJSONArray("govtDepDesigOffcrIds");  
+				List<Long> govtDeptDesiOffIdList = new ArrayList<Long>();
+				if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.length() > 0){
+					for (int i = 0; i < govtDepDesigOffcrIds.length(); i++){
+						govtDeptDesiOffIdList.add(Long.parseLong(govtDepDesigOffcrIds.getString(i)));          
+					}
+				}
+				
+				JSONArray govtOfficerIds = jObj.getJSONArray("govtOfficerIds");  
+				List<Long> govtOffcrIdList = new ArrayList<Long>();
+				for (int i = 0; i < govtOfficerIds.length(); i++){
+					govtOffcrIdList.add(Long.parseLong(govtOfficerIds.getString(i)));        
+				}
+				
 				String countType = jObj.getString("countType");
 				String alertType = jObj.getString("alertType");
 				String fromDate = jObj.getString("fromDate");
 				String toDate = jObj.getString("toDate");
 				
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptGovtOffrId,govtOffrcrId,countType,alertType,paperIdList,chanelIdList,calCntrIdList,fromDate,toDate);
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptDesiOffIdList,govtOffcrIdList,countType,alertType,paperIdList,chanelIdList,calCntrIdList,fromDate,toDate);
 				
 				alertCoreDashBoardVOs =alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
@@ -2588,13 +2600,27 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 				}
 				
-				Long govtDeptDesigOffceId = jObj.getLong("govtDeptDesigOffceId");
-				Long govtOffceId = jObj.getLong("govtOffceId");
+				JSONArray govtDepDesigOffcrIds = jObj.getJSONArray("govtDepDesigOffcrIds");  
+				List<Long> govtDeptDesiOffIdList = new ArrayList<Long>();
+				if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.length() > 0){
+					for (int i = 0; i < govtDepDesigOffcrIds.length(); i++){
+						govtDeptDesiOffIdList.add(Long.parseLong(govtDepDesigOffcrIds.getString(i)));          
+					}
+				}
+				
+				JSONArray govtOfficerIds = jObj.getJSONArray("govtOfficerIds");  
+				List<Long> govtOffcrIdList = new ArrayList<Long>();
+				if(govtOfficerIds != null && govtOfficerIds.length() > 0){
+					for (int i = 0; i < govtOfficerIds.length(); i++){
+						govtOffcrIdList.add(Long.parseLong(govtOfficerIds.getString(i)));        
+					}
+				}
+				
 				Long statusId = jObj.getLong("statusId");
 				String formDateStr = jObj.getString("formDate");
 				String toDateStr = jObj.getString("toDate");
 				String clickType =  jObj.getString("clickType");
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(govtDeptDesigOffceId,govtOffceId,statusId,formDateStr,toDateStr,clickType,paperIdList,chanelIdList,calCntrIdList);
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(govtDeptDesiOffIdList,govtOffcrIdList,statusId,formDateStr,toDateStr,clickType,paperIdList,chanelIdList,calCntrIdList);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
 				e.printStackTrace();

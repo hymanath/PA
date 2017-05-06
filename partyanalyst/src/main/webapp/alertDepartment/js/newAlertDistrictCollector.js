@@ -276,8 +276,8 @@ var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","El
 		$("#assignedSubTasksDivID").html('');
 		if(result !=null){
 			globalDepartmentId = result.departmentId;
-			globalgovtDeptDesigOffcrId = result.govtDeptDesigOffcrIds[0];
-			globalgovtOfficerId = result.govtOfficerIds[0];
+			globalgovtDeptDesigOffcrIds = result.govtDeptDesigOffcrIds;
+			globalgovtOfficerIds = result.govtOfficerIds;
 			globalDesignationId = result.designationId;
 			buildDistrictOfficerAlertsCountView(result);
 		}
@@ -1347,8 +1347,8 @@ $(document).on("click",".overAllCount",function(){
 	var alertType = $(this).attr("attr_alert_type");
 	//alertIdArr=($(this).attr("attr_overcunt").split(','));
 	var jObj = {
-		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
-		govtOfficerId : globalgovtOfficerId,
+		govtDepDesigOffcrIds : globalgovtDeptDesigOffcrIds,
+		govtOfficerIds : globalgovtOfficerIds,
 		countType: "overAll",
 		alertType : alertType,
 		paperIdArr:paperIdArr,
@@ -1377,15 +1377,14 @@ $(document).on("click",".todayCountCls",function(){
 			keyboard: false,
 			backdrop: 'static'
 		});
-	
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count")
 	//alertIdArr.push(parseInt($(this).attr("attr_todayCunt")));
 	var alertType = $(this).attr("attr_alert_type");
 	var jObj = {
-		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
-		govtOfficerId : globalgovtOfficerId,
+		govtDepDesigOffcrIds : globalgovtDeptDesigOffcrIds,
+		govtOfficerIds : globalgovtOfficerIds,
 		countType: "today",
 		alertType : alertType,
 		paperIdArr:paperIdArr,
@@ -1476,8 +1475,8 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		
 		
 		var jsObj = {
-		govtDeptDesigOffceId : globalgovtDeptDesigOffcrId,
-		govtOffceId : globalgovtOfficerId,
+	    govtDepDesigOffcrIds : globalgovtDeptDesigOffcrIds,
+		govtOfficerIds : globalgovtOfficerIds,
 		statusId : StatusId,
 		formDate:currentFromDate, 
 		toDate: currentToDate,

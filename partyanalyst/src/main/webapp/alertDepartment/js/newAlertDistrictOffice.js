@@ -669,9 +669,11 @@ $(document).on("click",".overAllCount",function(){
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
 	//alertIdArr=($(this).attr("attr_overcunt").split(','));
+	var govtDepDesigOffcrIds = [globalgovtDeptDesigOffcrId];
+	var govtOfficerIds = [globalgovtOfficerId];
 	var jObj = {
-		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
-		govtOfficerId : globalgovtOfficerId,
+		govtDepDesigOffcrIds : govtDepDesigOffcrIds,
+		govtOfficerIds : govtOfficerIds,
 		countType: "overAll",
 		alertType : alertType,
 		paperIdArr : newspapersGlobalArr,
@@ -704,11 +706,12 @@ $(document).on("click",".todayCountCls",function(){
 	var alertIdArr =[];
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count")
-	//alertIdArr.push(parseInt($(this).attr("attr_todayCunt")));
 	var alertType = $(this).attr("attr_alert_type");
+	var govtDepDesigOffcrIds = [globalgovtDeptDesigOffcrId];
+	var govtOfficerIds = [globalgovtOfficerId];
 	var jObj = {
-		govtDepDesigOffcrId : globalgovtDeptDesigOffcrId,
-		govtOfficerId : globalgovtOfficerId,
+		govtDepDesigOffcrIds : govtDepDesigOffcrIds,
+		govtOfficerIds : govtOfficerIds,
 		countType: "today",
 		alertType : alertType,
 		paperIdArr : newspapersGlobalArr,
@@ -1828,10 +1831,11 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		});
 		$("#alertManagementPopupBody").html(spinner);
 		
-		
+	   var govtDepDesigOffcrIds = [globalgovtDeptDesigOffcrId];
+	   var govtOfficerIds = [globalgovtOfficerId];
 		var jsObj = {
-		govtDeptDesigOffceId : globalgovtDeptDesigOffcrId,
-		govtOffceId : globalgovtOfficerId,
+		govtDepDesigOffcrIds : govtDepDesigOffcrIds,
+		govtOfficerIds : govtOfficerIds,
 		statusId : StatusId,
 		formDate:currentFromDate, 
 		toDate: currentToDate,
