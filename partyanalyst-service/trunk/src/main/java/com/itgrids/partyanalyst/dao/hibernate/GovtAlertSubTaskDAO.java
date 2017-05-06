@@ -3416,7 +3416,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 		    	
 		    	StringBuilder sb = new StringBuilder();  
 			    sb.append("select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
-			    		"model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName,model.govtAlertSubTaskId ");
+			    		"model1.designationName,model.govtAlertSubTaskId ");
 		    	
 			    if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 	        	      sb.append(" , S.govtDepartmentWorkLocationId,S.locationName,S.govtDepartmentScope.govtDepartmentScopeId ,  GDS.levelName ");
@@ -3439,9 +3439,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
 	          	      sb.append(" , P.govtDepartmentWorkLocationId,P.locationName,P.govtDepartmentScope.govtDepartmentScopeId ,  GDS.levelName ");
 	    	    	
-			    sb.append(" , model.alertSubTaskStatus.alertSubTaskStatusId,model.insertedTime,model.updatedTime ");
+			    sb.append(" , model.alertSubTaskStatus.alertSubTaskStatusId,model.createdTime,model.updatedTime ");
 			    
-		    	sb.append(" from GovtAlertSubTask model" +
+		    	sb.append(" from GovtDepartmentDesignationNew model1,GovtAlertSubTask model" +
 		    			" left join model.govtDepartmentDesignationOfficer.govtUserAddress UA " +
 		    	          " left join UA.state S " +
 		    	          " left join UA.zone Z " +
@@ -3456,7 +3456,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 		    	          " left join  model.govtDepartmentDesignationOfficer.govtDepartmentScope GDS " );
 		    	sb.append(" left join model.alert.edition EDS " +
 		  	    		   " left join model.alert.tvNewsChannel TNC  ");
-			    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
+			    sb.append(" where model1.govtDepartmentDesignationId=model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId and model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
 			    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+")   ");
 			    
 			    if(desigIds != null && !desigIds.isEmpty())
@@ -3548,7 +3548,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			    	sb.append("  and model.alertSubTaskStatus.alertSubTaskStatusId in (:statusIds) ");
 			    }
 			    
-			    sb.append(" group by ");
+			    /*sb.append(" group by ");
     	    	if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
         	      sb.append("   S.govtDepartmentWorkLocationId  ");
         	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
@@ -3568,7 +3568,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
         	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
           	      sb.append("  LEB.govtDepartmentWorkLocationId   ");
         	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
-          	      sb.append("  P.govtDepartmentWorkLocationId    ");
+          	      sb.append("  P.govtDepartmentWorkLocationId    ");*/
     	    	
 			    Query query = getSession().createQuery(sb.toString());
 			    
