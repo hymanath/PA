@@ -6989,7 +6989,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" and model1.alertStatus.alertStatusId = model.alertStatus.alertStatusId " + 
 						" and model.isDeleted ='N' " +
 						" and model.govtDepartment.govtDepartmentId = :departmentId ");
-		if(sourceId != null && sourceId.longValue() != 0L){
+		if(sourceId != null && sourceId.longValue() != 0L){  
 			if(sourceId != null && sourceId.longValue() > 0 && sourceId.longValue() == 1L){
 				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId and model.alertCaller is not null");
 			}else{
@@ -7623,13 +7623,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" and model.isDeleted ='N' " +
 						" and model.govtDepartment.govtDepartmentId = :departmentId ");
 		if(sourceId != null && sourceId.longValue() != 0L){
-			if(sourceId != null && sourceId.longValue() > 0 && sourceId.longValue() == 1L){
-				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId and model.alertCaller is not null");
-			}else{
-				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
-			}
+			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3) or model.alertCaller is not null)");
+			queryStr.append(" and model.alertCategory.alertCategoryId  in (2,3,4) ");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
