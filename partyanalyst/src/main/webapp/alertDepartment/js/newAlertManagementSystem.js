@@ -1169,7 +1169,7 @@ $(document).on("click",".locationAndStatusWiseInterchange li",function(){
 			
 		}
 		
-		getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentId,searchType,"levelWiseGraphView",sortingType,orderType,0,0,"Default","Sorting");
+		getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentId,searchType,"levelWiseGraphView",sortingType,orderType,0,0,"Default","Other");
 		getLocationBasedOnDepartmentLevel(departmentId,parentId,districtLevelId);
 		
 		
