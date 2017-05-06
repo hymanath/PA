@@ -8310,7 +8310,13 @@ public FilterSectionVO getFilterSectionAlertNewDetails(Long userId,List<Long> de
 		//List<Object[]> scopeIds = govtDepartmentScopeDAO.getFilterSectionDetailsOnScopeIds();
 		 setFilterSectionAlertDetails(scopeIds,filterVo,"scopes");
 		List<Object[]> severityIds = alertSeverityDAO.getFilterSectionDetailsOnSeverity();
-		 setFilterSectionAlertDetails(severityIds,filterVo,"severity");	
+		 setFilterSectionAlertDetails(severityIds,filterVo,"severity");
+		List<Object[]> categoryIds = alertCategoryDAO.getAllCategory1();
+		 setFilterSectionAlertDetails(categoryIds,filterVo,"category");
+		List<Object[]> editionsIds = newsPaperDAO.getNewPaperList();
+		 setFilterSectionAlertDetails(editionsIds,filterVo,"editions");
+		List<Object[]> tvNewsChannelIds = tvNewsChannelDAO.getAllElectrinicMedia();
+		 setFilterSectionAlertDetails(tvNewsChannelIds,filterVo,"tvNewsChannel");
 		} catch (Exception e) {
 			LOG.error(" Exception Occured in getFilterSectionAlertDetails() method, Exception - ",e);
 		}		
