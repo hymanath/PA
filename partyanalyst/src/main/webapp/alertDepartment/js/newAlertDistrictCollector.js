@@ -910,7 +910,7 @@ function buildDistrictLevelDeptWiseLocationLevelView(result){
 				if(result[i].subList2 !=null &&  result[i].subList2.length>0){
 					for(var j in result[i].subList2){
 							
-						 if(result[i].subList2[j].count > 0){
+						 //if(result[i].subList2[j].count > 0){
 								if(result[i].subList2[j].id==1){
 									 stateArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
 								}else if(result[i].subList2[j].id==2){
@@ -932,7 +932,7 @@ function buildDistrictLevelDeptWiseLocationLevelView(result){
 								}else if(result[i].subList2[j].id==10){
 									 panchayatArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count});
 								} 
-						 }	
+						 //}	
 					}
 					
 				}
@@ -1133,7 +1133,6 @@ function buildDistrictLevelDeptWiseStatusOverView(result,levelId){
 					for(var j in result[i].subList2){
 							
 						if(alertType == "alert"){
-								if(result[i].subList2[j].count > 0){
 										if(result[i].subList2[j].id==1){
 											pendingAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId}); 
 										}else if(result[i].subList2[j].id==2){
@@ -1162,10 +1161,8 @@ function buildDistrictLevelDeptWiseStatusOverView(result,levelId){
 										}else if(result[i].subList2[j].id==13){
 											 Proposal.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 										}
-								}
 								
 							}else if(alertType == "subTask"){
-								if(result[i].subList2[j].count > 0){
 									if(result[i].subList2[j].id==1){
 										 notifiedAlertArr.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 									}else if(result[i].subList2[j].id==2){
@@ -1181,7 +1178,6 @@ function buildDistrictLevelDeptWiseStatusOverView(result,levelId){
 									}else if(result[i].subList2[j].id==7){
 										 Closed.push({"y":result[i].subList2[j].count,"extra":result[i].id+"-"+result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].count+"-"+levelId});
 									}
-								}
 								
 							}
 					}
