@@ -150,7 +150,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		List<String> entitlements = null;
 		if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 			entitlements = regVO.getEntitlements();
-			if(!entitlements.contains("BLOOD_BANK_DASHBOARD_ENTITLEMENT".trim()) || !entitlements.contains("BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT".trim())){
+			if(!(entitlements.contains("BLOOD_BANK_DASHBOARD_ENTITLEMENT".trim()) || entitlements.contains("BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT".trim()))){
 				noaccess = true ;
 			}
 		
@@ -179,7 +179,7 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		 List<String> entitlements = null;
 			if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
 				entitlements = regVO.getEntitlements();
-				if(!entitlements.contains("BLOOD_BANK_BLEEDING_ENTITLEMENT".trim()) || !entitlements.contains("BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT".trim())){
+				if(!(entitlements.contains("BLOOD_BANK_BLEEDING_ENTITLEMENT".trim()) || entitlements.contains("BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT".trim()))){
 					noaccess = true ;
 				}
 			
@@ -250,7 +250,11 @@ public class BloodBankAction extends ActionSupport implements ServletRequestAwar
 		
 		try {
 			jObj= new JSONObject(getTask());	
-			bloodBankVO=bloodBankService.getCadreDetails(jObj.getString("memberShipNo"));
+			String searchType =jObj.getString("searchType");
+			String searchValue =jObj.getString("searchValue");
+			Long enrollmentId = jObj.getLong("enrollmentId");
+			
+			bloodBankVO=bloodBankService.getCadreDetails(enrollmentId,searchType.trim(),searchValue.trim());
 		} catch (Exception e) {
 			 LOG.info("Error raised at getCadreDetails() in BloodBankAction",e);
 		}
