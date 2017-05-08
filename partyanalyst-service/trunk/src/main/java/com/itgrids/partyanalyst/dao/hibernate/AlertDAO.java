@@ -6041,7 +6041,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			queryStr.append(" A.alert_status_id as alert_status_id, ");
 			queryStr.append(" ALTS.alert_status as alert_status,ALTS.alert_color as color, ");
 		}else if(type.equalsIgnoreCase("alertSource")){
-			queryStr.append(" AC.alert_category_id as alertCategoryId,AC.category as category,' ' as color," );
+			queryStr.append(" AC.alert_category_id as alertCategoryId,AC.category as category,' ' as color," +
+					" ALTS.alert_status_id as alertStatusId,ALTS.alert_status as alertStatus,ALTS.alert_color as alertColor,");
 		}
 		queryStr.append(" count(distinct A.alert_id) as count ");
 		queryStr.append(" from ");
@@ -6091,7 +6092,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}else if(type.equalsIgnoreCase("Status")){
 			queryStr.append(" group by ALTS.alert_status_id order by ALTS.alert_status_id ");
 		}else if(type.equalsIgnoreCase("alertSource")){
-			queryStr.append(" group by AC.alert_category_id order by AC.order asc");
+			queryStr.append(" group by AC.alert_category_id,ALTS.alert_status_id order by AC.order asc,ALTS.status_order asc");
 		}
 		SQLQuery query = getSession().createSQLQuery(queryStr.toString());
 		if(type.equalsIgnoreCase("Department")){
@@ -6106,6 +6107,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.addScalar("alertCategoryId", Hibernate.LONG);
 			query.addScalar("category", Hibernate.STRING);
 			query.addScalar("color",Hibernate.STRING);
+			query.addScalar("alertStatusId",Hibernate.LONG);
+			query.addScalar("alertStatus",Hibernate.STRING);
+			query.addScalar("alertColor",Hibernate.STRING);
 		}
 		query.addScalar("count", Hibernate.LONG);
 		if(fromDate != null && toDate != null){

@@ -3260,7 +3260,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 		   }
 		 public List<Long> getSubTaskAlertIdsBasedOnLocation(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
 				   Long levelId,List<Long> levelValues,Long govtDepartmentId,Long parentGovtDepartmentScopeId,Long locationValue,Long deptLevelId
-				   ,Long statusId,List<Long> calCntrIds,Long alertCategoryId){
+				   ,Long statusId,List<Long> calCntrIds,Long alertCategoryId,List<Long> deptScopeIdList){
 		   	StringBuilder queryStr = new StringBuilder();
 		   	    queryStr.append(" select ");
 		        queryStr.append(" distinct AAO.alert_id as alertIds ");
@@ -3327,7 +3327,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				if(locationValue != null && locationValue.longValue() > 0L){
 					queryStr.append(" and GDWL1.govt_department_work_location_id=:locationValue   ");
 				}
-				
+				if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+					queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
+				}
 				if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
 					queryStr.append(" and GDWL.govt_department_id = :govtDepartmentId   ");
 				}
@@ -3407,6 +3409,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				}
 				if(alertCategoryId != null && alertCategoryId.longValue() > 0){
 					query.setParameter("alertCategoryId",alertCategoryId);
+				}
+				if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+					query.setParameterList("deptScopeIdList",deptScopeIdList);
 				}
 				return query.list();
 		   }
