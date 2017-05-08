@@ -793,8 +793,10 @@ var GmembershipNo;
 		startIndex:0,
 		maxIndex:5000,
 		removedStatus:false,
-		enrollmentId : 3,
-		task:"tdpCadreSearchForBloodBank"
+		enrollmentId : 0,
+		task:"tdpCadreSearchForBloodBank",
+		searchType:"memberShipNo",//mobileNo, votercardNo, trNo,
+		searchValue : membserShipId
 	}
 	
 		GmembershipNo = membserShipId;
