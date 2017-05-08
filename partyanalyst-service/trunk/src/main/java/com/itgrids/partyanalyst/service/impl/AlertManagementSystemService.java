@@ -1084,7 +1084,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            			}
            			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
            				mobileNo=tempSMSAlert.getDescription().trim();
-           			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message); 
+           			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
+           				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message); 
            			
            			//srujana
            			if(mobileNo != null && !mobileNo.isEmpty()){
@@ -1092,6 +1093,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            			if(mobileNOArr != null && mobileNOArr.length>0){
            				for (int i = 0; i < mobileNOArr.length; i++) {
 		           			GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
+		           			smsDetailsVO.setAlertId(task1 != null?task1.getAlertId():null);
 		           			smsDetailsVO.setUserId(mainUserId);
 		           			smsDetailsVO.setGovtOfficerId(govtOfficerId);
 		           			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
@@ -1135,7 +1137,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                			}
                			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
                				mobileNo=tempSMSAlert.getDescription().trim();
-               			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
+               			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
+               				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
                			
                		   //srujana
                			if(mobileNo != null && !mobileNo.isEmpty()){
@@ -3399,7 +3402,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            public ResultStatus sendSMSTOAlertAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long alertId,Long actionTypeId,Long userId,String status,String comment,Long mainUserId){
               	ResultStatus rs = new ResultStatus();
               	try {
-              		
+              		Long alertStatusId =0L;
+              		String callerName = "";
+          			String callerMobileNo = "";
               		String userNameStr="ADMIN";
     				String departmentStr=" - ";
     				String designationStr=" - ";
@@ -3448,6 +3453,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                   		}
               		}
               		if(objArr != null){
+              			alertStatusId = commonMethodsUtilService.getLongValueForObject(objArr[3]);
+              			callerName = commonMethodsUtilService.getStringValueForObject(objArr[4]);
+              			callerMobileNo = commonMethodsUtilService.getStringValueForObject(objArr[5]);              			
               			String message = "Alert is assigned to you,Please follow up and resolve.\nTitle : "+objArr[0].toString()+" \nDept"+objArr[2].toString();
               			List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,1L,1L,1L);//1 
                			
@@ -3465,7 +3473,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                			}
                			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
                				mobileNo=tempSMSAlert.getDescription().trim();
-              			govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message); 
+               			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
+               				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message); 
                			
                		    //srujana
                			if(mobileNo != null && !mobileNo.isEmpty()){
@@ -3475,6 +3484,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		              			GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO(); 
 		              			smsDetailsVO.setUserId(mainUserId);
 		               			smsDetailsVO.setGovtOfficerId(govtOfficerId);
+		               			smsDetailsVO.setAlertStatusId(alertStatusId);
 		               			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
 		               			smsDetailsVO.setAlertId(alertId);
 		               			smsDetailsVO.setSmsText(message);
@@ -3519,8 +3529,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                    			
                    			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
                    				mobileNo=tempSMSAlert.getDescription().trim();
-                   			
-              				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
+                   			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
+                   				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
                    			
                    		   //srujana
                    			if(mobileNo != null && !mobileNo.isEmpty()){
@@ -3530,6 +3540,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		              				GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
 		              				smsDetailsVO.setUserId(mainUserId);
 		                   			//smsDetailsVO.setGovtOfficerId(govtOfficerId);
+		              				smsDetailsVO.setAlertStatusId(alertStatusId);
 		                   			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
 		                   			smsDetailsVO.setAlertId(alertId);
 		                   			smsDetailsVO.setSmsText(message);
@@ -3538,6 +3549,34 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                    				}
                    			}
                    		 }
+                   			
+                   			if(callerName != null && !callerName.isEmpty() && callerName.length()>0 && 
+                   					 alertStatusId != null && alertStatusId.longValue() == 12L && actionTypeId != null && actionTypeId.longValue()== 6L){//alert closed, 6 - status change 
+                   				smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,1L,1L,3L);//3 Alert Caller
+                       			
+                       			if(commonMethodsUtilService.isListOrSetValid(smsText)){
+                       				message = smsText.get(0) != null ? smsText.get(0).toString():message;
+                       				message=message.replace("flag0", callerName);
+                       				message=message.replace("flag1", status+"\n");
+                       				message=message.replace("flag2", objArr[0].toString()+"\n");
+                       				message=message.replace("flag3", comment+"\n");
+                       			}
+                   				
+                       			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
+                       				callerMobileNo=tempSMSAlert.getDescription().trim();
+                       			
+                       			if(callerMobileNo != null && callerMobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
+                       				govtSMSAPIService.senedSMSForGovtAlert(callerMobileNo,message);
+                       			
+                   				GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
+	              				smsDetailsVO.setUserId(mainUserId);
+	                   			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(callerMobileNo));
+	                   			smsDetailsVO.setAlertStatusId(alertStatusId);
+	                   			smsDetailsVO.setAlertId(alertId);
+	                   			smsDetailsVO.setSmsText(message);
+	                   			smsDetailsVO.setActionTypeId(actionTypeId);
+	                   			//saveGovtOfficerSmsDetails(smsDetailsVO);
+                   			}
               			}
               		}
               		
