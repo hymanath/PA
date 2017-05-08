@@ -5883,6 +5883,8 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 	$('.clearClsTD1'+constituencyId).addClass("selected");
 	$("#ajaxImgStyle2").show();
 	$("#iconDiv1"+constituencyId).show();
+	var committeeSpanTypeIdsArr = [];
+	committeeSpanTypeIdsArr.push($('#tdpCommitteeYearId').val());
 		var jObj = {
 			startDate:startDate,
 			endDate:endDate,
@@ -5891,7 +5893,8 @@ function buildConstiWiseSummaryForDistrict(result,mandalCheck,villageCheck,divId
 			villageCheck:villageCheck,
 			accessType:"Constituency",
 			accessValue:constituencyId,
-			task:"Constituency"
+			task:"Constituency",
+			committeeEnrollmentIdsArr:committeeSpanTypeIdsArr,
 		}
 				//alert(1177)	;
 		$.ajax({
