@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.model.BloodDonationAgeGroup;
 import com.itgrids.partyanalyst.model.BloodDonorInfo;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.TdpCadre;
 import com.itgrids.partyanalyst.service.IBloodBankService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -212,19 +213,27 @@ public class BloodBankService implements IBloodBankService{
 		return eductnQulfctnLst;
 	}
 	
-	public BloodBankVO getCadreDetails(String memberShipNO){
+	public BloodBankVO getCadreDetails(Long enrollmentId,String searchType,String searchValue){
           
 		BloodBankVO cadreDtlsVO=new BloodBankVO();
 		try {			
-			String memberShipId=memberShipNO.trim();
+			String memberShipId=searchValue != null ? searchValue.trim():"";
             //Checking tdpCadreId avilable or not
-		  Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(memberShipId);
+		Long tdpCadreId = null;
+		List<Long> list =   tdpCadreDAO.getCadreIdsByMemberShip(enrollmentId,searchType,searchValue.trim());
+		if(commonMethodsUtilService.isListOrSetValid(list))
+			tdpCadreId = list.get(0);
+		
 		   if(tdpCadreId == null){
 			 cadreDtlsVO.setStatus("not exist");
 			 return cadreDtlsVO;
 			}
 			//0.bloodDonorInfo,1.donationsInBloodBank,2.donationsInOtherPlaces,3.lastDonationDate,4.bloodComponentId,5.component
 			//,6.emergencyDonation,7.willingToCallDonation,8.remarks,9.donorAge,10.bloodDonationId
+		   if(searchType != null && !searchType.trim().equalsIgnoreCase("memberShipNo")){
+			   TdpCadre tdpCadre = tdpCadreDAO.get(tdpCadreId);
+			   	memberShipId =  tdpCadre.getMemberShipNo().trim();
+		   }
 			List<Object[]> cadreDetailsObj = bloodDonationDAO.getCadreDetailsOfRegistered(memberShipId);
 			
 			if(cadreDetailsObj !=null && cadreDetailsObj.size()>0){			
