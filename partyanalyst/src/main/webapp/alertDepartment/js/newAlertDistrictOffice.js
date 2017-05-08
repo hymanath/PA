@@ -2138,16 +2138,20 @@ function getStatus(){
 	  data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			buildStatusForLevls(result);
+			buildStatusForLevls(result,type);
 		}
 	});
 }
-function buildStatusForLevls(result){
+function buildStatusForLevls(result,type){
 	var str='';	
 	//str+='<option value="0">Select Status</option>';
 	str+='<option value="0">All</option>';
 	for(var i in result){
+		if(type == 'alerts' && result[i].id != 1){
 			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}else if(type == 'subTask'){
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
 	}	
 	$("#statusSelectedId").html(str);
 	$("#statusSelectedId").trigger("chosen:updated");
@@ -2157,19 +2161,7 @@ function getGovtSubLevelInfo1(departmentId,levelId){
 	$("#designationsWiseId").html("<option value='0'>All</option>");
 	$("#designationsWiseId").trigger("chosen:updated");	
 	
-	//$("#locationSubLevelSelectedId"+levelId+"").addClass("hasActive");
-	/* var locaionLevelValues=$("#locationSubLevelSelectedId"+levelId+"").val();	
-	
-	if(locaionLevelValues == "" || locaionLevelValues == 0){
-		if($(".dynamicSelectList").hasClass("hasActive")){
-			
-		alert($(".dynamicSelectList").closest("#parentLevelDivId").find('div').html());
-		}
-		
-	
-	} */
-	
-	 var locaionLevelValues=$("#locationSubLevelSelectedId"+levelId+"").val();
+	var locaionLevelValues=$("#locationSubLevelSelectedId"+levelId+"").val();
 	var jsObj = {
 		departmentId : departmentId,
 		levelId :levelId,
@@ -2209,37 +2201,36 @@ function buildGovtSubLevelInfoAction1(result,levelId){
 				if(levelId == 5)
 				{
 					levelId = levelId + 1
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").html('<option value="0">All</option>');
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").trigger('chosen:updated');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").html('<option value="0">All</option>');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").trigger('chosen:updated');
 				}else if(levelId == 6)
 				{
 					$("#designationsWiseId,#PriorityId,#statusSelectedId").html('<option value="0">All</option>');
 					$("#designationsWiseId,#PriorityId,#statusSelectedId").trigger('chosen:updated');
 				}
-				alert(2)
+				
 			}else if(impactLevel == 7){
 				if(levelId == 5)
 				{
 					levelId = levelId + 1
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").html('<option value="0">All</option>');
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").trigger('chosen:updated');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").html('<option value="0">All</option>');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").trigger('chosen:updated');
 					levelId = levelId + 1
 					$("#locationSubLevelSelectedId"+levelId+"").html('<option value="0">All</option>');
 					$("#locationSubLevelSelectedId"+levelId+"").trigger('chosen:updated');
 				}else if(levelId == 6)
 				{
 					levelId = levelId + 1
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").html('<option value="0">All</option>');
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").trigger('chosen:updated');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").html('<option value="0">All</option>');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").trigger('chosen:updated');
 				}
-				alert(3)
+			
 			}else if(impactLevel == 8){
-				alert(4)
 				if(levelId == 5)
 				{
 					levelId = levelId + 1
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").html('<option value="0">All</option>');
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").trigger('chosen:updated');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").html('<option value="0">All</option>');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").trigger('chosen:updated');
 					levelId = levelId + 1
 					$("#locationSubLevelSelectedId"+levelId+"").html('<option value="0">All</option>');
 					$("#locationSubLevelSelectedId"+levelId+"").trigger('chosen:updated');
@@ -2249,16 +2240,16 @@ function buildGovtSubLevelInfoAction1(result,levelId){
 				}else if(levelId == 6)
 				{
 					levelId = levelId + 1
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").html('<option value="0">All</option>');
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").trigger('chosen:updated');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").html('<option value="0">All</option>');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").trigger('chosen:updated');
 					levelId = levelId + 1
 					$("#locationSubLevelSelectedId"+levelId+"").html('<option value="0">All</option>');
 					$("#locationSubLevelSelectedId"+levelId+"").trigger('chosen:updated');
 				}else if(levelId == 7)
 				{
 					levelId = levelId + 1
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").html('<option value="0">All</option>');
-					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId,#PriorityId,#statusSelectedId").trigger('chosen:updated');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").html('<option value="0">All</option>');
+					$("#locationSubLevelSelectedId"+levelId+",#designationsWiseId").trigger('chosen:updated');
 				}
 			}
 			 
@@ -2306,7 +2297,7 @@ $(document).on("click",".subOrdinateFilterAlertsCls",function(){
 
 
 function getSubOrdinateFilterAlertsOverview(){
-	$("#getSubOrdinateFilterAlertsOverview").html(spinner);
+	
 
 	var lvelIdsArr =[];
 	var deginaIdsArr = [];
@@ -2314,10 +2305,6 @@ function getSubOrdinateFilterAlertsOverview(){
 	var deptIdsArr = [];
 	var statusIdsArr = [];
 	
-	if(globalDepartmentId != null && globalDepartmentId != 0){
-		deptIdsArr.push(globalDepartmentId);
-	}
-
 	var fromDays = 0;
 	var toDays = 0;
 	var lagChckedValue =$("#lagDaysId").is(':checked') ? 1 : 0;
@@ -2339,7 +2326,12 @@ function getSubOrdinateFilterAlertsOverview(){
 		}else{
 			moreDAysChckedValue = "false";
 		}
-	
+	if($("#departmentSelectedId").val() == null || $("#departmentSelectedId").val() == 0){
+		$("#assignErrorDivId").html("Please select department");
+		return;
+	}else{
+		deptIdsArr.push($("#departmentSelectedId").val());
+	}
 	if($("#locationLevelSelectedId").val() == null  || $("#locationLevelSelectedId").val() == 0)
 	{
 		
@@ -2423,6 +2415,7 @@ function getSubOrdinateFilterAlertsOverview(){
 	}
 	var alertType = getAlertType();
 	$("#assignErrorDivId").html(' ');
+	$("#getSubOrdinateFilterAlertsOverview").html(spinner);
 	var jsObj = {
 	  
 		fromDate : currentFromDate,
