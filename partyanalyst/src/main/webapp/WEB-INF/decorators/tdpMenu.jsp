@@ -593,11 +593,11 @@
 									
 									<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 					<li>
-                        <a href="#"><img src='img/mahanaduicon1.png' class='pull-left changeIconCode' style='width:16px;'/><span>&nbsp;&nbsp;Mahanadu 2016</span></a>
-                        <h2><i class="fa fa-wrench line_heightDiv"></i>Mahanadu 2016</h2>
+                        <a href="#"><img src='img/mahanaduicon1.png' class='pull-left changeIconCode' style='width:16px;'/><span>&nbsp;&nbsp;Mahanadu 2017</span></a>
+                        <h2><i class="fa fa-wrench line_heightDiv"></i>Mahanadu 2017</h2>
                        <ul>
 							<li>
-								<a href="eventDashboardAction.action?eventId=30"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
+								<a href="eventDashboardAction.action?eventId=51"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
 							</li>
 							<li>
 								<a href="mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
@@ -1038,6 +1038,39 @@
 									</li>
 							</c:if>
 							
+						    <c:if test="${sessionScope.USER.isAdmin != 'true'}">
+							    <c:if test="${ fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ENTITLEMENT' )  ||
+							fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ENTITLEMENT' ) ||
+							fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_BLEEDING_ENTITLEMENT' ) ||
+							fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ADMIN_ENTITLEMENT' ) ||
+							fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT' ) ||
+							fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT' )}">
+								<li>
+									<a href="#"><img src='img/blood_donation.png' class='pull-left changeIconCode' style='width:16px;'/><span>&nbsp;&nbsp;BloodBank</span></a>
+									<h2><i class="fa fa-wrench line_heightDiv"></i>BloodBank</h2>
+								   <ul>
+								   <c:if test="${  fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ENTITLEMENT' )  ||
+									fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_REGISTRATION_ADMIN_ENTITLEMENT' ) }">
+										<li>
+											<a href="bloodBankRegistrationAction.action"><img src='img/blood_donation.png' class='pull-left changeIconCode' style='width:16px;'/><span>&nbsp;&nbsp;BloodBank Registration</span></a>
+										</li>
+									</c:if>	
+									<c:if test="${  fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ENTITLEMENT' )  ||
+									fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_DASHBOARD_ADMIN_ENTITLEMENT' ) }">						
+												<li>
+													<a href="bloodBankDashBoardAction.action"><img src='img/blood_donation.png' class='pull-left changeIconCode' style='width:16px;'/><span>&nbsp;&nbsp;Blood Bank DashBoard</span></a>
+												</li>
+									</c:if>	
+									<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_BLEEDING_ENTITLEMENT' )  ||
+									fn:contains(sessionScope.USER.entitlements, 'BLOOD_BANK_BLEEDING_ADMIN_ENTITLEMENT' ) }">	
+										<li>
+											<a href="bloodBankBleadingAction.action"><img src='img/blood_donation.png' class='pull-left changeIconCode' style='width:16px;'/><span>&nbsp;&nbsp;BloodBank Bleading</span></a>
+										</li>
+										</c:if>		
+								   </ul>
+								</li>
+							   </c:if>
+							</c:if>			
 							<!--
 							<c:if test="${sessionScope.USER.isAdmin == 'true' &&fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
 							<!--- Card Printing DashBoard 2016 start 
