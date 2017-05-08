@@ -12,7 +12,7 @@ public interface IBloodBankService {
 
  public List<BloodBankVO> getOccupationList();
  public List<BloodBankVO> getEducationalQualificationsList();
- public BloodBankVO getCadreDetails(String memberShipNO);
+ public BloodBankVO getCadreDetails(Long enrollmentId,String searchType,String searchValue);
  public List<IdNameVO> getAcceptanceStatus();
  public List<IdNameVO> getBloodBagType();
  public List<IdNameVO> getBloodBagQuantity();
