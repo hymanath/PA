@@ -1962,7 +1962,7 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 		});
 		$("#alertManagementPopupBody").html(spinner);
    
- 
+    var subLevels = [];
     var jsObj ={
 		fromDate:currentFromDate,
 		toDate:currentToDate,
@@ -1976,7 +1976,8 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 		callCenterArr:globalCallCenterArr,
 		locationValue : locationValue,
 		alertType:"alert",
-		alertCategoryId:alertCategoryId
+		alertCategoryId:alertCategoryId,
+		subLevels:subLevels
     }
     $.ajax({
     type:'GET',                        
@@ -2292,7 +2293,8 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId)
       chanelIdArr : globalChannelIdArr,
 	  callCenterArr : globalCallCenterArr,
 	  alertCategoryId:alertCategoryId,
-	  userType :"admin"
+	  userType :"admin",
+	  alertStatusId:0
     }
     $.ajax({
       type:'POST',

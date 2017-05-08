@@ -3028,6 +3028,13 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 						}
 					}
+					JSONArray subLevels = jObj.getJSONArray("subLevels");  
+					List<Long> deptSubLevelIds = new ArrayList<Long>();
+					if(subLevels != null && subLevels.length() > 0){
+						for (int i = 0; i < subLevels.length(); i++){
+							deptSubLevelIds.add(Long.parseLong(subLevels.getString(i)));        
+						}
+					}
 					
 					Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 					Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");
@@ -3036,7 +3043,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					Long locationValue = jObj.getLong("locationValue");
 					String alertType = jObj.getString("alertType");
 					Long alertCategoryId = jObj.getLong("alertCategoryId");
-					alertCoreDashBoardVOs = alertManagementSystemService.getAlertDetailsBasedOnLocation(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeId,statusId,calCntrIdList,locationValue,alertType,alertCategoryId);
+					
+					alertCoreDashBoardVOs = alertManagementSystemService.getAlertDetailsBasedOnLocation(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeId,statusId,calCntrIdList,locationValue,alertType,alertCategoryId,deptSubLevelIds);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
@@ -3412,7 +3420,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			} 
 			Long alertCategoryId = jObj.getLong("alertCategoryId");
 			String userType = jObj.getString("userType");
-			alertCoreDashBoardVOs = alertManagementSystemService.getAlertDtlsByAlertSource(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,calCntrIdList,alertCategoryId,userType);
+			Long alertStatusId = jObj.getLong("alertStatusId");
+			alertCoreDashBoardVOs = alertManagementSystemService.getAlertDtlsByAlertSource(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,calCntrIdList,alertCategoryId,userType,alertStatusId);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDtlsByAlertSource() of AlertManagementSystemAction",e);

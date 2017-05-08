@@ -1796,7 +1796,8 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId){
       chanelIdArr : chanelIdArr,
 	  callCenterArr : callCenterArr,
 	  alertCategoryId:alertCategoryId,
-	  userType :"districtCollector"
+	  userType :"districtCollector",
+	  alertStatusId:0
     }
     $.ajax({
       type:'POST',
