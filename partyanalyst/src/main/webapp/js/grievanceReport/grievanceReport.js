@@ -165,7 +165,6 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  			str +=''+result.count+'Days '+result.totalCount+'Hours';
  			 $("#averageIssueId").html(str);
  		}
- 		$('#issuePendingCntId').text(str);
      });
      
      }
@@ -201,7 +200,8 @@ function getDistrintInformation(){
 	 getDistIdAndNameList();
 	 getAverageIssuePendingDays();
 	 getGrievanceReportDayWise();
-	 getTotalAlertGroupByCategoryThenStatus(); 
+	 getTotalAlertGroupByCategoryThenStatus();
+	getCadreGreivienceEfficiency();	 
  $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
  $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
@@ -238,6 +238,7 @@ function getDistrintInformation(){
 	 getAverageIssuePendingDays();
 	 getGrievanceReportDayWise();
 	 getTotalAlertGroupByCategoryThenStatus(); 
+	 getCadreGreivienceEfficiency()
 	 $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	 $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
@@ -272,7 +273,7 @@ function getDistrintInformation(){
 	 getAverageIssuePendingDays();
 	 getGrievanceReportDayWise();
 	 getTotalAlertGroupByCategoryThenStatus(); 
-	 
+	 getCadreGreivienceEfficiency();
  $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
  $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
      var sourceId=$("#selectMediaId").val();
@@ -2871,3 +2872,66 @@ function getDistIdAndNameList(){
 		}         
 	}); 
 } 
+
+	getCadreGreivienceEfficiency();
+function getCadreGreivienceEfficiency(){
+	$("#efficiencyId").html("");
+	$("#efficiencyId").html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
+    var alertstatusIds = [];
+	var deptIds=[];
+	var sourceIds =[];
+	var includeProposal = $("#proposalId").prop('checked');;
+	
+	var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+	deptIds.push(deptId);  
+	if(sourceId==0){
+		sourceIds.push(1);
+		sourceIds.push(2);
+		sourceIds.push(3);
+	}else if(sourceId==1){
+		sourceIds.push(1);
+	}else if(sourceId==2){
+		sourceIds.push(2);
+	}else if(sourceId==3){
+		sourceIds.push(3);
+	}
+    var jobj = {
+      
+      daysArr : [5,10,30,60,90,180,365],
+	  deptIds :deptIds,
+	  sourceIds:sourceIds,
+      includeProposal : includeProposal,
+	  alertstatusIds:$("#statusId").val()
+    }
+    $.ajax({
+      type : "POST",
+      url  : "getAlertEfficiencyListAction.action",
+      dataType: 'json',
+      data: {task:JSON.stringify(jobj)},
+    }).done(function(result){
+      if(result!=null){
+				var str = "";
+				str +="<table class='table table-bordered bg-white' style='margin-bottom:20px;'>";
+					str +="<tbody>";
+						str +="<tr>";
+							for(var i in result){
+								str+="<td>"+result[i].effcncyType+"</td>";
+							}
+							str +="</tr>";
+							str +="<tr>";
+							for(var i in result){
+								if(result[i].clrFrEffcncy=="red"){
+									str+="<td class='text-danger'>"+result[i].effcncyPrcnt+" %</td>";
+								}else{
+									str+="<td class='text-success'>"+result[i].effcncyPrcnt+" %</td>";
+								}
+							}
+						str +="</tr>";
+					str +="</tbody>";
+				str +="</table>";
+			}
+			
+			$("#efficiencyId").html(str);
+    });
+}
