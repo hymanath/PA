@@ -6953,10 +6953,35 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 	 		" and model.tdpCadre.enrollmentYear = :enrollmentYear ");
 	 
 	 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
-	 query.setParameter("memberShipNo", memberShipNo);
+	 query.setParameter("memberShipNo", memberShipNo.trim());
 	 return (Long) query.uniqueResult();
  }
-	
+
+public List<Long> getCadreIdsByMemberShip(Long enrollmentId,String searchType,String searchValue){
+	 
+	 StringBuilder queryStr = new StringBuilder();
+	 queryStr.append(" select model.tdpCadreId from TdpCadreEnrollmentYear model  where ");
+	 queryStr.append(" model.tdpCadre.isDeleted = 'N' and model.isDeleted='N' and  model.tdpCadre.enrollmentYear = :enrollmentYear  ");
+	 if(enrollmentId != null && enrollmentId.longValue()>0L)
+		 queryStr.append(" and model.enrollmentYearId = :enrollmentId  ");
+	 if(searchType != null && !searchType.isEmpty()){
+		 if(searchType.trim().equalsIgnoreCase("memberShipNo"))
+			 queryStr.append(" and model.tdpCadre.memberShipNo = :searchValue ");
+		 else if(searchType.trim().equalsIgnoreCase("mobileNo"))
+			 queryStr.append(" and model.tdpCadre.mobileNo = :searchValue ");
+		 else if(searchType.trim().equalsIgnoreCase("votercardNo"))
+			 queryStr.append(" and model.tdpCadre.cardNo = :searchValue ");
+		 else if(searchType.trim().equalsIgnoreCase("trNo"))
+			 queryStr.append(" and model.tdpCadre.refNo = :searchValue ");
+	 }
+	 
+	 Query query = getSession().createQuery(queryStr.toString());
+	 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
+	 query.setParameter("searchValue", searchValue.trim());
+	 query.setParameter("enrollmentId", enrollmentId);
+	 return query.list();
+ }
+
  	public List<Object[]> getMobileNumberDetailsByTdpCadre(Long tdpCadreId){
  		/*Query query = getSession().createQuery("select model.tdpCadreId," +
  													" model.mobileNo," +

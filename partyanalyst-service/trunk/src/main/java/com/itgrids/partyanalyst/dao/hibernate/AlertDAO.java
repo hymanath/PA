@@ -6147,7 +6147,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     
     public Object[] getAlertDetailsForSMS(Long alertId){
     	Query query = getSession().createQuery(" select model.title,model.govtDepartment.govtDepartmentId,model.govtDepartment.departmentName "
+    			+" , model.alertStatusId, alertCaller.callerName,alertCaller.mobileNo  "
     			+ " from Alert model "
+    			+ " left join model.alertCaller alertCaller "
     			+ " where model.alertId=:alertId and model.isDeleted='N' ");
     	query.setParameter("alertId", alertId);
     	return (Object[])query.uniqueResult();
