@@ -1790,7 +1790,7 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 		});
 		$("#alertManagementPopupBody").html(spinner);
        var alertType = getAlertType();
- 
+      var subLevels = [];
     var jsObj ={
 		fromDate:currentFromDate,
 		toDate:currentToDate,
@@ -1804,7 +1804,8 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 		callCenterArr:callCenterGlobalArr,
 		locationValue : locationValue,
 		alertType:alertType,
-		alertCategoryId:alertCategoryId
+		alertCategoryId:alertCategoryId,
+		subLevels:subLevels
 		
     }
     $.ajax({
