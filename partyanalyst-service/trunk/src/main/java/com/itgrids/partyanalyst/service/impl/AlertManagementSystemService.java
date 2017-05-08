@@ -7424,6 +7424,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   							   if(deptEntry.getValue() != null && deptEntry.getValue().size() > 0){
   								    for(Entry<Long,IdNameVO> levelEntry:deptEntry.getValue().entrySet()){
   								    	if(deptLevelPositionMap.get(deptEntry.getKey()) != null){
+  								    		//Filter SelectBox Related Code
   								    		if(levelEntry.getKey() != null && levelEntry.getKey().longValue() != 1l){//For State Level We are not sending filter
   								    			Long levelPosition = deptLevelPositionMap.get(deptEntry.getKey()).get(levelEntry.getKey());
   	  								    		List<IdNameVO> upperLevelList = getUpperLevelList(levelPosition,deptEntry.getKey(),deptLevelReversePositionMap,levelIdAndNameMap);
@@ -7432,6 +7433,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   	  								    		    lastLevelVO.setChildLevelId(0l);
   	  								    			levelEntry.getValue().getSubList1().addAll(upperLevelList);
   	  								    		}
+  	  								    	    //Setting Child Dept Scope List
+  	    									     List<IdNameVO> childLevelDeptScopeLst = setChildLevelList(levelPosition,deptEntry.getKey(),deptLevelReversePositionMap,levelIdAndNameMap);
+  	    	  								     if(childLevelDeptScopeLst != null && childLevelDeptScopeLst.size() > 0){
+  	    	  								    	levelEntry.getValue().getIdnameList().addAll(childLevelDeptScopeLst);
+  	    	  								     }
   								    		}
   								    	}
   								    }
@@ -7442,6 +7448,28 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   					  e.printStackTrace();
  			          LOG.error("Error occured setDepartmentWiseLevel() method of AlertManagementSystemService",e);
   				 }
+  			 }
+  			 public List<IdNameVO> setChildLevelList(Long levelPosition,Long deptId,Map<Long,Map<Long,Long>> deptLevelReversePositionMap,Map<Long,String> levelIdAndNameMap){
+  				 List<IdNameVO> childLevelDeptList = new ArrayList<IdNameVO>();
+  				 try{
+  					 if(deptLevelReversePositionMap != null && deptLevelReversePositionMap.size() > 0){
+  						 Map<Long,Long> levelMap = deptLevelReversePositionMap.get(deptId);
+  						  if(levelMap != null && levelMap.size() > 0){
+  							  Long levelSize = Long.valueOf(levelMap.size());
+  							  for(Long position=levelPosition;position<=levelSize;position++){
+  								  IdNameVO levelVO = new IdNameVO();
+ 								   Long levelId = levelMap.get(position);
+ 								   levelVO.setId(levelId);
+ 								   levelVO.setName(levelIdAndNameMap.get(levelId));
+ 								   childLevelDeptList.add(levelVO);	
+ 							  }
+  						  }
+  					 }
+  				 }catch(Exception e){
+  					  e.printStackTrace();
+ 			          LOG.error("Error occured setChildLevelList() method of AlertManagementSystemService",e);
+  				 }
+  				 return childLevelDeptList;
   			 }
   			 public List<IdNameVO> getUpperLevelList(Long levelPosition,Long deptId,Map<Long,Map<Long,Long>> deptLevelReversePositionMap,Map<Long,String> levelIdAndNameMap){
   				 List<IdNameVO> upperLevelList = new ArrayList<IdNameVO>();
@@ -7615,7 +7643,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					subLevels.add(sublevel);
 				}
 			}
-			
+		    if(sublevels != null && sublevels.size() > 0){//In the case of filter data scope wise we are sending selected values
+		    	deptScopeIdList.clear();
+		    	deptScopeIdList.addAll(sublevels);
+		    }
 		
 			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = null; 
@@ -7746,7 +7777,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	 }
 			return null;
 		}
-	public List<AlertCoreDashBoardVO> getAlertDetailsBasedOnLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long alertStatusId,List<Long> calCntrIds,Long locationValue,String alertType,Long alertCategoryId){
+	public List<AlertCoreDashBoardVO> getAlertDetailsBasedOnLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long alertStatusId,List<Long> calCntrIds,Long locationValue,String alertType,Long alertCategoryId,List<Long> subLevelList){
 	      		try{
 	      			
 	      			Date fromDate = null;  
@@ -7771,9 +7802,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      			
 	    			List<Long> alertList = null;
 	    			if(alertType != null && alertType.equalsIgnoreCase("alert")){
-	    			  alertList = alertAssignedOfficerNewDAO.getAlertIdsBasedOnRequiredParameter(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, locationValue,calCntrIds, deptScopeId, alertStatusId,alertCategoryId);
+	    			  alertList = alertAssignedOfficerNewDAO.getAlertIdsBasedOnRequiredParameter(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, locationValue,calCntrIds, deptScopeId, alertStatusId,alertCategoryId,subLevelList);
 	    			}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
-	    				alertList = govtAlertSubTaskDAO.getSubTaskAlertIdsBasedOnLocation(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, locationValue, deptScopeId, alertStatusId, calCntrIds,alertCategoryId);
+	    				alertList = govtAlertSubTaskDAO.getSubTaskAlertIdsBasedOnLocation(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, locationValue, deptScopeId, alertStatusId, calCntrIds,alertCategoryId,subLevelList);
 	    			}
 	    		 	List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
 	      			if(alertList != null && alertList.size() > 0){
@@ -8766,6 +8797,7 @@ public List<AlertVO> getAlertSourceWiseAlert(String fromDateStr, String toDateSt
 					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				}
 			}
+			
 			/*Long regionScopeId=0l;
 			List<Long>  locationValueLst = new ArrayList<Long>(0);
 			
@@ -8776,7 +8808,8 @@ public List<AlertVO> getAlertSourceWiseAlert(String fromDateStr, String toDateSt
 		    		 locationValueLst.add(commonMethodsUtilService.getLongValueForObject(param[1]));
 		    	 }
 		    }*/
-		   
+		   Map<Long,Map<Long,AlertVO>> catgoryMap = new LinkedHashMap<Long, Map<Long,AlertVO>>(0);
+		   Map<Long,String> categoryNameAndIdMap = new HashMap<Long, String>(0);
 		//Getting Pending Alert By Alert Source
 			 List<Object[]> totalList = new ArrayList<Object[]>();
 			if(userType != null && !userType.equalsIgnoreCase("districtCollector")){
@@ -8790,7 +8823,36 @@ public List<AlertVO> getAlertSourceWiseAlert(String fromDateStr, String toDateSt
 		if(rtrnObjLst != null && rtrnObjLst.size() > 0){
 				totalList.addAll(rtrnObjLst);
 		}
-		setAlertCount(totalList,finalAlertVOs);
+		
+		setAlertCategoryWiseAlert(totalList,catgoryMap,categoryNameAndIdMap);
+		
+		Long totalAlertCnt = 0l;
+		 if(catgoryMap != null && catgoryMap.size() >0){
+			 for(Entry<Long,Map<Long,AlertVO>> categoryEntry:catgoryMap.entrySet()){
+				 AlertVO  categoryVO = new AlertVO();
+				 categoryVO.setId(categoryEntry.getKey());
+				 categoryVO.setName(categoryNameAndIdMap.get(categoryEntry.getKey()));
+				 if(categoryEntry.getValue() != null && categoryEntry.getValue().size() > 0){
+					 for(Entry<Long,AlertVO> statusEntry:categoryEntry.getValue().entrySet()){
+						 categoryVO.getSubList2().add(statusEntry.getValue()); 
+						 categoryVO.setAlertCnt(categoryVO.getAlertCnt()+statusEntry.getValue().getAlertCnt());
+						 totalAlertCnt = totalAlertCnt+statusEntry.getValue().getAlertCnt();
+					 }
+				 }
+				 finalAlertVOs.add(categoryVO);
+			 }
+		 }
+		 //Calculating Percentage
+		 if(finalAlertVOs != null && finalAlertVOs.size() > 0){
+			 for(AlertVO categogyVO:finalAlertVOs){
+				 if(categogyVO.getSubList2() != null && categogyVO.getSubList2().size()>0){
+					 for(AlertVO statusVO:categogyVO.getSubList2()){
+						 statusVO.setPercentage(calculatePercantage(statusVO.getAlertCnt(), categogyVO.getAlertCnt()));
+					 }
+				 }
+				 categogyVO.setPercentage(calculatePercantage(categogyVO.getAlertCnt(), totalAlertCnt));
+			 }
+		 }
 		//Soring List
 		if(finalAlertVOs != null && finalAlertVOs.size() > 0){
 			Collections.sort(finalAlertVOs, new Comparator<AlertVO>() {
@@ -8806,7 +8868,30 @@ public List<AlertVO> getAlertSourceWiseAlert(String fromDateStr, String toDateSt
 	}
 	return null;
 }
-public List<AlertCoreDashBoardVO> getAlertDtlsByAlertSource(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,Long alertCategoryId,String userType){
+public void setAlertCategoryWiseAlert(List<Object[]> objList,Map<Long,Map<Long,AlertVO>> categoryMap,Map<Long,String> categoryIdAndNameMap){
+	try{
+		if(objList != null && objList.size() > 0){
+			for(Object[] param:objList){
+				Map<Long,AlertVO> statusMap = categoryMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));//CategoryId
+				 if(statusMap == null){
+					 statusMap = new LinkedHashMap<Long, AlertVO>();
+					 categoryIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					 categoryMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusMap);
+				 }
+				 AlertVO categoryVO = new AlertVO();
+				 categoryVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));//StatusId
+				 categoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));//StatusName
+				 categoryVO.setColor(commonMethodsUtilService.getStringValueForObject(param[5])); //color
+				 categoryVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[6]));//AlertCnt
+				 statusMap.put(categoryVO.getId(), categoryVO);
+			}
+		}
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured setAlertCategoryWiseAlert() method of AlertManagementSystemService{}");
+	}
+}
+public List<AlertCoreDashBoardVO> getAlertDtlsByAlertSource(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,Long alertCategoryId,String userType,Long alertStatusId){
 	LOG.info("Entered in getAlertDtlsByAlertSource() method of AlertManagementSystemService{}");
 	try{
 		Date fromDate = null;
@@ -8843,7 +8928,7 @@ public List<AlertCoreDashBoardVO> getAlertDtlsByAlertSource(String fromDateStr, 
 		 }
 		
 		//getAlertCntByAlertCategory
-		List<Long> alertAssignedIds = alertAssignedOfficerNewDAO.getAlertCntByAlertCategory(fromDate, toDate, stateId, printIdList, electronicIdList, deptIdList, levelId, levelValues, calCntrIdList, alertCategoryId);
+		List<Long> alertAssignedIds = alertAssignedOfficerNewDAO.getAlertCntByAlertCategory(fromDate, toDate, stateId, printIdList, electronicIdList, deptIdList, levelId, levelValues, calCntrIdList, alertCategoryId,alertStatusId);
 		if(alertAssignedIds != null && alertAssignedIds.size() > 0){
 			alertIds.addAll(alertAssignedIds);
 		}

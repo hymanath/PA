@@ -32,7 +32,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
      	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.color ");	
      	    }else if(type.equalsIgnoreCase("alertSource")){
-     	    	sb.append("AC.alertCategoryId,AC.category,'' " );	
+     	    	sb.append(" AC.alertCategoryId,AC.category,'',model.alertStatus.alertStatusId," +
+     	    			  " model.alertStatus.alertStatus,model.alertStatus.color " );	
      	    }
     	     sb.append(" ,count(distinct model.alert.alertId) ");
     	      
@@ -95,7 +96,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
        	    }else if(type.equalsIgnoreCase("Department")){
        	    	sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId " );	
        	    }else if(type.equalsIgnoreCase("alertSource")){
-     	    	sb.append("group by  model.alert.alertCategory.alertCategoryId order by model.alert.alertCategory.order asc");	
+     	    	sb.append("group by  model.alert.alertCategory.alertCategoryId,model.alertStatus.alertStatusId " +
+     	    			" order by model.alert.alertCategory.order asc,model.alertStatus.statusOrder asc");	
      	    }
     	  
     	    Query query = getSession().createQuery(sb.toString());
@@ -4293,7 +4295,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      }
      public List<Long> getAlertIdsBasedOnRequiredParameter(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
     		 List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
-      		Long parentGovtDepartmentScopeId,Long locationValue,List<Long> calCntrIds,Long deptLevelId,Long alertStatusId,Long alertCategoryId){
+      		Long parentGovtDepartmentScopeId,Long locationValue,List<Long> calCntrIds,Long deptLevelId,
+      		Long alertStatusId,Long alertCategoryId,List<Long> deptScopeIds){
      	 
       	StringBuilder queryStr = new StringBuilder();
       	queryStr.append(" select ");
@@ -4330,6 +4333,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   		if(alertCategoryId != null && alertCategoryId.longValue() > 0){
   			queryStr.append(" and A.alert_category_id = :alertCategoryId ");
   		}
+  		if(deptScopeIds != null && deptScopeIds.size() > 0){
+ 			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIds)");
+ 		}
+ 		
 		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 			queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.state_id  ");
 		}else if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 2L){
@@ -4436,6 +4443,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   		if(alertStatusId != null && alertStatusId.longValue() > 0){
   			query.setParameter("alertStatusId",alertStatusId);
   		}
+  		if(deptScopeIds != null && deptScopeIds.size() > 0){
+ 			query.setParameterList("deptScopeIds",deptScopeIds);
+ 		}
   		return query.list();
       }
 	     public List<Object[]> getDepartmentDetaislByDeptIds(Long departmentId){
@@ -4875,7 +4885,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	 		return query.list();
 	    	     }
 	    	 
-	    	 public List<Long> getAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,List<Long> calCntrIds,Long alertCategoryId){
+	    	 public List<Long> getAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,List<Long> calCntrIds,Long alertCategoryId,Long alertStatusId){
 	     		StringBuilder sb = new StringBuilder();  
 	     	    sb.append("select ");
 	     	     sb.append(" distinct model.alert.alertId ");
@@ -4905,6 +4915,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	     	    }
 	     	    if(fromDate != null && toDate != null)
 	     	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+	     	     
+	     	    if(alertStatusId != null && alertStatusId.longValue() > 0){
+	     	    	sb.append(" and model.alertStatusId=:alertStatusId");
+	     	    }
 	     	    
 	     	    if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 	     	      sb.append(" and UA.stateId in (:levelValues)");
@@ -4949,7 +4963,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	     	   if(alertCategoryId != null && alertCategoryId.longValue() > 0){
 	     	      query.setParameter("alertCategoryId", alertCategoryId);
 	     	    }
-	     	   
+	     	    if(alertStatusId != null && alertStatusId.longValue() > 0){
+	     	    	query.setParameter("alertStatusId", alertStatusId);
+	     	    }
 	     	      return query.list();
 	     	}
 	  public List<Long> getTotalAlertByOtherStatus1(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, List<Long> statusIdList,Long levelId,List<Long> levelValues, Long govtDepartmentScopeId, Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long scopeId,List<Long> locationList){
