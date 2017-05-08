@@ -66,7 +66,7 @@
 						<div class="col-md-3 m_top10">
 							<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
 								<option value="0">All</option>
-								<option value="4">Call Center</option>     
+								<option value="1">Call Center</option>     
 								<option value="2">Print Media</option>
 								<option value="3">Electronic Media</option>
 							</select>
@@ -109,9 +109,49 @@
     
 
        <section class="container m_top20">
+	   <div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12">
+			<div class="panel panel-default">
+				<div class="panel-heading headingColor">
+					<h4 class="m_0 panel-title text-capital fontColor" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency 
+						<!--<span style="margin-left:300px;font-size:13px;" class="fontColor">AVERAGE ISSUE PENDING DAYS : 
+						<span id="issuePendingCntId"></span></span>-->
+					<span class="pull-right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
+					<span style="font-size:12px;">Include Proposal</span></span>
+					</h4>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-3 col-xs-12 col-sm-4">
+						<label>Select Status</label>
+						<select class="chosenSelect" multiple id="statusId" onchange="getCadreGreivienceEfficiency();">
+							<option value="1">Pending</option>
+							<option value="2">Notified</option>
+							<option value="3">Action In Progess</option>
+							<option value="4" selected>Completed</option>
+							<option value="5">Unable to Resolve</option>
+							<option value="6">Action Not Required</option>
+							<option value="7">Duplicate</option>
+							<option value="8">Wrongly Mapped Designation</option>
+							<option value="9">Wrongly Mapped Department</option>
+							<option value="10">Rejoinder</option>
+							<option value="11">Reopen</option>
+							<option value="12" selected>Closed</option>
+						</select>
+					</div>
+					<div id="efficiencyId"></div>
+				</div>
+			</div>
+		   
+				
+				
+				
+			</div>
+			
+	   </div>
 		   <div class="panel panel-default">
 				<div class="panel-heading headingColor">
 					<div class="row">
+					
 						<div class="col-md-10 m_top5">   
 							<h4 class="panel-title text-capital fontColor">Category Wise Grievance Report </h4>  
 						</div>
@@ -282,6 +322,7 @@
 
 </script>
 <script>
+$(".chosenSelect").chosen({width:'100%'})
 function generateExcel1(){
 	tableToExcel('grievanceReportTableId', 'Grievance Report');
 }
