@@ -8398,7 +8398,8 @@ return constiLst;
 			
 			List<Long> constituenciesIds = locationsMap.get((Long)countArr[1]);
 			if(constituenciesIds != null && constituenciesIds.size() > 0){
-				for(Long constituenciesId:constituenciesIds){
+				//for(Long constituenciesId:constituenciesIds){
+					Long constituenciesId = commonMethodsUtilService.getLongValueForObject(countArr[1]);
 					Long count = countMap.get(constituenciesId);
 					if(count == null){
 						countMap.put(constituenciesId,(Long)countArr[0]);
@@ -8524,7 +8525,7 @@ return constiLst;
 						
 						afflCountMap.put(constituenciesId,afflCount+(Long)countArr[0]);
 					}*/
-				}
+				//}
 			}
 		}
 	}
@@ -21579,6 +21580,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					TdpCommittee tdpCommittee = tdpCommitteeDAO.get(tdpCommitteeId);
 					if(tdpCommittee != null){
 						tdpCommittee.setIsCommitteeConfirmed("N");
+						tdpCommittee.setCompletedDate(null);
 						tdpCommittee = tdpCommitteeDAO.save(tdpCommittee);
 					}
 							
