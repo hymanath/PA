@@ -83,7 +83,7 @@
 								<label class="checkbox-inline"><input type="checkbox" class="chanelListCls checkedSelected" checked />Electronic Media</label>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12"> 
-								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="4" checked />Call Center</label>
+								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="1" checked />Call Center</label>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12  m_top10"> 
 								<button class="btn btn-success btn-sm" onClick="onLoadCallsAMU();">APPLY</button>
@@ -153,15 +153,7 @@
 										</div>
 									</div>
 								</div>-->
-								<!--<div class="panel panel-default" style="display:none;">
-									<div class="panel-body">
-										<div class="row">
-											<div class="col-sm-12 col-xs-12 col-md-12">
-												<div id="assignedUser1"></div>
-											</div>	
-										</div>
-									</div>
-								</div>-->
+								
 							</div>
 						</div>
 					</div>
@@ -169,7 +161,7 @@
 			</div>			
 		</div>
 	</section>
-<!--	<div id="testingDemo"></div>-->
+
 <div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document" style="width:85%;">
 		<div class="modal-content">
@@ -237,7 +229,7 @@ var globalDesignationId;
 var subLevels = [];
 var distWiseDistLevelArr=[];
 var divisionWiseDistLevelArr=[];
-
+var globalDepartmentName;
 google.load("elements", "1", {
 	packages: "transliteration"
 });
