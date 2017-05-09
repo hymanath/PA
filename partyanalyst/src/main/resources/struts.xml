@@ -17182,5 +17182,10 @@
 				<param name="root">alertCoreDashBoardVOs</param>       
 			</result>
   </action>
+  <action name="getAlertEfficiencyListAction1" class="createAlertAction"  method="getAlertEfficiencyList1">
+		<result type="json" name="success">    
+			<param name="root">alertsSummeryVOList</param>       
+		</result> 
+	</action>
  </package>
 </struts>

@@ -121,24 +121,28 @@
 					</h4>
 				</div>
 				<div class="panel-body">
-					<div class="col-md-3 col-xs-12 col-sm-4">
-						<label>Select Status</label>
-						<select class="chosenSelect" multiple id="statusId" onchange="getCadreGreivienceEfficiency();">
-							<option value="1">Pending</option>
-							<option value="2">Notified</option>
-							<option value="3">Action In Progess</option>
-							<option value="4" selected>Completed</option>
-							<option value="5">Unable to Resolve</option>
-							<option value="6">Action Not Required</option>
-							<option value="7">Duplicate</option>
-							<option value="8">Wrongly Mapped Designation</option>
-							<option value="9">Wrongly Mapped Department</option>
-							<option value="10">Rejoinder</option>
-							<option value="11">Reopen</option>
-							<option value="12" selected>Closed</option>
-						</select>
+					<div class="row">
+						<div class="col-md-3 col-xs-12 col-sm-4">
+							<label>Select Status</label>
+							<select class="chosenSelect" multiple id="statusId" onchange="getCadreGreivienceEfficiency();">
+								<option value="1">Pending</option>
+								<option value="2">Notified</option>
+								<option value="3">Action In Progess</option>
+								<option value="4" selected>Completed</option>
+								<option value="5">Unable to Resolve</option>
+								<option value="6">Action Not Required</option>
+								<option value="7">Duplicate</option>
+								<option value="8">Wrongly Mapped Designation</option>
+								<option value="9">Wrongly Mapped Department</option>
+								<option value="10">Rejoinder</option>
+								<option value="11">Reopen</option>
+								<option value="12" selected>Closed</option>
+							</select>
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div id="efficiencyId"></div>
+						</div>
 					</div>
-					<div id="efficiencyId"></div>
 				</div>
 			</div>
 		   
