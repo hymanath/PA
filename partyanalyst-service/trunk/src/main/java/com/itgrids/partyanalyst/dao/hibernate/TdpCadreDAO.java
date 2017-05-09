@@ -6978,7 +6978,8 @@ public List<Long> getCadreIdsByMemberShip(Long enrollmentId,String searchType,St
 	 Query query = getSession().createQuery(queryStr.toString());
 	 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
 	 query.setParameter("searchValue", searchValue.trim());
-	 query.setParameter("enrollmentId", enrollmentId);
+	 if(enrollmentId != null && enrollmentId.longValue()>0L)
+		 query.setParameter("enrollmentId", enrollmentId);
 	 return query.list();
  }
 
