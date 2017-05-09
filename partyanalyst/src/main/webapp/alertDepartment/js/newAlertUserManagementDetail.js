@@ -1081,11 +1081,11 @@ function displayStatus(result)
 		$("#assiningLdngImg").hide();
 		$("#assignOfficerId").show();
 		$("#assignSuccess").html('Alert Assigned Successfully')
-		setTimeout(function(){
+		setTimeout(function(){              
 			location.reload();
 		},500);
 	}else{
-		alert("Please Try Again.");
+		alert("Please Try Again.");  
 		$("#assignSuccess").addClass("text-danger");
 		$("#assignSuccess").html('Try Again');
 	}	
@@ -1153,7 +1153,6 @@ function getStatusCompletionInfo(alertId){
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
 			globalStatusId = sttatusId; 
-			
 			$('#historyId').show();
 			if(result[0].dueDateStr != null && result[0].dueDateStr.trim().length>0){
 				$('.modal-date').html(result[0].dueDateStr)
@@ -1227,7 +1226,7 @@ function getStatusCompletionInfo(alertId){
 			}
 			alertStatus(result,alertId);	
 
-			if(globalStatusId == 12 ){ // closed
+			if(globalStatusId == 12 || globalStatusId ==8 || globalStatusId ==9  ){ // closed || Wrongly Mapped Designation || Wrongly Mapped Department
 				$('#displaySubTasksliId,#docAttachmentId,#displayPriority,#displayDueDate2').hide();
 				$('#displayDueDate1').show();
 			}
@@ -1247,6 +1246,7 @@ function getStatusCompletionInfo(alertId){
 function rightSideExpandView(alertId)
 {
     $("#rightSideExpandView").html(spinner);
+	$(".assignedUser1").html('');
 	var str='';
 	str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
 		str+='<div class="panel-right">';
@@ -1315,7 +1315,7 @@ function rightSideExpandView(alertId)
 					str+='<div class="panel-heading" id="subBlockStates" style="display:none;">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-4">';
-								str+='<div id="assignedUser1"></div>';
+								str+='<div class="assignedUser1"></div>';
 							str+='</div>';
 							str+='<div class="col-sm-8  pull-right" >';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
@@ -1516,7 +1516,7 @@ function rightSideExpandView(alertId)
 	getStatusCompletionInfo(alertId);
 	getGovtAllDepartmentDetails();
 	buildAssignUIAttributes(alertId);
-	
+	getCommentsForAlert(alertId)//doubt
 	
 	var options = {
 	  sourceLanguage:
@@ -1682,7 +1682,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 						subTaskStatusChangAvailable=true;
 					else
 						subTaskStatusChangAvailable=false;					
-				}
+				}  
 				
 				
 				$("#statusId1Color").attr('style','background-color:'+result[0].color+'');
@@ -1690,6 +1690,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				$(".modal-date1").html(result[0].dueDateStr);
 				
 					var str='';
+					var str6='';
 					var splitNameArr = result[0].name.split(" ");
 					var value = "";
 					if(splitNameArr != null && splitNameArr.length>1)
@@ -1697,23 +1698,22 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 					else
 						value = splitNameArr[0];  
 					
-					str+='<div class="media">';
-						str+='<div class="media-left">';
-							str+='<span class="icon-name icon-primary">'+result[0].assignedOfficerStr.substring(0,2)+'</span>';
-						str+='</div>';
-						str+='<div class="media-body">';
-							str+='<p> SUB TASK ASSIGN TO: <i class="fa fa-level-down "></i></p> ';
-							//str+='<p>'+result[0].assignedOfficerStr+' - '+result[0].deptName+'</p>';
-							str+='<p>'+result[0].assignedOfficerStr+'</p>';
-							str+='<p><i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+'</p>';
-							str+='<p><b>Location :</b>'+result[0].callerName+'</p>';
-							str+='<p><b> Dept:</b> '+result[0].deptName+'</p>';
-							//str+='<p><b>Location :</b>'+result[0].positionName+'</p>';
-							str+='<p></p>';
-						str+='</div>';
-					str+='</div>';
-					$("#assignedUser1").html(str);
-					
+					str6+='<div class="media">';
+						str6+='<div class="media-left">';
+							str6+='<span class="icon-name icon-primary">'+result[0].assignedOfficerStr.substring(0,2)+'</span>';
+						str6+='</div>';
+						str6+='<div class="media-body">';
+							str6+='<p> SUB TASK ASSIGN TO: <i class="fa fa-level-down "></i></p> ';
+							//str6+='<p>'+result[0].assignedOfficerStr+' - '+result[0].deptName+'</p>';
+							str6+='<p>'+result[0].assignedOfficerStr+'</p>';
+							str6+='<p><i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+'</p>';
+							str6+='<p><b>Location :</b>'+result[0].callerName+'</p>';
+							str6+='<p><b> Dept:</b> '+result[0].boardName+'</p>';
+							//str6+='<p><b>Location :</b>'+result[0].positionName+'</p>';
+							str6+='<p></p>';
+						str6+='</div>';
+					str6+='</div>';
+					$(".assignedUser1").html(str6);
 					
 				str="";
 				str+='<div class="col-sm-1 text-center body-icons">';
@@ -1868,10 +1868,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				subTaskglStr=str1;
 		}
 	str+='</div>';
-	
 		$("#subAlertDetails").html(str);
-		
-		
 }
 
 
@@ -2085,10 +2082,10 @@ function buildAlertDataNew(result)
 			str+='</div>';
 		}
 	str+='</div>';
-	str+='<div class="row m_top20">';
+	/*str+='<div class="row m_top20">';
 		str+='<div class="col-sm-1 text-center body-icons">';
 			str+='<i class="fa fa-paperclip fa-2x"></i>';
-		str+='</div>';
+		str+='</div>';*/
 		str+='<div class="col-sm-11">';
 			for(var i in result.documentList)
 			{
@@ -2375,14 +2372,13 @@ function buildSubTaskInfoForAlert(result,alertId)
 	$("#alertSubtask").html(str);
 }
 function getCommentsForAlert(alertId){
-	//$("#alertGeneralComments").html(spinner);
 	$("#alertGeneralComments").html(spinner);
 	var jsObj ={
 		alertId  :alertId
 	}
 	$.ajax({
 		type:'GET',
-		url: 'getCommentsForAlertAction.action',
+		url: 'viewAlertHistoryAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		$("#alertGeneralComments").html('');
@@ -2393,10 +2389,10 @@ function getCommentsForAlert(alertId){
 			$("#alertGeneralComments").html("");
 		}
 	});
-}
+}	
 function buildCommentsForAlert(result)
 {
-	var str='';
+	/*var str='';
 	str+='<div class="row m_top20">';
 		str+='<div class="col-sm-1 text-center body-icons">';
 			str+='<i class="fa fa-comments-o fa-2x"></i>';
@@ -2452,12 +2448,94 @@ function buildCommentsForAlert(result)
 							str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].mobileNO+'</p>';
 						}
 						*/
-					str+='</div>';
+					/*str+='</div>';
 				str+='</div>';
 			}
 		str+='</div>';
 	str+='</div>';
+	$("#alertGeneralComments").html(str);*/
+	
+	var str='';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-1 text-center body-icons">';
+			str+='<i class="fa fa-road fa-2x"></i>';
+		str+='</div>';
+		str+='<div class="col-sm-11">';
+			str+='<h4 class="text-muted text-capital">complete alert history</h4>';
+		str+='<ul class="alert-myfoot m_top10" style="list-style:outside none none">';
+		for(var i in result){
+			
+			str+='<li>';
+			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i][0].trackingDate+'</span>';
+			for(var j in result[i]){
+				
+					if(result[i][j].actionType == 'Assigning'){     
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Assigned BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>    </p>';
+						
+					}else if(result[i][j].actionType == 'Attachment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						str+='<p><span class="alert-history-body text-capital"><a target="_blank"  href="http://www.mytdp.com/images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';       
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">'+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';     
+					}else if(result[i][j].actionType == 'Due Date'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Changed Date </span> : '+result[i][j].dueDate+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';  
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+						
+					}else if(result[i][j].actionType == 'Priority'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Priority </span> : '+result[i][j].severty+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}else if(result[i][j].actionType == 'Status Change'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> : '+result[i][j].status+'</p>';
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}else if(result[i][j].actionType == 'Comment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}
+			}
+		str+='</li>';	
+		
+		}
+		str+='</ul>';
+	str+='</div>';
+	//$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertGeneralComments").html(str);
+//}
 }
 
 
@@ -2746,9 +2824,11 @@ function getDocumentsForAlert(alertId){
 			str+='<h4 class="text-muted text-capital">alert attachment</h4>';
 			str+='<ul class="list-inline imageShowOpen">';
 			for(var i in result){
-				str+='<li class="" style="margin-top:25px;" attr_doc_id="'+result[i].id+'"  attr_path="'+result[i].name+'" id="imageAttachmentOpen'+result[i].id+'" >';
+				str+='<span style="background-color: gray; display: inline-block; border-radius: 5px; height: 8px; width: 8px;"></span><li class="" style="margin-top:25px;" attr_doc_id="'+result[i].id+'"  attr_path="'+result[i].name+'" id="imageAttachmentOpen'+result[i].id+'" >';
 					str+='<img src="http://www.mytdp.com/images/'+result[i].name+'" style="width: 100px; height: 100px;cursor:pointer" />';
-				str+='</li>';
+					//str+='<a target="_blank" href="http://www.mytdp.com/images/'+result[i].name+'" style="cursor:pointer;">'+result[i].name+'</a>';
+				str+='</li>&nbsp;&nbsp;';
+				
 			}
 			str+='</ul>';
 			$("#existingDocsDivId").html(str);
@@ -3105,8 +3185,82 @@ function getDepartmentDetailsOfAlert(alertId)
 }
 function alertHistory(result)
 {
+	
 	var str='';
-	for(var i in result)
+	for(var i in result){
+			str+='<ul class="alert-history m_top10" style="list-style:outside none none">';
+			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i][0].trackingDate+'</span>';
+			
+			for(var j in result[i]){
+				str+='<li>';
+			
+				str+='<span class="alert-history-time" >'+result[i][j].trackingTime+'</span>';
+					if(result[i][j].actionType == 'Assigning'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Assigned BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>    </p>';
+						
+					}else if(result[i][j].actionType == 'Attachment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'</p>'; 
+						str+='<p><span class="alert-history-body text-capital"><a target="_blank" href="http://www.mytdp.com/images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';      
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Due Date'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Changed Date </span> : '+result[i][j].dueDate+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>'; 
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Priority'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  </p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Priority </span> : '+result[i][j].severty+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>'; 
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Status Change'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
+						
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> : '+result[i][j].status+'</p>';
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Comment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
+						
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span> '; 
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}
+				
+					
+				str+='</li>';	
+			}
+		
+		str+='</ul>';
+		}
+		
+	/* for(var i in result)
 	{
 		str+='<ul class="alert-history">';
 			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i].date+'</span>';
@@ -3217,7 +3371,7 @@ function alertHistory(result)
 				}
 			}
 		str+='</ul>';
-	}
+	} */
 	
 	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 	$("#alertManagementPopupBody1").html(str);
@@ -3242,14 +3396,18 @@ function alertStatusHistory(result,alertId)
 			for(var i in result)
 			{
 				str+='<tr>';
-					str+='<td>'+result[i].date+'</td>';
+					str+='<td style="width:100px;">'+result[i].date+'</td>';
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
+					if(result[i].userName == "govt_admin"){
+						str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
+						str+='<p class="text-primary text-capitalize"><u> Designation:  <span style="color:black;"> '+result[i].designation+' </span></u></p>';
+					}else{
 						str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
 						str+='<p class="text-primary text-capitalize"><u> Designation:  <span style="color:black;"> '+result[i].designation+' </span></u></p>';
 						str+='<p class="text-primary text-capitalize"><u> Location:  <span style="color:black;"> '+result[i].location+' </span></u></p>';
-						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';						
-						
+						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';
+					}
 						//str+='<p class="text-primary text-capitalize">Dept Name: '+result[i].mobileNO+'</p>';
 					str+='</td>';
 					str+='<td>'+result[i].comment+'</td>';
@@ -3628,3 +3786,4 @@ $(document).on("click","#updateStatusChangeId",function(){
 		
 		
 	});
+	
