@@ -35,11 +35,11 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public List<Object[]> getDayWiseImagesCount(EventDocumentVO inputVO,Date startDate,Date endDate);
 	//public List<Object[]> activityInfoDocumentCount(List<Long> scopeIds);
 	public List<Object[]>  getDistrictNamesByScopeId(Long activityScopeId,Long stateId,Date stDate,Date endDate);
-	public List<Object[]>  getConstituencyNamesByDistrictId(Long activityScopeId,Long districtId);
-	public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long constitencyId);
-	public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Long constitencyId);
-	public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mandalId);
-	public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long muncipalityId);
+	public List<Object[]>  getConstituencyNamesByDistrictId(Long activityScopeId,Long districtId,Date startDate,Date endDate);
+	public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long constitencyId,Date startDate,Date endDate);
+	public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Long constitencyId,Date startDate,Date endDate);
+	public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mandalId,Date startDate,Date endDate);
+	public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long muncipalityId,Date startDate,Date endDate);
 	public List<Object[]> getDocumentsCuntByScopeId(Long activityScopeId,List<Long> villageIdsList,List<Long> wardIdsList);
 	public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> districtIds,List<Long> constiIdsList);
 	
@@ -50,5 +50,10 @@ public interface IActivityInfoDocumentDAO extends GenericDao<ActivityInfoDocumen
 	public Integer deleteEventUploadFilebyActivityInfoId(List<Long> activityInfoIdList);
 	public List<Object[]> setDayWiseImagesDetails(Long locationId);
 	public List<Object[]> getEventsDocumentsCountByLocationInbfo(EventDocumentVO inputVO,Date startDate,Date endDate,Long userAccessLevelId,Set<Long> userAccessLevelValues);
+	public List<Object[]> getConstituencyNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long districtId,Date startDate,Date endDate);
+	public List<Object[]> getMandalNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long constituencyId,Date startDate,Date endDate);
+	public List<Object[]> getMuncipalityNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long constituencyId,Date startDate,Date endDate);
+	public List<Object[]> getPanchaytNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId, Long mandalOrMuncId,Date startDate,Date endDate);
+	public List<Object[]> getWardNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId, Long mandalOrMuncId,Date startDate,Date endDate);
 	public List<Object[]> getDocumentsCuntForScopeId(Long activityScopeId,List<Long> mandalIdList,List<Long> muncipIdsList);
 }
