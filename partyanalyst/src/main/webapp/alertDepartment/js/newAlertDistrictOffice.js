@@ -802,7 +802,7 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 								str+='<li class="active" attr_type="statuswise" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status overview</li>';
 								str+='<li attr_type="scopewise"  attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location level</li>';
 								str+='<li attr_type="alertSource"  attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Alert Source</li>';
-								str+='<li id="filterViewId">Filter</li>';
+								str+='<li id="filterViewId" attr_type="filterView">Filter</li>';
 								str+='</ul>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-4 ">';
@@ -1013,11 +1013,12 @@ $(document).on("click",".switch-btn li",function(){
 		}else{
 		  $(".locationLevelWiseDivCls").hide();
 		}
-		if(searchType == 'statuswise' || searchType == 'scopewise')
-		{
+		if(searchType != "filterView"){
+			
 			$("#statusOvrvwId").show();
 			$("#filterViewBodyId").hide();
 		}
+		
 		for(var i in parentIdStr){
 				for(var j in subLevelIdStr){
 					$("#locationNamesId"+departmentId+parentIdStr[i]+subLevelIdStr[j]).html('');
