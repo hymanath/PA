@@ -6692,6 +6692,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
             List<Object[]> scopeIds = govtDepartmentScopeLevelDAO.getGovtScopesLevelByParentScopeLevel(levelId, deptIdList);//levelId means Access Level 
 			//List<Object[]> scopeIds = govtDepartmentScopeDAO.getFilterSectionDetailsOnScopeIds();
 			 setFilterSectionAlertDetails(scopeIds,filterVo,"scopes");
+            List<Object[]> departIds = govtAlertDepartmentLocationNewDAO.getDeptIdAndNameForUserAccessLevel(userId);
+			 setFilterSectionAlertDetails(departIds,filterVo,"departments");
+			//List<Long> departIdList =govtAlertDepartmentLocationNewDAO.getDeptNameForUserAccessLevel(userId);
 			List<Object[]> severityIds = alertSeverityDAO.getFilterSectionDetailsOnSeverity();
 			 setFilterSectionAlertDetails(severityIds,filterVo,"severity");
 			List<Object[]> categoryIds = alertCategoryDAO.getAllCategory1();
@@ -6705,7 +6708,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			List<Object[]> alertStatusIds =alertStatusDAO.getAllStatus();
 			setFilterSectionAlertDetails(alertStatusIds,filterVo,"alertStatus");
 			List<Object[]> subTaskStatusIds =alertSubTaskStatusDAO.getAlertSubStatusDtls();
-			setFilterSectionAlertDetails(subTaskStatusIds,filterVo,"alertSubTaskStatus");		
+			setFilterSectionAlertDetails(subTaskStatusIds,filterVo,"alertSubTaskStatus");
 			} catch (Exception e) {
 				LOG.error(" Exception Occured in getFilterSectionAlertDetails() method, Exception - ",e);
 			}		
@@ -6747,6 +6750,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		 if(names.equalsIgnoreCase("alertSubTaskStatus")){
 			 filterVo.getAlertSubTaskStatusList().addAll(list);
 		 }
+		 if(names.equalsIgnoreCase("departments")){
+			 filterVo.getAlertDepartMentList().addAll(list);
+		 } 
 		 
 	 }
 	 public String getDesignationForUser(Long userId){
@@ -8252,7 +8258,7 @@ public ResultStatus saveGovtOfficerSmsDetails(final GovtOfficerSmsDetailsVO smsD
 		
 		
 		 
-	 }
+      }
 public List<IdNameVO> getLvlsForDepatmnt(Long userId,Long departmentId){
 	List<IdNameVO> resultList = new ArrayList<IdNameVO>();
 	try {						
@@ -8354,7 +8360,6 @@ public FilterSectionVO getFilterSectionAlertNewDetails(Long userId,List<Long> de
           }
         }
         List<Object[]> scopeIds = govtDepartmentScopeLevelDAO.getGovtScopesLevelByParentScopeLevel(levelId, deptIdList);//levelId means Access Level 
-		//List<Object[]> scopeIds = govtDepartmentScopeDAO.getFilterSectionDetailsOnScopeIds();
 		 setFilterSectionAlertDetails(scopeIds,filterVo,"scopes");
 		List<Object[]> severityIds = alertSeverityDAO.getFilterSectionDetailsOnSeverity();
 		 setFilterSectionAlertDetails(severityIds,filterVo,"severity");
@@ -8381,11 +8386,14 @@ public List<AlertCoreDashBoardVO> getTotalAlertByStatusNew(String fromDateStr, S
 		}
 		prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);
 		List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
-		List<Object[]> alertList = alertDAO.getTotalAlertByStatusNew1(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusIdList,deptId,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,scopeId,locationIdList,subTaskStatusIdList);
-		//setAlertDtls(alertCoreDashBoardVOs, alertList);
+		List<Object[]> alertList =null;
 		if(statusIdList != null && statusIdList.size()>0){
+		 alertList = alertDAO.getTotalAlertByStatusNew1(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusIdList,deptId,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,scopeId,locationIdList,subTaskStatusIdList);
+		//setAlertDtls(alertCoreDashBoardVOs, alertList);
 		setAlertDtlsNew(alertCoreDashBoardVOs, alertList,startDay,endDay,"alertStatus",isMoreThanYrChkd);
-		}else if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
+		}
+		if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
+			alertList = alertDAO.getTotalAlertByStatusNew2(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusIdList,deptId,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,scopeId,locationIdList,subTaskStatusIdList);
 			setAlertDtlsNew(alertCoreDashBoardVOs, alertList,startDay,endDay,"subTaskStatus",isMoreThanYrChkd);
 		}
 		//set Subtask into alert logic 
@@ -8448,16 +8456,13 @@ public void setAlertDtlsNew(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, Li
 				statusId = commonMethodsUtilService.getLongValueForObject(param[3]);
 				if(name.equalsIgnoreCase("alertStatus")){ 
 				if(param[1] != null && param[2] != null){
-					if(statusId == 4L || statusId == 5L || statusId == 6L || statusId == 8L || statusId == 9L || statusId == 10L || statusId == 11L || statusId == 12L || statusId == 13L){
+					if(statusId == 5L || statusId == 8L || statusId == 9L || statusId == 11L || statusId == 13L){
 						dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
-					}else{
+					}else if(statusId == 1L || statusId == 2L || statusId == 3L){
 						dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),td);
 					}
 					  alertCoreDashBoardVO.setInterval(dist);
 					if(startDay != null && startDay > 01 && endDay != null && endDay> 01){
-					/*if(startDay>=dist && endDay<=dist){
-					      alertCoreDashBoardVO.setInterval(dist);
-					}*/
 						if(alertCoreDashBoardVO.getInterval()>=startDay && alertCoreDashBoardVO.getInterval()<=endDay){
 							alertCoreDashBoardVOs.add(alertCoreDashBoardVO);
 						}
@@ -8469,20 +8474,14 @@ public void setAlertDtlsNew(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, Li
 				}
 			  }else if(name.equalsIgnoreCase("subTaskStatus")){
 				  if(param[1] != null && param[2] != null){
-						if(statusId == 3L || statusId == 4L || statusId == 5L || statusId == 6L || statusId == 7L){
+						if(statusId == 5L || statusId == 6L){
 							dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
-						}else{
+						}else if(statusId == 1L || statusId == 2L){
 							dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),td);
 						}
-						
-						/*if(startDay != null && endDay != null){
-					  if(dist >= startDay && dist <= endDay)
-						{
-						    alertCoreDashBoardVO.setInterval(dist);
-						}
-						}*/
+						alertCoreDashBoardVO.setInterval(dist);
 						if(startDay != null && startDay > 01 && endDay != null && endDay> 01){
-								if(alertCoreDashBoardVO.getInterval()>=startDay && alertCoreDashBoardVO.getInterval()<=endDay){
+								if(alertCoreDashBoardVO.getInterval() >= startDay && alertCoreDashBoardVO.getInterval() <= endDay){
 									alertCoreDashBoardVOs.add(alertCoreDashBoardVO);
 								}
 							}else if(isMoreThanYrChkd != null && isMoreThanYrChkd.equalsIgnoreCase("true")){
@@ -8553,11 +8552,19 @@ public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatusNew(String fromDateS
 			}
 		}
 		
+		/*List<Long> alertIds = new ArrayList<Long>();
+		   if(userType != null && !userType.equalsIgnoreCase("districtCollector")){
+			   //Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,List<Long> statusIdList,Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long scopeId,List<Long> locationIdList,List<Long> subTaskStatusIdList
+			   List<Long> pendingAlertIdsList = alertDAO.getTotalAlertByStatusNew1(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusIdList,deptId,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,scopeId,locationList,subTaskStatusIdList);
+				if(pendingAlertIdsList != null && pendingAlertIdsList.size() > 0){
+					alertIds.addAll(pendingAlertIdsList);
+				}
+		 }*/
 		List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
-		//List<Object[]> list = null;
+		List<Object[]> list = null;
 		List<Long> alertIdSet = alertAssignedOfficerNewDAO.getTotalAlertByOtherStatus1(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,statusIdList,levelId,levelValuesList,govtDeptScopeId,deptId,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,scopeId,locationList);
 		if(alertIdSet != null && alertIdSet.size() > 0){
-			List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdSet));
+			 list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdSet));
 			//setAlertDtls(alertCoreDashBoardVOs, list);
 			if(statusIdList != null && statusIdList.size()>0)
 			 setAlertDtlsNew(alertCoreDashBoardVOs,list,startDay,endDay,"alertStatus",isMoreThanYrChkd);
@@ -8568,7 +8575,9 @@ public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatusNew(String fromDateS
 		    setAlertDtlsNew(alertCoreDashBoardVOs, subTaskStatusList,startDay,endDay,"subTaskStatus",isMoreThanYrChkd);
 		}
 		}
-		
+		if(alertIdSet != null && alertIdSet.size() > 0 && statusIdList.isEmpty() && subTaskStatusIdList.isEmpty()){
+			setAlertDtls(alertCoreDashBoardVOs, list);
+		}
 		//set Subtask into alert logic 
 		//get subtask count.
 		List<Object[]> subtaskCountList = null;
@@ -8849,7 +8858,7 @@ public List<AlertVO> getAlertSourceWiseAlert(String fromDateStr, String toDateSt
 		    }*/
 		   Map<Long,Map<Long,AlertVO>> catgoryMap = new LinkedHashMap<Long, Map<Long,AlertVO>>(0);
 		   Map<Long,String> categoryNameAndIdMap = new HashMap<Long, String>(0);
-		//Getting Pending Alert By Alert Source
+		//Getting Pending Alert By Alert Source		
 			 List<Object[]> totalList = new ArrayList<Object[]>();
 			if(userType != null && !userType.equalsIgnoreCase("districtCollector")){
 					List<Object[]> alertCountList = alertDAO.getTotalGovtPendingStatusAlertCnt(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,"alertSource",calCntrIdList,null,null);
@@ -8983,4 +8992,5 @@ public List<AlertCoreDashBoardVO> getAlertDtlsByAlertSource(String fromDateStr, 
 	}
 	return null;
 }
+
 }      	

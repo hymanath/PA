@@ -18,6 +18,7 @@ public class FilterSectionVO implements Serializable{
 	private List<FilterSectionVO> locationLevelList = new ArrayList<FilterSectionVO>(0);
 	private List<FilterSectionVO> alertStatusList = new ArrayList<FilterSectionVO>(0);
 	private List<FilterSectionVO> alertSubTaskStatusList = new ArrayList<FilterSectionVO>(0);
+	private List<FilterSectionVO> alertDepartMentList = new ArrayList<FilterSectionVO>(0);
 	public Long getId() {
 		return id;
 	}
@@ -78,6 +79,12 @@ public class FilterSectionVO implements Serializable{
 	public void setAlertSubTaskStatusList(
 			List<FilterSectionVO> alertSubTaskStatusList) {
 		this.alertSubTaskStatusList = alertSubTaskStatusList;
+	}
+	public List<FilterSectionVO> getAlertDepartMentList() {
+		return alertDepartMentList;
+	}
+	public void setAlertDepartMentList(List<FilterSectionVO> alertDepartMentList) {
+		this.alertDepartMentList = alertDepartMentList;
 	}
 	
 	
