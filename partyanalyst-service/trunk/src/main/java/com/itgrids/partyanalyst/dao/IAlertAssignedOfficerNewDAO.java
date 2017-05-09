@@ -88,5 +88,7 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> filterLocationValues,List<Long> desigIds);
     public List<Long> getTotalAlertByOtherStatus1(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, List<Long> statusIdList,Long levelId,List<Long> levelValues, Long govtDepartmentScopeId, Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long scopeId,List<Long> locationList);
     //public List<Object[]> getSubTaskStatusIds(Set<Long> alertSet);
+    public List<Object[]> getBellowLvlDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList);
     public List<Long> getAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,List<Long> calCntrIds,Long alertCategoryId,Long alertStatusId);
+    public List<Long> getBellowDistrictOfficerAlertsDtls(Date fromDate,Date toDate,List<Long> printIdList,List<Long> electronicIdList,List<Long> calCntrIdList,Long statusId,Long desigDeptOfficerId,Long officerId);
 }
