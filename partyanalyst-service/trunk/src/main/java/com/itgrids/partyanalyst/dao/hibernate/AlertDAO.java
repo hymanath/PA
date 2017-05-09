@@ -5397,7 +5397,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				        " P.panchayat_name as panchayatName, " +//22
 				        " LEB.name as localElectionBodyNeme, " +//23
 				        " ALTSVR.severity_color as severityColor, "+ //24
-						" ALTS.alert_color as color"); //25
+						" ALTS.alert_color as color," +//25
+						" GON.officer_name as officerName, " + //26
+	                    " GDWL.location_name as officerLocation "); //27
 		queryStr.append(" from alert A ");  
 		queryStr.append(" left outer join tv_news_channel TNC on A.tv_news_channel_id = TNC.tv_news_channel_id ");//
 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");//
@@ -5411,6 +5413,12 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" left outer join tehsil T on T.tehsil_id = UA.tehsil_id ");//
 		queryStr.append(" left outer join panchayat P on P.panchayat_id = UA.panchayat_id ");//
 		queryStr.append(" left outer join local_election_body LEB on LEB.local_election_body_id = UA.local_election_body ");//
+		
+		queryStr.append(" left outer join alert_assigned_officer_new AAO on AAO.alert_id = A.alert_id ");
+	    queryStr.append(" left outer join govt_department_designation_officer_new GDDO on AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id ");
+	    queryStr.append(" left outer join govt_officer_new GON on AAO.govt_officer_id = GON.govt_officer_id ");
+	    queryStr.append(" left outer join govt_department_work_location GDWL on GDDO.level_value = GDWL.govt_department_work_location_id ");
+	    
 		queryStr.append(" join alert_status ALTS on A.alert_status_id=ALTS.alert_status_id ");//
 		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
 		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");//
@@ -5442,7 +5450,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("panchayatName", Hibernate.STRING)//22
 				.addScalar("localElectionBodyNeme", Hibernate.STRING)//23
 				.addScalar("severityColor", Hibernate.STRING)//24
-				.addScalar("color", Hibernate.STRING);//25
+				.addScalar("color", Hibernate.STRING)//25
+				.addScalar("officerName", Hibernate.STRING)//26
+                .addScalar("officerLocation", Hibernate.STRING);//27
 		if(alertSet != null && alertSet.size() > 0){
 			query.setParameterList("alertSet", alertSet);   
 		}
