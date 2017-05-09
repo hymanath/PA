@@ -1516,7 +1516,7 @@ function rightSideExpandView(alertId)
 	getStatusCompletionInfo(alertId);
 	getGovtAllDepartmentDetails();
 	buildAssignUIAttributes(alertId);
-	getCommentsForAlert(alertId)//doubt
+	getCommentsForAlert(alertId)
 	
 	var options = {
 	  sourceLanguage:
@@ -2386,7 +2386,7 @@ function getCommentsForAlert(alertId){
 		{
 			buildCommentsForAlert(result);
 		}else{
-			$("#alertGeneralComments").html("");
+			$("#alertGeneralComments").html("NO DATA");
 		}
 	});
 }	
@@ -3388,7 +3388,7 @@ function alertStatusHistory(result,alertId)
 	{
 		str+='<table class="table border_1">';
 			str+='<thead class="text-capitalize">';
-				str+='<th>Date</th>';
+				str+='<th >Date</th>';
 				str+='<th>Status</th>';
 				str+='<th>Updated By</th>';
 				str+='<th>Comments</th>';
