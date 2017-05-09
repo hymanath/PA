@@ -71,6 +71,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<DistrictOfficeViewAlertVO> districtOfficeViewAlertVOList;
 	private Long alertId;
 	private List<AlertTrackingVO> alertTrackingVOList;
+	private List<List<AlertTrackingVO>> listOfalertTrackingVOList;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVo;
 	private Long subTaskId;
 	private List<KeyValueVO> keyValueVOList;
@@ -82,6 +83,17 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private FilterSectionVO filterDetilsList;
 	private String officerNameAnddesgnationName;
 	
+	
+	
+	public List<List<AlertTrackingVO>> getListOfalertTrackingVOList() {
+		return listOfalertTrackingVOList;
+	}
+
+	public void setListOfalertTrackingVOList(
+			List<List<AlertTrackingVO>> listOfalertTrackingVOList) {
+		this.listOfalertTrackingVOList = listOfalertTrackingVOList;
+	}
+
 	public InputStream getInputStream() {
 		return inputStream;
 	}
@@ -1121,15 +1133,15 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		return Action.SUCCESS;	
 	
 	}
-	
+
 	public String viewAlertHistory(){
 		try {
 			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVo == null)
 				return null;
 			
-			jObj = new JSONObject(getTask());
-			alertTrackingVOList = alertManagementSystemService.viewAlertHistory(jObj.getLong("alertId"));
+			jObj = new JSONObject(getTask());  
+			listOfalertTrackingVOList = alertManagementSystemService.viewAlertHistoryNew(jObj.getLong("alertId"));
 			
 			
 		} catch (Exception e) {
@@ -3362,8 +3374,46 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						LOG.error("Exception occured in getFilterSectionAlertDetails() of alertManagementSystemAction",e);
 					}
 					return Action.SUCCESS;
-				}
-	public String getAlertSourceWiseAlert(){
+			 }
+			 public String getBellowDistrictOfficerAlertsCountView(){
+					try{
+						session = request.getSession();
+					   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+						Long userId = regVo.getRegistrationID();
+						jObj = new JSONObject(getTask());
+						String fromDate = jObj.getString("fromDate");
+						String toDate = jObj.getString("toDate");
+						String task = jObj.getString("task");
+						JSONArray paperIdArr = jObj.getJSONArray("paperIdArr"); 
+						String sortingType = jObj.getString("sortingType");
+						List<Long> paperIdList = new ArrayList<Long>();
+						if(paperIdArr != null && paperIdArr.length() > 0){
+							for (int i = 0; i < paperIdArr.length(); i++){
+								paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+							} 
+						}
+						
+						JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+						List<Long> chanelIdList = new ArrayList<Long>();
+						if(chanelIdArr != null && chanelIdArr.length() > 0){
+							for (int i = 0; i < chanelIdArr.length(); i++){
+								chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+							}
+						}
+						
+						JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+						List<Long> calCntrIdList = new ArrayList<Long>();
+						for (int i = 0; i < calCntrIdArr.length(); i++){
+							calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+						}
+						districtOfficeViewAlertVOList = alertManagementSystemService.getBellowDistrictOfficerAlertsCountView(userId,fromDate,toDate,paperIdList,chanelIdList,calCntrIdList,task,sortingType);
+					}catch(Exception e){
+						e.printStackTrace();
+						LOG.error("Exception occured in getFilterSectionAlertDetails() of alertManagementSystemAction",e);
+					}
+					return Action.SUCCESS;
+			 }
+public String getAlertSourceWiseAlert(){
 		try{
 			session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
@@ -3446,4 +3496,45 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;
 	}
+	public String getBellowDistrictOfficerAlertsDtls(){
+		try{
+			session = request.getSession();
+		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			String task = jObj.getString("task");
+			Long statusId = jObj.getLong("statusId");
+			Long desigDeptOfficerId = jObj.getLong("desigDeptOfficerId");
+			Long officerId = jObj.getLong("officerId");
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			if(paperIdArr != null && paperIdArr.length() > 0){
+				for (int i = 0; i < paperIdArr.length(); i++){
+					paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			if(chanelIdArr != null && chanelIdArr.length() > 0){
+				for (int i = 0; i < chanelIdArr.length(); i++){
+					chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));          
+				}
+			}
+			
+			JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+			List<Long> calCntrIdList = new ArrayList<Long>();
+			for (int i = 0; i < calCntrIdArr.length(); i++){
+				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+			}
+			alertCoreDashBoardVOs = alertManagementSystemService.getBellowDistrictOfficerAlertsDtls(fromDate,toDate,paperIdList,chanelIdList,calCntrIdList,task,statusId,desigDeptOfficerId,officerId);
+			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception occured in getBellowDistrictOfficerAlertsDtls() of alertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+ }
 }
