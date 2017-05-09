@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -145,4 +146,5 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public String getUserRedirectedUrl(Long userId);
 	public List<Object[]> getUserDetails(List<Long> userIdList);
 	public List<Object[]>  getUserNameById(Long userId);
+	public List<Object[]> getuserIdAndNameList(Set<Long> userIdList);
 }
