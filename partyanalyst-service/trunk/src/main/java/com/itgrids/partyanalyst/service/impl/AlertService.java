@@ -12078,7 +12078,107 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			return userAddress;
 		}
 	 
-	 
+	 public Date getAfterDayForNoOfDays(int noOfDays, Date today){
+			Calendar cal = new GregorianCalendar();
+			cal.setTime(today);
+			
+			cal.add(Calendar.DAY_OF_MONTH, noOfDays);
+			Date prevDay = cal.getTime();
+			return prevDay;
+		}
+	public List<AlertsSummeryVO> getAlertEfficiencyList1(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal,List<Long> alertstatusIds
+				,String startDate,String endDate){
+			LOG.debug(" Entered Into getAlertEfficiencyList");
+			List<AlertsSummeryVO> finalList = new ArrayList<AlertsSummeryVO>();
+			 
+			try{
+				
+				List<Long> totalAlertStatusIds = new ArrayList<Long>(0);
+				
+				totalAlertStatusIds.addAll(IConstants.ALERT_STATUS_IDS);
+				
+				if(includeProposal)
+					totalAlertStatusIds.add(13L);
+				Date fromDate = null;        
+				Date toDate = null; 
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				Long totalAlerts =null;
+				if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+					fromDate = sdf.parse(startDate);
+					toDate = sdf.parse(endDate);
+					 totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(fromDate,toDate,departmentIds,sourceIds,totalAlertStatusIds);
+				}
+				if(daysLst!=null && daysLst.size()>0){
+					for(Integer day:daysLst){
+						AlertsSummeryVO temp = new AlertsSummeryVO();
+						temp.setEffcncyType("First "+day+" Days");
+						temp.setEffcncyPrcnt("0.0");
+						temp.setClrFrEffcncy("red");
+						temp.setDays(day);
+						//Date today 	 =  dateUtilService.getCurrentDateAndTime();
+						List<String> datesStrList = dateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+						
+						if(datesStrList != null && datesStrList.size() >0){
+							if(datesStrList.size() >0 && datesStrList.size() <=day){
+								getEfficiencyOfDates1(fromDate, temp, toDate, departmentIds,sourceIds,includeProposal,alertstatusIds,totalAlerts);
+							}else if(datesStrList.size() >0 && datesStrList.size() >day){
+								Date afterDay =  null;
+								afterDay =  getAfterDayForNoOfDays(day, fromDate);
+								getEfficiencyOfDates1(fromDate, temp, afterDay, departmentIds,sourceIds,includeProposal,alertstatusIds,totalAlerts);
+							}
+						}
+						/*if(today!=null){
+							getEfficiencyOfDates(today, temp, day, departmentIds,sourceIds,includeProposal,alertstatusIds);
+						}
+						*/
+						finalList.add(temp);
+					}
+				}
+				
+				AlertsSummeryVO temp = new AlertsSummeryVO();
+				temp.setEffcncyType(" Overall ");
+				temp.setEffcncyPrcnt("0.0");
+				temp.setClrFrEffcncy("red");
+				temp.setDays(0);
+				getEfficiencyOfDates1(fromDate, temp, toDate, departmentIds,sourceIds,includeProposal,alertstatusIds, totalAlerts);
+				finalList.add(temp);
+			}catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Raised in getAlertEfficiencyList");
+			}
+			return finalList;
+		}
+		
+		public void getEfficiencyOfDates1(Date fromDate, AlertsSummeryVO temp, Date  afterDay,  List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal,List<Long> alertstatusIds,Long totalAlerts){
+			
+			Long completedAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(fromDate,afterDay,departmentIds,sourceIds,alertstatusIds);
+				
+				
+				temp.setTtlAlrtss(totalAlerts);
+				temp.setEffcncyAlerts(completedAlerts);
+				
+				String percentage = "0.0";
+				if(totalAlerts != null && totalAlerts.longValue() >0l)
+				 percentage = (new BigDecimal(completedAlerts*(100.0)/totalAlerts)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				
+				if(percentage != null){
+				float prcntgeFlt = Float.parseFloat(percentage);
+				
+				if(temp.getDays()==30){
+					if(prcntgeFlt>=90.0f){
+						temp.setClrFrEffcncy("green");
+					}
+				}else{
+					if(prcntgeFlt>=95.0f){
+						temp.setClrFrEffcncy("green");
+					}
+				}
+				}
+				
+				temp.setEffcncyPrcnt(percentage);
+			
+			
+		}
 }
 
 
