@@ -17177,16 +17177,33 @@
 		    <param name="inputName">inputStream</param>
 	  </result>	
 	</action>
-   <action name="getAlertSourceWiseAlertAction" class="alertManagementSystemAction"  method="getAlertSourceWiseAlert">
+	<action name="getAlertSourceWiseAlertAction" class="alertManagementSystemAction"  method="getAlertSourceWiseAlert">
 			<result type="json" name="success">    
 				<param name="root">alertVOs</param>       
 			</result>
-  </action>
-   <action name="getAlertDtlsByAlertSourceAction" class="alertManagementSystemAction"  method="getAlertDtlsByAlertSource">
+  	</action>
+   	<action name="getAlertDtlsByAlertSourceAction" class="alertManagementSystemAction"  method="getAlertDtlsByAlertSource">
 			<result type="json" name="success">    
 				<param name="root">alertCoreDashBoardVOs</param>       
 			</result>
-  </action>
+  	</action>
+	<action name="getSocialAlertCallerDetailsAction" class="createAlertAction" method="getSocialAlertCallerDetails">
+		 <result type="json" name="success">			   
+		    <param name="root">alertTrackingVOList</param>
+	  	</result>	
+	</action>
+	<action name="getSocialAlertDetailsByStatusAction" class="createAlertAction" method="getSocialAlertDetailsByStatus">
+		 <result type="json" name="success">			   
+		    <param name="root">alertVOs</param>
+		</result>
+	</action>
+	<action name="changeVeificationStatusDetailsAction" class="createAlertAction" method="changeVeificationStatusDetails">
+		 <result type="json" name="success">			   
+		    <param name="root">status</param>
+		</result>
+	</action>
+	
+	
   <action name="getBellowDistrictOfficerAlertsDtlsAction" class="alertManagementSystemAction"  method="getBellowDistrictOfficerAlertsDtls">
 		<result type="json" name="success">    
 			<param name="root">alertCoreDashBoardVOs</param>       
