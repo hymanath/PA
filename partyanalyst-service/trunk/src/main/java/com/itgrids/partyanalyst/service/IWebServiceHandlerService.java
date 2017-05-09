@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AccommodationVO;
@@ -30,6 +29,7 @@ import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
+import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
@@ -215,4 +215,5 @@ public interface IWebServiceHandlerService {
     public List<AlertCommentVO> getAlertStatusCommentsTrackingDetails(Long alertId);
     public AlertVerificationVO getAlertVerificationDtls(Long alertId);
     public List<AlertCoreDashBoardVO> getDeptWiseStatusWiseAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long statusId);
+    public List<GrievanceAlertVO> getAllGrievancesForCaller(String mobileNo);
 }

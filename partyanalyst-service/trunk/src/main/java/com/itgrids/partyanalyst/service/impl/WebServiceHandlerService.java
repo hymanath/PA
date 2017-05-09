@@ -88,6 +88,7 @@ import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
+import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
@@ -145,6 +146,7 @@ import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IActivityService;
+import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAlertsNewsPortalService;
 import com.itgrids.partyanalyst.service.IAttendanceService;
@@ -262,8 +264,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IAppointmentTimeSlotDAO appointmentTimeSlotDAO;
     private IAlertsNewsPortalService alertsNewsPortalService;
     private AppointmentService appointmentService;
+    private IAlertManagementSystemService alertManagementSystemService;
    
     
+	public IAlertManagementSystemService getAlertManagementSystemService() {
+		return alertManagementSystemService;
+	}
+
+	public void setAlertManagementSystemService(
+			IAlertManagementSystemService alertManagementSystemService) {
+		this.alertManagementSystemService = alertManagementSystemService;
+	}
+
 	public AppointmentService getAppointmentService() {
 		return appointmentService;
 	}
@@ -4858,4 +4870,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  }
 		  return returnList;
 	  }
+	 
+	 public List<GrievanceAlertVO> getAllGrievancesForCaller(String mobileNo){
+		 List<GrievanceAlertVO> returnList = null;
+		 try {
+			 returnList = alertManagementSystemService.getGovtGrievanceAlertDetails(mobileNo,"",0l,"","",0l);
+		} catch (Exception e) {
+			log.error("exception occured in  the getAllGrievancesForCaller  method in WebServiceHandlerService");
+		}
+		 return returnList;
+	 }
 }

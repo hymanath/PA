@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerDetailsNew;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class GovtDepartmentDesignationOfficerDetailsNewDAO extends GenericDaoHibernate<GovtDepartmentDesignationOfficerDetailsNew, Long>
 		implements IGovtDepartmentDesignationOfficerDetailsNewDAO {
@@ -395,4 +397,42 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		query.setParameterList("deptIdList", deptIdList);
 		return query.list();
 	}
+	
+	public List<String> getGovtOfficerMobileNums(Long locationId,String locationType){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select gon.mobile_no as mobileNum from " +
+				" govt_department_work_location gdwl,govt_department_designation_officer_new gddon," +
+				" govt_department_designation_officer_details_new gddodn,govt_officer_new gon " +
+				" where gddodn.govt_department_designation_officer_id=gddon.govt_department_designation_officer_id and " +
+				" gddon.level_value=gdwl.govt_department_work_location_id and gdwl.is_deleted='N' " +
+				" and gddodn.govt_officer_id = gon.govt_officer_id " +
+				" and gdwl.alert_region_scopes_id=:scopeId and gdwl.location_value=:locationId and gdwl.govt_department_id=:departmentId " +
+				" and gddon.govt_department_designation_id =:designationId ");
+		
+		/*sb.append(" select model.govtOfficer.mobileNo " +
+				" from GovtDepartmentDesignationOfficerDetailsNew model " +
+				" where model.isDeleted='N' and model.deptActive='Y' " +
+				" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.isDeleted='N' " +
+				" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.govtDepartmentId=:departmentId " +
+				" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.alertRegionScopesId=:scopeId " +
+				" and model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationValue=:locationId " +
+				" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationId=:designationId ");*/
+		
+		Query query = getSession().createSQLQuery(sb.toString()).addScalar("mobileNum", Hibernate.STRING);
+		
+		query.setParameter("departmentId", 20l);
+		
+		if(locationType.equalsIgnoreCase("tehsil")){
+			query.setParameter("scopeId", 5l);
+			query.setParameter("designationId", IConstants.PANCHAYATRAJ_MPDO_DESIGNATION_ID);
+		}else if(locationType.equalsIgnoreCase("village")){
+			query.setParameter("scopeId", 6l);
+			query.setParameter("designationId", IConstants.PANCHAYATRAJ_PANCHAYAT_SECRERATORY_ID);
+		}
+		query.setParameter("locationId", locationId);
+		
+		return query.list();
+	}
+
 }

@@ -9760,6 +9760,34 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						govtSMSAPIService.senedSMSForGovtAlert(testAlert.getDescription().trim(),officerMessage);
 					else
 						govtSMSAPIService.senedSMSForGovtAlert(inputVO.getMobileNo(),officerMessage); 
+					
+					//sending SMS to MPDO and Panchayat secratory
+					if(inputVO.getDepartmentId() != null && inputVO.getDepartmentId() == IConstants.RWS_DEPARTMENT_ID // rws deaprtment 
+							&& inputVO.getDesignationId() != null && inputVO.getDesignationId() == 4l) //AE designation
+					{
+						//get MPDO's mobile num
+						List<String> mpdosMobNumsList = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtOfficerMobileNums(inputVO.getMandalId(),"tehsil");
+						List<String> villageSecMobNums = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtOfficerMobileNums(inputVO.getPanchayatId(),"village");
+						
+						String allMobStr = null;
+						if(mpdosMobNumsList != null && mpdosMobNumsList.size() > 0){
+							for (String string : mpdosMobNumsList) {
+								allMobStr = allMobStr == null?string:allMobStr+","+string;
+							}
+						}
+						if(villageSecMobNums != null && villageSecMobNums.size() > 0){
+							for (String string : villageSecMobNums) {
+								allMobStr = allMobStr == null?string:allMobStr+","+string;
+							}
+						}
+						if(allMobStr != null){
+							String message = "Respected officer, Grievance request is assigned to AE." +
+									"\n Issue Title: "+inputVO.getAlertTitle()+"\n" +
+									"Assigned officer: "+designationName+" ("+officerMobileNo+") \n Dept: "+departmentName+" \n Raised by: "+inputVO.getMobileNo()+" ("+inputVO.getName()+")";
+							govtSMSAPIService.senedSMSForGovtAlert(allMobStr,message); 
+						}
+					}
+							
 
 					rs = "success";
 					return rs;
