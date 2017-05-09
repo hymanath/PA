@@ -2143,8 +2143,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					scopeId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				}
 			}
-		
-			//scopeDetlsLst = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetails(scopeId);
+		   //scopeDetlsLst = govtDepartmentScopeDAO.getGovtDepartmenttScopeDetails(scopeId);
 	
 			if(type.equalsIgnoreCase("alert")){
 				//deptId-0,deptname-1,scopeId-2,level-3,,color-4,count-4
