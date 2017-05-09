@@ -1222,10 +1222,10 @@ div.comment-area
 	position:relative;
 	
 }
-.alert-history li .alert-history-time
+.alert-history li .alert-history-time  
 {
 	position: absolute;
-	left: -56px;
+	left: -73px;
 	top: 0;
 	font-size: 10px;
 	background: #fff;
@@ -1262,7 +1262,7 @@ div.comment-area
 	padding: 6px 9px;
 	font-size: 12px;
 }
-.alert-history .status-icon.arrow-icon
+.alert-history .status-icon.arrow-icon , .alert-myfoot .status-icon.arrow-icon
 {
 	background-color:#F1E3BB;
 	border:1px solid #ddd;
@@ -1722,4 +1722,43 @@ input[type="checkbox"]:checked + label span.checkbox::after {
 .footer h4
 {
 	font-size:14px !important
+}
+.alertType-subordinate  
+{
+	padding:3px;
+	background-color: #fff;
+	display: inline-block;
+	border-radius: 14px;
+}
+.alertType-subordinate li
+{
+	list-style:none;
+	display: inline-block;
+	padding: 4px 8px;
+	cursor: pointer;
+	text-transform:uppercase;
+}
+.alertType-subordinate li.active
+{
+	background-color: #4A5863;
+	color: #fff;
+	border-radius: 14px;
+	-moz-transition: .5s all ease-out;
+}
+.alertType-subordinate li:hover
+{
+	background-color: #4A5863;
+	-moz-transition: .5s all ease-out;
+	border-radius: 14px;
+	color:#fff;
+}
+.alert-myfoot li .alert-history-user
+{
+	color:#60BBFD;
+	font-size:12px;
+	text-transform:uppercase;
+}
+.alert-myfoot
+{
+	padding-left:0px;
 }
