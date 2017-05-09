@@ -1107,7 +1107,7 @@ $(document).on("change",".locationLevelWiseOnChange",function(){
 			
 		var locationLevelId =0;
 		locationLevelId = $("#locationLevelNamesId"+departmentId+levelId).val();
-		getStateThenGovtDeptScopeWiseAlertCount(departmentId,levelId,searchType,alertType,"levelWiseGraphView",sortingType,orderType,0,0,"Default",locationLevelId);
+		getStateThenGovtDeptScopeWiseAlertCount(departmentId,levelId,searchType,alertType,"levelWiseGraphView",sortingType,orderType,0,0,"change",locationLevelId);
 		getLocationBasedOnDepartmentLevel(departmentId,levelId,districtLevelId);
 });
 function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartmentScopeId,searchType,alertType,divId,sortingType,orderType,filterParentScopeId,filterScopeValue,actionType,locationLevelId){
