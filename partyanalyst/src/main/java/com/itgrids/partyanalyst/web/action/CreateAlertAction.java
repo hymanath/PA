@@ -2934,4 +2934,42 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
+	
+	public String getAlertEfficiencyList1(){
+		try {
+			jObj = new JSONObject(getTask());
+			JSONArray dysArr = jObj.getJSONArray("daysArr");
+			List<Integer> daysList = new ArrayList<Integer>();
+			for (int i = 0; i < dysArr.length(); i++) {
+				Integer desgId = (Integer)dysArr.get(i);
+				daysList.add(desgId);
+			}
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIds");
+			List<Long> deptIdList = new ArrayList<Long>();
+			for (int i = 0; i < deptIdArr.length(); i++) {
+				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));
+			}
+			
+			JSONArray sourceIdArr = jObj.getJSONArray("sourceIds");
+			List<Long> sourceIdList = new ArrayList<Long>();
+			for (int i = 0; i < sourceIdArr.length(); i++) {
+				sourceIdList.add(Long.parseLong(sourceIdArr.getString(i)));
+			}
+			JSONArray alertstatusIdsArr = jObj.getJSONArray("alertstatusIds");
+			List<Long> alertstatusIds = new ArrayList<Long>();
+			for (int i = 0; i < alertstatusIdsArr.length(); i++) {
+				alertstatusIds.add(Long.parseLong(alertstatusIdsArr.getString(i)));
+			}
+			boolean includeProposal = jObj.getBoolean("includeProposal");
+			
+			String fromDate=jObj.getString("fromDate");
+			String toDateStr=jObj.getString("toDateStr");
+			
+			alertsSummeryVOList = alertService.getAlertEfficiencyList1(daysList,deptIdList,sourceIdList,includeProposal,alertstatusIds,fromDate,toDateStr);
+	   } catch (Exception e) {
+		   LOG.error("Exception Raised in getAlertEfficiencyList() in CreateAlertAction",e);
+		}
+		   return Action.SUCCESS;
+	}
 }

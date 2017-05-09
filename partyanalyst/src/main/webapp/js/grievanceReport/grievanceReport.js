@@ -2875,6 +2875,7 @@ function getDistIdAndNameList(){
 
 	getCadreGreivienceEfficiency();
 function getCadreGreivienceEfficiency(){
+	
 	$("#efficiencyId").html("");
 	$("#efficiencyId").html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
     var alertstatusIds = [];
@@ -2902,11 +2903,13 @@ function getCadreGreivienceEfficiency(){
 	  deptIds :deptIds,
 	  sourceIds:sourceIds,
       includeProposal : includeProposal,
-	  alertstatusIds:$("#statusId").val()
+	  alertstatusIds:$("#statusId").val(),
+	  fromDate: callCenterUserFDate,                       
+	  toDateStr:callCenterUserTDate, 
     }
     $.ajax({
       type : "POST",
-      url  : "getAlertEfficiencyListAction.action",
+      url  : "getAlertEfficiencyListAction1.action",
       dataType: 'json',
       data: {task:JSON.stringify(jobj)},
     }).done(function(result){
