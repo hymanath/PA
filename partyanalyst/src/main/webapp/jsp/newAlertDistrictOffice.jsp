@@ -128,6 +128,28 @@
 								</div>
 							</div>
 						</div>
+						<div class="row" id="collectorateVidId" style="display:none;">    
+							<div class="col-md-12 col-xs-12 col-sm-12">
+								<div class="panel panel-default">
+									<div class="panel-heading headingColor">
+										<div class="row">
+											<div class="col-md-10 col-xs-12 col-sm-12">
+												<h4 class="panel-title text-capital fontColor">COLLECTORATE Alerts</h4>
+											</div>
+											<div class="col-md-2 col-xs-12 col-sm-12 ">
+												<ul class="alertType-subordinate pull-right">       
+													<li  attr_type="task" class="active">Alerts</li>
+													<li attr_type="subTask">Sub Tasks</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body">  
+										<div id="subordinateAlertsDivId"></div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div id="departmentWiseLocationBlockId"></div>
 						<div class="row">
 						<div class="col-md-12 col-xs-12 col-sm-12"> 	
