@@ -12404,7 +12404,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}catch(Exception e){
 				LOG.error("Error occured changeVeificationStatusDetails() method of AlertService{}",e);
 			}
-		 return null;
+		 return status;
 	 }
 	 public Date getAfterDayForNoOfDays(int noOfDays, Date today){
 			Calendar cal = new GregorianCalendar();
