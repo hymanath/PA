@@ -1005,52 +1005,54 @@ $(document).on("click",".switch-btn-alertType li",function(){
 $(document).on("click",".switch-btn li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
-		//$("#filterMainDiv").show();
-		//assignUser1();
-		var departmentId = $(this).attr("attr_department_id");
-		var parentIdStr = $(this).attr("attr_level_idstr").split(',');
 		var searchType =  $(this).attr("attr_type");
-		var alertType = getAlertType();
-		
-		var subLevelIdStr = $(this).attr("attr_sublevel_id").split(',');
-		var sortingType='';
-		var orderType='';
-		
-		$('.sortingCls'+departmentId+parentIdStr).each(function(i, obj){
-			 if($(this).hasClass('active')){
-			  sortingType = $(this).attr("attr_sorting_type");
-			  orderType = $(this).attr("attr_order_type");
-			 }
-		});
-		var districtLevelId = $(this).attr("attr_district_level_id");
-		var childLevelIdsStr = $(this).attr("attr_child_id").split(',');
-		if(searchType == "statuswise" || searchType == "alertSource"){
-		  $(".locationLevelWiseDivCls").show();
-		}else{
-		  $(".locationLevelWiseDivCls").hide();
-		}
-		if(searchType != "filterView"){
+		if(searchType == "statuswise" || searchType == "scopewise" || searchType == "alertSource"){
+			var departmentId = $(this).attr("attr_department_id");
+			var parentIdStr = $(this).attr("attr_level_idstr").split(',');
+			var alertType = getAlertType();
+			var subLevelIdStr = $(this).attr("attr_sublevel_id").split(',');
+			var sortingType='';
+			var orderType='';
 			
-			$("#statusOvrvwId").show();
-			$("#filterViewBodyId").hide();
-		}
-		
-		for(var i in parentIdStr){
-				for(var j in subLevelIdStr){
-					$("#locationNamesId"+departmentId+parentIdStr[i]+subLevelIdStr[j]).html('');
-					$("#locationNamesId"+departmentId+parentIdStr[i]+subLevelIdStr[j]).append('<option value="0">SELECT '+globalLevelObj[subLevelIdStr[j]]+'</option>');
-					$("#locationNamesId"+departmentId+parentIdStr[i]+subLevelIdStr[j]).trigger('chosen:updated');
-					$("#locationLevelNamesId"+departmentId+parentIdStr[i]).val(0)
-					$("#locationLevelNamesId"+departmentId+parentIdStr[i]).trigger('chosen:updated')
+			$('.sortingCls'+departmentId+parentIdStr).each(function(i, obj){
+				 if($(this).hasClass('active')){
+				  sortingType = $(this).attr("attr_sorting_type");
+				  orderType = $(this).attr("attr_order_type");
+				 }
+			});
+			var districtLevelId = $(this).attr("attr_district_level_id");
+			var childLevelIdsStr = $(this).attr("attr_child_id").split(',');
+			if(searchType == "statuswise" || searchType == "alertSource"){
+			  $(".locationLevelWiseDivCls").show();
+			}else{
+			  $(".locationLevelWiseDivCls").hide();
 			}
-		}
-		
-		var locationLevelId=0;
-		for(var i in parentIdStr){
-			getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentIdStr[i],searchType,alertType,"levelWiseGraphView",sortingType,orderType,0,0,"Default",0);
-			getLocationBasedOnDepartmentLevel(departmentId,parentIdStr[i],districtLevelId);
 			
-		}
+				
+				$("#statusOvrvwId").show();
+				$("#filterViewBodyId").hide();
+			
+			
+			for(var i in parentIdStr){
+					for(var j in subLevelIdStr){
+						$("#locationNamesId"+departmentId+parentIdStr[i]+subLevelIdStr[j]).html('');
+						$("#locationNamesId"+departmentId+parentIdStr[i]+subLevelIdStr[j]).append('<option value="0">SELECT '+globalLevelObj[subLevelIdStr[j]]+'</option>');
+						$("#locationNamesId"+departmentId+parentIdStr[i]+subLevelIdStr[j]).trigger('chosen:updated');
+						$("#locationLevelNamesId"+departmentId+parentIdStr[i]).val(0)
+						$("#locationLevelNamesId"+departmentId+parentIdStr[i]).trigger('chosen:updated')
+				}
+			}
+			
+			var locationLevelId=0;
+			for(var i in parentIdStr){
+				getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentIdStr[i],searchType,alertType,"levelWiseGraphView",sortingType,orderType,0,0,"Default",0);
+				getLocationBasedOnDepartmentLevel(departmentId,parentIdStr[i],districtLevelId);
+				
+			}
+	}else{
+		$("#statusOvrvwId").hide();
+		$("#filterViewBodyId").show();
+	}
 });
 
 $(document).on("click",".locationAndStatusWiseSorting li",function(){
