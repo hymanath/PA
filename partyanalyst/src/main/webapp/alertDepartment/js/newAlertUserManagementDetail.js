@@ -183,7 +183,11 @@ function onLoadClicks()
 			
 	});
 
+	$(document).on("click",".filters-cancel",function(){
+		$("#filter").hide();
+	});
 	$(document).on("click",".filters-apply",function(){
+		$("#filter").hide();
 		var impactLevelArr =[];
 		var priorityArr =[];
 		var alertSourceArr =[];
@@ -233,7 +237,7 @@ function onLoadClicks()
 				});
 			}
 		})
-		getAlertDtlsBasedOnStatusFilterClick(statusId,statusName,statusCount,impactLevelArr,priorityArr,alertSourceArr,printMediaArr,electronicMediaArr);
+		getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevelArr,priorityArr,alertSourceArr,printMediaArr,electronicMediaArr);
 	});
 	
 	$(document).on("click","#assignOfficerId",function(){
@@ -544,7 +548,7 @@ function onLoadClicks()
 	
 	
 	
-	
+
 	$(document).on("click",".alert-status-change",function(){
 		var alertId = $(this).attr("attr_alert_id");
 
@@ -587,9 +591,32 @@ function onLoadClicks()
 	});
 	$(document).on("click","[filer-selection]",function(e){
 		e.stopPropagation();
+		var blockName = $(this).closest("ul").attr("filters-list");
+		var value = $(this).closest("li").text();
+		var valueId = $(this).closest("li").attr("attr_id");
+		var $this = $(this);
 		var selectionType = $(this).attr("filer-selection");
 		$(this).closest("li").removeClass("active");
 		$(this).remove();
+		if(blockName == 'alertSourceType')
+		{
+			if(value == 'Print Media')
+			{
+				$("[filters-list-title='printMedia']").hide();
+				$("[filters-list='printMedia']").html('');
+			}else if(value == 'Electronic Media')
+			{
+				$("[filters-list-title='electronicMedia']").hide();
+				$("[filters-list='electronicMedia']").html('');
+			}
+		}else if(blockName == 'locLevel')
+		{
+			if(value == 'VILLAGE' || value == 'PANCHAYAT'|| value == 'MANDAL'|| value == 'CONSTITUENCY'|| value == 'DISTRICT'|| value == 'STATE')
+			{
+				$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list-title='panLevel'],[filters-list-title='villageLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").hide();
+				$("[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").html(' ');
+			}
+		}
 	});
 	$(document).on("click",".assign-subtask,.arrow_box_top,#departmentsId1",function(e){
 		e.stopPropagation();
@@ -598,7 +625,31 @@ function onLoadClicks()
 		e.stopPropagation();
 		
 		var blockName = $(this).closest("ul").attr("filters-list");
-		$(this).addClass("active");
+		if(blockName == 'locLevel')
+		{
+			$("[filters-list="+blockName+"] li").removeClass("active").find("span.remove").remove();
+			$("[filters-list='statesLevel'] li").removeClass("active").find("span.remove").remove();
+			$("[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").html(' ');
+			$(this).addClass("active");
+			$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list-title='panLevel'],[filters-list-title='villageLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").hide();
+			$(".scroller-district,.scroller-mandal,.scroller-cons,.scroller-panchayat,.scroller-village").removeAttr("style");
+			$(".scroller-district,.scroller-mandal,.scroller-cons,.scroller-panchayat,.scroller-village").mCustomScrollbar("destroy");
+		}else if(blockName == 'statesLevel' || blockName == 'districtsLevel' || blockName == 'consLevel' || blockName == 'mandalLevel' || blockName == 'panLevel' || blockName == 'villageLevel'){
+			var impactLevel = $("[filters-list='locLevel'] li.active").attr("attr_levelVal");
+			if(impactLevel != blockName)
+			{
+				$("[filters-list="+blockName+"] li").removeClass("active").find("span.remove").remove();
+				$(this).addClass("active");
+			}else{
+				$(this).addClass("active");
+			}
+		}else{
+			$(this).addClass("active");
+		}
+		
+		var locLevel = $("[filters-list='locLevel'] li.active").attr("attr_level");
+		var value = $(this).html();
+		var valueId = $(this).attr("attr_id");
 		if(!$(this).find("span").hasClass("remove"))
 		{
 			$(this).append("<span class='remove' filer-selection='true'><i class='glyphicon glyphicon-remove'></i></span>")
@@ -613,9 +664,105 @@ function onLoadClicks()
 			{
 				$("[filters-list-title="+blockName+"]").append("<small class='clear' filer-selection-clear="+blockName+">(Clear All)</small>")
 			}
-			if(blockName == '')
+			if(blockName == 'alertSourceType')
 			{
+				if(value == 'Print Media')
+				{
+					$("[filters-list-title='printMedia']").show();
+					var str='';
+					for(var i in printMediaFilters)
+					{
+						str+='<li attr_id='+printMediaFilters[i].id+'>'+printMediaFilters[i].name+'</li>'
+					}
+						
+					$("[filters-list='printMedia']").html(str);
+					if(printMediaFilters.length > 4)
+					{
+						$(".scroller-print").mCustomScrollbar({setHeight : '150px'});
+					}
+				}else if(value == 'Electronic Media')
+				{
+					var str='';
+					$("[filters-list-title='electronicMedia']").show();
+					for(var i in electronicMediaFilters)
+					{
+						str+='<li attr_id='+electronicMediaFilters[i].id+'>'+electronicMediaFilters[i].name+'</li>'
+					}
+						
+					$("[filters-list='electronicMedia']").html(str);
+					if(electronicMediaFilters.length > 4)
+					{
+						$(".scroller-electronic").mCustomScrollbar({setHeight : '150px'});
+					}
+				}
+				
+			}else if(blockName == 'alertDepartments')
+			{
+				$("[filters-list="+blockName+"] li").removeClass("active").find("span.remove").remove();
+				$(this).addClass("active");
+				getlevlsForDepartmnt(valueId);
+				getlevlsForDepartmnt(valueId);
+			}else if(blockName == 'locLevel')
+			{
+				if(locLevel == 'state' )
+				{
+					$("[filters-list-title='statesLevel'],[filters-list='statesLevel']").show();
+				}else if(locLevel == 'district' )
+				{
+					$("[filters-list-title='statesLevel'],[filters-list='statesLevel'],[filters-list-title='districtsLevel'],[filters-list='districtsLevel']").show();
+				}else if(locLevel == 'constituency' )
+				{
+					$("[filters-list-title='statesLevel'],[filters-list='statesLevel'],[filters-list-title='districtsLevel'],[filters-list='districtsLevel'],[filters-list-title='consLevel'],[filters-list='consLevel']").show();
+				}else if(locLevel == 'mandal' )
+				{
+					$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel']").show();
+				}else if(locLevel == 'panchayat' )
+				{
+					$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list-title='panLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel']").show();
+				}else if(locLevel == 'village')
+				{
+					$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list-title='panLevel'],[filters-list-title='villageLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").show();
+					
+				}
+				
+			}else if(blockName == 'statesLevel')
+			{
+				if(value == 'ANDHRA PRADESH')
+				{
+					if(locLevel == 'district' || locLevel == 'constituency' || locLevel == 'mandal' || locLevel == 'panchayat'|| locLevel == 'village')
+					{
+						getDistrictsListForState('1')
+					}
+				}
+			}else if(blockName == 'districtsLevel')
+			{
+				if(locLevel == 'constituency' || locLevel == 'mandal'|| locLevel == 'panchayat'|| locLevel == 'village' )
+				{
+					getConstituenciesForADistrictAjax(valueId)
+				}
+			}else if(blockName == 'consLevel')
+			{
+				if(locLevel == 'mandal' || locLevel == 'panchayat'|| locLevel == 'village')
+				{
+					getMandalDetailsByConstituency(valueId)
+				}
+				
+			}else if(blockName == 'mandalLevel')
+			{
+				if(locLevel == 'panchayat' || locLevel == 'village')
+				{
+					getPanchayatWardByMandal(valueId)
+				}
+				
+			}else if(blockName == 'panLevel')
+			{
+				if(locLevel == 'village')
+				{
+					getHamletsForPanchayat(valueId)
+				}
+				
 			}
+			
 		}
 	});
 	$(document).on("click",".assign-subtask-btn",function(e){
@@ -1243,10 +1390,12 @@ function getStatusCompletionInfo(alertId){
 		},1000);
 	});
 }
+var control;
+var lang;
 function rightSideExpandView(alertId)
 {
     $("#rightSideExpandView").html(spinner);
-	$(".assignedUser1").html('');
+    $(".assignedUser1").html('');
 	var str='';
 	str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
 		str+='<div class="panel-right">';
@@ -1298,7 +1447,7 @@ function rightSideExpandView(alertId)
 										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
 										str+='<form name="uploadAttachment" method="post" id="uploadAttachment">';
 										str+='<div class="alert-status-attachment arrow_box_top" style="display:none;">';
-										str+='<i attr_class="alert-status-attachment" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
+										str+='<i attr_class="alert-status-attachment" class="glyphicon glyphicon-remove pull-right attachmentCloseCls" ></i>';
 											str+='<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/>';
 											str+='<input type="hidden" name="alertId" value="'+alertId+'" subAlertId=""  id="alertHiddenId"/>';
 											str+='<button class="btn btn-primary btn-sm text-capital uploadBtnIdCls" attr_alert_id="'+alertId+'" type="button" id="uploadBtnId" subAlertId="" >upload</button>';
@@ -1315,7 +1464,7 @@ function rightSideExpandView(alertId)
 					str+='<div class="panel-heading" id="subBlockStates" style="display:none;">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-4">';
-								str+='<div class="assignedUser1"></div>';
+								str+='<div id="assignedUser1"></div>';
 							str+='</div>';
 							str+='<div class="col-sm-8  pull-right" >';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
@@ -1349,7 +1498,7 @@ function rightSideExpandView(alertId)
 										str+='<i class="glyphicon glyphicon-paperclip" data-toggle="tooltip" data-placement="top" title="Attachments"></i>';
 										str+='<form name="uploadAttachment1" method="post" id="uploadAttachment1">';
 										str+='<div class="alert-status-attachment arrow_box_top" style="display:none;">';
-										str+='<i attr_class="alert-status-attachment" class="glyphicon glyphicon-remove pull-right closeCls" ></i>';
+										str+='<i attr_class="alert-status-attachment" class="glyphicon glyphicon-remove pull-right attachmentCloseCls" ></i>';
 											str+='<input type="file" name="imageForDisplay" class="form-control m_top20" id="imageId"/>';
 											str+='<input type="hidden" name="subTaskId" value="'+alertId+'" subAlertId=""  id="alertHiddenId"/>';
 											str+='<button class="btn btn-primary btn-sm text-capital uploadBtnIdCls " attr_alert_id="'+alertId+'" type="button" id="uploadBtnId" subAlertId=""  >upload</button>';
@@ -1387,7 +1536,12 @@ function rightSideExpandView(alertId)
 								str+='<div class="col-sm-11">';
 									str+='<div class="panel panel-default panel-border-white">';
 										str+='<div class="panel-heading">';
-											//str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
+											str+='<label class="radio-inline" style="margin-bottom: 5px;">';
+												str+='<input type="radio" value="te" name="language1" class="lang" id="telugu1" checked="true" onclick="languageChangeHandler1();"/>Telugu';
+											str+='</label>';
+											str+='<label class="radio-inline" style="margin-bottom: 5px;">';
+												str+='<input type="radio" value="en" name="language1" class="lang" id="eng1" onclick="languageChangeHandler1();"/>English';
+											str+='</label>';
 										str+='</div>';
 										str+='<div class="panel-body">';
 											str+='<div class="comment-area">Comment Here</div>';
@@ -1427,7 +1581,13 @@ function rightSideExpandView(alertId)
 								str+='<div class="col-sm-11">';
 									str+='<div class="panel panel-default panel-border-white">';
 										str+='<div class="panel-heading">';
-											//str+='<p>(Press Alt+t toggle between Telugu & English)</p>';
+											str+='<label class="radio-inline" style="margin-bottom: 5px;">';
+												str+='<input type="radio" value="te" name="language" class="lang" id="telugu" checked onclick="languageChangeHandler();"/>Telugu';
+											str+='</label>';
+											str+='<label class="radio-inline" style="margin-bottom: 5px;">';
+												str+='<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English';
+											str+='</label>';
+											//str+='<p><label class="radio-inline"><input type="radio" name="commentLang"/>English</label><label class="radio-inline"><input type="radio" name="commentLang"/>Telugu</label></p>';
 										str+='</div>';
 										str+='<div class="panel-body">';
 											str+='<div class="comment-area">Comment Here</div>';
@@ -1487,6 +1647,7 @@ function rightSideExpandView(alertId)
 	str+='</div>';
 	$("#rightSideExpandView").html(str);
 	$('[data-toggle="tooltip"]').tooltip();
+	//google.setOnLoadCallback(onLoad);
 	$(".chosenSelect").chosen({width:'100%'});
 	
 	$('.modal-date2').data('daterangepicker');
@@ -1517,20 +1678,24 @@ function rightSideExpandView(alertId)
 	getGovtAllDepartmentDetails();
 	buildAssignUIAttributes(alertId);
 	getCommentsForAlert(alertId)
-	
+
+
+	lang = $("input[name=language]:checked").val();
 	var options = {
-	  sourceLanguage:
-		  google.elements.transliteration.LanguageCode.ENGLISH,
-	  destinationLanguage:
-		  [google.elements.transliteration.LanguageCode.TELUGU],
-	  shortcutKey: 'alt+t',
-	  transliterationEnabled: true
+		sourceLanguage:google.elements.transliteration.LanguageCode.ENGLISH,
+		destinationLanguage:[''+lang+''],
+		shortcutKey: 'alt+t',
+		transliterationEnabled: true
 	};
-	var control = new google.elements.transliteration.TransliterationControl(options);
-	//control.makeTransliteratable(['alertCommentId1']);
-	//control.makeTransliteratable(['alertCommentId2']);
-	//control.makeTransliteratable(['subTaskTitleId']);
-	
+	// Create an instance on TransliterationControl with the required options.
+	control = new google.elements.transliteration.TransliterationControl(options);
+	// Enable transliteration in the textbox with id 'descrptionId'.
+	if ($('#alertCommentId2').length){
+		control.makeTransliteratable(['alertCommentId2']);
+	}
+	if ($('#alertCommentId1').length){
+		control.makeTransliteratable(['alertCommentId1']);
+	}
 }
 
 function buildAssignUIAttributes(alertId){
@@ -2211,7 +2376,6 @@ function getGroupedArticlesInfo(articleId)
 		  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 		 // url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 	}).then(function(result){
-		console.log(result);
 		//$("#alertDetails").append(str);
 	});
 }
@@ -2836,6 +3000,8 @@ function getDocumentsForAlert(alertId){
     });
 }
 
+var printMediaFilters = [];
+var electronicMediaFilters = [];
 function popUpFilter(type,result,statusId,statusName,statuscount)
 {
 	var str='';
@@ -2848,8 +3014,12 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 			str1+='</div>';
 			str1+='<div class="col-sm-4">';
 				str1+='<ul class="list-icons pull-right list-inline">';
-					//str1+='<li class="filters-icon"><i class="glyphicon glyphicon-filter "></i></li>';
+					str1+='<li class="filters-icon"><i class="glyphicon glyphicon-filter "></i></li>';
 					str1+='<li data-dismiss="modal" aria-label="Close"><i class="glyphicon glyphicon-remove"></i></li>';
+				str1+='</ul>';
+				str1+='<ul class="switch-btn filtersSwitch pull-right" style="border:1px solid #ddd;">';
+					str1+='<li class="active">Classic</li>';
+					str1+='<li>Premium</li>';
 				str1+='</ul>';
 			str1+='</div>';
 		str1+='</div>';
@@ -2864,58 +3034,144 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 				str+='<div class="col-sm-4">';
 				str+='</div>';
 			str+='</div>';
-			str+='<div class="row">';
+			str+='<div class="row m_top10">';
 				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="impactLevel"><b>Impact Level</b></h5>';
-					str+='<ul class="filters-list" filters-list="impactLevel">';
-						for(var i in result.scopesList)
-						{
-							str+='<li class="active" attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-						}
+					str+='<h5 class="text-capitalize" filters-list-title="locLevel"><b>Location Level</b></h5>';
+					str+='<ul class="filters-list" filters-list="locLevel">';
+						str+='<li attr_level="state" attr_levelVal="statesLevel" attr_id="1">STATE</li>';
+						str+='<li attr_level="district" attr_levelVal="districtsLevel" attr_id="2">DISTRICT</li>';
+						str+='<li attr_level="constituency" attr_levelVal="consLevel" attr_id="3">CONSTITUENCY</li>';
+						str+='<li attr_level="mandal" attr_levelVal="mandalLevel" attr_id="4">MANDAL</li>';
+						str+='<li attr_level="panchayat" attr_levelVal="panLevel" attr_id="5">PANCHAYAT</li>';
+						str+='<li attr_level="village" attr_levelVal="villageLevel" attr_id="6">VILLAGE</li>';
 					str+='</ul>';
 				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize" filters-list-title="statesLevel"><b>State Level</b></h5>';
+					str+='<div class="scroller-state">';
+						str+='<ul class="filters-list" filters-list="statesLevel">';
+							str+='<li attr_id="1">ANDHRA PRADESH</li>';
+						str+='</ul>';
+					str+='</div>';
+					str+='<h5 class="text-capitalize m_top10" filters-list-title="districtsLevel"><b>District Level</b></h5>';
+					str+='<div class="scroller-district">';
+						str+='<ul class="filters-list" filters-list="districtsLevel"></ul>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize m_top10" filters-list-title="consLevel"><b>Constituency Level</b></h5>';
+					str+='<div class="scroller-cons">';
+						str+='<ul class="filters-list" filters-list="consLevel"></ul>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize m_top10" filters-list-title="mandalLevel"><b>Mandal Level</b></h5>';
+					str+='<div class="scroller-mandal">';
+						str+='<ul class="filters-list" filters-list="mandalLevel"></ul>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="row m_top10">';
+				
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize m_top10" filters-list-title="panLevel"><b>Panchayat Level</b></h5>';
+					str+='<div class="scroller-panchayat">';
+						str+='<ul class="filters-list" filters-list="panLevel"></ul>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize m_top10" filters-list-title="villageLevel"><b>Village Level</b></h5>';
+					str+='<div class="scroller-village">';
+						str+='<ul class="filters-list" filters-list="villageLevel"></ul>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="row m_top10">';
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize" filters-list-title="alertStatus"><b>alert status</b></h5>';
+					str+='<div class="scroller-alertStatus">';
+						str+='<ul class="filters-list" filters-list="alertStatus">';
+							for(var i in result.alertStatusList)
+							{
+								str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+							}
+						str+='</ul>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize m_top10" filters-list-title="alertSubtaskStatus"><b>alert subtask status</b></h5>';
+					str+='<div class="scroller-alertSubtask">';
+						str+='<ul class="filters-list" filters-list="alertSubtaskStatus">';
+							for(var i in result.alertSubTaskStatusList	)
+							{
+								str+='<li attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'</li>';
+							}
+						str+='</ul>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize m_top10" filters-list-title="alertDepartments"><b>alert departments</b></h5>';
+					str+='<div class="scroller-alertDepartments">';
+						str+='<ul class="filters-list" filters-list="alertDepartments">';
+							for(var i in result.alertDepartMentList		)
+							{
+								str+='<li attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'</li>';
+							}
+						str+='</ul>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
+					str+='<h5 class="text-capitalize" filters-list-title="impactLevel"><b>Impact Level</b></h5>';
+					str+='<ul class="filters-list" filters-list="impactLevel"></ul>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="row m_top20">';	
 				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize" filters-list-title="priority"><b>priority</b></h5>';
 					str+='<ul class="filters-list" filters-list="priority">';
 						for(var i in result.severityList)
 						{
-							str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+							str+='<li attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'</li>';
 						}
 					str+='</ul>';
+				str+='</div>';
+				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize m_top20" filters-list-title="alertSourceType"><b>alert source type</b></h5>';
 					str+='<ul class="filters-list" filters-list="alertSourceType">';
 						for(var i in result.categoryList)
 						{
-							str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+							str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
 						}
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="printMedia"><b>Print Media</b></h5>';
+					str+='<h5 class="text-capitalize" filters-list-title="printMedia" style="display:none"><b>Print Media</b></h5>';
 					str+='<div class="scroller-print">';
 						str+='<ul class="filters-list" filters-list="printMedia">';
 							for(var i in result.editionsList)
 							{
-								str+='<li class="active" attr_id='+result.editionsList[i].id+'>'+result.editionsList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								printMediaFilters.push({"name":result.editionsList[i].name,"id":result.editionsList[i].id})
+								//str+='<li attr_id='+result.editionsList[i].id+'>'+result.editionsList[i].name+'</li>';
 							}
 						str+='</ul>';
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="electronicMedia"><b>Electronic Media</b></h5>';
+					str+='<h5 class="text-capitalize" filters-list-title="electronicMedia" style="display:none"><b>Electronic Media</b></h5>';
 					str+='<div class="scroller-electronic">';
 						str+='<ul class="filters-list" filters-list="electronicMedia">';
 							for(var i in result.tvNewsChannelList)
 							{
-								str+='<li class="active" attr_id='+result.tvNewsChannelList[i].id+'>'+result.tvNewsChannelList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								electronicMediaFilters.push({"name":result.tvNewsChannelList[i].name,"id":result.tvNewsChannelList[i].id})
+								//str+='<li attr_id='+result.tvNewsChannelList[i].id+'>'+result.tvNewsChannelList[i].name+'</li>';
 							}
 						str+='</ul>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-9 m_top10">';
+				str+='<div class="col-sm-12 m_top10">';
 					str+='<h5 class="text-capitalize" filters-list-title="lagDays"><b>Lag Days</b><small class="clear" filer-selection-clear="lagDays">(Clear All)</small></h5>';
-					str+='<div id="tourSlider"></div>';
-					str+='<label class="checkbox-inline pull-right"><input type="checkbox"/>More than 365 Days</label>';
+					str+='<div id="tourSlider" style="width:900px"></div>';
+					str+='<label class="checkbox-inline pull-right"><input type="checkbox" class="yearCheckbox"/>More than 365 Days</label>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row">';
@@ -2923,31 +3179,105 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 					str+='<button class="btn btn-primary btn-block filters-apply" attr_status_id="'+statusId+'" attr_status_count="'+statuscount+'" attr_status_name="'+statusName+'" type="button">APPLY FILTERS</button>';
 				str+='</div>';
 				str+='<div class="col-sm-3 m_top20">';
-					str+='<button class="btn btn-default btn-block">CANCEL/CLEAR FILTERS</button>';
+					str+='<button class="btn btn-default btn-block filters-cancel">CANCEL</button>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 		$("#filter").html(str);
-		if(result.editionsList.length > 7)
+		$("#tourSlider").rangeSlider();
+		$("#tourSlider").rangeSlider("destroy");
+		setTimeout(function(){
+			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 0, max: 365},defaultValues:{min: 0, max: 180}});
+		},1000);
+		
+		$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list-title='panLevel'],[filters-list-title='villageLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").hide();
+		if(result.tvNewsChannelList.length > 4)
 		{
-			$(".scroller-print").mCustomScrollbar({setHeight : '210px'});
+			$(".scroller-electronic").mCustomScrollbar({setHeight : '120px'});
 		}
-		if(result.tvNewsChannelList.length > 7)
+		if(result.alertStatusList.length > 4)
 		{
-			$(".scroller-electronic").mCustomScrollbar({setHeight : '210px'});
+			$(".scroller-alertStatus").mCustomScrollbar({setHeight : '130px'});
 		}
-		$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 0, max: 365},defaultValues:{min: 0, max: 180}});
+		if(result.alertSubTaskStatusList.length > 4)
+		{
+			$(".scroller-alertSubtask").mCustomScrollbar({setHeight : '130px'});
+		}
+		if(result.alertDepartMentList.length > 4)
+		{
+			$(".scroller-alertDepartments").mCustomScrollbar({setHeight : '130px'});
+		}
+		
 	}
 }
 function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 {
+	
 	var str='';
 	popUpFilter('heading','','','','');
 	var alertId = '';
 	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
 	str+='<div class="row">';
-		str+='<div class="col-sm-12" expand-main="false">';
-			str+='<div class="panel-group panel-white panel-left" id="accordion" role="tablist" aria-multiselectable="true">';
+		str+='<div class="col-sm-12 m_top10" expand-main="false">';
+			str+='<div class="classicView">';
+				str+='<table style="background-color:#fff;" id="dataTable" class="table table-bordered ">';
+					str+='<thead>';
+						str+='<th></th>';
+						str+='<th>Id</th>';
+						str+='<th>Title</th>';
+						str+='<th><span class="channel-name">Source</span></th>';
+						str+='<th><span class="location-name">Location</span></th>';
+						str+='<th><span class="channel-name">Status</span></th>';
+						str+='<th><span class="channel-name">Ofcr Name</span></th>';
+						str+='<th><span class="channel-name">Ofcr Designation</span></th>';
+						str+='<th>Subtask <i class="fa fa-level-down"></i></th>';
+						str+='<th></th>';
+					str+='</thead>';
+					str+='<tbody>';
+					for(var i in result)
+					{
+						for(var j in result[i].subList)
+						{
+							str+='<tr>';
+								str+='<td>';
+									str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].subList[j].severtyColor+';margin-right:3px;"></i>';
+								str+='</td>';
+								str+='<td> '+result[i].subList[j].id+'</td>';
+								str+='<td>';
+									str+='<span class="alert-title" data-toggle="tooltip" data-placement="top" title="'+result[i].subList[j].title+'">'+result[i].subList[j].title+'</span>';
+								str+='</td>';
+								str+='<td>';
+									str+='<span data-toggle="tooltip" class="channel-name" data-placement="top" title="'+result[i].subList[j].source+'">'+result[i].subList[j].source+'</span>';
+								str+='</td>';
+								str+='<td>';
+									str+='<span data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].location+'">'+result[i].subList[j].location+'</span>';
+								str+='</td>';
+								str+='<td class="text-center"><span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].status+'">'+result[i].subList[j].status+'</span></td>';
+								str+='<td class="text-center"><span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].problem+'">'+result[i].subList[j].problem+'</span></td>';
+								str+='<td class="text-center"><span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].relatedTo+'">'+result[i].subList[j].relatedTo+'</span></td>';
+								str+='<td class="text-center">';
+									if(result[i].subList[j].subTaskCount > 0)
+									{
+										str+='<span class="arrow-icon" style="margin:0px 4px" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
+											str+=''+result[i].subList[j].subTaskCount+'';
+										str+='</span>';
+									}else{
+										str+='-';
+									}
+								str+='</td>';
+								str+='<td>';
+									str+='<span class="arrow-icon pull-right" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
+										str+='<i class="glyphicon glyphicon-menu-right"></i>';
+									str+='</span>';
+								str+='</td>';
+							str+='</tr>';
+						}
+					}
+						
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+			str+='<div class="panel-group panel-white panel-left premiumView" style="display:none" id="accordion" role="tablist" aria-multiselectable="true">';
 			for(var i in result)
 			{
 				str+='<div class="panel panel-default">';
@@ -3017,6 +3347,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 		str+='<div id="rightSideExpandView"></div>';
 	str+='</div>';
 	$("#alertManagementPopupBody").html(str);
+	$("#dataTable").dataTable();
 	$('[data-toggle="tooltip"]').tooltip();
 	getAlertData(alertId);
 }
@@ -3633,29 +3964,86 @@ function buildChildLevelValuesForSubTask(result,departmentId){
 		}
 	}	
 } 
-function getAlertDtlsBasedOnStatusFilterClick(statusId,statusName,statusCount,impactLevelArr,priorityArr,alertSourceArr,printMediaArr,electronicMediaArr){
+function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevelArr,priorityArr,alertSourceArr,printMediaArr,electronicMediaArr){
 	$("#alertManagementPopupBody").html(spinner);
-	var fromDays = $(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html();
-	var toDays = $(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html();
-	
-    var jsObj ={
-		fromDate:			currentFromDate,
-		toDate:				currentToDate,
-		stateId : 			1,
-		deptIdArr : 		globalDepartmentIdArr,  
-		paperIdArr : 		globalNewsPaperIdArr,
-		chanelIdArr : 		globalChannelIdArr, 
-		callCenterArr : 	globalCallCenterArr,		
-		statusId : 			statusId,
-        impactLevelArr :	impactLevelArr,
-        priorityArr :		priorityArr,
-        alertSourceArr:		alertSourceArr,
-        printMediaArr :		printMediaArr,
-        electronicMediaArr:	electronicMediaArr
+	var fromDays = $("#tourSlider").rangeSlider("min");
+	var toDays = $("#tourSlider").rangeSlider("max");
+	var statusIdArr = [];
+	var subStatusIdArr = [];
+	$("[filters-list='alertStatus'] li.active").each(function(){
+		statusIdArr.push($(this).attr("attr_id"));
+	});
+	$("[filters-list='alertSubtaskStatus'] li.active").each(function(){
+		subStatusIdArr.push($(this).attr("attr_id"));
+	});
+	var levelId = $("[filters-list='locLevel'] li.active").attr("attr_id");
+	var levelValues = [];
+	if(levelId == '1')
+	{
+		$("[filters-list='statesLevel'] li.active").each(function(){
+			levelValues.push($(this).attr("attr_id"));
+		});
+	}else if(levelId == '2')
+	{
+		$("[filters-list='districtsLevel'] li.active").each(function(){
+			levelValues.push($(this).attr("attr_id"));
+		});
+	}else if(levelId == '3')
+	{
+		$("[filters-list='consLevel'] li.active").each(function(){
+			levelValues.push($(this).attr("attr_id"));
+		});
+	}else if(levelId == '4')
+	{
+		$("[filters-list='mandalLevel'] li.active").each(function(){
+			levelValues.push($(this).attr("attr_id"));
+		});
+	}else if(levelId == '5')
+	{
+		$("[filters-list='panLevel'] li.active").each(function(){
+			levelValues.push($(this).attr("attr_id"));
+		});
+	}else if(levelId == '6')
+	{
+		$("[filters-list='villageLevel'] li.active").each(function(){
+			levelValues.push($(this).attr("attr_id"));
+		});
+	}else{
+		levelId =0;
+	}
+	var isMoreThanYrChkd = '';
+	if($("#yearCheckbox").is(":checked") == true)
+	{
+		isMoreThanYrChkd = "true"
+		fromDays = 0;
+		toDays = 0;
+	}else{
+		isMoreThanYrChkd = "false"
+	}
+	var jsObj ={
+		fromDate:     		 currentFromDate,
+		toDate:       		 currentToDate,
+		stateId :     		 1,
+		deptIdArr :     	 globalDepartmentIdArr,  
+		paperIdArr :     	 globalNewsPaperIdArr,
+		chanelIdArr :     	 globalChannelIdArr, 
+		callCenterArr :   	 globalCallCenterArr,    
+		statusId :       	 statusIdArr,
+		impactLevelArr :  	 impactLevelArr,
+		priorityArr :    	 priorityArr,
+		alertSourceArr:    	 alertSourceArr,
+		printMediaArr :    	 printMediaArr,
+		electronicMediaArr:  electronicMediaArr,
+		startDay :			 fromDays,
+		endDay :			 toDays,
+		levelId :			 levelId,
+		levelValues :		 levelValues,
+		subTaskStatusIdList: subStatusIdArr,
+		isMoreThanYrChkd: 	 "false"
     }
     $.ajax({
 		type:'GET',
-		url: 'getTotalAlertByStatusNewAction.action',
+		url: 'getTotalAlertByStatusNewAction1.action',
 		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result != null && result.length > 0){
@@ -3787,3 +4175,177 @@ $(document).on("click","#updateStatusChangeId",function(){
 		
 	});
 	
+function getDistrictsListForState(id)
+{
+	var jsObj ={
+		stateId : id
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getDistrictsListForStateAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length> 0)
+		{
+			var str = '';
+			for(var i in result)
+			{
+				str+='<li attr_id='+result[i].id+'>'+result[i].name+'</li>'
+			}
+			$("[filters-list='districtsLevel']").html(str);
+			if(result.length > 4 )
+			{
+				$(".scroller-district").mCustomScrollbar({setHeight: '130px'})
+			}
+		}
+	});
+}
+function getMandalDetailsByConstituency(id)
+{
+	var jsObj ={
+		constituencyId : id
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getMandalDetailsByConstituencyAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length> 0)
+		{
+			var str = '';
+			for(var i in result)
+			{
+				str+='<li attr_id='+result[i].locationId+'>'+result[i].locationName+'</li>'
+			}
+			$("[filters-list='mandalLevel']").html(str);
+			if(result.length > 5 )
+			{
+				$(".scroller-mandal").mCustomScrollbar({setHeight: '180px'})
+			}
+		}
+	});
+}
+function getPanchayatWardByMandal(id)
+{
+	var jsObj ={
+		mandalId		: id,
+		constituencyId 	: $("[filters-list='mandalLevel'] li.active").attr("attr_id")
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getPanchayatWardByMandalAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length> 0)
+		{
+			var str = '';
+			for(var i in result)
+			{
+				str+='<li attr_id='+result[i].locationId+'>'+result[i].locationName+'</li>'
+			}
+			$("[filters-list='panLevel']").html(str);
+			if(result.length > 4 )
+			{
+				$(".scroller-panchayat").mCustomScrollbar({setHeight: '130px'})
+			}
+		}
+	});
+}
+function getHamletsForPanchayat(id)
+{
+	var jsObj ={
+		panchayatId		: id,
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getHamletsForPanchayatAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length> 0)
+		{
+			var str = '';
+			for(var i in result)
+			{
+				str+='<li attr_id='+result[i].id+'>'+result[i].name+'</li>'
+			}
+			$("[filters-list='villageLevel']").html(str);
+			if(result.length > 4 )
+			{
+				$(".scroller-village").mCustomScrollbar({setHeight: '130px'})
+			}
+		}
+	});
+}
+function getlevlsForDepartmnt(id)
+{
+	var jsObj ={
+		departmentId	: id,
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getlevlsForDepartmntAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length> 0)
+		{
+			var str = '';
+			for(var i in result)
+			{
+				str+='<li attr_id='+result[i].id+'>'+result[i].name+'</li>'
+			}
+			$("[filters-list='impactLevel']").html(str);
+			if(result.length > 4 )
+			{
+				$(".scroller-impactLevel").mCustomScrollbar({setHeight: '130px'})
+			}
+		}
+	});
+}
+
+function getConstituenciesForADistrictAjax(id)
+{
+	var jsObj ={
+		districtId : id
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getConstituenciesForADistrictAjaxAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length> 0)
+		{
+			var str = '';
+			for(var i in result)
+			{
+				str+='<li attr_id='+result[i].id+'>'+result[i].name+'</li>'
+			}
+			$("[filters-list='consLevel']").html(str);
+			if(result.length > 4 )
+			{
+				$(".scroller-cons").mCustomScrollbar({setHeight: '180px'})
+			}
+		}
+	});
+}
+function languageChangeHandler(){
+	var lang1 = $("input[name=language]:checked").val();
+	if(lang1 =="en"){
+		control.disableTransliteration();
+	}else{
+		control.enableTransliteration();
+		control.setLanguagePair(
+		google.elements.transliteration.LanguageCode.ENGLISH,
+		lang1);
+	}
+}
+function languageChangeHandler1(){
+	var lang1 = $("input[name=language1]:checked").val();
+	if(lang1 =="en"){
+		control.disableTransliteration();
+	}else{
+		control.enableTransliteration();
+		control.setLanguagePair(
+		google.elements.transliteration.LanguageCode.ENGLISH,
+		lang1);
+	}
+}
