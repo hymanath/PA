@@ -29,6 +29,7 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private List<DistrictOfficeViewAlertVO> list3 = new ArrayList<DistrictOfficeViewAlertVO>(0);
 	private List<Long> govtDeptDesigOffcrIds;
 	private List<Long> govtOfficerIds;
+	private Long govtOfficerId;
 	private Double alertsPerc;
 	private String color;
 	private List<Long> todayAlertIds = new ArrayList<Long>();
@@ -222,6 +223,12 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	}
 	public void setLevelId(Long levelId) {
 		this.levelId = levelId;
+	}
+	public Long getGovtOfficerId() {
+		return govtOfficerId;
+	}
+	public void setGovtOfficerId(Long govtOfficerId) {
+		this.govtOfficerId = govtOfficerId;
 	}
 	
 	
