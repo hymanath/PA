@@ -33,7 +33,13 @@ public class AlertTrackingVO {
 	private String alertTypeStr;
 	private String color;
 	private String location;
-	
+	private String document;
+	private String trackingDate;
+	private String trackingTime;
+	private String dueDate;
+	private String severty;
+	private String actionType;
+	private String position;
 	public AlertTrackingVO(){}
 	public AlertTrackingVO(Long alertId,String comment,String date){
 		this.alertId=alertId;
@@ -220,5 +226,49 @@ public class AlertTrackingVO {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	public String getDocument() {
+		return document;
+	}
+	public void setDocument(String document) {
+		this.document = document;
+	}
+	public String getTrackingDate() {
+		return trackingDate;
+	}
+	public void setTrackingDate(String trackingDate) {
+		this.trackingDate = trackingDate;
+	}
+	public String getTrackingTime() {
+		return trackingTime;
+	}
+	public void setTrackingTime(String trackingTime) {
+		this.trackingTime = trackingTime;
+	}
+	public String getDueDate() {
+		return dueDate;
+	}
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+	public String getSeverty() {
+		return severty;
+	}
+	public void setSeverty(String severty) {
+		this.severty = severty;
+	}
+	public String getActionType() {
+		return actionType;
+	}
+	public void setActionType(String actionType) {
+		this.actionType = actionType;
+	}
+	public String getPosition() {
+		return position;
+	}
+	public void setPosition(String position) {
+		this.position = position;
+	}
+	
+	
 
 }
