@@ -9573,7 +9573,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 
 					alert = alertDAO.save(alert);
 
-					saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+					//saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+					saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
 
 					AlertComment alertComment = new AlertComment();
 					alertComment.setComments(inputVO.getDescription().toString());
@@ -9828,7 +9829,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("old"))
 				 objList1 = alertTrackingDAO.getStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
 			 else if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("new"))
-				 objList1 = alertTrackingDAO.getStatuswiseAlertsDetails1(mobileNo,userId, startDate, endDate,departmentId);
+				 objList1 = alertTrackingDAO.getStatuswiseAlertsDetails1(mobileNo,userId, startDate, endDate,departmentId,4l);
 			
 			Map<Long,Long> statusWiseMap = new HashMap<Long, Long>(0);
 			if(objList1 != null && objList1.size() > 0){
@@ -9867,7 +9868,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("old"))
 				 objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetails(mobileNo,userId, startDate, endDate,departmentId);
 			 else if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("new"))
-				 objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetails1(mobileNo,userId, startDate, endDate,departmentId);
+				 objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetails1(mobileNo,userId, startDate, endDate,departmentId,4l);
 			 
 			if(objList != null && objList.size() > 0 && commonMethodsUtilService.isListOrSetValid(feedbacksStatusList)){
 				for (Object[] param : objList) {
@@ -10164,7 +10165,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	return returnList;
 }
 
-	public List<AlertVO> getAlertDetailsByStatusId(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStattusId){
+	public List<AlertVO> getAlertDetailsByStatusId(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStattusId,Long categoryId){
 		List<AlertVO> returnList = new ArrayList<AlertVO>();
 		try{
 			Date fromDate = null;      
@@ -10179,7 +10180,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("old"))
 				alertList = alertDAO.getAlertDetials(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStattusId);
 			else if(IConstants.CALL_CENTER_VERSION.toString().trim().equalsIgnoreCase("new"))
-				alertList = alertDAO.getAlertDetials1(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStattusId);
+				alertList = alertDAO.getAlertDetials1(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStattusId,categoryId);
 			
 			if(alertList != null && alertList.size() > 0l){
 				for (Object[] objects : alertList) {
@@ -11939,7 +11940,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						alert.setUpdatedBy(userId);
 						alert.setImpactScopeId(inputVO.getLocationLevelId() !=null ? inputVO.getLocationLevelId():null);
 
-						alert.setAlertStatusId(1l);// default pending status
+						alert.setAlertStatusId(14l);// default Pre_Pending status
 
 						alert.setAlertSourceId(6l);
 						alert.setCreatedTime(date.getCurrentDateAndTime());
@@ -11962,13 +11963,14 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						//balu
 				    	
 						//Document Saving
-						saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+						//saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+						saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
 						
 						//Alert Tracking
 						AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
 						
 						alertTrackingVO.setUserId(userId);
-						alertTrackingVO.setAlertStatusId(1l);	
+						alertTrackingVO.setAlertStatusId(14l);	
 						alertTrackingVO.setAlertId(alert.getAlertId());
 						alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
 						
@@ -12078,6 +12080,332 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			return userAddress;
 		}
 	 
+	 public List<AlertTrackingVO> getSocialAlertCallerDetails(Long userId,String startdateStr,String endDateStr,String status,String mobileNo,Long departmentId){
+			List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
+			try {
+				Date startDate=null;
+				Date endDate = null;
+				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				if(startdateStr != null && !startdateStr.isEmpty() && startdateStr != null && !startdateStr.isEmpty()){
+					 startDate=format.parse(startdateStr);
+					 endDate = format.parse(endDateStr);
+				}
+				
+				List<AlertStatus> statusList =  alertStatusDAO.getAll();
+				AlertTrackingVO returnVO = new AlertTrackingVO();
+				 if(commonMethodsUtilService.isListOrSetValid(statusList)){
+					 for (AlertStatus alertStatus : statusList) {
+						 AlertTrackingVO vo = new AlertTrackingVO();
+						 vo.setAlertStatusId(alertStatus.getAlertStatusId());
+						 vo.setStatus(alertStatus.getAlertStatus());
+						 returnVO.getStatusList().add(vo);
+					}
+				 }
+				 
+				 List<Object[]> objList1 = null;
+					 objList1 = alertTrackingDAO.getStatuswiseAlertsDetailsOfSocial(mobileNo,userId, startDate, endDate,departmentId,5l);
+				
+				Map<Long,Long> statusWiseMap = new HashMap<Long, Long>(0);
+				if(objList1 != null && objList1.size() > 0){
+					for (Object[] param : objList1) {
+						AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getStatusList(), "alertStatusId", commonMethodsUtilService.getStringValueForObject(param[0]));
+						if(vo != null){
+							vo.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						}
+						statusWiseMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+				
+				 List<AlertFeedbackStatus> feedbackStatusList =  alertFeedbackStatusDAO.getAll();
+				 List<AlertTrackingVO> feedbacksStatusList = new ArrayList<AlertTrackingVO>(0);
+				 if(commonMethodsUtilService.isListOrSetValid(feedbackStatusList)){
+					 for (AlertFeedbackStatus alertStatus : feedbackStatusList) {
+						 if(alertStatus.getIsDeleted().equalsIgnoreCase("N")){
+							 AlertTrackingVO vo = new AlertTrackingVO();
+							 vo.setAlertStatusId(alertStatus.getAlertFeedbackStatusId());
+							 vo.setStatus(alertStatus.getStatus());
+							 if(commonMethodsUtilService.isListOrSetValid(returnVO.getStatusList())){
+								 for (AlertTrackingVO alertTrackingVO : returnVO.getStatusList()) {
+									 AlertTrackingVO vo1 = new AlertTrackingVO();
+									 vo1.setAlertStatusId(alertTrackingVO.getAlertStatusId());
+									 vo1.setStatus(alertTrackingVO.getStatus());
+									 //vo1.setCount(alertTrackingVO.getCount());
+									 vo.getStatusList().add(vo1);
+								}
+							 }
+							 feedbacksStatusList.add(vo);
+						 }
+					}
+				 }
+					
+				 List<Object[]> objList = null;
+					 objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetailsOfSocial(mobileNo,userId, startDate, endDate,departmentId,5l);
+				 
+				if(objList != null && objList.size() > 0 && commonMethodsUtilService.isListOrSetValid(feedbacksStatusList)){
+					for (Object[] param : objList) {
+						AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(feedbacksStatusList, "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[1]).toString());
+						if(vo != null){
+							AlertTrackingVO vo1 = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(vo.getStatusList(), "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
+							if(vo1 != null){
+								vo1.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+							}
+						}else{
+							vo = feedbacksStatusList.get(0);
+							AlertTrackingVO vo1 = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(vo.getStatusList(), "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
+							if(vo1 != null){
+								vo1.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+							}
+						}
+					}
+				}
+				if(commonMethodsUtilService.isMapValid(statusWiseMap) && commonMethodsUtilService.isListOrSetValid(feedbacksStatusList)){
+					AlertTrackingVO vo = feedbacksStatusList.get(0);
+					 List<AlertTrackingVO> list =vo.getStatusList();
+					 if(commonMethodsUtilService.isListOrSetValid(list)){
+						 for (AlertTrackingVO statusVO : list) {
+							 statusVO.setTotalCount(statusWiseMap.get(statusVO.getAlertStatusId()));
+						}
+					 }
+				}
+				 returnVO.getStatusList().clear();
+				 returnVO.getStatusList().addAll(feedbacksStatusList);
+				voList.add(returnVO);
+				
+				/*if(voList !=null && voList.size()>0){
+					for (AlertTrackingVO vo : voList){
+						List<AlertTrackingVO> subList = new ArrayList<AlertTrackingVO>();	
+						List<AlertTrackingVO> subListNew = new ArrayList<AlertTrackingVO>();	
+						if(vo !=null && vo.getStatusList() !=null && vo.getStatusList().size()>0){
+							
+							subList.addAll(vo.getStatusList());							
+							vo.getStatusList().clear();
+							
+							for (AlertTrackingVO subVo : subList) {
+								if(subVo.getAlertStatusId() !=null && subVo.getAlertStatusId()==14l){
+									subListNew.add(subVo);
+									subList.;
+								}
+							}
+						}
+						
+						
+					}
+				}*/
+				
+				
+			} catch (Exception e) {
+				LOG.error("Error occured getSocialAlertCallerDetails() method of AlertManagementSystemService");
+			}
+			return voList;
+		}
+	 
+	 public static String folderCreationForAlertsAttachmentNew(){
+	  	 try {
+	  		 LOG.debug(" in FolderForNotCadre ");
+	  		
+	  		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+	  		 
+	  		Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			int year = calendar.get(Calendar.YEAR);
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+			String dateStr = sdf.format(new Date());
+			 
+			 String notCadreImagesFoldr = staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr;
+			 
+			 String foldrSts = ActivityService.createFolder(notCadreImagesFoldr);
+			 if(!foldrSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr;
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create ");
+			return "FAILED";
+		}
+	}
+	 
+	 public String saveAlertDocumentNew(Long alertId,Long userId,final Map<File,String> documentMap){
+			
+			try{
+				
+				DateUtilService dt = new DateUtilService();
+				
+				String folderName = folderCreationForAlertsAttachmentNew();
+				AlertDocument alertDocument = null;  
+				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(new Date());
+				 int year = calendar.get(Calendar.YEAR);
+				 int month = calendar.get(Calendar.MONTH);
+				 //int day = calendar.get(Calendar.DAY_OF_MONTH);
+				 int temp = month+1;
+				 String monthText = getMonthForInt(temp);
+				
+				 StringBuilder pathBuilder = null;
+				 StringBuilder str ;
+				 
+				 SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+				 String dateStr = sdf.format(new Date());
+				 String yearStr = String.valueOf(year);
+				 
+				
+				 for (Map.Entry<File, String> entry : documentMap.entrySet())
+				 {
+
+					 pathBuilder = new StringBuilder();
+					 
+					 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+					 String ext = "";
+					 String fName = "";
+					 String[] extension  = entry.getValue().split("\\.");
+					 if(extension.length > 1){
+						 ext = extension[extension.length-1];
+						 fName = extension[0];
+					 }
+					 String destPath = folderName+"/"+randomNumber+"."+ext;
+					 
+					 
+					 pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(entry.getValue());
+					 
+					 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
+					 
+						if(fileCpyStts.equalsIgnoreCase("error")){
+							LOG.error(" Exception Raise in copying file in saveAlertDocumentNew ");
+							throw new ArithmeticException();
+						}
+						
+						alertDocument = new AlertDocument();
+						alertDocument.setDocumentPath(pathBuilder.toString());
+						alertDocument.setDocumentName(StringEscapeUtils.escapeJava(fName));     
+						alertDocument.setAlertId(alertId);
+						alertDocument.setInsertedTime(dt.getCurrentDateAndTime());
+						alertDocument.setIsDeleted("N");
+						alertDocument.setInsertedBy(userId);
+						alertDocument = alertDocumentDAO.save(alertDocument);
+						
+				 }
+			}catch(Exception e){
+				LOG.error("Exception Occured in saveAlertDocumentNew() in ToursService", e);
+				return "faliure";
+			}
+			return "success";
+		}
+	 
+	 public List<AlertVO> getSocialAlertDetailsByStatus(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStatusId,
+			 Long deptId,Long categoryId,Long userId){
+			List<AlertVO> returnList = new ArrayList<AlertVO>();
+			try{
+				Date fromDate = null;      
+				Date toDate = null;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				
+				List<Object[]> alertList = alertDAO.getSocialAlertDetials(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStatusId,categoryId,userId);
+				
+				if(alertList != null && alertList.size() > 0l){
+					for (Object[] objects : alertList) {
+						AlertVO vo = new AlertVO();
+						vo.setAlertId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						vo.setTitle(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.setAlertImpactId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+						vo.setCreatedTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+						vo.setAlertSourceId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+						vo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+						vo.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[6]));
+						vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+						vo.setFeedbackStatus(commonMethodsUtilService.getStringValueForObject(objects[8]));
+						
+						vo.setDistrict(commonMethodsUtilService.getStringValueForObject(objects[9]));
+						vo.setConstituency(commonMethodsUtilService.getStringValueForObject(objects[10]));
+						vo.setTehsil(commonMethodsUtilService.getStringValueForObject(objects[11]));
+						vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(objects[12]));
+						vo.setHamlet(commonMethodsUtilService.getStringValueForObject(objects[13]));
+						vo.setLocalBody(commonMethodsUtilService.getStringValueForObject(objects[14]));
+						vo.setWard(commonMethodsUtilService.getStringValueForObject(objects[15]));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[16]));
+						vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[17]));
+						
+						vo.setUserName(commonMethodsUtilService.getStringValueForObject(objects[18]));
+						vo.setSmTypeId(commonMethodsUtilService.getLongValueForObject(objects[19]));
+						vo.setSmType(commonMethodsUtilService.getStringValueForObject(objects[20]));
+						 
+						returnList.add(vo);
+					}
+				}
+			}catch(Exception e){
+				LOG.error("Error occured getSocialAlertDetailsByStatus() method of AlertService{}",e);
+			}
+			return returnList;
+		}
+	 
+	 public String changeVeificationStatusDetails(final AlertVO alertvo,final Long userId){
+		 
+		 String  status = new String();
+		 
+		 try{
+				status = (String) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						
+						//Saving comment In alertComment
+						AlertComment alertComment = new AlertComment();
+						alertComment.setAlertId(alertvo.getAlertId());
+						alertComment.setComments(alertvo.getComment());
+						alertComment.setInsertedBy(userId);
+						alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						alertComment.setIsDeleted("N");
+						alertComment = alertCommentDAO.save(alertComment);
+						
+						//saving alertTtrcking
+						AlertTracking alertTracking = new AlertTracking();
+						alertTracking.setAlertId(alertvo.getAlertId());
+						alertTracking.setAlertStatusId(alertvo.getStatusId());
+						alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
+						
+						if(alertvo.getStatus() !=null && !alertvo.getStatus().trim().isEmpty() &&
+								alertvo.getStatus().trim().equalsIgnoreCase("Y")){
+							alertTracking.setAlertTrackingActionId(1l);
+						}else if(alertvo.getStatus() !=null && !alertvo.getStatus().trim().isEmpty() &&
+								alertvo.getStatus().trim().equalsIgnoreCase("N")){
+							alertTracking.setAlertTrackingActionId(2l);
+						}
+						
+						
+						alertTracking.setInsertedBy(userId);
+						alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						//alertTracking.setAlertSourceId(alertvo.getAlertSourceId());
+						alertTrackingDAO.save(alertTracking);
+						
+						Alert alert = alertDAO.get(alertvo.getAlertId());
+						
+						if(alert != null){
+							if(alertvo.getStatus() !=null && !alertvo.getStatus().trim().isEmpty() &&
+									alertvo.getStatus().trim().equalsIgnoreCase("Y")){
+								
+								alert.setAlertStatusId(alertvo.getStatusId() !=null ? alertvo.getStatusId():null);
+								//alert.setIsVerified(alertvo.getStatus());
+								
+							}else if(alertvo.getStatus() !=null && !alertvo.getStatus().trim().isEmpty() &&
+									alertvo.getStatus().trim().equalsIgnoreCase("N")){
+								//alert.setIsVerified(alertvo.getStatus());
+							}
+							
+							alertDAO.save(alert);
+						}
+						
+						return "success";
+					
+					}
+				});
+			}catch(Exception e){
+				LOG.error("Error occured changeVeificationStatusDetails() method of AlertService{}",e);
+			}
+		 return null;
+	 }
 	 public Date getAfterDayForNoOfDays(int noOfDays, Date today){
 			Calendar cal = new GregorianCalendar();
 			cal.setTime(today);

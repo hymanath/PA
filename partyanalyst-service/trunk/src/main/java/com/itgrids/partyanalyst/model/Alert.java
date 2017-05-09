@@ -87,6 +87,7 @@ public class Alert extends BaseModel implements Serializable {
 	private Long socialMediaTypeId;
 	private SocialMediaType socialMediaType;
 	
+	/*private String isVerified;*/
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -619,6 +620,15 @@ public class Alert extends BaseModel implements Serializable {
 	public void setSocialMediaType(SocialMediaType socialMediaType) {
 		this.socialMediaType = socialMediaType;
 	}
+
+	/*@Column(name = "is_verified")
+	public String getIsVerified() {
+		return isVerified;
+	}
+
+	public void setIsVerified(String isVerified) {
+		this.isVerified = isVerified;
+	}*/
 	
 	
 
