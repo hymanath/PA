@@ -913,7 +913,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			String startDateStr = jObj.getString("startDate");
 			String fromDateStr = jObj.getString("fromDate");
 			String type = jObj.getString("type");
-			Long deptId = jObj.getLong("deptId");
+			//Long deptId = jObj.getLong("deptId");
 			String sortingType = jObj.getString("sortingType");
 			
 			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
@@ -937,12 +937,18 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			for (int i = 0; i < calCntrIdArr.length(); i++){
 				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 			}  
-			/*JSONArray deptArr = jObj.getJSONArray("deptArr");  
+			JSONArray deptArr = jObj.getJSONArray("deptArr");  
 			List<Long> deptIdList = new ArrayList<Long>();
 			for (int i = 0; i < deptArr.length(); i++){
 				deptIdList.add(Long.parseLong(deptArr.getString(i)));        
-			}  */
-			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptId,sortingType,paperIdList,chanelIdList,calCntrIdList);
+			}  
+			JSONArray subLevelArr = jObj.getJSONArray("subLevelArr");  
+			List<Long> deptScopeList = new ArrayList<Long>();
+			for (int i = 0; i < subLevelArr.length(); i++){
+				deptScopeList.add(Long.parseLong(subLevelArr.getString(i)));        
+			}  
+			String resultType = jObj.getString("resultType");
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptIdList,sortingType,paperIdList,chanelIdList,calCntrIdList,resultType,deptScopeList);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -969,7 +975,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			session = request.getSession();
 		   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			Long userId = regVo.getRegistrationID();
-			alertVOs = alertManagementSystemService.getGovtDeptScopeDetails(jObj.getLong("departmentId"),userId);
+			JSONArray deptArr = jObj.getJSONArray("deptArr");  
+			List<Long> deptList = new ArrayList<Long>();
+			if(deptArr != null && deptArr.length() > 0){
+				for (int i = 0; i < deptArr.length(); i++){
+					deptList.add(Long.parseLong(deptArr.getString(i)));        
+				} 
+			} 
+			alertVOs = alertManagementSystemService.getGovtDeptScopeDetails(deptList,userId);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getGovtDeptScopeDetails() of alertManagementSystemAction",e);
 		}
@@ -1179,7 +1192,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			Long filterParentScopeId = jObj.getLong("filterParentScopeId");
 			Long filterScopeValue = jObj.getLong("filterScopeValue");
 			
-			alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew(fromDate,
+			alertCoreDashBoardVOs = alertManagementSystemService.getLocationWiseDepartmentOverviewAlertCount(fromDate,
 					toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,
 					order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,calCntrIdList,sublevels,filterParentScopeId,filterScopeValue,searchType);
 	
@@ -1189,11 +1202,6 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		}
 		return Action.SUCCESS;	
 	}
-	/*	getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview(String fromDateStr, String toDateStr, Long stateId, 
-		List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
-			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
-			Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId)*/
-	
 	public String getDistrictLevelDeptWiseFlterClick(){
 		try{
 			session = request.getSession();
@@ -1229,8 +1237,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			for (int i = 0; i < calCntrIdArr.length(); i++){
 				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 			}
-			
-			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList);
+			Long alertCategoryId = jObj.getLong("alertCategoryId");
+			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,statusId,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList,alertCategoryId);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -2436,7 +2444,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				Long filterParentScopeId = jObj.getLong("filterParentScopeId");
 				Long filterScopeValue = jObj.getLong("filterScopeValue");
 				
-				alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew(fromDate,
+				alertCoreDashBoardVOs = alertManagementSystemService.getLocationWiseDepartmentOverviewAlertCount(fromDate,
 						toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,
 						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,callCenterIds,sublevels,filterParentScopeId,filterScopeValue,searchType);
 		
@@ -2519,7 +2527,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				/*alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamic(fromDateStr,
 						toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
 						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,chanelIdList,sublevels);*/
-				        alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew(fromDateStr,
+				        alertCoreDashBoardVOs = alertManagementSystemService.getLocationWiseDepartmentOverviewAlertCount(fromDateStr,
 						toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
 						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,callCenterIdList,sublevels,filterParentScopeId,filterScopeValue,searchType);
 		
@@ -2794,7 +2802,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
-					LOG.error("Exception occured in getDistrictLevelDeptWiseFlterClick() of alertManagementSystemAction",e);
+					LOG.error("Exception occured in getStateLevelAlertclickView() of alertManagementSystemAction",e);
 				}
 				return Action.SUCCESS;
 			}
@@ -2836,7 +2844,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
-					LOG.error("Exception occured in getDistrictLevelDeptWiseFlterClick() of alertManagementSystemAction",e);
+					LOG.error("Exception occured in getStateAndDistrictWorkLocationThenGovtDeptScopeWiseAlertCountForOverviewForClick() of alertManagementSystemAction",e);
 				}
 				return Action.SUCCESS;
 			}
@@ -2903,7 +2911,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
-					LOG.error("Exception occured in getDistrictLevelDeptWiseFlterClick() of alertManagementSystemAction",e);
+					LOG.error("Exception occured in getStateLevelDeptWiseFlterClick() of alertManagementSystemAction",e);
 				}
 				return Action.SUCCESS;
 			}
@@ -2951,7 +2959,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");      
 					Long govtDepartmentId = jObj.getLong("govtDepartmentId");
 					String alertType = jObj.getString("alertType");
-					idnameVoList = alertManagementSystemService.getLocationBasedOnDepartmentLevel(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,alertType,calCntrIdList);
+					
+					JSONArray subLevelArr = jObj.getJSONArray("subLevelArr");  
+					List<Long> deptScopeList = new ArrayList<Long>();
+					for (int i = 0; i < subLevelArr.length(); i++){
+						deptScopeList.add(Long.parseLong(subLevelArr.getString(i)));        
+					}  
+					
+					idnameVoList = alertManagementSystemService.getLocationBasedOnDepartmentLevel(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,alertType,calCntrIdList,deptScopeList);
 				} catch (Exception e) {
 					LOG.error("Exception Occured in getLocationBasedOnDepartmentLevel() method, Exception - ",e); 
 				}

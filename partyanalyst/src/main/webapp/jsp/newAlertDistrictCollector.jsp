@@ -143,8 +143,9 @@
 										</div>
 										<div class="col-md-6 col-xs-12 col-sm-12">
 											<ul class="switch-btn pull-right activeCls">
-												<li attr_type="status" class="statusOverview">status overview</li>
-												<li attr_type="location" class="active locationOverview" >location level</li>
+												<li attr_type="status" class="active">status overview</li>
+												<li attr_type="scopeLevel" class="" >location level</li>
+												<li attr_type="alertCategory" class="" >Alert Source</li>
 												<!--<li attr_type="filter" >Filter View</li>-->
 											</ul>
 										</div>
@@ -160,8 +161,8 @@
 								<div class="panel-body">
 									<div class="row">
 										<div class="col-sm-12 col-xs-12 col-md-12 ">
-											<div class="col-md-2 col-xs-12 col-sm-4 sortingDivCls">
-												<ul class="list-inline activeUlCls  constituencyUl locationWiseSorting">
+											<div class="col-md-2 col-xs-12 col-sm-4">
+												<ul class="list-inline activeUlCls  constituencyUl sortingDivCls">
 												<li class="active " attr_sorting_type="Decending">
 													<i class="glyphicon glyphicon-sort-by-attributes" ></i>
 												</li>
@@ -176,18 +177,20 @@
 												</li>
 												</ul>
 											</div>
-											<div class="col-sm-4 col-xs-12 col-md-4 sortingDivClsDept">
-												<select class="form-control locationWiseDeptOnChange" id="govtDepartmentsLocId" >
+											<div class="col-sm-4 col-xs-12 col-md-4">
+												<select class="form-control" id="govtDepartmentsId" >
 												</select>
 											</div>
-											<div class="col-sm-4 col-xs-12 col-md-3 pull-right sortingDivClsLevel" style="display:none">
-												<select class="form-control locationWiseDistLevelOnChange" id="districtWiseLevelLocId" >
+											<div class="col-sm-4 col-xs-12 col-md-3 pull-right locationLevelNamesCls" >
+												<select class="form-control" id="locationLevelNamesId" >
 												</select>
 											</div>
 										</div>
-												<div id="departmentlocationCountDivId" class="departmentlocationShow" style="margin-left:15px;"></div>
-												<div id="departmentStatusCountDivId" class="departmentStatusShow" style="display:none;"></div>
-												<div id="departmentAlertCountDivId" class="departmentAlertCountShow" style="display:none;"></div>
+											<div id="departmentWiseGraphViewDetails"></div>
+											<!--<div id="departmentlocationCountDivId" class="departmentlocationShow" style="margin-left:15px;display:none;"></div>
+											<div id="departmentStatusCountDivId" class="departmentStatusShow" ></div>
+											<div id="departmentAlertCountDivId" class="departmentAlertCountShow" style="display:none;"></div>
+											<div id="departmentAlertSourceCountDivId" class="departmentAlertSourceCountShow" style="display:none;"></div>-->
 										
 									</div>
 								</div>
@@ -248,9 +251,8 @@
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
-var paperIdArr =[];
-var chanelIdArr =[];
-var callCenterArr=[];
+
+var globalDepartmentId;
 var overAllAlertIds =[];
 var totalCoutAlertIds =[];
 var globalUserLevelId;
@@ -258,7 +260,10 @@ var globalUserLevelValues = [];
 var globalgovtDeptDesigOffcrIds=[];
 var	globalgovtOfficerIds=[];
 var globalDesignationId;
-var globalDepartmentId;
+var globalDepartmentName;
+var paperIdArr =[];
+var chanelIdArr =[];
+var callCenterArr=[];
 var departmentIdsForAlertSoutceArr=[];
 
 google.load("elements", "1", {
