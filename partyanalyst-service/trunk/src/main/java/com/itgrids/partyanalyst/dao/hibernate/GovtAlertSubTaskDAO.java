@@ -249,28 +249,38 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	  	  return query.list();
 	  	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDistrictLevelDeptWiseLocationLevelViewForSubtask(Date fromDate, Date toDate,Long deptId,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,Long levelId,List<Long> levelValues){
+	public List<Object[]> getDistrictLevelDeptWiseLocationLevelViewForSubtask(Date fromDate, Date toDate,List<Long> deptIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,Long levelId,List<Long> levelValues,String type,List<Long> deptScopeIds){
 	  		StringBuilder sb = new StringBuilder();  
 	  		
 	  	     sb.append("select ");
 	  	    
 	  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
-	      		      " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " );
-	  	    
-	  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
-	  	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName," +
-	  	      		    " model.govtDepartmentDesignationOfficer.govtDepartmentScope.color, " );
-	  	     
+	      		      "  model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " );
+	  	
+		  	  if(type != null && type.equalsIgnoreCase("ScopeLevel")){
+	  	    	  sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
+		  	      		   " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName," +
+		  	      		   " model.govtDepartmentDesignationOfficer.govtDepartmentScope.color, " );
+	  	      }else if(type != null && type.equalsIgnoreCase("AlertCategory")){
+	  	 	     sb.append(" model.alert.alertCategory.alertCategoryId," +
+	  	      		       "  model.alert.alertCategory.category," +
+	  	      		       "  ''," );
+		      }
 	  	     sb.append(" count(distinct model.govtAlertSubTaskId) ");
 	  	     
 	  	     sb.append(" from GovtAlertSubTask model left join model.alert.edition EDS " +
     	             " left join model.alert.tvNewsChannel TNC,GovtUserAddress UA ");
 	  	     
 	  	     sb.append(" where model.govtDepartmentDesignationOfficer.govtUserAddress.userAddressId=UA.userAddressId " +
-	  	     		   " and model.alert.isDeleted='N' and model.isDeleted = 'N' ");
+	  	     		   " and model.alert.isDeleted='N'" +
+	  	     		   " and model.isDeleted = 'N' " +
+	  	     		   " and model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
 
-	  	     if(deptId != null && deptId.longValue() > 0){
-	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId ");
+	  	     if(deptIds != null && deptIds.size() > 0){
+	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds) ");
+	  	     }
+	  	    if(deptScopeIds != null && deptScopeIds.size() > 0){
+	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId in(:deptScopeIds) ");
 	  	     }
 	  	   if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
 	      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
@@ -309,9 +319,14 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	  	    if(levelId != null && levelId > 0){
 	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >=:levelId "); 
 	  	     }
-	  	    sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId, " +
-	    		      " model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " );
-	     	    
+	  	 
+	  	     sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId" );
+	  	     if(type != null && type.equalsIgnoreCase("ScopeLevel")){
+	  	    	  sb.append(",model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " +
+	  	    	  		    " order by model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId asc");
+	  	     }else if(type != null && type.equalsIgnoreCase("AlertCategory")){
+	  	 	  sb.append(",model.alert.alertCategory.alertCategoryId order by model.alert.alertCategory.order asc");
+	         }
 	  	    Query query = getSession().createQuery(sb.toString());
 	  	    if(fromDate != null && toDate != null){
 	  	        query.setDate("fromDate", fromDate);
@@ -322,8 +337,8 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
     	      query.setParameterList("electronicIdList", electronicIdsList);
     	    }
 	  	  
-	  	    if(deptId != null && deptId.longValue() > 0){
-	  	    	query.setParameter("deptId", deptId);
+	  	    if(deptIds != null && deptIds.size() > 0){
+	  	    	query.setParameterList("deptIds", deptIds);
 	  	    }
 		  	if(levelId != null && levelValues != null && !levelValues.isEmpty()){
 		  		 query.setParameterList("levelValues", levelValues);  
@@ -331,7 +346,9 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 		  	if(levelId != null && levelId.longValue() > 0){
 		  		query.setParameter("levelId",levelId);  
 		  	}
-  	     
+		  	if(deptScopeIds != null && deptScopeIds.size() > 0){
+		  		query.setParameterList("deptScopeIds", deptScopeIds);
+		  	 }
 	  	  return query.list();
 	  	}
    	
@@ -2172,7 +2189,7 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
 	    	  
    	}
    	
-   	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+   	 if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
         sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList) )");
         if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
             sb.append(" or model.alert.alertCallerId is not null ");
@@ -2181,38 +2198,38 @@ public class GovtAlertSubTaskDAO extends GenericDaoHibernate<GovtAlertSubTask, L
       }
           sb.append(" )");
       }
-   	if(statusId != null && statusId.longValue() > 0L){
+   	   if(statusId != null && statusId.longValue() > 0L){
    		sb.append(" and  model.alertSubTaskStatus.alertSubTaskStatusId = :statusId");
 		}
 		if(fromDate != null && toDate != null){
 			sb.append(" and date(model.createdTime) between :fromDate and :toDate ");
 		}
 	    	   
-	    	  Query query = getSession().createQuery(sb.toString());
-	    	  
-	    	  if(govtDeptDesigOffceIds != null && govtDeptDesigOffceIds.size() >0){
-	    		  query.setParameterList("govtDeptDesigOffceIds", govtDeptDesigOffceIds);  
-	    	  }
-	    	  if(govtOffceIds != null && govtOffceIds.size() >0){
-	    		  query.setParameterList("govtOffceIds", govtOffceIds);  
-	    	  }
-	    	  if(statusId != null && statusId.longValue() > 0L){
-	    		  query.setParameter("statusId", statusId); 
-	    	  }
-	    	  if(fromDate != null && toDate != null){
-	    		  query.setDate("fromDate", fromDate);
-	    		  query.setDate("toDate", toDate);
-	    	  }
-	    	  
-	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
-	    	      query.setParameterList("printIdsList", printIdsList);
-	    	      query.setParameterList("electronicIdsList", electronicIdsList);
-	    	    }  
-	    	    /*else if(printIdsList != null && printIdsList.size()>0){
-	    	      query.setParameterList("printIdList", printIdsList);
-	    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
-	    	      query.setParameterList("electronicIdList", electronicIdsList);
-	    	    }*/
+    	  Query query = getSession().createQuery(sb.toString());
+    	  
+    	  if(govtDeptDesigOffceIds != null && govtDeptDesigOffceIds.size() >0){
+    		  query.setParameterList("govtDeptDesigOffceIds", govtDeptDesigOffceIds);  
+    	  }
+    	  if(govtOffceIds != null && govtOffceIds.size() >0){
+    		  query.setParameterList("govtOffceIds", govtOffceIds);  
+    	  }
+    	  if(statusId != null && statusId.longValue() > 0L){
+    		  query.setParameter("statusId", statusId); 
+    	  }
+    	  if(fromDate != null && toDate != null){
+    		  query.setDate("fromDate", fromDate);
+    		  query.setDate("toDate", toDate);
+    	  }
+    	  
+    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+    	      query.setParameterList("printIdsList", printIdsList);
+    	      query.setParameterList("electronicIdsList", electronicIdsList);
+    	    }  
+    	    /*else if(printIdsList != null && printIdsList.size()>0){
+    	      query.setParameterList("printIdList", printIdsList);
+    	    }else if(electronicIdsList != null && electronicIdsList.size()>0){
+    	      query.setParameterList("electronicIdList", electronicIdsList);
+    	    }*/
 	    	  return query.list();
    }
   @SuppressWarnings("unchecked")//Use
@@ -2429,7 +2446,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	}
 		@SuppressWarnings("unchecked")
 		public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,
-				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long levelId,List<Long> levelValues,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
+				Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long levelId,List<Long> levelValues,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,Long alertCategoryId){
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select distinct model.alert.alertId "+
 					  " from " +
@@ -2455,7 +2472,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			if(officerId != null && officerId.longValue() > 0){
 				sb.append(" and model.subTaskGovtOfficer.govtOfficerId =:officerId ");
 			}
-			
+			if(alertCategoryId != null && alertCategoryId.longValue() > 0){
+				sb.append(" and  model.alert.alertCategoryTypeId=:alertCategoryId");
+			}
 			  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
 	      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
 	      	     if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
@@ -2514,7 +2533,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
 	    	}
-			 
+			if(alertCategoryId != null && alertCategoryId.longValue() > 0){
+				  query.setParameter("alertCategoryId",alertCategoryId);
+			}
 			
 			//query.setParameter("scopeId",scopeId);
 			return query.list();
