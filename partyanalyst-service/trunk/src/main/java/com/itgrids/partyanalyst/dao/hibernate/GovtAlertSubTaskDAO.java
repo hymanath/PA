@@ -2473,7 +2473,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 				sb.append(" and model.subTaskGovtOfficer.govtOfficerId =:officerId ");
 			}
 			if(alertCategoryId != null && alertCategoryId.longValue() > 0){
-				sb.append(" and  model.alert.alertCategoryTypeId=:alertCategoryId");
+				sb.append(" and  model.alert.alertCategoryId=:alertCategoryId");
 			}
 			  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
 	      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
