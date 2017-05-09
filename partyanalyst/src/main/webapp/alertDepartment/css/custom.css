@@ -1079,7 +1079,8 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	color:#999999;
 }
 div[expand-main='true'] .channel-name ,
-div[expand-main='true'] .location-name 
+div[expand-main='true'] .location-name ,
+div[expand-main='true'] .status-name
 {
     width: 34px;
 	text-overflow: ellipsis;
@@ -1096,6 +1097,19 @@ div[expand-main='true'] .alert-title
 	overflow: hidden;
 	display: inline-block;
 	white-space: nowrap;
+}
+div[expand-main='true'] td .alert-title  
+{
+	margin:0px 3px;
+    width: 50px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: inline-block;
+	white-space: nowrap;
+}
+div[expand-main='true'] table tr td , div[expand-main='true'] table thead th
+{
+	padding:8px 3px !important;
 }
 .glyphicon-remove
 {
@@ -1342,13 +1356,23 @@ div.comment-area
 	border:1px solid transparent;
 	list-style:none;
 	cursor:pointer;
-	margin:3px 0px;
+	margin:4px 0px;
 }
-.filters-list li.active
+.filters-list li.active 
 {
 	background-color:#EEEEEE;
 	border-radius:16px;
+	transition: all 0.3s ease-in-out 0s;
+	box-shadow:0px 0px 2px #222;
 }
+.filters-list li:hover , .filters-list li:focus
+{
+	background-color:#EEEEEE;
+	border-radius:16px;
+	transition: all 0.3s ease-in-out 0s;
+	box-shadow:0px 0px 0px 3px #5ABCFC;
+}
+
 .filters-list li.active .remove
 {
 	float:right;
@@ -1675,4 +1699,27 @@ input[type="checkbox"]:checked + label span.checkbox::after {
 .filter-block
 {
 	margin-bottom:20px;
+}
+.clear
+{
+	display:none;
+}
+.m_top15
+{
+	margin-top:15px !important;
+}
+.footer
+{
+	display:block;
+	background-color:rgba(0,0,0,0.2);
+	color:#333;
+	width:100%;
+	z-index:99;
+	padding:8px;
+	box-shadow:0px -2px 4px 4px rgba(0,0,0,0.3); 
+	font-size:14px !important
+}
+.footer h4
+{
+	font-size:14px !important
 }
