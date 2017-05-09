@@ -44,7 +44,7 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     			+ " where model.alertId=:alertId  and " +
     			"  model.updatedBy = model2.userId  order by model.insertedTime desc ");
     	query.setParameter("alertId", alertId);
-    //	query.setParameter("trackTypeId", trackTypeId);
+    	//query.setParameter("trackTypeId", trackTypeId);
     	return query.list();
     }
     
@@ -126,6 +126,41 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     			"  model.govtAlertActionType.govtAlertActionTypeId = :trackTypeId and model.updatedBy = model2.userId  order by model.insertedTime desc ");
     	query.setParameter("alertId", alertId);
     	query.setParameter("trackTypeId", trackTypeId);
+    	return query.list();
+    }
+    public List<Object[]> getAlertTrackingDtls(Long alertId){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append(" select " +
+    					" model.alert.alertId " +//0
+    					" , model.govtAlertActionType.govtAlertActionTypeId " +//1
+    					" , model.govtAlertActionType.actionType " +//2
+    					" , alertDepartmentComment.alertDepartmentCommentId " +//3
+    					" , alertDepartmentComment.comment " +//4
+    					" , alertDepartmentDocument.alertDepartmentDocumentId " +//5
+    					" , alertDepartmentDocument.document " +//6
+    					" , model.dueDate " +//7
+    					" , alertStatus.alertStatusId " +//8
+    					" , alertStatus.alertStatus " +//9
+    					" , alertSeviority.alertSeverityId " +//10
+    					" , alertSeviority.severity " +//11
+    					" , model.insertedTime " +//12
+    					" , model.updatedBy " +//13
+    					" , model.alert.govtDepartment.govtDepartmentId " +//14
+    					" , model.alert.govtDepartment.departmentName " +//15
+    					" from AlertAssignedOfficerTrackingNew model " +
+    					" left outer join model.alertDepartmentComment alertDepartmentComment " +
+    					" left outer join model.alertStatus alertStatus " +
+    					" left outer join model.alertDepartmentDocument alertDepartmentDocument " +
+    					" left outer join model.alertSeviority alertSeviority , " +
+    					" GovtAlertActionType govtAlertActionType " +
+    					" where " +
+    					" govtAlertActionType.govtAlertActionTypeId = model.govtAlertActionType.govtAlertActionTypeId " +
+    					" and model.alert.alertId = :alertId " +
+    					" and model.alert.isDeleted = 'N' " +
+    					" order by model.insertedTime ");
+    	Query query = getSession().createQuery(queryStr.toString());
+    	query.setParameter("alertId",alertId);
+    	
     	return query.list();
     }
 }

@@ -161,9 +161,12 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 	
 	public List<Object[]> getNewLocationInfoOfUser(Long userId){
 		
-		Query query = getSession().createQuery(" SELECT '','', model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " +
+		Query query = getSession().createQuery(" " +
+				" SELECT '','', " +
+				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " +
 				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName, " +
-				" model.govtOfficer.officerName, model.govtOfficer.mobileNo " +
+				" model.govtOfficer.officerName, " +
+				" model.govtOfficer.mobileNo " +
 				" FROM GovtDepartmentDesignationOfficerDetailsNew model " +
 				" WHERE model.isDeleted = 'N'" +
 				" and model.userId = :userId  ") ;
@@ -172,7 +175,6 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		return query.list();
 		
 	}
-
 	public List<Long> getDesignationInfoForUser(Long userId){
 		Query query = getSession().createQuery(" " +
 				 " select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId " +
@@ -274,6 +276,33 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		if(locationValue != null && locationValue.longValue()>0L)
 			query.setParameter("locationValue", locationValue);
 		
+		return query.list();
+	}
+	public List<Object[]> getLocationInfoForUser(Long loginUserId,Long deptId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct " +
+						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName, " +//0
+						" model.govtOfficer.officerName,  " +//1
+						" model.govtOfficer.mobileNo, " +//2
+						" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName " +//3
+						" from GovtDepartmentDesignationOfficerDetailsNew model " +
+						" where " +
+						//" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId" +
+						" model.userId = :loginUserId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("loginUserId", loginUserId);
+		//query.setParameter("deptId", deptId);
+		return query.list();
+	}
+	public List<String> getAssignedDeptList(Long loginUserId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct" +
+						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName " +//0
+						" from GovtDepartmentDesignationOfficerDetailsNew model " +
+						" where " +
+						" model.userId = :loginUserId ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("loginUserId", loginUserId);
 		return query.list();
 	}
 }

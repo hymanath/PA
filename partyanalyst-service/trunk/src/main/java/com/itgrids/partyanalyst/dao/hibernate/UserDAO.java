@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
@@ -796,7 +797,12 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		query.setParameter("userId", userId);
 		return query.list();
 	}
-	
-	
+	public List<Object[]> getuserIdAndNameList(Set<Long> userIdList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.userId,model.userName from User model where model.userId in (:userIdList)");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameterList("userIdList", userIdList);
+		return query.list();
+	}
 	
 }

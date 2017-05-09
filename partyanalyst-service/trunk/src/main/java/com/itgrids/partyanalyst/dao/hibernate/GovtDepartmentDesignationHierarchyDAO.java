@@ -68,4 +68,12 @@ public class GovtDepartmentDesignationHierarchyDAO extends GenericDaoHibernate<G
 	    query.setParameterList("parentGovtDeptDesigIdList", parentGovtDeptDesigIdList);
 	    return query.list();
 	  }
+	public List<Long> getGovtDeptSubDesigIds(Long govtDeptDesigId){
+		StringBuilder queryStr = new StringBuilder();
+	    queryStr.append(" select distinct model.subDesignationId from GovtDepartmentDesignationHierarchy model where model.parentDesignationId = :govtDeptDesigId " +
+	    		" and model.isDeleted = 'N' " ); 
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("govtDeptDesigId", govtDeptDesigId);
+	    return query.list();
+	}
 }

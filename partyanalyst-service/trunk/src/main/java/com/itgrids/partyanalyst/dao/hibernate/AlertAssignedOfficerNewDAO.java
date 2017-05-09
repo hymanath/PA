@@ -5161,4 +5161,108 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  		   }
 	    	    return query.list();
 	    	}
+	public List<Object[]> getBellowLvlDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select " +
+				  " model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId, " +
+				  " model.alertStatus.alertStatusId, " +
+				  " model.alertStatus.alertStatus, " +
+				  " model.alertStatus.color, " +
+				  " count(distinct model.alert.alertId) " +
+				  " from " +
+				  " AlertAssignedOfficerNew model ");
+      
+      	sb.append(" left join model.alert.edition EDS " +
+      			  " left join model.alert.tvNewsChannel TNC ");
+      	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' " );//and model.isApproved = 'Y'
+      	
+      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+      		sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+      		if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
+      			sb.append(" or model.alert.alertCallerId is not null ");
+      		}else{
+      			sb.append(" and model.alert.alertCallerId is null ");
+      		}
+      		sb.append(" )");
+      	}
+	      	
+      	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+      		sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
+      	}
+	  
+      	if(fromDate != null && toDate != null){
+      		sb.append(" and date(model.insertedTime) between :fromDate and :toDate " );
+      	}	  
+      	sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId, model.alertStatus.alertStatusId ");
+      	Query query = getSession().createQuery(sb.toString());
+	  
+      	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
+      		query.setParameterList("govtDepDesigOffcrIds", govtDepDesigOffcrIds);  
+      	}
+	  
+      	if(fromDate != null && toDate != null){
+      		query.setDate("fromDate", fromDate);
+      		query.setDate("toDate", toDate);
+      	}
+      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+      		query.setParameterList("printIdList", printIdsList);
+      		query.setParameterList("electronicIdList", electronicIdsList);
+      	} 
+      	return query.list();
+	}
+	public List<Long> getBellowDistrictOfficerAlertsDtls(Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,Long statusId,Long govtDepDesigOffcrId,Long officerId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.alert.alertId " +
+				  " from " +
+				  " AlertAssignedOfficerNew model ");
+      
+      	sb.append(" left join model.alert.edition EDS " +
+      			  " left join model.alert.tvNewsChannel TNC ");
+      	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' " );//and model.isApproved = 'Y'
+      	
+      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+      		sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
+      		if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
+      			sb.append(" or model.alert.alertCallerId is not null ");
+      		}else{
+      			sb.append(" and model.alert.alertCallerId is null ");
+      		}
+      		sb.append(" )");
+      	}
+	      	
+      	if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0L){
+      		sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId =:govtDepDesigOffcrId " );
+      	}
+      	if(officerId != null && officerId.longValue() > 0L){
+      		sb.append(" and model.govtOfficer.govtOfficerId =:officerId " );
+      	}
+	  
+      	if(fromDate != null && toDate != null){
+      		sb.append(" and date(model.insertedTime) between :fromDate and :toDate " );
+      	}	  
+      	
+      	if(statusId != null && statusId.longValue() > 0L){
+      		sb.append(" and model.alertStatus.alertStatusId =:statusId " );
+      	}
+      	Query query = getSession().createQuery(sb.toString());
+	  
+      	if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0L){
+      		query.setParameter("govtDepDesigOffcrId", govtDepDesigOffcrId);  
+      	}
+      	if(officerId != null && officerId.longValue() > 0L){
+      		query.setParameter("officerId", officerId);
+      	}
+      	if(statusId != null && statusId.longValue() > 0L){
+      		query.setParameter("statusId", statusId);
+      	}
+      	if(fromDate != null && toDate != null){
+      		query.setDate("fromDate", fromDate);
+      		query.setDate("toDate", toDate);
+      	}
+      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
+      		query.setParameterList("printIdList", printIdsList);
+      		query.setParameterList("electronicIdList", electronicIdsList);
+      	} 
+      	return query.list();
+	}
 }
