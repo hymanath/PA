@@ -16601,7 +16601,7 @@
 	</action>	
 	<action name="viewAlertHistoryAction" class="alertManagementSystemAction" method="viewAlertHistory">
 		<result type="json" name="success">
-   			<param name="root">alertTrackingVOList</param>
+   			<param name="root">listOfalertTrackingVOList</param>
    		</result>
 	</action>
 	<action name="getStateThenGovtDeptScopeWiseAlertCountAction" class="alertManagementSystemAction" method="getStateThenGovtDeptScopeWiseAlertCount">
@@ -17167,6 +17167,11 @@
 				<param name="root">filterDetilsList</param>     
 			</result>
     </action>
+    <action name="getBellowDistrictOfficerAlertsCountViewAction" class="alertManagementSystemAction" method="getBellowDistrictOfficerAlertsCountView">
+			<result type="json" name="success">
+				<param name="root">districtOfficeViewAlertVOList</param>     
+			</result>
+    </action>
      <action name="saveSocialAlertAction" class="createAlertAction" method="saveSocialAlert">
 		 <result name="success" type="stream">			   
 		    <param name="inputName">inputStream</param>
@@ -17181,6 +17186,11 @@
 			<result type="json" name="success">    
 				<param name="root">alertCoreDashBoardVOs</param>       
 			</result>
+  </action>
+  <action name="getBellowDistrictOfficerAlertsDtlsAction" class="alertManagementSystemAction"  method="getBellowDistrictOfficerAlertsDtls">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>       
+		</result>
   </action>
   <action name="getAlertEfficiencyListAction1" class="createAlertAction"  method="getAlertEfficiencyList1">
 		<result type="json" name="success">    
