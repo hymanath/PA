@@ -75,3 +75,11 @@ footer
 	left:0px;
 	z-index:-9;
 }
+section .footer
+{
+	display:block;
+}
+.footer
+{
+	display:none;
+}
