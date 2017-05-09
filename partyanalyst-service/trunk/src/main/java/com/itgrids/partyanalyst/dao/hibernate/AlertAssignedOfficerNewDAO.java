@@ -395,27 +395,36 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   	  return query.list();
   	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDistrictLevelDeptWiseLocationLevelView(Date fromDate, Date toDate,Long deptId,List<Long> printIdsList,
-			List<Long> electronicIdsList,List<Long> calCntrIdList,Long levelId,List<Long> levelValues){
+	public List<Object[]> getDistrictLevelDeptWiseLocationLevelView(Date fromDate, Date toDate,List<Long> deptIds,List<Long> printIdsList,
+			List<Long> electronicIdsList,List<Long> calCntrIdList,Long levelId,List<Long> levelValues,String type,List<Long> deptScopeIds){
 	  		StringBuilder sb = new StringBuilder();  
 	  		 sb.append("select ");
 	  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
 	      		      " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " );
-	  	    
-	  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
-	  	      		   " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName," +
-	  	      		   " model.govtDepartmentDesignationOfficer.govtDepartmentScope.color, " );
-	  	     
+	  	     if(type != null && type.equalsIgnoreCase("ScopeLevel")){
+	  	    	  sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId," +
+		  	      		   " model.govtDepartmentDesignationOfficer.govtDepartmentScope.levelName," +
+		  	      		   " model.govtDepartmentDesignationOfficer.govtDepartmentScope.color, " );
+	  	     }else if(type != null && type.equalsIgnoreCase("AlertCategory")){
+	  	 	  sb.append(" model.alert.alertCategory.alertCategoryId," +
+	  	      		   "  model.alert.alertCategory.category," +
+	  	      		   "  ''," );
+ 	         }
+	  	   
 	  	     sb.append(" count(distinct model.alert.alertId) ");
 	  	     sb.append(" from AlertAssignedOfficerNew model  ");
 	  	     sb.append(" left join model.alert.edition EDS " +
 	  	    		   " left join model.alert.tvNewsChannel TNC,GovtUserAddress UA ");
-	  	     sb.append(" where model.govtDepartmentDesignationOfficer.govtUserAddress.userAddressId=UA.userAddressId and model.alert.isDeleted='N' and model.isDeleted = 'N' ");
+	  	     sb.append(" where model.govtDepartmentDesignationOfficer.govtUserAddress.userAddressId=UA.userAddressId " +
+	  	     		  " and model.alert.isDeleted='N' and model.isDeleted = 'N' " +
+	  	     		  " and model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
 	  	     
-	  	    if(deptId != null && deptId.longValue() > 0){
-	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId = :deptId ");
+	  	    if(deptIds != null && deptIds.size() > 0){
+	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in(:deptIds) ");
 	  	    }
-
+            if(deptScopeIds != null && deptScopeIds.size() > 0){
+            	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId in(:deptScopeIds) ");
+            }
 	  	   if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) )");
      	     if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
@@ -452,18 +461,22 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  	     if(levelId != null && levelId > 0){
 	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >=:levelId "); 
 	  	     }
-	  	      
-	  	      sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId, " +
-	    	           " model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " );
-	     	    
-	  	    Query query = getSession().createQuery(sb.toString());
+	  	     sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId" );
+	  	     if(type != null && type.equalsIgnoreCase("ScopeLevel")){
+	  	    	  sb.append(",model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId " +
+	  	    	  		    " order by model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId asc");
+	  	     }else if(type != null && type.equalsIgnoreCase("AlertCategory")){
+	  	 	  sb.append(",model.alert.alertCategory.alertCategoryId order by model.alert.alertCategory.order asc");
+	         }
+	  	   
+	  	     Query query = getSession().createQuery(sb.toString());
 	  	    
 	  	    if(fromDate != null && toDate != null){
 	  	        query.setDate("fromDate", fromDate);
 	  	        query.setDate("toDate", toDate);
 	  	    }
-	  	    if(deptId != null && deptId.longValue() > 0){
-	  	    	query.setParameter("deptId", deptId);
+	  	    if(deptIds != null && deptIds.size() > 0){
+	  	    	query.setParameterList("deptIds", deptIds);
 	  	    }
 	  	   if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() ){
     	      query.setParameterList("printIdList", printIdsList);
@@ -475,6 +488,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		  	if(levelId != null && levelId.longValue() > 0){
 		  		query.setParameter("levelId",levelId);  
 		  	}
+		  	 if(deptScopeIds != null && deptScopeIds.size() > 0){
+		  		query.setParameterList("deptScopeIds",deptScopeIds);
+	         }
 	  	    return query.list();
 	  	}
 	@SuppressWarnings("unchecked")
@@ -570,7 +586,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	@SuppressWarnings("unchecked")
 	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,Long statusId,
 			Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long levelId,List<Long> levelValues,
-			List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
+			List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,Long alertCategoryId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.alert.alertId "+
 				  " from " +
@@ -596,6 +612,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		}
 		if(officerId != null && officerId.longValue() > 0){
 			sb.append(" and model.govtOfficer.govtOfficerId = :officerId " );
+		}
+		if(alertCategoryId != null && alertCategoryId.longValue() > 0){
+			sb.append(" and  model.alert.alertCategoryId=:alertCategoryId");
 		}
 		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
   	      sb.append(" and UA.stateId in (:levelValues)");
@@ -653,6 +672,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		  if(levelId != null && levelValues != null && !levelValues.isEmpty()){
 	  			query.setParameterList("levelValues",levelValues);
 	  	  } 
+		  if(alertCategoryId != null && alertCategoryId.longValue() > 0){
+			  query.setParameter("alertCategoryId",alertCategoryId);
+		  }
 		//	query.setParameter("scopeId",scopeId);
 		
 		return query.list();
@@ -3802,7 +3824,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
  			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
  		}
- 		/*if(stateId != null && stateId.longValue() > 0){
+ 		/*if(subLevelIds != null && subLevelIds.size() > 0){
  			queryStr.append(" and GUA.state_id = :stateId ");
  		}*/
 		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
