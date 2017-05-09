@@ -1221,7 +1221,7 @@ public String getCommentDetails(){
 	 try{
 		 
 		 jObj = new JSONObject(getTask());
-		 activityVOList = activityService.getConstByDistrictId(jObj.getLong("activityScopeId"),jObj.getLong("districtId"));
+		 activityVOList = activityService.getConstByDistrictId(jObj.getLong("activityScopeId"),jObj.getLong("districtId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getConstituencyList()", e);
 	 }
@@ -1231,7 +1231,7 @@ public String getCommentDetails(){
 	 try{
 		 
 		 jObj = new JSONObject(getTask());
-		 activityVOList = activityService.getMandOrMuncByconstituencyId(jObj.getLong("activityScopeId"),jObj.getLong("constituencyId"));
+		 activityVOList = activityService.getMandOrMuncByconstituencyId(jObj.getLong("activityScopeId"),jObj.getLong("constituencyId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getConstituencyList()", e);
 	 }
@@ -1241,7 +1241,7 @@ public String getCommentDetails(){
 	 try{
 		 
 		 jObj = new JSONObject(getTask());
-		 activityVOList = activityService.getPanchayatOrWardsByMandalOrMuncId(jObj.getLong("activityScopeId"),jObj.getLong("mandalOrMuncipalityId"));
+		 activityVOList = activityService.getPanchayatOrWardsByMandalOrMuncId(jObj.getLong("activityScopeId"),jObj.getLong("mandalOrMuncipalityId"),jObj.getString("fromDate"),jObj.getString("toDate"));
 	 }catch(Exception e){
 		 LOG.error("Exception raised at getConstituencyList()", e);
 	 }
