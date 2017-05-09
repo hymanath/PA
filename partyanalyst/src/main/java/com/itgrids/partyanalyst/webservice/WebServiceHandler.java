@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
+import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
@@ -2600,4 +2601,17 @@ public class WebServiceHandler {
 				return null;
 			}
 		}
+		
+	@GET
+	@Path("/getAllGrievancesForCaller/{mobileNo}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<GrievanceAlertVO> getAllGrievancesForCaller(@PathParam("mobileNo") String mobileNo){
+		try{			
+			return webServiceHandlerService.getAllGrievancesForCaller(mobileNo);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAlertStatusCommentsTrackingDetails() Method, Exception is ",e);
+			return null;
+		}
+	}
 }

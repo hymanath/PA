@@ -2718,9 +2718,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			}
 		public String getGovtGrievanceAlertDetails(){
 			try{
-				session = request.getSession();
-			   	RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
-				Long scopeId = regVo.getRegistrationID();
+				//session = request.getSession();
+			   	//RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+				//Long scopeId = regVo.getRegistrationID();
 				jObj = new JSONObject(getTask());
 				String mobileNo = jObj.getString("mobileNo");
 				String locatoinType = jObj.getString("locatoinType");
