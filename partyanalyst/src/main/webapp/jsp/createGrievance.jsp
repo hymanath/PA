@@ -1441,7 +1441,8 @@ function getAlertDetails(alertStatusId,status,feedbackStattusId)
 			mobileNo : '',
 			fromDate :fromDateStr,//"12/04/2016",
 			toDate : toDateStr,//"12/04/2017"
-			feedbackStattusId:feedbackStattusId
+			feedbackStattusId:feedbackStattusId,
+			categoryId:4
 			
 		}
 		$.ajax({

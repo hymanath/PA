@@ -2434,7 +2434,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		try{
 			jObj = new JSONObject(getTask());
 			
-			alertVOs = alertService.getAlertDetailsByStatusId(jObj.getLong("alertStatusId"),jObj.getString("mobileNo"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("feedbackStattusId"));    
+			alertVOs = alertService.getAlertDetailsByStatusId(jObj.getLong("alertStatusId"),jObj.getString("mobileNo"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("feedbackStattusId"),
+					jObj.getLong("categoryId"));    
 		}catch(Exception e) {
 			LOG.error("Exception occured in getAlertDetailsByStatusId() of CreateAlertAction",e);
 		}
@@ -2934,7 +2935,6 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
-	
 	public String getAlertEfficiencyList1(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -2971,5 +2971,66 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		   LOG.error("Exception Raised in getAlertEfficiencyList() in CreateAlertAction",e);
 		}
 		   return Action.SUCCESS;
+	}
+	
+	public String getSocialAlertCallerDetails(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return null;
+			
+			jObj = new JSONObject(getTask());
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			String status = jObj.getString("status");
+			String mobileNo = jObj.getString("mobileNo");
+			Long deptId = jObj.getLong("deptId");
+			
+			alertTrackingVOList = alertService.getSocialAlertCallerDetails(regVo.getRegistrationID(),startDate,endDate,status,mobileNo,deptId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getSocialAlertCallerDetails() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;	
+		
+	}
+	public String getSocialAlertDetailsByStatus(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return null;
+			
+			jObj = new JSONObject(getTask());
+			
+			alertVOs = alertService.getSocialAlertDetailsByStatus(jObj.getLong("alertStatusId"),jObj.getString("mobileNo"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("feedbackStatusId"),
+					jObj.getLong("deptId"),jObj.getLong("categoryId"),regVo.getRegistrationID());    
+		}catch(Exception e) {
+			LOG.error("Exception occured in getSocialAlertDetailsByStatus() of CreateAlertAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String changeVeificationStatusDetails()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+
+			
+			jObj = new JSONObject(getTask());
+			AlertVO alertVO = new AlertVO();
+			alertVO.setAlertId(jObj.getLong("alertId"));
+			alertVO.setComment(jObj.getString("comment"));
+			alertVO.setStatusId(jObj.getLong("alertStatusId"));
+			alertVO.setStatus(jObj.getString("verifiedStatus"));
+			
+			status = alertService.changeVeificationStatusDetails(alertVO,userId);
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in changeVeificationStatusDetails",e);
+		}
+		return Action.SUCCESS;	
 	}
 }
