@@ -1139,10 +1139,10 @@ public List<Object[]>  getDistrictNamesConductedInfocoveredLocationsByScopeId(Lo
 	
 	return query.list();
 }
-public List<Object[]>  getConstituencyNamesByDistrictId(Long activityScopeId,Long districtId){
+public List<Object[]>  getConstituencyNamesByDistrictId(Long activityScopeId,Long districtId,Date startDate,Date endDate){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.constituency.constituencyId,UA.constituency.name," +
-				" count(model.activityDocument.activityDocumentId) " +
+				" count(distinct model.activityLocationInfoId), count(distinct model.activityConductedInfoId) " +
 				" from ActivityInfoDocument model,UserAddress UA" +
 				" where model.isDeleted ='N'" +
 				" and model.activityAddressId = UA.userAddressId ");
@@ -1150,17 +1150,23 @@ public List<Object[]>  getConstituencyNamesByDistrictId(Long activityScopeId,Lon
 			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
 		if(districtId != null && districtId.longValue() > 0l)
 			sb.append(" and UA.district.districtId = :districtId");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+			}
 		sb.append(" group by UA.constituency.constituencyId order by UA.constituency.name asc");
 	Query query =  getSession().createQuery(sb.toString());
 	if(activityScopeId != null && activityScopeId.longValue() > 0l)
 	 query.setParameter("activityScopeId", activityScopeId);
 	if(districtId != null && districtId.longValue() > 0l)
 		 query.setParameter("districtId", districtId);
-	
+	if(startDate != null && endDate != null){
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+	}
 	return query.list();
 }
 
-public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long constitencyId){
+public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long constitencyId,Date startDate,Date endDate){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.tehsil.tehsilId,UA.tehsil.tehsilName," +
 				" count(model.activityDocument.activityDocumentId) " +
@@ -1171,17 +1177,24 @@ public List<Object[]>  getMandalNamesByConstiencyId(Long activityScopeId,Long co
 			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
 		if(constitencyId != null && constitencyId.longValue() > 0l)
 			sb.append(" and UA.constituency.constituencyId = :constitencyId");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+			}
+			
 		sb.append(" group by UA.tehsil.tehsilId order by UA.tehsil.tehsilName asc ");
 	Query query =  getSession().createQuery(sb.toString());
 	if(activityScopeId != null && activityScopeId.longValue() > 0l)
 	 query.setParameter("activityScopeId", activityScopeId);
 	if(constitencyId != null && constitencyId.longValue() > 0l)
 		 query.setParameter("constitencyId", constitencyId);
-	
+	if(startDate != null && endDate != null){
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+	}
 	return query.list();
 }
 
-public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Long constitencyId){
+public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Long constitencyId,Date startDate,Date endDate){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.localElectionBody.localElectionBodyId,UA.localElectionBody.name," +
 				" count(model.activityDocument.activityDocumentId)," +
@@ -1194,17 +1207,25 @@ public List<Object[]>  getMuncipalityNamesByConstiencyId(Long activityScopeId,Lo
 			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
 		if(constitencyId != null && constitencyId.longValue() > 0l)
 			sb.append(" and UA.constituency.constituencyId = :constitencyId");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+			}
+			
+			
 		sb.append(" group by UA.localElectionBody.localElectionBodyId order by UA.localElectionBody.name asc ");
 	Query query =  getSession().createQuery(sb.toString());
 	if(activityScopeId != null && activityScopeId.longValue() > 0l)
 	 query.setParameter("activityScopeId", activityScopeId);
 	if(constitencyId != null && constitencyId.longValue() > 0l)
 		 query.setParameter("constitencyId", constitencyId);
-	
+	if(startDate != null && endDate != null){
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+	}
 	return query.list();
 }
 
-public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mandalId){
+public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mandalId,Date startDate,Date endDate){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.panchayat.panchayatId,UA.panchayat.panchayatName," +
 				" count(model.activityDocument.activityDocumentId) " +
@@ -1215,16 +1236,23 @@ public List<Object[]>  getPanchaytNamesByMandalId(Long activityScopeId,Long mand
 			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
 		if(mandalId != null && mandalId.longValue() > 0l)
 			sb.append(" and UA.tehsil.tehsilId = :mandalId");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+			}
+			
 		sb.append(" group by UA.panchayat.panchayatId order by UA.panchayat.panchayatName asc ");
 	Query query =  getSession().createQuery(sb.toString());
 	if(activityScopeId != null && activityScopeId.longValue() > 0l)
 	 query.setParameter("activityScopeId", activityScopeId);
 	if(mandalId != null && mandalId.longValue() > 0l)
 		 query.setParameter("mandalId", mandalId);
-	
+	if(startDate != null && endDate != null){
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+	}
 	return query.list();
 }
-public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long muncipalityId){
+public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long muncipalityId,Date startDate,Date endDate){
 	StringBuilder sb = new StringBuilder();
 		sb.append("select UA.ward.constituencyId,UA.ward.name," +
 				" count(model.activityDocument.activityDocumentId) " +
@@ -1236,12 +1264,21 @@ public List<Object[]>  getWardNamesByMuncipalityId(Long activityScopeId,Long mun
 			sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
 		if(muncipalityId != null && muncipalityId.longValue() > 0l)
 			sb.append(" and UA.localElectionBody.localElectionBodyId = :muncipalityId");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+			}
+			
+			
 		sb.append(" group by UA.ward.constituencyId order by UA.ward.name asc ");
 	Query query =  getSession().createQuery(sb.toString());
 	if(activityScopeId != null && activityScopeId.longValue() > 0l)
 	 query.setParameter("activityScopeId", activityScopeId);
 	if(muncipalityId != null && muncipalityId.longValue() > 0l)
 		 query.setParameter("muncipalityId", muncipalityId);
+	if(startDate != null && endDate != null){
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+	}
 	
 	return query.list();
 }
@@ -1323,16 +1360,156 @@ public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> d
 	return query.list();
 }
 
-		public List<Object[]> setDayWiseImagesDetails(Long locationId){
-			StringBuilder str = new StringBuilder();
-		    str.append("select date(model.activityDocument.activityDate),count(model.activityDocument.activityDocumentId),model.day, count(distinct model.activityLocationInfoId) , count(distinct model.activityConductedInfoId)" +
-		        "  from ActivityInfoDocument model where model.activityLocationInfoId =:locationId and model.isDeleted='N' ");
-		    str.append(" group by date(model.activityDocument.activityDate) ");
-		    
-		    Query query = getSession().createQuery(str.toString());
-		    query.setParameter("locationId",locationId);
-		    return query.list();
+public List<Object[]> setDayWiseImagesDetails(Long locationId){
+	StringBuilder str = new StringBuilder();
+    str.append("select date(model.activityDocument.activityDate),count(model.activityDocument.activityDocumentId),model.day, count(distinct model.activityLocationInfoId) , count(distinct model.activityConductedInfoId)" +
+        "  from ActivityInfoDocument model where model.activityLocationInfoId =:locationId and model.isDeleted='N' ");
+    str.append(" group by date(model.activityDocument.activityDate) ");
+    
+    Query query = getSession().createQuery(str.toString());
+    query.setParameter("locationId",locationId);
+    return query.list();
+}
+
+
+public List<Object[]> getConstituencyNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long districtId,Date startDate,Date endDate){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select UA.constituency.constituencyId,UA.constituency.name," +
+			" count(model.activityDocument.activityDocumentId) " +
+			" from ActivityInfoDocument model,UserAddress UA" +
+			" where model.isDeleted ='N'" +
+			" and model.activityAddressId = UA.userAddressId ");
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+		sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+	if(districtId != null && districtId.longValue() > 0l)
+		sb.append(" and model.userAddress.district.districtId = :districtId");
+	if(startDate != null && endDate != null){
+		sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
 		}
+		
+	sb.append(" group by UA.constituency.constituencyId order by UA.district.orderNo asc");
+	Query query =  getSession().createQuery(sb.toString());
+
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameter("districtId", districtId);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+
+		return query.list();
+}
+
+
+public List<Object[]> getMandalNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long constituencyId,Date startDate,Date endDate){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select UA.tehsil.tehsilId,UA.tehsil.tehsilName," +
+			" count(distinct model.activityLocationInfoId), count(distinct model.activityConductedInfoId) " +
+			" from ActivityInfoDocument model,UserAddress UA" +
+			" where model.isDeleted ='N'" +
+			" and model.activityAddressId = UA.userAddressId ");
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+		sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+	if(constituencyId != null && constituencyId.longValue() > 0l)
+		sb.append(" and UA.constituency.constituencyId = :constituencyId");
+	if(startDate != null && endDate != null){
+		sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+		}
+		
+	sb.append(" group by UA.tehsil.tehsilId order by UA.tehsil.tehsilName asc");
+	Query query =  getSession().createQuery(sb.toString());
+
+		query.setParameter("activityScopeId", activityScopeId);
+		query.setParameter("constituencyId", constituencyId);
+		if(startDate != null && endDate != null){
+				query.setDate("startDate", startDate);
+				query.setDate("endDate", endDate);
+		}
+return query.list();
+}
+
+
+public List<Object[]> getMuncipalityNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId,Long constituencyId,Date startDate,Date endDate){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select UA.localElectionBody.localElectionBodyId,UA.localElectionBody.name," +
+			" count(distinct model.activityLocationInfoId), count(distinct model.activityConductedInfoId) " +
+			" from ActivityInfoDocument model,UserAddress UA" +
+			" where model.isDeleted ='N'" +
+			" and model.activityAddressId = UA.userAddressId ");
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+		sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+	if(constituencyId != null && constituencyId.longValue() > 0l)
+		sb.append(" and UA.constituency.constituencyId = :constituencyId");
+	if(startDate != null && endDate != null){
+		sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+		}
+		
+	sb.append(" group by UA.localElectionBody.localElectionBodyId order by UA.localElectionBody.name asc");
+Query query =  getSession().createQuery(sb.toString());
+
+ query.setParameter("activityScopeId", activityScopeId);
+query.setParameter("constituencyId", constituencyId);
+if(startDate != null && endDate != null){
+	query.setDate("startDate", startDate);
+	query.setDate("endDate", endDate);
+}
+
+return query.list();
+}
+
+public List<Object[]> getPanchaytNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId, Long mandalOrMuncId,Date startDate,Date endDate){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select UA.panchayat.panchayatId,UA.panchayat.panchayatName," +
+			" count(distinct model.activityLocationInfoId), count(distinct model.activityConductedInfoId) " +
+			" from ActivityInfoDocument model,UserAddress UA" +
+			" where model.isDeleted ='N'" +
+			" and model.activityAddressId = UA.userAddressId ");
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+		sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+	if(mandalOrMuncId != null && mandalOrMuncId.longValue() > 0l)
+		sb.append(" and UA.tehsil.tehsilId = :mandalOrMuncId");
+	if(startDate != null && endDate != null){
+		sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+		}
+		
+	sb.append(" group by UA.panchayat.panchayatId order by UA.panchayat.panchayatName asc");
+Query query =  getSession().createQuery(sb.toString());
+
+ query.setParameter("activityScopeId", activityScopeId);
+query.setParameter("mandalOrMuncId", mandalOrMuncId);
+if(startDate != null && endDate != null){
+	query.setDate("startDate", startDate);
+	query.setDate("endDate", endDate);
+}
+return query.list();
+}
+
+public List<Object[]> getWardNamesLocationsInfocoveredLocationsByScopeId(Long activityScopeId, Long mandalOrMuncId,Date startDate,Date endDate){
+	StringBuilder sb = new StringBuilder();
+	sb.append("select UA.ward.constituencyId,UA.ward.name," +
+			" count(distinct model.activityLocationInfoId), count(distinct model.activityConductedInfoId) " +
+			" from ActivityInfoDocument model,UserAddress UA" +
+			" where model.isDeleted ='N'" +
+			" and model.activityAddressId = UA.userAddressId ");
+	if(activityScopeId != null && activityScopeId.longValue() > 0l)
+		sb.append(" and model.activityDocument.activityScope.activityScopeId = :activityScopeId");
+	if(mandalOrMuncId != null && mandalOrMuncId.longValue() > 0l)
+		sb.append(" and UA.localElectionBody.localElectionBodyId = :mandalOrMuncId");
+	if(startDate != null && endDate != null)
+		sb.append(" and date(model.activityDocument.activityDate) between :startDate and :endDate");
+
+		
+		sb.append(" group by UA.ward.constituencyId order by UA.ward.name asc");
+	Query query =  getSession().createQuery(sb.toString());
+
+	 query.setParameter("activityScopeId", activityScopeId);
+	query.setParameter("mandalOrMuncId", mandalOrMuncId);
+	if(startDate != null && endDate != null){
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+	}
+	return query.list();
+}
 		public List<Object[]> getDocumentsCuntForScopeId(Long activityScopeId,List<Long> mandalIdList,List<Long> muncipIdsList){
 			StringBuilder sb = new StringBuilder();
 			sb.append("select locationInfo.activityLocationInfoId,count(distinct model.activityDocument.activityDocumentId)," +
@@ -1377,5 +1554,5 @@ public List<Object[]> getDocumentCuntByScopeId(Long activityScopeId,List<Long> d
 			} 
 			return query.list();
 		}
-	
 }
+
