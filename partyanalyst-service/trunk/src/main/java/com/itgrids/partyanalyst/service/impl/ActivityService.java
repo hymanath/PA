@@ -6287,17 +6287,42 @@ public List<ActivityVO> getDistrictNamesByScopeId(Long activityScopeId,Long acti
 	return returnList;
 }
 
-public List<ActivityVO> getConstByDistrictId(Long activityScopeId,Long districtId){
+public List<ActivityVO> getConstByDistrictId(Long activityScopeId,Long districtId,String fromDate, String toDate){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	try{
-		List<Object[]> cntuencyCountList = activityInfoDocumentDAO.getConstituencyNamesByDistrictId(activityScopeId,districtId);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Date stDate = null;
+		Date ndDate = null;
+		if(fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0){
+			stDate = sdf.parse(fromDate);
+			ndDate = sdf.parse(toDate);
+		}
+		
+		List<Object[]> locationsInfodocsDetals = activityInfoDocumentDAO.getConstituencyNamesLocationsInfocoveredLocationsByScopeId(activityScopeId,districtId,stDate,ndDate);
+		Map<Long,Long> imagescoverdMap = new HashMap<Long, Long>(0);
+		
+		if(commonMethodsUtilService.isListOrSetValid(locationsInfodocsDetals)){
+			for (Object[] param : locationsInfodocsDetals) {
+				imagescoverdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+			}
+		}		
+		
+		
+		List<Object[]> cntuencyCountList = activityInfoDocumentDAO.getConstituencyNamesByDistrictId(activityScopeId,districtId,stDate,ndDate);
 		if(cntuencyCountList != null && cntuencyCountList.size() > 0l){
 			for (Object[] objects : cntuencyCountList) {
+				
 				ActivityVO vo = new ActivityVO();
 				 vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				 
+				 if(vo.getCount() == null || vo.getCount().longValue()==0L)
+					 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[3]));
+				 
+				 vo.setImagesCnt(imagescoverdMap.get(commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 returnList.add(vo);
+				 
 			}
 		}
 	}catch(Exception e){
@@ -6305,27 +6330,55 @@ public List<ActivityVO> getConstByDistrictId(Long activityScopeId,Long districtI
 	}
 	return returnList;
 }
-public List<ActivityVO> getMandOrMuncByconstituencyId(Long activityScopeId,Long constituencyId){
+public List<ActivityVO> getMandOrMuncByconstituencyId(Long activityScopeId,Long constituencyId,String fromDate,String toDate){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	try{
-		List<Object[]> mandalCuntList = activityInfoDocumentDAO.getMandalNamesByConstiencyId(activityScopeId,constituencyId);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Date stDate = null;
+		Date ndDate = null;
+		if(fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0){
+			stDate = sdf.parse(fromDate);
+			ndDate = sdf.parse(toDate);
+		}
+		
+		List<Object[]> locationInfodocsDetals = activityInfoDocumentDAO.getMandalNamesLocationsInfocoveredLocationsByScopeId(activityScopeId,constituencyId,stDate,ndDate);
+		Map<Long,Long> mandalImagescoverdMap = new HashMap<Long, Long>(0);
+		
+		if(commonMethodsUtilService.isListOrSetValid(locationInfodocsDetals)){
+			for (Object[] param : locationInfodocsDetals) {
+				mandalImagescoverdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+			}
+		}
+		
+		List<Object[]> mandalCuntList = activityInfoDocumentDAO.getMandalNamesByConstiencyId(activityScopeId,constituencyId,stDate,ndDate);
 		if(mandalCuntList != null && mandalCuntList.size() > 0l){
 			for (Object[] objects : mandalCuntList) {
 				ActivityVO vo = new ActivityVO();
 				 vo.setMandalId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				 vo.setImagesCount(mandalImagescoverdMap.get(commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 returnList.add(vo);
 			}
 		}
 		
-		List<Object[]> muncipuntList = activityInfoDocumentDAO.getMuncipalityNamesByConstiencyId(activityScopeId,constituencyId);
+		List<Object[]> locationsInfodocsDetals = activityInfoDocumentDAO.getMuncipalityNamesLocationsInfocoveredLocationsByScopeId(activityScopeId,constituencyId,stDate,ndDate);
+		Map<Long,Long> muncipalityimagescoverdMap = new HashMap<Long, Long>(0);
+		
+		if(commonMethodsUtilService.isListOrSetValid(locationsInfodocsDetals)){
+			for (Object[] param : locationsInfodocsDetals) {
+				muncipalityimagescoverdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+			}
+		}
+		
+		List<Object[]> muncipuntList = activityInfoDocumentDAO.getMuncipalityNamesByConstiencyId(activityScopeId,constituencyId,stDate,ndDate);
 		if(muncipuntList != null && muncipuntList.size() > 0l){
 			for (Object[] objects : muncipuntList) {
 				ActivityVO vo = new ActivityVO();
 				 vo.setMandalId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1])+ " " +commonMethodsUtilService.getStringValueForObject(objects[3]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				 vo.setImagesCount(muncipalityimagescoverdMap.get(commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 returnList.add(vo);
 			}
 		}
@@ -6335,31 +6388,59 @@ public List<ActivityVO> getMandOrMuncByconstituencyId(Long activityScopeId,Long 
 	return returnList;
 }
 
-public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId,Long mandalOrMuncId){
+public List<ActivityVO> getPanchayatOrWardsByMandalOrMuncId(Long activityScopeId,Long mandalOrMuncId,String fromDate,String toDate){
 	List<ActivityVO> returnList = new ArrayList<ActivityVO>();
 	try{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		Date stDate = null;
+		Date ndDate = null;
+		if(fromDate != null && fromDate.length() > 0 && toDate != null && toDate.length() > 0){
+			stDate = sdf.parse(fromDate);
+			ndDate = sdf.parse(toDate);
+		}
+		
+		List<Object[]> locationInfodocsDetals = activityInfoDocumentDAO.getPanchaytNamesLocationsInfocoveredLocationsByScopeId(activityScopeId,Long.valueOf(mandalOrMuncId.toString().substring(1)),stDate,ndDate);
+		Map<Long,Long> panchayatimagescoverdMap = new HashMap<Long, Long>(0);
+		
+		if(commonMethodsUtilService.isListOrSetValid(locationInfodocsDetals)){
+			for (Object[] param : locationInfodocsDetals) {
+				panchayatimagescoverdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+			}
+		}
 		
 		String subStrId=mandalOrMuncId.toString().substring(0,1);
 		if(subStrId.trim().equalsIgnoreCase("2")){
-		List<Object[]> panchayatCuntList = activityInfoDocumentDAO.getPanchaytNamesByMandalId(activityScopeId,Long.valueOf(mandalOrMuncId.toString().substring(1)));
+		List<Object[]> panchayatCuntList = activityInfoDocumentDAO.getPanchaytNamesByMandalId(activityScopeId,Long.valueOf(mandalOrMuncId.toString().substring(1)),stDate,ndDate);
 		if(panchayatCuntList != null && panchayatCuntList.size() > 0l){
 			for (Object[] objects : panchayatCuntList) {
 				ActivityVO vo = new ActivityVO();
 				 vo.setPanchayatId(Long.valueOf("1"+commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 				 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				 vo.setImagesCount(panchayatimagescoverdMap.get(commonMethodsUtilService.getLongValueForObject(objects[0])));
 				 returnList.add(vo);
 				}
 			}
 		}
+		
+		List<Object[]> locationsInfodocsDetals = activityInfoDocumentDAO.getWardNamesLocationsInfocoveredLocationsByScopeId(activityScopeId,Long.valueOf(mandalOrMuncId.toString().substring(1)),stDate,ndDate);
+		Map<Long,Long> wardimagescoverdMap = new HashMap<Long, Long>(0);
+		
+		if(commonMethodsUtilService.isListOrSetValid(locationsInfodocsDetals)){
+			for (Object[] param : locationsInfodocsDetals) {
+				wardimagescoverdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+			}
+		}
+		
 		if(subStrId.trim().equalsIgnoreCase("1")){
-			List<Object[]> panchayatCuntList = activityInfoDocumentDAO.getWardNamesByMuncipalityId(activityScopeId,Long.valueOf(mandalOrMuncId.toString().substring(1)));
+			List<Object[]> panchayatCuntList = activityInfoDocumentDAO.getWardNamesByMuncipalityId(activityScopeId,Long.valueOf(mandalOrMuncId.toString().substring(1)),stDate,ndDate);
 			if(panchayatCuntList != null && panchayatCuntList.size() > 0l){
 				for (Object[] objects : panchayatCuntList) {
 					ActivityVO vo = new ActivityVO();
 					 vo.setPanchayatId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(objects[0])));
 					 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 					 vo.setCount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					 vo.setImagesCount(wardimagescoverdMap.get(commonMethodsUtilService.getLongValueForObject(objects[0])));
 					 returnList.add(vo);
 					}
 				}
