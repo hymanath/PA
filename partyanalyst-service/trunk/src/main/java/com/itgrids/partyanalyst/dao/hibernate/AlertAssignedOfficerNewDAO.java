@@ -4975,6 +4975,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	          " left join model.alert.edition EDS " +
 	    	          " left join model.alert.tvNewsChannel TNC " +
 	    	          " left join model.govtDepartmentDesignationOfficer.govtUserAddress UA " +
+	    	          " left join model.alert.alertCategory AC " +
 	    	          " left join UA.state S " +
 	    	          " left join UA.zone Z " +
 	    	          " left join UA.region R" +
@@ -4987,7 +4988,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	          " left join UA.panchayat P");
 	    	    sb.append(" where model.alert.isDeleted='N' and model.isDeleted = 'N'  " +
 	    	    		  " and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") " +
-	    	    		  " and model.alert.alertCategory.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
+	    	    		  " and AC.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
 	    	    if(govtDepartmentScopeId != null && govtDepartmentScopeId.longValue() > 0L){
 	    	    	sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :govtDepartmentScopeId ");
 	    	    }
@@ -5052,7 +5053,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		   sb.append(" and model.alert.alertSeverity.alertSeverityId in (:priorityIdList) ");
 	    	   }
 	    	   if(alertSourceIdList != null && alertSourceIdList.size()>0){
-	    		   sb.append(" and model.alert.alertCategory.alertCategoryId in (:alertSourceIdList) ");
+	    		   sb.append(" and AC.alertCategoryId in (:alertSourceIdList) ");
 	    	   }
 	    	   if(printMediaIdList != null && printMediaIdList.size()>0 && electronicMediaIdList != null && electronicMediaIdList.size()>0){
 	    		   sb.append(" and ( model.alert.edition.newsPaper.newsPaperId in (:printMediaIdList) or ( model.alert.tvNewsChannel.tvNewsChannelId in (:electronicMediaIdList) ))" +
