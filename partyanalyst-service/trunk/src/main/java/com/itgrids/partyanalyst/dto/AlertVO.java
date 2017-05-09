@@ -79,6 +79,8 @@ public class AlertVO {
 	private String issueSubType;
 	private String feedbackStatus;
 	private String userName;
+	private Long smTypeId;
+	private String smType;
 	
 	
 	public String getUserName() {
@@ -504,4 +506,17 @@ public class AlertVO {
 	public void setFeedBackStatusId(Long feedBackStatusId) {
 		this.feedBackStatusId = feedBackStatusId;
 	}
+	public Long getSmTypeId() {
+		return smTypeId;
+	}
+	public void setSmTypeId(Long smTypeId) {
+		this.smTypeId = smTypeId;
+	}
+	public String getSmType() {
+		return smType;
+	}
+	public void setSmType(String smType) {
+		this.smType = smType;
+	}
+	
 }

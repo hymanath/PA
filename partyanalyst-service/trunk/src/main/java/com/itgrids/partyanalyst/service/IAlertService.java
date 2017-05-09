@@ -116,7 +116,7 @@ public interface IAlertService {
     public List<IdNameVO> getPanchayatDetailsByMandalId(Long tehsilId,String type);
     public CallCenterVO getTotalUserLogingDtls(String fromDateStr, String toDateStr);
     public List<IdNameVO> getAllMandalsByDistrictID(Long districtId);
-    public List<AlertVO> getAlertDetailsByStatusId(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStattusId);
+    public List<AlertVO> getAlertDetailsByStatusId(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStattusId,Long categoryId);
     public List<AlertVO> getAlertCallerDetails(Long alertId);
     public String saveAlertStatusDetails(final AlertVO alertvo,final Long userId);
     public List<AlertVO> getFeedbackStatusDetails();
@@ -146,4 +146,8 @@ public interface IAlertService {
     public List<IdNameVO> getAllDepts();
     public String saveSocialAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
     public List<AlertsSummeryVO> getAlertEfficiencyList1(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal,List<Long> alertstatusIds,String startDate,String endDate);
+    public List<AlertTrackingVO> getSocialAlertCallerDetails(Long userId,String startdateStr,String endDateStr,String status,String mobileNo,Long departmentId);
+    public List<AlertVO> getSocialAlertDetailsByStatus(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStatusId,
+			 Long deptId,Long categoryId,Long userId);
+    public String changeVeificationStatusDetails(final AlertVO alertvo,final Long userId);
 }
