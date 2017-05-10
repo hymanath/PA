@@ -8282,4 +8282,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		return query.list();  
     }
+    public List<Object[]> getAllSocialMediaType(){
+    	Query query = getSession().createQuery("select model.socialMediaTypeId,model.type from SocialMediaType model ");
+    	return query.list();
+    }
 }
