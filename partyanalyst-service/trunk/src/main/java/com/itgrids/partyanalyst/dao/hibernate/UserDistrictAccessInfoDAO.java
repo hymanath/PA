@@ -99,4 +99,12 @@ public class UserDistrictAccessInfoDAO extends GenericDaoHibernate<UserDistrictA
 			query.setParameter("userId", userId);
 			return query.list();
 		}
+		public List<Long> getDistrictIdsForUser(List<Long> userIds){
+			Query query = getSession().createQuery("select " +GET_DISTRICT_ID+""+
+					" from UserDistrictAccessInfo model" +
+					" where model.user.userId in (:userIds)");
+			query.setParameterList("userIds", userIds);
+			return query.list();
+			
+		}
 }

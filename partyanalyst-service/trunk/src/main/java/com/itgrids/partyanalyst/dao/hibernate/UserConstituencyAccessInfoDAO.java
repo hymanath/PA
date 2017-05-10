@@ -153,5 +153,12 @@ public class UserConstituencyAccessInfoDAO extends GenericDaoHibernate< UserCons
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	public List<Long> getConstituenciesByUser(List<Long> userIds){
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId" +
+				" from UserConstituencyAccessInfo model" +
+				" where model.userId in (:userIds)");
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
 
 }
