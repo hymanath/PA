@@ -3624,6 +3624,9 @@
 		<property name="urbanLocalityDAO" ref="urbanLocalityDAO"></property> 
 		<!--<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO"></property>-->
 		<property name="urbanBlockDAO" ref="urbanBlockDAO"></property>
+		<property name="tdpCadreLoginDetailsDAO" ref="tdpCadreLoginDetailsDAO"></property>
+		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"></property>
+		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	
