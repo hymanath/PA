@@ -3676,8 +3676,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 return (Integer) query.executeUpdate();
 	 }
 	 public List<Long> getAssignedDtls(Long alertId){
-		 Query query = getSession().createQuery(" select distinct model.alertAssignedOfficerId from  AlertAssignedOfficerNew model where model.alertId = :alertId and " +
-		 		" model.isDeleted='N'  ");
+		 /*Query query = getSession().createQuery(" select  model.alertAssignedOfficerId from  AlertAssignedOfficerNew model where model.alertId = :alertId and " +
+		 		" model.isDeleted='N'  ");*/
+		 
+		 Query query = getSession().createSQLQuery(" SELECT distinct  model.alert_assigned_officer_id as alert_assigned_officer_id  from alert_assigned_officer_new model " +
+		 		" where model.alert_id = :alertId  and model.is_deleted='N'  ")
+		 		.addScalar("alert_assigned_officer_id", Hibernate.LONG);
 		 query.setParameter("alertId", alertId);
 		 return query.list();
 	 }
