@@ -93,6 +93,10 @@
 		    <result name="success">/jsp/editAnnouncement.jsp</result>
 		</action>
 		
+		<action name="partyLeadersDetailsAction" class="announcementPageAction" method="getpartyLeaderDetails">
+		    <result name="success">/jsp/partyLeadersDetails.jsp</result>
+		</action>
+		
 		<action name="editAnnouncementAction" class="announcementPageAction" method="getAnnouncementByUserId" >
 			<result type="json" name="success">
 				<param name="root">announcementInfo</param>
