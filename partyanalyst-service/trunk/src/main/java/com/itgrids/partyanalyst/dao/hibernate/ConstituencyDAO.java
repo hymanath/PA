@@ -2163,6 +2163,14 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	  return query.list();
 	  
   }
+  public List<Object[]> getConstituenciesByDistrict(List<Long> districtIds){
+	  Query query = getSession().createQuery("select distinct model.constituencyId," +
+	  		" model.electionScope.electionScopeId" +
+	  		" from Constituency model" +
+	  		" where model.district.districtId in (:districtIds)");
+	  query.setParameterList("districtIds", districtIds);
+	  return query.list();
+  }
 }
 
 
