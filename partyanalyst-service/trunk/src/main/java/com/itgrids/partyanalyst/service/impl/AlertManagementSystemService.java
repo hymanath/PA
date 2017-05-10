@@ -1095,7 +1095,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
            		//get asigned officer dept, alert title
            		//0-title,1-deptId,2-deptName
-           		Alert tempSMSAlert = alertDAO.get(16894L);
+           		Alert tempSMSAlert = alertDAO.get(16894L);// testing alert id for custom mobile no
            		GovtAlertSubTask task1 = govtAlertSubTaskDAO.get(subTaskId);
            		GovtDepartmentDesignationOfficerNew designationOfficeNew = govtDepartmentDesignationOfficerNewDAO.get(task1.getGovtDepartmentDesignationOfficerId());
           		Long levelId= designationOfficeNew.getGovtDepartmentScopeId();
@@ -1127,6 +1127,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
            				message=message.replace("flag6", comment.toString()+"\n");
            				message=message.replace("flag7", status.toString()+"\n");
            				message=message.replace("flag8", status.toString()+"\n");
+           				message=message.replace("flag_99", task1 != null?task1.getAlertId().toString():null);
            				
            			}
            			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
@@ -1181,6 +1182,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                				message=message.replace("flag6", comment.toString()+"\n");
                				message=message.replace("flag7", status.toString()+"\n");
                				message=message.replace("flag8", status.toString()+"\n");
+               				message=message.replace("flag_99", task1 != null?task1.getAlertId().toString():null);
                			}
                			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
                				mobileNo=tempSMSAlert.getDescription().trim();
@@ -3488,7 +3490,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
               		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
               		//get asigned officer dept, alert title
               		//0-title,1-deptId,2-deptName
-              		Alert tempSMSAlert = alertDAO.get(16894L);// for temp mobile nos details
+              		Alert tempSMSAlert = alertDAO.get(16894L);// testing alert id for custom mobile no
               		Object[] objArr = alertDAO.getAlertDetailsForSMS(alertId);
               		List<Object[]> levelDetails = alertAssignedOfficerNewDAO.getAlertAssignedLevelDetails(alertId);
               		Long levelId=0L;
@@ -3524,7 +3526,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                				message=message.replace("flag5", departmentStr.toString());
                				message=message.replace("flag6", comment.toString()+"\n");
                				message=message.replace("flag7", status.toString()+"\n");
-               				message=message.replace("flag8", status.toString()+"\n");
+               				message=message.replace("flag_99", alertId.toString());
                			}
                			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
                				mobileNo=tempSMSAlert.getDescription().trim();
@@ -3579,6 +3581,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
                    				message=message.replace("flag6", comment.toString()+"\n");
                    				message=message.replace("flag7", status.toString()+"\n");
                    				message=message.replace("flag8", status.toString()+"\n");
+                   				message=message.replace("flag_99", alertId.toString());
                    			}
                    			
                    			
