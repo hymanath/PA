@@ -242,7 +242,7 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		return query.list();
 	}
 	//hiii 
-	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId,Date fromDate2,Date toDate2,Long involvedCadreId,Long impactId)
+	public List<Object[]> getLocationWiseFilterAlertData(List<Long> sourceIds,Date fromDate,Date toDate,LocationVO inputVO,Long assignedCadreId,Date fromDate2,Date toDate2,Long involvedCadreId,Long impactId,List<Long> consIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select " +
@@ -375,6 +375,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 			
 				
 		}
+		if(consIds != null && consIds.size() >0l){
+			str.append(" and constituency.constituencyId in (:consIds)");
+		}
 		
 		if(inputVO.getId() != null && inputVO.getId().longValue()>0L){
 			str.append(" and model.alertTypeId =:alertTypeId ");
@@ -499,6 +502,9 @@ public class AlertDAO extends GenericDaoHibernate<Alert, Long> implements
 		if(inputVO.getVillageId() != null && inputVO.getVillageId() > 0)
 		{
 			query.setParameter("panchayatId", inputVO.getVillageId());
+		}
+		if(consIds != null && consIds.size() >0l){
+			query.setParameterList("consIds", consIds);
 		}
 		return query.list();
 	}
@@ -4460,7 +4466,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list();
 	}
    
-   public List<Object[]> getTotalAlertGroupByStatusForCentralMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,Long tdpCadreId){
+   public List<Object[]> getTotalAlertGroupByStatusForCentralMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,Long tdpCadreId,List<Long> constIds){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select alertStatus.alertStatusId, alertStatus.alertStatus, count(distinct model.alert.alertId) " +
 						" from AlertAssigned model " +
@@ -4474,8 +4480,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 						" left join userAddress.ward ward  ");
 		queryStr.append(" left join model.alert.alertStatus alertStatus ");
 		
-		queryStr.append(" where model.alert.isDeleted ='N' and model.tdpCadreId = :tdpCadreId" +
-							" and model.isDeleted = 'N'");
+		queryStr.append(" where model.alert.isDeleted ='N' and model.isDeleted = 'N'");
+		
+		if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
+			queryStr.append(" and model.tdpCadreId = :tdpCadreId");
+		}
+		if(constIds != null && constIds.size() > 0l){
+			queryStr.append(" and constituency.constituencyId in (:constIds)");
+		}
+							
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and (date(model.alert.createdTime) between :fromDate and :toDate) ");
 		}
@@ -4493,7 +4506,12 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		queryStr.append(" group by model.alert.alertStatus.alertStatusId order by model.alert.alertStatus.alertStatusId ");
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("tdpCadreId", tdpCadreId);
+		if(tdpCadreId != null && tdpCadreId.longValue() > 0l){
+			query.setParameter("tdpCadreId", tdpCadreId);
+		}
+		if(constIds != null && constIds.size() > 0l){
+			query.setParameterList("constIds", constIds);
+		}
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
@@ -4504,7 +4522,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list(); 
 	}
    
-   public List<Object[]> getTotalAlertGroupByStatusThenCategoryForCentralMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,Long tdpCadreId){
+   public List<Object[]> getTotalAlertGroupByStatusThenCategoryForCentralMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,Long tdpCadreId,List<Long> consIds){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select " +
 						" alertStatus.alertStatusId, " +
@@ -4526,8 +4544,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" left join model.alert.alertSource alertSource ");
 		queryStr.append(" left join model.alert.alertSeverity alertSeverity ");
 		queryStr.append(" left join model.alert.alertStatus alertStatus ");
-		queryStr.append(" where model.alert.isDeleted ='N' and model.tdpCadreId = :tdpCadreId" +
-							" and model.isDeleted = 'N' ");
+		queryStr.append(" where model.alert.isDeleted ='N' and model.isDeleted = 'N'");
+		
+		if(tdpCadreId != null && tdpCadreId.longValue() >0l){
+			queryStr.append(" and model.tdpCadreId = :tdpCadreId");
+		}
+		if(consIds != null && consIds.size() > 0l){
+			queryStr.append(" and constituency.constituencyId in (:consIds)");
+		}
+		
 		if(fromDate != null && toDate != null){
 			queryStr.append(" and ( date(model.alert.createdTime) between :fromDate and :toDate)  ");
 		}
@@ -4546,7 +4571,13 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" group by alertStatus.alertStatusId, alertCategory.alertCategoryId " +
 						" order by alertStatus.alertStatusId, alertCategory.alertCategoryId ");
 		Query query = getSession().createQuery(queryStr.toString());
-		query.setParameter("tdpCadreId", tdpCadreId);
+		if(tdpCadreId != null && tdpCadreId.longValue() >0l){
+			query.setParameter("tdpCadreId", tdpCadreId);
+		}
+		if(consIds != null && consIds.size() > 0l){
+			query.setParameterList("consIds", consIds);
+		}
+		
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate", toDate);
@@ -4557,7 +4588,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list(); 
 	}
    
-   public List<Object[]> getLocationLevelWiseAlertsDataForCentralMembers(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate)
+   public List<Object[]> getLocationLevelWiseAlertsDataForCentralMembers(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,List<Long> consIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append("select " +
@@ -4617,6 +4648,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		
 		if(inputVO.getAssignId() != null && inputVO.getAssignId() > 0l)
 			str.append(" and model.tdpCadreId = :tdpCadreId");
+		
+		if(consIds != null && consIds.size() > 0l){
+			str.append(" and constituency.constituencyId in (:consIds)");
+		}
 		
 		if(inputVO.getAlertImpactScopeId() !=null && inputVO.getAlertImpactScopeId()>0l){
 			str.append(" and model.alert.impactScopeId=:impactScopeId");
@@ -4695,6 +4730,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		if(inputVO.getAssignId() != null && inputVO.getAssignId() > 0l)
 			query.setParameter("tdpCadreId", inputVO.getAssignId());
+		if(consIds != null && consIds.size() > 0l)
+			query.setParameterList("consIds", consIds);
 		return query.list();
 	}
    	//swadhin lenka
