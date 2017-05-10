@@ -270,6 +270,15 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 	}
 	
+	public String getpartyLeaderDetails(){
+		try {
+
+		} catch (Exception e) {
+			LOG.error("Exception rised in getpartyLeaderDetails",e);
+		}
+		return Action.SUCCESS;
+		
+	}
 	
 	
 }
