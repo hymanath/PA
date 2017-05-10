@@ -23,4 +23,12 @@ public class TdpCadreLoginDetailsDAO extends GenericDaoHibernate<TdpCadreLoginDe
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	public List<Long> getuserIdsForCadre(Long tdpCadreId){
+		Query query = getSession().createQuery("select distinct model.loginId" +
+				" from TdpCadreLoginDetails model" +
+				" where model.tdpCadreId = :tdpCadreId" +
+				" and model.isDeleted = 'N'");
+		query.setParameter("tdpCadreId", tdpCadreId);
+		return query.list();
+	}
 }
