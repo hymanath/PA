@@ -805,8 +805,51 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							adcn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 							adcn = alertDepartmentCommentNewDAO.save(adcn);
 						}
+						List<Long> assingedIdsList = new ArrayList<Long>(0);
+						List<AlertAssignedOfficerNew> assignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+						if(commonMethodsUtilService.isListOrSetValid(assignedOfficersList)){
+							
+							for (AlertAssignedOfficerNew aaon : assignedOfficersList) {
+								
+								if(statusId == 8l || statusId == 9l)
+									aaon.setIsApproved("N");
+								aaon.setAlertStatusId(statusId);
+								aaon.setUpdatedBy(userId);
+								aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								alertAssignedOfficerNewDAO.save(aaon);
+								
+								AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+									if(statusId == 8l || statusId == 9l)
+										aaon.setIsApproved("N");
+								aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+								aaotn.setAlertId(aaon.getAlertId());
+								aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+								aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+								aaotn.setGovtAlertActionTypeId(6l);
+								if(statusId != null && statusId.longValue()>0L)
+									aaotn.setAlertStatusId(statusId);
+								
+								if(adcn != null)
+									aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
+								
+								aaotn.setInsertedBy(userId);
+								aaotn.setAlertStatusId(aaon.getAlertStatusId());
+								aaotn.setUpdatedBy(userId);
+								aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								aaotn.setIsApproved(aaon.getIsApproved());
+								alertAssignedOfficerTrackingNewDAO.save(aaotn);
+								
+								assingedIdsList.add(aaon.getAlertAssignedOfficerId());
+							}
+						}
 						
-						AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
+						/* here only we are updating for one assigned officer. But we can assing to multiple members . because of this we need to update present status of alert
+						 * for every assigned user. so am iterating the whole assigned officers 
+						 * Srishailam Pittala 
+						 */
+						
+						/*AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
 						if(statusId == 8l || statusId == 9l)
 							aaon.setIsApproved("N");
 						aaon.setAlertStatusId(statusId);
@@ -835,10 +878,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						aaotn.setIsApproved(aaon.getIsApproved());
 						alertAssignedOfficerTrackingNewDAO.save(aaotn);
-						
+						*/
 						/* SMS sending while assigning a new alert to any officer */
 						
-						List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(alertId);
+						//List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(alertId);
 						if(commonMethodsUtilService.isListOrSetValid(assingedIdsList)){//assingedId != null){
 							for (Long assingedId : assingedIdsList) {
 								AlertAssignedOfficerNew alertAssignedOfficer2 = alertAssignedOfficerNewDAO.get(assingedId);
@@ -3580,7 +3623,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	                   			smsDetailsVO.setAlertId(alertId);
 	                   			smsDetailsVO.setSmsText(message);
 	                   			smsDetailsVO.setActionTypeId(actionTypeId);
-	                   			//saveGovtOfficerSmsDetails(smsDetailsVO);
+	                   			saveGovtOfficerSmsDetails(smsDetailsVO);
                    			}
               			}
               		}
