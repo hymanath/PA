@@ -8323,4 +8323,158 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	Query query = getSession().createQuery("select model.socialMediaTypeId,model.type from SocialMediaType model ");
     	return query.list();
     }
+    public List<Long> getTotalAlertByStatusNew4(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,List<Long> statusIdList,Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long scopeId,List<Long> locationIdList,List<Long> subTaskStatusIdList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct ");  
+		queryStr.append(" A.alert_id as alert_id  from alert A ");
+		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N') ");
+		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id ");
+		queryStr.append(" left outer join alert_source ALTSRC on ALTSRC.alert_source_id = A.alert_source_id ");
+		queryStr.append(" left outer join alert_impact_scope AIS on AIS.alert_impact_scope_id = A.impact_scope_id ");
+		queryStr.append(" left outer join alert_severity ALTSVR on ALTSVR.alert_severity_id = A.alert_severity_id ");//
+		queryStr.append(" left outer join user_address UA on A.address_id=UA.user_address_id ");
+		queryStr.append(" left outer join state S on UA.state_id=S.state_id ");
+		queryStr.append(" left outer join district D on D.district_id = UA.district_id ");
+		queryStr.append(" left outer join constituency C on C.constituency_id = UA.constituency_id ");
+		queryStr.append(" left outer join tehsil T on T.tehsil_id = UA.tehsil_id ");//
+		queryStr.append(" left outer join panchayat P on P.panchayat_id = UA.panchayat_id ");//
+		queryStr.append(" left outer join local_election_body LEB on LEB.local_election_body_id = UA.local_election_body ");//
+		queryStr.append(" left join govt_alert_sub_task ASTS on ASTS.alert_id = A.alert_id ");
+		queryStr.append(" join alert_status ALTS on A.alert_status_id=ALTS.alert_status_id ");
+		queryStr.append(" join govt_department GD on GD.govt_department_id = A.govt_department_id ");
+		queryStr.append(" join alert_category AC on AC.alert_category_id = A.alert_category_id ");
+		
+		//queryStr.append(" join govt_department_scope GDS on GDS.govt_department_scope_id = A.impact_scope_id ");
+		queryStr.append(" where ");
+		queryStr.append(" A.is_deleted='N' and A.alert_status_id = 1 and ");
+		if(deptId != null && deptId.longValue() > 0 ){
+			queryStr.append(" A.govt_department_id =:deptId and ");
+		}else{
+			if(deptIdList != null && deptIdList.size() > 0)
+				queryStr.append(" A.govt_department_id in (:deptIdList) and ");
+		}
+		queryStr.append(" A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") and ");
+		
+		if(fromDate != null && toDate != null)
+			queryStr.append(" (date(A.created_time) between :fromDate and :toDate) and ");
+		if(stateId != null && stateId.longValue() >= 0L){
+			if(stateId.longValue() == 1L){
+				queryStr.append(" S.state_id = 1 and ");
+			}else if(stateId.longValue() == 36L){
+				queryStr.append(" S.state_id = 36 and ");
+			}else if(stateId.longValue() == 0L){
+				queryStr.append(" S.state_id in (1,36) and ");
+			}
+		}
+		queryStr.append(" A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+		//queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) ) ");
+		
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+			queryStr.append(" and ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList) )");
+		
+			if( calCntrIds !=null && !calCntrIds.isEmpty() && calCntrIds.get(0).longValue()!=0l ){
+				queryStr.append(" or A.alert_caller_id is not null ");
+			}else{
+				queryStr.append(" and A.alert_caller_id is null ");
+			}
+			queryStr.append(" )");
+		}
+			
+		/*else if(printIdList != null && !printIdList.isEmpty())
+			queryStr.append(" and EDS.news_paper_id in (:printIdList)");
+		else if(electronicIdList != null && !electronicIdList.isEmpty())
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicIdList)");*/
+		
+		if(statusIdList != null && statusIdList.size() > 0L){
+			queryStr.append(" and A.alert_status_id in (:statusIdList)  ");
+		}
+		if(impactLevelIdList != null && impactLevelIdList.size()>0){
+			queryStr.append(" and A.impact_level_id in (:impactLevelIdList) ");
+		}
+		if(priorityIdList != null && priorityIdList.size()>0){
+			queryStr.append(" and ALTSVR.alert_severity_id in (:priorityIdList) ");
+		}
+		if(alertSourceIdList != null && alertSourceIdList.size()>0){
+			queryStr.append(" and AC.alert_category_id in (:alertSourceIdList) ");
+		}
+		if(printMediaIdList != null && printMediaIdList.size()>0 && electronicMediaIdList != null && electronicMediaIdList.size()>0){
+			queryStr.append(" and  (EDS.news_paper_id  in (:printMediaIdList) or (TNC.tv_news_channel_id in (:electronicMediaIdList) ) ) ");
+		}else if(printMediaIdList != null && printMediaIdList.size()>0){
+			queryStr.append(" and  EDS.news_paper_id  in (:printMediaIdList) ");
+		}else if(electronicMediaIdList != null && electronicMediaIdList.size()>0){
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicMediaIdList) ");
+		}
+		/*if(electronicMediaIdList != null && electronicMediaIdList.size()>0){
+			queryStr.append(" and TNC.tv_news_channel_id in (:electronicMediaIdList) ");
+		}*/
+		if(locationIdList != null && locationIdList.size()>0){
+		if(scopeId != null && scopeId.longValue() == 1L ){
+			queryStr.append(" and UA.state_id in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 2L ){
+			queryStr.append(" and UA.district_id in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 3L ){
+			queryStr.append(" and UA.constituency_id in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 5L ){
+			queryStr.append(" and  UA.tehsil_id in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 6L ){
+			queryStr.append(" and UA.panchayat_id in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 4L ){
+			queryStr.append(" and UA.parliament_constituency_id in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 8L ){
+			queryStr.append(" and UA.local_election_body in (:locationIdList) ");
+		}else if(scopeId != null && scopeId.longValue() == 7L ){
+			queryStr.append(" and UA.hamlet_id in (:locationIdList) ");
+		}
+		}
+		if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
+			queryStr.append(" and ASTS.alert_sub_task_status_id in (:subTaskStatusIdList) ");
+		}
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alert_id", Hibernate.LONG);//0
+				
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		if(printIdList != null && !printIdList.isEmpty() && electronicIdList != null && !electronicIdList.isEmpty()){
+			query.setParameterList("printIdList", printIdList);   
+			query.setParameterList("electronicIdList", electronicIdList);
+			
+		}
+		
+		if(deptId != null && deptId.longValue() > 0 ){
+			query.setParameter("deptId", deptId);
+		}else{
+			if(deptIdList != null && deptIdList.size() > 0){
+				query.setParameterList("deptIdList", deptIdList);
+			}
+		}
+		if(statusIdList != null && statusIdList.size() > 0L){
+			query.setParameterList("statusIdList", statusIdList);
+		}
+		if(impactLevelIdList != null && impactLevelIdList.size()>0){
+			query.setParameterList("impactLevelIdList", impactLevelIdList);
+		}
+		if(priorityIdList != null && priorityIdList.size()>0){
+			query.setParameterList("priorityIdList", priorityIdList);
+		}
+		if(alertSourceIdList != null && alertSourceIdList.size()>0){
+			query.setParameterList("alertSourceIdList", alertSourceIdList);
+		}
+		if(printMediaIdList != null && printMediaIdList.size()>0){
+			query.setParameterList("printMediaIdList", printMediaIdList);
+		}
+		if(electronicMediaIdList != null && electronicMediaIdList.size()>0){
+			query.setParameterList("electronicMediaIdList", electronicMediaIdList);
+		}
+		if(locationIdList != null && locationIdList.size()>0){
+			query.setParameterList("locationIdList", locationIdList);
+		}
+		if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0){
+			
+			query.setParameterList("subTaskStatusIdList", subTaskStatusIdList);
+		}
+		return query.list(); 
+	}
+    
 }
