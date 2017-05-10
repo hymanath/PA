@@ -4687,7 +4687,28 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     			String lcationName = govtDepartmentDesignationOfficerDetailsNewDAO.getLocationNameByAssignedOficer(assignedByOfficerId);
     			if(finalList != null && finalList.size() > 0){
     				IdNameVO vo = finalList.get(0);
-    				vo.setDeptName(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());
+    				Long assignedUserId = govtAlertSubTask.getCreatedBy();
+    				if(assignedUserId != null){
+    					List<String> deptList = govtAlertDepartmentLocationNewDAO.getAccessDepartmentList(assignedUserId);
+    					if(deptList != null && deptList.size() > 0){
+    						StringBuilder strBuild = new StringBuilder();
+    						if(deptList.size() > 3){
+    							for(int i=1 ; i <= 3 ; i++){
+    								strBuild.append(deptList.get(i));
+    								strBuild.append(",");
+    							}
+    							strBuild.append("...");
+    						}else{
+    							for(String str : deptList){
+    								strBuild.append(str);
+    								strBuild.append(",");
+    							}
+    						}  
+    						vo.setDeptName(strBuild.toString());
+    					}
+    				}
+    				
+    				//vo.setDeptName(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());
     				vo.setAssignedByOfficerStr(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getOfficerName());
     				vo.setAssignedOfficerStr(govtAlertSubTask.getSubTaskGovtOfficer().getOfficerName());
     				vo.setMobileNo(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo() != null ?govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo():"");
@@ -9081,6 +9102,11 @@ public List<AlertCoreDashBoardVO> getAlertDtlsByAlertSource(String fromDateStr, 
 	}
 	return null;
 }
+/*
+ * Swadhin K Lenka
+ * (non-Javadoc)
+ * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getBellowDistrictOfficerAlertsDtls(java.lang.String, java.lang.String, java.util.List, java.util.List, java.util.List, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long)
+ */
 public List<AlertCoreDashBoardVO> getBellowDistrictOfficerAlertsDtls(String fromDateStr,String toDateStr,List<Long> printIdList,List<Long> electronicIdList,List<Long> calCntrIdList,String task,Long statusId,Long desigDeptOfficerId,Long officerId){
 	try{
 		Date fromDate = null;
@@ -9131,7 +9157,12 @@ public List<AlertCoreDashBoardVO> getBellowDistrictOfficerAlertsDtls(String from
 	}
 	return null;
 }
-public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId){
+/*
+ * Swadhin K Lenka
+ * (non-Javadoc)
+ * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#viewAlertHistoryNew(java.lang.Long)
+ */
+public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId, String task){
 	try{
 		AlertTrackingVO alertTrackingVO = null;
 		AlertTrackingVO userDetails = null;
@@ -9140,8 +9171,13 @@ public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId){
 		Map<Long,AlertTrackingVO> userMap = new HashMap<Long, AlertTrackingVO>(0);
 		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss a");
+		List<Object[]> trackingList = null;
+		if(task != null && !task.trim().isEmpty() && task.trim().length() > 0 && task.trim().equalsIgnoreCase("task")){
+			trackingList = alertAssignedOfficerTrackingNewDAO.getAlertTrackingDtls(alertId);
+		}else{
+			trackingList = govtOfficerSubTaskTrackingDAO.getSubTaskAlertTrackingDtls(alertId);
+		}
 		
-		List<Object[]> trackingList = alertAssignedOfficerTrackingNewDAO.getAlertTrackingDtls(alertId);
 		//collect userid
 		Set<Long> userIdList = new HashSet<Long>(); 
 		if(trackingList != null && trackingList.size() > 0){
@@ -9171,13 +9207,31 @@ public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId){
 				if(userDtls != null && userDtls.size() > 0){
 					userIdAndStatusMap.put(loginUserId, "officer");
 					String deptName = "";
-					if(deptList != null && deptList.size() > 0){
+					/*if(deptList != null && deptList.size() > 0){
 						if(deptList.size() > 1){
 							deptName = "N/A";  
 						}else{
 							deptName = deptList.get(0).trim();
 						}
+					}*/
+					
+					if(deptList != null && deptList.size() > 0){
+						StringBuilder strBuild = new StringBuilder();
+						if(deptList.size() > 3){
+							for(int i=1 ; i <= 3 ; i++){
+								strBuild.append(deptList.get(i));
+								strBuild.append(",");
+							}
+							strBuild.append("...");
+						}else{
+							for(String str : deptList){
+								strBuild.append(str);
+								strBuild.append(",");
+							}
+						}
+						deptName = strBuild.toString();
 					}
+					
 					String designationStr = commonMethodsUtilService.getStringValueForObject(userDtls.get(0)[0]);
 					String officerName = idAndNameMap.get(commonMethodsUtilService.getLongValueForObject(param[13]));
 					String mobileNo = commonMethodsUtilService.getStringValueForObject(userDtls.get(0)[2]);
@@ -9271,6 +9325,8 @@ public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId){
 }
 /*
  * Swadhin K Lenka
+ * (non-Javadoc)
+ * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getBellowDistrictOfficerAlertsCountView(java.lang.Long, java.lang.String, java.lang.String, java.util.List, java.util.List, java.util.List, java.lang.String, java.lang.String)
  */
 public List<DistrictOfficeViewAlertVO> getBellowDistrictOfficerAlertsCountView(Long userId,String startDate,String endDate, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList, String task,String sortingType){
 	
