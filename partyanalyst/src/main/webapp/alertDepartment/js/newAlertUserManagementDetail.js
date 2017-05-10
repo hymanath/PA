@@ -4090,7 +4090,8 @@ function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevel
 		levelId :			 levelId,
 		levelValues :		 levelValues,
 		subTaskStatusIdList: subStatusIdArr,
-		isMoreThanYrChkd: 	 "false"
+		isMoreThanYrChkd: 	 "false",
+		isLagChkd : "false"
     }
     $.ajax({
 		type:'GET',
