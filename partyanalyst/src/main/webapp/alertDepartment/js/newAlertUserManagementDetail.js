@@ -897,6 +897,7 @@ function getSubTaskStatusHistory(subTaskId,alertId){
 		alertSubTaskStatusHistory(result,subTaskId,alertId);
 	});
 }
+//nandini
 function alertSubTaskStatusHistory(result,subTaskId,alertId){
 
 	var str='';
@@ -922,7 +923,16 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 						str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
 						str+='<p class="text-primary text-capitalize"><u> Designation:  <span style="color:black;"> '+result[i].designation+' </span></u></p>';
 						str+='<p class="text-primary text-capitalize"><u> Location:  <span style="color:black;"> '+result[i].location+' </span></u></p>';
-						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';						
+						//str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';
+						
+						if(result[i].deptName != null && result[i].deptName.length > 0){
+							var deptArr = result[i].deptName.split(",");
+							if(deptArr.length > 3){
+								str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+deptArr[0]+","+deptArr[1]+","+deptArr[2]+'... </span></p>';
+							}else{
+								str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';
+							}   
+						}
 						
 						//str+='<p class="text-primary text-capitalize">Dept Name: '+result[i].mobileNO+'</p>';
 					str+='</td>';
@@ -3769,7 +3779,16 @@ function alertStatusHistory(result,alertId)
 						str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
 						str+='<p class="text-primary text-capitalize"><u> Designation:  <span style="color:black;"> '+result[i].designation+' </span></u></p>';
 						str+='<p class="text-primary text-capitalize"><u> Location:  <span style="color:black;"> '+result[i].location+' </span></u></p>';
-						str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';
+						
+						if(result[i].deptName != null && result[i].deptName.length > 0){
+							var deptArr = result[i].deptName.split(",");
+							if(deptArr.length > 3){
+								str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+deptArr[0]+","+deptArr[1]+","+deptArr[2]+'... </span></p>';
+							}else{
+								str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;"> '+result[i].deptName+' </span></p>';
+							}
+						}
+						
 					}
 						//str+='<p class="text-primary text-capitalize">Dept Name: '+result[i].mobileNO+'</p>';
 					str+='</td>';
