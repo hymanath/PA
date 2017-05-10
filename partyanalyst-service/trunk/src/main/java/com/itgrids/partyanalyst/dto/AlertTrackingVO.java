@@ -47,7 +47,7 @@ public class AlertTrackingVO {
 		this.date = date;
 	}
 	
-	public AlertTrackingVO(Long alertId,String comment,String date,String userName,String designation,String department,String location){
+	public AlertTrackingVO(Long alertId,String comment,String date,String userName,String designation,String department,String location,Long userId){
 		this.alertId=alertId;
 		this.comment = comment;
 		this.date = date;
@@ -55,6 +55,7 @@ public class AlertTrackingVO {
 		this.designation = designation;
 		this.deptName = department;
 		this.location = location;
+		this.userId = userId;
 	}
 	public String getColor() {
 		return color;
