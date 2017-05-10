@@ -333,7 +333,6 @@ function buildTotalAlertGroupByStatusForGovt(result)
 {
 	var str='';
 	var totalAlert = 0;
-	var pendingCount=0;
 	str+='<div class="row">';
 		str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 			str+='<div id="totalAlertGroupByStatusForGovt" style="height:300px"></div>';
@@ -350,10 +349,7 @@ function buildTotalAlertGroupByStatusForGovt(result)
 					str+='<tbody>';
 						for(var i in result)
 						{
-							var statusName = result[i].name;
-							if(statusName == "Pending"){
-								pendingCount = result[i].alertCnt;
-							}	
+							
 							totalAlert+=result[i].alertCnt;
 							str+='<tr>';
 								str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
@@ -371,7 +367,7 @@ function buildTotalAlertGroupByStatusForGovt(result)
 		str+='</div>';
 	str+='</div>';
 	$("#statusOverview").html(str);
-	$("#statusOverViewTotal").html("<h4 style='font-size: 16px;'><span class='totalAlertCls' attr_result_type='statusWise' style='cursor:pointer;' attr_total_alert_count='"+totalAlert+"'>TOTAL -  "+totalAlert+"</span>  <span style='cursor:pointer;margin-left: 10px;' class='getDtlsCls' attr_status_name ='Pending' attr_status_count='"+pendingCount+"' attr_status_id ='1' >PENDING -  "+pendingCount+"</span></h4>");
+	$("#statusOverViewTotal").html("<h4 style='font-size: 16px;'><span class='totalAlertCls' attr_result_type='statusWise' style='cursor:pointer;' attr_total_alert_count='"+totalAlert+"'>TOTAL -  "+totalAlert+"</span></h4>");
 	var statusOverviewArr =[];
 	if(result.length > 6)
 	{
