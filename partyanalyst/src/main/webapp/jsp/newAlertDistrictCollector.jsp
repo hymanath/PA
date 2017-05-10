@@ -168,6 +168,7 @@
 												<li attr_type="status" class="active">status overview</li>
 												<li attr_type="scopeLevel" class="" >location level</li>
 												<li attr_type="alertCategory" class="" >Alert Source</li>
+												<li attr_type="filterView" class="" id="filterViewId" >Filter</li>
 											</ul>
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-12 ">
@@ -206,6 +207,9 @@
 												<select class="form-control" id="locationLevelNamesId" >
 												</select>
 											</div>
+										</div>
+										<div class="col-sm-12 col-xs-12 col-md-12 ">
+											<div id="filterViewBodyId" style="display:none"></div>
 										</div>
 											<div id="departmentWiseGraphViewDetails"></div>
 											<!--<div id="departmentlocationCountDivId" class="departmentlocationShow" style="margin-left:15px;display:none;"></div>
@@ -270,6 +274,7 @@
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertDistrictCollector.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertFilter.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 
@@ -282,9 +287,9 @@ var globalgovtDeptDesigOffcrIds=[];
 var	globalgovtOfficerIds=[];
 var globalDesignationId;
 var globalDepartmentName;
-var paperIdArr =[];
-var chanelIdArr =[];
-var callCenterArr=[];
+var newspapersGlobalArr =[];
+var channelGlobalArr =[];
+var callCenterGlobalArr=[];
 var departmentIdsForAlertSoutceArr=[];
 
 google.load("elements", "1", {
@@ -316,22 +321,22 @@ $(document).on("click",".selectAllCls",function(){
 		$(".newsPaperListCls").prop('checked', false);
 		$(".chanelListCls").prop('checked', false);
 		$(".callcenterCls").prop('checked', false);
-		paperIdArr=[];
-		chanelIdArr=[];
-		callCenterArr=[];
+		newspapersGlobalArr=[];
+		channelGlobalArr=[];
+		callCenterGlobalArr=[];
 	}
 	
 });
 function onLoadPrintAndChannelAndCallCen(){
-	paperIdArr=[];
-	chanelIdArr=[];
-	callCenterArr=[];
+	newspapersGlobalArr=[];
+	channelGlobalArr=[];
+	callCenterGlobalArr=[];
 	$(".newsPaperListCls").each(function(){
 	if($(this).is(":checked"))
 	{
 		<c:forEach var="newsPaper" items="${newsPaperList}">
 			var newspapersGlobalObj = '${newsPaper.id}'
-			paperIdArr.push(newspapersGlobalObj)
+			newspapersGlobalArr.push(newspapersGlobalObj)
 		 </c:forEach>
 	}
 });
@@ -340,7 +345,7 @@ $(".chanelListCls").each(function(){
 	{
 		 <c:forEach items="${chanelListNew}"  var="channels">
 			var channelGlobalObj = '${channels.id}'
-			chanelIdArr.push(channelGlobalObj)
+			channelGlobalArr.push(channelGlobalObj)
 		 </c:forEach>
 	}
 });
@@ -348,7 +353,7 @@ $(".callcenterCls").each(function(){
 	if($(this).is(":checked"))
 	{
 		var callCenterObj = $(this).attr("attr_val");
-		callCenterArr.push(callCenterObj);
+		callCenterGlobalArr.push(callCenterObj);
 	}
 }); 
 }

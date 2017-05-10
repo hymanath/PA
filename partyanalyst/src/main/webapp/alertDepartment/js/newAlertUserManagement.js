@@ -3,6 +3,7 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
+var globaldepartmentsArrForFilterView=[];
 onLoadCallsForState(); 
 $(document).on("click",".filterSubmitBtnCls",function(){
 		var newsPaperIdLen = newspapersGlobalArr.length;
@@ -60,7 +61,6 @@ $(document).on("click",".filterSubmitBtnCls",function(){
 			stateLevelDeptOfficerLocationLevelOverview();
 			stateLevelDeptOfficerDepartmentWiseAlertsView();
 			getAlertSourceWiseAlert();
-		
 		});
 	}
 
@@ -1983,22 +1983,25 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 						str+='</div>';
 						str+='<div class="col-md-6 col-xs-12 col-sm-4">';
 							str+='<ul class="switch-btn pull-right">';
-								str+='<li class="active" attr_type="statuswise" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status overview</li>';
-								str+='<li attr_type="scopewise"  attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location level</li>';
-								str+='<li attr_type="alertSource"  attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Alert Source</li>';
+								str+='<li class="active" attr_type="statuswise" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status overview</li>';
+								str+='<li attr_type="scopewise"  attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location level</li>';
+								str+='<li attr_type="alertSource"  attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Alert Source</li>';
+								str+='<li id="filterViewId" attr_type="filterView" attr_department_name="'+result[i].name+'" attr_department_id="'+result[i].id+'">Filter</li>';
 							str+='</ul>';
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-4 ">';
 							str+='<ul class="switch-btn-alertType pull-right">';
-								str+='<li  attr_type="alert" class="active" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Alerts</li>';
-								str+='<li attr_type="subTask" attr_department_id="'+result[i].id+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Sub Tasks</li>';
+								str+='<li  attr_type="alert" class="active" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Alerts</li>';
+								str+='<li attr_type="subTask" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Sub Tasks</li>';
 							str+='</ul>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 			
 					
-				str+='<div class="panel-body">';
+				str+='<div class="panel-body" style="display:none;" id="filterViewBodyId"></div>';
+					
+				str+='<div class="panel-body" id="statusOvrvwId">';
 						if(result[i].subList1 !=null && result[i].subList1.length>0){
 							for(var j in result[i].subList1){
 								str+='<div class="col-md-12 col-xs-12 col-sm-12" id="departmentWiseBlocks'+result[i].id+''+result[i].subList1[j].id+'">';
@@ -2083,6 +2086,23 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 	}
 	
 }
+
+
+function filerterViewBody()
+{
+	var str='';
+	
+	str+='<div class="row">';
+		str+='<div class="col-sm-12 col-xs-12 col-md-12">';
+			str+='<div id="assignedUser1"></div>';
+		str+='</div>	';
+		str+='<div class="col-sm-12 col-xs-12 col-md-12">';
+			str+='<div id="getSubOrdinateFilterAlertsOverview"></div>';
+		str+='</div>';
+	str+='</div>';
+	$("#filterViewBodyId").html(str);
+}
+
 	function getAlertType(){
 		 var alertType = ''; 
 		$('.switch-btn-alertType li').each(function(i, obj){
@@ -2107,6 +2127,7 @@ $(document).on("click",".switch-btn-alertType li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var departmentId = $(this).attr("attr_department_id");
+		var departmentName = $(this).attr("attr_department_name");
 		var parentIdStr = $(this).attr("attr_level_idstr").split(',');
 		var alertType =  $(this).attr("attr_type");
 		var searchType = getsearchType();
@@ -2122,7 +2143,16 @@ $(document).on("click",".switch-btn-alertType li",function(){
 			 }
 		});
 		
-		 
+		 if($("#filterViewId").hasClass("active") == true)
+		{
+			var deptObj = {id : departmentId,name: departmentName}
+			globaldepartmentsArrForFilterView.push(deptObj);
+			filerterViewBody()
+			assignUser1(globaldepartmentsArrForFilterView);
+			
+			
+		}
+		
 		var districtLevelId = $(this).attr("attr_district_level_id");
 		var childLevelIdsStr = $(this).attr("attr_child_id").split(',');
 		if(searchType == "statuswise" || searchType == "alertSource"){
@@ -2158,6 +2188,8 @@ $(document).on("click",".switch-btn li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		var departmentId = $(this).attr("attr_department_id");
+		var departmentName = $(this).attr("attr_department_name");
+	if(searchType == "statuswise" || searchType == "scopewise" || searchType == "alertSource"){
 		var parentIdStr = $(this).attr("attr_level_idstr").split(',');
 		var searchType =  $(this).attr("attr_type");
 		var alertType = getAlertType();
@@ -2198,6 +2230,19 @@ $(document).on("click",".switch-btn li",function(){
 			
 			
 		}
+		$("#statusOvrvwId").show();
+		$("#filterViewBodyId").hide();
+	}else{
+		var deptObj1 = {id : departmentId,name: departmentName}
+		globaldepartmentsArrForFilterView.push(deptObj1)
+	
+		filerterViewBody()
+		assignUser1(globaldepartmentsArrForFilterView);
+		
+		$("#statusOvrvwId").hide();
+		$("#filterViewBodyId").show();
+		
+	}
 });
 
 $(document).on("click",".locationAndStatusWiseSorting li",function(){

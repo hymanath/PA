@@ -232,6 +232,7 @@
 <script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertDistrictOffice.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertFilter.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <script type="text/javascript">
