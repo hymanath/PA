@@ -6979,6 +6979,12 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	   					designationIds.add(commonMethodsUtilService.getLongValueForObject(obj[5]));
 	   					designationNames.add(commonMethodsUtilService.getStringValueForObject(obj[6]));
 	   					
+	   					DistrictOfficeViewAlertVO deptVO = new DistrictOfficeViewAlertVO();
+	   					deptVO.setId(commonMethodsUtilService.getLongValueForObject(obj[3]));
+	   					deptVO.setName(commonMethodsUtilService.getStringValueForObject(obj[4]));
+	   					returnVO.getSubList1().add(deptVO);
+	   					
+	   					
 	   					returnVO.setDeptIds(departmentIds);
 	   					returnVO.setDepartmentNames(departmentNames);
 	   					returnVO.setGovtDeptDesigOffcrIds(govtDepDesigOffcrIds);
