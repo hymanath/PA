@@ -41,6 +41,7 @@ public class LocationVO implements Serializable {
 	private String toDate2;
 	private Long hamletId;
 	private String hamletName;
+	private String searchType;
 	
 	
 	public String getTask() {
@@ -223,6 +224,12 @@ public class LocationVO implements Serializable {
 	}
 	public void setHamletName(String hamletName) {
 		this.hamletName = hamletName;
+	}
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
 	}
 	
 }
