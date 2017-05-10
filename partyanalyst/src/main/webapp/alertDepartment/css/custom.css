@@ -857,14 +857,14 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	border: 1px solid #ddd;
 	border-right-color: transparent;
 }
-.switch-btn
+.switch-btn , .flipview-btn
 {
 	padding:3px;
 	background-color: #fff;
 	display: inline-block;
 	border-radius: 14px;
 }
-.switch-btn li
+.switch-btn li , .flipview-btn li
 {
 	list-style:none;
 	display: inline-block;
@@ -872,14 +872,14 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 	cursor: pointer;
 	text-transform:uppercase;
 }
-.switch-btn li.active
+.switch-btn li.active , .flipview-btn li.active
 {
 	background-color: #4A5863;
 	color: #fff;
 	border-radius: 14px;
 	-moz-transition: .5s all ease-out;
 }
-.switch-btn li:hover
+.switch-btn li:hover , .flipview-btn li:hover
 {
 	background-color: #4A5863;
 	-moz-transition: .5s all ease-out;
@@ -1106,6 +1106,10 @@ div[expand-main='true'] td .alert-title
 	overflow: hidden;
 	display: inline-block;
 	white-space: nowrap;
+}
+div[expand-main='true'] table tr td:nth-child(4) , div[expand-main='true'] table thead th:nth-child(4) ,div[expand-main='true'] table tr td:nth-child(5) , div[expand-main='true'] table thead th:nth-child(5) 
+{
+	display:none;
 }
 div[expand-main='true'] table tr td , div[expand-main='true'] table thead th
 {
@@ -1349,6 +1353,7 @@ div.comment-area
 .filters-list
 {
 	padding-left:0px;
+	margin-top:10px !important;
 }
 .filters-list li
 {
@@ -1761,4 +1766,8 @@ input[type="checkbox"]:checked + label span.checkbox::after {
 .alert-myfoot
 {
 	padding-left:0px;
+}
+h5[filters-list-title] b
+{
+	border-bottom: 2px solid #EFA5B6;
 }

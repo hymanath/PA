@@ -248,7 +248,7 @@
 	
 </div>
 <div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document" style="width:85%;">
+	<div class="modal-dialog" role="document" style="width:90%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -269,6 +269,7 @@
 				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
 			</div>
 			<div class="modal-body">
+				<div id="filter"></div>
 				<div id="alertManagementPopupBody1"></div>
 			</div>
 			<div class="modal-footer">

@@ -41,7 +41,20 @@ function onLoadClicks()
 			$("body").addClass("modal-open")
 		},1000);
 	});
-	
+	$(document).on("click",".filtersSwitch li",function(){
+		var text = $(this).html();
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		if(text == "Classic")
+		{
+			$(".classicView").show();
+			$(".premiumView").hide();
+		}else if(text == "Premium")
+		{
+			$(".classicView").hide();
+			$(".premiumView").show();
+		}
+	});
 	$(document).on("click",".displayImgCls",function(){
 		var articleId= $(this).attr("attr_articleId");
 		$("#alertManagementPopup1").modal({
@@ -3017,7 +3030,7 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 					str1+='<li class="filters-icon"><i class="glyphicon glyphicon-filter "></i></li>';
 					str1+='<li data-dismiss="modal" aria-label="Close"><i class="glyphicon glyphicon-remove"></i></li>';
 				str1+='</ul>';
-				str1+='<ul class="switch-btn filtersSwitch pull-right" style="border:1px solid #ddd;">';
+				str1+='<ul class="flipview-btn filtersSwitch pull-right" style="border:1px solid #ddd;">';
 					str1+='<li class="active">Classic</li>';
 					str1+='<li>Premium</li>';
 				str1+='</ul>';
@@ -3091,9 +3104,12 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 					str+='<h5 class="text-capitalize" filters-list-title="alertStatus"><b>alert status</b></h5>';
 					str+='<div class="scroller-alertStatus">';
 						str+='<ul class="filters-list" filters-list="alertStatus">';
-							for(var i in result.alertStatusList)
+							if(result.alertStatusList != null && result.alertStatusList.length>0)
 							{
-								str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+								for(var i in result.alertStatusList)
+								{
+									str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+								}
 							}
 						str+='</ul>';
 					str+='</div>';
@@ -3188,7 +3204,7 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 		$("#tourSlider").rangeSlider("destroy");
 		setTimeout(function(){
 			$("#tourSlider").rangeSlider({arrows:false,bounds:{min: 0, max: 365},defaultValues:{min: 0, max: 180}});
-		},1000);
+		},2000);
 		
 		$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list-title='panLevel'],[filters-list-title='villageLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").hide();
 		if(result.tvNewsChannelList.length > 4)
@@ -3791,9 +3807,9 @@ function alertStatusHistory(result,alertId)
  
  
 
-function getFilterSectionAlertDetails(statusId,statusName,statuscount){
+function getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr){
 	var jsObj={
-		
+		deptIdArr : globalDepartmentIdArr
 	}
 	$.ajax({   
 		type:'GET',

@@ -69,17 +69,21 @@ footer
 	background-color:rgba(0,0,0,0.2);
 	color:#333;
 	width:100%;
-	position:fixed;
-	bottom:0px;
-	right:0px;
-	left:0px;
-	z-index:-9;
+	z-index:9;
 }
 section .footer
 {
 	display:block;
 }
-.footer
+.m_top25
 {
-	display:none;
+	margin-top:25px;
+}
+.stickyFooter
+{
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	width:100%;
 }
