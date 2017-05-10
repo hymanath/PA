@@ -48,6 +48,10 @@ header
 {
 	display:none;
 }
+.m_top15
+{
+	margin-top:15px;
+}
 </style>
 </head>
 <body>
@@ -92,21 +96,23 @@ header
 	</div>
 	</form>
 </div>
-<footer class="footer">
-	<div class="container">
+<!--<footer class="footer">
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-6">
-				<p class="m_top20">All &copy; Government Of Andhra Pradesh</p>
+			<div class="col-sm-8">
+				<p class="m_top25 text-right">All &copy; Government Of Andhra Pradesh</p>
 			</div>
-			<div class="col-sm-6">
-				<img src="alertDepartment/img/log_itgrids.png" class="img-responsive pull-right"/>
+			<div class="col-sm-4 text-right">
+				<p style="margin-bottom:0px">Powered By</p>
+				<p style="margin-bottom:0px"><a target="_new" href="http://www.itgrids.com"><img src="alertDepartment/img/log_itgrids.png" style="height:30px;width:70px"/></a></p>
+				<p><small style="font-size: 75%;">ITGRIDS INDIA PVT.LTD</small></p>
 			</div>
 			<div class="col-sm-12 text-right">
-				<p>Powered By ITGRIDS INDIA PVT LTD</p>
+				
 			</div>
 		</div>
 	</div>
-</footer>
+</footer>-->
 <script>
 $("#userName1").focus();
 var userip = "";
@@ -117,6 +123,12 @@ setTimeout(function(){
 	$(".cc").addClass("scroll-animation");
 	$(".borderLine").addClass("borderLineAnimate");
 },150);
+if($(window).height() > 600)
+{
+	setTimeout(function(){
+		$("footer").addClass("stickyFooter");
+	},1000)
+}
 </script>
 <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
 </body>

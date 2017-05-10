@@ -190,7 +190,7 @@ function onLoadInitialisations()
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount);
-		getFilterSectionAlertDetails(statusId,statusName,statuscount);
+		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
 	});
 	$(document).on("click",".getTotalAlertBylocationLvl",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -203,7 +203,7 @@ function onLoadInitialisations()
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		getTotalAlertBylocationLvl(statusId,statusName,statuscount);
-		getFilterSectionAlertDetails(statusId,statusName,statuscount);
+		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
 	});
 	$(document).on("click",".totalAlertCls",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -219,6 +219,7 @@ function onLoadInitialisations()
 		}else{
 			getTotalAlertBylocationLvl(0,"Alert",totalAlertCnt);
 		}
+		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
 	});
 	
 	$(document).on("click",".getTotalAlertBylocationLvlThenDept",function(){
@@ -233,7 +234,7 @@ function onLoadInitialisations()
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
 		getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,departmentId);
-		getFilterSectionAlertDetails(statusId,statusName,statuscount);
+		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
 	});
 	$(document).on("click",".getTotalAlertByStatusThenDept",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -247,7 +248,7 @@ function onLoadInitialisations()
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
 		getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmentId);
-		getFilterSectionAlertDetails(statusId,statusName,statuscount);
+		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
 	});
 	
 }
@@ -340,7 +341,7 @@ function buildTotalAlertGroupByStatusForGovt(result)
 		str+='</div>';
 		str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 			str+='<div class="scrollerDivCls">';
-				str+='<table class="table tableGraph">';
+				str+='<table class="table tableGraph" id="dataTableTotalAlert">';
 					str+='<thead>';
 						str+='<th>Status</th>';
 						str+='<th>Total</th>';
@@ -367,6 +368,11 @@ function buildTotalAlertGroupByStatusForGovt(result)
 		str+='</div>';
 	str+='</div>';
 	$("#statusOverview").html(str);
+	$("#dataTableTotalAlert").dataTable({
+		"paging":   false,
+        "info":     false,
+		"sDom":   '<"top"i>rt<"bottom"lp><"clear"f>'
+	});
 	$("#statusOverViewTotal").html("<h4 style='font-size: 16px;'><span class='totalAlertCls' attr_result_type='statusWise' style='cursor:pointer;' attr_total_alert_count='"+totalAlert+"'>TOTAL -  "+totalAlert+"</span></h4>");
 	var statusOverviewArr =[];
 	if(result.length > 6)
@@ -496,7 +502,7 @@ function buildLevelWiseAlertOverviewCnt(result)
 		str+='</div>';
 		str+='<div class="col-md-6 col-xs-12 col-sm-6">';
 			str+='<div class="scrollerDivClsLevel">';
-				str+='<table class="table tableGraph">';
+				str+='<table class="table tableGraph" id="dataTableLevelWise">';
 					str+='<thead>';
 						str+='<th>Level</th>';
 						str+='<th>Total</th>';
@@ -518,6 +524,11 @@ function buildLevelWiseAlertOverviewCnt(result)
 		str+='</div>';
 	str+='</div>';
 	$("#levelWiseAlertOverview").html(str);
+	$("#dataTableLevelWise").dataTable({
+		"paging":   false,
+        "info":     false,
+		"sDom": 	'<"top"i>rt<"bottom"lp><"clear"f>'
+	});
 	if(result.length > 6)
 	{
 		$(".scrollerDivClsLevel").mCustomScrollbar({setHeight:'300px'});
@@ -1118,10 +1129,9 @@ function buildDeptNamesForMultiLevel(result){
 						
 					  str+='</div>';
 					 
-					 str+='</div>';	
-					 str+='</div>';
+						str+='</div>';	
+					str+='</div>';
 				}
-				
 			str+='</div>';
 		str+='</div>';
 		$("#levelWiseDepartmentDetailsId").html(str);
