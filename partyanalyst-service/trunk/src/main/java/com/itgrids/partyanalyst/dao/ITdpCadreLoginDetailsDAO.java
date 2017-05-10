@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.TdpCadreLoginDetails;
 public interface ITdpCadreLoginDetailsDAO extends GenericDao<TdpCadreLoginDetails, Long>{
 
 	public List<Long> getAssignedCadreIdsForLoginUserId(Long userId);
+	public List<Long> getuserIdsForCadre(Long tdpCadreId);
 }
