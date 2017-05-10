@@ -103,27 +103,36 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     }
     public List<Object[]> getAlertStatusForAdminHistory1(Long alertId,Long trackTypeId){
     	//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
-    	Query query = getSession().createQuery(" select model.alertStatus.alertStatus,comment.comment,"
-    			+ " model.insertedTime,model.updatedUser.userName, '', ''  ,'',''," +
-    			" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName  "
-    			+ " from  AlertAssignedOfficerTrackingNew model "
+    	Query query = getSession().createQuery(" select " +
+    			" model.alertStatus.alertStatus, " +//0
+    			" comment.comment,"//1
+    			+ " model.insertedTime, " +//2
+    			" model.updatedUser.userName, '', ''  ,'',''," +//3
+    			" model.alertAssignedOfficer.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName  "//8
+    			+ " from  AlertAssignedOfficerTrackingNew model"
     			+ " left join model.alertDepartmentComment comment "
-    			+ " where model.alertId=:alertId  " +
-    			" and model.govtAlertActionType.govtAlertActionTypeId = :trackTypeId order by model.insertedTime desc ");
+    			+ " where model.alertId=:alertId " +
+    			" and (model.govtAlertActionType.govtAlertActionTypeId = :trackTypeId or model.govtAlertActionType.govtAlertActionTypeId = 1l) order by model.insertedTime desc ");
     	query.setParameter("alertId", alertId);
         query.setParameter("trackTypeId", trackTypeId);
     	return query.list();
     }
     public List<Object[]> getAlertStatusHistory1(Long alertId,Long trackTypeId){
     	//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
-    	Query query = getSession().createQuery(" select model.alertStatus.alertStatus,comment.comment,"
-    			+ " model.insertedTime,model.updatedUser.userName, model2.govtOfficer.mobileNo , model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "
-    			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName,model2.govtOfficer.govtOfficerId," +
-    			" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName "
+    	Query query = getSession().createQuery(" select " +
+    			" model.alertStatus.alertStatus, " +//0
+    			" comment.comment,"//1
+    			+ " model.insertedTime, " +//2
+    			" model.updatedUser.userName, " +//3
+    			" model2.govtOfficer.mobileNo , " +//4
+    			" model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName "//5
+    			+ " ,model2.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.shortName, " +//6
+    			" model2.govtOfficer.govtOfficerId," +//7
+    			" model2.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName "//8
     			+ " from GovtDepartmentDesignationOfficerDetailsNew model2, AlertAssignedOfficerTrackingNew model "
     			+ " left join model.alertDepartmentComment comment "
     			+ " where model.alertId=:alertId  and " +
-    			"  model.govtAlertActionType.govtAlertActionTypeId = :trackTypeId and model.updatedBy = model2.userId  order by model.insertedTime desc ");
+    			"  (model.govtAlertActionType.govtAlertActionTypeId = :trackTypeId or model.govtAlertActionType.govtAlertActionTypeId = 1l) and model.updatedBy = model2.userId  order by model.insertedTime desc ");
     	query.setParameter("alertId", alertId);
     	query.setParameter("trackTypeId", trackTypeId);
     	return query.list();

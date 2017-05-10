@@ -373,12 +373,15 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		query.setParameter("assignedOfficerId", assignedOfficerId);
 		return query.list();
 	}
-	public String getLocationNameByAssignedOficer(Long officerId){
-		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName" +
+	public List<Object[]> getLocationNameByAssignedOficer(Long officerId){
+		Query query = getSession().createQuery("select distinct model.user.userName," +
+				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName," +
+				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName," +
+				" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName" +
 				" from GovtDepartmentDesignationOfficerDetailsNew model " +
 				" where model.userId = :officerId");
 		query.setParameter("officerId", officerId);
-		return (String) query.uniqueResult();
+		return  query.list();
 	}
 	public List<Object[]> getDeptListForGreivanceReport(Set<Long> deptIdList){
 		StringBuilder queryStr = new StringBuilder();
@@ -467,4 +470,16 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		return query.list();
 	}
 
+	public List<Object[]> getDesigAndDepartForUser(List<Long> userIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.user.userId,model.user.userName," +
+				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName," +
+				" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName," +
+				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName" +
+				" from GovtDepartmentDesignationOfficerDetailsNew model" +
+				" where model.userId in (:userIds) and model.isDeleted = 'N'");
+		Query  query = getSession().createQuery(sb.toString());
+		query.setParameterList("userIds", userIds);
+		return query.list();
+	}
 }
