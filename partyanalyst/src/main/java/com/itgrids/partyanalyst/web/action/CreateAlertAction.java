@@ -97,6 +97,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private List<AlertsSummeryVO> alertsSummeryVOList;
 	private AlertCoreDashBoardVO alertCoreDashBoardVO;
 	private IAlertManagementSystemService alertManagementSystemService;
+	private Long tdpCadreId;
 	
 	
 	
@@ -443,6 +444,14 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		this.activityMembersList = activityMembersList;
 	}
 
+	public Long getTdpCadreId() {
+		return tdpCadreId;
+	}
+
+	public void setTdpCadreId(Long tdpCadreId) {
+		this.tdpCadreId = tdpCadreId;
+	}
+
 	public String execute()	{
 		session = request.getSession();
 		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
@@ -581,6 +590,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setTask(jObj.getString("task"));
 			inputVO.setFromDate2(jObj.getString("fromDate2"));
 			inputVO.setToDate2(jObj.getString("toDate2"));
+			inputVO.setSearchType(jObj.getString("radioVal"));
 			alertDataList = alertService.getLocationWiseFilterAlertData(regVo.getRegistrationID(),inputVO,jObj.getLong("assignedCadreId"),jObj.getLong("involvedCadreId"),jObj.getLong("impactId"));
 			
 		}
@@ -1723,7 +1733,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String toDate = jObj.getString("toDate");
 			Long alertyTypeId = jObj.getLong("alertyTypeId");
 			Long tdpCadreId = jObj.getLong("tdpCadreId");
-			alertVOs = alertService.getTotalAlertGroupByStatusForCentralMembers(fromDate, toDate, stateId,alertyTypeId,tdpCadreId);
+			String searchType = jObj.getString("radioVal");
+			alertVOs = alertService.getTotalAlertGroupByStatusForCentralMembers(fromDate, toDate, stateId,alertyTypeId,tdpCadreId,searchType);
 		}catch(Exception e) {
 			LOG.error("Exception occured in getTotalAlertGroupByStatusForCentralMembers() of CreateAlertAction",e);
 		}
@@ -1738,7 +1749,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String toDate = jObj.getString("toDate");
 			Long alertyTypeId = jObj.getLong("alertyTypeId");
 			Long tdpCadreId = jObj.getLong("tdpCadreId");
-			alertVOs = alertService.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId,alertyTypeId,tdpCadreId);
+			String searchType = jObj.getString("radioVal");
+			alertVOs = alertService.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId,alertyTypeId,tdpCadreId,searchType);
 		}catch(Exception e) {
 			LOG.error("Exception occured in getTotalAlertGroupByStatusThenCategoryForCentralMembers() of CreateAlertAction",e);
 		}
@@ -1780,7 +1792,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			inputVO.setSearchTypeStr(jObj.getString("task"));
 			inputVO.setAlertTypeId(jObj.getLong("alertTypeId"));
 			inputVO.setAlertImpactScopeId(jObj.getLong("impactScopeId"));
-			
+			inputVO.setSearchType(jObj.getString("radioVal"));
 			alertDataList = alertService.getLocationLevelWiseAlertsDataForCentralMembers(regVo.getRegistrationID(),inputVO);
 			
 		}
