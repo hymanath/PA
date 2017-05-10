@@ -15,6 +15,7 @@ public class AlertInputVO {
 	private Long actionTypeStatusId;
 	private String fromDate2;
 	private String toDate2;
+	private String searchType;
 	public Long getAlertTypeId() {
 		return alertTypeId;
 	}
@@ -98,6 +99,12 @@ public class AlertInputVO {
 	}
 	public void setToDate2(String toDate2) {
 		this.toDate2 = toDate2;
+	}
+	public String getSearchType() {
+		return searchType;
+	}
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
 	}
 	
 
