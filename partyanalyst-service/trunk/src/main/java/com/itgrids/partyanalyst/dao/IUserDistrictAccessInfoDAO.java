@@ -24,5 +24,7 @@ public interface IUserDistrictAccessInfoDAO extends GenericDao<UserDistrictAcces
 	
 	public List<Long> getDistrictIdsByUsrId(Long userId);
 	
+	public List<Long> getDistrictIdsForUser(List<Long> userIds);
+	
 	
 }
