@@ -44,10 +44,10 @@
 						</div>
 						<div class="col-md-2 col-xs-12 col-sm-3">
 							<select class="chosenSelect" id="alertTypeId">
-								<option value="0">All</option>
+								<!--<option value="0">All</option>-->
 								<option value="1" selected="selected">Party</option>            
-								<option value="2">Govt</option>
-								<option value="3">Others</option>
+								<!--<option value="2">Govt</option>
+								<option value="3">Others</option>-->
 							</select>
 						</div>
 					</div>
@@ -55,7 +55,7 @@
 				<div class="panel-body">
 					<div class="row m_top20">
 						<div class="col-md-12 col-xs-12 col-sm-12">
-							<div id="overAllCount"></div>
+							<div id="overAllCount" class="table-responsive"></div>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="panel panel-default">
@@ -712,8 +712,11 @@ function getAdvanceLocationFilterAlertData(){
 				actionTypeStatusId:actionTypeStatusId,        
 				task : "verification",
 				fromDate2 : fromDat2,
-				toDate2 : toDat2
-			}
+				toDate2 : toDat2   ,
+				involvedCadreId:0,
+				impactId:0
+			};
+			
 		$.ajax({
 			type:'GET',
 			url: 'getLocationFilterAlertDataAction.action',//imp
@@ -772,8 +775,11 @@ function getAdvanceLocationFilterAlertData(){
 				actionTypeStatusId : 0,            
 				task : "",
 				fromDate2 : "",
-				toDate2 : ""   
-		}
+				toDate2 : ""   ,
+				involvedCadreId:0,
+				impactId:0
+		};
+		
 		$.ajax({
 			type:'GET',
 			url: 'getLocationFilterAlertDataAction.action',
@@ -945,7 +951,8 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 		assignId:assignId,
 		impactScopeId:impactScopeId,
 		task : locationBlock
-	}
+	};
+	
 	$.ajax({
 		  type:'GET',
 		  url: 'getLocationLevelWiseAlertsDataForCentralMembersAction.action',
@@ -1084,8 +1091,11 @@ function getLocationFilterAlertData()
 				actionTypeStatusId : 0,            
 				task : "",  
 				fromDate2 : "",
-				toDate2 : ""
-		}
+				toDate2 : ""   ,
+				involvedCadreId:0,
+				impactId:0
+		};
+	
 		$.ajax({      
 			type:'GET',
 			url: 'getLocationFilterAlertDataAction.action',
