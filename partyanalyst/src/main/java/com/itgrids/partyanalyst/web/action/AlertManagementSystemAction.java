@@ -1141,7 +1141,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				return null;
 			
 			jObj = new JSONObject(getTask());  
-			listOfalertTrackingVOList = alertManagementSystemService.viewAlertHistoryNew(jObj.getLong("alertId"));
+			listOfalertTrackingVOList = alertManagementSystemService.viewAlertHistoryNew(jObj.getLong("alertId"),jObj.getString("task"));
 			
 			
 		} catch (Exception e) {
