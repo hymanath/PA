@@ -12,8 +12,6 @@
 <title>IAS OFFICER VIEW & STATE LEVEL DEPARTMENT</title>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="govtCoreDashBoard/img/fevicon.png">
 <link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
-<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
 <link rel="stylesheet" href="dist/css/font-awesome.css">
 <link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
@@ -24,6 +22,10 @@
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -199,6 +201,9 @@
 <script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertFilter.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagement.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
@@ -222,7 +227,6 @@ var subLevels=[];
 var newspapersGlobalArr =[];
 var channelGlobalArr =[];
 var callCenterGlobalArr=[];
-
 google.load("elements", "1", {
 	packages: "transliteration"
 });
