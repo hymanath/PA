@@ -29,5 +29,7 @@ public interface IUserConstituencyAccessInfoDAO extends GenericDao<UserConstitue
 	public List<Object[]> getAllUserAccessConstituencies(Long userId);
 	
 	public List<Object[]> getLocationIdList(Long userId);
+	
+	public List<Long> getConstituenciesByUser(List<Long> userIds);
 
 }
