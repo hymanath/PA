@@ -167,6 +167,7 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName, " +
 				" model.govtOfficer.officerName, " +
 				" model.govtOfficer.mobileNo " +
+				" model.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName" +
 				" FROM GovtDepartmentDesignationOfficerDetailsNew model " +
 				" WHERE model.isDeleted = 'N'" +
 				" and model.userId = :userId  ") ;
