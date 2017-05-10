@@ -89,18 +89,23 @@ import com.itgrids.partyanalyst.dao.IParliamentAssemblyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUrbanBlockDAO;
 import com.itgrids.partyanalyst.dao.IUrbanLocalityDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
+import com.itgrids.partyanalyst.dao.hibernate.TdpCadreLoginDetailsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -255,6 +260,9 @@ private IUrbanLocalityDAO urbanLocalityDAO;
 private IUrbanBlockDAO urbanBlockDAO;
 
 private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+private ITdpCadreLoginDetailsDAO  tdpCadreLoginDetailsDAO;
+private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 
 
 public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
@@ -796,6 +804,24 @@ public IAlertFeedbackStatusDAO getAlertFeedbackStatusDAO() {
 }
 public void setAlertFeedbackStatusDAO(IAlertFeedbackStatusDAO alertFeedbackStatusDAO) {
 	this.alertFeedbackStatusDAO = alertFeedbackStatusDAO;
+}
+public ITdpCadreLoginDetailsDAO getTdpCadreLoginDetailsDAO() {
+	return tdpCadreLoginDetailsDAO;
+}
+public void setTdpCadreLoginDetailsDAO(ITdpCadreLoginDetailsDAO tdpCadreLoginDetailsDAO) {
+	this.tdpCadreLoginDetailsDAO = tdpCadreLoginDetailsDAO;
+}
+public IUserDistrictAccessInfoDAO getUserDistrictAccessInfoDAO() {
+	return userDistrictAccessInfoDAO;
+}
+public void setUserDistrictAccessInfoDAO(IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+	this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+}
+public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
+	return userConstituencyAccessInfoDAO;
+}
+public void setUserConstituencyAccessInfoDAO(IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+	this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -1571,7 +1597,35 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				fromDate2 = sdf.parse(inputVO.getFromDate2());
 				toDate2 = sdf.parse(inputVO.getToDate2());
 			}
-			 List<Object[]> list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId,fromDate2,toDate2,involvedCandidateId,impactId);//done
+			List<Long> consIds = new ArrayList<Long>(0);
+			List<Object[]> list = null;
+			if(inputVO.getSearchType() != null && inputVO.getSearchType().trim().equalsIgnoreCase("areaAlerts")){
+				List<Long>  userIds = tdpCadreLoginDetailsDAO.getuserIdsForCadre(assignedCadreId);
+				List<Long> districtIds = userDistrictAccessInfoDAO.getDistrictIdsForUser(userIds);
+				if(districtIds != null && districtIds.size() > 0l){
+					List<Object[]> constList = constituencyDAO.getConstituenciesByDistrict(districtIds);
+					if(constList != null && constList.size() > 0l){
+						for (Object[] objects : constList) {
+							Long elctionTypeId = commonMethodsUtilService.getLongValueForObject(objects[1]);
+							if(elctionTypeId == 1){
+								
+							}else{
+								consIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							}
+						}
+					}
+				}else{
+					consIds = userConstituencyAccessInfoDAO.getConstituenciesByUser(userIds);
+				}
+			}
+			
+			if(inputVO.getSearchType() != null && inputVO.getSearchType().trim().equalsIgnoreCase("areaAlerts")){
+				 list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,null,fromDate2,toDate2,null,impactId,consIds);//done
+			}else{
+				 list = alertDAO.getLocationWiseFilterAlertData(userTypeIds,fromDate,toDate,inputVO,assignedCadreId,fromDate2,toDate2,involvedCandidateId,impactId,null);//done
+			}
+			
+			 
 			 List<Object[]> list2 = verificationStatusDAO.getTotalStatus();
 			 Map<Long,String> alertAndStatusMap = new HashMap<Long,String>();
 			 if(list2 != null && list2.size() > 0){
@@ -7515,7 +7569,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 	}
 	
 	
-	public List<AlertVO> getTotalAlertGroupByStatusForCentralMembers(String fromDateStr, String toDateStr, Long stateId,Long alertTypeId,Long tdpCadreId){
+	public List<AlertVO> getTotalAlertGroupByStatusForCentralMembers(String fromDateStr, String toDateStr, Long stateId,Long alertTypeId,Long tdpCadreId,String searchType){
 		LOG.info("Entered in getTotalAlertGroupByStatusForCentralMembers() method of AlertService{}");
 		try{
 			Date fromDate = null;
@@ -7528,6 +7582,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			AlertVO alertVO = null;
 			List<AlertVO> alertVOs = new ArrayList<AlertVO>();
 			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
+			List<Long> consIds = new ArrayList<Long>(0);
+			List<Object[]> alertCountList = null;
 			//get all the alert status and build the template
 			List<Object[]> statusList = alertStatusDAO.getAllStatus();
 			if(statusList != null && statusList.size() > 0){
@@ -7538,8 +7594,32 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alertVOs.add(alertVO);
 				}
 			}
+			if(searchType != null && searchType.trim().equalsIgnoreCase("areaAlerts")){
+				List<Long>  userIds = tdpCadreLoginDetailsDAO.getuserIdsForCadre(tdpCadreId);
+				List<Long> districtIds = userDistrictAccessInfoDAO.getDistrictIdsForUser(userIds);
+				if(districtIds != null && districtIds.size() > 0l){
+					List<Object[]> constList = constituencyDAO.getConstituenciesByDistrict(districtIds);
+					if(constList != null && constList.size() > 0l){
+						for (Object[] objects : constList) {
+							Long elctionTypeId = commonMethodsUtilService.getLongValueForObject(objects[1]);
+							if(elctionTypeId == 1){
+								
+							}else{
+								consIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							}
+						}
+					}
+				}else{
+					consIds = userConstituencyAccessInfoDAO.getConstituenciesByUser(userIds);
+				}
+			}
+			
 			//get alert status count and and create a map of alertStatusId and its count
-			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,tdpCadreId);
+			if(searchType != null && searchType.trim().equalsIgnoreCase("areaAlerts")){
+				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,null,consIds);
+			}else{
+				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,tdpCadreId,null);
+			}
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
 					statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -7563,7 +7643,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		return null;
 	}
 	
-	public List<AlertVO> getTotalAlertGroupByStatusThenCategoryForCentralMembers(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long tdpCadreId){
+	public List<AlertVO> getTotalAlertGroupByStatusThenCategoryForCentralMembers(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId, Long tdpCadreId,String searchType){
 		LOG.info("Entered in getTotalAlertGroupByStatusThenCategoryForCentralMembers() method of AlertService{}");
 		try{
 			Date fromDate = null;
@@ -7576,11 +7656,37 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			AlertVO alertVO = null;
 			List<AlertVO> alertVOs = null;//new ArrayList<AlertVO>();
 			Map<Long,Long> statusIdAndCountMap = new HashMap<Long,Long>();
+			List<Long> consIds = new ArrayList<Long>(0);
+			List<Object[]> alertCountList = null;
+			List<Object[]> alertCountGrpByCatList =null;
 			//get all the alert category for  building the template
 			List<Object[]> categoryList = alertCategoryDAO.getAllCategory(); 
 			
-			//get alert status count and and create a map of alertStatusId and its corresponding  alert count
-			List<Object[]> alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,tdpCadreId);
+			if(searchType != null && searchType.trim().equalsIgnoreCase("areaAlerts")){
+				List<Long>  userIds = tdpCadreLoginDetailsDAO.getuserIdsForCadre(tdpCadreId);
+				List<Long> districtIds = userDistrictAccessInfoDAO.getDistrictIdsForUser(userIds);
+				if(districtIds != null && districtIds.size() > 0l){
+					List<Object[]> constList = constituencyDAO.getConstituenciesByDistrict(districtIds);
+					if(constList != null && constList.size() > 0l){
+						for (Object[] objects : constList) {
+							Long elctionTypeId = commonMethodsUtilService.getLongValueForObject(objects[1]);
+							if(elctionTypeId == 1){
+								
+							}else{
+								consIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							}
+						}
+					}
+				}else{
+					consIds = userConstituencyAccessInfoDAO.getConstituenciesByUser(userIds);
+				}
+			}
+			
+			if(searchType != null && searchType.trim().equalsIgnoreCase("areaAlerts")){
+				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,null,consIds);
+			}else{
+				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,tdpCadreId,null);
+			}
 			if(alertCountList != null && alertCountList.size() > 0){
 				for(Object[] param : alertCountList){
 					statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -7590,7 +7696,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			Map<Long,String> statusIdAndNameMap = new HashMap<Long,String>();
 			Map<Long,Long> categoryIdAndCountMap = null;//new HashMap<Long, Long>();
 			Map<Long,Map<Long,Long>> statusIdAndCategoryIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
-			List<Object[]> alertCountGrpByCatList = alertDAO.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId, alertTypeId,tdpCadreId);
+			
+			//get alert status count and and create a map of alertStatusId and its count
+			if(searchType != null && searchType.trim().equalsIgnoreCase("areaAlerts")){
+				 alertCountGrpByCatList = alertDAO.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId, alertTypeId,null,consIds);
+			}else{
+				 alertCountGrpByCatList = alertDAO.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId, alertTypeId,tdpCadreId,consIds);
+			}
+			
 			if(alertCountGrpByCatList != null && alertCountGrpByCatList.size() > 0){
 				for(Object[] param : alertCountGrpByCatList){
 					categoryIdAndCountMap = statusIdAndCategoryIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -7686,7 +7799,36 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			 fromDate = sdf.parse(inputVO.getFromDate());
 			 toDate = sdf.parse(inputVO.getToDate());
 			}
-			 List<Object[]> list = alertDAO.getLocationLevelWiseAlertsDataForCentralMembers(userTypeIds,inputVO,fromDate,toDate);//done
+			List<Long> consIds = new ArrayList<Long>(0);
+			List<Object[]> list = null;
+			
+			if(inputVO.getSearchType() != null && inputVO.getSearchType().trim().equalsIgnoreCase("areaAlerts")){
+				List<Long>  userIds = tdpCadreLoginDetailsDAO.getuserIdsForCadre(inputVO.getAssignId());
+				inputVO.setAssignId(null);
+				List<Long> districtIds = userDistrictAccessInfoDAO.getDistrictIdsForUser(userIds);
+				if(districtIds != null && districtIds.size() > 0l){
+					List<Object[]> constList = constituencyDAO.getConstituenciesByDistrict(districtIds);
+					if(constList != null && constList.size() > 0l){
+						for (Object[] objects : constList) {
+							Long elctionTypeId = commonMethodsUtilService.getLongValueForObject(objects[1]);
+							if(elctionTypeId == 1){
+								
+							}else{
+								consIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+							}
+						}
+					}
+				}else{
+					consIds = userConstituencyAccessInfoDAO.getConstituenciesByUser(userIds);
+				}
+			}
+			
+			if(inputVO.getSearchType() != null && inputVO.getSearchType().trim().equalsIgnoreCase("areaAlerts")){
+				 list = alertDAO.getLocationLevelWiseAlertsDataForCentralMembers(userTypeIds,inputVO,fromDate,toDate,consIds);//done
+			}else{
+				 list = alertDAO.getLocationLevelWiseAlertsDataForCentralMembers(userTypeIds,inputVO,fromDate,toDate,null);//done
+			}
+			
 			 List<Object[]> list2 = verificationStatusDAO.getTotalStatus();
 			 Map<Long,String> alertAndStatusMap = new HashMap<Long,String>();
 			 if(list2 != null && list2.size() > 0){
