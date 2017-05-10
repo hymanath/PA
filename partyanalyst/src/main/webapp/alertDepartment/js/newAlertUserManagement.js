@@ -867,6 +867,9 @@ function buildstateLevelDeptOfficerStatusOverview(result)
 								pendingCount = result[i].alertCnt;
 							}		
 						totalAlert+=result[i].alertCnt;
+						if(result[i].id == 1){
+							continue;
+						}
 						str+='<tr>';
 							str+='<td><span class="label" style="background-color:'+result[i].color+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
 							str+='<td style="cursor:pointer;" class="getDtlsAlertsCls" attr_status_type="overall" attr_type="alert" attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'"  attr_status_id="'+result[i].id+'" attr_level_id="0" >'+result[i].alertCnt+'</td>';
