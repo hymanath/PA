@@ -109,6 +109,7 @@ function onLoadClicks()
 		$('#sub_tasls_View_alert_block,#subAlertDetails,#subBlockStates,#displayDueDate3,#displayStatusId1').show();
 		$('.commentChangeCls').attr('subalertid',''+subAlertId+'');
 		getSubTaskFullDetailsAction(subAlertId,alertId);
+		getSubTaskCommetDtls(subAlertId,alertId);
 		$('#uploadBtnId').attr('subalertid',subAlertId);
 		$('#alertHiddenId').val(subAlertId);
 		initializeFile();
@@ -981,11 +982,12 @@ function viewAlertHistory(alertId)
 {
 	$("#alertManagementPopupBody1").html(spinner)
 	var jsObj ={
-		alertId : alertId
+		alertId : alertId,
+		task:"task"
 	}
 	$.ajax({
 		type:'GET',
-		url: 'viewAlertHistoryAction.action',
+		url: 'viewAlertHistoryAction.action',        
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length> 0)
@@ -1477,7 +1479,7 @@ function rightSideExpandView(alertId)
 					str+='<div class="panel-heading" id="subBlockStates" style="display:none;">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-4">';
-								str+='<div id="assignedUser1"></div>';
+								str+='<div class="assignedUser1"></div>';
 							str+='</div>';
 							str+='<div class="col-sm-8  pull-right" >';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
@@ -1579,9 +1581,10 @@ function rightSideExpandView(alertId)
 							str+='</p>';
 							str+='<div id="subAlertDetails"></div>';
 							str+='<div id="subArticleAttachment"></div>';
+							str+='<div id="subAlertComments"></div>';
 							str+='<div id="subAlertCategory"></div>';
 							str+='<div id="subAlertSubtask"></div>';
-							//str+='<div id="subAlertComments"></div>';
+							//str+='<div id="subAlertComments"></div>';        
 							str+='<div id="subAlertGeneralComments"></div>';
 							//str+='<div status-body="task" class="m_top20"></div>';
 							//str+='<div status-body="subTask" class="m_top20"></div>';
@@ -1791,7 +1794,9 @@ function getSubAlertsDetails(alertId,subAlertId){
 	$('.commentChangeCls').attr('subalertid',''+subAlertId+'');
 	$('#docAttachmentId1').attr('subalertid',''+subAlertId+'');
 	$('#uploadBtnId').attr('subalertid',''+subAlertId+'');
-	getSubTaskFullDetailsAction(subAlertId,alertId)
+	getSubTaskFullDetailsAction(subAlertId,alertId);
+	getSubTaskCommetDtls(subAlertId,alertId);
+	
 }
 function getSubTaskFullDetailsAction(subAlertId,alertId)
 {
@@ -1825,7 +1830,26 @@ function getSubTaskFullDetailsAction(subAlertId,alertId)
 		}
 	});
 }
-
+function getSubTaskCommetDtls(subAlertId,alertId){
+	$("#alertGeneralComments").html(spinner);
+	var jsObj ={
+		alertId  :subAlertId,
+		task:"subTask"  
+	}
+	$.ajax({
+		type:'GET',
+		url: 'viewAlertHistoryAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$("#alertGeneralComments").html('');
+		if(result != null && result.length > 0)
+		{
+			buildSubTaskCommetDtls(result);
+		}else{
+			$("#alertGeneralComments").html("NO DATA");
+		}
+	});
+}	
 
 var subTaskglStr='';
 var subTaskStatusChangAvailable=true;
@@ -1939,17 +1963,14 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 					
 				str1+='</div>';
 				}
-				
-
 				$("#subArticleAttachment").html(str1);
-				
-				if(result[i].commentList != null && result[i].commentList.length>0){
+				/* if(result[i].commentList != null && result[i].commentList.length>0){    
 					str+='<div class="row m_top20">';
 					str+='<div class="col-sm-1 text-center body-icons">';
 						str+='<i class="fa fa-comments-o fa-2x"></i>';
 					str+='</div>';
 					str+='<div class="col-sm-11">';
-						str+='<h4 class="text-muted text-capital m_top10"> Sub Tasks Comments </h4>';	
+						str+='<h4 class="text-muted text-capital m_top10">Sub Tasks Comments</h4>';	
 						for(var k in result[i].commentList){
 							str+='<div class="media">';	
 							str+='<div class="media-left">';
@@ -1990,19 +2011,13 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 												//str+='<p class="m_top5"><i class="glyphicon "></i> Dept Name: '+result[i].commentList[k].deptName+'</p>';
 												str+='<p class="text-primary text-capitalize">Dept Name: <span style="color:black;">'+result[i].commentList[k].deptName+' </span></p>';
 											}
-											/*if(result[i].mobileNO != null && result[i].mobileNO.length > 0)
-											{
-												str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].mobileNO+'</p>';
-											}
-											*/
-										
 									str+='</div>';
 							str+='</div>';
 						}
 					str+='</div>';
 				str+='</div>';
 				
-				}			
+				} */			
 				str1="";
 				str1+='<div class="panel-body" style="font-weight:bold;font-size:15px"> <i class="fa fa-long-arrow-left fa-2x " style="cursor:pointer;margin-right:15px;margin-top:5px" aria-hidden="true" expand-icon="block1" attr_alertId="'+alertId+'" title="Back to Main Alert View."></i>  <span style="margin-top:-5px">';
 				if(result[i].description.length>80)
@@ -2551,7 +2566,8 @@ function buildSubTaskInfoForAlert(result,alertId)
 function getCommentsForAlert(alertId){
 	$("#alertGeneralComments").html(spinner);
 	var jsObj ={
-		alertId  :alertId
+		alertId  :alertId,
+		task:"task"
 	}
 	$.ajax({
 		type:'GET',
@@ -4364,4 +4380,85 @@ function languageChangeHandler1(){
 		google.elements.transliteration.LanguageCode.ENGLISH,
 		lang1);
 	}
+}
+function buildSubTaskCommetDtls(result){
+	var str='';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-1 text-center body-icons">';
+			str+='<i class="fa fa-road fa-2x m_top20"></i>';
+		str+='</div>';
+		str+='<div class="col-sm-11">';
+			str+='<h4 class="text-muted text-capital m_top20">complete sub task history</h4>';              
+		str+='<ul class="alert-myfoot m_top10" style="list-style:outside none none">';
+		for(var i in result){
+			
+			str+='<li>';
+			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i][0].trackingDate+'</span>';
+			for(var j in result[i]){
+				
+					if(result[i][j].actionType == 'Assigning'){     
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Assigned BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>    </p>';
+						
+					}else if(result[i][j].actionType == 'Attachment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						str+='<p><span class="alert-history-body text-capital"><a target="_blank"  href="http://www.mytdp.com/images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';       
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">'+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';     
+					}else if(result[i][j].actionType == 'Due Date'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Changed Date </span> : '+result[i][j].dueDate+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';  
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+						
+					}else if(result[i][j].actionType == 'Priority'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Priority </span> : '+result[i][j].severty+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}else if(result[i][j].actionType == 'Status Change'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> : '+result[i][j].status+'</p>';
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}else if(result[i][j].actionType == 'Comment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}
+			}
+		str+='</li>';	
+		
+		}
+		str+='</ul>';
+	str+='</div>';
+	$("#subAlertComments").html(str);
 }
