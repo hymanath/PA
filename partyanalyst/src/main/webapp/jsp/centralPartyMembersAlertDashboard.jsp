@@ -460,7 +460,8 @@ function getTotalAlertGroupByStatus(stateId,fromDate,toDate){
 		fromDate : fromDate,
 		toDate : toDate,
 		alertyTypeId : alertTypeId,
-		tdpCadreId : globalTdpCadreId		
+		tdpCadreId : globalTdpCadreId,
+		radioVal : ''
 	}
 	$.ajax({
 		type : 'POST',      
@@ -523,7 +524,8 @@ function getTotalAlertGroupByStatusThenCategory(stateId,fromDate,toDate){
 		fromDate : fromDate,
 		toDate : toDate,
 		alertyTypeId : alertTypeId,
-		tdpCadreId : globalTdpCadreId
+		tdpCadreId : globalTdpCadreId,
+		radioVal:''
 	}
 	$.ajax({
 		type : 'POST',      
@@ -714,7 +716,8 @@ function getAdvanceLocationFilterAlertData(){
 				fromDate2 : fromDat2,
 				toDate2 : toDat2   ,
 				involvedCadreId:0,
-				impactId:0
+				impactId:0,
+				radioVal : ''
 			};
 			
 		$.ajax({
@@ -777,7 +780,8 @@ function getAdvanceLocationFilterAlertData(){
 				fromDate2 : "",
 				toDate2 : ""   ,
 				involvedCadreId:0,
-				impactId:0
+				impactId:0,
+                radioVal : ''
 		};
 		
 		$.ajax({
@@ -950,7 +954,8 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 		categoryId:categoryId,
 		assignId:assignId,
 		impactScopeId:impactScopeId,
-		task : locationBlock
+		task : locationBlock,
+		radioVal : ''
 	};
 	
 	$.ajax({
@@ -1093,7 +1098,8 @@ function getLocationFilterAlertData()
 				fromDate2 : "",
 				toDate2 : ""   ,
 				involvedCadreId:0,
-				impactId:0
+				impactId:0,
+				radioVal : ''
 		};
 	
 		$.ajax({      
