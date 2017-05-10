@@ -1243,12 +1243,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 									String designationStr = commonMethodsUtilService.getStringValueForObject(param[3]);
 									String officerName = commonMethodsUtilService.getStringValueForObject(param[4]);
 									String mobileNo = commonMethodsUtilService.getStringValueForObject(param[5]);
+									String locationName = commonMethodsUtilService.getStringValueForObject(param[6]);
 									
 									AlertTrackingVO vo = new AlertTrackingVO();
 									vo.setDeptName(deptName);
 									vo.setDesignation(designationStr);
 									vo.setUserName(officerName);
 									vo.setMobileNO(mobileNo);
+									vo.setLocation(locationName);
 									userMap.put(updatedUserId, vo);
 								}
 							}
@@ -1289,6 +1291,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								vo.setDesignation(updatedUserVO.getDesignation());
 								vo.setUserName(updatedUserVO.getUserName());
 								vo.setMobileNO(updatedUserVO.getMobileNO());
+								vo.setLocation(updatedUserVO.getLocation());
 							}
 							
 							matchedTimeVO.getAttachementsList().add(vo);
@@ -1309,6 +1312,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								vo.setDesignation(updatedUserVO.getDesignation());
 								vo.setUserName(updatedUserVO.getUserName());
 								vo.setMobileNO(updatedUserVO.getMobileNO());
+								vo.setLocation(updatedUserVO.getLocation());
 							}
 							
 							
@@ -1330,6 +1334,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								vo.setDesignation(updatedUserVO.getDesignation());
 								vo.setUserName(updatedUserVO.getUserName());
 								vo.setMobileNO(updatedUserVO.getMobileNO());
+								vo.setLocation(updatedUserVO.getLocation());
 							}
 							
 							
@@ -1351,6 +1356,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								vo.setDesignation(updatedUserVO.getDesignation());
 								vo.setUserName(updatedUserVO.getUserName());
 								vo.setMobileNO(updatedUserVO.getMobileNO());
+								vo.setLocation(updatedUserVO.getLocation());
 							}
 							
 							
@@ -1372,6 +1378,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								vo.setDesignation(updatedUserVO.getDesignation());
 								vo.setUserName(updatedUserVO.getUserName());
 								vo.setMobileNO(updatedUserVO.getMobileNO());
+								vo.setLocation(updatedUserVO.getLocation());
 							}
 							
 							matchedTimeVO.getPriorityList().add(vo);
@@ -3668,9 +3675,20 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        						AlertTrackingVO tempVO = alertMap.get(vo.getDate()+"-"+vo.getComment());
        						if( tempVO!= null && tempVO.getDate().equalsIgnoreCase(vo.getDate()) && tempVO.getComment().equalsIgnoreCase(vo.getComment()))
        						{
-       							if(!tempVO.getDeptName().contains(vo.getDeptName()))
-       								vo.setDeptName(tempVO.getDeptName()+", "+vo.getDeptName());
+       							if(!tempVO.getDeptName().contains(vo.getDeptName())){
+       								if(tempVO.getDeptName().trim().length() > 0 && !tempVO.getDeptName().trim().isEmpty()){
+       									vo.setDeptName(tempVO.getDeptName()+", "+vo.getDeptName());
+       								}else{
+       									vo.setDeptName(vo.getDeptName());
+       								}
+       								
+       							}
        						}
+       						if(objects[3] != null && objects[3].toString().trim().equalsIgnoreCase("govt_admin"))
+       						{
+       							vo.setDesignation("Admin");
+       						}
+       						
        						alertMap.put(vo.getDate()+"-"+vo.getComment(), vo);
        					}
        					
@@ -4380,8 +4398,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        						AlertTrackingVO tempVO = alertMap.get(vo.getDate()+"-"+vo.getComment());
        						if( tempVO!= null && tempVO.getDate().equalsIgnoreCase(vo.getDate()) && tempVO.getComment().equalsIgnoreCase(vo.getComment()))
        						{
-       							if(!tempVO.getDeptName().contains(vo.getDeptName()))
-       								vo.setDeptName(tempVO.getDeptName()+", "+vo.getDeptName());
+       							if(!tempVO.getDeptName().contains(vo.getDeptName())){
+       								if(tempVO.getDeptName().trim().length() > 0 && !tempVO.getDeptName().trim().isEmpty()){
+       									vo.setDeptName(tempVO.getDeptName()+", "+vo.getDeptName());
+       								}else{
+       									vo.setDeptName(vo.getDeptName());
+       								}
+       							}
        						}
        						alertMap.put(vo.getDate()+"-"+vo.getComment(), vo);
        					}
@@ -4396,6 +4419,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         		}
         		return voList;
         	} 
+        	
         	
         public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId,Long userId){
         	List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0); 
@@ -4684,7 +4708,21 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         			VO.setName(govtAlertSubTask.getAlertSubTaskStatus().getStatus());
         			finalList.add(VO);
         		}
-    			String lcationName = govtDepartmentDesignationOfficerDetailsNewDAO.getLocationNameByAssignedOficer(assignedByOfficerId);
+        		
+        		String userName = "";
+        		String locationName = "";
+        		String deptName = "";
+        		String desigName  = "";
+        		
+    			List<Object[]> desigList = govtDepartmentDesignationOfficerDetailsNewDAO.getLocationNameByAssignedOficer(assignedByOfficerId);
+    			if(desigList != null && desigList.size() > 0){
+    				for (Object[] objects : desigList) {
+    					userName = commonMethodsUtilService.getStringValueForObject(objects[0]);
+    					locationName = commonMethodsUtilService.getStringValueForObject(objects[3]);
+    					deptName = commonMethodsUtilService.getStringValueForObject(objects[2]);
+    					desigName = commonMethodsUtilService.getStringValueForObject(objects[1]);
+    				}
+    			}
     			if(finalList != null && finalList.size() > 0){
     				IdNameVO vo = finalList.get(0);
     				Long assignedUserId = govtAlertSubTask.getCreatedBy();
@@ -4711,8 +4749,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				//vo.setDeptName(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());
     				vo.setAssignedByOfficerStr(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getOfficerName());
     				vo.setAssignedOfficerStr(govtAlertSubTask.getSubTaskGovtOfficer().getOfficerName());
-    				vo.setMobileNo(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo() != null ?govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo():"");
-    				vo.setDesignation(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getDesignationName());
+    				//vo.setMobileNo(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo() != null ?govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo():"");//mobile No for Assigned By
+    				vo.setMobileNo(govtAlertSubTask.getSubTaskGovtOfficer().getMobileNo() != null ?govtAlertSubTask.getSubTaskGovtOfficer().getMobileNo():"");//mobile No for Assigned to
+    				vo.setDesignation(desigName);
     				vo.setAlertId(subTaskId);
     				vo.setDescription(govtAlertSubTask.getAlert().getDescription());
     				vo.setMainTitle(govtAlertSubTask.getAlert().getTitle());
@@ -4725,15 +4764,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     				vo.setStatusId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
     				vo.setColor(alertSubTaskStatusDAO.get(currentStatusId).getColor());
     				vo.setCategoryId(govtAlertSubTask.getAlert().getAlertCategoryId());
-    				vo.setPositionName(lcationName);//LocationName for Assigned By
+    				vo.setPositionName(locationName);//LocationName for Assigned By
     				vo.setCallerName(govtAlertSubTask.getGovtDepartmentDesignationOfficer().getLevelValueGovtDepartmentWorkLocation().getLocationName());//Location for assignedTo
+    				vo.setBoardName(govtAlertSubTask.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());//depart for assigned to
     				
-    				
-    				List<Long> subTaskIds = new ArrayList<Long>(0);
+        		/*	List<Long> subTaskIds = new ArrayList<Long>(0);
+    				List<Long> userIds = new ArrayList<Long>(0);
     				subTaskIds.add(vo.getAlertId());
     				List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistory(subTaskIds);
         			if(officersList != null && officersList.size() > 0){
 	    				for (Object[] objects : officersList) {
+	    					//userIds.add(commonMethodsUtilService.getLongValueForObject(objects[11]));
+
+							//}
+					//}
+        			//List<Object[]> deptList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistoryByUser(userIds);
+        			//if(deptList != null && deptList.size() > 0){
+	    				//for (Object[] objects : deptList) {
 								if(!commonMethodsUtilService.getStringValueForObject(objects[2]).isEmpty()){
 									vo.getCommentList().add(new AlertTrackingVO(commonMethodsUtilService.getLongValueForObject(objects[0]), 
 										 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3]),
@@ -4742,11 +4789,59 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								
 								if(!commonMethodsUtilService.getStringValueForObject(objects[8]).isEmpty()){
 									vo.getSubList().add(commonMethodsUtilService.getStringValueForObject(objects[8]));
-								}
+								
 
 							}
-					}
+	    				}
+        			}*/
+    				List<Long> subTaskIds = new ArrayList<Long>(0);
+    				Set<Long> userIds = new HashSet<Long>(0);
+    				Map<Long,AlertTrackingVO> map = new LinkedHashMap<Long, AlertTrackingVO>(0);
+    				subTaskIds.add(vo.getAlertId());
+    				List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistory(subTaskIds);
+        			if(officersList != null && officersList.size() > 0){
+	    				for (Object[] objects : officersList) {
+	    					userIds.add(commonMethodsUtilService.getLongValueForObject(objects[11]));
+								if(!commonMethodsUtilService.getStringValueForObject(objects[2]).isEmpty()){
+									vo.getCommentList().add(new AlertTrackingVO(commonMethodsUtilService.getLongValueForObject(objects[0]), 
+										 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3]),
+										 commonMethodsUtilService.getStringValueForObject(objects[4]),commonMethodsUtilService.getStringValueForObject(objects[6]),commonMethodsUtilService.getStringValueForObject(objects[7]),commonMethodsUtilService.getStringValueForObject(objects[10]),commonMethodsUtilService.getLongValueForObject(objects[11])));
+								}
+								
+								if(!commonMethodsUtilService.getStringValueForObject(objects[8]).isEmpty()){
+									vo.getSubList().add(commonMethodsUtilService.getStringValueForObject(objects[8]));
+							}
+	    	    		}
+	            	}
+	    		    
+        			List<Object[]> deptList = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigAndDepartForUser(new ArrayList<Long>(userIds));
+        			if(deptList != null && deptList.size() > 0){
+	    				for (Object[] object : deptList) {
+	    					Long usrId = commonMethodsUtilService.getLongValueForObject(object[0]);
+	    					AlertTrackingVO trackingVO = map.get(usrId);
+	    					if(trackingVO == null){
+	    						trackingVO  = new AlertTrackingVO();
+	    						trackingVO.setUserName(commonMethodsUtilService.getStringValueForObject(object[1]));
+	    						trackingVO.setDesignation(commonMethodsUtilService.getStringValueForObject(object[2]));
+	    						trackingVO.setLocation(commonMethodsUtilService.getStringValueForObject(object[3]));
+	    						trackingVO.setDeptName(commonMethodsUtilService.getStringValueForObject(object[4]));
+	    						map.put(usrId,trackingVO);
+	    					}
+							}
+	    				}
         			
+        			if(vo.getCommentList() != null && !vo.getCommentList().isEmpty()){
+        				for (AlertTrackingVO desigVO: vo.getCommentList()) {
+        					Long usrId = desigVO.getUserId();
+        					AlertTrackingVO finalVO = map.get(usrId);
+        					if(finalVO != null){
+        						desigVO.setUserName(finalVO.getUserName());
+        						desigVO.setDesignation(finalVO.getDesignation());
+        						desigVO.setLocation(finalVO.getLocation());
+        						desigVO.setDeptName(finalVO.getDeptName());
+        					}
+						}
+        			}
         			vo.setUserType(subTaskUserTypeStr);// assignedBy user or assignedTo user
         			
     			}
