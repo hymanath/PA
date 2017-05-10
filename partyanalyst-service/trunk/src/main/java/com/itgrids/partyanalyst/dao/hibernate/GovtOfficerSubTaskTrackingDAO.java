@@ -97,4 +97,39 @@ public class GovtOfficerSubTaskTrackingDAO extends GenericDaoHibernate<GovtOffic
 		query.setParameter("subTaskId", subTaskId);
 		return query.list();
 	}
+	public List<Object[]> getSubTaskAlertTrackingDtls(Long govtAlertSubTaskId){
+    	StringBuilder queryStr = new StringBuilder();
+    	queryStr.append(" select " +
+    					" model.govtAlertSubTask.govtAlertSubTaskId " +//0
+    					" , model.govtAlertActionType.govtAlertActionTypeId " +//1
+    					" , model.govtAlertActionType.actionType " +//2
+    					" , alertDepartmentComment.alertDepartmentCommentId " +//3
+    					" , alertDepartmentComment.comment " +//4
+    					" , alertDepartmentDocument.alertDepartmentDocumentId " +//5
+    					" , alertDepartmentDocument.document " +//6
+    					" , model.dueDate " +//7
+    					" , alertSubTaskStatus.alertSubTaskStatusId " +//8
+    					" , alertSubTaskStatus.status " +//9
+    					" , alertSeverity.alertSeverityId " +//10
+    					" , alertSeverity.severity " +//11
+    					" , model.insertedTime " +//12
+    					" , model.insertedById " +//13
+    					" , model.govtAlertSubTask.alert.govtDepartment.govtDepartmentId " +//14
+    					" , model.govtAlertSubTask.alert.govtDepartment.departmentName " +//15
+    					" from GovtOfficerSubTaskTracking model " +
+    					" left outer join model.alertDepartmentComment alertDepartmentComment " +
+    					" left outer join model.alertSubTaskStatus alertSubTaskStatus " +
+    					" left outer join model.alertDepartmentDocument alertDepartmentDocument " +
+    					" left outer join model.alertSeverity alertSeverity , " +
+    					" GovtAlertActionType govtAlertActionType " +
+    					" where " +
+    					" govtAlertActionType.govtAlertActionTypeId = model.govtAlertActionType.govtAlertActionTypeId " +
+    					" and model.govtAlertSubTask.govtAlertSubTaskId = :govtAlertSubTaskId " +
+    					" and model.govtAlertSubTask.isDeleted = 'N' " +
+    					" order by model.insertedTime ");
+    	Query query = getSession().createQuery(queryStr.toString());
+    	query.setParameter("govtAlertSubTaskId",govtAlertSubTaskId);
+    	
+    	return query.list();
+    }
 }

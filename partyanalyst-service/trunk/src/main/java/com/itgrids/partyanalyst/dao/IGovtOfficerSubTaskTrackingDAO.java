@@ -13,4 +13,5 @@ public interface IGovtOfficerSubTaskTrackingDAO extends GenericDao<GovtOfficerSu
 	public List<Object[]> getCommentDetialsForSubTasks(Long subTaskId);
 	public List<Object[]> getSubTasksStatusHistory(List<Long> subTaskIdsList);
 	public List<Object[]> getSubTasksCommentsAndStatusHistory(List<Long> subTaskIdsList);
+	public List<Object[]> getSubTaskAlertTrackingDtls(Long govtAlertSubTaskId);
 }

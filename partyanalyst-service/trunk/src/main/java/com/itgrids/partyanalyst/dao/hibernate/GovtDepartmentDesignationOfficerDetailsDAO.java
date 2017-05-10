@@ -297,7 +297,7 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 	public List<String> getAssignedDeptList(Long loginUserId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct" +
-						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName " +//0
+						" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.shortName " +//0
 						" from GovtDepartmentDesignationOfficerDetailsNew model " +
 						" where " +
 						" model.userId = :loginUserId ");
