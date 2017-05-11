@@ -42,7 +42,107 @@ public class DistrictOfficeViewAlertVO extends BaseModel implements Serializable
 	private List<String> departmentNames =new ArrayList<String>();
 	private List<String> designationNames =new ArrayList<String>();
 	private List<Long> deptIds =new ArrayList<Long>();
+	private Long stateId;
+	private String stateName;
+	private Long districtId;
+	private String distName;
+	private Long divId;
+	private String divName;
+	private Long subDivId;
+	private String subDivName;
+	private Long mandalId;
+	private String mandalName;
+	private Long LEBId;
+	private String LEBName;
+	private Long pancId;
+	private String panchayatName;
 	
+	
+	
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistName() {
+		return distName;
+	}
+	public void setDistName(String distName) {
+		this.distName = distName;
+	}
+	public Long getDivId() {
+		return divId;
+	}
+	public void setDivId(Long divId) {
+		this.divId = divId;
+	}
+	public String getDivName() {
+		return divName;
+	}
+	public void setDivName(String divName) {
+		this.divName = divName;
+	}
+	public Long getSubDivId() {
+		return subDivId;
+	}
+	public void setSubDivId(Long subDivId) {
+		this.subDivId = subDivId;
+	}
+	public String getSubDivName() {
+		return subDivName;
+	}
+	public void setSubDivName(String subDivName) {
+		this.subDivName = subDivName;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
+	}
+	public Long getLEBId() {
+		return LEBId;
+	}
+	public void setLEBId(Long lEBId) {
+		LEBId = lEBId;
+	}
+	public String getLEBName() {
+		return LEBName;
+	}
+	public void setLEBName(String lEBName) {
+		LEBName = lEBName;
+	}
+	public Long getPancId() {
+		return pancId;
+	}
+	public void setPancId(Long pancId) {
+		this.pancId = pancId;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
 	public List<Long> getDeptIds() {
 		return deptIds;
 	}

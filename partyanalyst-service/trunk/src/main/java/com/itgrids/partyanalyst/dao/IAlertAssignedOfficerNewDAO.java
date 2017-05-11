@@ -91,4 +91,6 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Object[]> getBellowLvlDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList);
     public List<Long> getAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,List<Long> calCntrIds,Long alertCategoryId,Long alertStatusId);
     public List<Long> getBellowDistrictOfficerAlertsDtls(Date fromDate,Date toDate,List<Long> printIdList,List<Long> electronicIdList,List<Long> calCntrIdList,Long statusId,Long desigDeptOfficerId,Long officerId);
+    public List<Long> getLocationFilterClickAlertIds(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
+ 			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId);
 }
