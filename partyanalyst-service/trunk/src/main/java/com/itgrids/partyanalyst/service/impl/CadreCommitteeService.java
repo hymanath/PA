@@ -21594,4 +21594,43 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 	}
 	return status;
 }
+
+	public List<TdpCadreVO>  getPartyLeadersDeatails(Long userId,Long levelId,List<Long> locationIdsList,Long representativeTypeId,List<Long> designationIdsList,int firstIndex,int maxIndex){
+		List<TdpCadreVO> returnList = new ArrayList<TdpCadreVO>(0);
+		try {
+			
+			List<Object[]> membersList = publicRepresentativeDAO.getPartyLeadersDeatails(levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+			if(commonMethodsUtilService.isListOrSetValid(membersList)){
+				for (Object[] param : membersList) {
+					TdpCadreVO vo = new TdpCadreVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setCadreName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[3]));
+					vo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
+					
+					vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[6]));
+					vo.setDistrict(commonMethodsUtilService.getStringValueForObject(param[8]));
+					vo.setParliament(commonMethodsUtilService.getStringValueForObject(param[10]));
+					vo.setConstituency(commonMethodsUtilService.getStringValueForObject(param[12]));
+					
+					if(commonMethodsUtilService.getStringValueForObject(param[16]).trim().length()>0)
+						vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[16]));
+					else 
+						vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[14]));
+					
+					if(commonMethodsUtilService.getStringValueForObject(param[20]).trim().length()>0)
+						vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[20]));
+					else
+						vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[18]));
+					
+					vo.setImageURL(commonMethodsUtilService.getStringValueForObject(param[22]));
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getPartyLeadersDeatails", e);
+		}
+		return returnList;
+	}
 }
