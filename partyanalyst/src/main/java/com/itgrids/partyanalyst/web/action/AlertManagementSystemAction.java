@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
@@ -82,7 +83,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<GrievanceAlertVO> grievanceAlertVo;
 	private FilterSectionVO filterDetilsList;
 	private String officerNameAnddesgnationName;
-	
+	private Long alertDataId;
 	
 	
 	public List<List<AlertTrackingVO>> getListOfalertTrackingVOList() {
@@ -325,6 +326,14 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	public void setFilterDetilsList(FilterSectionVO filterDetilsList) {
 		this.filterDetilsList = filterDetilsList;
 	}
+	public Long getAlertDataId() {
+		return alertDataId;
+	}
+
+	public void setAlertDataId(Long alertDataId) {
+		this.alertDataId = alertDataId;
+	}
+
 	public String execute(){
 		    session = request.getSession();
 			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
@@ -3538,7 +3547,6 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;
  }
-	
 	public String getLocationFilterClickDetails(){
 		try {
 			session = request.getSession();
@@ -3624,4 +3632,18 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getSearchAlertsDtls(){
+		 try{
+		      session = request.getSession();
+		         RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		      Long userId = regVo.getRegistrationID();
+		      jObj = new JSONObject(getTask());
+				Long alertId = jObj.getLong("alertId");
+				alertDataId = alertManagementSystemService.getSearchAlertsDtls(userId,alertId);
+		    }catch(Exception e){
+		      e.printStackTrace();
+		      LOG.error("Exception occured in getSearchAlertsDtls() of alertManagementSystemAction",e);
+		    }
+		    return Action.SUCCESS;
+		  }
 }
