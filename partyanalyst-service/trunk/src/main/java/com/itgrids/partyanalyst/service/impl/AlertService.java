@@ -6027,6 +6027,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							}else{
 								alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
 							}
+						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 5L){////Social Media
+							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
 						}
 						alertCoreDashBoardVO.setSource(alertSource);
 					 
