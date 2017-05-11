@@ -4224,7 +4224,8 @@
 		<property name="govtOfficerNewDAO" ref="govtOfficerNewDAO" ></property>  
 		<property name="govtSmsActionTypeDAO" ref="govtSmsActionTypeDAO" ></property>
 		<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO" ></property>
-		<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO" ></property>   
+		<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO" ></property> 
+		<property name="alertService" ref="alertService" ></property>	  
    </bean>
 </beans>			
 	

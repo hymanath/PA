@@ -17226,5 +17226,10 @@
 			<param name="root">alertCoreDashBoardVOs</param>       
 		</result> 
 	</action>
+	 <action name="getSearchAlertsDtlsAction" class="alertManagementSystemAction"  method="getSearchAlertsDtls">
+		<result type="json" name="success">    
+			<param name="root">alertDataId</param>       
+		</result>
+  </action>
  </package>
 </struts>
