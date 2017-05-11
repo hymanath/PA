@@ -2605,4 +2605,44 @@ public String updateCommitteeMemberDesignationByCadreId(){
 	
 	return Action.SUCCESS;
 }
+
+	public String getPartyLeadersDeatails(){
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+				return "input";
+			}
+			Long userId = regVO.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			Long levelId = jObj.getLong("levelId");
+			Long representativeTypeId = jObj.getLong("representativeTypeId");
+			JSONArray locationIdArr = jObj.getJSONArray("locationIds");
+			int firstIndex = jObj.getInt("firstIndex");
+			int maxIndex = jObj.getInt("maxIndex");
+			
+			List<Long> locationIdsList = new ArrayList<Long>(0);
+			if(locationIdArr != null && locationIdArr.length()>0){
+				for (int i = 0; i < locationIdArr.length(); i++) {
+					locationIdsList.add(locationIdArr.get(i) != null ? Long.valueOf(locationIdArr.get(i).toString()):0L);
+				}
+			}
+			
+			JSONArray designationIdArr = jObj.getJSONArray("designationIds");
+			List<Long> designationIdsList = new ArrayList<Long>(0);
+			if(designationIdArr != null && designationIdArr.length()>0){
+				for (int i = 0; i < designationIdArr.length(); i++) {
+					designationIdsList.add(designationIdArr.get(i) != null ? Long.valueOf(designationIdArr.get(i).toString()):0L);
+				}
+			}
+			
+			commiteeMembersList = cadreCommitteeService.getPartyLeadersDeatails(regVO.getRegistrationID(),levelId,locationIdsList,representativeTypeId,designationIdsList,firstIndex,maxIndex);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in updateCommitteeMemberDesignationByCadreId() At CadreCommitteeAction",e);
+		}
+		
+		return Action.SUCCESS;
+		
+	}
 }
