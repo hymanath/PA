@@ -4195,13 +4195,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  				 String dateStr = sdf.format(new Date());
  				 String yearStr = String.valueOf(year);
         		
-        		 StringBuilder pathBuilder = new StringBuilder();
-        		 StringBuilder str ;
+        		
         		 
         		 if(mapfiles != null && mapfiles.size() > 0){
         			GovtAlertSubTask gast = govtAlertSubTaskDAO.get(subTaskId);
         			 for (Map.Entry<File, String> entry : mapfiles.entrySet()){
-        				 str = new StringBuilder();
+        				 StringBuilder pathBuilder = new StringBuilder();
+                		 StringBuilder str = new StringBuilder();
         				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
         				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
         				 pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(entry.getValue());
