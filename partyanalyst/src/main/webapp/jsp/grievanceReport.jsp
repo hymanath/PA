@@ -66,7 +66,7 @@
 						<div class="col-md-3 m_top10">
 							<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
 								<option value="0">All</option>
-								<option value="1">Call Center</option>     
+								<option value="4">Call Center</option>     
 								<option value="2">Print Media</option>
 								<option value="3">Electronic Media</option>
 							</select>
