@@ -236,5 +236,106 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		return query.list();
 	}
 	
+	public List<Object[]> getPartyLeadersDeatails(Long levelId,List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" SELECT ");
+		queryStr.append(" distinct tc.tdp_cadre_di as tdp_cadre_di ");
+		queryStr.append(" tc.membership_id as membership_id,  ");
+		queryStr.append(" tc.first_name as first_name , ");
+		queryStr.append(" tc.mobile_no as mobile_no ,  ");
+		queryStr.append(" prt.position as position, ");
+		queryStr.append(" s.state_id as state_id , ");
+		queryStr.append(" s.state_name as state_name , ");
+		queryStr.append(" d.district_id as district_id , ");
+		queryStr.append(" d.district_name as district_name, ");
+		queryStr.append(" pc.constituency_id as pId , ");
+		queryStr.append(" pc.`name` as pName, ");
+		queryStr.append(" c.constituency_id as assemblyId, ");
+		queryStr.append(" c.`name` as assemblyName, ");
+		queryStr.append(" t.tehsil_id as tehsil_id, ");
+		queryStr.append(" t.tehsil_name as tehsil_name , ");
+		queryStr.append(" l.local_election_body_id as local_election_body_id , ");
+		queryStr.append(" l.`name` as lebName, ");
+		queryStr.append(" p.panchayat_id as panchayat_id, ");
+		queryStr.append(" p.panchayat_name as panchayat_name, ");
+		queryStr.append(" w.constituency_id as wardId, ");//20
+		queryStr.append(" w.`name` as wardName, ");
+		queryStr.append(" tc.image as image ");
+		queryStr.append(" from  ");
+		queryStr.append(" public_representative pr,  ");
+		queryStr.append(" public_representative_type prt, ");
+		queryStr.append(" tdp_cadre_enrollment_year tcey,  ");
+		queryStr.append(" tdp_cadre tc ,  ");
+		queryStr.append(" tdp_cadre_candidate tcc ,  ");
+		queryStr.append(" user_address ua  ");
+		queryStr.append(" left outer join state s on ua.state_id = s.state_id ");
+		queryStr.append(" left outer join district d on ua.district_id = d.district_id  ");
+		queryStr.append(" left outer join constituency c on ua.constituency_id = c.constituency_id  ");
+		queryStr.append(" left outer join constituency pc on ua.parliament_constituency_id = pc.constituency_id ");
+		queryStr.append(" left outer join tehsil t on ua.tehsil_id = t.tehsil_id  ");
+		queryStr.append(" left outer join local_election_body l on ua.local_election_body = l.local_election_body_id  ");
+		queryStr.append(" left outer join panchayat  p on ua.panchayat_id = p.panchayat_id  ");
+		queryStr.append(" left outer join constituency w on ua.ward = w.constituency_id ");
+		queryStr.append(" where  ");
+		queryStr.append(" pr.address_id = ua.user_address_id and  ");
+		queryStr.append(" pr.public_representative_type_id = prt.public_representative_type_id and  ");
+		queryStr.append(" pr.candidate_id = tcc.candidate_id and  ");
+		queryStr.append(" tcc.tdp_cadre_id = tcey.tdp_cadre_id and  ");
+		queryStr.append(" tcey.tdp_cadre_id = tc.tdp_cadre_id and  ");
+		
+		if(designationIdsList != null && designationIdsList.size()>0)
+			queryStr.append(" and pr.public_representative_type_id in (:designationIdsList)   ");
+		if(levelId != null && levelId.longValue()>0L){
+			if(levelId.longValue() == 2L)
+				queryStr.append(" and ua.state_id in (:locationIdsList)   ");
+			else if(levelId.longValue() == 3L)
+				queryStr.append(" and ua.district_id in (:locationIdsList)   "); 
+			else if(levelId.longValue() == 4L)
+				queryStr.append(" and ua.constituency_id in (:locationIdsList)   "); 
+			else if(levelId.longValue() == 5L)
+				queryStr.append(" and ua.tehsil_id in (:locationIdsList)   "); 
+			else if(levelId.longValue() == 6L)
+				queryStr.append(" and ua.panchayat_id in (:locationIdsList)   "); 
+			else if(levelId.longValue() == 7L)
+				queryStr.append(" and ua.local_election_body in (:locationIdsList)   "); 
+			else if(levelId.longValue() == 8L)
+				queryStr.append(" and ua.ward in (:locationIdsList)   ");
+		}
+		
+		queryStr.append(" tcey.enrollment_year_id = 4 ");
+		queryStr.append(" order by tc.membership_id,prt.position ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("tdp_cadre_di", Hibernate.LONG)
+				.addScalar("membership_id", Hibernate.STRING)
+				.addScalar("first_name", Hibernate.STRING)
+				.addScalar("mobile_no", Hibernate.STRING)
+				.addScalar("position", Hibernate.STRING)
+				.addScalar("state_id", Hibernate.LONG)
+				.addScalar("state_name", Hibernate.STRING)
+				.addScalar("district_id", Hibernate.LONG)
+				.addScalar("district_name", Hibernate.STRING)
+				.addScalar("pId", Hibernate.LONG)
+				.addScalar("pName", Hibernate.STRING)
+				.addScalar("assemblyId", Hibernate.LONG)
+				.addScalar("assemblyName", Hibernate.STRING)
+				.addScalar("tehsil_id", Hibernate.LONG)
+				.addScalar("tehsil_name", Hibernate.STRING)
+				.addScalar("local_election_body_id", Hibernate.LONG)
+				.addScalar("lebName", Hibernate.STRING)
+				.addScalar("panchayat_id", Hibernate.LONG)
+				.addScalar("panchayat_name", Hibernate.STRING)
+				.addScalar("wardId", Hibernate.LONG)
+				.addScalar("wardName", Hibernate.STRING)
+				.addScalar("image", Hibernate.STRING);
+		
+		if(designationIdsList != null && designationIdsList.size()>0)
+			query.setParameterList("designationIdsList", designationIdsList);
+		if(locationIdsList != null && locationIdsList.size()>0)
+			query.setParameterList("locationIdsList", locationIdsList);
+		
+		query.setFirstResult(firstIndex);
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
 	
  }
