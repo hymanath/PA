@@ -739,6 +739,7 @@
 		 <!-- geoDemographics Start -->
 		<pattern>/geoDemographicsAction*</pattern>
 		<pattern>/newConstituencyPage*</pattern>
+		<pattern>/partyLeadersDetailsAction*</pattern>
 		<pattern>/customReportAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
