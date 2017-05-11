@@ -202,5 +202,6 @@ public interface ICadreCommitteeService {
 	 public List<ActivityVO> getDistrictWiseActivitiesCount(Long activityScopeId,Long activityLevelId,String accessType,Long accessValue,Long stateId,Long userId);
 	 
 	 public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,final Long userId);
-	 public List<TdpCadreVO>  getPartyLeadersDeatails(Long userId,Long levelId,List<Long> locationIdsList,Long representativeTypeId,List<Long> designationIdsList,int firstIndex,int maxIndex);
+	 public List<TdpCadreVO>  getPartyLeadersDeatails(Long userId,Long levelId,List<Long> locationIdsList,Long representativeTypeId,List<Long> designationIdsList,
+				List<Long> committeeLevelIdsList,List<Long> enrollmentIdsList, List<Long> committeeTypeIdsList, Long stateId, int firstIndex,int maxIndex);
 }

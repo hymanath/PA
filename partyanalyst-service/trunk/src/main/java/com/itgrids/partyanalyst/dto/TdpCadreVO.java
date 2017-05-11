@@ -21,8 +21,11 @@ public class TdpCadreVO implements java.io.Serializable
 	private String errorStr;
 	private String occupation;
 	private Long totalCount;
+	private String state;
+	private String stateId;
 	private Long constituencyId;
 	private String constituency;
+	private Long constituencyNo;
 	private Long tehsilId;
 	private String tehsil;
 	private Long localElectionBodyId;
@@ -72,6 +75,24 @@ public class TdpCadreVO implements java.io.Serializable
 	private String enrollmentYearIdStr;
 	private List<String> enrollmentYearList = new ArrayList<String>();
 	
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public String getStateId() {
+		return stateId;
+	}
+	public void setStateId(String stateId) {
+		this.stateId = stateId;
+	}
+	public Long getConstituencyNo() {
+		return constituencyNo;
+	}
+	public void setConstituencyNo(Long constituencyNo) {
+		this.constituencyNo = constituencyNo;
+	}
 	public String getParliament() {
 		return parliament;
 	}
