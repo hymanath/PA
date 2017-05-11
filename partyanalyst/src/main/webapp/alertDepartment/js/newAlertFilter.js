@@ -421,6 +421,7 @@ function getSubOrdinateFilterAlertsOverview(){
 	var levelValuesArr = [];
 	var deptIdsArr = [];
 	var statusIdsArr = [];
+	var levelId = 0;
 	
 	var fromDays = 0;
 	var toDays = 0;
@@ -456,6 +457,7 @@ function getSubOrdinateFilterAlertsOverview(){
 		return;
 	}else{
 		lvelIdsArr.push($("#locationLevelSelectedId").val());
+		levelId = $("#locationLevelSelectedId").val();
 	}
 	
 	var dynamicLocationValue=$('.dynamicSelectList').val();
@@ -486,13 +488,14 @@ function getSubOrdinateFilterAlertsOverview(){
 		var childLevelVals =[];	
 		var childLevelId = 0; //0
 		$('.childValCls').each(function(){
-			childLevelVals =[];	
+			
 			var dynamicLevlId = $(this).attr('attr_dynamic_levelid');
 			var id =  $(this).attr('id');
 			var dynamicLocationValue=$('#'+id+'').val();
 			
 			if(dynamicLocationValue != null &&  dynamicLocationValue != 0)
 				{
+					childLevelVals =[];	
 					childLevelId =dynamicLevlId;
 					childLevelVals.push(dynamicLocationValue);
 				}
@@ -561,20 +564,50 @@ function getSubOrdinateFilterAlertsOverview(){
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildSubOrdinateFilterAlertsOverview(result);
+			buildSubOrdinateFilterAlertsOverview(result,levelId);
 		}else{
 			$("#getSubOrdinateFilterAlertsOverview").html("NO DATA");
 		}
 	});
 }
-function buildSubOrdinateFilterAlertsOverview(result)
+function buildSubOrdinateFilterAlertsOverview(result,levelId)
 {
 	var str='';
 	str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered table-condensed">';
 			str+='<thead style="background-color:#ccc;">';
 				str+='<th>Level</th>';
-				str+='<th>Location</th>';
+				if(levelId != 0 && levelId ==1 || levelId ==2 || levelId ==3 || levelId ==4){
+					str+='<th>State</th>';
+				}if(levelId != 0 && levelId ==5){
+					str+='<th>District</th>';
+				}else if(levelId != 0 && levelId ==6){
+					str+='<th>District</th>';
+					str+='<th>Division</th>';
+				}else if(levelId != 0 && levelId ==7){
+					str+='<th>District</th>';
+					str+='<th>Division</th>';
+					str+='<th>Sub Division</th>';
+				}else if(levelId != 0 && levelId ==8){
+					str+='<th>District</th>';
+					str+='<th>Division</th>';
+					str+='<th>Sub Division</th>';
+					str+='<th>Mandal</th>';
+				}else if(levelId != 0 && levelId ==9){
+					str+='<th>District</th>';
+					str+='<th>Division</th>';
+					str+='<th>Sub Division</th>';
+					str+='<th>Mandal</th>';
+					str+='<th>Local Election Body</th>';
+				}else if(levelId != 0 && levelId ==10){
+					str+='<th>District</th>';
+					str+='<th>Division</th>';
+					str+='<th>Sub Division</th>';
+					str+='<th>Mandal</th>';
+					str+='<th>Local Election Body</th>';
+					str+='<th>Panchayat</th>';
+				}
+				
 				str+='<th>Designation</th>';
 				str+='<th>Total</th>';
 				for(var i in result[0].list1[0].list2[0].subList1)
@@ -593,14 +626,131 @@ function buildSubOrdinateFilterAlertsOverview(result)
 						{
 							str+='<tr>';
 									str+='<td>'+result[i].name+'</td>';
-									str+='<td>'+result[i].list1[j].name+'</td>';
+									if(levelId != 0 && levelId ==1 || levelId ==2 || levelId ==3 || levelId ==4){
+										if(result[i].list1[j].name != null){
+											str+='<td>'+result[i].list1[j].name+'</td>';
+										}else{
+											tr+='<td>-</td>';
+										}
+									}else if(levelId != 0 && levelId ==5){
+										if(result[i].list1[j].name != null){
+											str+='<td>'+result[i].list1[j].name+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+									}else if(levelId != 0 && levelId ==6){
+										if(result[i].list1[j].distName != null && result[i].list1[j].distName != ""){
+											str+='<td>'+result[i].list1[j].distName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].name != null){
+											str+='<td>'+result[i].list1[j].name+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+									}else if(levelId != 0 && levelId ==7){
+										if(result[i].list1[j].distName != null && result[i].list1[j].distName != ""){
+											str+='<td>'+result[i].list1[j].distName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].divName != null && result[i].list1[j].divName != ""){
+											str+='<td>'+result[i].list1[j].divName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].name != null){
+											str+='<td>'+result[i].list1[j].name+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+									}else if(levelId != 0 && levelId ==8){
+										if(result[i].list1[j].distName != null && result[i].list1[j].distName != ""){
+											str+='<td>'+result[i].list1[j].distName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].divName != null && result[i].list1[j].divName != ""){
+											str+='<td>'+result[i].list1[j].divName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].subDivName != null && result[i].list1[j].subDivName != ""){
+											str+='<td>'+result[i].list1[j].subDivName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].name != null){
+											str+='<td>'+result[i].list1[j].name+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+									}else if(levelId != 0 && levelId ==9){
+										if(result[i].list1[j].distName != null && result[i].list1[j].distName != ""){
+											str+='<td>'+result[i].list1[j].distName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].divName != null && result[i].list1[j].divName != ""){
+											str+='<td>'+result[i].list1[j].divName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].subDivName != null && result[i].list1[j].subDivName != ""){
+											str+='<td>'+result[i].list1[j].subDivName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].mandalName != null && result[i].list1[j].mandalName != ""){
+											str+='<td>'+result[i].list1[j].mandalName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].name != null){
+											str+='<td>'+result[i].list1[j].name+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+									}else if(levelId != 0 && levelId ==10){
+										if(result[i].list1[j].distName != null && result[i].list1[j].distName != ""){
+											str+='<td>'+result[i].list1[j].distName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].divName != null && result[i].list1[j].divName != ""){
+											str+='<td>'+result[i].list1[j].divName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].subDivName != null && result[i].list1[j].subDivName != ""){
+											str+='<td>'+result[i].list1[j].subDivName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].mandalName != null && result[i].list1[j].mandalName != ""){
+											str+='<td>'+result[i].list1[j].mandalName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].LEBName != null && result[i].list1[j].LEBName != ""){
+											str+='<td>'+result[i].list1[j].LEBName+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(result[i].list1[j].name != null && result[i].list1[j].name != ""){
+											str+='<td>'+result[i].list1[j].name+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+									}
 									str+='<td>'+result[i].list1[j].list2[k].name+'</td>';
 									
-									str+='<td>'+result[i].list1[j].list2[k].count+'</td>';
+									str+='<td attr_disig_id="'+result[i].list1[j].list2[k].id+'" attr_level_id="'+result[i].id+'" attr_childval_id="'+result[i].list1[j].id+'" attr_childlvl_id="" attr_status_id="0">'+result[i].list1[j].list2[k].count+'</td>';
 							for(var l in result[i].list1[j].list2[k].subList1)
 							{
 								
-									str+='<td>'+result[i].list1[j].list2[k].subList1[l].count+'</td>';
+									str+='<td attr_disig_id="'+result[i].list1[j].list2[k].id+'" attr_level_id="'+result[i].id+'" attr_childval_id="'+result[i].list1[j].id+'" attr_childlvl_id="" attr_status_id="'+result[i].list1[j].list2[k].subList1[l].id+'">'+result[i].list1[j].list2[k].subList1[l].count+'</td>';
 								
 							}
 							str+='</tr>';
@@ -611,4 +761,159 @@ function buildSubOrdinateFilterAlertsOverview(result)
 		str+='</table>';
 	str+='</div>';
 	$("#getSubOrdinateFilterAlertsOverview").html(str);
+}
+//getLocationFilterClickDetails();
+function getLocationFilterClickDetails(){
+	var lvelIdsArr =[];
+	var deginaIdsArr = [];
+	var levelValuesArr = [];
+	var deptIdsArr = [];
+	var statusIdsArr = [];
+	var levelId = 0;
+	
+	var fromDays = 0;
+	var toDays = 0;
+	var lagChckedValue =$("#lagDaysId").is(':checked') ? 1 : 0;
+	var checkedValue;
+	/* 	if(lagChckedValue == 1){
+			 fromDays = $(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html();
+			 toDays = $(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html();
+			lagChckedValue = "true";
+		}else{
+			lagChckedValue = "false";
+		}
+		
+	var moreDAysChckedValue =$("#moreDaysId").is(':checked') ? 1 : 0;
+ 	  if(moreDAysChckedValue == 1){
+		   fromDays = 0;
+		   toDays = 0;
+		   lagChckedValue = "true";
+			moreDAysChckedValue = "true";
+		}else{
+			moreDAysChckedValue = "false";
+		}
+	if($("#departmentSelectedId").val() == null || $("#departmentSelectedId").val() == 0){
+		$("#assignErrorDivId").html("Please select department");
+		return;
+	}else{
+		deptIdsArr.push($("#departmentSelectedId").val());
+	}
+	if($("#locationLevelSelectedId").val() == null  || $("#locationLevelSelectedId").val() == 0)
+	{
+		
+		$("#assignErrorDivId").html("Please select impact level");
+		return;
+	}else{
+		lvelIdsArr.push(8);
+		levelId = $("#locationLevelSelectedId").val();
+	}
+	
+	var dynamicLocationValue=$('.dynamicSelectList').val();
+	var hasError=false;
+	var displayName = "";
+	if (typeof(dynamicLocationValue) != "undefined"){
+		
+		
+		$('.dynamicSelectList').each(function(){
+			if(!hasError){
+				displayName = $(this).attr('attr_dyna_name');
+				var id =  $(this).attr('id');
+				var dynamicLocationValue=$('#'+id+'').val();
+				if(dynamicLocationValue == null )
+				{
+					hasError=true;
+					$("#assignErrorDivId").html("Please select "+displayName+". ");
+					return;
+				}			
+			}else{
+				return;
+			}
+		});	
+		if(hasError)
+			return;
+		
+	}
+		var childLevelVals =[];	
+		var childLevelId = 0; //0
+		$('.childValCls').each(function(){
+			
+			var dynamicLevlId = $(this).attr('attr_dynamic_levelid');
+			var id =  $(this).attr('id');
+			var dynamicLocationValue=$('#'+id+'').val();
+			
+			if(dynamicLocationValue != null &&  dynamicLocationValue != 0)
+				{
+					childLevelVals =[];	
+					childLevelId =dynamicLevlId;
+					childLevelVals.push(dynamicLocationValue);
+				}
+		});
+	
+	/* hasError=false;
+	if(!hasError){
+		var locationValue=$(".locationCls1").val();
+		if(locationValue == null)
+		{
+			$("#assignErrorDivId").html("Please select Location. ");
+			return;
+		}
+	}
+	if($("#designationsWiseId").val() == null)
+	{
+		$("#assignErrorDivId").html("Please select designation");
+		return;
+	}
+	if($("#statusSelectedId").val() == null)
+	{
+		$("#assignErrorDivId").html("Please select Status");
+		return;
+	}
+	if($("#PriorityId").val() == null )
+	{
+		$("#assignErrorDivId").html("Please select Status");
+		return;
+	} */
+	var priorityId = $("#PriorityId").val();
+	if($("#designationsWiseId").val() != null && $("#designationsWiseId").val() != 0){
+		deginaIdsArr.push(26);
+	}
+
+	if($("#statusSelectedId").val() != null && $("#statusSelectedId").val() != 0){
+		statusIdsArr.push($("#statusSelectedId").val());
+	}
+	var alertType = getAlertType();
+	$("#assignErrorDivId").html(' ');
+	$("#getSubOrdinateFilterAlertsOverview").html(spinner); 
+	var locationValues=[];
+	locationValues.push(200);
+	lvelIdsArr.push(8);
+	deginaIdsArr.push(26);
+	var jsObj = {
+	  
+		fromDate : currentFromDate,
+		toDateStr : currentToDate,
+		govtLevelIds :[8] , //locationLevelSelectedId //impact level
+		locationValues : [206], //locationSubLevelSelectedId
+		desigIds : [7],		 //designationsWiseId	
+		statusIds : [],      //statusSelectedId
+		deptIds : [49],			//departmentIds
+		priorityId : 0,				//PriorityId
+		childLevelId:0,
+		alertType : "subTask",
+		isLagChkd : "", // true
+		isMoreThanYrChkd : "", //check true or false true - 0,0 --- false (particular values)
+		lagStartCnt : 0,
+		lagEndCnt : 0,
+		paperIdArr:[],
+		chanelIdArr:[],
+		callCenterArr:[]
+    
+	}
+	$.ajax({
+		type:'GET',
+		url: 'getLocationFilterClickDetailsAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		alert(7)
+	});
 }
