@@ -3772,7 +3772,7 @@ function alertStatusHistory(result,alertId)
 					str+='<td style="width:100px;">'+result[i].date+'</td>';
 					str+='<td>'+result[i].status+'</td>';
 					str+='<td>';
-					if(result[i].userName == "govt_admin"){
+					if(result[i].designation == "Admin"){
 						str+='<p class="text-primary text-capitalize">Updated By: <span style="color:black;">'+result[i].userName+' </span></p>';
 						str+='<p class="text-primary text-capitalize"><u> Designation:  <span style="color:black;"> '+result[i].designation+' </span></u></p>';
 					}else{
