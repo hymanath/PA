@@ -23,6 +23,7 @@
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
 <link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
+<link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -165,10 +166,10 @@
 										</div>
 										<div class="col-md-6 col-xs-12 col-sm-12">
 											<ul class="switch-btn pull-right activeCls">
-												<li attr_type="status" class="active">status overview</li>
-												<li attr_type="scopeLevel" class="" >location level</li>
-												<li attr_type="alertCategory" class="" >Alert Source</li>
-												<li attr_type="filterView" class="" id="filterViewId" >Filter</li>
+												<li attr_type="status" attr_department_type="statuswise" class="active">status overview</li>
+												<li attr_type="scopeLevel" attr_department_type="scopewise" class="" >location level</li>
+												<li attr_type="alertCategory" attr_department_type="alertSource" class="" >Alert Source</li>
+												<li attr_type="filterView" attr_department_type="filterView" class="" id="filterViewId" >Filter</li>
 											</ul>
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-12 ">
@@ -212,14 +213,15 @@
 											<div id="filterViewBodyId" style="display:none"></div>
 										</div>
 											<div id="departmentWiseGraphViewDetails"></div>
-											<!--<div id="departmentlocationCountDivId" class="departmentlocationShow" style="margin-left:15px;display:none;"></div>
-											<div id="departmentStatusCountDivId" class="departmentStatusShow" ></div>
-											<div id="departmentAlertCountDivId" class="departmentAlertCountShow" style="display:none;"></div>
-											<div id="departmentAlertSourceCountDivId" class="departmentAlertSourceCountShow" style="display:none;"></div>-->
-										
 									</div>
 								</div>
+								
 							</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-xs-12 col-md-12 ">
+								<div id="departmentWiseLocationBlockId" ></div>
 							</div>
 						</div>
 					</div>
