@@ -1262,7 +1262,7 @@ function buildAlertData(result)
 		$("#descriptionId").html('<b>'+result[i].desc+'</b>');
 		
 		if(result[i].imageUrl !=null && result[i].imageUrl.length>0){
-			$(".imageUrlUlCls").html("<li class='articleDetailsCls' attr_articleId="+result[i].alertCategoryTypeId+" style='cursor:pointer'><img src='http://mytdp.com/NewsReaderImages/"+result[i].imageUrl+"' style='width: 150px; height: 150px;'></img></li>");
+			$(".imageUrlUlCls").html("<li class='articleDetailsCls' attr_articleId="+result[i].alertCategoryTypeId+" style='cursor:pointer'><img src='../NewsReaderImages/"+result[i].imageUrl+"' style='width: 150px; height: 150px;'></img></li>");
 			$("#imageUrlTrId").show();
 		}else{
 			$(".imageUrlUlCls").html("");
@@ -1304,7 +1304,7 @@ function getTotalArticledetails(articleId){
 		heading+='</h4>';
 		str+='<div class="row">';
 			str+='<div class="col-md-12">';
-				str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;" alt="Img Title"/>';
+				str+='<img class="mainImage"  src="../NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;" alt="Img Title"/>';
 			str+='</div>';
 			str+='<div class="col-md-12 m_top10">';
 				str+='<h4 class="panel-title text-success">Description</h4>';
@@ -1527,7 +1527,7 @@ function getTotalArticledetails(articleId){
 								for( var i in result.linkedList){
 									if(result.linkedList[i].articleId !=articleId ){
 										str+='<div class="col-md-4" style="margin-top:5px;">';
-											str+='<img  class="thumbnail img-responsive linkedArticlesClickId" src="http://mytdp.com/NewsReaderImages/'+result.linkedList[i].imageURL+'" style="display:block;margin:auto;height:90px;cursor:pointer"/>';
+											str+='<img  class="thumbnail img-responsive linkedArticlesClickId" src="../NewsReaderImages/'+result.linkedList[i].imageURL+'" style="display:block;margin:auto;height:90px;cursor:pointer"/>';
 										str+='</div>';
 									}
 								}
@@ -2001,7 +2001,7 @@ function getGroupedArticlesInfo(articleId)
 			for(var i in result)
 			{
 				if(articleId != result[i].id){
-					str+='<li class="articleImgDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="http://mytdp.com/NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
+					str+='<li class="articleImgDetailsCls" attr_articleId='+result[i].id+' style="cursor:pointer"><img src="../NewsReaderImages/'+result[i].name+'" style="width: 150px; height: 150px;margin-top:5px;"></img></li>';
 				}
 			}
 			str+='</ul>';

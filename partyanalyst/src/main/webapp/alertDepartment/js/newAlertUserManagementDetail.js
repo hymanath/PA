@@ -19,7 +19,7 @@ function onLoadClicks()
 	/*alert Assigned Part Start*/
 	$(document).on('click', '.imageShowOpen li', function(){
 		var id = $(this).attr("attr_doc_id");
-		var path = "http://mytdp.com/images/"+$(this).attr("attr_path");
+		var path = "../images/"+$(this).attr("attr_path");
 		window.open(path);
 	});
 	$(document).on('change', '#locationLevelSelectId', function(){
@@ -63,7 +63,7 @@ function onLoadClicks()
 			backdrop: 'static'
 		});
 		var imgSrc = $(this).attr('src');
-		$('#alertManagementPopupBody1').html('<img class=" img-responsive m_top20" attr_articleId="" src="http://www.mytdp.com/images/'+imgSrc+'" style="width: 999px; height: 500px;"/>');
+		$('#alertManagementPopupBody1').html('<img class=" img-responsive m_top20" attr_articleId="" src="../images/'+imgSrc+'" style="width: 999px; height: 500px;"/>');
 		
 		$('#alertManagementPopupHeading').html(' Sub Task Uploaded Attachment');
 	});
@@ -1967,7 +1967,7 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 					str1+='<h4 class="text-muted text-capital"> Sub Task Attachments:  </h4>';	
 					for(var k in result[i].subList){
 							str1+='<div class="col-sm-3">';
-							str1+='<img class="displayImgCls img-responsive m_top20" attr_articleId="" src="http://www.mytdp.com/images/'+result[i].subList[k]+'" style="width: 100px; height: 100px;cursor:pointer"/>';
+							str1+='<img class="displayImgCls img-responsive m_top20" attr_articleId="" src="../images/'+result[i].subList[k]+'" style="width: 100px; height: 100px;cursor:pointer"/>';
 							str1+='</div>';
 					}
 					
@@ -2292,7 +2292,7 @@ function buildAlertDataNew(result)
 		str+='<div class="col-sm-11">';
 			for(var i in result.documentList)
 			{
-				str+='<img class="articleDetailsCls img-responsive m_top20" src="http://mytdp.com/Reports/'+result.documentList[i]+'" style="width: 150px; height: 150px;cursor:pointer"/>';
+				str+='<img class="articleDetailsCls img-responsive m_top20" src="../Reports/'+result.documentList[i]+'" style="width: 150px; height: 150px;cursor:pointer"/>';
 			}
 		str+='</div>';
 	str+='</div>';
@@ -2305,7 +2305,7 @@ function buildAlertDataNew(result)
 			if(result[i].imageUrl != null){
 				str1+='<div class="col-sm-4">';
 					str1+='<h4 class="text-muted text-capital">article attachment</h4>';
-					str1+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId='+result[i].alertCategoryTypeId+' src="http://mytdp.com/NewsReaderImages/'+result[i].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer"/>';
+					str1+='<img class="articleDetailsCls img-responsive m_top20" attr_articleId='+result[i].alertCategoryTypeId+' src="../NewsReaderImages/'+result[i].imageUrl+'" style="width: 150px; height: 150px;cursor:pointer"/>';
 				str1+='</div>';
 				str1+='<div class="col-sm-7" id="existingDocsDivId"></div>';
 			}else{
@@ -2678,7 +2678,7 @@ function buildCommentsForAlert(result)
 						
 					}else if(result[i][j].actionType == 'Attachment'){
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
-						str+='<p><span class="alert-history-body text-capital"><a target="_blank"  href="http://www.mytdp.com/images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';       
+						str+='<p><span class="alert-history-body text-capital"><a target="_blank"  href="../images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';       
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">'+result[i][j].updatedUserName+'  </span>';     
 						if(result[i][j].position != "admin"){
 							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
@@ -2760,7 +2760,7 @@ function getTotalArticledetails(articleId){
 		heading+='</h4>';
 		str+='<div class="row">';
 			str+='<div class="col-md-12">';
-				str+='<img class="mainImage"  src="http://mytdp.com/NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;" alt="Img Title"/>';
+				str+='<img class="mainImage"  src="../NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;" alt="Img Title"/>';
 			str+='</div>';
 			str+='<div class="col-md-12 m_top10">';
 				str+='<h4 class="panel-title text-success">Description</h4>';
@@ -2985,7 +2985,7 @@ function getTotalArticledetails(articleId){
 								for( var i in result.linkedList){
 									if(result.linkedList[i].articleId !=articleId ){
 										str+='<div class="col-md-4" style="margin-top:5px;">';
-											str+='<img  class="thumbnail img-responsive linkedArticlesClickId" src="http://mytdp.com/NewsReaderImages/'+result.linkedList[i].imageURL+'" style="display:block;margin:auto;height:90px;cursor:pointer"/>';
+											str+='<img  class="thumbnail img-responsive linkedArticlesClickId" src="../NewsReaderImages/'+result.linkedList[i].imageURL+'" style="display:block;margin:auto;height:90px;cursor:pointer"/>';
 										str+='</div>';
 									}
 								}
@@ -3028,7 +3028,7 @@ function getDocumentsForAlert(alertId){
 			str+='<ul class="list-inline imageShowOpen">';
 			for(var i in result){
 				str+='<span style="background-color: gray; display: inline-block; border-radius: 5px; height: 8px; width: 8px;"></span><li class="" style="margin-top:25px;" attr_doc_id="'+result[i].id+'"  attr_path="'+result[i].name+'" id="imageAttachmentOpen'+result[i].id+'" >';
-					str+='<img src="http://www.mytdp.com/images/'+result[i].name+'" style="width: 100px; height: 100px;cursor:pointer" />';
+					str+='<img src="../images/'+result[i].name+'" style="width: 100px; height: 100px;cursor:pointer" />';
 					//str+='<a target="_blank" href="http://www.mytdp.com/images/'+result[i].name+'" style="cursor:pointer;">'+result[i].name+'</a>';
 				str+='</li>&nbsp;&nbsp;';
 				
@@ -3574,7 +3574,7 @@ function alertHistory(result)
 						
 					}else if(result[i][j].actionType == 'Attachment'){
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'</p>'; 
-						str+='<p><span class="alert-history-body text-capital"><a target="_blank" href="http://www.mytdp.com/images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';
+						str+='<p><span class="alert-history-body text-capital"><a target="_blank" href="../images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';      
 						if(result[i][j].position != "admin"){
 							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
@@ -4422,7 +4422,7 @@ function buildSubTaskCommetDtls(result){
 						
 					}else if(result[i][j].actionType == 'Attachment'){
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
-						str+='<p><span class="alert-history-body text-capital"><a target="_blank"  href="http://www.mytdp.com/images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';       
+						str+='<p><span class="alert-history-body text-capital"><a target="_blank"  href="../images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';       
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">'+result[i][j].updatedUserName+'  </span>';     
 						if(result[i][j].position != "admin"){
 							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
