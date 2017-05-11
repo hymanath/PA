@@ -2739,8 +2739,13 @@ function buildGrievanceReportDayWise(result,rangeType) {
 		var locTotal = 0;
 		for(var i in result){
 			str+='<tr>'; 
-				str+='<td>'+result[i].day+'</td>';           
-				str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="0" attr_location_id="0">'+result[i].totalAlertCnt+'</td>';
+				str+='<td data-toggle="tooltip" data-placement="top" title="'+result[i].fromDateStr+"-"+result[i].toDateStr+'">'+result[i].day+'</td>';
+				if(result[i].totalAlertCnt == 0){
+					str+='<td>-</td>';
+				}else{
+					str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="0" attr_location_id="0">'+result[i].totalAlertCnt+'</td>';
+				}
+				
 				locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
 			for(var j in result[i].subList1){
 				if(result[i].subList1[j].totalAlertCnt != 0){
