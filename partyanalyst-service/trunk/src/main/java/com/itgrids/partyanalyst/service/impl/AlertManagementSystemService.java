@@ -3687,7 +3687,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
        								
        							}
        						}
-       						if(objects[3] != null && objects[3].toString().trim().equalsIgnoreCase("govt_admin"))
+       						if(objects[3] != null && objects[3].toString().trim().contains("govt"))
        						{
        							vo.setDesignation("Admin");
        						}
