@@ -239,7 +239,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 	public List<Object[]> getPartyLeadersDeatails(Long levelId,List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" SELECT ");
-		queryStr.append(" distinct tc.tdp_cadre_di as tdp_cadre_di ");
+		queryStr.append(" distinct tc.tdp_cadre_id as tdp_cadre_di, ");
 		queryStr.append(" tc.membership_id as membership_id,  ");
 		queryStr.append(" tc.first_name as first_name , ");
 		queryStr.append(" tc.mobile_no as mobile_no ,  ");
@@ -258,8 +258,8 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		queryStr.append(" l.`name` as lebName, ");
 		queryStr.append(" p.panchayat_id as panchayat_id, ");
 		queryStr.append(" p.panchayat_name as panchayat_name, ");
-		queryStr.append(" w.constituency_id as wardId, ");//20
-		queryStr.append(" w.`name` as wardName, ");
+		queryStr.append(" w.constituency_id as wardId, ");//19
+		queryStr.append(" w.`name` as wardName, '' as empty,");
 		queryStr.append(" tc.image as image ");
 		queryStr.append(" from  ");
 		queryStr.append(" public_representative pr,  ");
@@ -281,7 +281,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		queryStr.append(" pr.public_representative_type_id = prt.public_representative_type_id and  ");
 		queryStr.append(" pr.candidate_id = tcc.candidate_id and  ");
 		queryStr.append(" tcc.tdp_cadre_id = tcey.tdp_cadre_id and  ");
-		queryStr.append(" tcey.tdp_cadre_id = tc.tdp_cadre_id and  ");
+		queryStr.append(" tcey.tdp_cadre_id = tc.tdp_cadre_id  ");
 		
 		if(designationIdsList != null && designationIdsList.size()>0)
 			queryStr.append(" and pr.public_representative_type_id in (:designationIdsList)   ");
@@ -302,7 +302,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 				queryStr.append(" and ua.ward in (:locationIdsList)   ");
 		}
 		
-		queryStr.append(" tcey.enrollment_year_id = 4 ");
+		queryStr.append(" and tcey.enrollment_year_id = 4 ");
 		queryStr.append(" order by tc.membership_id,prt.position ");
 		Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("tdp_cadre_di", Hibernate.LONG)
@@ -326,6 +326,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 				.addScalar("panchayat_name", Hibernate.STRING)
 				.addScalar("wardId", Hibernate.LONG)
 				.addScalar("wardName", Hibernate.STRING)
+				.addScalar("empty", Hibernate.STRING)
 				.addScalar("image", Hibernate.STRING);
 		
 		if(designationIdsList != null && designationIdsList.size()>0)
