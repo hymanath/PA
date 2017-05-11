@@ -3627,6 +3627,7 @@
 		<property name="tdpCadreLoginDetailsDAO" ref="tdpCadreLoginDetailsDAO"></property>
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"></property>
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"></property>
+		<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	
