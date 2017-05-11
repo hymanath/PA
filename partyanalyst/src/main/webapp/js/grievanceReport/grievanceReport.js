@@ -57,6 +57,7 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 		    }else{
 				$("#statusWiseAlertCntId").html('No Data Available');
 				$("#grivenaceTableId").html('No Data Available');
+				$("#totalAlertCountId").html("-");
 			}
 	}); 
 }	
@@ -192,6 +193,7 @@ function getDistrintInformation(){
 				buildGrievanceReportDayWise(result,rangeType);
 			}else{
 				$("#dayWiseGrivenaceTableId").html('No Data Available.');
+				$("#totalAlertCountId").html("-");
 			}
 	}); 
 }	 
@@ -227,6 +229,7 @@ function getDistrintInformation(){
 		 }else{
 			 $("#statusWiseAlertCntId").html('No Data Available');
 			 $("#grivenaceTableId").html('No Data Available');
+			 $("#totalAlertCountId").html("-");
 		 }
 
  	});
@@ -264,6 +267,7 @@ function getDistrintInformation(){
 		}else{
 			$("#statusWiseAlertCntId").html('No Data Available');
 			$("#grivenaceTableId").html('No Data Available');
+			$("#totalAlertCountId").html("-");
 		}
  	});
  }
@@ -298,6 +302,7 @@ function getDistrintInformation(){
 		}else{
 			$("#statusWiseAlertCntId").html('No Data Available');
 			$("#grivenaceTableId").html('No Data Available');
+			$("#totalAlertCountId").html("-");
 		}
  	});
  }
@@ -332,6 +337,7 @@ function getDistrintInformation(){
 		}else{
 			$("#statusWiseAlertCntId").html('No Data Available');
 			$("#grivenaceTableId").html('No Data Available');
+			$("#totalAlertCountId").html("-");
 		}
 	});
 });
@@ -676,7 +682,7 @@ function onLoadInitialisations(){
 		  type : "POST",
 		  url  : "getGrievanceReportDtlsForBellowLocationAction.action",  
 		  dataType: 'json',       
-		  data: {task:JSON.stringify(jobj)},    
+		  data: {task:JSON.stringify(jobj)},        
 		}).done(function(result){
 			buildAlertStatusWise(result,status);  
 		});
@@ -2737,7 +2743,7 @@ function buildGrievanceReportDayWise(result,rangeType) {
         str+='</thead>';
 		str+='<tbody>';
 		var locTotal = 0;
-		for(var i in result){
+		for(var i in result){  
 			str+='<tr>'; 
 				str+='<td data-toggle="tooltip" data-placement="top" title="'+result[i].fromDateStr+"-"+result[i].toDateStr+'">'+result[i].day+'</td>';
 				if(result[i].totalAlertCnt == 0){
