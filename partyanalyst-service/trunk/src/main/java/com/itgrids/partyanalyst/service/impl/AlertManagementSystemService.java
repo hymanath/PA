@@ -58,7 +58,6 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
-import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
@@ -8850,7 +8849,7 @@ public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long u
 				List<Object[]> list = alertAssignedOfficerNewDAO.getSubOrdinateFilterAlertsDetails(userId,fromDate,toDate,scopeIds,locationValues,levelId,levelValues,desigIds,priorityId,statusIds,paperIdList,chanelIdList,calCntrIdList,childLevelVals,childLevelId);
 			 //List<Object[]> list = alertAssignedOfficerNewDAO.getSubOrdinateFilterAlertsDetailsForUser(fromDate,toDate,null,null,null,levelId,levelValues,deptIds,
     	     	//	 parentGovtDepartmentScopeId,null, null, locationValues, desigIds);
-				setFilterDetails(list,scopWiseMap,alertType,lagStartCnt,lagEndCnt,statusIds,isMoreThanYrChkd,isLagChkd);
+				setFilterDetails(list,scopWiseMap,alertType,lagStartCnt,lagEndCnt,statusIds,isMoreThanYrChkd,isLagChkd,govtScopeIds);
 				}
 			}
 		}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
@@ -8859,7 +8858,7 @@ public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long u
 					List<Long> scopeIds = new ArrayList<Long>();
 					scopeIds.add(parentGovtDepartmentScopeId);
 				List<Object[]> totalTasks = govtAlertSubTaskDAO.getSubOrdinateFilterSubTasksDetails(userId,fromDate,toDate,scopeIds,locationValues,levelId,levelValues,desigIds,priorityId,statusIds,paperIdList,chanelIdList,calCntrIdList,childLevelVals,childLevelId);
-				setFilterDetails(totalTasks,scopWiseMap,alertType,lagStartCnt,lagEndCnt,statusIds,isMoreThanYrChkd,isLagChkd);
+				setFilterDetails(totalTasks,scopWiseMap,alertType,lagStartCnt,lagEndCnt,statusIds,isMoreThanYrChkd,isLagChkd,govtScopeIds);
 				}
 			}
 		}
@@ -8908,7 +8907,8 @@ public List<DistrictOfficeViewAlertVO> getSubOrdinateFilterAlertsOverview(Long u
 	return returnList;
 }
 
-public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAlertVO> scopWiseMap,String alertType,Long lagStartCnt,Long lagEndCnt,List<Long> statusIds,String isMoreThanYrChkd,String isLagChkd){
+public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAlertVO> scopWiseMap,String alertType,Long lagStartCnt,Long lagEndCnt,
+		List<Long> statusIds,String isMoreThanYrChkd,String isLagChkd,List<Long> govtScopeIds){
 	
 	SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
     Date today = dateUtilService.getCurrentDateAndTime();
@@ -8924,21 +8924,69 @@ public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAler
 		
 		if(list != null && list.size() >0){
 			for(Object[] obj : list ){
-				DistrictOfficeViewAlertVO scopeVO = scopWiseMap.get(commonMethodsUtilService.getLongValueForObject(obj[5]));
+				DistrictOfficeViewAlertVO scopeVO = scopWiseMap.get(commonMethodsUtilService.getLongValueForObject(obj[8]));
 					if(scopeVO == null){
 						scopeVO = new DistrictOfficeViewAlertVO();
-						scopWiseMap.put(commonMethodsUtilService.getLongValueForObject(obj[5]), scopeVO);
+						scopWiseMap.put(commonMethodsUtilService.getLongValueForObject(obj[8]), scopeVO);
 					}
-					scopeVO.setId(commonMethodsUtilService.getLongValueForObject(obj[5]));
-					scopeVO.setName(commonMethodsUtilService.getStringValueForObject(obj[6]));
+					scopeVO.setId(commonMethodsUtilService.getLongValueForObject(obj[8]));
+					scopeVO.setName(commonMethodsUtilService.getStringValueForObject(obj[9]));
 				
-				DistrictOfficeViewAlertVO locationVO = getMatchVOForSubOrdinate(scopeVO.getList1(),commonMethodsUtilService.getLongValueForObject(obj[3]));
+				DistrictOfficeViewAlertVO locationVO = getMatchVOForSubOrdinate(scopeVO.getList1(),commonMethodsUtilService.getLongValueForObject(obj[6]));
 					if(locationVO == null){
 						locationVO = new DistrictOfficeViewAlertVO();
+						locationVO.setId(commonMethodsUtilService.getLongValueForObject(obj[6]));
+						locationVO.setName(commonMethodsUtilService.getStringValueForObject(obj[7]));
+							/*if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID){
+									
+							}else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID){
+			        	      sb.append(" , Z.govtDepartmentWorkLocationId,Z.locationName,Z.govtDepartmentScope.govtDepartmentScopeId ,  GDS.levelName ");
+							}else if(govtScopeIds != null && govtScopeIds.get(0).longValue() ==IConstants.GOVT_DEPARTMENT_REGION_LEVEL_ID){
+			        	      sb.append(" , R.govtDepartmentWorkLocationId,R.locationName,R.govtDepartmentScope.govtDepartmentScopeId ,  GDS.levelName ");
+							} else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_CIRCLE_LEVEL_ID){
+			        	      sb.append(" , C.govtDepartmentWorkLocationId,C.locationName,C.govtDepartmentScope.govtDepartmentScopeId ,  GDS.levelName ");
+							} else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_DISTRICT_LEVEL_ID){
+			        	      sb.append(" , D.govtDepartmentWorkLocationId,D.locationName, "+
+			        	      		"D.govtDepartmentScope.govtDepartmentScopeId ,  GDS.levelName ");
+							} else*/ if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_DIVISION_LEVEL_ID){
+								locationVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[10]));
+								locationVO.setDistName(commonMethodsUtilService.getStringValueForObject(obj[11]));
+							}else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_SUB_DIVISION_LEVEL_ID){
+								locationVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[10]));
+								locationVO.setDistName(commonMethodsUtilService.getStringValueForObject(obj[11]));
+								locationVO.setDivId(commonMethodsUtilService.getLongValueForObject(obj[12]));
+								locationVO.setDivName(commonMethodsUtilService.getStringValueForObject(obj[13]));
+							}else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MANDAL_LEVEL_ID){
+								locationVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[10]));
+								locationVO.setDistName(commonMethodsUtilService.getStringValueForObject(obj[11]));
+								locationVO.setDivId(commonMethodsUtilService.getLongValueForObject(obj[12]));
+								locationVO.setDivName(commonMethodsUtilService.getStringValueForObject(obj[13]));
+								locationVO.setSubDivId(commonMethodsUtilService.getLongValueForObject(obj[14]));
+								locationVO.setSubDivName(commonMethodsUtilService.getStringValueForObject(obj[15]));
+							}else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID){
+								locationVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[10]));
+								locationVO.setDistName(commonMethodsUtilService.getStringValueForObject(obj[11]));
+								locationVO.setDivId(commonMethodsUtilService.getLongValueForObject(obj[12]));
+								locationVO.setDivName(commonMethodsUtilService.getStringValueForObject(obj[13]));
+								locationVO.setSubDivId(commonMethodsUtilService.getLongValueForObject(obj[14]));
+								locationVO.setSubDivName(commonMethodsUtilService.getStringValueForObject(obj[15]));
+								locationVO.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[16]));
+								locationVO.setMandalName(commonMethodsUtilService.getStringValueForObject(obj[17]));
+							}else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID){
+								locationVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(obj[10]));
+								locationVO.setDistName(commonMethodsUtilService.getStringValueForObject(obj[11]));
+								locationVO.setDivId(commonMethodsUtilService.getLongValueForObject(obj[12]));
+								locationVO.setDivName(commonMethodsUtilService.getStringValueForObject(obj[13]));
+								locationVO.setSubDivId(commonMethodsUtilService.getLongValueForObject(obj[14]));
+								locationVO.setSubDivName(commonMethodsUtilService.getStringValueForObject(obj[15]));
+								locationVO.setMandalId(commonMethodsUtilService.getLongValueForObject(obj[16]));
+								locationVO.setMandalName(commonMethodsUtilService.getStringValueForObject(obj[17]));
+								locationVO.setLEBId(commonMethodsUtilService.getLongValueForObject(obj[18]));
+								locationVO.setLEBName(commonMethodsUtilService.getStringValueForObject(obj[19]));
+							}
 						scopeVO.getList1().add(locationVO);
 					}
-				locationVO.setId(commonMethodsUtilService.getLongValueForObject(obj[3]));
-				locationVO.setName(commonMethodsUtilService.getStringValueForObject(obj[4]));
+				
 				
 				DistrictOfficeViewAlertVO desigVo = getMatchVOForSubOrdinate(locationVO.getList2(),commonMethodsUtilService.getLongValueForObject(obj[0]));
 					if(desigVo == null){
@@ -8949,8 +8997,8 @@ public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAler
 				desigVo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
 				desigVo.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
 				
-				Long statusId=commonMethodsUtilService.getLongValueForObject(obj[7]);
-				DistrictOfficeViewAlertVO statusVO = getMatchVOForSubOrdinate(desigVo.getSubList1(),commonMethodsUtilService.getLongValueForObject(obj[7]));
+				Long statusId=commonMethodsUtilService.getLongValueForObject(obj[3]);
+				DistrictOfficeViewAlertVO statusVO = getMatchVOForSubOrdinate(desigVo.getSubList1(),commonMethodsUtilService.getLongValueForObject(obj[3]));
 				List<Long> lagStatusIds = new ArrayList<Long>();
 					if(alertType != null && alertType.equalsIgnoreCase("alert")){
 						lagStatusIds.add(4l);
@@ -8972,11 +9020,11 @@ public void setFilterDetails(List<Object[]> list,Map<Long,DistrictOfficeViewAler
 					Long dist = 0l;
 					if(isLagChkd != null && isLagChkd.equalsIgnoreCase("true")){
 					if(lagStartCnt != null && lagStartCnt >= 0l && lagEndCnt != null && lagEndCnt>= 0l){
-						if(commonMethodsUtilService.getStringValueForObject(obj[8]) != null && commonMethodsUtilService.getStringValueForObject(obj[9]) != null){
+						if(commonMethodsUtilService.getStringValueForObject(obj[4]) != null && commonMethodsUtilService.getStringValueForObject(obj[5]) != null){
 							if(lagStatusIds.contains(statusId) ){
-								dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(obj[8]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(obj[9]).substring(0, 10));
+								dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(obj[4]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(obj[5]).substring(0, 10));
 							}else{
-								dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(commonMethodsUtilService.getStringValueForObject(obj[8])).substring(0, 10), td);
+								dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(commonMethodsUtilService.getStringValueForObject(obj[4])).substring(0, 10), td);
 							}  
 							
 						}
@@ -9694,6 +9742,55 @@ public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatusNew1(String fromDate
 		LOG.error("Error occured getTotalAlertByOtherStatus() method of AlertManagementSystemService{}");
 	}
 	return null;  
+}
+
+/*
+ * Hymavathi
+ * Filter View
+ * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getLocationFilterClickDetails()
+ */
+public List<AlertCoreDashBoardVO> getLocationFilterClickDetails(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
+		List<Long> desigIds,Long priorityId,List<Long> statusIds ,List<Long> deptIds, Long lagStartCnt, 
+		Long lagEndCnt,String alertType,String isMoreThanYrChkd,String isLagChkd,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList,Long childLevelId){
+	
+	List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+	
+	try{
+		
+		List<Long> levelValues = new ArrayList<Long>();    
+		Long levelId = 0L;
+		List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+		if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+			for(Object[] param : lvlValueAndLvlIdList){
+				levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+			}
+		}
+		
+		Date fromDate = null;
+		Date toDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+			fromDate = sdf.parse(fromDateStr);
+			toDate = sdf.parse(toDateStr);
+		}
+		List<Long> alertIds = null;
+		if(alertType != null && alertType.equalsIgnoreCase("alert")){
+			alertIds = alertAssignedOfficerNewDAO.getLocationFilterClickAlertIds(userId,fromDate,toDate,govtScopeIds,locationValues,levelId,levelValues,desigIds,priorityId,statusIds,paperIdList,chanelIdList,calCntrIdList,locationValues,childLevelId);
+		}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
+			alertIds = govtAlertSubTaskDAO.getLocationFilterClickAlertIds(userId,fromDate,toDate,govtScopeIds,locationValues,levelId,levelValues,desigIds,priorityId,statusIds,paperIdList,chanelIdList,calCntrIdList,locationValues,childLevelId);
+		}
+		 if(alertIds != null && alertIds.size() > 0){
+			List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+			setAlertDtls(returnList, list); 
+		}
+		setSubListCount(returnList, alertIds);
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured getLocationFilterClickDetails() method of AlertManagementSystemService{}");
+	}
+	return returnList;  
 }
 
 }      	
