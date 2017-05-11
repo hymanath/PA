@@ -17208,7 +17208,7 @@
 	</action>
 	<action name="getPartyLeadersDeatailsAction" class="cadreCommitteeAction"  method="getPartyLeadersDeatails">
 		<result type="json" name="success">    
-			<param name="root">alertsSummeryVOList</param>       
+			<param name="root">commiteeMembersList</param>       
 		</result> 
 	</action>	
   <action name="getBellowDistrictOfficerAlertsDtlsAction" class="alertManagementSystemAction"  method="getBellowDistrictOfficerAlertsDtls">
