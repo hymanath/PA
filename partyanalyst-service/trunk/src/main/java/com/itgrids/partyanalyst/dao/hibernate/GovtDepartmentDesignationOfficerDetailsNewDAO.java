@@ -482,4 +482,14 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 		query.setParameterList("userIds", userIds);
 		return query.list();
 	}
+	public List<Object[]> getLoginUserDetails(Long userId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+				" model.govtDepartmentDesignationOfficer.levelValue,model.govtDepartmentDesignationOfficer.govtDepartmentScopeId " +
+				" from GovtDepartmentDesignationOfficerDetailsNew model " +
+						" where  model.userId = :userId and model.isDeleted = 'N' ");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }

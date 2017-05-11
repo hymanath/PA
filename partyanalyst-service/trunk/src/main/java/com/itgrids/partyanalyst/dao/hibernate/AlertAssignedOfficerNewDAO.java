@@ -5450,4 +5450,54 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	    return query.list();
  	    	
      }
+	public Long getAlertdetails(Long alertId,List<Long> deptsList,List<Long> levelValuesList,Long levelId){
+		 StringBuilder queryStr = new StringBuilder();
+		 queryStr.append(" select distinct model.alert.alertId " +
+		 				 " from AlertAssignedOfficerNew model " +
+		 				" left join model.govtDepartmentDesignationOfficer.govtUserAddress UA " +
+		    	          " left join UA.state S " +
+		    	          " left join UA.zone Z  " +
+		    	          " left join UA.region R " +
+		    	          " left join UA.circle C " +
+		    	          " left join UA.district D " +
+		    	          " left join UA.division DIV " +
+		    	          " left join UA.subDivision SUBDIV " +
+		    	          " left join UA.tehsil T " +
+		    	          " left join UA.localElectionBody LEB " +
+		    	          " left join UA.panchayat P " +
+		 				 " where model.alertId =:alertId  " );
+		 if(levelValuesList != null && levelValuesList.size()>0){
+		 if(levelId != null && levelId.longValue() ==1L){
+			 queryStr.append(" and UA.stateId in(:levelValuesList)  ");
+		 }else if(levelId != null && levelId.longValue() == 2L){
+			 queryStr.append(" and UA.districtId in(:levelValuesList)  ");
+		 }else if(levelId != null && levelId.longValue() == 3L){
+			 queryStr.append(" and UA.constituencyId in(:levelValuesList)  ");
+		 }else if(levelId != null && levelId.longValue() == 4L){
+			 queryStr.append(" and UA.parliamentConstituencyId in(:levelValuesList)  ");
+		 }else if(levelId != null && levelId.longValue() == 5L){
+			 queryStr.append(" and UA.tehsilId in(:levelValuesList)  ");
+		 }else if(levelId != null && levelId.longValue() == 6L){
+			 queryStr.append(" and UA.panchayatId in(:levelValuesList)  ");
+		 }else if(levelId != null && levelId.longValue() == 7L){
+			 queryStr.append(" and UA.hamletId in(:levelValuesList)  ");
+		 }else if(levelId != null && levelId.longValue() == 8L){
+			 queryStr.append(" and UA.localElectionBody in(:levelValuesList)  ");
+		 }
+		 }
+		 if(deptsList != null && deptsList.size()>0){
+			 queryStr.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:deptsList)");
+		 }
+		 queryStr.append(" and model.alert.isDeleted = 'N' " +
+				 		 " and model.isDeleted = 'N' ");
+		 Query query = getSession().createQuery(queryStr.toString());
+		 query.setParameter("alertId", alertId);
+		 if(levelId != null && levelValuesList != null && levelValuesList.size()>0){
+	    	 query.setParameterList("levelValuesList", levelValuesList);
+	     }
+		 if(deptsList != null && deptsList.size()>0){
+			 query.setParameterList("deptsList", deptsList);
+		 }
+		 return (Long) query.uniqueResult();
+	 }
 }

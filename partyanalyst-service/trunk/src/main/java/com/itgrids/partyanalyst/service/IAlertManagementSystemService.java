@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
@@ -151,4 +152,5 @@ public interface IAlertManagementSystemService {
 	 public List<AlertCoreDashBoardVO> getLocationFilterClickDetails(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
 				List<Long> desigIds,Long priorityId,List<Long> statusIds ,List<Long> deptIds, Long lagStartCnt, 
 				Long lagEndCnt,String alertType,String isMoreThanYrChkd,String isLagChkd,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList,Long childLevelId);
+	 public Long getSearchAlertsDtls(Long userId,Long alertId);
 }        
