@@ -52,6 +52,7 @@ import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertFeedbackStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertGovtOfficerSmsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertIssueSubTypeDAO;
 import com.itgrids.partyanalyst.dao.IAlertIssueTypeDAO;
@@ -104,8 +105,6 @@ import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
-import com.itgrids.partyanalyst.dao.hibernate.TdpCadreLoginDetailsDAO;
-import com.itgrids.partyanalyst.dao.hibernate.UserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -148,6 +147,7 @@ import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
 import com.itgrids.partyanalyst.model.AlertDocument;
 import com.itgrids.partyanalyst.model.AlertFeedbackStatus;
+import com.itgrids.partyanalyst.model.AlertGovtOfficerSmsDetails;
 import com.itgrids.partyanalyst.model.AlertIssueType;
 import com.itgrids.partyanalyst.model.AlertStatus;
 import com.itgrids.partyanalyst.model.AlertTracking;
@@ -158,6 +158,7 @@ import com.itgrids.partyanalyst.model.GovtDepartment;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignation;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationNew;
 import com.itgrids.partyanalyst.model.GovtOfficer;
+import com.itgrids.partyanalyst.model.GovtOfficerNew;
 import com.itgrids.partyanalyst.model.MemberType;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VerificationComments;
@@ -263,7 +264,17 @@ private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 private ITdpCadreLoginDetailsDAO  tdpCadreLoginDetailsDAO;
 private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+private IAlertGovtOfficerSmsDetailsDAO alertGovtOfficerSmsDetailsDAO;
 
+
+public IAlertGovtOfficerSmsDetailsDAO getAlertGovtOfficerSmsDetailsDAO() {
+	return alertGovtOfficerSmsDetailsDAO;
+}
+
+public void setAlertGovtOfficerSmsDetailsDAO(
+		IAlertGovtOfficerSmsDetailsDAO alertGovtOfficerSmsDetailsDAO) {
+	this.alertGovtOfficerSmsDetailsDAO = alertGovtOfficerSmsDetailsDAO;
+}
 
 public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 	return assemblyLocalElectionBodyDAO;
@@ -9826,12 +9837,21 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					String officerMobileNo = "";
 					String designationName = "";
 					String departmentName = "";
-
-					GovtOfficer govtOfficer = govtOfficerDAO.get(inputVO.getGovtOfficerId());
-					if(govtOfficer != null){
-						officerName = govtOfficer.getOfficerName();
-						officerMobileNo = govtOfficer.getMobileNo();
+					
+					if(callCenterVersion.trim().equalsIgnoreCase("old")){
+						GovtOfficer govtOfficer = govtOfficerDAO.get(inputVO.getGovtOfficerId());
+						if(govtOfficer != null){
+							officerName = govtOfficer.getOfficerName();
+							officerMobileNo = govtOfficer.getMobileNo();
+						}
+					}else if(callCenterVersion.trim().equalsIgnoreCase("new")){
+						GovtOfficerNew govtOfficer = govtOfficerNewDAO.get(inputVO.getGovtOfficerId());
+						if(govtOfficer != null){
+							officerName = govtOfficer.getOfficerName();
+							officerMobileNo = govtOfficer.getMobileNo();
+						}
 					}
+					
 					
 					Alert testAlert = alertDAO.get(14850L);
 					
@@ -9891,10 +9911,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					String callerMessage = "Respected officer, Grievance request is assigned to you. Please follow up and resolve." +
 							" \n Issue Title: "+inputVO.getAlertTitle()+"\n" +
 							" Assigned officer: "+designationName+" ("+officerMobileNo+") \n Dept: "+departmentName+" \n Raised by: "+inputVO.getMobileNo()+" ("+inputVO.getName()+")";
-					/*if(testAlert.getDescription()!= null && !testAlert.getDescription().isEmpty())
+					if(testAlert.getDescription()!= null && !testAlert.getDescription().isEmpty())
 						govtSMSAPIService.senedSMSForGovtAlert(testAlert.getDescription().trim(),callerMessage);
 					else
-						govtSMSAPIService.senedSMSForGovtAlert(officerMobileNo,callerMessage);*/
+						govtSMSAPIService.senedSMSForGovtAlert(officerMobileNo,callerMessage);
 
 
 					/* request raised person*/ 
@@ -9914,21 +9934,25 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						List<String> mpdosMobNumsList = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtOfficerMobileNums(inputVO.getMandalId(),"tehsil");
 						List<String> villageSecMobNums = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtOfficerMobileNums(inputVO.getPanchayatId(),"village");
 						
+						String message = "Respected officer, Grievance request is assigned to AE." +
+								"\n Issue Title: "+inputVO.getAlertTitle()+"\n" +
+								"Assigned officer: "+designationName+" ("+officerMobileNo+") \n Dept: "+departmentName+" \n Raised by: "+inputVO.getMobileNo()+" ("+inputVO.getName()+")";
+						
 						String allMobStr = null;
+						
 						if(mpdosMobNumsList != null && mpdosMobNumsList.size() > 0){
 							for (String string : mpdosMobNumsList) {
 								allMobStr = allMobStr == null?string:allMobStr+","+string;
+								saveMessageDetails(userId,string,testAlert.getAlertId(),testAlert.getAlertStatusId(),message,1l);
 							}
 						}
 						if(villageSecMobNums != null && villageSecMobNums.size() > 0){
 							for (String string : villageSecMobNums) {
 								allMobStr = allMobStr == null?string:allMobStr+","+string;
+								saveMessageDetails(userId,string,testAlert.getAlertId(),testAlert.getAlertStatusId(),message,1l);
 							}
 						}
 						if(allMobStr != null){
-							String message = "Respected officer, Grievance request is assigned to AE." +
-									"\n Issue Title: "+inputVO.getAlertTitle()+"\n" +
-									"Assigned officer: "+designationName+" ("+officerMobileNo+") \n Dept: "+departmentName+" \n Raised by: "+inputVO.getMobileNo()+" ("+inputVO.getName()+")";
 							govtSMSAPIService.senedSMSForGovtAlert(allMobStr,message); 
 						}
 					}
@@ -9946,6 +9970,22 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 
 		return resultStatus;
 	}
+    
+    public void saveMessageDetails(Long userId,String mobileNum,Long alertId,Long alertStatusId,String messageText,Long actionTypeId){
+    	try {
+    		AlertGovtOfficerSmsDetails agosd = new AlertGovtOfficerSmsDetails();
+    		agosd.setUserId(userId);
+    		agosd.setMobileNo(mobileNum);
+    		agosd.setAlertId(alertId);
+    		agosd.setAlertStatusId(alertStatusId);
+    		agosd.setSmsText(messageText);
+    		agosd.setInsertTime(dateUtilService.getCurrentDateAndTime());
+    		agosd.setGovtAlertActionTypeId(actionTypeId);
+    		alertGovtOfficerSmsDetailsDAO.save(agosd);
+		} catch (Exception e) {
+			LOG.error("Exception raised at saveMessageDetails", e);
+		}
+    }
     
 	public List<AlertTrackingVO> getAlertCallerDetailsByMobileNo(Long userId,String startdateStr,String endDateStr,String status,String mobileNo,Long departmentId){
 		List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
