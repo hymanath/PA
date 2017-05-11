@@ -34,4 +34,5 @@ public interface IGovtDepartmentDesignationOfficerDetailsNewDAO extends GenericD
 	public List<Object[]> getGovtDepaDesigOfficerDtls(List<Long> govtDepartmentDesignationIds, Long govtDepartmentScopeId, Long levelValue);
 	public List<String> getGovtOfficerMobileNums(Long locationid,String locationType);
 	public List<Object[]> getDesigAndDepartForUser(List<Long> userIds);
+	public List<Object[]> getLoginUserDetails(Long userId);
 }

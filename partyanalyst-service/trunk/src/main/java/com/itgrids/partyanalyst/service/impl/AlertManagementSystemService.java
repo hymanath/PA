@@ -58,6 +58,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
+import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
@@ -83,6 +84,7 @@ import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
 import com.itgrids.partyanalyst.model.GovtDepartmentWorkLocation;
 import com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
+import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -129,6 +131,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IUserGroupRelationDAO userGroupRelationDAO;
 	private IAlertGovtOfficerSmsDetailsDAO alertGovtOfficerSmsDetailsDAO;
 	private IAlertImpactScopeDAO alertImpactScopeDAO;
+	private IAlertService alertService;
 	
 	public IGovtSmsActionTypeDAO getGovtSmsActionTypeDAO() {
 		return govtSmsActionTypeDAO;
@@ -404,6 +407,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 
 	public void setAlertImpactScopeDAO(IAlertImpactScopeDAO alertImpactScopeDAO) {
 		this.alertImpactScopeDAO = alertImpactScopeDAO;
+	}
+
+	public IAlertService getAlertService() {
+		return alertService;
+	}
+
+	public void setAlertService(IAlertService alertService) {
+		this.alertService = alertService;
 	}
 
 	//Business Method
@@ -9743,7 +9754,6 @@ public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatusNew1(String fromDate
 	}
 	return null;  
 }
-
 /*
  * Hymavathi
  * Filter View
@@ -9792,6 +9802,31 @@ public List<AlertCoreDashBoardVO> getLocationFilterClickDetails(Long userId,Stri
 	}
 	return returnList;  
 }
-
+public Long getSearchAlertsDtls(Long userId,Long alertId)
+{
+	//List<AlertDataVO> returnList = null;
+	Long returnAlertId = null;
+	try{
+		List<Long> deptsList = new ArrayList<Long>(0);
+		List<Long> levelValuesList = new ArrayList<Long>(0);
+		Long levelId =0l;
+		List<Object[]> officerDetailsList =govtDepartmentDesignationOfficerDetailsNewDAO.getLoginUserDetails(userId);
+		if(officerDetailsList != null && officerDetailsList.size() > 0){
+			for(Object[] param : officerDetailsList){
+				deptsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				levelValuesList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				levelId = commonMethodsUtilService.getLongValueForObject(param[2]);
+			}
+		}
+		 returnAlertId = alertAssignedOfficerNewDAO.getAlertdetails(alertId,deptsList,levelValuesList,levelId);
+		//if(returnAlertId != null)
+		   //returnList = alertService.getAlertsData(returnAlertId);
+		
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error("Error occured getSearchAlertsDtls() method of AlertManagementSystemService{}");
+	}
+	return returnAlertId;
+}
 }      	
 
