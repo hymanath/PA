@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
@@ -236,7 +238,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		return query.list();
 	}
 	
-	public List<Object[]> getPartyLeadersDeatails(Long levelId,List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex){
+	public List<Object[]> getPartyLeadersDeatails(Long stateId, List<Long> enrollmentIdsList, Long levelId,List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" SELECT ");
 		queryStr.append(" distinct tc.tdp_cadre_id as tdp_cadre_di, ");
@@ -259,7 +261,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		queryStr.append(" p.panchayat_id as panchayat_id, ");
 		queryStr.append(" p.panchayat_name as panchayat_name, ");
 		queryStr.append(" w.constituency_id as wardId, ");//19
-		queryStr.append(" w.`name` as wardName, '' as empty,");
+		queryStr.append(" w.`name` as wardName,");
 		queryStr.append(" tc.image as image ");
 		queryStr.append(" from  ");
 		queryStr.append(" public_representative pr,  ");
@@ -283,9 +285,9 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		queryStr.append(" tcc.tdp_cadre_id = tcey.tdp_cadre_id and  ");
 		queryStr.append(" tcey.tdp_cadre_id = tc.tdp_cadre_id  ");
 		
-		if(designationIdsList != null && designationIdsList.size()>0)
-			queryStr.append(" and pr.public_representative_type_id in (:designationIdsList)   ");
-		if(levelId != null && levelId.longValue()>0L){
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+			queryStr.append("  and tcey.enrollment_year_id in (:enrollmentIdsList)   ");
+		if(levelId != null && levelId.longValue()>0L && locationIdsList != null && locationIdsList.size()>0){
 			if(levelId.longValue() == 2L)
 				queryStr.append(" and ua.state_id in (:locationIdsList)   ");
 			else if(levelId.longValue() == 3L)
@@ -302,7 +304,11 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 				queryStr.append(" and ua.ward in (:locationIdsList)   ");
 		}
 		
-		queryStr.append(" and tcey.enrollment_year_id = 4 ");
+		if(stateId != null && stateId.longValue()>0L)
+			queryStr.append(" and ua.state_id =:stateId  ");
+		if(designationIdsList != null && designationIdsList.size()>0)
+			queryStr.append(" and pr.public_representative_type_id in (:designationIdsList)   ");
+		
 		queryStr.append(" order by tc.membership_id,prt.position ");
 		Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("tdp_cadre_di", Hibernate.LONG)
@@ -326,13 +332,26 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 				.addScalar("panchayat_name", Hibernate.STRING)
 				.addScalar("wardId", Hibernate.LONG)
 				.addScalar("wardName", Hibernate.STRING)
-				.addScalar("empty", Hibernate.STRING)
 				.addScalar("image", Hibernate.STRING);
 		
+		if(stateId != null && stateId.longValue()>0L)
+			query.setParameter("stateId", stateId);
 		if(designationIdsList != null && designationIdsList.size()>0)
 			query.setParameterList("designationIdsList", designationIdsList);
-		if(locationIdsList != null && locationIdsList.size()>0)
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+			query.setParameterList("enrollmentIdsList", enrollmentIdsList);
+		
+		if(locationIdsList != null && locationIdsList.size()>0){
+			if(levelId.longValue() == 5L || levelId.longValue() == 6L || levelId.longValue() == 7L || levelId.longValue() == 8L ){
+				Set<Long> ids = new HashSet<Long>();
+				for (Long id : locationIdsList) {
+					ids.add(Long.valueOf(id.toString().substring(1)));
+				}
+				locationIdsList.clear();
+				locationIdsList.addAll(ids);
+			}
 			query.setParameterList("locationIdsList", locationIdsList);
+		}
 		
 		query.setFirstResult(firstIndex);
 		query.setMaxResults(maxIndex);
