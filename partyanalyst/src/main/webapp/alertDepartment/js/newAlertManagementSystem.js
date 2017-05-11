@@ -1,6 +1,6 @@
 /*global Function and variables Start*/
  var globalLevelObj =  {"1":"STATE","2":"ZONE","3":"REGION","4":"CIRCLE","5":"DISTRICT","6":"DIVISION","7":"SUB DIVISION","8":"MANDAL","9":"MUNICIPALITY","10":"PANCHAYAT"};
-var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","Electronic Media":"#8D69C8","Call Center":"#EFC000","Facebook":"#00ABED","Twitter":"#F7776C","Social Media":"#05ABHY"};	 
+var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","Electronic Media":"#8D69C8","Call Center":"#EFC000","Facebook":"#00ABED","Twitter":"#F7776C","Social Media":"#00ABED"};	 
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var globalStateId = 1;  
