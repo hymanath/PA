@@ -21595,11 +21595,17 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 	return status;
 }
 
-	public List<TdpCadreVO>  getPartyLeadersDeatails(Long userId,Long levelId,List<Long> locationIdsList,Long representativeTypeId,List<Long> designationIdsList,int firstIndex,int maxIndex){
+	public List<TdpCadreVO>  getPartyLeadersDeatails(Long userId,Long levelId,List<Long> locationIdsList,Long representativeTypeId,List<Long> designationIdsList,
+			List<Long> committeeLevelIdsList,List<Long> enrollmentIdsList,List<Long> committeeTypeIdsList, Long stateId, int firstIndex,int maxIndex){
 		List<TdpCadreVO> returnList = new ArrayList<TdpCadreVO>(0);
 		try {
+			List<Object[]> membersList =  null;
 			
-			List<Object[]> membersList = publicRepresentativeDAO.getPartyLeadersDeatails(levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+			if(representativeTypeId.longValue() == 1L)
+				membersList = publicRepresentativeDAO.getPartyLeadersDeatails(stateId,enrollmentIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+			else if(representativeTypeId.longValue() == 2L)
+				membersList = cadreCommitteeRoleDAO.getPartyCommitteeLeadersDeatails(stateId,enrollmentIdsList,committeeLevelIdsList,committeeTypeIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+			List<Long> constiIds1 = new ArrayList<Long>(0);
 			if(commonMethodsUtilService.isListOrSetValid(membersList)){
 				for (Object[] param : membersList) {
 					TdpCadreVO vo = new TdpCadreVO();
@@ -21607,15 +21613,21 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					vo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[1]));
 					vo.setCadreName(commonMethodsUtilService.getStringValueForObject(param[2]));
 					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[3]));
-					vo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
+					if(representativeTypeId.longValue() == 1L)
+						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
+					if(representativeTypeId.longValue() == 2L){
+						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
+						vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[22]));
+					}
 					
-					vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[6]));
+					vo.setState(commonMethodsUtilService.getStringValueForObject(param[6]));
 					vo.setDistrict(commonMethodsUtilService.getStringValueForObject(param[8]));
 					vo.setParliament(commonMethodsUtilService.getStringValueForObject(param[10]));
+					vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
 					vo.setConstituency(commonMethodsUtilService.getStringValueForObject(param[12]));
 					
 					if(commonMethodsUtilService.getStringValueForObject(param[16]).trim().length()>0)
-						vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[16]));
+						vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[16]) +" Munci/Corp/Greater City" );
 					else 
 						vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[14]));
 					
@@ -21624,9 +21636,30 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					else
 						vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[18]));
 					
-					vo.setImageURL(commonMethodsUtilService.getStringValueForObject(param[22]));
+					vo.setImageURL(commonMethodsUtilService.getStringValueForObject(param[21]));
 					returnList.add(vo);
+					
+					if(!constiIds1.contains(vo.getConstituencyId()))
+						constiIds1.add(vo.getConstituencyId());
 				}
+				
+				Map<Long,Long> constiNoMap = new HashMap<Long, Long>();
+				List<Object[]> constiNosDtls = delimitationConstituencyDAO.getConstituencyNo(constiIds1, IConstants.DELIMITATION_YEAR);
+				if(constiNosDtls != null && constiNosDtls.size() > 0){
+					for(Object[] params : constiNosDtls){
+						Long constiNo = constiNoMap.get((Long)params[0]);
+						if(constiNo == null){
+							constiNoMap.put((Long)params[0],(Long)params[1]);
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isListOrSetValid(returnList)){
+					for (TdpCadreVO vo : returnList) {
+						vo.setConstituencyNo(constiNoMap.get(vo.getConstituencyId()));
+					}
+				}
+				
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised in getPartyLeadersDeatails", e);
