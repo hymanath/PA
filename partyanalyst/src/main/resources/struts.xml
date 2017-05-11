@@ -17206,8 +17206,11 @@
 		    <param name="root">status</param>
 		</result>
 	</action>
-	
-	
+	<action name="getPartyLeadersDeatailsAction" class="cadreCommitteeAction"  method="getPartyLeadersDeatails">
+		<result type="json" name="success">    
+			<param name="root">alertsSummeryVOList</param>       
+		</result> 
+	</action>	
   <action name="getBellowDistrictOfficerAlertsDtlsAction" class="alertManagementSystemAction"  method="getBellowDistrictOfficerAlertsDtls">
 		<result type="json" name="success">    
 			<param name="root">alertCoreDashBoardVOs</param>       
