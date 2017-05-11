@@ -48,7 +48,8 @@ public class TdpCadreVO implements java.io.Serializable
 	private String designation;
 	private String wished = "false";
 	private String relativeType;
-	
+	private String parliament;
+	private String parliamentId;
 	private List<TdpCadreVO> tdpCadreDetailsList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> cadreSearchList = new ArrayList<TdpCadreVO>();
 	private List<TdpCadreVO> voterSearchList = new ArrayList<TdpCadreVO>();
@@ -71,7 +72,18 @@ public class TdpCadreVO implements java.io.Serializable
 	private String enrollmentYearIdStr;
 	private List<String> enrollmentYearList = new ArrayList<String>();
 	
-	
+	public String getParliament() {
+		return parliament;
+	}
+	public void setParliament(String parliament) {
+		this.parliament = parliament;
+	}
+	public String getParliamentId() {
+		return parliamentId;
+	}
+	public void setParliamentId(String parliamentId) {
+		this.parliamentId = parliamentId;
+	}
 	public List<String> getEnrollmentYearList() {
 		return enrollmentYearList;
 	}
