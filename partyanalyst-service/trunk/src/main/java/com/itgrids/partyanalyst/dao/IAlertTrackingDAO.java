@@ -18,4 +18,7 @@ public interface IAlertTrackingDAO extends GenericDao<AlertTracking, Long> {
 	public List<Object[]> getAlertFeedbackStatuswiseAlertsDetails1(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId,Long categoryId);
 	public List<Object[]> getStatuswiseAlertsDetailsOfSocial(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId,Long categoryId);
 	public List<Object[]> getAlertFeedbackStatuswiseAlertsDetailsOfSocial(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId,Long categoryId);
+	public List<Object[]> getSocialMediaTypeAlertsDetails(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId,Long categoryId);
+	public List<Object[]> getFeedbackStatuswiseAlertsDetailsOfSocial(String mobileNo,Date startDate, Date endDate,Long departmentId);
+	public List<Object[]> getSocialMediaTypeAlertsFeedbackDetails(String mobileNo, Date startDate, Date endDate,Long departmentId);
 }

@@ -94,4 +94,5 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Long> getLocationFilterClickAlertIds(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
  			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId);
     public Long getAlertdetails(Long alertId,List<Long> deptsList,List<Long> levelValuesList,Long levelId);
+    public List<AlertAssignedOfficerNew> getModelForApprovedAlert(Long alertId);
 }

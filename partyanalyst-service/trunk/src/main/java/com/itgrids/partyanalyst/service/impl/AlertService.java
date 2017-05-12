@@ -9725,6 +9725,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					alert.setGovtDepartmentId(inputVO.getDepartmentId());
 					alert.setAlertIssueSubTypeId(inputVO.getAlertIssueSubTypeId());
 					alert.setIsMultiple("N");
+					alert.setAlertCallCenterTypeId(inputVO.getAlertCallCenterTypeId() !=null ? inputVO.getAlertCallCenterTypeId():null);
 
 					alert = alertDAO.save(alert);
 
@@ -10464,6 +10465,114 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			});
 		}catch(Exception e){
 			LOG.error("Error occured saveAlertStatusDetails() method of AlertService{}",e);
+		}
+		return status;
+	}
+	public String saveAlertFeedbackStatusDetails(final AlertVO alertvo,final Long userId){
+		String status = new String();
+		try{
+			status = (String) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					
+					//Saving comment In alertComment
+					AlertComment alertComment = new AlertComment();
+					alertComment.setAlertId(alertvo.getAlertId());
+					alertComment.setComments(alertvo.getComment());
+					alertComment.setInsertedBy(userId);
+					alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertComment.setIsDeleted("N");
+					alertComment = alertCommentDAO.save(alertComment);
+					
+					//saving alertTtrcking
+					AlertTracking alertTracking = new AlertTracking();
+					alertTracking.setAlertId(alertvo.getAlertId());
+					if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
+						alertTracking.setAlertStatusId(alertvo.getNewAlertStatusId());
+						alertTracking.setAlertTrackingActionId(1l);
+					}else{
+						alertTracking.setAlertStatusId(alertvo.getStatusId());
+						alertTracking.setAlertTrackingActionId(3l);
+					}
+					
+					alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
+					
+					alertTracking.setInsertedBy(userId);
+					alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertTracking.setAlertSourceId(alertvo.getAlertSourceId());
+					alertTracking.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
+					alertTrackingDAO.save(alertTracking);
+					
+					Alert alert = alertDAO.get(alertvo.getAlertId());
+					if(alert != null){
+						
+						alert.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
+						if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
+							alert.setAlertStatusId(alertvo.getNewAlertStatusId());
+						}
+						alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						alert.setUpdatedBy(userId);
+						
+						alertDAO.save(alert);
+						
+					}
+
+					// if alert status is Reopen 
+					
+					if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
+					
+						List<AlertAssignedOfficerNew> alertAssignedOfficerNewObj =  alertAssignedOfficerNewDAO.getModelForApprovedAlert(alertvo.getAlertId());
+						
+						AlertAssignedOfficerNew alertAssignedOfficer =null; 
+						
+						if(alertAssignedOfficerNewObj !=null && alertAssignedOfficerNewObj.size()>0){
+							alertAssignedOfficer = alertAssignedOfficerNewObj.get(0);
+						}
+						
+						if(alertAssignedOfficer !=null){
+							alertAssignedOfficer.setAlertStatusId(alertvo.getNewAlertStatusId());
+							alertAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+							alertAssignedOfficer.setUpdatedBy(userId);	
+							
+							alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+							
+							//Officer Assigning Tracking
+							AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
+							alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+							alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
+							alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(alertAssignedOfficer.getGovtDepartmentDesignationOfficerId());
+							alertAssignedOfficerTracking.setGovtOfficerId(alertAssignedOfficer.getGovtOfficerId());
+							alertAssignedOfficerTracking.setInsertedBy(userId);
+							alertAssignedOfficerTracking.setUpdatedBy(userId);
+							alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+							alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());						
+							alertAssignedOfficerTracking.setAlertStatusId(alertvo.getNewAlertStatusId());
+							alertAssignedOfficerTracking.setGovtAlertActionTypeId(6l);
+							alertAssignedOfficerTracking.setIsApproved("Y");
+							alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+		
+							alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+							
+							//Sms Sending
+							Long designationId = alertAssignedOfficer.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignationId();							
+							List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(alertAssignedOfficer.getGovtOfficerId());							
+							List<Long> userIdsList = govtDepartmentDesignationOfficerDetailsNewDAO.getuserIdDtlsForDesignationOfficerId(alertAssignedOfficer.getGovtDepartmentDesignationOfficerId());							
+					          if(commonMethodsUtilService.isListOrSetValid(userIdsList)){
+					            Long assignedToUserID = userIdsList.get(0);
+					            if(mobileNos != null && mobileNos.size() > 0 && mobileNos.get(0).trim().length() > 0 && !mobileNos.get(0).trim().isEmpty()){
+					            	alertManagementSystemService.sendSMSTOAlertAssignedOfficer(designationId,alertAssignedOfficer.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),6L,assignedToUserID,alertStatusDAO.get(alertvo.getNewAlertStatusId()).getAlertStatus(),"",userId);  
+					            }
+					          } 
+							
+						}	
+					}
+					
+					
+					return "success";
+				
+				}
+			});
+		}catch(Exception e){
+			LOG.error("Error occured saveAlertFeedbackStatusDetails() method of AlertService{}",e);
 		}
 		return status;
 	}
@@ -12300,7 +12409,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					}
 				}
 				
-				 List<AlertFeedbackStatus> feedbackStatusList =  alertFeedbackStatusDAO.getAll();
+				 /*List<AlertFeedbackStatus> feedbackStatusList =  alertFeedbackStatusDAO.getAll();
 				 List<AlertTrackingVO> feedbacksStatusList = new ArrayList<AlertTrackingVO>(0);
 				 if(commonMethodsUtilService.isListOrSetValid(feedbackStatusList)){
 					 for (AlertFeedbackStatus alertStatus : feedbackStatusList) {
@@ -12320,21 +12429,45 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 							 feedbacksStatusList.add(vo);
 						 }
 					}
-				 }
+				 }*/
 					
+				List<AlertTrackingVO> socialMediaTypeList = new ArrayList<AlertTrackingVO>(0);
+				List<Object[]> socialMediaObj =  alertDAO.getAllSocialMediaType();
+				if(commonMethodsUtilService.isListOrSetValid(socialMediaObj)){
+					for (Object[] objects : socialMediaObj) {						
+						AlertTrackingVO vo = new AlertTrackingVO();
+						vo.setAlertStatusId(objects[0] !=null ? (Long)objects[0]:null);
+						vo.setStatus(objects[1] !=null ? objects[1].toString():"");
+						
+						 if(commonMethodsUtilService.isListOrSetValid(returnVO.getStatusList())){
+							 for (AlertTrackingVO alertTrackingVO : returnVO.getStatusList()) {
+								 AlertTrackingVO vo1 = new AlertTrackingVO();
+								 vo1.setAlertStatusId(alertTrackingVO.getAlertStatusId());
+								 vo1.setStatus(alertTrackingVO.getStatus());
+								 //vo1.setCount(alertTrackingVO.getCount());
+								 vo.getStatusList().add(vo1);
+							}
+						 } 						 
+						 socialMediaTypeList.add(vo);
+					}
+				}
+				
+				
 				 List<Object[]> objList = null;
-					 objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetailsOfSocial(mobileNo,userId, startDate, endDate,departmentId,5l);
+					 //objList = alertTrackingDAO.getAlertFeedbackStatuswiseAlertsDetailsOfSocial(mobileNo,userId, startDate, endDate,departmentId,5l);
 				 
-				if(objList != null && objList.size() > 0 && commonMethodsUtilService.isListOrSetValid(feedbacksStatusList)){
+				 objList = alertTrackingDAO.getSocialMediaTypeAlertsDetails(mobileNo,userId, startDate, endDate,departmentId,5l);
+				 
+				if(objList != null && objList.size() > 0 && commonMethodsUtilService.isListOrSetValid(socialMediaTypeList)){
 					for (Object[] param : objList) {
-						AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(feedbacksStatusList, "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[1]).toString());
+						AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(socialMediaTypeList, "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[1]).toString());
 						if(vo != null){
 							AlertTrackingVO vo1 = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(vo.getStatusList(), "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
 							if(vo1 != null){
 								vo1.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
 							}
 						}else{
-							vo = feedbacksStatusList.get(0);
+							vo = socialMediaTypeList.get(0);
 							AlertTrackingVO vo1 = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(vo.getStatusList(), "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
 							if(vo1 != null){
 								vo1.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[3]));
@@ -12342,8 +12475,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						}
 					}
 				}
-				if(commonMethodsUtilService.isMapValid(statusWiseMap) && commonMethodsUtilService.isListOrSetValid(feedbacksStatusList)){
-					AlertTrackingVO vo = feedbacksStatusList.get(0);
+				if(commonMethodsUtilService.isMapValid(statusWiseMap) && commonMethodsUtilService.isListOrSetValid(socialMediaTypeList)){
+					AlertTrackingVO vo = socialMediaTypeList.get(0);
 					 List<AlertTrackingVO> list =vo.getStatusList();
 					 if(commonMethodsUtilService.isListOrSetValid(list)){
 						 for (AlertTrackingVO statusVO : list) {
@@ -12352,29 +12485,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					 }
 				}
 				 returnVO.getStatusList().clear();
-				 returnVO.getStatusList().addAll(feedbacksStatusList);
-				voList.add(returnVO);
-				
-				/*if(voList !=null && voList.size()>0){
-					for (AlertTrackingVO vo : voList){
-						List<AlertTrackingVO> subList = new ArrayList<AlertTrackingVO>();	
-						List<AlertTrackingVO> subListNew = new ArrayList<AlertTrackingVO>();	
-						if(vo !=null && vo.getStatusList() !=null && vo.getStatusList().size()>0){
-							
-							subList.addAll(vo.getStatusList());							
-							vo.getStatusList().clear();
-							
-							for (AlertTrackingVO subVo : subList) {
-								if(subVo.getAlertStatusId() !=null && subVo.getAlertStatusId()==14l){
-									subListNew.add(subVo);
-									subList.;
-								}
-							}
-						}
-						
-						
-					}
-				}*/
+				 returnVO.getStatusList().addAll(socialMediaTypeList);
+				voList.add(returnVO);				
 				
 				
 			} catch (Exception e) {
@@ -12478,7 +12590,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 	 
 	 public List<AlertVO> getSocialAlertDetailsByStatus(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStatusId,
-			 Long deptId,Long categoryId,Long userId){
+			 Long deptId,Long categoryId,Long userId,Long smTypeId){
 			List<AlertVO> returnList = new ArrayList<AlertVO>();
 			try{
 				Date fromDate = null;      
@@ -12489,7 +12601,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					toDate = sdf.parse(toDateStr);
 				}
 				
-				List<Object[]> alertList = alertDAO.getSocialAlertDetials(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStatusId,categoryId,userId);
+				List<Object[]> alertList = alertDAO.getSocialAlertDetials(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStatusId,categoryId,userId,smTypeId);
 				
 				if(alertList != null && alertList.size() > 0l){
 					for (Object[] objects : alertList) {
@@ -12517,7 +12629,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						vo.setUserName(commonMethodsUtilService.getStringValueForObject(objects[18]));
 						vo.setSmTypeId(commonMethodsUtilService.getLongValueForObject(objects[19]));
 						vo.setSmType(commonMethodsUtilService.getStringValueForObject(objects[20]));
-						 
+						vo.setVerifyStatus(commonMethodsUtilService.getStringValueForObject(objects[21]));
+						
 						returnList.add(vo);
 					}
 				}
@@ -12571,11 +12684,11 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 									alertvo.getStatus().trim().equalsIgnoreCase("Y")){
 								
 								alert.setAlertStatusId(alertvo.getStatusId() !=null ? alertvo.getStatusId():null);
-								//alert.setIsVerified(alertvo.getStatus());
+								alert.setIsVerified(alertvo.getStatus());
 								
 							}else if(alertvo.getStatus() !=null && !alertvo.getStatus().trim().isEmpty() &&
 									alertvo.getStatus().trim().equalsIgnoreCase("N")){
-								//alert.setIsVerified(alertvo.getStatus());
+								alert.setIsVerified(alertvo.getStatus());
 							}
 							
 							alertDAO.save(alert);
@@ -12690,6 +12803,102 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				temp.setEffcncyPrcnt(percentage);
 			
 			
+		}
+		
+		public List<AlertTrackingVO> getSocialAlertFeedBackDetails(Long userId,String startdateStr,String endDateStr,String mobileNo,Long departmentId){
+			List<AlertTrackingVO> voList = new ArrayList<AlertTrackingVO>(0);
+			try {
+				Date startDate=null;
+				Date endDate = null;
+				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				if(startdateStr != null && !startdateStr.isEmpty() && startdateStr != null && !startdateStr.isEmpty()){
+					 startDate=format.parse(startdateStr);
+					 endDate = format.parse(endDateStr);
+				}
+				
+				List<AlertFeedbackStatus> feedbackStatusList =  alertFeedbackStatusDAO.getAll();
+				AlertTrackingVO returnVO = new AlertTrackingVO();
+				 if(commonMethodsUtilService.isListOrSetValid(feedbackStatusList)){
+					 for (AlertFeedbackStatus alertStatus : feedbackStatusList) {
+						 if(alertStatus.getIsDeleted().equalsIgnoreCase("N")){
+							 AlertTrackingVO vo = new AlertTrackingVO();
+							 vo.setAlertStatusId(alertStatus.getAlertFeedbackStatusId());
+							 vo.setStatus(alertStatus.getStatus());
+							 returnVO.getStatusList().add(vo);
+						 }
+					}
+				 }
+				 
+				 List<Object[]> objList1  = alertTrackingDAO.getFeedbackStatuswiseAlertsDetailsOfSocial(mobileNo, startDate, endDate,departmentId);
+				
+				Map<Long,Long> statusWiseMap = new HashMap<Long, Long>(0);
+				if(objList1 != null && objList1.size() > 0){
+					for (Object[] param : objList1) {
+						AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(returnVO.getStatusList(), "alertStatusId", commonMethodsUtilService.getStringValueForObject(param[0]));
+						if(vo != null){
+							vo.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						}
+						statusWiseMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+					
+				List<AlertTrackingVO> socialMediaTypeList = new ArrayList<AlertTrackingVO>(0);
+				List<Object[]> socialMediaObj =  alertDAO.getAllSocialMediaType();
+				if(commonMethodsUtilService.isListOrSetValid(socialMediaObj)){
+					for (Object[] objects : socialMediaObj) {						
+						AlertTrackingVO vo = new AlertTrackingVO();
+						vo.setAlertStatusId(objects[0] !=null ? (Long)objects[0]:null);
+						vo.setStatus(objects[1] !=null ? objects[1].toString():"");
+						
+						 if(commonMethodsUtilService.isListOrSetValid(returnVO.getStatusList())){
+							 for (AlertTrackingVO alertTrackingVO : returnVO.getStatusList()) {
+								 AlertTrackingVO vo1 = new AlertTrackingVO();
+								 vo1.setAlertStatusId(alertTrackingVO.getAlertStatusId());
+								 vo1.setStatus(alertTrackingVO.getStatus());
+								 vo.getStatusList().add(vo1);
+							}
+						 } 						 
+						 socialMediaTypeList.add(vo);
+					}
+				}
+				 
+				 List<Object[]> objList = alertTrackingDAO.getSocialMediaTypeAlertsFeedbackDetails(mobileNo, startDate, endDate,departmentId);
+				 
+				if(objList != null && objList.size() > 0 && commonMethodsUtilService.isListOrSetValid(socialMediaTypeList)){
+					for (Object[] param : objList) {
+						AlertTrackingVO vo = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(socialMediaTypeList, "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[1]).toString());
+						if(vo != null){
+							AlertTrackingVO vo1 = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(vo.getStatusList(), "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
+							if(vo1 != null){
+								vo1.setCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+							}
+						}else{
+							vo = socialMediaTypeList.get(0);
+							AlertTrackingVO vo1 = (AlertTrackingVO)setterAndGetterUtilService.getMatchedVOfromList(vo.getStatusList(), "alertStatusId", commonMethodsUtilService.getLongValueForObject(param[0]).toString());
+							if(vo1 != null){
+								vo1.setTotalCount(commonMethodsUtilService.getLongValueForObject(param[3]));
+							}
+						}
+					}
+				}
+				if(commonMethodsUtilService.isMapValid(statusWiseMap) && commonMethodsUtilService.isListOrSetValid(socialMediaTypeList)){
+					AlertTrackingVO vo = socialMediaTypeList.get(0);
+					 List<AlertTrackingVO> list =vo.getStatusList();
+					 if(commonMethodsUtilService.isListOrSetValid(list)){
+						 for (AlertTrackingVO statusVO : list) {
+							 statusVO.setTotalCount(statusWiseMap.get(statusVO.getAlertStatusId()));
+						}
+					 }
+				}
+				 returnVO.getStatusList().clear();
+				 returnVO.getStatusList().addAll(socialMediaTypeList);
+				voList.add(returnVO);				
+				
+				
+			} catch (Exception e) {
+				LOG.error("Error occured getSocialAlertFeedBackDetails() method of AlertManagementSystemService");
+			}
+			return voList;
 		}
 }
 

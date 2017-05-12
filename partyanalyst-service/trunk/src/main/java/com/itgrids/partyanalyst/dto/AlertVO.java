@@ -81,6 +81,9 @@ public class AlertVO {
 	private String userName;
 	private Long smTypeId;
 	private String smType;
+	private String verifyStatus;
+	
+	private Long newAlertStatusId;
 	
 	
 	public String getUserName() {
@@ -518,5 +521,18 @@ public class AlertVO {
 	public void setSmType(String smType) {
 		this.smType = smType;
 	}
+	public Long getNewAlertStatusId() {
+		return newAlertStatusId;
+	}
+	public void setNewAlertStatusId(Long newAlertStatusId) {
+		this.newAlertStatusId = newAlertStatusId;
+	}
+	public String getVerifyStatus() {
+		return verifyStatus;
+	}
+	public void setVerifyStatus(String verifyStatus) {
+		this.verifyStatus = verifyStatus;
+	}
+	
 	
 }

@@ -55,6 +55,8 @@ public class GrievanceAlertVO {
 	private Long socialMediaTypeId;
 	private String accountId;
 	
+	private Long alertCallCenterTypeId; 
+	
 	public String getState() {
 		return state;
 	}
@@ -342,6 +344,12 @@ public class GrievanceAlertVO {
 	}
 	public void setSocialMediaTypeId(Long socialMediaTypeId) {
 		this.socialMediaTypeId = socialMediaTypeId;
+	}
+	public Long getAlertCallCenterTypeId() {
+		return alertCallCenterTypeId;
+	}
+	public void setAlertCallCenterTypeId(Long alertCallCenterTypeId) {
+		this.alertCallCenterTypeId = alertCallCenterTypeId;
 	}
 	
 	
