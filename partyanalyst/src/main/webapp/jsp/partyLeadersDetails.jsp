@@ -147,7 +147,7 @@
 			</div>
 			<div class="panel panel-default" id="leadersDetailsDiv" style="display:none;">
 				<div class="panel-heading">
-					<h4 class="panel-title text-capital" > 2016-2018 Leaders Details By Search Criteria  <button class="btn btn-min btn-xs btn-success pull-right" onclick="exportToExcel('EXPORTEXCEL');" id="excelBtn" style="display:none;" > Export Excel </button> </h4>
+					<h4 class="panel-title text-capital" > 2016-2018 Leaders Details By Search Criteria  <span id="exportId" ></span> <button class="btn btn-min btn-xs btn-success pull-right" onclick="exportToExcel('EXPORTEXCEL');" id="excelBtn" style="display:none;" > Export Excel </button> </h4>
 				</div>
 				<div class="panel-body">
 					<div class="row">
