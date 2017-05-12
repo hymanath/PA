@@ -149,4 +149,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
     		Long categoryId,Long userId,Long smTypeId);
 	 public List<Object[]> getAllSocialMediaType();
 	public List<Long> getTotalAlertByStatusNew4(Date fromDate, Date toDate, Long stateId, List<Long> printIdList, List<Long> electronicIdList,List<Long> deptIdList,List<Long> statusIdList,Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long scopeId,List<Long> locationIdList,List<Long> subTaskStatusIdList);
+	public List<Object[]> getTotalAlertGroupByStatusForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> constIds);
+	public List<Object[]> getTotalAlertGroupByStatusThenCategoryForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> consIds);
+	public List<Object[]> getLocationLevelWiseAlertsDataForCentralAreaMembers(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,List<Long> consIds);
 }
