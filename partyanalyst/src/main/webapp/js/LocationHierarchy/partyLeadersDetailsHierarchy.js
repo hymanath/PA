@@ -201,6 +201,7 @@ function getPublicRepresentsDetails(){
 
  var excelUrl="";
 function getLeadersDetasils(searchType){
+	var tempType = searchType;
 	var representativeTypeId =$('#leaderTypeId').val();
 	var locationArr=[];
 	var designationIdArr=$('#designationId').val();
@@ -311,9 +312,7 @@ function getLeadersDetasils(searchType){
 			levelId = 3;
 		}
 	}
-		 
-		
-		  var firstIndex=0;
+		 var firstIndex=0;
 		  var maxIndex=1000;
 		  if(searchType == 'EXPORTEXCEL'){
 			firstIndex=0;
@@ -345,7 +344,7 @@ function getLeadersDetasils(searchType){
 			data: {task :JSON.stringify(jsObj)}
 		  }).done(function(result){
 			  
-			  if(searchType == 'EXPORTEXCEL' && result != null && result.length>0){
+			  if(tempType == 'EXPORTEXCEL' && result != null && result.length>0){
 				  window.open('http://www.mytdp.com/'+result[0].totalImagePathStr+'');
 			  }
 			  else{
