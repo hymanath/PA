@@ -59,7 +59,12 @@
 </head>
 <body>
 <div  class="AMS AUMS">
-	
+	<div class="themeControll">
+	<div class="linkinner"> 
+		<input type="text" class="form-control" id="alertIdSearch" placeholder="Alert ID" expand-icon="true"/>
+	</div>
+	<p class="tbtn"> <i class="glyphicon glyphicon-search"></i></p>
+</div>
 	<section class="m_top20">
 		<div class="container">
 			<div class="row">
