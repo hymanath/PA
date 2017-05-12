@@ -209,34 +209,48 @@ $(document).on("change","#mandalId",function(){
 		if(committeeTypeIdsArr == null )
 			committeeTypeIdsArr=[];	
 		
-		$('#leadersDetailsDiv').show();
 		
-		if(representativeTypeId == 2){
+	
+		errMsg="";		
+		if(representativeTypeId == 2){			
+
 			if(districtIds == null || districtIds==0){
-				alert("Please select atleast one district.");
-				return;
+				errMsg=errMsg+"Please select atleast one district. <br/>";
 			}			
 			if(committeeLevelIdsArr == null || committeeLevelIdsArr.length==0){
-				alert("Please select atleast one Committee Level.");
-				return;
+				errMsg=errMsg+"Please select atleast one Committee Level. <br/>";
 			}
 			if(committeeTypeIdsArr == null || committeeTypeIdsArr.length==0){
-				alert("Please select atleast one Committee type .");
-				return;
+				errMsg=errMsg+"Please select atleast one Committee type. <br/>";
+			}
+			
+			if(errMsg.length>0){
+				$("#errorMessegeId").html(errMsg);
+			}else{
+				$("#errorMessegeId").html('');
 			}
 		}
 		
 		
 		if(enrollmentIdsArr == null || enrollmentIdsArr.length==0){
-			alert("Please select atleast one enrollment Year .");
-				return;
+			errMsg=errMsg+"Please select atleast one enrollment year . <br/>";
 		}
+		if(errMsg.length>0){
+				$("#errorMessegeId").html(errMsg);
+			}else{
+				$("#errorMessegeId").html('');
+			}
 		
 		if(designationIdArr == null || designationIdArr.length==0){
-			alert("Please select atleast one designation.");
-				return;
+			errMsg=errMsg+"Please select atleast one designation. <br/>";
 		}
-		
+		if(errMsg.length>0){
+				$("#errorMessegeId").html(errMsg);
+				return;
+			}else{
+				$("#errorMessegeId").html('');
+			}
+		$('#leadersDetailsDiv').show();
 		if(panchayatIds != null && parseInt(panchayatIds)>0){
 			levelId = 6;
 			locationArr.push(panchayatIds);
