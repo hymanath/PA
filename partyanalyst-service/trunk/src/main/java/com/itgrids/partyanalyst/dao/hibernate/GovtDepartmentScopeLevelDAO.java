@@ -193,4 +193,19 @@ public class GovtDepartmentScopeLevelDAO extends GenericDaoHibernate<GovtDepartm
 		query.setParameter("userLevelId", userLevelId);
 		return query.list();
 	}
+	
+	public List<Object[]> getChildGovtScopesLevelByParentScopeLevel1(Long parentScopeId,List<Long> deptIds){
+		Query query = getSession().createQuery(" select distinct " +
+											   " model.govtDepartment.govtDepartmentId," +
+											   " model.parentGovtDepartmentScopeId," +
+											   " model.govtDepartmentScopeId " +
+											   " from GovtDepartmentScopeLevel model " +
+											   " where " +
+											   " model.govtDepartment.govtDepartmentId in (:deptIds) " +
+											   " and model.parentGovtDepartmentScopeId=:parentScopeId " +
+											   " order by model.govtDepartment.govtDepartmentId,model.parentGovtDepartmentScopeId ");
+		query.setParameterList("deptIds", deptIds);
+		query.setParameter("parentScopeId", parentScopeId);
+		return query.list();
+	}
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -9804,7 +9805,6 @@ public List<AlertCoreDashBoardVO> getLocationFilterClickDetails(Long userId,Stri
 }
 public Long getSearchAlertsDtls(Long userId,Long alertId)
 {
-	//List<AlertDataVO> returnList = null;
 	Long returnAlertId = null;
 	try{
 		List<Long> deptsList = new ArrayList<Long>(0);
@@ -9814,13 +9814,28 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		if(officerDetailsList != null && officerDetailsList.size() > 0){
 			for(Object[] param : officerDetailsList){
 				deptsList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
-				levelValuesList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
-				levelId = commonMethodsUtilService.getLongValueForObject(param[2]);
+				//levelValuesList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				//levelId = commonMethodsUtilService.getLongValueForObject(param[2]);
 			}
 		}
-		 returnAlertId = alertAssignedOfficerNewDAO.getAlertdetails(alertId,deptsList,levelValuesList,levelId);
-		//if(returnAlertId != null)
-		   //returnList = alertService.getAlertsData(returnAlertId);
+		List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+	    if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+	      for(Object[] param : lvlValueAndLvlIdList){
+	    	  levelValuesList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+	    	  levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+	      }
+	    }
+	    Set<Long> govtScopeIds = new TreeSet<Long>();
+	    if(levelId != null && levelId.longValue() >=0l){
+	          List<Object[]> rtrnObjList = govtDepartmentScopeLevelDAO.getChildGovtScopesLevelByParentScopeLevel1(levelId, deptsList);//levelId means Access Level 
+	          if(rtrnObjList != null && rtrnObjList.size() > 0){
+	            for(Object[] param:rtrnObjList){
+	              govtScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+	            }
+	          }
+	     }
+		 returnAlertId = alertAssignedOfficerNewDAO.getAlertdetails(alertId,deptsList,levelValuesList,levelId,govtScopeIds);
+		 //returnAlertId = govtAlertSubTaskDAO.getAlertSubTaskdetails(alertId,deptsList,levelValuesList,levelId);
 		
 	}catch(Exception e){
 		e.printStackTrace();
