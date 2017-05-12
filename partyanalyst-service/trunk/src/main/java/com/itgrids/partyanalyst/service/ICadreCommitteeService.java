@@ -204,4 +204,7 @@ public interface ICadreCommitteeService {
 	 public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,final Long userId);
 	 public List<TdpCadreVO>  getPartyLeadersDeatails(Long userId,Long levelId,List<Long> locationIdsList,Long representativeTypeId,List<Long> designationIdsList,
 				List<Long> committeeLevelIdsList,List<Long> enrollmentIdsList, List<Long> committeeTypeIdsList, Long stateId, int firstIndex,int maxIndex);
+	 
+	 public List<IdNameVO> getCommitteeLevelDetils();
+	 public List<IdNameVO> getCommitteeTypeDetils();
 }
