@@ -152,6 +152,14 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   		query.setParameter("alertId", alertId);
   		return query.list();
   	}
+      
+      public List<AlertAssignedOfficerNew> getModelForApprovedAlert(Long alertId){
+    		Query query = getSession().createQuery(" select model from AlertAssignedOfficerNew model where model.alertId=:alertId and model.isDeleted='N' " +
+    				" and model.isApproved ='Y' ");
+    		query.setParameter("alertId", alertId);
+    		return query.list();
+      }
+      
         public List<Object[]> getDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList){
         	StringBuilder sb = new StringBuilder();
 	    	  

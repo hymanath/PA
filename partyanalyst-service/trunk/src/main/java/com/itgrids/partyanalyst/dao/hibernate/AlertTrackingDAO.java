@@ -10,6 +10,7 @@ import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.model.AlertTracking;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		implements IAlertTrackingDAO {
@@ -284,6 +285,7 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 	}
 	
 	public List<Object[]> getStatuswiseAlertsDetailsOfSocial(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId,Long categoryId){
+		userId = null;
 		StringBuilder queryStr  = new StringBuilder();
 		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,as1.alert_status as alert_status , count(distinct a.alert_id) as count ");
 		queryStr.append(" from ");
@@ -383,4 +385,144 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		return query.list();   
 	}
 	
+	public List<Object[]> getSocialMediaTypeAlertsDetails(String mobileNo,Long userId, Date startDate, Date endDate,Long departmentId,Long categoryId){
+		userId =null;
+		StringBuilder queryStr  = new StringBuilder();
+		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,smt.social_media_type_id as socialMediaTypeId , smt.type as type ," +
+				" count(distinct a.alert_id) as count ");
+		queryStr.append(" from ");
+		queryStr.append(" alert a ");
+		queryStr.append(" LEFT JOIN  social_media_type smt on a.social_media_type_id = smt.social_media_type_id ");
+		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
+		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+
+		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+			queryStr.append(" and ac.mobile_no =:mobile_no ");
+		if(departmentId != null && departmentId.longValue()>0L)
+			queryStr.append(" and a.govt_department_id =:departmentId ");
+		if(userId != null && userId.longValue()>0L) 
+			queryStr.append(" and a.created_by =:userId ");
+		if(startDate != null && startDate != null)
+			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
+		
+		if(categoryId !=null && categoryId.longValue()>0){
+			queryStr.append(" and a.alert_category_id = :categoryId ");
+		}
+		
+		
+		queryStr.append(" GROUP BY a.alert_status_id,smt.social_media_type_id ");
+		queryStr.append(" ORDER BY a.alert_status_id,smt.social_media_type_id ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alert_status_id", Hibernate.LONG)
+				.addScalar("socialMediaTypeId", Hibernate.LONG)
+				.addScalar("type", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+		if(departmentId != null && departmentId.longValue()>0L)
+			query.setParameter("departmentId", departmentId);
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+		query.setParameter("mobileNo", mobileNo);
+		
+		if(userId != null && userId.longValue()>0L) 
+			query.setParameter("userId", userId);
+		
+		if(startDate != null && startDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
+		if(categoryId !=null && categoryId.longValue()>0l){
+			query.setParameter("categoryId", categoryId);
+		}
+		
+		return query.list();   
+	}
+	
+	public List<Object[]> getFeedbackStatuswiseAlertsDetailsOfSocial(String mobileNo,Date startDate, Date endDate,Long departmentId){
+		StringBuilder queryStr  = new StringBuilder();
+		queryStr.append(" SELECT  afs.alert_feedback_status_id as alert_feedback_status_id ,afs.status as status , count(distinct a.alert_id) as count ");
+		queryStr.append(" from ");
+		queryStr.append(" alert a ");
+		queryStr.append(" LEFT JOIN  alert_feedback_status afs on a.alert_feedback_status_id = afs.alert_feedback_status_id ");
+		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+			queryStr.append(" and ac.mobile_no =:mobile_no ");
+		if(departmentId != null && departmentId.longValue()>0L)
+			queryStr.append(" and a.govt_department_id =:departmentId ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
+		
+
+		queryStr.append(" and a.alert_category_id = :categoryId ");
+
+		
+		queryStr.append(" GROUP BY afs.alert_feedback_status_id ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alert_feedback_status_id", Hibernate.LONG)
+				.addScalar("status", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+		if(departmentId != null && departmentId.longValue()>0L)
+			query.setParameter("departmentId", departmentId);
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+			query.setParameter("mobileNo", mobileNo);
+		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+
+		query.setParameter("categoryId", IConstants.GOVT_SOCIAL_MEDIA_CATEGORY_ID);
+
+		
+		return query.list();   
+	}
+	public List<Object[]> getSocialMediaTypeAlertsFeedbackDetails(String mobileNo, Date startDate, Date endDate,Long departmentId){
+		StringBuilder queryStr  = new StringBuilder();
+		queryStr.append(" SELECT  afs.alert_feedback_status_id as alert_feedback_status_id ,smt.social_media_type_id as socialMediaTypeId , smt.type as type ," +
+				" count(distinct a.alert_id) as count ");
+		queryStr.append(" from ");
+		queryStr.append(" alert a ");
+		queryStr.append(" LEFT JOIN  social_media_type smt on a.social_media_type_id = smt.social_media_type_id ");
+		queryStr.append(" LEFT JOIN  alert_feedback_status afs on a.alert_feedback_status_id = afs.alert_feedback_status_id ");
+		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+
+		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+			queryStr.append(" and ac.mobile_no =:mobile_no ");
+		if(departmentId != null && departmentId.longValue()>0L)
+			queryStr.append(" and a.govt_department_id =:departmentId ");
+
+		if(startDate != null && endDate != null)
+			queryStr.append(" and ( date(a.created_time) between :startDate and :endDate ) ");
+		
+		queryStr.append(" and a.alert_category_id = :categoryId ");
+	
+		
+		
+		queryStr.append(" GROUP BY afs.alert_feedback_status_id,smt.social_media_type_id ");
+		queryStr.append(" ORDER BY afs.alert_feedback_status_id,smt.social_media_type_id ");
+		Query query = getSession().createSQLQuery(queryStr.toString())
+				.addScalar("alert_feedback_status_id", Hibernate.LONG)
+				.addScalar("socialMediaTypeId", Hibernate.LONG)
+				.addScalar("type", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+		if(departmentId != null && departmentId.longValue()>0L)
+			query.setParameter("departmentId", departmentId);
+		if(mobileNo != null && !mobileNo.isEmpty()) 
+			query.setParameter("mobileNo", mobileNo);
+		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
+		query.setParameter("categoryId", IConstants.GOVT_SOCIAL_MEDIA_CATEGORY_ID);
+
+		
+		return query.list();   
+	}
 }

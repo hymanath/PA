@@ -8226,13 +8226,16 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list(); 
 	}
     public List<Object[]> getSocialAlertDetials(String mobileNo,Long alertStatusId,Date startDate,Date endDate,Long departmentId,Long feedbackStattusId,
-    		Long categoryId,Long userId){
+    		Long categoryId,Long userId,Long smTypeId){
+    	
+    	userId =null;
     	
     	StringBuilder queryStr  = new StringBuilder();
 		queryStr.append(" SELECT  a.alert_id as alertId ,a.title as title , a.impact_level_id as levelId , date(a.created_time) as time ," +
 				"  a.alert_source_id as sourceId,rs.scope as scope ,a.alert_status_id as statusId, gd.department_name as deptName, fs.status as feedbackStattus, d.district_name as districtName," +
 				" c.name as cname, t.tehsil_name as tehsilName, p.panchayat_name as pname, h.hamlet_name as hname , leb.name as lname, " +
-				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo,user.username as username,sm.social_media_type_id as smTypeId,sm.type as smType ");
+				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo,user.username as username,sm.social_media_type_id as smTypeId,sm.type as smType," +
+				" a.is_verified as is_verified ");
 		queryStr.append(" from ");
 		queryStr.append(" user user,alert a ");
 		queryStr.append(" Left Join alert_feedback_status fs on a.alert_feedback_status_id = fs.alert_feedback_status_id ");
@@ -8271,6 +8274,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			queryStr.append(" and a.created_by =:userId ");
 		}
 		
+		if(smTypeId !=null && smTypeId.longValue()>0){
+			queryStr.append(" and a.social_media_type_id =:smTypeId ");
+		}
+		
 		queryStr.append(" order BY a.alert_status_id ");
 		Query query = getSession().createSQLQuery(queryStr.toString())
 				.addScalar("alertId", Hibernate.LONG)
@@ -8293,7 +8300,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("mobileNo", Hibernate.STRING)
 				.addScalar("username", Hibernate.STRING)
 				.addScalar("smTypeId", Hibernate.LONG)
-				.addScalar("smType", Hibernate.STRING);
+				.addScalar("smType", Hibernate.STRING)
+				.addScalar("is_verified", Hibernate.STRING);
 		
 		
 		if(departmentId != null && departmentId.longValue()>0L)
@@ -8315,6 +8323,9 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		}
 		if(userId !=null && userId.longValue()>0l){
 			query.setParameter("userId",userId);
+		}
+		if(smTypeId !=null && smTypeId.longValue()>0){
+			query.setParameter("smTypeId",smTypeId);
 		}
 		
 		return query.list();  

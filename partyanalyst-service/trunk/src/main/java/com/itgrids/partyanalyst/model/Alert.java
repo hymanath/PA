@@ -89,7 +89,7 @@ public class Alert extends BaseModel implements Serializable {
 	private Long alertCallCenterTypeId;
 	private  AlertCallCenterType alertCallCenterType;
 	
-	/*private String isVerified;*/
+	private String isVerified;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -642,14 +642,14 @@ public class Alert extends BaseModel implements Serializable {
 		this.alertCallCenterType = alertCallCenterType;
 	}
 	
-	/*@Column(name = "is_verified")
+	@Column(name = "is_verified")
 	public String getIsVerified() {
 		return isVerified;
 	}
 
 	public void setIsVerified(String isVerified) {
 		this.isVerified = isVerified;
-	}*/
+	}
 	
 	
 
