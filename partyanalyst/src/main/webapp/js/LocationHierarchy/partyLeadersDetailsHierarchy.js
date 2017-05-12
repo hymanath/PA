@@ -141,8 +141,8 @@ $(document).on('change','#leaderTypeId',function(){
 	 if(leadrId == 0){
 		getPublicRepresentsDetails();
 		getCommitteeRoles();
-        $("#committeeLevelDivId").hide();
-		$("#committeeTypeDivId").hide();
+       $('#committeeTypeDivId').show();
+		$('#committeeLevelDivId').show();
 	 }else if(leadrId == 2){
 		getCommitteeRoles();
 		getCommitteeLevelDetails();
@@ -173,7 +173,7 @@ function getCommitteeRoles(){
 		if(result != null){
 			for(var i in result)
 			{
-			$("#designationId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			$("#designationId").append('<option value="1'+result[i].id+'">'+result[i].name+'</option>');
 			}
 		   $(".chosenClass").trigger("chosen:updated");
 		}
@@ -192,14 +192,15 @@ function getPublicRepresentsDetails(){
     	if(result != null){
 			for(var i in result)
 			{ 
-			  $("#designationId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			  $("#designationId").append('<option value="2'+result[i].id+'">'+result[i].name+'</option>');
 			}
 			$(".chosenClass").trigger("chosen:updated");
 		}
    });	
  }
-	  
-$(document).on("click","#btnId",function(){
+
+ var excelUrl="";
+function getLeadersDetasils(searchType){
 	var representativeTypeId =$('#leaderTypeId').val();
 	var locationArr=[];
 	var designationIdArr=$('#designationId').val();
@@ -219,25 +220,7 @@ $(document).on("click","#btnId",function(){
 	if(committeeTypeIdsArr == null )
 		committeeTypeIdsArr=[];	
 	
-	  errMsg="";		
-	 if(representativeTypeId == 2){			
-		if(districtIds == null || districtIds==0){
-			errMsg=errMsg+"Please select atleast one district. <br/>";
-		}			
-	   if(committeeLevelIdsArr == null || committeeLevelIdsArr.length==0){
-			errMsg=errMsg+"Please select atleast one Committee Level. <br/>";
-		}
-	   if(committeeTypeIdsArr == null || committeeTypeIdsArr.length==0){
-			errMsg=errMsg+"Please select atleast one Committee type. <br/>";
-		}
-		if(errMsg.length>0){
-			$("#errorMessegeId").html(errMsg);
-		}else{
-			$("#errorMessegeId").html('');
-		 }
-}
-		
-		
+	  errMsg="";	
 	if(enrollmentIdsArr == null || enrollmentIdsArr.length==0){
 		errMsg=errMsg+"Please select atleast one enrollment year . <br/>";
 	}
@@ -249,7 +232,27 @@ $(document).on("click","#btnId",function(){
 	
 	if(designationIdArr == null || designationIdArr.length==0){
 		errMsg=errMsg+"Please select atleast one designation. <br/>";
+	}	  
+	 if(representativeTypeId == 2){	
+		if(pageType == 'District'){	 
+			if(districtIds == null || districtIds==0){
+				errMsg=errMsg+"Please select atleast one district. <br/>";
+			}	
+		}
+		
+	   if(committeeLevelIdsArr == null || committeeLevelIdsArr.length==0){
+			errMsg=errMsg+"Please select atleast one Committee Level. <br/>";
+		}
+	   if(committeeTypeIdsArr == null || committeeTypeIdsArr.length==0){
+			errMsg=errMsg+"Please select atleast one Committee type. <br/>";
+		}
+		if(errMsg.length>0){
+			$("#errorMessegeId").html(errMsg);
+		}else{
+			$("#errorMessegeId").html('');
+		 }
 	}
+	
 	if(errMsg.length>0){
 		$("#errorMessegeId").html(errMsg);
 		return;
@@ -257,6 +260,13 @@ $(document).on("click","#btnId",function(){
 		$("#errorMessegeId").html('');
 	}
 	$('#leadersDetailsDiv').show();
+	
+	if(pageType == 'Constituency'){
+		levelId = 4;
+	 }else if(pageType == 'District'){
+		 levelId = 3;
+	 }
+	 
 	if(panchayatIds != null && parseInt(panchayatIds)>0){
 		levelId = 6;
 		locationArr.push(panchayatIds);
@@ -273,22 +283,60 @@ $(document).on("click","#btnId",function(){
 		levelId = 2;
 		locationArr.push(globalstateId);
 	}
-	$("#partyLeaderDetailsId").html('<img src="images/Loading-data.gif" style="margin-left: 550px;">');
-		 $('#excelBtn').hide();
+	
+	if(pageType == 'Constituency'){
+		if(panchayatIds != null && parseInt(panchayatIds)>0){
+			levelId = 6;
+			locationArr.push(panchayatIds);
+		}else if(mandalIds != null && parseInt(mandalIds)>0){
+			levelId = 5;
+			locationArr.push(mandalIds);
+		}else{
+			locationArr =locationIdsArr;
+			levelId = 4;
+		}		
+	}
+	else if(pageType == 'District'){
+		if(panchayatIds != null && parseInt(panchayatIds)>0){
+			levelId = 6;
+			locationArr.push(panchayatIds);
+		}else if(mandalIds != null && parseInt(mandalIds)>0){
+			levelId = 5;
+			locationArr.push(mandalIds);
+		}else if(constituencyIds != null && parseInt(constituencyIds)>0){
+			levelId = 4;
+			locationArr.push(constituencyIds);
+		}else{
+			locationArr =locationIdsArr;
+			levelId = 3;
+		}
+	}
+		 
+		
+		  var firstIndex=0;
+		  var maxIndex=1000;
+		  if(searchType == 'EXPORTEXCEL'){
+			firstIndex=0;
+			maxIndex=0;
+			searchType = searchType+"::"+excelUrl;
+		  }else{
+			   $('#excelBtn').hide();
+			  $("#partyLeaderDetailsId").html('<img src="images/Loading-data.gif" style="margin-left: 550px;">');
+		  }
 		 var jsObj =
 		  {
 			levelId:levelId,
 			representativeTypeId :representativeTypeId,
 			locationIds:locationArr,
 			designationIds:designationIdArr,
-			firstIndex:0,
-			maxIndex:1000,
+			firstIndex:firstIndex,
+			maxIndex:maxIndex,
 			committeeLevelIdsArr:committeeLevelIdsArr,
 			enrollmentId:enrollmentId,
 			stateId:globalstateId,
 			committeeTypeIdsArr:committeeTypeIdsArr,
 			enrollmentIdsArr:enrollmentIdsArr,
-			enrollmentId:0
+			reportType:searchType
 		  };
 		  
 		  $.ajax({  
@@ -297,8 +345,11 @@ $(document).on("click","#btnId",function(){
 			data: {task :JSON.stringify(jsObj)}
 		  }).done(function(result){
 			  
-			   
-               if(result != null){				
+			  if(searchType == 'EXPORTEXCEL' && result != null && result.length>0){
+				  window.open('http://www.mytdp.com/'+result[0].totalImagePathStr+'');
+			  }
+			  else{
+				  if(result != null){				
 					 var str = '';
 					  str +='<table class="table table-bordered" id="leadersDetailsTab">';
 							 str +='<thead>';
@@ -319,6 +370,9 @@ $(document).on("click","#btnId",function(){
 					      str +='<tbody>';
 								
 								for(var i in result){
+									
+									if(i==0)
+										excelUrl =result[i].aadharNo;
 									str +='<tr>';
 									str +='<td>'+result[i].district+'</td>';
 									
@@ -373,8 +427,9 @@ $(document).on("click","#btnId",function(){
 				   }else{
 					   $("#partyLeaderDetailsId").html(' <center> No Data available... </center>');
 				   }
+			  }
 		  });   			
-});
+}
 
 function getCommitteeLevelDetails(){
    var jsObj=
@@ -423,10 +478,7 @@ function getCommitteeTypeDetails(){
 	  }
    });
   }	  
-function exportToExcel()
-{
-	tableToExcel('leadersDetailsTab', 'Party Leaders Details');
-}
+
 
 $(document).on("change","#panchayatDivId",function(){
 		$('#leadersDetailsDiv').hide();
@@ -448,7 +500,8 @@ $(document).on("change","#committeeTypeId",function(){
 		$('#leadersDetailsDiv').hide();
 });
 	  
-function exportToExcel()
+function exportToExcel(buildType)
 {
-	tableToExcel('leadersDetailsTab', 'Party Leaders Details');
+	getLeadersDetasils(buildType);
+	//tableToExcel('leadersDetailsTab', 'Party Leaders Details');
 }
