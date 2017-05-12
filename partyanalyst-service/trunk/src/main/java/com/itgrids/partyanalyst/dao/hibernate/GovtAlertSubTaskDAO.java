@@ -3441,10 +3441,10 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 					List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId){
 		    	
 		    	StringBuilder sb = new StringBuilder();  
-		    	sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
+		    	sb.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
 	    	    		"model1.designationName,  model.alert.alertId ");
 	    	    
-	        	sb.append(" ,model.alertSubTaskStatus.alertSubTaskStatusId,model.insertedTime,model.updatedTime ");
+	        	sb.append(" ,model.alertSubTaskStatus.alertSubTaskStatusId,model.createdTime,model.updatedTime ");
 	    	    	if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 	        	      sb.append(" , S.govtDepartmentWorkLocationId,S.locationName,S.govtDepartmentScope.govtDepartmentScopeId ,  GDS.levelName ");
 	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
@@ -3494,7 +3494,7 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 		    	          " left join  model.govtDepartmentDesignationOfficer.govtDepartmentScope GDS " );
 		    	sb.append(" left join model.alert.edition EDS " +
 		  	    		   " left join model.alert.tvNewsChannel TNC  ");
-			    sb.append(" where model1.govtDepartmentDesignationId=model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId and model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
+			    sb.append(" where model1.govtDepartmentDesignationId = model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId and model.alert.isDeleted='N' and model.isDeleted = 'N' and " +
 			    		  " model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+")   ");
 			    
 			    if(desigIds != null && !desigIds.isEmpty())
