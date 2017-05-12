@@ -100,7 +100,8 @@
 				<div class="row">
 					<div class="col-sm-3">
 						<label>Leader Type</label>
-						<select class="form-control" id="leaderTypeId">							
+						<select class="form-control" id="leaderTypeId">
+                            <option value="0">All</option>
 							<option value="1">Public representitive</option>
 							<option value="2">Committee Member</option>
 						</select>
@@ -125,42 +126,14 @@
 					<div class="col-sm-3"  id="committeeLevelDivId" style="display:none">
 						<label>Committee Level </label>
 						<select class="form-control chosenClass" id="committeeLevelId" multiple>
-							<option value="6">Village</option>
-							<option value="8">Ward</option>
-							<option value="5">Mandal</option>
-							<option value="7">Town</option>
-							<option value="9">Division</option>
-							<option value="11">District</option>
-							<option value="10">State</option>
-							<option value="12">Central</option>
+							<option value="0">All</option>
 						</select>
 					</div>
 					
 					<div class="col-sm-3"   id="committeeTypeDivId"  style="display:none" >
 						<label>Committee Type </label>
 						<select class="form-control chosenClass" id="committeeTypeId" multiple>
-							<option value="1">	Main </option>
-							<option value="2">	Telugu Yuvatha </option>
-							<option value="3">	Telugu Mahila </option>
-							<option value="4">	Telugu Rythu </option>
-							<option value="5">	TNTUC </option>
-							<option value="6">	BC Cell </option>
-							<option value="7">	SC Cell </option>
-							<option value="8">	ST Cell </option>
-							<option value="9">	Minority Cell </option>
-							<option value="10">	Legal Cell </option>
-							<option value="11">	TNSF (Student Union) </option>
-							<option value="12">	Commercial Cell </option>
-							<option value="13">	Cultural Cell </option>
-							<option value="14">	TNUS ( Teachers Union)  </option>
-							<option value="15">	TSNV (Technical Expert Cell) </option>
-							<option value="16">	Doctor Cell </option>
-							<option value="17">	Trade </option>
-							<option value="18">	Christian </option>
-							<option value="19">	Telugu Rakshana Vedika </option>
-							<option value="20">	Kallu Geetha Karmikulu </option>
-							<option value="21">	Chenetha </option>
-
+							<option value="0">All</option>
 						</select>
 					</div>
 					
@@ -195,6 +168,7 @@
 $(".chosenClass").chosen();
 getDistrictsForStates(1);
 getPublicRepresentsDetails();
+getCommitteeRoles();
 </script>
 </body>
 </html>

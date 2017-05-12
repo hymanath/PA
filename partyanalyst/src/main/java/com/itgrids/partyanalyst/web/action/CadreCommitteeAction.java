@@ -2672,4 +2672,24 @@ public String updateCommitteeMemberDesignationByCadreId(){
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getCommitteeLevelDetils(){
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = cadreCommitteeService.getCommitteeLevelDetils();
+		}catch(Exception e){
+			LOG.error("Exception occured in getCommitteeLevelDetils() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCommitteeTypeDetils(){
+		try{
+			jObj = new JSONObject(getTask());
+			idNameVOList = cadreCommitteeService.getCommitteeTypeDetils();
+		}catch(Exception e){
+			LOG.error("Exception occured in getCommitteeTypeDetils() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }

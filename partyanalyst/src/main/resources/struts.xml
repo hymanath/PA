@@ -17231,5 +17231,15 @@
 			<param name="root">alertDataId</param>       
 		</result>
   </action>
+  <action name="getCommitteeLevelDetailsAction" class="cadreCommitteeAction"  method="getCommitteeLevelDetils">
+		<result type="json" name="success">    
+			<param name="root">idNameVOList</param>       
+		</result>
+  </action>
+  <action name="getCommitteeTypeDetailsAction" class="cadreCommitteeAction"  method="getCommitteeTypeDetils">
+		<result type="json" name="success">    
+			<param name="root">idNameVOList</param>       
+		</result> 
+	</action>	
  </package>
 </struts>
