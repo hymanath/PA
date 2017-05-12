@@ -1970,6 +1970,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 						alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						alertCommentVO.setUserId(commonMethodsUtilService.getLongValueForObject(param[12]));
 						alertCommentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[10]));
 						if(alertTrackingDocumentsMap != null && alertTrackingDocumentsMap.size() > 0 && param[11] != null && alertTrackingDocumentsMap.get((Long)param[11]) != null){
 							alertCommentVO.setDocList(alertTrackingDocumentsMap.get((Long)param[11]));
@@ -1985,6 +1986,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						}
 						alertCommentVO.setCadreName(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertCommentVO.setUserName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						alertCommentVO.setUserId(commonMethodsUtilService.getLongValueForObject(param[12]));
 						alertCommentVO.setOrderNo(commonMethodsUtilService.getLongValueForObject(param[10]));
 						if(alertTrackingDocumentsMap != null && alertTrackingDocumentsMap.size() > 0 && param[11] != null && alertTrackingDocumentsMap.get((Long)param[11]) != null){
 							alertCommentVO.setDocList(alertTrackingDocumentsMap.get((Long)param[11]));
@@ -7629,7 +7631,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			
 			//get alert status count and and create a map of alertStatusId and its count
 			if(searchType != null && searchType.trim().equalsIgnoreCase("areaAlerts")){
-				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,null,consIds);
+				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralAreaMembers(fromDate,toDate,stateId,alertTypeId,consIds);
 			}else{
 				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,tdpCadreId,null);
 			}
@@ -7696,7 +7698,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			
 			if(searchType != null && searchType.trim().equalsIgnoreCase("areaAlerts")){
-				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,null,consIds);
+				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralAreaMembers(fromDate,toDate,stateId,alertTypeId,consIds);
 			}else{
 				 alertCountList = alertDAO.getTotalAlertGroupByStatusForCentralMembers(fromDate,toDate,stateId,alertTypeId,tdpCadreId,null);
 			}
@@ -7712,7 +7714,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			
 			//get alert status count and and create a map of alertStatusId and its count
 			if(searchType != null && searchType.trim().equalsIgnoreCase("areaAlerts")){
-				 alertCountGrpByCatList = alertDAO.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId, alertTypeId,null,consIds);
+				 alertCountGrpByCatList = alertDAO.getTotalAlertGroupByStatusThenCategoryForCentralAreaMembers(fromDate, toDate, stateId, alertTypeId,consIds);
 			}else{
 				 alertCountGrpByCatList = alertDAO.getTotalAlertGroupByStatusThenCategoryForCentralMembers(fromDate, toDate, stateId, alertTypeId,tdpCadreId,consIds);
 			}
@@ -7837,7 +7839,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 			
 			if(inputVO.getSearchType() != null && inputVO.getSearchType().trim().equalsIgnoreCase("areaAlerts")){
-				 list = alertDAO.getLocationLevelWiseAlertsDataForCentralMembers(userTypeIds,inputVO,fromDate,toDate,consIds);//done
+				 list = alertDAO.getLocationLevelWiseAlertsDataForCentralAreaMembers(userTypeIds,inputVO,fromDate,toDate,consIds);//done
 			}else{
 				 list = alertDAO.getLocationLevelWiseAlertsDataForCentralMembers(userTypeIds,inputVO,fromDate,toDate,null);//done
 			}
