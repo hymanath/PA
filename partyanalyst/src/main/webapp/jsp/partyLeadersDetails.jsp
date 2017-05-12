@@ -140,14 +140,14 @@
 					</div>
 					
 					<div class="col-sm-3 pull-right">
-						<button type="button" id="btnId" class="btn btn-sm" style="border-width: 4px 12px 4px 15px; margin-top: 22px;"><b>View</b></button>
+						<button type="button" id="btnId" class="btn btn-sm" onclick="getLeadersDetasils('')" style="border-width: 4px 12px 4px 15px; margin-top: 22px;"><b>View</b></button>
 					</div>
 				</div>
 			  </div>
 			</div>
 			<div class="panel panel-default" id="leadersDetailsDiv" style="display:none;">
 				<div class="panel-heading">
-					<h4 class="panel-title text-capital" > 2016-2018 Leaders Details By Search Criteria  <button class="btn btn-min btn-xs btn-success pull-right" onclick="exportToExcel();" id="excelBtn" style="display:none;"> Export Excel </button> </h4>
+					<h4 class="panel-title text-capital" > 2016-2018 Leaders Details By Search Criteria  <button class="btn btn-min btn-xs btn-success pull-right" onclick="exportToExcel('EXPORTEXCEL');" id="excelBtn" style="display:none;" > Export Excel </button> </h4>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -168,18 +168,17 @@
  
 <script  type="text/javascript" >
 $(".chosenClass").chosen();
-getDistrictsForStates(1);
-getPublicRepresentsDetails();
 var pageType='STATE';
 var areasList= [];
-
+var locationIdsArr=[];
 <c:forEach var="item" items="${statesList}">
 	pageType = '${item.type}';
 	var obj = {
 		id:'${item.id}',
 		name:'${item.name}'
 	}
-	areasList.push(obj)
+	locationIdsArr.push('${item.id}');
+	areasList.push(obj);
  </c:forEach>
 
  function buildOptions(){
@@ -188,25 +187,27 @@ var areasList= [];
 		 $('.switch-btn').hide();
 		if(areasList != null && areasList.length>0){
 			 $("#constituencyId").html('');
-			for(var i in areasList){
-				 if(i == 0)
-					 $("#constituencyId").append('<option value="0">ALL</option>');
-				else
+			  $("#constituencyId").append('<option value="0">ALL</option>');
+				for(var i in areasList){
 					$("#constituencyId").append('<option value='+areasList[i].id+'>'+areasList[i].name+'</option>');
-		   }
+				}
 		}
 	 }else if(pageType == 'District'){
 		  $('.switch-btn').hide();
 		 if(areasList != null && areasList.length>0){
 			 $("#districtId").html('');
+			  $("#districtId").append('<option value="0">ALL</option>');
 			for(var i in areasList){
-				 if(i == 0)
-					 $("#districtId").append('<option value="0">ALL</option>');
-				else
-					$("#districtId").append('<option value='+areasList[i].id+'>'+areasList[i].name+'</option>');
+				$("#districtId").append('<option value='+areasList[i].id+'>'+areasList[i].name+'</option>');
 		   }
 		}
+	 }else{
+		 getDistrictsForStates(1);
 	 }
+	 getPublicRepresentsDetails();
+	// getCommitteeRoles();
+	 $("#committeeLevelDivId").hide();
+	 $("#committeeTypeDivId").hide();
  }
  
 buildOptions();
