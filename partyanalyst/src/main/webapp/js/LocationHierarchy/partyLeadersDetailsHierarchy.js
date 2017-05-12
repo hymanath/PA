@@ -23,6 +23,16 @@ function getDistrictsForStates(stateId){
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
+	   $('#districtId').val(0);
+	   $('#constituencyId').val(0);
+	   $('#mandalId').val(0);
+	   $('#panchayatDivId').val(0);
+	   $('#leaderTypeId').val(1);
+	   $('#enrollmentId').val('');
+	   $('#designationId').val('');
+	   $('#committeeLevelId').val('');
+	   $('#committeeTypeId').val('');
+	   $('#leadersDetailsDiv').hide();
 	   if(result != null){
 		   $("#districtId").html('');
 			 for(var i in result){
@@ -40,6 +50,7 @@ function getDistrictsForStates(stateId){
   
 $(document).on("change","#districtId",function(){
 	var districtId = $("#districtId").val();
+		$('#leadersDetailsDiv').hide();
 		var jsObj=
         {				
 		  districtId:districtId						
@@ -67,6 +78,7 @@ $(document).on("change","#districtId",function(){
    
 $(document).on("change","#constituencyId",function(){
 	var constituencyId = $('#constituencyId').val();
+		$('#leadersDetailsDiv').hide();
 		var jsObj ={					
 			constituencyId:constituencyId
 		};
@@ -96,6 +108,7 @@ $(document).on("change","#constituencyId",function(){
 $(document).on("change","#mandalId",function(){	
     var mandalId = $('#mandalId').val();
 	var constituencyId = $('#constituencyId').val();
+	$('#leadersDetailsDiv').hide();
 	 var jsObj ={					
 			mandalId:mandalId,
 			constituencyId :constituencyId
@@ -413,3 +426,23 @@ function exportToExcel()
 {
 	tableToExcel('leadersDetailsTab', 'Party Leaders Details');
 }
+
+$(document).on("change","#panchayatDivId",function(){
+		$('#leadersDetailsDiv').hide();
+});
+
+$(document).on("change","#enrollmentId",function(){
+		$('#leadersDetailsDiv').hide();
+});
+
+$(document).on("change","#designationId",function(){
+		$('#leadersDetailsDiv').hide();
+});
+
+$(document).on("change","#committeeLevelId",function(){
+		$('#leadersDetailsDiv').hide();
+});
+
+$(document).on("change","#committeeTypeId",function(){
+		$('#leadersDetailsDiv').hide();
+});
