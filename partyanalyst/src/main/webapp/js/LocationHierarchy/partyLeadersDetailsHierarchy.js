@@ -297,6 +297,7 @@ $(document).on("click","#btnId",function(){
 			data: {task :JSON.stringify(jsObj)}
 		  }).done(function(result){
 			  
+			   
                if(result != null){				
 					 var str = '';
 					  str +='<table class="table table-bordered" id="leadersDetailsTab">';
@@ -446,3 +447,8 @@ $(document).on("change","#committeeLevelId",function(){
 $(document).on("change","#committeeTypeId",function(){
 		$('#leadersDetailsDiv').hide();
 });
+	  
+function exportToExcel()
+{
+	tableToExcel('leadersDetailsTab', 'Party Leaders Details');
+}
