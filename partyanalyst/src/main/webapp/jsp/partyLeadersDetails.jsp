@@ -69,6 +69,7 @@
 					</ul>  			
 				</h4>
 			  </div>
+			  <div id="errorMessegeId" style="color: red; padding-left: 15px;"></div>
 				<div class="panel-body">
 				<div class="row">
 					<div class="col-sm-3">
