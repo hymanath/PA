@@ -9,18 +9,21 @@ import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+
 import com.itgrids.partyanalyst.dao.IAnnouncementDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IUserAnnouncementDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyScopeDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Announcement;
 import com.itgrids.partyanalyst.model.UserAnnouncement;
 import com.itgrids.partyanalyst.model.UserConstituencyScope;
 import com.itgrids.partyanalyst.service.IAnnouncementService;
-import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AnnouncementService implements IAnnouncementService {
@@ -31,6 +34,9 @@ public class AnnouncementService implements IAnnouncementService {
 	private IUserConstituencyScopeDAO userConstituencyScopeDAO;
 	private IConstituencyDAO constituencyDAO;
 	private TransactionTemplate transactionTemplate = null;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	
 	private static final Logger log = Logger.getLogger(IAnnouncementService.class);
 	
 	public TransactionTemplate getTransactionTemplate() {
@@ -61,8 +67,7 @@ public class AnnouncementService implements IAnnouncementService {
 		return userConstituencyScopeDAO;
 	}
 
-	public void setUserConstituencyScopeDAO(
-			IUserConstituencyScopeDAO userConstituencyScopeDAO) {
+	public void setUserConstituencyScopeDAO(IUserConstituencyScopeDAO userConstituencyScopeDAO) {
 		this.userConstituencyScopeDAO = userConstituencyScopeDAO;
 	}
 		
@@ -72,6 +77,24 @@ public class AnnouncementService implements IAnnouncementService {
 
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	
+	public IUserDistrictAccessInfoDAO getUserDistrictAccessInfoDAO() {
+		return userDistrictAccessInfoDAO;
+	}
+
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+
+	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
+		return userConstituencyAccessInfoDAO;
+	}
+
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
 	}
 
 	public AnnouncementVO saveAnnouncement(final AnnouncementVO announcementVO) 
@@ -303,6 +326,42 @@ public class AnnouncementService implements IAnnouncementService {
 		log.error(" Exception rised in getAllUserAnnouncementDetails ",e);
 		return null;
 	}
+	}
+	public List<SelectOptionVO> getUserBasedAccessConstituencies(Long userId) {
+		ArrayList<SelectOptionVO> statesList = new ArrayList<SelectOptionVO>(0);
+		try {
+			SelectOptionVO selectOptionVO =null;
+			List<Object[]> userDistricts = userDistrictAccessInfoDAO.getLocationIdList(userId);
+			if (userDistricts == null || userDistricts.size() == 0) {
+				List<Object[]> userConstituencies = userConstituencyAccessInfoDAO.getLocationIdList(userId);
+
+				if (userConstituencies != null && userConstituencies.size() > 0) {
+					for (Object[] params : userConstituencies) {
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setType("Constituency");
+						selectOptionVO.setId((Long) params[0]);
+						selectOptionVO.setName(params[1].toString());
+						statesList.add(selectOptionVO);
+					}
+				}
+				return statesList;
+
+			} else {
+				if (userDistricts != null && userDistricts.size() > 0) {
+					for (Object[] params : userDistricts) {
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setType("District");
+						selectOptionVO.setId((Long) params[0]);
+						selectOptionVO.setName(params[1].toString());
+						statesList.add(selectOptionVO);
+					}
+				}
+				return statesList;
+			}
+		} catch (Exception e) {
+			log.error(" Exception rised in getUserBasedAccessConstituencies ",e);
+		}
+		return null;
 	}
 		
 }
