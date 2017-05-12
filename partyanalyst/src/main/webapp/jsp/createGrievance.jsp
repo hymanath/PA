@@ -317,6 +317,7 @@
 						<input type="hidden" class="form-control" value="1" name="grievanceAlertVO.stateId"/>
 						<!-- NEW VARIABLES -->
 						<input type="hidden" class="form-control" id="locationTypeHidVal" name="grievanceAlertVO.locationTypeStr"/>
+						<input type="hidden" class="form-control" id="alertCallCenterTypeId" name="grievanceAlertVO.alertCallCenterTypeId" value="1"/>
 					</form>
 				</div>
 				<div id="dashboardGrevanceDivId" style="display:none;">
@@ -340,10 +341,13 @@
 		</div>
 		
 		<div class="col-md-12 col-xs-12 col-sm-12  m_top10">
-			  <label>FeedBack Status :</label><br>
+			  <label>FeedBack Status :<span style="color:red">*</span><span id="statusErrMsgId" style="color:red"></span></label><br>
 			  <select id="feedbackStatusList" class="form-control">
 				<option value="0"> Select Feedback Status</option>
 			  </select>
+			  
+			  <span id="reOpenSpanId" style="display:none"><input id="reopenCheckboxId" type="checkbox" value="11"/> Reopen </span>
+			  
 		</div>
 		<div class="col-md-12 col-xs-12 col-sm-12">			
 				<span id="saveMsgId"></span>
@@ -1483,17 +1487,32 @@ function saveAlertStatusDetails()
 		var alertId = $("#hiddenAlertId").val();
 		var sourceId = $("#hiddenSourceId").val();
 		var statusId = $("#hiddenStatusId").val();
+		var newAlertStatusId = $('#reopenCheckboxId').prop('checked') ? $('#reopenCheckboxId').val() : 0;
 		
+		$("#commentErrMsgId").html('');
+		$("#statusErrMsgId").html('');
+		
+		if(comment == null || comment.trim().length == 0 || comment == "undefined" ){
+			$("#commentErrMsgId").html("Please Enter Comment");
+			return;
+		}
+		if(feedBackStatus == null || feedBackStatus == 0 || feedBackStatus == "undefined" ){
+			$("#statusErrMsgId").html("Please Select Anyone ");
+			return;
+		}
+				
 		var jObj = {
 			alertId : alertId,
 			comment : comment,
 			alertStatusId : statusId,
 			alertFeedBackStatusId : feedBackStatus,
-			alertSourceId : sourceId
+			alertSourceId : sourceId,
+			newAlertStatusId:newAlertStatusId
 		}
 		$.ajax({
 		  type:'GET',
-		  url: 'saveAlertStatusAction.action',
+		  //url: 'saveAlertStatusAction.action',
+		  url: 'saveAlertFeedbackStatusAction.action',
 		  data: {task :JSON.stringify(jObj)}
 		}).done(function(result){
 			if(result == "success"){
@@ -1543,7 +1562,11 @@ function buildAlertDetails(result,status,alertStatusId){
 			str+='<th  style="text-align:center"> CALLER DETAILS</th>'; 
 			str+='<th  style="text-align:center"> CREATED BY</th>'; 
 			str+='<th  style="text-align:center"> FEEDBACK STATUS  </th>'; 
-			str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
+			
+			if(alertStatusId !=null && alertStatusId>0 &&  alertStatusId == 4 || alertStatusId == 12){
+				str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
+			}
+			
 		str+='</thead>';
 		str+='<tbody>';
 		for( var i in result){
@@ -1583,14 +1606,18 @@ function buildAlertDetails(result,status,alertStatusId){
 				str+='<td>'+result[i].userName+'</td>';
 				str+='<td>';
 				if(result[i].feedbackStatus != null){
-					if(result[i].feedbackStatus == 	"Received" || result[i].feedbackStatus == 	"Not Received"){
 						str+=' '+result[i].feedbackStatus+' <br>';
-					}
 				}
 			str+='</td>';
-			str+='<td>';
-				str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
-			str+='</td>';
+			
+			if(alertStatusId !=null && alertStatusId>0 &&  alertStatusId == 4 || alertStatusId == 12){
+				str+='<td>';
+					str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
+				str+='</td>';
+			}
+			
+			
+			
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -1638,7 +1665,7 @@ function buildAlertCallerDetails(result){
 					str+='<h5><span>description : </span> <span>'+result[i].desc+'</span></h5>';
 					str+='</div>';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12  m_top10">';
-					str+='<label>Comment</label><br>';
+					str+='<label>Comment<span style="color:red">*</span></label><span id="commentErrMsgId" style="color:red"></span><br>';
 					str+='<textarea id="comntId" rows="3" style="width: 799px;"></textarea>';
 					str+='</div>';
 				}
@@ -1706,7 +1733,7 @@ function showDashboard(){
 						str+='<th  style="text-align:center">  </th>';
 						var totalCount =0;
 						for(var k in result[0].statusList[0].statusList){
-							if(result[0].statusList[0].statusList[k].alertStatusId != 1)
+							if(result[0].statusList[0].statusList[k].alertStatusId != 1 && result[0].statusList[0].statusList[k].alertStatusId !=14)
 							str+='<th  style="text-align:center" > '+result[0].statusList[0].statusList[k].status+' </th>';
 						}
 						str+='<th  style="text-align:center">TOTAL COUNT </th>';
@@ -1732,7 +1759,7 @@ function showDashboard(){
 						str+='<tr>';*/
 						str+='<th  style="text-align:center" > TOTAL </th>';
 						for(var k in result[0].statusList[0].statusList){
-							if(result[0].statusList[0].statusList[k].alertStatusId != 1){
+							if(result[0].statusList[0].statusList[k].alertStatusId != 1 && result[0].statusList[0].statusList[k].alertStatusId !=14){
 								if(result[0].statusList[0].statusList[k].totalCount != null && parseInt(result[0].statusList[0].statusList[k].totalCount)>0){
 									total = total+result[0].statusList[0].statusList[k].totalCount;
 									//str+='<td  style="text-align:center" > '+result[0].statusList[0].statusList[k].count+' </td>';
@@ -2233,6 +2260,17 @@ function getRuralUrbanLocations(){
 		$('#locationLevelSelectId').trigger('chosen:updated');
 	}
 }
+$(document).on("change","#feedbackStatusList",function(){
+		var feedbackId = $("#feedbackStatusList").val();
+		
+		$('#reopenCheckboxId').attr('checked', false);
+		
+		if(feedbackId ==2 || feedbackId == 3){
+			$("#reOpenSpanId").show();
+		}else{
+			$("#reOpenSpanId").hide();
+		}
+	});
 </script>
 </body>
 </html>

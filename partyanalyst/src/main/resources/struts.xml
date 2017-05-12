@@ -17240,6 +17240,18 @@
 		<result type="json" name="success">    
 			<param name="root">idNameVOList</param>       
 		</result> 
-	</action>	
+	</action>
+	<action name="getSocialAlertFeedBackDetailsAction" class="createAlertAction" method="getSocialAlertFeedBackDetails">
+		 <result type="json" name="success">			   
+		    <param name="root">alertTrackingVOList</param>
+	  	</result>	
+	</action>
+	
+	<action name="saveAlertFeedbackStatusAction" class="createAlertAction" method="saveAlertFeedbackStatus">
+		 <result type="json" name="success">
+				<param name="root">status</param>
+		 </result>
+	</action>
+	
  </package>
 </struts>
