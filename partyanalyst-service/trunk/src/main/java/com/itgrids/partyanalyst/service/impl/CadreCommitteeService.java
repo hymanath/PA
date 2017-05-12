@@ -21596,53 +21596,127 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 }
 
 	public List<TdpCadreVO>  getPartyLeadersDeatails(Long userId,Long levelId,List<Long> locationIdsList,Long representativeTypeId,List<Long> designationIdsList,
-			List<Long> committeeLevelIdsList,List<Long> enrollmentIdsList,List<Long> committeeTypeIdsList, Long stateId, int firstIndex,int maxIndex){
+			List<Long> committeeLevelIdsList,List<Long> enrollmentIdsList,List<Long> committeeTypeIdsList, Long stateId, int firstIndex,int maxIndex,String reportType){
 		List<TdpCadreVO> returnList = new ArrayList<TdpCadreVO>(0);
 		try {
-			List<Object[]> membersList =  null;
 			
-			if(representativeTypeId.longValue() == 1L)
-				membersList = publicRepresentativeDAO.getPartyLeadersDeatails(stateId,enrollmentIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
-			else if(representativeTypeId.longValue() == 2L)
-				membersList = cadreCommitteeRoleDAO.getPartyCommitteeLeadersDeatails(stateId,enrollmentIdsList,committeeLevelIdsList,committeeTypeIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+			if(commonMethodsUtilService.isListOrSetValid(designationIdsList)){
+				if(designationIdsList.contains(0L))
+					designationIdsList.clear();
+			}
+			if(commonMethodsUtilService.isListOrSetValid(committeeTypeIdsList)){
+				if(committeeTypeIdsList.contains(0L))
+					committeeTypeIdsList.clear();
+			}
+			if(commonMethodsUtilService.isListOrSetValid(committeeLevelIdsList)){
+				if(committeeLevelIdsList.contains(0L))
+					committeeLevelIdsList.clear();
+			}
+			if(commonMethodsUtilService.isListOrSetValid(enrollmentIdsList)){
+				if(enrollmentIdsList.contains(0L))
+					enrollmentIdsList.clear();
+			}
+			List<Object[]> membersList =  new ArrayList<Object[]>(0);
 			List<Long> constiIds1 = new ArrayList<Long>(0);
-			if(commonMethodsUtilService.isListOrSetValid(membersList)){
-				for (Object[] param : membersList) {
-					TdpCadreVO vo = new TdpCadreVO();
-					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
-					vo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[1]));
-					vo.setCadreName(commonMethodsUtilService.getStringValueForObject(param[2]));
-					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[3]));
-					if(representativeTypeId.longValue() == 1L)
-						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
-					if(representativeTypeId.longValue() == 2L){
-						vo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
-						vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[22]));
-					}
-					
-					vo.setState(commonMethodsUtilService.getStringValueForObject(param[6]));
-					vo.setDistrict(commonMethodsUtilService.getStringValueForObject(param[8]));
-					vo.setParliament(commonMethodsUtilService.getStringValueForObject(param[10]));
-					vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
-					vo.setConstituency(commonMethodsUtilService.getStringValueForObject(param[12]));
-					
-					if(commonMethodsUtilService.getStringValueForObject(param[16]).trim().length()>0)
-						vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[16]) +" Munci/Corp/Greater City" );
-					else 
-						vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[14]));
-					
-					if(commonMethodsUtilService.getStringValueForObject(param[20]).trim().length()>0)
-						vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[20]));
-					else
-						vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[18]));
-					
-					vo.setImageURL(commonMethodsUtilService.getStringValueForObject(param[21]));
-					returnList.add(vo);
-					
-					if(!constiIds1.contains(vo.getConstituencyId()))
-						constiIds1.add(vo.getConstituencyId());
-				}
+			Map<Long, TdpCadreVO> cadreMap1 = new HashMap<Long, TdpCadreVO>(0);
+			if(representativeTypeId.longValue() == 1L || representativeTypeId.longValue() ==0L){
+				List<Object[]> cadreList = publicRepresentativeDAO.getPartyLeadersDeatails(stateId,enrollmentIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+				if(commonMethodsUtilService.isListOrSetValid(cadreList))
+					membersList.addAll(cadreList);
 				
+					if(commonMethodsUtilService.isListOrSetValid(cadreList)){
+						for (Object[] param : cadreList) {
+							
+							TdpCadreVO vo = new TdpCadreVO();
+							vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							if(cadreMap1.get(vo.getId()) != null){
+								vo = cadreMap1.get(vo.getId());
+								vo.setDesignation(vo.getDesignation() != null ?vo.getDesignation()+",":"" +commonMethodsUtilService.getStringValueForObject(param[4]));
+							}
+							else{
+								vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								vo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[1]));
+								vo.setCadreName(commonMethodsUtilService.getStringValueForObject(param[2]));
+								vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[3]));
+								vo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
+								vo.setState(commonMethodsUtilService.getStringValueForObject(param[6]));
+								vo.setDistrict(commonMethodsUtilService.getStringValueForObject(param[8]));
+								vo.setParliament(commonMethodsUtilService.getStringValueForObject(param[10]));
+								vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
+								vo.setConstituency(commonMethodsUtilService.getStringValueForObject(param[12]));
+								
+								if(commonMethodsUtilService.getStringValueForObject(param[16]).trim().length()>0)
+									vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[16]) +" Munci/Corp/Greater City" );
+								else 
+									vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[14]));
+								
+								if(commonMethodsUtilService.getStringValueForObject(param[20]).trim().length()>0)
+									vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[20]));
+								else
+									vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[18]));
+								
+								vo.setImageURL(commonMethodsUtilService.getStringValueForObject(param[21]));
+								//returnList.add(vo);
+								cadreMap1.put(vo.getId(), vo);
+								if(!constiIds1.contains(vo.getConstituencyId()))
+									constiIds1.add(vo.getConstituencyId());
+							}
+						}
+				}
+			}
+			
+			Map<Long, TdpCadreVO> cadreMap2 = new HashMap<Long, TdpCadreVO>(0);
+			if(representativeTypeId.longValue() == 2L  || representativeTypeId.longValue() ==0L){
+				List<Object[]> cadreList = cadreCommitteeRoleDAO.getPartyCommitteeLeadersDeatails(stateId,enrollmentIdsList,committeeLevelIdsList,committeeTypeIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+				if(commonMethodsUtilService.isListOrSetValid(cadreList))
+					membersList.addAll(cadreList);
+				
+					if(commonMethodsUtilService.isListOrSetValid(cadreList)){
+						for (Object[] param : cadreList) {
+							
+							TdpCadreVO vo = new TdpCadreVO();
+							vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							if(cadreMap2.get(vo.getId()) != null){
+								vo = cadreMap2.get(vo.getId());
+								vo.setDesignation(vo.getDesignation() != null ?vo.getDesignation()+",":"" +commonMethodsUtilService.getStringValueForObject(param[4]));
+								vo.setStatus(vo.getStatus() != null ?vo.getStatus()+",":"" +commonMethodsUtilService.getStringValueForObject(param[22]));
+							}
+							else{
+								vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								vo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[1]));
+								vo.setCadreName(commonMethodsUtilService.getStringValueForObject(param[2]));
+								vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[3]));
+								vo.setDesignation(commonMethodsUtilService.getStringValueForObject(param[4]));
+								vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[22]));
+								vo.setState(commonMethodsUtilService.getStringValueForObject(param[6]));
+								vo.setDistrict(commonMethodsUtilService.getStringValueForObject(param[8]));
+								vo.setParliament(commonMethodsUtilService.getStringValueForObject(param[10]));
+								vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[11]));
+								vo.setConstituency(commonMethodsUtilService.getStringValueForObject(param[12]));
+								
+								if(commonMethodsUtilService.getStringValueForObject(param[16]).trim().length()>0)
+									vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[16]) +" Munci/Corp/Greater City" );
+								else 
+									vo.setTehsil(commonMethodsUtilService.getStringValueForObject(param[14]));
+								
+								if(commonMethodsUtilService.getStringValueForObject(param[20]).trim().length()>0)
+									vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[20]));
+								else
+									vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(param[18]));
+								
+								vo.setImageURL(commonMethodsUtilService.getStringValueForObject(param[21]));
+								
+								cadreMap2.put(vo.getId(), vo);
+								if(!constiIds1.contains(vo.getConstituencyId()))
+									constiIds1.add(vo.getConstituencyId());
+							}
+						}
+						
+				}
+			
+			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(membersList)){
 				Map<Long,Long> constiNoMap = new HashMap<Long, Long>();
 				List<Object[]> constiNosDtls = delimitationConstituencyDAO.getConstituencyNo(constiIds1, IConstants.DELIMITATION_YEAR);
 				if(constiNosDtls != null && constiNosDtls.size() > 0){
@@ -21654,18 +21728,316 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					}
 				}
 				
-				if(commonMethodsUtilService.isListOrSetValid(returnList)){
-					for (TdpCadreVO vo : returnList) {
+				if(commonMethodsUtilService.isMapValid(cadreMap1)){
+					for (Long cadreId : cadreMap1.keySet()){
+						TdpCadreVO vo  = cadreMap1.get(cadreId);
 						vo.setConstituencyNo(constiNoMap.get(vo.getConstituencyId()));
+						returnList.add(vo);
 					}
 				}
-				
+				if(commonMethodsUtilService.isMapValid(cadreMap2)){
+					for (Long cadreId : cadreMap2.keySet()){
+						TdpCadreVO vo  = cadreMap2.get(cadreId);
+						vo.setConstituencyNo(constiNoMap.get(vo.getConstituencyId()));
+						returnList.add(vo);
+					}
+				}
 			}
+			
+			if(reportType != null && reportType.trim().contains("EXPORTEXCEL"))
+			{
+				String[] arr = reportType.split("::");
+				String url = arr[1].toString();
+				String path = exprortToExcelForLeaders(returnList,url);
+				if(commonMethodsUtilService.isListOrSetValid(returnList)){
+					returnList.clear();
+					TdpCadreVO vo  = new TdpCadreVO();
+					vo.setTotalImagePathStr(path);
+					returnList.add(vo);
+				}
+			}else{
+				Random randomNum = new Random();
+    		   	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    		   	Date date = new Date();
+    		   	System.out.println(dateFormat.format(date));
+    		   	String url = "Invitees/"+dateFormat.format(date)+"_"+randomNum.nextInt(10000)+".xls";
+    		   	if(returnList != null && returnList.size()>0){
+    		   		TdpCadreVO vo  = returnList.get(0);
+    		   		vo.setAadharNo(url);
+    		   	}
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised in getPartyLeadersDeatails", e);
 		}
 		return returnList;
 	}
+	
+	public String exprortToExcelForLeaders(List<TdpCadreVO> returnList,String url){
+		
+		try {
+			if(returnList  != null && returnList.size()>0)
+			{	
+				HSSFWorkbook workbook = new HSSFWorkbook();
+				HSSFSheet sheet = workbook.createSheet("INVITEE DETAILS");
+				HSSFRow rowhead = sheet.createRow((short) 1);
+				
+				
+				
+				HSSFFont font = workbook.createFont();
+			    font.setFontName("Calibri");
+			    font.setFontHeightInPoints((short)14);
+			    CellStyle style = workbook.createCellStyle();
+			    style.setFillForegroundColor(HSSFColor.YELLOW.index);
+			    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+			    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			    style.setAlignment(CellStyle.ALIGN_CENTER);
+			    style.setFont(font);
+			    
+			    //for data.
+			    HSSFFont font1 = workbook.createFont();
+			    font1.setFontName("Calibri");
+			    font1.setFontHeightInPoints((short)11);
+			    CellStyle style1 = workbook.createCellStyle();
+			    style1.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			    style1.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			    style1.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			    style1.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			    style1.setAlignment(CellStyle.ALIGN_CENTER);
+			    style1.setFont(font1);
+			   
+			    HSSFFont font2 = workbook.createFont();
+			    font2.setFontName("Calibri");
+			    font2.setFontHeightInPoints((short)11);
+			    CellStyle style2 = workbook.createCellStyle();
+			    style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+			    style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+			    style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+			    style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+			    style1.setFont(font2);
+			   
+			    
+			    HSSFCell cell = (HSSFCell) rowhead.createCell(1);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" S.NO ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(2);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" DISTRICT");
+			    
+			    cell = (HSSFCell) rowhead.createCell(3);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" PC_NAME ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(4);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" AC_NO ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(5);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" AC_NAME ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(6);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" MANDAL/TOWN/DIVISION ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(7);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" VILLAGE/WARD ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(8);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue("  CANDIDATE NAME ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(9);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" COMMITTEE - LEVEL  ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(10);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" DESIGNATION ");
+			    
+			    cell = (HSSFCell) rowhead.createCell(11);
+			    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+		    	cell.setCellStyle(style);
+			    cell.setCellValue(" MOBILE NO ");
+			    
+				int rowNum = 1;
+				int sno = 0;
+				for (TdpCadreVO cadreCommitteeVO : returnList) 
+				{
+					rowNum++;
+					sno++;
+				    Row dataRow = sheet.createRow(rowNum);
+
+				    cell = (HSSFCell) dataRow.createCell(1);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	cell.setCellStyle(style2);
+			    	cell.setCellValue(sno);
+			    	
+			    	cell = (HSSFCell) dataRow.createCell(2);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				    if(cadreCommitteeVO.getDistrict() != null )
+				    {
+				    	cell.setCellStyle(style2);
+				    	cell.setCellValue(cadreCommitteeVO.getDistrict());
+				    }
+				    else
+				    {
+				    	cell.setCellStyle(style1);
+				    	cell.setCellValue(" - ");
+				    }
+				    	
+				    cell = (HSSFCell) dataRow.createCell(3);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				    if(cadreCommitteeVO.getParliament() != null )
+				    {
+				    	cell.setCellStyle(style2);
+				    	cell.setCellValue(cadreCommitteeVO.getParliament());
+				    }
+				    else
+				    {
+				    	cell.setCellStyle(style1);
+				    	cell.setCellValue(" - ");
+				    }
+			    	
+				    cell = (HSSFCell) dataRow.createCell(4);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				    if(cadreCommitteeVO.getConstituencyNo() != null )
+				    {
+				    	cell.setCellStyle(style2);
+				    	cell.setCellValue(cadreCommitteeVO.getConstituencyNo());
+				    }
+				    else
+				    {
+				    	cell.setCellStyle(style1);
+				    	cell.setCellValue(" - ");
+				    }
+				    
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(5);
+			    	cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				    if(cadreCommitteeVO.getConstituency() != null )
+				    {
+				    	cell.setCellStyle(style2);
+				    	cell.setCellValue(cadreCommitteeVO.getConstituency());
+				    }
+				    else
+				    {
+				    	cell.setCellStyle(style1);
+				    	cell.setCellValue(" - ");
+				    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(6);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getTehsil() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getTehsil());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	 cell = (HSSFCell) dataRow.createCell(7);
+					    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+				    	 if(cadreCommitteeVO.getPanchayat() != null )
+						    {
+						    	cell.setCellStyle(style2);
+						    	cell.setCellValue(cadreCommitteeVO.getPanchayat());
+						    }
+						    else
+						    {
+						    	cell.setCellStyle(style1);
+						    	cell.setCellValue(" - ");
+						    }
+				    	 
+			    	cell = (HSSFCell) dataRow.createCell(8);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getCadreName() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getCadreName());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(9);
+			    	 cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getStatus() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getStatus());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(10);
+			    	cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getDesignation() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getDesignation());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+			    	 
+			    	cell = (HSSFCell) dataRow.createCell(11);
+				    cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+			    	 if(cadreCommitteeVO.getMobileNo() != null )
+					    {
+					    	cell.setCellStyle(style2);
+					    	cell.setCellValue(cadreCommitteeVO.getMobileNo());
+					    }
+					    else
+					    {
+					    	cell.setCellStyle(style1);
+					    	cell.setCellValue(" - ");
+					    }
+				}
+				
+				 try {
+		    	        FileOutputStream out =  new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+""+url));
+		    	        workbook.write(out);
+		    	        out.close();
+		    	         
+		    	    } catch (FileNotFoundException e) {
+		    	        e.printStackTrace();
+		    	    } catch (IOException e) {
+		    	        e.printStackTrace();
+		    	    } 
+				 
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in generateExcelReport",e);
+		}
+		return url;
+	}
+	
 	public List<IdNameVO> getCommitteeLevelDetils(){
 		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
 		try {
