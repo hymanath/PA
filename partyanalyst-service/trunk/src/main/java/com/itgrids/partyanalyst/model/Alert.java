@@ -86,6 +86,8 @@ public class Alert extends BaseModel implements Serializable {
 	
 	private Long socialMediaTypeId;
 	private SocialMediaType socialMediaType;
+	private Long alertCallCenterTypeId;
+	private  AlertCallCenterType alertCallCenterType;
 	
 	/*private String isVerified;*/
 	
@@ -620,7 +622,26 @@ public class Alert extends BaseModel implements Serializable {
 	public void setSocialMediaType(SocialMediaType socialMediaType) {
 		this.socialMediaType = socialMediaType;
 	}
+	@Column(name = "alert_call_center_type_id")
+	public Long getAlertCallCenterTypeId() {
+		return alertCallCenterTypeId;
+	}
 
+	public void setAlertCallCenterTypeId(Long alertCallCenterTypeId) {
+		this.alertCallCenterTypeId = alertCallCenterTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_call_center_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertCallCenterType getAlertCallCenterType() {
+		return alertCallCenterType;
+	}
+
+	public void setAlertCallCenterType(AlertCallCenterType alertCallCenterType) {
+		this.alertCallCenterType = alertCallCenterType;
+	}
+	
 	/*@Column(name = "is_verified")
 	public String getIsVerified() {
 		return isVerified;
