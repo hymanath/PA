@@ -1,6 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=utf-8"
+		pageEncoding="utf-8"%>
+<%@taglib prefix="s" uri="/struts-tags" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -72,7 +74,7 @@
 			  <div id="errorMessegeId" style="color: red; padding-left: 15px;"></div>
 				<div class="panel-body">
 				<div class="row">
-					<div class="col-sm-3">
+					<div class="col-sm-3" id="districtDivId">
 						<label>District</label>
 						<select class="form-control " id="districtId" >
 							<option value="0">All</option>
@@ -168,7 +170,46 @@
 $(".chosenClass").chosen();
 getDistrictsForStates(1);
 getPublicRepresentsDetails();
-getCommitteeRoles();
+var pageType='STATE';
+var areasList= [];
+
+<c:forEach var="item" items="${statesList}">
+	pageType = '${item.type}';
+	var obj = {
+		id:'${item.id}',
+		name:'${item.name}'
+	}
+	areasList.push(obj)
+ </c:forEach>
+
+ function buildOptions(){
+	 if(pageType == 'Constituency'){
+		 $('#districtDivId').hide();
+		 $('.switch-btn').hide();
+		if(areasList != null && areasList.length>0){
+			 $("#constituencyId").html('');
+			for(var i in areasList){
+				 if(i == 0)
+					 $("#constituencyId").append('<option value="0">ALL</option>');
+				else
+					$("#constituencyId").append('<option value='+areasList[i].id+'>'+areasList[i].name+'</option>');
+		   }
+		}
+	 }else if(pageType == 'District'){
+		  $('.switch-btn').hide();
+		 if(areasList != null && areasList.length>0){
+			 $("#districtId").html('');
+			for(var i in areasList){
+				 if(i == 0)
+					 $("#districtId").append('<option value="0">ALL</option>');
+				else
+					$("#districtId").append('<option value='+areasList[i].id+'>'+areasList[i].name+'</option>');
+		   }
+		}
+	 }
+ }
+ 
+buildOptions();
 </script>
 </body>
 </html>
