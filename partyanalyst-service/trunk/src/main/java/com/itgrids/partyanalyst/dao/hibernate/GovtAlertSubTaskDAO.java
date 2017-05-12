@@ -3438,7 +3438,8 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 		   }
 		 
 		 public List<Object[]> getSubOrdinateFilterSubTasksDetails(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
-					List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId){
+					List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,
+					List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId,List<Long> deptIds){
 		    	
 		    	StringBuilder sb = new StringBuilder();  
 		    	sb.append(" select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId," +
@@ -3499,7 +3500,8 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 			    
 			    if(desigIds != null && !desigIds.isEmpty())
 		  	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentDesignationId in (:desigIds)");
-			    
+			    if(deptIds != null && !deptIds.isEmpty())
+		      	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:deptIds)");
 			    if(fromDate != null && endDate != null){
 			    	sb.append(" and date(model.createdTime) between :fromDate and :endDate " );
 			    }
@@ -3637,6 +3639,9 @@ public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksCli
 		    	      query.setParameterList("printIdList", printIdsList);
 		    	      query.setParameterList("electronicIdList", electronicIdsList);
 		    	    }
+			    
+			    if(deptIds != null && !deptIds.isEmpty())
+	    	    	query.setParameterList("deptIds", deptIds);
 			    
 			    return query.list();
 			    	
