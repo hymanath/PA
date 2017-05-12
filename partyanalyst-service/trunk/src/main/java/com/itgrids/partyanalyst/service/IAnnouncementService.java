@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 public interface IAnnouncementService {
 	
 	public AnnouncementVO saveAnnouncement(AnnouncementVO announcementVO);
@@ -16,4 +17,5 @@ public interface IAnnouncementService {
     
     public List<AnnouncementVO> getAllUserAnnouncementDetails(Long userId,Date today);
     
+    public  List<SelectOptionVO> getUserBasedAccessConstituencies(Long userId);
 } 
