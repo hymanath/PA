@@ -2399,7 +2399,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			
 		}
 		catch (Exception e) {
-			LOG.error("Exception rised in raiseComplaint",e);
+			LOG.error("Exception rised in createGrievanceAlert",e);
 		}
 		return Action.SUCCESS;	
 	}
@@ -2462,6 +2462,30 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception occured in getAlertCallerDetails() of CreateAlertAction",e);
 		}
 		return Action.SUCCESS;
+	}
+	public String saveAlertFeedbackStatus()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+
+			
+			jObj = new JSONObject(getTask());
+			AlertVO alertVO = new AlertVO();
+			alertVO.setAlertId(jObj.getLong("alertId"));
+			alertVO.setComment(jObj.getString("comment"));
+			alertVO.setStatusId(jObj.getLong("alertStatusId"));
+			alertVO.setFeedBackStatusId(jObj.getLong("alertFeedBackStatusId"));
+			alertVO.setAlertSourceId(jObj.getLong("alertSourceId"));
+			alertVO.setNewAlertStatusId(jObj.getLong("newAlertStatusId"));
+			
+			status = alertService.saveAlertFeedbackStatusDetails(alertVO,userId);
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in saveAlertStatus",e);
+		}
+		return Action.SUCCESS;	
 	}
 	public String saveAlertStatus()
 	{
@@ -3016,7 +3040,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(getTask());
 			
 			alertVOs = alertService.getSocialAlertDetailsByStatus(jObj.getLong("alertStatusId"),jObj.getString("mobileNo"),jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getLong("feedbackStatusId"),
-					jObj.getLong("deptId"),jObj.getLong("categoryId"),regVo.getRegistrationID());    
+					jObj.getLong("deptId"),jObj.getLong("categoryId"),regVo.getRegistrationID(),jObj.getLong("smTypeId"));    
 		}catch(Exception e) {
 			LOG.error("Exception occured in getSocialAlertDetailsByStatus() of CreateAlertAction",e);
 		}
@@ -3044,5 +3068,23 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			LOG.error("Exception rised in changeVeificationStatusDetails",e);
 		}
 		return Action.SUCCESS;	
+	}
+	public String getSocialAlertFeedBackDetails(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return null;
+			
+			jObj = new JSONObject(getTask());
+			String startDate = jObj.getString("startDate");
+			String endDate = jObj.getString("endDate");
+			String mobileNo = jObj.getString("mobileNo");
+			Long deptId = jObj.getLong("deptId");
+			alertTrackingVOList = alertService.getSocialAlertFeedBackDetails(regVo.getRegistrationID(),startDate,endDate,mobileNo,deptId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getSocialAlertCallerDetails() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;			
 	}
 }

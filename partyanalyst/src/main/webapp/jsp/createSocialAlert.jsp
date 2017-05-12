@@ -292,14 +292,14 @@
 						</div>
 						<div class="col-sm-3 m_top10">
 							<label>Department&nbsp;<span style="color:red">*</span><span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptNewId"></span></label>
-							<select class="chosenSelect" id="departmentsNewId" onChange="getSocialAlertDetails()">  
+							<select class="chosenSelect" id="departmentsNewId" onChange="getSocialAlertDetails();getSocialAlertFeedbackDetails()">  
 								<option value="0">Select Department</option>
 							</select>
 						</div>
 						<div class="col-sm-3 m_top10" id="dateDivId" style="display:none;">
 							<label>DateRange&nbsp;<span style="color:red">*</span></label>
 							<div class="input-group pull-right dateRangePickerClsForEvents">
-								<input type="text" id="dateRangeIdForEvents" class="form-control" onChange="getSocialAlertDetails()"/>
+								<input type="text" id="dateRangeIdForEvents" class="form-control" onChange="getSocialAlertDetails();getSocialAlertFeedbackDetails();"/>
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
@@ -307,6 +307,7 @@
 						</div>
 					</div>
 					<div id="summaryDiv"></div>
+					<div id="feedbackSummaryDivId"></div>
 					<div class="row" id="verificationStatusMainDivId" style="display:none" >
 						<div class="col-sm-3 m_top10">
 							<label>VERIFICATION STATUS&nbsp;<span style="color:red">*</span><span class="errorMsgClas" style="color:#FF4C64;" id=""></span></label>
@@ -335,9 +336,11 @@
 		
 		<div class="col-md-12 col-xs-12 col-sm-12  m_top10">
 			  <label><span id="feedbackLabelId"></span><span style="color:red">*</span><span id="statusErrMsgId" style="color:red"></span></label><br>
-			  <select id="feedbackStatusList" class="form-control">
+			  <select id="feedbackStatusList" class="form-control" >
 				<option value="0"> </option>
 			  </select>
+
+			  <span id="reOpenSpanId" style="display:none"><input id="reopenCheckboxId" type="checkbox" value="11"/> Reopen </span>
 		</div>
 		<div class="col-md-12 col-xs-12 col-sm-12">			
 				<span id="saveMsgId"></span>
@@ -1080,6 +1083,7 @@ function showDashboard(){
 		$("#departmentsNewId").trigger('chosen:updated');		
 		
 		getSocialAlertDetails();
+		getSocialAlertFeedbackDetails();
 		$('#dashboardGrevanceDivId').show();
 		$('#newGrevanceDivId').hide();
 	}
@@ -1112,7 +1116,8 @@ function getSocialAlertDetails(){
 		}).done(function(result){
 			if(result != null){
 				$('#summaryDiv').html('');
-				buildGrievanceSummary(result);
+				//buildGrievanceSummary(result);
+				buildSocialAlertDetails(result);
 			}	  
 		});
 	}
@@ -1178,6 +1183,68 @@ function getSocialAlertDetails(){
 		}
 	}
 	
+	function buildSocialAlertDetails(result){
+		if(result != null && result.length>0){
+			var str='';
+			var total = 0;
+			if(result[0].statusList != null && result[0].statusList.length>0) {
+				str+='<div style="background-color: lightgrey; font-weight: bold; margin-top: 55px; margin-bottom: 5px; border-radius: 5px; text-align: center; text-transform: uppercase; font-size: 15px;">  Grievance Details </div>';
+				str+='<div class="table-responsive">';
+				str+='<table  class="table table-bordered "  style="text-align:center;" id="tabDetails">';
+					str+='<thead>';
+						str+='<th style="text-align:center">   </th>';
+						str+='<th  style="text-align:center"> Total  </th>';
+						var totalCount =0;
+						for(var k in result[0].statusList[0].statusList){
+							if(result[0].statusList[0].statusList[k].alertStatusId)
+							str+='<th  style="text-align:center" > '+result[0].statusList[0].statusList[k].status+' </th>';
+						}
+					
+					str+='</thead>';
+					str+='<tbody>';
+						
+						for(var i in result[0].statusList){
+							if(result[0].statusList[i].statusList !=null && result[0].statusList[i].statusList.length>0){															
+								//Total Of SocialMediaType
+								var totalCount  = 0;
+								for(var j in result[0].statusList[i].statusList){
+									if(result[0].statusList[i].statusList[j].count !=null){
+										totalCount = totalCount + result[0].statusList[i].statusList[j].count;
+									}
+								}
+								
+								str+='<tr>';
+									str+='<td>'+result[0].statusList[i].status+'</td>';
+									
+									if(totalCount !=null && totalCount>0){
+										str+='<td  style="text-align:center" ><a class="alertDetailsCls" attr_statusId ="0" attr_status="0" attr_feedbackSId="0" attr_smTypeId='+result[0].statusList[i].alertStatusId+' style="color:green;font-weight:bold;" href="javascript:{getAlertDetails(0,0,0,\''+result[0].statusList[i].alertStatusId+'\',\'status\')}"> '+totalCount+'</a></td>';
+									}else{
+										str+='<td> - </td>';
+									}
+									
+									
+									
+									for(var j in result[0].statusList[i].statusList){
+										if(result[0].statusList[i].statusList[j].count !=null){
+											str+='<td  style="text-align:center" > <a style="color:green;font-weight:bold;" class="alertDetailsCls" attr_statusId = '+result[0].statusList[i].statusList[j].alertStatusId+' attr_status="'+result[0].statusList[i].statusList[j].status+'" attr_feedbackSId="0" attr_smTypeId='+result[0].statusList[i].alertStatusId+' href="javascript:{getAlertDetails('+result[0].statusList[i].statusList[j].alertStatusId+',\''+result[0].statusList[i].statusList[j].status+'\',0,\''+result[0].statusList[i].alertStatusId+'\',\'status\')}"> '+result[0].statusList[i].statusList[j].count+' </a> </td>';
+										}else{
+											str+='<td> - </td>';
+										}										
+									}
+								str+='</tr>';								
+							}
+						}
+																
+					str+='</tbody>';
+				str+='</table>';
+				str+='</div>';
+			}
+			
+			$('#summaryDiv').html(str);
+			
+		}
+	}
+	
 	
 	var globalAlertStatusId=0;
 	var globalAlertStatus=0;
@@ -1196,7 +1263,7 @@ function getSocialAlertDetails(){
 		getAlertDetails(globalAlertStatusId,globalAlertStatus,0);
 	}); */
 	
-	function getAlertDetails(alertStatusId,status,feedbackStattusId)
+	function getAlertDetails(alertStatusId,status,feedbackStattusId,smTypeId,buildType)
 	{		
 		/* if(alertStatusId !=null && alertStatusId == 14){
 			$("#verificationStatusMainDivId").show();
@@ -1226,7 +1293,8 @@ function getSocialAlertDetails(){
 			toDate : toDateStr,//"12/04/2017"
 			feedbackStatusId:feedbackStattusId,
 			deptId :deptId,
-			categoryId:5
+			categoryId:5,
+			smTypeId:smTypeId
 		}
 		$.ajax({
 		  type:'GET',
@@ -1234,11 +1302,11 @@ function getSocialAlertDetails(){
 		  data: {task :JSON.stringify(jObj)}
 		}).done(function(result){
 			if(result != null && result.length > 0){
-				buildAlertDetails(result,status,alertStatusId);
+				buildAlertDetails(result,status,alertStatusId,buildType);
 			}
 		});
 }
-function buildAlertDetails(result,status,alertStatusId){
+function buildAlertDetails(result,status,alertStatusId,buildType){
 	var str = '';
 	if(status == 0)
 		status = "Total";
@@ -1256,12 +1324,14 @@ function buildAlertDetails(result,status,alertStatusId){
 			str+='<th  style="text-align:center"> CREATED BY</th>'; 
 			str+='<th  style="text-align:center"> FEEDBACK STATUS  </th>'; 
 			str+='<th  style="text-align:center"> VERIFIED STATUS  </th>'; 
-			if(status != 0){
-				if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 14 || alertStatusId == 4 || alertStatusId == 12){
-					str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
+			if(buildType !=null && buildType == "status"){
+				if(status != 0){
+					if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 14 || alertStatusId == 4 || alertStatusId == 12){
+						str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
+					}				
 				}
-				
 			}
+			
 				
 		str+='</thead>';
 		str+='<tbody>';
@@ -1298,28 +1368,33 @@ function buildAlertDetails(result,status,alertStatusId){
 				str+='<td>'+result[i].userName+'</td>';
 				str+='<td>';
 				if(result[i].feedbackStatus != null){
-					if(result[i].feedbackStatus == 	"Received" || result[i].feedbackStatus == 	"Not Received"){
-						str+=' '+result[i].feedbackStatus+' <br>';
-					}
+					str+=' '+result[i].feedbackStatus+' <br>';
 				}
 			str+='</td>';
-			
 			str+='<td>';
-			//BALU
+			if(result[i].verifyStatus !=null && result[i].verifyStatus.length>0){	
+				if(result[i].verifyStatus == "Y")
+					str+=' Approved ';
+				else
+					str+=' Rejected ';
+			}
 			str+='</td>';
 			
-			if(status != 0){
-				
-				if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 14){
-					str+='<td>';
-						str+='<button class="btn btn-success updateAlertVerifyCls btn-xs btn-mini m_top10" attr_alert_id ="'+result[i].alertId+'" attr_alert_source_id ="'+result[i].alertSourceId+'" attr_alert_status_id ="'+result[i].statusId+'">Verify</button>';
-					str+='</td>';
-				}else if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 4 || alertStatusId == 12){
-					str+='<td>';
-						str+='<button class="btn btn-success updateAlertNewCls btn-xs btn-mini m_top10" attr_alert_id ="'+result[i].alertId+'" attr_alert_source_id ="'+result[i].alertSourceId+'" attr_alert_status_id ="'+result[i].statusId+'">Update</button>';
-					str+='</td>';
+			
+			if(buildType !=null && buildType == "status"){
+				if(status != 0){
+					
+					if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 14){
+						str+='<td>';
+							str+='<button class="btn btn-success updateAlertVerifyCls btn-xs btn-mini m_top10" attr_alert_id ="'+result[i].alertId+'" attr_alert_source_id ="'+result[i].alertSourceId+'" attr_alert_status_id ="'+result[i].statusId+'">Verify</button>';
+						str+='</td>';
+					}else if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 4 || alertStatusId == 12){
+						str+='<td>';
+							str+='<button class="btn btn-success updateAlertNewCls btn-xs btn-mini m_top10" attr_alert_id ="'+result[i].alertId+'" attr_alert_source_id ="'+result[i].alertSourceId+'" attr_alert_status_id ="'+result[i].statusId+'">Update</button>';
+						str+='</td>';
+					}
+					
 				}
-				
 			}
 			
 			str+='</tr>';
@@ -1336,9 +1411,13 @@ function buildAlertDetails(result,status,alertStatusId){
 		
 }
 
+var globalChangeStatusType="";
 $(document).on("click",".updateAlertNewCls",function(){ 
 
+	globalChangeStatusType = "feedback" ;
 	getFeedBackStatusDetails();
+	
+	$("#reOpenSpanId").hide();
 
 	var alertId = $(this).attr("attr_alert_id");
 	var sourceId =$(this).attr("attr_alert_source_id");
@@ -1354,7 +1433,10 @@ $(document).on("click",".updateAlertNewCls",function(){
 });	
 $(document).on("click",".updateAlertVerifyCls",function(){ 
 
+	globalChangeStatusType = "vefify" ;
 	buildVerifiedStatusDetails();
+	
+	$("#reOpenSpanId").hide();
 	
 	var alertId = $(this).attr("attr_alert_id");
 	var sourceId =$(this).attr("attr_alert_source_id");
@@ -1450,7 +1532,7 @@ function buildVerifiedStatusDetails()
 
 $(document).on('click','.updateAlertFooterCls',function(){
 	var statusId = $(this).attr("attr_statusId"); 
-	if(statusId !=null && statusId>0 && statusId ==4 || statusId ==12){
+	if(statusId !=null && statusId>0 && statusId ==4 || statusId ==12){	
 		saveAlertStatusDetails();
 	}else if(statusId !=null && statusId>0 && statusId ==14){
 		changeVeificationStatusDetails();
@@ -1463,7 +1545,8 @@ function saveAlertStatusDetails()
 		var feedBackStatus =$("#feedbackStatusList").val();
 		var alertId = $("#hiddenAlertId").val();
 		var sourceId = $("#hiddenSourceId").val();
-		var statusId = $("#hiddenStatusId").val();
+		var statusId = $("#hiddenStatusId").val();	
+	  var newAlertStatusId = $('#reopenCheckboxId').prop('checked') ? $('#reopenCheckboxId').val() : 0;
 		
 		$("#commentErrMsgId").html('');
 		$("#statusErrMsgId").html('');
@@ -1482,11 +1565,12 @@ function saveAlertStatusDetails()
 			comment : comment,
 			alertStatusId : statusId,
 			alertFeedBackStatusId : feedBackStatus,
-			alertSourceId : sourceId
+			alertSourceId : sourceId,
+			newAlertStatusId:newAlertStatusId
 		}
 		$.ajax({
 		  type:'GET',
-		  url: 'saveAlertStatusAction.action',
+		  url: 'saveAlertFeedbackStatusAction.action',
 		  data: {task :JSON.stringify(jObj)}
 		}).done(function(result){
 			if(result == "success"){
@@ -1551,6 +1635,110 @@ $(document).on("click",".switch-btn li",function(){
 	$(this).closest("ul").find("li").removeClass("active");
 	$(this).addClass("active");
 });
+	function getSocialAlertFeedbackDetails(){
+	    $('#alertDataDivId').html('');
+		$('#feedbackSummaryDivId').html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
+		var fromDateStr;
+		var toDateStr;
+		
+		 var dates = $('#dateRangeIdForEvents').val();
+		  var dateArray = dates.split("-");
+		  if(dateArray != null){
+			  fromDateStr = dateArray[0];
+			 toDateStr = dateArray[1];
+		  }
+		  var deptId = $("#departmentsNewId").val();
+		var jsObj ={
+			startDate:fromDateStr,//'dd/MM/YYYY',
+			endDate:toDateStr,
+			mobileNo:'',
+			deptId:deptId,
+			task:""
+		}
+		$.ajax({
+			type:'GET',
+			url: 'getSocialAlertFeedBackDetailsAction.action',
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			 if(result != null){
+				$('#feedbackSummaryDivId').html('');
+				buildSocialAlertFeedBackDetails(result);
+			}  
+		});
+	}
+	
+	function buildSocialAlertFeedBackDetails(result){
+		if(result != null && result.length>0){
+			var str='';
+			var total = 0;
+			if(result[0].statusList != null && result[0].statusList.length>0) {
+				str+='<div style="background-color: lightgrey; font-weight: bold; margin-top: 55px; margin-bottom: 5px; border-radius: 5px; text-align: center; text-transform: uppercase; font-size: 15px;">  Feedback Details </div>';
+				str+='<div class="table-responsive">';
+				str+='<table  class="table table-bordered "  style="text-align:center;" id="tabDetails">';
+					str+='<thead>';
+						str+='<th style="text-align:center">   </th>';
+						str+='<th  style="text-align:center"> Total  </th>';
+						var totalCount =0;
+						for(var k in result[0].statusList[0].statusList){
+							if(result[0].statusList[0].statusList[k].alertStatusId)
+							str+='<th  style="text-align:center" > '+result[0].statusList[0].statusList[k].status+' </th>';
+						}
+					
+					str+='</thead>';
+					str+='<tbody>';
+						
+						for(var i in result[0].statusList){
+							if(result[0].statusList[i].statusList !=null && result[0].statusList[i].statusList.length>0){															
+								//Total Of SocialMediaType
+								var totalCount  = 0;
+								for(var j in result[0].statusList[i].statusList){
+									if(result[0].statusList[i].statusList[j].count !=null){
+										totalCount = totalCount + result[0].statusList[i].statusList[j].count;
+									}
+								}
+								
+								str+='<tr>';
+									str+='<td>'+result[0].statusList[i].status+'</td>';
+									if(totalCount !=null && totalCount>0){
+										str+='<td  style="text-align:center" ><a class="alertDetailsCls" attr_statusId ="0" attr_status="0" attr_feedbackSId="0" attr_smTypeId='+result[0].statusList[i].alertStatusId+' style="color:green;font-weight:bold;" href="javascript:{getAlertDetails(0,0,0,\''+result[0].statusList[i].alertStatusId+'\',\'feedback\')}"> '+totalCount+'</a></td>';
+									}else{
+										str+='<td> - </td>';
+									}
+									
+									for(var j in result[0].statusList[i].statusList){
+										if(result[0].statusList[i].statusList[j].count !=null){
+											str+='<td  style="text-align:center" > <a style="color:green;font-weight:bold;" class="alertDetailsCls" attr_statusId = "0" attr_status="'+result[0].statusList[i].statusList[j].status+'" attr_feedbackSId="'+result[0].statusList[i].statusList[j].alertStatusId+'" attr_smTypeId='+result[0].statusList[i].alertStatusId+' href="javascript:{getAlertDetails(0,\''+result[0].statusList[i].statusList[j].status+'\',\''+result[0].statusList[i].statusList[j].alertStatusId+'\',\''+result[0].statusList[i].alertStatusId+'\',\'feedback\')}"> '+result[0].statusList[i].statusList[j].count+' </a> </td>';
+										}else{
+											str+='<td> - </td>';
+										}										
+									}
+								str+='</tr>';								
+							}
+						}
+																
+					str+='</tbody>';
+				str+='</table>';
+				str+='</div>';
+			}
+			
+			$('#feedbackSummaryDivId').html(str);
+			
+		}
+	}
+	
+	$(document).on("change","#feedbackStatusList",function(){
+		var feedbackId = $("#feedbackStatusList").val();
+		
+		$('#reopenCheckboxId').attr('checked', false);
+		
+		if(globalChangeStatusType !=null && globalChangeStatusType.trim().length>0 &&
+		globalChangeStatusType == "feedback" && feedbackId ==2 || feedbackId == 3){
+			$("#reOpenSpanId").show();
+		}else{
+			$("#reOpenSpanId").hide();
+		}
+	});
+	
 </script>
 </body>
 </html>
