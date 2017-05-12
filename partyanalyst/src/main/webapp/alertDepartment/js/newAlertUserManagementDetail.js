@@ -881,6 +881,16 @@ function onLoadClicks()
 		//getFilterSectionAlertDetails();
 		$("#filter").toggle();
 	});
+
+	$(document).keypress(function(e){
+		var alertId =  $("#alertIdSearch").val();
+		if(e.which == 13) {
+			getSearchAlertsDtls(alertId)
+		}
+	});
+	$(".tbtn").click(function(){
+		$(".themeControll").toggleClass("active");
+	});
 }
 /*Default Image*/
 	
@@ -4481,4 +4491,38 @@ function buildSubTaskCommetDtls(result){
 		str+='</ul>';
 	str+='</div>';
 	$("#subAlertComments").html(str);
+}
+
+function getSearchAlertsDtls(alertId){
+	var jsObj ={
+		alertId:alertId 
+	}
+	$.ajax({
+		type:'GET',         
+		url: 'getSearchAlertsDtlsAction.action',
+		data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		$(".tbtn").trigger("click");
+		$("#alertManagementPopup").modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+		if(result != null){
+			var alertId =result;
+			$("#alertManagementPopupBody").html("<div class='row'><div id='rightSideExpandView'></div></div>");
+			//getAlertData(alertId);
+			rightSideExpandView(alertId);
+			popUpFilter('heading','','','','');
+			$(".flipview-btn,.filters-icon").hide();
+			var alertId = '';
+			$("#modalHeadingTotal").html("Alert Status");
+			setTimeout(function(){
+				$("[expanded-block='block1']").addClass("col-sm-12").removeClass("col-sm-8 pad_left0");
+				$("[expanded-block='block1']").show();
+			},750);
+		}else{
+			$("#alertManagementPopupBody").html("NO ACCESS");
+		}
+	});
 }
