@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -238,7 +239,18 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		return query.list();
 	}
 	
-	public List<Object[]> getPartyLeadersDeatails(Long stateId, List<Long> enrollmentIdsList, Long levelId,List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex){
+	public List<Object[]> getPartyLeadersDeatails(Long stateId, List<Long> enrollmentIdsList, Long levelId,List<Long> locationIdsList,List<Long> designationIds1List,int firstIndex,int maxIndex){
+		List<Long> validIds = new ArrayList<Long>(0);
+		if(designationIds1List !=null && designationIds1List.size()>0){
+			for (Long id : designationIds1List) {
+				if(id.toString().substring(0, 1).equalsIgnoreCase("2"))
+					validIds.add(Long.valueOf(id.toString().substring(1)));
+			}
+			if(validIds == null || validIds.size()==0){
+					return null;
+			}
+		}
+		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" SELECT ");
 		queryStr.append(" distinct tc.tdp_cadre_id as tdp_cadre_di, ");
@@ -306,7 +318,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		
 		if(stateId != null && stateId.longValue()>0L)
 			queryStr.append(" and ua.state_id =:stateId  ");
-		if(designationIdsList != null && designationIdsList.size()>0)
+		if(validIds != null && validIds.size()>0)
 			queryStr.append(" and pr.public_representative_type_id in (:designationIdsList)   ");
 		
 		queryStr.append(" order by tc.membership_id,prt.position ");
@@ -336,25 +348,28 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		
 		if(stateId != null && stateId.longValue()>0L)
 			query.setParameter("stateId", stateId);
-		if(designationIdsList != null && designationIdsList.size()>0)
-			query.setParameterList("designationIdsList", designationIdsList);
+		if(validIds != null && validIds.size()>0)
+			query.setParameterList("designationIdsList", validIds);
 		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
 			query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 		
 		if(locationIdsList != null && locationIdsList.size()>0){
 			if(levelId.longValue() == 5L || levelId.longValue() == 6L || levelId.longValue() == 7L || levelId.longValue() == 8L ){
-				Set<Long> ids = new HashSet<Long>();
+				Set<Long> idsList = new HashSet<Long>();
 				for (Long id : locationIdsList) {
-					ids.add(Long.valueOf(id.toString().substring(1)));
+					idsList.add(Long.valueOf(id.toString().substring(1)));
 				}
 				locationIdsList.clear();
-				locationIdsList.addAll(ids);
+				locationIdsList.addAll(idsList);
 			}
 			query.setParameterList("locationIdsList", locationIdsList);
 		}
 		
-		query.setFirstResult(firstIndex);
-		query.setMaxResults(maxIndex);
+		if(maxIndex >0){
+			query.setFirstResult(firstIndex);
+			query.setMaxResults(maxIndex);
+		}
+		
 		return query.list();
 	}
 	

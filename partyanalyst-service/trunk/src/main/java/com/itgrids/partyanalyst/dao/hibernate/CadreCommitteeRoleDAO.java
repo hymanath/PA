@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -50,14 +51,26 @@ public class CadreCommitteeRoleDAO extends GenericDaoHibernate<CadreCommitteeRol
 	
 	
 	public List<Object[]> getPartyCommitteeLeadersDeatails(Long stateId,List<Long> enrollmentIdsList,List<Long>  committeeLevelIdsList,List<Long> committeeTypeIdsLsit,
-			 Long levelId, List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex){
+			 Long levelId, List<Long> locationIdsList,List<Long> designationIds1List,int firstIndex,int maxIndex){
+		
+		List<Long> validIds = new ArrayList<Long>(0);
+		if(designationIds1List !=null && designationIds1List.size()>0){
+			for (Long id : designationIds1List) {
+				if(id.toString().substring(0, 1).equalsIgnoreCase("1"))
+					validIds.add(Long.valueOf(id.toString().substring(1)));
+			}
+			if(validIds == null || validIds.size()==0){
+					return null;
+			}
+		}
+		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("  SELECT   ");
 		queryStr.append("  distinct tc1.tdp_cadre_id as tdp_cadre_di,  ");
 		queryStr.append("  tc1.membership_id as membership_id,   ");
 		queryStr.append("  tc1.first_name as first_name ,  ");
 		queryStr.append("  tc1.mobile_no as mobile_no ,   ");
-		queryStr.append("  tr.role as position,  ");
+		queryStr.append("  concat(tcl.tdp_committee_level,'-',tr.role) as position,  ");
 		queryStr.append("  s.state_id as state_id ,  ");
 		queryStr.append("  s.state_name as state_name ,  ");
 		queryStr.append("  d.district_id as district_id ,  ");
@@ -78,7 +91,7 @@ public class CadreCommitteeRoleDAO extends GenericDaoHibernate<CadreCommitteeRol
 		queryStr.append(" tbc.name as committeeName ");
 		queryStr.append("  from   ");
 		queryStr.append("  tdp_committee tc,  ");
-		queryStr.append("  tdp_basic_committee tbc,  ");
+		queryStr.append("  tdp_basic_committee tbc, tdp_committee_level tcl , ");
 		queryStr.append("  tdp_committee_role tcr,  ");
 		queryStr.append("  tdp_committee_member tcm ,  ");
 		queryStr.append("  tdp_roles tr,  ");
@@ -93,7 +106,7 @@ public class CadreCommitteeRoleDAO extends GenericDaoHibernate<CadreCommitteeRol
 		queryStr.append("  left outer join local_election_body l on ua.local_election_body = l.local_election_body_id   ");
 		queryStr.append("  left outer join panchayat  p on ua.panchayat_id = p.panchayat_id   ");
 		queryStr.append("  left outer join constituency w on ua.ward = w.constituency_id  ");
-		queryStr.append("  where   ");
+		queryStr.append("  where   tc.tdp_committee_level_id = tcl.tdp_committee_level_id and ");
 		queryStr.append("  tc.tdp_committee_id = tcr.tdp_committee_id and   ");
 		queryStr.append("  tc.tdp_basic_committee_id = tbc.tdp_basic_committee_id AND  ");
 		queryStr.append("  tcr.tdp_committee_role_id = tcm.tdp_committee_role_id and   ");
@@ -130,7 +143,7 @@ public class CadreCommitteeRoleDAO extends GenericDaoHibernate<CadreCommitteeRol
 		if(committeeLevelIdsList != null && committeeLevelIdsList.size()>0)
 			queryStr.append(" and tc.tdp_committee_level_id in (:committeeLevelIdsList) ");
 		
-		if(designationIdsList != null && designationIdsList.size()>0)
+		if(validIds != null && validIds.size()>0)
 			queryStr.append(" and tr.tdp_roles_id in (:designationIdsList)   ");
 		if(stateId != null && stateId.longValue()>0L)
 			queryStr.append(" and ua.state_id =:stateId  ");
@@ -167,8 +180,8 @@ public class CadreCommitteeRoleDAO extends GenericDaoHibernate<CadreCommitteeRol
 		
 		if(stateId != null && stateId.longValue()>0L)
 			query.setParameter("stateId", stateId);
-		if(designationIdsList != null && designationIdsList.size()>0)
-			query.setParameterList("designationIdsList", designationIdsList);
+		if(validIds != null && validIds.size()>0)
+			query.setParameterList("designationIdsList", validIds);
 		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
 			query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 		if(committeeTypeIdsLsit != null && committeeTypeIdsLsit.size()>0)
@@ -177,18 +190,20 @@ public class CadreCommitteeRoleDAO extends GenericDaoHibernate<CadreCommitteeRol
 			query.setParameterList("committeeLevelIdsList", committeeLevelIdsList);
 		if(locationIdsList != null && locationIdsList.size()>0){
 			if(levelId.longValue() == 5L || levelId.longValue() == 6L || levelId.longValue() == 7L || levelId.longValue() == 8L ){
-				Set<Long> ids = new HashSet<Long>();
+				Set<Long> idsList = new HashSet<Long>();
 				for (Long id : locationIdsList) {
-					ids.add(Long.valueOf(id.toString().substring(1)));
+					idsList.add(Long.valueOf(id.toString().substring(1)));
 				}
 				locationIdsList.clear();
-				locationIdsList.addAll(ids);
+				locationIdsList.addAll(idsList);
 			}
 			query.setParameterList("locationIdsList", locationIdsList);
 		}
 		
-		query.setFirstResult(firstIndex);
-		query.setMaxResults(maxIndex);
+		if(maxIndex>0){
+			query.setFirstResult(firstIndex);
+			query.setMaxResults(maxIndex);
+		}
 		return query.list();
 	}
 	
