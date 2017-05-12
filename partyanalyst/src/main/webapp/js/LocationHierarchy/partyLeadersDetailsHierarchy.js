@@ -318,6 +318,7 @@ function getLeadersDetasils(searchType){
 			firstIndex=0;
 			maxIndex=0;
 			searchType = searchType+"::"+excelUrl;
+			$("#exportId").html('<img src="images/Loading-data.gif" style="width:50px;height:50px;">');
 		  }else{
 			   $('#excelBtn').hide();
 			  $("#partyLeaderDetailsId").html('<img src="images/Loading-data.gif" style="margin-left: 550px;">');
@@ -343,7 +344,7 @@ function getLeadersDetasils(searchType){
 			url: 'getPartyLeadersDeatailsAction.action',
 			data: {task :JSON.stringify(jsObj)}
 		  }).done(function(result){
-			  
+			  $("#exportId").html('');
 			  if(tempType == 'EXPORTEXCEL' && result != null && result.length>0){
 				  window.open('http://www.mytdp.com/'+result[0].totalImagePathStr+'');
 			  }
@@ -360,8 +361,7 @@ function getLeadersDetasils(searchType){
 									 str +='<th>Mandal/Town/Division</th>';
 									 str +='<th>Village/Ward</th>';
 									 str +='<th>Name</th>';
-									 if(representativeTypeId == 2)
-										  str +='<th>Committe Type </th>';	
+										  str +='<th>Committe&nbspType </th>';	
 									 str +='<th>Designation</th>';									
 									 str +='<th> Mobile&nbspNo  </th>';
 								 str +='</tr>';
@@ -372,19 +372,10 @@ function getLeadersDetasils(searchType){
 									
 									if(i==0)
 										excelUrl =result[i].aadharNo;
+									
 									str +='<tr>';
 									str +='<td>'+result[i].district+'</td>';
 									
-									
-									if(result[i].designation == 'MP'){
-										if(result[i].constituency != null  && result[i].constituency.trim().length>0 )
-											str +='<td>'+result[i].constituency+'</td>';
-										else
-											str +='<td style="text-align:center;"> - </td>';
-										
-										str +='<td style="text-align:center;"> - </td>';
-									}
-									else{
 										if(result[i].parliament != null  && result[i].parliament.trim().length>0 )
 											str +='<td>'+result[i].parliament+'</td>';
 										else
@@ -397,7 +388,7 @@ function getLeadersDetasils(searchType){
 											str +='<td>'+result[i].constituency+'</td>';
 										else
 											str +='<td style="text-align:center;"> - </td>';
-									}
+									
 									if(result[i].tehsil != null && result[i].tehsil.trim().length>0)
 										str +='<td>'+result[i].tehsil+'</td>';
 									else
@@ -408,8 +399,10 @@ function getLeadersDetasils(searchType){
 										str +='<td style="text-align:center;"> - </td>';
 									
 									str +='<td>'+result[i].cadreName+'</td>';
-									if(representativeTypeId == 2)
+									if(result[i].status != null )
 										str +='<td>'+result[i].status+' Committee </td>';
+									else
+										str +='<td style="text-align:center;"> - </td>';
 									str +='<td>'+result[i].designation+'</td>';
 									str +='<td>'+result[i].mobileNo+'</td>';									
 									str +='</tr>';
