@@ -21666,4 +21666,39 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		}
 		return returnList;
 	}
+	public List<IdNameVO> getCommitteeLevelDetils(){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> committeLevelObjLst = tdpCommitteeLevelDAO.getAllLevels();
+			if(committeLevelObjLst != null && committeLevelObjLst.size()>0){
+				for(Object[] param : committeLevelObjLst){
+					IdNameVO resultVO = new IdNameVO();
+					resultVO.setId((Long)param[0]);
+					resultVO.setName(param[1] != null ?param[1].toString() :"");
+					finalList.add(resultVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in CadreCommitteeService of getCommitteeLevelDetils", e);
+		}
+		return finalList;
+	}
+	
+	public List<IdNameVO> getCommitteeTypeDetils(){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try {
+			List<Object[]> committeTypeObjLst = tdpBasicCommitteeDAO.getBasicCommittees();
+			if(committeTypeObjLst != null && committeTypeObjLst.size()>0){
+				for(Object[] param : committeTypeObjLst){
+					IdNameVO resultVO = new IdNameVO();
+					resultVO.setId((Long)param[0]);
+					resultVO.setName(param[1] != null ?param[1].toString() :"");
+					finalList.add(resultVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in CadreCommitteeService of getCommitteeLevelDetils", e);
+		}
+		return finalList;
+	}
 }
