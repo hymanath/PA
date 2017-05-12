@@ -2617,12 +2617,11 @@ public String updateCommitteeMemberDesignationByCadreId(){
 			jObj = new JSONObject(getTask());
 			Long levelId = jObj.getLong("levelId");
 			Long representativeTypeId = jObj.getLong("representativeTypeId");
-			Long enrollmentId = jObj.getLong("enrollmentId");
 			Long stateId = jObj.getLong("stateId");
 			JSONArray locationIdArr = jObj.getJSONArray("locationIds");
 			int firstIndex = jObj.getInt("firstIndex");
 			int maxIndex = jObj.getInt("maxIndex");
-			
+			String reportType  = jObj.getString("reportType");
 			List<Long> locationIdsList = new ArrayList<Long>(0);
 			if(locationIdArr != null && locationIdArr.length()>0){
 				for (int i = 0; i < locationIdArr.length(); i++) {
@@ -2663,7 +2662,7 @@ public String updateCommitteeMemberDesignationByCadreId(){
 			}
 			
 			
-			commiteeMembersList = cadreCommitteeService.getPartyLeadersDeatails(regVO.getRegistrationID(),levelId,locationIdsList,representativeTypeId,designationIdsList,committeeLevelIdsList,enrollmentIdsList,committeeTypeIdsList,stateId,firstIndex,maxIndex);
+			commiteeMembersList = cadreCommitteeService.getPartyLeadersDeatails(regVO.getRegistrationID(),levelId,locationIdsList,representativeTypeId,designationIdsList,committeeLevelIdsList,enrollmentIdsList,committeeTypeIdsList,stateId,firstIndex,maxIndex,reportType);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in updateCommitteeMemberDesignationByCadreId() At CadreCommitteeAction",e);
