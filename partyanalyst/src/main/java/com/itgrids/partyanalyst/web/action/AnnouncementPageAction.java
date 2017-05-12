@@ -272,7 +272,9 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 	
 	public String getpartyLeaderDetails(){
 		try {
-
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			statesList = announcementService.getUserBasedAccessConstituencies(regVO.getRegistrationID());
 		} catch (Exception e) {
 			LOG.error("Exception rised in getpartyLeaderDetails",e);
 		}
