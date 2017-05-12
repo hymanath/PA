@@ -2617,6 +2617,8 @@ public String updateCommitteeMemberDesignationByCadreId(){
 			jObj = new JSONObject(getTask());
 			Long levelId = jObj.getLong("levelId");
 			Long representativeTypeId = jObj.getLong("representativeTypeId");
+			Long enrollmentId = jObj.getLong("enrollmentId");
+			Long stateId = jObj.getLong("stateId");
 			JSONArray locationIdArr = jObj.getJSONArray("locationIds");
 			int firstIndex = jObj.getInt("firstIndex");
 			int maxIndex = jObj.getInt("maxIndex");
@@ -2636,7 +2638,32 @@ public String updateCommitteeMemberDesignationByCadreId(){
 				}
 			}
 			
-			commiteeMembersList = cadreCommitteeService.getPartyLeadersDeatails(regVO.getRegistrationID(),levelId,locationIdsList,representativeTypeId,designationIdsList,firstIndex,maxIndex);
+			JSONArray committeeLevelIdArr = jObj.getJSONArray("committeeLevelIdsArr");
+			List<Long> committeeLevelIdsList = new ArrayList<Long>(0);
+			if(committeeLevelIdArr != null && committeeLevelIdArr.length()>0){
+				for (int i = 0; i < committeeLevelIdArr.length(); i++) {
+					committeeLevelIdsList.add(committeeLevelIdArr.get(i) != null ? Long.valueOf(committeeLevelIdArr.get(i).toString()):0L);
+				}
+			}
+			
+			JSONArray committeeTypeIdArr = jObj.getJSONArray("committeeTypeIdsArr");
+			List<Long> committeeTypeIdsList = new ArrayList<Long>(0);
+			if(committeeTypeIdArr != null && committeeTypeIdArr.length()>0){
+				for (int i = 0; i < committeeTypeIdArr.length(); i++) {
+					committeeTypeIdsList.add(committeeTypeIdArr.get(i) != null ? Long.valueOf(committeeTypeIdArr.get(i).toString()):0L);
+				}
+			}
+			
+			JSONArray enrollmentIdArr = jObj.getJSONArray("enrollmentIdsArr");
+			List<Long> enrollmentIdsList = new ArrayList<Long>(0);
+			if(enrollmentIdArr != null && enrollmentIdArr.length()>0){
+				for (int i = 0; i < enrollmentIdArr.length(); i++) {
+					enrollmentIdsList.add(enrollmentIdArr.get(i) != null ? Long.valueOf(enrollmentIdArr.get(i).toString()):0L);
+				}
+			}
+			
+			
+			commiteeMembersList = cadreCommitteeService.getPartyLeadersDeatails(regVO.getRegistrationID(),levelId,locationIdsList,representativeTypeId,designationIdsList,committeeLevelIdsList,enrollmentIdsList,committeeTypeIdsList,stateId,firstIndex,maxIndex);
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in updateCommitteeMemberDesignationByCadreId() At CadreCommitteeAction",e);
