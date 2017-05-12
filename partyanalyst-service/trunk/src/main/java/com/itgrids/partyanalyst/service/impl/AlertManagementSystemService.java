@@ -2422,7 +2422,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				finalVoList.addAll(deptLevelMap.values());
 				//Sorting list based on department scope id
 				Collections.sort(finalVoList, new Comparator<AlertVO>() {
-					@Override
 					public int compare(AlertVO o1, AlertVO o2) {
 						return o1.getId().compareTo(o2.getId());
 					}
