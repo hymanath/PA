@@ -28,8 +28,14 @@ public class AlertCommentVO implements Serializable {
 	private List<KeyValueVO> docList = new ArrayList<KeyValueVO>(0);
 	private String currentSts;
 	private Long currentStsId;
+	private Long userId;
 	
-	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public String getCurrentSts() {
 		return currentSts;
 	}
