@@ -755,6 +755,7 @@
 		<pattern>/locationWiseReportAction*</pattern>
 		<pattern>/createGrievance*</pattern>
 		<pattern>/locationWiseGrivenceReportAction*</pattern>
-		<pattern>/createSocialAlert*</pattern>      
+		<pattern>/createSocialAlert*</pattern>
+		<pattern>/officerWiseAlertReportAction*</pattern>        
 	 </decorator>
 </decorators>

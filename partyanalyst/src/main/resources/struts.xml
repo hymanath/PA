@@ -16885,7 +16885,7 @@
            <param name="root">idNameVOList</param>
       </result>
    </action>
-    <action name="getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewAction" class="alertManagementSystemAction" method="getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview">
+   <action name="getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewAction" class="alertManagementSystemAction" method="getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview">
   	   <result type="json" name="success">
 			<param name="root">alertCoreDashBoardVOs</param>
 		</result>
@@ -17221,6 +17221,14 @@
 			<param name="root">alertsSummeryVOList</param>       
 		</result> 
 	</action>
+	<action name="officerWiseAlertReportAction" class="alertManagementSystemAction" method="officerWiseAlertReport">
+		  <result name="success">/jsp/alertDepartmentOfficerDetails.jsp</result>                
+	</action>
+	<action name="getOfficerLocationWiseDepartmentOverviewAlertCountAction" class="alertManagementSystemAction" method="getOfficerLocationWiseDepartmentOverviewAlertCount">
+  	   <result type="json" name="success">
+			<param name="root">alertCoreDashBoardVOs</param>
+		</result>
+    </action> 
 	<action name="getLocationFilterClickDetailsAction" class="alertManagementSystemAction"  method="getLocationFilterClickDetails">
 		<result type="json" name="success">    
 			<param name="root">alertCoreDashBoardVOs</param>       
