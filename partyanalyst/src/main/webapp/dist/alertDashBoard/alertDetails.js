@@ -1192,6 +1192,8 @@ $(document).on("click",".linkedArticlesClickId",function(){
 	});
 function alertComments(result)
 {
+	
+	var disabledDivIDsArr=[];
 	var docName = '';
 	var extName = [];
 	var statusId = 0;
@@ -1225,14 +1227,15 @@ function alertComments(result)
 			str+='</div>';
 			if(length == i)  
 			{
-				str+='<div id="collapse'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
+				str+='<div id="collapse'+i+'" class="panel-collapse  collapse in" role="tabpanel" aria-labelledby="heading'+i+'">';
 			}else{
 				str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
 			}
 				str+='<div class="panel-body" style="padding:5px;">';
 					str+='<div class="row">';
+					var isAvailableSameUser = false;
 						for(var j in result[i].sublist2){
-							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+							str+='<div class="col-md-2 col-xs-12 col-sm-2 " id="commenttsId1'+i+''+j+'" >';
 								var date = result[i].sublist2[j].date
 								var dateArr = date.split("-");
 								var year = dateArr[0];
@@ -1250,24 +1253,74 @@ function alertComments(result)
 									str+='</tr>';
 								str+='</table>';
 							str+='</div>';
-							str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
+							str+='<div class="col-md-10 col-xs-12 col-sm-10 "  id="commenttsId2'+i+''+j+'" style="padding-left:0px;">';
 								str+='<ul class="alertStatusTracking">';
 									str+='<li>';
 										str+='<div class="arrow_box_left">';
+										var isLocalAvailableSameUser = true;
 										for(var k in result[i].sublist2[j].sublist)
-										{	
-											str+='<div>';
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
-												for(var l in result[i].sublist2[j].sublist[k])
-												{
-													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
+										{											
+											if( (isIgnoredDiv && result[i].sublist2[j].sublist[k][0].userId != null && 
+											parseInt(result[i].sublist2[j].sublist[k][0].userId) == parseInt(globalUserId)) || (result[i].sublist2[j].sublist[k][0].userId != null && 
+											parseInt(result[i].sublist2[j].sublist[k][0].userId) == parseInt(globalUserId))) {
+												isAvailableSameUser = true;
+												isLocalAvailableSameUser = true;
+												str+='<div>';
+													str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+													for(var l in result[i].sublist2[j].sublist[k])
+													{
+														str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
+													}
+													str+='</p>';
+													str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+													str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+													if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
+														str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
+														str+='<ul>';
+														for(var t in result[i].sublist2[j].sublist[k][0].docList){
+															docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
+															extName = docName.split("/");
+															str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';          
+														}
+														str+='</ul>';              
+													}
+													str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+													str+='<hr style="margin-top:20px;"/>';
+												str+='</div>';   
+											}else  if(!isIgnoredDiv){
+												isLocalAvailableSameUser = false;
+												str+='<div>';
+													str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+													for(var l in result[i].sublist2[j].sublist[k])
+													{
+														str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
+													}
+													str+='</p>';
+													str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+													str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+													if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
+														str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
+														str+='<ul>';
+														for(var t in result[i].sublist2[j].sublist[k][0].docList){
+															docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
+															extName = docName.split("/");
+															str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';          
+														}
+														str+='</ul>';              
+													}
+													str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+													str+='<hr style="margin-top:20px;"/>';
+												str+='</div>';   
+											}else{
+												isLocalAvailableSameUser = false;
+												if(!isAvailableSameUser){
+													disabledDivIDsArr.push('collapse'+i+'');
 												}
-												str+='</p>';
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
-												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
-												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
-												str+='<hr style="margin-top:20px;"/>';
-											str+='</div>';   
+												if(!isLocalAvailableSameUser){
+													disabledDivIDsArr.push('commenttsId1'+i+''+j+'');
+													disabledDivIDsArr.push('commenttsId2'+i+''+j+'');
+												}
+											}
 										}
 										str+='</div>';    
 									str+='</li>';
@@ -1321,10 +1374,53 @@ function alertComments(result)
 			}else{
 				str+='<div id="collapse'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i+'">';
 			}
-				str+='<div class="panel-body" style="padding:5px;">';
+			
+			var isIgnoredDiv=false;
+			var buildStr='';
+			
+				if(entitlementsArr != null && entitlementsArr.length >0){
+				for(var x=0;x<entitlementsArr.length;x++){
+				if(entitlementsArr[x].trim()=="IGNORE_PROGRAMME_COMMITTEE_ALERT_COMMENTS_ENTITLEMENT"){
+					    buildStr='<div class="panel-body" style="padding:5px;display:none;">';
+						/* $("#statusId").prop('disabled', true);
+						var select = new Dropkick("#statusId");
+							select.refresh();
+						$("#assignedCadreId").prop('disabled', true).trigger("chosen:updated"); */
+						
+						isIgnoredDiv = true;
+					}
+				}
+			}
+			/* if an alert is assigned to login user , we need to */
+			if(globalTdpCadreId == globalAssignedCadreId){
+					buildStr='<div class="panel-body" style="padding:5px;display:block;">';
+					/* $("#statusId").prop('disabled', false);
+					var select = new Dropkick("#statusId");
+						select.refresh();
+					$("#assignedCadreId").prop('disabled', false).trigger("chosen:updated"); */
+					
+				}
+			
+			
+			 /* if an alert is assigned to anthor candidate , we need to */
+			/*if(globalTdpCadreId != globalAssignedCadreId){
+				buildStr='<div class="panel-body" style="padding:5px;display:none;">';
+						$("#statusId").prop('disabled', true);
+						var select = new Dropkick("#statusId");
+							select.refresh();
+						$("#assignedCadreId").prop('disabled', true).trigger("chosen:updated");
+						isIgnoredDiv = true;
+			} */
+			if(!isIgnoredDiv)
+				buildStr='<div class="panel-body" style="padding:5px;display:block;">';
+			
+			str+=buildStr;
+			
+				//str+='<div class="panel-body cmntsDataCls" style="padding:5px;display:none;">';
 					str+='<div class="row">';
+					var isAvailableSameUser = false;
 						for(var j in result[i].sublist2){
-							str+='<div class="col-md-2 col-xs-12 col-sm-2">';
+							str+='<div class="col-md-2 col-xs-12 col-sm-2 " id="commenttsId1'+i+''+j+'" >';
 								var date = result[i].sublist2[j].date
 								var dateArr = date.split("-");
 								var year = dateArr[0];
@@ -1342,34 +1438,74 @@ function alertComments(result)
 									str+='</tr>';
 								str+='</table>';
 							str+='</div>';
-							str+='<div class="col-md-10 col-xs-12 col-sm-10" style="padding-left:0px;">';
+							str+='<div class="col-md-10 col-xs-12 col-sm-10 "  id="commenttsId2'+i+''+j+'" style="padding-left:0px;">';
 								str+='<ul class="alertStatusTracking">';
 									str+='<li>';
 										str+='<div class="arrow_box_left">';
+										var isLocalAvailableSameUser = true;
 										for(var k in result[i].sublist2[j].sublist)
-										{	
-											str+='<div>';
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
-												for(var l in result[i].sublist2[j].sublist[k])
-												{
-													str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
-												}
-												str+='</p>';
-												str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
-												str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
-												if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
-													str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
-													str+='<ul>';
-													for(var t in result[i].sublist2[j].sublist[k][0].docList){
-														docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
-														extName = docName.split("/");
-														str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';          
+										{											
+											if( (isIgnoredDiv && result[i].sublist2[j].sublist[k][0].userId != null && 
+											parseInt(result[i].sublist2[j].sublist[k][0].userId) == parseInt(globalUserId)) || (result[i].sublist2[j].sublist[k][0].userId != null && 
+											parseInt(result[i].sublist2[j].sublist[k][0].userId) == parseInt(globalUserId))) {
+												isAvailableSameUser = true;
+												isLocalAvailableSameUser = true;
+												str+='<div>';
+													str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+													for(var l in result[i].sublist2[j].sublist[k])
+													{
+														str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
 													}
-													str+='</ul>';              
+													str+='</p>';
+													str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+													str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+													if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
+														str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
+														str+='<ul>';
+														for(var t in result[i].sublist2[j].sublist[k][0].docList){
+															docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
+															extName = docName.split("/");
+															str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';          
+														}
+														str+='</ul>';              
+													}
+													str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+													str+='<hr style="margin-top:20px;"/>';
+												str+='</div>';   
+											}else  if(!isIgnoredDiv){
+												isLocalAvailableSameUser = false;
+												str+='<div>';
+													str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT SOURCE:'+result[i].sublist2[j].sublist[k][0].timeString+'</span><br>';
+													for(var l in result[i].sublist2[j].sublist[k])
+													{
+														str+='<img src="dist/Appointment/img/thumb.jpg" style="width:10px;display:inline-block"/> '+result[i].sublist2[j].sublist[k][l].cadreName+'<br>';
+													}
+													str+='</p>';
+													str+='<p><span style="color:#A286C0;font-size:13px;">COMMENT:</span><br>';
+													str+='<p>'+result[i].sublist2[j].sublist[k][0].comment+'</p>';
+													if(result[i].sublist2[j].sublist[k][0].docList != null && result[i].sublist2[j].sublist[k][0].docList.length > 0){
+														str+='<p><span style="color:#A286C0;font-size:13px;">DOCUMENTS:</span><br>';
+														str+='<ul>';
+														for(var t in result[i].sublist2[j].sublist[k][0].docList){
+															docName = result[i].sublist2[j].sublist[k][0].docList[t].name;
+															extName = docName.split("/");
+															str+='<li id="document'+result[i].id+'"><a href="/Reports/'+result[i].sublist2[j].sublist[k][0].docList[t].name+'" target="_blank">'+extName[1]+'</a></li>';          
+														}
+														str+='</ul>';              
+													}
+													str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
+													str+='<hr style="margin-top:20px;"/>';
+												str+='</div>';   
+											}else{
+												isLocalAvailableSameUser = false;
+												if(!isAvailableSameUser){
+													disabledDivIDsArr.push('collapse'+i+'');
 												}
-												str+='<p><span class="pull-right" style="color:#A286C0;font-size:13px;">UPDATED BY: '+result[i].sublist2[j].sublist[k][0].userName+'</span></p>';
-												str+='<hr style="margin-top:20px;"/>';
-											str+='</div>';   
+												if(!isLocalAvailableSameUser){
+													disabledDivIDsArr.push('commenttsId1'+i+''+j+'');
+													disabledDivIDsArr.push('commenttsId2'+i+''+j+'');
+												}
+											}
 										}
 										str+='</div>';    
 									str+='</li>';
@@ -1394,7 +1530,32 @@ function alertComments(result)
 		str+='</div>';
 		str+='</div>';
 	}   */      
-	$("#alertCommentsDivIdNew").html(str)
+	$("#alertCommentsDivIdNew").html(str);
+	
+	if(disabledDivIDsArr != null && disabledDivIDsArr.length>0){
+		for(var x in disabledDivIDsArr){
+			//alert(disabledDivIDsArr[x]);
+			$('#'+disabledDivIDsArr[x]+'').html('');			
+		}
+	}
+
+	setTimeout(function(){
+		if(globalTdpCadreId != globalAssignedCadreId){
+			;//alert("not same");
+			$("#statusId").prop('disabled', true);
+			$("#commentsId").prop('disabled', true);
+			$("#extraUploadFileDiv").prop('disabled', true);
+			$("#uploadFileId0").prop('disabled', true);
+			$("#addFile").prop('disabled', true);
+			$("#uploadAlertStatusDocBtnId").prop('disabled', true);
+			var select = new Dropkick("#statusId");
+				select.refresh();
+			$("#assignedCadreId").prop('disabled', true).trigger("chosen:updated");
+		}
+		else{
+			;//alert("same");
+		}
+		}, 3000);
 	}
 }
 
