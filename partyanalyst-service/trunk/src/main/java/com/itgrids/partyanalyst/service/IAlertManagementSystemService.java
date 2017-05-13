@@ -159,4 +159,9 @@ public interface IAlertManagementSystemService {
 				Long lagEndCnt,String alertType,String isMoreThanYrChkd,String isLagChkd,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList,Long childLevelId);
 	 public Long getSearchAlertsDtls(Long userId,Long alertId);
 	 public ResultStatus sendSMSTOAlertAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long alertId,Long actionTypeId,Long userId,String status,String comment,Long mainUserId);
+	 public List<AlertCoreDashBoardVO> getAlertDetailsForGrievanceReportClick(String fromDateStr, String toDateStr, Long stateId, 
+				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+				String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
+				Long filterScopeValue,String searchType,Long statusId,Long sourseId);
 }        

@@ -10461,5 +10461,78 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		}
 	}*/
 
+	
+	/*
+	 * Hymavathi
+	 * Filter View
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getAlertDetailsForGrievanceReportClick()
+	 */
+	public List<AlertCoreDashBoardVO> getAlertDetailsForGrievanceReportClick(String fromDateStr, String toDateStr, Long stateId, 
+			List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+			String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
+			Long filterScopeValue,String searchType,Long statusId,Long sourseId){
+		
+		List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+		
+		try{
+			
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+
+			//prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Prepare Parameter
+
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long levelId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+
+			List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
+			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+			List<Long> deptScopeIdList = new ArrayList<Long>();
+			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+				for(Object [] param : childDeptScopeIdList){
+					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					KeyValueVO sublevel = new KeyValueVO();
+					sublevel.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					sublevel.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					subLevels.add(sublevel);
+				}
+			}
+			if(sublevels != null && sublevels.size() > 0){//In the case of filter data scope wise we are sending selected values
+				deptScopeIdList.clear();
+				deptScopeIdList.addAll(sublevels);
+			}
+			
+			List<Long> alertIds = null;
+			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
+					if(alertType != null && alertType.equalsIgnoreCase("alert")){
+						alertIds = alertAssignedOfficerNewDAO.getAlertDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,statusId,sourseId);
+					}
+				}
+			}
+			 if(alertIds != null && alertIds.size() > 0){
+				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+				setAlertDtls(returnList, list); 
+			}
+			setSubListCount(returnList, alertIds);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertDetailsForGrievanceReportClick() method of AlertManagementSystemService{}");
+		}
+		return returnList;  
+	}
 }
 
