@@ -51,14 +51,15 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private Long noOfAlertCreated = 0L;
 	private String relatedTo;
 	private String problem;
-	
-	
+	private Long pendingCount = 0L;
+	private Long reopenCount = 0l;
 	private Long totalAgent = 0L;
 	private String totalTime;
 	private Long totalAlert = 0L;
 	private Long attendedCount = 0L;
 	private String range;
 	private String callerStr;
+	private Long grandTotal = 0L;
 	private List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
 	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
@@ -431,6 +432,30 @@ public class AlertCoreDashBoardVO implements Serializable{
 
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
+	}
+
+	public Long getPendingCount() {
+		return pendingCount;
+	}
+
+	public void setPendingCount(Long pendingCount) {
+		this.pendingCount = pendingCount;
+	}
+
+	public Long getReopenCount() {
+		return reopenCount;
+	}
+
+	public void setReopenCount(Long reopenCount) {
+		this.reopenCount = reopenCount;
+	}
+
+	public Long getGrandTotal() {
+		return grandTotal;
+	}
+
+	public void setGrandTotal(Long grandTotal) {
+		this.grandTotal = grandTotal;
 	}
 	
 	
