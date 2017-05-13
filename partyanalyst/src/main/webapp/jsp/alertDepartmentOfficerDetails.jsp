@@ -52,21 +52,22 @@
 					<div id="menu1" class="col-md-6">       
 						<div class="col-md-12">
 							<ul class="nav navbar-nav">        
-								<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
+								<!--<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
 								<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
-								<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
+								<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>-->
 								<li style="padding:14px 16px;color:#95989A;"> 
 									<div id="reportrange"> 
 										&nbsp; <span>Custom Date Range</span>
 									</div>
 								</li>
 							</ul>
-						</div>
+						</div>     
 					</div>
 					<div class="col-md-3 m_top10">
 						<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
 							<option value="0">All</option>
-							<option value="1">Call Center</option>     
+							<option value="4">Call Center</option>         
+							<option value="5">Social Media</option>            
 							<option value="2">Print Media</option>
 							<option value="3">Electronic Media</option>
 						</select>
@@ -85,13 +86,7 @@
 
 	<div class="container-fluid bg-gov-dark">
 		<div class="row">
-			<div class="col-md-2">
-				<div style="padding-top: 80px">
-					<h4 class="text-center issue-title">AVERAGE ISSUE <br> PENDING DAYS</h4>
-					<h3 class=" text-center issue-title"><span id="averageIssueId"></span></h3>
-				</div>
-			</div>
-			<div class="col-md-8">   
+			<div class="col-md-10">      
 				<div class="row">
 					<div class="col-md-7">
 						<div id="statusWiseAlertCntId" style=" height: 400px; margin: 0 auto display:none"> </div>
@@ -113,33 +108,7 @@
 		</div>
 	</div>
 	<section class="container m_top20">
-		<div class="panel panel-default">
-			<div class="panel-heading headingColor">
-				<div class="row">
-					<div class="col-sm-7">
-						<h4 class="panel-title text-capital fontColor">Alert Source Wise - Details</h4>
-					</div>
-					<div class="col-sm-3">
-						<select class="form-control pull-right">
-							<option></option>
-						</select>
-					</div>
-					<div class="col-sm-2">
-						<button class="btn btn-success btn-download">download</button>
-					</div>
-				</div>
-			</div>
-			<div class="panel-body">
-				<table class="table table-bordered">
-					<thead>
-						<th></th>
-					</thead>
-					<tr>
-						<td></td>
-					</tr>
-				</table>
-			</div>
-		</div>
+		<div id="allLocationLevelDivId"></div>
 	</section>
 	<input type="hidden" id="dateRangeId" value="day"></input>
 
