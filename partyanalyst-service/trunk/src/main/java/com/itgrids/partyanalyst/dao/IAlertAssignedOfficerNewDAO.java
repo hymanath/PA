@@ -91,6 +91,15 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Object[]> getBellowLvlDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList);
     public List<Long> getAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,List<Long> calCntrIds,Long alertCategoryId,Long alertStatusId);
     public List<Long> getBellowDistrictOfficerAlertsDtls(Date fromDate,Date toDate,List<Long> printIdList,List<Long> electronicIdList,List<Long> calCntrIdList,Long statusId,Long desigDeptOfficerId,Long officerId);
+    public List<Object[]> getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(Date fromDate,Date toDate,
+     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
+     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
+     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,String queryStatus);
+    public List<Object[]> getAlertDetailsLocationWiseBasedOnDepartmentLevelForOfficer(Date fromDate,Date toDate,
+     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
+     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
+     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue);
+    public List<Long> getAllReOpenAlerts();
     public List<Long> getLocationFilterClickAlertIds(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
  			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId);
     public Long getAlertdetails(Long alertId,List<Long> deptsList,List<Long> levelValues,Long levelId,Set<Long> govtScopeIds);

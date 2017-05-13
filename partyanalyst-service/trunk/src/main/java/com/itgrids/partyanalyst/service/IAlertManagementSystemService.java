@@ -149,6 +149,11 @@ public interface IAlertManagementSystemService {
 	 public List<AlertCoreDashBoardVO> getBellowDistrictOfficerAlertsDtls(String fromDateStr,String toDateStr,List<Long> printIdList,List<Long> electronicIdList,List<Long> calCntrIdList,String task,Long statusId,Long desigDeptOfficerId,Long officerId);
 	 public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId,String task);
 	 public List<AlertCoreDashBoardVO> getTotalAlertByOtherStatusNew1(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,List<Long> statusIdList,Long userId,Long govtDeptScopeId,Long deptId,List<Long> calCntrIdList,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long startDay,Long endDay,Long scopeId,List<Long> locationList,List<Long> subTaskStatusIdList,String isMoreThanYrChkd,String isLagChkd);
+	 public List<AlertCoreDashBoardVO> getOfficerLocationWiseDepartmentOverviewAlertCount(String fromDateStr, String toDateStr, Long stateId, 
+				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+				String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
+				Long filterScopeValue,String searchType);
 	 public List<AlertCoreDashBoardVO> getLocationFilterClickDetails(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
 				List<Long> desigIds,Long priorityId,List<Long> statusIds ,List<Long> deptIds, Long lagStartCnt, 
 				Long lagEndCnt,String alertType,String isMoreThanYrChkd,String isLagChkd,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList,Long childLevelId);

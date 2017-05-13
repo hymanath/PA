@@ -49,12 +49,12 @@ public class GovtAlertDepartmentLocationNewDAO extends GenericDaoHibernate<GovtA
 	}
 	public List<String> getAccessDepartmentList(Long assignedUserId){
 		Query query = getSession().createQuery(" select distinct " +
-				   " model.govtDepartment.shortName " +
-				   " from " +
-				   " GovtAlertDepartmentLocationNew model  " +
-				   " where " +
-				   " model.user.userId = :assignedUserId" +
-				   " and model.isDeleted = 'N'");  
+											   " model.govtDepartment.shortName " +
+											   " from " +
+											   " GovtAlertDepartmentLocationNew model  " +
+											   " where " +
+											   " model.user.userId = :assignedUserId" +
+											   " and model.isDeleted = 'N'");  
 		query.setParameter("assignedUserId", assignedUserId);
 		return query.list();
 	}

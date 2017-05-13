@@ -15,7 +15,8 @@ public class AlertFeedbackStatusDAO extends GenericDaoHibernate<AlertFeedbackSta
 	}
 	
 	public List<Object[]> getFeedBackStatus(){
-		Query query = getSession().createQuery("select model.alertFeedbackStatusId," +
+		Query query = getSession().createQuery("select " +
+				" model.alertFeedbackStatusId," +
 				" model.status " +
 				" from AlertFeedbackStatus model " +
 				" where model.isDeleted = 'N' order by model.orderNo ");

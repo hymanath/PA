@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentDocumentNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
+import com.itgrids.partyanalyst.dao.IAlertFeedbackStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertGovtOfficerSmsDetailsDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
@@ -132,8 +133,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IUserGroupRelationDAO userGroupRelationDAO;
 	private IAlertGovtOfficerSmsDetailsDAO alertGovtOfficerSmsDetailsDAO;
 	private IAlertImpactScopeDAO alertImpactScopeDAO;
+	private IAlertFeedbackStatusDAO alertFeedbackStatusDAO;
 	private IAlertService alertService;
 	
+	
+	public void setAlertFeedbackStatusDAO(
+			IAlertFeedbackStatusDAO alertFeedbackStatusDAO) {
+		this.alertFeedbackStatusDAO = alertFeedbackStatusDAO;
+	}
+
 	public IGovtSmsActionTypeDAO getGovtSmsActionTypeDAO() {
 		return govtSmsActionTypeDAO;
 	}
@@ -3297,6 +3305,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     					statusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
     				}
         		}
+        		//calculate status wise total count.
+    			Map<Long,Long> statusIdAndTotalCount = new HashMap<Long,Long>();
+    			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
+    				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+    					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+    						statusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), 0L);
+    					}
+    				}
+    			}
+    			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
+    				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+    					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+    						statusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), statusIdAndTotalCount.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()))+commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
+    					}
+    				}
+    			}
+        		
     			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
     			if(lvlIdThenStatusIdThenAlertCount != null && lvlIdThenStatusIdThenAlertCount.size() > 0){
     				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : lvlIdThenStatusIdThenAlertCount.entrySet()){
@@ -3334,6 +3359,17 @@ public class AlertManagementSystemService extends AlertService implements IAlert
     						Collections.sort(returnList, alphabeticalAscSortLvlWise);
     					}else{
     						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+    					}
+    				}
+    			}
+    			
+    			if(statusIdAndTotalCount.size() > 0){
+    				if(returnList != null && returnList.size() > 0){
+    					AlertCoreDashBoardVO altCorevo = returnList.get(0);
+    					for(AlertCoreDashBoardVO param : altCorevo.getSubList()){
+    						if(statusIdAndTotalCount.get(param.getId()) != null){
+    							param.setGrandTotal(statusIdAndTotalCount.get(param.getId()));
+    						}
     					}
     				}
     			}
@@ -8022,7 +8058,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			LOG.error("Error occured getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew() method of AlertManagementSystemService",e);
 	 }
 			return null;
-		}
+}
 	public List<AlertCoreDashBoardVO> getAlertDetailsBasedOnLocation(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,Long deptScopeId, Long alertStatusId,List<Long> calCntrIds,Long locationValue,String alertType,Long alertCategoryId,List<Long> subLevelList){
 	      		try{
 	      			
@@ -9842,5 +9878,588 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 	}
 	return returnAlertId;
 }
-}      	
+	public List<AlertCoreDashBoardVO> getOfficerLocationWiseDepartmentOverviewAlertCount(String fromDateStr, String toDateStr, Long stateId, 
+			List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
+			String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
+			Long filterScopeValue,String searchType){
+		try{
+
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+
+			//prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Prepare Parameter
+
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long levelId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+
+			List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
+			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+			List<Long> deptScopeIdList = new ArrayList<Long>();
+			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+				for(Object [] param : childDeptScopeIdList){
+					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					KeyValueVO sublevel = new KeyValueVO();
+					sublevel.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+					sublevel.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					subLevels.add(sublevel);
+				}
+			}
+			if(sublevels != null && sublevels.size() > 0){//In the case of filter data scope wise we are sending selected values
+				deptScopeIdList.clear();
+				deptScopeIdList.addAll(sublevels);
+			}
+			
+			Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+			LinkedHashMap<Long,Long> levelIdAndAlertCountMap = null;
+			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
+			List<Object[]> alertList = null;
+			List<Object[]> feedbackList = null;
+			List<Object[]> notSatisfiedList = null;
+			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
+					if(alertType != null && alertType.equalsIgnoreCase("alert")){
+						alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue);
+						//get location wise feedback count
+						feedbackList = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false");
+						//get location wise Not Satisfied and Partially Satisfied alerts in reopen status
+						notSatisfiedList = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"true");
+						
+					}
+					if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+						if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
+							prepareResultForState(alertList,returnList,sortingType,order,alertType,searchType);
+							if(returnList != null && returnList.size() > 0){
+								pushFeedBackDataForState(returnList,alertList,feedbackList);
+							}
+							if(returnList != null && returnList.size() > 0){
+								pushReopenDataForState(returnList, notSatisfiedList);
+							}
+							return returnList;  
+						}
+					}
+				}
+			}
+
+			Map<Long,String> locIdAndLocNameMap = new LinkedHashMap<Long,String>();
+			Map<Long,String> lvlIdAndLvlName = new LinkedHashMap<Long,String>();
+			Map<Long,String> lvlIdAndColor = new LinkedHashMap<Long,String>();
+			
+
+			Set<Long> deptScopeIds = new HashSet<Long>();
+			if(alertList != null && alertList.size() > 0){
+				for(Object[] param : alertList){
+					deptScopeIds.add(commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+
+			List<Object[]> deptScopeIdDtlsList = null;
+			if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") && deptScopeIds != null && deptScopeIds.size() >0){
+				if(searchType != null && searchType.equalsIgnoreCase("statuswise")){
+					deptScopeIdDtlsList = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(new ArrayList<Long>(deptScopeIds));	
+				}
+			}
+			
+			if(deptScopeIdDtlsList != null && deptScopeIdDtlsList.size() > 0){
+				for(Object[] param : deptScopeIdDtlsList){
+					lvlIdAndLvlName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					lvlIdAndColor.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[2]));
+				}  
+			}
+
+			if(alertList != null && alertList.size() > 0){   
+				for(Object[] param : alertList){
+					locIdAndLocNameMap.put(commonMethodsUtilService.getLongValueForObject(param[1]),commonMethodsUtilService.getStringValueForObject(param[2]));
+					levelIdAndAlertCountMap = locIdThenLvlIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(levelIdAndAlertCountMap == null){
+						levelIdAndAlertCountMap = new LinkedHashMap<Long,Long>();
+						locIdThenLvlIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[1]), levelIdAndAlertCountMap);
+					}
+					levelIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+			if(locIdThenLvlIdThenAlertCount != null && locIdThenLvlIdThenAlertCount.size() > 0){
+				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenLvlIdThenAlertCount.entrySet()){
+					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+					alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey()));
+					alertCoreDashBoardVO.setName(locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) != null ? locIdAndLocNameMap.get(commonMethodsUtilService.getLongValueForObject(outerEntry.getKey())) : "");
+					buildStatusWiseTemplate(alertCoreDashBoardVO,lvlIdAndLvlName,lvlIdAndColor);
+					Long total = new Long(0L);
+					for(AlertCoreDashBoardVO boardVO : alertCoreDashBoardVO.getSubList()){
+						if(outerEntry.getValue() != null && outerEntry.getValue().get(boardVO.getId()) != null){
+							boardVO.setCount(outerEntry.getValue().get(boardVO.getId()));
+							total = total + outerEntry.getValue().get(boardVO.getId());
+						}
+					}
+					alertCoreDashBoardVO.setTotalCount(total);
+					returnList.add(alertCoreDashBoardVO);
+				}
+			}
+			//calculate status wise total count.
+			Map<Long,Long> statusIdAndTotalCount = new HashMap<Long,Long>();
+			if(locIdThenLvlIdThenAlertCount != null && locIdThenLvlIdThenAlertCount.size() > 0){
+				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenLvlIdThenAlertCount.entrySet()){
+					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+						statusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), 0L);
+					}
+				}
+			}
+			if(locIdThenLvlIdThenAlertCount != null && locIdThenLvlIdThenAlertCount.size() > 0){
+				for(Entry<Long,LinkedHashMap<Long,Long>> outerEntry : locIdThenLvlIdThenAlertCount.entrySet()){
+					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+						statusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), statusIdAndTotalCount.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()))+commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
+					}
+				}
+			}
+			
+			
+			
+			if(returnList != null && returnList.size() > 0){
+				returnList.get(0).getSubLevels().addAll(subLevels);
+				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("count")){
+					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+						Collections.sort(returnList, alertAscendingCountWiseSortingLvlWise);
+					}else{
+						Collections.sort(returnList, alertDescCountWiseSortingLvlWise);
+					}
+				}
+				if(sortingType != null && !sortingType.trim().isEmpty() && sortingType.trim().equalsIgnoreCase("name")){
+					if(order != null && !order.trim().isEmpty() && order.trim().equalsIgnoreCase("asc")){
+						Collections.sort(returnList, alphabeticalAscSortLvlWise);
+					}else{
+						Collections.sort(returnList, alphabeticalDescendingSortLvlWise);
+					}
+				}
+			}
+			if(returnList != null && returnList.size() > 0){
+				pushFeedBackData(returnList, locIdThenLvlIdThenAlertCount,feedbackList);
+			}
+			if(returnList != null && returnList.size() > 0){
+				pushReopenData(returnList, notSatisfiedList);
+			}
+			if(statusIdAndTotalCount.size() > 0){
+				if(returnList != null && returnList.size() > 0){
+					AlertCoreDashBoardVO altCorevo = returnList.get(0);
+					for(AlertCoreDashBoardVO param : altCorevo.getSubList()){
+						if(statusIdAndTotalCount.get(param.getId()) != null){
+							param.setGrandTotal(statusIdAndTotalCount.get(param.getId()));
+						}
+					}
+				}
+			}
+			
+			return returnList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public void pushFeedBackData(List<AlertCoreDashBoardVO> returnList,Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCount,List<Object[]> feedbackList){
+		try{
+			List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getFeedBackStatus();
+			//create map of feedBackId and status map
+			Map<Long,String> feedbackAndStatusIdMap = new LinkedHashMap<Long,String>();
+			if(feedbackStatusList != null && feedbackStatusList.size() > 0){
+				for(Object[] param : feedbackStatusList){
+					feedbackAndStatusIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			for(AlertCoreDashBoardVO param : returnList){
+				feedbackAndStatusIdMap.put(4L, "Pending Feedback");
+				buildFeedbackStatusInTemplate(param,feedbackAndStatusIdMap);
+			}
+			
+			//create a map for locationIdAndFeedbackIdAndFeedbackStatusMap
+			Map<Long,Map<Long,Long>> locationIdAndFeedbackIdAndFeedbackStatusCountMap = new HashMap<Long,Map<Long,Long>>();
+			Map<Long,Long> feedbackIdAndFeedbackStatusCountMap = null;//new HashMap<Long,String>();
+			
+			if(feedbackList != null && feedbackList.size() > 0){
+				for(Object[] param : feedbackList){
+					feedbackIdAndFeedbackStatusCountMap = locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(feedbackIdAndFeedbackStatusCountMap == null){
+						feedbackIdAndFeedbackStatusCountMap = new HashMap<Long,Long>();
+						feedbackIdAndFeedbackStatusCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdAndFeedbackIdAndFeedbackStatusCountMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), feedbackIdAndFeedbackStatusCountMap);
+					}
+					feedbackIdAndFeedbackStatusCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			//calculate feedback status wise total count.
+			Map<Long,Long> feedbackStatusIdAndTotalCount = new HashMap<Long,Long>();
+			if(locationIdAndFeedbackIdAndFeedbackStatusCountMap != null && locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> outerEntry : locationIdAndFeedbackIdAndFeedbackStatusCountMap.entrySet()){
+					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+						feedbackStatusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), 0L);
+					}
+				}
+				feedbackStatusIdAndTotalCount.put(4L, 0L);
+			}
+			if(locationIdAndFeedbackIdAndFeedbackStatusCountMap != null && locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> outerEntry : locationIdAndFeedbackIdAndFeedbackStatusCountMap.entrySet()){
+					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+						feedbackStatusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), feedbackStatusIdAndTotalCount.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()))+commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
+					}
+				}
+			}
+			
+			
+			//push the feedback count in vo.
+			for(AlertCoreDashBoardVO param : returnList){
+				Long locationId = param.getId();
+				if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
+					for(AlertCoreDashBoardVO innerParam : param.getSubList1()){
+						if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId).get(innerParam.getId()) != null){
+							innerParam.setCount(locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId).get(innerParam.getId()));
+						}else{
+							innerParam.setCount(0L);
+						}
+					}
+				}
+			}
+			// calculate feedback pending location wise here...........
+			
+			//first create a map for locationId and closed alrts
+			Map<Long,Long> locationIdAndClosedAlerts = new HashMap<Long,Long>();
+			
+			for(Entry<Long,LinkedHashMap<Long,Long>> entry : locIdThenLvlIdThenAlertCount.entrySet()){
+				Long closedAlerts = new Long(0L);//completed and closed alerts
+				if(entry.getValue() != null && entry.getValue().get(4L) != null){
+					closedAlerts = closedAlerts + entry.getValue().get(4L);//Completed status
+				}
+				if(entry.getValue() != null && entry.getValue().get(12L) != null){
+					closedAlerts = closedAlerts + entry.getValue().get(12L);//Closed status
+				}
+				locationIdAndClosedAlerts.put(entry.getKey(), closedAlerts);
+			}
+			
+			//second create map for locationId and feedback collected alerts
+			Map<Long,Long> locationIdAndFeedbackCollectedAlerts = new HashMap<Long,Long>();
+			
+			for(Entry<Long,Map<Long,Long>> entry : locationIdAndFeedbackIdAndFeedbackStatusCountMap.entrySet()){
+				Long feedbackCollectedAlerts = new Long(0L);
+				if(entry.getValue() != null && entry.getValue().get(1L) != null){
+					feedbackCollectedAlerts = feedbackCollectedAlerts + entry.getValue().get(1L);//Completely Satisfied
+				}
+				if(entry.getValue() != null && entry.getValue().get(2L) != null){
+					feedbackCollectedAlerts = feedbackCollectedAlerts + entry.getValue().get(2L);//Not Satisfied
+				}
+				if(entry.getValue() != null && entry.getValue().get(3L) != null){
+					feedbackCollectedAlerts = feedbackCollectedAlerts + entry.getValue().get(3L);//Partially Satisfied
+				}
+				locationIdAndFeedbackCollectedAlerts.put(entry.getKey(), feedbackCollectedAlerts);
+			}
+			
+			//now push feedback pending count into vo.
+			
+			for(AlertCoreDashBoardVO param : returnList){
+				Long locationId = param.getId();
+				if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
+					for(AlertCoreDashBoardVO innerParam : param.getSubList1()){
+						if(innerParam.getId().longValue() == 4L){//feedback pending count
+							Long totalClosedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndClosedAlerts.get(locationId));
+							Long totalFeedbackCollectedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndFeedbackCollectedAlerts.get(locationId));
+							innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
+							feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+(totalClosedAlert-totalFeedbackCollectedAlert));
+						}
+					}
+				}
+			}
+			
+			if(feedbackStatusIdAndTotalCount.size() > 0){
+				if(returnList != null && returnList.size() > 0){
+					AlertCoreDashBoardVO altCorevo = returnList.get(0);
+					for(AlertCoreDashBoardVO param : altCorevo.getSubList()){
+						if(feedbackStatusIdAndTotalCount.get(param.getId()) != null){
+							param.setGrandTotal(feedbackStatusIdAndTotalCount.get(param.getId()));
+						}
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void pushFeedBackDataForState(List<AlertCoreDashBoardVO> returnList,List<Object[]> alertList,List<Object[]> feedbackList){
+		try{
+			Map<Long,LinkedHashMap<Long,Long>> lvlIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+			LinkedHashMap<Long,Long> statusIdThenAlertCount = null;
+			if(alertList != null && alertList.size() > 0){
+    			for(Object[] param : alertList){
+    				statusIdThenAlertCount = lvlIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+					if(statusIdThenAlertCount == null){
+						statusIdThenAlertCount = new LinkedHashMap<Long,Long>();
+						lvlIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[3]), statusIdThenAlertCount);
+					}
+					statusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
+				}
+    		}
+			
+			List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getFeedBackStatus();
+			//create map of feedBackId and status map
+			Map<Long,String> feedbackAndStatusIdMap = new LinkedHashMap<Long,String>();
+			if(feedbackStatusList != null && feedbackStatusList.size() > 0){
+				for(Object[] param : feedbackStatusList){
+					feedbackAndStatusIdMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			for(AlertCoreDashBoardVO param : returnList){
+				feedbackAndStatusIdMap.put(4L, "Pending Feedback");
+				buildFeedbackStatusInTemplate(param,feedbackAndStatusIdMap);
+			}
+			
+			//create a map for locationIdAndFeedbackIdAndFeedbackStatusMap
+			Map<Long,Map<Long,Long>> locationIdAndFeedbackIdAndFeedbackStatusCountMap = new HashMap<Long,Map<Long,Long>>();
+			Map<Long,Long> feedbackIdAndFeedbackStatusCountMap = null;//new HashMap<Long,String>();
+			
+			if(feedbackList != null && feedbackList.size() > 0){
+				for(Object[] param : feedbackList){
+					feedbackIdAndFeedbackStatusCountMap = locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+					if(feedbackIdAndFeedbackStatusCountMap == null){
+						feedbackIdAndFeedbackStatusCountMap = new HashMap<Long,Long>();
+						feedbackIdAndFeedbackStatusCountMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
+						locationIdAndFeedbackIdAndFeedbackStatusCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), feedbackIdAndFeedbackStatusCountMap);
+					}
+					feedbackIdAndFeedbackStatusCountMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
+				}
+			}
+			
+			//calculate feedback status wise total count.
+			Map<Long,Long> feedbackStatusIdAndTotalCount = new HashMap<Long,Long>();
+			if(locationIdAndFeedbackIdAndFeedbackStatusCountMap != null && locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> outerEntry : locationIdAndFeedbackIdAndFeedbackStatusCountMap.entrySet()){
+					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+						feedbackStatusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), 0L);
+					}
+				}
+				feedbackStatusIdAndTotalCount.put(4L, 0L);
+			}
+			if(locationIdAndFeedbackIdAndFeedbackStatusCountMap != null && locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> outerEntry : locationIdAndFeedbackIdAndFeedbackStatusCountMap.entrySet()){
+					for(Entry<Long,Long> innerEntry : outerEntry.getValue().entrySet()){
+						feedbackStatusIdAndTotalCount.put(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()), feedbackStatusIdAndTotalCount.get(commonMethodsUtilService.getLongValueForObject(innerEntry.getKey()))+commonMethodsUtilService.getLongValueForObject(innerEntry.getValue()));
+					}
+				}
+			}
+			
+			
+			//push the feedback count in vo.
+			for(AlertCoreDashBoardVO param : returnList){
+				Long locationId = param.getId();
+				if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
+					for(AlertCoreDashBoardVO innerParam : param.getSubList1()){
+						if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId).get(innerParam.getId()) != null){
+							innerParam.setCount(locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId).get(innerParam.getId()));
+						}else{
+							innerParam.setCount(0L);
+						}
+					}
+				}
+			}
+			// calculate feedback pending location wise here...........
+			
+			//first create a map for locationId and closed alrts
+			Map<Long,Long> locationIdAndClosedAlerts = new HashMap<Long,Long>();
+			
+			for(Entry<Long,LinkedHashMap<Long,Long>> entry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+				Long closedAlerts = new Long(0L);//completed and closed alerts
+				if(entry.getValue() != null && entry.getValue().get(4L) != null){
+					closedAlerts = closedAlerts + entry.getValue().get(4L);//Completed status
+				}
+				if(entry.getValue() != null && entry.getValue().get(12L) != null){
+					closedAlerts = closedAlerts + entry.getValue().get(12L);//Closed status
+				}
+				locationIdAndClosedAlerts.put(entry.getKey(), closedAlerts);
+			}
+			
+			//second create map for locationId and feedback collected alerts
+			Map<Long,Long> locationIdAndFeedbackCollectedAlerts = new HashMap<Long,Long>();
+			
+			for(Entry<Long,Map<Long,Long>> entry : locationIdAndFeedbackIdAndFeedbackStatusCountMap.entrySet()){
+				Long feedbackCollectedAlerts = new Long(0L);
+				if(entry.getValue() != null && entry.getValue().get(1L) != null){
+					feedbackCollectedAlerts = feedbackCollectedAlerts + entry.getValue().get(1L);//Completely Satisfied
+				}
+				if(entry.getValue() != null && entry.getValue().get(2L) != null){
+					feedbackCollectedAlerts = feedbackCollectedAlerts + entry.getValue().get(2L);//Not Satisfied
+				}
+				if(entry.getValue() != null && entry.getValue().get(3L) != null){
+					feedbackCollectedAlerts = feedbackCollectedAlerts + entry.getValue().get(3L);//Partially Satisfied
+				}
+				locationIdAndFeedbackCollectedAlerts.put(entry.getKey(), feedbackCollectedAlerts);
+			}
+			
+			//now push feedback pending count into vo.
+			for(AlertCoreDashBoardVO param : returnList){
+				Long locationId = param.getId();
+				if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
+					for(AlertCoreDashBoardVO innerParam : param.getSubList1()){
+						if(innerParam.getId().longValue() == 4L){//feedback pending count
+							Long totalClosedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndClosedAlerts.get(locationId));
+							Long totalFeedbackCollectedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndFeedbackCollectedAlerts.get(locationId));
+							innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
+							feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+(totalClosedAlert-totalFeedbackCollectedAlert));
+						}
+					}
+				}
+			}
+			if(feedbackStatusIdAndTotalCount.size() > 0){
+				if(returnList != null && returnList.size() > 0){
+					AlertCoreDashBoardVO altCorevo = returnList.get(0);
+					for(AlertCoreDashBoardVO param : altCorevo.getSubList1()){
+						if(feedbackStatusIdAndTotalCount.get(param.getId()) != null){
+							param.setGrandTotal(feedbackStatusIdAndTotalCount.get(param.getId()));
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void buildFeedbackStatusInTemplate(AlertCoreDashBoardVO param,Map<Long,String> feedbackAndStatusIdMap){
+		try{
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			for(Entry<Long,String> entry : feedbackAndStatusIdMap.entrySet()){
+				alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+				alertCoreDashBoardVO.setId(commonMethodsUtilService.getLongValueForObject(entry.getKey()));
+				alertCoreDashBoardVO.setName(commonMethodsUtilService.getStringValueForObject(entry.getValue()));
+				alertCoreDashBoardVOs.add(alertCoreDashBoardVO);
+			}
+			param.setSubList1(alertCoreDashBoardVOs);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void pushReopenData(List<AlertCoreDashBoardVO> returnList, List<Object[]> notSatisfiedList){
+		try{
+			Map<Long,Long> locationIdAndReopenCount = new HashMap<Long,Long>();
+			if(notSatisfiedList != null && notSatisfiedList.size() > 0){
+				for(Object[] param : notSatisfiedList){
+					locationIdAndReopenCount.put(commonMethodsUtilService.getLongValueForObject(param[1]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			for(AlertCoreDashBoardVO param : returnList){
+				if(locationIdAndReopenCount.get(param.getId()) != null){
+					param.setReopenCount(locationIdAndReopenCount.get(param.getId()));
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void pushReopenDataForState(List<AlertCoreDashBoardVO> returnList, List<Object[]> notSatisfiedList){
+		try{
+			Map<Long,Long> locationIdAndReopenCount = new HashMap<Long,Long>();
+			if(notSatisfiedList != null && notSatisfiedList.size() > 0){
+				for(Object[] param : notSatisfiedList){
+					locationIdAndReopenCount.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[5]));
+				}
+			}
+			for(AlertCoreDashBoardVO param : returnList){
+				if(locationIdAndReopenCount.get(param.getId()) != null){
+					param.setReopenCount(locationIdAndReopenCount.get(param.getId()));  
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	/*public void pushReopenData(List<AlertCoreDashBoardVO> returnList, List<Object[]> notSatisfiedList){
+		try{
+			//create a map for locationId and list of alert ids
+			Map<Long,Set<Long>> locationIdAndAlertIds = new HashMap<Long,Set<Long>>();
+			Set<Long> alertIds = null;
+			if(notSatisfiedList != null && notSatisfiedList.size() > 0){
+				for(Object[] param : notSatisfiedList){
+					alertIds = locationIdAndAlertIds.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(alertIds == null){
+						alertIds = new HashSet<Long>();
+						alertIds.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdAndAlertIds.put(commonMethodsUtilService.getLongValueForObject(param[1]), alertIds);
+					}
+					alertIds.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			//get all the alert whose status is reopened.
+			List<Long> reopenAlerts = alertAssignedOfficerNewDAO.getAllReOpenAlerts();
+			List<Long> tempList = null;
+			for(AlertCoreDashBoardVO parama : returnList){
+				Long locId = parama.getId();
+				alertIds = locationIdAndAlertIds.get(locId);
+				if(alertIds == null){
+					parama.setPendingCount(0L);
+				}else{
+					tempList = new ArrayList<Long>(reopenAlerts);
+					if(tempList != null && tempList.size() > 0){
+						tempList.retainAll(alertIds);
+						int count = tempList.size();
+						parama.setPendingCount(Long.valueOf(Integer.toString(count)));
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}*/
+	/*public void pushReopenDataForState(List<AlertCoreDashBoardVO> returnList, List<Object[]> notSatisfiedList){
+		try{
+			//create a map for locationId and list of alert ids
+			Map<Long,Set<Long>> locationIdAndAlertIds = new HashMap<Long,Set<Long>>();
+			Set<Long> alertIds = null;
+			if(notSatisfiedList != null && notSatisfiedList.size() > 0){
+				for(Object[] param : notSatisfiedList){
+					alertIds = locationIdAndAlertIds.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(alertIds == null){
+						alertIds = new HashSet<Long>();
+						alertIds.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdAndAlertIds.put(commonMethodsUtilService.getLongValueForObject(param[1]), alertIds);
+					}
+					alertIds.add(commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			//get all the alert whose status is reopened.
+			List<Long> reopenAlerts = alertAssignedOfficerNewDAO.getAllReOpenAlerts();
+			List<Long> tempList = null;
+			for(AlertCoreDashBoardVO parama : returnList){
+				Long locId = parama.getId();
+				alertIds = locationIdAndAlertIds.get(locId);
+				if(alertIds == null){
+					parama.setPendingCount(0L);
+				}else{
+					tempList = new ArrayList<Long>(reopenAlerts);
+					if(tempList != null && tempList.size() > 0){
+						tempList.retainAll(alertIds);
+						int count = tempList.size();
+						parama.setPendingCount(Long.valueOf(Integer.toString(count)));
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}*/
+
+}
 
