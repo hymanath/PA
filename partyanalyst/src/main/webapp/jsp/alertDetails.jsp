@@ -509,7 +509,7 @@
 									</li>
 								</ul>  
 							</div>  
-							<div class="col-md-8 col-xs-12 col-sm-6">
+							<div class="col-md-8 col-xs-12 col-sm-6" id="statusTrckingDivId">
 								<h4 class="panel-title text-capital">alert status tracking comments</h4>
 								
 								<div id="alertCommentsDivIdNew"></div>
@@ -554,9 +554,9 @@
 											</div>
 										</div>
 										<c:if test="${fn:contains(sessionScope.USER.entitlements, 'UPDATE_ALERT_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_DASHBOARD_USER_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT') || fn:contains(sessionScope.USER.entitlements, 'TDP_CADRE_LOGIN_ENTITLEMENT')}">
-										<div class="col-md-8 col-xs-12 col-sm-8">
+										<div class="col-md-8 col-xs-12 col-sm-8" id="editCmntDivId">
 											<div class="panel panel-default panelHeights" style="position:relative;">
-												<div class="panel-body">
+												<div class="panel-body" >
 													<form id="alertStatusForm" name="alertStatusForm">
 														<div class="row">
 															<div class="col-md-6 col-xs-12 col-sm-6">
@@ -754,11 +754,15 @@
 <script type="text/javascript">
 
 var alertId = '${alertId}';
+var globalTdpCadreId = '${tdpCadreId}';
+var globalUserId = '${sessionScope.USER.registrationID}';
+var globalTypeValue = '${status}';
 var entilementStr = '${sessionScope.USER.entitlements}';
 $(".dropkickClass").dropkick();
  
        /* Hiding involved and assigned block for info cell user */
           var entitlementsArr = [];
+		//  entitlementsArr.push("IGNORE_PROGRAMME_COMMITTEE_ALERT_COMMENTS_ENTITLEMENT");
 		  var strArr = entilementStr.split(",");
 				for(var i=0;i<strArr.length;i++){
 					if(i==0){
@@ -768,6 +772,7 @@ $(".dropkickClass").dropkick();
 					else
 						entitlementsArr.push(strArr[i]);
 				}
+				
 		    var isInfoCellUser="false";
 		   for(var i=0;i<entitlementsArr.length;i++){
 			   if(entitlementsArr[i].trim()=="ALERT_CLARIFICATION_DASHBOARD_ADMIN_ENTITLEMENT"){
@@ -798,6 +803,8 @@ function deleteAlertAssignedCandidates(tdpCadreId)
 			      //buildAlertAssignedCandidateData(result);
 				});
 }
+
+var globalAssignedCadreId;
 function buildAlertAssignedCandidateData(result)
 {
 	
@@ -812,6 +819,8 @@ function buildAlertAssignedCandidateData(result)
 	{
 		for(var j in result[i].subList)  
 		{
+			
+			globalAssignedCadreId = result[i].subList[j].id;
 			str+='<div class="media" style="margin-top:5px;border:1px solid #ddd;">';
 			str+='<div class="media-left">';
 			str+='<img src="images/cadre_images/'+result[i].subList[j].image+'" onerror="setDefaultImage(this);" alt="Profile Image" style="width:50px;"/>';
@@ -863,7 +872,7 @@ function buildAlertAssignedCandidateData(result)
 	{
 		$("#alertAssignedCandidateDataId").mCustomScrollbar({setHeight:'290px'});
 	}*/
-	
+	//hideAndShow();
 }
 /*$(document).on("click",".assignCandidate",function(){
 	 var tdpCadreId = $(this).attr("attr_tdpCadreId");
@@ -903,7 +912,26 @@ function buildAlertAssignedCandidateData(result)
 			alert("Please Try Again.");
 		}
 	}	
-   
+/*function hideAndShow(){
+	if(globalTdpCadreId != globalAssignedCadreId){
+	    $(".cmntsDataCls").hide();
+	    $("#statusId").prop('disabled', true);
+	    $("#assignedCadreId").prop('disabled', true).trigger("chosen:updated"); 
+	}else if(entitlementsArr != null && entitlementsArr.length >0){
+		for(var i=0;i<entitlementsArr.length;i++){
+			if(entitlementsArr[i].trim()=="IGNORE_PROGRAMME_COMMITTEE_ALERT_COMMENTS_ENTITLEMENT"){
+				$(".cmntsDataCls").hide();
+				$("#statusId").prop('disabled', true);
+				$("#assignedCadreId").prop('disabled', true).trigger("chosen:updated");
+			}
+		}
+	}else{
+		$(".cmntsDataCls").show();
+		$("#statusId").prop('disabled', false);
+		$("#assignedCadreId").prop('disabled', false).trigger("chosen:updated");
+	}
+	
+ }  */ 
 		
 </script>
 <script src="dist/CreateAlert/alertCommonCadreSearch.js" type="text/javascript"></script>
