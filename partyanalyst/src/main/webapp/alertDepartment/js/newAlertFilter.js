@@ -746,11 +746,20 @@ function buildSubOrdinateFilterAlertsOverview(result,levelId)
 									}
 									str+='<td>'+result[i].list1[j].list2[k].name+'</td>';
 									
-									str+='<td attr_disig_id="'+result[i].list1[j].list2[k].id+'" attr_level_id="'+result[i].id+'" attr_childval_id="'+result[i].list1[j].id+'" attr_childlvl_id="" attr_status_id="0">'+result[i].list1[j].list2[k].count+'</td>';
+									if(result[i].list1[j].list2[k].count !=null && result[i].list1[j].list2[k].count>0){
+										str+='<td class="getAlertDtlsFilter" attr_disig_id="'+result[i].list1[j].list2[k].id+'" attr_level_id="'+result[i].id+'" attr_childval_id="'+result[i].list1[j].id+'" attr_childlvl_id="" attr_status_id="0" attr_total_count="'+result[i].list1[j].list2[k].count+'" attr_name="Total" style="cursor:pointer;">'+result[i].list1[j].list2[k].count+'</td>';
+									}else{
+										str+='<td> - </td>';
+									}
+									
 							for(var l in result[i].list1[j].list2[k].subList1)
 							{
-								
-									str+='<td attr_disig_id="'+result[i].list1[j].list2[k].id+'" attr_level_id="'+result[i].id+'" attr_childval_id="'+result[i].list1[j].id+'" attr_childlvl_id="" attr_status_id="'+result[i].list1[j].list2[k].subList1[l].id+'">'+result[i].list1[j].list2[k].subList1[l].count+'</td>';
+								if(result[i].list1[j].list2[k].subList1[l].count !=null && result[i].list1[j].list2[k].subList1[l].count>0){
+									str+='<td class="getAlertDtlsFilter" attr_disig_id="'+result[i].list1[j].list2[k].id+'" attr_level_id="'+result[i].id+'" attr_childval_id="'+result[i].list1[j].id+'" attr_childlvl_id="" attr_status_id="'+result[i].list1[j].list2[k].subList1[l].id+'" attr_total_count="'+result[i].list1[j].list2[k].subList1[l].count+'" attr_name="'+result[i].list1[j].list2[k].subList1[l].name+'" style="cursor:pointer;">'+result[i].list1[j].list2[k].subList1[l].count+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+									
 								
 							}
 							str+='</tr>';
@@ -762,20 +771,32 @@ function buildSubOrdinateFilterAlertsOverview(result,levelId)
 	str+='</div>';
 	$("#getSubOrdinateFilterAlertsOverview").html(str);
 }
+$(document).on("click",".getAlertDtlsFilter",function(){
+	var designationId = $(this).attr("attr_disig_id");
+	var levelId = $(this).attr("attr_level_id");
+	var locationValueId = $(this).attr("attr_childval_id");
+	var statusId = $(this).attr("attr_status_id");
+	var totalCount = $(this).attr("attr_total_count");
+	var statusName = $(this).attr("attr_name");
+	getLocationFilterClickDetails(designationId,levelId,locationValueId,statusId,totalCount,statusName);
+	
+	
+});
 //getLocationFilterClickDetails();
-function getLocationFilterClickDetails(){
-	var lvelIdsArr =[];
-	var deginaIdsArr = [];
-	var levelValuesArr = [];
-	var deptIdsArr = [];
-	var statusIdsArr = [];
-	var levelId = 0;
+function getLocationFilterClickDetails(designationId,levelId,locationValueId,statusId,totalCount,statusName){
+	
+	var desigArr=[];
+	var levelIdsArr =[];
+	var locationValueArr=[];
+	var statusIdsArr=[];
+	var deptIdsArr=[];
+	
 	
 	var fromDays = 0;
 	var toDays = 0;
 	var lagChckedValue =$("#lagDaysId").is(':checked') ? 1 : 0;
 	var checkedValue;
-	/* 	if(lagChckedValue == 1){
+		if(lagChckedValue == 1){
 			 fromDays = $(".ui-rangeSlider-leftLabel").find(".ui-rangeSlider-label-value").html();
 			 toDays = $(".ui-rangeSlider-rightLabel").find(".ui-rangeSlider-label-value").html();
 			lagChckedValue = "true";
@@ -792,121 +813,64 @@ function getLocationFilterClickDetails(){
 		}else{
 			moreDAysChckedValue = "false";
 		}
-	if($("#departmentSelectedId").val() == null || $("#departmentSelectedId").val() == 0){
-		$("#assignErrorDivId").html("Please select department");
-		return;
+	
+	if(designationId == null || designationId == 0){
+		desigArr=[];
 	}else{
-		deptIdsArr.push($("#departmentSelectedId").val());
+		desigArr.push(designationId);
 	}
-	if($("#locationLevelSelectedId").val() == null  || $("#locationLevelSelectedId").val() == 0)
-	{
-		
-		$("#assignErrorDivId").html("Please select impact level");
-		return;
+	if(levelId == null || levelId == 0){
+		levelIdsArr=[];
 	}else{
-		lvelIdsArr.push(8);
-		levelId = $("#locationLevelSelectedId").val();
+		levelIdsArr.push(levelId);
+	}
+	if(locationValueId == null || locationValueId == 0){
+		locationValueArr=[];
+	}else{
+		locationValueArr.push(locationValueId);
+	}
+	if(statusId == null || statusId == 0){
+		statusIdsArr=[];
+	}else{
+		statusIdsArr.push(statusId);
 	}
 	
-	var dynamicLocationValue=$('.dynamicSelectList').val();
-	var hasError=false;
-	var displayName = "";
-	if (typeof(dynamicLocationValue) != "undefined"){
-		
-		
-		$('.dynamicSelectList').each(function(){
-			if(!hasError){
-				displayName = $(this).attr('attr_dyna_name');
-				var id =  $(this).attr('id');
-				var dynamicLocationValue=$('#'+id+'').val();
-				if(dynamicLocationValue == null )
-				{
-					hasError=true;
-					$("#assignErrorDivId").html("Please select "+displayName+". ");
-					return;
-				}			
-			}else{
-				return;
-			}
-		});	
-		if(hasError)
-			return;
-		
-	}
-		var childLevelVals =[];	
-		var childLevelId = 0; //0
-		$('.childValCls').each(function(){
-			
-			var dynamicLevlId = $(this).attr('attr_dynamic_levelid');
-			var id =  $(this).attr('id');
-			var dynamicLocationValue=$('#'+id+'').val();
-			
-			if(dynamicLocationValue != null &&  dynamicLocationValue != 0)
-				{
-					childLevelVals =[];	
-					childLevelId =dynamicLevlId;
-					childLevelVals.push(dynamicLocationValue);
-				}
-		});
 	
-	/* hasError=false;
-	if(!hasError){
-		var locationValue=$(".locationCls1").val();
-		if(locationValue == null)
-		{
-			$("#assignErrorDivId").html("Please select Location. ");
-			return;
-		}
-	}
-	if($("#designationsWiseId").val() == null)
-	{
-		$("#assignErrorDivId").html("Please select designation");
-		return;
-	}
-	if($("#statusSelectedId").val() == null)
-	{
-		$("#assignErrorDivId").html("Please select Status");
-		return;
-	}
-	if($("#PriorityId").val() == null )
-	{
-		$("#assignErrorDivId").html("Please select Status");
-		return;
-	} */
+	
+	
+	
+	deptIdsArr.push($("#departmentSelectedId").val());
 	var priorityId = $("#PriorityId").val();
-	if($("#designationsWiseId").val() != null && $("#designationsWiseId").val() != 0){
-		deginaIdsArr.push(26);
-	}
-
-	if($("#statusSelectedId").val() != null && $("#statusSelectedId").val() != 0){
-		statusIdsArr.push($("#statusSelectedId").val());
-	}
 	var alertType = getAlertType();
-	$("#assignErrorDivId").html(' ');
-	$("#getSubOrdinateFilterAlertsOverview").html(spinner); 
-	var locationValues=[];
-	locationValues.push(200);
-	lvelIdsArr.push(8);
-	deginaIdsArr.push(26);
+	
+		$("#alertManagementPopupBody").html('')
+	
+		$("#alertManagementPopup").modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+		$("#alertManagementPopupBody").html(spinner);
+		
 	var jsObj = {
 	  
 		fromDate : currentFromDate,
 		toDateStr : currentToDate,
-		govtLevelIds :[8] , //locationLevelSelectedId //impact level
-		locationValues : [206], //locationSubLevelSelectedId
-		desigIds : [7],		 //designationsWiseId	
-		statusIds : [],      //statusSelectedId
-		deptIds : [49],			//departmentIds
-		priorityId : 0,				//PriorityId
+		govtLevelIds :levelIdsArr , //locationLevelSelectedId //impact level attr_level_id
+		locationValues : locationValueArr, //locationSubLevelSelectedId attr_childval_id
+		desigIds : desigArr,		 //designationsWiseId	
+		statusIds : statusIdsArr,      //statusSelectedId attr_status_id
+		deptIds : deptIdsArr,			//departmentIds
+		priorityId : priorityId,				//PriorityId
 		childLevelId:0,
-		alertType : "subTask",
-		isLagChkd : "", // true
-		isMoreThanYrChkd : "", //check true or false true - 0,0 --- false (particular values)
-		lagStartCnt : 0,
-		lagEndCnt : 0,
-		paperIdArr:[],
-		chanelIdArr:[],
-		callCenterArr:[]
+		alertType : alertType,
+		isLagChkd : lagChckedValue, // true
+		isMoreThanYrChkd : moreDAysChckedValue, //check true or false true - 0,0 --- false (particular values)
+		lagStartCnt : fromDays,
+		lagEndCnt : toDays,
+		paperIdArr:newspapersGlobalArr,
+		chanelIdArr:channelGlobalArr,
+		callCenterArr:callCenterGlobalArr
     
 	}
 	$.ajax({
@@ -914,6 +878,11 @@ function getLocationFilterClickDetails(){
 		url: 'getLocationFilterClickDetailsAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
-		alert(7)
+		if(result != null && result.length > 0){
+			$("#totalAlertsModalTabId").html('');
+			buildAlertDtlsBasedOnStatusClick(result,statusName,totalCount);
+		}else{
+			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
+		}
 	});
 }
