@@ -3738,4 +3738,77 @@ public String getAlertSourceWiseAlert(){
 		    }
 		    return Action.SUCCESS;
 		  }
+	
+	public String getAlertDetailsForGrievanceReportClick(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDateStr");
+			String toDateStr = jObj.getString("toDateStr");
+			Long stateId = jObj.getLong("stateId");
+			
+			JSONArray printIdArr = null;
+			JSONArray electronicIdArr = null;
+			
+			List<Long> printIdList = new ArrayList<Long>(0);
+			List<Long> electronicIdList = new ArrayList<Long>();
+			
+			printIdArr = jObj.getJSONArray("printIdArr");  
+			
+			if(printIdArr != null && printIdArr.length() > 0){
+				for (int i = 0; i < printIdArr.length(); i++){
+					printIdList.add(Long.parseLong(printIdArr.getString(i)));        
+				} 
+			}
+			
+			
+			electronicIdArr = jObj.getJSONArray("electronicIdArr");
+			
+			if(electronicIdArr != null && electronicIdArr.length() > 0){
+				for (int i = 0; i < electronicIdArr.length(); i++){
+					electronicIdList.add(Long.parseLong(electronicIdArr.getString(i)));        
+				} 
+			}
+			
+			Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+			Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");
+			String sortingType = jObj.getString("sortingType");
+			String order = jObj.getString("order");
+			String alertType = jObj.getString("alertType");
+			
+			String group = jObj.getString("group");
+			JSONArray subLevelsArr = jObj.getJSONArray("subLevels");  
+			List<Long> sublevels = new ArrayList<Long>();
+			if(subLevelsArr != null && subLevelsArr.length() > 0){
+				for (int i = 0; i < subLevelsArr.length(); i++){
+					sublevels.add(Long.parseLong(subLevelsArr.getString(i)));          
+				}  
+			}
+			
+			JSONArray callCenterIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> callCenterIdList = new ArrayList<Long>();
+			if(callCenterIdArr != null && callCenterIdArr.length() > 0){
+				for (int i = 0; i < callCenterIdArr.length(); i++){
+					callCenterIdList.add(Long.parseLong(callCenterIdArr.getString(i)));        
+				} 
+			}
+			
+			String searchType = jObj.getString("searchType");
+			Long filterParentScopeId = jObj.getLong("filterParentScopeId");
+			Long filterScopeValue = jObj.getLong("filterScopeValue");
+			Long statusId = jObj.getLong("statusId");
+			Long sourseId = jObj.getLong("sourseId");
+	        alertCoreDashBoardVOs = alertManagementSystemService.getAlertDetailsForGrievanceReportClick(fromDateStr,
+			toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
+			order,alertType,group,callCenterIdList,sublevels,filterParentScopeId,filterScopeValue,searchType,statusId,sourseId);
+	        alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAlertDetailsForGrievanceReportClick() method, Exception - ",e);
+		}
+		return Action.SUCCESS;	
+	}
 }

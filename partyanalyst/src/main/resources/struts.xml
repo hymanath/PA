@@ -17260,6 +17260,10 @@
 				<param name="root">status</param>
 		 </result>
 	</action>
-	
+	<action name="getAlertDetailsForGrievanceReportClickAction" class="alertManagementSystemAction" method="getAlertDetailsForGrievanceReportClick">
+		 <result type="json" name="success">
+				<param name="root">alertCoreDashBoardVOs</param>
+		 </result>
+	</action>
  </package>
 </struts>
