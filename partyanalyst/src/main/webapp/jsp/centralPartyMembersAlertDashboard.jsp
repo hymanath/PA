@@ -16,9 +16,53 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css">
 
+
+<style type="text/css">
+.switch-btn
+{
+	padding:3px;
+	background-color: #fff;
+	display: inline-block;
+	border-radius: 14px;
+}
+.switch-btn li
+{
+	list-style:none;
+	display: inline-block;
+	padding: 4px 8px;
+	cursor: pointer;
+	text-transform:uppercase;
+}
+.switch-btn li.active
+{
+	background-color: #4A5863;
+	color: #fff;
+	border-radius: 14px;
+	-moz-transition: .5s all ease-out;
+}
+.switch-btn li:hover
+{
+	background-color: #4A5863;
+	-moz-transition: .5s all ease-out;
+	border-radius: 14px;
+	color:#fff;
+}
+</style>
+
 </head>
 <body>
 <div class="container">
+
+	<div class="row">
+		<div class="col-md-12 col-xs-12 col-sm-12 m_top10">				
+			<ul class="switch-btn pull-right"  style="border: 1px solid rgb(211, 211, 211);">       
+				<!--<li  attr_type="" class="active" value="all" >ALL</li>-->
+				<li attr_type="" class="active" value="ownAlerts" >My Own Alerts</li>
+				<li attr_type="" value="areaAlerts" >My Area Alerts</li>
+			</ul>				
+		</div>
+	</div>
+	
 	<div class="row">
 		<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 			<div class="panel panel-default">
@@ -165,7 +209,7 @@
 											<option value="7">Duplicate</option>
 										</select>
 									</div>
-									<div class="col-md-3 col-xs-12 col-sm-3">
+									<div class="col-md-2 col-xs-12 col-sm-3">
 										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Verification Status</label>
 										<select class="chosenSelect chosen-select" id="alertVerificationStatusId" >
 											<option value="0" selected="selected">All</option>
@@ -173,7 +217,7 @@
 											<option value="2">Completed</option>
 										</select>
 									</div>
-									<div class="col-md-3 col-xs-12 col-sm-3">
+									<div class="col-md-2 col-xs-12 col-sm-3">
 										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Verification Date</label>  
 										<div class="input-group">  
 											<input placeholder="click here for date" type="text" class="form-control" id="verificationDateRangePickerId"/>  
@@ -181,7 +225,14 @@
 												<i class="glyphicon glyphicon-calendar"></i>
 											</span>     
 										</div>    
-									</div>  
+									</div>
+									<div class="col-md-2 col-xs-12 col-sm-3">
+										<label style="font-size:14px;" class="textcolor_black text_capital">Alert Type</label>
+										<select class="chosenSelect chosen-select" id="alerttTypeId" >
+											<option value="ownAlerts">My Own Alerts</option>
+											<option value="areaAlerts">My Area Alerts</option>
+										</select>
+									</div>									
 									<div class="col-md-2 col-xs-12 col-sm-3">  
 										<button style="margin-top: 25px;" id="searchBtId" onclick="getLocationFilterAlertData();" class="btn  btn-success m_top20 " type="button">View</button>
 									</div>
@@ -216,7 +267,7 @@ $(document).on("click",".menuSelection li",function(){
 	$(this).addClass("active");
 });
 $('.chosenSelect').chosen({width:'100%'});
-
+var globalRadioVal ="ownAlerts";
 $(document).ready(function(){
 	$("#dateRangePickerId").daterangepicker({
 		opens:'left',
@@ -455,13 +506,16 @@ $(document).on("change","#alertTypeId",function(){
 
 function getTotalAlertGroupByStatus(stateId,fromDate,toDate){
 	var alertTypeId = $("#alertTypeId").val();
+	//var radioVal = $("input[name='radioAlerts']:checked").val();
+	var radioVal = globalRadioVal;
+	$('#alerttTypeId').val(radioVal).trigger('chosen:updated');
 	var jsObj = { 
 		stateId : stateId,     
 		fromDate : fromDate,
 		toDate : toDate,
 		alertyTypeId : alertTypeId,
 		tdpCadreId : globalTdpCadreId,
-		radioVal : ''
+		radioVal : radioVal		
 	}
 	$.ajax({
 		type : 'POST',      
@@ -519,13 +573,16 @@ function buildTotalAlertGroupByStatus(result){
 
 function getTotalAlertGroupByStatusThenCategory(stateId,fromDate,toDate){
 	var alertTypeId = $("#alertTypeId").val();
+	//var radioVal = $("input[name='radioAlerts']:checked").val();
+	var radioVal = globalRadioVal;
+	$('#alerttTypeId').val(radioVal).trigger('chosen:updated');
 	var jsObj = { 
 		stateId : stateId,     
 		fromDate : fromDate,
 		toDate : toDate,
 		alertyTypeId : alertTypeId,
 		tdpCadreId : globalTdpCadreId,
-		radioVal:''
+		radioVal : radioVal
 	}
 	$.ajax({
 		type : 'POST',      
@@ -697,6 +754,10 @@ function getAdvanceLocationFilterAlertData(){
 		}
 		if(alertTpeId== null || alertTpeId.length==0)
 			alertTpeId=0;
+		//var radioVal = $("input[name='radioAlerts']:checked").val();
+		
+		var radioVal = globalRadioVal;
+		$('#alerttTypeId').val(radioVal).trigger('chosen:updated');
 		var jsObj =
 			{
 				statusId:statusId,
@@ -717,7 +778,7 @@ function getAdvanceLocationFilterAlertData(){
 				toDate2 : toDat2   ,
 				involvedCadreId:0,
 				impactId:0,
-				radioVal : ''
+				radioVal : radioVal
 			};
 			
 		$.ajax({
@@ -760,7 +821,8 @@ function getAdvanceLocationFilterAlertData(){
 		var statusId = $('#alertStatusId').val();	
 		if(alertTpeId== null || alertTpeId.length==0)
 			alertTpeId=0;
-		
+		//var radioVal = $("input[name='radioAlerts']:checked").val();
+		var radioVal = $('#alerttTypeId').val();
 		var jsObj =
 			 {
 				statusId:statusId,
@@ -781,7 +843,7 @@ function getAdvanceLocationFilterAlertData(){
 				toDate2 : ""   ,
 				involvedCadreId:0,
 				impactId:0,
-                radioVal : ''
+                radioVal : radioVal
 		};
 		
 		$.ajax({
@@ -943,6 +1005,9 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 		impactScopeId=levelId;
 		levelId=0;
 	}
+	//var radioVal = $("input[name='radioAlerts']:checked").val();
+	var radioVal = globalRadioVal;
+	$('#alerttTypeId').val(radioVal).trigger('chosen:updated');
 	var jsObj =
 	{
 		alertTypeId:alertTpeId,
@@ -955,7 +1020,7 @@ function getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,c
 		assignId:assignId,
 		impactScopeId:impactScopeId,
 		task : locationBlock,
-		radioVal : ''
+		radioVal : radioVal
 	};
 	
 	$.ajax({
@@ -1078,6 +1143,8 @@ function getLocationFilterAlertData()
 		var statusId = $('#alertStatusId').val();	
 		if(alertTpeId== null || alertTpeId.length==0)
 			alertTpeId=0;
+		//var radioVal = $("input[name='radioAlerts']:checked").val();
+		var radioVal = $('#alerttTypeId').val();
 		
 		var jsObj =
 			 {
@@ -1099,7 +1166,7 @@ function getLocationFilterAlertData()
 				toDate2 : ""   ,
 				involvedCadreId:0,
 				impactId:0,
-				radioVal : ''
+				radioVal : radioVal
 		};
 	
 		$.ajax({      
@@ -1143,8 +1210,61 @@ function getAllAlertsWithoutFilter(alertTpeId,alertCategoryId,actionTypeId,actio
 var GlobalalertId;
 $(document).on("click",".alertModel",function(){
 GlobalalertId = $(this).attr("attr-id");
-window.open("alertDetailsAction.action?alertId="+GlobalalertId+"", '_blank');
+window.open("alertDetailsAction.action?alertId="+GlobalalertId+"&tdpCadreId="+globalTdpCadreId+"&status="+globalRadioVal+"", '_blank');
 });
+
+
+/*$(document).on("click",".alertsCls",function(){
+	getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
+	getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate);
+	var levelId = 0;
+		var levelValue = 0;
+		$('.stateCls').each(function(){
+			if($(this).hasClass("active"))
+				levelValue = $(this).attr("attr_state_id");
+		});
+		
+		var statusId=0;
+		 var fromDate='';
+		 var toDate='';
+		 var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+		var	categoryId =0;
+		$("#errorId").html("");
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
+});*/
+
+$(document).on("click",".switch-btn li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		globalRadioVal = $(this).attr("value");
+	var levelId = 0;
+		var levelValue = 0;
+		$('.stateCls').each(function(){
+			if($(this).hasClass("active"))
+				levelValue = $(this).attr("attr_state_id");
+		});
+		
+		var statusId=0;
+		 var fromDate='';
+		 var toDate='';
+		 var dateStr = $("#dateRangePickerId").val(); 
+			if(dateStr !=null && dateStr.length>0){
+				fromDate = dateStr.split("-")[0];
+				toDate = dateStr.split("-")[1];
+			}
+		var	categoryId =0;
+		$("#errorId").html("");
+	getTotalAlertGroupByStatus(globalStateId,currentFromDate,currentToDate);
+	getTotalAlertGroupByStatusThenCategory(globalStateId,currentFromDate,currentToDate);
+	getLocationLevelAlertData(levelValue,levelId,statusId,fromDate,toDate,categoryId,"totalBlock");
+		
+});
+
 </script>
 </body>
 </html>
+
