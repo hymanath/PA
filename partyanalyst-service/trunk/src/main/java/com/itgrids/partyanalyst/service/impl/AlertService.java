@@ -12647,7 +12647,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					 String destPath = folderName+"/"+randomNumber+"."+ext;
 					 
 					 
-					 pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(entry.getValue());
+					 pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append("_").append(entry.getValue());
 					 
 					 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
 					 
