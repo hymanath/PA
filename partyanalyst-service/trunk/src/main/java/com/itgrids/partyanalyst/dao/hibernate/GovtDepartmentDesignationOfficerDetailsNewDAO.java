@@ -319,10 +319,24 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
 	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName, " +
 	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " +
 	        " model.govtDepartmentDesignationOfficer.govtDepartmentScopeId, model.govtDepartmentDesignationOfficer.levelValue ," +
-	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.shortName" +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.shortName, " +
+	        "  model.userId " +//5
 	        " from GovtDepartmentDesignationOfficerDetailsNew model " +
 	        " where model.userId = :userId");
 	    query.setParameter("userId", userId);
+	    return query.list();
+	  }
+	
+	public List<Object[]> getDesignationNameForUsers(List<Long> userIdsList){
+	    Query query = getSession().createQuery("select distinct model.user.userName , " +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName, " +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentScopeId, model.govtDepartmentDesignationOfficer.levelValue ," +
+	        " model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.shortName, " +
+	        "  model.userId " +//5
+	        " from GovtDepartmentDesignationOfficerDetailsNew model " +
+	        " where model.userId in (:userIdsList) ");
+	    query.setParameterList("userIdsList", userIdsList);
 	    return query.list();
 	  }
 	

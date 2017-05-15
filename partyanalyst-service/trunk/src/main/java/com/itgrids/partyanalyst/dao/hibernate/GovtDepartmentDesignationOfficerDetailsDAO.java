@@ -123,6 +123,29 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 		return query.list();
 	}
 	
+	public List<Object[]> getUserIdForDeptDesigOfficerIdAndGovtOfficerId(Long subTaskGovtOfficerId,Long govtDepartmentDesignationOfficerId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct  model.user.userId, '' " +
+						" from " +
+						" GovtDepartmentDesignationOfficerDetailsNew model" +
+						" where model.isDeleted = 'N' " );
+		if(subTaskGovtOfficerId != null && subTaskGovtOfficerId.longValue() > 0L){
+			queryStr.append(" and model.govtOfficerId = :subTaskGovtOfficerId  ");
+		}			
+		if(govtDepartmentDesignationOfficerId != null && govtDepartmentDesignationOfficerId.longValue() > 0L){
+			queryStr.append(" and model.govtDepartmentDesignationOfficerId = :govtDepartmentDesignationOfficerId  ");
+		}
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		if(subTaskGovtOfficerId != null && subTaskGovtOfficerId.longValue() > 0L){
+			query.setParameter("subTaskGovtOfficerId",subTaskGovtOfficerId); 
+		}
+		if(govtDepartmentDesignationOfficerId != null && govtDepartmentDesignationOfficerId.longValue() > 0L){
+			query.setParameter("govtDepartmentDesignationOfficerId",govtDepartmentDesignationOfficerId); 
+		}
+		return query.list();
+	}
+	
 	public List<String> getDesignationsForUser(Long userId){
 		Query query = getSession().createQuery("select model.govtOfficer.officerName " +
 				//("select model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName" +
