@@ -4475,6 +4475,43 @@ public class AlertManagementSystemService extends AlertService implements IAlert
         	try {
         		List<Object[]> objList = govtAlertSubTaskDAO.getSubTaskInfoForAlert(alertId);
         		Map<Long,AlertTrackingVO> tempMap = new LinkedHashMap<Long, AlertTrackingVO>(0);
+        		List<Long> assignedToList  =new ArrayList<Long>(0);
+        		Map<Long,String> userLocationMap = new HashMap<Long, String>(0);
+        		Map<Long,Long> subtaskUserMap = new HashMap<Long, Long>(0);
+        		
+        		if(objList != null && objList.size() > 0){
+        			for (Object[] obj : objList) {
+        				Long subTaskGovtOfficerId  = commonMethodsUtilService.getLongValueForObject(obj[6]);
+        				Long govtDepartmentDesignationOfficerId  = commonMethodsUtilService.getLongValueForObject(obj[7]);
+        				List<Object[]> userList = govtDepartmentDesignationOfficerDetailsDAO.getUserIdForDeptDesigOfficerIdAndGovtOfficerId(subTaskGovtOfficerId,govtDepartmentDesignationOfficerId);
+        				if(commonMethodsUtilService.isListOrSetValid(userList)){
+        					for (Object[] param : userList) {
+        						subtaskUserMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), commonMethodsUtilService.getLongValueForObject(param[0]));
+        						if(!assignedToList.contains(commonMethodsUtilService.getLongValueForObject(param[0])))
+                    				assignedToList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+							}
+        				}
+        			}
+        			
+        			if(commonMethodsUtilService.isListOrSetValid(assignedToList)){
+        				List<Object[]> userdtls = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationNameForUsers(assignedToList);
+        				if(commonMethodsUtilService.isListOrSetValid(userdtls)){
+        					String location="";
+        					for (Object[] param : userdtls) {
+    							Long locationTypeId = commonMethodsUtilService.getLongValueForObject(param[3]);
+    							Long scopeValue = commonMethodsUtilService.getLongValueForObject(param[4]);
+    							Long assignTO = commonMethodsUtilService.getLongValueForObject(param[6]);
+    							
+    							if(locationTypeId != null && locationTypeId.longValue()>0L){
+    								GovtDepartmentWorkLocation workLocation = govtDepartmentWorkLocationDAO.get(scopeValue);
+    								if(workLocation != null)
+    									location=workLocation.getLocationName();
+    							}
+    							userLocationMap.put(assignTO, location);
+    						}
+        				}
+        			}
+        		}
         		
         		if(objList != null && objList.size() > 0){
         			List<Long> subTaskIds = new ArrayList<Long>(0);
@@ -4521,7 +4558,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 									vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[5]));
 									vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[6]));
 									vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[7]));
-									
+									Long assignedTo = subtaskUserMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+									vo.setLocation(userLocationMap.get(assignedTo) != null ? userLocationMap.get(assignedTo) :"");
 								}
 							}
 						}

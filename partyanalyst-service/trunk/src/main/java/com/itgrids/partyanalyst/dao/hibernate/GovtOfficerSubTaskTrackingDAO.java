@@ -73,12 +73,18 @@ public class GovtOfficerSubTaskTrackingDAO extends GenericDaoHibernate<GovtOffic
 	
 	public List<Object[]> getSubTasksCommentsAndStatusHistory(List<Long> subTaskIdsList){
 		//0-status,1-comment,2-date,3-officerName,4-mobileNo,5-designationName,6-departmentName
-    	Query query = getSession().createQuery(" select  distinct model.govtAlertSubTaskId, model.govtAlertSubTask.alertSubTaskStatus.status," +
+    	Query query = getSession().createQuery(" select  distinct model.govtAlertSubTaskId, " +
+    			"model.govtAlertSubTask.alertSubTaskStatus.status," +
     			"comment.comment,"
-    			+ " model.insertedTime,model.govtAlertSubTask.subTaskGovtOfficer.officerName,model.govtAlertSubTask.subTaskGovtOfficer.mobileNo,"
-    			+ " model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName"
-    			+ " ,model.govtAlertSubTask.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName , " +
-    			" 	alertDepartmentDocument.document , model.govtAlertSubTask.alertSubTaskStatus.color,model.govtAlertSubTask.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName "
+    			+ " model.insertedTime," +
+    			"model.govtAlertSubTask.subTaskGovtOfficer.officerName," +
+    			"model.govtAlertSubTask.subTaskGovtOfficer.mobileNo,"//5
+    			+ " model.govtAlertSubTask.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName, "
+    			+ " model.govtAlertSubTask.alertAssignedOfficer.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName , " +
+    			" 	alertDepartmentDocument.document , " +
+    			"model.govtAlertSubTask.alertSubTaskStatus.color," +
+    			"model.govtAlertSubTask.govtDepartmentDesignationOfficer.levelValueGovtDepartmentWorkLocation.locationName," +//10
+    			"  model.alertAssignedOfficerNew.govtDepartmentDesignationOfficer.userId "
     			+ " from GovtOfficerSubTaskTracking model "
     			+ " left join model.alertDepartmentComment comment " +
     			"   left join model.alertDepartmentDocument alertDepartmentDocument "
