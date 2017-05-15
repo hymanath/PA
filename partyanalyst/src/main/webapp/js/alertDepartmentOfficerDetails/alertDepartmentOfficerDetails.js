@@ -351,7 +351,8 @@ $(document).on("change",".locationLevelWiseOnChange",function(){
 		var position = $(this).attr("attr_postion_val");
 		var locationLevelId = $(this).val();
 		$("#locationLevelWiseTableId"+position).html(spinner);
-		getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentId,"statusWise","alert","","count","desc",0,0,"","",locationLevelId,position,"singleCall")
+		getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentId,"statusWise","alert","","count","desc",0,0,"","",locationLevelId,position,"singleCall");
+		
 });
 //getAlertDetailsForGrievanceReportClick();
 function getAlertDetailsForGrievanceReportClick(){      
@@ -360,10 +361,16 @@ function getAlertDetailsForGrievanceReportClick(){
 	 var newspapersGlobalArr=[];    
 	 var channelGlobalArr=[];
 	 var callCenterGlobalArr=[];
-	 
+	 //locationLevelIdArr.push(1);
+	 //locationLevelIdArr.push(5);
+	 //locationLevelIdArr.push(6);
+	 //locationLevelIdArr.push(7);
+	//locationLevelIdArr.push(8);
+	// fromDateStr:callCenterUserFDate,
+		//toDateStr:callCenterUserTDate,
    var jsObj={
-		fromDateStr:"01/01/1997",
-		toDateStr:"31/12/2027",
+		fromDateStr:callCenterUserFDate,
+		toDateStr:callCenterUserTDate,
 		stateId : 1,
 		printIdArr : newspapersGlobalArr,
 		electronicIdArr : channelGlobalArr,		
@@ -371,15 +378,15 @@ function getAlertDetailsForGrievanceReportClick(){
 		parentGovtDepartmentScopeId : 1,
 		sortingType :"",
 		order :"",
-		alertType :"alert",
+		alertType :"feedback",//alert,feedback,reopen
 		group :"status",
 		subLevels:locationLevelIdArr,   
 		chanelIdArr:callCenterGlobalArr,
 		searchType:"statusWise",
-		filterParentScopeId :8,
+		filterParentScopeId :7,
 		filterScopeValue:0,
 		sourseId:0 ,  
-			statusId:2
+		statusId:1//alert=alertStatusId,feedback=alert_feedback_status_id,reopen=0
 	}
     $.ajax({
     type:'GET',         
