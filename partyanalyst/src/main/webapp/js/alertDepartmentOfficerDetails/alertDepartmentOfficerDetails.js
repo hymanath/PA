@@ -364,9 +364,9 @@ function getAlertDetailsForGrievanceReportClick(){
 	 //locationLevelIdArr.push(1);
 	 //locationLevelIdArr.push(5);
 	 //locationLevelIdArr.push(6);
-	 //locationLevelIdArr.push(7);
+	// locationLevelIdArr.push(7);
 	//locationLevelIdArr.push(8);
-	// fromDateStr:callCenterUserFDate,
+	 //fromDateStr:callCenterUserFDate,
 		//toDateStr:callCenterUserTDate,
    var jsObj={
 		fromDateStr:callCenterUserFDate,
@@ -375,17 +375,17 @@ function getAlertDetailsForGrievanceReportClick(){
 		printIdArr : newspapersGlobalArr,
 		electronicIdArr : channelGlobalArr,		
 		govtDepartmentId : 49,
-		parentGovtDepartmentScopeId : 1,
+		parentGovtDepartmentScopeId : 1,//result.sublist[0]
 		sortingType :"",
 		order :"",
-		alertType :"feedback",//alert,feedback,reopen
-		group :"status",
+		alertType :"feedback",//alert-graph,feedback,reopen
+		group :"status",//status
 		subLevels:locationLevelIdArr,   
 		chanelIdArr:callCenterGlobalArr,
-		searchType:"statusWise",
-		filterParentScopeId :7,
-		filterScopeValue:0,
-		sourseId:0 ,  
+		searchType:"statusWise",//statusWise
+		filterParentScopeId :7,//graphblock=0
+		filterScopeValue:0,//stateblock,graph=0
+		sourseId:0 , //categeries 
 		statusId:1//alert=alertStatusId,feedback=alert_feedback_status_id,reopen=0
 	}
     $.ajax({
