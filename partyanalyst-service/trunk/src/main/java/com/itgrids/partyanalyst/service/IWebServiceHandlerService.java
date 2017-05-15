@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
+import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
@@ -216,4 +217,5 @@ public interface IWebServiceHandlerService {
     public AlertVerificationVO getAlertVerificationDtls(Long alertId);
     public List<AlertCoreDashBoardVO> getDeptWiseStatusWiseAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long statusId);
     public List<GrievanceAlertVO> getAllGrievancesForCaller(String mobileNo);
+    public NotificationDeviceVO getAccommodationDetails(String notificationId,Long constId);
 }

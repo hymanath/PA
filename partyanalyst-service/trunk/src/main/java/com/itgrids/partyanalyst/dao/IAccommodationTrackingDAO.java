@@ -9,5 +9,5 @@ import com.itgrids.partyanalyst.model.AccommodationTracking;
 public interface IAccommodationTrackingDAO extends GenericDao<AccommodationTracking, Long>{
 	public List<Object[]> getAccommodationTrackingInfoByNotificationType(Long notificationType, Long locationType,Long lastAccommodationTrackingId);
 	public List<Long> getInactiveAccommodationTrackingInfoByNotificationType(Long typeId, Long locationType,Long lastAccommodationTrackingId);
-	public List<Object[]> getEventParkingDetails(Long notificationTypeId,Long locationId);
+	public List<Object[]> getEventParkingDetails(List<Long> notificationTypeIds,Long locationId);
 }
