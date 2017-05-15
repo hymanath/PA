@@ -2517,7 +2517,7 @@ function buildSubTaskInfoForAlert(result,alertId)
 											str+='<p>'+result[i].attachementsList[k].title+' ';
 											
 											str+='</p>';
-											str+='<small class="pull-right">DEPT : '+result[i].attachementsList[k].deptName+' DESIGNATION : '+result[i].attachementsList[k].designation+'</small>';
+											str+='<small class="pull-right">DEPT : <span style="color: #60bbfd;">'+result[i].attachementsList[k].deptName+'</span> DESIGNATION : <span style="color: #60bbfd;">'+result[i].attachementsList[k].designation+'</span> Location : <span style="color: #60bbfd;">'+result[i].attachementsList[k].location+'</span> </small>';
 										str+='</div>';
 										str+='<div class="col-sm-1">';
 											str+='<ul class="list-icons list-inline">';
@@ -2554,7 +2554,7 @@ function buildSubTaskInfoForAlert(result,alertId)
 											str+='<p>'+result[i].commentList[k].title+'';
 											
 											str+='</p>';
-											str+='<small class="pull-right">DEPT : <span style="color: #60bbfd;">'+result[i].commentList[k].deptName+'</span> DESIGNATION : <span style="color: #60bbfd;">'+result[i].commentList[k].designation+'</small>';
+											str+='<small class="pull-right">DEPT : <span style="color: #60bbfd;">'+result[i].commentList[k].deptName+'</span> DESIGNATION : <span style="color: #60bbfd;">'+result[i].commentList[k].designation+'</span> Location : <span style="color: #60bbfd;">'+result[i].commentList[k].location+'</span> </small>';
 										str+='</div>';
 										str+='<div class="col-sm-1">';
 											str+='<span class="icon-name icon-primary" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span>';
