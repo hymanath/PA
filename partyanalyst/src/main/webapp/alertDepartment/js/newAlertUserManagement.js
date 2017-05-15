@@ -2189,11 +2189,10 @@ $(document).on("click",".switch-btn li",function(){
 		$(this).addClass("active");
 		var departmentId = $(this).attr("attr_department_id");
 		var departmentName = $(this).attr("attr_department_name");
-	if(searchType == "statuswise" || searchType == "scopewise" || searchType == "alertSource"){
-		var parentIdStr = $(this).attr("attr_level_idstr").split(',');
 		var searchType =  $(this).attr("attr_type");
 		var alertType = getAlertType();
-		
+	if(searchType == "statuswise" || searchType == "scopewise" || searchType == "alertSource"){
+		var parentIdStr = $(this).attr("attr_level_idstr").split(',');
 		var subLevelIdStr = $(this).attr("attr_sublevel_id").split(',');
 		var sortingType='';
 		var orderType='';
