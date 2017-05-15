@@ -153,7 +153,7 @@ public interface IAlertManagementSystemService {
 				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
 				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
 				String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
-				Long filterScopeValue,String searchType);
+				Long filterScopeValue,String searchType,Long source);
 	 public List<AlertCoreDashBoardVO> getLocationFilterClickDetails(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
 				List<Long> desigIds,Long priorityId,List<Long> statusIds ,List<Long> deptIds, Long lagStartCnt, 
 				Long lagEndCnt,String alertType,String isMoreThanYrChkd,String isLagChkd,List<Long> paperIdList,List<Long> chanelIdList,List<Long> calCntrIdList,Long childLevelId);

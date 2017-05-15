@@ -4112,7 +4112,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      public List<Object[]> getAlertDetailsLocationWiseBasedOnDepartmentLevel(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
-     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue){
+     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,Long source){
     	 
      	StringBuilder queryStr = new StringBuilder();
      	queryStr.append(" select ");
@@ -4164,7 +4164,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		queryStr.append(" where ");
  		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N'  ");
  		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
- 		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+ 		if(source != null && source.longValue() > 0){
+ 			queryStr.append(" and A.alert_category_id =:source   ");
+ 		}else{
+ 			queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+ 		}
+ 		
  		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
  		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
  		
@@ -4325,7 +4330,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(filterScopeValue != null && filterScopeValue.longValue() > 0L){
  			query.setParameter("filterScopeValue",filterScopeValue);
  		}
- 		
+ 		if(source != null && source.longValue() > 0){
+ 			query.setParameter("source",source);
+ 		}
  		return query.list();
      }
      public List<Long> getAlertIdsBasedOnRequiredParameter(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
@@ -5525,7 +5532,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	public List<Object[]> getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(Date fromDate,Date toDate,
 	     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
 	     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
-	     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue, String reopen){
+	     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue, String reopen,Long source){
 	    	 
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -5588,7 +5595,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		queryStr.append(" and ALTFS.is_deleted='N' ");
 		queryStr.append(" and (A.social_media_type_id is not null or A.alert_call_center_type_id is not null) ");
 		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
-		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+		if(source != null && source.longValue() > 0L){
+			queryStr.append(" and A.alert_category_id =:source  ");
+		}else{
+			queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+		}
+		
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
 		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
 
@@ -5751,7 +5763,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		}
  		if(filterScopeValue != null && filterScopeValue.longValue() > 0L){
  			query.setParameter("filterScopeValue",filterScopeValue);
- 		}	
+ 		}
+ 		if(source != null && source.longValue() > 0L){
+ 			query.setParameter("source",source);
+		}
 	 	return query.list();
 	}
 	public List<Object[]> getAlertDetailsLocationWiseBasedOnDepartmentLevelForOfficer(Date fromDate,Date toDate,
