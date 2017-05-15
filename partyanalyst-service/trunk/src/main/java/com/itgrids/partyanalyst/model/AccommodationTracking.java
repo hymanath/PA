@@ -24,7 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "accommodation_tracking")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AccommodationTracking extends BaseModel implements Serializable{
-	
+
 	private Long accommodationTrackingId;
 	private Long notificationTypeId;
 	private Long locationTypeId;
@@ -38,10 +38,11 @@ public class AccommodationTracking extends BaseModel implements Serializable{
 	private String isActive;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long eventId;	
 	
 	private RegionScopes RegionScopes;
 	private NotificationType notificationType;
-	
+	private Event event;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -51,7 +52,7 @@ public class AccommodationTracking extends BaseModel implements Serializable{
 	}
 	public void setAccommodationTrackingId(Long accommodationTrackingId) {
 		this.accommodationTrackingId = accommodationTrackingId;
-	}
+	}	
 	@Column(name = "notification_type_id")
 	public Long getNotificationTypeId() {
 		return notificationTypeId;
@@ -136,6 +137,13 @@ public class AccommodationTracking extends BaseModel implements Serializable{
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	@Column(name = "event_id")	
+	public Long getEventId() {
+		return eventId;
+	}
+	public void setEventId(Long eventId) {
+		this.eventId = eventId;
+	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="location_type_id", insertable=false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
@@ -156,7 +164,14 @@ public class AccommodationTracking extends BaseModel implements Serializable{
 	public void setNotificationType(NotificationType notificationType) {
 		this.notificationType = notificationType;
 	}
-	
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="event_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Event getEvent() {
+		return event;
+	}
+	public void setEvent(Event event) {
+		this.event = event;
+	}	
 }

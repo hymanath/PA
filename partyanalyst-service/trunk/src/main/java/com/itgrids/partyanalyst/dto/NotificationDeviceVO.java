@@ -28,6 +28,10 @@ public class NotificationDeviceVO {
 	private String deviceName;
 	private Long orderNo;
 	private String isActive;
+	private String locationName;
+    private String address;
+	private List<NotificationDeviceVO> parkingLst = new ArrayList<NotificationDeviceVO>(0);
+	private List<NotificationDeviceVO> vipParkingLst = new ArrayList<NotificationDeviceVO>(0);
 	
 	
 	public String getIsActive() {
@@ -174,8 +178,38 @@ public class NotificationDeviceVO {
 	}
 	public void setImeiNo(String imeiNo) {
 		this.imeiNo = imeiNo;
+	}   
+	
+	public String getLocationName() {
+		return locationName;
 	}
-	
-	
-	
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public List<NotificationDeviceVO> getParkingLst() {
+		return parkingLst;
+	}
+
+	public void setParkingLst(List<NotificationDeviceVO> parkingLst) {
+		this.parkingLst = parkingLst;
+	}
+
+	public List<NotificationDeviceVO> getVipParkingLst() {
+		return vipParkingLst;
+	}
+
+	public void setVipParkingLst(List<NotificationDeviceVO> vipParkingLst) {
+		this.vipParkingLst = vipParkingLst;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+		
 }
