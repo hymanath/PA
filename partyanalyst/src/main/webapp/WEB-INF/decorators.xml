@@ -736,6 +736,7 @@
 		<pattern>/centralPartyMembersAlertDashboardAction*</pattern>
 		<pattern>/committeeCreationDetailsAction*</pattern>
 		<pattern>/assemblySessionReportAction*</pattern>
+		<pattern>/electionBoothCommitteeAction*</pattern>
 		 <!-- geoDemographics Start -->
 		<pattern>/geoDemographicsAction*</pattern>
 		<pattern>/newConstituencyPage*</pattern>
