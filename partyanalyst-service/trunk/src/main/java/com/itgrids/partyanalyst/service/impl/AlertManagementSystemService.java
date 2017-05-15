@@ -10171,11 +10171,18 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 				Long locationId = param.getId();
 				if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
 					for(AlertCoreDashBoardVO innerParam : param.getSubList1()){
-						if(innerParam.getId().longValue() == 4L){//feedback pending count
+						if(innerParam.getId().longValue() == 4L){//feedback pending count   
 							Long totalClosedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndClosedAlerts.get(locationId));
 							Long totalFeedbackCollectedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndFeedbackCollectedAlerts.get(locationId));
-							innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
-							feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+(totalClosedAlert-totalFeedbackCollectedAlert));
+							Long pending = totalClosedAlert-totalFeedbackCollectedAlert;
+							if(pending.longValue() < 0L){
+								innerParam.setCount(0L);
+								feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+0L);
+							}else{
+								innerParam.setCount(pending);
+								feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+pending);
+							}
+							
 						}
 					}
 				}
@@ -10183,8 +10190,8 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			
 			if(feedbackStatusIdAndTotalCount.size() > 0){
 				if(returnList != null && returnList.size() > 0){
-					AlertCoreDashBoardVO altCorevo = returnList.get(0);
-					for(AlertCoreDashBoardVO param : altCorevo.getSubList()){
+					AlertCoreDashBoardVO altCorevo = returnList.get(0);   
+					for(AlertCoreDashBoardVO param : altCorevo.getSubList1()){
 						if(feedbackStatusIdAndTotalCount.get(param.getId()) != null){
 							param.setGrandTotal(feedbackStatusIdAndTotalCount.get(param.getId()));
 						}
@@ -10313,8 +10320,16 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 						if(innerParam.getId().longValue() == 4L){//feedback pending count
 							Long totalClosedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndClosedAlerts.get(locationId));
 							Long totalFeedbackCollectedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndFeedbackCollectedAlerts.get(locationId));
-							innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
-							feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+(totalClosedAlert-totalFeedbackCollectedAlert));
+							//innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
+							//feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+(totalClosedAlert-totalFeedbackCollectedAlert));
+							Long pending = totalClosedAlert-totalFeedbackCollectedAlert;
+							if(pending.longValue() < 0L){
+								innerParam.setCount(0L);
+								feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+0L);
+							}else{
+								innerParam.setCount(pending);
+								feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+pending);
+							}
 						}
 					}
 				}
