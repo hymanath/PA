@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IAccommodationTrackingDAO;
 import com.itgrids.partyanalyst.model.AccommodationTracking;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AccommodationTrackingDAO extends GenericDaoHibernate<AccommodationTracking, Long> implements IAccommodationTrackingDAO{
 
@@ -74,18 +75,25 @@ public class AccommodationTrackingDAO extends GenericDaoHibernate<AccommodationT
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getEventParkingDetails(Long notificationTypeId,Long locationId){
-		Query query = getSession().createQuery(" select " +
+	public List<Object[]> getEventParkingDetails(List<Long> notificationTypeIds,Long locationId){
+		Query query = getSession().createQuery(" select model.notificationTypeId, " +
 				" model.locationName," +
 				" model.address," +
 				" model.longitude," +
 				" model.latitude" +
 				" from AccommodationTracking model " +
-				" where model.notificationTypeId = :notificationTypeId and " +
+				" where model.notificationTypeId in (:notificationTypeIds) and " +
 				" model.locationValue = :locationId and " +
-				" model.eventId = 7 and " +
-				" model.locationTypeId = 4 and " +
+				" model.eventId = :eventId and " +
+				" model.locationTypeId = :locationLevel and " +
 				" model.isActive='true' ");
+		
+		
+		query.setParameterList("notificationTypeIds",notificationTypeIds);
+		query.setParameter("locationId", locationId);
+		query.setParameter("eventId", IConstants.MAHANADU_2017_EVENT_ID);
+		query.setParameter("locationLevel", 4l);
+		
 		return query.list();
 	}
 	

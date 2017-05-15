@@ -1305,4 +1305,5 @@ public interface IConstants {
 	public static final Long PANCHAYATRAJ_PANCHAYAT_SECRERATORY_ID=72L;
 	
 	public static final Long GOVT_SOCIAL_MEDIA_CATEGORY_ID=5L;
+	public static final Long MAHANADU_2017_EVENT_ID=51l;
 }

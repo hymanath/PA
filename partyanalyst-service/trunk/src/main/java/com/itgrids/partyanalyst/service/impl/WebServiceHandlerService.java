@@ -98,6 +98,7 @@ import com.itgrids.partyanalyst.dto.MessagePropertyVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserSmsStatusVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVO;
 import com.itgrids.partyanalyst.dto.MobileAppUserVoterVO;
+import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.NtrTrustStudentVO;
 import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -4879,5 +4880,22 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("exception occured in  the getAllGrievancesForCaller  method in WebServiceHandlerService");
 		}
 		 return returnList;
+	 }
+	 
+	 public NotificationDeviceVO getAccommodationDetails(String notificationTypeId,Long constId){
+		 NotificationDeviceVO vo = new NotificationDeviceVO();
+		 try {
+			 String s[] = notificationTypeId.split(",");
+			 List<Long> list = new ArrayList<Long>(0);
+			 if(s != null && s.length > 0){
+				 for (int i = 0; i < s.length; i++) {
+					 list.add(Long.parseLong(s[i]));
+				}
+			 }
+			 vo = notificationService.getEventAccommodationParkingDetails(list,constId);
+		} catch (Exception e) {
+			Log.error("Exception raised at getAccommodationDetails", e);
+		}
+		 return vo;
 	 }
 }
