@@ -10534,6 +10534,10 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
 					if(alertType != null && alertType.equalsIgnoreCase("alert")){
 						alertIds = alertAssignedOfficerNewDAO.getAlertDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,statusId,sourseId);
+					}else if(alertType != null && alertType.equalsIgnoreCase("feedback")){
+						alertIds = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false",sourseId,statusId);
+					}else if(alertType != null && alertType.equalsIgnoreCase("reopen")){
+						alertIds = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"true",sourseId,statusId);
 					}
 				}
 			}
