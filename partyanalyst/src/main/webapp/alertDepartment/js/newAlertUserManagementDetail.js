@@ -2245,6 +2245,9 @@ function getAlertData(alertId)
 			{
 				getGroupedArticlesInfo(result[0].alertCategoryTypeId)
 			}
+			if(result[0].categoryId == 5){
+				buildSocialMediaImage(result[0].documentList);
+			}
 		}else{
 			$("#alertDetails").html("NO DATA AVAILABLE...");
 		}
@@ -2333,6 +2336,26 @@ function buildAlertDataNew(result)
 	$("#articleAttachment").html(str1);
 	
 }
+function buildSocialMediaImage(result){
+	$("#existingDocsDivId").html('');
+	var str='';
+	
+	if(result !=null && result.length>0){
+		str+='<ul class="list-inline imageShowOpen">';
+			for(var i in result){
+				str+='<span style="background-color: gray; display: inline-block; border-radius: 5px; height: 8px; width: 8px;"></span><li class="" style="margin-top:25px;" attr_doc_id="'+i+'"  attr_path="'+result[i]+'">';
+					str+='<img src="../images/'+result[i]+'" style="width: 100px; height: 100px;cursor:pointer" />';
+					//str+='<a target="_blank" href="http://www.mytdp.com/images/'+result[i].name+'" style="cursor:pointer;">'+result[i].name+'</a>';
+				str+='</li>&nbsp;&nbsp;';
+			}
+		str+='</ul>';
+		}
+		setTimeout(function(){
+			$("#existingDocsDivId").html(str);	
+		},1000);
+		
+}
+
 function getAlertCategortByAlert(alertId){
 	$("#categoryId").html('');
 	$("#alertCategory").html(spinner);
@@ -2494,6 +2517,7 @@ function buildSubTaskInfoForAlert(result,alertId)
 											str+='<p>'+result[i].attachementsList[k].title+' ';
 											
 											str+='</p>';
+											str+='<small class="pull-right">DEPT : '+result[i].attachementsList[k].deptName+' DESIGNATION : '+result[i].attachementsList[k].designation+'</small>';
 										str+='</div>';
 										str+='<div class="col-sm-1">';
 											str+='<ul class="list-icons list-inline">';
@@ -2527,9 +2551,10 @@ function buildSubTaskInfoForAlert(result,alertId)
 											str+='<i class="glyphicon glyphicon-ok"></i>';
 										str+='</div>';
 										str+='<div class="col-sm-10" >';
-											str+='<p>'+result[i].commentList[k].title+' ';
+											str+='<p>'+result[i].commentList[k].title+'';
 											
 											str+='</p>';
+											str+='<small class="pull-right">DEPT : <span style="color: #60bbfd;">'+result[i].commentList[k].deptName+'</span> DESIGNATION : <span style="color: #60bbfd;">'+result[i].commentList[k].designation+'</small>';
 										str+='</div>';
 										str+='<div class="col-sm-1">';
 											str+='<span class="icon-name icon-primary" id="statusIdColor" style="background-color: '+result[i].commentList[k].color+'"  title="'+result[i].commentList[k].status+'"></span>';
