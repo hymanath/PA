@@ -2614,4 +2614,17 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	
+	@GET
+	@Path("/getAccommodationDetails/{notificationId}/{constId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public NotificationDeviceVO getAccommodationDetails(@PathParam("notificationId") String notificationId,@PathParam("constId") Long constId){
+		try{			
+			return webServiceHandlerService.getAccommodationDetails(notificationId,constId);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAlertStatusCommentsTrackingDetails() Method, Exception is ",e);
+			return null;
+		}
+	}
 }
