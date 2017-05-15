@@ -3628,10 +3628,10 @@ public String getAlertSourceWiseAlert(){
 			String searchType = jObj.getString("searchType");
 			Long filterParentScopeId = jObj.getLong("filterParentScopeId");
 			Long filterScopeValue = jObj.getLong("filterScopeValue");
-			
+			Long sourceId = jObj.getLong("source");
 	        alertCoreDashBoardVOs = alertManagementSystemService.getOfficerLocationWiseDepartmentOverviewAlertCount(fromDateStr,
 			toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
-			order,alertType,group,callCenterIdList,sublevels,filterParentScopeId,filterScopeValue,searchType);
+			order,alertType,group,callCenterIdList,sublevels,filterParentScopeId,filterScopeValue,searchType,sourceId);
 	        
 			
 		} catch (Exception e) {

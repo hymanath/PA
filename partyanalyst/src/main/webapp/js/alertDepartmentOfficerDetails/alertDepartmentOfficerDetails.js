@@ -248,42 +248,7 @@ function buildHighchart(divId,statusNamesArray,statusIdNameArr){
              }],
          });
 }
-//getAlertDetailsForGrievanceReportClick();
-function getAlertDetailsForGrievanceReportClick(){      
-	 var source = $("#selectMediaId").val();
-	 var locationLevelIdArr=[];                                                                            
-	 var newspapersGlobalArr=[];    
-	 var channelGlobalArr=[];
-	 var callCenterGlobalArr=[];
-	 
-   var jsObj={
-		fromDateStr:"01/01/1997",
-		toDateStr:"31/12/2027",
-		stateId : 1,
-		printIdArr : newspapersGlobalArr,
-		electronicIdArr : channelGlobalArr,		
-		govtDepartmentId : 49,
-		parentGovtDepartmentScopeId : 1,
-		sortingType :"",
-		order :"",
-		alertType :"alert",
-		group :"status",
-		subLevels:locationLevelIdArr,   
-		chanelIdArr:callCenterGlobalArr,
-		searchType:"statusWise",
-		filterParentScopeId :8,
-		filterScopeValue:0,
-		sourseId:0 ,  
-			statusId:2
-	}
-    $.ajax({
-    type:'GET',         
-    url: 'getAlertDetailsForGrievanceReportClickAction.action',
-    data: {task :JSON.stringify(jsObj)}     
-    }).done(function(result){
-		
-	});
-}
+
 function buildTableDivId(result){
 	var str='';
 	for(var i in result[0].subList1){
@@ -388,3 +353,39 @@ $(document).on("change",".locationLevelWiseOnChange",function(){
 		$("#locationLevelWiseTableId"+position).html(spinner);
 		getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentId,"statusWise","alert","","count","desc",0,0,"","",locationLevelId,position,"singleCall")
 });
+//getAlertDetailsForGrievanceReportClick();
+function getAlertDetailsForGrievanceReportClick(){      
+	 var source = $("#selectMediaId").val();
+	 var locationLevelIdArr=[];                                                                            
+	 var newspapersGlobalArr=[];    
+	 var channelGlobalArr=[];
+	 var callCenterGlobalArr=[];
+	 
+   var jsObj={
+		fromDateStr:"01/01/1997",
+		toDateStr:"31/12/2027",
+		stateId : 1,
+		printIdArr : newspapersGlobalArr,
+		electronicIdArr : channelGlobalArr,		
+		govtDepartmentId : 49,
+		parentGovtDepartmentScopeId : 1,
+		sortingType :"",
+		order :"",
+		alertType :"alert",
+		group :"status",
+		subLevels:locationLevelIdArr,   
+		chanelIdArr:callCenterGlobalArr,
+		searchType:"statusWise",
+		filterParentScopeId :8,
+		filterScopeValue:0,
+		sourseId:0 ,  
+			statusId:2
+	}
+    $.ajax({
+    type:'GET',         
+    url: 'getAlertDetailsForGrievanceReportClickAction.action',
+    data: {task :JSON.stringify(jsObj)}     
+    }).done(function(result){
+		
+	});
+}
