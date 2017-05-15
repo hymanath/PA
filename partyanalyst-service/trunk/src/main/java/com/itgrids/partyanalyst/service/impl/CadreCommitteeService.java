@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.dao.IActivityTypeDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeChangeDesignationsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeIncreasedPositionsDAO;
 import com.itgrids.partyanalyst.dao.ICadreCommitteeRoleDAO;
@@ -159,6 +160,7 @@ import com.itgrids.partyanalyst.model.ActivityConductedInfo;
 import com.itgrids.partyanalyst.model.ActivityLocationInfo;
 import com.itgrids.partyanalyst.model.ActivityLocationInfoDates;
 import com.itgrids.partyanalyst.model.ActivityScope;
+import com.itgrids.partyanalyst.model.BoothIncharge;
 import com.itgrids.partyanalyst.model.CadreCommitteeChangeDesignations;
 import com.itgrids.partyanalyst.model.CadreCommitteeIncreasedPositions;
 import com.itgrids.partyanalyst.model.CadreOtpDetails;
@@ -295,7 +297,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private ICommitteeConfirmRuleConditionDAO committeeConfirmRuleConditionDAO;
 	private IActivityConductedInfoDAO activityConductedInfoDAO;
 	private IRequiredAttributeDAO requiredAttributeDAO;
-	
+	private IBoothInchargeDAO boothInchargeDAO;
 		
 	public IRequiredAttributeDAO getRequiredAttributeDAO() {
 		return requiredAttributeDAO;
@@ -766,6 +768,12 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	}
 	public void setActivityConductedInfoDAO(IActivityConductedInfoDAO activityConductedInfoDAO) {
 		this.activityConductedInfoDAO = activityConductedInfoDAO;
+	}
+    public IBoothInchargeDAO getBoothInchargeDAO() {
+		return boothInchargeDAO;
+	}
+    public void setBoothInchargeDAO(IBoothInchargeDAO boothInchargeDAO) {
+		this.boothInchargeDAO = boothInchargeDAO;
 	}
 
 	public CadreCommitteeVO getCadreDetailsByTdpCadreId(Long tdpCadreId)
@@ -22073,4 +22081,59 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		}
 		return finalList;
 	}
+	public ResultStatus saveElectionBoothCommitteeDetails(Long userId,Long boothId,Long tdpCadreId){
+		ResultStatus status = new ResultStatus();
+		try{
+			BoothIncharge boothIncharge = new BoothIncharge();
+				boothIncharge.setBoothId(boothId);
+				boothIncharge.setTdpCadreId(tdpCadreId);
+				boothIncharge.setIsActive("Y");
+				boothIncharge.setIsDeleted("N");
+				boothIncharge.setBoothInchargeEnrollmentId(1l);
+				boothIncharge.setInsertedBy(userId);
+				boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				boothInchargeDAO.save(boothIncharge);
+				
+			  status.setResultCode(0);
+		}catch(Exception e){
+			status.setResultCode(1);
+			LOG.error("Exception raised in saveElectionBoothCommitteeDetails ", e);
+		}
+		return status;
+	 }
+
+		public List<CadreCommitteeVO> getBoothsForMandals(Long mandalId,Long constituencyId){
+		 List<CadreCommitteeVO> returnList = new ArrayList<CadreCommitteeVO>();
+		 try{
+			 List<Long> mandalIds = new ArrayList<Long>();
+			List<Long> localBodyIds = new ArrayList<Long>();
+			List<Object[]> boothList = null;
+				
+			 if((mandalId.toString().substring(0,1)).equalsIgnoreCase("2")){
+					mandalIds.add(Long.valueOf(mandalId.toString().substring(1)));
+			}
+			if((mandalId.toString().substring(0,1)) .equalsIgnoreCase("1")){
+				localBodyIds.add(Long.valueOf(mandalId.toString().substring(1)));
+			}
+			 if(mandalIds != null && mandalIds.size() > 0l){
+				 boothList = boothDAO.getBoothsForTehsilId(mandalIds,constituencyId);
+			 }
+			 if(localBodyIds != null && localBodyIds.size() > 0l){
+				 boothList = boothDAO.getBoothsForMuncipality(localBodyIds,constituencyId);
+			 }
+			 if(boothList != null && boothList.size() > 0l){
+				 for (Object[] objects : boothList) {
+					 CadreCommitteeVO vo = new CadreCommitteeVO();
+					 vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));//BoothId
+					 vo.setRoleId(commonMethodsUtilService.getLongValueForObject(objects[1]));//partNo
+					 vo.setRelativeName(commonMethodsUtilService.getStringValueForObject(objects[2]));//villageCvred
+					 returnList.add(vo);
+				}
+			 } 
+		 }catch(Exception e){
+			 LOG.error("Exception raised in saveElectionBoothCommitteeDetails ", e);
+		 }
+		 return returnList;
+	 }
+	 
 }

@@ -204,7 +204,9 @@ public interface ICadreCommitteeService {
 	 public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,final Long userId);
 	 public List<TdpCadreVO>  getPartyLeadersDeatails(Long userId,Long levelId,List<Long> locationIdsList,Long representativeTypeId,List<Long> designationIdsList,
 				List<Long> committeeLevelIdsList,List<Long> enrollmentIdsList, List<Long> committeeTypeIdsList, Long stateId, int firstIndex,int maxIndex,String reportType);
-	 
+
 	 public List<IdNameVO> getCommitteeLevelDetils();
 	 public List<IdNameVO> getCommitteeTypeDetils();
+	 public ResultStatus saveElectionBoothCommitteeDetails(Long userId,Long boothId,Long tdpCadreId);
+	 public List<CadreCommitteeVO> getBoothsForMandals(Long mandalId,Long constituencyId);
 }
