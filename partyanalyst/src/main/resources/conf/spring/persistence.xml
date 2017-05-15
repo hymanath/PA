@@ -1256,7 +1256,10 @@
 	                   <value>com.itgrids.partyanalyst.model.AlertIssueSubType</value>
 	                   <value>com.itgrids.partyanalyst.model.GovtSmsType</value>
 		      		   <value>com.itgrids.partyanalyst.model.GovtSmsActionType</value>
-		      		   <value>com.itgrids.partyanalyst.model.GovtUserType</value>	
+		      		   <value>com.itgrids.partyanalyst.model.GovtUserType</value>
+		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeEnrollment</value>
+		      		   <value>com.itgrids.partyanalyst.model.BoothIncharge</value>	
+		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeHistory</value>
 		      		   <value>com.itgrids.partyanalyst.model.AlertCallCenterType</value>
 		      		   
 				  </list>

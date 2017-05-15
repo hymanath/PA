@@ -3975,5 +3975,15 @@
 	 <bean id="govtUserTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtUserTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="boothInchargeEnrollmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeEnrollmentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="boothInchargeDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="boothInchargeHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeHistoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 
 </beans>		
