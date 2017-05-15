@@ -1,5 +1,6 @@
+  
     /* Setting script code start */
-	 var impactLevelObj =  {"0":"All","1":"State","2":"District","3":"Constituency","8":"CORP-GMC","5":"Mandal/MUNICIPALITY","7":"Village/ward/PANCHAYAT"};	
+	 var impactLevelObj =  {"0":"All","1":"State","2":"District","3":"Constituency","8":"CORP-GMC","5":"Mandal/MUNICIPALITY","7":"Village/ward/PANCHAYAT","2":"State","3":"District","4":"Constituency","6":"Village/ward/HAMLET"};	//2 - State ,3-District,4-Constituency and 6-Village/Ward/Hamlet for location 
 	$(document).on("click",".alertSettingBlock",function(e){
 		$(this).closest(".alertsBlock").find(".basicAlertBlockDropDown").toggle();
 		e.stopPropagation();
@@ -101,11 +102,15 @@
 				getAlertOverviewDetails();
 			if($(".alertsIconExpand").find("i").hasClass( "glyphicon glyphicon-resize-small" )){
 				$(".alertLocationDiv").show();
+				 $("#hiddenLevelTypeId").attr("attr_level_type","impactScopeWise");
+				 $("#locationAlertsId").prop("checked",false);
+                 $("#impactAlertsId").prop("checked",true);
+				 $(".locImptLevelDivCls").show();
 				getAlertCategoryDtlsLocationWise(0,0);
-				getStateImpactandItsSubLevelAlert();
-				getDistrictImpactandItsSubLevelAlert("Decending","0");
-				getCorpGMCAlert(0);
-				getConstituencyImpactandItsSubLevelAlert("Decending","0","0");
+				getStateImpactandItsSubLevelAlert("impactScopeWise");
+				getDistrictImpactandItsSubLevelAlert("Decending","0","impactScopeWise");
+				getCorpGMCAlert(0,"impactScopeWise");
+				getConstituencyImpactandItsSubLevelAlert("Decending","0","0","impactScopeWise");
 				getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 		    }
 			$(".basicAlertBlockDropDown").hide(); 
@@ -204,15 +209,20 @@
 		 $(".constituencyUl li").removeClass("active");
 	     $(".constituencyUl li:first-child").addClass("active");
 		 $(".districtUl li").removeClass("active");
-	     $(".districtUl li:first-child").addClass("active");		 
+	     $(".districtUl li:first-child").addClass("active");	
+          $(".locImptLevelDivCls").show();
+          $("#locationAlertsId").prop("checked",false);
+          $("#impactAlertsId").prop("checked",true);
+		  $("#hiddenLevelTypeId").attr("attr_level_type","impactScopeWise");
+			
 		 getAlertOverviewDetails();
 		 getAlertCategoryDtlsLocationWise(0,0); 
 		 getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 		 $(".impactLevelCls").attr("attr_level","Overview");
-		 getStateImpactandItsSubLevelAlert();
-		 getDistrictImpactandItsSubLevelAlert("Decending","0");
-		 getCorpGMCAlert(0);
-		 getConstituencyImpactandItsSubLevelAlert("Decending","0","0");
+		 getStateImpactandItsSubLevelAlert("impactScopeWise");
+		 getDistrictImpactandItsSubLevelAlert("Decending","0","impactScopeWise");
+		 getCorpGMCAlert(0,"impactScopeWise");
+		 getConstituencyImpactandItsSubLevelAlert("Decending","0","0","impactScopeWise");
 	    //getTotalAlertGroupByDist(scopeIdsArr,"date");  
 	    // getStateImpactLevelAlertStatusWise("date");
 	 var dates= $("#dateRangeIdForAlert").val();
@@ -220,7 +230,7 @@
 	});
 	
 	function defaultAlertCalls()
-	{       //santosh
+	{      
 		    $(".alertFilterCls li").removeClass("active");
 		    $(".alertFilterCls li:nth-child(2)").addClass("active");
 			$(".constituencyUl li").removeClass("active");
@@ -232,11 +242,15 @@
 		    $(".impactLevelCls").attr("attr_level","Overview");
 			$(".alertComparisonblock").hide();
 			$(".alertImpctLevelBlcock").show();	
+			$(".locImptLevelDivCls").show();
+			$("#locationAlertsId").prop("checked",false);
+            $("#impactAlertsId").prop("checked",true);
+			$("#hiddenLevelTypeId").attr("attr_level_type","impactScopeWise");
 	        getAlertCategoryDtlsLocationWise($("#alertTypeHiddenId").attr("attr_alert_id"),$("#alertEditionTypeHiddenId").attr("attr_alert_edition_id"));
-			getStateImpactandItsSubLevelAlert();
-			getDistrictImpactandItsSubLevelAlert("Decending","0");
-			getCorpGMCAlert(0);
-			getConstituencyImpactandItsSubLevelAlert("Decending","0","0");
+			getStateImpactandItsSubLevelAlert("impactScopeWise");
+			getDistrictImpactandItsSubLevelAlert("Decending","0","impactScopeWise");
+			getCorpGMCAlert(0,"impactScopeWise");
+			getConstituencyImpactandItsSubLevelAlert("Decending","0","0","impactScopeWise");
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 	}
 	/* $(document).on("click",".alertsIconExpand",function(){
@@ -336,14 +350,19 @@
 	     $(".districtUl li:first-child").addClass("active");
 		 $(".collapseTblViewCls").removeClass("active");
 		 $(".collapseHIghChartViewCls").addClass("active");
-		if(option == "1"){ 
+		if(option == "1"){
+			$("#locationAlertsId").prop("checked",false);
+            $("#impactAlertsId").prop("checked",true);			
+			$(".locImptLevelDivCls").show();
+		    $("#hiddenLevelTypeId").attr("attr_level_type","impactScopeWise");
 			$(".impactLevelCls").attr("attr_level","Overview");
-			getStateImpactandItsSubLevelAlert();
-			getDistrictImpactandItsSubLevelAlert("Decending","0");
-			getCorpGMCAlert("0");
-			getConstituencyImpactandItsSubLevelAlert("Decending","0","0");
+			getStateImpactandItsSubLevelAlert("impactScopeWise");
+			getDistrictImpactandItsSubLevelAlert("Decending","0","impactScopeWise");
+			getCorpGMCAlert("0","impactScopeWise");
+			getConstituencyImpactandItsSubLevelAlert("Decending","0","0","impactScopeWise");
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 		 }else if(option == "2"){
+			 $(".locImptLevelDivCls").hide();
 			 $(".impactLevelCls").attr("attr_level","Status");
 			 getStateImpactLevelAlertStatusWise();
 			 getTotalAlertGroupByLocationThenStatus("Decending","0");
@@ -351,6 +370,7 @@
 			 getConstituencyAlertStatusWise("Decending","0","0");
 			 getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 		}else if(option =="3"){
+			 $(".locImptLevelDivCls").hide();
 			$(".impactLevelCls").attr("attr_level","Publication");
 			getStateImpcatLevelAlertCntPublicationWise();
 			getDistrictWisePublicationAlert("Decending","0");
@@ -358,6 +378,7 @@
 			getConstituencyWisePublicationAlert("Decending","0","0");
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
 		}else if(option =="4"){
+			 $(".locImptLevelDivCls").hide();
 		  $("#alertChildActivityMemberDivId").html('');
 		  $("#childUserTypeDetailsDivForAlerts").html('');
 		  $("#candidateLocationAlertDtlsStatusWiseDivId").html('');
@@ -1008,7 +1029,8 @@
 			locationLevel : "",
 			isPublication:"false",
 			publicationId:0,
-            locationElectionBodyId:0			
+            locationElectionBodyId:0,
+			type : "impactScopeWise"			
 		
 		}                  
 		$.ajax({   
@@ -1076,6 +1098,7 @@
 		if(editionId == undefined){
 			editionId = 0;
 		 }
+		 $("#districtOverviewHeadingId").html("District overview - impact alerts");
   
 			var jsObj = { 
 			stateId : 			globalStateId,             
@@ -1558,6 +1581,7 @@ function getAssignGroupTypeAlertDtlsByImpactLevelWise(disctrictId){
 		if(editionId == undefined){
 			editionId = 0;
 		}
+		
 		var jsObj = { 
 			stateId : 			globalStateId,             
 			fromDate : 			customStartDateAlert,        
@@ -2314,6 +2338,7 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 		if(editionId == undefined){
 			editionId = 0;
 		}
+		$("#stateOverviewHeadingId").html("State overview - impact alerts");
 		var jsObj={  
 			activityMemberId : 	globalActivityMemberId,      
 			stateId : 			globalStateId,           
@@ -2581,7 +2606,8 @@ function buildProgramCommiteeAndOtherMemberDtls(result,divId,groupAssignType){
 			locationLevel : locationLevel,
 			isPublication:isPublication,
 			publicationId:publicationValue,
-			locationElectionBodyId:0
+			locationElectionBodyId:0,
+			type : "impactScopeWise"
 		
 		}                  
 		$.ajax({
@@ -3438,11 +3464,15 @@ function getTotalArticledetails(articleId){
 			 $(".collapseTblViewCls").removeClass("active");
 		     $(".collapseHIghChartViewCls").addClass("active");
 			if(locVal == "1"){  
+			    $(".locImptLevelDivCls").show();
 				$(".impactLevelCls").attr("attr_level","Overview");
-				getStateImpactandItsSubLevelAlert();
-				getDistrictImpactandItsSubLevelAlert("Decending","0");
-				getCorpGMCAlert("0");
-				getConstituencyImpactandItsSubLevelAlert("Decending","0","0");
+			    $("#locationAlertsId").prop("checked",false);
+                $("#impactAlertsId").prop("checked",true);	
+                $("#hiddenLevelTypeId").attr("attr_level_type","impactScopeWise");				
+				getStateImpactandItsSubLevelAlert("impactScopeWise");
+				getDistrictImpactandItsSubLevelAlert("Decending","0","impactScopeWise");
+				getCorpGMCAlert("0","impactScopeWise");
+				getConstituencyImpactandItsSubLevelAlert("Decending","0","0","impactScopeWise");
 				getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId);
 			}else if(locVal == "2"){
 				 $(".impactLevelCls").attr("attr_level","Status");
@@ -3556,23 +3586,40 @@ function getTotalArticledetails(articleId){
 		var alertTypeId = typeId;
 		var alertCount = count;
 		var selectedAlertType = type;
-		getAlertDetatilsByAlertType(alertTypeId,alertCount,selectedAlertType,globalImpactScopeArr,0);
+		getAlertDetatilsByAlertType(alertTypeId,alertCount,selectedAlertType,globalImpactScopeArr,0,"impactScopeWise");
 	}
 	
-	function getImpactLevelWiseAlertDtls(impactLevelId,totalAlertCnt){
+	function getImpactLevelWiseAlertDtls(impactLevelId,totalAlertCnt,selectionType){
+		
 		var impactScopArr = [];
-		if(impactLevelId == 5){
-			impactScopArr.push(5);
-			impactScopArr.push(12);
-		}else if(impactLevelId == 7){
-			impactScopArr.push(6);
-			impactScopArr.push(7);
-			impactScopArr.push(9);
-		}else if(impactLevelId == 0){
-			impactScopArr = globalImpactScopeArr;
-		}else{
-		   impactScopArr.push(impactLevelId);
+		if(selectionType != null && selectionType=="impactScopeWise"){
+			if(impactLevelId == 5){
+			  impactScopArr.push(5);
+			  impactScopArr.push(12);
+			}else if(impactLevelId == 7){
+				impactScopArr.push(6);
+				impactScopArr.push(7);
+				impactScopArr.push(9);
+			}else if(impactLevelId == 0){
+				impactScopArr = globalImpactScopeArr;
+			}else{
+			   impactScopArr.push(impactLevelId);
+			}
+		}else if(selectionType=="locationWise"){
+				if(impactLevelId == 5){
+			  impactScopArr.push(5);
+			  impactScopArr.push(7);
+			}else if(impactLevelId == 6){
+				impactScopArr.push(6);
+				impactScopArr.push(8);
+				impactScopArr.push(11);
+			}else if(impactLevelId == 0){
+				impactScopArr = [2,3,4,5,6,7,8,11];
+			}else{
+			   impactScopArr.push(impactLevelId);
+			}
 		}
+		
 		var alertTypeId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertTypeId == undefined){
 			alertTypeId = 0;
@@ -3588,9 +3635,9 @@ function getTotalArticledetails(articleId){
 		 impactLevel = impactLevelObj[impactLevelId]+" Impact Alerts";	
 		}
 		
-		getAlertDetatilsByAlertType(alertTypeId,totalAlertCnt,impactLevel.toUpperCase(),impactScopArr,editionIds);
+		getAlertDetatilsByAlertType(alertTypeId,totalAlertCnt,impactLevel.toUpperCase(),impactScopArr,editionIds,selectionType);
 	}
-	function getAlertDetatilsByAlertType(alertTypeId,alertCount,selectedAlertType,impactScopArr,editionIds){
+	function getAlertDetatilsByAlertType(alertTypeId,alertCount,selectedAlertType,impactScopArr,editionIds,selectionType){
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');           
 		$("#tourDocumentId").modal("show");  
@@ -3604,7 +3651,8 @@ function getTotalArticledetails(articleId){
 			alertTypeId : alertTypeId,
 			alertStatusArr : globalAlertStatusArr,
 			scopeIdsArr : impactScopArr,
-			editionId : editionIds
+			editionId : editionIds,
+			type : selectionType
 		};
 		$.ajax({
 			type : 'POST',
@@ -3665,7 +3713,7 @@ function getTotalArticledetails(articleId){
 		buildDistrictWiseAlert(districtIdArr,totalAlertCnt,constituencyId,alertStatusId,locationLevel,loctionType,"false",0);
 	}
 	
-	function getLocationWiseAlertDtls(locationIdStr,totalAlertCnt,loctionType,impactLevelId){
+	function getLocationWiseAlertDtls(locationIdStr,totalAlertCnt,loctionType,impactLevelId,selectionType){
 		var locationLevel = "";
 		var districtIdArr =[];
 		var constituencyId = 0;
@@ -3687,22 +3735,42 @@ function getTotalArticledetails(articleId){
 		} 
 	
 		var impactScopArr = [];
-		if(impactLevelId == 5){
-			impactScopArr.push(5);
-			impactScopArr.push(12);
-		}else if(impactLevelId == 7){
-			impactScopArr.push(6);
-			impactScopArr.push(7);
-			impactScopArr.push(9);
-		}else if(impactLevelId == 0){
-			if(loctionType=="Constituency"){
-				impactScopArr = globalConstituencyImpactScopeArr;
-			}else if(loctionType=="District"){
-				impactScopArr = globalDistrictImpactLevelScopeArr;
+		if(selectionType != null && selectionType=="impactScopeWise"){
+			if(impactLevelId == 5){
+				impactScopArr.push(5);
+				impactScopArr.push(12);
+			}else if(impactLevelId == 7){
+				impactScopArr.push(6);
+				impactScopArr.push(7);
+				impactScopArr.push(9);
+			}else if(impactLevelId == 0){
+				if(loctionType=="Constituency"){
+					impactScopArr = globalConstituencyImpactScopeArr;
+				}else if(loctionType=="District"){
+					impactScopArr = globalDistrictImpactLevelScopeArr;
+				}
+			}else{
+			   impactScopArr.push(impactLevelId);
 			}
-		}else{
-		   impactScopArr.push(impactLevelId);
+		}else if( selectionType=="locationWise"){
+			if(impactLevelId == 5){
+				impactScopArr.push(5);
+				impactScopArr.push(7);
+			}else if(impactLevelId == 6){
+				impactScopArr.push(6);
+				impactScopArr.push(8);
+				impactScopArr.push(11);
+			}else if(impactLevelId == 0){
+				if(loctionType=="Constituency"){ 
+					impactScopArr = [4,5,6,7,8,11];
+				}else if(loctionType=="District"){
+					impactScopArr = [3,4,5,6,7,8,11];
+				}
+			}else{
+			   impactScopArr.push(impactLevelId);
+			}
 		}
+		
 		var impactLevel ="";
 		if(impactLevelId == 0){
 		 impactLevel = "Total Alerts";	
@@ -3710,10 +3778,10 @@ function getTotalArticledetails(articleId){
 		 impactLevel = impactLevelObj[impactLevelId]+" Impact Alerts";	
 		}
 		
-		getLcatnWiseAlertDtls(locationLevel,impactLevel.toUpperCase(),districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId);
+		getLcatnWiseAlertDtls(locationLevel,impactLevel.toUpperCase(),districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId,selectionType);
 	}
 
-	function getLcatnWiseAlertDtls(locationLevel,impactLevel,districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId){
+	function getLcatnWiseAlertDtls(locationLevel,impactLevel,districtIdArr,totalAlertCnt,constituencyId,impactScopArr,locationElectionBodyId,selectionType){
 		$("#tourDocumentBodyId").html("");           
 		$("#tourDocumentBodyId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');   
 		$("#alertCntTitId").html(impactLevel+" - "+totalAlertCnt);        
@@ -3742,7 +3810,8 @@ function getTotalArticledetails(articleId){
 			locationLevel : locationLevel,
 			isPublication:false,
 			publicationId:0,
-			locationElectionBodyId:locationElectionBodyId
+			locationElectionBodyId:locationElectionBodyId,
+			type : selectionType
 			
 		
 		}                  
@@ -3774,6 +3843,7 @@ function getTotalArticledetails(articleId){
 		if(editionId == undefined){
 			editionId = 0;
 		}
+		$("#constituencyOverviewHeadingId").html("Constituency overview - impact alerts");
 		var jsObj = { 
 			stateId : 			globalStateId,             
 			fromDate : 			customStartDateAlert,      
@@ -3875,6 +3945,7 @@ function getTotalArticledetails(articleId){
 			$(".districtImpactLevelBlockCls").hide();
 			return;
 		}
+		 $("#districtOverviewHeadingId").html("District overview - impact alerts");
 		$("#districtImpactLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
     	var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -3922,6 +3993,7 @@ function getTotalArticledetails(articleId){
 			$(".constituencyImpactLevelBlockCls").hide();
 			return;
 		}
+		 $("#constituencyOverviewHeadingId").html("Constituency overview - impact alerts");
 		$("#constituencyLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
     	var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -4362,14 +4434,15 @@ function getTotalArticledetails(articleId){
 			type = "Decending";
 			
 		}
+	  var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	  if(selectedLevel == "Overview"){
 		  if(status =="Search"){
-			getDistrictImpactandItsSubLevelAlert(type,districtId); 
-			getCorpGMCAlert(districtId); 
-			getConstituencyImpactandItsSubLevelAlert(type,0,districtId); 
+			getDistrictImpactandItsSubLevelAlert(type,districtId,selectionType); 
+			getCorpGMCAlert(districtId,selectionType); 
+			getConstituencyImpactandItsSubLevelAlert(type,0,districtId,selectionType); 
 			getAssignGroupTypeAlertDtlsByImpactLevelWise(districtId);	  
 		  }else{
-			getDistrictImpactandItsSubLevelAlert(type,districtId);  
+			getDistrictImpactandItsSubLevelAlert(type,districtId,selectionType);  
 		  }
 	  }else if(selectedLevel == "Status"){
 		   if(status =="Search"){
@@ -4403,8 +4476,9 @@ function getTotalArticledetails(articleId){
 		     $(".constituencyUl li:first-child").addClass("active");
 		     type = "Decending";
 		}
+		var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	  if(selectedLevel == "Overview"){
-		 getConstituencyImpactandItsSubLevelAlert(type,constituencyId,districtId);  
+		 getConstituencyImpactandItsSubLevelAlert(type,constituencyId,districtId,selectionType);  
 	  }else if(selectedLevel == "Status"){
 		getConstituencyAlertStatusWise(type,constituencyId,districtId);
 	  }else if(selectedLevel == "Publication"){
@@ -4421,8 +4495,9 @@ var globalCorpGmcLevelRlst;
 var globalConstituencyLevelRlst;
  function stateLevelHighchartBuildingFunction(){
 	  var selectedLevel = $(".impactLevelCls").attr("attr_level");
+	  var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	  if(selectedLevel == "Overview"){
-		 buildStateImpactLevelHighChartRslt(globalStateLevelRslt);  
+		 buildStateImpactLevelHighChartRslt(globalStateLevelRslt,selectionType);  
 	  }else if(selectedLevel == "Status"){
 		buildStateImpactLevelHighChartStatusWiseRslt(globalStateLevelRslt); 
 	  }else if(selectedLevel == "Publication"){
@@ -4431,8 +4506,9 @@ var globalConstituencyLevelRlst;
  }
   function stateLevelTblBuildingFunction(){
 	  var selectedLevel = $(".impactLevelCls").attr("attr_level");
+	   var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	  if(selectedLevel == "Overview"){
-		 buildStateImpactLevelTabularRslt(globalStateLevelRslt);  
+		 buildStateImpactLevelTabularRslt(globalStateLevelRslt,selectionType);  
 	  }else if(selectedLevel == "Status"){
 		buildStateOrGhmcImpactLevelTabularRsltStatusWise(globalStateLevelRslt,"stateImpactLevelTblDivId","StateImpactLevel");
 	  }else if(selectedLevel == "Publication"){
@@ -4441,10 +4517,11 @@ var globalConstituencyLevelRlst;
  }
  
  function districtLevelHighchartBuildingFunction(){
+	 var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	 var selectedLevel = $(".impactLevelCls").attr("attr_level");
 	 var districtId = $("#districtSelectBoxId").val();
 	  if(selectedLevel == "Overview"){
-		  buildDistrictImpactLevelHighChartRslt(globalDistrictLevelRlst,districtId);  
+		  buildDistrictImpactLevelHighChartRslt(globalDistrictLevelRlst,districtId,selectionType);  
 	  }else if(selectedLevel == "Status"){
 		buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWise(globalDistrictLevelRlst,"districtImpactLevelHighChartDivId",districtId,"District");
 	  }else if(selectedLevel == "Publication"){
@@ -4452,9 +4529,10 @@ var globalConstituencyLevelRlst;
 	  }
  }
   function districtLevelTblBuildingFunction(){
+	   var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	   var selectedLevel = $(".impactLevelCls").attr("attr_level");
 	  if(selectedLevel == "Overview"){
-		  buildDistrictOrConstituencyImpactLevelTabularRslt(globalDistrictLevelRlst,"districtImpactLevelTblDivId","District");  
+		  buildDistrictOrConstituencyImpactLevelTabularRslt(globalDistrictLevelRlst,"districtImpactLevelTblDivId","District",selectionType);  
 	  }else if(selectedLevel == "Status"){
 		buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWise(globalDistrictLevelRlst,"District","districtImpactLevelTblDivId");
 	  }else if(selectedLevel == "Publication"){
@@ -4472,9 +4550,10 @@ var globalConstituencyLevelRlst;
 	  }
  }
   function gmcLevelTblBuildingFunction(){
+	   var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	   var selectedLevel = $(".impactLevelCls").attr("attr_level");
 	  if(selectedLevel == "Overview"){
-		 buildCorpGmcImpactLevelTabularRslt(globalCorpGmcLevelRlst,"localElectionBody");  
+		 buildCorpGmcImpactLevelTabularRslt(globalCorpGmcLevelRlst,"localElectionBody",selectionType);  
 	  }else if(selectedLevel == "Status"){
 		buildStateOrGhmcImpactLevelTabularRsltStatusWise(globalCorpGmcLevelRlst,"gmcImpactLevelTblDivId","GHMCImpactLevel"); 
 	  }else if(selectedLevel == "Publication"){
@@ -4482,10 +4561,11 @@ var globalConstituencyLevelRlst;
 	  }
  }
  function constituencyLevelHighchartBuildingFunction(){
+	   var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	   var selectedLevel = $(".impactLevelCls").attr("attr_level");
 	    var constituencyId = $("#constituencySeletBoxId").val();
 	  if(selectedLevel == "Overview"){
-		 buildConstituencyImpactLevelHighChartRslt(globalConstituencyLevelRlst,constituencyId);  
+		 buildConstituencyImpactLevelHighChartRslt(globalConstituencyLevelRlst,constituencyId,selectionType);  
 	  }else if(selectedLevel == "Status"){
 		buildDistrictOrConstituencyImpactLevelHighChartRsltStatusWise(globalConstituencyLevelRlst,"constituencyLevelHighChartDivId",constituencyId,"Constituency"); 
 	  }else if(selectedLevel == "Publication"){
@@ -4494,18 +4574,24 @@ var globalConstituencyLevelRlst;
  }
   function constituencyTblBuildingFunction(){
 	    var selectedLevel = $(".impactLevelCls").attr("attr_level");
+		var selectionType =  $("#hiddenLevelTypeId").attr("attr_level_type");
 	  if(selectedLevel == "Overview"){
-		 buildDistrictOrConstituencyImpactLevelTabularRslt(globalConstituencyLevelRlst,"constituencyLevelTblDivId","Constituency");  
+		 buildDistrictOrConstituencyImpactLevelTabularRslt(globalConstituencyLevelRlst,"constituencyLevelTblDivId","Constituency",selectionType);  
 	  }else if(selectedLevel == "Status"){
 		 buildDistrictOrConstituencyLevelRlstInTabularFormatStatusWise(globalConstituencyLevelRlst,"Constituency","constituencyLevelTblDivId"); 
 	  }else if(selectedLevel == "Publication"){
 		buildDistrictOrConstituencyImpactLevelTabularRsltPublicationWise(globalConstituencyLevelRlst,"constituencyLevelTblDivId","Constituency");  
 	  }
  }
-function getStateImpactandItsSubLevelAlert(){
+function getStateImpactandItsSubLevelAlert(selectionType){
 	    $(".stateImpactLevelBlockCls").show();
 		$("#stateImpactLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
         var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
+		var level = "impact";
+		 if(selectionType=="locationWise"){
+			 level="location"
+		 }
+		$("#stateOverviewHeadingId").html("state overview - "+level+" alerts");
 		if(alertId == undefined){
 			alertId = 0;
 		}
@@ -4513,15 +4599,22 @@ function getStateImpactandItsSubLevelAlert(){
 		if(editionId == undefined){
 			editionId = 0;
 		}
+		var impactScopeArr = [];
+		if(selectionType=="impactScopeWise"){
+			impactScopeArr = globalImpactScopeArr;
+		}else if(selectionType=="locationWise"){
+			impactScopeArr =[2,3,4,5,6,7,8,11];
+		}
 		var jsObj={  
 			activityMemberId : 	globalActivityMemberId,      
 			stateId : 			globalStateId,           
 			fromDate:			customStartDateAlert,        
 			toDate :			customEndDateAlert,
-			scopeIdsArr:		globalImpactScopeArr,
+			scopeIdsArr:		impactScopeArr,
 			alertIds : 			alertId,
 			editionIds : 		editionId,
-			alertStatusArr :  globalAlertStatusArr
+			alertStatusArr :  globalAlertStatusArr,
+			selectionType : selectionType
 		};
 		$.ajax({
 			type : 'GET',
@@ -4531,22 +4624,28 @@ function getStateImpactandItsSubLevelAlert(){
 		}).done(function(result){
 		   globalStateLevelRslt = result;
 		   if(result != null && result.subList1 != null && result.subList1.length > 0){
-			   buildStateImpactLevelHighChartRslt(result);
+			   buildStateImpactLevelHighChartRslt(result,selectionType);
 		   }else{
 			   $(".stateImpactLevelBlockCls").hide();  
 		   }
       });	
 	}
 	
-	function buildStateImpactLevelHighChartRslt(result){
+	function buildStateImpactLevelHighChartRslt(result,selectionType){
 		if(result.subList1 != null && result.subList1.length > 0){
 			var impactLevelColorObj =  {"1":"#967BDC","2":"#51D9B1","3":"#34CCFD","8":"#1062FB","5":"#009662","7":"#FC690D"};	
+			var locationLevelColorObj =  {"2":"#967BDC","3":"#51D9B1","4":"#34CCFD","7":"#1062FB","5":"#009662","6":"#FC690D"};	
 			var jsonObjArr = [];
 			var colorArr = [];
 			
 			for(var i in result.subList1){
-				jsonObjArr.push({"name":result.subList1[i].name,"data":[{y:result.subList1[i].alertCount,extra: result.subList1[i].id}]});
-				colorArr.push(impactLevelColorObj[result.subList1[i].id]);
+				jsonObjArr.push({"name":result.subList1[i].name,"data":[{y:result.subList1[i].alertCount,extra: result.subList1[i].id+"-"+selectionType}]});
+				 if(selectionType=="impactScopeWise"){
+					colorArr.push(impactLevelColorObj[result.subList1[i].id]);	
+				 }else if(selectionType=="locationWise"){
+					colorArr.push(locationLevelColorObj[result.subList1[i].id]); 
+				 }
+				
 			}
 			var getWidth = $("#stateOvervwGraph").width();
 			$("#stateImpactLevelHighChartDivId").css("width",getWidth);	
@@ -4613,7 +4712,9 @@ function getStateImpactandItsSubLevelAlert(){
 						 cursor: 'pointer',
 						 events: {
 							click: function (event) {
-								getImpactLevelWiseAlertDtls(this.data[0].options.extra,this.data[0].options.y);
+								var impactLevelId=this.data[0].options.extra.split("-")[0];
+								var levelType=this.data[0].options.extra.split("-")[1];
+								getImpactLevelWiseAlertDtls(impactLevelId,this.data[0].options.y,levelType);
 							}
 						}
 					}
@@ -4624,7 +4725,7 @@ function getStateImpactandItsSubLevelAlert(){
 		 $("#stateImpactLevelHighChartDivId").html("NO DATA AVAILABLE.");	
 		}
 	}
-	function buildStateImpactLevelTabularRslt(result){
+	function buildStateImpactLevelTabularRslt(result,selectionType){
 	  var str= '';
 	   if(result.subList1 != null && result.subList1.length > 0){
 		   str+='<div class="table-responsive">';
@@ -4637,10 +4738,10 @@ function getStateImpactandItsSubLevelAlert(){
 				str+='</thead>';
 				str+='<tbody>';
 				str+='<tr>';
-				str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getImpactLevelWiseAlertDtls(0,\''+result.alertCount+'\');">'+result.alertCount+'</td>';
+				str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getImpactLevelWiseAlertDtls(0,\''+result.alertCount+'\',\''+selectionType+'\');">'+result.alertCount+'</td>';
 				for(var j in result.subList1){
 					 if(result.subList1[j].alertCount > 0){
-						str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getImpactLevelWiseAlertDtls(\''+result.subList1[j].id+'\',\''+result.subList1[j].alertCount+'\');">'+result.subList1[j].alertCount+'</td>';	
+						str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getImpactLevelWiseAlertDtls(\''+result.subList1[j].id+'\',\''+result.subList1[j].alertCount+'\',\''+selectionType+'\');">'+result.subList1[j].alertCount+'</td>';	
 					 }else{
 					str+='<td style="text-align:center;">-</td>';	 
 					 }
@@ -4655,7 +4756,7 @@ function getStateImpactandItsSubLevelAlert(){
 	   $("#stateImpactLevelTblDivId").html(str);
 	}
 	
-	function getDistrictImpactandItsSubLevelAlert(sortingType,districtId){
+	function getDistrictImpactandItsSubLevelAlert(sortingType,districtId,selectionType){
 		
 		/*Hiding Block if impact Level is not selected*/
 		$(".districtImpactLevelBlockCls").show();
@@ -4672,23 +4773,36 @@ function getStateImpactandItsSubLevelAlert(){
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		/* if(location == "date"){
-			alertId = 0;
-			editionId = 0;
-		} */
+		
+		var level = "impact";
+		 if(selectionType=="locationWise"){
+			 level="location"
+		 }
+		 
+		$("#districtOverviewHeadingId").html("District overview - "+level+" alerts");
+		
+		
+		var impactScopeArr = [];
+		if(selectionType=="impactScopeWise"){
+			impactScopeArr = globalDistrictImpactLevelScopeArr;
+		}else if(selectionType=="locationWise"){
+			impactScopeArr =[3,4,5,6,7,8,11];
+		}
+		
 		var jsObj={  
 			activityMemberId : 	globalActivityMemberId,      
 			stateId : 			globalStateId,           
 			fromDate:			customStartDateAlert,        
 			toDate :			customEndDateAlert,
-			scopeIdsArr:		globalDistrictImpactLevelScopeArr,
+			scopeIdsArr:		impactScopeArr,
 			alertIds : 			alertId,
 			editionIds : 		editionId,
 			alertStatusArr :  globalAlertStatusArr,
 			resultType : "District",
 			locationValue : districtId,
 			sortingType : sortingType,
-			districtId : 0
+			districtId : 0,
+			selectionType : selectionType
 		};
 		$.ajax({
 			type : 'POST',
@@ -4698,17 +4812,16 @@ function getStateImpactandItsSubLevelAlert(){
 		}).done(function(result){
 		   globalDistrictLevelRlst = result;
 		   if(result != null && result.subList1 != null && result.subList1.length > 0){
-			   buildDistrictImpactLevelHighChartRslt(result,districtId);
+			   buildDistrictImpactLevelHighChartRslt(result,districtId,selectionType);
 		   }else{
 			  $(".districtImpactLevelBlockCls").hide();  
 		   }
       });	
 	}
-	function buildDistrictImpactLevelHighChartRslt(result,districtId){
+	function buildDistrictImpactLevelHighChartRslt(result,districtId,selectionType){
 		 if(result.subList1 != null && result.subList1.length > 0){
 			 var districtNameArr = [];
 			 var str='';
-			// str+='<option value="-1">Select District</option>';
 			 str+='<option value="0">All</option>';
 			 for(var i in result.subList1){
 				   districtNameArr.push(result.subList1[i].name);
@@ -4726,21 +4839,34 @@ function getStateImpactandItsSubLevelAlert(){
 			 var vllgWrdPnchytImpctArr = [];
 			 for(var i in result.subList1){
 				 for(var j in result.subList1[i].subList1){
-					  if(result.subList1[i].subList1[j].id==2){
-						districtImpactArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id});
-					  }else if(result.subList1[i].subList1[j].id==8){
-						corpGhmcImpactArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id});  
-					  }else if(result.subList1[i].subList1[j].id==3){
-						 constituencyImpactArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id}); 
-					  }else if(result.subList1[i].subList1[j].id==5){
-						  mndlMuncpltyImprArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id});
-					  }else if(result.subList1[i].subList1[j].id==7){
-						 vllgWrdPnchytImpctArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id}); 
-					  }
+					 if(selectionType != null && selectionType=="impactScopeWise"){
+						  if(result.subList1[i].subList1[j].id==2){
+							districtImpactArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
+						  }else if(result.subList1[i].subList1[j].id==8){
+							corpGhmcImpactArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});  
+						  }else if(result.subList1[i].subList1[j].id==3){
+							 constituencyImpactArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType}); 
+						  }else if(result.subList1[i].subList1[j].id==5){
+							  mndlMuncpltyImprArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
+						  }else if(result.subList1[i].subList1[j].id==7){
+							 vllgWrdPnchytImpctArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType}); 
+						  }
+					 }else if(selectionType != null && selectionType=="locationWise"){
+						 if(result.subList1[i].subList1[j].id==3){
+							districtImpactArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
+						  }else if(result.subList1[i].subList1[j].id==4){
+							 constituencyImpactArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType}); 
+						  }else if(result.subList1[i].subList1[j].id==5){
+							  mndlMuncpltyImprArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
+						  }else if(result.subList1[i].subList1[j].id==6){
+							 vllgWrdPnchytImpctArr.push({"y":result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-District"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType}); 
+						  } 
+					 }
+					 
 				 }
 			 }
 			 	
-			 //santosh
+			
 		       var mainJosnObjArr = [];
 			  if(districtImpactArr != null && districtImpactArr.length > 0){
 				mainJosnObjArr.push({name:'DISTRICT',data:districtImpactArr,color:"#51D9B1"});  
@@ -4754,9 +4880,16 @@ function getStateImpactandItsSubLevelAlert(){
 			   if(mndlMuncpltyImprArr != null && mndlMuncpltyImprArr.length > 0){
 				mainJosnObjArr.push({name:'MANDAL/MUNICIPALITY',data:mndlMuncpltyImprArr,color:"#009662"});  
 			  }
-			   if(vllgWrdPnchytImpctArr != null && vllgWrdPnchytImpctArr.length > 0){
-				mainJosnObjArr.push({name:'VILLAGE/WARD/PANCHAYAT',data:vllgWrdPnchytImpctArr,color:"#FC690D"});  
-			  } 
+			  if(selectionType != null && selectionType=="impactScopeWise"){
+				   if(vllgWrdPnchytImpctArr != null && vllgWrdPnchytImpctArr.length > 0){
+				    mainJosnObjArr.push({name:'VILLAGE/WARD/PANCHAYAT',data:vllgWrdPnchytImpctArr,color:"#FC690D"});  
+			      }
+			  }else if(selectionType != null && selectionType=="locationWise"){
+				 if(vllgWrdPnchytImpctArr != null && vllgWrdPnchytImpctArr.length > 0){
+				  mainJosnObjArr.push({name:'VILLAGE/WARD/HAMLET',data:vllgWrdPnchytImpctArr,color:"#FC690D"});  
+			     }  
+			  }
+			   
 			  
 			  var getWidth = $("#districtOvervwGraph").width();
 			  $("#districtImpactLevelHighChartDivId").height(650);	
@@ -4841,7 +4974,8 @@ function getStateImpactandItsSubLevelAlert(){
 										var totalAlertCnt = distInfo[1];
 										var locationType = distInfo[2];
 										var impactScopeId = distInfo[3];
-										getLocationWiseAlertDtls(districtId,totalAlertCnt,locationType,impactScopeId);
+										var selectionType = distInfo[4];
+										getLocationWiseAlertDtls(districtId,totalAlertCnt,locationType,impactScopeId,selectionType);
 									}
 								}
 							}
@@ -4860,7 +4994,7 @@ function getStateImpactandItsSubLevelAlert(){
 			 $("#districtImpactLevelHighChartDivId").html("NO DATA AVAILABLE.");
 		 }
 	}
-	function buildDistrictOrConstituencyImpactLevelTabularRslt(result,divId,locationType){
+	function buildDistrictOrConstituencyImpactLevelTabularRslt(result,divId,locationType,selectionType){
 	  var str= '';
 	   if(result.subList1 != null && result.subList1.length > 0){
 		   var impactLevelObj = result.subList1[0].subList1;
@@ -4887,13 +5021,13 @@ function getStateImpactandItsSubLevelAlert(){
 				  str+='<tr>';
 				  str+='<td>'+result.subList1[i].name+'</td>';
 				  if(result.subList1[i].totalAlertCnt > 0){
-				     str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getLocationWiseAlertDtls(\''+result.subList1[i].id+'\',\''+result.subList1[i].totalAlertCnt+'\',\''+locationType+'\',0);">'+result.subList1[i].totalAlertCnt+'</td>';	  
+				     str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getLocationWiseAlertDtls(\''+result.subList1[i].id+'\',\''+result.subList1[i].totalAlertCnt+'\',\''+locationType+'\',0,\''+selectionType+'\');">'+result.subList1[i].totalAlertCnt+'</td>';	  
 				  }else{
 				      str+='<td style="text-align:center;">-</td>';	  
 				  }
 				 for(var j in result.subList1[i].subList1){
 					 if(result.subList1[i].subList1[j].alertCount > 0){
-						str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getLocationWiseAlertDtls(\''+result.subList1[i].id+'\',\''+result.subList1[i].subList1[j].alertCount+'\',\''+locationType+'\',\''+result.subList1[i].subList1[j].id+'\');">'+result.subList1[i].subList1[j].alertCount+'</td>';	 	
+						str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getLocationWiseAlertDtls(\''+result.subList1[i].id+'\',\''+result.subList1[i].subList1[j].alertCount+'\',\''+locationType+'\',\''+result.subList1[i].subList1[j].id+'\',\''+selectionType+'\');">'+result.subList1[i].subList1[j].alertCount+'</td>';	 	
 					 }else{
 						str+='<td  style="text-align:center;"> - </td>';	  
 					 }
@@ -4923,7 +5057,7 @@ function getStateImpactandItsSubLevelAlert(){
 	   
 	   
 	}
-	function getCorpGMCAlert(districtId){
+	function getCorpGMCAlert(districtId,selectionType){
 		$(".gmcImpactLevelBlockCls").show();	
 		/*Hiding Block if impact Level is not selected*/
 		if(globalCorpGhmcImpactScopeSArr == null || globalCorpGhmcImpactScopeSArr.length == 0){
@@ -4939,17 +5073,30 @@ function getStateImpactandItsSubLevelAlert(){
 		if(editionId == undefined){
 			editionId = 0;
 		}
-
+		
+		 var level = "impact";
+		 if(selectionType=="locationWise"){
+			 level="location"
+		 }
+		$("#corpOverviewHeadingId").html("CORP-GMC overview - "+level+" alerts");
+		
+	    var impactScopeArr = [];
+		if(selectionType=="impactScopeWise"){
+			impactScopeArr = globalCorpGhmcImpactScopeSArr;
+		}else if(selectionType=="locationWise"){
+			impactScopeArr =[7];
+		}
 		var jsObj={  
 			activityMemberId : 	globalActivityMemberId,      
 			stateId : 			globalStateId,           
 			fromDate:			customStartDateAlert,        
 			toDate :			customEndDateAlert,
-			scopeIdsArr:		globalCorpGhmcImpactScopeSArr,
+			scopeIdsArr:		impactScopeArr,
 			alertIds : 			alertId,
 			editionIds : 		editionId,
 			alertStatusArr :  globalAlertStatusArr,
-			districtId :districtId
+			districtId :districtId,
+			selectionType : selectionType
 		};
 		$.ajax({
 			type : 'POST',
@@ -4959,14 +5106,14 @@ function getStateImpactandItsSubLevelAlert(){
 		}).done(function(result){
 			globalCorpGmcLevelRlst = result;
 		    if(result != null && result.subList1 != null && result.subList1.length > 0){
-				buildCorpGmcImpactLevelHighChartRslt(result);
+				buildCorpGmcImpactLevelHighChartRslt(result,selectionType);
 			}else{
 				$(".gmcImpactLevelBlockCls").hide();
 			}
       });	
 	}
 	
-	function buildCorpGmcImpactLevelHighChartRslt(result){  
+	function buildCorpGmcImpactLevelHighChartRslt(result,selectionType){  
 		var corpGmcImparArr = [];
 		 if(result.subList1.length ==1){
 			 if(result.subList1[0].id==0){
@@ -4980,7 +5127,7 @@ function getStateImpactandItsSubLevelAlert(){
 				var obj1 = {
 					name: result.subList1[i].name,
 					y: result.subList1[i].alertCount,
-					extra:result.subList1[i].id       
+					extra:result.subList1[i].id+"-"+selectionType       
 				};
 				corpGmcImparArr.push(obj1);
 			}	
@@ -5064,9 +5211,16 @@ function getStateImpactandItsSubLevelAlert(){
 						point: {
 							events: {
 								click: function () {
-									var localElectionBodyId = this.extra;
+									var localElectionBodyId = this.extra.split("-")[0];
+									var selectionType = this.extra.split("-")[1];
 									var totalAlertCnt = this.y;
-									getLocationWiseAlertDtls(localElectionBodyId,totalAlertCnt,'localElectionBody',8);
+									var scopeId = 0;
+									if(selectionType=="impactScopeWise"){
+										scopeId = 8;
+									}else if(selectionType=="locationWise"){
+										scopeId = 7;
+									}
+									getLocationWiseAlertDtls(localElectionBodyId,totalAlertCnt,'localElectionBody',scopeId,selectionType);
 								}
 							}
 						}  
@@ -5083,9 +5237,15 @@ function getStateImpactandItsSubLevelAlert(){
 			 
 			});  
 	}
-	//santosh
-	function buildCorpGmcImpactLevelTabularRslt(result,locationType){
+	
+	function buildCorpGmcImpactLevelTabularRslt(result,locationType,selectionType){
 	  var str= '';
+	  var scopeId =0;
+	  if(selectionType == "impactScopeWise"){
+		  scopeId = 8;
+	  }else if(selectionType == "locationWise"){
+		  scopeId = 7;
+	  }
 	   if(result.subList1 != null && result.subList1.length > 0){
 		   var impactLevelObj = result.subList1[0].subList1;
 		   str+='<div class="table-responsive">';
@@ -5101,7 +5261,7 @@ function getStateImpactandItsSubLevelAlert(){
 				  str+='<tr>';
 				  str+='<td style="text-align:center;">'+result.subList1[i].name+'</td>';
 				  if(result.subList1[i].alertCount > 0){
-					str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getLocationWiseAlertDtls(\''+result.subList1[i].id+'\',\''+result.subList1[i].alertCount+'\',\''+locationType+'\',8);">'+result.subList1[i].alertCount+'</td>';  
+					str+='<td style="text-align:center;cursor:pointer;color:rgb(51, 122, 183);font-size:13px;" onClick="getLocationWiseAlertDtls(\''+result.subList1[i].id+'\',\''+result.subList1[i].alertCount+'\',\''+locationType+'\',\''+scopeId+'\',\''+selectionType+'\');">'+result.subList1[i].alertCount+'</td>';  
 				  }else{
 					str+='<td style="text-align:center;">-</td>';  
 				  }
@@ -5115,7 +5275,7 @@ function getStateImpactandItsSubLevelAlert(){
 	   }
 	   $("#gmcImpactLevelTblDivId").html(str);
 	}
-	function getConstituencyImpactandItsSubLevelAlert(sortingType,constituencyId,districtId){
+	function getConstituencyImpactandItsSubLevelAlert(sortingType,constituencyId,districtId,selectionType){
 		/*Hiding Block if impact Level is not selected*/
 		$(".constituencyImpactLevelBlockCls").show();	
 		if(globalConstituencyImpactScopeArr == null || globalConstituencyImpactScopeArr.length == 0){
@@ -5131,23 +5291,32 @@ function getStateImpactandItsSubLevelAlert(){
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		/* if(location == "date"){
-			alertId = 0;
-			editionId = 0;
-		} */
+		 var level = "impact";
+		 if(selectionType=="locationWise"){
+			 level="location"
+		 }
+		$("#constituencyOverviewHeadingId").html("Constituency overview - "+level+" alerts");
+		var impactScopeArr = [];
+		if(selectionType=="impactScopeWise"){
+			impactScopeArr = globalConstituencyImpactScopeArr;
+		}else if(selectionType=="locationWise"){
+			impactScopeArr =[4,5,6,7,8,11];
+		}
+		
 		var jsObj={  
 			activityMemberId : 	globalActivityMemberId,      
 			stateId : 			globalStateId,           
 			fromDate:			customStartDateAlert,        
 			toDate :			customEndDateAlert,
-			scopeIdsArr:		globalConstituencyImpactScopeArr,
+			scopeIdsArr:		impactScopeArr,
 			alertIds : 			alertId,
 			editionIds : 		editionId,
 			alertStatusArr :  globalAlertStatusArr,
 			locationValue : constituencyId,
 			resultType : "Constituency",
 			sortingType : sortingType,
-			districtId : districtId
+			districtId : districtId,
+			selectionType : selectionType
 		};
 		$.ajax({
 			type : 'POST',
@@ -5157,13 +5326,13 @@ function getStateImpactandItsSubLevelAlert(){
 		}).done(function(result){
 		    globalConstituencyLevelRlst = result;
 			if(result != null && result.subList1!= null && result.subList1.length>0){
-			   buildConstituencyImpactLevelHighChartRslt(result,constituencyId);	
+			   buildConstituencyImpactLevelHighChartRslt(result,constituencyId,selectionType);	
 			}else{
 				$(".constituencyImpactLevelBlockCls").hide();
 			}
       });	
 	}
-	function buildConstituencyImpactLevelHighChartRslt(result,constituencyId){
+	function buildConstituencyImpactLevelHighChartRslt(result,constituencyId,selectionType){
 		   if(result.subList1!= null && result.subList1.length > 10){
 				var highChartDivHight = result.subList1.length*40;
 				$("#constituencyLevelHighChartDivId").height(highChartDivHight);
@@ -5172,7 +5341,6 @@ function getStateImpactandItsSubLevelAlert(){
 			}
 		 if(result.subList1 != null && result.subList1.length > 0){
 			 var str = '';
-			// str+='<option value="-1">Select Constituency</option>';
 			 str+='<option value="0">All</option>';
 			  var constituencyName = [];
 			 for(var i in result.subList1){
@@ -5190,25 +5358,54 @@ function getStateImpactandItsSubLevelAlert(){
 			 var vllgWrdPnchytImpctArr = [];
 			 for(var i in result.subList1){
 				 for(var j in result.subList1[i].subList1){
-				    if(result.subList1[i].subList1[j].id==3){
-						 constituencyImpactArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id}); 
-					  }else if(result.subList1[i].subList1[j].id==5){
-						  mndlMuncpltyImprArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id});
-					  }else if(result.subList1[i].subList1[j].id==7){
-					  vllgWrdPnchytImpctArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id}); 
-					  }
+					 if(selectionType!= null && selectionType=="impactScopeWise"){
+						   if(result.subList1[i].subList1[j].id==3){
+							if(result.subList1[i].subList1[j].alertCount !=0){
+							 constituencyImpactArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType}); 
+							}
+						  }else if(result.subList1[i].subList1[j].id==5){
+							  if(result.subList1[i].subList1[j].alertCount !=0){
+							  mndlMuncpltyImprArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
+							  }
+						  }else if(result.subList1[i].subList1[j].id==7){
+							if(result.subList1[i].subList1[j].alertCount !=0){
+						  vllgWrdPnchytImpctArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
+							}					  
+						  }
+					 }else if(selectionType != null && selectionType=="locationWise"){
+						  if(result.subList1[i].subList1[j].id==4){
+							if(result.subList1[i].subList1[j].alertCount !=0){
+							   constituencyImpactArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType}); 
+							}
+						  }else if(result.subList1[i].subList1[j].id==5){
+							  if(result.subList1[i].subList1[j].alertCount !=0){
+							    mndlMuncpltyImprArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
+							  }
+						  }else if(result.subList1[i].subList1[j].id==6){
+							if(result.subList1[i].subList1[j].alertCount !=0){
+						      vllgWrdPnchytImpctArr.push({y:result.subList1[i].subList1[j].alertCount,"extra":result.subList1[i].id+"-"+result.subList1[i].subList1[j].alertCount+"-Constituency"+"-"+result.subList1[i].subList1[j].id+"-"+selectionType});
+							}					  
+						  }  
+					 }
 				 }
 			 }
 		       var mainJosnObjArr = [];
 			   if(constituencyImpactArr != null && constituencyImpactArr.length > 0){
-				mainJosnObjArr.push({name:'CONSTITUENCY',data:constituencyImpactArr,color:"#34CCFD"});  
+				 mainJosnObjArr.push({name:'CONSTITUENCY',data:constituencyImpactArr,color:"#34CCFD"});  
 			  }
 			   if(mndlMuncpltyImprArr != null && mndlMuncpltyImprArr.length > 0){
-				mainJosnObjArr.push({name:'MANDAL/MUNICIPALITY',data:mndlMuncpltyImprArr,color:"#059E69"});  
+				 mainJosnObjArr.push({name:'MANDAL/MUNICIPALITY',data:mndlMuncpltyImprArr,color:"#059E69"});  
 			  }
-			   if(vllgWrdPnchytImpctArr != null && vllgWrdPnchytImpctArr.length > 0){
-				mainJosnObjArr.push({name:'VILLAGE/WARD/PANCHAYAT',data:vllgWrdPnchytImpctArr,color:"#FE6406"});  
+			  if(selectionType != null && selectionType=="impactScopeWise"){
+				  if(vllgWrdPnchytImpctArr != null && vllgWrdPnchytImpctArr.length > 0){
+				   mainJosnObjArr.push({name:'VILLAGE/WARD/PANCHAYAT',data:vllgWrdPnchytImpctArr,color:"#FE6406"}); 
+				  }				  
+			  }else if(selectionType != null && selectionType=="locationWise"){
+				   if(vllgWrdPnchytImpctArr != null && vllgWrdPnchytImpctArr.length > 0){
+				    mainJosnObjArr.push({name:'VILLAGE/WARD/HAMLET',data:vllgWrdPnchytImpctArr,color:"#FE6406"});  
+			        } 
 			  }
+			 
 			  var getWidth = $("#constituencyOvervwGraph").width();
 			$("#constituencyLevelHighChartDivId").css("width",getWidth);	
 			  $("#constituencyLevelHighChartDivId").highcharts({
@@ -5285,7 +5482,8 @@ function getStateImpactandItsSubLevelAlert(){
 										var totalAlertCnt = constituencyInfo[1];
 										var locationType = constituencyInfo[2];
 										var impactScopeId = constituencyInfo[3];
-										getLocationWiseAlertDtls(constituencyId,totalAlertCnt,locationType,impactScopeId);
+										var selectionType = constituencyInfo[4];
+										getLocationWiseAlertDtls(constituencyId,totalAlertCnt,locationType,impactScopeId,selectionType);
 									}
 								}
 							}
@@ -5329,10 +5527,8 @@ function getStateImpactandItsSubLevelAlert(){
 		if(editionId == undefined){
 			editionId = 0;
 		}
-		/* if(location == "date"){
-			alertId = 0;
-			editionId = 0;
-		} */
+		
+		$("#corpOverviewHeadingId").html("CORP-GMC overview - impact alerts");
 		var jsObj={  
 			activityMemberId : 	globalActivityMemberId,      
 			stateId : 			globalStateId,           
@@ -5553,6 +5749,7 @@ function getStateImpactandItsSubLevelAlert(){
 		if(editionId == undefined){
 			editionId = 0;
 		}
+		$("#stateOverviewHeadingId").html("State overview - impact alerts");
     	var jsObj = { 
 			stateId : 			globalStateId,             
 			fromDate : 			customStartDateAlert,      
@@ -5732,6 +5929,7 @@ function getStateImpactandItsSubLevelAlert(){
 			$(".gmcImpactLevelBlockCls").hide();
 			 return;
 		}
+		 $("#corpOverviewHeadingId").html("CORP-GMC overview - impact alerts");
 		$("#gmcImpactLevelHighChartDivId").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
     	var alertId = $("#alertTypeHiddenId").attr("attr_alert_id");
 		if(alertId == undefined){
@@ -6279,7 +6477,7 @@ function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,s
  function buildCandidateAccessLocationAlertDtlsStatusWise(result,selectedMemberName,selectedUserType)
  {
 	 var isDataAvailale = false;
-    var statusColorObj =  {"1":"#A27FC2","2":"#0175F3","3":"#3EC3FF","4":"#049968","5":"#F21A98","6":"#FD6E07","7":"#CF0001"};	
+    var statusColorObj =  {"1":"#A27FC2","2":"#0175F3","3":"#3EC3FF","4":"#049968","5":"#F21A98","6":"#FD6E07","7":"#CF0001","8":"#FE9900","9":"#0C9514","10":"#82CA9C","11":"#C9AC82","12":"#ababab","13":"#5a8476"};	
 	var str='';
 	 var width = 100 / result.length;
 	  str+='<div class="col-xs-12 col-sm-12 col-md-12">';
@@ -6483,3 +6681,18 @@ function activityMemberClsForAlertBlock(selectedUserType,childActivityMemberId,s
 	$(document).on("click",".basicAlertSetClose",function(){
 		$(this).closest(".basicAlertBlockDropDown").hide();
 	});
+function getLocationWiseAlertDetails(){
+$(".collapseTblViewCls").removeClass("active");
+$(".collapseHIghChartViewCls").addClass("active");
+$("#hiddenLevelTypeId").attr("attr_level_type","locationWise");
+getStateImpactandItsSubLevelAlert("locationWise");
+getDistrictImpactandItsSubLevelAlert("Decending","0","locationWise");
+getCorpGMCAlert("0","locationWise");
+getConstituencyImpactandItsSubLevelAlert("Decending","0","0","locationWise");
+getAssignGroupTypeAlertDtlsByImpactLevelWise(0);
+};	
+
+$(document).on("click",".checkedAlertsCls",function(){      
+	$(".checkedAlertsCls").prop("checked",false);
+	$(this).prop("checked",true);	
+});

@@ -3631,6 +3631,7 @@
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"></property>
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"></property>
 		<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO"></property>
+		<property name="regionScopesDAO" ref="regionScopesDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	
