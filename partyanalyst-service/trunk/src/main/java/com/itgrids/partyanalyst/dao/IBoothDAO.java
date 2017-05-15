@@ -498,4 +498,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 public List<Object[]> getWardsByLocalElecBody(Long id,Long publicationDateId,Long constituencyId);
 	 
 	 public Constituency getConstituencyIdByTehsilId(Long tehsilId);
+	 public List<Object[]> getBoothsForTehsilId(List<Long> tehsilIds,Long constituencyId);
+	 public List<Object[]> getBoothsForMuncipality(List<Long> lcalElcBdyId,Long constituencyId);
 }
