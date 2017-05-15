@@ -40,4 +40,12 @@ public class RegionScopesDAO extends GenericDaoHibernate<RegionScopes, Long> imp
 		return (Long) query.uniqueResult();
 		
 	}
+	public List<Object[]> getAlertLocationLevelById(List<Long> alertLocationIds)
+	{
+		Query query = getSession().createQuery(" select model.regionScopesId,model.scope " +
+											  " from RegionScopes model where model.regionScopesId in(:alertLocationIds)" +
+											  " order by model.regionScopesId ");
+		query.setParameterList("alertLocationIds", alertLocationIds);
+		return query.list();
+	}
 }

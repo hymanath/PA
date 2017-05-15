@@ -64,7 +64,7 @@ public interface IAlertService {
 	public List<AlertVO> getMemForPartyCommitDesg(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId,List<Long> commitLvlIdArr,Long commitTypeId,Long designationId,Long alertTypeId,Long editionTypeId,Long districtId,List<Long> alertStatusIds);
 	public List<AlertCoreDashBoardVO> getAlertDtlsAssignedByPartyCommite(String fromDateStr,String toDateStr,Long stateId,List<Long> scopeIdList,Long activityMemberId,List<Long> commitLvlIdList,Long commitTypeId,Long designationId,Long cadreId,List<Long> alertStatusIds,Long alertTypeId,Long editionTypeId,Long districtId);
 	public List<AlertCoreDashBoardVO> getAlertDetailsTdpCadreWise(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,Long tdpCadreId, List<Long> alertStatusIds,String resultType,Long alertTypeId,Long editionTypeId,Long districtId);
-	public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,List<Long> districtIdList,Long catId,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,String locationLevel,String publication,String publiationId,Long localElectionBoydId);
+	public List<AlertCoreDashBoardVO> getDistrictAndStateImpactLevelWiseAlertDtls(String fromDateStr, String toDateStr, Long stateId,List<Long> impactLevelIds, Long activityMemberId,List<Long> districtIdList,Long catId,Long alertTypeId, Long editionId,Long constituencyId,List<Long> alertStatusIds,String locationLevel,String publication,String publiationId,Long localElectionBoydId,String type);
     public String getAlertLastUpdatedTime();
     public String getAlertStatusOfArticle(Long articleId);
     public AlertVO getAlertDetailsBySearch(Long tdpCadreId,Long stateId,String startDateStr,String endDateStr,String searchType,Long alertTypeId);
@@ -84,7 +84,7 @@ public interface IAlertService {
     public List<KeyValueVO> getDocumentsForAlert(Long alertId);
     public String saveAlertDocument(Long alertId,Long userId,final Map<File,String> documentMap);
     public List<AlertVerificationVO> getAlertTypeActionStatus(Long actionTypeId);
-    public List<AlertCoreDashBoardVO> getAlertDetailsByAlertType(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId,Long activityMemberId,List<Long> impactScopeIds,List<Long> alertStatusIds,Long editionId);
+    public List<AlertCoreDashBoardVO> getAlertDetailsByAlertType(String fromDateStr, String toDateStr, Long stateId, Long alertTypeId,Long activityMemberId,List<Long> impactScopeIds,List<Long> alertStatusIds,Long editionId,String type);
     public AlertVO getAlertDetailsForEdit(Long alertId);
     
     public List<AlertVO> getTotalAlertGroupByStatusForCentralMembers(String fromDateStr, String toDateStr, Long stateId,Long alertTypeId,Long tdpCadreId,String searchType);
@@ -102,9 +102,9 @@ public interface IAlertService {
     public List<StatusTrackingVO> getAlertAssignedCandidateForDashBoard(Long alertId,Long stateId,Long alertTypeId,String fromDateStr,String toDateStr);
     public List<AlertOverviewVO> getPublicationWiseAlert(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, List<Long> alertStatusIds,Long alertTypeId,Long editionId,String filterType,Long locationValue,String sortingType,Long disctrictId);
     //New call
-    public AlertOverviewVO getStateImpactandItsSubLevelAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId,List<Long> alertStatusIds);
-    public AlertOverviewVO getDistrictOrConstituencyImpactandItsSubLevelAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId,List<Long> alertStatusIds,Long locationValue,String sortingType,String resultType,Long disctrictId);
-    public AlertOverviewVO getCorpGMCAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId,List<Long> alertStatusIds,Long districtId);
+    public AlertOverviewVO getStateImpactandItsSubLevelAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId,List<Long> alertStatusIds,String selectionType);
+    public AlertOverviewVO getDistrictOrConstituencyImpactandItsSubLevelAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId,List<Long> alertStatusIds,Long locationValue,String sortingType,String resultType,Long disctrictId,String selectionType);
+    public AlertOverviewVO getCorpGMCAlert(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId,List<Long> alertStatusIds,Long districtId,String selectionType);
     public List<UserTypeVO> getAlertByUserTypeBasedOnAccessLevel(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId,List<Long> alertStatusIds);
     public List<AlertOverviewVO> getDirectChildMemberAlertStatusWise(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> impactLevelIds,Long alertTypeId, Long editionId,List<Long> alertStatusIds);
     public AlertOverviewVO getStateOrGHMCImpcatLevelAlertCntPublicationWise(Long activityMemberId,String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList,Long alertTypeId,Long editionId, List<Long> alertStatusIds,Long discrictId);
@@ -152,4 +152,5 @@ public interface IAlertService {
     public String changeVeificationStatusDetails(final AlertVO alertvo,final Long userId);
     public List<AlertTrackingVO> getSocialAlertFeedBackDetails(Long userId,String startdateStr,String endDateStr,String mobileNo,Long departmentId);
     public String saveAlertFeedbackStatusDetails(final AlertVO alertvo,final Long userId);
+    public List<AlertOverviewVO> getAlertImpactLocationWiseLocationSubTemplate(List<Long> locationIds);
 }
