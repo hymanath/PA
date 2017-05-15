@@ -73,5 +73,20 @@ public class AccommodationTrackingDAO extends GenericDaoHibernate<AccommodationT
 		
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getEventParkingDetails(Long notificationTypeId,Long locationId){
+		Query query = getSession().createQuery(" select " +
+				" model.locationName," +
+				" model.address," +
+				" model.longitude," +
+				" model.latitude" +
+				" from AccommodationTracking model " +
+				" where model.notificationTypeId = :notificationTypeId and " +
+				" model.locationValue = :locationId and " +
+				" model.eventId = 7 and " +
+				" model.locationTypeId = 4 and " +
+				" model.isActive='true' ");
+		return query.list();
+	}
 	
 }

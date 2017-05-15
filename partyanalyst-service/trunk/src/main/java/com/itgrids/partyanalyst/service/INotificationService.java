@@ -17,4 +17,5 @@ public interface INotificationService {
 	 public String saveNotification(Long notificationType,String notificationText);
 	 public String setActivcationStatusforNotificationAndNotificationType(String updationTypeStr , Long id, String activeStatus);
 	 public String saveNotificationType(String notificationTypeText);
+	 public NotificationDeviceVO getEventParkingDetails(Long notificationId,Long locationId);
 }

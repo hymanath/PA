@@ -452,5 +452,41 @@ public class NotificationService implements INotificationService{
 		return notificationList;
 	 
 	 }
-	 
+	 public NotificationDeviceVO getEventParkingDetails(Long notificationId,Long locationId){
+		 NotificationDeviceVO finalVo = new NotificationDeviceVO();
+		 List<NotificationDeviceVO> parkingLst = new ArrayList<NotificationDeviceVO>(0);
+		 List<NotificationDeviceVO> vipParkingLst = new ArrayList<NotificationDeviceVO>(0);
+		 try {
+			 if(notificationId == 4l){
+				List<Object[]> parkObjLst = accommodationTrackingDAO.getEventParkingDetails(notificationId, locationId);
+				if(parkObjLst != null && parkObjLst.size() > 0){
+					 for (Object[] objects : parkObjLst) {
+						 NotificationDeviceVO vo = new NotificationDeviceVO();
+							 vo.setLocationName(objects[0] != null ? objects[0].toString():"");
+							 vo.setAddress(objects[1] != null ? objects[1].toString():"");
+							 vo.setLatitude(objects[2] != null ? objects[2].toString():"");
+							 vo.setLongitude(objects[3] != null ? objects[3].toString():"");
+						   parkingLst.add(vo);
+						finalVo.setParkingLst(parkingLst);
+					}
+				 }
+			 }else{
+				 List<Object[]> vipParkObjLst = accommodationTrackingDAO.getEventParkingDetails(notificationId, locationId);
+				 if(vipParkObjLst != null && vipParkObjLst.size() > 0){
+					 for (Object[] objects : vipParkObjLst) {
+						 NotificationDeviceVO vo = new NotificationDeviceVO();
+							 vo.setLocationName(objects[0] != null ? objects[0].toString():"");
+							 vo.setAddress(objects[1] != null ? objects[1].toString():"");
+							 vo.setLatitude(objects[2] != null ? objects[2].toString():"");
+							 vo.setLongitude(objects[3] != null ? objects[3].toString():"");
+						  vipParkingLst.add(vo);
+						finalVo.setVipParkingLst(vipParkingLst);
+					}
+				 }
+			 }
+		} catch (Exception e) {
+			log.error("Exception occured in getEventParkingDetails() Method ",e);
+		}
+		 return finalVo;
+	  }
  }
