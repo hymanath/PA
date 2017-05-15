@@ -18,6 +18,7 @@ public class AlertInputsVO {
 	   private Long districtId;
 	   private Long constituencyId;
 	   private Long activityMemerId;
+	   private String type;
 	   
 		public Long getUserAccessLevelId() {
 			return userAccessLevelId;
@@ -96,6 +97,12 @@ public class AlertInputsVO {
 		}
 		public void setActivityMemerId(Long activityMemerId) {
 			this.activityMemerId = activityMemerId;
+		}
+		public String getType() {
+			return type;
+		}
+		public void setType(String type) {
+			this.type = type;
 		}
 		
         		 

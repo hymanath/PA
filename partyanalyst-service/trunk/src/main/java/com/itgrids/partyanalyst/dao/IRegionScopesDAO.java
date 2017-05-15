@@ -12,4 +12,5 @@ public interface IRegionScopesDAO extends GenericDao<RegionScopes, Long> {
 	public List<Object[]> getAllRegionScopes();
 	public List<Object[]> getAllRegionScopesWithOutOrderBy();
 	public Long getRegionScopeIdByScope(String scope);
+	public List<Object[]> getAlertLocationLevelById(List<Long> alertLocationIds);
 }
