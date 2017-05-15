@@ -2691,4 +2691,47 @@ public String updateCommitteeMemberDesignationByCadreId(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getElectionBoothCommitteeDetails(){
+		try{
+			ageRangeList = cadreCommitteeService.getAgeRangeDetailsForCadre();
+			genericVOList = cadreCommitteeService.getAllCasteDetailsForState();
+			cadreRolesVOList = cadreCommitteeService.getBasicCadreCommitteesDetails();
+			locations = cadreCommitteeService.getAllTdpCommitteeDesignations();
+			List<BasicVO> accLoc = getUserAccessConstituencies();
+			finalStatus = accLoc.get(0).getName();
+			locationValue = accLoc.get(0).getId();
+			if(panchayatId == null) //default values for prepopulate fields
+			{
+				panchayatId = "0";
+				committeeTypeId = 0L;
+				committeeId = 0L;
+				result3 = "0";
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured in getElectionBoothCommitteeDetails() At CadreCommitteeAction",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String saveElectionBoothCommitteeDetails(){
+		try{
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			Long userId = regVO.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			status = cadreCommitteeService.saveElectionBoothCommitteeDetails(userId,jObj.getLong("boothId"),jObj.getLong("tdpCadreId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in saveElectionBoothCommitteeDetails() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getBoothsForMandal(){
+		try{
+			jObj = new JSONObject(getTask());
+			cadreCommitteeList = cadreCommitteeService.getBoothsForMandals(jObj.getLong("mandalId"),jObj.getLong("constituencyId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in getBoothsForMandal() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }
