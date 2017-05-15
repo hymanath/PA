@@ -311,7 +311,7 @@
 							<div class="panel panel-default panelNew">
 								<div class="panel-heading panelNew" style="background: rgb(237, 238, 240) none repeat scroll 0% 0% ! important;">
 									<div class="row">
-										<div class="col-md-12 col-xs-12 col-sm-12">
+										<div class="col-md-6 col-xs-12 col-sm-6 pull-right">
 											<ul class="activeUlCls alertFilterCls list-inline pull-right">
 											    <li class="" style="background:#ddd;">Detailed</li>
 												<li class="active optionsCls" onClick="getAlertDetails('1')" attr_id="1" style="margin-left: -7px;">Overview</li>
@@ -321,14 +321,23 @@
 												<!--<li  id="alertSettingsId"><i class="fa fa-gears" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i></li>-->
 											</ul>
 										</div>
+										<div class="col-md-3 col-xs-12 col-sm-6 locImptLevelDivCls">
+											<label class="checkbox-inline">
+											  <input type="checkbox" id="impactAlertsId" value="option2" checked onClick="getAlertDetails('1')" class="checkedAlertsCls">Impact Wise
+											</label>
+											<label class="checkbox-inline">
+											  <input type="checkbox" id="locationAlertsId" value="option1" onClick="getLocationWiseAlertDetails()" class="checkedAlertsCls">Location Wise 
+											</label>
+										</div>
 								   </div>
-								</div>  
+								</div>
+								
 								<div class="panel-body alertImpctLevelBlcock">  
 								   <div class="row">
 									<div class="col-md-12 col-xs-12 col-sm-12 stateImpactLevelBlockCls">
 										   <div class="panel panel-default panelNew">
 											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">state overview - impact alerts</span></h4>
+												<h4 class="panel-title"><span class="headingColor" id="stateOverviewHeadingId">state overview - impact alerts</span></h4>
 											</div>
 											<div class="panel-body">
 												<div class="row">
@@ -359,7 +368,7 @@
 								     <div class="col-md-12 col-xs-12 col-sm-12 districtImpactLevelBlockCls">
 										   <div class="panel panel-default panelNew">
 											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">District overview - impact alerts</span></h4>
+												<h4 class="panel-title"><span class="headingColor" id="districtOverviewHeadingId">District overview - impact alerts</span></h4>
 											</div>
 											<div class="panel-body">
 												<div class="row" >
@@ -411,7 +420,7 @@
 										<div class="col-md-12 col-xs-12 col-sm-12 gmcImpactLevelBlockCls">
 										   <div class="panel panel-default panelNew">
 											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">CORP-GMC overview - impact alerts</span></h4>
+												<h4 class="panel-title"><span class="headingColor" id="corpOverviewHeadingId">CORP-GMC overview - impact alerts</span></h4>
 											</div>
 											<div class="panel-body">
 												<div class="row">
@@ -442,7 +451,7 @@
 										<div class="col-md-12 col-xs-12 col-sm-12 constituencyImpactLevelBlockCls">
 										   <div class="panel panel-default panelNew">
 											<div class="panel-heading">
-												<h4 class="panel-title"><span class="headingColor">Constituency overview - impact alerts</span></h4>
+												<h4 class="panel-title"><span class="headingColor" id="constituencyOverviewHeadingId">Constituency overview - impact alerts</span></h4>
 											</div>
 											<div class="panel-body">
 												<div class="row">
@@ -4351,6 +4360,7 @@
 <input type="hidden" id="cmtAttendanceId" attr_cmt_id="editTextAttendanceId'+i+'" value=""></input>
 <input type="hidden" id="hiddenActivityScopeId"></input>
 <input type="hidden" id="hiddenActivityLevelId"></input>
+<input type="hidden" id="hiddenLevelTypeId" attr_level_type="impactScopeWise"></input>
 
 <!--attendance-->
 <input type="hidden" id="officeHidId" attr_office_hid_id="" value=""></input>

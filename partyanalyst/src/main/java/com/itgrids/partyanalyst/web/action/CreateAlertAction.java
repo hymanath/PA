@@ -1304,8 +1304,10 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			JSONArray statusArray = jObj.getJSONArray("alertStatusArr"); 
 			for (int i = 0; i < statusArray.length(); i++){
 				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
-			}  
-			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,catId,alertTypeId,editionId,constituencyId,alertStatusIds,locationLevel,isPublication,publicationIdStr,localElectionBodyId);   
+			}
+			 
+			String type = jObj.getString("type");
+			alertCoreDashBoardVOs = alertService.getDistrictAndStateImpactLevelWiseAlertDtls(fromDate,toDate,stateId,scopeIdList,activityMemberId,districtIds,catId,alertTypeId,editionId,constituencyId,alertStatusIds,locationLevel,isPublication,publicationIdStr,localElectionBodyId,type);   
 		}catch(Exception e) {    
 			LOG.error("Exception occured in getDistrictAndStateImpactLevelWiseAlertDtls() of CreateAlertAction",e);
 		}
@@ -1708,7 +1710,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				alertStatusIds.add(Long.parseLong(statusArray.getString(i)));
 			}  
 			Long editionId = jObj.getLong("editionId");
-			alertCoreDashBoardVOs = alertService.getAlertDetailsByAlertType(fromDate,toDate,stateId,alertTypeId,activityMemberId,scopeIdList,alertStatusIds,editionId);   
+			String alertType = jObj.getString("type");
+		
+			alertCoreDashBoardVOs = alertService.getAlertDetailsByAlertType(fromDate,toDate,stateId,alertTypeId,activityMemberId,scopeIdList,alertStatusIds,editionId,alertType);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getAlertDetatilsByAlertType() of CreateAlertAction",e);
 		}
@@ -2106,7 +2110,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	}
 	public String getStateImpactandItsSubLevelAlert(){
 		try{
-			session = request.getSession();			jObj = new JSONObject(getTask());
+			
+			jObj = new JSONObject(getTask());
+			session = request.getSession();			
 			Long stateId = jObj.getLong("stateId");
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
@@ -2123,7 +2129,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}  
 			Long alertTypeId = jObj.getLong("alertIds");
 			Long editionId = jObj.getLong("editionIds");
-			alertOverviewVO = alertService.getStateImpactandItsSubLevelAlert(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionId,alertStatusIds);   
+			
+		    String selectionType = jObj.getString("selectionType");
+			alertOverviewVO = alertService.getStateImpactandItsSubLevelAlert(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionId,alertStatusIds,selectionType);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getStateImpactandItsSubLevelAlert() of CreateAlertAction",e);
 		}
@@ -2153,7 +2161,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			String sortyingType = jObj.getString("sortingType");
 			String resultType = jObj.getString("resultType");
 			Long disctrictId = jObj.getLong("districtId");
-			alertOverviewVO = alertService.getDistrictOrConstituencyImpactandItsSubLevelAlert(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionId,alertStatusIds,locationValue,sortyingType,resultType,disctrictId);   
+			
+			 String selectionType = jObj.getString("selectionType");
+			alertOverviewVO = alertService.getDistrictOrConstituencyImpactandItsSubLevelAlert(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionId,alertStatusIds,locationValue,sortyingType,resultType,disctrictId,selectionType);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getDistrictImpactandItsSubLevelAlert() of CreateAlertAction",e);
 		}
@@ -2180,7 +2190,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long alertTypeId = jObj.getLong("alertIds");
 			Long editionId = jObj.getLong("editionIds");
 			Long districtId = jObj.getLong("districtId");
-			alertOverviewVO = alertService.getCorpGMCAlert(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionId,alertStatusIds,districtId);   
+			
+			String selectionType = jObj.getString("selectionType");
+			alertOverviewVO = alertService.getCorpGMCAlert(activityMemberId,stateId,fromDate,toDate,scopeIdList,alertTypeId,editionId,alertStatusIds,districtId,selectionType);   
 		}catch(Exception e) {  
 			LOG.error("Exception occured in getDistrictImpactandItsSubLevelAlert() of CreateAlertAction",e);
 		}
