@@ -94,7 +94,7 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Object[]> getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
-     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,String queryStatus,Long source);
+     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,String queryStatus,Long source,String filterType);
     public List<Object[]> getAlertDetailsLocationWiseBasedOnDepartmentLevelForOfficer(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
