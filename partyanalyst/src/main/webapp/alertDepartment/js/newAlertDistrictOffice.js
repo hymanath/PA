@@ -56,7 +56,8 @@ $("#dateRangePickerAUM").daterangepicker({
 			var newsPaperIdLen = newspapersGlobalArr.length;
 			var channelIdLen = channelGlobalArr.length;
 			var callCenterIdLen = callCenterGlobalArr.length;
-			if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen == 0){
+			var socialMediaIdLen = globalsocialMediaTypeIdsArr.length;
+			if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen == 0 && socialMediaIdLen ==0){
 				alert("Please Select Atleast One Option.");   
 				return;
 			}
@@ -103,7 +104,8 @@ $("#dateRangePickerAUM").daterangepicker({
 	  endDate:currentToDate,
 	  paperIdArr:newspapersGlobalArr,
 	  chanelIdArr:channelGlobalArr,
-	  callCenterArr:callCenterGlobalArr
+	  callCenterArr:callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -699,7 +701,8 @@ $(document).on("click",".overAllCount",function(){
 		chanelIdArr : channelGlobalArr,  
 		callCenterArr:callCenterGlobalArr,
 		fromDate:currentFromDate,
-		toDate:currentToDate		
+		toDate:currentToDate,
+        socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr		
 	}
 	$.ajax({
       type:'GET',
@@ -737,7 +740,8 @@ $(document).on("click",".todayCountCls",function(){
 		chanelIdArr : channelGlobalArr,  
 		callCenterArr:callCenterGlobalArr,
 		fromDate:currentFromDate,
-		toDate:currentToDate
+		toDate:currentToDate,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	}
 	$.ajax({
       type:'GET',
@@ -1113,11 +1117,7 @@ $(document).on("change",".locationLevelWiseOnChange",function(){
 });
 function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartmentScopeId,searchType,alertType,divId,sortingType,orderType,filterParentScopeId,filterScopeValue,actionType,locationLevelId){
 	$("#"+divId+departmentId+parentGovtDepartmentScopeId).html(spinner);
-	/* var group='status';
-
-	if(searchType == "scopewise" && parentGovtDepartmentScopeId == 1){
-		group = "overview";
-	} */
+	
 	 var locationLevelIdArr=[];
 	 
 	 if(locationLevelId == null || locationLevelId == 0){
@@ -1144,7 +1144,8 @@ function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartme
 		chanelIdArr:callCenterGlobalArr,
 		searchType:searchType,
 		filterParentScopeId :filterParentScopeId,
-		filterScopeValue:filterScopeValue
+		filterScopeValue:filterScopeValue,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	}
     $.ajax({
     type:'GET',         
@@ -1328,7 +1329,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 					mainJosnObjArr.push({name:'Call Center',data:callCenterArr,color:"#EFC000"});  
 				  }
 				  if(socialMediaArr != null && socialMediaArr.length > 0){
-					mainJosnObjArr.push({name:'Social Media',data:socialMediaArr,color:"#05ABHY"});  
+					mainJosnObjArr.push({name:'Social Media',data:socialMediaArr,color:"#00ABED"});  
 				  }
 				  
 			
@@ -1850,7 +1851,8 @@ function getLocationBasedOnDepartmentLevel(departmentId,parentScopeId,districtLe
 		  govtDepartmentId : departmentId,
 		  parentGovtDepartmentScopeId : districtLevelId,
 		  alertType:alertType,
-		  subLevelArr:subLevelArr
+		  subLevelArr:subLevelArr,
+		  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -1885,6 +1887,7 @@ function getLocationBasedOnDepartmentLevel(departmentId,parentScopeId,districtLe
 			parentGovtDepartmentScopeValue:locationValue,
 			childLevelId:childLevelId,
 			alertType:alertType,
+		   socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -1934,7 +1937,8 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 		locationValue : locationValue,
 		alertType:alertType,
 		alertCategoryId:alertCategoryId,
-		subLevels:locationLevelIdClickArr
+		subLevels:locationLevelIdClickArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		
     }
     $.ajax({
@@ -1972,7 +1976,8 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		clickType:clickType, //
 		paperIdArr:newspapersGlobalArr,
 		chanelIdArr:channelGlobalArr,
-		callCenterArr:callCenterGlobalArr
+		callCenterArr:callCenterGlobalArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	}
 	$.ajax({
       type:'GET',
@@ -2003,7 +2008,8 @@ function getBellowDistrictOfficerAlertsCountView(task){
 			chanelIdArr:channelGlobalArr,
 			callCenterArr:callCenterGlobalArr,
 			task:task, 
-			sortingType:"Descending"  
+			sortingType:"Descending",
+            socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr			
 		}
 		$.ajax({
 			type:'GET',
@@ -2390,7 +2396,8 @@ function getBellowDistrictOfficerAlertsDtls(designationOfficerId,officerId,offic
 			officerId:officerId,
 			paperIdArr:newspapersGlobalArr,  
 			chanelIdArr:channelGlobalArr,
-			callCenterArr:callCenterGlobalArr
+			callCenterArr:callCenterGlobalArr,
+			socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		}
 	$.ajax({
       type:'GET',

@@ -86,7 +86,10 @@
 								<label class="checkbox-inline"><input type="checkbox" class="chanelListCls checkedSelected" checked />Electronic Media</label>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12"> 
-								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" attr_val="4" checked />Call Center</label>
+								<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected"  checked />Call Center</label>
+							</div>
+							<div class="col-md-12 col-xs-12 col-sm-12"> 
+								<label class="checkbox-inline"><input type="checkbox" class="socialMediaCls checkedSelected"  checked />Social Media</label>
 							</div>
 							<div class="col-md-12 col-xs-12 col-sm-12  m_top10"> 
 								<input class="btn btn-success btn-sm" value="APPLY" type="button" onClick="onLoadCallsAMU();" />
@@ -298,6 +301,7 @@ var newspapersGlobalArr =[];
 var channelGlobalArr =[];
 var callCenterGlobalArr=[];
 var departmentIdsForAlertSoutceArr=[];
+var globalsocialMediaTypeIdsArr = [];
 
 google.load("elements", "1", {
 	packages: "transliteration"
@@ -321,16 +325,18 @@ $(document).on("click",".selectAllCls",function(){
 		$(".newsPaperListCls").prop('checked', true);
 		$(".chanelListCls").prop('checked', true);
 		$(".callcenterCls").prop('checked', true);
-		
+		$(".socialMediaCls").prop('checked', true);
 		onLoadPrintAndChannelAndCallCen();
 
 	}else{
 		$(".newsPaperListCls").prop('checked', false);
 		$(".chanelListCls").prop('checked', false);
 		$(".callcenterCls").prop('checked', false);
+		$(".socialMediaCls").prop('checked', false);
 		newspapersGlobalArr=[];
 		channelGlobalArr=[];
 		callCenterGlobalArr=[];
+		globalsocialMediaTypeIdsArr=[];
 	}
 	
 });
@@ -338,6 +344,7 @@ function onLoadPrintAndChannelAndCallCen(){
 	newspapersGlobalArr=[];
 	channelGlobalArr=[];
 	callCenterGlobalArr=[];
+	globalsocialMediaTypeIdsArr=[];
 	$(".newsPaperListCls").each(function(){
 	if($(this).is(":checked"))
 	{
@@ -359,8 +366,21 @@ $(".chanelListCls").each(function(){
 $(".callcenterCls").each(function(){
 	if($(this).is(":checked"))
 	{
-		var callCenterObj = $(this).attr("attr_val");
-		callCenterGlobalArr.push(callCenterObj);
+		
+		<c:forEach items="${alertCallCenterTypeIdList}"  var="callCenterType">
+			var callCenterObj = '${callCenterType.id}'
+			callCenterGlobalArr.push(callCenterObj)
+		 </c:forEach>
+		 
+	}
+});
+$(".socialMediaCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		 <c:forEach items="${socailMediaTypeList}"  var="socailMediaType">
+			var socialGlobalObj = '${socailMediaType.id}'
+			globalsocialMediaTypeIdsArr.push(socialGlobalObj)
+		 </c:forEach>
 	}
 }); 
 }

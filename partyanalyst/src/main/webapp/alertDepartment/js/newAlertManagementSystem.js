@@ -11,6 +11,7 @@ var globalUserLevelId=0;
 var globalUserLevelValues = [0];
 var globalDesignationId=0;
 var globalCallCenterArr = [];
+var globalsocialMediaTypeIdsArr = [];
 var subLevels = [];
 
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
@@ -50,6 +51,12 @@ function onLoadInitialisations()
 			globalCallCenterArr.push($(this).attr("attr_val"));
 		}
 	});
+	$(".mediaTypeCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalsocialMediaTypeIdsArr.push($(this).attr("attr_val"));
+		}
+	});
 	
 	$(document).on("click",".switch-btn li",function(){
 		$(this).parent("ul").find("li").removeClass("active");
@@ -70,6 +77,7 @@ function onLoadInitialisations()
 		globalChannelIdArr = [];
 		globalDepartmentIdArr = [];
 		globalCallCenterArr = [];
+		globalsocialMediaTypeIdsArr = [];
 		$(".newsPaperListCls").each(function(){
 			if($(this).is(":checked"))
 			{
@@ -94,18 +102,22 @@ function onLoadInitialisations()
 				globalCallCenterArr.push($(this).attr("attr_val"));
 			}
 		});
+		
+	   $(".mediaTypeCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalsocialMediaTypeIdsArr.push($(this).attr("attr_val"));
+		}
+	   });
 		var newsPaperIdLen = globalNewsPaperIdArr.length;
 		var channelIdLen = globalChannelIdArr.length;
 		var callCenterIdLen = globalCallCenterArr.length;
+		var mediaTypeLenLen = globalsocialMediaTypeIdsArr.length;
 		
-		if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen == 0){
+		if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen == 0 && mediaTypeLenLen==0){
 			alert("Please Select Atleast One Option.");   
 			return;
 		}
-		/* if(globalNewsPaperIdArr.length == 0 && globalChannelIdArr.length == 0){
-			globalNewsPaperIdArr.push(0);
-			globalChannelIdArr.push(0);
-		} */
 		var departmentIdLen = globalDepartmentIdArr.length;
 		if(departmentIdLen == 0){
 			alert("Please Select Atleast One Department.");
@@ -126,6 +138,13 @@ function onLoadInitialisations()
 			$(".chanelListCls").prop('checked', true);
 		}else{
 			$(".chanelListCls").prop('checked', false);
+		}
+	});
+	$(document).on("click",".selectAllMediaType",function(){
+		if($(this).prop('checked')) {
+			$(".mediaTypeCls").prop('checked', true);
+		}else{
+			$(".mediaTypeCls").prop('checked', false);
 		}
 	});
 	$(document).on("click",".selectAllPaperCls",function(){
@@ -316,7 +335,8 @@ function getStatusWiseAlertOverviewCnt()
       deptIdArr : globalDepartmentIdArr,  
       paperIdArr : globalNewsPaperIdArr,
       chanelIdArr : globalChannelIdArr,
-	  callCenterArr : globalCallCenterArr
+	  callCenterArr : globalCallCenterArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -476,7 +496,8 @@ function getLevelWiseAlertOverviewCnt()
 		deptIdArr : globalDepartmentIdArr,  
 		paperIdArr : globalNewsPaperIdArr,
 		chanelIdArr : globalChannelIdArr,
-		callCenterArr : globalCallCenterArr
+		callCenterArr : globalCallCenterArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	}
 	$.ajax({
 		type:'GET',
@@ -706,7 +727,8 @@ function getDepartmentWiseAlertOverviewCnt(type,id)
 		callCenterArr : globalCallCenterArr,
 		alertStatusIdArr:alertStatusIdArr,
 		deptScopeLevelIdArr:deptScopeLevelIdArr,
-		resultType:type
+		resultType:type,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
 		type:'GET',
@@ -891,7 +913,8 @@ function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){
         priorityArr :priorityArr,
         alertSourceArr:alertSourceArr,
         printMediaArr :printMediaArr,
-        electronicMediaArr:electronicMediaArr
+        electronicMediaArr:electronicMediaArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
 		type:'GET',
@@ -917,7 +940,8 @@ function getTotalAlertBylocationLvl(statusId,statusName,statuscount){
 		chanelIdArr : globalChannelIdArr,
 		callCenterArr : globalCallCenterArr,		
 		statusId : 0,
-		govtDeptScopeId : statusId
+		govtDeptScopeId : statusId,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	}
 	$.ajax({
 		type:'GET',       
@@ -943,7 +967,8 @@ function getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmen
 		chanelIdArr : globalChannelIdArr, 
 		callCenterArr : globalCallCenterArr,	
 		statusId : departmentId,
-		deptId : statusId       
+		deptId : statusId,
+        socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr		
 	}
 	$.ajax({
 		type:'GET',
@@ -970,7 +995,8 @@ function getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,depa
 		callCenterArr : globalCallCenterArr,		
 		statusId : 0,
 		govtDeptScopeId : departmentId,    
-		deptId : statusId
+		deptId : statusId,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	}
 	$.ajax({
 		type:'GET',       
@@ -988,10 +1014,13 @@ function getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,depa
 	
 function getDeptNamesForMultiLevel(){ 
 $("#levelWiseDepartmentDetailsId").html(spinner);
+ var jsObj = {
+	  deptIdArr : globalDepartmentIdArr  
+ }
   $.ajax({
       type:'GET',
       url: 'getDeptListForMultiLvlAction.action',
-    data: {}
+    data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 		$("#levelWiseDepartmentDetailsId").html('');
 		buildDeptNamesForMultiLevel(result);
@@ -1315,7 +1344,8 @@ function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartme
 		searchType:searchType,
 		subLevels:locationLevelIdArr,
 		filterParentScopeId :filterParentScopeId,
-		filterScopeValue:filterScopeValue
+		filterScopeValue:filterScopeValue,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
     type:'GET',         
@@ -1480,7 +1510,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 					mainJosnObjArr.push({name:'Call Center',data:callCenterArr,color:"#EFC000"});  
 				  }
 				  if(socialMediaArr != null && socialMediaArr.length > 0){
-					mainJosnObjArr.push({name:'Social Media',data:socialMediaArr,color:"#05ABHY"});  
+					mainJosnObjArr.push({name:'Social Media',data:socialMediaArr,color:"#00ABED"});  
 				  }
 				  
 			
@@ -1957,7 +1987,8 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 		  govtDepartmentId : departmentId,
 		  parentGovtDepartmentScopeId : districtLevelId,
 		  alertType:"alert",
-		  subLevelArr:subLevelArr
+		  subLevelArr:subLevelArr,
+		  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -2026,6 +2057,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 			parentGovtDepartmentScopeValue:locationValue,
 			childLevelId:childLevelId,
 			alertType:"alert",
+			socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -2076,7 +2108,8 @@ var locationLevelIdClickArr=[];
 		locationValue : locationValue,
 		alertType:"alert",
 		alertCategoryId:alertCategoryId,
-		subLevels:locationLevelIdClickArr
+		subLevels:locationLevelIdClickArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
     type:'GET',                        
@@ -2106,7 +2139,8 @@ function getAlertSourceWiseAlert()
       paperIdArr : globalNewsPaperIdArr,
       chanelIdArr : globalChannelIdArr,
 	  callCenterArr : globalCallCenterArr,
-	  userType :"admin"
+	  userType :"admin",
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -2460,8 +2494,10 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 	  callCenterArr : globalCallCenterArr,
 	  alertCategoryId:alertCategoryId,
 	  userType :"admin",
-	  alertStatusId:alertStatusId
+	  alertStatusId:alertStatusId,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
+	
     $.ajax({
       type:'POST',
       url: 'getAlertDtlsByAlertSourceAction.action',
