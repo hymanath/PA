@@ -52,6 +52,8 @@ public class GovtUserAddress {
 	private String addressLane1;
 	private String addressLane2;
 	private String deliveryocation;
+	private Long gmcId;
+	private Long clusterId;
 	
 	private TdpCadre tdpCadre;
 	private GovtDepartmentWorkLocation state;
@@ -67,6 +69,8 @@ public class GovtUserAddress {
 	private GovtDepartmentWorkLocation localElectionBody;
 	private GovtDepartmentWorkLocation ward;
 	private GovtDepartmentWorkLocation panchayat;
+	private GovtDepartmentWorkLocation gmc;
+	private GovtDepartmentWorkLocation cluster;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -281,6 +285,20 @@ public class GovtUserAddress {
 	public String getDeliveryocation() {
 		return deliveryocation;
 	}
+	@Column(name = "gmc_id")
+	public Long getGmcId() {
+		return gmcId;
+	}
+	public void setGmcId(Long gmcId) {
+		this.gmcId = gmcId;
+	}
+	@Column(name = "cluster_id")
+	public Long getClusterId() {
+		return clusterId;
+	}
+	public void setClusterId(Long clusterId) {
+		this.clusterId = clusterId;
+	}
 	public void setDeliveryocation(String deliveryocation) {
 		this.deliveryocation = deliveryocation;
 	}
@@ -423,6 +441,26 @@ public class GovtUserAddress {
 	}
 	public void setPanchayat(GovtDepartmentWorkLocation panchayat) {
 		this.panchayat = panchayat;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="gmc_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtDepartmentWorkLocation getGmc() {
+		return gmc;
+	}
+	public void setGmc(GovtDepartmentWorkLocation gmc) {
+		this.gmc = gmc;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="cluster_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtDepartmentWorkLocation getCluster() {
+		return cluster;
+	}
+	public void setCluster(GovtDepartmentWorkLocation cluster) {
+		this.cluster = cluster;
 	}
 	
 	
