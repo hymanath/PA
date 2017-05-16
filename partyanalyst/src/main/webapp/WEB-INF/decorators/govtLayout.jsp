@@ -121,13 +121,13 @@ globalValue = resultValue[resultValue.length-1];
 			<h2><i class="fa fa-reorder line_heightDiv" style="color:#fff;font-size:23px;"></i>&nbsp;</h2>
 			<ul>
 				<li>
-					<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Wise Report</span></a>
+					<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Location Report</span></a>
 				</li>
 				<li>
 					<a href="locationWiseGrivenceReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Location Wise Report</span></a>
 				</li>
 				<li>
-					<a href="govtLogoutAction.action"><span class="fa fa-sign-out ico-white"></span><span>&nbsp;&nbsp;LOGOUT</span></a>
+					<a href="govtLogoutAction.action"><span class="fa fa-sign-out ico-white"></span><span>&nbsp;&nbsp;LOGOUT (${sessionScope.officerName})</span></a>
 				</li> 
 				<li>
 					<img style="padding:55px 40px;border-bottom:0px" src="alertDepartment/img/Menu_logo.png" alt="logo" class="img-responsive"/>
