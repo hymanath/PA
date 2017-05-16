@@ -151,11 +151,11 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/alertDepartmentOfficerDetails/alertDepartmentOfficerDetails.js" type="text/javascript"></script>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	var windowUrl = window.location.href;
 	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
@@ -163,6 +163,9 @@
 
 </script>
 <script>
+google.load("elements", "1", {
+	packages: "transliteration"
+});
 $(".chosenSelect").chosen({width:'100%'})
 function generateExcel1(){
 	tableToExcel('grievanceReportTableId', 'Grievance Report');
