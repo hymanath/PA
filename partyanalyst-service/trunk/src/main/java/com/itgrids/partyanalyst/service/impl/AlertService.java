@@ -11642,7 +11642,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		  return locationLevelList;
 	}
 	
-	public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds){
+	public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal,List<Long> alertstatusIds){
 		KeyValueVO vo = null;
 		try{
 			Date fromDate = null;
@@ -11652,11 +11652,20 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			List<Long> alertStatusIds = new ArrayList<Long>();
-			alertStatusIds.add(12l);
-			Long diffSum = 0l;
 			
-			List<Object[]> alertDiffTime = alertDAO.getDifferenceTime(fromDate,toDate,departmentIds,sourceIds,alertStatusIds);
+			if(includeProposal){
+				if(alertstatusIds != null){
+					alertstatusIds.add(13L);
+				}
+			}
+				
+			
+			Long diffSum = 0l;
+			List<Object[]> alertDiffTime = null; 
+			if(alertstatusIds != null && alertstatusIds.size() > 0){
+				alertDiffTime = alertDAO.getDifferenceTime(fromDate,toDate,departmentIds,sourceIds,alertstatusIds);
+			}
+			
 			if(commonMethodsUtilService.isListOrSetValid(alertDiffTime)){
 				for(Object[] obj :alertDiffTime){
 					diffSum = diffSum+commonMethodsUtilService.getLongValueForObject(obj[4]);
