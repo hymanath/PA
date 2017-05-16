@@ -8061,7 +8061,7 @@ return constiLst;
 			 
 		    resultList=new ArrayList<CommitteeApprovalVO>();
 		    resultList.addAll(resultMap.values());
-		    System.out.println(resultList);
+		   // System.out.println(resultList);
 		}catch(Exception e)
 		{
 			LOG.error("Exception raised in changeDesignationRecordsForAUser", e);
@@ -8427,7 +8427,7 @@ return constiLst;
 							CadreCommitteeReportVO committeeVO = getMatchedCadreCommitteeReportVOById(basicCmmty,((Long)countArr[3]).longValue());
 							if(constituenciesId.longValue() == 248L)
 							{
-								System.out.println("Setting values");
+								//System.out.println("Setting values");
 							}
 							if(committeeVO != null)
 							{		
@@ -17018,7 +17018,7 @@ return mandalList;
 		    		   	//String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 		    		   	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		    		   	Date date = new Date();
-		    		   	System.out.println(dateFormat.format(date));
+		    		   //	System.out.println(dateFormat.format(date));
 		    		   	url = "Invitees/"+dateFormat.format(date)+"_"+randomNum.nextInt(10000)+".xls";
 		    	        FileOutputStream out =  new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+""+url));
 		    	        workbook.write(out);
@@ -21628,7 +21628,35 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			List<Long> constiIds1 = new ArrayList<Long>(0);
 			Map<Long, TdpCadreVO> cadreMap1 = new HashMap<Long, TdpCadreVO>(0);
 			if(representativeTypeId.longValue() == 1L || representativeTypeId.longValue() ==0L){
-				List<Object[]> cadreList = publicRepresentativeDAO.getPartyLeadersDeatails(stateId,enrollmentIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+				List<Object[]> totalCountList = publicRepresentativeDAO.getPartyLeadersDeatails(stateId,enrollmentIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex,"count");
+				
+				List<Object[]> cadreList = new ArrayList<Object[]>();
+				if(totalCountList != null && totalCountList.size()>0){
+					Object[] totalCountArr = totalCountList.get(0);
+					int totalCount = totalCountArr[0] != null ? Integer.valueOf(totalCountArr[0].toString()):0;
+					
+					 int filterCount = maxIndex;
+                     int i = 0; 
+                     int j = filterCount;
+                     int maxcount = maxIndex;
+                     if(maxIndex == 1500 || maxIndex == 10000 || maxIndex == 20000 || maxIndex == 30000  || maxIndex == 50000  )
+                    	 maxcount = totalCount;
+                     while (maxcount >0){  
+                         if(maxcount<filterCount)
+                             j = i+maxcount;
+                         
+                         List<Object[]>  tempList  =  publicRepresentativeDAO.getPartyLeadersDeatails(stateId,enrollmentIdsList,levelId,locationIdsList,designationIdsList,i,j,"records");
+                            if(commonMethodsUtilService.isListOrSetValid(tempList)){
+                            	cadreList.addAll(tempList);
+                            }
+                         i=i+j;
+                         maxcount = maxcount-filterCount;
+                        // j=j+filterCount;
+                         
+                     }
+				}
+				
+				//List<Object[]> cadreList = publicRepresentativeDAO.getPartyLeadersDeatails(stateId,enrollmentIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex,"records");
 				if(commonMethodsUtilService.isListOrSetValid(cadreList))
 					membersList.addAll(cadreList);
 				
@@ -21675,7 +21703,34 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			
 			Map<Long, TdpCadreVO> cadreMap2 = new HashMap<Long, TdpCadreVO>(0);
 			if(representativeTypeId.longValue() == 2L  || representativeTypeId.longValue() ==0L){
-				List<Object[]> cadreList = cadreCommitteeRoleDAO.getPartyCommitteeLeadersDeatails(stateId,enrollmentIdsList,committeeLevelIdsList,committeeTypeIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex);
+				List<Object[]> totalCountList  = cadreCommitteeRoleDAO.getPartyCommitteeLeadersDeatails(stateId,enrollmentIdsList,committeeLevelIdsList,committeeTypeIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex,"count");
+				List<Object[]> cadreList = new ArrayList<Object[]>();
+				if(totalCountList != null && totalCountList.size()>0){
+					Object[] totalCountArr = totalCountList.get(0);
+					int totalCount = totalCountArr[0] != null ? Integer.valueOf(totalCountArr[0].toString()):0;
+					
+					 int filterCount = maxIndex;
+                     int i = 0; 
+                     int j = filterCount;
+                     int maxcount = maxIndex;
+                     if(maxIndex == 1500 || maxIndex == 10000 || maxIndex == 20000 || maxIndex == 30000  || maxIndex == 50000  )
+                    	 maxcount = totalCount;
+                     while (maxcount >0){  
+                         if(maxcount<filterCount)
+                             j = i+maxcount;
+                         
+                         List<Object[]>  tempList  = cadreCommitteeRoleDAO.getPartyCommitteeLeadersDeatails(stateId,enrollmentIdsList,committeeLevelIdsList,committeeTypeIdsList,levelId,locationIdsList,designationIdsList,i,j,"records");
+                            if(commonMethodsUtilService.isListOrSetValid(tempList)){
+                            	cadreList.addAll(tempList);
+                            }
+                         i=i+j;
+                         maxcount = maxcount-filterCount;
+                        // j=j+filterCount;
+                         
+                     }
+                     
+				}
+				//List<Object[]> cadreList = cadreCommitteeRoleDAO.getPartyCommitteeLeadersDeatails(stateId,enrollmentIdsList,committeeLevelIdsList,committeeTypeIdsList,levelId,locationIdsList,designationIdsList,firstIndex,maxIndex,"records");
 				if(commonMethodsUtilService.isListOrSetValid(cadreList))
 					membersList.addAll(cadreList);
 				
@@ -21767,7 +21822,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				Random randomNum = new Random();
     		   	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     		   	Date date = new Date();
-    		   	System.out.println(dateFormat.format(date));
+    		   //	System.out.println(dateFormat.format(date));
     		   	String url = "Invitees/"+dateFormat.format(date)+"_"+randomNum.nextInt(10000)+".xls";
     		   	if(returnList != null && returnList.size()>0){
     		   		TdpCadreVO vo  = returnList.get(0);
