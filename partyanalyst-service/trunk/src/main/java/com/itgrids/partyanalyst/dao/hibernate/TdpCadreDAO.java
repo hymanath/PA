@@ -6911,7 +6911,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		 return query.list();
 	}
 
-	public Object[] getCadreDetailsByMmbrShpId(String memberShipNo) {
+	public Object[] getCadreDetailsByMmbrShpId(String memberShipNo,Long enrollmentId) {
 		
 		StringBuilder queryString=new StringBuilder();
 		//tdpCadreId,firstname,lastname,relativename,mobileNo,emailId,gender,age,dateOfBirth,qualification,occupation,stateId,
@@ -6933,14 +6933,16 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 							" left join model.userAddress.panchayat panchayat" +
 							" left join model.userAddress.localElectionBody localElectionBody  " +
 							" where " +
-							" model.isDeleted='N' and model.enrollmentYear=:enrollmentYear and model.memberShipNo=:memberShipNo " +
-							"  and model1.isDeleted='N' and model1.enrollmentYearId = 4 ");
-		
+							" model.isDeleted='N' and model1.isDeleted='N' and model.enrollmentYear=:enrollmentYear and model.memberShipNo=:memberShipNo " +
+							"");
+		if(enrollmentId != null && enrollmentId.longValue()>0L)
+			queryString.append("   and model1.isDeleted='N' and model1.enrollmentYearId = :enrollmentId ");
 			Query query=getSession().createQuery(queryString.toString());
 			
 			query.setParameter("memberShipNo", memberShipNo);
 			query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_YEAR);
-		
+			if(enrollmentId != null && enrollmentId.longValue()>0L)
+				query.setParameter("enrollmentId", enrollmentId);
 		return (Object[]) query.uniqueResult();
 }
 	
