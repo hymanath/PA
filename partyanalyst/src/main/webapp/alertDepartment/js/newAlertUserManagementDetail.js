@@ -267,116 +267,37 @@ function onLoadClicks()
 			$("#assignErrorDivId").html("please select impact level");
 			return;
 		}
-		if($("#locationLevelSelectId").val() == 1)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select State");
+		var dynamicLocationValue=$('.assigningDynamicSelectList').val();
+		var hasError=false;
+		var displayName = "";
+		if (typeof(dynamicLocationValue) != "undefined"){
+			
+			
+			$('.assigningDynamicSelectList').each(function(){
+				if(!hasError){
+					displayName = $(this).attr('attr_dyna_name');
+					var id =  $(this).attr('id');				
+					var dynamicLocationValue=$('#'+id+'').val();
+					if(dynamicLocationValue == null || dynamicLocationValue == "" || dynamicLocationValue == 0)
+					{
+						hasError=true;
+						$("#assignErrorDivId").html("Please select "+displayName+". ");
+						return;
+					}				
+				}else{
+					return;
+				}
+			});	
+			if(hasError)
 				return;
-			}
+			
 		}
-		if($("#locationLevelSelectId").val() == 5)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
+		hasError=false;
+		if(!hasError){
+			var locationValue=$('.assingLocationCls').val();
+			if(locationValue == null || locationValue == "" || locationValue == 0)
 			{
-				$("#assignErrorDivId").html("please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select location");
-				return;
-			}
-		}
-		if($("#locationLevelSelectId").val() == 6)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select district");
-				return;
-			}
-			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select location");
-				return;
-			}
-		}
-		if($("#locationLevelSelectId").val() == 7)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select district");
-				return;
-			}
-			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select division");
-				return;
-			}
-			if($("#locationSubLevelSelectId7").val() == null || $("#locationSubLevelSelectId7").val() == "" || $("#locationSubLevelSelectId7").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select location");
-				return;
-			}
-		}
-		if($("#locationLevelSelectId").val() == 8)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select district");
-				return;
-			}
-			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select division");
-				return;
-			}
-			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select location");
-				return;
-			}
-		}
-		if($("#locationLevelSelectId").val() == 10)
-		{
-			if($("#locationSubLevelSelectId1").val() == null || $("#locationSubLevelSelectId1").val() == "" || $("#locationSubLevelSelectId1").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select State");
-				return;
-			}
-			if($("#locationSubLevelSelectId5").val() == null || $("#locationSubLevelSelectId5").val() == "" || $("#locationSubLevelSelectId5").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select district");
-				return;
-			}
-			if($("#locationSubLevelSelectId6").val() == null || $("#locationSubLevelSelectId6").val() == "" || $("#locationSubLevelSelectId6").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select division");
-				return;
-			}
-			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select mandal");
-				return;
-			}
-			if($("#locationSubLevelSelectId8").val() == null || $("#locationSubLevelSelectId8").val() == "" || $("#locationSubLevelSelectId8").val() == 0)
-			{
-				$("#assignErrorDivId").html("please select location");
+				$("#assignErrorDivId").html("Please select Location. ");
 				return;
 			}
 		}
@@ -391,6 +312,7 @@ function onLoadClicks()
 			return;
 		}
 		$("#assiningLdngImg").show();
+		
 		
 		var uploadHandler = {
 			upload: function(o) {
@@ -1096,15 +1018,15 @@ function buildParentLevelsOfLevel(result,departmentId,tempbuildId){
 			if(i<result.length-1){
 				str+='<div class="col-sm-6">';
 					str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
-					str+='<select  class="chosenSelect" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
+					str+='<select  class="chosenSelect assigningDynamicSelectList" attr_dyna_name="'+result[i].name+'" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
 				str+='</div>';
 			}else{
 				str+='<div class="col-sm-6">';
 					str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId"></span></label>';
 					if(tempbuildId =='locationLevelSelectId1')
-						str+='<select  class="chosenSelect locationsCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
+						str+='<select  class="chosenSelect locationsCls assingLocationCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
 					else
-						str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
+						str+='<select  class="chosenSelect locationCls assingLocationCls" id="locationSubLevelSelectId'+result[i].id+'" name="alertAssigningVO.levelValue" ></select>';
 				str+='</div>';
 			}
 		}
