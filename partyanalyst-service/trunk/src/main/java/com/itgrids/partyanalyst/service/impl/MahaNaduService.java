@@ -4271,52 +4271,40 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			LOG.error(" Exception Raised in setToIdNameVoList ",e);
 		}		
 	}
-	public ResultStatus savingCandidateDetails(String name,String mobileNo,String membershipId,
-			String fromDateStr,String time){
+	public ResultStatus savingBloodDonateCandidateDetails(String name,String mobileNo,String membershipId,String fromDateStr,String time){
 		ResultStatus resultStatus = new ResultStatus();
 		DateUtilService date = new DateUtilService();
 		try{			
 			Date fromDate = null; 			
- 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
  			if(fromDateStr != null  && time != null  ){
  				fromDate = sdf.parse(fromDateStr+" "+time); 				
  			}
- 			List<Object[]> tdpCadreLst = null;
- 			if(membershipId != null && !membershipId.trim().isEmpty()){
- 				tdpCadreLst = tdpCadreDAO.getCandidateDetailsByMembershipId(membershipId);
+
+ 			BloodDonorInfo bloodDonorInfo = new BloodDonorInfo();
+ 			if(membershipId != null && !membershipId.trim().isEmpty() && !membershipId.trim().equalsIgnoreCase("0")){
+ 				List<Object[]> tdpCadreLst = tdpCadreDAO.getCandidateDetailsByMembershipId(membershipId);
+ 				
  				if(tdpCadreLst != null && tdpCadreLst.size() > 0){
- 					for (Object[] objects : tdpCadreLst) {
- 						BloodDonorInfo bloodDonorInfo = new BloodDonorInfo();
- 	 	 				bloodDonorInfo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(objects[0]));
- 	 	 				bloodDonorInfo.setRelativeName(commonMethodsUtilService.getStringValueForObject(objects[1]));
- 	 	 				bloodDonorInfo.setGender(commonMethodsUtilService.getStringValueForObject(objects[2]));
- 	 	 				bloodDonorInfo.setDateOfBirth(convertToDateFormet(objects[3].toString()));
- 	 	 				bloodDonorInfo.setAge(commonMethodsUtilService.getLongValueForObject(objects[4]));
- 	 	 				bloodDonorInfo.setMobileNo(mobileNo);
- 	 	 				bloodDonorInfo.setDonorName(name);
- 	 	 				bloodDonorInfo.setInsertedTime(date.getCurrentDateAndTime());
- 	 	 				bloodDonorInfo.setUpdatedTime(date.getCurrentDateAndTime());
- 	 	 				bloodDonorInfo.setDonationTime(fromDate);
- 	 		 			bloodDonorInfo.setRegisteredSource("app");
- 	 	 				bloodDonorInfo.setIsDeleted("N");
- 	 	 				
- 	 	 				bloodDonorInfoDAO.save(bloodDonorInfo);
-					}
- 				}else{
- 	 				BloodDonorInfo bloodDonorInfo = new BloodDonorInfo();
- 	 				bloodDonorInfo.setDonorName(name);
- 	 				bloodDonorInfo.setMobileNo(mobileNo);
- 	 				bloodDonorInfo.setInsertedTime(date.getCurrentDateAndTime());
- 		 			bloodDonorInfo.setUpdatedTime(date.getCurrentDateAndTime());
- 		 			bloodDonorInfo.setDonationTime(fromDate);
- 		 			bloodDonorInfo.setRegisteredSource("app");
- 		 			bloodDonorInfo.setIsDeleted("N");
- 		 			
- 		 			bloodDonorInfoDAO.save(bloodDonorInfo);
- 	 			}
- 				resultStatus.setResultCode(0);
- 				resultStatus.setMessage("success");
+ 					Object[] objects = tdpCadreLst.get(0);
+ 					bloodDonorInfo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+ 	 	 			bloodDonorInfo.setRelativeName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+ 	 	 			bloodDonorInfo.setGender(commonMethodsUtilService.getStringValueForObject(objects[2]));
+ 	 	 			bloodDonorInfo.setDateOfBirth(convertToDateFormet(objects[3].toString()));
+ 	 	 			bloodDonorInfo.setAge(commonMethodsUtilService.getLongValueForObject(objects[4]));
+ 				}
  			}
+ 			bloodDonorInfo.setDonorName(name);
+			bloodDonorInfo.setMobileNo(mobileNo);
+ 			bloodDonorInfo.setDonationTime(fromDate);
+ 			bloodDonorInfo.setInsertedTime(date.getCurrentDateAndTime());
+			bloodDonorInfo.setUpdatedTime(date.getCurrentDateAndTime());
+ 			bloodDonorInfo.setRegisteredSource("app");
+ 			bloodDonorInfo.setIsDeleted("N");
+ 			bloodDonorInfoDAO.save(bloodDonorInfo);
+ 			
+ 			resultStatus.setResultCode(0);
+			resultStatus.setMessage("success");
 		}catch (Exception e) {
 			resultStatus.setResultCode(1);
 			resultStatus.setMessage("failure");
@@ -4334,11 +4322,11 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 		return date;
 	}
-	public List<IdAndNameVO> getAllCandidateDetails(){
-		List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>();
-		List<Long> donorIds = null;
+	public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(){
+		List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>(0);
 		try{
 			List<Object[]> mainList = bloodDonorInfoDAO.getBloodDonorDetails();
+			List<Long> donorIds = new ArrayList<Long>(0);
 			if(mainList != null && mainList.size() > 0){
 				for (Object[] objects : mainList) {
 					donorIds.add((Long)objects[0]);
@@ -4351,7 +4339,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 					vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
 					vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
-					if(donationInfoLst != null && donationInfoLst.size() > 0){
+					if(donationInfoLst.contains((Long)objects[0])){
 						vo.setFlag("yes");
 					}else{
 						vo.setFlag("No");
