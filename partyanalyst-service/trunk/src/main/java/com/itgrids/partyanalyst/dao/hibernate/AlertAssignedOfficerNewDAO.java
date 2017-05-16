@@ -5845,7 +5845,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	public List<Long> getAlertDetailsForGrievanceReportClick(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
-     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,Long statusId,Long sourseId){
+     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,Long statusId,Long sourseId,String feedbackType){
     	 
      	StringBuilder queryStr = new StringBuilder();
      	queryStr.append(" select ");
@@ -5884,6 +5884,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		queryStr.append(" and GDWL.govt_department_scope_id = GDDO.govt_department_scope_id ");
  		queryStr.append(" and GUA.user_address_id = GDWL.govt_user_address_id  ");
  		queryStr.append(" and GDDO.address_id = GUA.user_address_id  ");
+ 		if(feedbackType != null && feedbackType.trim().equalsIgnoreCase("pending")){
+ 			queryStr.append(" and ALTS.alert_status_id in (4,12) ");
+ 			queryStr.append(" and AAO.alert_status_id in (4,12) ");
+ 		}
  		
  		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
  			queryStr.append(" and GDWL.govt_department_scope_id in(:deptScopeIdList)");
@@ -6132,8 +6136,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
 	  queryStr.append(" and GDWL1.govt_department_scope_id=:parentGovtDepartmentScopeId   ");
     }
- 		
-	if(statusId != null && statusId.longValue() > 0l){
+ 	
+	if(statusId != null && statusId.longValue() == 4l){
+		queryStr.append(" and ALTFS.alert_feedback_status_id in (2,3)  ");
+	}else if(statusId != null && statusId.longValue() > 0l){
 		queryStr.append(" and ALTFS.alert_feedback_status_id = :statusId   ");
 	}
 		
@@ -6206,7 +6212,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			query.setParameter("source",source);
 	}
 		
-		if(statusId != null && statusId.longValue() > 0l){
+		if(statusId != null && statusId.longValue() > 0l && statusId.longValue() != 4l){
 			query.setParameter("statusId",statusId);
 		}
  	return query.list();
