@@ -23,7 +23,7 @@
     <script src="js/cadreCommittee/bootstrap.min.js"></script>
 	<!----slick Js----->
 	<script type="text/javascript" src="js/cadreCommittee/slick/slick.min.js"></script>
-	<script type="text/javascript" src="js/cadreCommittee/cadreCommittee.js"></script>
+	<script type="text/javascript" src="js/cadreCommittee/cadreDistrictCommittee.js"></script>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
 	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
@@ -776,6 +776,7 @@
    </script>
 	<script>		
 		var reqlocationId ='${param.locationId}';
+		var reqLocationType ='${param.reqLocationType}';
 		
 		var isSmartPhone = '${cadreCommitteeVO.isSmartPhone}';
 		var mobnum,refid;
