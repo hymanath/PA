@@ -12714,6 +12714,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						vo.setSmTypeId(commonMethodsUtilService.getLongValueForObject(objects[19]));
 						vo.setSmType(commonMethodsUtilService.getStringValueForObject(objects[20]));
 						vo.setVerifyStatus(commonMethodsUtilService.getStringValueForObject(objects[21]));
+						vo.setState(commonMethodsUtilService.getStringValueForObject(objects[22]));
 						
 						returnList.add(vo);
 					}
@@ -12743,22 +12744,23 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						
 						//saving alertTtrcking
 						AlertTracking alertTracking = new AlertTracking();
-						alertTracking.setAlertId(alertvo.getAlertId());
-						alertTracking.setAlertStatusId(alertvo.getStatusId());
+						alertTracking.setAlertId(alertvo.getAlertId());						
 						alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
 						
 						if(alertvo.getStatus() !=null && !alertvo.getStatus().trim().isEmpty() &&
 								alertvo.getStatus().trim().equalsIgnoreCase("Y")){
 							alertTracking.setAlertTrackingActionId(1l);
+							alertTracking.setAlertStatusId(alertvo.getStatusId());
 						}else if(alertvo.getStatus() !=null && !alertvo.getStatus().trim().isEmpty() &&
 								alertvo.getStatus().trim().equalsIgnoreCase("N")){
 							alertTracking.setAlertTrackingActionId(2l);
+							alertTracking.setAlertStatusId(14l);
 						}
 						
 						
 						alertTracking.setInsertedBy(userId);
 						alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-						//alertTracking.setAlertSourceId(alertvo.getAlertSourceId());
+						//alertTracking.setAlertSourceId(6l);
 						alertTrackingDAO.save(alertTracking);
 						
 						Alert alert = alertDAO.get(alertvo.getAlertId());
