@@ -139,11 +139,14 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 	 });  
 }
 
-
+//abcd
  
  function getAverageIssuePendingDays(){
 	var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
+	var includeProposal = $("#proposalId").prop('checked');
+	 
+	var alertstatusIds = [];
 	
  	var deptIds=[];
  	var sourceIds =[];
@@ -159,26 +162,28 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 	}else if(sourceId==3){
 		sourceIds.push(3);
 	}
-     var jobj = {
-       deptIds :deptIds,
- 	  sourceIds:sourceIds,
- 	  fromDate : callCenterUserFDate,//2016-11-01
- 	  toDate:callCenterUserTDate//2017-05-01
-     }
-     $.ajax({
+    var jobj = {
+		deptIds :deptIds,
+		sourceIds:sourceIds,  
+		alertstatusIds:$("#statusId").val(),
+		includeProposal : includeProposal,
+		fromDate : callCenterUserFDate,//2016-11-01
+		toDate:callCenterUserTDate//2017-05-01
+    }
+    $.ajax({
        type : "POST",
        url  : "getAverageIssuePendingDaysAction.action",
        dataType: 'json',
        data: {task:JSON.stringify(jobj)},
-     }).done(function(result){
+    }).done(function(result){
      	var str ='';
  		if(result != null){
  			str +=''+result.count+'Days '+result.totalCount+'Hours';
  			 $("#averageIssueId").html(str);
  		}
-     });
+    });
      
-     }
+    }
 function getDistrintInformation(){
 	$("#dayWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	var rangeType=$("#dateRangeId").attr("value");
@@ -1672,26 +1677,26 @@ function getDistIdAndNameList(){
 		}         
 	}); 
 } 
-
+//abcd
 	
 function getCadreGreivienceEfficiency(){
-	
+	getAverageIssuePendingDays();
 	$("#efficiencyId").html("");
 	$("#efficiencyId").html('<center><img id="" style="width:50px;height:50px;"  src="./images/Loading-data.gif" alt="Processing Image"/></center>');
     var alertstatusIds = [];
 	var deptIds=[];
 	var sourceIds =[];
-	var includeProposal = $("#proposalId").prop('checked');;
+	var includeProposal = $("#proposalId").prop('checked');
 	
 	var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
 	deptIds.push(deptId);  
 	if(sourceId==0){
-		sourceIds.push(1);
+		sourceIds.push(4);
 		sourceIds.push(2);
 		sourceIds.push(3);
-	}else if(sourceId==1){
-		sourceIds.push(1);
+	}else if(sourceId==4){
+		sourceIds.push(4);
 	}else if(sourceId==2){
 		sourceIds.push(2);
 	}else if(sourceId==3){
@@ -1704,7 +1709,7 @@ function getCadreGreivienceEfficiency(){
 	  sourceIds:sourceIds,
       includeProposal : includeProposal,
 	  alertstatusIds:$("#statusId").val(),
-	  fromDate: callCenterUserFDate,                       
+	  fromDate: callCenterUserFDate,                           
 	  toDateStr:callCenterUserTDate, 
     }
     $.ajax({
