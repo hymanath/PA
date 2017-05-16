@@ -2598,6 +2598,9 @@
          <property name="eventAttendeeErrorDAO" ref="eventAttendeeErrorDAO" />
          <property name="eventAttendeeInfoDAO" ref="eventAttendeeInfoDAO" />
          <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+         <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+         <property name="bloodDonorInfoDAO" ref="bloodDonorInfoDAO" />
+         
    </bean>
   
    <bean name="webServiceClient" class="com.itgrids.partyanalyst.webservice.client.WebServiceClient" lazy-init="true" >
