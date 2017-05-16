@@ -111,7 +111,36 @@
 		<div id="allLocationLevelDivId"></div>
 	</section>
 	<input type="hidden" id="dateRangeId" value="day"></input>
-
+<div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body modal-insurance">
+				<div id="filter"></div>
+				<div id="alertManagementPopupBody"></div>
+			</div>
+		</div>
+  </div>
+</div>
+<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="alertManagementPopupBody1"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+  </div>
+</div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 
@@ -124,6 +153,9 @@
 <script src="js/alertDepartmentOfficerDetails/alertDepartmentOfficerDetails.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <script type="text/javascript">
 	var windowUrl = window.location.href;
 	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
