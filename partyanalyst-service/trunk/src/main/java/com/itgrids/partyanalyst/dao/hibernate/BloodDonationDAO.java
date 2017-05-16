@@ -351,4 +351,13 @@ public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List
 	}
 	return query.list();
 }
+	@SuppressWarnings("unchecked")
+	public List<Long> getBloodDonationDetails(List<Long> bloodDonorIds){
+		
+		Query query = getSession().createQuery(" select model.bloodDonationId " +
+				" from BloodDonation model " +
+				" where model.bloodDonorInfoId in ('"+bloodDonorIds+"') ");
+		
+		return query.list();
+	}
 }

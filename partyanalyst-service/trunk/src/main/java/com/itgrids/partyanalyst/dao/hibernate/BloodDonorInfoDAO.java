@@ -41,4 +41,15 @@ public class BloodDonorInfoDAO extends GenericDaoHibernate<BloodDonorInfo, Long>
 	query.setDate("campToDate",campToDate);
 	return query.list();
    }*/
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getBloodDonorDetails(){
+		
+		Query query = getSession().createQuery(" select " +
+				" model.bloodDonorInfoId," +
+				" model.donorName,model.mobileNo," +
+				" model.donationTime " +
+				" from BloodDonorInfo model where model.isDeleted = 'N' and model.registeredSource = 'app' ");
+		
+		return query.list();
+	   }
 }

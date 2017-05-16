@@ -9585,5 +9585,14 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   query.setParameterList("tdpCadreIds", tdpCadreIds);
 		   return query.list();
 	   }
+	  public List<Object[]> getCandidateDetailsByMembershipId(String membershipId){
+		  Query query = getSession().createQuery(" select model.tdpCadreId," +
+		  		" model.relativename,model.gender,model.dateOfBirth,model.age" +		  		
+		  		" from TdpCadre model where " +
+		  		" model.memberShipNo =:membershipId " +
+		  		" and model.isDeleted = 'N' ");
+		  query.setParameter("membershipId", membershipId);
+		  return query.list();
+	  }
 	   
 }
