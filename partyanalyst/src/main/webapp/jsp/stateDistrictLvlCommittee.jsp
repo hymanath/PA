@@ -235,6 +235,7 @@
 	</footer>-->
 
 	<script>	
+	var reqlocationId = '${locationId}';
 	var reqLocationValue = '${reqLocationValue}';
 	var reqLocationType ='${reqLocationType}';
 	var globalLocationName ='${globalLocationName}';
@@ -573,13 +574,21 @@
 				str+='<div class="slick_widget">';
 				str+='	<h5>'+counts[i].locationName+'</h5>';
 				str+='	<ul class="list-inline text-center" >';
-				if(counts[i].population!=0){
+				if(counts[i].population != null && counts[i].population!=0){
 					str+='		<li class="btn btn-xs btn-default" disabled="disabled">'+counts[i].population+'</li>';
 				}else{
 					str+='		<li class="btn btn-xs btn-default" disabled="disabled">N/A</li>';
 				}
-				str+='		<li class="btn btn-xs btn-danger" disabled="disabled">'+counts[i].votesPolled+'</li>';
-				if(counts[i].population!=0){
+				if(counts[i].votesPolled != null && counts[i].votesPolled != 0 )
+					str+='		<li class="btn btn-xs btn-danger" disabled="disabled">'+counts[i].votesPolled+'</li>';
+				else{
+					if(counts[i].finalizedCount != null && counts[i].finalizedCount != 0 )
+						str+='		<li class="btn btn-xs btn-danger" disabled="disabled">'+counts[i].finalizedCount+'</li>';
+					else
+						str+='		<li class="btn btn-xs btn-danger" disabled="disabled">N/A</li>';
+				}
+				
+				if(counts[i].population != null &&  counts[i].population!=0){
 					str+='		<li class="btn btn-xs btn-success" disabled="disabled">'+counts[i].total+'</li>';
 				}else{
 					str+='		<li class="btn btn-xs btn-success" disabled="disabled">N/A</li>';
