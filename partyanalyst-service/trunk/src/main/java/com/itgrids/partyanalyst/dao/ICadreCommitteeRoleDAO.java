@@ -15,5 +15,5 @@ public interface ICadreCommitteeRoleDAO extends GenericDao<CadreCommitteeRole, L
 	
 	public List<Object[]> getCommitteeRolesByLevelIdAndCommitteeId(Long cadreCommitteeLevelId,Long cadreCommiteeId);
 	public List<Object[]> getPartyCommitteeLeadersDeatails(Long stateId,List<Long> enrollmentIdsList,List<Long>  committeeLevelIdsList,List<Long> committeeTypeIdsLsit,
-			 Long levelId, List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex);
+			 Long levelId, List<Long> locationIdsList,List<Long> designationIdsList,int firstIndex,int maxIndex,String fetchTypeStr);
 }
