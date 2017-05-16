@@ -47,6 +47,7 @@ public class IdAndNameVO {
 	private String yesPerc;
 	private String noPerc;
 	private String mayPerc;
+	private String flag;
 	
 	private List<String> enrollmentYears = new ArrayList<String>();
 	
@@ -308,6 +309,12 @@ public class IdAndNameVO {
 
 	public void setRemainingPerc(String remainingPerc) {
 		this.remainingPerc = remainingPerc;
+	}
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}	
 	
 }

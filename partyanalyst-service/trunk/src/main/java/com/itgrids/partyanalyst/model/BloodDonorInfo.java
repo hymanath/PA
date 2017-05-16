@@ -46,6 +46,8 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	private TdpCadre tdpCadre;
 	private EducationalQualifications education;
 	private Occupation occupation;
+	private String registeredSource;
+	private Date donationTime; 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "blood_donor_info_id", unique = true, nullable = false)
@@ -223,4 +225,19 @@ public class BloodDonorInfo extends BaseModel implements Serializable{
 	public void setOccupation(Occupation occupation) {
 		this.occupation = occupation;
 	}
+	@Column(name="registered_source")
+	public String getRegisteredSource() {
+		return registeredSource;
+	}
+	public void setRegisteredSource(String registeredSource) {
+		this.registeredSource = registeredSource;
+	}
+	@Column(name="donation_time")
+	public Date getDonationTime() {
+		return donationTime;
+	}
+	public void setDonationTime(Date donationTime) {
+		this.donationTime = donationTime;
+	}
+	
 }
