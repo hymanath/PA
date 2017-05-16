@@ -7460,12 +7460,15 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   	          String desgnationName = null;
   	          List<Long> lvlValueList = new ArrayList<Long>();
   	          String locationName = null;
+  	          String levelName = null;
   	          String officerNameAnddesgnationName = null;
   	          String deptName = null;
   		          try {
   		            List<Object[]> LocationList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
   		            if(commonMethodsUtilService.isListOrSetValid(LocationList)){
   		              lvlValueList.add((Long) LocationList.get(0)[1]);
+  		              if(LocationList.get(0)[2] !=null)
+  		            	  levelName = LocationList.get(0)[2].toString();
   		            }
   		            List<Object[]> usrNameList	 = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigNameForUser(userId);
   		            if(usrNameList.isEmpty()){
@@ -7488,11 +7491,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   		             }
   		             if(desgnationName  != null){
   		            	if(deptName != null)
-  		            		officerNameAnddesgnationName = officerName+"/"+desgnationName+"-"+deptName+"-"+locationName; 
+  		            		officerNameAnddesgnationName = officerName+"/"+desgnationName+"-"+deptName+"-"+locationName+" "+levelName; 
   		            	else
-  		            		officerNameAnddesgnationName = officerName+"/"+desgnationName+"-"+locationName;
+  		            		officerNameAnddesgnationName = officerName+"/"+desgnationName+"-"+locationName+" "+levelName;
   		             }else{
-  		            	 officerNameAnddesgnationName = officerName+"/"+locationName;
+  		            	 officerNameAnddesgnationName = officerName+"/"+locationName+" "+levelName;
   		             }
   		              
   		          } catch (Exception e) {
