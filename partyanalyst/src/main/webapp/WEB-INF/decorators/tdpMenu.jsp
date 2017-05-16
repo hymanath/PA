@@ -467,6 +467,11 @@
 								 <h2><i class="fa fa-group ico-white line_heightDiv"></i> Committees</h2>
 								 <ul>
 								<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_ADMIN' ) || fn:contains(sessionScope.USER.entitlements, 'TDP_COMMITTEE_AREAWISE_ACCESS' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_DETAILED_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' )}">
+									<c:if test="${fn:contains(sessionScope.USER.entitlements, 'COMMITTEE_MGT' )}">
+										<li>
+											<a href="committeeInfoAction.action"><i class="fa fa-calendar-plus-o"></i><span>&nbsp;&nbsp; Create Committee </span></a>
+										</li>
+									</c:if>
 								  <li>
 									<a href="#"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Committees Dashboard</span></a>
 									 <h2><i class="fa fa-dashboard ico-white line_heightDiv"></i> Committees Dashboard</h2>
@@ -483,7 +488,7 @@
 									 </ul>
 									</li>
 								</c:if>
-								<c:if test="${sessionScope.USER.isAdmin == 'true' &&							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
+								<c:if test="${sessionScope.USER.isAdmin == 'true' &&fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
 									<c:if test="${ sessionScope.USER.isAdmin == 'true' || fn:contains(sessionScope.USER.entitlements, 'CADREDASHBOARD' )}">
 								<li>
 									<a href="cadreCommitteeAction.action"><i class="fa fa-edit ico-white"></i><span>&nbsp;&nbsp;TDP Committees Management</span></a>
