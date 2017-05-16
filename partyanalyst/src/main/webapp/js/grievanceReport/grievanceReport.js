@@ -139,11 +139,11 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  	var sourceIds =[];
  	deptIds.push(deptId);  
 	if(sourceId==0){
-		sourceIds.push(1);
-		sourceIds.push(2);
+		sourceIds.push(4);             
+		sourceIds.push(2);  
 		sourceIds.push(3);
-	}else if(sourceId==1){
-		sourceIds.push(1);
+	}else if(sourceId==4){   
+		sourceIds.push(4);
 	}else if(sourceId==2){
 		sourceIds.push(2);
 	}else if(sourceId==3){
