@@ -2781,7 +2781,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
-	
+	//abcd
 	public String getAverageIssuePendingDays(){
 		try {
 			jObj = new JSONObject(getTask());
@@ -2798,10 +2798,16 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 				sourceIdList.add(Long.parseLong(sourceIdArr.getString(i)));
 			}
 			
+			JSONArray alertstatusIdsArr = jObj.getJSONArray("alertstatusIds");
+			List<Long> alertstatusIds = new ArrayList<Long>();
+			for (int i = 0; i < alertstatusIdsArr.length(); i++) {
+				alertstatusIds.add(Long.parseLong(alertstatusIdsArr.getString(i)));
+			}
+			boolean includeProposal = jObj.getBoolean("includeProposal");
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			
-			keyValueVO = alertService.getAverageIssuePendingDays(fromDate,toDate,deptIdList,sourceIdList);
+			keyValueVO = alertService.getAverageIssuePendingDays(fromDate,toDate,deptIdList,sourceIdList,includeProposal,alertstatusIds);
 	   } catch (Exception e) {
 		   LOG.error("Exception Raised in getAverageIssuePendingDays() in CreateAlertAction",e);
 		}
@@ -2983,6 +2989,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;	
 	}
+	//abcd
 	public String getAlertEfficiencyList1(){
 		try {
 			jObj = new JSONObject(getTask());
