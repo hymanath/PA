@@ -88,6 +88,7 @@ import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICoreDashboardCadreRegistrationService;
+import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.itgrids.partyanalyst.service.ISmsSenderService;
@@ -130,7 +131,8 @@ public class WebServiceHandler {
 	private PeshiAppGrievanceVO peshiAppGrievanceVO;
 	private PeshiAppAppointmentVO peshiAppAppointmentVO;
 	private PashiAppNoCadreVO pashiAppNoCadreVO;
-	
+	@Autowired
+	private IMahaNaduService mahaNaduService;
 	@Autowired
 	private IPartyMeetingService partyMeetingService;
 	
@@ -2624,6 +2626,22 @@ public class WebServiceHandler {
 			return webServiceHandlerService.getAccommodationDetails(notificationId,constId);			
 		}catch(Exception e){
 			LOG.error("Exception Occured in getAlertStatusCommentsTrackingDetails() Method, Exception is ",e);
+			return null;
+		}
+	}
+	@GET
+	@Path("/savingCandidateDetails/{name}/{mobileNo}/{memberShipId}/{date}/{time}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ResultStatus savingcandidateDetails(@PathParam("name") String name,
+			           @PathParam("mobileNo") String mobileNo, 			          
+			           @PathParam("memberShipId") String memberShipId,
+			           @PathParam("date") String date,
+			           @PathParam("time") String time){
+		try{			
+			return mahaNaduService.savingCandidateDetails(name,mobileNo,memberShipId,date,time);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in savingCandidateDetails() Method, Exception is ",e);
 			return null;
 		}
 	}
