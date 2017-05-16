@@ -240,44 +240,57 @@
 	</div>
 <!-- Modal -->
    <div class="modal fade" id="grievanceDtlsModalId" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog" style="width:85%">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
          <div id="grivenaceModalHeedingId"> </div> 
+         <div id="grivancHeadinId"> </div> 
         </div>
         <div class="modal-body">
-                    <div class="table-responsive" id="totalAlertDistricTableId"> </div>
-        
-           
-			<div class="panel panel-default">
-			<div clss="panel-heading m_top20" id="grivancHeadinId">
-			</div>
-			<div class="panel-body">
-            <div id="grevinceDetailsId"  class="table-responsive">
-			   
-			</div>
-			</div>
-			</div>
-               
-            
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <div class="table-responsive" id="totalAlertDistricTableId"> </div>
+			<div id="grevinceDetailsId"  class="table-responsive"></div>
         </div>
       </div>
     </div>
   </div>
-
+<div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body modal-insurance">
+				<div id="filter" style="display:none;"></div>
+				<div id="alertManagementPopupBody"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="filter"></div>
+				<div id="alertManagementPopupBody1"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button closeSecondModal" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+  </div>
+</div>
   <div class="modal" tabindex="-1" role="dialog" id="cdrModelDivId">
 	  <div class="modal-dialog modal-lg">       
 		<div class="modal-content" >
 			<div class="modal-body">
 				<div id="rightSideExpandView">
 				</div>     
-			</div>
-			<div class="modal-footer">     
-				<button type="button" class="btn btn-default dtlsCloseCls" data-dismiss="modal">Close</button>
 			</div>
 		</div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
@@ -289,23 +302,6 @@
 		</div>
 	</div>  
 </div> 
-
-<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document" style="width:85%;">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="alertManagementPopupHeading">Alert Status History</h4>
-			</div>
-			<div class="modal-body">
-				<div id="alertManagementPopupBody1"></div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-  </div>
-</div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 
@@ -316,9 +312,17 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="js/grievanceReport/grievanceReport.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
-
+<script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<!-- Custom Script Files Data End-->
+<script type="text/javascript">
+google.load("elements", "1", {
+	packages: "transliteration"
+});
+</script>
 <script type="text/javascript">
 	var windowUrl = window.location.href;
 	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
@@ -326,6 +330,7 @@
 
 </script>
 <script>
+
 $(".chosenSelect").chosen({width:'100%'})
 function generateExcel1(){
 	tableToExcel('grievanceReportTableId', 'Grievance Report');

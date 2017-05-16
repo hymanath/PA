@@ -62,6 +62,7 @@ function onLoadClicks()
 			keyboard: false,
 			backdrop: 'static'
 		});
+		$("#alertManagementPopup1 .modal-footer").html(' ');
 		var imgSrc = $(this).attr('src');
 		$('#alertManagementPopupBody1').html('<img class=" img-responsive m_top20" attr_articleId="" src="../images/'+imgSrc+'" style="width: 999px; height: 500px;"/>');
 		
@@ -83,6 +84,7 @@ function onLoadClicks()
 			keyboard: false,
 			backdrop: 'static'
 		});
+		$("#alertManagementPopup1 .modal-footer").html(' ');
 		getTotalArticledetails(articleId);
 	});
 	$(document).on("click","#displaySubTasksli",function(){
@@ -580,6 +582,10 @@ function onLoadClicks()
 		$(this).hide();
 		$(".panel-border-white .panel-heading,.panel-border-white .panel-footer,.panel-border-white textarea").show();
 	});
+	$(document).on("click","#alertCommentId1",function(e){
+		e.stopPropagation()
+	});
+	
 	$(document).on("click","div.assign-user",function(e){
 		e.stopPropagation()
 		$(".assign-subtask").show();
@@ -590,8 +596,9 @@ function onLoadClicks()
 		$(".assign-subtask").show();
 	});
 	
-	$(document).on("click",".panel-border-white",function(e){
-		e.stopPropagation()
+	$(document).on("click",".panel-border-white,.panel-border-white textarea,#alertCommentId1",function(e){
+		e.stopPropagation();
+		e.preventDefault();
 	});
 	
 	$(document).on("click",function(e){
@@ -710,6 +717,12 @@ function onLoadClicks()
 					}
 				}
 				
+			}else if(blockName == 'alertStatus' || blockName == 'alertSubtaskStatus' || blockName == 'alertDepartments'){
+				if(valueId == 'All')
+				{
+					$("[filters-list='"+blockName+"'] li").removeClass("active").find("span.remove").remove();
+					$("[filters-list='"+blockName+"'] li").addClass("active").append("<span class='remove' filer-selection='true'><i class='glyphicon glyphicon-remove'></i></span>")
+				}
 			}else if(blockName == 'alertDepartments')
 			{
 				$("[filters-list="+blockName+"] li").removeClass("active").find("span.remove").remove();
@@ -811,7 +824,7 @@ function onLoadClicks()
 					backdrop: 'static'
 				});
 				$("#alertManagementPopupHeading").html('ALERT HISTORY')
-				$("#alertManagementPopup1 .modal-footer").hide();
+				$("#alertManagementPopup1 .modal-footer").html(' ');
 				viewAlertHistory(alertId);
 			}else if(status == 'alertStatus'){
 				$("#alertManagementPopup1").modal({
@@ -820,6 +833,7 @@ function onLoadClicks()
 					backdrop: 'static'
 				});
 				$("#alertManagementPopupHeading").html('ALERT STATUS HISTORY');
+				$("#alertManagementPopup1 .modal-footer").html(' ');
 				getAlertStatusHistory(alertId);
 			}else if(status == 'alertStatus1'){// sub task status popup
 				$("#alertManagementPopup1").modal({
@@ -827,7 +841,7 @@ function onLoadClicks()
 					keyboard: false,
 					backdrop: 'static'
 				});
-				
+				$("#alertManagementPopup1 .modal-footer").html(' ');
 				$("#alertManagementPopupHeading").html('SUB TASK STATUS HISTORY');
 				getSubTaskStatusHistory(subalertid,alertId);				
 			}else if(status == 'alertStatusChange'){
@@ -878,11 +892,10 @@ function onLoadClicks()
 		$("[expand-main]").removeClass("col-sm-4").addClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	});
 	$(document).on("click",".filters-icon",function(){
-		//getFilterSectionAlertDetails();
 		$("#filter").toggle();
 	});
 
-	$(document).keypress(function(e){
+	$(document).keypress(".linkinner",function(e){
 		var alertId =  $("#alertIdSearch").val();
 		if(e.which == 13) {
 			getSearchAlertsDtls(alertId)
@@ -955,7 +968,7 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 		
 		
 		$("#alertManagementPopup1 .modal-footer").show();
-		
+		$("#alertManagementPopup1 .modal-footer").html(' ');
 		$("#alertManagementPopup1 .modal-dialog").css("width","60%")
 		$("#alertManagementPopupBody1").html(str);
 	}else{
@@ -974,7 +987,7 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 			//}
 		}  
 		$("#alertManagementPopup1 .modal-footer").html(str1);
-		
+		$("#alertManagementPopup1 .modal-footer").html(' ');
 		var options = {
 	  sourceLanguage:
 		  google.elements.transliteration.LanguageCode.ENGLISH,
@@ -1429,7 +1442,7 @@ var control;
 var lang;
 function rightSideExpandView(alertId)
 {
-    $("#rightSideExpandView").html(spinner);
+	$("#rightSideExpandView").html(spinner);
     $(".assignedUser1").html('');
 	var str='';
 	str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display: none;">';
@@ -2444,8 +2457,8 @@ function getGroupedArticlesInfo(articleId)
 {
 	$.ajax({
 		  type : 'GET',      
-		  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
-		 // url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  //url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 	}).then(function(result){
 		//$("#alertDetails").append(str);
 	});
@@ -2540,7 +2553,7 @@ function buildSubTaskInfoForAlert(result,alertId)
 						str+='<i class="fa fa-level-down fa-2x"></i>';
 					str+='</div>';
 				str+='<div class="col-sm-11 ">';
-					str+='<h4 class="text-muted text-capital"> Others Sub Tasks : </h4>';
+					str+='<h4 class="text-muted text-capital"> Sub Tasks involved : </h4>';
 					str+='</div>';
 					str+='<div class="col-sm-11 col-sm-offset-1">';
 						str+='<ul class="assign-subtask-list m_top20">';
@@ -2782,8 +2795,8 @@ function getTotalArticledetails(articleId){
 	$("#alertManagementPopupBody1,#alertManagementPopupHeading").html(spinner);
 	$.ajax({
 		  type : 'GET',      
-		  url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
-		 // url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		  //url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+			url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 	}).then(function(results){
 		var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","Muncipality/Corporation/GHMC/GVMC","Ward"];
 		var result = results[0];
@@ -3076,7 +3089,7 @@ function getDocumentsForAlert(alertId){
 
 var printMediaFilters = [];
 var electronicMediaFilters = [];
-function popUpFilter(type,result,statusId,statusName,statuscount)
+function popUpFilter(type,result,statusName,statuscount)
 {
 	var str='';
 	var str1='';
@@ -3165,11 +3178,17 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 					str+='<h5 class="text-capitalize" filters-list-title="alertStatus"><b>alert status</b></h5>';
 					str+='<div class="scroller-alertStatus">';
 						str+='<ul class="filters-list" filters-list="alertStatus">';
+							str+='<li attr_id="All">All</li>';
 							if(result.alertStatusList != null && result.alertStatusList.length>0)
 							{
 								for(var i in result.alertStatusList)
 								{
-									str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+									if(statusName == result.alertStatusList[i].name)
+									{
+										str+='<li class="active" attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+									}else{
+										str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+									}
 								}
 							}
 						str+='</ul>';
@@ -3179,9 +3198,15 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 					str+='<h5 class="text-capitalize m_top10" filters-list-title="alertSubtaskStatus"><b>alert subtask status</b></h5>';
 					str+='<div class="scroller-alertSubtask">';
 						str+='<ul class="filters-list" filters-list="alertSubtaskStatus">';
+							str+='<li attr_id="All">All</li>';
 							for(var i in result.alertSubTaskStatusList	)
 							{
-								str+='<li attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'</li>';
+								if(statusName == result.alertSubTaskStatusList[i].name)
+								{
+									str+='<li class="active" attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								}else{
+									str+='<li attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'</li>';
+								}
 							}
 						str+='</ul>';
 					str+='</div>';
@@ -3190,9 +3215,15 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 					str+='<h5 class="text-capitalize m_top10" filters-list-title="alertDepartments"><b>alert departments</b></h5>';
 					str+='<div class="scroller-alertDepartments">';
 						str+='<ul class="filters-list" filters-list="alertDepartments">';
+							str+='<li attr_id="All">All</li>';
 							for(var i in result.alertDepartMentList		)
 							{
-								str+='<li attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'</li>';
+								if(statusName == result.alertDepartMentList[i].name)
+								{
+									str+='<li class="active" attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								}else{
+									str+='<li attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'</li>';
+								}
 							}
 						str+='</ul>';
 					str+='</div>';
@@ -3208,7 +3239,12 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 					str+='<ul class="filters-list" filters-list="priority">';
 						for(var i in result.severityList)
 						{
-							str+='<li attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'</li>';
+							if(statusName == result.severityList[i].name)
+							{
+								str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+							}else{
+								str+='<li attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'</li>';
+							}
 						}
 					str+='</ul>';
 				str+='</div>';
@@ -3217,7 +3253,12 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 					str+='<ul class="filters-list" filters-list="alertSourceType">';
 						for(var i in result.categoryList)
 						{
-							str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
+							if(statusName == result.categoryList[i].name)
+							{
+								str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+							}else{
+								str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
+							}
 						}
 					str+='</ul>';
 				str+='</div>';
@@ -3253,7 +3294,7 @@ function popUpFilter(type,result,statusId,statusName,statuscount)
 			str+='</div>';
 			str+='<div class="row">';
 				str+='<div class="col-sm-3 m_top20">';
-					str+='<button class="btn btn-primary btn-block filters-apply" attr_status_id="'+statusId+'" attr_status_count="'+statuscount+'" attr_status_name="'+statusName+'" type="button">APPLY FILTERS</button>';
+					str+='<button class="btn btn-primary btn-block filters-apply" attr_status_count="'+statuscount+'" attr_status_name="'+statusName+'" type="button">APPLY FILTERS</button>';
 				str+='</div>';
 				str+='<div class="col-sm-3 m_top20">';
 					str+='<button class="btn btn-default btn-block filters-cancel">CANCEL</button>';
@@ -3317,23 +3358,78 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 						{
 							str+='<tr>';
 								str+='<td>';
-									str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].subList[j].severtyColor+';margin-right:3px;"></i>';
+									
+									if(result[i].subList[j].severtyColor != null && result[i].subList[j].severtyColor > 0)
+									{
+										str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].subList[j].severtyColor+';margin-right:3px;"></i>';
+									}else{
+										str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:#eee;margin-right:3px;"></i>';
+									}
+									
 								str+='</td>';
-								str+='<td> '+result[i].subList[j].id+'</td>';
+								str+='<td> ';
+									if(result[i].subList[j].id != null)
+									{
+										str+=''+result[i].subList[j].id+'</td>';
+									}else{
+										str+='-</td>';
+									}
+									
 								str+='<td>';
-									str+='<span class="alert-title" data-toggle="tooltip" data-placement="top" title="'+result[i].subList[j].title+'">'+result[i].subList[j].title+'</span>';
+									if(result[i].subList[j].title != null)
+									{
+										str+='<span class="alert-title" data-toggle="tooltip" data-placement="top" title="'+result[i].subList[j].title+'">'+result[i].subList[j].title+'</span>';
+									}else{
+										str+='<span class="alert-title" data-toggle="tooltip" data-placement="top" title="-">-</span>';
+									}
 								str+='</td>';
 								str+='<td>';
-									str+='<span data-toggle="tooltip" class="channel-name" data-placement="top" title="'+result[i].subList[j].source+'">'+result[i].subList[j].source+'</span>';
+									if(result[i].subList[j].source != null)
+									{
+										str+='<span data-toggle="tooltip" class="channel-name" data-placement="top" title="'+result[i].subList[j].source+'">'+result[i].subList[j].source+'</span>';
+									}else{
+										str+='<span data-toggle="tooltip" class="channel-name" data-placement="top" title="-">-</span>';
+									}
 								str+='</td>';
+								
 								str+='<td>';
-									str+='<span data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].location+'">'+result[i].subList[j].location+'</span>';
+									if(result[i].subList[j].location != null)
+									{
+										str+='<span data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].location+'">'+result[i].subList[j].location+'</span>';
+									}else{
+										str+='<span data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
+									}
+									
 								str+='</td>';
-								str+='<td class="text-center"><span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].status+'">'+result[i].subList[j].status+'</span></td>';
-								str+='<td class="text-center"><span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].problem+'">'+result[i].subList[j].problem+'</span></td>';
-								str+='<td class="text-center"><span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].relatedTo+'">'+result[i].subList[j].relatedTo+'</span></td>';
 								str+='<td class="text-center">';
-									if(result[i].subList[j].subTaskCount > 0)
+									if(result[i].subList[j].status != null)
+									{
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].status+'">'+result[i].subList[j].status+'</span>';
+									}else{
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
+									}
+									
+								str+='</td>';
+								str+='<td class="text-center">';
+									if(result[i].subList[j].problem != null)
+									{
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].problem+'">'+result[i].subList[j].problem+'</span>';
+									}else{
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
+									}
+									
+								str+='</td>';
+								str+='<td class="text-center">';
+									if(result[i].subList[j].relatedTo != null)
+									{
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].relatedTo+'">'+result[i].subList[j].relatedTo+'</span>';
+									}else{
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
+									}
+									
+								str+='</td>';
+								str+='<td class="text-center">';
+									if(result[i].subList[j].subTaskCount != null && result[i].subList[j].subTaskCount > 0)
 									{
 										str+='<span class="arrow-icon" style="margin:0px 4px" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
 											str+=''+result[i].subList[j].subTaskCount+'';
@@ -3343,9 +3439,15 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 									}
 								str+='</td>';
 								str+='<td>';
-									str+='<span class="arrow-icon pull-right" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
-										str+='<i class="glyphicon glyphicon-menu-right"></i>';
-									str+='</span>';
+									if(result[i].subList[j].id != null && result[i].subList[j].id > 0)
+									{
+										str+='<span class="arrow-icon pull-right" attr_alertId="'+result[i].subList[j].id+'" expand-icon="block1">';
+											str+='<i class="glyphicon glyphicon-menu-right"></i>';
+										str+='</span>';
+									}else{
+										str+='-';
+									}
+									
 								str+='</td>';
 							str+='</tr>';
 						}
@@ -3877,7 +3979,7 @@ function alertStatusHistory(result,alertId)
  
  
 
-function getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr){
+function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr){
 	var jsObj={
 		deptIdArr : globalDepartmentIdArr
 	}
@@ -3887,7 +3989,7 @@ function getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepa
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		popUpFilter('body',result,statusId,statusName,statuscount);
+		popUpFilter('body',result,statusName,statuscount);
 	});
 }
 //swadhin
@@ -4536,9 +4638,8 @@ function getSearchAlertsDtls(alertId){
 		if(result != null){
 			var alertId =result;
 			$("#alertManagementPopupBody").html("<div class='row'><div id='rightSideExpandView'></div></div>");
-			//getAlertData(alertId);
 			rightSideExpandView(alertId);
-			popUpFilter('heading','','','','');
+			popUpFilter('heading','','','');
 			$(".flipview-btn,.filters-icon").hide();
 			var alertId = '';
 			$("#modalHeadingTotal").html("Alert Status");

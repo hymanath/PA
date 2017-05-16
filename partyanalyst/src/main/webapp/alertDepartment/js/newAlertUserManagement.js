@@ -823,7 +823,7 @@ function buildIASOfficerMyAssignedSubTasksCountView(result){
 function stateLevelDeptOfficerStatusOverview(){
 	$("#statusOverview").html(spinner);
 	var jsObj ={
-      fromDate:currentFromDate,
+		fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
@@ -1795,12 +1795,13 @@ function buildstateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClickss(res
 }
 
 $(document).on("click",".alertCountCls",function(){
-  var deptId = $(this).attr("attr_dept_id");
-  var deptName = $(this).attr("attr_dept_name");
-  var count = $(this).attr("attr_count");
-  var type = $(this).attr("attr_type");
-  var searchType = $(this).attr("attr_search_type");
-  getTotalAlertCountDetails(deptId,0,0,type,deptName,count,searchType)
+	var deptId = $(this).attr("attr_dept_id");
+	var deptName = $(this).attr("attr_dept_name");
+	var count = $(this).attr("attr_count");
+	var type = $(this).attr("attr_type");
+	var searchType = $(this).attr("attr_search_type");
+	getTotalAlertCountDetails(deptId,0,0,type,deptName,count,searchType)
+	getFilterSectionAlertDetails(deptName,count,globalDepartmentIdsArr);
 });
 function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType,resultType){
   $("#alertManagementPopupBody").html('')
@@ -3598,16 +3599,19 @@ function buildAlertSouceWiseDetails(result)
 		}
 }
 function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertStatusId)
-{$("#alertManagementPopupBody").html('')
+{
+	$("#alertManagementPopupBody").html('')
 	
-		$("#alertManagementPopup").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
-		$("#alertManagementPopupBody").html(spinner);
+	$("#alertManagementPopup").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	$("#alertManagementPopupBody").html(spinner);
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
+	
     var jsObj ={
-      fromDate:currentFromDate,
+		fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : globalDepartmentIdsArr,  
@@ -3620,9 +3624,9 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
-      type:'POST',
-      url: 'getAlertDtlsByAlertSourceAction.action',
-      data: {task :JSON.stringify(jsObj)}
+		type:'POST',
+		url: 'getAlertDtlsByAlertSourceAction.action',
+		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 	    if(result != null && result.length > 0){
 		$("#totalAlertsModalTabId").html('');

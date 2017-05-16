@@ -209,7 +209,7 @@ function onLoadInitialisations()
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount);
-		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
 	});
 	$(document).on("click",".getTotalAlertBylocationLvl",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -222,7 +222,7 @@ function onLoadInitialisations()
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		getTotalAlertBylocationLvl(statusId,statusName,statuscount);
-		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
 	});
 	$(document).on("click",".totalAlertCls",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -238,7 +238,7 @@ function onLoadInitialisations()
 		}else{
 			getTotalAlertBylocationLvl(0,"Alert",totalAlertCnt);
 		}
-		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
 	});
 	
 	$(document).on("click",".getTotalAlertBylocationLvlThenDept",function(){
@@ -253,7 +253,7 @@ function onLoadInitialisations()
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
 		getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,departmentId);
-		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
 	});
 	$(document).on("click",".getTotalAlertByStatusThenDept",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -267,7 +267,7 @@ function onLoadInitialisations()
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
 		getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmentId);
-		getFilterSectionAlertDetails(statusId,statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
 	});
 	
 }
@@ -2476,14 +2476,16 @@ function buildAlertSouceWiseDetails(result)
 		
 }
 function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertStatusId)
-{$("#alertManagementPopupBody").html('')
+{
+	$("#alertManagementPopupBody").html('')
 	
-		$("#alertManagementPopup").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
-		$("#alertManagementPopupBody").html(spinner);
+	$("#alertManagementPopup").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	$("#alertManagementPopupBody").html(spinner);
+	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,

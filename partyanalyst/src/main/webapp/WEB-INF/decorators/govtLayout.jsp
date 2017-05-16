@@ -42,80 +42,96 @@
 		font-size: 15px;
 	}
 .text_capital{text-transform:uppercase;}
+.overlay
+{
+	background-color: rgba(0,0,0,0.1);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+.details-box
+{
+	background-color: #38465D;
+	color:#fff;
+	padding:10px;
+	border-bottom: 8px solid #F67E40;
+	font-size:22px !important
+}
+.special-font
+{
+	font-family:Gabriola;
+}
+#trigger
+{
+	background-color:#DD8E65;
+	padding:3px 5px ;
+	font-size:14px;
+	color:#fff;
+	cursor:pointer;
+}
 </style>
 <script>
 var globalValue='';
 var Value = '${sessionScope.designationAndLocation}';
-var resultValue = Value.split("-");
-if(resultValue[resultValue.length-1] == "AP"){
-	globalValue = resultValue[resultValue.length-1]+" "+"State";
-}else{
-	globalValue = resultValue[resultValue.length-1]+" "+"District";
-}
 
+var resultValue = Value.split("-");
+var resultDesigValue = resultValue[0]
+globalValue = resultValue[resultValue.length-1];
 </script>
 <decorator:head/>
 </head>
 <body>
 
 
-<header >
-	  <div class="container-fluid navbarHeader">
-		<div class="navbar-header ">
-		  <a class="navbar-brand" href="#"><img src="alertDepartment/img/Alert_Management_Logo_Header.png" class="img-responsive"/>
-		  <h4 style="margin-left:20px !important;display:inline-block;font-family:Gabriola;color:#fff;font-size: 24px;" id="stateAndDistName"></h4> </a>
-		</div>
-		<nav role="navigation" class="collapse navbar-collapse bs-navbar-collapse ">		 
-		  <ul class="nav navbar-nav navbar-right" >
-			<li style="margin-right:30px;margin-top: 13px;font-family:Gabriola;font-size:18px" class="">
-				<div class="text_capital" style="cursor:default;color: #fff;">
-					<div style="display: inline-block; position: relative; top: -10px; font-size: 20px;">
-						<i class="glyphicon glyphicon-user"></i>
-					</div>
-					<div style="display: inline-block;">
-						<p>&nbsp;&nbsp;&nbsp;${sessionScope.officerName}</p>
-						<p style="margin-left: 7px ! important; line-height: 10px ! important;font-size:15px">${sessionScope.designationAndLocation}</p>
-					</div>
+<header>
+	<nav class="navbarHeader">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<img src="alertDepartment/img/logo.png" class="img-responsive pull-left"/>
 				</div>
-				<!--<div class="text_capital" style="cursor:default;color: #fff;">
-					<div>
-						<i class="glyphicon glyphicon-user"></i>
-					</div>
-					<div>
-						<p>&nbsp;&nbsp;&nbsp;${sessionScope.officerName}</p>
-						<p style="margin-left: 27px;">${sessionScope.designationAndLocation}</p>
-					</div>
-				</div>-->
-			</li>
-			<div class="pull-right" style="margin-top: 12px;">
-				
-				<a id="trigger" aria-expanded="false" data-toggle="dropdown" class="fullcollapse textdecoration">
-					<span class="fa fa-reorder" style="font-size: 24px; color: #fff;cursor:pointer;"> </span>
-				</a>
+				<div class="col-sm-6">
+					<img src="alertDepartment/img/headerImage.png" class="img-responsive pull-right"/>
+				</div>
 			</div>
-			
-		  </ul>
-		 
-		</nav>
-	  </div>
-	</header><!-- Top Nav Bar End -->
+		</div>
+		<div class="details-box">
+			<div class="container">
+				<div class="col-sm-6">
+					<h4 class="special-font" style="font-size:22px;text-transform:uppercase;" id="stateAndDistName"></h4>
+				</div>
+				<div class="col-sm-6 text-right">
+					<h4 class="special-font">
+						<i class="glyphicon glyphicon-user" style="font-size:14px"></i><span style="font-size:22px;text-transform:uppercase;" id="designationName"> </span> &nbsp;&nbsp;&nbsp;
+						<a id="trigger" aria-expanded="false" data-toggle="dropdown" class="fullcollapse textdecoration">
+							<i class="fa fa-reorder" style="font-size:14px"> </i> MENU 
+						</a>
+					</h4>
+				</div>
+			</div>
+		</div>
+	</nav>
+</header><!-- Top Nav Bar End -->
 	
 <div class="container">
 	<div class="" id="menu" style="z-index:9999">
 		<nav class="">
 			<h2><i class="fa fa-reorder line_heightDiv" style="color:#fff;font-size:23px;"></i>&nbsp;</h2>
 			<ul>
-				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'AP_GOVT_LOCATION_WISE_GRIEVANCE_REPORT' )}">
+				<li>
+					<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Wise Report</span></a>
+				</li>
 				<li>
 					<a href="locationWiseGrivenceReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Location Wise Report</span></a>
-				 </li>
-				 </c:if>
-				 <li>
+				</li>
+				<li>
 					<a href="govtLogoutAction.action"><span class="fa fa-sign-out ico-white"></span><span>&nbsp;&nbsp;LOGOUT</span></a>
-				 </li> 
-				 <li>
+				</li> 
+				<li>
 					<img style="padding:55px 40px;border-bottom:0px" src="alertDepartment/img/Menu_logo.png" alt="logo" class="img-responsive"/>
-				 </li>
+				</li>
 			</ul>
 		</nav>
 	</div>
@@ -139,6 +155,7 @@ if(resultValue[resultValue.length-1] == "AP"){
 <script type="text/javascript" src="alertDepartment/alertexpandcollapse/fullexpandcollapse.js"></script>
 <script>
 $("#stateAndDistName").html(globalValue);
+$("#designationName").html(resultDesigValue);
 if(Value != "")
 {
 	$(".footer").css("background-color","#4e5d76")

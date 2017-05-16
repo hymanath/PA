@@ -1,12 +1,3 @@
- body
-{
-	background-color: #fff;
-	background-image: linear-gradient(to right top, #fc7279 10%, #ff7b9c 65%, #ffc019 125%);
-	background-image: -webkit-linear-gradient(to  #fc7279 10%, right  #ff7b9c 65%,top #ffc019 125%);
-	background-image:    -moz-linear-gradient(to  #fc7279 10%, right  #ff7b9c 65%,top #ffc019 125%);
-	background-image:      -o-linear-gradient(to  #fc7279 10%, right  #ff7b9c 65%,top #ffc019 125%);
-	min-height:100vh;
-}
   .m_top10{margin-top:10px;}
   .m_top20{margin-top:20px;}
   .m_top40{margin-top:40px;}
@@ -66,7 +57,7 @@ footer
 .footer
 {
 	display:block;
-	background-color:rgba(0,0,0,0.2);
+	background-color: #CACACA;
 	color:#333;
 	width:100%;
 	z-index:9;
@@ -86,4 +77,491 @@ section .footer
 	left:0px;
 	right:0px;
 	width:100%;
+}
+
+
+/*New Styles*/
+nav
+{
+	background-color: #4E5E77
+}
+.login-box
+{
+	background-color: #3E4E67;
+	padding: 30px;
+	background-image: url("../img/andhra%20pradesh%20map.png");
+	background-position: center;
+	background-size: auto;
+	background-repeat: no-repeat;
+	background-blend-mode: lighten;
+	color: #fff;
+	position: relative;
+}
+.special-font
+{
+	font-family:Gabriola;
+}
+.text-capital
+{
+	text-transform: uppercase;
+}
+label
+{
+	font-weight: 400
+}
+.m_top20{margin-top: 20px}
+.m_top30{margin-top: 30px}
+.m_top25{margin-top: 25px !important}
+.overlay
+{
+	background-color: rgba(0,0,0,0.1);
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+.departments-box
+{
+	padding: 20px;
+	padding-bottom:45px;
+	border-bottom: 5px solid #F59E46;
+	background-color: #E9E9E9;
+	position: relative;
+}
+.color_blue
+{
+	color: #3E4E67
+}
+.alert-logo
+{
+	position: absolute;
+	background-color: #fff;
+	padding: 10px;
+	bottom: -60px;
+	margin: auto;
+	display: block;
+	left: 46%;
+	border-radius: 50%;
+	animation-duration: 0.7s;
+  	animation-name: vibrate;
+  	animation-iteration-count: infinite;
+  	animation-direction: alternate;
+}
+@keyframes vibrate {
+  	from {
+    	transform: rotate(12deg)
+  	}
+	to{
+		transform: rotate(-12deg)
+	}
+  
+}
+
+.work
+{
+	padding: 40px;
+	position: relative;
+}
+.animted-profile
+{
+	position: absolute;
+	top: 50px;
+	left: 8vw
+}
+.arrows-top
+{
+	right:7vw;
+	position: absolute;
+	top:20px;
+	animation-name: arrowLeft1;
+	animation-iteration-count: 1;
+  	animation-direction: alternate;
+	animation-delay: 2s;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
+}
+.sms-icon
+{
+	position: absolute;
+	right: 6vw;
+	top: 0px;
+	animation-fill-mode: forwards;
+	visibility: hidden;
+	animation-name: arrowLeft1;
+	animation-iteration-count: 1;
+  	animation-direction: alternate;
+	animation-delay: 2s;
+	animation-duration: 1s;
+}
+.box
+{
+	position: relative;
+	height: 140px;
+}
+.people-1
+{
+	right: 7.2vw;
+	position: absolute;
+	height: 80px;
+	top:-30px;
+}
+.people-2
+{
+	right: 4.5vw;
+	top:00px;
+	height: 60px;
+	position: absolute;
+}
+.people-3
+{
+	right: 7.3vw;
+	top:50px;
+	height: 30px;
+	position: absolute;
+	
+}
+.people-1,.people-2,.people-3
+{
+	animation-duration: 0.7s;
+	animation-delay: 4s;
+  	animation-name: people;
+  	animation-iteration-count: infinite;
+  	animation-direction: alternate;
+	animation-fill-mode: forwards;
+	visibility: hidden;
+}
+@keyframes people {
+  	from {
+    	transform: rotate(0deg) scale(1.1);
+		visibility: visible;
+  	}
+	to{
+		transform: rotate(-12deg) scale(1.2);
+		visibility: visible;
+	}
+  
+}
+.arrow-left
+{
+	position: absolute;
+	transform: translate3d(-630px, 40px, 0);
+	animation-name: arrowLeft1;
+	animation-iteration-count: 1;
+  	animation-direction: alternate;
+	animation-delay: 1s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
+	animation-duration: 1s;
+}
+@keyframes socialMedia{
+	10%{
+		transform: translate3d(50px, -120px, 0);
+	}
+	20%{
+		transform: translate3d(50px, -100px, 0);
+	}
+	30%{
+		transform: translate3d(50px, -80px, 0);
+	}
+	40%{
+		transform: translate3d(50px, -60px, 0);
+	}
+	50%{
+		transform: translate3d(50px, -40px, 0);
+	}
+	60%{
+		transform: translate3d(50px, 0px, 0);
+	}
+	70%{
+		transform: translate3d(50px, 20px, 0);
+	}
+	80%{
+		transform: translate3d(50px, 40px, 0);
+	}
+	80%{
+		transform: translate3d(50px, 60px, 0);
+	}
+	80%{
+		transform: translate3d(50px, 80px, 0);
+	}
+	90%{
+		transform: translate3d(50px, 100px, 0);
+	}
+	100%{
+		transform: translate3d(50px, 120px, 0);
+	}
+}
+.media-icon
+{
+	transform: translate3d(50px, 20px, 0);
+	animation-duration: 0.7s;
+  	animation-name: socialMedia;
+  	animation-iteration-count: 1;
+  	animation-direction: alternate;
+}
+@keyframes socialMedia1{
+	10%{
+		transform: translate3d(60px, -120px, 0);
+	}
+	20%{
+		transform: translate3d(60px, -100px, 0);
+	}
+	30%{
+		transform: translate3d(60px, -80px, 0);
+	}
+	40%{
+		transform: translate3d(60px, -60px, 0);
+	}
+	50%{
+		transform: translate3d(60px, -40px, 0);
+	}
+	60%{
+		transform: translate3d(60px, 0px, 0);
+	}
+	70%{
+		transform: translate3d(60px, 20px, 0);
+	}
+	80%{
+		transform: translate3d(60px, 40px, 0);
+	}
+	80%{
+		transform: translate3d(60px, 60px, 0);
+	}
+	80%{
+		transform: translate3d(60px, 80px, 0);
+	}
+	90%{
+		transform: translate3d(60px, 100px, 0);
+	}
+	100%{
+		transform: translate3d(60px, 120px, 0);
+	}
+}
+.media-icon1
+{
+	transform: translate3d(60px, 00px, 0);
+	animation-duration: 0.7s;
+  	animation-name: socialMedia1;
+  	animation-iteration-count: 1;
+  	animation-direction: alternate;
+}
+@keyframes socialMedia2{
+	10%{
+		transform: translate3d(-20px, -120px, 0);
+	}
+	20%{
+		transform: translate3d(-20px, -100px, 0);
+	}
+	30%{
+		transform: translate3d(-20px, -80px, 0);
+	}
+	40%{
+		transform: translate3d(-20px, -60px, 0);
+	}
+	50%{
+		transform: translate3d(-20px, -40px, 0);
+	}
+	60%{
+		transform: translate3d(-20px, 0px, 0);
+	}
+	70%{
+		transform: translate3d(-20px, 20px, 0);
+	}
+	80%{
+		transform: translate3d(-20px, 40px, 0);
+	}
+	80%{
+		transform: translate3d(-20px, 60px, 0);
+	}
+	80%{
+		transform: translate3d(-20px, 80px, 0);
+	}
+	90%{
+		transform: translate3d(-20px, 100px, 0);
+	}
+	100%{
+		transform: translate3d(-20px, 120px, 0);
+	}
+}
+.media-icon2
+{
+	transform: translate3d(-20px, 60px, 0);
+	animation-duration: 0.7s;
+  	animation-name: socialMedia2;
+  	animation-iteration-count: 1;
+  	animation-direction: alternate;
+}
+@keyframes socialMedia3{
+	10%{
+		transform: translate3d(0px, -120px, 0);
+	}
+	20%{
+		transform: translate3d(0px, -100px, 0);
+	}
+	30%{
+		transform: translate3d(0px, -80px, 0);
+	}
+	40%{
+		transform: translate3d(0px, -60px, 0);
+	}
+	50%{
+		transform: translate3d(0px, -40px, 0);
+	}
+	60%{
+		transform: translate3d(0px, 0px, 0);
+	}
+	70%{
+		transform: translate3d(0px, 20px, 0);
+	}
+	80%{
+		transform: translate3d(0px, 40px, 0);
+	}
+	80%{
+		transform: translate3d(0px, 60px, 0);
+	}
+	80%{
+		transform: translate3d(0px, 80px, 0);
+	}
+	90%{
+		transform: translate3d(0px, 100px, 0);
+	}
+	100%{
+		transform: translate3d(0px, 120px, 0);
+	}
+}
+.media-icon3
+{
+	transform: translate3d(00px, 40px, 0);
+	animation-duration: 0.7s;
+  	animation-name: socialMedia3;
+  	animation-iteration-count: 1;
+  	animation-direction: alternate;
+}
+@keyframes socialMedia4{
+	10%{
+		transform: translate3d(-20px, -120px, 0);
+	}
+	20%{
+		transform: translate3d(-20px, -100px, 0);
+	}
+	30%{
+		transform: translate3d(-20px, -80px, 0);
+	}
+	40%{
+		transform: translate3d(-20px, -60px, 0);
+	}
+	50%{
+		transform: translate3d(-20px, -40px, 0);
+	}
+	60%{
+		transform: translate3d(-20px, 0px, 0);
+	}
+	70%{
+		transform: translate3d(-20px, 20px, 0);
+	}
+	80%{
+		transform: translate3d(-20px, 40px, 0);
+	}
+	80%{
+		transform: translate3d(-20px, 60px, 0);
+	}
+	80%{
+		transform: translate3d(-20px, 80px, 0);
+	}
+	90%{
+		transform: translate3d(-20px, 100px, 0);
+	}
+	100%{
+		transform: translate3d(-20px, 120px, 0);
+	}
+}
+.media-icon4
+{
+	transform: translate3d(-220px, 80px, 0);
+	animation-duration: 0.7s;
+  	animation-name: socialMedia4;
+  	animation-iteration-count: 1;
+  	animation-direction: alternate;
+}
+@keyframes arrowLeft1 {
+  from {
+    opacity: 0;
+	  visibility: visible
+  }
+	10% , 20%{
+		opacity:0;
+	}
+	30% , 40%{
+		opacity:0.2;	
+	}
+	50% , 60%{
+		opacity:0.4;
+	}
+	70% , 80%{
+		opacity:0.6;
+	}
+	90% , 100%{
+		opacity:0.9;	
+	}
+  to {
+    opacity: 1;
+	  visibility: visible
+  }
+}
+
+.arrow-left1
+{
+	transform: translate3d(-080px, 40px, 0);
+	animation-name: arrowLeft1;
+	animation-iteration-count: 1;
+  	animation-direction: alternate;
+	animation-delay: 3s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
+	animation-duration: 1s;
+}
+.animted-profile
+{
+	animation-name: arrowLeft1;
+	animation-iteration-count: 1;
+  	animation-direction: alternate;
+	animation-delay: 2s;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
+}
+.completed-icon
+{
+	transform: translate3d(20px, -10px, 0);
+	animation-name: arrowLeft1;
+	animation-iteration-count: 1;
+  	animation-direction: alternate;
+	animation-delay: 3s;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
+}
+.sms-icon1
+{
+	transform: translate3d(280px, -80px, 0);
+	animation-name: arrowLeft1;
+	animation-iteration-count: 1;
+  	animation-direction: alternate;
+	animation-delay: 3s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
+	animation-duration: 1s;
+}
+.arrows-top1
+{
+	transform: translate3d(290px, -50px, 0);
+	animation-name: arrowLeft1;
+	animation-iteration-count: 1;
+  	animation-direction: alternate;
+	animation-delay: 3s;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+	visibility: hidden;
 }

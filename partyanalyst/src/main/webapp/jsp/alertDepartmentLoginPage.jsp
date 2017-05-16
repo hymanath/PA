@@ -8,9 +8,12 @@
 <link type="text/css" rel="stylesheet" href="alertDepartment/css/bootstrap.min.css" media="screen" />
 <link type="text/css" rel="stylesheet" href="alertDepartment/css/login.css" media="screen" />
 <link href="alertDepartment/css/animate.css" rel="stylesheet" type="text/css">
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <script type="text/javascript" src="alertDepartment/js/alertDepartmentLoginPage.js"></script>
 <script type="text/javascript" src="js/md5.js"></script>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 	
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -52,82 +55,162 @@ header
 {
 	margin-top:15px;
 }
+.list-inline li
+{
+	margin:0px 5px;
+}
 </style>
 </head>
 <body>
-<div class="container">
-	<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">
-	<div class="row">
-		<div class="m_top20 col-xs-12 col-md-6 col-md-offset-3">
-			<img class="displayed m_top20 m_bottom20 img-responsive" src="alertDepartment/img/AP_Govt_Logo.png" alt="Andhra Pradesh Goverment Logo"/>
-			<div class="m_top20 panel panel-default" style="border:1px solid #ffc019; box-shadow:0 0 30px 10px rgba(0, 0, 0, 0.2)">
-			<div class="m_top20panel-body">
-				<img class="displayed m_top20 m_bottom20 img-responsive" src="alertDepartment/img/Alert_Management_Logo.png" alt="Andhra Pradesh Goverment Logo">
-				<img class="displayed m_top10 image-responsive" src="alertDepartment/img/Officer Login.png" alt="Andhra Pradesh Goverment Logo">
-				
-				<div class="loginFormBox" style="padding: 10px 80px;">
-					<div class="input-group">
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-user"></i>
-						</span>
-						<input type="text" class="form-control m_top10" id="userName1" placeholder="User Name" class="url"/>
-					</div>
-					<div class="input-group m_top20 m_bottom20">
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-lock"></i>
-						</span>
-						<input type="password" class="form-control m_top10" id="passWord_Id1" placeholder="Password" class="url"/>
-					</div>			
+	<nav>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<img src="alertDepartment/img/logo.png" class="img-responsive pull-left"/>
 				</div>
-				
-				
-			</div>
-			<div id="ajaxcallimage"  style="display:none;margin-top:10px">
-				<font  style="font-size:small;">Sending Your Request. Please wait...</font>
-				<img src="images/icons/loading.gif" width="18" height="11"/>
-			</div>
-			<div id ="LoginErrorMessageDiv" style="color:red; margin-left: 2px;"></div>
-			<div class="panel-footer" style="padding: 0px;">			
-				<!---<input class="btn btn-primary btn-block btn-lg" value="LOGIN" type="submit"></div>-->
-				<input type="submit" class="btn btn-primary btn-block btn-lg signin" id="submit1" value="LOGIN"/>
-				
+				<div class="col-sm-6">
+					<img src="alertDepartment/img/headerImage.png" class="img-responsive pull-right"/>
+				</div>
 			</div>
 		</div>
-	</div>
-	</form>
-</div>
-<!--<footer class="footer">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-8">
-				<p class="m_top25 text-right">All &copy; Government Of Andhra Pradesh</p>
-			</div>
-			<div class="col-sm-4 text-right">
-				<p style="margin-bottom:0px">Powered By</p>
-				<p style="margin-bottom:0px"><a target="_new" href="http://www.itgrids.com"><img src="alertDepartment/img/log_itgrids.png" style="height:30px;width:70px"/></a></p>
-				<p><small style="font-size: 75%;">ITGRIDS INDIA PVT.LTD</small></p>
-			</div>
-			<div class="col-sm-12 text-right">
-				
+	</nav>
+	<section class="login-box">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h1 class="text-center text-capitalize special-font">welcome to alert management system</h1>
+					<h3 class="special-font text-center">Alert Management System An Government Of Andhra Pradesh Initiative to expand the  e governance to resolve the public Grievances with transparancy and Smart Approach           </h3>
+				</div>
+				<div class="col-sm-12">
+					<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">
+					<div class="row m_top20">
+						<div class="col-sm-4 ">
+							<label class="text-capital">username</label>
+							<input type="text" class="form-control" id="userName1" placeholder="User Name" class="url"/>
+						</div>
+						<div class="col-sm-4">
+							<label class="text-capital">password</label>
+							<input type="password" class="form-control" id="passWord_Id1" placeholder="Password" class="url"/>
+						</div>
+						<div class="col-sm-4">
+							<button class="btn btn-warning text-capital m_top25 btn-block">sign in</button>
+						</div>
+						<div id="ajaxcallimage"  style="display:none;margin-top:10px">
+							<font  style="font-size:small;">Sending Your Request. Please wait...</font>
+							<img src="images/icons/loading.gif" width="18" height="11"/>
+						</div>
+						<div id ="LoginErrorMessageDiv" style="color:red; margin-left: 2px;"></div>
+					</div>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
-</footer>-->
+	</section>
+	<section class="departments-box">
+		<h4 class="text-capital color_blue text-center">departments that are included in alert management system</h4>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 m_top30">
+					<div id="departments"></div>
+				</div>
+			</div>
+		</div>
+		<img src="alertDepartment/img/alert logo.png" alt="alert Logo"  class="alert-logo"/>
+	</section>
+	
+	<section class="work">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<h4 class="text-center text-capital color_blue">how it works</h4>
+				</div>
+				<div class="row">
+					<div class="col-sm-4 box">
+						<img src="alertDepartment/img/1.png" class="media-icon"/>
+						<img src="alertDepartment/img/2.png" class="media-icon1"/>
+						<img src="alertDepartment/img/3.png" class="media-icon2"/>
+						<img src="alertDepartment/img/4.png" class="media-icon3"/>
+						<img src="alertDepartment/img/5.png" class="media-icon4"/>
+					</div>
+						<img src="alertDepartment/img/arrow1.png" class="arrow-left1"/>
+					<div class="col-sm-4 box">
+						<img src="alertDepartment/img/arrow2.png" class="arrows-top"/>
+						<img src="alertDepartment/img/sms_mobile.png" class="sms-icon"/>
+						<img src="alertDepartment/img/6.png" class="animted-profile"/>
+					</div>
+						<img src="alertDepartment/img/arrow1.png" class="arrow-left"/>
+					<div class="col-sm-4 box">
+						<img src="alertDepartment/img/arrow2.png" class="arrows-top1"/>
+						<img src="alertDepartment/img/sms_mobile.png" class="sms-icon1"/>
+						<img src="alertDepartment/img/7.png" class="completed-icon"/>
+						<img src="alertDepartment/img/8.png" class="people-1"/>
+						<img src="alertDepartment/img/9.png" class="people-2"/>
+						<img src="alertDepartment/img/10.png" class="people-3"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-4">
+						<p class="text-capitalize">alert creates from different sources like print media,electronic media,call center,collector peshi,facebook,twitter,etc..</p>
+					</div>
+					<div class="col-sm-4">
+						<p class="text-capitalize">identify grievance department and assign to (create SMS alert) specific location level department officer</p>
+					</div>
+					<div class="col-sm-4">
+						<p class="text-capitalize">different department grievance resolved people happy</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 <script>
 $("#userName1").focus();
 var userip = "";
-setTimeout(function(){
-	$(".cc").removeClass("scroll-animate");
-},100);
-setTimeout(function(){
-	$(".cc").addClass("scroll-animation");
-	$(".borderLine").addClass("borderLineAnimate");
-},150);
-if($(window).height() > 600)
+
+getGovtDepartmentDetails()
+function getGovtDepartmentDetails()
 {
-	setTimeout(function(){
-		$("footer").addClass("stickyFooter");
-	},1000)
+	$("#govtDepartmentsId").html('');
+	$.ajax({
+	  type:'GET',
+	  url: 'getAllDeptsAction.action',
+	  data: {}
+	}).done(function(result){
+		var str='';
+		str+='<ul class="list-inline">';
+			if(result != null && result.length > 0)
+			{
+				for(var i in result)
+				{
+					if(result[i].name.length > 25)
+					{
+						str+='<li id="'+result[i].id+'"><img style="display:inline-block" src="alertDepartment/img/'+result[i].id+'.jpg" alt="'+result[i].name+'" onerror="setDefaultImage(this);"/> '+result[i].id+' '+result[i].name.substring(0,25)+'..</li>';
+					}else{
+						str+='<li id="'+result[i].id+'"><img style="display:inline-block" src="alertDepartment/img/'+result[i].id+'.jpg" alt="'+result[i].name+'" onerror="setDefaultImage(this);"/> '+result[i].id+' '+result[i].name+'</li>';
+					}
+					
+				}
+			}
+		str+='</ul>';
+		$("#departments").html(str);
+		$('.list-inline').slick({
+			slide: 'li',
+			slidesToShow: 4,
+			slidesToScroll: 4,
+			infinite: false,
+			swipe:false,
+			touchMove:true,
+			autoplay: false,
+			autoplaySpeed: 4000,
+			variableWidth: true
+		});
+	});
+}
+function setDefaultImage(img)
+{
+	img.onerror = "";
+	img.src = "alertDepartment/img/noimg-icon.jpg";
+	return true;
 }
 </script>
 <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
