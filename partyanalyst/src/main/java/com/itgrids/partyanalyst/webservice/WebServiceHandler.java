@@ -2630,7 +2630,7 @@ public class WebServiceHandler {
 		}
 	}
 	@GET
-	@Path("/savingCandidateDetails/{name}/{mobileNo}/{memberShipId}/{date}/{time}")
+	@Path("/savingBloodDonateCandidateDetails/{name}/{mobileNo}/{memberShipId}/{date}/{time}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ResultStatus savingcandidateDetails(@PathParam("name") String name,
@@ -2639,7 +2639,7 @@ public class WebServiceHandler {
 			           @PathParam("date") String date,
 			           @PathParam("time") String time){
 		try{			
-			return mahaNaduService.savingCandidateDetails(name,mobileNo,memberShipId,date,time);			
+			return mahaNaduService.savingBloodDonateCandidateDetails(name,mobileNo,memberShipId,date,time);			
 		}catch(Exception e){
 			LOG.error("Exception Occured in savingCandidateDetails() Method, Exception is ",e);
 			return null;
