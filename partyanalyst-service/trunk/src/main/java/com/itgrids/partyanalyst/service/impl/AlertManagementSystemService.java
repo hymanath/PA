@@ -9965,22 +9965,25 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = null;
 			List<Object[]> feedbackList = null;
+			List<Object[]> feedbackListForPending = null;
 			List<Object[]> notSatisfiedList = null;
 			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
 				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
 					if(alertType != null && alertType.equalsIgnoreCase("alert")){
 						alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,source);
 						//get location wise feedback count
-						feedbackList = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false",source);
+						feedbackList = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false",source,"other");
+						//get location wise feedback count for pending
+						feedbackListForPending = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false",source,"pending");
 						//get location wise Not Satisfied and Partially Satisfied alerts in reopen status
-						notSatisfiedList = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"true",source);
+						notSatisfiedList = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"true",source,"other");
 						
 					}
 					if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
 						if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
 							prepareResultForState(alertList,returnList,sortingType,order,alertType,searchType);
 							if(returnList != null && returnList.size() > 0){
-								pushFeedBackDataForState(returnList,alertList,feedbackList);
+								pushFeedBackDataForState(returnList,alertList,feedbackList,feedbackListForPending);
 							}
 							if(returnList != null && returnList.size() > 0){
 								pushReopenDataForState(returnList, notSatisfiedList);
@@ -10084,7 +10087,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 				}
 			}
 			if(returnList != null && returnList.size() > 0){
-				pushFeedBackData(returnList, locIdThenLvlIdThenAlertCount,feedbackList);
+				pushFeedBackData(returnList, locIdThenLvlIdThenAlertCount,feedbackList,feedbackListForPending);
 			}
 			if(returnList != null && returnList.size() > 0){
 				pushReopenData(returnList, notSatisfiedList);
@@ -10107,7 +10110,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		}
 		return null;
 	}
-	public void pushFeedBackData(List<AlertCoreDashBoardVO> returnList,Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCount,List<Object[]> feedbackList){
+	public void pushFeedBackData(List<AlertCoreDashBoardVO> returnList,Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCount,List<Object[]> feedbackList,List<Object[]> feedbackListForPending){
 		try{
 			List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getFeedBackStatus();
 			//create map of feedBackId and status map
@@ -10137,6 +10140,23 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 					feedbackIdAndFeedbackStatusCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
 				}
 			}
+			
+			//create a map for locationIdAndFeedbackIdAndFeedbackStatusMap for pending
+			Map<Long,Map<Long,Long>> locationIdAndFeedbackIdAndFeedbackStatusCountMapForPending = new HashMap<Long,Map<Long,Long>>();
+			Map<Long,Long> feedbackIdAndFeedbackStatusCountMapForPending = null;//new HashMap<Long,String>();
+			
+			if(feedbackListForPending != null && feedbackListForPending.size() > 0){
+				for(Object[] param : feedbackListForPending){
+					feedbackIdAndFeedbackStatusCountMapForPending = locationIdAndFeedbackIdAndFeedbackStatusCountMapForPending.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(feedbackIdAndFeedbackStatusCountMapForPending == null){
+						feedbackIdAndFeedbackStatusCountMapForPending = new HashMap<Long,Long>();
+						feedbackIdAndFeedbackStatusCountMapForPending.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdAndFeedbackIdAndFeedbackStatusCountMapForPending.put(commonMethodsUtilService.getLongValueForObject(param[1]), feedbackIdAndFeedbackStatusCountMapForPending);
+					}
+					feedbackIdAndFeedbackStatusCountMapForPending.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
 			
 			//calculate feedback status wise total count.
 			Map<Long,Long> feedbackStatusIdAndTotalCount = new HashMap<Long,Long>();
@@ -10189,7 +10209,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			//second create map for locationId and feedback collected alerts
 			Map<Long,Long> locationIdAndFeedbackCollectedAlerts = new HashMap<Long,Long>();
 			
-			for(Entry<Long,Map<Long,Long>> entry : locationIdAndFeedbackIdAndFeedbackStatusCountMap.entrySet()){
+			for(Entry<Long,Map<Long,Long>> entry : locationIdAndFeedbackIdAndFeedbackStatusCountMapForPending.entrySet()){
 				Long feedbackCollectedAlerts = new Long(0L);
 				if(entry.getValue() != null && entry.getValue().get(1L) != null){
 					feedbackCollectedAlerts = feedbackCollectedAlerts + entry.getValue().get(1L);//Completely Satisfied
@@ -10207,23 +10227,25 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			
 			for(AlertCoreDashBoardVO param : returnList){
 				Long locationId = param.getId();
-				if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
+				//if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
 					for(AlertCoreDashBoardVO innerParam : param.getSubList1()){
 						if(innerParam.getId().longValue() == 4L){//feedback pending count   
 							Long totalClosedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndClosedAlerts.get(locationId));
 							Long totalFeedbackCollectedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndFeedbackCollectedAlerts.get(locationId));
-							Long pending = totalClosedAlert-totalFeedbackCollectedAlert;
+							innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
+							feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L) != null ? feedbackStatusIdAndTotalCount.get(4L) : 0L +(totalClosedAlert-totalFeedbackCollectedAlert));
+							/*Long pending = totalClosedAlert-totalFeedbackCollectedAlert;
 							if(pending.longValue() < 0L){
 								innerParam.setCount(0L);
 								feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+0L);
 							}else{
 								innerParam.setCount(pending);
 								feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+pending);
-							}
+							}*/
 							
 						}
 					}
-				}
+				//}
 			}
 			
 			if(feedbackStatusIdAndTotalCount.size() > 0){
@@ -10241,7 +10263,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			e.printStackTrace();
 		}
 	}
-	public void pushFeedBackDataForState(List<AlertCoreDashBoardVO> returnList,List<Object[]> alertList,List<Object[]> feedbackList){
+	public void pushFeedBackDataForState(List<AlertCoreDashBoardVO> returnList,List<Object[]> alertList,List<Object[]> feedbackList,List<Object[]> feedbackListForPending){
 		try{
 			Map<Long,LinkedHashMap<Long,Long>> lvlIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
 			LinkedHashMap<Long,Long> statusIdThenAlertCount = null;
@@ -10271,7 +10293,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			
 			//create a map for locationIdAndFeedbackIdAndFeedbackStatusMap
 			Map<Long,Map<Long,Long>> locationIdAndFeedbackIdAndFeedbackStatusCountMap = new HashMap<Long,Map<Long,Long>>();
-			Map<Long,Long> feedbackIdAndFeedbackStatusCountMap = null;//new HashMap<Long,String>();
+			Map<Long,Long> feedbackIdAndFeedbackStatusCountMap = null;
 			
 			if(feedbackList != null && feedbackList.size() > 0){
 				for(Object[] param : feedbackList){
@@ -10284,6 +10306,23 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 					feedbackIdAndFeedbackStatusCountMap.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
 				}
 			}
+			
+			//create a map for locationIdAndFeedbackIdAndFeedbackStatusMap for pending
+			Map<Long,Map<Long,Long>> locationIdAndFeedbackIdAndFeedbackStatusCountMapForPending = new HashMap<Long,Map<Long,Long>>();
+			Map<Long,Long> feedbackIdAndFeedbackStatusCountMapForPending = null;//new HashMap<Long,String>();
+			
+			if(feedbackListForPending != null && feedbackListForPending.size() > 0){
+				for(Object[] param : feedbackListForPending){
+					feedbackIdAndFeedbackStatusCountMapForPending = locationIdAndFeedbackIdAndFeedbackStatusCountMapForPending.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+					if(feedbackIdAndFeedbackStatusCountMapForPending == null){
+						feedbackIdAndFeedbackStatusCountMapForPending = new HashMap<Long,Long>();
+						feedbackIdAndFeedbackStatusCountMapForPending.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
+						locationIdAndFeedbackIdAndFeedbackStatusCountMapForPending.put(commonMethodsUtilService.getLongValueForObject(param[3]), feedbackIdAndFeedbackStatusCountMapForPending);
+					}
+					feedbackIdAndFeedbackStatusCountMapForPending.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
+				}
+			}
+			
 			
 			//calculate feedback status wise total count.
 			Map<Long,Long> feedbackStatusIdAndTotalCount = new HashMap<Long,Long>();
@@ -10336,7 +10375,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			//second create map for locationId and feedback collected alerts
 			Map<Long,Long> locationIdAndFeedbackCollectedAlerts = new HashMap<Long,Long>();
 			
-			for(Entry<Long,Map<Long,Long>> entry : locationIdAndFeedbackIdAndFeedbackStatusCountMap.entrySet()){
+			for(Entry<Long,Map<Long,Long>> entry : locationIdAndFeedbackIdAndFeedbackStatusCountMapForPending.entrySet()){
 				Long feedbackCollectedAlerts = new Long(0L);
 				if(entry.getValue() != null && entry.getValue().get(1L) != null){
 					feedbackCollectedAlerts = feedbackCollectedAlerts + entry.getValue().get(1L);//Completely Satisfied
@@ -10353,24 +10392,24 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			//now push feedback pending count into vo.
 			for(AlertCoreDashBoardVO param : returnList){
 				Long locationId = param.getId();
-				if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
+				//if(locationIdAndFeedbackIdAndFeedbackStatusCountMap.size() > 0 && locationIdAndFeedbackIdAndFeedbackStatusCountMap.get(locationId) != null){
 					for(AlertCoreDashBoardVO innerParam : param.getSubList1()){
 						if(innerParam.getId().longValue() == 4L){//feedback pending count
 							Long totalClosedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndClosedAlerts.get(locationId));
 							Long totalFeedbackCollectedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndFeedbackCollectedAlerts.get(locationId));
-							//innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
-							//feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+(totalClosedAlert-totalFeedbackCollectedAlert));
-							Long pending = totalClosedAlert-totalFeedbackCollectedAlert;
+							innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
+							feedbackStatusIdAndTotalCount.put(4L, (feedbackStatusIdAndTotalCount.get(4L) != null ? feedbackStatusIdAndTotalCount.get(4L) : 0L) +(totalClosedAlert-totalFeedbackCollectedAlert));
+							/*Long pending = totalClosedAlert-totalFeedbackCollectedAlert;
 							if(pending.longValue() < 0L){
 								innerParam.setCount(0L);
 								feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+0L);
 							}else{
 								innerParam.setCount(pending);
 								feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L)+pending);
-							}
+							}*/
 						}
 					}
-				}
+				//}
 			}
 			if(feedbackStatusIdAndTotalCount.size() > 0){
 				if(returnList != null && returnList.size() > 0){
