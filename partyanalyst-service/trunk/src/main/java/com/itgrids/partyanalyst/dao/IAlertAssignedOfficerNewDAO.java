@@ -107,7 +107,7 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Long> getAlertDetailsForGrievanceReportClick(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
-     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,Long statusId,Long sourseId);
+     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,Long statusId,Long sourseId,String feedbackType);
     public List<Long> getAlertFeedBackDetailsForGrievanceReportClick(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
