@@ -68,6 +68,7 @@ public class AlertOverviewVO {
 	private Long grandTotal = 0L;
 	private String fromDateStr;
 	private String toDateStr;
+	private Long reopenCount = 0L;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
 	
 	public Long getGovtAlertCnt() {
@@ -384,5 +385,12 @@ public class AlertOverviewVO {
 	public void setToDateStr(String toDateStr) {
 		this.toDateStr = toDateStr;
 	}
+	public Long getReopenCount() {
+		return reopenCount;
+	}
+	public void setReopenCount(Long reopenCount) {
+		this.reopenCount = reopenCount;
+	}
+	
 	
 }                                                          
