@@ -1,4 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var globalUserLevelId=0;
+var globalUserLevelValues = [];	
 var start = moment();
 var end = moment();
 function cb(start, end){
@@ -160,13 +162,13 @@ function buildHighcharForStatusFeedbackAndReopen(result,parentGovtDepartmentScop
 	for(var i in result){
 		 reopenTotalCount = parseInt(reopenTotalCount) + parseInt(result[i].reopenCount);
 	}
-	statusIdNameArr.push({"y":reopenTotalCount,"extra":"reopen-Reopen-11-"+reopenTotalCount});
+	statusIdNameArr.push({"y":reopenTotalCount,"extra":"reopen-Reopen-0-"+reopenTotalCount});
 	buildHighchart("reopenAlertCntId",statusNamesArray,statusIdNameArr,parentGovtDepartmentScopeId);
 } 
 function buildHighchart(divId,statusNamesArray,statusIdNameArr,parentGovtDepartmentScopeId){
 	Highcharts.chart(divId, {
              colors: ['#FFCF2C'],
-             chart: {
+             chart: { 
                  backgroundColor:'transparent',
                  type: 'column'
              },
@@ -328,32 +330,36 @@ function buildOfficerLocationWiseDepartmentOverviewAlertCount(result,departmentI
 			for(var i in result){
 				var filterScopeValue ='';
 				var filterParentScopeId='';
+				var locationId='';
 				if(parentGovtDepartmentScopeId == 1){
 					filterScopeValue =0;
 					filterParentScopeId = result[i].id;
+					locationId = result[i].id;
 				}else{
 					filterScopeValue = result[i].id;
 					filterParentScopeId = parentGovtDepartmentScopeId;
+					locationId = locationLevelId;
 				}
 				str+='<tr>'; 
 					str+='<td >'+result[i].name+'</td>';         
-					str+='<td class="getAlertDetailsCls" attr_parent_id = "'+parentGovtDepartmentScopeId+'" attr_type="alert" attr_location_val="'+filterParentScopeId+'" attr_parent_scope_id="'+filterParentScopeId+'" attr_parent_scope_value="'+filterScopeValue+'" attr_status_id="0" attr_status_name="Total" attr_count="'+result[i].totalCount+'" style="cursor:pointer;color: #337ab7;">'+result[i].totalCount+'</td>';
+					str+='<td class="getAlertDetailsCls" attr_parent_id = "'+parentGovtDepartmentScopeId+'" attr_type="alert" attr_location_val="'+locationId+'" attr_parent_scope_id="'+filterParentScopeId+'" attr_parent_scope_value="'+filterScopeValue+'" attr_status_id="0" attr_status_name="Total" attr_count="'+result[i].totalCount+'" style="cursor:pointer;color: #337ab7;">'+result[i].totalCount+'</td>';
 					for(var j in result[i].subList){
 						if(result[i].subList[j].count != 0){
-							str+='<td class="getAlertDetailsCls" attr_parent_id = "'+parentGovtDepartmentScopeId+'" attr_type="alert" attr_location_val="'+locationLevelId+'" attr_parent_scope_id="'+parentGovtDepartmentScopeId+'" attr_parent_scope_value="'+filterScopeValue+'" attr_status_id="'+result[i].subList[j].id+'" attr_status_name="'+result[i].subList[j].name+'" attr_count="'+result[i].subList[j].count+'" style="cursor:pointer;color: #337ab7;">'+result[i].subList[j].count+'</td>';
+							str+='<td class="getAlertDetailsCls" attr_parent_id = "'+parentGovtDepartmentScopeId+'" attr_type="alert" attr_location_val="'+locationId+'" attr_parent_scope_id="'+filterParentScopeId+'" attr_parent_scope_value="'+filterScopeValue+'" attr_status_id="'+result[i].subList[j].id+'" attr_status_name="'+result[i].subList[j].name+'" attr_count="'+result[i].subList[j].count+'" style="cursor:pointer;color: #337ab7;">'+result[i].subList[j].count+'</td>';
 						}else{
 							str+='<td>-</td>';
 						}      
 					}
 					for(var j in result[i].subList1){  
-						if(result[i].subList1[j].count != 0){        
-							str+='<td class="getAlertDetailsCls" attr_parent_id = "'+parentGovtDepartmentScopeId+'" attr_type="feedback" attr_location_val="'+locationLevelId+'" attr_parent_scope_id="'+parentGovtDepartmentScopeId+'" attr_parent_scope_value="'+filterScopeValue+'" attr_status_id="'+result[i].subList1[j].id+'" attr_status_name="'+result[i].subList1[j].name+'" attr_count="'+result[i].subList1[j].count+'" style="cursor:pointer;color: #337ab7;">'+result[i].subList1[j].count+'</td>';
+						if(result[i].subList1[j].count != 0){
+        
+							str+='<td class="getAlertDetailsCls" attr_parent_id = "'+parentGovtDepartmentScopeId+'" attr_type="feedback" attr_location_val="'+locationId+'" attr_parent_scope_id="'+filterParentScopeId+'" attr_parent_scope_value="'+filterScopeValue+'" attr_status_id="'+result[i].subList1[j].id+'" attr_status_name="'+result[i].subList1[j].name+'" attr_count="'+result[i].subList1[j].count+'" style="cursor:pointer;color: #337ab7;">'+result[i].subList1[j].count+'</td>';
 						}else{      
 							str+='<td>-</td>';   
 						}
 					}
 					if(result[i].reopenCount != 0){        
-						str+='<td class="getAlertDetailsCls" attr_parent_id = "'+parentGovtDepartmentScopeId+'" attr_type="reopen" attr_location_val="'+locationLevelId+'" attr_parent_scope_id="'+parentGovtDepartmentScopeId+'" attr_parent_scope_value="'+filterScopeValue+'" attr_status_id="11" attr_status_name="Reopen" attr_count="'+result[i].reopenCount+'" style="cursor:pointer;color: #337ab7;">'+result[i].reopenCount+'</td>';
+						str+='<td class="getAlertDetailsCls" attr_parent_id = "'+parentGovtDepartmentScopeId+'" attr_type="reopen" attr_location_val="'+locationId+'" attr_parent_scope_id="'+filterParentScopeId+'" attr_parent_scope_value="'+filterScopeValue+'" attr_status_id="0" attr_status_name="Reopen" attr_count="'+result[i].reopenCount+'" style="cursor:pointer;color: #337ab7;">'+result[i].reopenCount+'</td>';
 					}else{      
 						str+='<td>-</td>';
 					}
@@ -405,6 +411,7 @@ function getAlertDetailsForGrievanceReportClick(parentId,alertType,locationValId
 		 locationLevelIdArr.push(locationValId);
 	 }
 	 
+	 var departmentId = $("#selecDepartmentId").val();   
 		$("#alertManagementPopupBody").html('')
 	
 		$("#alertManagementPopup").modal({
@@ -420,7 +427,7 @@ function getAlertDetailsForGrievanceReportClick(parentId,alertType,locationValId
 		stateId : 1,
 		printIdArr : newspapersGlobalArr,
 		electronicIdArr : channelGlobalArr,		
-		govtDepartmentId : 49,
+		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : parentId,//result.sublist[0]
 		sortingType :"",
 		order :"",
