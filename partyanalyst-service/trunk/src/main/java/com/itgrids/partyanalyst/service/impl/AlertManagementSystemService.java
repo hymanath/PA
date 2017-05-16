@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -1776,13 +1777,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		
 		try {
 			
-			Map<Long,IdNameVO> levelMap = new HashMap<Long, IdNameVO>();
+			Map<Long,IdNameVO> levelMap = new LinkedHashMap<Long, IdNameVO>();
 			
 			
 			List<Object[]> subLevelObj = govtDepartmentScopeLevelDAO.getParentLevelsOfLevel(departmentId,levelId);
 			
 			if(subLevelObj !=null && subLevelObj.size()>0){
-				Set<Long> subLevelIds = new HashSet<Long>();
+				Set<Long> subLevelIds = new LinkedHashSet<Long>();
 				for (Object[] param : subLevelObj) {					
 					//if(param[0] !=null && !(param[0].equals(levelId))){	
 						

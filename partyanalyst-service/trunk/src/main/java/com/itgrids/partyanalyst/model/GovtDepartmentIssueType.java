@@ -19,10 +19,6 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
-import com.google.gdata.data.introspection.IServiceDocument;
-
-import sun.net.www.content.audio.basic;
-
 @Entity
 @Table(name = "govt_department_issue_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
