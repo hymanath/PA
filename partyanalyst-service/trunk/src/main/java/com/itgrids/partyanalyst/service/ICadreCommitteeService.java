@@ -209,4 +209,9 @@ public interface ICadreCommitteeService {
 	 public List<IdNameVO> getCommitteeTypeDetils();
 	 public ResultStatus saveElectionBoothCommitteeDetails(Long userId,Long boothId,Long tdpCadreId);
 	 public List<CadreCommitteeVO> getBoothsForMandals(Long mandalId,Long constituencyId);
+	 
+	 public List<IdNameVO> getMultplConstituencesByDistctIds(List<Long> districtIds);
+	 public List<LocationWiseBoothDetailsVO> getMultiMandalsByConstituencyLst(List<Long> constituencyIds);
+	 public List<LocationWiseBoothDetailsVO> getMultiMandalMunicCorpDetailsLst(List<Long> constituencyIds);
+	 public  List<LocationWiseBoothDetailsVO> getMultplePanchayatWardByMandalIdsLst(List<Long> constituencyIds,List<Long> mandalIds);
 }
