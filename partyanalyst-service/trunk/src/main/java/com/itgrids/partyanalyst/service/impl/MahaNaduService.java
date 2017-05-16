@@ -30,6 +30,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
+import com.itgrids.partyanalyst.dao.IBloodDonorInfoDAO;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -53,6 +55,7 @@ import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -63,13 +66,14 @@ import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.EventActionPlanVO;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
-import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.BloodDonorInfo;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreGovtDesignation;
@@ -122,7 +126,27 @@ public class MahaNaduService implements IMahaNaduService{
 	private IEventAttendeeErrorDAO eventAttendeeErrorDAO;
 	private IEventAttendeeInfoDAO eventAttendeeInfoDAO;
 	private CommonMethodsUtilService commonMethodsUtilService;
+	private ITdpCadreDAO tdpCadreDAO;
+	private IBloodDonorInfoDAO bloodDonorInfoDAO;
+	private IBloodDonationDAO bloodDonationDAO;
 	
+	
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+
+	public IBloodDonorInfoDAO getBloodDonorInfoDAO() {
+		return bloodDonorInfoDAO;
+	}
+
+	public void setBloodDonorInfoDAO(IBloodDonorInfoDAO bloodDonorInfoDAO) {
+		this.bloodDonorInfoDAO = bloodDonorInfoDAO;
+	}
+
 	public IEventDAO getEventDAO() {
 		return eventDAO;
 	}
@@ -4247,5 +4271,98 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			LOG.error(" Exception Raised in setToIdNameVoList ",e);
 		}		
 	}
-	
+	public ResultStatus savingCandidateDetails(String name,String mobileNo,String membershipId,
+			String fromDateStr,String time){
+		ResultStatus resultStatus = new ResultStatus();
+		DateUtilService date = new DateUtilService();
+		try{			
+			Date fromDate = null; 			
+ 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm a");
+ 			if(fromDateStr != null  && time != null  ){
+ 				fromDate = sdf.parse(fromDateStr+" "+time); 				
+ 			}
+ 			List<Object[]> tdpCadreLst = null;
+ 			if(membershipId != null && !membershipId.trim().isEmpty()){
+ 				tdpCadreLst = tdpCadreDAO.getCandidateDetailsByMembershipId(membershipId);
+ 				if(tdpCadreLst != null && tdpCadreLst.size() > 0){
+ 					for (Object[] objects : tdpCadreLst) {
+ 						BloodDonorInfo bloodDonorInfo = new BloodDonorInfo();
+ 	 	 				bloodDonorInfo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+ 	 	 				bloodDonorInfo.setRelativeName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+ 	 	 				bloodDonorInfo.setGender(commonMethodsUtilService.getStringValueForObject(objects[2]));
+ 	 	 				bloodDonorInfo.setDateOfBirth(convertToDateFormet(objects[3].toString()));
+ 	 	 				bloodDonorInfo.setAge(commonMethodsUtilService.getLongValueForObject(objects[4]));
+ 	 	 				bloodDonorInfo.setMobileNo(mobileNo);
+ 	 	 				bloodDonorInfo.setDonorName(name);
+ 	 	 				bloodDonorInfo.setInsertedTime(date.getCurrentDateAndTime());
+ 	 	 				bloodDonorInfo.setUpdatedTime(date.getCurrentDateAndTime());
+ 	 	 				bloodDonorInfo.setDonationTime(fromDate);
+ 	 		 			bloodDonorInfo.setRegisteredSource("app");
+ 	 	 				bloodDonorInfo.setIsDeleted("N");
+ 	 	 				
+ 	 	 				bloodDonorInfoDAO.save(bloodDonorInfo);
+					}
+ 				}else{
+ 	 				BloodDonorInfo bloodDonorInfo = new BloodDonorInfo();
+ 	 				bloodDonorInfo.setDonorName(name);
+ 	 				bloodDonorInfo.setMobileNo(mobileNo);
+ 	 				bloodDonorInfo.setInsertedTime(date.getCurrentDateAndTime());
+ 		 			bloodDonorInfo.setUpdatedTime(date.getCurrentDateAndTime());
+ 		 			bloodDonorInfo.setDonationTime(fromDate);
+ 		 			bloodDonorInfo.setRegisteredSource("app");
+ 		 			bloodDonorInfo.setIsDeleted("N");
+ 		 			
+ 		 			bloodDonorInfoDAO.save(bloodDonorInfo);
+ 	 			}
+ 				resultStatus.setResultCode(0);
+ 				resultStatus.setMessage("success");
+ 			}
+		}catch (Exception e) {
+			resultStatus.setResultCode(1);
+			resultStatus.setMessage("failure");
+			LOG.error(" Exception Raised in savingcandidateDetails ",e);
+		}	
+		return  resultStatus;
+	}
+	public Date convertToDateFormet(String dateStr) {
+		Date date = null;
+		try {
+			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd");
+			date = originalFormat.parse(dateStr);
+		} catch (Exception e) {
+			LOG.error("Exception raised in convertToDateFormet method in CadreRegistrationAction Action",e);
+		}
+		return date;
+	}
+	public List<IdAndNameVO> getAllCandidateDetails(){
+		List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>();
+		List<Long> donorIds = null;
+		try{
+			List<Object[]> mainList = bloodDonorInfoDAO.getBloodDonorDetails();
+			if(mainList != null && mainList.size() > 0){
+				for (Object[] objects : mainList) {
+					donorIds.add((Long)objects[0]);
+				}
+			}
+			List<Long> donationInfoLst = bloodDonationDAO.getBloodDonationDetails(donorIds); 
+			if(mainList != null && mainList.size() > 0){
+				for (Object[] objects : mainList) {
+					IdAndNameVO vo = new IdAndNameVO();
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
+					vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					if(donationInfoLst != null && donationInfoLst.size() > 0){
+						vo.setFlag("yes");
+					}else{
+						vo.setFlag("No");
+					}
+					finalList.add(vo);
+				}
+			}	
+		}catch (Exception e) {
+			LOG.error(" Exception Raised in getAllCandidateDetails ",e);
+		}
+		return finalList;
+		
+	}
 }
