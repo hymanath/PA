@@ -90,6 +90,7 @@
 													<li role="presentation" class="active text-capital"><a href="#printMediaAlerts" aria-controls="printMediaAlerts" role="tab" data-toggle="tab">Print Media</a></li>
 													<li role="presentation" class="text-capital"><a href="#electronicMediaAlerts" aria-controls="electronicMediaAlerts" role="tab" data-toggle="tab">Electronic Media</a></li>
 													<li role="presentation" class="text-capital"><a href="#callcenterAlerts" aria-controls="callcenterAlerts" role="tab" data-toggle="tab">Manual</a></li>
+													<li role="presentation" class="text-capital"><a href="#socialMediaType" aria-controls="socialMediaType" role="tab" data-toggle="tab">Social Media Type</a></li>
 													<li role="presentation" class="text-capital"><a href="#departmentAlerts" aria-controls="departmentAlerts" role="tab" data-toggle="tab">Department</a></li>
 												</ul>
 											</div>
@@ -135,12 +136,30 @@
 																<li>
 																	<label><input type="checkbox" class="selectAllcallcenterCls" checked/>Select All</label>
 																</li>
+																
+																<c:forEach items="${alertCallCenterTypeIdList}"  var="callCenterType">
 																<li>
-																	<label><input type="checkbox" class="callcenterCls" checked attr_val="4"/>Call Center
-																	</label>
+																	<label><input type="checkbox" class="callcenterCls" checked attr_val="${callCenterType.id}"/>
+																	${callCenterType.name}</label>
 																</li>
+															  </c:forEach>
 															</ul>
 														</div>
+													</div>
+													<div role="tabpanel" class="tab-pane" id="socialMediaType">
+														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Social Media Type</h4>
+														<hr style ="margin-bottom:0px;" />
+														<ul class="settingsUl">
+															<li>
+																<label><input type="checkbox" class="selectAllMediaType" checked />Select All</label>
+															</li>
+															<c:forEach items="${socailMediaTypeList}"  var="socailMediaType">
+																<li>
+																	<label><input type="checkbox" class="mediaTypeCls" checked attr_val="${socailMediaType.id}"/>
+																	${socailMediaType.name}</label>
+																</li>
+															</c:forEach>
+														</ul>
 													</div>
 													<div role="tabpanel" class="tab-pane" id="departmentAlerts">
 														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Departments</h4>
@@ -179,6 +198,35 @@
 						</div>
 						<div class="panel-body">
 							<div class="row">
+								<div class="col-sm-12">
+									<div class="panel panel-default">
+										<div class="panel-heading headingColor">
+											<div class="row">
+												<div class="col-sm-8">
+													<h4 class="panel-title text-capital fontColor">Department overview</h4>
+												</div>
+												<div class="col-sm-4">
+													<ul class="switch-btn pull-right">
+														<li class="active" attr_type="status">status overview</li>
+														<li attr_type="department">location level</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-sm-3">
+													<div id="departmentStatus"></div>
+												</div>
+												<div class="col-sm-9">
+													<div id="departmentWiseAlertOverviewCnt"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
 								<div class="col-sm-6">
 									<div class="panel panel-default">
 										<div class="panel-heading headingColor">
@@ -209,33 +257,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-sm-12">
-									<div class="panel panel-default">
-										<div class="panel-heading headingColor">
-											<div class="row">
-												<div class="col-sm-8">
-													<h4 class="panel-title text-capital fontColor">Department overview</h4>
-												</div>
-												<div class="col-sm-4">
-													<ul class="switch-btn pull-right">
-														<li class="active" attr_type="status">status overview</li>
-														<li attr_type="department">location level</li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-sm-3">
-													<div id="departmentStatus"></div>
-												</div>
-												<div class="col-sm-9">
-													<div id="departmentWiseAlertOverviewCnt"></div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+								
 								<!-- Level Wise Department Wise  -->
 									<div id="levelWiseDepartmentDetailsId"></div>
 							</div>

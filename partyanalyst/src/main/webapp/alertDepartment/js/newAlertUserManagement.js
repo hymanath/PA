@@ -9,7 +9,8 @@ $(document).on("click",".filterSubmitBtnCls",function(){
 		var newsPaperIdLen = newspapersGlobalArr.length;
 		var channelIdLen = channelGlobalArr.length;
 		var callCenterIdLen = callCenterGlobalArr.length;
-		if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen == 0){
+		var socialMediaIdLen = globalsocialMediaTypeIdsArr.length;
+		if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen == 0 && socialMediaIdLen ==0){
 			alert("Please Select Atleast One Option.");   
 			return;
 		}
@@ -113,7 +114,8 @@ function getIASOfficerMyAlertsCountMainView(){
         toDate:currentToDate,
 		paperIdArr : newspapersGlobalArr,
         chanelIdArr :channelGlobalArr,
-	    callCenterArr:callCenterGlobalArr
+	    callCenterArr:callCenterGlobalArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	};
     $.ajax({
       type:'GET',
@@ -349,7 +351,8 @@ $("#mySubTasksDivID").html(spinner);
 		toDate:currentToDate,
 		paperIdArr : newspapersGlobalArr,
         chanelIdArr :channelGlobalArr,
-	    callCenterArr:callCenterGlobalArr
+	    callCenterArr:callCenterGlobalArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	};
     $.ajax({
       type:'GET',
@@ -586,7 +589,8 @@ function getIASOfficerMyAssignedSubTasksCountView(){
 		toDate:currentToDate,
 		paperIdArr : newspapersGlobalArr,
         chanelIdArr :channelGlobalArr,
-	    callCenterArr:callCenterGlobalArr
+	    callCenterArr:callCenterGlobalArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	};
     $.ajax({
       type:'GET',
@@ -825,7 +829,8 @@ function stateLevelDeptOfficerStatusOverview(){
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : newspapersGlobalArr,
       chanelIdArr :channelGlobalArr,
-	  callCenterArr:callCenterGlobalArr
+	  callCenterArr:callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -887,8 +892,8 @@ function buildstateLevelDeptOfficerStatusOverview(result)
 	str+='</div>';
 	$("#statusOverview").html(str); 
 	
-	$("#statusOverViewTotal").html("<h4 style='font-size: 16px;'><span class='overAllAlertCls' attr_department_id ='0' attr_alert_type='' attr_level_type='status' attr_result_type='alert' style='cursor:pointer;' attr_total_alert_count='"+totalAlert+"'>TOTAL -  "+totalAlert+"</span>  <span style='cursor:pointer;margin-left: 10px;' class='getDtlsAlertsCls' attr_status_type ='overall' attr_type='alert' attr_status_name ='Pending' attr_status_count = '"+pendingCount+"' attr_status_id ='1' attr_level_id ='0'>PENDING -  "+pendingCount+"</span></h4>");
-	
+	$("#statusOverViewTotal").html("<h4 style='font-size: 16px;'><span class='overAllAlertCls' attr_department_id ='0' attr_alert_type='' attr_level_type='status' attr_result_type='alert' style='cursor:pointer;' attr_total_alert_count='"+totalAlert+"'>TOTAL -  "+totalAlert+"</span></h4>");
+	// <span style='cursor:pointer;margin-left: 10px;' class='getDtlsAlertsCls' attr_status_type ='overall' attr_type='alert' attr_status_name ='Pending' attr_status_count = '"+pendingCount+"' attr_status_id ='1' attr_level_id ='0'>PENDING -  "+pendingCount+"</span>
 	var statusOverviewArr =[];
 	if(result.length > 6)
 	{
@@ -987,7 +992,9 @@ function stateLevelDeptOfficerLocationLevelOverview(){
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : newspapersGlobalArr,
       chanelIdArr :channelGlobalArr,
-	  callCenterArr:callCenterGlobalArr
+	  callCenterArr:callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+	  
     }
     $.ajax({
       type:'GET',
@@ -1141,7 +1148,8 @@ function stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(){
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : newspapersGlobalArr,
       chanelIdArr :channelGlobalArr,
-	  callCenterIdsArr:callCenterGlobalArr
+	  callCenterIdsArr:callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -1290,7 +1298,8 @@ $("#levelWiseSubTasksAlertOverview").html(spinner);
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : newspapersGlobalArr,
       chanelIdArr :channelGlobalArr,
-	  callCenterIdsArr : callCenterGlobalArr
+	  callCenterIdsArr : callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -1433,7 +1442,8 @@ function stateLevelDeptOfficerDepartmentWiseAlertsView(){
       deptIdArr : globalDepartmentIdsArr,  
       paperIdArr : newspapersGlobalArr,
       chanelIdArr :channelGlobalArr,
-	  callCenterArr:callCenterGlobalArr
+	  callCenterArr:callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -1648,7 +1658,8 @@ function stateLevelDepartmentWiseSubTaskDetails(departmentId){
       deptIdArr : deptIdStrArr,  
       paperIdArr : newspapersGlobalArr,
       chanelIdArr :channelGlobalArr,
-	  callCenterIdsArr : callCenterGlobalArr
+	  callCenterIdsArr : callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -1814,7 +1825,11 @@ function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName
 		  desigDeptOfficerIdsArr:globalGovtDeptDesigOffcrIds,
 		  searchType:searchType,
 		  fromDate:currentFromDate,
-		  toDate:currentToDate
+		  toDate:currentToDate,
+		  paperIdArr : newspapersGlobalArr,
+          chanelIdArr :channelGlobalArr,
+	      callCenterArr:callCenterGlobalArr,
+		  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
   $.ajax({
       type:'GET',
@@ -1902,7 +1917,8 @@ function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,leve
 			callCenterArr:callCenterGlobalArr,
 			stateId :1,
 			levelType:levelType,
-			alertType:alertType
+			alertType:alertType,
+			socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 			
 		}
 	$.ajax({
@@ -2334,7 +2350,8 @@ function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartme
 		chanelIdArr:callCenterGlobalArr,
 		searchType:searchType,
 		filterParentScopeId :filterParentScopeId,
-		filterScopeValue:filterScopeValue
+		filterScopeValue:filterScopeValue,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	}
     $.ajax({
     type:'GET',         
@@ -2519,7 +2536,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 					mainJosnObjArr.push({name:'Call Center',data:callCenterArr,color:"#EFC000"});  
 				  }
 				  if(socialMediaArr != null && socialMediaArr.length > 0){
-					mainJosnObjArr.push({name:'Social Media',data:socialMediaArr,color:"#05ABHY"});  
+					mainJosnObjArr.push({name:'Social Media',data:socialMediaArr,color:"#00ABED"});  
 				  }
 				  
 			
@@ -3037,7 +3054,8 @@ function getLocationBasedOnDepartmentLevel(departmentId,parentScopeId,districtLe
 		  govtDepartmentId : departmentId,
 		  parentGovtDepartmentScopeId : districtLevelId,
 		  alertType:alertType,
-		  subLevelArr:subLevelArr
+		  subLevelArr:subLevelArr,
+		  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -3072,6 +3090,7 @@ function getLocationBasedOnDepartmentLevel(departmentId,parentScopeId,districtLe
 			parentGovtDepartmentScopeValue:locationValue,
 			childLevelId:childLevelId,
 			alertType:alertType,
+			socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -3120,7 +3139,8 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 		locationValue : locationValue,
 		alertType:alertType,
 		alertCategoryId:alertCategoryId,
-		subLevels:locationLevelIdClickArr
+		subLevels:locationLevelIdClickArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 		
     }
     $.ajax({
@@ -3241,7 +3261,8 @@ function getAlertSourceWiseAlert()
       paperIdArr : newspapersGlobalArr,
       chanelIdArr : channelGlobalArr,
 	  callCenterArr : callCenterGlobalArr,
-	  userType :"stateLevel"
+	  userType :"stateLevel",
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -3595,7 +3616,8 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 	  callCenterArr : callCenterGlobalArr,
 	  alertCategoryId:alertCategoryId,
 	  userType :"stateLevel",
-	   alertStatusId:alertStatusId
+	  alertStatusId:alertStatusId,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
       type:'POST',

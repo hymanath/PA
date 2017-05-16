@@ -537,7 +537,7 @@ function getSubOrdinateFilterAlertsOverview(){
 	$("#assignErrorDivId").html(' ');
 	$("#getSubOrdinateFilterAlertsOverview").html(spinner);
 	var jsObj = {
-	  
+	 
 		fromDate : currentFromDate,
 		toDateStr : currentToDate,
 		govtLevelIds :lvelIdsArr , //locationLevelSelectedId //impact level
@@ -555,7 +555,8 @@ function getSubOrdinateFilterAlertsOverview(){
 		lagEndCnt : toDays,
 		paperIdArr:newspapersGlobalArr,
 		chanelIdArr:channelGlobalArr,
-		callCenterArr:callCenterGlobalArr
+		callCenterArr:callCenterGlobalArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     
 	}
 	$.ajax({
@@ -870,7 +871,8 @@ function getLocationFilterClickDetails(designationId,levelId,locationValueId,sta
 		lagEndCnt : toDays,
 		paperIdArr:newspapersGlobalArr,
 		chanelIdArr:channelGlobalArr,
-		callCenterArr:callCenterGlobalArr
+		callCenterArr:callCenterGlobalArr,
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     
 	}
 	$.ajax({
