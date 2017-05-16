@@ -141,6 +141,8 @@ $(document).on('change','#leaderTypeId',function(){
 	 if(leadrId == 0){
 		getPublicRepresentsDetails();
 		getCommitteeRoles();
+		getCommitteeLevelDetails();
+		getCommitteeTypeDetails();
        $('#committeeTypeDivId').show();
 		$('#committeeLevelDivId').show();
 	 }else if(leadrId == 2){
@@ -160,7 +162,7 @@ $(document).on('change','#leaderTypeId',function(){
 		}
 });
 	  
-function getCommitteeRoles(){
+function getCommitteeRoles(callTypeId){
 		 var jsObj={
 				task:"roles"
 				}
@@ -169,6 +171,11 @@ function getCommitteeRoles(){
     	url: 'getAllCommitteesAction.action',
     	data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
+		if(callTypeId == 0){
+			 $("#designationId").find('option').remove();
+			 $(".chosenClass").trigger("chosen:updated");
+			 getPublicRepresentsDetails(0)
+		}
 		var str ='';
 		if(result != null){
 			for(var i in result)
@@ -179,7 +186,7 @@ function getCommitteeRoles(){
 		}
    });		
 }
-function getPublicRepresentsDetails(){
+function getPublicRepresentsDetails(callTypeId){
     	var jsObj={
     	  task:"publicRepresentatives"
     		}
@@ -188,14 +195,13 @@ function getPublicRepresentsDetails(){
     	  url: 'getPublicRepresentativeTypes.action',
     	  data: {task:JSON.stringify(jsObj)}
     	   }).done(function(result){
-		     var str ='';
-    	if(result != null){
-			for(var i in result)
-			{ 
-			  $("#designationId").append('<option value="2'+result[i].id+'">'+result[i].name+'</option>');
+			if(result != null){
+				for(var i in result)
+				{
+				  $("#designationId").append('<option value="2'+result[i].id+'">'+result[i].name+'</option>');
+				}
+				$(".chosenClass").trigger("chosen:updated");
 			}
-			$(".chosenClass").trigger("chosen:updated");
-		}
    });	
  }
 
@@ -316,7 +322,7 @@ function getLeadersDetasils(searchType){
 		  var maxIndex=1000;
 		  if(searchType == 'EXPORTEXCEL'){
 			firstIndex=0;
-			maxIndex=0;
+			maxIndex=1500;
 			searchType = searchType+"::"+excelUrl;
 			$("#exportId").html('<img src="images/Loading-data.gif" style="width:50px;height:50px;">');
 		  }else{
