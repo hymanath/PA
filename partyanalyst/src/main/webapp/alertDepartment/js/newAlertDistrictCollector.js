@@ -674,16 +674,16 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 
 $(document).on("click",".overAllCount",function(){
 	$("#totalAlertsModalTabId").html(spinner);
-		$("#alertManagementPopup").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
+	$("#alertManagementPopup").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
 		
-	
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
+	getFilterSectionAlertDetails(statusName,totalCount,departmentIdsForAlertSoutceArr);
 	
 	var jObj = {
 		govtDepDesigOffcrIds : globalgovtDeptDesigOffcrIds,
@@ -1141,15 +1141,18 @@ function buildAlertSouceWiseDetails(result)
 function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertStatusId){
 	
 	$("#alertManagementPopupBody").html('')
+
+	$("#alertManagementPopup").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+
+	$("#alertManagementPopupBody").html(spinner);
 	
-		$("#alertManagementPopup").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
-		$("#alertManagementPopupBody").html(spinner);
+	getFilterSectionAlertDetails(statusName,totalCount,departmentIdsForAlertSoutceArr);
     var jsObj ={
-      fromDate:currentFromDate,
+		fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
       deptIdArr : departmentIdsForAlertSoutceArr,  
@@ -1162,9 +1165,9 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
-      type:'POST',
-      url: 'getAlertDtlsByAlertSourceAction.action',
-      data: {task :JSON.stringify(jsObj)}
+		type:'POST',
+		url: 'getAlertDtlsByAlertSourceAction.action',
+		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
 	    if(result != null && result.length > 0){
 		$("#totalAlertsModalTabId").html('');
