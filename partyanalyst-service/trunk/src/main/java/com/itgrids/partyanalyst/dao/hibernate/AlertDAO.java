@@ -8276,7 +8276,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				"  a.alert_source_id as sourceId,rs.scope as scope ,a.alert_status_id as statusId, gd.department_name as deptName, fs.status as feedbackStattus, d.district_name as districtName," +
 				" c.name as cname, t.tehsil_name as tehsilName, p.panchayat_name as pname, h.hamlet_name as hname , leb.name as lname, " +
 				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo,user.username as username,sm.social_media_type_id as smTypeId,sm.type as smType," +
-				" a.is_verified as is_verified ");
+				" a.is_verified as is_verified,s.state_name as state ");
 		queryStr.append(" from ");
 		queryStr.append(" user user,alert a ");
 		queryStr.append(" Left Join alert_feedback_status fs on a.alert_feedback_status_id = fs.alert_feedback_status_id ");
@@ -8285,6 +8285,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
 		queryStr.append(" left join govt_department gd on a.govt_department_id = gd.govt_department_id  ");
 		queryStr.append(" left join user_address ua on a.address_id = ua.user_address_id  ");
+		
+		queryStr.append(" left join state s on s.state_id = ua.state_id  ");
 		queryStr.append(" left join district d on ua.district_id = d.district_id  ");
 		queryStr.append(" left join constituency c on ua.constituency_id = c.constituency_id  ");
 		queryStr.append(" left join tehsil t on ua.tehsil_id = t.tehsil_id  ");
@@ -8342,7 +8344,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("username", Hibernate.STRING)
 				.addScalar("smTypeId", Hibernate.LONG)
 				.addScalar("smType", Hibernate.STRING)
-				.addScalar("is_verified", Hibernate.STRING);
+				.addScalar("is_verified", Hibernate.STRING)
+				.addScalar("state", Hibernate.STRING);
 		
 		
 		if(departmentId != null && departmentId.longValue()>0L)
