@@ -76,25 +76,25 @@
 				<div class="row">
 					<div class="col-sm-3" id="districtDivId">
 						<label>District</label>
-						<select class="form-control " id="districtId" >
+						<select class="form-control chosenClass" id="districtId" multiple>
 							<option value="0">All</option>
 						</select>
 					</div>
 					<div class="col-sm-3">
 						<label>Constituency</label>
-						<select class="form-control " id="constituencyId">
+						<select class="form-control chosenClass" id="constituencyId" multiple>
 							<option value="0">All</option>
 						</select>
 					</div>
 					<div class="col-sm-3">
 						<label>Mandal/Town/Division</label>
-						<select class="form-control " id="mandalId" >
+						<select class="form-control chosenClass" id="mandalId" multiple>
 							<option value="0">All</option>
 						</select>
 					</div>
 					<div class="col-sm-3">
 						<label>Village/Ward</label>
-						<select class="form-control " id="panchayatDivId">
+						<select class="form-control chosenClass" id="panchayatDivId" multiple>
 							<option value="0">All</option>
 						</select>
 					</div>
@@ -168,6 +168,7 @@
  
 <script  type="text/javascript" >
 $(".chosenClass").chosen();
+$(".chosenClass").trigger("chosen:updated");
 var pageType='STATE';
 var areasList= [];
 var locationIdsArr=[];
