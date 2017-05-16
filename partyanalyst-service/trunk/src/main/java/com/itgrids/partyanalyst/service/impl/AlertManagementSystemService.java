@@ -10665,21 +10665,46 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			}
 			
 			List<Long> alertIds = null;
+			List<Long> pendingFeedbackList = null;
 			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
 				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
 					if(alertType != null && alertType.equalsIgnoreCase("alert")){
-						alertIds = alertAssignedOfficerNewDAO.getAlertDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,statusId,sourseId);
+						alertIds = alertAssignedOfficerNewDAO.getAlertDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,statusId,sourseId,"other");
 					}else if(alertType != null && alertType.equalsIgnoreCase("feedback")){
-						alertIds = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false",sourseId,statusId);
+						if(statusId != null && statusId.longValue() == 4L){
+							pendingFeedbackList = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false",sourseId,statusId);
+							alertIds = alertAssignedOfficerNewDAO.getAlertDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,0L,sourseId,"pending");
+						}else{
+							alertIds = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false",sourseId,statusId);
+						}
+						
 					}else if(alertType != null && alertType.equalsIgnoreCase("reopen")){
 						alertIds = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsForGrievanceReportClick(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"true",sourseId,statusId);
 					}
 				}
 			}
-			 if(alertIds != null && alertIds.size() > 0){
-				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
-				setAlertDtls(returnList, list); 
+			if(alertType != null && alertType.equalsIgnoreCase("feedback")){
+				if(statusId != null && statusId.longValue() == 4L){
+					if(pendingFeedbackList != null && pendingFeedbackList.size() > 0){
+						alertIds.removeAll(pendingFeedbackList);
+					}
+					if(alertIds != null && alertIds.size() > 0){
+						List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+						setAlertDtls(returnList, list); 
+					}
+				}else{
+					if(alertIds != null && alertIds.size() > 0){
+						List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+						setAlertDtls(returnList, list); 
+					}
+				}
+			}else{
+				if(alertIds != null && alertIds.size() > 0){
+					List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+					setAlertDtls(returnList, list); 
+				}
 			}
+			
 			setSubListCount(returnList, alertIds);
 			
 		}catch(Exception e){
