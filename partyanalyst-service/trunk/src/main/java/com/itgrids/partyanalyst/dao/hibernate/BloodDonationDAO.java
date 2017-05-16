@@ -354,7 +354,7 @@ public List<Object[]> getThePrePopulateData(String searchType,Long statusId,List
 	@SuppressWarnings("unchecked")
 	public List<Long> getBloodDonationDetails(List<Long> bloodDonorIds){
 		
-		Query query = getSession().createQuery(" select model.bloodDonationId " +
+		Query query = getSession().createQuery(" select model.bloodDonorInfoId " +
 				" from BloodDonation model " +
 				" where model.bloodDonorInfoId in ('"+bloodDonorIds+"') ");
 		
