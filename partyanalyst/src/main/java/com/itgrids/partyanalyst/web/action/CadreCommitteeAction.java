@@ -2734,4 +2734,66 @@ public String updateCommitteeMemberDesignationByCadreId(){
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getMultplConstituencesByDistctIds(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			JSONArray districtIdsArr = jObj.getJSONArray("districtIds");
+			List<Long> districtIdsLst = new ArrayList<Long>(0);
+			if(districtIdsArr != null && districtIdsArr.length()>0){
+				for (int i = 0; i < districtIdsArr.length(); i++) {
+					districtIdsLst.add(Long.valueOf(districtIdsArr.get(i).toString().trim()));
+				}
+			}
+			idNameVOList = cadreCommitteeService.getMultplConstituencesByDistctIds(districtIdsLst);
+		}catch(Exception e){
+			LOG.error("Exception occured in getMultplConstituencesByDistctIds() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMultpleMandalsByConstituencyIds(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			JSONArray constituencyIdsArr = jObj.getJSONArray("constituencyIds");
+			List<Long> constituencyIdsLst = new ArrayList<Long>(0);
+			if(constituencyIdsArr != null && constituencyIdsArr.length()>0){
+				for (int i = 0; i < constituencyIdsArr.length(); i++) {
+					constituencyIdsLst.add(Long.valueOf(constituencyIdsArr.get(i).toString().trim()));
+				}
+			}
+			locations = cadreCommitteeService.getMultiMandalsByConstituencyLst(constituencyIdsLst);
+		}catch(Exception e){
+			LOG.error("Exception occured in getMultpleMandalsByConstituencyIds() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMultplePanchayatWardByMandalIds(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			JSONArray constituencyIdsArr = jObj.getJSONArray("constituencyIds");
+			List<Long> constituencyIdsLst = new ArrayList<Long>(0);
+			if(constituencyIdsArr != null && constituencyIdsArr.length()>0){
+				for (int i = 0; i < constituencyIdsArr.length(); i++) {
+					constituencyIdsLst.add(Long.valueOf(constituencyIdsArr.get(i).toString().trim()));
+				}
+			}
+			JSONArray mandalIdsArr = jObj.getJSONArray("mandalIds");
+			List<Long> mandalIdsList = new ArrayList<Long>();
+			if(mandalIdsArr != null && mandalIdsArr.length()>0){
+				for (int i = 0; i < mandalIdsArr.length(); i++) {
+					mandalIdsList.add(Long.valueOf(mandalIdsArr.get(i).toString().trim()));
+					
+				}
+			}
+			locations = cadreCommitteeService.getMultplePanchayatWardByMandalIdsLst(constituencyIdsLst,mandalIdsList);
+		}catch(Exception e){
+			LOG.error("Exception occured in getMultplePanchayatWardByMandalIds() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }

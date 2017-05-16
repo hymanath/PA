@@ -17278,5 +17278,21 @@
 				<param name="root">cadreCommitteeList</param>
 			</result>
   </action>
+  <action name="getMultplConstituencesByDistctIdsAction" class="cadreCommitteeAction"  method="getMultplConstituencesByDistctIds">
+		<result type="json" name="success">    
+			<param name="root">idNameVOList</param>       
+		</result> 
+	</action>	
+	<action name="getMultpleMandalsByConstituencyIdsAction" class="cadreCommitteeAction"  method="getMultpleMandalsByConstituencyIds">
+		<result type="json" name="success">    
+			<param name="root">locations</param>       
+		</result> 
+	</action>	
+	
+	<action name="getMultplePanchayatWardByMandalIdsAction" class="cadreCommitteeAction"  method="getMultplePanchayatWardByMandalIds">
+		<result type="json" name="success">    
+			<param name="root">locations</param>       
+		</result> 
+	</action>	
  </package>
 </struts>
