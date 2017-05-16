@@ -102,12 +102,14 @@
 			$("#printBtnDiv").hide();
 			$("#addMembrsBtn").show();
 			$("#viewMembrsBtn").show();
+			$("#mandalMainDivId").show();
 		}
 		
 		else if(areaTypeId == 2) // Mandal / Town / GHMC 
 		{				
 			$('#areaTypeId').val(areaTypeId);
 			$("#affiliCommitteeAllInfoDivId").html("");
+			$("#mandalMainDivId").hide();
 		}
 	}
 	
@@ -141,7 +143,7 @@
 		//areaTypeId means
 		    //for panchayat level 1
 			//for mandal level 2
-			
+			  
 		var areaTypeId  =  $('#areaTypeId').val();
 		var committeeLocationId =$("#committeeLocationId").val();
 		
@@ -179,6 +181,186 @@
 			}			
 		}
 		
+		if(committeTypeID ==1)
+		{
+			if(committeeLocationId == null || committeeLocationId == 0)
+			{
+				$('#committeeLocationIdErr').html('Please Select Location');
+				return;
+			}
+			if(searchRadioType == 'name' || searchRadioType == 'advancedSearch'){
+				committeeLocationId = $('#committeeLocationId').val();
+				if(committeeLocationId == null || committeeLocationId == 0)
+				{
+					$('#committeeLocationIdErr').html('Please Select Location');
+					return;
+				}
+				if(areaTypeId ==1)
+					{
+						if(committeeLocationId.substr(0,1) == 1){
+							  locationLevel = 6;
+						}
+						else if(committeeLocationId.substr(0,1) == 2){
+							 locationLevel = 8;
+							 parentLocation = $("#panchayatWardByMandal option:selected").val();
+							  parentLocation = parentLocation.substr(1);
+						}
+					}
+					if(areaTypeId ==2)
+					{
+						if(committeeLocationId.substr(0,1) == 1){
+							 locationLevel = 7;
+						}
+						else if(committeeLocationId.substr(0,1) == 2){
+							 locationLevel = 5;
+						}
+						else if(committeeLocationId.substr(0,1) == 3){
+							 locationLevel = 8;
+						}						
+					}
+					locationValue = committeeLocationId.substr(1);
+			}	
+			
+			if(committeePosition == 0)
+			{
+				$('#committeePositionIdErr').html('Please Select Designation.');
+				return;
+			} 			
+		}
+		else if(committeTypeID ==2 || committeTypeID ==3)
+		{		
+			
+				var searchLevel = $('#searchLevelId').val();
+				committeeLocationId = $('#committeLocationId').val();
+				if(searchLevel == null || searchLevel == 0)
+				{
+					$('#searchLevelErrDiv').html('Please Select SearchLevel');
+					return;
+				}
+				if(committeeLocationId == null || committeeLocationId == 0)
+				{
+					$('#committeLocationIdErr').html('Please Select Location');
+					return;
+				}
+			
+		}
+		
+
+		if(searchRadioType == 'mobileNo' || searchRadioType == 'voterId' || searchRadioType == 'membershipId')
+		{				
+				if(committeTypeID != 1 )
+				{
+					       committeeLocationId = $('#committeLocationId').val();
+							 if(areaTypeId ==1)
+							{
+								if(committeeLocationId.substr(0,1) == 1){
+									  locationLevel = 6;
+								}
+								else if(committeeLocationId.substr(0,1) == 2){
+									 locationLevel = 8;
+									 
+								}
+							}
+							if(areaTypeId ==2)
+							{
+								if(committeeLocationId.substr(0,1) == 1){
+									 locationLevel = 7;
+								}
+								else if(committeeLocationId.substr(0,1) == 2){
+									 locationLevel = 5;
+								}
+								else if(committeeLocationId.substr(0,1) == 3){
+									 locationLevel = 8;
+								}
+							}
+							locationValue = committeeLocationId.substr(1);				
+				}				
+				else
+				{
+					if(areaTypeId ==1)
+					{
+						if(committeeLocationId.substr(0,1) == 1){
+							  locationLevel = 6;
+						}
+						else if(committeeLocationId.substr(0,1) == 2){
+							 locationLevel = 8;
+							 parentLocation = $("#panchayatWardByMandal option:selected").val();
+							  parentLocation = parentLocation.substr(1);
+						}
+					}
+					if(areaTypeId ==2)
+					{
+						if(committeeLocationId.substr(0,1) == 1){
+							 locationLevel = 7;
+						}
+						else if(committeeLocationId.substr(0,1) == 2){
+							 locationLevel = 5;
+						}	
+						else if(committeeLocationId.substr(0,1) == 3){
+							 locationLevel = 8;
+						}						
+					}
+					locationValue = committeeLocationId.substr(1);
+				}	
+		}
+		else
+		{
+			committeeLocationId = $('#committeLocationId').val();
+			if(committeTypeID != 1 )
+			{						
+				if(areaTypeId ==1)
+				{
+					if(committeeLocationId.substr(0,1) == 1){
+						  locationLevel = 6;
+					}
+					else if(committeeLocationId.substr(0,1) == 2){
+						 locationLevel = 8;
+					}
+				}
+				if(areaTypeId ==2)
+				{
+					if(committeeLocationId.substr(0,1) == 1){
+						 locationLevel = 7;
+					}
+					else if(committeeLocationId.substr(0,1) == 2){
+						 locationLevel = 5;
+					}
+					else if(committeeLocationId.substr(0,1) == 3){
+						 locationLevel = 8;
+					}
+				}
+				locationValue = committeeLocationId.substr(1);
+			}
+			else
+			{
+				committeeLocationId = $('#committeeLocationId').val();
+				if(areaTypeId ==1)
+				{
+					if(committeeLocationId.substr(0,1) == 1){
+						  locationLevel = 6;
+					}
+					else if(committeeLocationId.substr(0,1) == 2){
+						 locationLevel = 8;
+						 parentLocation = $("#panchayatWardByMandal option:selected").val();
+						 parentLocation = parentLocation.substr(1);
+					}
+				}
+				if(areaTypeId ==2)
+				{
+					if(committeeLocationId.substr(0,1) == 1){
+						 locationLevel = 7;
+					}
+					else if(committeeLocationId.substr(0,1) == 2){
+						 locationLevel = 5;
+					}
+					else if(committeeLocationId.substr(0,1) == 3){
+							 locationLevel = 8;
+					}					
+				}
+				locationValue = committeeLocationId.substr(1);
+			}	
+			
+		}
 		if(searchRadioType == 'membershipId')
 		{
 			memberShipCardNo = $('#searchBy').val().trim();
@@ -223,31 +405,119 @@
 				$('#searchErrDiv').html('Invalid Mobile No.');
 				return;				
 			}
-		}	
-		$("#searchDataImg").show();	
+			
+			
+			
+		}
+		if(searchRadioType == 'name')
+		{
+			searchName = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Name.');
+				return;
+			}
+			else if(searchBy.trim().length < 3)
+			{
+				$('#searchErrDiv').html('Please enter Minimum 3 Characters.');
+				return;
+			}
+		}
+		if(searchRadioType == 'advancedSearch')
+		{			
+			gender = $('#gender option:selected').text().trim();
+			var casteGroup = $('#casteCategory').val();
+			var casteName  = $('#casteList').val();
+			var age = $('#ageRange').val();
+			
+			var locfromAge = $('#fromAgeId').val().trim();
+			var loctoAge = $('#toAgeId').val().trim(); 
+			
+			if(casteGroup == 0 && casteName == 0 && age == 0 && gender == 'All' && locfromAge.length == 0 && loctoAge.length == 0 )
+			{
+				$('#advancedSearchErrDiv').html('Please Select Any of Search Criteria');
+				return;			
+			}			
+			if($('#ageRange').val() != 0)
+			{
+				var ageRange = $('#ageRange option:selected').text();
+				var ageRange = ageRange.split('-');
+				fromAge = ageRange[0].trim();
+				toAge = ageRange[1].trim();
+			}
+			else
+			{
+				fromAge = $('#fromAgeId').val().trim();
+				toAge = $('#toAgeId').val().trim(); 
+				
+				if(fromAge.length >0 || toAge.length >0)
+				{
+					if(fromAge.length == 0 || toAge.length == 0)
+					{
+						$('#advancedSearchErrDiv').html('Please Enter Between Age Details.');
+						return;	
+					}
+					if(fromAge > toAge){
+						$('#advancedSearchErrDiv').html('From Age Should be Less than To Age.');
+						return;							
+					}
+				}
+				else
+				{
+					fromAge = 0;
+					toAge = 0;					
+				}
+			}				
+			casteCategory = $('#casteCategory option:selected').text().trim();
+			casteStateId = $('#casteList').val().trim();
+			
+			if(casteCategory == 'All')
+			{
+				casteCategory = "";				
+			}			
+		}
+		
+		$("#searchDataImg").show();
+		
+		if(committeTypeID ==1 && locationLevel==8 && parentLocation!=null && parentLocation !=0){
+			locationLevel = 7,
+			locationValue = parentLocation
+		}
+		
+		if(loginAreaType == 'URBAN')
+		{
+			locationLevel = 4;
+			locationValue = userLocation;
+		}
+
+		if(locationValue == null)
+			locationValue =0;
+		
 		var jsObj =
 		{
-			locationLevel :"0",
-			locationValue:"0",
-			searchName : "",
+			locationLevel :locationLevel,
+			locationValue:locationValue,
+			searchName : searchName,
 			mobileNo: mobileNo,
-			casteCategory : "",
-			fromAge : "0",
-			toAge : "0",
+			casteCategory : casteCategory,
+			fromAge : fromAge,
+			toAge : toAge,
 			memberShipCardNo: memberShipCardNo,
-			casteStateId : "0",
+			casteStateId : casteStateId,
 			trNumber : trNumber,
 			voterCardNo:voterCardNo,
-			gender:"",
-			houseNo:"",
+			gender:gender,
+			houseNo:houseNo,
 			removedStatus:"false",
 			enrollmentId : 4,
 			task:"search"
 		}
-
+		
+		//console.log(jsObj);
 		$.ajax({
 				type : "POST",
-				url : "getCadreSearchDetailsAction.action",
+				url : "getCadreSearchDetailsForCommitteeAction.action",
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				 if(typeof result == "string"){
@@ -306,21 +576,31 @@
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
 				{
 					str+='<ul>';
-					str+='<li style="font-weight:bold;">Existing Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'</i>';	
+					
+					//showing current designation in committees.
+					if(result[i].committeeMemberStatus != null && result[i].committeeMemberStatus.trim().length > 0){
+						if(result[i].committeeMemberStatus.trim() == 'F'){
+							str+='<li style="font-weight:bold;">Current Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer;font-size:12px; border-radius:50%; padding:3px; " title="Click here to delete current designation"></i><img style="width: 25px; height: 20px;display:none;" src="images/icons/loading.gif" class="dataLoadingImgCls"></li>';	
+							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
+						}else if(result[i].committeeMemberStatus.trim() == 'P'){
+							str+='<li style="font-weight:bold;">Current Designation : Proposed For '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer; font-size:12px; border-radius:50%; padding:3px;" title="Click here to delete current designation"></i><img style="width: 25px; height: 20px;display:none;" src="images/icons/loading.gif" class="dataLoadingImgCls"></li>';	
+							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' Proposed as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
+						}
+					}
+					//showing current designation in Electrols.
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 						for(var j in result[i].previousRoles){
 							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
 						}
 					}
-					str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
 					str+='</ul>';	
 					str+='</div>';
 					str+='</div>';
 					if(committeeMngntTypeId == 1)
 					{
-						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
-						str+='</div>	';	
+						//str+='<div class="form-inline ">';
+						//str+='<a onclick="javascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+						//str+='</div>	';	
 					}
 					else if(committeeMngntTypeId == 2)
 					{
@@ -356,6 +636,7 @@
 					}								
 				}
 				else{
+					 //showing current designation in Electrols.
 					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
 					    str+='<ul>';
 						for(var j in result[i].previousRoles){
@@ -369,7 +650,7 @@
 					if(committeeMngntTypeId == 1)
 					{
 						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{getCadreProfileInfo('+result[i].tdpCadreId+' ,0)}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
+						str+='<a onclick="javascript:{getCadreProfileInfo('+result[i].tdpCadreId+' ,0)}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
 						str+='</div>	';	
 					}
 					else if(committeeMngntTypeId == 2)
@@ -424,53 +705,27 @@
 	}
 	function getCadreProfileInfo(tdpCadreId,existingRole,existingId)
 	{
-		if(existingId != undefined && existingId != null && existingId != 'null'){
-			if(existingId == committeePosition){
-				alert("Candidate Already Added To This Designation");
-				return;
-			}
-		}
-		var existingDesignation = '';
-		if(existingRole != null && existingRole != 0 && existingRole.trim().length>0)
-		{
-			existingDesignation = $('#'+existingRole+'').val();
-		}
-		var committeePositionStr = $('#committeePositionId option:selected').text().trim();
-		var committeeTypeId = $('#committeeTypeId').val();
-		var committeeType = $('#committeeTypeId option:selected').text().trim();
-	    var committeeId = $('#afflitCommitteeId').val();
-			if(committeeTypeId ==2 )
-			{
-				committeeType = $('#afflitCommitteeId option:selected').text().trim();
-			} 
-		if(existingDesignation != null && existingDesignation.trim().length>0)
-		{
-			if(!confirm(""+existingDesignation+". Are you sure want to change his Designation as "+committeePositionStr+" for "+committeeType+" in "+ globalLocationName+".?" ))
-			{
-				return;
-			}
-		}
-		 //committeeTypeId(1 Main Committee ,2 Affiliated Committee),committeeId(afflitCommitteeId),result3(COMMITTEE DESIGNATION id)
-		
-			
-		window.location.href = 'cadreProfileDetailsAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'&tdpCadreId='+tdpCadreId+'&result1='+$("#committeePositionId option:selected").text().trim()+'&result2='+committeeType+'&result4='+globalLocationName+'&committeeMngtType=4&result3='+$("#committeePositionId").val()+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId;
-
-		return;
 		var mandalId=$("#panchayatWardByMandal").val();
 		
 		var committeTypeID = $('#committeeMngtType').val();		
 		var committeeLocationId = $('#committeeLocationId').val();
 		var committeeTypeId = $('#committeeTypeId').val();
-		
+		var committeeId = $('#afflitCommitteeId').val();
 		var isError = "";
 		var areaType = $('#areaTypeId').val();
 		var committeeMngtType = $('#committeeMngtType').val();
+		
 		var committeePosition = $('#committeePositionId').val();
+		var committeePositionRoleType = $('#committeePositionId option:selected').attr("attr_role_type");
 		
-
 		
+		var existingDesignation = '';
+		var committeePositionStr = $('#committeePositionId option:selected').text().trim();
 		var locationTypeStr= " Mandal " ;
-		
+		if(existingRole != null && existingRole != 0 && existingRole.trim().length>0)
+		{
+			existingDesignation = $('#'+existingRole+'').val();
+		}
 		if(committeTypeID ==1)
 		{			
 			$('#afflitCommitteeIdErr,#committeeTypeIdErr,#committeeLocationIdErr,#committeePositionIdErr').html('');
@@ -543,17 +798,21 @@
 					{
 						return;
 					}
-					window.location.href = 'cadreProfileDetailsAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'&tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'';
+					  window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'&locationId='+reqlocationId+'';
+				    //var url = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
+				    //window.open(url,'_blank');
 				}
 				else{
-					window.location.href = 'cadreProfileDetailsAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'&tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'';
+					 window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'&locationId='+reqlocationId+'';
+				    //var url = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&panchayatId='+committeeLocationId+'&committeeTypeId='+committeeTypeId+'&committeeId='+committeeId+'&result1='+$('#committeePositionId option:selected').text().trim()+'&result2='+committeeType+'&result3='+committeePosition+'&result4='+$('#committeeLocationId option:selected').text()+''+locationTypeStr+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
+			        //window.open(url,'_blank');
 				}
-				
-				
 			}
 		}else
 		{
-			window.location.href = 'cadreProfileDetailsAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'&tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&mandalId='+mandalId+'';
+			 window.location.href = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'&locationId='+reqlocationId+'';
+		    //var url = 'cadreProfileDetailsAction.action?tdpCadreId='+tdpCadreId+'&task='+areaType+'&committeeMngtType='+committeeMngtType+'&mandalId='+mandalId+'&roleType='+committeePositionRoleType+'';
+			//window.open(url,'_blank');
 		}
 	}
 	
@@ -709,33 +968,82 @@
 		}
 
 		var result = JSON.parse(uploadResult);
+       // alert( reqcommitteeMngtType + "-" +result.resultCode );
+		if(result.resultCode == 0){//Success
 
-		if(result.resultCode == 0)
-		{			
-
-		$('.existingDiv').hide();
-		$('#step2Id').hide();
-		$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
-		$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
-		$('#profileDiv').html('');
+			$('.existingDiv').hide();
+			$('#step2Id').hide();
+			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
+			if(reqcommitteeMngtType == 4){
+				
+				if(reqlocationId != null && reqlocationId>0)
+					$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="committeeManagementAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"> </i> </a>');
+				else
+					$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="committeeManagementAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"> </i> </a>');
+			}else{
+					if(reqlocationId != null && reqlocationId>0)
+						$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"> </i> </a>');
+					else
+						$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <a class="btn btn-success btn-xs" href="cadreCommitteeAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 10px;margin-left:250px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"> </i> </a>');
+			}
+			$('#profileDiv').html('');
 
 		}		
-		else if(result.resultCode == 2)
-		{			
+		else if(result.resultCode == 2){ // Not Eligible For This Committee.
+					
 			var redirectURL = $('#redirectURLId').val();
 			$('#profileDiv').hide();
 			$('#step2Id').hide();
 			$('.existingDiv').hide();
 			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
-			$('#redirectURLId').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
-			$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+			alert("reqcommitteeMngtType : "+reqcommitteeMngtType)
+			if(reqcommitteeMngtType == 4){
+			
+				if(reqlocationId != null && reqlocationId>0)
+					$('#redirectURLId').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="committeeManagementAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"> </i> </a>');
+				else{
+					$('#redirectURLId').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="committeeManagementAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"> </i> </a>');
+				}
+				if(reqlocationId != null && reqlocationId>0)
+					$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="committeeManagementAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"> </i> </a>');
+				else{
+					$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="committeeManagementAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME">  </i> </a>');
+				}
+			}else{
+				
+				if(reqlocationId != null && reqlocationId>0)
+					$('#redirectURLId').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="committeeManagementAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME">  </i> </a>');
+				else
+					$('#redirectURLId').html('<span style="font-weight: bold;text-transform: uppercase;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="committeeManagementAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME">  </i> </a>');
+				 
+				 if(reqlocationId != null && reqlocationId>0)
+					$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="committeeManagementAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME">  </i> </a>');
+				else
+					$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br> <a class="btn btn-success btn-xs" href="'+redirectURL+'">  CLICK HERE IF YOU WANT DESIGNATION </a><a class="btn btn-success btn-xs" href="committeeManagementAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME">  </i> </a>');
+			}
 		}
 		else{
+			
 			$("#submitCadreFormBtnReqId").show();
 			$('html,body').animate({scrollTop: $('.successDiv').offset().top}, 800);
-			$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br><a class="btn btn-success btn-xs" href="cadreCommitteeAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+			if(reqcommitteeMngtType == 4){
+				
+				if(reqlocationId != null && reqlocationId>0){
+					  $('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br><a class="btn btn-success btn-xs" href="committeeManagementAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME">  </i> </a>');
+				}
+				else{
+					  $('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br><a class="btn btn-success btn-xs" href="committeeInfoAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+				}
+			
+			}else{
+				if(reqlocationId != null && reqlocationId>0){
+					$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br><a class="btn btn-success btn-xs" href="committeeManagementAction.action?locationId='+reqlocationId+'&reqLocationType='+reqLocationType+'"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+				}
+				else{
+					$('.successDiv').html('<span style="font-weight: bold;text-transform: uppercase;color:red;"> '+result.status+'</span> <br><a class="btn btn-success btn-xs" href="committeeInfoAction.action"  style="padding: 4px;margin-left:10px;"> <i class="glyphicon glyphicon-home"  title="BACK TO HOME"></i> </a>');
+				}
+			}
 		}
-		
 		
 	}
 	function addMoreRolesForCadre()
@@ -940,8 +1248,28 @@
 	
 	
 	var userLocation = "";
+	var loginAreaType ="rural";
 	function getUserLocation(){
 		var locationId = 0;
+			var jObj ={
+				locationId:locationId,
+			task:"getConstituency"             
+		}	
+		$.ajax({
+			type : "POST",
+			url : "getUserAccessConstituencyAction.action",
+			data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			if(result != null){
+				for(var i in result){				
+				userLocation = result[i].id;
+				loginAreaType = result[i].description;
+				}
+				}
+		});
+	}
+	function getUserLocation1(locationId){
+	
 			var jObj ={
 			locationId:locationId,
 			task:"getConstituency"             
@@ -954,11 +1282,11 @@
 			if(result != null){
 				for(var i in result){				
 				userLocation = result[i].id;
+				loginAreaType = result[i].description;
 				}
 				}
 		});
 	}
-	
 	function addAsElectrole(cadreId,btnId,addmoreId,resultDiv)
 	{	
 		var designationArr = new Array();
@@ -1111,3 +1439,28 @@
 			});
 			
 	}
+	
+$(document).on("click",".updateMemberCls",function(){
+	var tdpCadreId = $(this).attr("attr_tdp_cadre_id");
+	if(confirm("Are you sure want to Delete his Current Designation?")){
+		$(".dataLoadingImgCls").show();
+		var jsObj = {
+		   tdpCadreId :tdpCadreId
+		}
+	    $.ajax({
+			type : "POST",
+			url : "updateCommitteeMemberDesignationByCadreIdAction.action",
+			data : {task:JSON.stringify(jsObj)} ,
+		}).done(function(result){
+			if(result != null && result == "success"){
+				alert("Current Designation Deleted Successfully...");
+				$(".dataLoadingImgCls").hide();
+				getCadreDetailsBySearchCriteria();
+			}
+			else{
+				alert("Sorry,Exception Occured.Please Try Again...");
+				$(".dataLoadingImgCls").hide();
+			}
+		});
+	}
+});
