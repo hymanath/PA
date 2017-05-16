@@ -16,7 +16,7 @@ public class GovtAlertDepartmentLocationNewDAO extends GenericDaoHibernate<GovtA
 	public List<Object[]> getUserAccessLevels(Long userId){
 		Query query = getSession().createQuery(" select distinct " +  
 												" model.govtDepartmentScope.govtDepartmentScopeId," +
-												" model.levelValue  " +
+												" model.levelValue,model.govtDepartmentScope.levelName  " +
 												" from GovtAlertDepartmentLocationNew model" +
 												" where model.user.userId = :userId" +
 												" and model.isDeleted = 'N'");
