@@ -111,7 +111,7 @@ header
 		<h4 class="text-capital color_blue text-center">departments that are included in alert management system</h4>
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-12 m_top30">
+				<div class="col-sm-12 m_top10">
 					<div id="departments"></div>
 				</div>
 			</div>
@@ -167,7 +167,7 @@ header
 $("#userName1").focus();
 var userip = "";
 
-getGovtDepartmentDetails()
+getGovtDepartmentDetails();
 function getGovtDepartmentDetails()
 {
 	$("#govtDepartmentsId").html('');
@@ -184,9 +184,9 @@ function getGovtDepartmentDetails()
 				{
 					if(result[i].name.length > 25)
 					{
-						str+='<li id="'+result[i].id+'"><img style="display:inline-block" src="alertDepartment/img/'+result[i].id+'.jpg" alt="'+result[i].name+'" onerror="setDefaultImage(this);"/> '+result[i].id+' '+result[i].name.substring(0,25)+'..</li>';
+						str+='<li><img style="display:inline-block" src="alertDepartment/img/'+result[i].id+'.jpg" alt="'+result[i].name+'" onerror="setDefaultImage(this);"/>'+result[i].name.substring(0,25)+'..</li>';
 					}else{
-						str+='<li id="'+result[i].id+'"><img style="display:inline-block" src="alertDepartment/img/'+result[i].id+'.jpg" alt="'+result[i].name+'" onerror="setDefaultImage(this);"/> '+result[i].id+' '+result[i].name+'</li>';
+						str+='<li><img style="display:inline-block" src="alertDepartment/img/'+result[i].id+'.jpg" alt="'+result[i].name+'" onerror="setDefaultImage(this);"/>'+result[i].name+'</li>';
 					}
 					
 				}
