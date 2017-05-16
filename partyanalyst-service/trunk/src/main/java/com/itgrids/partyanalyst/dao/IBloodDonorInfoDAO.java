@@ -10,5 +10,6 @@ import com.itgrids.partyanalyst.model.BloodDonorInfo;
 public interface IBloodDonorInfoDAO extends GenericDao<BloodDonorInfo, Long> {
 	//public List<Object[]> getBloodDonorCounts(Date campFromDate,Date campToDate );
 	//public List<Object[]> getBloodDonorDayWiseCounts(Date campFromDate,Date campToDate );
+	public List<Object[]> getBloodDonorDetails();
 
 }
