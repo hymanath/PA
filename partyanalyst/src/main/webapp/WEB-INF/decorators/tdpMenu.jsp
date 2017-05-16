@@ -570,8 +570,11 @@
 							<!--<li><a href="activitiesQuestionResponcesAction.action"><i class="fa fa-eye"></i><span> Activities Response Report  </span></a></li>-->
 								 	 <c:if test="${sessionScope.USER.isAdmin == 'true' ||
 							fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS') }">
-								  <li>
-									<a href="eventInvitees.action"><i class="fa fa-envelope-square"></i><span>&nbsp;&nbsp;Events Invitees</span></a>
+									<li>
+										<a href="partyLeadersDetailsAction.action"><i class="fa fa-envelope-square"></i><span>&nbsp;&nbsp;Leaders Details </span></a>
+									</li>
+									<li>
+										<a href="eventInvitees.action"><i class="fa fa-envelope-square"></i><span>&nbsp;&nbsp;Events Invitees</span></a>
 									</li>
 									  <li>
 									<a href="#"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Events Dashoard</span></a>
