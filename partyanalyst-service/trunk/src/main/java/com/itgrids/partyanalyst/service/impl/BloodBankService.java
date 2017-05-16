@@ -241,7 +241,7 @@ public class BloodBankService implements IBloodBankService{
 				setCadreDetailsOfDonor(cadreDetails,cadreDtlsVO);				
 			}else{
 				
-				Object[] obj=tdpCadreDAO.getCadreDetailsByMmbrShpId(memberShipId);
+				Object[] obj=tdpCadreDAO.getCadreDetailsByMmbrShpId(memberShipId,enrollmentId);
 				
 				  if(obj!=null && obj.length>0){
 					  
