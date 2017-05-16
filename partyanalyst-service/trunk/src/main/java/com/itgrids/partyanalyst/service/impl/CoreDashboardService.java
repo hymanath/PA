@@ -944,7 +944,7 @@ public class CoreDashboardService implements ICoreDashboardService{
 					if(locationLevelId == IConstants.DISTRICT_LEVEl_ACCESS_ID){
 						values = districtDAO.getDistrictNamesByIds(locationLevelValues);
 					}else if(locationLevelId == IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
-						values = constituencyDAO.getConstituenctNamesByIds(locationLevelValues);
+						values = constituencyDAO.getConstituenciesNamesByIds(locationLevelValues);
 					}else if(locationLevelId == IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
 						values = constituencyDAO.getConstituenctNamesByIds(locationLevelValues);
 					}
