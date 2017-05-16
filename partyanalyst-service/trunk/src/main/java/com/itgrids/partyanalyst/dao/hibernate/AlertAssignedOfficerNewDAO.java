@@ -5532,7 +5532,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	public List<Object[]> getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(Date fromDate,Date toDate,
 	     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
 	     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
-	     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue, String reopen,Long source){
+	     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue, String reopen,Long source,String feedbackType){
 	    	 
 		StringBuilder queryStr = new StringBuilder();
 		
@@ -5606,6 +5606,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 
 		queryStr.append(" and AAO.is_deleted='N' ");//and AAO.is_approved = 'Y'
 		queryStr.append(" and AAO.alert_status_id = ALTS.alert_status_id  ");
+		if(feedbackType != null && feedbackType.trim().equalsIgnoreCase("pending")){
+			queryStr.append(" and ALTS.alert_status_id in (4,12) ");   
+		}
 		queryStr.append(" and AAO.govt_department_designation_officer_id = GDDO.govt_department_designation_officer_id  ");
 		queryStr.append(" and GDWL.govt_department_scope_id = GDDO.govt_department_scope_id ");
 		queryStr.append(" and GDDO.address_id = GUA.user_address_id  ");
