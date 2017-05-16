@@ -202,16 +202,17 @@ public class CadreCommitteeRoleDAO extends GenericDaoHibernate<CadreCommitteeRol
 			query.setParameterList("committeeTypeIdsLsit", committeeTypeIdsLsit);
 		if(committeeLevelIdsList != null && committeeLevelIdsList.size()>0)
 			query.setParameterList("committeeLevelIdsList", committeeLevelIdsList);
+		
 		if(locationIdsList != null && locationIdsList.size()>0){
+			Set<Long> idsList = new HashSet<Long>();
 			if(levelId.longValue() == 5L || levelId.longValue() == 6L || levelId.longValue() == 7L || levelId.longValue() == 8L ){
-				Set<Long> idsList = new HashSet<Long>();
 				for (Long id : locationIdsList) {
 					idsList.add(Long.valueOf(id.toString().substring(1)));
 				}
-				locationIdsList.clear();
-				locationIdsList.addAll(idsList);
+			}else{
+				idsList.addAll(locationIdsList);
 			}
-			query.setParameterList("locationIdsList", locationIdsList);
+			query.setParameterList("locationIdsList", idsList);
 		}
 		
 		if(maxIndex>0){
