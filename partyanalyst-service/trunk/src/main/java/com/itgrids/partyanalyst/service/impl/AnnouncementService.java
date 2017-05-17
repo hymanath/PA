@@ -347,17 +347,24 @@ public class AnnouncementService implements IAnnouncementService {
 				return statesList;
 
 			} else {
-				if (userDistricts != null && userDistricts.size() > 0) {
+				selectOptionVO = null;
 					for (Object[] params : userDistricts) {
 						selectOptionVO = new SelectOptionVO();
 						selectOptionVO.setType("District");
 						selectOptionVO.setId((Long) params[0]);
 						selectOptionVO.setName(params[1].toString());
+						selectOptionVO.setState(" ");
+						if(userDistricts != null && userDistricts.size() == 10l && (Long) params[0]==1L){
+							selectOptionVO.setState("TS");
+						}
+						else if(userDistricts != null && userDistricts.size() == 14l && (Long) params[0]==11L){
+							selectOptionVO.setState("AP");
+						}
+						
 						statesList.add(selectOptionVO);
-					}
+					}					
 				}
-				return statesList;
-			}
+			return statesList;
 		} catch (Exception e) {
 			log.error(" Exception rised in getUserBasedAccessConstituencies ",e);
 		}
