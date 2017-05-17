@@ -191,6 +191,7 @@ var locationIdsArr=[];
 			 $("#constituencyId").html('');
 			  $("#constituencyId").append('<option value="0">ALL</option>');
 				for(var i in areasList){
+					constiArr.push(areasList[i].id);
 					$("#constituencyId").append('<option value='+areasList[i].id+'>'+areasList[i].name+'</option>');
 				}
 		}
@@ -199,7 +200,8 @@ var locationIdsArr=[];
 		 if(areasList != null && areasList.length>0){
 			 $("#districtId").html('');
 			  $("#districtId").append('<option value="0">ALL</option>');
-			  for(var i in areasList){		
+			  for(var i in areasList){
+			   		districtsArr.push(areasList[i].id);	
 					if(areasList[i].state == 'AP'){
 							$('.switch-btn').show()
 							$("#districtId").html('');
