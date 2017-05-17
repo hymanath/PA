@@ -2993,12 +2993,6 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	public String getAlertEfficiencyList1(){
 		try {
 			jObj = new JSONObject(getTask());
-			JSONArray dysArr = jObj.getJSONArray("daysArr");
-			List<Integer> daysList = new ArrayList<Integer>();
-			for (int i = 0; i < dysArr.length(); i++) {
-				Integer desgId = (Integer)dysArr.get(i);
-				daysList.add(desgId);
-			}
 			
 			JSONArray deptIdArr = jObj.getJSONArray("deptIds");
 			List<Long> deptIdList = new ArrayList<Long>();
@@ -3016,12 +3010,11 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < alertstatusIdsArr.length(); i++) {
 				alertstatusIds.add(Long.parseLong(alertstatusIdsArr.getString(i)));
 			}
-			boolean includeProposal = jObj.getBoolean("includeProposal");
-			
 			String fromDate=jObj.getString("fromDate");
 			String toDateStr=jObj.getString("toDateStr");
+			String rangeType=jObj.getString("rangeType"); 
 			
-			alertsSummeryVOList = alertService.getAlertEfficiencyList1(daysList,deptIdList,sourceIdList,includeProposal,alertstatusIds,fromDate,toDateStr);
+			alertsSummeryVOList = alertService.getAlertEfficiencyList2(deptIdList,sourceIdList,alertstatusIds,fromDate,toDateStr,rangeType);
 	   } catch (Exception e) {
 		   LOG.error("Exception Raised in getAlertEfficiencyList() in CreateAlertAction",e);
 		}
