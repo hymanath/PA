@@ -817,9 +817,10 @@ function onLoadClicks()
 		$("#filter").toggle();
 	});
 
-	$(document).keypress(".linkinner",function(e){
+	$(document).on("keypress","#alertIdSearch",function(e){
 		var alertId =  $("#alertIdSearch").val();
 		if(e.which == 13) {
+			alert(alertId)
 			getSearchAlertsDtls(alertId)
 		}
 	});
@@ -842,7 +843,7 @@ function getSubTaskStatusHistory(subTaskId,alertId){
 		alertSubTaskStatusHistory(result,subTaskId,alertId);
 	});
 }
-//nandini
+
 function alertSubTaskStatusHistory(result,subTaskId,alertId){
 
 	var str='';
