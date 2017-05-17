@@ -42,6 +42,7 @@
                         	<input placeholder="Ex: 38324292" type="text" class="form-control" id="membershipInputId"/>
                             <span class="input-group-addon">
                             	<button class="btn btn-success" type="button" id="cadreDetailsId">POPULATE DETAILS</button>
+                            	<button class="btn btn-success" type="button" id="cadreDetailsId">INTERESTED PEOPLE</button>
                             </span>							
                         </div>
 						
@@ -646,7 +647,24 @@
 </div><!-- /.modal -->
 </div><!-- /.modal -->
 
-
+<div class="modal fade" id="myModalConformation" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content" style="background:rgba(0,0,0,0.8);">
+    <div class="modal-body">
+      <button type="button" style="color:#fff;" class="close modalCloseAndShow" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="media" style="color:#fff;">
+        <div class="media-left">
+          <img src="img/alert.png" class="media-object" />
+        </div>
+        <div class="media-body" id="duplicateCandidateBlock">
+          
+        </div>
+      </div>
+      <p class="text-capital" style="color:yellow;" id="memberConfirmation">already added member to this alert</p>
+    </div>
+  </div>
+  </div>
+</div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
@@ -1084,7 +1102,15 @@ function clearFields(){
 					getCadreDetails();
 				}
 		  });
+getAllBloodDonateRegiCandidateDetails();
+function getAllBloodDonateRegiCandidateDetails(){
+		$.ajax({
+		  type:'GET',
+		  url: 'getAllBloodDonateRegiCandidateDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+		});
+}
 </script>
-
 </body>
 </html>
