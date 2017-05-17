@@ -116,8 +116,8 @@
 					<h4 class="m_0 panel-title text-capital fontColor" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency 
 						<!--<span style="margin-left:300px;font-size:13px;" class="fontColor">AVERAGE ISSUE PENDING DAYS : 
 						<span id="issuePendingCntId"></span></span>-->
-					<span class="pull-right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
-					<span style="font-size:12px;">Include Proposal</span></span>
+					<!--<span class="pull-right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
+					<span style="font-size:12px;">Include Proposal</span></span>-->
 					</h4>
 				</div>
 				<div class="panel-body">
@@ -137,6 +137,7 @@
 								<option value="10">Rejoinder</option>
 								<option value="11">Reopen</option>
 								<option value="12" selected>Closed</option>
+								<option value="Include">Include Proposal</option>
 							</select>
 						</div>
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
