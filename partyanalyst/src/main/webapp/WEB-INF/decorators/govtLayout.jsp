@@ -120,12 +120,45 @@ globalValue = resultValue[resultValue.length-1];
 		<nav class="">
 			<h2><i class="fa fa-reorder line_heightDiv" style="color:#fff;font-size:23px;"></i>&nbsp;</h2>
 			<ul>
-				<li>
-					<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Location Report</span></a>
-				</li>
-				<li>
-					<a href="locationWiseGrivenceReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Location Wise Report</span></a>
-				</li>
+			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_ADMIN_ENTITLEMENT_NEW')}">
+					<li>
+						<a href="alertManagementAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Home</span></a>
+					</li>
+			</c:if>
+			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_ENTITLEMENT_NEW')}">
+					<li>
+						<a href="alertUserManagementAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Home</span></a>
+					</li>
+					<li>
+						<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Location Report</span></a>
+					</li>
+					<li>
+						<a href="locationWiseGrivenceReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Location Wise Report</span></a>
+					</li>
+			</c:if>
+			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT_NEW')}">
+					<li>
+						<a href="alertDistManagement.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Home</span></a>
+					</li>
+					<li>
+						<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Location Report</span></a>
+					</li>
+					<li>
+						<a href="locationWiseGrivenceReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Location Wise Report</span></a>
+					</li>
+			</c:if>
+			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICE_ENTITLEMENT_NEW')}">
+					<li>
+						<a href="alertDistOfficeManagement.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Home</span></a>
+					</li>
+					<li>
+						<a href="officerWiseAlertReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Officer Location Report</span></a>
+					</li>
+					<li>
+						<a href="locationWiseGrivenceReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Location Wise Report</span></a>
+					</li>
+			</c:if>
+			
 				<li>
 					<a href="govtLogoutAction.action"><span class="fa fa-sign-out ico-white"></span><span>&nbsp;&nbsp;LOGOUT (${sessionScope.officerName})</span></a>
 				</li> 

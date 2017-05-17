@@ -55,7 +55,7 @@
 									<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
 									<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
 									<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
-									<li style="padding:14px 16px;color:#95989A;"> 
+									<li style="padding:14px 16px;color:#95989A;cursor:pointer;"> 
 										<div id="reportrange"> 
 											&nbsp; <span>Custom Date Range</span>
 										</div>
@@ -71,8 +71,8 @@
 								<option value="3">Electronic Media</option>
 							</select>
 						</div>
-						<div class="col-md-3">
-							<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
+						<div class="col-md-3 m_top10">
+							<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();" style="width:70%">
 								<c:forEach items="${idNameVOList}"  var="department">
 									<option value="${department.id}">${department.name}</option>
 								</c:forEach>
@@ -122,7 +122,7 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-md-3 col-xs-12 col-sm-4">
+						<div class="col-md-3 col-xs-12 col-sm-4" style="width: auto;">
 							<label>Select Status</label>
 							<select class="chosenSelect" multiple id="statusId" onchange="getCadreGreivienceEfficiency();">
 								<option value="1">Pending</option>
@@ -202,7 +202,7 @@
 							<h4 class="panel-title text-capital fontColor">Date wise Grievance Report </h4>
 						</div>
 						<div class="col-md-2">
-							<select id="selectDistrictId" class="selectpicker" onChange="getDistrintInformation();"></select>
+							<select id="selectDistrictId" class="form-control " onChange="getDistrintInformation();"></select>
 						</div>
 						<div class="col-md-2">
 							<button class="btn btn-success btn-sm" onclick="generateExcel2();">

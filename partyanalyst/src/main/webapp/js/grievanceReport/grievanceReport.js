@@ -1,23 +1,30 @@
 var globalUserLevelValues = [0]; 
 var globalUserLevelId = 0;
-var start = moment().subtract(29, 'days');
-var end = moment();
+var start=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+var end=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 function cb(start, end){
 	$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
 }
 
 $('#reportrange').daterangepicker({
+	opens: 'left',
 	startDate: start,
 	endDate: end,
+	locale: {
+		  format: 'DD/MM/YYYY'
+		},
 	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	}
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
 }, cb);
  
 var callCenterUserFDate=moment().format("DD/MM/YYYY");
@@ -324,6 +331,7 @@ function getDistrintInformation(){
  //on click month week day btn
  $(document).on("click",".rangeTypeCls",function(){
 	$("#selectDistrictId").val(0);  
+	$('#selectDistrictId').trigger("chosen:updated");
 	$("#dayWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	$("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	$("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -379,6 +387,13 @@ function getDistrintInformation(){
                  gridLineWidth: 0,
                  minorGridLineWidth: 0,         
                  categories: statusNamesArray,
+				 labels: {
+						
+						 style: {
+							color: '#F0F8FF'
+						}
+						
+					}
              },
              yAxis: {
                  lineWidth: 0,
@@ -1674,7 +1689,11 @@ function getDistIdAndNameList(){
 		}else{
 			$('#selectDistrictId').find('option').remove();
 			$('#selectDistrictId').append('<option value="-1">No Data</option>');
-		}         
+		}
+
+			$('#selectDistrictId').chosen();
+			$('#selectDistrictId').trigger("chosen:updated");
+			
 	}); 
 } 
 //abcd

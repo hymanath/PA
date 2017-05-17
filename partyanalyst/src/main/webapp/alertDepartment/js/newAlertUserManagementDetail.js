@@ -313,7 +313,6 @@ function onLoadClicks()
 		}
 		$("#assiningLdngImg").show();
 		
-		
 		var uploadHandler = {
 			upload: function(o) {
 				var uploadResult = o.responseText;
@@ -1197,10 +1196,24 @@ function displayStatus(result)
 	if(result.search('success') != -1){
 		$("#assiningLdngImg").hide();
 		$("#assignOfficerId").show();
-		$("#assignSuccess").html('Alert Assigned Successfully')
-		setTimeout(function(){              
+		$("#assignSuccess").html('Alert Assigned Successfully');
+		$("#departmentsId").val(0);
+		$("#departmentsId").trigger("chosen:updated");
+		$("#locationLevelSelectId").html('');
+		$("#locationLevelSelectId").append('<option value="0">Select Level</option>');
+		$("#locationLevelSelectId").trigger("chosen:updated");
+		$("#designationsId").html('');
+		$("#designationsId").append('<option value="0">Select Designation</option>');
+		$("#designationsId").trigger("chosen:updated");
+		$("#officerNamesId").html('');
+		$("#officerNamesId").append('<option value="0">Select Officer</option>');
+		$("#officerNamesId").trigger("chosen:updated");
+		$("#parentLevelDivId").html('');
+		$(".assign-user-body").hide();
+		$("#assignSuccess").hide();
+		/* setTimeout(function(){              
 			location.reload();
-		},500);
+		},500); */
 	}else{
 		alert("Please Try Again.");  
 		$("#assignSuccess").addClass("text-danger");
