@@ -88,7 +88,7 @@ nav
 .login-box
 {
 	background-color: #3E4E67;
-	padding: 30px;
+	padding: 10px;
 	background-image: url("../img/andhra%20pradesh%20map.png");
 	background-position: center;
 	background-size: auto;
@@ -123,7 +123,7 @@ label
 }
 .departments-box
 {
-	padding: 20px;
+	padding: 10px;
 	padding-bottom:45px;
 	border-bottom: 5px solid #F59E46;
 	background-color: #E9E9E9;
@@ -162,6 +162,7 @@ label
 {
 	padding: 40px;
 	position: relative;
+	padding-bottom:10px;
 }
 .animted-profile
 {
