@@ -251,6 +251,27 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 			}
 		}
 		
+		Set<Long> urbanIdsList = new HashSet<Long>();
+		Set<Long> ruralIdsList = new HashSet<Long>();
+		if(locationIdsList != null && locationIdsList.size()>0){
+			if(levelId.longValue() == 5L || levelId.longValue() == 7L){
+				for (Long id : locationIdsList) {
+					if(Long.valueOf(id.toString().substring(0,1)) == 2L)
+						ruralIdsList.add(Long.valueOf(id.toString().substring(1)));
+					if(Long.valueOf(id.toString().substring(0,1)) == 1L)
+						urbanIdsList.add(Long.valueOf(id.toString().substring(1)));
+				}
+			}
+			else if(levelId.longValue() == 6L || levelId.longValue() == 8L ){
+				for (Long id : locationIdsList) {
+					if(Long.valueOf(id.toString().substring(0,1)) == 2L)
+						urbanIdsList.add(Long.valueOf(id.toString().substring(1)));
+					if(Long.valueOf(id.toString().substring(0,1)) == 1L)
+						ruralIdsList.add(Long.valueOf(id.toString().substring(1)));
+				}
+			}
+		}
+		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" SELECT ");
 		if(fetchTypeStr != null && fetchTypeStr.equalsIgnoreCase("count")){
@@ -312,14 +333,54 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 				queryStr.append(" and ua.district_id in (:locationIdsList)   "); 
 			else if(levelId.longValue() == 4L)
 				queryStr.append(" and ua.constituency_id in (:locationIdsList)   "); 
-			else if(levelId.longValue() == 5L)
-				queryStr.append(" and ua.tehsil_id in (:locationIdsList)   "); 
-			else if(levelId.longValue() == 6L)
-				queryStr.append(" and ua.panchayat_id in (:locationIdsList)   "); 
-			else if(levelId.longValue() == 7L)
-				queryStr.append(" and ua.local_election_body in (:locationIdsList)   "); 
-			else if(levelId.longValue() == 8L)
-				queryStr.append(" and ua.ward in (:locationIdsList)   ");
+			else if(levelId.longValue() == 5L){
+				queryStr.append(" and ( ");
+				if(ruralIdsList != null && ruralIdsList.size()>0){
+					queryStr.append("  ua.tehsil_id in (:ruralIdsList)   ");
+					if(urbanIdsList != null && urbanIdsList.size()>0){
+						queryStr.append(" or ua.local_election_body in (:urbanIdsList)   ");
+					}
+				}else if(urbanIdsList != null && urbanIdsList.size()>0){
+					queryStr.append(" ua.local_election_body in (:urbanIdsList)   ");
+				}
+				queryStr.append(" ) ");
+			}
+			else if(levelId.longValue() == 6L){
+				queryStr.append(" and ( ");
+				if(ruralIdsList != null && ruralIdsList.size()>0){
+					queryStr.append("  ua.panchayat_id in (:ruralIdsList)   ");
+					if(urbanIdsList != null && urbanIdsList.size()>0){
+						queryStr.append(" or ua.ward in (:urbanIdsList)   ");
+					}
+				}else if(urbanIdsList != null && urbanIdsList.size()>0){
+					queryStr.append(" ua.ward in (:urbanIdsList)   ");
+				}
+				queryStr.append(" ) ");
+			}
+			else if(levelId.longValue() == 7L){
+				queryStr.append(" and ( ");
+				if(ruralIdsList != null && ruralIdsList.size()>0){
+					queryStr.append("  ua.tehsil_id in (:ruralIdsList)   ");
+					if(urbanIdsList != null && urbanIdsList.size()>0){
+						queryStr.append(" or ua.local_election_body in (:urbanIdsList)   ");
+					}
+				}else if(urbanIdsList != null && urbanIdsList.size()>0){
+					queryStr.append(" ua.local_election_body in (:urbanIdsList)   ");
+				}
+				queryStr.append(" ) ");
+			}
+			else if(levelId.longValue() == 8L){
+				queryStr.append(" and ( ");
+				if(ruralIdsList != null && ruralIdsList.size()>0){
+					queryStr.append("  ua.panchayat_id in (:ruralIdsList)   ");
+					if(urbanIdsList != null && urbanIdsList.size()>0){
+						queryStr.append(" or ua.ward in (:urbanIdsList)   ");
+					}
+				}else if(urbanIdsList != null && urbanIdsList.size()>0){
+					queryStr.append(" ua.ward in (:urbanIdsList)   ");
+				}
+				queryStr.append(" ) ");
+			}
 		}
 		
 		if(stateId != null && stateId.longValue()>0L)
@@ -369,7 +430,7 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
 			query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 		
-		if(locationIdsList != null && locationIdsList.size()>0){
+		/*if(locationIdsList != null && locationIdsList.size()>0){
 			Set<Long> idsList = new HashSet<Long>();
 			if(levelId.longValue() == 5L || levelId.longValue() == 6L || levelId.longValue() == 7L || levelId.longValue() == 8L ){
 				for (Long id : locationIdsList) {
@@ -379,6 +440,19 @@ public class PublicRepresentativeDAO extends GenericDaoHibernate<PublicRepresent
 				idsList.addAll(locationIdsList);
 			}
 			query.setParameterList("locationIdsList", idsList);
+		}*/
+	
+		if(locationIdsList != null && locationIdsList.size()>0){
+			if(levelId.longValue() == 5L || levelId.longValue() == 6L || levelId.longValue() == 7L || levelId.longValue() == 8L ){
+				if(urbanIdsList != null && urbanIdsList.size()>0)
+					query.setParameterList("urbanIdsList", urbanIdsList);
+				if(ruralIdsList != null && ruralIdsList.size()>0)
+					query.setParameterList("ruralIdsList", ruralIdsList);
+			}
+			else{
+				query.setParameterList("locationIdsList", locationIdsList);
+			}
+			
 		}
 		
 		if(maxIndex >0){
