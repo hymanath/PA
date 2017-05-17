@@ -62,7 +62,7 @@
 <div  class="AMS AUMS">
 <div class="themeControll">
   <div class="linkinner"> 
-    <input type="text" class="form-control" id="alertIdSearch" placeholder="Alert ID" expand-icon="true"/>
+    <input type="text" class="form-control" id="alertIdSearch" placeholder="Alert ID"/>
   </div>
   <p class="tbtn"> <i class="glyphicon glyphicon-search"></i></p>
 </div>

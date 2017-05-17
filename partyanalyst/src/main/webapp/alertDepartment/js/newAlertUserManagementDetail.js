@@ -820,7 +820,6 @@ function onLoadClicks()
 	$(document).on("keypress","#alertIdSearch",function(e){
 		var alertId =  $("#alertIdSearch").val();
 		if(e.which == 13) {
-			alert(alertId)
 			getSearchAlertsDtls(alertId)
 		}
 	});
