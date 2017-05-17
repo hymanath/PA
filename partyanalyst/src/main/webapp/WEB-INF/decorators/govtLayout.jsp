@@ -142,12 +142,11 @@ globalValue = resultValue[resultValue.length-1];
 <footer class="footer">
 	<div class="container">
 		<div class="col-sm-8" style="margin-top: 20px;">
-			<p class="m_top25 text-right" style="font-size: 18px;font-family:Gabriola">All &copy; Government Of Andhra Pradesh</p>
+			<p class="text-right" style="font-size: 18px;font-family:Gabriola">All &copy; Government Of Andhra Pradesh</p>
 		</div>
 		<div class="col-sm-4 text-right">
-			<p style="margin-bottom:0px;font-family:Gabriola;font-family:Gabriola">Powered By</p>
-			<p style="margin-bottom:0px;font-family:Gabriola"><a target="_new" href="http://www.itgrids.com"><img src="alertDepartment/img/log_itgrids.png" style="height:30px;width:70px"/></a></p>
-			<p><small style="font-size: 85%;font-family:Gabriola">ITGRIDS INDIA PVT.LTD</small></p>
+			<p style="margin-bottom:0px;font-family:Gabriola"><a target="_new" href="http://www.itgrids.com"><img src="alertDepartment/img/itgridsLogo.png" style="height:30px;width:70px"/></a></p>
+			<p><small style="font-size: 85%;font-family:Gabriola">Powered By ITGRIDS INDIA PVT.LTD</small></p>
 		</div>
 	</div>
 </footer>
