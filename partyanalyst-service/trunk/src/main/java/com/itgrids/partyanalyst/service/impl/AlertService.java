@@ -5987,7 +5987,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			}
 		return null;
  	}
- public void setAlertDtls(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, List<Object[]> alertList){//abcd
+ public void setAlertDtls(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs, List<Object[]> alertList){
 		try{
 			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 			Date today = dateUtilService.getCurrentDateAndTime();
@@ -11231,7 +11231,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		
 		
 	}
-	/*
+	/* abcd
 	 * Swadhin K Lenka
 	 * @see com.itgrids.partyanalyst.service.IAlertService#getGrievanceReport(java.lang.String, java.lang.String, java.lang.Long, java.lang.Long, java.lang.Long, java.lang.String)
 	 */
@@ -11941,7 +11941,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					}
 				}
 			}
-			
+			//aaaaaaa
 			//build final vo to sent to ui
 			List<AlertOverviewVO> finalList = new ArrayList<AlertOverviewVO>();
 			AlertOverviewVO innerListAlertVO = null;
@@ -12847,10 +12847,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 								getEfficiencyOfDates1(fromDate, temp, afterDay, departmentIds,sourceIds,includeProposal,alertstatusIds,totalAlerts);
 							}
 						}
-						/*if(today!=null){
-							getEfficiencyOfDates(today, temp, day, departmentIds,sourceIds,includeProposal,alertstatusIds);
-						}
-						*/
+						
 						finalList.add(temp);
 					}
 				}
@@ -12868,6 +12865,101 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}
 			return finalList;
 		}
+	//abcd
+	public List<AlertsSummeryVO> getAlertEfficiencyList2(List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds
+			,String startDate,String endDate,String rangeType){
+		LOG.debug(" Entered Into getAlertEfficiencyList");
+		List<AlertsSummeryVO> finalList = new ArrayList<AlertsSummeryVO>();
+		 
+		try{
+			
+			List<Long> totalAlertStatusIds = new ArrayList<Long>(0);
+			
+			totalAlertStatusIds.addAll(IConstants.ALERT_STATUS_IDS);
+			
+			Date fromDate = null;        
+			Date toDate = null; 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Long totalAlerts =null;
+			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+				fromDate = sdf.parse(startDate);
+				toDate = sdf.parse(endDate);
+				//total alerts
+				totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(fromDate,toDate,departmentIds,sourceIds,totalAlertStatusIds);
+			}
+			List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+			Collections.reverse(dayList);
+			//date wise tatal alerts
+			List<Object[]> totalAlertsDateWise = null;
+			if(alertstatusIds != null && alertstatusIds.size() > 0){
+				totalAlertsDateWise = alertDAO.getTotalAlertsDateWise(fromDate,toDate,departmentIds,sourceIds,alertstatusIds);
+			}
+			//create a map for date and count
+			Map<String,Long> dateAndCountMap = new HashMap<String,Long>();
+			if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
+				for(Object[] param : totalAlertsDateWise){
+					dateAndCountMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			AlertsSummeryVO alertVO = null;
+			if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("day")){
+				if(dayList != null && dayList.size() > 0){
+					for(String param : dayList){
+						alertVO = new AlertsSummeryVO();
+						alertVO.setName(commonMethodsUtilService.getStringValueForObject(param));
+						alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
+						alertVO.setEffcncyAlerts(commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param)));
+						finalList.add(alertVO);  
+					}
+				}
+			}else if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("week")){
+				LinkedHashMap<String,List<String>> weekAndDaysMap = null;
+				weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
+				if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
+					for(Entry<String,List<String>> param : weekAndDaysMap.entrySet()){
+						alertVO = new AlertsSummeryVO();
+						alertVO.setName(commonMethodsUtilService.getStringValueForObject(param.getKey()));
+						alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
+						if(param.getValue() != null && param.getValue().size() > 0){
+							for(String param2 : param.getValue()){
+								alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts() + commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param2)));
+							}
+						}
+						finalList.add(alertVO); 
+					}
+				}
+			}else if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("month")){
+				LinkedHashMap<String,List<String>> monthAndDaysMap = null;
+				monthAndDaysMap = getMonthWeekAndDaysList(startDate, endDate,"month");
+				if(monthAndDaysMap != null && monthAndDaysMap.size() > 0){
+					for(Entry<String,List<String>> param : monthAndDaysMap.entrySet()){
+						alertVO = new AlertsSummeryVO();
+						alertVO.setName(commonMethodsUtilService.getStringValueForObject(param.getKey()));
+						alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
+						if(param.getValue() != null && param.getValue().size() > 0){
+							for(String param2 : param.getValue()){
+								alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts() + commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param2)));
+							}
+						}
+						finalList.add(alertVO); 
+					}
+				}
+			}
+			if(finalList != null && finalList.size() > 0){
+				for(AlertsSummeryVO param : finalList){
+					String percentage = "0.0";
+					if(totalAlerts != null && totalAlerts.longValue() >0l)
+						percentage = (new BigDecimal(param.getEffcncyAlerts()*(100.0)/totalAlerts)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						param.setEffcncyPrcnt(commonMethodsUtilService.getStringValueForObject(percentage));
+				}
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception Raised in getAlertEfficiencyList");
+		}
+		return finalList;
+	}
 		
 		public void getEfficiencyOfDates1(Date fromDate, AlertsSummeryVO temp, Date  afterDay,  List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal,List<Long> alertstatusIds,Long totalAlerts){
 			
