@@ -1,14 +1,14 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalUserLevelId=0;
 var globalUserLevelValues = [];	
-var start=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
-var end=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
+var start=moment();
+var end=moment();
 function cb(start, end){
 	$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
 }
 
 $('#reportrange').daterangepicker({
-	opens: 'left',
+	opens: 'right',
 	startDate: start,
 	endDate: end,
 	locale: {
@@ -27,7 +27,7 @@ $('#reportrange').daterangepicker({
 		}
 }, cb);
  
-var callCenterUserFDate=moment().format("DD/MM/YYYY");
+var callCenterUserFDate=moment().startOf('month').format("DD/MM/YYYY");
 var callCenterUserTDate=moment().format("DD/MM/YYYY");
 
 $('#reportrange').on('apply.daterangepicker', function(ev, picker) {

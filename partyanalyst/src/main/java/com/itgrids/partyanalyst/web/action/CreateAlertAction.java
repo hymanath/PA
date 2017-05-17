@@ -2803,11 +2803,11 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			for (int i = 0; i < alertstatusIdsArr.length(); i++) {
 				alertstatusIds.add(Long.parseLong(alertstatusIdsArr.getString(i)));
 			}
-			boolean includeProposal = jObj.getBoolean("includeProposal");
+			//boolean includeProposal = jObj.getBoolean("includeProposal");
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
 			
-			keyValueVO = alertService.getAverageIssuePendingDays(fromDate,toDate,deptIdList,sourceIdList,includeProposal,alertstatusIds);
+			keyValueVO = alertService.getAverageIssuePendingDays(fromDate,toDate,deptIdList,sourceIdList,alertstatusIds);
 	   } catch (Exception e) {
 		   LOG.error("Exception Raised in getAverageIssuePendingDays() in CreateAlertAction",e);
 		}
