@@ -1686,7 +1686,6 @@ function getCadreGreivienceEfficiency(){
     var alertstatusIds = [];
 	var deptIds=[];
 	var sourceIds =[];
-	var includeProposal = $("#proposalId").prop('checked');
 	
 	var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
@@ -1699,15 +1698,13 @@ function getCadreGreivienceEfficiency(){
 		sourceIds.push(4);
 	}else if(sourceId==2){
 		sourceIds.push(2);
-	}else if(sourceId==3){
+	}else if(sourceId==3){   
 		sourceIds.push(3);
 	}
     var jobj = {
-      
-      daysArr : [5,10,30,60,90,180,365],
 	  deptIds :deptIds,
 	  sourceIds:sourceIds,
-      includeProposal : includeProposal,
+	  rangeType:"day",  
 	  alertstatusIds:$("#statusId").val(),
 	  fromDate: callCenterUserFDate,                           
 	  toDateStr:callCenterUserTDate, 
@@ -1720,11 +1717,12 @@ function getCadreGreivienceEfficiency(){
     }).done(function(result){
       if(result!=null){
 				var str = "";
+				str+='<div class="table-responsive">';
 				str +="<table class='table table-bordered bg-white' style='margin-bottom:20px;'>";
 					str +="<tbody>";
 						str +="<tr>";
 							for(var i in result){
-								str+="<td>"+result[i].effcncyType+"</td>";
+								str+="<td>"+result[i].name+"</td>";
 							}
 							str +="</tr>";
 							str +="<tr>";
@@ -1738,6 +1736,7 @@ function getCadreGreivienceEfficiency(){
 						str +="</tr>";
 					str +="</tbody>";
 				str +="</table>";
+				str +="</div>";
 			}
 			
 			$("#efficiencyId").html(str);
