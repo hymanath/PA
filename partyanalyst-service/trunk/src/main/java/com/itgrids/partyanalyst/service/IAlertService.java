@@ -145,7 +145,7 @@ public interface IAlertService {
     public List<IdNameVO> getDistrictList(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId);
     public List<IdNameVO> getAllDepts();
     public String saveSocialAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
-    public List<AlertsSummeryVO> getAlertEfficiencyList1(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal,List<Long> alertstatusIds,String startDate,String endDate);
+    public List<AlertsSummeryVO> getAlertEfficiencyList1(List<Integer> daysLst, List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds,String startDate,String endDate);
     public List<AlertTrackingVO> getSocialAlertCallerDetails(Long userId,String startdateStr,String endDateStr,String status,String mobileNo,Long departmentId);
     public List<AlertVO> getSocialAlertDetailsByStatus(Long alertStatusId,String mobileNo,String fromDateStr,String toDateStr,Long feedbackStatusId,
 			 Long deptId,Long categoryId,Long userId,Long smTypeId);
