@@ -11642,7 +11642,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		  return locationLevelList;
 	}
 	
-	public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds,boolean includeProposal,List<Long> alertstatusIds){
+	public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds){
 		KeyValueVO vo = null;
 		try{
 			Date fromDate = null;
@@ -11653,12 +11653,6 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				toDate = sdf.parse(toDateStr);
 			}
 			
-			if(includeProposal){
-				if(alertstatusIds != null){
-					alertstatusIds.add(13L);
-				}
-			}
-				
 			
 			Long diffSum = 0l;
 			List<Object[]> alertDiffTime = null; 
@@ -12904,12 +12898,18 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			AlertsSummeryVO alertVO = null;
 			if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("day")){
 				if(dayList != null && dayList.size() > 0){
+					int order = 1;
 					for(String param : dayList){
+						if(order%2 != 0){
+							order++;
+							continue;
+						}
 						alertVO = new AlertsSummeryVO();
-						alertVO.setName(commonMethodsUtilService.getStringValueForObject(param));
+						alertVO.setName("DAY_"+order);
 						alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
 						alertVO.setEffcncyAlerts(commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param)));
-						finalList.add(alertVO);  
+						finalList.add(alertVO); 
+						order++;
 					}
 				}
 			}else if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("week")){
@@ -12917,16 +12917,26 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
 				if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
 					for(Entry<String,List<String>> param : weekAndDaysMap.entrySet()){
-						alertVO = new AlertsSummeryVO();
-						alertVO.setName(commonMethodsUtilService.getStringValueForObject(param.getKey()));
-						alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
-						if(param.getValue() != null && param.getValue().size() > 0){
-							for(String param2 : param.getValue()){
-								alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts() + commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param2)));
-							}
-						}
-						finalList.add(alertVO); 
-					}
+			            alertVO = new AlertsSummeryVO();
+			            String[] dateArr = param.getKey().split("_");
+			            if(dateArr[1].trim().equalsIgnoreCase("1")){
+			              alertVO.setName(commonMethodsUtilService.getStringValueForObject("1st Week"));
+			            }else if(dateArr[1].trim().equalsIgnoreCase("2")){
+			              alertVO.setName(commonMethodsUtilService.getStringValueForObject("2nd Week"));
+			            }else if(dateArr[1].trim().equalsIgnoreCase("3")){
+			              alertVO.setName(commonMethodsUtilService.getStringValueForObject("3rd Week"));
+			            }else{
+			              alertVO.setName(commonMethodsUtilService.getStringValueForObject(dateArr[1].trim()+"th"+ " Week"));
+			            }
+			            
+			            alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
+			            if(param.getValue() != null && param.getValue().size() > 0){
+			              for(String param2 : param.getValue()){
+			                alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts() + commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param2)));
+			              }
+			            }
+			            finalList.add(alertVO); 
+			          }
 				}
 			}else if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("month")){
 				LinkedHashMap<String,List<String>> monthAndDaysMap = null;
