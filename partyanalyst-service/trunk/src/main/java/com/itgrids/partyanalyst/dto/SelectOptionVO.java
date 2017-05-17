@@ -43,9 +43,17 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long constituencyId;
 	private String status;
 	private String committeeMemberStatus;
+	private String state;
 	
 	
-	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	public List<LocationWiseBoothDetailsVO> getResult() {
 		return result;
 	}
