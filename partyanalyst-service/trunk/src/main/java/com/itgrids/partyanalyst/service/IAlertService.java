@@ -153,4 +153,6 @@ public interface IAlertService {
     public List<AlertTrackingVO> getSocialAlertFeedBackDetails(Long userId,String startdateStr,String endDateStr,String mobileNo,Long departmentId);
     public String saveAlertFeedbackStatusDetails(final AlertVO alertvo,final Long userId);
     public List<AlertOverviewVO> getAlertImpactLocationWiseLocationSubTemplate(List<Long> locationIds);
+    public List<AlertsSummeryVO> getAlertEfficiencyList2(List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds
+			,String startDate,String endDate,String rangeType);
 }
