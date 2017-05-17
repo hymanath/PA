@@ -119,7 +119,7 @@
 		}else if(areaTypeId == 3) //  Village / Ward / Division
 		{
 			$('#areaTypeId').val(areaTypeId);
-			$("#affiliCommitteeAllInfoDivId").html("");
+			//$("#affiliCommitteeAllInfoDivId").html("");
 			//$("#printBtnDiv").hide();
 			//$("#addMembrsBtn").show();
 			//$("#viewMembrsBtn").show();
@@ -561,7 +561,7 @@
 
 	}
 	
-	function buildCadreDetails(result)
+	function buildCadreDetails(result,locationId)
 	{
 		var str ='';
 		var committeeMngntTypeId = $('#committeeMngtType').val();
@@ -584,8 +584,12 @@
 				str+='<li>Gender: '+result[i].gender+'</i>';
 				str+='<li>Mobile No: '+result[i].mobileNo+'</i>';
 				str+='<li>Caste: '+result[i].casteName+'</i>';
-				str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
-				//str+='<li>Aadhar: '+result[i].imageURL+'</i>';
+				if(result[i].type == "Added Member"){
+					str+='<li>Voter ID: '+result[i].voterCardNo+'</i>&nbsp;&nbsp;<span class="text-danger remveMbrCls" attr_cadre_id="'+result[i].tdpCadreId+'" attr_location_id="'+locationId+'" style="cursor:pointer;" title="Click here to remove member">x</span>';
+				}else{
+					str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
+				}
+				
 				str+='</ul>';
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
@@ -662,42 +666,12 @@
 					str+='</div>';
 					str+='</div>';
 					
-					if(committeeMngntTypeId == 1)
+					if(result[i].type == "Not Added")
 					{
 						str+='<div class="form-inline ">';
-						str+='<a onclick="javascript:{getCadreProfileInfo('+result[i].tdpCadreId+' ,0)}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
-						str+='</div>	';	
+						str+='<a onclick="javascript:{saveBoothDetails('+result[i].tdpCadreId+')}" class="btn btn-success btn-medium m_top5" > ADD PROFILE</a><span id="errMsgId"></span>';
+						str+='</div>';	
 					}
-					else if(committeeMngntTypeId == 2)
-					{
-
-						str+='<div class="form-inline m_top5" id="elecroleDiv'+result[i].tdpCadreId+'" >';						
-						str+='</div>	';
-						str+='<div class="row">	';
-						str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group addmoreId'+result[i].tdpCadreId+'" id="updateBtnId'+result[i].tdpCadreId+'">';
-						str+='<a href="javascript:{addMoreEligibleRoles(\'elecroleDiv'+result[i].tdpCadreId+'\',0,\'updateBtnId'+result[i].tdpCadreId+'\','+result[i].tdpCadreId+');}" class="btn btn-success  btn-xs ">Click here to Add+ Details</a>';	
-						str+='</div>';
-						str+='</div>';
-						str+='<div class="row">	';
-							str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
-							str+='</div>';
-						str+='</div>';	
-						
-						str+='<div class="form-inline " >';
-						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'"  style="display:none;"> UPDATE  ELECTORAL DETAILS </a>';
-						str+='</div>	';
-					}	
-					else if(committeeMngntTypeId == 3)
-					{
-						str+='<div class="row">	';
-							str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
-							str+='</div>';
-						str+='</div>';	
-						
-						str+='<div class="form-inline elecroleDiv'+result[i].tdpCadreId+'">';
-						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 " > ADD AS AFFILIATED ELECTROLE </a>';
-						str+='</div>	';
-					}	
 				}
 				elegRolCnt++;
 				dtCnt++;
@@ -1469,7 +1443,7 @@ $(document).on("click",".updateMemberCls",function(){
 			if(result != null && result == "success"){
 				alert("Current Designation Deleted Successfully...");
 				$(".dataLoadingImgCls").hide();
-				getCadreDetailsBySearchCriteria();
+				getCadreDetailsForBoothBySearchCriteria();
 			}
 			else{
 				alert("Sorry,Exception Occured.Please Try Again...");
@@ -1478,3 +1452,261 @@ $(document).on("click",".updateMemberCls",function(){
 		});
 	}
 });
+
+function getCadreDetailsForBoothBySearchCriteria()
+	{
+		//committeTypeID means 
+			//for committiee management 1
+			//for Mandal/Muncipality Main Committee Electoral Management 2
+			//for Mandal/Muncipality Affiliated Committee Electoral Management 3
+		//areaTypeId means
+		    //for panchayat level 1
+			//for mandal level 2
+			  
+		var areaTypeId  =  $('#areaTypeId').val();
+		//var committeeLocationId =$("#committeeLocationId").val();
+		
+		var locationLevel = 0;
+		var locationValue = 0;
+		var searchName = '';
+		var mobileNo = '';
+		var casteCategory = '';
+		var casteStateId = 0;
+		var fromAge = 0;
+		var toAge = 0;
+		var memberShipCardNo = '';
+		var trNumber = '';
+		var voterCardNo = '';
+		var gender = '';
+		var houseNo = '';
+		$('#cadreDetailsDiv,#searchErrDiv,#committeeLocationIdErr,#committeLocationIdErr,#advancedSearchErrDiv').html('');
+		$('#searchLevelErrDiv,#committeePositionIdErr,#nonAfflitCommitteeIdErr').html('');
+		$("#cadreDetailsDiv").hide();
+		var searchBy = $('#searchBy').val().trim();
+		var searchRadioType = $('#cadreSearchType').val();
+		var committeTypeID = $('#committeeMngtType').val();
+		var committeePosition = $('#committeePositionId').val();
+		var parentLocation = 0;
+		
+		$("#step3Id").hide();
+		
+		if(searchRadioType == 'membershipId')
+		{
+			memberShipCardNo = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Membership Card No.');
+				return;
+			}
+		}			
+		if(searchRadioType == 'voterId')
+		{
+			voterCardNo = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Voter Card No.');
+				return;
+			}
+		}
+		if(searchRadioType == 'mobileNo')
+		{	
+			mobileNo = $('#searchBy').val().trim();
+			
+			if(searchRadioType=="mobileNo"){
+					
+					var numericExpression = /^[0-9]+$/;
+					if(!$('#searchBy').val().match(numericExpression)){
+						$('#searchErrDiv').html('Enter Numerics Only.');
+						return;
+					}
+			}	
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Mobile No.');
+				return;
+			}
+			
+			else if(mobileNo.trim().length != 10)
+			{
+				$('#searchErrDiv').html('Invalid Mobile No.');
+				return;				
+			}
+			
+			
+			
+		}
+		if(searchRadioType == 'name')
+		{
+			searchName = $('#searchBy').val().trim();
+			
+			if(searchBy.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Name.');
+				return;
+			}
+			else if(searchBy.trim().length < 3)
+			{
+				$('#searchErrDiv').html('Please enter Minimum 3 Characters.');
+				return;
+			}
+		}
+		if(searchRadioType == 'advancedSearch')
+		{			
+			gender = $('#gender option:selected').text().trim();
+			var casteGroup = $('#casteCategory').val();
+			var casteName  = $('#casteList').val();
+			var age = $('#ageRange').val();
+			
+			var locfromAge = $('#fromAgeId').val().trim();
+			var loctoAge = $('#toAgeId').val().trim(); 
+			
+			if(casteGroup == 0 && casteName == 0 && age == 0 && gender == 'All' && locfromAge.length == 0 && loctoAge.length == 0 )
+			{
+				$('#advancedSearchErrDiv').html('Please Select Any of Search Criteria');
+				return;			
+			}			
+			if($('#ageRange').val() != 0)
+			{
+				var ageRange = $('#ageRange option:selected').text();
+				var ageRange = ageRange.split('-');
+				fromAge = ageRange[0].trim();
+				toAge = ageRange[1].trim();
+			}
+			else
+			{
+				fromAge = $('#fromAgeId').val().trim();
+				toAge = $('#toAgeId').val().trim(); 
+				
+				if(fromAge.length >0 || toAge.length >0)
+				{
+					if(fromAge.length == 0 || toAge.length == 0)
+					{
+						$('#advancedSearchErrDiv').html('Please Enter Between Age Details.');
+						return;	
+					}
+					if(fromAge > toAge){
+						$('#advancedSearchErrDiv').html('From Age Should be Less than To Age.');
+						return;							
+					}
+				}
+				else
+				{
+					fromAge = 0;
+					toAge = 0;					
+				}
+			}				
+			casteCategory = $('#casteCategory option:selected').text().trim();
+			casteStateId = $('#casteList').val().trim();
+			
+			if(casteCategory == 'All')
+			{
+				casteCategory = "";				
+			}			
+		}
+		
+		$("#searchDataImg").show();
+		
+		var committeeLocationId =$("#committeeLocationId").val();
+		
+		var jsObj =
+		{
+			locationLevel :4,
+			locationValue:globalLocationId,
+			searchName : searchName,
+			mobileNo: mobileNo,
+			casteCategory : casteCategory,
+			fromAge : fromAge,
+			toAge : toAge,
+           memberShipCardNo: "14899082",
+           // memberShipCardNo: memberShipCardNo,
+		   casteStateId : casteStateId,
+			trNumber : trNumber,
+			voterCardNo:voterCardNo,
+			gender:gender,
+			houseNo:houseNo,
+			removedStatus:"false",
+			enrollmentId : 4,
+			task:"search"
+		}
+		
+		//console.log(jsObj);
+		$.ajax({
+				type : "POST",
+				url : "getCadreSearchDetailsForBoothsCommitteeAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				 if(typeof result == "string"){
+					if(result.indexOf("TDP Party's Election Analysis &amp; Management Platform") > -1){
+					  location.reload(); 
+					}
+				}
+				$("#searchDataImg").hide();
+				$('#cadreDetailsDiv').show();
+				var committeTypesId = $('#committeeMngtType').val();
+				
+				if(result != null && result.previousRoles != null && result.previousRoles.length>0)
+				{
+					if(committeTypesId == 1)
+					{
+						$("#step3Id").show();
+					}
+				
+					buildCadreDetails(result.previousRoles,committeeLocationId);
+				}
+				else
+				{
+					$('#cadreDetailsDiv').html("<span style='font-weight:bold;text-align:center;'> No Data Available...</span>");
+				}
+			}); 
+	}
+
+function saveBoothDetails(tdpCadreId){
+	 var committeeLocationId =$("#committeeLocationId").val();
+	var jsObj =
+		{
+			boothId : committeeLocationId,
+			tdpCadreId : tdpCadreId
+		}
+		
+		$.ajax({
+				type : "POST",
+				url : "saveElectionBoothCommitteeDetailsAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				 if(result.resultCode == 0){
+					$("#errMsgId").html("<span style='color:green;'>Member added successfully.....</span>");
+					setTimeout(function(){
+						getCadreDetailsForBoothBySearchCriteria();
+					},1200);
+				}else{
+					$("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>");
+				} 
+			});
+}
+$(document).on("click",".remveMbrCls",function(){
+	var tdpCadreId = $(this).attr("attr_cadre_id");
+	
+	var jsObj =
+		{
+			tdpCadreId : tdpCadreId
+		}
+		
+		$.ajax({
+				type : "POST",
+				url : "removeMbrFromCurentLocationAction.action",
+				data : {task:JSON.stringify(jsObj)} ,
+			}).done(function(result){
+				if(result.resultCode == 0){
+					alert("Member removed successfully.....");
+					setTimeout(function(){
+						getCadreDetailsForBoothBySearchCriteria();
+					},1200);
+				}else{
+					alert("Member removed failed.Please try again.");
+				}
+			});
+	
+});	

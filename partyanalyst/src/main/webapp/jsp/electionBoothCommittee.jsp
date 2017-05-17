@@ -91,15 +91,15 @@
 		</div>-->
 		<div class="container">
 		<div class="row ">
-		<div class="col-md-12 col-xs-12 col-sm-12 "><h4><i class="glyphicon glyphicon-home pull-right redirectHomePage" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Click here to Home Page"  style="cursor:pointer;"></i></h4></div>
+		<!--<div class="col-md-12 col-xs-12 col-sm-12 "><h4><i class="glyphicon glyphicon-home pull-right redirectHomePage" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="Click here to Home Page"  style="cursor:pointer;"></i></h4></div>
 			<div class="row" style="margin-top:30px;">
 				 <div class="container breadcrumb" >
 					   <i>For any Technical Support, please contact : <b> +91-7032818783 / 8499912198</b> , @email: tdpparty.helpdesk@gmail.com </i></p>
 				</div>
-			</div>
+			</div>-->
 			
 		<h3 class="text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3> 
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
+			<!--<div class="col-md-8 col-md-offset-2 col-sm-12 col-xs-12" >
 				<div class="row" >
 				     
 					<div class="col-md-4 col-md-offset-0 col-sm-4 col-xs-4" >
@@ -113,12 +113,12 @@
 						<a class="btn btn-success btn-block "  id="mandalaffiliatedTab" href="javascript:{showAndHideTabs('mandalaffiliated');}" >Mandal/Municipality/Division <br> Affiliated   Committee <br>  Electoral Management</a>				
 					</div>
 				</div> 		
-			</div> 		
+			</div> 	-->	
 		</div> 
 		<input type="hidden" value="1" id="committeeMngtType"/>		
 		<input type="hidden" value="1" id="areaTypeId"/>
 		<div class="row" id="basicCommitteeDiv">
-		<div class="row m_top20">
+		<!-- <div class="row m_top20">
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
 				<div class="radio pull-right">
 				  <label>
@@ -141,7 +141,7 @@
 			    </div>
 			</div>
 			
-		</div> 
+		</div> -->
 		
 		<div class="row-fluid m_top20" id="mandalMainDivId">
 			<div class="form-group col-md-8 col-md-offset-2  col-sm-6 col-xs-6">
@@ -174,7 +174,7 @@
 				 </div>
 			</div>
 		</div>
-		<div id="committeeMainId" class="row">	
+		<!--<div id="committeeMainId" class="row">	
 			<div class="col-md-6 col-md-offset-2 col-sm-6 col-sm-offset-2 col-xs-12 ">
 				<div class="form-group col-xs-12">
 					<label for="committeeId">AFFILIATED COMMITTEE <span style="color:red">*</span></label>
@@ -182,7 +182,7 @@
 					<div id="afflitCommitteeIdErr"></div>
 				 </div>
 			</div>			
-		</div> 
+		</div> -->
 		<!--<div class="row m_top20">
 			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 "  >
 				<div class="form-group col-xs-12 pull-right" >
@@ -205,7 +205,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
 						<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getCommitteMembersInfo();" value="VIEW" /></li>
-						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchInfo();" value="ADD" /></li>
+						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchDiv();" value="ADD" /></li>
 					</ul>
 			</div> 
 		</div>
@@ -306,7 +306,7 @@
 			
 			</div>
 			
-			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center">
+			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center" >
 				<div class="form-inline ">
 					<div class="radio">
 						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
@@ -349,7 +349,7 @@
 						<div id="searchErrDiv"></div>
 					</div>	
 					<div class="col-md-3 col-sm-3 col-xs-3 ">
-						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
+						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsForBoothBySearchCriteria()">SEARCH</button>
 					</div>			
 				</div>			
 			</div>
@@ -393,20 +393,20 @@
 							</label>
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
-							<button type="submit" class="btn btn-success btn-block" onclick="getCadreDetailsBySearchCriteria()">SEARCH</button>
+							<button type="submit" class="btn btn-success btn-block" onclick="getCadreDetailsForBoothBySearchCriteria()">SEARCH</button>
 						</div>				
 					</div>			
 				</div>			
 			</div>
 			</div>
 
-	<div class="row">
+	<!--<div class="row">
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 m_top20">
 				<div class="well well-sm" style="background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.1); border: medium none transparent;margin-bottom:2px;overflow:scroll:900px;" id="step3Id">
-				 <span style="font-weight:bold;">Hint (Step - 3): </span> <span> CLICK  SELECT & UPDATE PROFILE FOR ADD A CADRE TO COMMITTEE. </span>
+				 <span> CLICK  SELECT & UPDATE PROFILE FOR ADD A CADRE TO COMMITTEE. </span>
 				</div>			
 			</div>	
-	</div>
+	</div>-->
 	<div class="row">
 	
 			
@@ -423,7 +423,11 @@
 			&copy; 2015 Telugu Desam Party
 	</footer>-->
 
-	<script>	
+	<script>
+ validateSearchType('3');
+getTdpCommitteeMandalCorporationsByConstituency(2);	
+var globalLocationId = '${sessionScope.USER.accessValue}';
+var globalAccessLevel = '${sessionScope.USER.accessType}';
 	 $("#nonafiliatedCommitteeId").append($("#nonafiliatedCommitteeId option:gt(0)").sort(function (a, b) {
               return a.text == b.text ? 0 : a.text < b.text ? -1 : 1;
           }));
@@ -1055,7 +1059,7 @@
 							if(committeTypeID == 1)
 							{
 								 setTimeout(function(){ 
-								getCadreDetailsBySearchCriteria();}, 1000);
+								getCadreDetailsForBoothBySearchCriteria();}, 1000);
 							}
 						
 						}
@@ -1536,7 +1540,7 @@
 	 }
 	//getCommitteeLocations();
 	//getMandalCorporationsByConstituency();
-	  getTdpCommitteeMandalCorporationsByConstituency(1);
+	 // getTdpCommitteeMandalCorporationsByConstituency(1);
 	
 	
 	if(reqlocationId != null && reqlocationId !='')
@@ -1694,6 +1698,9 @@ function getBoothsByMandal(mandalId){
 				}
 			}
 		});
+	}
+	function showSearchDiv(){
+		$("#searchcadrenewDiv").show();
 	}
 	</script>
   </body>
