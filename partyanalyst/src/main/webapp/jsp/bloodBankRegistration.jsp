@@ -42,7 +42,7 @@
                         	<input placeholder="Ex: 38324292" type="text" class="form-control" id="membershipInputId"/>
                             <span class="input-group-addon">
                             	<button class="btn btn-success" type="button" id="cadreDetailsId">POPULATE DETAILS</button>
-                            	<button class="btn btn-success" type="button" id="interestedPeopleId">INTERESTED PEOPLE</button>
+                            	<!-- <button class="btn btn-success" type="button" id="interestedPeopleId">INTERESTED PEOPLE</button>-->
                             </span>							
                         </div>
 						
@@ -648,7 +648,7 @@
 </div><!-- /.modal -->
 
 <div class="modal fade" id="interestedmodalId" role="dialog">
-  <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" style="background:rgba(0,0,0,0.8);">
     <div class="modal-body">
       <button type="button" style="color:#fff;" class="close modalCloseAndShow" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -1115,13 +1115,13 @@ function getAllBloodDonateRegiCandidateDetails(){
 			if(result != null && result.length > 0){
 				buildAllBloodDonateRegiCandidateDetails(result);
 			}else{
-				$("#interestedPeopleModalBody").html("No data available...");
+				$("#interestedPeopleModalBody").html("No Data Available.");
 			}
 		});
 }
 function buildAllBloodDonateRegiCandidateDetails(result){
 	var str ='';
-	str +='<table class="table table-bordered" style="display:none;" id="rangeWiseExportBoothReport">';
+	str +='<table class="table table-bordered" style="" id="rangeWiseExportBoothReport">';
         str +='<thead>';
             str +='<th>Cadre Name</th>';
             str +='<th>Mobile No</th>';
