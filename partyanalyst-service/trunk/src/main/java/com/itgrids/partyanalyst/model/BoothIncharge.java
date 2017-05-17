@@ -43,7 +43,7 @@ public class BoothIncharge extends BaseModel implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "booth_incharge_id", unique = true, nullable = false)
+	@Column(name = "booth_incharge", unique = true, nullable = false)
 	public Long getBoothInchargeId() {
 		return boothInchargeId;
 	}
