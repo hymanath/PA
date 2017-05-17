@@ -47,7 +47,8 @@ public class BloodDonorInfoDAO extends GenericDaoHibernate<BloodDonorInfo, Long>
 		Query query = getSession().createQuery(" select " +
 				" model.bloodDonorInfoId," +
 				" model.donorName,model.mobileNo," +
-				" model.donationTime " +
+				" model.donationTime, " +
+				" model.tdpCadre.memberShipNo " +
 				" from BloodDonorInfo model where model.isDeleted = 'N' and model.registeredSource = 'app' ");
 		
 		return query.list();
