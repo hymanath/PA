@@ -16,8 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -35,7 +35,6 @@ import com.itgrids.partyanalyst.service.impl.CadreCommitteeService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.util.IWebConstants;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -107,8 +106,16 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private List<TdpCadreVO> commiteeMembersList = new ArrayList<TdpCadreVO>();
 	private CadreCommitteeService cadreCommitteeService;
 	private PartyMeetingVO partyMeetingVO;
+	private List<IdAndNameVO> idAndNameVOList;
 	
 	
+	public List<IdAndNameVO> getIdAndNameVOList() {
+		return idAndNameVOList;
+	}
+	public void setIdAndNameVOList(List<IdAndNameVO> idAndNameVOList) {
+		this.idAndNameVOList = idAndNameVOList;
+	}
+
 	public PartyMeetingVO getPartyMeetingVO() {
 		return partyMeetingVO;
 	}
@@ -1028,6 +1035,15 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			partyMeetingVO = mahaNaduService.getParticipatedCandidateEventDetails(tdpCadreId);
 		} catch (Exception e) {
 			LOG.error(" exception occured in getCadreWiseEventDetails() in mahanaduAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getAllBloodDonateRegiCandidateDetails(){
+		try {
+			jObj = new JSONObject(getTask());			
+			idAndNameVOList = mahaNaduService.getAllBloodDonateRegiCandidateDetails();
+		} catch (Exception e) {
+			LOG.error(" exception occured in getAllBloodDonateRegiCandidateDetails() in mahanaduAction class.",e);
 		}
 		return Action.SUCCESS;
 	}

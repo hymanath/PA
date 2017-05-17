@@ -17287,12 +17287,18 @@
 		<result type="json" name="success">    
 			<param name="root">locations</param>       
 		</result> 
-	</action>	
-	
+	</action>
+			
 	<action name="getMultplePanchayatWardByMandalIdsAction" class="cadreCommitteeAction"  method="getMultplePanchayatWardByMandalIds">
 		<result type="json" name="success">    
 			<param name="root">locations</param>       
 		</result> 
 	</action>	
+	<action name="getAllBloodDonateRegiCandidateDetailsAction" class="MahaNaduAction"  method="getAllBloodDonateRegiCandidateDetails">
+		<result type="json" name="success">    
+			<param name="root">idAndNameVOList</param>       
+		</result> 
+	</action>
+		
  </package>
 </struts>
