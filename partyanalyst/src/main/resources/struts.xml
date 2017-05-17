@@ -17274,9 +17274,14 @@
 		 </result>
 	</action>
   <action name="getBoothsForMandalAction" class="cadreCommitteeAction" method="getBoothsForMandal">
-	 		<result type="json" name="success">
-				<param name="root">cadreCommitteeList</param>
-			</result>
+ 		<result type="json" name="success">
+			<param name="root">cadreCommitteeList</param>
+		</result>
+  </action>
+  <action name="getCadreSearchDetailsForBoothsCommitteeAction" class="cadreCommitteeAction" method="getCadreSearchDetailsForBoothsCommittee">
+		<result type="json" name="success">
+			<param name="root">cadreCommitteeVO</param>
+		</result>
   </action>
   <action name="getMultplConstituencesByDistctIdsAction" class="cadreCommitteeAction"  method="getMultplConstituencesByDistctIds">
 		<result type="json" name="success">    
@@ -17293,7 +17298,12 @@
 		<result type="json" name="success">    
 			<param name="root">locations</param>       
 		</result> 
-	</action>	
+	</action>
+	<action name="removeMbrFromCurentLocationAction" class="cadreCommitteeAction" method="removeMbrFromCurentLocation">
+		<result type="json" name="success">
+			<param name="root">status</param>
+		</result>
+  </action>	
 	<action name="getAllBloodDonateRegiCandidateDetailsAction" class="mahaNaduAction"  method="getAllBloodDonateRegiCandidateDetails">
 		<result type="json" name="success">    
 			<param name="root">idAndNameVOList</param>       
