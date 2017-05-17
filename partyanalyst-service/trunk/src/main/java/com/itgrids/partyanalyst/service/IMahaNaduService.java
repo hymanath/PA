@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MahanaduEventVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
@@ -57,5 +58,6 @@ public interface IMahaNaduService {
 	 public ResultStatus insertDataintoEventInfo1(Date startDate,Date endDate,Long parentEventId,List<Long> subEventIds);
 	 public List<IdNameVO> getSubEventsOfNewEvent(Long eventId);
 	 public ResultStatus savingBloodDonateCandidateDetails(String name,String mobileNo,String memberShipId,String fromDateStr,String time);
+	 public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails();
 }
 
