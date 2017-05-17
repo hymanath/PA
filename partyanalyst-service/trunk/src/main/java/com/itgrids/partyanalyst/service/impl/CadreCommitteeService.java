@@ -21608,6 +21608,11 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		List<TdpCadreVO> returnList = new ArrayList<TdpCadreVO>(0);
 		try {
 			
+			if(commonMethodsUtilService.isListOrSetValid(locationIdsList)){
+				if(locationIdsList.contains(0L))
+					locationIdsList.clear();
+			}
+			
 			if(commonMethodsUtilService.isListOrSetValid(designationIdsList)){
 				if(designationIdsList.contains(0L))
 					designationIdsList.clear();
