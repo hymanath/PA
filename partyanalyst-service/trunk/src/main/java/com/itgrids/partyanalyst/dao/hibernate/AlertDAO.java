@@ -8767,4 +8767,43 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 			query.setParameterList("consIds", consIds);
 		return query.list();
 	}
+public List<Object[]> getTotalAlertsDateWise(Date fromDate,Date toDate,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds){
+    	
+    	StringBuilder sb = new StringBuilder();
+		sb.append(" select " +
+				  " date(model.createdTime), " +
+				  " count(distinct model.alertId) " +
+				  " from Alert model " +
+				  " where  model.isDeleted = 'N' " );
+		
+		if(departmentIds != null && departmentIds.size() > 0)
+			sb.append(" and model.govtDepartment.govtDepartmentId in  (:departmentIds) ");
+		
+		if(sourceIds != null && sourceIds.size() > 0)
+			sb.append(" and model.alertCategory.alertCategoryId in  (:sourceIds) ");
+		
+		if(alertStatusIds != null && alertStatusIds.size() > 0)
+			sb.append(" and model.alertStatus.alertStatusId in  (:alertStatusIds) ");
+		
+		if(fromDate != null && toDate != null)
+			sb.append(" and (date(model.createdTime) between :startDate and :endDate) ");
+			
+		sb.append(" group by date(model.createdTime) ");
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(departmentIds != null && departmentIds.size() > 0)
+			query.setParameterList("departmentIds", departmentIds);
+		
+		if(sourceIds != null && sourceIds.size() > 0)
+			query.setParameterList("sourceIds", sourceIds);
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("startDate", fromDate);
+			query.setDate("endDate", toDate);
+		}
+		if(alertStatusIds != null && alertStatusIds.size() > 0)
+			query.setParameterList("alertStatusIds", alertStatusIds);
+		
+		return query.list();
+    }
 }
