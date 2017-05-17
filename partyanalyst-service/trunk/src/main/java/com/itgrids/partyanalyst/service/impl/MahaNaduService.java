@@ -4348,7 +4348,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				}
 			}	
 		}catch (Exception e) {
-			LOG.error(" Exception Raised in getAllCandidateDetails ",e);
+			LOG.error(" Exception Raised in getAllBloodDonateRegiCandidateDetails ",e);
 		}
 		return finalList;
 		
