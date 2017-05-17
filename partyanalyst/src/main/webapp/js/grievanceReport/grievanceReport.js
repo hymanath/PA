@@ -1,6 +1,6 @@
 var globalUserLevelValues = [0]; 
 var globalUserLevelId = 0;
-var start=moment();
+var start=moment().startOf('month');
 var end=moment();
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 function cb(start, end){
@@ -349,9 +349,8 @@ function getDistrintInformation(){
 		url: 'getGrievanceReportAction.action',
 		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
-		getCadreGreivienceEfficiency();
 		getGrievanceReportDayWise();
-		getTotalAlertGroupByCategoryThenStatus(); 
+		getTotalAlertGroupByCategoryThenStatus();       
 		if(result !=null && result.length>0){
 			buildGrievanceReport(result);
 			buildLocationWiseGrivenacereportGraph(result);
@@ -1719,12 +1718,13 @@ function getCadreGreivienceEfficiency(){
 		sourceIds.push(3);
 	}
     var jobj = {
-	  deptIds :deptIds,
-	  sourceIds:sourceIds,
-	  rangeType:$("#dateRangeId").attr("value"),  
-	  alertstatusIds:$("#statusId").val(),
-	  fromDate: callCenterUserFDate,                           
-	  toDateStr:callCenterUserTDate, 
+		daysArr : [5,10,30,60,90,180,365],   
+		deptIds :deptIds,
+		sourceIds:sourceIds,
+		rangeType:$("#dateRangeId").attr("value"),  
+		alertstatusIds:$("#statusId").val(),
+		fromDate: callCenterUserFDate,                           
+		toDateStr:callCenterUserTDate, 
     }
     $.ajax({
       type : "POST",
@@ -1746,39 +1746,14 @@ function getCadreGreivienceEfficiency(){
 					
 						str +="<tr>";
 							for(var i in result){
-								
-									str+='<td>'+result[i].name+'</td>';
-									
+								str+='<td>'+result[i].effcncyType+'</td>';
 							}
-						str +="</tr>";
+						str +="</tr>";    
 						str +="<tr>";
 							for(var i in result){
-								
-									
-									str+="<td class='text-success'>"+result[i].effcncyPrcnt+" %</td>";
+								str+="<td class='text-success'>"+result[i].effcncyPrcnt+" %</td>";
 							}
 						str +="</tr>";
-						
-							/* for(var i in result){
-								if(result[i].effcncyPrcnt == "0.00%"){
-									
-								}else{
-									str+="<td>"+result[i].name+"</td>";
-								}
-								
-							}
-							str +="</tr>";
-							str +="<tr>";
-							for(var i in result){
-								if(result[i].effcncyPrcnt == "0.00%"){
-									
-								}else{
-									str+="<td class='text-success'>"+result[i].effcncyPrcnt+" %</td>";
-								}
-								
-								
-							} */
-						
 					str +="</tbody>";
 				str +="</table>";
 				str +="</div>";
