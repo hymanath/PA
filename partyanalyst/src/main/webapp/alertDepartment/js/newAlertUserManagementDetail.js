@@ -3281,7 +3281,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 							str+='<tr>';
 								str+='<td>';
 									
-									if(result[i].subList[j].severtyColor != null && result[i].subList[j].severtyColor > 0)
+									if(result[i].subList[j].severtyColor != null)
 									{
 										str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].subList[j].severtyColor+';margin-right:3px;"></i>';
 									}else{
