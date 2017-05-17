@@ -2994,6 +2994,12 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		try {
 			jObj = new JSONObject(getTask());
 			
+			JSONArray dysArr = jObj.getJSONArray("daysArr");
+			List<Integer> daysList = new ArrayList<Integer>();
+			for (int i = 0; i < dysArr.length(); i++) {
+				Integer desgId = (Integer)dysArr.get(i);
+				daysList.add(desgId);
+			}
 			JSONArray deptIdArr = jObj.getJSONArray("deptIds");
 			List<Long> deptIdList = new ArrayList<Long>();
 			for (int i = 0; i < deptIdArr.length(); i++) {
@@ -3012,9 +3018,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			}
 			String fromDate=jObj.getString("fromDate");
 			String toDateStr=jObj.getString("toDateStr");
-			String rangeType=jObj.getString("rangeType"); 
+			//String rangeType=jObj.getString("rangeType"); 
 			
-			alertsSummeryVOList = alertService.getAlertEfficiencyList2(deptIdList,sourceIdList,alertstatusIds,fromDate,toDateStr,rangeType);
+			alertsSummeryVOList = alertService.getAlertEfficiencyList1(daysList,deptIdList,sourceIdList,alertstatusIds,fromDate,toDateStr);
 	   } catch (Exception e) {
 		   LOG.error("Exception Raised in getAlertEfficiencyList() in CreateAlertAction",e);
 		}
