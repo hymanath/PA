@@ -17294,7 +17294,7 @@
 			<param name="root">locations</param>       
 		</result> 
 	</action>	
-	<action name="getAllBloodDonateRegiCandidateDetailsAction" class="MahaNaduAction"  method="getAllBloodDonateRegiCandidateDetails">
+	<action name="getAllBloodDonateRegiCandidateDetailsAction" class="mahaNaduAction"  method="getAllBloodDonateRegiCandidateDetails">
 		<result type="json" name="success">    
 			<param name="root">idAndNameVOList</param>       
 		</result> 
