@@ -131,6 +131,14 @@ public class MahaNaduService implements IMahaNaduService{
 	private IBloodDonationDAO bloodDonationDAO;
 	
 	
+	public IBloodDonationDAO getBloodDonationDAO() {
+		return bloodDonationDAO;
+	}
+
+	public void setBloodDonationDAO(IBloodDonationDAO bloodDonationDAO) {
+		this.bloodDonationDAO = bloodDonationDAO;
+	}
+
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
 	}
@@ -4322,31 +4330,67 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 		return date;
 	}
-	public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(){
+	public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(String type){
 		List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>(0);
 		try{
 			List<Object[]> mainList = bloodDonorInfoDAO.getBloodDonorDetails();
 			List<Long> donorIds = new ArrayList<Long>(0);
 			if(mainList != null && mainList.size() > 0){
 				for (Object[] objects : mainList) {
-					donorIds.add((Long)objects[0]);
+					donorIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				}
 			}
-			List<Long> donationInfoLst = bloodDonationDAO.getBloodDonationDetails(donorIds); 
-			if(mainList != null && mainList.size() > 0){
-				for (Object[] objects : mainList) {
-					IdAndNameVO vo = new IdAndNameVO();
-					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-					vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
-					vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
-					if(donationInfoLst.contains((Long)objects[0])){
-						vo.setFlag("yes");
-					}else{
-						vo.setFlag("No");
+			
+			List<Long> donationInfoLst = new ArrayList<Long>(0);
+			donationInfoLst = bloodDonationDAO.getBloodDonationDetails(donorIds); 
+			if(type.equalsIgnoreCase("all")){
+				if(mainList != null && mainList.size() > 0){
+					for (Object[] objects : mainList) {
+						IdAndNameVO vo = new IdAndNameVO();
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+						vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
+						if(donationInfoLst.contains((Long)objects[0])){
+							vo.setFlag("yes");
+						}else{
+							vo.setFlag("No");
+						}
+						finalList.add(vo);
 					}
-					finalList.add(vo);
-				}
-			}	
+				}	
+			}else if(type.equalsIgnoreCase("yes")){
+				if(mainList != null && mainList.size() > 0){
+					for (Object[] objects : mainList) {
+						if(donationInfoLst.contains((Long)objects[0])){
+							IdAndNameVO vo = new IdAndNameVO();
+							vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
+							vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
+							vo.setFlag("yes");
+							finalList.add(vo);		
+						}
+					}
+				}	
+			}else if(type.equalsIgnoreCase("no")){
+				if(mainList != null && mainList.size() > 0){
+					for (Object[] objects : mainList) {
+						if(!donationInfoLst.contains((Long)objects[0])){
+							IdAndNameVO vo = new IdAndNameVO();
+							vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
+							vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
+							vo.setFlag("yes");
+							finalList.add(vo);		
+						}
+					}
+				}	
+			}
+			
+			
+			
 		}catch (Exception e) {
 			LOG.error(" Exception Raised in getAllBloodDonateRegiCandidateDetails ",e);
 		}

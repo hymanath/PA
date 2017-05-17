@@ -48,6 +48,7 @@ public class IdAndNameVO {
 	private String noPerc;
 	private String mayPerc;
 	private String flag;
+	private String membershipNo;
 	
 	private List<String> enrollmentYears = new ArrayList<String>();
 	
@@ -315,6 +316,12 @@ public class IdAndNameVO {
 	}
 	public void setFlag(String flag) {
 		this.flag = flag;
+	}
+	public String getMembershipNo() {
+		return membershipNo;
+	}
+	public void setMembershipNo(String membershipNo) {
+		this.membershipNo = membershipNo;
 	}	
 	
 }
