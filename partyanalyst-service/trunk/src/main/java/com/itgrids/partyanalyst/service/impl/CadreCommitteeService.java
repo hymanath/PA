@@ -128,6 +128,7 @@ import com.itgrids.partyanalyst.dao.impl.IActivityLocationInfoDatesDAO;
 import com.itgrids.partyanalyst.dto.AccessedPageLoginTimeVO;
 import com.itgrids.partyanalyst.dto.ActivityVO;
 import com.itgrids.partyanalyst.dto.AddressVO;
+import com.itgrids.partyanalyst.dto.AdminHouseVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeReportVO;
@@ -202,6 +203,7 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.itgrids.partyanalyst.utils.SetterAndGetterUtilService;
+import com.rabbitmq.client.ReturnListener;
 
 public class CadreCommitteeService implements ICadreCommitteeService
 {
@@ -22144,17 +22146,27 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 	public ResultStatus saveElectionBoothCommitteeDetails(Long userId,Long boothId,Long tdpCadreId){
 		ResultStatus status = new ResultStatus();
 		try{
-			BoothIncharge boothIncharge = new BoothIncharge();
-				boothIncharge.setBoothId(boothId);
-				boothIncharge.setTdpCadreId(tdpCadreId);
+			BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"addOption");
+			if(boothIncharge != null){
 				boothIncharge.setIsActive("Y");
-				boothIncharge.setIsDeleted("N");
-				boothIncharge.setBoothInchargeEnrollmentId(1l);
-				boothIncharge.setInsertedBy(userId);
+				boothIncharge.setUpdatedBy(userId);
 				boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				boothInchargeDAO.save(boothIncharge);
-				
-			  status.setResultCode(0);
+			}else{
+				BoothIncharge boothInchrge = new BoothIncharge();
+				boothInchrge.setBoothId(boothId);
+				boothInchrge.setTdpCadreId(tdpCadreId);
+				boothInchrge.setIsActive("Y");
+				boothInchrge.setIsDeleted("N");
+				boothInchrge.setBoothInchargeEnrollmentId(1l);
+				boothInchrge.setInsertedBy(userId);
+				boothInchrge.setUpdatedBy(userId);
+				boothInchrge.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				boothInchrge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				boothInchargeDAO.save(boothInchrge);
+			}
+			
+			 status.setResultCode(0);
 		}catch(Exception e){
 			status.setResultCode(1);
 			LOG.error("Exception raised in saveElectionBoothCommitteeDetails ", e);
@@ -22195,6 +22207,51 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		 }
 		 return returnList;
 	 }
+	public CadreCommitteeVO getCadreDetailsForBothsCommittee(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
+			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId,String searchType){
+	   CadreCommitteeVO committeevo = new CadreCommitteeVO();
+		try{
+			
+			Map<Long,CadreCommitteeVO> cadreMap = new LinkedHashMap<Long, CadreCommitteeVO>(0);
+			List<CadreCommitteeVO> returnList  = new ArrayList<CadreCommitteeVO>();
+			List<Long> tdpCadreIds = new ArrayList<Long>(0);
+			Long tdpCadreId = 0l;
+			committeevo = searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationId,searchName,memberShipCardNo,voterCardNo,trNumber,mobileNo,casteStateId,casteCategory,
+			 fromAge, toAge, houseNo, gender, startIndex, maxIndex, isRemoved,enrollmentId,searchType);
+			if(committeevo != null){
+				for (CadreCommitteeVO vo: committeevo.getPreviousRoles()){
+					tdpCadreId = vo.getTdpCadreId();
+					tdpCadreIds.add(tdpCadreId);
+					cadreMap.put(vo.getTdpCadreId(), vo);
+				}
+			}
+			List<Long> boothCadreIdList = boothInchargeDAO.getCadreIdsForLocation(tdpCadreIds);
+			if(tdpCadreIds != null && tdpCadreIds.size() > 0l){
+				for (Long long1 : tdpCadreIds) {
+					CadreCommitteeVO vo = cadreMap.get(long1);
+					if(boothCadreIdList != null && boothCadreIdList.size() > 0l){
+						if(boothCadreIdList.contains(long1)){
+							   vo.setType("Added Member");
+							}else{
+								vo.setType("Not Added");
+							}
+						}
+						else{
+							vo.setType("Not Added");
+						}
+					}
+				}
+			
+			
+			if(commonMethodsUtilService.isMapValid(cadreMap)){
+				returnList = new ArrayList<CadreCommitteeVO>(cadreMap.values()); 
+			}
+			committeevo.setPreviousRoles(returnList);
+		}catch(Exception e){
+			 LOG.error("Exception raised in saveElectionBoothCommitteeDetails ", e);
+		}
+		return  committeevo;
+	}
 	 
 		public List<IdNameVO> getMultplConstituencesByDistctIds(List<Long> districtIdsLst){
 			List<IdNameVO> finalList = new ArrayList<IdNameVO>();
@@ -22312,4 +22369,22 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		  
 		return locationsList;
 	}
+ public ResultStatus removeMbrFromCurentLocation(Long userId,Long tdpCadreId){
+	 ResultStatus status = new ResultStatus();
+	 try{
+		 BoothIncharge boothIncharge = boothInchargeDAO.getExistingMember(tdpCadreId,"removeOption");
+		 if(boothIncharge != null){
+			 boothIncharge.setIsActive("N");
+			 boothIncharge.setUpdatedBy(userId);
+			 boothIncharge.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			 boothInchargeDAO.save(boothIncharge);
+			 
+			 status.setResultCode(0);
+		  }
+	}catch(Exception e){
+		 status.setResultCode(1);
+		 LOG.error("Exception raised in CadreCommitteeService of removeMbrFromCurentLocation", e);
+	 }
+	 return status;
+ }
 }
