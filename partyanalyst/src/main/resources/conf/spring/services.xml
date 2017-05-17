@@ -2600,7 +2600,7 @@
          <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
          <property name="tdpCadreDAO" ref="tdpCadreDAO" />
          <property name="bloodDonorInfoDAO" ref="bloodDonorInfoDAO" />
-         
+        <property name="bloodDonationDAO" ref="bloodDonationDAO" />
    </bean>
   
    <bean name="webServiceClient" class="com.itgrids.partyanalyst.webservice.client.WebServiceClient" lazy-init="true" >

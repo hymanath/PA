@@ -42,7 +42,7 @@
                         	<input placeholder="Ex: 38324292" type="text" class="form-control" id="membershipInputId"/>
                             <span class="input-group-addon">
                             	<button class="btn btn-success" type="button" id="cadreDetailsId">POPULATE DETAILS</button>
-                            	<button class="btn btn-success" type="button" id="cadreDetailsId">INTERESTED PEOPLE</button>
+                            	<button class="btn btn-success" type="button" id="interestedPeopleId">INTERESTED PEOPLE</button>
                             </span>							
                         </div>
 						
@@ -647,20 +647,17 @@
 </div><!-- /.modal -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="myModalConformation" tabindex="-1" role="dialog">
+<div class="modal fade" id="interestedmodalId" role="dialog">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content" style="background:rgba(0,0,0,0.8);">
     <div class="modal-body">
       <button type="button" style="color:#fff;" class="close modalCloseAndShow" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
       <div class="media" style="color:#fff;">
         <div class="media-left">
-          <img src="img/alert.png" class="media-object" />
         </div>
-        <div class="media-body" id="duplicateCandidateBlock">
-          
+        <div class="media-body" id="interestedPeopleModalBody">
         </div>
       </div>
-      <p class="text-capital" style="color:yellow;" id="memberConfirmation">already added member to this alert</p>
     </div>
   </div>
   </div>
@@ -1102,14 +1099,47 @@ function clearFields(){
 					getCadreDetails();
 				}
 		  });
-getAllBloodDonateRegiCandidateDetails();
+$(document).on("click","#interestedPeopleId",function(){
+	$("#interestedmodalId").modal("show");
+	getAllBloodDonateRegiCandidateDetails();
+});
 function getAllBloodDonateRegiCandidateDetails(){
+	jObj = {
+		type:"no"
+	}
 		$.ajax({
 		  type:'GET',
 		  url: 'getAllBloodDonateRegiCandidateDetailsAction.action',
 		  data : {task:JSON.stringify(jObj)} ,
 		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildAllBloodDonateRegiCandidateDetails(result);
+			}else{
+				$("#interestedPeopleModalBody").html("No data available...");
+			}
 		});
+}
+function buildAllBloodDonateRegiCandidateDetails(result){
+	var str ='';
+	str +='<table class="table table-bordered" style="display:none;" id="rangeWiseExportBoothReport">';
+        str +='<thead>';
+            str +='<th>Cadre Name</th>';
+            str +='<th>Mobile No</th>';
+            str +='<th>Time</th>';
+            str +='<th>Membership No</th>';
+        str +='</thead>';
+        str+='<tbody>';
+        for(var i in result){
+          str +='<tr>';
+              str +='<td>'+result[i].name+'</td>';
+              str +='<td>'+result[i].mobileNumber+'</td>';
+              str +='<td>'+result[i].startTime+'</td>';
+              str +='<td>'+result[i].membershipNo+'</td>';
+          str +='</tr>';  
+          }  
+      str+='</tbody>';
+      str +='</table>';
+	  $("#interestedPeopleModalBody").html(str);
 }
 </script>
 </body>
