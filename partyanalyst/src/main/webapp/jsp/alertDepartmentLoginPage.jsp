@@ -79,12 +79,12 @@ header
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12">
-					<h1 class="text-center text-capitalize special-font">welcome to alert management system</h1>
-					<h3 class="special-font text-center">Alert Management System An Government Of Andhra Pradesh Initiative to expand the  e governance to resolve the public Grievances with transparancy and Smart Approach           </h3>
+					<h1 class="text-center text-capitalize special-font m_top10">welcome to alert management system</h1>
+					<h3 class="special-font text-center m_top10">Alert Management System An Government Of Andhra Pradesh Initiative to expand the  e governance to resolve the public Grievances with transparancy and Smart Approach           </h3>
 				</div>
 				<div class="col-sm-12">
 					<form name="loginForm" method="POST" onsubmit="javascript: ajaxCallForLoginPopup(); return false;">
-					<div class="row m_top20">
+					<div class="row m_top10">
 						<div class="col-sm-4 ">
 							<label class="text-capital">username</label>
 							<input type="text" class="form-control" id="userName1" placeholder="User Name" class="url"/>
