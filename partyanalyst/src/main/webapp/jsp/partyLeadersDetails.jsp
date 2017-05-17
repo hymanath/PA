@@ -66,8 +66,8 @@
 			  <div class="panel-heading">
 				<h4 class="panel-title text-capital" style="height: 30px;">Party Leaders Details  
 					<ul class="switch-btn pull-right"  style="border: 1px solid rgb(211, 211, 211);">       
-						<li attr_type="1" class="active" >AP</li>
-						<li attr_type="36"  >TS</li>
+						<li attr_type="1" class="active" id="apId">AP</li>
+						<li attr_type="36" id="tsId">TS</li>
 					</ul>  			
 				</h4>
 			  </div>
@@ -176,7 +176,8 @@ var locationIdsArr=[];
 	pageType = '${item.type}';
 	var obj = {
 		id:'${item.id}',
-		name:'${item.name}'
+		name:'${item.name}',
+		state:'${item.state}'
 	}
 	locationIdsArr.push('${item.id}');
 	areasList.push(obj);
@@ -198,9 +199,23 @@ var locationIdsArr=[];
 		 if(areasList != null && areasList.length>0){
 			 $("#districtId").html('');
 			  $("#districtId").append('<option value="0">ALL</option>');
-			for(var i in areasList){
-				$("#districtId").append('<option value='+areasList[i].id+'>'+areasList[i].name+'</option>');
-		   }
+			  for(var i in areasList){		
+					if(areasList[i].state == 'AP'){
+							$('.switch-btn').show()
+							$("#districtId").html('');
+							$("#tsId").hide();
+							$("#apId").show();
+							$('#apId').addClass('active');
+					}
+					if(areasList[i].state == 'TS'){
+							$('.switch-btn').show()
+							$("#districtId").html('');
+							$("#tsId").show();
+							$("#apId").hide();
+							$('#tsId').addClass('active');
+					}
+					$("#districtId").append('<option value='+areasList[i].id+'>'+areasList[i].name+'</option>');
+			   }
 		}
 	 }else{
 		 getDistrictsForStates(1);
