@@ -22302,8 +22302,10 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 			   
 	       	for(Object[] localBody:localBodyList){
 	       		vo = new LocationWiseBoothDetailsVO();
-		        	vo.setLocationId(Long.valueOf("2"+(Long)localBody[0]));
-		        	vo.setLocationName(localBody[1].toString()+"("+localBody[2].toString()+")");
+		        	//vo.setLocationId(Long.valueOf("2"+(Long)localBody[0]));
+	       		//vo.setLocationName(localBody[1].toString()+"("+localBody[2].toString()+")");
+	       		vo.setLocationId((Long)localBody[0]);
+		        vo.setLocationName(localBody[1] != null ? localBody[1].toString():"");
 		        	locationsList.add(vo);
 	       	}
 	       }
