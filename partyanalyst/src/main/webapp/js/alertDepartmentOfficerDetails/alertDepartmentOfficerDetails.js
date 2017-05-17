@@ -1,23 +1,30 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalUserLevelId=0;
 var globalUserLevelValues = [];	
-var start = moment();
-var end = moment();
+var start=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
+var end=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 function cb(start, end){
 	$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
 }
 
 $('#reportrange').daterangepicker({
+	opens: 'left',
 	startDate: start,
 	endDate: end,
+	locale: {
+		  format: 'DD/MM/YYYY'
+		},
 	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-	}
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
 }, cb);
  
 var callCenterUserFDate=moment().format("DD/MM/YYYY");
@@ -183,8 +190,11 @@ function buildHighchart(divId,statusNamesArray,statusIdNameArr,parentGovtDepartm
                  categories: statusNamesArray,
 				 labels: {
 						formatter: function() {
-							return this.value.toString().substring(0, 5)+'....';
+							return this.value.toString().substring(0, 8)+'..';
 						},
+						 style: {
+							color: '#F0F8FF'
+						}
 						
 					}
              },

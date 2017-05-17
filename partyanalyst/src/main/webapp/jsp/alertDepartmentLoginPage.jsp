@@ -78,7 +78,7 @@ header
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-12">
+				<div class="col-sm-8 col-sm-offset-2">
 					<h1 class="text-center text-capitalize special-font m_top10">welcome to alert management system</h1>
 					<h3 class="special-font text-center m_top10">Alert Management System An Government Of Andhra Pradesh Initiative to expand the  e governance to resolve the public Grievances with transparancy and Smart Approach           </h3>
 				</div>

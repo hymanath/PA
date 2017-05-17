@@ -44,26 +44,24 @@
 }
 </style>
 </head>
-<body>           
-	<nav>
-		<div class=" bg-gov-dark">
-			<div class="container">  
-				<div class="row">
-					<div id="menu1" class="col-md-6">       
-						<div class="col-md-12">
-							<ul class="nav navbar-nav">        
-								<!--<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
-								<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
-								<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>-->
-								<li style="padding:14px 16px;color:#95989A;cursor:pointer;"> 
-									<div id="reportrange"> 
-										&nbsp; <span>Custom Date Range</span>
-									</div>
-								</li>
-							</ul>
-						</div>     
+<body>  
+  <nav>
+	<div class="bg-gov-dark">
+		<div class="container"> 
+			<div class="row" style="padding:8px;">
+					<div class="col-sm-5">
+						<ul class="nav navbar-nav" style="padding: 5px; background-color: rgb(88, 88, 88);">        
+							<!--<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
+							<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
+							<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>-->
+							<li style="color:#f0f8ff;cursor:pointer;"> 
+								<div id="reportrange"> 
+									&nbsp; <span>Custom Date Range</span>
+								</div>
+							</li>
+						</ul>
 					</div>
-					<div class="col-md-3 m_top10">
+					<div class="col-sm-2 ">
 						<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
 							<option value="0">All</option>
 							<option value="4">Call Center</option>         
@@ -72,18 +70,18 @@
 							<option value="3">Electronic Media</option>
 						</select>
 					</div>
-					<div class="col-md-3 m_top10">
-						<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();">
+					<div class="col-sm-5 pull-right">
+						<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();" style="width:50%">
 							<c:forEach items="${idNameVOList}"  var="department">
 								<option value="${department.id}">${department.name}</option>
 							</c:forEach>
 						</select>
 					</div>
-				</div>
+					
+					
 			</div>
 		</div>
-	</nav>
-
+	</div>
 	<div class="container-fluid bg-gov-dark">
 		<div class="row">
 			<div class="col-md-10">      

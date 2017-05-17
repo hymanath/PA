@@ -90,9 +90,9 @@ nav
 	background-color: #3E4E67;
 	padding: 10px;
 	background-image: url("../img/andhra%20pradesh%20map.png");
-	background-position: center;
-	background-size: auto;
-	background-repeat: no-repeat;
+	background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 240px 160px;
 	background-blend-mode: lighten;
 	color: #fff;
 	position: relative;
