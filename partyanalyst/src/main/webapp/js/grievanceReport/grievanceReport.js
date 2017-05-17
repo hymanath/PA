@@ -1,14 +1,14 @@
 var globalUserLevelValues = [0]; 
 var globalUserLevelId = 0;
-var start=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
-var end=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
+var start=moment();
+var end=moment();
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 function cb(start, end){
 	$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
 }
 
 $('#reportrange').daterangepicker({
-	opens: 'left',
+	opens: 'right',
 	startDate: start,
 	endDate: end,
 	locale: {
@@ -27,7 +27,7 @@ $('#reportrange').daterangepicker({
 		}
 }, cb);
  
-var callCenterUserFDate=moment().format("DD/MM/YYYY");
+var callCenterUserFDate=moment().startOf('month').format("DD/MM/YYYY");
 var callCenterUserTDate=moment().format("DD/MM/YYYY");
 
 $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
@@ -151,8 +151,6 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
  function getAverageIssuePendingDays(){
 	var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
-	var includeProposal = $("#proposalId").prop('checked');
-	 
 	var alertstatusIds = [];
 	
  	var deptIds=[];
@@ -173,7 +171,6 @@ $("#barGraph").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"
 		deptIds :deptIds,
 		sourceIds:sourceIds,  
 		alertstatusIds:$("#statusId").val(),
-		includeProposal : includeProposal,
 		fromDate : callCenterUserFDate,//2016-11-01
 		toDate:callCenterUserTDate//2017-05-01
     }
@@ -352,6 +349,7 @@ function getDistrintInformation(){
 		url: 'getGrievanceReportAction.action',
 		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
+		getCadreGreivienceEfficiency();
 		getGrievanceReportDayWise();
 		getTotalAlertGroupByCategoryThenStatus(); 
 		if(result !=null && result.length>0){
@@ -1723,7 +1721,7 @@ function getCadreGreivienceEfficiency(){
     var jobj = {
 	  deptIds :deptIds,
 	  sourceIds:sourceIds,
-	  rangeType:"day",  
+	  rangeType:$("#dateRangeId").attr("value"),  
 	  alertstatusIds:$("#statusId").val(),
 	  fromDate: callCenterUserFDate,                           
 	  toDateStr:callCenterUserTDate, 
@@ -1737,24 +1735,53 @@ function getCadreGreivienceEfficiency(){
       if(result!=null){
 				var str = "";
 				str+='<div class="table-responsive">';
+				if(result.length>4){
+					str+='<div class="">';
+				}else{
+					str+='<div class="col-sm-4">';
+				}
+				
 				str +="<table class='table table-bordered bg-white' style='margin-bottom:20px;'>";
 					str +="<tbody>";
+					
 						str +="<tr>";
 							for(var i in result){
-								str+="<td>"+result[i].name+"</td>";
+								
+									str+='<td>'+result[i].name+'</td>';
+									
+							}
+						str +="</tr>";
+						str +="<tr>";
+							for(var i in result){
+								
+									
+									str+="<td class='text-success'>"+result[i].effcncyPrcnt+" %</td>";
+							}
+						str +="</tr>";
+						
+							/* for(var i in result){
+								if(result[i].effcncyPrcnt == "0.00%"){
+									
+								}else{
+									str+="<td>"+result[i].name+"</td>";
+								}
+								
 							}
 							str +="</tr>";
 							str +="<tr>";
 							for(var i in result){
-								if(result[i].clrFrEffcncy=="red"){
-									str+="<td class='text-danger'>"+result[i].effcncyPrcnt+" %</td>";
+								if(result[i].effcncyPrcnt == "0.00%"){
+									
 								}else{
 									str+="<td class='text-success'>"+result[i].effcncyPrcnt+" %</td>";
 								}
-							}
-						str +="</tr>";
+								
+								
+							} */
+						
 					str +="</tbody>";
 				str +="</table>";
+				str +="</div>";
 				str +="</div>";
 			}
 			
