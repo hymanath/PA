@@ -4306,7 +4306,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			bloodDonorInfo.setMobileNo(mobileNo);
  			bloodDonorInfo.setDonationTime(fromDate);
  			bloodDonorInfo.setInsertedTime(date.getCurrentDateAndTime());
+ 			bloodDonorInfo.setInsertedBy(1l);
 			bloodDonorInfo.setUpdatedTime(date.getCurrentDateAndTime());
+			bloodDonorInfo.setUpdatedBy(1l);
  			bloodDonorInfo.setRegisteredSource("app");
  			bloodDonorInfo.setIsDeleted("N");
  			bloodDonorInfoDAO.save(bloodDonorInfo);
@@ -4349,7 +4351,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						IdAndNameVO vo = new IdAndNameVO();
 						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 						vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
-						vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+						vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]).substring(0, 16));
 						vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
 						if(donationInfoLst.contains((Long)objects[0])){
 							vo.setFlag("yes");
@@ -4366,7 +4368,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 							IdAndNameVO vo = new IdAndNameVO();
 							vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 							vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
-							vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]).substring(0, 16));
 							vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
 							vo.setFlag("yes");
 							finalList.add(vo);		
@@ -4380,9 +4382,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 							IdAndNameVO vo = new IdAndNameVO();
 							vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
 							vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
-							vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]));
+							vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]).substring(0, 16));
 							vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
-							vo.setFlag("yes");
+							vo.setFlag("no");
 							finalList.add(vo);		
 						}
 					}

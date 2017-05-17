@@ -48,8 +48,10 @@ public class BloodDonorInfoDAO extends GenericDaoHibernate<BloodDonorInfo, Long>
 				" model.bloodDonorInfoId," +
 				" model.donorName,model.mobileNo," +
 				" model.donationTime, " +
-				" model.tdpCadre.memberShipNo " +
-				" from BloodDonorInfo model where model.isDeleted = 'N' and model.registeredSource = 'app' ");
+				" tdpCadre.memberShipNo " +
+				" from BloodDonorInfo model " +
+				" left join model.tdpCadre tdpCadre " +
+				" where model.isDeleted = 'N' and model.registeredSource = 'app' ");
 		
 		return query.list();
 	   }
