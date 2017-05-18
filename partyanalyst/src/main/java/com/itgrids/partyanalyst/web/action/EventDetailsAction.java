@@ -391,9 +391,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			Long stateId = jObj.getLong("stateId");
 			Long reportLevelId = jObj.getLong("reportLevelId");
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++){
-				subEventIds.add(new Long(arr.get(i).toString()));
-			}			
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					subEventIds.add(new Long(arr.get(i).toString()));
+				}			
+			}
 			resultList = mahaNaduService.getDaysUniqueAndRevisitSummary(eventId,stateId,reportLevelId,subEventIds,jObj.getString("dateValues"));
 						
 		}catch (Exception e) {
