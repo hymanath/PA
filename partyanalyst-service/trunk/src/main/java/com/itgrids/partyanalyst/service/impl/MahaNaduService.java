@@ -4335,21 +4335,66 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(String type){
 		List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>(0);
 		try{
-			List<Object[]> mainList = bloodDonorInfoDAO.getBloodDonorDetails();
-			List<Long> donorIds = new ArrayList<Long>(0);
-			if(mainList != null && mainList.size() > 0){
-				for (Object[] objects : mainList) {
-					donorIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
-				}
+			
+			List<Object[]> countList = bloodDonorInfoDAO.getBloodDonorDetails("count",0,0);
+			int totalCount =0;
+			if(commonMethodsUtilService.isListOrSetValid(countList)){
+				Object[] obj = countList.get(0);
+				totalCount = Integer.valueOf(obj[0] != null?commonMethodsUtilService.getStringValueForObject(obj[0]):"0");
 			}
 			
-			List<Long> donationInfoLst = new ArrayList<Long>(0);
-			donationInfoLst = bloodDonationDAO.getBloodDonationDetails(donorIds); 
+			if(totalCount ==0)
+				return finalList;
+			
+			List<Object[]> mainList = new ArrayList<Object[]>(0);
+			List<Long> donorIds = new ArrayList<Long>(0);
+				
+				int filterCount = 100 ;
+	            int i = 0; 
+	            int j = filterCount;
+	            int maxcount = totalCount;
+	            while (maxcount >0){  
+	                if(maxcount<filterCount)
+	                    j = i+maxcount;
+	                
+	                List<Object[]>  tempList  = bloodDonorInfoDAO.getBloodDonorDetails("data",i,j);
+	                   if(commonMethodsUtilService.isListOrSetValid(tempList)){
+	                	   mainList.addAll(tempList);
+	                   }
+	                i=i+j;
+	                maxcount = maxcount-filterCount;
+	            }
+			
+            if(mainList != null && mainList.size() > 0){
+				for (Object[] objects : mainList) {
+					if(!donorIds.contains(commonMethodsUtilService.getLongValueForObject(objects[0])))
+						donorIds.add(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}
+            }
+            
+            List<Long> donationInfoLst = new ArrayList<Long>();
+            filterCount = 100 ;
+            i = 0; 
+            j = filterCount;
+            maxcount = donorIds.size();
+            while (maxcount >0){  
+                if(maxcount<filterCount)
+                    j = i+maxcount;
+                
+                List<Long>  tempList  =  bloodDonationDAO.getBloodDonationDetails(donorIds.subList(i, j));
+                   if(commonMethodsUtilService.isListOrSetValid(tempList)){
+                	   donationInfoLst.addAll(tempList);
+                   }
+                i=i+j;
+                maxcount = maxcount-filterCount;
+            }
+            
+            
 			if(type.equalsIgnoreCase("all")){
 				if(mainList != null && mainList.size() > 0){
 					for (Object[] objects : mainList) {
 						IdAndNameVO vo = new IdAndNameVO();
-						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]).toUpperCase());
 						vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
 						vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]).substring(0, 16));
 						vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
