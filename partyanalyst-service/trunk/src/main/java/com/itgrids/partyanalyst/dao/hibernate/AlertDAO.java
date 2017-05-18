@@ -6929,11 +6929,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     		*/
     	
     	StringBuilder queryStr  = new StringBuilder();
-		queryStr.append(" SELECT  a.alert_id as alert_id ,a.title as title , a.impact_level_id as levelId , date(a.created_time) as time ," +
+		queryStr.append(" SELECT distinct  a.alert_id as alert_id ,a.title as title , a.impact_level_id as levelId , date(a.created_time) as time ," +
 				"  a.alert_source_id as sourceId,rs.scope as scope ,a.alert_status_id as statusId, gd.department_name as deptName,es.entry_source as source , " +
 				" it.issue_type as issueType , ist.issue_type as issueSubType , fs.status as feedbackStattus, d.district_name as districtName," +
 				" c.name as cname, t.tehsil_name as tehsilName, p.panchayat_name as pname, h.hamlet_name as hname , leb.name as lname, " +
-				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo,user.username as username");
+				" w.name as ward,'' as callerName,'' as mobileNo,user.username as username,as1.alert_status as alertStatus");
 		queryStr.append(" from ");
 		queryStr.append(" user user,alert a ");
 		queryStr.append(" Left Join alert_feedback_status fs on a.alert_feedback_status_id = fs.alert_feedback_status_id ");
@@ -6999,7 +6999,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 				.addScalar("ward", Hibernate.STRING)
 				.addScalar("callerName", Hibernate.STRING)
 				.addScalar("mobileNo", Hibernate.STRING)
-				.addScalar("username", Hibernate.STRING);
+				.addScalar("username", Hibernate.STRING)
+				.addScalar("alertStatus", Hibernate.STRING);
 		
 		
 		if(departmentId != null && departmentId.longValue()>0L)
