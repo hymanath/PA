@@ -2958,7 +2958,8 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				String startDate = jObj.getString("fromDate");
 				String endDate = jObj.getString("toDate");
 				Long alertStatusId = jObj.getLong("alertStatusId");
-				grievanceAlertVo = alertManagementSystemService.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId,startDate,endDate,alertStatusId);
+				Long deptId = jObj.getLong("deptId");
+				grievanceAlertVo = alertManagementSystemService.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId,startDate,endDate,alertStatusId,deptId);
 			}catch(Exception e){
 				e.printStackTrace();
 				LOG.error("Exception occured in getGovtGrievanceAlertDetails() of alertManagementSystemAction",e);
