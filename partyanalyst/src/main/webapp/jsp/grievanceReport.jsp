@@ -43,6 +43,11 @@
 {
 	margin-top:5px
 }
+#selectMediaId_chosen a{background-color: #95989a;color: #f0f8ff;}
+#selectMediaId_chosen .chosen-drop{background-color: #95989a !important;color: #f0f8ff !important;}
+#selecDepartmentId_chosen a{background-color: #95989a;color: #f0f8ff;}
+#selecDepartmentId_chosen .chosen-drop{background-color: #95989a !important;color: #f0f8ff !important;}
+
 </style>
 </head>
 <body>           
@@ -52,21 +57,21 @@
 					<div class="row">
 						<div id="menu1" class="col-sm-3">       
 								<ul class="nav navbar-nav">        
-									<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
-									<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
-									<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
+									<li> <a  attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
+									<li> <a attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
+									<li> <a  attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
 								</ul>
 						</div>
 						<div class="col-sm-3"> 
-							<div class="input-group dateRangePickerlocCls m_top10" style="margin-right: 15px">
-								<input type="text" class="selectpicker" style="width:180px" id="reportrange">
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar" style="color:#f0f8ff"></i>
+							<div class="input-group dateRangePickerCls m_top10" style="margin-right: 15px">
+								<input type="text" class="form-control" style="width:180px;height: 37px;background-color: #95989a;color: #f0f8ff;" id="reportrange">
+								<span class="input-group-addon" style="background-color: #95989a;border-left: 1px solid #f0f8ff;">
+									<i class="glyphicon glyphicon-calendar" ></i>
 								</span>
 							</div>
 						</div>
 						<div class="col-sm-3 m_top10">
-							<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
+							<select id="selectMediaId" class="form-control" onChange="getMediaInformation();">
 								<option value="0">All</option>
 								<c:forEach items="${idNameVOList[0].subList1}"  var="category">
 									<option value="${category.id}">${category.name}</option>
@@ -74,7 +79,7 @@
 							</select>
 						</div>
 						<div class="col-sm-3 m_top10">
-							<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();" style="width:70%">
+							<select id="selecDepartmentId" class="form-control"  onChange="getDepartmentInformation();" style="width:70%">
 								<c:forEach items="${idNameVOList}"  var="department">
 									<option value="${department.id}">${department.name}</option>
 								</c:forEach>
@@ -345,10 +350,13 @@ google.load("elements", "1", {
 </script>
 <script>
 $(".chosenSelect").chosen({width:'100%'})
+$("#selecDepartmentId").chosen()
+$("#selectMediaId").chosen()
+$("#selecDepartmentId").trigger("chosen:updated")
+$("#selectMediaId").trigger("chosen:updated")
 getSliderDetails();
-
+var sliderVa1;
 function getSliderDetails(){
-	var sliderVa1;
 		var slider = new Slider('#sliderValue', {
 	   formatter: function(value) {
 		   $("#getSliderVal").text(value);

@@ -44,6 +44,7 @@ $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 });
 $(document).on("click",".daterangeClorCls",function(){ 
     $(".daterangeClorCls").removeClass("dateColorCls");
+	$(this).addClass("dateColorCls");
 }); 
  onLoadCalls();
 
@@ -238,8 +239,8 @@ function getDistrintInformation(){
 	 getGrievanceReportDayWise();
 	 getTotalAlertGroupByCategoryThenStatus();
 	getCadreGreivienceEfficiency(2);	 
- $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
- $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+ $("#statusWiseAlertCntId").html(spinner);
+ $("#grivenaceTableId").html(spinner);
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
 	 var rangeType=$("#dateRangeId").attr("value");
@@ -257,6 +258,8 @@ function getDistrintInformation(){
  		 dataType: 'json',
  		 data: {task:JSON.stringify(jobj)},
      }).done(function(result){
+		 $("#statusWiseAlertCntId").html('');
+		$("#grivenaceTableId").html('');
 		 if(result != null && result.length > 0){
 			buildGrievanceReport(result);
 			buildLocationWiseGrivenacereportGraph(result);
@@ -278,8 +281,8 @@ function getDistrintInformation(){
 	 getGrievanceReportDayWise();
 	 getTotalAlertGroupByCategoryThenStatus(); 
 	 getCadreGreivienceEfficiency(2)
-	 $("#statusWiseAlertCntId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
-	 $("#grivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	 $("#statusWiseAlertCntId").html(spinner);
+	 $("#grivenaceTableId").html(spinner);
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
 	 var rangeType=$("#dateRangeId").attr("value");
@@ -297,6 +300,8 @@ function getDistrintInformation(){
         dataType: 'json',
         data: {task:JSON.stringify(jobj)},
      }).done(function(result){
+		 $("#statusWiseAlertCntId").html('');
+		$("#grivenaceTableId").html('');
 		if(result !=null && result.length>0){
 			buildGrievanceReport(result);
 			buildLocationWiseGrivenacereportGraph(result);
