@@ -179,7 +179,7 @@
 													<input type="text" id="emailId" class="form-control" placeholder="abc@xyz.com" name="grievanceAlertVO.emailId"/>
 												</div>
 												<div class="col-sm-3 m_top10">
-													<label>Address<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgAddressId"></span></label>
+													<label>Address </label>
 													<input type="text" id="addressId" class="form-control" name="grievanceAlertVO.address"/>
 												</div>
 											</div>
@@ -1033,10 +1033,10 @@ function createGrievanceAlert()
 		$("#errMsgNameId").html(" Please Enter Name ");
 		return;
 	}
-	if(address.length==0 ||address==''){
+	/*if(address.length==0 ||address==''){
 		$("#errMsgAddressId").html(" Please Enter Address ");
 		return;
-	}
+	}*/
 	
   
   if(level==0)
@@ -2149,7 +2149,7 @@ $("#buildUpdateDivId").html(str);
 		var address = $("#addressId").val();
 		var loadngImg = $(this).attr("attr_loading_img");
 		
-		if(mobileNo.length==0 ||mobileNo==''){
+		/*if(mobileNo.length==0 ||mobileNo==''){
 			$("#modalErrorDiv").html(" Please Enter Caller Details,Enter MobileNo ");
 			return;
 		}
@@ -2171,7 +2171,7 @@ $("#buildUpdateDivId").html(str);
 		if(address.length==0 ||address==''){
 			$("#modalErrorDiv").html(" Please Enter Caller Details,Enter Address ");
 			return;
-		}
+		}*/
 		$("#"+loadngImg).show();
 		var jobj={
 			mobileNo : mobileNo,
@@ -2187,7 +2187,7 @@ $("#buildUpdateDivId").html(str);
 		}).done(function(result){
 			if(result != null && result == 'success'){
 				$("#"+loadngImg).hide();
-				$("#modalSuccessDiv").html("Alert Details Successfully Updated...");
+				alert("This Caller Request has been marked as Duplicate,Ref No:"+alertId+" and SMS sent to Caller"+mobileNo);
 			}
 			else{
 				$("#"+loadngImg).hide();
@@ -2200,12 +2200,22 @@ $("#buildUpdateDivId").html(str);
 		$("#commentsBlock").html('');
 	 var districtId = $('#modalDistrictId').val();
 	 
+	 var url = "getAllMandalsByDistrictIDAction.action";
+	 var deptName = $("#departmentsId option:selected").text();
+	var locationType = deptName.split("-")[1];
+	if(locationType != null && locationType == "Rural"){
+		url = "getAllMandalsByDistrictIDAction.action";
+	}
+	else if(locationType != null && locationType == "Urban"){
+		url = "getAllLebsByDistrictIDAction.action";
+	}
+	 
 	 var jobj = {
 		districtId : districtId
 	}
 		$.ajax({
 			type : "POST",
-			url  : "getAllMandalsByDistrictIDAction.action",
+			url  : url,
 			data : {task:JSON.stringify(jobj)}
 		}).done(function(result){
 			var mandalStr='';
@@ -2222,12 +2232,19 @@ $("#buildUpdateDivId").html(str);
 				$("#modalPanchayatId").html('<option value="0">ALL</option>');
 				$("#modalPanchayatId").trigger('chosen:updated'); 
 			
-				if(glMandalId != null && glMandalId>0)
-				$("#modalMandalNameId").val(glMandalId);
-				$("#modalMandalNameId").trigger('chosen:updated'); 
+				if(glMandalId != null && glMandalId>0){
+					$("#modalMandalNameId").val(glMandalId);
+					$("#modalMandalNameId").trigger('chosen:updated'); 
+				}
+				else{
+					getGovtGrievanceAlertDetails();
+				}
 				
 				if(glPanchayatId != null && glPanchayatId>0){
 					$("#modalMandalNameId").trigger('onchange');
+				}
+				else{
+					getGovtGrievanceAlertDetails();
 				}
 				if(glhamletId != null && glhamletId>0)
 					$("#modalMandalNameId").trigger('onchange');
@@ -2253,7 +2270,18 @@ $("#buildUpdateDivId").html(str);
 	 if(type.indexOf("Mandal") == -1) 
 		type = "muncipality" ;
 	else
-		type = "mandal" ; 
+		type = "mandal" ;
+
+	var url = "getPanchayatAndWardDetailsAction.action";
+	 var deptName = $("#departmentsId option:selected").text();
+	var locationType = deptName.split("-")[1];
+	if(locationType != null && locationType == "Rural"){
+		url = "getPanchayatAndWardDetailsAction.action";
+	}
+	else if(locationType != null && locationType == "Urban"){
+		url = "getUrbanLocalitiesForMuncipalityAction.action";
+	}
+	
 	  var jsObj={
 				mandalId :mandalId,
 				type:type,
@@ -2262,7 +2290,7 @@ $("#buildUpdateDivId").html(str);
 			}
 	 $.ajax({
 				type:"POST",
-				url :"getPanchayatAndWardDetailsAction.action",
+				url :url,
 				 dataType: 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
@@ -2276,11 +2304,18 @@ $("#buildUpdateDivId").html(str);
 					$("#modalPanchayatId").html(panchyatStr);
 					$("#modalPanchayatId").trigger('chosen:updated');
 					
-					if(glPanchayatId != null && glPanchayatId>0)
-					$("#modalPanchayatId").val(glPanchayatId);
-					$("#modalPanchayatId").trigger('chosen:updated'); 
+					if(glPanchayatId != null && glPanchayatId>0){
+						$("#modalPanchayatId").val(glPanchayatId);
+						$("#modalPanchayatId").trigger('chosen:updated'); 
+					}
+					else{
+						getGovtGrievanceAlertDetails();
+					}
 					if(glhamletId != null && glhamletId>0)
-					$("#modalPanchayatId").trigger('onchange');
+						$("#modalPanchayatId").trigger('onchange');
+					else{
+						getGovtGrievanceAlertDetails();
+					}
 				}else{
 					//for panchayat
 					$("#modalPanchayatId").html('<option value="0">ALL</option>');
@@ -2313,6 +2348,32 @@ var glPanchayatId = 0;
 var glhamletId =0;
 
  $(document).on("click",".govtGrievanceCls",function(){
+	 $("#errMsgMobileNoId").html('');
+	 $("#errMsgNameId").html('');
+	var name = $("#nameId").val().trim();
+	var address = $("#addressId").val().trim();
+	var mobileNo = $("#mobileNoId").val().trim();
+	
+	if(mobileNo.length==0 ||mobileNo==''){
+		$("#errMsgMobileNoId").html(" Please Enter MobileNo ");
+		return;
+	}
+	if(mobileNo.length != 10){
+		$("#errMsgMobileNoId").html(" Please Enter Valid MobileNO ");
+		return;
+	}
+	if(mobileNo.length > 0){
+		var numericExpression = /^[0-9]+$/;
+		if(!mobileNo.match(numericExpression)){
+			$('#errMsgMobileNoId').html('Enter Numerics Only.');
+			return;
+		}
+	}
+	if(name.length==0 ||name==''){
+		$("#errMsgNameId").html(" Please Enter Name ");
+		return;
+	}
+	
 	  $("#govtGrievanceAlertModalId").modal("show");
        $("#commentsBlock").html('');
       $("#searchBy").val('');	   
@@ -2338,22 +2399,22 @@ var glhamletId =0;
 			$('#radioBtnMobileId').prop('checked',true);
 			var priviousMobileNo =$("#mobileNoId").val();
 			$("#searchBy").val(priviousMobileNo);
-			
+			getGovtGrievanceAlertDetails();
 		 }
 		 else if(type =='location'){
 			 $(".mobileSearchCls").hide();
 			 $(".locationSearchCls").show();
 			 $('#radioBtnClsId').prop('checked',true);
+			 
+			 glDistrictId =$("#referdistrictId").val();
+			glMandalId = $("#refermandalNameId").val();
+			glPanchayatId = $("#referpanchayatId").val();
+			glhamletId =$("#hamletId").val();
+			
+			$("#modalDistrictId").val(glDistrictId);
+			$("#modalDistrictId").trigger('chosen:updated');
+			$("#modalDistrictId").trigger("onchange");
 		 } 
-		 
-		glDistrictId =$("#referdistrictId").val();
-		glMandalId = $("#refermandalNameId").val();
-		glPanchayatId = $("#referpanchayatId").val();
-		glhamletId =$("#hamletId").val();
-		
-		$("#modalDistrictId").val(glDistrictId);
-		$("#modalDistrictId").trigger('chosen:updated');
-		$("#modalDistrictId").trigger("onchange");
  });
  function getHamletss1(){
 	  $("#commentsBlock").html('');
@@ -2366,7 +2427,17 @@ var glhamletId =0;
 	else
 		type = "mandal" ; 
 	
-	if(type == "mandal"){
+	var url = "getHamletsForPanchayatAction.action";
+	 var deptName = $("#departmentsId option:selected").text();
+	var locationType = deptName.split("-")[1];
+	if(locationType != null && locationType == "Rural"){
+		url = "getHamletsForPanchayatAction.action";
+	}
+	else if(locationType != null && locationType == "Urban"){
+		url = "getUrbanBlocksForLocalityAction.action";
+	}
+	
+	//if(type == "mandal"){
 		
 		var jsObj={
 				panchayatId :panchayatId,
@@ -2374,7 +2445,7 @@ var glhamletId =0;
 			}
 	 $.ajax({
 				type:"POST",
-				url :"getHamletsForPanchayatAction.action",
+				url :url,
 				 dataType: 'json',
 				data: {task:JSON.stringify(jsObj)}
 			}).done(function(result){
@@ -2387,16 +2458,22 @@ var glhamletId =0;
 					}
 					$("#modalhamletId").html(panchyatStr);
 					$("#modalhamletId").trigger('chosen:updated');
-					if(glhamletId != null && glhamletId>0)
-					$("#modalhamletId").val(glhamletId);
-					$("#modalhamletId").trigger('chosen:updated');
+					if(glhamletId != null && glhamletId>0){
+						$("#modalhamletId").val(glhamletId);
+						$("#modalhamletId").trigger('chosen:updated');
+						getGovtGrievanceAlertDetails();
+					}
+					else{
+						getGovtGrievanceAlertDetails();
+					}
+					
 				}else{
 					//for panchayat
 					$("#modalhamletId").html('<option value="0">ALL</option>');
 					$("#modalhamletId").trigger('chosen:updated'); 
 				}     
 		});
-	}
+	//}
 }
 $(document).on("click",".closeFileCls",function(){
 	$("#uploadFileId0").val('');
