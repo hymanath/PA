@@ -6,7 +6,7 @@ import java.util.List;
 
 public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> {
 	
-	private static final long serialVersionUID = 1L;
+	private static long serialVersionUID = 1L;
 	private String name;
 	private Long id;
 	private String url;
@@ -44,8 +44,61 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String status;
 	private String committeeMemberStatus;
 	private String state;
-	
-	
+	private Long boothNumber;
+	private String boothName;
+	private Long mobileNumber;
+	private Long memberShipNo;
+	private String firstName;
+		
+		
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public static void setSerialversionuid(long serialversionuid) {
+		serialVersionUID = serialversionuid;
+	}
+
+	public Long getBoothNumber() {
+		return boothNumber;
+	}
+
+	public void setBoothNumber(Long boothNumber) {
+		this.boothNumber = boothNumber;
+	}
+
+	public String getBoothName() {
+		return boothName;
+	}
+
+	public void setBoothName(String boothName) {
+		this.boothName = boothName;
+	}
+
+	public Long getMobileNumber() {
+		return mobileNumber;
+	}
+
+	public void setMobileNumber(Long mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+
+	public Long getMemberShipNo() {
+		return memberShipNo;
+	}
+
+	public void setMemberShipNo(Long memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
+
 	public String getState() {
 		return state;
 	}

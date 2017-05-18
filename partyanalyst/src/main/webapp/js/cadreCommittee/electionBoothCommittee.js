@@ -1710,3 +1710,49 @@ $(document).on("click",".remveMbrCls",function(){
 			});
 	
 });	
+
+function getBoothUserDetailsbuild(result){
+	$("#userDetailsId").show();
+	var str = '';
+		  str +='<table class="table table-bordered">';
+				 str +='<thead>';
+					 str +='<tr class="text-center">';
+					 
+						str +='<th>Constituency Name</th>';
+						str +='<th>Mandal Name</th>';
+						str +='<th>Panchayat Name</th>';
+						str +='<th>Booth Name</th>';
+						str +='<th>Booth Number</th>';
+						str +='<th>Photo</th>';
+						str +='<th>Cadre Name</th>';
+						str +='<th>Mobile Number</th>';
+						str +='<th>Member ShipId</th>';
+					 						 
+					 str +='</tr>';
+				 str +='</thead>';			 
+			  str +='<tbody>';
+						for(var i in result){
+							
+							str +='<tr>';
+								str +='<td>'+result[i].name+'</td>';
+								str +='<td>'+result[i].mandalName+'</td>';
+								str +='<td>'+result[i].panchayatName+'</td>';
+								str +='<td>'+result[i].boothName+'</td>';
+								str +='<td><span title="http://www.mytdp.com/cadre_images/'+result[i].url+'"></span>'+'Booth No - '+result[i].boothNumber+'</td>';
+				str +='<td><img src="http://www.mytdp.com/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+								str +='<td>'+result[i].firstName+'</td>';	
+								str +='<td>'+result[i].mobileNumber+'</td>';	
+								str +='<td>'+result[i].memberShipNo+'</td>';
+									
+							str +='</tr>';
+							}
+			  str +='</tbody>';
+			  str +='</table>';
+	$("#userDetailsId").html(str);
+}
+
+function setDefaultImage(img){
+    img.onerror = "";
+    img.src = "images/cadre_images/human.jpg";
+    return true;
+  }

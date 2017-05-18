@@ -14,6 +14,38 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		super(BoothIncharge.class);
 	}
 	
+	public List<Object[]> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId){
+		StringBuilder query = new StringBuilder("select model.booth.partNo, model.booth.villagesCovered, " +
+					" model.booth.constituency.name, " +
+					" model.booth.panchayat.panchayatName," +
+					" model.tdpCadre.firstname, model.tdpCadre.mobileNo, model.tdpCadre.memberShipNo, " +
+					" model.tdpCadre.image, " +
+					" model.booth.tehsil.tehsilName " +
+					" from BoothIncharge model " +
+					" where " +
+					" model.isDeleted='N' "+
+					" and model.tdpCadre.isDeleted='N' ");
+		if(constituencyId !=null && constituencyId.longValue() > 0)
+		query.append(" and model.booth.constituency.constituencyId=:constituencyId");
+		if(mandalId !=null && mandalId.longValue() > 0)
+		query.append(" and model.booth.tehsil.tehsilId=:mandalId");
+		if(boothId !=null && boothId.longValue() > 0)
+		query.append(" and model.booth.boothId=:boothId");
+		
+		Query query1=getSession().createQuery(query.toString());
+		
+		if(constituencyId !=null && constituencyId.longValue() > 0){
+			query1.setParameter("constituencyId", constituencyId);
+		}
+		if(mandalId !=null && mandalId.longValue() > 0){
+			query1.setParameter("mandalId", mandalId);
+		}
+		if(boothId !=null && boothId.longValue() > 0){
+			query1.setParameter("boothId", boothId);
+		}
+		return query1.list();
+	}
+	
 	public List<Long> getCadreIdsForLocation(List<Long> tdpCadreIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select " +
