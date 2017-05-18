@@ -11192,6 +11192,11 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					returnList.add(vo);
 				}
 			}
+			
+			KeyValueVO othervo = new KeyValueVO();
+			othervo.setId(99999L);
+			othervo.setName("OTHERS");
+			returnList.add(othervo);
 		} catch (Exception e) {
 			LOG.error("Error occured getUrbanLocalitiesForMuncipality() method of AlertService{}",e);
 		}
@@ -11206,10 +11211,18 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				for (Object[] obj : list) {
 					KeyValueVO vo = new KeyValueVO();
 					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-					vo.setName(obj[1] != null ? "Block-"+obj[1].toString():"");
+					if(vo.getId() == 99999l)
+						vo.setName(obj[1] != null ? obj[1].toString():"");
+					else
+						vo.setName(obj[1] != null ? "Block-"+obj[1].toString():"");
 					returnList.add(vo);
 				}
 			}
+			
+			/*KeyValueVO othervo = new KeyValueVO();
+			othervo.setId(99999L);
+			othervo.setName("OTHERS");
+			returnList.add(othervo);*/
 		} catch (Exception e) {
 			LOG.error("Error occured getUrbanBlocksForLocality() method of AlertService{}",e);
 		}

@@ -6837,7 +6837,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		return query.list();
 		
     }
-    public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,Date fromDate,Date toDate,Long statusId){
+    public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,Date fromDate,Date toDate,Long statusId,Long deptId){
     	StringBuilder sb = new StringBuilder();
     	 	sb.append(" select distinct model.alertId,model.createdTime,model.title,model.description,model.alertIssueType.issueType," +
     	 			" model.alertIssueSubType.issueType,model.alertStatus.alertStatus,'', district.districtName, " +
@@ -6875,6 +6875,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	if(statusId != null && statusId.longValue() > 0l){
     	 		sb.append(" model.alertStatus.alertStatusId = :statusId and ");
     	 	}
+    	 	if(deptId != null && deptId.longValue() > 0l)
+    	 		sb.append(" model.govtDepartmentId = :deptId and");
     	 	sb.append(" model.isDeleted ='N' and acr.isDeleted = 'N' and model.alertCategoryId = 4");
     	 	Query query = getSession().createQuery(sb.toString());
     	 	if(locatoinType != null && locatoinType.equalsIgnoreCase("district")){
@@ -6896,6 +6898,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	if(statusId != null && statusId.longValue() > 0l){
     	 		query.setParameter("statusId", statusId);
     	 	}
+    	 	if(deptId != null && deptId.longValue() > 0l)
+    	 		query.setParameter("deptId", deptId);
     	 	return query.list();
     	 		 	
     }

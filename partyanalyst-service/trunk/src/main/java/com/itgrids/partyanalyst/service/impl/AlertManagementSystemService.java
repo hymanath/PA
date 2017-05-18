@@ -6894,7 +6894,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  		return null;
  	}
 
-	 public List<GrievanceAlertVO> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,String fromDateStr,String toDateStr,Long statusId){
+	 public List<GrievanceAlertVO> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,String fromDateStr,String toDateStr,Long statusId,Long deptId){
 			List<GrievanceAlertVO> finalVoList = new ArrayList<GrievanceAlertVO>(0);
 		try {
 			Date fromDate = null;
@@ -6906,7 +6906,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
  				toDate = sdf.parse(toDateStr);
  			}
  			
-			List<Object[]> GovtGrivenceDetails = alertDAO.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId,fromDate,toDate,statusId);
+			List<Object[]> GovtGrivenceDetails = alertDAO.getGovtGrievanceAlertDetails(mobileNo,locatoinType,locationId,fromDate,toDate,statusId,deptId);
 			 if(GovtGrivenceDetails != null &&  GovtGrivenceDetails.size()>0){
 				 for(Object[] param : GovtGrivenceDetails){
 					 GrievanceAlertVO Vo = new  GrievanceAlertVO();
