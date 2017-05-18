@@ -10,17 +10,18 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.INotificationService;
-import com.itgrids.partyanalyst.service.ITrainingCampService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class NotificationAction extends ActionSupport implements ServletRequestAware {
 	
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOG = Logger.getLogger(NotificationAction.class);
-	private HttpServletRequest 					request;
-	private HttpSession 						session;
+	transient private HttpServletRequest 					request;
+	transient private HttpSession 						session;
 	private String 								task;
 	private JSONObject							jObj;
 	private ResultStatus 						resultStatus;
@@ -75,32 +76,11 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 	public void setjObj(JSONObject jObj) {
 		this.jObj = jObj;
 	}
-
-
-	public HttpServletRequest getRequest() {
-		return request;
-	}
-
-
-	public void setRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-
-
-	public HttpSession getSession() {
-		return session;
-	}
-
-
-	public void setSession(HttpSession session) {
-		this.session = session;
-	}
-
-
+	
+	
 	public String getTask() {
 		return task;
 	}
-
 
 	public void setTask(String task) {
 		this.task = task;
@@ -111,11 +91,6 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		return jObj;
 	}
 	
-	public void setServletRequest(HttpServletRequest arg0) {
-		// TODO Auto-generated method stub
-	}
-	
-
 	public String getNotificatonStats() {
 		return notificatonStats;
 	}
@@ -132,13 +107,16 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		try{
 			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
 			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
 			String notifctionType=jObj.getString("notificationTypeId");
 			String notificatonTxt=jObj.getString("notificationText");
 			
 			NotificationDeviceVO notifyVO = new NotificationDeviceVO();
 			notifyVO.setRegisteredId(notifctionType);
 			notifyVO.setNotification(notificatonTxt);
-			status=notificationService.pushNotification(notifyVO);
+			status=notificationService.pushNotification(notifyVO,regVO.getRegistrationID());
 		}catch(Exception e){
 			LOG.error("Exception raised at PushNotificationDetails() method of NotificationAction", e);
 		}
@@ -216,6 +194,10 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 			LOG.error("Exception raised at isActiveStatusNotification() method of NotificationAction", e);
 		}
 		return Action.SUCCESS;
+	}
+
+	public void setServletRequest(final HttpServletRequest request) {
+		this.request=request;		
 	}
 	
 }
