@@ -42,17 +42,29 @@ public class BloodDonorInfoDAO extends GenericDaoHibernate<BloodDonorInfo, Long>
 	return query.list();
    }*/
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getBloodDonorDetails(){
+	public List<Object[]> getBloodDonorDetails(String dataType,int firstIndex,int maxResult){
+		Query query = null;
+		if(dataType != null && dataType.equalsIgnoreCase("count")){
+			query = getSession().createQuery(" select " +
+					" count( distinct model.bloodDonorInfoId), ''  from BloodDonorInfo model " +
+					" left join model.tdpCadre tdpCadre " +
+					" where model.isDeleted = 'N' and model.registeredSource = 'app' ");
+		}
+		else{
+			query = getSession().createQuery(" select " +
+					" distinct model.bloodDonorInfoId," +
+					" model.donorName,model.mobileNo," +
+					" model.donationTime, " +
+					" tdpCadre.memberShipNo " +
+					" from BloodDonorInfo model " +
+					" left join model.tdpCadre tdpCadre " +
+					" where model.isDeleted = 'N' and model.registeredSource = 'app' ");
+		}
 		
-		Query query = getSession().createQuery(" select " +
-				" model.bloodDonorInfoId," +
-				" model.donorName,model.mobileNo," +
-				" model.donationTime, " +
-				" tdpCadre.memberShipNo " +
-				" from BloodDonorInfo model " +
-				" left join model.tdpCadre tdpCadre " +
-				" where model.isDeleted = 'N' and model.registeredSource = 'app' ");
-		
+		if(maxResult >0){
+			query.setFirstResult(firstIndex);
+			query.setMaxResults(maxResult);
+		}
 		return query.list();
-	   }
+	 }
 }
