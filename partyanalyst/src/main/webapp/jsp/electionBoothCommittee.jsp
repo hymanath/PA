@@ -205,10 +205,13 @@
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
 						<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getCommitteMembersInfo();" value="VIEW" /></li>
-						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchDiv();" value="ADD" /></li>
+						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchDiv();" value="ADD" /></li>						
 					</ul>
+					
 			</div> 
+			<div id="userDetailsId"></div>
 		</div>
+		
 		<div id="printDiv">		
 			<div id="affiliCommitteeAllInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
 			<div id="elctarolInfoDivId" class="col-md-10 col-md-offset-1 col-sm-12 col-xs-12"></div>
@@ -394,7 +397,7 @@
 						</div>
 						<div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4 m_top10">
 							<button type="submit" class="btn btn-success btn-block" onclick="getCadreDetailsForBoothBySearchCriteria()">SEARCH</button>
-						</div>				
+						</div>						
 					</div>			
 				</div>			
 			</div>
@@ -771,6 +774,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 	
 	function getCommitteMembersInfo(){
 		//alert(1);
+		//shrinuFunction();
 		$("#desigChangErrs").html("");
 		$("#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv").hide();
 		$("#committeeLocationIdErr").html("");
@@ -784,6 +788,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 			$("#committeeLocationIdErr").html("Please Select Location");
 			return;
 		}
+		getBoothUserDetails();
 		if($("#committeeTypeId").val() == 0){
 			$("#committeeTypeIdErr").html("Please Select Committee Type");
 			return;
@@ -1701,6 +1706,30 @@ function getBoothsByMandal(mandalId){
 	}
 	function showSearchDiv(){
 		$("#searchcadrenewDiv").show();
+		$("#userDetailsId").hide();
+	}
+
+function getBoothUserDetails(){
+	var mandalId=$("#panchayatWardByMandal").val();
+	var locationId=$("#committeeLocationId").val();
+	var jsObj={
+		constituencyId:globalLocationId,
+		mandalId:0,
+		boothId:0		
+	}
+	
+	$.ajax({
+	
+	type:"GET",
+	url:"getBoothUserDetailsAction.action",
+	data:{task:JSON.stringify(jsObj)}
+	}).done(function(result){
+			if(result != null && result != ''){
+				getBoothUserDetailsbuild(result);
+			}else{
+				$("#userDetailsId").html(' <center> No Data available... </center>');
+			}
+		});
 	}
 	</script>
   </body>

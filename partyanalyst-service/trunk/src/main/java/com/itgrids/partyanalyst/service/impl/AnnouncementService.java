@@ -11,6 +11,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAnnouncementDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IUserAnnouncementDAO;
 import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.model.Announcement;
 import com.itgrids.partyanalyst.model.UserAnnouncement;
 import com.itgrids.partyanalyst.model.UserConstituencyScope;
 import com.itgrids.partyanalyst.service.IAnnouncementService;
+import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AnnouncementService implements IAnnouncementService {
@@ -36,7 +38,17 @@ public class AnnouncementService implements IAnnouncementService {
 	private TransactionTemplate transactionTemplate = null;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private IBoothInchargeDAO boothInchargeDAO;	
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
+	public IBoothInchargeDAO getBoothInchargeDAO() {
+		return boothInchargeDAO;
+	}
+
+	public void setBoothInchargeDAO(IBoothInchargeDAO boothInchargeDAO) {
+		this.boothInchargeDAO = boothInchargeDAO;
+	}
+
 	private static final Logger log = Logger.getLogger(IAnnouncementService.class);
 	
 	public TransactionTemplate getTransactionTemplate() {
@@ -366,6 +378,34 @@ public class AnnouncementService implements IAnnouncementService {
 				}
 			return statesList;
 		} catch (Exception e) {
+			log.error(" Exception rised in getUserBasedAccessConstituencies ",e);
+		}
+		return null;
+	}
+	
+	public List<SelectOptionVO> getBoothUserDetails(Long constituencyId, Long mandalId, Long boothId){
+		SelectOptionVO optionVo=null;
+		try{
+			ArrayList<SelectOptionVO> finalList=new ArrayList<SelectOptionVO>(0);
+			
+			List<Object[]> result=boothInchargeDAO.getBoothUserDetails(constituencyId, mandalId, boothId);
+			if(result !=null){
+				for(Object[] Obj: result){
+					optionVo = new SelectOptionVO();
+					optionVo.setBoothNumber(commonMethodsUtilService.getLongValueForObject(Obj[0])); 
+					optionVo.setBoothName(commonMethodsUtilService.getStringValueForObject(Obj[1]));
+					optionVo.setName(commonMethodsUtilService.getStringValueForObject(Obj[2]));
+					optionVo.setPanchayatName(commonMethodsUtilService.getStringValueForObject(Obj[3]));
+					optionVo.setFirstName(commonMethodsUtilService.getStringValueForObject(Obj[4]));
+					optionVo.setMobileNumber(commonMethodsUtilService.getLongValueForObject(Obj[5]));
+					optionVo.setMemberShipNo(commonMethodsUtilService.getLongValueForObject(Obj[6]));
+					optionVo.setUrl(commonMethodsUtilService.getStringValueForObject(Obj[7]));
+					optionVo.setMandalName(commonMethodsUtilService.getStringValueForObject(Obj[8]));
+					finalList.add(optionVo);
+				}
+				return finalList;
+			}
+		}catch(Exception e){
 			log.error(" Exception rised in getUserBasedAccessConstituencies ",e);
 		}
 		return null;
