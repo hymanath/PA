@@ -1955,6 +1955,7 @@ $("#buildUpdateDivId").html(str);
 		 var locatoinType;
 		 var mobileNo;
 		 var locationId;
+		 var departmentsId = $("#departmentsId").val();
 		/* $(document).on("click",".radioBtnCls",function(){
 			  var searchType  = $('input[name=checkBoxName]:checked').val();
 			  if(searchType == 1){
@@ -2054,7 +2055,8 @@ $("#buildUpdateDivId").html(str);
 			locationId : locationId,
 			fromDate : "",
 			toDate : "",
-			alertStatusId : 0
+			alertStatusId : 0,
+			deptId : departmentsId
 		}
 		$.ajax({
 			type:'GET',
@@ -2389,10 +2391,18 @@ var glhamletId =0;
  $(document).on("click",".govtGrievanceCls",function(){
 	 $("#errMsgMobileNoId").html('');
 	 $("#errMsgNameId").html('');
+	 $("#errMsgIssueTypeId").html('');
+	 
 	var name = $("#nameId").val().trim();
 	var address = $("#addressId").val().trim();
 	var mobileNo = $("#mobileNoId").val().trim();
+	var issueTypeId = $("#issueTypeId").val();
 	
+	
+	if(issueTypeId == 0){
+		$("#errMsgIssueTypeId").html(" Select Issue Type ");
+		return;
+	}
 	if(mobileNo.length==0 ||mobileNo==''){
 		$("#errMsgMobileNoId").html(" Please Enter MobileNo ");
 		return;
