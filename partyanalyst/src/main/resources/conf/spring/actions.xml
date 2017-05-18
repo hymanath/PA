@@ -1440,7 +1440,8 @@
 	   <property name="mahaNaduService" ref="mahaNaduService" /> 
 	   <property name="regionServiceDataImp" ref="regionServiceDataImp" /> 
 	   <property name="entitlementsHelper" ref="entitlementsHelper" /> 
-	    <property name="cadreCommitteeService" ref="cadreCommitteeService" />    
+	   <property name="cadreCommitteeService" ref="cadreCommitteeService" />   
+	   <property name="notificationService" ref="notificationService" />    
 	</bean>
 	<bean id="cmsAdminAction" class="com.itgrids.partyanalyst.web.action.CmsAdminAction" singleton="false"></bean>
 	
