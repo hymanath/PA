@@ -64,6 +64,17 @@
 	<!-- YUI Dependency files (End) -->
 	
 	<style>
+	#partMeetingModalData thead th:nth-child(5) , #partMeetingModalData thead th:nth-child(3),
+	{
+		width:150px !important;
+		max-width:150px !important;
+	}
+	#partMeetingModalData tr td:nth-child(5) , #partMeetingModalData tr td:nth-child(3),
+	#partMeetingModalData thead th:nth-child(9) , #partMeetingModalData thead th:nth-child(9)
+	{
+		width:100px !important;
+		max-width:100px !important;
+	}
 	.bg_ED
 	{
 		background-color:#EDEDED
@@ -478,7 +489,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="mdlHeadingId" style="text-transform: uppercase;">Search</h4>
+        <h4 class="modal-title" id="mdlHeadingId" style="text-transform: uppercase;">Search And Mark As Duplicate</h4>
       </div>
       <div class="modal-body">
 	  <div class ="row">
@@ -543,8 +554,8 @@
 	<div class="modal-dialog" role="document" style="width:85%;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">ALERT DETAILS</h4>
 			</div>
 			<div class="modal-body modal-insurance">
 				<div id="alertManagementPopupBody"></div>
@@ -586,8 +597,13 @@
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script type="text/javascript" src="alertDepartment/js/newAlertUserManagementDetail.js"></script>
 <script>
-var globalUserLevelId;
-var globalUserLevelValues = [];
+$(document).on("click",".closeFirstModal",function(){
+	setTimeout(function(){
+		$("body").addClass("modal-open")
+	},1000);
+});
+var globalUserLevelId = 0;
+var globalUserLevelValues = [0];
 $(".chosen").chosen({
 	width : '100%'
 });
@@ -599,25 +615,32 @@ google.load("elements", "1", {
 
 getAlertIssueTypes();
 //getAlertCallerTypes();
+
 $("#dateRangeIdForEvents").daterangepicker({
 	opens: 'left',
-	startDate: moment().subtract('month').startOf('month'),
-	endDate: moment().subtract('month').endOf('month'),
+	startDate: moment().startOf('month'),
+	endDate: moment(),
 	locale: {
 	  format: 'DD/MM/YYYY'
 	},
 	ranges: {
-		'This Month': [moment().startOf('month'), moment()],
+		'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+		'Today' : [moment(), moment()],
 	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
 	   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
 	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-	   
+	   'This Month': [moment().startOf('month'), moment()],
 	   'This Year': [moment().startOf('Year'), moment()]
 	}
 });
-
+var dates= $("#dateRangeIdForEvents").val();
+var pickerDates = currentFromDate+' - '+currentToDate
+if(dates == pickerDates)
+{
+	$("#dateRangeIdForEvents").val('All');
+}
 function getDistrictsForReferPopup() {
 	var stateId = $("#stateId").val();
 	
@@ -1705,13 +1728,15 @@ function buildAlertDetails(result,status,alertStatusId){
 			str+='<h4 class="panel-title">'+status+' Status Grievance Details</h4>';
 		str+='</div>';
 		str+='<div class="panel-body">';
-			str+='<div class="table-responsive">';
+				str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered text-center table-condensed" id="tabbDetails">';
 					str+='<thead>';
+						str+='<th  style="text-align:center">ALERT ID</th>';
 						str+='<th  style="text-align:center">TITLE</th>';
 						str+='<th  style="text-align:center">DEPARTMENT</th>';
 						str+='<th  style="text-align:center">ISSUE TYPE</th>';
 						str+='<th  style="text-align:center">ISSUE SUB TYPE</th>';
+						str+='<th  style="text-align:center">ALERT STATUS</th>';
 						str+='<th  style="text-align:center">IMPACT LEVEL</th>';
 						str+='<th  style="text-align:center">LOCATION</th>';
 						str+='<th  style="text-align:center"> CREATED ON</th>'; 
@@ -1719,7 +1744,9 @@ function buildAlertDetails(result,status,alertStatusId){
 						str+='<th  style="text-align:center"> CREATED BY</th>'; 
 						str+='<th  style="text-align:center"> FEEDBACK STATUS  </th>'; 
 						
-						if(alertStatusId !=null && alertStatusId>0 &&  alertStatusId == 4 || alertStatusId == 12){
+						if(alertStatusId !=null && alertStatusId>0 &&  (alertStatusId == 4 || alertStatusId == 12)){
+							str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
+						}else{
 							str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
 						}
 						
@@ -1728,43 +1755,47 @@ function buildAlertDetails(result,status,alertStatusId){
 					for( var i in result){
 						var locationName ="";
 						if(result[i].district != null && result[i].district.length>0)
-							locationName = locationName+" "+result[i].district+" District,<br> ";
+							locationName = locationName+"District : "+result[i].district+"<br> ";
 						if(result[i].constituency != null && result[i].constituency.length>0)
-							locationName = locationName+" "+result[i].constituency+" Assembly ,<br> ";
+							locationName = locationName+"Assembly : "+result[i].constituency+"<br> ";
 						
 						if(result[i].tehsil != null){
 							if(result[i].tehsil != null && result[i].tehsil.length>0)
-								locationName = locationName+" "+result[i].tehsil+" Mandal,<br> ";
+								locationName = locationName+"Mandal : "+result[i].tehsil+"<br> ";
 							if(result[i].panchayat != null && result[i].panchayat.length>0)
-								locationName = locationName+" "+result[i].panchayat+" Panchayat,<br> ";
+								locationName = locationName+"Panchayat : "+result[i].panchayat+"<br> ";
 							if(result[i].hamlet != null && result[i].hamlet.length>0)
-								locationName = locationName+" "+result[i].hamlet+" Hamlet , <br>";
+								locationName = locationName+"Hamlet : "+result[i].hamlet+"<br>";
 						}
 						else{
 							if(result[i].leb != null && result[i].leb.length>0)
-								locationName = locationName+" "+result[i].leb+" Munci/Corp/Greater City, <br>";
+								locationName = locationName+"Munci/Corp/Greater City : "+result[i].leb+"<br>";
 							if(result[i].ward != null && result[i].ward.length>0)
-								locationName = locationName+" "+result[i].ward+"  ";
+								locationName = locationName+"Ward : "+result[i].ward+"";
 						}
 						
-						
-					
-					
-						str+='<tr>';
+						if(result[i].callerDuplicate == 'YES')
+							str+='<tr style="background-color:#ddd;">';
+						else
+							str+='<tr>';
+							str+='<td><a style="text-transform: uppercase;cursor:pointer;color:#337ab7" class="text-center alertIdSpecialSearch" attr_alertId="'+result[i].alertId+'">'+result[i].alertId+'</a></td>';
 							str+='<td>'+result[i].title+'</td>';
 							str+='<td>'+result[i].deptName+'</td>';
 							str+='<td>'+result[i].issueType+'</td>';
 							str+='<td>'+result[i].issueSubType+'</td>';
-							str+='<td>'+result[i].locationName+'</td>';
-							str+='<td style="">'+locationName+'</td>';
+							str+='<td>'+result[i].status+'</td>';
+							str+='<td >'+result[i].locationName+'</td>';
+							str+='<td style="text-align:left;">'+locationName+'</td>';
 							str+='<td>'+result[i].createdTime+'</td>';
 							//str+='<td>'+result[i].name+'<br>MobileNo:'+result[i].mobileNo+'</td>';
 							if(result[i].idNamesList != null && result[i].idNamesList.length > 0){
-								str+='<td>';
+								str+='<td style="text-align:left;">';
 								for(var j in result[i].idNamesList){
 									str+='<p>'+result[i].idNamesList[j].name+', MNo:'+result[i].idNamesList[j].mobileNo+'</p>';
 								}
 								str+='</td>';
+							}else{
+								str+='<td> - </td>';
 							}
 							str+='<td>'+result[i].userName+'</td>';
 							str+='<td>';
@@ -1773,22 +1804,27 @@ function buildAlertDetails(result,status,alertStatusId){
 							}
 						str+='</td>';
 						
-						if(alertStatusId !=null && alertStatusId>0 &&  alertStatusId == 4 || alertStatusId == 12){
+						if(result[i].statusId !=null && result[i].statusId>0 &&  (result[i].statusId == 4 || result[i].statusId == 12)){
 							str+='<td>';
 								str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
 							str+='</td>';
+						}else{
+							str+='<td> - </td>';
 						}
 						str+='</tr>';
 					}
 					str+='</tbody>';
 				str+='</table>';
-			str+='</div>';
+				str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	
 	$("#alertDataDivId").html(str);
 	$('#tabbDetails').dataTable();
 	$("#tabbDetails").removeClass("dataTable");
+	setTimeout(function(){
+		$("#alertManagementPopup").find(".closeSecondModal").removeClass("closeSecondModal");
+	},1000)
 }
 $(document).on("click",".updateAlertCls",function(){ 
 	var alertId = $(this).attr("attr_alert_id");
@@ -2072,10 +2108,7 @@ $("#buildUpdateDivId").html(str);
 	}
   function buildGovtGrievanceAlertDetails(result){
 	var str = '';
-	if($(window).width() < 768)
-	{
-		str+='<div class="table-responsive">';
-	}
+	str+='<div class="table-responsive">';
 	str +='<table class="table table-bordered table-condensed " id="partMeetingModalData">'; 
 		str +='<thead class=" bg_ED">';
 			str +='<th style="text-transform: uppercase;"> Alert ID</th>';
@@ -2090,15 +2123,18 @@ $("#buildUpdateDivId").html(str);
 			str +='<th style="text-transform: uppercase;"> Duplicate</th>';
 		str +='</thead>';
 		str +='<tbody>';
-		for(var i in result){		
-			str+='<tr>';
+		for(var i in result){	
+			if(result[i].callerDuplicate == 'YES')
+				str+='<tr style="background-color:#ddd">';
+			else
+				str+='<tr>';
 				if(result[i].alertId != null){
-					str+='<td style="text-transform: uppercase;cursor:pointer;color:#337ab7" class="text-center alertIdSpecialSearch" attr_alertId="'+result[i].alertId+'">'+result[i].alertId+'</td>';
+					str+='<td><a style="text-transform: uppercase;cursor:pointer;color:#337ab7" class="text-center alertIdSpecialSearch" attr_alertId="'+result[i].alertId+'">'+result[i].alertId+'</a></td>';
 				}else{
 					str+='<td style="text-transform: uppercase;" class="text-center">-</td>';
 				}
 			if(result[i].date != null){
-				str+='<td style="text-transform: uppercase;">'+result[i].date+'&nbsp;&nbsp;'+result[i].time+'</td>';
+				str+='<td style="text-transform: uppercase;">'+result[i].date+'<br/>'+result[i].time+'</td>';
 			}else{
 				str+='<td>-</td>';
 			}
@@ -2118,8 +2154,10 @@ $("#buildUpdateDivId").html(str);
 					locationName = locationName+" Munci/Corp/Greater City : "+result[i].leb+"<br>";
 				if(result[i].ward != null && result[i].ward.length>0)
 					locationName = locationName+" "+result[i].ward+"  ";
-				
-				str+='<td style="">'+locationName+'</td>';
+				if(locationName.length > 25)
+					str+='<td><span  class="tooltipCls" title="'+locationName+'">'+locationName.substring(0,25)+'...</span></td>';
+				else
+					str+='<td>'+locationName+'</td>';
 			}else{
 				str+='<td>-</td>';
 			}
@@ -2129,7 +2167,13 @@ $("#buildUpdateDivId").html(str);
 				str+='<td>-</td>';
 			}
 			if(result[i].description != null){
-				str+='<td style="text-transform: uppercase;">'+result[i].description+'</td>';
+				if(result[i].description.length > 50)
+				{
+					str+='<td style="text-transform: uppercase;"><span  class="tooltipCls" title="'+result[i].description+'">'+result[i].description.substring(0,50)+'...</span></td>';
+				}else{
+					str+='<td style="text-transform: uppercase;">'+result[i].description+'</td>';
+				}
+				
 			}else{
 				str+='<td>-</td>';
 			}
@@ -2151,7 +2195,7 @@ $("#buildUpdateDivId").html(str);
 			if(result[i].subList != null &&  result[i].subList.length > 0){
 				str+='<td>';
 					for(var j in result[i].subList){
-						str+='<p>'+result[i].subList[j].name+' - '+result[i].subList[j].mobileNo+'</p>'
+						str+='<p>'+result[i].subList[j].name+' <br/> '+result[i].subList[j].mobileNo+'</p>'
 					}
 				str+='</td>';
 				//str+='<td style="text-transform: uppercase;">'+result[i].createdBy+'</td>';
@@ -2166,14 +2210,12 @@ $("#buildUpdateDivId").html(str);
 		}
 		str +='</tbody>';
 	str +='</table>';
-	if($(window).width() < 768)
-	{
-		str +='</div>';
-	}
+	str +='</div>';
 	$("#commentsBlock").html(str); 
+	$(".tooltipCls").tooltip();
 	$("#partMeetingModalData").dataTable();
 	$("#partMeetingModalData").removeClass("dataTable");
-	
+	$("#alertManagementPopup").find(".close").addClass("closeSecondModal");
 }
 	
 	$(document).on("click",".modalRadioCls",function(){
@@ -2229,10 +2271,15 @@ $("#buildUpdateDivId").html(str);
 			if(result != null && result == 'success'){
 				$("#"+loadngImg).hide();
 				alert("This Caller Request has been marked as Duplicate for the Ref No: "+alertId+" and SMS sent to Caller mobile "+mobileNo);
+				location.reload();
+				$("#mobileNoId").val('');
+				$("#nameId").val('');
+				$("#emailId").val('');
+				$("#addressId").val('');
 			}
 			else{
 				$("#"+loadngImg).hide();
-				$("#modalErrorDiv").html("Exception Occured...");
+				alert("Exception Occured...Please Try Again..");
 			}
 		});
 	});
@@ -2377,9 +2424,20 @@ $("#buildUpdateDivId").html(str);
 		  $(".mobileSearchCls").show();
 		  $(".locationSearchCls").hide();
 		 mobileNo =$("#searchBy").val();
+		 var priviousMobileNo =$("#mobileNoId").val();
+			$("#searchBy").val(priviousMobileNo);
+			getGovtGrievanceAlertDetails();
 	  }else if(searchType == 2){
 		  $(".locationSearchCls").show();
 		  $(".mobileSearchCls").hide();
+		  glDistrictId =$("#referdistrictId").val();
+			glMandalId = $("#refermandalNameId").val();
+			glPanchayatId = $("#referpanchayatId").val();
+			glhamletId =$("#hamletId").val();
+			
+			$("#modalDistrictId").val(glDistrictId);
+			$("#modalDistrictId").trigger('chosen:updated');
+			$("#modalDistrictId").trigger("onchange");
 	  }
 });
 			  

@@ -824,7 +824,6 @@ function onLoadClicks()
 	});
 	$(document).on("click",".alertIdSpecialSearch",function(e){
 		var alertId = $(this).attr("attr_alertId");
-		alert(alertId)
 		$("#alertManagementPopup").modal({
 			show: true,
 			keyboard: false,
@@ -832,7 +831,7 @@ function onLoadClicks()
 		});
 		$("#alertManagementPopupBody").html("<div class='row'><div id='rightSideExpandView'></div></div>");
 		rightSideExpandView(alertId);
-		popUpFilter('heading','','','');
+		//popUpFilter('heading','','','');
 		$(".flipview-btn,.filters-icon").hide();
 		var alertId = '';
 		$("#modalHeadingTotal").html("Alert Status");
@@ -1292,10 +1291,21 @@ function getStatusCompletionInfo(alertId){
 						str+='<ul class="list-inline slickSlider">';
 						for(var  j in result[0].idnameList)
 						{
-							str+='<li>';
-								str+='<p class="m_top10">Name : '+result[0].idnameList[j].callerName+' </p>';
-								str+='<p> Mobile No : '+result[0].idnameList[j].mobileNo+' </p>';
-								str+='<p> Caller : '+result[0].idnameList[j].userType+'</p>';
+							str+='<li style="padding:0px 8px;margin:0px 5px;border:1px solid #ddd;">';
+								str+='<table class="table table-condensed">';
+									str+='<tr>';
+										str+='<td>Name</td>';
+										str+='<td>: '+result[0].idnameList[j].callerName+'</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>Mobile No</td>';
+										str+='<td>: '+result[0].idnameList[j].mobileNo+'</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>Caller</td>';
+										str+='<td>: '+result[0].idnameList[j].userType+'</td>';
+									str+='</tr>';
+								str+='</table>';
 							str+='</li>';
 						}
 						str+='</ul>';
@@ -3077,7 +3087,7 @@ function popUpFilter(type,result,statusName,statuscount)
 			str1+='<div class="col-sm-4">';
 				str1+='<ul class="list-icons pull-right list-inline">';
 					str1+='<li class="filters-icon"><i class="glyphicon glyphicon-filter "></i></li>';
-					str1+='<li data-dismiss="modal" aria-label="Close"><i class="glyphicon glyphicon-remove"></i></li>';
+					str1+='<li data-dismiss="modal" class="closeFirstModal" aria-label="Close"><i class="glyphicon glyphicon-remove"></i></li>';
 				str1+='</ul>';
 				str1+='<ul class="flipview-btn filtersSwitch pull-right" style="border:1px solid #ddd;">';
 					str1+='<li class="active">Classic</li>';
