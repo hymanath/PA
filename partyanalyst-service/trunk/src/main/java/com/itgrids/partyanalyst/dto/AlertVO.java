@@ -84,8 +84,15 @@ public class AlertVO {
 	private String verifyStatus;
 	
 	private Long newAlertStatusId;
+	private String callerDuplicate;
 	
 	
+	public String getCallerDuplicate() {
+		return callerDuplicate;
+	}
+	public void setCallerDuplicate(String callerDuplicate) {
+		this.callerDuplicate = callerDuplicate;
+	}
 	public String getUserName() {
 		return userName;
 	}

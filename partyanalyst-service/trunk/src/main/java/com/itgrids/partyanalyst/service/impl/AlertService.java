@@ -10516,6 +10516,13 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					}
 				}
 			}
+			
+			if(returnList != null && !returnList.isEmpty()){
+				for (AlertVO alertVO : returnList) {
+					if(alertVO.getIdNamesList().size() > 1)
+						alertVO.setCallerDuplicate("YES");
+				}
+			}
 		}catch(Exception e){
 			LOG.error("Error occured getAlertDetailsByStatusId() method of AlertService{}",e);
 		}

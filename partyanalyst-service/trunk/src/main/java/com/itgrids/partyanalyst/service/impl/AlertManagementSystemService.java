@@ -6950,6 +6950,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					}
 				 }
 			 }
+			 
+			 if(finalVoList != null && !finalVoList.isEmpty()){
+					for (GrievanceAlertVO alertVO : finalVoList) {
+						if(alertVO.getSubList().size() > 1)
+							alertVO.setCallerDuplicate("YES");
+					}
+				}
 							
 			} catch (Exception e) {
 				LOG.error(" Exception Occured in getGovtGrievanceAlertDetails() method, Exception - ",e);
