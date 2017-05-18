@@ -17309,6 +17309,9 @@
 			<param name="root">idAndNameVOList</param>       
 		</result> 
 	</action>
+  <action name="mahanaduNotificationAction" class="mahaNaduAction" method="getNotificationType">
+		    <result name="success">/jsp/notificationWebview.jsp</result>
+	</action>
 		
 	<action name="updateDuplicateAlertCallerDetailsAction" class="createAlertAction"  method="updateDuplicateAlertCallerDetails">
 		<result type="json" name="success">    
