@@ -3108,7 +3108,43 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;			
 	}
-	
+	public String getFeedbackAlert(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDateStr=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			Long stateId=jObj.getLong("stateId");
+			Long locationId=jObj.getLong("locationId");
+			Long statusId=jObj.getLong("statusId");
+			String type = jObj.getString("type");
+			
+			alertCoreDashBoardVOs = alertService.getFeedbackAlertDetails(fromDate,toDateStr,stateId,deptId,sourceId,locationId,statusId,type);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getFeedbackAlert Method",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getLocationWiseFeebbackAlert(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDate=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			Long stateId=jObj.getLong("stateId");
+			Long LocationId=jObj.getLong("LocationId");
+			Long statusId=jObj.getLong("statusId");
+			String areaType = jObj.getString("areaType");
+			String groupType = jObj.getString("groupType");
+			String type = jObj.getString("type");
+			alertCoreDashBoardVOs = alertService.getLocationWiseFeebBackAlert(fromDate,toDate,stateId,deptId,sourceId,LocationId,statusId,areaType,groupType,type);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getLocationWiseFeebbackAlert Method",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String updateDuplicateAlertCallerDetails(){
 		try {
 			session = request.getSession();

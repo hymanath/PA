@@ -102,7 +102,13 @@ $("#statusWiseAlertCntId").html(spinner);
 	        		str+='<th>District</th>';     
 	        		str+='<th>Total</th>';
 					for(var i in result[0].subList1){       
-			           str+='<th>'+result[0].subList1[i].statusType+'</th>';
+			           if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
+						str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
+						}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
+							str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
+						}else{
+							str+='<th>'+result[0].subList1[i].statusType+'</th>';
+						}
 					}
 					for(var j in result[0].subList2){         
 						str+='<th style="background-color:#ecebd6">'+result[0].subList2[j].day+'</th>';
@@ -112,20 +118,25 @@ $("#statusWiseAlertCntId").html(spinner);
 			str+='<tbody>';
 			var locTotal = 0;
 			for(var i in result){
+			
 				str+='<tr>'; 
-					str+='<td style="cursor:pointer;" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_location_name="'+result[i].name+'"class="bellowLvlLocCls"><i class="glyphicon glyphicon-plus-sign"></i>'+result[i].name+'</td>';         
-					str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_group_type="status" attr_location_id="'+result[i].id+'">'+result[i].totalAlertCnt+'</td>';
+					str+='<td style="cursor:pointer;" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_location_name="'+result[i].name+'"class="bellowLvlLocCls"><i class="glyphicon glyphicon-plus-sign"></i> '+result[i].name+'</td>';         
+					str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_type="other" attr_group_type="status" attr_location_id="'+result[i].id+'">'+result[i].totalAlertCnt+'</td>';
 					locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
 					for(var j in result[i].subList1){
+						var type = "other";
+						if(result[i].subList1[j].name != null){
+							type = result[i].subList1[j].name;
+						}
 						if(result[i].subList1[j].totalAlertCnt != 0){
-							str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="'+result[i].id+'" attr_group_type="status">'+result[i].subList1[j].totalAlertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_type="'+type+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="'+result[i].id+'" attr_group_type="status">'+result[i].subList1[j].totalAlertCnt+'</td>';
 						}else{
 							str+='<td>-</td>';
 						}      
 					}
 					for(var j in result[i].subList2){  
 						if(result[i].subList2[j].totalAlertCnt != 0){        
-							str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_pattern="'+result[i].subList2[j].day+'" attr_location_id="'+result[i].id+'" attr_group_type="day">'+result[i].subList2[j].totalAlertCnt+'</td>';
+							str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_type="other" attr_pattern="'+result[i].subList2[j].day+'" attr_location_id="'+result[i].id+'" attr_group_type="day">'+result[i].subList2[j].totalAlertCnt+'</td>';
 						}else{      
 							str+='<td>-</td>';
 						}
@@ -390,11 +401,16 @@ function getDistrintInformation(){
  function buildLocationWiseGrivenacereportGraph(result){
 	var statusNamesArray =[];
 	var statusIdNameArr=[];
+	
  	    for(var i in result[0].subList1){
-				 statusNamesArray.push(result[0].subList1[i].statusType);
-				 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId});
- 	    }
- Highcharts.chart('statusWiseAlertCntId', {
+			 var type = "other";
+			 if(result[0].subList1[i].name != null){
+			   type = result[0].subList1[i].name;
+			 }
+			 statusNamesArray.push(result[0].subList1[i].statusType);
+			 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId,"type":type});
+		   }
+	Highcharts.chart('statusWiseAlertCntId', {
              colors: ['#FFCF2C'],
              chart: {
                  backgroundColor:'transparent',
@@ -443,7 +459,7 @@ function getDistrintInformation(){
                  enabled: false
              },
              plotOptions: {
-                 series: {
+                 column: {
                      borderWidth: 0,
                      dataLabels: {
                          enabled: true,
@@ -456,10 +472,18 @@ function getDistrintInformation(){
 							}
 
                      },
+				 },
+				 series: {
+					cursor: 'pointer',
 					 point: {
 						events: {
 							 click: function () {
-								getAlertStatusWise(this.id,this.status);
+								var type = this.type;
+								 if(type!="other"){
+								   getStatusWiseFeebbackAlertDtls(this.id,this.type);
+								 }else{
+								  getAlertStatusWise(this.id,this.status);   
+								 }
 							 }
 						 }
 					 }
@@ -563,6 +587,7 @@ function getDistrintInformation(){
 onLoadInitialisations();        
 function onLoadInitialisations(){                     
 	$(document).on("click",".getAlertDtlsCls",function(){
+		var type = $(this).attr("attr_type");
 		$("#totalAlertDistricTableId").html("");  
 		$("#grievanceDtlsModalId").modal("show");     
 		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -586,6 +611,10 @@ function onLoadInitialisations(){
 		}
 		if(pattern==undefined){
 		   pattern="";     
+		}
+		if(type!="other"){
+			getFeedbackAlert(callCenterUserFDate,callCenterUserTDate,deptId,sourceId,locationId,statusId,rangeType,type);
+			return;
 		}
 		 
 		var jobj = {
@@ -629,6 +658,11 @@ function onLoadInitialisations(){
 		var sourceId=$("#selectMediaId").val();
         var deptId=$("#selecDepartmentId").val();
 	    var rangeType=$("#dateRangeId").attr("value");
+		var type = $(this).attr("attr_type");
+		 if(type != "other"){
+			 getFeedbackAlert(fromDate,toDate,deptId,sourceId,locationId,statusId,rangeType,type);
+			 return;
+		 }
 		var jobj = {
 		  fromDate: fromDate,                       
 		  toDateStr:toDate,  
@@ -670,6 +704,8 @@ function onLoadInitialisations(){
  
 	$(document).on("click",".bellowLvlLocCls",function(){
 		$("#bellowLvlLocId").modal("show");
+		
+		$("#tehsilTableId").html(spinner);
 		var deptId=$("#selecDepartmentId").val();
 		var sourceId=$("#selectMediaId").val();
 		var locationId = $(this).attr("attr_location_id");
@@ -692,16 +728,26 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},    
 		}).done(function(result){
+			$("#tehsilTableId").html('');
 			buildGrievanceReportForBellowLocation(result,locationId,locationName,groupType);  
 		});
 	});
 	$(document).on("click",".panchayatDataCls",function(){
+		var signValue = $(this).find('i').hasClass("glyphicon-minus-sign");
+		
+		if(signValue){
+			$(this).closest('tr').next('tr.hiddenRow').hide();
+		}else{
+			$(this).closest('tr').next('tr.hiddenRow').show();
+		}
+		$(this).find('i').toggleClass("glyphicon-minus-sign");
 		var deptId=$("#selecDepartmentId").val();
 		var sourceId=$("#selectMediaId").val();
 		var locationId = $(this).attr("attr_location_id");
 		var groupType = $(this).attr("attr_group_type");  
 		var positionValue = $(this).attr("attr_position");  
-		   
+		 
+		$("#demo"+positionValue).html(spinner); 		 
 		var jobj = {
 		  fromDate: callCenterUserFDate,                          
 		  toDateStr:callCenterUserTDate, 
@@ -718,12 +764,16 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},    
 		}).done(function(result){
+			$("#demo"+positionValue).html('');
+				
 			buildGrievanceReportForPanchayat(result,positionValue,locationId,groupType);         
 		});
 	});
 	$(document).on("click",".bellowLvlCls",function(){
-		$("#grievanceDtlsModalId").modal("show");
+		var type = $(this).attr("attr_type");
 		
+		$("#grievanceDtlsModalId").modal("show");
+		$("#removeClassModal").addClass("closeSecondModal")
 		$("#totalAlertDistricTableId").html('');     
 		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
 		var deptId=$("#selecDepartmentId").val();
@@ -733,25 +783,49 @@ function onLoadInitialisations(){
 		var areaType = $(this).attr("attr_area_type"); 
 		var groupType = $(this).attr("attr_group_type"); 
 		var status = $(this).attr("attr_status"); 
-		var jobj = {
-		  fromDate: callCenterUserFDate,                          
-		  toDateStr:callCenterUserTDate, 
-		  deptId:deptId,
-		  sourceId:sourceId, 
-		  stateId:1,
-		  LocationId:locationId,
-		  statusId:statusId,
-		  areaType:areaType,
-		  groupType:groupType   
-		}   
-		$.ajax({    
-		  type : "POST",
-		  url  : "getGrievanceReportDtlsForBellowLocationAction.action",  
-		  dataType: 'json',       
-		  data: {task:JSON.stringify(jobj)},        
-		}).done(function(result){
-			buildAlertStatusWise(result,status);  
-		});
+		if(type != null && type=="other"){
+				var jobj = {
+				  fromDate: callCenterUserFDate,                          
+				  toDateStr:callCenterUserTDate, 
+				  deptId:deptId,
+				  sourceId:sourceId, 
+				  stateId:1,
+				  LocationId:locationId,
+				  statusId:statusId,
+				  areaType:areaType,
+				  groupType:groupType   
+				}   
+				$.ajax({    
+				  type : "POST",
+				  url  : "getGrievanceReportDtlsForBellowLocationAction.action",  
+				  dataType: 'json',       
+				  data: {task:JSON.stringify(jobj)},        
+				}).done(function(result){
+					buildAlertStatusWise(result,status);  
+			 });	
+		}else{
+			 var jobj = {
+			  fromDate: callCenterUserFDate,                          
+			  toDateStr:callCenterUserTDate, 
+			  deptId:deptId,
+			  sourceId:sourceId, 
+			  stateId:1,
+			  LocationId:locationId,
+			  statusId:statusId,
+			  areaType:areaType,
+			  groupType:groupType ,
+              type:type			  
+			}   
+			$.ajax({    
+			  type : "POST",
+			  url  : "getLocationWiseFeebbackAlertAction.action",  
+			  dataType: 'json',       
+			  data: {task:JSON.stringify(jobj)},        
+			}).done(function(result){
+				buildAlertStatusWise(result,status);  
+			});
+		}
+		
 	});
 	$(document).on("click","#statusId",function(){
 		var alertId = $(this).attr("attr_alert_id");
@@ -780,6 +854,8 @@ function onLoadInitialisations(){
 		getAlertStatusWise(0,"All Status");      
 	});
 	$(document).on("click",".getAlertDtlsOnDateWise",function(){
+		
+		var type = $(this).attr("attr_type");
 		$("#totalAlertDistricTableId").html("");  
 		$("#grivenaceModalHeedingId").html("");    
 		$("#grievanceDtlsModalId").modal("show");     
@@ -791,25 +867,55 @@ function onLoadInitialisations(){
 		var sourceId=$("#selectMediaId").val();
         var deptId=$("#selecDepartmentId").val();
 	    var rangeType=$("#dateRangeId").attr("value");
-		var jobj = {
-		  fromDate: fromDate,                       
-		  toDateStr:toDate,  
-		  deptId:deptId,
-		  sourceId:sourceId,                                      
-		  stateId:1,
-		  locationId:locationId,
-		  statusId : statusId,      
-		  rangeType:rangeType        
-		  }
-		$.ajax({    
-		  type : "POST",
-		  url  : "getGrievanceReportBasedOnLocationAndStatus.action",  
-		  dataType: 'json',
-		  data: {task:JSON.stringify(jobj)},
-		}).done(function(result){
-			  buildGrivenceDetailsTableOld(result);
-		});
+		
+		 if(type != null && type=="other"){
+			 getStatusWiseAlert(fromDate,toDate,deptId,sourceId,locationId,statusId,rangeType);
+		 }else{
+			 getFeedbackAlert(fromDate,toDate,deptId,sourceId,locationId,statusId,rangeType,type);
+		 }
+		
 	});
+	function getStatusWiseAlert(fromDate,toDate,deptId,sourceId,locationId,statusId,rangeType){
+			var jobj = {
+			  fromDate: fromDate,                       
+			  toDateStr:toDate,  
+			  deptId:deptId,
+			  sourceId:sourceId,                                      
+			  stateId:1,
+			  locationId:locationId,
+			  statusId : statusId,      
+			  rangeType:rangeType        
+			  }
+			$.ajax({    
+			  type : "POST",
+			  url  : "getGrievanceReportBasedOnLocationAndStatus.action",  
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jobj)},
+			}).done(function(result){
+				  buildGrivenceDetailsTableOld(result);
+			});
+	}
+		function getFeedbackAlert(fromDate,toDate,deptId,sourceId,locationId,statusId,rangeType,type){
+				var jobj = {
+				  fromDate: fromDate,                       
+				  toDateStr:toDate,  
+				  deptId:deptId,
+				  sourceId:sourceId,                                      
+				  stateId:1,
+				  locationId:locationId,
+				  statusId : statusId,      
+				  rangeType:rangeType,
+                  type:type				  
+				  }
+				$.ajax({    
+				  type : "POST",
+				  url  : "getFeedbackAlertAction.action",  
+				  dataType: 'json',
+				  data: {task:JSON.stringify(jobj)},
+				}).done(function(result){
+					  buildGrivenceDetailsTableOld(result);
+				});
+		}
 	$(document).on("click",".getAlertDtlsOnCategoryWise",function(){
 		$("#totalAlertDistricTableId").html("");  
 		$("#grivenaceModalHeedingId").html("");
@@ -844,7 +950,7 @@ function onLoadInitialisations(){
 function buildGrievanceReportForBellowLocation(result,locationId,locationName,groupType){
 	var str = '';
 	str+='<div class="table-responsive">';
-		str+='<table class="table table-inr-x table-bordered" style="border-collapse:collapse;">';
+		str+='<table class="table table-inr-x table-bordered" style="border-collapse:collapse;" id="dataTableForOuterSec">';
 			str+='<thead>';
 				str+='<tr>';
 					if(groupType=="tehsil"){
@@ -856,42 +962,55 @@ function buildGrievanceReportForBellowLocation(result,locationId,locationName,gr
 					}
 					
 					str+='<th>Total</th>';
-					for(var i in result[0].subList1){       
-						str+='<th>'+result[0].subList1[i].statusType+'</th>';
+					for(var i in result[0].subList1){
+						if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
+						str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
+						}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
+							str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
+						}else{
+							str+='<th>'+result[0].subList1[i].statusType+'</th>';
+						}
 					}
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
 			for(var i in result){
+			
 				if(result[i].name == "OTHER"){
 					str+='<tr>';
 					str+='<td>'+result[i].name+'</td>'; 
 				}else{
 					str+='<tr data-toggle="collapse" data-target="#demo'+i+'" class="accordion-toggle">';
-					str+='<td><button class="btn btn-default btn-xs panchayatDataCls" attr_position="'+i+'" attr_location_id="'+result[i].id+'" attr_group_type="panchayat"><span class="glyphicon glyphicon-plus-sign " ></span></button>'+result[i].name+'</td>'; 
+					str+='<td class="panchayatDataCls" attr_position="'+i+'" attr_location_id="'+result[i].id+'" attr_group_type="panchayat"><i class="glyphicon glyphicon-plus-sign"></i> '+result[i].name+'</td>'; 
 				}
 				if(result[i].name == "OTHER"){
-					str+='<td class="bellowLvlCls" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';  
+					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';  
 				}else{
-					str+='<td class="bellowLvlCls" attr_area_type="tehsil" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';  
+					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="tehsil" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';  
 				}
 					 
 					var len = result[i].subList1.length;
 					len=parseInt(len)+2;
 					for(var j in result[i].subList1){
+						var type = "other";
+						if(result[i].subList1[j].name != null){
+						  type = result[i].subList1[j].name;	
+						}
 						if(result[i].subList1[j].totalAlertCnt != 0){        
 							if(result[i].name == "OTHER"){
-								str+='<td class="bellowLvlCls" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
+								str+='<td class="bellowLvlCls" attr_type="'+type+'" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
 							}else{
-								str+='<td class="bellowLvlCls" attr_area_type="tehsil" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
+								str+='<td class="bellowLvlCls" attr_type="'+type+'" attr_area_type="tehsil" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
 							}
 						}else{
 							str+='<td>-</td>';
 						}      
 					}
 				str+='</tr>';
-				str+='<tr>';
-					str+='<td colspan="'+len+'" class="hiddenRow">';
+				
+						
+				str+='<tr style="display:none;" class="hiddenRow" attr_id="demo'+i+'">';
+					str+='<td colspan="'+len+'" >';
 						str+='<div class="accordian-body collapse" id="demo'+i+'">';
 						str+='</div>';
 					str+='</td>';
@@ -901,11 +1020,13 @@ function buildGrievanceReportForBellowLocation(result,locationId,locationName,gr
 		str+='</table>';
 	str+='</div>';
 	$("#tehsilTableId").html(str);
+	
 	  
 }
 function buildGrievanceReportForPanchayat(result,positionValue,locationId,groupType){
 	var str = '';
-	str+='<table class="table table-inr">';
+	str+='<div class="table-responsive">';
+	str+='<table class="table table-inr" style="border: 1px solid rgb(72, 72, 72); background: rgb(248, 243, 255) none repeat scroll 0% 0%;">';
 		str+='<thead>';
 			str+='<tr>';
 				if(groupType=="panchayat"){
@@ -915,26 +1036,37 @@ function buildGrievanceReportForPanchayat(result,positionValue,locationId,groupT
 				}
 				str+='<th>Total</th>';
 				for(var i in result[0].subList1){       
-					str+='<th>'+result[0].subList1[i].statusType+'</th>';
+					if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
+						str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
+						}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
+							str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
+						}else{
+							str+='<th>'+result[0].subList1[i].statusType+'</th>';
+						}
 				}
 			str+='</tr>';
 		str+='</thead>';
 		str+='<tbody>';
 		for(var i in result){
+			
 			str+='<tr>';
 				str+='<td>'+result[i].name+'</td>';
 				if(result[i].name == "OTHER"){
-					str+='<td class="bellowLvlCls" attr_area_type="panchayat" attr_group_type="tehsil" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';
+					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="panchayat" attr_group_type="tehsil" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';
 				}else{
-					str+='<td class="bellowLvlCls" attr_area_type="panchayat" attr_group_type="panchayat" attr_location_id="'+result[i].id+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';
+					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="panchayat" attr_group_type="panchayat" attr_location_id="'+result[i].id+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';
 				}
 				
-				for(var j in result[i].subList1){           
+				for(var j in result[i].subList1){
+                    var type = "other";					
+                      if(result[i].subList1[j].name != null){
+						type = result[i].subList1[j].name;  
+					  }				
 					if(result[i].subList1[j].totalAlertCnt != 0){
 						if(result[i].name == "OTHER"){
-							str+='<td class="bellowLvlCls" attr_area_type="panchayat" attr_group_type="tehsil" attr_location_id="'+locationId+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
+							str+='<td class="bellowLvlCls" attr_type="'+type+'" attr_area_type="panchayat" attr_group_type="tehsil" attr_location_id="'+locationId+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
 						}else{
-							str+='<td class="bellowLvlCls" attr_area_type="panchayat" attr_group_type="panchayat" attr_location_id="'+result[i].id+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
+							str+='<td class="bellowLvlCls" attr_type="'+type+'" attr_area_type="panchayat" attr_group_type="panchayat" attr_location_id="'+result[i].id+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_status="'+result[i].subList1[j].statusType+'"><a href="#">'+result[i].subList1[j].totalAlertCnt+'</a></td>';
 						}
 						
 					}else{
@@ -945,7 +1077,10 @@ function buildGrievanceReportForPanchayat(result,positionValue,locationId,groupT
 		}
 		str+='</tbody>';
 	str+='</table>';
-	$("#demo"+positionValue).html(str);          
+	str+='</div>';
+	$("#demo"+positionValue).html(str); 
+		
+	
 }
 
 function buildAlertData(result){
@@ -1490,16 +1625,27 @@ function buildTotalAlertDistrictTable(result){
         str+='<tr>'; 
 		str+='<th>Total</th>';
 	    for(var i in result[0].subList1){       
-           str+='<th  style="background-color:#ecebd6;">'+result[0].subList1[i].statusType+'</th>';
+          if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
+				str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
+				}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
+					str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
+				}else{
+					str+='<th>'+result[0].subList1[i].statusType+'</th>';
+				}
 		}
 	        str+='<tr>';	 
 	        str+='</thead>';	
 			str+='<tbody>'
 			str+='<tr>';
-			str+='<td style="cursor:pointer;" class="getAlertDtlsOnLocCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="0" attr_location_id="'+result[0].id+'">'+result[0].totalAlertCnt+'</td>';
-		for( var i in result[0].subList1){   
+			str+='<td style="cursor:pointer;"  attr_type="other" class="getAlertDtlsOnLocCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="0" attr_location_id="'+result[0].id+'">'+result[0].totalAlertCnt+'</td>';
+	
+		for( var i in result[0].subList1){
+	        var type = "other";			
+		    if(result[0].subList1[i].name != null){
+				type = result[0].subList1[i].name;
+			}
 			if(result[0].subList1[i].totalAlertCnt != 0){
-				str+='<td  style="cursor:pointer;" class="getAlertDtlsOnLocCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="'+result[0].subList1[i].statusTypeId+'" attr_location_id="'+result[0].id+'" style="background-color:#ecebd6;">'+result[0].subList1[i].totalAlertCnt+'</td>';
+				str+='<td  style="cursor:pointer;" class="getAlertDtlsOnLocCls" attr_type="'+type+'" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="'+result[0].subList1[i].statusTypeId+'" attr_location_id="'+result[0].id+'" style="background-color:#ecebd6;">'+result[0].subList1[i].totalAlertCnt+'</td>';
 			}else{
 				str+='<td>-</td>'; 
 			}
@@ -1568,25 +1714,38 @@ function buildGrievanceReportDayWise(result,rangeType) {
             
         str+='<th>Total</th>';
 		for(var i in result[0].subList1){       
-           str+='<th>'+result[0].subList1[i].statusType+'</th>';
+           if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
+						str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
+						}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
+							str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
+						}else{
+							str+='<th>'+result[0].subList1[i].statusType+'</th>';
+						}
 		}
+		
         str+=' </tr>';
         str+='</thead>';
 		str+='<tbody>';
 		var locTotal = 0;
 		for(var i in result){  
+		 
+		   
 			str+='<tr>'; 
 				str+='<td data-toggle="tooltip" data-placement="top" title="'+result[i].fromDateStr+"-"+result[i].toDateStr+'">'+result[i].day+'</td>';
 				if(result[i].totalAlertCnt == 0){
 					str+='<td>-</td>';
 				}else{
-					str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="0" attr_location_id="0">'+result[i].totalAlertCnt+'</td>';
+					str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_type="other" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="0" attr_location_id="0">'+result[i].totalAlertCnt+'</td>';
 				}
 				
 				locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
 			for(var j in result[i].subList1){
+				  var alertType = "other";
 				if(result[i].subList1[j].totalAlertCnt != 0){
-					str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="0">'+result[i].subList1[j].totalAlertCnt+'</td>';
+					 if(result[i].subList1[j].name != null && result[i].subList1[j].name.length > 0){
+				         alertType = result[i].subList1[j].name;
+			           }
+					str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise"  attr_type="'+alertType+'" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="0">'+result[i].subList1[j].totalAlertCnt+'</td>';
 				}else{
 					str+='<td>-</td>';
 				}      
@@ -1791,3 +1950,36 @@ function getCadreGreivienceEfficiency(sliderVal){
 $(document).on("change",".grievanceEffOnchange",function(){ 
     getCadreGreivienceEfficiency(sliderVa1);
 }); 
+
+function getStatusWiseFeebbackAlertDtls(statusId,type){
+       
+	   $("#grivenaceModalHeedingId").html("");    
+		$("#grievanceDtlsModalId").modal("show"); 
+		$("#removeClassModal").removeClass("closeSecondModal")	
+		$("#grevinceDetailsId").html(spinner);
+	
+         var sourceId=$("#selectMediaId").val();
+        var deptId=$("#selecDepartmentId").val();
+        var rangeType=$("#dateRangeId").attr("value");
+        
+        var jobj = {
+          fromDate: callCenterUserFDate,                       
+          toDateStr:callCenterUserTDate,  
+          deptId:deptId,
+          sourceId:sourceId,                                      
+          stateId:1,
+          locationId:0,
+          statusId : statusId,      
+          rangeType:rangeType,
+          type:type          
+          }
+        $.ajax({    
+          type : "POST",
+          url  : "getFeedbackAlertAction.action",  
+          dataType: 'json',
+          data: {task:JSON.stringify(jobj)},
+        }).done(function(result){
+			$("#grevinceDetailsId").html('');
+              buildGrivenceDetailsTableOld(result);
+        });
+    }
