@@ -13,6 +13,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.google.gson.JsonObject;
 import com.itgrids.partyanalyst.GcmService.GcmService;
 import com.itgrids.partyanalyst.dao.IAccommodationTrackingDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -115,7 +116,7 @@ public class NotificationService implements INotificationService{
 	 public NotificationDeviceVO saveUsersDataInNotificationDeviceTable(final NotificationDeviceVO notifyVO)
 	  {
 		 log.info("Entered into saveVotersDataInVoterInfoTable() Method...");
-		 GcmService gcmService = new GcmService();
+		 //GcmService gcmService = new GcmService();
 		// NotificationDeviceVO returnVo = new NotificationDeviceVO();
 		  try{
 			  transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -145,15 +146,7 @@ public class NotificationService implements INotificationService{
 						
 					}
 				});
-			  //returnList =  getActiveNotifications(notifyVO.getNotificationTypeId(),notifyVO.getLastNotificationId());
-			  @SuppressWarnings("unused")
-			  NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),IConstants.GCM_SERVER_STATIC_MESSAGE,null);
-			  
-			  if(notificationDeviceVO.getStatus() != null && notificationDeviceVO.getStatus().trim().equalsIgnoreCase("SUCCESS"))
-			 	return  new NotificationDeviceVO("SUCCESS");
-			  else
-				  throw new Exception();
-			  
+				  return  new NotificationDeviceVO("SUCCESS");
 		  }catch (Exception e) {
 			  e.printStackTrace();
 			  log.error("Exception Occured in saveUsersDataInNotificationDeviceTable() Method, Exception - "+e);
@@ -161,12 +154,32 @@ public class NotificationService implements INotificationService{
 		}
 	  }
 	 
-	 public String  pushNotification(NotificationDeviceVO notifyVO){
-		 try {
-			 GcmService gcmService = new GcmService();
-			 List<String> notificationKeysList = notificationDeviceDAO.getNotificationActiveKeys();
-			 NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),notifyVO.getNotification(),notificationKeysList);
-			 return notificationDeviceVO.getStatus();
+	 public String  pushNotification(NotificationDeviceVO notifyVO,Long userId){
+		try {
+			GcmService gcmService = new GcmService();
+			JsonObject notification = new JsonObject();
+			notification.addProperty("title", notifyVO.getNotificationTypeId());
+			notification.addProperty("body", notifyVO.getNotification());
+			List<String> notificationKeysList = notificationDeviceDAO
+					.getNotificationActiveKeys();
+			NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(), notification,notificationKeysList, userId);
+
+			Long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notificationType);
+			 if(orderNo == null || orderNo.longValue() ==0L)
+				 orderNo =0L;
+			Notifications notifications = new Notifications();
+			notifications.setUserId(userId);
+			notifications.setSuccessCount(notificationDeviceVO.getSuccessCount());
+			notifications.setSuccessCount(notificationDeviceVO.getFailureCount());
+			notifications.setNotification(notifyVO.getNotification());
+			notifications.setNotificationsId(notifyVO.getNotificationTypeId());
+			notifications.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+			notifications.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+			notifications.setIsActive("true");
+			notifications.setOrderNo(orderNo+1);
+			notificationsDAO.save(notifications);
+
+			return IConstants.SUCCESS;
 		} catch (Exception e) {
 			  log.error("Exception Occured in pushNotification() Method, Exception - "+e);
 		}
