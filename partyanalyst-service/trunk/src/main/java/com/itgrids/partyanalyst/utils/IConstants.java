@@ -1107,7 +1107,7 @@ public interface IConstants {
 	public static final String MAHANADU_IMAGES_RETRIEVE_PATH = "http://mytdp.com/images/mahanadu_images";
 	public static final String MAHANADU_IMAGES_2016 = "mahanadu_images";
 	
-	public static final String GOOGLE_SERVER_KEY = "AIzaSyAHpEk_L5Uv4-FJy_7P-mf_gmytlKU_1Bk";
+	public static final String GOOGLE_SERVER_KEY = "AAAAZP0HrS8:APA91bGtOcN7g9tChOaiIoisxXeZ8KeAUYvv0YDdomghUbGG5UrHve3aRAgHSmedbJVNhNn7ivgIixcIsj2A-xWPyg3aUouuIQ36FBKIa0Mp4PvGcFckAkCZ0wIYyVaOqXMatmgNo-gv";
 	public static final String GCM_SERVER_STATIC_MESSAGE = "Please Update Notifications";
 	
 	public static final String VOTER_IMG_FOLDER_PATH = "voter_images";
@@ -1299,9 +1299,7 @@ public interface IConstants {
 	public static final Long GOVT_DEPARTMENT_GMC_LEVEL_ID = 12L;
 	public static final Long GOVT_DEPARTMENT_CLUSTER_LEVEL_ID = 13L;
 	
-	
 	public static final List<Long>  AMS_REOPEN_ALERT_STATUS = Arrays.asList(11l,12l);
-	
 	public static final String CALL_CENTER_VERSION = "new";    //old - new
 	public static final List<Long> ALERT_STATUS_IDS = Arrays.asList(1L,2L,3L,4L,5L,6L,7l,8L,9L,10L,11L,12L,13L);
 	public static final Long PANCHAYATRAJ_MPDO_DESIGNATION_ID = 71L;
