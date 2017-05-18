@@ -1815,10 +1815,7 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 		for(var i in result[0].subList1){       
            str+='<th>'+result[0].subList1[i].statusType+'</th>';
 		}
-		for(var i in result[0].subList2){       
-           str+='<th style="background-color: rgb(236, 235, 214);">'+result[0].subList2[i].name+'</th>';
-		}
-		str+='<th style="background-color: rgb(201, 172, 130);">reopen</th>';   
+		 
         str+=' </tr>';
         str+='</thead>';
 		str+='<tbody>';
@@ -1835,21 +1832,9 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 					str+='<td>-</td>';
 				}      
 			}
-			for(var j in result[i].subList2){   
-				if(result[i].subList2[j].totalAlertCnt != 0){
-					str+='<th>'+result[i].subList2[j].totalAlertCnt+'</th>';
-				}else{
-					str+='<td>-</td>';
-				}
-				
-			}
-			if(result[i].reopenCount != 0){
-					str+='<th>'+result[i].reopenCount+'</th>';
-			}else{    
-					str+='<td>-</td>';
-			}
-			str+='</tr>';
-		}
+			
+			str+='</tr>';   
+		}    
 		str+='</tbody>';
 		str+='</table>';
 		$('#CategoryWiseGrivenaceTableId').html(str);  
