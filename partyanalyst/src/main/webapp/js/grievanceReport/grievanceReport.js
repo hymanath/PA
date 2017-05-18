@@ -1830,14 +1830,7 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 			}
          
 			str+='</tr>';
-		}  
- 		/* str+='<tr>';
- 			str+='<td>Grand Total</td>';
- 			str+='<td>'+locTotal+'</td>';
-			for(var i in result[0].subList1){
-				str+='<td>'+result[0].subList1[i].grandTotal+'</td>';//  result[0].subList1[i].statusType  
-			}
-		str+='</tr>'; */
+		}
 		str+='</tbody>';
 		str+='</table>';
 		$('#CategoryWiseGrivenaceTableId').html(str);  
