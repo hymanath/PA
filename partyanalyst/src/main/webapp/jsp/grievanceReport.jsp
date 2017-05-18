@@ -27,6 +27,8 @@
 <link rel="stylesheet" href="css/grievanceReport.css" type="text/css"/>
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <style>
 .dateColorCls{
 	background-color:#FFCF2D;
@@ -52,6 +54,7 @@
 .getAlertDtlsOnDateWise{color: #337ab7;}
 .panchayatDataCls{cursor:pointer;}
 .daterangeClorCls{cursor:pointer;}
+.bellowLvlCls{cursor:pointer;}
 </style>
 </head>
 <body>           
@@ -96,23 +99,37 @@
 
 		<div class="container-fluid bg-gov-dark">
 			<div class="row">
-				<div class="col-md-2">
+				<div class="col-md-1">
 					<div style="padding-top: 80px">
 						<h4 class="text-center issue-title">AVERAGE ISSUE <br> PENDING DAYS</h4>
 						<h3 class=" text-center issue-title"><span id="averageIssueId"></span></h3>
 					</div>
 				</div>
-				<div class="col-md-8">   
+				<div class="col-md-5">   
 					<div>
 						<h1 class="text-center">
 							<div id="statusWiseAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
 						</h1>
 					</div>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-3">   
+					<div>
+						<h1 class="text-center">
+							<div id="feedbackWiseAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
+						</h1>
+					</div>
+				</div>
+				<div class="col-md-1">   
+					<div>
+						<h1 class="text-center">
+							<div id="reopenAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
+						</h1>
+					</div>
+				</div>
+				<div class="col-md-1" style="margin-left: 60px;">
 					<div style="padding-top: 80px">
-						<h4 class="text-center issue-title total">TOTAL</h4>
-						<h1 style="font-size: 6em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
+						<h4 class="text-center issue-title total" style="letter-spacing: 14px;">TOTAL</h4>
+						<h1 style="font-size: 4em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
 					</div>
 				</div>
 			</div>
