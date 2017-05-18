@@ -11643,7 +11643,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	}
 	
 	public KeyValueVO getAverageIssuePendingDays(String fromDateStr ,String toDateStr,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds){
-		KeyValueVO vo = null;
+		KeyValueVO vo = new KeyValueVO();
 		try{
 			Date fromDate = null;
 			Date toDate = null;
@@ -11688,7 +11688,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					      a1 = Integer.parseInt(convert1[0]);
 						 //iPart1 =Long.valueOf(hours.toString());
 					}
-					vo = new KeyValueVO();
+					//vo = new KeyValueVO();
 					vo.setCount(Long.valueOf(a));//
 					vo.setTotalCount(Long.valueOf(a1));
 					
@@ -12859,7 +12859,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 	//abcd
 	public List<AlertsSummeryVO> getAlertEfficiencyList2(List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds
-			,String startDate,String endDate,String rangeType){
+			,String startDate,String endDate,int rangeValue){
 		LOG.debug(" Entered Into getAlertEfficiencyList");
 		List<AlertsSummeryVO> finalList = new ArrayList<AlertsSummeryVO>();
 		 
@@ -12880,7 +12880,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(fromDate,toDate,departmentIds,sourceIds,totalAlertStatusIds);
 			}
 			List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
-			Collections.reverse(dayList);
+			//Collections.reverse(dayList);
 			//date wise tatal alerts
 			List<Object[]> totalAlertsDateWise = null;
 			if(alertstatusIds != null && alertstatusIds.size() > 0){
@@ -12894,58 +12894,28 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				}
 			}
 			AlertsSummeryVO alertVO = null;
-			if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("day")){
-				if(dayList != null && dayList.size() > 0){
-					int order = 1;
-					for(String param : dayList){
-						if(order%2 != 0){
-							order++;
-							continue;
-						}
-						alertVO = new AlertsSummeryVO();
-						alertVO.setName("DAY_"+order);
-						alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
-						for(int i=0 ; i<order ; i++){
-							alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts()+commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(dayList.get(i))));
-						}
-						alertVO.setEffcncyAlerts(commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param)));
-						finalList.add(alertVO); 
-						order++;
-					}
+			if(dayList != null && dayList.size() > 0){
+				int order = rangeValue;
+				int loopCount = dayList.size()/rangeValue;
+				if(dayList.size()%rangeValue > 0){
+					loopCount+=1;
 				}
-			}else if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("week")){
-				LinkedHashMap<String,List<String>> weekAndDaysMap = null;
-				weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
-				if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
-					int order = 7;
-					for(Entry<String,List<String>> param : weekAndDaysMap.entrySet()){
-			            alertVO = new AlertsSummeryVO();
-			            alertVO.setName(commonMethodsUtilService.getStringValueForObject("First "+order+" Days"));
-			            alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
-			            if(param.getValue() != null && param.getValue().size() > 0){
-			              for(String param3 : param.getValue()){
-			                alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts() + commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param3)));
-			              }
-			            }
-			            finalList.add(alertVO); 
-			            order = order + 7;
-			          }
-				}
-			}else if(rangeType != null && !rangeType.trim().isEmpty() && rangeType.trim().length() > 0 && rangeType.trim().equalsIgnoreCase("month")){
-				LinkedHashMap<String,List<String>> monthAndDaysMap = null;
-				monthAndDaysMap = getMonthWeekAndDaysList(startDate, endDate,"month");
-				if(monthAndDaysMap != null && monthAndDaysMap.size() > 0){
-					for(Entry<String,List<String>> param : monthAndDaysMap.entrySet()){
-						alertVO = new AlertsSummeryVO();
-						alertVO.setName(commonMethodsUtilService.getStringValueForObject(param.getKey()));
-						alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
-						if(param.getValue() != null && param.getValue().size() > 0){
-							for(String param2 : param.getValue()){
-								alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts() + commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(param2)));
-							}
-						}
-						finalList.add(alertVO); 
+				for(int i = 1 ; i <= loopCount ; i++){
+					alertVO = new AlertsSummeryVO();
+					if(dayList.size() <= rangeValue){
+						alertVO.setName("<= "+dayList.size()+" Days");
+					}else{
+						alertVO.setName("<= "+order+" Days");
 					}
+					
+					alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
+					for(int j=0 ; j<order ; j++){
+						if(dayList.size() > j){
+							alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts()+commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(dayList.get(j))));
+						}
+					}
+					finalList.add(alertVO); 
+					order+=rangeValue;
 				}
 			}
 			if(finalList != null && finalList.size() > 0){
@@ -13089,6 +13059,25 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				LOG.error("Error occured getSocialAlertFeedBackDetails() method of AlertManagementSystemService");
 			}
 			return voList;
+		}
+		public List<IdNameVO> getAllCategoryForLocationWiseGrievance(){
+			try{
+				List<IdNameVO> idNameVOs = new ArrayList<IdNameVO>();
+				IdNameVO idNameVO = null;
+				List<Object[]> list = alertCategoryDAO.getAllCategoryForLocationWiseGrievance();
+				if(list != null && list.size() > 0){
+					for(Object[] param : list){
+						idNameVO = new IdNameVO();
+						idNameVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						idNameVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						idNameVOs.add(idNameVO);
+					}
+				}
+				return idNameVOs;
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return null;
 		}
 }
 
