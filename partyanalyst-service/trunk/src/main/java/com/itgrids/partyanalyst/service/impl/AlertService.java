@@ -10496,6 +10496,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					//vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[20]));
 					
 					vo.setUserName(commonMethodsUtilService.getStringValueForObject(objects[21]));
+					vo.setStatus(commonMethodsUtilService.getStringValueForObject(objects[22]));
 					alertIds.add(vo.getAlertId());
 					returnList.add(vo);
 				}
