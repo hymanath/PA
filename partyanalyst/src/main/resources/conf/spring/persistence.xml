@@ -1249,6 +1249,7 @@
 					   <value>com.itgrids.partyanalyst.model.UrbanBlock</value>
 					   <value>com.itgrids.partyanalyst.model.GovtDepartmentIssueType</value>
 					   <value>com.itgrids.partyanalyst.model.SocialMediaType</value>
+					   <value>com.itgrids.partyanalyst.model.AlertCallerRelation</value>
 					   
 	                   <!--  Govt Alert module end-->
 	                   

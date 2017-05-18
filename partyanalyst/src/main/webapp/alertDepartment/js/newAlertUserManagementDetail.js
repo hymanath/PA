@@ -1263,19 +1263,40 @@ function getStatusCompletionInfo(alertId){
 			if(result.length  == 1)
 				isStatusAvailable=false;
 			
-			if(result[0].callerName != null && result[0].callerName.length > 0 && result[0].mobileNo != null && result[0].mobileNo.length > 0)
+			if(result[0].idnameList != null && result[0].idnameList.length > 0)
 			{
 				var str='';
 				str+='<div class="row m_top20">';
 					str+='<div class="col-sm-1 text-center body-icons"><i class="fa fa-volume-control-phone fa-2x"></i></div>';
 					str+='<div class="col-sm-11">';
 						str+='<h3>Caller Details </h3>';
-						str+='<p class="m_top10">Name : '+result[0].callerName+' </p>';
-						str+='<p> Mobile No : '+result[0].mobileNo+' </p>';
-						str+='<p> Caller : '+result[0].userType+'</p>';
+						str+='<ul class="list-inline slickSlider">';
+						for(var  j in result[0].idnameList)
+						{
+							str+='<li>';
+								str+='<p class="m_top10">Name : '+result[0].idnameList[j].callerName+' </p>';
+								str+='<p> Mobile No : '+result[0].idnameList[j].mobileNo+' </p>';
+								str+='<p> Caller : '+result[0].idnameList[j].userType+'</p>';
+							str+='</li>';
+						}
+						str+='</ul>';
+						
 					str+='</div>';
 				str+='</div>';
 				$("#callerDetailsDIv").html(str);
+				if(result[0].idnameList.length > 3)
+				{
+					$('.slickSlider').slick({
+						slide: 'li',
+						slidesToShow: 3,
+						slidesToScroll: 1,
+						infinite: false,
+						swipe:false,
+						touchMove:false,
+						variableWidth: false
+					});
+				}
+				
 			}
 			
 			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
