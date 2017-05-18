@@ -1309,4 +1309,5 @@ public interface IConstants {
 	public static final Long GOVT_SOCIAL_MEDIA_CATEGORY_ID=5L;
 	public static final Long MAHANADU_2017_EVENT_ID=51l;
 	public static String FCM_URL = "https://fcm.googleapis.com/fcm/send";
+	public static final String FEEBBACK_ALERT_CATEGORY_ID="4,5";
 }

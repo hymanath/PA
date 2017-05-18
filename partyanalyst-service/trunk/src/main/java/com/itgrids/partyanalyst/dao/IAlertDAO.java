@@ -154,5 +154,10 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getTotalAlertGroupByStatusThenCategoryForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> consIds);
 	public List<Object[]> getLocationLevelWiseAlertsDataForCentralAreaMembers(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,List<Long> consIds);
 	public List<Object[]> getTotalAlertsDateWise(Date fromDate,Date toDate,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds);
+	public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId, Long departmentId,Long alertCategoryId,Long locationId);
+	public List<Object[]> getAlertBasedOnRequiredParameter(Date fromDate, Date toDate, Long stateId, Long departmentId,Long alertCategoryId,List<Long> statusIds,String type,Long locationId);
+	public List<Long> getFeedbackAlertIds(Date fromDate, Date toDate, Long stateId, Long departmentId,Long alertCategoryId,List<Long> statusIds,String type,Long locationId,Long feedBackStatusId);
+	public List<Object[]> getLocationWisefeedbackAlertCnt(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String groupType,String type, Long locationId,List<Long> statusIds);
+	public List<Long> getLocationWiseFeebbackAlertIds(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String groupType,String type, Long locationId,List<Long> statusIds,Long feebStatusId,String areaType);
 	public List<Object[]> getDifferenceDay(Date fromDate ,Date toDate,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds );
 }

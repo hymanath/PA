@@ -11338,10 +11338,14 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		try{  
 			Date fromDate = null;        
 			Date toDate = null; 
+			String frmDate = null;
+			String tDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
+				frmDate = fromDateStr;
+				tDate =	toDateStr;
 			}
 			Long otherTotal = 0L;
 			Map<Long,Long> otherStatusIdAndCountMap = new HashMap<Long,Long>();
@@ -11626,7 +11630,11 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				otherAlertVO.setSubList1(alertVOList);
 				finalList.add(otherAlertVO);  
 			}
-			
+			//Getting feebback alert
+			//Santosh
+			if(sourceId ==0l || sourceId==4l || sourceId==5l){//Getting only feebback alert for social media and call center
+				getLocationWiseFeebbackAlertCnt(frmDate, tDate, stateId, departmentId,sourceId,rangeType, groupType,LocationId,finalList);	
+			}
 			return finalList;  
 	  }catch(Exception e){
 			e.printStackTrace();
@@ -11634,6 +11642,97 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	  }
 		return null;
 	}   
+	
+	public void getLocationWiseFeebbackAlertCnt(String fromDateStr, String toDateStr,Long stateId,Long departmentId,Long sourceId,String rangeType,String groupType,Long LocationId,List<AlertOverviewVO> finalList){
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			List<Object[]> feebbackStatusObjLst = null;
+			List<Object[]> pendingFeebbakObjLst = null;
+			List<Object[]> reopeObjLst = null;
+			
+			List<Object[]> rtrnfeedbackStatusObjLst = alertFeedbackStatusDAO.getFeedBackStatus();
+		 	if(rangeType != null && !rangeType.isEmpty() && rangeType.length() > 0){
+				feebbackStatusObjLst = alertDAO.getLocationWisefeedbackAlertCnt(fromDate, toDate, stateId, departmentId, sourceId, "district", "feebbackStatus", null, null);
+				pendingFeebbakObjLst = alertDAO.getLocationWisefeedbackAlertCnt(fromDate, toDate, stateId, departmentId, sourceId, "district", "pendingFeedback", null,new ArrayList<Long>(){{add(4l);add(12l);}});
+				reopeObjLst = alertDAO.getLocationWisefeedbackAlertCnt(fromDate, toDate, stateId, departmentId, sourceId, "district", "reopen", null,new ArrayList<Long>(){{add(11l);}});
+			}else{//for tehsil and panchayat
+				feebbackStatusObjLst = alertDAO.getLocationWisefeedbackAlertCnt(fromDate, toDate, stateId, departmentId, sourceId, groupType, "feebbackStatus",LocationId,null);
+				pendingFeebbakObjLst = alertDAO.getLocationWisefeedbackAlertCnt(fromDate, toDate, stateId, departmentId, sourceId, groupType, "pendingFeedback",LocationId, new ArrayList<Long>(){{add(4l);add(12l);}});
+				reopeObjLst = alertDAO.getLocationWisefeedbackAlertCnt(fromDate, toDate, stateId, departmentId, sourceId, groupType, "reopen", LocationId,new ArrayList<Long>(){{add(11l);}});
+			}
+		 	
+		 	Map<Long,AlertOverviewVO> locationMap = new HashMap<Long,AlertOverviewVO>();
+		 	
+			prepareLocationWiseFeebbackAlert(feebbackStatusObjLst,rtrnfeedbackStatusObjLst,locationMap);//feebback status alert
+			prepareLocationWiseFeebbackAlert(pendingFeebbakObjLst,rtrnfeedbackStatusObjLst,locationMap);//pending feebback alert 
+			prepareLocationWiseFeebbackAlert(reopeObjLst,rtrnfeedbackStatusObjLst,locationMap);//reopen alert
+			
+			
+			//Calculating Grand Total alert
+			Map<String,Long> totalCntMap = new HashMap<String, Long>();
+			if(locationMap != null && locationMap.size() > 0){
+				for(Entry<Long, AlertOverviewVO> entry:locationMap.entrySet()){
+					if(entry.getValue().getSubList1() != null && entry.getValue().getSubList1().size() >0){
+						for(AlertOverviewVO statusVO:entry.getValue().getSubList1()){
+							Long alertcnt = totalCntMap.get(statusVO.getStatusType());
+							 if(alertcnt == null){
+								 totalCntMap.put(statusVO.getStatusType(), 0l);
+							 }
+							 totalCntMap.put(statusVO.getStatusType(), totalCntMap.get(statusVO.getStatusType())+statusVO.getTotalAlertCnt());
+						}
+					}
+					
+				}
+			}
+			
+			//Setting into final list
+			if(finalList != null && finalList.size() > 0){
+				for(AlertOverviewVO locationVO:finalList){
+					if(locationVO != null && locationVO.getSubList1() != null){
+						if(locationMap.get(locationVO.getId()) != null && locationMap.get(locationVO.getId()).getSubList1() != null){
+							locationVO.getSubList1().addAll(locationMap.get(locationVO.getId()).getSubList1());
+						}else{
+							locationVO.getSubList1().addAll(getFeedBackStatusList(rtrnfeedbackStatusObjLst));
+						}
+					}
+				}
+			}
+			 //Setting grand total alert cnt into final list
+			  settingGrandTotalAlert(finalList,totalCntMap);
+			  
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getLocationWiseFeebbackAlertCnt() method of AlertService{}");
+		}
+	}
+	public void prepareLocationWiseFeebbackAlert(List<Object[]> objList,List<Object[]> statusObjLst,Map<Long,AlertOverviewVO> locationMap){
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					AlertOverviewVO locationVO = locationMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 if(locationVO == null){
+						 locationVO = new AlertOverviewVO();
+						 locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						 locationVO.setSubList1(getFeedBackStatusList(statusObjLst));
+						 locationMap.put(locationVO.getId(), locationVO);
+					 }
+					 AlertOverviewVO statusMatchVO = getFeedBackStatusMatchVO(locationVO.getSubList1(), commonMethodsUtilService.getStringValueForObject(param[3]));
+					  if(statusMatchVO != null){
+						  statusMatchVO.setTotalAlertCnt(commonMethodsUtilService.getLongValueForObject(param[4])); //alertCnt
+					  }
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured prepareLocationWiseFeebbackAlert() method of AlertService{}");
+		}
+	}
 	public LinkedHashMap<String,List<String>> getMonthWeekAndDaysList(String startDate,String endDate,String type){
 		LinkedHashMap<String,List<String>> returnDays = new LinkedHashMap<String, List<String>>();
     	try{
@@ -11964,11 +12063,16 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		try{  
 			Date fromDate = null;        
 			Date toDate = null; 
+			String frmDteStr= null;
+			String tDateStr = null;
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
+				frmDteStr = fromDateStr;
+				tDateStr = toDateStr;
 			}
 			Long otherTotal = 0L;
 			Map<Long,Long> otherStatusIdAndCountMap = new HashMap<Long,Long>();
@@ -12235,6 +12339,12 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					}
 				}
 			}
+			 /*Getting Feedback Alert */ 
+			//Santosh
+			if(sourceId ==0l || sourceId==4l || sourceId==5l){//Getting only feebback alert for social media and call center
+			   gettingFeedbackAlert(frmDteStr,tDateStr,stateId,departmentId,sourceId,rangeType,LocationId,finalList);
+			 }
+			 
 			return finalList;  
 	  }catch(Exception e){
 			e.printStackTrace();
@@ -12242,7 +12352,320 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 	  }
 		return null;
 	} 
-
+	
+    public void gettingFeedbackAlert(String fromDateStr,String toDateStr,Long stateId,Long departmentId,Long alertCategoryId,String rangeType,Long LocationId,List<AlertOverviewVO> finalList){
+    	try{
+	    		Date fromDate = null;        
+				Date toDate = null; 
+			   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    		if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				
+				}
+	    		
+    		    List<Object[]> rtrnfeedbackStatusObjLst = alertFeedbackStatusDAO.getFeedBackStatus();
+    	    	List<Object[]> rtrnFeedAlertObjLst = alertDAO.getDateWiseAlert(fromDate, toDate, stateId, departmentId, alertCategoryId,LocationId);
+		 	    List<Object[]> pendingFeedBackObjLst = alertDAO.getAlertBasedOnRequiredParameter(fromDate, toDate, stateId, departmentId, alertCategoryId, new ArrayList<Long>(){{add(4l);add(12l);}}, "pendingFeedback",LocationId);
+			    List<Object[]> reopenObjLst = alertDAO.getAlertBasedOnRequiredParameter(fromDate, toDate, stateId, departmentId, alertCategoryId, new ArrayList<Long>(){{add(11l);}}, "reopen",LocationId);
+			
+			    if(rangeType != null && rangeType.equalsIgnoreCase("day")){
+			    	
+    			Map<String,AlertOverviewVO> daysMap = new LinkedHashMap<String, AlertOverviewVO>();
+    			
+    			List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+    			
+    			 prepareTemplate(dayList,rtrnfeedbackStatusObjLst,daysMap);
+    			 //feedback status wise alert
+    			  if(rtrnFeedAlertObjLst != null && rtrnFeedAlertObjLst.size() > 0){
+    				  for(Object[] param:rtrnFeedAlertObjLst){//0-date,1-status,2-alertcnt
+    		    		  setAlertData(daysMap,commonMethodsUtilService.getStringValueForObject(param[0]),commonMethodsUtilService.getStringValueForObject(param[2]),commonMethodsUtilService.getLongValueForObject(param[3]));
+    				  }
+    			  }
+    			  //Setting Pending Feedback alert
+    			   if(pendingFeedBackObjLst != null && pendingFeedBackObjLst.size() > 0){
+    				   for(Object[] param:pendingFeedBackObjLst){//0-date,1-alertcnt
+    		     		  setAlertData(daysMap,commonMethodsUtilService.getStringValueForObject(param[0]),"Pending FeedBack",commonMethodsUtilService.getLongValueForObject(param[1]));
+     				   }
+    			   }
+    			   //Setting Reopen alert
+    			   if(reopenObjLst != null && reopenObjLst.size() > 0){
+    				   for(Object[] param:reopenObjLst){ //0-date,1-alertcnt
+    					  setAlertData(daysMap,commonMethodsUtilService.getStringValueForObject(param[0]),"Reopen",commonMethodsUtilService.getLongValueForObject(param[1]));
+     				   }
+    			   }
+    			   //Calculating grand total
+    			   Map<String,Long> statusWiseTotalAlertMap = new HashMap<String, Long>();
+      			 if(daysMap != null && daysMap.size() > 0){
+      				 for(Entry<String,AlertOverviewVO> entry:daysMap.entrySet()){
+      					    if(entry.getValue().getSubList1() != null && entry.getValue().getSubList1().size()>0){
+      					    	for(AlertOverviewVO statusVO:entry.getValue().getSubList1()){
+      					    		Long alertCnt = statusWiseTotalAlertMap.get(statusVO.getStatusType());
+      					    		 if(alertCnt == null){
+      					    			 statusWiseTotalAlertMap.put(statusVO.getStatusType(),0l);
+      					    		 }
+      					    		 statusWiseTotalAlertMap.put(statusVO.getStatusType(), statusWiseTotalAlertMap.get(statusVO.getStatusType())+statusVO.getTotalAlertCnt());
+      					    	}
+      					    }
+      				 }
+      			 }
+      			 //Adding feedback alert status into final list
+    			  appendingFeebbackAlertInFinalList(finalList,daysMap);
+     			 //Setting grand total alert cnt into final list
+     			  settingGrandTotalAlert(finalList,statusWiseTotalAlertMap);
+      			  
+      	}else if(rangeType != null && (rangeType.equalsIgnoreCase("month") || rangeType.equalsIgnoreCase("week"))){
+    			  LinkedHashMap<String,List<String>> weekAndDaysMap = null;
+    			  Map<String,Map<String,AlertOverviewVO>> daysMap = new LinkedHashMap<String, Map<String,AlertOverviewVO>>();
+    			  Map<String,Map<String,Long>> alertCntMap = new HashMap<String, Map<String,Long>>();
+    			if(rangeType.equalsIgnoreCase("week")){
+    				weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
+    			}else if(rangeType.equalsIgnoreCase("month")){
+    				weekAndDaysMap = getMonthWeekAndDaysList(sdf.format(fromDate), sdf.format(toDate),"month");
+        		}
+    			
+    			prepareWeekMonthWiseDateTemplate(weekAndDaysMap,daysMap,rtrnfeedbackStatusObjLst);
+    			
+    			prepareAelrtInRequiredFormat(rtrnFeedAlertObjLst,alertCntMap,"feebbackstaus");//setting feedback status alert
+    			prepareAelrtInRequiredFormat(pendingFeedBackObjLst,alertCntMap,"Pending FeedBack");//Pending FeedBack status alert
+    			prepareAelrtInRequiredFormat(reopenObjLst,alertCntMap,"Reopen");//Reopen status alert
+    			
+    			//Seeting alert count into main map
+    			if(daysMap != null && daysMap.size() > 0){
+    				for(Entry<String, Map<String, AlertOverviewVO>> entry:daysMap.entrySet()){
+    					 if(entry.getValue() != null && entry.getValue().size() > 0){
+    						 for(Entry<String,AlertOverviewVO> dateEntry:entry.getValue().entrySet()){
+    							 Map<String,Long> statusMap = alertCntMap.get(dateEntry.getKey());
+    							 if(dateEntry.getValue().getSubList1() != null && dateEntry.getValue().getSubList1().size()>0){
+    								 for(AlertOverviewVO statusVO:dateEntry.getValue().getSubList1()){
+    									 if(statusMap != null && statusMap.size() > 0){
+    										 if(statusMap.get(statusVO.getStatusType()) != null){
+        										 statusVO.setTotalAlertCnt(statusMap.get(statusVO.getStatusType()));
+        									 }
+        								 }
+    								 }
+    							 }
+    						 }
+    					 }
+    				}
+    			}
+    			//Prepare cumulative result month or year wise
+    			Map<String,AlertOverviewVO> tempMap = new LinkedHashMap<String, AlertOverviewVO>();
+    			if(daysMap != null && daysMap.size() > 0){
+    				for(Entry<String, Map<String, AlertOverviewVO>> entry:daysMap.entrySet()){
+    					if(entry.getValue() != null && entry.getValue().size() > 0){
+    						for(Entry<String,AlertOverviewVO> daysEntry:entry.getValue().entrySet()){
+    							AlertOverviewVO vo = tempMap.get(entry.getKey());
+    							 if(vo == null){
+    								 vo = new AlertOverviewVO();
+    								 vo.setDay(entry.getKey());
+    								 vo.setSubList1(getFeedBackStatusList(rtrnfeedbackStatusObjLst));
+    								 tempMap.put(entry.getKey(), vo);
+    							 }
+    							 if(daysEntry.getValue().getSubList1() != null && daysEntry.getValue().getSubList1().size() > 0){
+    								 for(AlertOverviewVO statusVO:daysEntry.getValue().getSubList1()){
+    									  AlertOverviewVO matchVO = getFeedBackStatusMatchVO(vo.getSubList1(),statusVO.getStatusType());
+    	    							   if(matchVO != null){
+    	    								   matchVO.setTotalAlertCnt(matchVO.getTotalAlertCnt()+statusVO.getTotalAlertCnt());
+    	    							   }
+    	    						 }
+    							 }
+    						}
+    					}
+    				}
+    			}
+    			//Calculating grand total alert
+    			 Map<String,Long> statusWiseTotalAlertMap = new HashMap<String, Long>();
+    			 if(tempMap != null && tempMap.size() > 0){
+    				 for(Entry<String,AlertOverviewVO> entry:tempMap.entrySet()){
+    					    if(entry.getValue().getSubList1() != null && entry.getValue().getSubList1().size()>0){
+    					    	for(AlertOverviewVO statusVO:entry.getValue().getSubList1()){
+    					    		Long alertCnt = statusWiseTotalAlertMap.get(statusVO.getStatusType());
+    					    		 if(alertCnt == null){
+    					    			 statusWiseTotalAlertMap.put(statusVO.getStatusType(),0l);
+    					    		 }
+    					    		 statusWiseTotalAlertMap.put(statusVO.getStatusType(), statusWiseTotalAlertMap.get(statusVO.getStatusType())+statusVO.getTotalAlertCnt());
+    					    	}
+    					    }
+    				 }
+    			 }
+    			 //Adding feedback alert status into final list
+    			  appendingFeebbackAlertInFinalList(finalList,tempMap);
+     			 //Setting grand total alert cnt into final list
+     			  settingGrandTotalAlert(finalList,statusWiseTotalAlertMap);
+     		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+			LOG.error("Error occured settingFeedbackAlert() method of AlertService{}");
+    	}
+    }
+    public void settingGrandTotalAlert(List<AlertOverviewVO> finalList,Map<String,Long> statusWiseTotalAlertMap){
+    	try{
+    		if(finalList != null && finalList.size() > 0){
+   				if(finalList.get(0) != null && finalList.get(0).getSubList1() != null && finalList.get(0).getSubList1().size() > 0){
+   					for(AlertOverviewVO param : finalList.get(0).getSubList1()){
+   						if(statusWiseTotalAlertMap.get(param.getStatusType()) != null){
+   							param.setGrandTotal(statusWiseTotalAlertMap.get(param.getStatusType()));
+   						}
+   					}
+   				}
+   			}
+    	}catch(Exception e){
+    		e.printStackTrace();
+			LOG.error("Error occured settingGrandTotalAlert() method of AlertService{}");
+    
+    	}
+    }
+    public  void appendingFeebbackAlertInFinalList(List<AlertOverviewVO> finalList,Map<String,AlertOverviewVO> daysMap){
+    	try{
+    		 if(daysMap != null && daysMap.size() > 0){
+				  for(Entry<String,AlertOverviewVO> entry:daysMap.entrySet()){
+					  AlertOverviewVO dayVO = getDaysMatchVO(finalList,entry.getKey());
+					   if(dayVO != null){
+						 dayVO.getSubList1().addAll(entry.getValue().getSubList1());
+					   }
+				  }
+			  }
+    	}catch(Exception e){
+    		e.printStackTrace();
+			LOG.error("Error occured appendingFeebbackAlertInFinalList() method of AlertService{}");
+    	}
+    }
+    public void prepareAelrtInRequiredFormat(List<Object[]> objList,Map<String,Map<String,Long>> alertCntMap,String type){
+    	try{
+    		if(objList != null && objList.size() > 0){
+    			for(Object[] param:objList){
+    				Map<String,Long> statusMap = alertCntMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));//0-date
+    				if(statusMap == null ){
+    					statusMap = new HashMap<String, Long>();
+    					alertCntMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), statusMap);
+    				}
+    				if(type != null && (type.equalsIgnoreCase("Pending FeedBack") || type.equalsIgnoreCase("Reopen"))){
+    					statusMap.put(type, commonMethodsUtilService.getLongValueForObject(param[1]));
+    				}else if(type.equalsIgnoreCase("feebbackstaus")){
+    					statusMap.put(commonMethodsUtilService.getStringValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[3]));
+    				}
+    			}
+    		}
+    	}catch(Exception e){
+     		e.printStackTrace();
+    		LOG.error("Error occured prepareAelrtInRequiredFormat() method of AlertService{}");
+       }
+    }
+    public void setAlertData(Map<String,AlertOverviewVO> daysMap,String day,String status,Long alertCnt){
+    	try{
+    		 AlertOverviewVO dayVO = daysMap.get(day);
+			  if(dayVO != null && dayVO.getSubList1() != null && dayVO.getSubList1().size() > 0){
+				  AlertOverviewVO statusVO = getFeedBackStatusMatchVO(dayVO.getSubList1(),status);
+				   if(statusVO != null){
+					   statusVO.setTotalAlertCnt(alertCnt);
+				   }
+			  }
+    	}catch(Exception e){
+     		e.printStackTrace();
+    		LOG.error("Error occured setAlertData() method of AlertService{}");
+      }
+    }
+    public AlertOverviewVO getFeedBackStatusMatchVO(List<AlertOverviewVO> statusList,String status){
+    	try{
+    		if(statusList == null || statusList.size()==0){
+    			return null;
+    		}
+			for(AlertOverviewVO statusVO:statusList){
+				if(statusVO.getStatusType().trim().equalsIgnoreCase(status.trim())){
+					return statusVO;
+				}
+			}
+    	}catch(Exception e){
+    		e.printStackTrace();
+			LOG.error("Error occured getFeedBackStatusMatchVO() method of AlertService{}");
+    	}
+    	return null;
+    }
+    public AlertOverviewVO getDaysMatchVO(List<AlertOverviewVO> daysList,String day){
+    	try{
+    		if(daysList == null || daysList.size()==0){
+    			return null;
+    		}
+			for(AlertOverviewVO dayVO:daysList){
+				if(dayVO.getDay().trim().equalsIgnoreCase(day.trim())){
+					return dayVO;
+				}
+			}
+    	}catch(Exception e){
+    		e.printStackTrace();
+			LOG.error("Error occured getFeedBackStatusMatchVO() method of AlertService{}");
+    	}
+    	return null;
+    }
+    public void prepareTemplate(List<String> days,List<Object[]> objList,Map<String,AlertOverviewVO> daysMap){
+    	try{
+    		if(days != null && days.size() > 0){
+    			for(String day:days){
+    				AlertOverviewVO dayVO = new AlertOverviewVO();
+    				dayVO.setDay(day);
+    				dayVO.setSubList1(getFeedBackStatusList(objList));
+    				daysMap.put(day, dayVO);
+    			}
+    		}
+    	}catch(Exception e){
+     		e.printStackTrace();
+    		LOG.error("Error occured prepareTemplate() method of AlertService{}");
+      }
+    }
+    public void prepareWeekMonthWiseDateTemplate(Map<String,List<String>> weekAndDaysMap,Map<String,Map<String,AlertOverviewVO>> tempWeakdaysMap,List<Object[]> objList){
+    	try{
+    		if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
+    			for(Entry<String,List<String>> entry:weekAndDaysMap.entrySet()){
+    				if(entry.getValue() != null && entry.getValue().size() > 0){
+    					Map<String,AlertOverviewVO> daysMap = tempWeakdaysMap.get(entry.getKey());
+    					if(daysMap == null){
+    						daysMap = new LinkedHashMap<String, AlertOverviewVO>();
+    						tempWeakdaysMap.put(entry.getKey(), daysMap);
+    					}
+    					for(String day:entry.getValue()){
+    						AlertOverviewVO dayVO = new AlertOverviewVO();
+    	    				dayVO.setDay(day);
+    	    				dayVO.setSubList1(getFeedBackStatusList(objList));
+    	    				daysMap.put(day, dayVO);
+    					}
+    				}
+    			}
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		LOG.error("Error occured prepareTemplate() method of AlertService{}");
+    	}
+    }
+    public List<AlertOverviewVO> getFeedBackStatusList(List<Object[]> objList){
+    	try{
+    		List<AlertOverviewVO> statuList = new ArrayList<AlertOverviewVO>(0);
+    		if(objList != null && objList.size() > 0){
+    			for(Object[] param:objList){
+    				AlertOverviewVO statusVO = new AlertOverviewVO();
+    				statusVO.setStatusTypeId(commonMethodsUtilService.getLongValueForObject(param[0]));
+    				statusVO.setStatusType(commonMethodsUtilService.getStringValueForObject(param[1]));
+    				statusVO.setName("feebbackAlert");
+    				statuList.add(statusVO);
+    			}
+    		}
+    		AlertOverviewVO pendingFeedBackVO = new AlertOverviewVO();
+    		pendingFeedBackVO.setStatusTypeId(4l);
+    		pendingFeedBackVO.setStatusType("Pending FeedBack");
+    		pendingFeedBackVO.setName("pendingFeedBack");
+			statuList.add(pendingFeedBackVO);
+			AlertOverviewVO reopenVO = new AlertOverviewVO();
+			reopenVO.setStatusTypeId(5l);
+			reopenVO.setStatusType("Reopen");
+			reopenVO.setName("reopen");
+			statuList.add(reopenVO);
+			return statuList;
+    	}catch(Exception e){
+       		e.printStackTrace();
+    		LOG.error("Error occured getFeedBackStatusList() method of AlertService{}");
+    	}
+    	return null;
+    }
 	 public List<AlertOverviewVO> getTotalAlertGroupByCategoryThenStatus(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId){
 		 try{  
 				Date fromDate = null;        
@@ -13160,91 +13583,91 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			return finalList;
 		}
 	//abcd
-	public List<AlertsSummeryVO> getAlertEfficiencyList2(List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds
-			,String startDate,String endDate,int rangeValue){
-		LOG.debug(" Entered Into getAlertEfficiencyList");
-		List<AlertsSummeryVO> finalList = new ArrayList<AlertsSummeryVO>();
-		 
-		try{
-			
-			List<Long> totalAlertStatusIds = new ArrayList<Long>(0);
-			
-			totalAlertStatusIds.addAll(IConstants.ALERT_STATUS_IDS);
-			
-			Date fromDate = null;        
-			Date toDate = null; 
-			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
-				fromDate = sdf.parse(startDate);
-				toDate = sdf.parse(endDate);
-			}
-			List<Object[]> totalAlertsDateWise = null;
-			if(alertstatusIds != null && alertstatusIds.size() > 0){
-				totalAlertsDateWise = alertDAO.getDifferenceDay(fromDate,toDate,departmentIds,sourceIds,alertstatusIds);
-			}
-			Long ttlAlts = 0L;
-			if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
-				ttlAlts = Long.valueOf(totalAlertsDateWise.size());
-			}
-			
-			//create a map for date and count
-			Map<Long,Long> noOfDayAndCountMap = new HashMap<Long,Long>();
-			if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
-				for(Object[] param : totalAlertsDateWise){
-					noOfDayAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), (commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[3])))+1L));
+		public List<AlertsSummeryVO> getAlertEfficiencyList2(List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds
+				,String startDate,String endDate,int rangeValue){
+			LOG.debug(" Entered Into getAlertEfficiencyList");
+			List<AlertsSummeryVO> finalList = new ArrayList<AlertsSummeryVO>();
+			 
+			try{
+				
+				List<Long> totalAlertStatusIds = new ArrayList<Long>(0);
+				
+				totalAlertStatusIds.addAll(IConstants.ALERT_STATUS_IDS);
+				
+				Date fromDate = null;        
+				Date toDate = null; 
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
+					fromDate = sdf.parse(startDate);
+					toDate = sdf.parse(endDate);
 				}
-			}
-			List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
-			Long maxDays = Collections.max(noOfDayAndCountMap.keySet());
-			int maxVal = Integer.parseInt(maxDays.toString());
-			
-			AlertsSummeryVO alertVO = null;
-			if(dayList != null && dayList.size() > 0 && totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
-				int order = rangeValue;
-				int loopCount = maxVal/rangeValue;
-				if(maxVal%rangeValue > 0){
-					loopCount+=1;
+				List<Object[]> totalAlertsDateWise = null;
+				if(alertstatusIds != null && alertstatusIds.size() > 0){
+					totalAlertsDateWise = alertDAO.getDifferenceDay(fromDate,toDate,departmentIds,sourceIds,alertstatusIds);
 				}
-				int cnt = 0;
-				for(int i = 1 ; i <= loopCount ; i++){
-					alertVO = new AlertsSummeryVO();
-					if(dayList.size() <= rangeValue){
-						alertVO.setName("<="+dayList.size()+" Days");
-					}else{
-						alertVO.setName("<= "+order+" Days");
-					}
-					alertVO.setRange(cnt+"-"+order);
-					for(int k=cnt ; k<=order ; k++){
-						alertVO.setRangeCount(alertVO.getRangeCount()+commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(Long.valueOf(k))));
-					}
-					if(cnt == 0){
-						cnt++;
-					}
-					cnt+=rangeValue;
-					
-					alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(ttlAlts));
-					for(int j=0 ; j<=order ; j++){
-						alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts()+commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(Long.valueOf(j))));
-					}
-					finalList.add(alertVO); 
-					order+=rangeValue;
+				Long ttlAlts = 0L;
+				if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
+					ttlAlts = Long.valueOf(totalAlertsDateWise.size());
 				}
-			}
-			if(finalList != null && finalList.size() > 0){
-				for(AlertsSummeryVO param : finalList){
-					String percentage = "0.0";
-					if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0)
-						percentage = (new BigDecimal(param.getEffcncyAlerts()*(100.0)/ttlAlts)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
-						param.setEffcncyPrcnt(commonMethodsUtilService.getStringValueForObject(percentage));
+				
+				//create a map for date and count
+				Map<Long,Long> noOfDayAndCountMap = new HashMap<Long,Long>();
+				if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
+					for(Object[] param : totalAlertsDateWise){
+						noOfDayAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), (commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[3])))+1L));
+					}
 				}
+				List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+				Long maxDays = Collections.max(noOfDayAndCountMap.keySet());
+				int maxVal = Integer.parseInt(maxDays.toString());
+				
+				AlertsSummeryVO alertVO = null;
+				if(dayList != null && dayList.size() > 0 && totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
+					int order = rangeValue;
+					int loopCount = maxVal/rangeValue;
+					if(maxVal%rangeValue > 0){
+						loopCount+=1;
+					}
+					int cnt = 0;
+					for(int i = 1 ; i <= loopCount ; i++){
+						alertVO = new AlertsSummeryVO();
+						if(dayList.size() <= rangeValue){
+							alertVO.setName("<="+dayList.size()+" Days");
+						}else{
+							alertVO.setName("<= "+order+" Days");
+						}
+						alertVO.setRange(cnt+"-"+order);
+						for(int k=cnt ; k<=order ; k++){
+							alertVO.setRangeCount(alertVO.getRangeCount()+commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(Long.valueOf(k))));
+						}
+						if(cnt == 0){
+							cnt++;
+						}
+						cnt+=rangeValue;
+						
+						alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(ttlAlts));
+						for(int j=0 ; j<=order ; j++){
+							alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts()+commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(Long.valueOf(j))));
+						}
+						finalList.add(alertVO); 
+						order+=rangeValue;
+					}
+				}
+				if(finalList != null && finalList.size() > 0){
+					for(AlertsSummeryVO param : finalList){
+						String percentage = "0.0";
+						if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0)
+							percentage = (new BigDecimal(param.getEffcncyAlerts()*(100.0)/ttlAlts)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+							param.setEffcncyPrcnt(commonMethodsUtilService.getStringValueForObject(percentage));
+					}
+				}
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Raised in getAlertEfficiencyList");
 			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			LOG.error("Exception Raised in getAlertEfficiencyList");
+			return finalList;
 		}
-		return finalList;
-	}
 		
 		public void getEfficiencyOfDates1(Date fromDate, AlertsSummeryVO temp, Date  afterDay,  List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds,Long totalAlerts){
 			
@@ -13371,6 +13794,61 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				LOG.error("Error occured getSocialAlertFeedBackDetails() method of AlertManagementSystemService");
 			}
 			return voList;
+		}
+		public List<AlertCoreDashBoardVO> getFeedbackAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String type){
+			try{
+				List<AlertCoreDashBoardVO> dtlsList = new ArrayList<AlertCoreDashBoardVO>();
+				Date fromDate = null;        
+				Date toDate = null; 
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				List<Long> alertIds = null;
+				if(type != null && type.equalsIgnoreCase("feebbackAlert")){
+					alertIds = alertDAO.getFeedbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, null, null, locationId, statusId);
+				}else if(type.equalsIgnoreCase("pendingFeedBack")){
+					alertIds = alertDAO.getFeedbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, new ArrayList<Long>(){{add(4l);add(12l);}}, "pendingFeedback", locationId, null);
+				}else if(type.equalsIgnoreCase("reopen")){
+					alertIds = alertDAO.getFeedbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, new ArrayList<Long>(){{add(11l);}}, "reopen", locationId, null);
+				}
+				List<Object[]> altDtlsList = alertDAO.getAlertDtlsForGrievance(alertIds);
+				setAlertDtls(dtlsList,altDtlsList);
+				return dtlsList;
+			}catch(Exception e){
+				e.printStackTrace();
+				LOG.error("Error occured getFeedbackAlertDetails() method of AlertService{}");
+			}
+			return null;  
+		}
+		public List<AlertCoreDashBoardVO> getLocationWiseFeebBackAlert(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String areaType,String groupType,String type){
+			try{
+				List<AlertCoreDashBoardVO> dtlsList = new ArrayList<AlertCoreDashBoardVO>();
+				Date fromDate = null;        
+				Date toDate = null; 
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+				List<Long> alertIds = null;
+				if(type != null && type.equalsIgnoreCase("feebbackAlert")){
+					alertIds = alertDAO.getLocationWiseFeebbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, groupType, null, locationId, null,statusId,areaType);
+				}else if(type.equalsIgnoreCase("pendingFeedBack")){
+					alertIds = alertDAO.getLocationWiseFeebbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, groupType, "pendingFeedback", locationId, new ArrayList<Long>(){{add(4l);add(12l);}}, null,areaType);
+				}else if(type.equalsIgnoreCase("reopen")){
+					alertIds = alertDAO.getLocationWiseFeebbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, groupType, "reopen", locationId, new ArrayList<Long>(){{add(11l);}}, null,areaType);
+				}
+				List<Object[]> altDtlsList = alertDAO.getAlertDtlsForGrievance(alertIds);
+				setAlertDtls(dtlsList,altDtlsList);
+				return dtlsList;
+				
+			}catch(Exception e){  
+				e.printStackTrace();
+				LOG.error("Error occured getLocationWiseFeebBackAlert() method of AlertService{}");
+			}
+			return null;
 		}
 		public List<IdNameVO> getAllCategoryForLocationWiseGrievance(){
 			try{
