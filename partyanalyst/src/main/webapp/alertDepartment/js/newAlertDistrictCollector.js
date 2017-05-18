@@ -105,7 +105,7 @@ var globaldepartmentsArrForFilterView=[];
 		 getGovtDepartmentDetails();
 		 var alertTypeForSubordinate = getAlertTypeForSubordinate();
 		 getBellowDistrictOfficerAlertsCountView(alertTypeForSubordinate);
-		 
+		 $("#departmentWiseLocationBlockId").html('');
 	}
 
 	function highcharts(id,type,xAxis,yAxis,legend,data,plotOptions,tooltip){
@@ -2687,6 +2687,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 	if(searchType == "statuswise" || searchType == "alertSource" ){
 		var alertType = getAlertType();
 		$("#departmentWiseBlocks"+departmentId+parentGovtDepartmentScopeId).show();
+		$(".locationLevelWiseDivCls").show();
 		if(result !=null && result.length>0){
 			if(searchType == "statuswise"){
 				var statusNamesArr=[];
@@ -3009,6 +3010,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 	}
 	else if(searchType == "scopewise" && parentGovtDepartmentScopeId != 1){
 		$("#departmentWiseBlocks"+departmentId+parentGovtDepartmentScopeId).show();
+		$(".locationLevelWiseDivCls").hide();
 		if(result !=null && result.length>0){
 			
 			var locationNamesArr=[];
@@ -3226,6 +3228,7 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 		}
 	}else if(searchType == "scopewise" && parentGovtDepartmentScopeId == 1){
 		$("#departmentWiseBlocks"+departmentId+parentGovtDepartmentScopeId).show();
+		$(".locationLevelWiseDivCls").hide();
 		if(result !=null && result.length>0){
 				var mainlocationArr =[];
 					var nmaesArr =[];
