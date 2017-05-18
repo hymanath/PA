@@ -64,12 +64,12 @@
 	<!-- YUI Dependency files (End) -->
 	
 	<style>
-	#partMeetingModalData thead th:nth-child(5) , #partMeetingModalData thead th:nth-child(3),
+	/*#partMeetingModalData thead th:nth-child(5) , #partMeetingModalData thead th:nth-child(3),
 	{
 		width:150px !important;
 		max-width:150px !important;
 	}
-	#partMeetingModalData tr td:nth-child(5) , #partMeetingModalData tr td:nth-child(3),
+	#partMeetingModalData tr td:nth-child(5) , #partMeetingModalData tr td:nth-child(3),*/
 	#partMeetingModalData thead th:nth-child(9) , #partMeetingModalData thead th:nth-child(9)
 	{
 		width:100px !important;
@@ -2141,17 +2141,17 @@ $("#buildUpdateDivId").html(str);
 			if(result[i].tehsil != null){
 				var locationName ="";
 				if(result[i].district != null && result[i].district.length>0)
-					locationName = locationName+"District : "+result[i].district+"<br> ";
+					locationName = locationName+"District : "+result[i].district+" ";
 				if(result[i].assembly != null && result[i].assembly.length>0)
-					locationName = locationName+"Assembly : "+result[i].assembly+"<br> ";
+					locationName = locationName+"Assembly : "+result[i].assembly+" ";
 				if(result[i].tehsil != null && result[i].tehsil.length>0)
-					locationName = locationName+"Mandal : "+result[i].tehsil+"<br> ";
+					locationName = locationName+"Mandal : "+result[i].tehsil+" ";
 				if(result[i].panchayat != null && result[i].panchayat.length>0)
-					locationName = locationName+"Panchayat : "+result[i].panchayat+"<br> ";
+					locationName = locationName+"Panchayat : "+result[i].panchayat+" ";
 				if(result[i].hamlet != null && result[i].hamlet.length>0)
-					locationName = locationName+"Hamlet : "+result[i].hamlet+"<br>";
+					locationName = locationName+"Hamlet : "+result[i].hamlet+"";
 				if(result[i].leb != null && result[i].leb.length>0)
-					locationName = locationName+" Munci/Corp/Greater City : "+result[i].leb+"<br>";
+					locationName = locationName+" Munci/Corp/Greater City : "+result[i].leb+"";
 				if(result[i].ward != null && result[i].ward.length>0)
 					locationName = locationName+" "+result[i].ward+"  ";
 				if(locationName.length > 25)
