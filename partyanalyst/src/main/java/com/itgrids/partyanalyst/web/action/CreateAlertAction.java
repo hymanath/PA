@@ -3108,4 +3108,32 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;			
 	}
+	
+	public String updateDuplicateAlertCallerDetails(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return null;
+			
+			jObj = new JSONObject(getTask());
+			String mobileNo = jObj.getString("mobileNo");
+			String nmae = jObj.getString("name");
+			String email = jObj.getString("email");
+			String address = jObj.getString("address");
+			Long alertId = jObj.getLong("alertId");
+			
+			GrievanceAlertVO inputVo = new GrievanceAlertVO();
+			inputVo.setMobileNo(mobileNo);
+			inputVo.setName(nmae);
+			inputVo.setEmailId(email);
+			inputVo.setAddress(address);
+			inputVo.setAlertId(alertId);
+			
+			status = alertService.updateDuplicateAlertCallerDetails(inputVo,regVo.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception Occured in updateDuplicateAlertCallerDetails() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;			
+	}
 }

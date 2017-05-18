@@ -3635,6 +3635,7 @@
 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"></property>
 		<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO"></property>
 		<property name="regionScopesDAO" ref="regionScopesDAO"></property>
+		<property name="alertCallerRelationDAO" ref="alertCallerRelationDAO"></property>
 	</bean>            
 	<!-- Debate End -->
 	
@@ -4234,6 +4235,7 @@
 		<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO" ></property>
 		<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO" ></property> 
 		<property name="alertService" ref="alertService" ></property>	  
+		<property name="alertCallerRelationDAO" ref="alertCallerRelationDAO" ></property>
    </bean>
 </beans>			
 	

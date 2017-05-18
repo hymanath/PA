@@ -3984,6 +3984,8 @@
 	 <bean id="boothInchargeHistoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothInchargeHistoryDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 
+	 <bean id="alertCallerRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertCallerRelationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 
 </beans>		
