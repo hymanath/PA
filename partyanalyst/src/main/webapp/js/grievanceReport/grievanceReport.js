@@ -27,7 +27,7 @@ $('#reportrange').daterangepicker({
 	var pickerDates = callCenterUserFDate+' - '+callCenterUserTDate
 	if(dates == pickerDates)
 	{
-		$("#reportrange").val('All');
+		$("#reportrange").val('This Month');
 	}
 //var callCenterUserFDate=moment().startOf('month').format("DD/MM/YYYY");
 //var callCenterUserTDate=moment().format("DD/MM/YYYY");
@@ -984,9 +984,9 @@ function buildGrievanceReportForBellowLocation(result,locationId,locationName,gr
 					str+='<td class="panchayatDataCls" attr_position="'+i+'" attr_location_id="'+result[i].id+'" attr_group_type="panchayat"><i class="glyphicon glyphicon-plus-sign"></i> '+result[i].name+'</td>'; 
 				}
 				if(result[i].name == "OTHER"){
-					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';  
+					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a >'+result[i].totalAlertCnt+'</a></td>';  
 				}else{
-					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="tehsil" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_status_id="0" attr_status="All Status"><a href="#">'+result[i].totalAlertCnt+'</a></td>';  
+					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="tehsil" attr_group_type="tehsil" attr_location_id="'+result[i].id+'" attr_status_id="0" attr_status="All Status"><a >'+result[i].totalAlertCnt+'</a></td>';  
 				}
 					 
 					var len = result[i].subList1.length;
@@ -1880,6 +1880,7 @@ function getDistIdAndNameList(){
 //abcd
 	
 function getCadreGreivienceEfficiency(sliderVal){
+	$("#totalHeadingRangeCount").html('');
 	getAverageIssuePendingDays();
 	$("#efficiencyId").html(spinner);
     var alertstatusIds = [];
@@ -1916,12 +1917,26 @@ function getCadreGreivienceEfficiency(sliderVal){
     }).done(function(result){
 		$("#efficiencyId").html('');
       if(result!=null){
+		  if(result[0] !=null){
+			  $("#totalHeadingRangeCount").html(result[0].ttlAlrtss);
+		  }else{
+			  $("#totalHeadingRangeCount").html(" - ");
+		  }
+			
 				var str = "";
+				var str1 = "";
 				str+='<div class="table-responsive">';
 				if(result.length>4){
 					str+='<div class="">';
 				}else{
 					str+='<div class="col-sm-4">';
+				}
+				
+				str1+='<div class="table-responsive">';
+				if(result.length>4){
+					str1+='<div class="">';
+				}else{
+					str1+='<div class="col-sm-4">';
 				}
 				
 				str +="<table class='table table-bordered bg-white' style='margin-bottom:20px;'>";
@@ -1939,11 +1954,32 @@ function getCadreGreivienceEfficiency(sliderVal){
 						str +="</tr>";
 					str +="</tbody>";
 				str +="</table>";
+				
+				str1 +="<table class='table table-bordered bg-white' style='margin-bottom:20px;'>";
+					str1 +="<tbody>";
+					
+						str1 +="<tr>";
+							for(var i in result){
+								str1+='<td>'+result[i].range+' (days)</td>';
+							}
+						str1 +="</tr>";    
+						str1 +="<tr>";
+							for(var i in result){
+								str1+="<td class='text-success'>"+result[i].rangeCount+"</td>";
+							}
+						str1 +="</tr>";
+					str1 +="</tbody>";
+				str1 +="</table>";
+				
+				str1 +="</div>";
+				str1 +="</div>";
+				
 				str +="</div>";
 				str +="</div>";
 			}
 			
 			$("#efficiencyId").html(str);
+			$("#efficiencyRangeId").html(str1);
     });
 }
 

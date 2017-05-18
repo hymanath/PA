@@ -1,16 +1,14 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalUserLevelId=0;
 var globalUserLevelValues = [];	
-var start=moment();
-var end=moment();
-function cb(start, end){
-	$('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-}
+var callCenterUserFDate=moment().startOf('month').format("DD/MM/YYYY");
+var callCenterUserTDate=moment().format("DD/MM/YYYY");
+
 
 $('#reportrange').daterangepicker({
 	opens: 'right',
-	startDate: start,
-	endDate: end,
+	startDate: callCenterUserFDate,
+	endDate: callCenterUserTDate,
 	locale: {
 		  format: 'DD/MM/YYYY'
 		},
@@ -25,14 +23,26 @@ $('#reportrange').daterangepicker({
 		   'This Month': [moment().startOf('month'), moment()],
 		   'This Year': [moment().startOf('Year'), moment()]
 		}
-}, cb);
+});
  
-var callCenterUserFDate=moment().startOf('month').format("DD/MM/YYYY");
-var callCenterUserTDate=moment().format("DD/MM/YYYY");
+ var dates= $("#reportrange").val();
+	var pickerDates = callCenterUserFDate+' - '+callCenterUserTDate
+	if(dates == pickerDates)
+	{
+		$("#reportrange").val('This Month');
+	}
+	
+/* var callCenterUserFDate=moment().startOf('month').format("DD/MM/YYYY");
+var callCenterUserTDate=moment().format("DD/MM/YYYY"); */
 
 $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 	callCenterUserFDate = picker.startDate.format('DD/MM/YYYY');
 	callCenterUserTDate = picker.endDate.format('DD/MM/YYYY');
+		if(picker.chosenLabel == 'All')
+		{
+			$("#reportrange").val('All');
+		}
+		
 	$("#statusWiseAlertCntId").html(spinner);
 	$("#feedbackWiseAlertCntId").html(spinner);
 	$("#reopenAlertCntId").html(spinner);
