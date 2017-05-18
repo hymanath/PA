@@ -742,6 +742,7 @@
 		<pattern>/newConstituencyPage*</pattern>
 		<pattern>/partyLeadersDetailsAction*</pattern>
 		<pattern>/customReportAction*</pattern>
+		<pattern>/mahanaduNotificationAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
