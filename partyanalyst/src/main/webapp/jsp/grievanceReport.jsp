@@ -26,6 +26,7 @@
 <link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/grievanceReport.css" type="text/css"/>
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
 <style>
 .dateColorCls{
 	background-color:#FFCF2D;
@@ -49,21 +50,22 @@
 			<div class=" bg-gov-dark">
 				<div class="container">  
 					<div class="row">
-						<div id="menu1" class="col-md-6">       
-							<div class="col-md-12">
+						<div id="menu1" class="col-sm-3">       
 								<ul class="nav navbar-nav">        
 									<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
 									<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
 									<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>
-									<li style="padding:14px 16px;color:#95989A;cursor:pointer;"> 
-										<div id="reportrange"> 
-											&nbsp; <span>Custom Date Range</span>
-										</div>
-									</li>
 								</ul>
+						</div>
+						<div class="col-sm-3"> 
+							<div class="input-group dateRangePickerlocCls m_top10" style="margin-right: 15px">
+								<input type="text" class="selectpicker" style="width:180px" id="reportrange">
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar" style="color:#f0f8ff"></i>
+								</span>
 							</div>
 						</div>
-						<div class="col-md-3 m_top10">
+						<div class="col-sm-3 m_top10">
 							<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
 								<option value="0">All</option>
 								<c:forEach items="${idNameVOList[0].subList1}"  var="category">
@@ -71,7 +73,7 @@
 								</c:forEach>
 							</select>
 						</div>
-						<div class="col-md-3 m_top10">
+						<div class="col-sm-3 m_top10">
 							<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();" style="width:70%">
 								<c:forEach items="${idNameVOList}"  var="department">
 									<option value="${department.id}">${department.name}</option>
@@ -113,19 +115,27 @@
 			<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading headingColor">
-					<h4 class="m_0 panel-title text-capital fontColor" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency 
-						<!--<span style="margin-left:300px;font-size:13px;" class="fontColor">AVERAGE ISSUE PENDING DAYS : 
-						<span id="issuePendingCntId"></span></span>-->
-					<!--<span class="pull-right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
-					<span style="font-size:12px;">Include Proposal</span></span>-->
-					</h4>
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<h4 class="m_0 panel-title text-capital fontColor" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency 
+								<!--<span style="margin-left:300px;font-size:13px;" class="fontColor">AVERAGE ISSUE PENDING DAYS : 
+								<span id="issuePendingCntId"></span></span>-->
+							<!--<span class="pull-right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
+							<span style="font-size:12px;">Include Proposal</span></span>-->
+							</h4>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6 pull-right">
+							<input id="sliderValue" data-slider-id="sliderValue" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="2"/>&nbsp;&nbsp;&nbsp;
+							<span>Value : <span id="getSliderVal"></span></span>
+						</div> 
+					</div>
 				</div>
 				<div class="panel-body">
 					<div class="col-md-12 col-xs-12 col-sm-12 ">
 						<div class="row">
 							<div class="col-md-3 col-xs-12 col-sm-4" style="width: auto;">
 								<label>Select Status</label>
-								<select class="chosenSelect" multiple id="statusId" onchange="getCadreGreivienceEfficiency();">
+								<select class="chosenSelect grievanceEffOnchange" multiple id="statusId">
 									<option value="1">Pending</option>
 									<option value="2">Notified</option>
 									<option value="3">Action In Progess</option>
@@ -320,6 +330,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->
 <script type="text/javascript">
 google.load("elements", "1", {
@@ -333,8 +344,23 @@ google.load("elements", "1", {
 
 </script>
 <script>
-
 $(".chosenSelect").chosen({width:'100%'})
+getSliderDetails();
+
+function getSliderDetails(){
+	var sliderVa1;
+		var slider = new Slider('#sliderValue', {
+	   formatter: function(value) {
+		   $("#getSliderVal").text(value);
+		   sliderVa1=value;
+		 return 'Current value: ' + value;
+	   }
+	});
+	
+	$( "#sliderValue" ).mouseup(function() {
+		getCadreGreivienceEfficiency(sliderVa1);
+	});
+}
 function generateExcel1(){
 	tableToExcel('grievanceReportTableId', 'Grievance Report');
 }
