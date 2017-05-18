@@ -1153,6 +1153,7 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO" />
 	   	<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"/>
+	    <property name="boothInchargeDAO" ref="boothInchargeDAO"/>
 	</bean>
 	
 	<bean name="userAccessRegionService" class="com.itgrids.partyanalyst.service.impl.UserAccessRegionService">
