@@ -42,46 +42,47 @@
 {
 	margin-top:5px
 }
+#selectMediaId_chosen a{background-color: #95989a;color: #f0f8ff;}
+#selectMediaId_chosen .chosen-drop{background-color: #95989a !important;color: #f0f8ff !important;}
+#selecDepartmentId_chosen a{background-color: #95989a;color: #f0f8ff;}
+#selecDepartmentId_chosen .chosen-drop{background-color: #95989a !important;color: #f0f8ff !important;}
 </style>
 </head>
 <body>  
   <nav>
-	<div class="bg-gov-dark">
-		<div class="container"> 
-			<div class="row" style="padding:8px;">
-					<div class="col-sm-5">
-						<ul class="nav navbar-nav" style="padding: 5px; background-color: rgb(88, 88, 88);">        
-							<!--<li> <a href="#" attr_range_val="month" class="daterangeClorCls rangeTypeCls">MONTH</a> </li>  
-							<li> <a href="#" attr_range_val="week" class="daterangeClorCls rangeTypeCls" >WEEK</a> </li>
-							<li> <a href="#" attr_range_val="day" class="daterangeClorCls rangeTypeCls  dateColorCls">DAY</a> </li>-->
-							<li style="color:#f0f8ff;cursor:pointer;"> 
-								<div id="reportrange"> 
-									&nbsp; <span>Custom Date Range</span>
-								</div>
-							</li>
-						</ul>
+			<div class=" bg-gov-dark">
+				<div class="container">  
+					<div class="row">
+						
+						<div class="col-sm-2 pull-right "> 
+							<div class="input-group dateRangePickerCls m_top10" style="margin-right: 15px">
+								<input type="text" class="form-control" style="width:180px;height: 37px;background-color: #95989a;color: #f0f8ff;" id="reportrange">
+								<span class="input-group-addon" style="background-color: #95989a;border-left: 1px solid #f0f8ff;">
+									<i class="glyphicon glyphicon-calendar" ></i>
+								</span>
+							</div>
+						</div>
+						<div class="col-sm-4 m_top10 pull-right">
+							<select id="selecDepartmentId" class="form-control"  onChange="getDepartmentInformation();" style="width:70%">
+								<c:forEach items="${idNameVOList}"  var="department">
+									<option value="${department.id}">${department.name}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="col-sm-2 m_top10 pull-right ">
+							<select id="selectMediaId" class="form-control" onChange="getMediaInformation();">
+								<option value="0">All</option>
+								<c:forEach items="${idNameVOList[0].subList1}"  var="category">
+									<option value="${category.id}">${category.name}</option>
+								</c:forEach>
+							</select>
+						</div>
+						
 					</div>
-					<div class="col-sm-2 ">
-						<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
-							<option value="0">All</option>
-							<option value="4">Call Center</option>         
-							<option value="5">Social Media</option>            
-							<option value="2">Print Media</option>
-							<option value="3">Electronic Media</option>
-						</select>
-					</div>
-					<div class="col-sm-5 pull-right">
-						<select id="selecDepartmentId" class="selectpicker"  onChange="getDepartmentInformation();" style="width:50%">
-							<c:forEach items="${idNameVOList}"  var="department">
-								<option value="${department.id}">${department.name}</option>
-							</c:forEach>
-						</select>
-					</div>
-					
-					
+				</div>
 			</div>
-		</div>
-	</div>
+		</nav>
+		
 	<div class="container-fluid bg-gov-dark">
 		<div class="row">
 			<div class="col-md-10">      
@@ -141,7 +142,7 @@
 </div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
-
+<script src="alertDepartment/js/jquery.hotkeys.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
@@ -165,6 +166,10 @@ google.load("elements", "1", {
 	packages: "transliteration"
 });
 $(".chosenSelect").chosen({width:'100%'})
+$("#selecDepartmentId").chosen()
+$("#selectMediaId").chosen()
+$("#selecDepartmentId").trigger("chosen:updated")
+$("#selectMediaId").trigger("chosen:updated")
 function generateExcel1(){
 	tableToExcel('grievanceReportTableId', 'Grievance Report');
 }

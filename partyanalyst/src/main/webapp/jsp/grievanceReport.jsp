@@ -51,6 +51,7 @@
 .getAlertDtlsCls{color: #337ab7;}
 .getAlertDtlsOnDateWise{color: #337ab7;}
 .panchayatDataCls{cursor:pointer;}
+.daterangeClorCls{cursor:pointer;}
 </style>
 </head>
 <body>           
@@ -159,9 +160,14 @@
 									<option value="13">Proposal</option>
 								</select>
 							</div>
+							<div class="col-md-3 col-xs-12 col-sm-4 pull-right">
+								<h4 class="panel-title">Total Alert</h4>
+								<h3 id="totalHeadingRangeCount"></h3>
+							</div>
 						</div>
 						<div class="row">
 							<div id="efficiencyId" class="m_top20"></div>
+							<div id="efficiencyRangeId" class="m_top20"></div>
 						</div>
 					</div>
 				</div>
