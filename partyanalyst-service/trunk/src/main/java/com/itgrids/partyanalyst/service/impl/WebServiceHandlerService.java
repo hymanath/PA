@@ -4875,7 +4875,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	 public List<GrievanceAlertVO> getAllGrievancesForCaller(String mobileNo){
 		 List<GrievanceAlertVO> returnList = null;
 		 try {
-			 returnList = alertManagementSystemService.getGovtGrievanceAlertDetails(mobileNo,"",0l,"","",0l);
+			 returnList = alertManagementSystemService.getGovtGrievanceAlertDetails(mobileNo,"",0l,"","",0l,0l);
 		} catch (Exception e) {
 			log.error("exception occured in  the getAllGrievancesForCaller  method in WebServiceHandlerService");
 		}
