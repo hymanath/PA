@@ -1718,10 +1718,9 @@ function getCadreGreivienceEfficiency(){
 		sourceIds.push(3);
 	}
     var jobj = {
-		daysArr : [5,10,30,60,90,180,365],   
 		deptIds :deptIds,
 		sourceIds:sourceIds,
-		rangeType:$("#dateRangeId").attr("value"),  
+		rangeValue:2,         
 		alertstatusIds:$("#statusId").val(),
 		fromDate: callCenterUserFDate,                           
 		toDateStr:callCenterUserTDate, 
@@ -1746,7 +1745,7 @@ function getCadreGreivienceEfficiency(){
 					
 						str +="<tr>";
 							for(var i in result){
-								str+='<td>'+result[i].effcncyType+'</td>';
+								str+='<td>'+result[i].name+'</td>';
 							}
 						str +="</tr>";    
 						str +="<tr>";
