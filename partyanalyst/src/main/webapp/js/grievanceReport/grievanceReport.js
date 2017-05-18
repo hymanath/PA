@@ -63,6 +63,8 @@ function getGrievanceReport(){
 $("#grivenaceTableId").html(spinner);
 $("#barGraph").html(spinner);
 $("#statusWiseAlertCntId").html(spinner);
+$("#feedbackWiseAlertCntId").html(spinner);
+$("#reopenAlertCntId").html(spinner);
     var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
     var jsObj ={
@@ -81,6 +83,8 @@ $("#statusWiseAlertCntId").html(spinner);
 				$("#grivenaceTableId").html('');
 				$("#barGraph").html('');
 				$("#statusWiseAlertCntId").html('');
+				$("#feedbackWiseAlertCntId").html('');
+				$("#reopenAlertCntId").html('');
 			if(result !=null && result.length>0){
 				buildGrievanceReport(result);
 				buildLocationWiseGrivenacereportGraph(result);
@@ -254,6 +258,8 @@ function getDistrintInformation(){
 	 getTotalAlertGroupByCategoryThenStatus();
 	getCadreGreivienceEfficiency(2);	 
  $("#statusWiseAlertCntId").html(spinner);
+$("#feedbackWiseAlertCntId").html(spinner);
+$("#reopenAlertCntId").html(spinner);
  $("#grivenaceTableId").html(spinner);
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
@@ -273,6 +279,8 @@ function getDistrintInformation(){
  		 data: {task:JSON.stringify(jobj)},
      }).done(function(result){
 		 $("#statusWiseAlertCntId").html('');
+		 $("#feedbackWiseAlertCntId").html('');
+		 $("#reopenAlertCntId").html('');
 		$("#grivenaceTableId").html('');
 		 if(result != null && result.length > 0){
 			buildGrievanceReport(result);
@@ -296,6 +304,8 @@ function getDistrintInformation(){
 	 getTotalAlertGroupByCategoryThenStatus(); 
 	 getCadreGreivienceEfficiency(2)
 	 $("#statusWiseAlertCntId").html(spinner);
+	 $("#feedbackWiseAlertCntId").html(spinner);
+	$("#reopenAlertCntId").html(spinner);
 	 $("#grivenaceTableId").html(spinner);
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
@@ -315,6 +325,8 @@ function getDistrintInformation(){
         data: {task:JSON.stringify(jobj)},
      }).done(function(result){
 		 $("#statusWiseAlertCntId").html('');
+		 $("#feedbackWiseAlertCntId").html('');
+		$("#reopenAlertCntId").html('');
 		$("#grivenaceTableId").html('');
 		if(result !=null && result.length>0){
 			buildGrievanceReport(result);
@@ -337,6 +349,8 @@ function getDistrintInformation(){
 	 getCadreGreivienceEfficiency(2);
  $("#grivenaceTableId").html(spinner);
  $("#statusWiseAlertCntId").html(spinner);
+ $("#feedbackWiseAlertCntId").html(spinner);
+$("#reopenAlertCntId").html(spinner);
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
 	 var rangeType=$("#dateRangeId").attr("value");
@@ -355,6 +369,8 @@ function getDistrintInformation(){
      }).done(function(result){
 		  $("#grivenaceTableId").html('');
 		 $("#statusWiseAlertCntId").html('');
+		 $("#feedbackWiseAlertCntId").html('');
+		$("#reopenAlertCntId").html('');
  		if(result !=null && result.length>0){
 			buildGrievanceReport(result);
 			buildLocationWiseGrivenacereportGraph(result);
@@ -404,18 +420,52 @@ function getDistrintInformation(){
  function buildLocationWiseGrivenacereportGraph(result){
 	var statusNamesArray =[];
 	var statusIdNameArr=[];
-	
- 	    for(var i in result[0].subList1){
+	for(var i in result[0].subList1){
+		 var type = "other";
+			if(result[0].subList1[i].name != "reopen" && result[0].subList1[i].name != "feebbackAlert" && result[0].subList1[i].name != "pendingFeedBack"){
+				
+				 if(result[0].subList1[i].name != null){
+				   type = result[0].subList1[i].name;
+				 } 
+				 statusNamesArray.push(result[0].subList1[i].statusType);
+				 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId,"type":type});
+			}
+		}	
+				
+		buildHighchart("statusWiseAlertCntId",statusNamesArray,statusIdNameArr);
+		statusNamesArray =[];
+		statusIdNameArr=[];
+	     for(var i in result[0].subList1){
 			 var type = "other";
-			 if(result[0].subList1[i].name != null){
-			   type = result[0].subList1[i].name;
-			 }
-			 statusNamesArray.push(result[0].subList1[i].statusType);
-			 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId,"type":type});
-		   }
-	Highcharts.chart('statusWiseAlertCntId', {
+			if(result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){
+				if(result[0].subList1[i].name != null){
+				   type = result[0].subList1[i].name;
+				 } 
+				 statusNamesArray.push(result[0].subList1[i].statusType);
+				 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId,"type":type});
+				 
+			}
+		}
+		buildHighchart("feedbackWiseAlertCntId",statusNamesArray,statusIdNameArr);
+		statusNamesArray =[];
+		statusIdNameArr=[];
+		for(var i in result[0].subList1){
+			 var type = "other";
+			if(result[0].subList1[i].name == "reopen"){
+				if(result[0].subList1[i].name != null){
+				   type = result[0].subList1[i].name;
+				 } 
+				 statusNamesArray.push(result[0].subList1[i].statusType);
+				 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId,"type":type});
+			}
+		}
+		buildHighchart("reopenAlertCntId",statusNamesArray,statusIdNameArr); 
+		
+ }
+ function buildHighchart(divId,statusNamesArray,statusIdNameArr){
+	Highcharts.chart(divId, {
              colors: ['#FFCF2C'],
-             chart: {
+             chart: { 
                  backgroundColor:'transparent',
                  type: 'column'
              },
@@ -429,7 +479,9 @@ function getDistrintInformation(){
                  minorGridLineWidth: 0,         
                  categories: statusNamesArray,
 				 labels: {
-						
+						formatter: function() {
+							return this.value.toString().substring(0, 8)+'..';
+						},
 						 style: {
 							color: '#F0F8FF'
 						}
@@ -476,8 +528,8 @@ function getDistrintInformation(){
 
                      },
 				 },
-				 series: {
-					cursor: 'pointer',
+				series: {
+					cursor: 'pointer',					
 					 point: {
 						events: {
 							 click: function () {
@@ -505,7 +557,8 @@ function getDistrintInformation(){
                  data:statusIdNameArr     
              }],
          });
- }
+} 
+ 
  function getAlertStatusWise(statusId,status){
 	$("#totalAlertDistricTableId").html("");   
 	$("#grievanceDtlsModalId").modal("show");     
@@ -592,7 +645,8 @@ function onLoadInitialisations(){
 	$(document).on("click",".getAlertDtlsCls",function(){
 		var type = $(this).attr("attr_type");
 		$("#totalAlertDistricTableId").html("");  
-		$("#grievanceDtlsModalId").modal("show");     
+		$("#grievanceDtlsModalId").modal("show");
+		$("#removeClassModal").removeClass("closeSecondModal")	
 		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 		var rangeType=$("#dateRangeId").attr("value");
 		var locationId = $(this).attr("attr_location_id");
@@ -1925,61 +1979,70 @@ function getCadreGreivienceEfficiency(sliderVal){
 			
 				var str = "";
 				var str1 = "";
-				str+='<div class="table-responsive">';
-				if(result.length>4){
-					str+='<div class="">';
-				}else{
-					str+='<div class="col-sm-4">';
-				}
-				
-				str1+='<div class="table-responsive">';
-				if(result.length>4){
-					str1+='<div class="">';
-				}else{
-					str1+='<div class="col-sm-4">';
-				}
-				
-				str +="<table class='table table-bordered bg-white' style='margin-bottom:20px;'>";
-					str +="<tbody>";
+				str+='<div class="col-sm-12">';
+				str+='<ul class="list-inline slickSlider">';
+					for(var  i in result)
+					{
+						str+='<li class="col-sm-2">';
+							str+='<table class="table table-condensed">';
+								str+='<tr>';
+									
+									str+='<td>'+result[i].name+'</td>';
+								str+='</tr>';
+								str+='<tr>';
+									
+									str+='<td class="text-success" style="border-bottom:1px solid #d3d3d3;">'+result[i].effcncyPrcnt+' %</td>';
+								str+='</tr>';
+								
+							str+='</table>';
+						str+='</li>';
+					}
+					str+='</ul>';
+					str+='</div>';
 					
-						str +="<tr>";
-							for(var i in result){
-								str+='<td>'+result[i].name+'</td>';
-							}
-						str +="</tr>";    
-						str +="<tr>";
-							for(var i in result){
-								str+="<td class='text-success'>"+result[i].effcncyPrcnt+" %</td>";
-							}
-						str +="</tr>";
-					str +="</tbody>";
-				str +="</table>";
+					str1+='<div class="col-sm-12 m_top20">';
+				str1+='<ul class="list-inline slickSliderRange">';
+					for(var  i in result)
+					{
+						str1+='<li class="col-sm-2">';
+							str1+='<table class="table table-condensed">';
+								str1+='<tr>';
+									
+									str1+='<td>'+result[i].range+' (days)</td>';
+								str1+='</tr>';
+								str1+='<tr>';
+									
+									str1+='<td class="text-success" style="border-bottom:1px solid #d3d3d3;">'+result[i].rangeCount+'</td>';
+								str1+='</tr>';
+								
+							str1+='</table>';
+						str1+='</li>';
+					}
+					str1+='</ul>';
+					str1+='</div>';
 				
-				str1 +="<table class='table table-bordered bg-white' style='margin-bottom:20px;'>";
-					str1 +="<tbody>";
-					
-						str1 +="<tr>";
-							for(var i in result){
-								str1+='<td>'+result[i].range+' (days)</td>';
-							}
-						str1 +="</tr>";    
-						str1 +="<tr>";
-							for(var i in result){
-								str1+="<td class='text-success'>"+result[i].rangeCount+"</td>";
-							}
-						str1 +="</tr>";
-					str1 +="</tbody>";
-				str1 +="</table>";
-				
-				str1 +="</div>";
-				str1 +="</div>";
-				
-				str +="</div>";
-				str +="</div>";
 			}
 			
 			$("#efficiencyId").html(str);
+			$('.slickSlider').slick({
+						slide: 'li',
+						slidesToShow: 6,
+						slidesToScroll: 3,
+						infinite: false,
+						swipe:false,
+						touchMove:false,
+						variableWidth: false
+					});
 			$("#efficiencyRangeId").html(str1);
+			$('.slickSliderRange').slick({
+						slide: 'li',
+						slidesToShow: 6,
+						slidesToScroll: 3,
+						infinite: false,
+						swipe:false,
+						touchMove:false,
+						variableWidth: false
+					});
     });
 }
 
