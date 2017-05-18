@@ -64,6 +64,10 @@
 	<!-- YUI Dependency files (End) -->
 	
 	<style>
+	.bg_ED
+	{
+		background-color:#EDEDED
+	}	
 	label{
 		font-weight : 400;
 	}
@@ -79,7 +83,7 @@
 	}
 	.block
 	{
-	  border:2px solid #f9dc7e;
+	  border:2px solid #ee935d ;
 	  position:relative;
 	  padding:8px;
 	  margin-top:20px;
@@ -97,7 +101,7 @@
 	}
 	.text-primary , .panelNewCustom.panel.panel-default span.panel-title
 	{
-	  color:#f9dc7e !important;
+	  color:#ee935d  !important;
 	}
 	</style>
 	</head>  	
@@ -470,7 +474,7 @@
 </div><!-- /.modal -->
 <!--srujana-->
  <div class="modal fade" id="govtGrievanceAlertModalId" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document" style="width:80%">
+  <div class="modal-dialog" role="document" style="width:95%">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -479,59 +483,90 @@
       <div class="modal-body">
 	  <div class ="row">
 		   <div class="col-md-3 col-sm-4 col-xs-12 govtGrievanceView" >
-		   <label>Search By:</label>
-                    <input  type="radio" name="checkBoxName"  style="" value="1" class="radioBtnCls" id="radioBtnMobileId"/><span> Mobile No </span>
-                    <input  type="radio" name="checkBoxName"  style="" value="2" class="radioBtnCls" id="radioBtnClsId" /><span>Location</span>  
-                </div>
-				<div id="modalErrorDiv" style="color:red"></div>
-				<div id="modalSuccessDiv" style="color:green"></div>
+				<label class="radio-inline">Search By:</label>
+				<label class="radio-inline">
+					<input  type="radio" name="checkBoxName"  style="" value="1" class="radioBtnCls" id="radioBtnMobileId"/> Mobile No
+				</label>
+				<label class="radio-inline">
+					<input  type="radio" name="checkBoxName"  style="" value="2" class="radioBtnCls" id="radioBtnClsId" />Location
+				</label>
+			</div>
+			<div id="modalErrorDiv" style="color:red"></div>
+			<div id="modalSuccessDiv" style="color:green"></div>
 		</div>
 	   <div class="row locationSearchCls" style="display:none;">
-	   <div class="col-sm-3 m_top10" id="districtIdDiv" style="display:block;">
-		<label>District<span style="color:red"></span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDistrictId"></span></label>
-		<select class="chosen" id="modalDistrictId" onChange="getMandalsByConstituencyForReferPopup1();" name="grievanceAlertVO.districtId">
-			<option value="0">ALL</option>
-		</select>
-	  </div>						
-	 <div class="col-sm-3 m_top10" id="mandalDiv" style="display:block;">
+			<div class="col-sm-3 m_top10" id="districtIdDiv" style="display:block;">
+				<label>District<span style="color:red"></span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDistrictId"></span></label>
+				<select class="chosen" id="modalDistrictId" onChange="getMandalsByConstituencyForReferPopup1();" name="grievanceAlertVO.districtId">
+					<option value="0">ALL</option>
+				</select>
+			</div>						
+			<div class="col-sm-3 m_top10" id="mandalDiv" style="display:block;">
 				<label>Mandal/Muncipality<span style="color:red"></span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgMandalId"></span></label>
 				<select class="chosen" id="modalMandalNameId" onChange="getPanchayatsForReferPopup1();" name="grievanceAlertVO.mandalId">
 					<option value="0">ALL</option>
 				</select>
-		</div>
-		<div class="col-sm-3 m_top10" id="panchayatDiv" style="display:block;">
-			<label>Village/Urban Locality<span style="color:red"></span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgVillageId"></span></label>
-			<select class="chosen" id="modalPanchayatId" onchange="getHamletss1();" name="grievanceAlertVO.panchayatId">
-				<option value="0">ALL</option>
-			</select>
-		</div>
-		<div class="col-sm-3 m_top10" id="villageDiv" style="display:block;">
-				<label>Habitation/Urban Block<span style="color:red"></span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgHamletId"></span></label>
-				<select class="chosen" id="modalhamletId" name="grievanceAlertVO.hamletId">
+			</div>
+			<div class="col-sm-3 m_top10" id="panchayatDiv" style="display:block;">
+				<label>Village/Urban Locality<span style="color:red"></span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgVillageId"></span></label>
+				<select class="chosen" id="modalPanchayatId" onchange="getHamletss1();" name="grievanceAlertVO.panchayatId">
 					<option value="0">ALL</option>
 				</select>
-		 </div>
+			</div>
+			<div class="col-sm-3 m_top10" id="villageDiv" style="display:block;">
+					<label>Habitation/Urban Block<span style="color:red"></span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgHamletId"></span></label>
+					<select class="chosen" id="modalhamletId" name="grievanceAlertVO.hamletId">
+						<option value="0">ALL</option>
+					</select>
+			</div>
+			<div class="col-sm-3 m_top10">
+				<input type="button" class="btn btn-success" value="SEARCH" id="" onclick="getGovtGrievanceAlertDetails();" style="margin-top: 19px;"></input>
+			</div>
 		</div>
 		<div class="row mobileSearchCls"  style="display:none;">
-		 <div class="col-sm-9 m_top10">
-		    <input type="text" class="form-control" id="searchBy"/><!--<span class="glyphicon glyphicon-search pull-right" style="margin-top: -34px;background-color: lightgrey;padding:10px;margin-right: -10px;: 2px"></span>-->
-			<div id="errorMassgeId" style="color:red"></div>
+			<div class="col-sm-4 m_top10">
+				<div id="errorMassgeId" style="color:red"></div>
+				<input type="text" class="form-control" id="searchBy"/><!--<span class="glyphicon glyphicon-search pull-right" style="margin-top: -34px;background-color: lightgrey;padding:10px;margin-right: -10px;: 2px"></span>-->
+				
 			</div>
-		 <div class="col-sm-3 pad_left0">
-                 <!--<button class="btn btn-success btn-block btnSearch" id="searchbtn">SEARCH</button>-->
-           </div>
-		 </div>
-		<div class="row">
-		<div class="col-md-2 col-xs-12 col-sm-6">
-             <!--<button class="btn btn-success"  id="" onclick="getGovtGrievanceAlertDetails();" style="margin-top: 19px;">SEARCH</button>-->
-			 <input type="button" class="btn btn-success" value="SEARCH" id="" onclick="getGovtGrievanceAlertDetails();" style="margin-top: 19px;"></input>
-           </div>
+			<div class="col-sm-4 m_top10">
+				<input type="button" class="btn btn-success" value="SEARCH" onclick="getGovtGrievanceAlertDetails();"></input>
+			</div>
 		 </div>
         <div id="commentsBlock" class="m_top10"></div>		
         <!--<div id="commentsDivId"></div>-->
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+			</div>
+			<div class="modal-body modal-insurance">
+				<div id="alertManagementPopupBody"></div>
+			</div>
+		</div>
+  </div>
+</div>
+<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:85%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="alertManagementPopupBody1"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+  </div>
 </div>
 <!-- Hidden Variables -->
 <input type="hidden" id="hiddenAlertId"></input>
@@ -542,13 +577,21 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
- <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
-  <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script src="alertDepartment/js/jquery.hotkeys.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
+<script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
+<script type="text/javascript" src="alertDepartment/js/newAlertUserManagementDetail.js"></script>
 <script>
+var globalUserLevelId;
+var globalUserLevelValues = [];
 $(".chosen").chosen({
 	width : '100%'
 });
-
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 // Load the Google Transliterate API
 google.load("elements", "1", {
 	packages: "transliteration"
@@ -2027,113 +2070,109 @@ $("#buildUpdateDivId").html(str);
 	}
   function buildGovtGrievanceAlertDetails(result){
 	var str = '';
-	str+='<div class="table-responsive">';
-	str +='<table class="table bg_ED " id="partMeetingModalData">'; 
-	str +='<thead>';
-	str +='<th style="text-transform: uppercase;"> Date</th>';
-	str +='<th style="text-transform: uppercase;"> Time</th>';
-	str +='<th style="text-transform: uppercase;"> Location</th>';
-	str +='<th style="text-transform: uppercase;"> Title</th>';
-	str +='<th style="text-transform: uppercase;"> Discription</th>';
-	str +='<th style="text-transform: uppercase;"> Related To</th>';
-	str +='<th style="text-transform: uppercase;"> Problem</th>';
-	str +='<th style="text-transform: uppercase;"> Status</th>';
-	str +='<th style="text-transform: uppercase;"> Caller Name</th>';
-	str +='<th style="text-transform: uppercase;"> Mobile No</th>';
-	str +='<th style="text-transform: uppercase;"> Duplicate Request</th>';
-	str +='<th></th>';
-	str +='</thead>';
-	str +='<tbody>';
-	for(var i in result){		
+	if($(window).width() < 768)
+	{
+		str+='<div class="table-responsive">';
+	}
+	str +='<table class="table table-bordered table-condensed " id="partMeetingModalData">'; 
+		str +='<thead class=" bg_ED">';
+			str +='<th style="text-transform: uppercase;"> Alert ID</th>';
+			str +='<th style="text-transform: uppercase;"> Date & Time</th>';
+			str +='<th style="text-transform: uppercase;"> Location</th>';
+			str +='<th style="text-transform: uppercase;"> Title</th>';
+			str +='<th style="text-transform: uppercase;"> Discription</th>';
+			str +='<th style="text-transform: uppercase;"> Related To</th>';
+			str +='<th style="text-transform: uppercase;"> Problem</th>';
+			str +='<th style="text-transform: uppercase;"> Status</th>';
+			str +='<th style="text-transform: uppercase;"> Caller Details</th>';
+			str +='<th style="text-transform: uppercase;"> Duplicate</th>';
+		str +='</thead>';
+		str +='<tbody>';
+		for(var i in result){		
 			str+='<tr>';
-		if(result[i].date != null){
-			str+='<td style="text-transform: uppercase;">'+result[i].date+'</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].time != null){
-			str+='<td style="text-transform: uppercase;">'+result[i].time+'</td>';
-		
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].tehsil != null){
-			var locationName ="";
-			if(result[i].district != null && result[i].district.length>0)
-				locationName = locationName+" "+result[i].district+" District,<br> ";
-			if(result[i].assembly != null && result[i].assembly.length>0)
-				locationName = locationName+" "+result[i].assembly+" Assembly ,<br> ";
-			if(result[i].tehsil != null && result[i].tehsil.length>0)
-				locationName = locationName+" "+result[i].tehsil+" Mandal,<br> ";
-			if(result[i].panchayat != null && result[i].panchayat.length>0)
-				locationName = locationName+" "+result[i].panchayat+" Panchayat,<br> ";
-			if(result[i].hamlet != null && result[i].hamlet.length>0)
-				locationName = locationName+" "+result[i].hamlet+" Hamlet , <br>";
-			if(result[i].leb != null && result[i].leb.length>0)
-				locationName = locationName+" "+result[i].leb+" Munci/Corp/Greater City, <br>";
-			if(result[i].ward != null && result[i].ward.length>0)
-				locationName = locationName+" "+result[i].ward+"  ";
-			
-			str+='<td style="">'+locationName+'</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].title != null){
-			str+='<td style="text-transform: uppercase;">'+result[i].title+'</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].description != null){
-			str+='<td style="text-transform: uppercase;">'+result[i].description+'</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].relatedTo != null){
-			str+='<td style="text-transform: uppercase;">'+result[i].relatedTo+'</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].problem != null){
-			str+='<td style="text-transform: uppercase;">'+result[i].problem+'</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].status != null){
-			str+='<td style="text-transform: uppercase;">'+result[i].status+'</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].subList != null &&  result[i].subList.length > 0){
-			str+='<td>';
-				for(var j in result[i].subList){
-					str+='<p>'+result[i].subList[j].name+'</p>'
+				if(result[i].alertId != null){
+					str+='<td style="text-transform: uppercase;cursor:pointer;color:#337ab7" class="text-center alertIdSpecialSearch" attr_alertId="'+result[i].alertId+'">'+result[i].alertId+'</td>';
+				}else{
+					str+='<td style="text-transform: uppercase;" class="text-center">-</td>';
 				}
+			if(result[i].date != null){
+				str+='<td style="text-transform: uppercase;">'+result[i].date+'&nbsp;&nbsp;'+result[i].time+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].tehsil != null){
+				var locationName ="";
+				if(result[i].district != null && result[i].district.length>0)
+					locationName = locationName+"District : "+result[i].district+"<br> ";
+				if(result[i].assembly != null && result[i].assembly.length>0)
+					locationName = locationName+"Assembly : "+result[i].assembly+"<br> ";
+				if(result[i].tehsil != null && result[i].tehsil.length>0)
+					locationName = locationName+"Mandal : "+result[i].tehsil+"<br> ";
+				if(result[i].panchayat != null && result[i].panchayat.length>0)
+					locationName = locationName+"Panchayat : "+result[i].panchayat+"<br> ";
+				if(result[i].hamlet != null && result[i].hamlet.length>0)
+					locationName = locationName+"Hamlet : "+result[i].hamlet+"<br>";
+				if(result[i].leb != null && result[i].leb.length>0)
+					locationName = locationName+" Munci/Corp/Greater City : "+result[i].leb+"<br>";
+				if(result[i].ward != null && result[i].ward.length>0)
+					locationName = locationName+" "+result[i].ward+"  ";
+				
+				str+='<td style="">'+locationName+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].title != null){
+				str+='<td style="text-transform: uppercase;">'+result[i].title+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].description != null){
+				str+='<td style="text-transform: uppercase;">'+result[i].description+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].relatedTo != null){
+				str+='<td style="text-transform: uppercase;">'+result[i].relatedTo+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].problem != null){
+				str+='<td style="text-transform: uppercase;">'+result[i].problem+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].status != null){
+				str+='<td style="text-transform: uppercase;">'+result[i].status+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].subList != null &&  result[i].subList.length > 0){
+				str+='<td>';
+					for(var j in result[i].subList){
+						str+='<p>'+result[i].subList[j].name+' - '+result[i].subList[j].mobileNo+'</p>'
+					}
+				str+='</td>';
+				//str+='<td style="text-transform: uppercase;">'+result[i].createdBy+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			str+='<td><input type="radio" name="modalRadio" class="modalRadioCls" attr_btn_divId="modalSubmitId'+i+'"/>';	
+				str+='<button class="btn btn-success btn-sm modalBtnCls" id="modalSubmitId'+i+'" attr_loading_img="modalLoadingImgId'+i+'" attr_alert_id='+result[i].alertId+' style="display:none;margin-left:5px;">Duplicate</button><img id="modalLoadingImgId'+i+'" style="width:50px;height:50px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/>';
 			str+='</td>';
-			//str+='<td style="text-transform: uppercase;">'+result[i].createdBy+'</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		if(result[i].subList != null &&  result[i].subList.length > 0){
-			str+='<td>';
-				for(var j in result[i].subList){
-					str+='<p>'+result[i].subList[j].mobileNo+'</p>'
-				}
-			str+='</td>';
-		}else{
-			str+='<td>-</td>';
-		}
-		str+='<td><input type="radio" name="modalRadio" class="modalRadioCls" attr_btn_divId="modalSubmitId'+i+'"/></td>';
-		str+='<td><button class="btn btn-success btn-sm modalBtnCls" id="modalSubmitId'+i+'" attr_loading_img="modalLoadingImgId'+i+'" attr_alert_id='+result[i].alertId+' style="display:none;">Duplicate</button><img id="modalLoadingImgId'+i+'" style="width:50px;height:50px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/></td>';
 		str+='</tr>';
 		
 		}
-    str +='</tbody>';
+		str +='</tbody>';
 	str +='</table>';
-	str +='</div>';
+	if($(window).width() < 768)
+	{
+		str +='</div>';
+	}
 	$("#commentsBlock").html(str); 
 	$("#partMeetingModalData").dataTable();
+	$("#partMeetingModalData").removeClass("dataTable");
 	
-	}
+}
 	
 	$(document).on("click",".modalRadioCls",function(){
 		$(".modalBtnCls").hide();
@@ -2187,7 +2226,7 @@ $("#buildUpdateDivId").html(str);
 		}).done(function(result){
 			if(result != null && result == 'success'){
 				$("#"+loadngImg).hide();
-				alert("This Caller Request has been marked as Duplicate,Ref No:"+alertId+" and SMS sent to Caller"+mobileNo);
+				alert("This Caller Request has been marked as Duplicate for the Ref No: "+alertId+" and SMS sent to Caller mobile "+mobileNo);
 			}
 			else{
 				$("#"+loadngImg).hide();
