@@ -10,6 +10,9 @@
 <!--<link href="dist/DateRange/daterangepicker-bs3.css" rel="stylesheet" type="text/css"/>-->
 <link href="dist/activity/Timepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,300,500italic,400italic,300italic,700,900" rel="stylesheet" type="text/css">
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
+
 <style>
 .mandatoryFieldCls
 {
@@ -36,13 +39,14 @@
                 	<div class="col-md-12">
                     	<hr style="border-color:#333;"/>
                     </div>
+					<button class="btn btn-warning pull-right interestedPeopleId " style="margin-right:15px" type="button" id="interestedPeopleId">INTERESTED PEOPLE</button>
                     <div class="col-md-6">
                     	<label>Enter Cadre Number To Prepopulate Details<span class="cadreNoErrorCls" style='color:red'></span></label>
                         <div class="input-group inputWithButton">
                         	<input placeholder="Ex: 38324292" type="text" class="form-control" id="membershipInputId"/>
                             <span class="input-group-addon">
                             	<button class="btn btn-success" type="button" id="cadreDetailsId">POPULATE DETAILS</button>
-                            	<!-- <button class="btn btn-success" type="button" id="interestedPeopleId">INTERESTED PEOPLE</button>-->
+                            	<!--<button class="btn btn-success" type="button" id="interestedPeopleId">INTERESTED PEOPLE</button>-->
                             </span>							
                         </div>
 						
@@ -647,12 +651,12 @@
 </div><!-- /.modal -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="interestedmodalId" role="dialog">
+<div class="modal fade" id="interestedmodalId" role="dialog" style="text-transform: uppercase;">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content" style="background:rgba(0,0,0,0.8);">
-    <div class="modal-body">
-      <button type="button" style="color:#fff;" class="close modalCloseAndShow" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      <div class="media" style="color:#fff;">
+    <div class="modal-content" style="">
+    <div class="modal-body ">
+      <button type="button" style="" class="close modalCloseAndShow" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="media " style="">
         <div class="media-left">
         </div>
         <div class="media-body" id="interestedPeopleModalBody">
@@ -668,6 +672,8 @@
 <script src="dist/DateRange/moment.js" type="text/javascript"></script>
 <!--<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>-->
 <script src="dist/activity/Timepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript">
 
 
@@ -1099,7 +1105,7 @@ function clearFields(){
 					getCadreDetails();
 				}
 		  });
-$(document).on("click","#interestedPeopleId",function(){
+$(document).on("click",".interestedPeopleId",function(){
 	$("#interestedmodalId").modal("show");
 	getAllBloodDonateRegiCandidateDetails();
 });
@@ -1119,28 +1125,53 @@ function getAllBloodDonateRegiCandidateDetails(){
 			}
 		});
 }
+function exportToExcel(tableId)
+{
+	tableToExcel(''+tableId+'', 'Interested People for Blood Donation ');
+}
+
 function buildAllBloodDonateRegiCandidateDetails(result){
 	var str ='';
-	str +='<table class="table table-bordered" style="" id="rangeWiseExportBoothReport">';
+	str +='<h4 style="text-align:center;margin-bottom: 20px">  Interested People for Blood Donation <img title="Here  we are showing  not blood donated people, who are registered through Public Blood Bank App.  " src="img/info.png" height="15px/"> <a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothReport\')}"> Export Excel</a></h4>';
+	
+	str +='<table class="table table-bordered m_top20" style="" id="rangeWiseExportBoothReport">';
         str +='<thead>';
-            str +='<th>Cadre Name</th>';
-            str +='<th>Mobile No</th>';
-            str +='<th>Time</th>';
-            str +='<th>Membership No</th>';
+            str +='<th> DONAR NAME  </th>';
+            str +='<th> MOBILE NO </th>';
+            str +='<th> INTERESTED TIME  </th>';
+            str +='<th> MEMBERSHIP NO </th>';
         str +='</thead>';
         str+='<tbody>';
         for(var i in result){
           str +='<tr>';
-              str +='<td>'+result[i].name+'</td>';
-              str +='<td>'+result[i].mobileNumber+'</td>';
-              str +='<td>'+result[i].startTime+'</td>';
-              str +='<td>'+result[i].membershipNo+'</td>';
+              str +='<td  style="text-transform: uppercase;" >'+result[i].name+'</td>';
+              str +='<td  style="text-transform: uppercase;" >'+result[i].mobileNumber+'</td>';
+              str +='<td  style="text-transform: uppercase;" >'+result[i].startTime+'</td>';
+              str +='<td  style="text-transform: uppercase;">'+result[i].membershipNo+'</td>';
           str +='</tr>';  
           }  
       str+='</tbody>';
       str +='</table>';
 	  $("#interestedPeopleModalBody").html(str);
+	 $("#rangeWiseExportBoothReport").dataTable({
+			"iDisplayLength": 20,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
 }
 </script>
+<script>
+var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+</script>
+
 </body>
 </html>
