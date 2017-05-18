@@ -17315,5 +17315,11 @@
 			<param name="root">status</param>       
 		</result> 
 	</action>
+
+	<action name="getBoothUserDetailsAction" class="announcementPageAction"  method="getBoothUserDetails">
+		<result type="json" name="success">    
+			<param name="root">statesList</param>       
+		</result> 
+	</action>
  </package>
 </struts>
