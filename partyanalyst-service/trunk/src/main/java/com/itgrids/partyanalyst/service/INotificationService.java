@@ -10,7 +10,7 @@ public interface INotificationService {
 	 public NotificationDeviceVO saveUsersDataInNotificationDeviceTable(final NotificationDeviceVO notifyVO);
 	 public List<NotificationDeviceVO> getActiveNotifications(NotificationDeviceVO notifyVO);
 	 public List<AccommodationVO> getAccommodationTrackingInfoByNotificationType(AccommodationVO inputVO);
-	 public String pushNotification(NotificationDeviceVO notifyVO);
+	 public String pushNotification(NotificationDeviceVO notifyVO,Long userId);
 	 public String notificationIsActiveStatus(Long notificatonsId);
 	 public List<NotificationDeviceVO> getNotificationType();
 	 public List<NotificationDeviceVO> getNotificationDetailsByTypeId(Long typeId);
