@@ -166,7 +166,7 @@
 										</div> -->
 										<div class="col-sm-3 m_top10">
 											<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDeptId"></span></label>
-											<select class="chosenSelect" id="departmentsId" onChange="getRuralUrbanLocations();" name="grievanceAlertVO.departmentId">  
+											<select class="chosenSelect" id="departmentId" onChange="getRuralUrbanLocations();" name="grievanceAlertVO.departmentId">  
 												<!--<option value="49">RWS</option>-->
 												<option value="0">Select Department</option>
 											</select>
@@ -713,7 +713,7 @@ function getDistrictsForReferPopup() {
 	 var districtId = $('#referdistrictId').val();
 	 
 	 var url = "getAllMandalsByDistrictIDAction.action";
-	 var deptName = $("#departmentsId option:selected").text();
+	 var deptName = $("#departmentId option:selected").text();
 	var locationType = deptName.split("-")[1];
 	if(locationType != null && locationType == "Rural"){
 		url = "getAllMandalsByDistrictIDAction.action";
@@ -773,7 +773,7 @@ function getDistrictsForReferPopup() {
 		type = "mandal" ; 
 	
 	 var url = "getPanchayatAndWardDetailsAction.action";
-	 var deptName = $("#departmentsId option:selected").text();
+	 var deptName = $("#departmentId option:selected").text();
 	var locationType = deptName.split("-")[1];
 	if(locationType != null && locationType == "Rural"){
 		url = "getPanchayatAndWardDetailsAction.action";
@@ -827,7 +827,7 @@ function getHamletss(){
 		type = "mandal" ; 
 	
 	var url = "getHamletsForPanchayatAction.action";
-	 var deptName = $("#departmentsId option:selected").text();
+	 var deptName = $("#departmentId option:selected").text();
 	var locationType = deptName.split("-")[1];
 	if(locationType != null && locationType == "Rural"){
 		url = "getHamletsForPanchayatAction.action";
@@ -1070,7 +1070,7 @@ function createGrievanceAlert()
   var mobileNo = $("#mobileNoId").val().trim();
   var email = $("#emailId").val().trim();
   
-  var department = $("#departmentsId").val();
+  var department = $("#departmentId").val();
   var assignLevelId = $("#locationLevelSelectId").val();
   var levelValue = $(".locationCls").val();
   var designation = $("#designationsId").val();
@@ -1349,7 +1349,7 @@ function createGrievanceAlert()
 
 function clearFields(){
 	$("#alertlevelId").val(0).trigger('chosen:updated');
-	$("#departmentsId").val(1).trigger('chosen:updated');
+	$("#departmentId").val(1).trigger('chosen:updated');
 	$("#entrySourceId").val(0).trigger('chosen:updated');
 	$("#telugu").prop("checked", true);
 	
@@ -1543,7 +1543,7 @@ function getAlertIsuueSubTypes(){
 		$("#officerNamesId").empty();
 		$("#officerNamesId").trigger("chosen:updated");
 		var LevelId = $("#locationLevelSelectId").chosen().val();
-		var deprtmntId = $("#departmentsId").chosen().val();
+		var deprtmntId = $("#departmentId").chosen().val();
 		var levelValue = $("#refermandalNameId").chosen().val();
 		
 		var jsObj = {
@@ -1902,7 +1902,7 @@ $("#buildUpdateDivId").html(str);
 			  fromDateStr = dateArray[0];
 			 toDateStr = dateArray[1];
 		  }
-		  var deptId = $("#departmentsId").val();
+		  var deptId = $("#departmentId").val();
 		var jsObj ={
 			startDate:fromDateStr,//'01/04/2017',
 			endDate:toDateStr,//'01/05/2017',
@@ -1991,7 +1991,7 @@ $("#buildUpdateDivId").html(str);
 		 var locatoinType;
 		 var mobileNo;
 		 var locationId;
-		 var departmentsId = $("#departmentsId").val();
+		 var departmentsId = $("#departmentId").val();
 		/* $(document).on("click",".radioBtnCls",function(){
 			  var searchType  = $('input[name=checkBoxName]:checked').val();
 			  if(searchType == 1){
@@ -2289,7 +2289,7 @@ $("#buildUpdateDivId").html(str);
 	 var districtId = $('#modalDistrictId').val();
 	 
 	 var url = "getAllMandalsByDistrictIDAction.action";
-	 var deptName = $("#departmentsId option:selected").text();
+	 var deptName = $("#departmentId option:selected").text();
 	var locationType = deptName.split("-")[1];
 	if(locationType != null && locationType == "Rural"){
 		url = "getAllMandalsByDistrictIDAction.action";
@@ -2361,7 +2361,7 @@ $("#buildUpdateDivId").html(str);
 		type = "mandal" ;
 
 	var url = "getPanchayatAndWardDetailsAction.action";
-	 var deptName = $("#departmentsId option:selected").text();
+	 var deptName = $("#departmentId option:selected").text();
 	var locationType = deptName.split("-")[1];
 	if(locationType != null && locationType == "Rural"){
 		url = "getPanchayatAndWardDetailsAction.action";
@@ -2535,7 +2535,7 @@ var glhamletId =0;
 		type = "mandal" ; 
 	
 	var url = "getHamletsForPanchayatAction.action";
-	 var deptName = $("#departmentsId option:selected").text();
+	 var deptName = $("#departmentId option:selected").text();
 	var locationType = deptName.split("-")[1];
 	if(locationType != null && locationType == "Rural"){
 		url = "getHamletsForPanchayatAction.action";
@@ -2587,8 +2587,8 @@ $(document).on("click",".closeFileCls",function(){
 });
 
 function getRealtedDepartments(){
-	$('#departmentsId').empty();
-	$('#departmentsId').trigger('chosen:updated');
+	$('#departmentId').empty();
+	$('#departmentId').trigger('chosen:updated');
 	
 	getAlertIsuueSubTypes();
 	
@@ -2602,19 +2602,19 @@ function getRealtedDepartments(){
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		//$('#departmentsId').append('<option value="0">Select Department</option>');
+		//$('#departmentId').append('<option value="0">Select Department</option>');
 		if(result != null && result.length > 0)
 		{
 			for(var i in result)
-				$('#departmentsId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				$('#departmentId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 		}
-		$('#departmentsId').trigger('chosen:updated');
-		$('#departmentsId').trigger("change");
+		$('#departmentId').trigger('chosen:updated');
+		$('#departmentId').trigger("change");
 	});
 }
 
 function getRuralUrbanLocations(){
-	var deptName = $("#departmentsId option:selected").text();
+	var deptName = $("#departmentId option:selected").text();
 	var locationType = deptName.split("-")[1];
 	$("#locationTypeHidVal").val(locationType);
 	if(locationType != null && locationType == "Rural"){
