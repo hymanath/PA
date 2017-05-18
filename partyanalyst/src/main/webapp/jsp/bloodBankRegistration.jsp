@@ -30,9 +30,10 @@
                   	  <img src="dist/BloodBankCustomFiles/logo.png" class="img-responsive" alt="Logo"/>
                     </div>
                     <div class="col-md-11 col-xs-11">
-                    	<h3 class="text-capitalise">ntr trust blood bank</h3>
-                        <p class="text-capitalise">ntr trust bhavan, road no-2, banjara hills, hyderabad - 34</p>
-                        <p>Tel: 040 30799999 | E-Mail:hydbb@ntrtrust.org | Lic No: 01/HD/AP/2008/BB/CP</p>
+                    	<h3 class="text-capitalise"> ntr trust blood bank</h3>
+                        <p class="text-capitalise">  NTR Trust Blood Bank,  D. No. 10-50-58/1, Raghavendra Towers,</p>
+                         <p class="text-capitalise"> Waltair, Waltair main road, Visakhapatnam-530002 . </p>
+                        <p>Tel: 0891 2565858, 2555858 | E-Mail: info@ntrtrust.org | Lic No: 03/VSP/AP/2013/BB/G </p>
                     </div>
                 </div>
                 <div class="row">
