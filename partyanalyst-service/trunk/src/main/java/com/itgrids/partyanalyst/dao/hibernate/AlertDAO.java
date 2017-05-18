@@ -7098,7 +7098,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(sourceId != null && sourceId.longValue() != 0L){
 			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4,5))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
@@ -7293,7 +7293,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(sourceId != null && sourceId.longValue() != 0L){
 			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4,5))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
@@ -7464,7 +7464,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(sourceId != null && sourceId.longValue() != 0L){
 			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4,5))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
@@ -7539,7 +7539,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(sourceId != null && sourceId.longValue() != 0L){
 			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4,5))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");    
 		if(fromDate != null && toDate != null){
@@ -7625,7 +7625,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(sourceId != null && sourceId.longValue() != 0L){
 			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId ");
 		}else{
-			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4))");
+			queryStr.append(" and (model.alertCategory.alertCategoryId  in (2,3,4,5))");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
@@ -7712,7 +7712,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		if(sourceId != null && sourceId.longValue() != 0L){
 			queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
 		}else{
-			queryStr.append(" and model.alertCategory.alertCategoryId  in (2,3,4) ");
+			queryStr.append(" and model.alertCategory.alertCategoryId  in (2,3,4,5) ");
 		}
 		queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
 		if(fromDate != null && toDate != null){
