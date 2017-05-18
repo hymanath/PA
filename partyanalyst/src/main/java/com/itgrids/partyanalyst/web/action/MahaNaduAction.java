@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreVo;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
+import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -107,8 +109,17 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private CadreCommitteeService cadreCommitteeService;
 	private PartyMeetingVO partyMeetingVO;
 	private List<IdAndNameVO> idAndNameVOList;
+	private List<NotificationDeviceVO> notificationDeviceVOList;
+	private INotificationService notificationService;
+	private String status;
 	
 	
+	public INotificationService getNotificationService() {
+		return notificationService;
+	}
+	public void setNotificationService(INotificationService notificationService) {
+		this.notificationService = notificationService;
+	}
 	public List<IdAndNameVO> getIdAndNameVOList() {
 		return idAndNameVOList;
 	}
@@ -533,6 +544,12 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		this.mahaNaduService = mahaNaduService;
 	}
 
+	public List<NotificationDeviceVO> getNotificationDeviceVOList() {
+		return notificationDeviceVOList;
+	}
+	public void setNotificationDeviceVOList(List<NotificationDeviceVO> notificationDeviceVOList) {
+		this.notificationDeviceVOList = notificationDeviceVOList;
+	}
 	public String execute(){
 		if(LOG.isDebugEnabled())
 			LOG.debug("MahaNaduAction.execute() start");
@@ -1047,5 +1064,21 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 			LOG.error(" exception occured in getAllBloodDonateRegiCandidateDetails() in mahanaduAction class.",e);
 		}
 		return Action.SUCCESS;
+	}
+	public String getNotificationType(){
+		try {
+			notificationDeviceVOList = notificationService.getNotificationType();
+			
+		} catch (Exception e) {
+			LOG.error(" exception occured in getAllBloodDonateRegiCandidateDetails() in mahanaduAction class.",e);
+		}
+		return Action.SUCCESS;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }
