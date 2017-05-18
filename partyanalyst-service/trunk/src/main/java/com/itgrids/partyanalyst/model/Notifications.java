@@ -28,10 +28,13 @@ public class Notifications extends BaseModel implements Serializable{
 	private Long notificationsId;
 	private Long notificationTypeId;
 	private String notification;
+	private Long userId;
 	private Date insertedTime;
 	private Date updatedTime;
 	private String isActive;
 	private Long orderNo;
+	private Long successCount;
+	private Long failureCount;
 
 	private NotificationType notificationType;
 
@@ -104,6 +107,29 @@ public class Notifications extends BaseModel implements Serializable{
 
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getSuccessCount() {
+		return successCount;
+	}
+
+	public void setSuccessCount(Long successCount) {
+		this.successCount = successCount;
+	}
+
+	public Long getFailureCount() {
+		return failureCount;
+	}
+
+	public void setFailureCount(Long failureCount) {
+		this.failureCount = failureCount;
 	}
 	
 }
