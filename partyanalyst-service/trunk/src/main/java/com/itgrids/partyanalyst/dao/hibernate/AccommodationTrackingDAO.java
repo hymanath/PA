@@ -80,7 +80,8 @@ public class AccommodationTrackingDAO extends GenericDaoHibernate<AccommodationT
 				" model.locationName," +
 				" model.address," +
 				" model.longitude," +
-				" model.latitude" +
+				" model.latitude," +
+				" model.accommodationTrackingId " +
 				" from AccommodationTracking model " +
 				" where model.notificationTypeId in (:notificationTypeIds) and " +
 				" model.locationValue = :locationId and " +

@@ -464,6 +464,7 @@ public class NotificationService implements INotificationService{
 					 vo.setAddress(objects[2] != null ? objects[2].toString():"");
 					 vo.setLatitude(objects[3] != null ? objects[3].toString():"");
 					 vo.setLongitude(objects[4] != null ? objects[4].toString():"");
+					 vo.setId(objects[5] != null ? (Long)objects[5]:0l);
 					 if(objects[0] != null && (Long)objects[0]==4l)
 						 finalVo.getParkingLst().add(vo);
 					 else
