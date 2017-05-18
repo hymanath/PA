@@ -13629,6 +13629,9 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					if(maxVal%rangeValue > 0){
 						loopCount+=1;
 					}
+					if(maxVal == 0){
+						loopCount = 1;
+					}
 					int cnt = 0;
 					for(int i = 1 ; i <= loopCount ; i++){
 						alertVO = new AlertsSummeryVO();
