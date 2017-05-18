@@ -28,6 +28,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
+import com.itgrids.partyanalyst.dao.IAlertCallerRelationDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentNewDAO;
@@ -136,8 +137,19 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IAlertImpactScopeDAO alertImpactScopeDAO;
 	private IAlertFeedbackStatusDAO alertFeedbackStatusDAO;
 	private IAlertService alertService;
+	private IAlertCallerRelationDAO alertCallerRelationDAO;
 	
 	
+	
+	public IAlertCallerRelationDAO getAlertCallerRelationDAO() {
+		return alertCallerRelationDAO;
+	}
+
+	public void setAlertCallerRelationDAO(
+			IAlertCallerRelationDAO alertCallerRelationDAO) {
+		this.alertCallerRelationDAO = alertCallerRelationDAO;
+	}
+
 	public void setAlertFeedbackStatusDAO(
 			IAlertFeedbackStatusDAO alertFeedbackStatusDAO) {
 		this.alertFeedbackStatusDAO = alertFeedbackStatusDAO;
@@ -6887,6 +6899,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		try {
 			Date fromDate = null;
  			Date toDate = null;
+ 			List<Long> alertIds = new ArrayList<Long>();
  			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
  			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
  				fromDate = sdf.parse(fromDateStr);
@@ -6904,7 +6917,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					 Vo.setRelatedTo(commonMethodsUtilService.getStringValueForObject(param[4]));
 					 Vo.setProblem(commonMethodsUtilService.getStringValueForObject(param[5]));
 					 Vo.setStatus(commonMethodsUtilService.getStringValueForObject(param[6]));
-					 Vo.setCreatedBy(commonMethodsUtilService.getStringValueForObject(param[7]));
+					 //Vo.setCreatedBy(commonMethodsUtilService.getStringValueForObject(param[7]));
 					 
 					 Vo.setDistrict(commonMethodsUtilService.getStringValueForObject(param[8]));
 					 Vo.setAssembly(commonMethodsUtilService.getStringValueForObject(param[9]));
@@ -6913,10 +6926,28 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					 Vo.setHamlet(commonMethodsUtilService.getStringValueForObject(param[12]));
 					 Vo.setLeb(commonMethodsUtilService.getStringValueForObject(param[13]));
 					 Vo.setWard(commonMethodsUtilService.getStringValueForObject(param[14]));
-					 Vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[15]));
+					 //Vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[15]));
 					 Vo.setAlertId(commonMethodsUtilService.getLongValueForObject(param[16]));
 					 
+					 alertIds.add(Vo.getAlertId());
 					 finalVoList.add(Vo);
+				 }
+			 }
+			 
+			 if(alertIds != null && !alertIds.isEmpty()){
+				 List<Object[]> list = alertCallerRelationDAO.getAlertCallerDetailsForAlerts(alertIds);
+				 if(list != null && !list.isEmpty()){
+					 for (Object[] obj : list) {
+						Long alertId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						GrievanceAlertVO vo = getMatchedGrieAlertVO(finalVoList, alertId);
+						if(vo != null){
+							GrievanceAlertVO callervo = new GrievanceAlertVO();
+							callervo.setName(obj[2] != null ? obj[2].toString():"");
+							callervo.setMobileNo(obj[3] != null ? obj[3].toString():"");
+							callervo.setStatus(obj[4] != null ? obj[4].toString():"");
+							vo.getSubList().add(callervo);
+						}
+					}
 				 }
 			 }
 							
@@ -6925,6 +6956,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			}		
 			return finalVoList;
 		}
+	 
+	 public GrievanceAlertVO getMatchedGrieAlertVO(List<GrievanceAlertVO> list, Long alertId)
+		{
+			try {
+				if(list != null && list.size()>0)
+				{
+					for (GrievanceAlertVO alertvo : list) {
+						if(alertvo.getAlertId().longValue() == alertId.longValue())
+							return alertvo;
+					}
+				}
+			} catch (Exception e) {
+				 LOG.error("Exception Occured in getMatchedGrieAlertVO() method, Exception - ",e);
+			}
+			return null;
+		}
+	 
 	 public void setAlertCountDetailsforDepartmentWise(List<Object[]> objList,List<AlertVO> finalAlertVOs){
  	    try{
  	    	if(objList != null && objList.size() > 0){         
@@ -7439,9 +7487,20 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			            	IdNameVO vo  =finalList.get(0);
   			            	vo.setApplicationStatus(userType+" - "+alert.getAlertStatusId());
   			            	vo.setUserStatus(userStatus);
-  			            	vo.setUserType(alert.getAlertCallerType() != null ? alert.getAlertCallerType().getCallerType():"");// citizen/chief minister...etc
-  			            	vo.setCallerName(alert.getAlertCaller() != null ? alert.getAlertCaller().getCallerName():"");
-  			            	vo.setMobileNo(alert.getAlertCaller() != null ? alert.getAlertCaller().getMobileNo():"");
+  			            	List<Object[]> list = alertCallerRelationDAO.getAlertCallerDetailsByAlert(alertId);
+  			            	if(list != null && !list.isEmpty()){
+  			            		for (Object[] obj : list) {
+									IdNameVO callervo = new IdNameVO();
+									callervo.setUserType(obj[1] != null ? obj[1].toString():"");
+									callervo.setCallerName(obj[3] != null ? obj[3].toString():"");
+									callervo.setMobileNo(obj[4] != null ? obj[4].toString():"");
+									callervo.setStatus(obj[5] != null ? obj[5].toString():"");
+									vo.getIdnameList().add(callervo);
+								}
+  			            	}
+  			            	//vo.setUserType(alert.getAlertCallerType() != null ? alert.getAlertCallerType().getCallerType():"");// citizen/chief minister...etc
+  			            	//vo.setCallerName(alert.getAlertCaller() != null ? alert.getAlertCaller().getCallerName():"");
+  			            	//vo.setMobileNo(alert.getAlertCaller() != null ? alert.getAlertCaller().getMobileNo():"");
   			                List<String> dueDatesList = alertAssignedOfficerTrackingNewDAO.getAlertDueDate(alertId);
   			                if(commonMethodsUtilService.isListOrSetValid(dueDatesList))
   			                	vo.setDueDateStr(dueDatesList.get(0).toString());

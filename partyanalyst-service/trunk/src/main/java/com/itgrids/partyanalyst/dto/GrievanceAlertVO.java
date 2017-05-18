@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GrievanceAlertVO {
 
 	private Long alertTypeId;
@@ -56,7 +59,15 @@ public class GrievanceAlertVO {
 	private String accountId;
 	
 	private Long alertCallCenterTypeId; 
+	private List<GrievanceAlertVO> subList = new ArrayList<GrievanceAlertVO>();
 	
+	
+	public List<GrievanceAlertVO> getSubList() {
+		return subList;
+	}
+	public void setSubList(List<GrievanceAlertVO> subList) {
+		this.subList = subList;
+	}
 	public String getState() {
 		return state;
 	}

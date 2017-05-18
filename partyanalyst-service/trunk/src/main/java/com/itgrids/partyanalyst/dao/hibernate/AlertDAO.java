@@ -6839,11 +6839,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     }
     public List<Object[]> getGovtGrievanceAlertDetails(String mobileNo,String locatoinType,Long locationId,Date fromDate,Date toDate,Long statusId){
     	StringBuilder sb = new StringBuilder();
-    	 	sb.append(" select model.alertId,model.createdTime,model.title,model.description,model.alertIssueType.issueType," +
-    	 			" model.alertIssueSubType.issueType,model.alertStatus.alertStatus,model.alertCaller.callerName, district.districtName, " +
-    	 			" constituency.name, tehsil.tehsilName,panchayat.panchayatName,hamlet.hamletName,leb.name,ward.name,model.alertCaller.mobileNo,model.alertId");
+    	 	sb.append(" select distinct model.alertId,model.createdTime,model.title,model.description,model.alertIssueType.issueType," +
+    	 			" model.alertIssueSubType.issueType,model.alertStatus.alertStatus,'', district.districtName, " +
+    	 			" constituency.name, tehsil.tehsilName,panchayat.panchayatName,hamlet.hamletName,leb.name,ward.name,'',model.alertId");
     	 				//9					10					11					12					13		14
-    	 	sb.append("	from Alert model " );
+    	 	sb.append("	from AlertCallerRelation acr,AlertCaller ac,Alert model " );
     		sb.append(" left join model.userAddress userAddress1 ");
     	 	sb.append(" left join userAddress1.panchayat panchayat ");
     	 	sb.append(" left join userAddress1.ward ward ");
@@ -6854,9 +6854,10 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	sb.append(" left join userAddress1.state state ");
     		sb.append(" left join userAddress1.hamlet hamlet "); 
     		sb.append(" left join userAddress1.localElectionBody leb ");
-    	 		sb.append(" where  ");
+    	 		sb.append(" where model.alertId = acr.alertId and" +
+    	 				" acr.alertCallerId = ac.alertCallerId and");
     	 	if(mobileNo != null && !mobileNo.isEmpty()){
-        	 		sb.append(" model.alertCaller.mobileNo =:mobileNo and ");
+        	 		sb.append(" ac.mobileNo =:mobileNo and ");
         	 	}
     	 	if(locatoinType != null && locatoinType.equalsIgnoreCase("district")){
     	 		sb.append(" model.userAddress.district.districtId =:locationId and ");
@@ -6874,7 +6875,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 	if(statusId != null && statusId.longValue() > 0l){
     	 		sb.append(" model.alertStatus.alertStatusId = :statusId and ");
     	 	}
-    	 	sb.append(" model.isDeleted ='N' ");
+    	 	sb.append(" model.isDeleted ='N' and acr.isDeleted = 'N' and model.alertCategoryId = 4");
     	 	Query query = getSession().createQuery(sb.toString());
     	 	if(locatoinType != null && locatoinType.equalsIgnoreCase("district")){
     	 		query.setParameter("locationId",locationId);
@@ -6937,7 +6938,8 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" Left Join alert_issue_sub_type ist on a.alert_issue_sub_type_id = ist.alert_issue_sub_type_id ");
 		queryStr.append(" Left Join region_scopes rs on a.impact_level_id = rs.region_scopes_id ");
 		queryStr.append(" LEFT JOIN alert_status as1 on a.alert_status_id = as1.alert_status_id ");
-		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		queryStr.append(" LEFT JOIN alert_caller_relation acr on acr.alert_id = a.alert_id  ");
+		queryStr.append(" LEFT JOIN alert_caller ac on ac.alert_caller_id = acr.alert_caller_id  ");
 		queryStr.append(" left join alert_assigned_officer_new a1 on a.alert_id = a1.alert_id  ");
 		queryStr.append(" left join govt_department_designation_officer_new a2 on a1.govt_department_designation_officer_id= a2.govt_department_designation_officer_id  ");
 		queryStr.append(" left join govt_department_designation_new a3 on a2.govt_department_designation_id = a3.govt_department_designation_id  ");
@@ -6952,7 +6954,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" left join constituency w on ua.ward = w.constituency_id  ");
 		
 		
-		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null" +
+		queryStr.append(" where a.is_deleted='N' and acr.is_deleted = 'N'" +
 						" and a.created_by = user.user_id");
 		if(alertStatusId != null && alertStatusId.longValue() > 0l)
 			queryStr.append(" and a.alert_status_id =:alertStatusId ");
