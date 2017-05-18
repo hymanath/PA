@@ -13174,47 +13174,57 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			Date fromDate = null;        
 			Date toDate = null; 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-			Long totalAlerts =null;
 			if(startDate != null && startDate.trim().length() > 0 && endDate != null && endDate.trim().length() > 0){
 				fromDate = sdf.parse(startDate);
 				toDate = sdf.parse(endDate);
-				//total alerts
-				totalAlerts = alertDAO.getTotalAlertsByStatusIdsAndDates(fromDate,toDate,departmentIds,sourceIds,totalAlertStatusIds);
 			}
-			List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
-			//Collections.reverse(dayList);
-			//date wise tatal alerts
 			List<Object[]> totalAlertsDateWise = null;
 			if(alertstatusIds != null && alertstatusIds.size() > 0){
-				totalAlertsDateWise = alertDAO.getTotalAlertsDateWise(fromDate,toDate,departmentIds,sourceIds,alertstatusIds);
+				totalAlertsDateWise = alertDAO.getDifferenceDay(fromDate,toDate,departmentIds,sourceIds,alertstatusIds);
 			}
+			Long ttlAlts = 0L;
+			if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
+				ttlAlts = Long.valueOf(totalAlertsDateWise.size());
+			}
+			
 			//create a map for date and count
-			Map<String,Long> dateAndCountMap = new HashMap<String,Long>();
+			Map<Long,Long> noOfDayAndCountMap = new HashMap<Long,Long>();
 			if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
 				for(Object[] param : totalAlertsDateWise){
-					dateAndCountMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[1]));
+					noOfDayAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), (commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[3])))+1L));
 				}
 			}
+			List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+			Long maxDays = Collections.max(noOfDayAndCountMap.keySet());
+			int maxVal = Integer.parseInt(maxDays.toString());
+			
 			AlertsSummeryVO alertVO = null;
-			if(dayList != null && dayList.size() > 0){
+			if(dayList != null && dayList.size() > 0 && totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
 				int order = rangeValue;
-				int loopCount = dayList.size()/rangeValue;
-				if(dayList.size()%rangeValue > 0){
+				int loopCount = maxVal/rangeValue;
+				if(maxVal%rangeValue > 0){
 					loopCount+=1;
 				}
+				int cnt = 0;
 				for(int i = 1 ; i <= loopCount ; i++){
 					alertVO = new AlertsSummeryVO();
 					if(dayList.size() <= rangeValue){
-						alertVO.setName("<= "+dayList.size()+" Days");
+						alertVO.setName("<="+dayList.size()+" Days");
 					}else{
 						alertVO.setName("<= "+order+" Days");
 					}
+					alertVO.setRange(cnt+"-"+order);
+					for(int k=cnt ; k<=order ; k++){
+						alertVO.setRangeCount(alertVO.getRangeCount()+commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(Long.valueOf(k))));
+					}
+					if(cnt == 0){
+						cnt++;
+					}
+					cnt+=rangeValue;
 					
-					alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(totalAlerts));
-					for(int j=0 ; j<order ; j++){
-						if(dayList.size() > j){
-							alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts()+commonMethodsUtilService.getLongValueForObject(dateAndCountMap.get(dayList.get(j))));
-						}
+					alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(ttlAlts));
+					for(int j=0 ; j<=order ; j++){
+						alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts()+commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(Long.valueOf(j))));
 					}
 					finalList.add(alertVO); 
 					order+=rangeValue;
@@ -13223,8 +13233,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			if(finalList != null && finalList.size() > 0){
 				for(AlertsSummeryVO param : finalList){
 					String percentage = "0.0";
-					if(totalAlerts != null && totalAlerts.longValue() >0l)
-						percentage = (new BigDecimal(param.getEffcncyAlerts()*(100.0)/totalAlerts)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+					if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0)
+						percentage = (new BigDecimal(param.getEffcncyAlerts()*(100.0)/ttlAlts)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
 						param.setEffcncyPrcnt(commonMethodsUtilService.getStringValueForObject(percentage));
 				}
 			}

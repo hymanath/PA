@@ -14,6 +14,8 @@ public class AlertsSummeryVO implements Serializable {
 	private String name;
 	private Long id;
 	private Integer days;
+	private String range;
+	private Long rangeCount = 0L;
 	
 	
 	
@@ -70,6 +72,18 @@ public class AlertsSummeryVO implements Serializable {
 	}
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public String getRange() {
+		return range;
+	}
+	public void setRange(String range) {
+		this.range = range;
+	}
+	public Long getRangeCount() {
+		return rangeCount;
+	}
+	public void setRangeCount(Long rangeCount) {
+		this.rangeCount = rangeCount;
 	}
 	
 	
