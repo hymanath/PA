@@ -17312,7 +17312,6 @@
   <action name="mahanaduNotificationAction" class="mahaNaduAction" method="getNotificationType">
 		    <result name="success">/jsp/notificationWebview.jsp</result>
 	</action>
-		
 	<action name="updateDuplicateAlertCallerDetailsAction" class="createAlertAction"  method="updateDuplicateAlertCallerDetails">
 		<result type="json" name="success">    
 			<param name="root">status</param>       
@@ -17322,6 +17321,16 @@
 	<action name="getBoothUserDetailsAction" class="announcementPageAction"  method="getBoothUserDetails">
 		<result type="json" name="success">    
 			<param name="root">statesList</param>       
+		</result> 
+	</action>	
+	<action name="getFeedbackAlertAction" class="createAlertAction"  method="getFeedbackAlert">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>       
+		</result> 
+	</action>
+	<action name="getLocationWiseFeebbackAlertAction" class="createAlertAction"  method="getLocationWiseFeebbackAlert">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>       
 		</result> 
 	</action>
  </package>

@@ -47,7 +47,10 @@
 #selectMediaId_chosen .chosen-drop{background-color: #95989a !important;color: #f0f8ff !important;}
 #selecDepartmentId_chosen a{background-color: #95989a;color: #f0f8ff;}
 #selecDepartmentId_chosen .chosen-drop{background-color: #95989a !important;color: #f0f8ff !important;}
-
+.getAlertDtlsOnCategoryWise{color: #337ab7;}
+.getAlertDtlsCls{color: #337ab7;}
+.getAlertDtlsOnDateWise{color: #337ab7;}
+.panchayatDataCls{cursor:pointer;}
 </style>
 </head>
 <body>           
@@ -241,7 +244,7 @@
 		<input type="hidden" id="dateRangeId" value="day"></input> 
       <!-- Modal -->
 	<div class="modal fade" id="bellowLvlLocId" role="dialog">  
-		<div class="modal-dialog modal-lg">
+		<div class="modal-dialog" role="document" style="width:90%;">
 		  <!-- Modal content-->
 		  <div class="modal-content">
 			<div class="modal-header">
@@ -261,7 +264,7 @@
     <div class="modal-dialog" style="width:85%">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button id="removeClassModal" type="button" class="close" data-dismiss="modal">&times;</button>
          <div id="grivenaceModalHeedingId"> </div> 
          <div id="grivancHeadinId"> </div> 
         </div>
@@ -322,7 +325,7 @@
 </div> 
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
-
+<script src="alertDepartment/js/jquery.hotkeys.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
