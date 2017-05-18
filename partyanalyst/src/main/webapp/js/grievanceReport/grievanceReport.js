@@ -181,6 +181,7 @@ $("#statusWiseAlertCntId").html(spinner);
  	var sourceIds =[];
  	deptIds.push(deptId);  
 	if(sourceId==0){
+		sourceIds.push(5);
 		sourceIds.push(4);             
 		sourceIds.push(2);  
 		sourceIds.push(3);
@@ -190,6 +191,8 @@ $("#statusWiseAlertCntId").html(spinner);
 		sourceIds.push(2);
 	}else if(sourceId==3){
 		sourceIds.push(3);
+	}else if(sourceId==5){
+		sourceIds.push(5);      
 	}
     var jobj = {
 		deptIds :deptIds,
@@ -1884,6 +1887,7 @@ function getCadreGreivienceEfficiency(sliderVal){
     var deptId=$("#selecDepartmentId").val();
 	deptIds.push(deptId);  
 	if(sourceId==0){
+		sourceIds.push(5);
 		sourceIds.push(4);
 		sourceIds.push(2);
 		sourceIds.push(3);
@@ -1893,6 +1897,8 @@ function getCadreGreivienceEfficiency(sliderVal){
 		sourceIds.push(2);
 	}else if(sourceId==3){   
 		sourceIds.push(3);
+	}else if(sourceId==5){   
+		sourceIds.push(5);
 	}
     var jobj = {
 		deptIds :deptIds,
