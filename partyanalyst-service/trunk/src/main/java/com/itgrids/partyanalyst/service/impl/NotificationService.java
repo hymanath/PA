@@ -164,7 +164,7 @@ public class NotificationService implements INotificationService{
 					.getNotificationActiveKeys();
 			NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(), notification,notificationKeysList, userId);
 
-			Long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notificationType);
+			Long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notifyVO.getNotificationTypeId());
 			 if(orderNo == null || orderNo.longValue() ==0L)
 				 orderNo =0L;
 			Notifications notifications = new Notifications();
