@@ -30,6 +30,9 @@ public class NotificationDeviceVO {
 	private String isActive;
 	private String locationName;
     private String address;
+    private Long userId;
+    private Long failureCount;
+    private Long successCount;
 	private List<NotificationDeviceVO> parkingLst = new ArrayList<NotificationDeviceVO>(0);
 	private List<NotificationDeviceVO> vipParkingLst = new ArrayList<NotificationDeviceVO>(0);
 	
@@ -210,6 +213,29 @@ public class NotificationDeviceVO {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public Long getFailureCount() {
+		return failureCount;
+	}
+
+	public void setFailureCount(Long failureCount) {
+		this.failureCount = failureCount;
+	}
+
+	public Long getSuccessCount() {
+		return successCount;
+	}
+
+	public void setSuccessCount(Long successCount) {
+		this.successCount = successCount;
 	}
 		
 }
