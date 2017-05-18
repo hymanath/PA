@@ -2645,4 +2645,18 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	@POST
+	@Path("/pushNotification")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String pushNotificationFcm(NotificationDeviceVO inputVo){
+		try{
+			return notificationService.pushNotification(inputVo,null);
+	}
+	catch(Exception e){
+		LOG.error("Exception Occured in getNotificationDetailsBynotificationDeviceId() Method, Exception is ",e);
+		e.printStackTrace();	
+	}
+		return null;  
+	}
 }
