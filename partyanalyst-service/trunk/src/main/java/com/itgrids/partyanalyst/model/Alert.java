@@ -78,7 +78,7 @@ public class Alert extends BaseModel implements Serializable {
 	private AlertEntrySource alertEntrySource;
 	private Long alertIssueTypeId;
 	private AlertIssueType alertIssueType;
-	private Long AlertFeedbackStatusId;
+	private Long alertFeedbackStatusId;
 	private AlertFeedbackStatus alertFeedbackStatus;
 	private AlertIssueSubType alertIssueSubType;
 	private Long alertIssueSubTypeId;
@@ -551,11 +551,11 @@ public class Alert extends BaseModel implements Serializable {
 
 	@Column(name = "alert_feedback_status_id")
 	public Long getAlertFeedbackStatusId() {
-		return AlertFeedbackStatusId;
+		return alertFeedbackStatusId;
 	}
 
 	public void setAlertFeedbackStatusId(Long alertFeedbackStatusId) {
-		AlertFeedbackStatusId = alertFeedbackStatusId;
+		alertFeedbackStatusId = alertFeedbackStatusId;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
