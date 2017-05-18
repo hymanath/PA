@@ -822,6 +822,25 @@ function onLoadClicks()
 			getSearchAlertsDtls(alertId)
 		}
 	});
+	$(document).on("click",".alertIdSpecialSearch",function(e){
+		var alertId = $(this).attr("attr_alertId");
+		alert(alertId)
+		$("#alertManagementPopup").modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+		$("#alertManagementPopupBody").html("<div class='row'><div id='rightSideExpandView'></div></div>");
+		rightSideExpandView(alertId);
+		popUpFilter('heading','','','');
+		$(".flipview-btn,.filters-icon").hide();
+		var alertId = '';
+		$("#modalHeadingTotal").html("Alert Status");
+		setTimeout(function(){
+			$("[expanded-block='block1']").addClass("col-sm-12").removeClass("col-sm-8 pad_left0");
+			$("[expanded-block='block1']").show();
+		},750);
+	});
 	$(".tbtn").click(function(){
 		$(".themeControll").toggleClass("active");
 	});
