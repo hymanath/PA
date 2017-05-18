@@ -595,7 +595,6 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		Long parentEventId = 0L;
 		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 		if(entryExitInfo != null){
-			
 			Long entryEventId = entryExitInfo.getEntryId();
 			Long exitEventId = entryExitInfo.getExitId();
 			parentEventId = entryExitInfo.getParentEventId();
@@ -713,11 +712,16 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long toDaytotalInviteeVisitors = 0l;
 			Long currentVisitors = 0l;
 			Long currentInviteeVisitors = 0l;			
-												
+			Long entryEventId = 0L;
+			Long exitEventId = 0L;
+			Long parentEventId = 0L;
+			
 			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
-			Long entryEventId = entryExitInfo.getEntryId();
-			Long exitEventId = entryExitInfo.getExitId();
-			Long parentEventId = entryExitInfo.getParentEventId();
+			if(entryExitInfo != null){
+				entryEventId = entryExitInfo.getEntryId();
+				exitEventId = entryExitInfo.getExitId();
+				parentEventId = entryExitInfo.getParentEventId();
+			}
 			
 			Date todayDate =null;
 			if(eventCurrentDate !=null && !eventCurrentDate.isEmpty()){
@@ -876,9 +880,14 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			}
 			
 			
+			Long entryEventId = 0L;
+			Long exitEventId = 0L;
+			
 			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
-			Long entryEventId = entryExitInfo.getEntryId();
-			Long exitEventId = entryExitInfo.getExitId();		
+			if(entryExitInfo != null){
+				entryEventId = entryExitInfo.getEntryId();
+				exitEventId = entryExitInfo.getExitId();
+			}		
 			//Date todayDate = dateUtilService.getCurrentDateAndTime();
 			Date todayDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 			
@@ -1032,9 +1041,14 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			}
 			
 			
+			Long entryEventId = 0L;
+			Long exitEventId = 0L;
+			
 			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
-			Long entryEventId = entryExitInfo.getEntryId();
-			Long exitEventId = entryExitInfo.getExitId();		
+			if(entryExitInfo != null){
+				entryEventId = entryExitInfo.getEntryId();
+				exitEventId = entryExitInfo.getExitId();
+			}		
 			//Date todayDate = dateUtilService.getCurrentDateAndTime();
 			Date todayDate = new SimpleDateFormat("yyyy-MM-dd").parse(date);
 			
@@ -1167,10 +1181,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			
 			Date date = betweenDates.get(Integer.parseInt(dayCount.toString())-1);*/
 			Date date = format.parse(dayCount);
-			
+			Long entryEventId = 0L;
+			Long exitEventId = 0L;
 			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
-			Long entryEventId = entryExitInfo.getEntryId();
-			Long exitEventId = entryExitInfo.getExitId();
+			if(entryExitInfo != null){
+				entryEventId = entryExitInfo.getEntryId();
+				exitEventId = entryExitInfo.getExitId();
+			}
 			
 			//get now in campus counts
 			//0-cadreids count,1-hour
