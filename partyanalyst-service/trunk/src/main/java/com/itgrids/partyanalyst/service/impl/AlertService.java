@@ -10456,7 +10456,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		try{
 			Date fromDate = null;      
 			Date toDate = null;
-			Long deptId = 49L;
+			Long deptId = 0l;
 			List<Long> alertIds = new ArrayList<Long>();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
