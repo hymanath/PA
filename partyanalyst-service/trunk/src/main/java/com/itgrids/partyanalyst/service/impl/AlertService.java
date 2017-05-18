@@ -12674,7 +12674,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
     	}
     	return null;
     }
-	 public List<AlertOverviewVO> getTotalAlertGroupByCategoryThenStatus(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId){
+     public List<AlertOverviewVO> getTotalAlertGroupByCategoryThenStatus(String fromDateStr, String toDateStr, Long stateId, Long departmentId,Long sourceId,Long locationId,Long statusId){
 		 try{  
 				Date fromDate = null;        
 				Date toDate = null; 
@@ -12696,25 +12696,27 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				
 				Map<Long,Long> statusIdAndCountMap = null;//new HashMap<Long, Long>();  
 				Map<Long,Map<Long,Long>> categoryIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+				List<Long> statusIdList = new ArrayList<Long>();
 				List<Object[]> stepList=alertDAO.getTotalAlertGroupByCategoryThenStatus(fromDate, toDate,  stateId,  departmentId,sourceId, "two", locationId, statusId);
-				{
-					if(stepList != null && stepList.size() > 0){
-						for(Object[] param : stepList){ 
-							if(param[0] != null){
-								statusIdAndCountMap = categoryIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
-								if(statusIdAndCountMap != null){
-									statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
-								}else{
-									statusIdAndCountMap = new HashMap<Long, Long>();
-									statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
-									categoryIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),statusIdAndCountMap);
-								}
+				if(stepList != null && stepList.size() > 0){
+					for(Object[] param : stepList){ 
+						if(param[0] != null){
+							//collect existing status id only.
+							statusIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+							statusIdAndCountMap = categoryIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+							if(statusIdAndCountMap != null){
+								statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+							}else{
+								statusIdAndCountMap = new HashMap<Long, Long>();
+								statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+								categoryIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),statusIdAndCountMap);
 							}
 						}
 					}
 				}
-						
-				List<Object[]> statusLists = alertDepartmentStatusDAO.getAlertStatusByDepartmentId(departmentId);
+				
+				
+				List<Object[]> statusLists = alertStatusDAO.getAlertStatusDtlsBasidOnAlertIds(statusIdList);
 				
 				//build final vo to sent to ui
 				List<AlertOverviewVO> finalList = new ArrayList<AlertOverviewVO>();
@@ -12752,6 +12754,17 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 							finalList.add(innerListAlertVO);     
 						}
 					}
+				}
+				//push feedback count.
+				List<Object[]> feedbackList=alertDAO.getTotalAlertGroupByCategoryThenFeedbackStatus(fromDate, toDate,  stateId,  departmentId,sourceId, "two", locationId, statusId,"other","false");
+				List<Object[]> feedbackListForPending=alertDAO.getTotalAlertGroupByCategoryThenFeedbackStatus(fromDate, toDate,  stateId,  departmentId,sourceId, "one", locationId, statusId,"pending","false");
+				//push reopen count.
+				List<Object[]> reopenList = alertDAO.getTotalAlertGroupByCategoryThenFeedbackStatus(fromDate, toDate,  stateId,  departmentId,sourceId, "one", locationId, statusId,"other","true");
+				if(finalList != null && finalList.size() > 0){
+					pushFeedbackCount(finalList,categoryIdAndStatusIdAndCountMap,feedbackList,feedbackListForPending);
+				}
+				if(finalList != null && finalList.size() > 0){
+					pushReopenCount(finalList,reopenList);
 				}
 				
 				return finalList;
@@ -13879,6 +13892,107 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				e.printStackTrace();
 			}
 			return null;
+		}
+		public void pushFeedbackCount(List<AlertOverviewVO> finalList,Map<Long,Map<Long,Long>> categoryIdAndStatusIdAndCountMap,List<Object[]> feedbackList,List<Object[]> feedbackListForPending){
+			try{
+				//for feedback
+				Map<Long,Map<Long,Long>> categoryIdAndFeedbackStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+				Map<Long,Long> feedbackStatusIdAndCountMap = null;
+				if(feedbackList != null && feedbackList.size() > 0){
+					for(Object[] param : feedbackList){
+						feedbackStatusIdAndCountMap = categoryIdAndFeedbackStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						if(feedbackStatusIdAndCountMap == null){
+							feedbackStatusIdAndCountMap = new HashMap<Long,Long>();
+							feedbackStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+							categoryIdAndFeedbackStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), feedbackStatusIdAndCountMap);
+						}
+						feedbackStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+					}
+				}
+				
+				//for pending feedback
+				Map<Long,Long> categoryIdAndCountMapForPending = new HashMap<Long,Long>();
+				
+				if(feedbackListForPending != null && feedbackListForPending.size() > 0){
+					for(Object[] param : feedbackListForPending){
+						categoryIdAndCountMapForPending.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+				
+				//get all feedback status id and name
+				List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getFeedBackStatus();
+				Map<Long,String> feedbackStatusIdAndStatusName = new HashMap<Long,String>();
+				if(feedbackStatusList != null && feedbackStatusList.size() > 0){
+					for(Object[] param : feedbackStatusList){
+						feedbackStatusIdAndStatusName.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+					}
+				}
+				
+				for(AlertOverviewVO param : finalList){
+					feedbackStatusIdAndStatusName.put(4L, "Pending Feedback");
+					buildFeedbackStatusInTemplate(param,feedbackStatusIdAndStatusName);
+				}
+				//push feedback status into vo.
+				
+				//push the feedback count in vo.
+				for(AlertOverviewVO param : finalList){
+					Long categoryId = param.getId();
+					if(categoryIdAndFeedbackStatusIdAndCountMap.size() > 0 && categoryIdAndFeedbackStatusIdAndCountMap.get(categoryId) != null){
+						for(AlertOverviewVO innerParam : param.getSubList2()){
+							if(categoryIdAndFeedbackStatusIdAndCountMap.get(categoryId).get(innerParam.getId()) != null){
+								innerParam.setTotalAlertCnt(categoryIdAndFeedbackStatusIdAndCountMap.get(categoryId).get(innerParam.getId()));
+							}else{
+								innerParam.setTotalAlertCnt(0L);
+							}
+						}
+					}
+				}
+				//now push feedback pending count into vo.
+				for(AlertOverviewVO param : finalList){
+					Long categoryId = param.getId();
+					for(AlertOverviewVO innerParam : param.getSubList2()){
+						if(innerParam.getId().longValue() == 4L){//feedback pending count   
+							innerParam.setTotalAlertCnt(commonMethodsUtilService.getLongValueForObject(categoryIdAndCountMapForPending.get(categoryId)));
+						}
+					}
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		public void buildFeedbackStatusInTemplate(AlertOverviewVO param,Map<Long,String> feedbackAndStatusIdMap){
+			try{
+				AlertOverviewVO alertOverviewVO = null;
+				List<AlertOverviewVO> AlertOverviewVOs = new ArrayList<AlertOverviewVO>();
+				for(Entry<Long,String> entry : feedbackAndStatusIdMap.entrySet()){
+					alertOverviewVO = new AlertOverviewVO();
+					alertOverviewVO.setId(commonMethodsUtilService.getLongValueForObject(entry.getKey()));
+					alertOverviewVO.setName(commonMethodsUtilService.getStringValueForObject(entry.getValue()));
+					AlertOverviewVOs.add(alertOverviewVO);
+				}
+				param.setSubList2(AlertOverviewVOs);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		public void pushReopenCount(List<AlertOverviewVO> finalList,List<Object[]> reopenList){
+			try{
+				Map<Long,Long> categoryIdAndReopenCountMap = new HashMap<Long,Long>();
+				if(reopenList != null && reopenList.size() > 0){
+					for(Object[] param : reopenList){
+						categoryIdAndReopenCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]	), commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+				for(AlertOverviewVO param : finalList){
+					if(categoryIdAndReopenCountMap != null && categoryIdAndReopenCountMap.get(param.getId()) != null){
+						param.setReopenCount(categoryIdAndReopenCountMap.get(param.getId()));
+					}
+				}
+				
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
 }
 

@@ -153,6 +153,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getTotalAlertGroupByStatusForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> constIds);
 	public List<Object[]> getTotalAlertGroupByStatusThenCategoryForCentralAreaMembers(Date fromDate, Date toDate, Long stateId,Long alertTypeId,List<Long> consIds);
 	public List<Object[]> getLocationLevelWiseAlertsDataForCentralAreaMembers(List<Long> sourceIds,AlertInputVO inputVO,Date fromDate,Date toDate,List<Long> consIds);
+	public List<Object[]> getTotalAlertGroupByCategoryThenFeedbackStatus(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId,String step,Long locationId,Long statusId,String feedBackType,String reopen);
 	public List<Object[]> getTotalAlertsDateWise(Date fromDate,Date toDate,List<Long> departmentIds,List<Long> sourceIds,List<Long> alertStatusIds);
 	public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId, Long departmentId,Long alertCategoryId,Long locationId);
 	public List<Object[]> getAlertBasedOnRequiredParameter(Date fromDate, Date toDate, Long stateId, Long departmentId,Long alertCategoryId,List<Long> statusIds,String type,Long locationId);
