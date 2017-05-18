@@ -66,9 +66,9 @@
 						<div class="col-md-3 m_top10">
 							<select id="selectMediaId"class="selectpicker" onChange="getMediaInformation();">
 								<option value="0">All</option>
-								<option value="4">Call Center</option>     
-								<option value="2">Print Media</option>
-								<option value="3">Electronic Media</option>
+								<c:forEach items="${idNameVOList[0].subList1}"  var="category">
+									<option value="${category.id}">${category.name}</option>
+								</c:forEach>
 							</select>
 						</div>
 						<div class="col-md-3 m_top10">
