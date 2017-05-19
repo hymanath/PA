@@ -67,4 +67,19 @@ public class BloodDonorInfoDAO extends GenericDaoHibernate<BloodDonorInfo, Long>
 		}
 		return query.list();
 	 }
+	@SuppressWarnings("unchecked")
+	public List<Object[]>  getEventAteendedDetails()
+	  {
+	    Query query = getSession().createQuery(" select " +
+	          " distinct model.bloodDonorInfoId," +
+	          " model.donorName,model.mobileNo," +
+	          " model.donationTime, " +
+	          " model.tdpCadre.memberShipNo " +
+	          " from BloodDonorInfo model,EventAttendee model2 " +
+	          " where " +
+	          " model.tdpCadreId = model2.tdpCadreId " +
+	          " and model.isDeleted = 'N' " +
+	          " and model.registeredSource = 'app' and model2.eventId >= 51l ");
+	    return query.list();
+	  }
 }
