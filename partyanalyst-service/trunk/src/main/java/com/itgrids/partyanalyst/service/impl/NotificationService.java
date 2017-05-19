@@ -161,7 +161,7 @@ public class NotificationService implements INotificationService{
 			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 			NotificationType notificationType =notificationTypeDAO.get(notifyVO.getNotificationTypeId());
 			notification.addProperty("title", notificationType.getNotificationType());
-			notification.addProperty("body", commonMethodsUtilService.getUniCodeMessage(notifyVO.getNotification()));
+			notification.addProperty("body", notifyVO.getNotification());
 			notification.addProperty("click_action",".Activitys.Activity_Notifications");
 			List<String> notificationKeysList = notificationDeviceDAO.getNotificationActiveKeys();
 			NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(), notification,notificationKeysList, userId);
@@ -173,8 +173,8 @@ public class NotificationService implements INotificationService{
 			notifications.setUserId(userId);
 			notifications.setNotificationTypeId(notifyVO.getNotificationTypeId());
 			notifications.setSuccessCount(notificationDeviceVO.getSuccessCount());
-			notifications.setSuccessCount(notificationDeviceVO.getFailureCount());
-			notifications.setNotification(commonMethodsUtilService.getUniCodeMessage(notifyVO.getNotification()));
+			notifications.setFailureCount(notificationDeviceVO.getFailureCount());
+			notifications.setNotification(notifyVO.getNotification());
 			notifications.setNotificationsId(notifyVO.getNotificationTypeId());
 			notifications.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			notifications.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -506,11 +506,12 @@ public class NotificationService implements INotificationService{
 				 vo.setNotificationTypeId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 				 vo.setLastUpdatedTime(objects[2] != null ? objects[2].toString():"");
 				 vo.setUserId(Long.valueOf(objects[3] != null ? objects[3].toString():"0"));
+				 vo.setNotificationType(objects[4] != null ? objects[4].toString():"");
 				 notificationDeviceVO.add(vo);
 			 }
 			return notificationDeviceVO;
 		}catch(Exception e){
-			log.error("Exception occured in getEventParkingDetails() Method ",e);
+			log.error("Exception occured in getAllNotifications() Method ",e);
 			return null;
 		}
 	}
