@@ -3960,7 +3960,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      public List<Object[]> getAlertDetailsLocationWiseBasedOnDepartmentLevel(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
-     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,List<Long> socialMediaTypeIds,Long source){
+     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,List<Long> socialMediaTypeIds,Long source,String pendingType){
     	 
      	StringBuilder queryStr = new StringBuilder();
      	queryStr.append(" select ");
@@ -4017,7 +4017,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(source != null && source.longValue() > 0){
  			queryStr.append(" and A.alert_category_id =:source   ");
  		}else{
- 			queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+ 			if(pendingType != null && pendingType.trim().equalsIgnoreCase("pending")){
+ 				queryStr.append(" and A.alert_category_id in (4,5)  ");
+ 			}else{
+ 				queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+ 			}
+ 			
  		}
  		
  		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -5419,8 +5424,6 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			}
 		}
 	    queryStr.append(" count(distinct AAO.alert_id) as count");
-	    
-
 		queryStr.append(" from ");
 
 		queryStr.append(" alert A ");
@@ -5454,7 +5457,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		if(source != null && source.longValue() > 0L){
 			queryStr.append(" and A.alert_category_id =:source  ");
 		}else{
-			queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+			if(reopen.trim().equalsIgnoreCase("true") || feedbackType.trim().equalsIgnoreCase("pending")){
+				queryStr.append(" and A.alert_category_id in (4,5)  ");    
+			}else{
+				queryStr.append(" and A.alert_category_id in (2,3,4,5)  ");    
+			}
+			
 		}
 		
 		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
