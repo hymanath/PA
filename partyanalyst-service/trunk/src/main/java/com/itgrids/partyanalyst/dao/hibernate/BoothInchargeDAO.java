@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.model.BoothIncharge;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> implements IBoothInchargeDAO{
 
@@ -24,7 +25,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 					" from BoothIncharge model " +
 					" where " +
 					" model.isDeleted='N' "+
-					" and model.tdpCadre.isDeleted='N' ");
+					" and model.tdpCadre.isDeleted='N' and model.booth.publicationDate.publicationDateId = :publicationDate");
 		if(constituencyId !=null && constituencyId.longValue() > 0)
 		query.append(" and model.booth.constituency.constituencyId=:constituencyId");
 		if(mandalId !=null && mandalId.longValue() > 0)
@@ -33,7 +34,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		query.append(" and model.booth.boothId=:boothId");
 		
 		Query query1=getSession().createQuery(query.toString());
-		
+		query1.setParameter("publicationDate", IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
 		if(constituencyId !=null && constituencyId.longValue() > 0){
 			query1.setParameter("constituencyId", constituencyId);
 		}
