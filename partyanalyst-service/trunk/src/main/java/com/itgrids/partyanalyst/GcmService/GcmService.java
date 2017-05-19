@@ -36,9 +36,9 @@ public class GcmService {
 			if (commonMethodsUtilService.isListOrSetValid(notificationKeysList)) {
 				int successcount = 0;
 				int failurecount = 0;
-				json.addProperty("notification", notification.toString());
+				json.add("notification", notification);
 				notification.remove("click_action");
-				json.addProperty("data", notification.toString());
+				json.add("data", notification);
 				for (String registereduId : notificationKeysList) {
 					json.addProperty("to", registereduId);
 					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
