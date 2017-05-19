@@ -79,7 +79,9 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 
 	@Override
 	public List<Object[]> getAllNotifications() {
-		Query query = getSession().createQuery("select model.notificationTypeId,model.notification,model.insertedTime,model.userId from Notifications model where model.isActive='true' ");
+		Query query = getSession().createQuery("select model.notificationTypeId.notificationTypeId, " +
+				" model.notification,model.insertedTime,model.userId,model.notificationType.notificationType "+
+				" from Notifications model where model.isActive='true' ");
 		return query.list();
 	}
 }
