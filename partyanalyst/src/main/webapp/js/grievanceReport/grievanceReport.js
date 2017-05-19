@@ -1871,7 +1871,10 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 		for(var i in result[0].subList1){       
            str+='<th>'+result[0].subList1[i].statusType+'</th>';
 		}
-		 
+		for(var i in result[0].subList2){       
+           str+='<th>'+result[0].subList2[i].name+'</th>';
+		}
+		str+='<th>Reopen</th>';
         str+=' </tr>';
         str+='</thead>';
 		str+='<tbody>';
@@ -1888,7 +1891,18 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 					str+='<td>-</td>';
 				}      
 			}
-			
+			for(var j in result[i].subList2){
+				if(result[i].subList2[j].totalAlertCnt != 0){
+					str+='<td>'+result[i].subList2[j].totalAlertCnt+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}      
+			}
+			if(result[i].reopenCount != 0){
+				str+='<td>'+result[i].reopenCount+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
 			str+='</tr>';   
 		}    
 		str+='</tbody>';
