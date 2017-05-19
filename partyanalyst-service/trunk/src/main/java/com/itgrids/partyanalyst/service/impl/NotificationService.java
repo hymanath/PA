@@ -158,10 +158,12 @@ public class NotificationService implements INotificationService{
 		try {
 			GcmService gcmService = new GcmService();
 			JsonObject notification = new JsonObject();
-			notification.addProperty("title", notifyVO.getNotificationTypeId());
-			notification.addProperty("body", notifyVO.getNotification());
-			List<String> notificationKeysList = notificationDeviceDAO
-					.getNotificationActiveKeys();
+			CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+			NotificationType notificationType =notificationTypeDAO.get(notifyVO.getNotificationTypeId());
+			notification.addProperty("title", notificationType.getNotificationType());
+			notification.addProperty("body", commonMethodsUtilService.getUniCodeMessage(notifyVO.getNotification()));
+			notification.addProperty("click_action",".Activitys.Activity_Notifications");
+			List<String> notificationKeysList = notificationDeviceDAO.getNotificationActiveKeys();
 			NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(), notification,notificationKeysList, userId);
 
 			Long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notifyVO.getNotificationTypeId());
@@ -169,9 +171,10 @@ public class NotificationService implements INotificationService{
 				 orderNo =0L;
 			Notifications notifications = new Notifications();
 			notifications.setUserId(userId);
+			notifications.setNotificationTypeId(notifyVO.getNotificationTypeId());
 			notifications.setSuccessCount(notificationDeviceVO.getSuccessCount());
 			notifications.setSuccessCount(notificationDeviceVO.getFailureCount());
-			notifications.setNotification(notifyVO.getNotification());
+			notifications.setNotification(commonMethodsUtilService.getUniCodeMessage(notifyVO.getNotification()));
 			notifications.setNotificationsId(notifyVO.getNotificationTypeId());
 			notifications.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			notifications.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -490,4 +493,25 @@ public class NotificationService implements INotificationService{
 		}
 		 return finalVo;
 	  }
+
+	@SuppressWarnings("null")
+	@Override
+	public List<NotificationDeviceVO> getAllNotifications() {
+		try{
+			List<Object[]> objList = notificationsDAO.getAllNotifications();
+			List<NotificationDeviceVO> notificationDeviceVO =new ArrayList<NotificationDeviceVO>(); ;
+			 for (Object[] objects : objList) {
+				 NotificationDeviceVO vo = new NotificationDeviceVO();
+				 vo.setNotification(objects[1] != null ? objects[1].toString():"");
+				 vo.setNotificationTypeId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+				 vo.setLastUpdatedTime(objects[2] != null ? objects[2].toString():"");
+				 vo.setUserId(Long.valueOf(objects[3] != null ? objects[3].toString():"0"));
+				 notificationDeviceVO.add(vo);
+			 }
+			return notificationDeviceVO;
+		}catch(Exception e){
+			log.error("Exception occured in getEventParkingDetails() Method ",e);
+			return null;
+		}
+	}
  }
