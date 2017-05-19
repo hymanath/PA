@@ -2659,4 +2659,19 @@ public class WebServiceHandler {
 	}
 		return null;  
 	}
+	
+	@GET
+	@Path("/getNotifications")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<NotificationDeviceVO> getAllNotifications() {
+		try {
+			List<NotificationDeviceVO> notificationDeviceVOList = notificationService.getAllNotifications();
+			return notificationDeviceVOList;
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getNotificationDetailsBynotificationDeviceId() Method, Exception is ",e);
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
