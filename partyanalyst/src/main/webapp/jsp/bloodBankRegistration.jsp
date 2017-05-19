@@ -731,6 +731,22 @@
       <div class="media " style="">
         <div class="media-left">
         </div>
+		<h4 style="text-align:center;margin-bottom: 20px">  Interested People for Blood Donation <img title="Here  we are showing  not blood donated people, who are registered through Public Blood Bank App.  " src="img/info.png" height="15px/"> <a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothReport\')}"> Export Excel</a></h4>
+		
+		<div class="col-xs-12">
+			<div class="col-xs-12" style="margin-bottom:10px;">
+				<label class="checkbox-inline" style="margin-left: 700px;margin-bottom:-22px;">
+					<input type="checkbox" id="attendedCheckId">Attended
+				</label>
+			</div>	
+			<div class="col-md-3" style="margin-bottom: 10px;">			
+				<select id="donatedMembersId" style="margin-bottom:10px;">
+					<option value="all">All members</option>
+					<option value="yes">Donated Members</option>
+					<option value="no">Not Donated Members</option>
+				</select>
+			</div>
+		</div>
         <div class="media-body" id="interestedPeopleModalBody">
         </div>
       </div>
@@ -1205,20 +1221,7 @@ function exportToExcel(tableId)
 
 function buildAllBloodDonateRegiCandidateDetails(result){
 	var str ='';
-	str +='<h4 style="text-align:center;margin-bottom: 20px">  Interested People for Blood Donation <img title="Here  we are showing  not blood donated people, who are registered through Public Blood Bank App.  " src="img/info.png" height="15px/"> <a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothReport\')}"> Export Excel</a></h4>';
-	str+='<div class="col-md-3" style="margin-bottom: 10px;">';
-		str+='<div class="col-xs-12">';
-			str+='<label class="checkbox-inline" style="margin-left: 700px;margin-bottom:-22px;">';
-				str+='<input type="checkbox" id="attendedCheckId">Attended&nbsp;&nbsp;';
-			str+='</label>';
-		str+='</div>';				
-		str+='<select id="donatedMembersId" >';
-			str+='<option value="0">Select members</option>';
-			str+='<option value="all">All members</option>';
-			str+='<option value="yes">Donated members</option>';
-			str+='<option value="no">Not donated members</option>';
-	   str+='</select>';
-	str+='</div>';
+	//str +='<h4 style="text-align:center;margin-bottom: 20px">  Interested People for Blood Donation <img title="Here  we are showing  not blood donated people, who are registered through Public Blood Bank App.  " src="img/info.png" height="15px/"> <a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothReport\')}"> Export Excel</a></h4>';
 	str +='<table class="table table-bordered m_top20" style="" id="rangeWiseExportBoothReport">';
         str +='<thead>';
             str +='<th> DONAR NAME  </th>';
@@ -1773,10 +1776,14 @@ $( document ).on("click",".cadreCls",function(){
 		}
 });
 $(document).on("change","#donatedMembersId",function(){
+	getAllBloodDonateRegiCandidateDetails("all");
+});
+function getAllBloodDonateRegiCandidateDetails(attendedType){
 	$("#rangeWiseExportBoothReport").html("");
 	var type = $(this).val();
 	jObj = {
-		type:type
+		type:type,
+		attendedType:attendedType
 	}
 		$.ajax({
 		  type:'GET',
@@ -1789,6 +1796,14 @@ $(document).on("change","#donatedMembersId",function(){
 				$("#interestedPeopleModalBody").html("No Data Available.");
 			}
 		});
+}
+$(document).on("click","#attendedCheckId",function(){
+  if($(this).is(":checked"))
+  {
+   getAllBloodDonateRegiCandidateDetails("attended");
+  }else{
+    getAllBloodDonateRegiCandidateDetails("all");
+  }
 });
 </script>
 <script>
