@@ -14,18 +14,17 @@ import com.google.gson.JsonParser;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-import com.mysql.jdbc.jdbc2.optional.SuspendableXAConnection;
+
 /*
  * @Srishailm
  * @Swadhin
+ * @Sanjay
  */
 public class GcmService {
 	
 	private static final Logger LOG = Logger.getLogger(GcmService.class);
-	private static int successcount = 0;
-	private static int failurecount = 0;
 	JsonParser parser = new JsonParser();
-	public NotificationDeviceVO sendNotification(String registeredId,JsonObject notification, List<String> notificationKeysList, Long userId) {
+	public NotificationDeviceVO sendNotification(String registeredId,JsonObject notification, List<String> notificationKeysList,Long userId) {
 
 		String result = null;
 		final String GOOGLE_SERVER_KEY = IConstants.GOOGLE_SERVER_KEY;
@@ -35,11 +34,13 @@ public class GcmService {
 			URL url = new URL(IConstants.FCM_URL.trim());
 			JsonObject json = new JsonObject();
 			if (commonMethodsUtilService.isListOrSetValid(notificationKeysList)) {
+				int successcount = 0;
+				int failurecount = 0;
+				json.addProperty("notification", notification.toString());
+				notification.remove("click_action");
+				json.addProperty("data", notification.toString());
 				for (String registereduId : notificationKeysList) {
-					json.add("notification", notification);
-					json.add("data", notification);
 					json.addProperty("to", registereduId);
-					json.addProperty("click_action", "OPEN_ACTIVITY");
 					HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 					conn.setUseCaches(false);
 					conn.setDoInput(true);
@@ -48,13 +49,13 @@ public class GcmService {
 					conn.setRequestProperty("Authorization", "key="+ GOOGLE_SERVER_KEY);
 					conn.setRequestProperty("Content-Type", "application/json");
 					OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-					wr.write(json.toString()); 
+					wr.write(json.toString());
 					wr.flush();
 					InputStream is = conn.getInputStream();
 					String resultValue = convertStreamToString(is);
 					JsonObject jsonResult = parser.parse(resultValue).getAsJsonObject();
 					if (jsonResult.get("failure").getAsInt() == 0) {
-						LOG.info("success Multicat_id="+jsonResult.get("multicast_id").getAsString());
+						LOG.info("success Multicat_id="+ jsonResult.get("multicast_id").getAsString());
 						result= "SUCCESS";
 						successcount++;
 					}else{
@@ -62,14 +63,11 @@ public class GcmService {
 						failurecount++;
 					}
 					json.remove("to");
-					json.remove("notification");
-					json.remove("click_action");
-					json.remove("data");
 				}
-				
-				notificationsVO.setSuccessCount((long) successcount);
-				notificationsVO.setSuccessCount((long) failurecount);
-				
+
+				notificationsVO.setSuccessCount(Long.valueOf(successcount));
+				notificationsVO.setFailureCount(Long.valueOf(failurecount));
+
 			}
 		}catch(Exception e){
 			LOG.info(e.getMessage());
@@ -78,9 +76,10 @@ public class GcmService {
 		notificationsVO.setStatus(result);
 		return notificationsVO;
 	}
+
 	//string converstion from input stream
 	static String convertStreamToString(InputStream is) {
-	    Scanner s = new Scanner(is).useDelimiter("\\A");
-	    return s.hasNext() ? s.next() : "";
+		Scanner s = new Scanner(is).useDelimiter("\\A");
+		return s.hasNext() ? s.next() : "";
 	}
 }
