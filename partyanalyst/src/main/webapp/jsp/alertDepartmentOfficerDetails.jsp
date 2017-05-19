@@ -72,9 +72,10 @@
 						<div class="col-sm-2 m_top10 pull-right ">
 							<select id="selectMediaId" class="form-control" onChange="getMediaInformation();">
 								<option value="0">All</option>
-								<c:forEach items="${idNameVOList[0].subList1}"  var="category">
-									<option value="${category.id}">${category.name}</option>
-								</c:forEach>
+								<option value="4">Call Center</option>     
+								<option value="2">Print Media</option>
+								<option value="3">Electronic Media</option>
+								<option value="5">Social Media</option>
 							</select>
 						</div>
 						
