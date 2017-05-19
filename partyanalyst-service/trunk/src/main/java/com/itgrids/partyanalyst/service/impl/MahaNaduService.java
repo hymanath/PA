@@ -4332,7 +4332,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 		return date;
 	}
-	public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(String type){
+	public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(String type,String attendedType){
 		List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>(0);
 		try{
 			
@@ -4434,14 +4434,23 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						}
 					}
 				}	
-			}
-			
-			
-			
+			}else{
+				List<Object[]> attendedList = bloodDonorInfoDAO.getEventAteendedDetails();
+				if(attendedList != null && attendedList.size() >0){
+					for (Object[] objects : attendedList) {
+						IdAndNameVO vo = new IdAndNameVO();
+						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
+						vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]).substring(0, 16));
+						vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
+						//vo.setFlag("no");
+						finalList.add(vo);
+					}
+				}
+			}			
 		}catch (Exception e) {
 			LOG.error(" Exception Raised in getAllBloodDonateRegiCandidateDetails ",e);
 		}
-		return finalList;
-		
+		return finalList;		
 	}
 }
