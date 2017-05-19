@@ -108,6 +108,8 @@ public class Notifications extends BaseModel implements Serializable{
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
+	
+	@Column(name="user_id")
 	public Long getUserId() {
 		return userId;
 	}
@@ -116,6 +118,7 @@ public class Notifications extends BaseModel implements Serializable{
 		this.userId = userId;
 	}
 
+	@Column(name="success_count")
 	public Long getSuccessCount() {
 		return successCount;
 	}
@@ -124,6 +127,7 @@ public class Notifications extends BaseModel implements Serializable{
 		this.successCount = successCount;
 	}
 
+	@Column(name="failure_count")
 	public Long getFailureCount() {
 		return failureCount;
 	}
