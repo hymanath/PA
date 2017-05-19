@@ -2250,6 +2250,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 						eventVo.setUserName(params[1] != null ? params[1].toString() : "");
 						eventVo.setEventSyncType(params[6] != null ? params[6].toString() : "");
 						eventVo.setIsInviteeExist(params[7] != null ? params[7].toString() : "");
+						eventVo.setAcceptedEnrollmentYear(params[8] != null ? params[8].toString():"");
 						userEventDetailsVO.getSubList().add(eventVo);
 						eventsIdsList.add((Long)params[0]);
 					}
@@ -2278,6 +2279,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 								childEventVo.setOrderId(params[12] != null ? Long.valueOf(params[12].toString().trim()) : null);
 								childEventVo.setIsActive(params[13] != null ? params[13].toString() : "");
 								childEventVo.setEventSyncType(params[14] != null ? params[14].toString() : "");
+								childEventVo.setAcceptedEnrollmentYear(params[15] != null ? params[15].toString() : "");
 								List<Long> eventIds = new ArrayList<Long>();
 								eventIds.add(childEventVo.getEventId());
 								List<Object[]> eventRfidDetailsList = eventRfidDetailsDAO.getEventRFIDDetailsByEventIds(eventIds);	

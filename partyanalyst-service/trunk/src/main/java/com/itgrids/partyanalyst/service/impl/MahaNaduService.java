@@ -56,6 +56,7 @@ import com.itgrids.partyanalyst.dao.IPartyDesignationDAO;
 import com.itgrids.partyanalyst.dao.ISocialCategoryDAO;
 import com.itgrids.partyanalyst.dao.ISurveyUserAuthDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreInfoDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
@@ -129,8 +130,18 @@ public class MahaNaduService implements IMahaNaduService{
 	private ITdpCadreDAO tdpCadreDAO;
 	private IBloodDonorInfoDAO bloodDonorInfoDAO;
 	private IBloodDonationDAO bloodDonationDAO;
+	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	
 	
+	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
+		return tdpCadreEnrollmentYearDAO;
+	}
+
+	public void setTdpCadreEnrollmentYearDAO(
+			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
+		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
+	}
+
 	public IBloodDonationDAO getBloodDonationDAO() {
 		return bloodDonationDAO;
 	}
@@ -4279,46 +4290,55 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			LOG.error(" Exception Raised in setToIdNameVoList ",e);
 		}		
 	}
-	public ResultStatus savingBloodDonateCandidateDetails(String name,String mobileNo,String membershipId,String fromDateStr,String time){
+	public ResultStatus savingBloodDonateCandidateDetails(String name,String mobileNo,String membershipId,String fromDateTimeStr){
 		ResultStatus resultStatus = new ResultStatus();
 		DateUtilService date = new DateUtilService();
-		try{			
-			Date fromDate = null; 			
- 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
- 			if(fromDateStr != null  && time != null  ){
- 				fromDate = sdf.parse(fromDateStr+" "+time); 				
- 			}
+		try{
+			
+			//check validity of membership id
+			String valid = "";
+			if(membershipId != null && !membershipId.trim().isEmpty() && !membershipId.trim().equalsIgnoreCase("0")){
+				List<Object[]> tdpCadreLst = tdpCadreDAO.getCandidateDetailsByMembershipId(membershipId);
+				if(tdpCadreLst != null && tdpCadreLst.size() > 0){
+					
+					Date fromDate = null; 			
+		 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+		 			if(fromDateTimeStr != null){
+		 				fromDateTimeStr = fromDateTimeStr.replace("_", " ");
+		 				fromDate = sdf.parse(fromDateTimeStr); 				
+		 			}
+		 			
+					BloodDonorInfo bloodDonorInfo = new BloodDonorInfo();
+					
+	 					Object[] objects = tdpCadreLst.get(0);
+	 					bloodDonorInfo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+	 	 	 			bloodDonorInfo.setRelativeName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+	 	 	 			bloodDonorInfo.setGender(commonMethodsUtilService.getStringValueForObject(objects[2]));
+	 	 	 			bloodDonorInfo.setDateOfBirth(convertToDateFormet(objects[3].toString()));
+	 	 	 			bloodDonorInfo.setAge(commonMethodsUtilService.getLongValueForObject(objects[4]));
 
- 			BloodDonorInfo bloodDonorInfo = new BloodDonorInfo();
- 			if(membershipId != null && !membershipId.trim().isEmpty() && !membershipId.trim().equalsIgnoreCase("0")){
- 				List<Object[]> tdpCadreLst = tdpCadreDAO.getCandidateDetailsByMembershipId(membershipId);
- 				
- 				if(tdpCadreLst != null && tdpCadreLst.size() > 0){
- 					Object[] objects = tdpCadreLst.get(0);
- 					bloodDonorInfo.setTdpCadreId(commonMethodsUtilService.getLongValueForObject(objects[0]));
- 	 	 			bloodDonorInfo.setRelativeName(commonMethodsUtilService.getStringValueForObject(objects[1]));
- 	 	 			bloodDonorInfo.setGender(commonMethodsUtilService.getStringValueForObject(objects[2]));
- 	 	 			bloodDonorInfo.setDateOfBirth(convertToDateFormet(objects[3].toString()));
- 	 	 			bloodDonorInfo.setAge(commonMethodsUtilService.getLongValueForObject(objects[4]));
- 				}
- 			}
- 			bloodDonorInfo.setDonorName(name);
-			bloodDonorInfo.setMobileNo(mobileNo);
- 			bloodDonorInfo.setDonationTime(fromDate);
- 			bloodDonorInfo.setInsertedTime(date.getCurrentDateAndTime());
- 			bloodDonorInfo.setInsertedBy(1l);
-			bloodDonorInfo.setUpdatedTime(date.getCurrentDateAndTime());
-			bloodDonorInfo.setUpdatedBy(1l);
- 			bloodDonorInfo.setRegisteredSource("app");
- 			bloodDonorInfo.setIsDeleted("N");
- 			bloodDonorInfoDAO.save(bloodDonorInfo);
- 			
- 			resultStatus.setResultCode(0);
-			resultStatus.setMessage("success");
+	 	 	 			bloodDonorInfo.setDonorName(name);
+	 	 				bloodDonorInfo.setMobileNo(mobileNo);
+	 	 	 			bloodDonorInfo.setDonationTime(fromDate);
+	 	 	 			bloodDonorInfo.setInsertedTime(date.getCurrentDateAndTime());
+	 	 	 			bloodDonorInfo.setInsertedBy(1l);
+	 	 				bloodDonorInfo.setUpdatedTime(date.getCurrentDateAndTime());
+	 	 				bloodDonorInfo.setUpdatedBy(1l);
+	 	 	 			bloodDonorInfo.setRegisteredSource("app");
+	 	 	 			bloodDonorInfo.setIsDeleted("N");
+	 	 	 			bloodDonorInfoDAO.save(bloodDonorInfo);
+	 	 	 			
+	 	 	 			resultStatus.setMessage("Registration Successfull.");
+				}else{
+					resultStatus.setMessage("Please Enter Valid Membership Number.");
+				}
+			}else{
+				resultStatus.setMessage("Please Enter Valid Membership Number.");
+			}
+			
 		}catch (Exception e) {
-			resultStatus.setResultCode(1);
-			resultStatus.setMessage("failure");
-			LOG.error(" Exception Raised in savingcandidateDetails ",e);
+			resultStatus.setMessage("Something Went Wrong Please Try Again.");
+			LOG.error("Exception Raised in savingcandidateDetails ",e);
 		}	
 		return  resultStatus;
 	}

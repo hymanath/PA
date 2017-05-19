@@ -48,8 +48,15 @@ public class UserEventDetailsVO implements Serializable{
 	private String errorDesc;
 	private String uniqueKey;
 	private String isInviteeExist;
+	private String acceptedEnrollmentYear;
 	
 	
+	public String getAcceptedEnrollmentYear() {
+		return acceptedEnrollmentYear;
+	}
+	public void setAcceptedEnrollmentYear(String acceptedEnrollmentYear) {
+		this.acceptedEnrollmentYear = acceptedEnrollmentYear;
+	}
 	public String getIsInviteeExist() {
 		return isInviteeExist;
 	}
