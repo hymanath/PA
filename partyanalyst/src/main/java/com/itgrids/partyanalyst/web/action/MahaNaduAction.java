@@ -1059,7 +1059,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		try {
 			jObj = new JSONObject(getTask());		
 			String type = jObj.getString("type");
-			idAndNameVOList = mahaNaduService.getAllBloodDonateRegiCandidateDetails(type);
+			String attendedType = jObj.getString("attendedType");
+			idAndNameVOList = mahaNaduService.getAllBloodDonateRegiCandidateDetails(type,attendedType);
 		} catch (Exception e) {
 			LOG.error(" exception occured in getAllBloodDonateRegiCandidateDetails() in mahanaduAction class.",e);
 		}
