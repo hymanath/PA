@@ -14,7 +14,9 @@ $(document).on("click",".switch-btn li",function(){
 	$('#committeeTypeDivId').hide();
 	$('#committeeLevelDivId').hide();
 	$("#errorMessegeId").html('');
-	  $("#constituencyId").html('');
+	$("#constituencyId").html('');
+	$("#mandalId").html('');
+	$("#panchayatDivId").html('');
 	}
 	
 });
