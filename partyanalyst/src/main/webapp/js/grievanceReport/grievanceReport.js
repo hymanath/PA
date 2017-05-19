@@ -790,6 +790,9 @@ function onLoadInitialisations(){
 		});
 	});
 	$(document).on("click",".panchayatDataCls",function(){
+		
+		$(this).closest('tr').next('tr').find(".accordian-body").addClass("in");
+		$(this).closest('tr').next('tr').find(".accordian-body").removeAttr("style");
 		var signValue = $(this).find('i').hasClass("glyphicon-minus-sign");
 		
 		if(signValue){
@@ -827,21 +830,40 @@ function onLoadInitialisations(){
 		});
 	});
 	$(document).on("click",".bellowLvlCls",function(){
-		var type = $(this).attr("attr_type");
-		
-		$("#grievanceDtlsModalId").modal("show");
-		$("#removeClassModal").addClass("closeSecondModal")
-		$("#totalAlertDistricTableId").html('');     
-		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
-		var deptId=$("#selecDepartmentId").val();
-		var sourceId=$("#selectMediaId").val();
-		var locationId = $(this).attr("attr_location_id");
-		var statusId = $(this).attr("attr_status_id"); 
-		var areaType = $(this).attr("attr_area_type"); 
-		var groupType = $(this).attr("attr_group_type"); 
-		var status = $(this).attr("attr_status"); 
-		if(type != null && type=="other"){
-				var jobj = {
+			var type = $(this).attr("attr_type");
+			$("#grievanceDtlsModalId").modal("show");
+			 $("#removeClassModal").addClass("closeSecondModal")
+			$("#totalAlertDistricTableId").html('');     
+			$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
+			var deptId=$("#selecDepartmentId").val();
+			var sourceId=$("#selectMediaId").val();
+			var locationId = $(this).attr("attr_location_id");
+			var statusId = $(this).attr("attr_status_id"); 
+			var areaType = $(this).attr("attr_area_type"); 
+			var groupType = $(this).attr("attr_group_type"); 
+			var status = $(this).attr("attr_status"); 
+			if(type != null && type=="other"){
+					var jobj = {
+					  fromDate: callCenterUserFDate,                          
+					  toDateStr:callCenterUserTDate, 
+					  deptId:deptId,
+					  sourceId:sourceId, 
+					  stateId:1,
+					  LocationId:locationId,
+					  statusId:statusId,
+					  areaType:areaType,
+					  groupType:groupType   
+					}   
+					$.ajax({    
+					  type : "POST",
+					  url  : "getGrievanceReportDtlsForBellowLocationAction.action",  
+					  dataType: 'json',       
+					  data: {task:JSON.stringify(jobj)},        
+					}).done(function(result){
+						buildAlertStatusWise(result,status);  
+				 });	
+			}else{
+				 var jobj = {
 				  fromDate: callCenterUserFDate,                          
 				  toDateStr:callCenterUserTDate, 
 				  deptId:deptId,
@@ -850,38 +872,18 @@ function onLoadInitialisations(){
 				  LocationId:locationId,
 				  statusId:statusId,
 				  areaType:areaType,
-				  groupType:groupType   
+				  groupType:groupType ,
+				  type:type			  
 				}   
 				$.ajax({    
 				  type : "POST",
-				  url  : "getGrievanceReportDtlsForBellowLocationAction.action",  
+				  url  : "getLocationWiseFeebbackAlertAction.action",  
 				  dataType: 'json',       
 				  data: {task:JSON.stringify(jobj)},        
 				}).done(function(result){
 					buildAlertStatusWise(result,status);  
-			 });	
-		}else{
-			 var jobj = {
-			  fromDate: callCenterUserFDate,                          
-			  toDateStr:callCenterUserTDate, 
-			  deptId:deptId,
-			  sourceId:sourceId, 
-			  stateId:1,
-			  LocationId:locationId,
-			  statusId:statusId,
-			  areaType:areaType,
-			  groupType:groupType ,
-              type:type			  
-			}   
-			$.ajax({    
-			  type : "POST",
-			  url  : "getLocationWiseFeebbackAlertAction.action",  
-			  dataType: 'json',       
-			  data: {task:JSON.stringify(jobj)},        
-			}).done(function(result){
-				buildAlertStatusWise(result,status);  
-			});
-		}
+				});
+			} 
 		
 	});
 	$(document).on("click","#statusId",function(){
@@ -1037,8 +1039,8 @@ function buildGrievanceReportForBellowLocation(result,locationId,locationName,gr
 					str+='<tr>';
 					str+='<td>'+result[i].name+'</td>'; 
 				}else{
-					str+='<tr data-toggle="collapse" data-target="#demo'+i+'" class="accordion-toggle">';
-					str+='<td class="panchayatDataCls" attr_position="'+i+'" attr_location_id="'+result[i].id+'" attr_group_type="panchayat"><i class="glyphicon glyphicon-plus-sign"></i> '+result[i].name+'</td>'; 
+					str+='<tr >';
+					str+='<span data-toggle="collapse" data-target="#demo'+i+'" class="accordion-toggle"><td class="panchayatDataCls" attr_position="'+i+'" attr_location_id="'+result[i].id+'" attr_group_type="panchayat"><i class="glyphicon glyphicon-plus-sign"></i> '+result[i].name+'</td></span>'; 
 				}
 				if(result[i].name == "OTHER"){
 					str+='<td class="bellowLvlCls" attr_type="other" attr_area_type="tehsil" attr_group_type="district" attr_location_id="'+locationId+'" attr_status_id="0" attr_status="All Status"><a >'+result[i].totalAlertCnt+'</a></td>';  
