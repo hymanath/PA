@@ -1206,7 +1206,19 @@ function exportToExcel(tableId)
 function buildAllBloodDonateRegiCandidateDetails(result){
 	var str ='';
 	str +='<h4 style="text-align:center;margin-bottom: 20px">  Interested People for Blood Donation <img title="Here  we are showing  not blood donated people, who are registered through Public Blood Bank App.  " src="img/info.png" height="15px/"> <a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothReport\')}"> Export Excel</a></h4>';
-	
+	str+='<div class="col-md-3" style="margin-bottom: 10px;">';
+		str+='<div class="col-xs-12">';
+			str+='<label class="checkbox-inline" style="margin-left: 700px;margin-bottom:-22px;">';
+				str+='<input type="checkbox" id="attendedCheckId">Attended&nbsp;&nbsp;';
+			str+='</label>';
+		str+='</div>';				
+		str+='<select id="donatedMembersId" >';
+			str+='<option value="0">Select members</option>';
+			str+='<option value="all">All members</option>';
+			str+='<option value="yes">Donated members</option>';
+			str+='<option value="no">Not donated members</option>';
+	   str+='</select>';
+	str+='</div>';
 	str +='<table class="table table-bordered m_top20" style="" id="rangeWiseExportBoothReport">';
         str +='<thead>';
             str +='<th> DONAR NAME  </th>';
@@ -1759,6 +1771,24 @@ $( document ).on("click",".cadreCls",function(){
 			$("#uploadFlDivId").hide();
 			$("#submitBtnId").hide();
 		}
+});
+$(document).on("change","#donatedMembersId",function(){
+	$("#rangeWiseExportBoothReport").html("");
+	var type = $(this).val();
+	jObj = {
+		type:type
+	}
+		$.ajax({
+		  type:'GET',
+		  url: 'getAllBloodDonateRegiCandidateDetailsAction.action',
+		  data : {task:JSON.stringify(jObj)} ,
+		}).done(function(result){
+			if(result != null && result.length > 0){
+				buildAllBloodDonateRegiCandidateDetails(result);
+			}else{
+				$("#interestedPeopleModalBody").html("No Data Available.");
+			}
+		});
 });
 </script>
 <script>
