@@ -3846,7 +3846,7 @@ public String getAlertSourceWiseAlert(){
 			LOG.error("Exception occured in getBellowDistrictOfficerAlertsDtls() of alertManagementSystemAction",e);
 		}
 		return Action.SUCCESS;
- }
+	}
 	public String officerWiseAlertReport(){
 		try{
 			session = request.getSession();
