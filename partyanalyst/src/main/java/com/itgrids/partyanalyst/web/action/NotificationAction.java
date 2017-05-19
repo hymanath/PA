@@ -110,11 +110,11 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
-			String notifctionType=jObj.getString("notificationTypeId");
+			Long notifctionTypeId=jObj.getLong("notificationTypeId");
 			String notificatonTxt=jObj.getString("notificationText");
 			
 			NotificationDeviceVO notifyVO = new NotificationDeviceVO();
-			notifyVO.setRegisteredId(notifctionType);
+			notifyVO.setNotificationTypeId(notifctionTypeId);
 			notifyVO.setNotification(notificatonTxt);
 			status=notificationService.pushNotification(notifyVO,regVO.getRegistrationID());
 		}catch(Exception e){
