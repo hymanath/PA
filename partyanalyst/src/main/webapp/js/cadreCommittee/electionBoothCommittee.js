@@ -1711,10 +1711,12 @@ $(document).on("click",".remveMbrCls",function(){
 	
 });	
 
-function getBoothUserDetailsbuild(result){
+function getBoothUserDetailsbuild(result,locationName){
 	$("#userDetailsId").show();
+	$("#locationDivId").html('<center><h4>'+locationName+' Committee Details.</center></h4>');
 	var str = '';
-		  str +='<table class="table table-bordered">';
+	str +='<h4><a class="btn btn-xs btn-mini btn-success pull-right" href="javascript:{exportToExcel(\'rangeWiseExportBoothReport\')}"  style="margin-bottom: 7px;"> Export Excel</a></h4>';
+		  str +='<table class="table table-bordered" id="rangeWiseExportBoothReport">';
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
 					 
@@ -1749,6 +1751,10 @@ function getBoothUserDetailsbuild(result){
 			  str +='</tbody>';
 			  str +='</table>';
 	$("#userDetailsId").html(str);
+	$("#rangeWiseExportBoothReport").dataTable({
+			"iDisplayLength": 20,
+			"aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+		});
 }
 
 function setDefaultImage(img){
@@ -1756,3 +1762,8 @@ function setDefaultImage(img){
     img.src = "images/cadre_images/human.jpg";
     return true;
   }
+function exportToExcel(tableId)
+{
+	tableToExcel(''+tableId+'', 'Booth Committee Details.. ');
+}
+ 

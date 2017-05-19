@@ -16,6 +16,9 @@
     <link href="css/cadreCommitee/style.css" rel="stylesheet">
 	<!----slick.css----->
 	<link rel="stylesheet" type="text/css" href="css/cadreCommitee/slick/slick.css"/>
+	<!-- dataTable.css -->
+	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/>
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -25,6 +28,8 @@
 	<script type="text/javascript" src="js/cadreCommittee/electionBoothCommittee.js"></script>
    	<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 			<link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+	<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 	<style>
 	#publicrepresantative,#mandalaffiliated,#advancedSearchDiv,#committeeDetailsDiv,#searchcadrenewDiv,#committeLocationsDiv,
 	#designationDivId,#step1Id,#step2Id,#step3Id,#cadreDetailsDiv
@@ -149,7 +154,7 @@
 				<!--	<select id="" class="form-control" onchange="(1);"><option value="0">Select Location</option></select>-->
 				<!--	<div id=""></div> -->
 					<div id="mandalDivId"></div>
-					<div id="mandalDivIdErr"></div>
+					<!--<div id="mandalDivIdErr"></div>-->
 			</div>
 		</div> 	
 		<div class="row m_top20">
@@ -157,7 +162,7 @@
 				<div class="form-group col-xs-12 pull-right">
 					<label for="committeeLocationId">SELECT LOCATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
 					<select onchange="populateDefaultValue(1);" class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
-					<div id="committeeLocationIdErr"></div>
+					<!--<div id="committeeLocationIdErr"></div>-->
 				 </div>
 			</div>
 			<div class="col-md-4 col-sm-6 col-xs-6" id="commitTypeId">
@@ -204,11 +209,13 @@
 		<div class="row">	
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
 					<ul class="list-inline">
-						<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getCommitteMembersInfo();" value="VIEW" /></li>
-						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchDiv();" value="ADD" /></li>						
-					</ul>
+						<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getBoothUserDetails();" value="VIEW" /></li>
+						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchDiv();" value="ADD" /></li>
+						</ul>
+						<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
 					
 			</div> 
+			  <div id="locationDivId"></div>
 			<div id="userDetailsId"></div>
 		</div>
 		
@@ -788,7 +795,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 			$("#committeeLocationIdErr").html("Please Select Location");
 			return;
 		}
-		getBoothUserDetails();
+		//getBoothUserDetails();
 		if($("#committeeTypeId").val() == 0){
 			$("#committeeTypeIdErr").html("Please Select Committee Type");
 			return;
@@ -1710,12 +1717,34 @@ function getBoothsByMandal(mandalId){
 	}
 
 function getBoothUserDetails(){
-	var mandalId=$("#panchayatWardByMandal").val();
-	var locationId=$("#committeeLocationId").val();
+	$("#viewDataLoadingImg").show();
+	$("#userDetailsId").html('');
+	$("#locationDivId").html('');
+	var constiName ='${finalStatus}';
+	var selectLocationName = constiName+" Constituency";
+	var mandalId = $("#panchayatWardByMandal").val();
+	var boothId = $("#committeeLocationId").val();
+	var mandalName = $("#panchayatWardByMandal option:selected").text();
+	var boothName = $("#committeeLocationId option:selected").text();
+	
+	  if(boothId !=0 && boothId>0)
+		{
+			boothId = boothId;
+			mandalId = 0;
+			selectLocationName = boothName;
+		}
+		else if(mandalId !=0 && mandalId>0)
+		{
+			mandalId = mandalId.substr(1);
+			boothId = 0;
+			selectLocationName = mandalName;
+		}
+		
+	
 	var jsObj={
 		constituencyId:globalLocationId,
-		mandalId:0,
-		boothId:0		
+		mandalId:mandalId,
+		boothId:boothId		
 	}
 	
 	$.ajax({
@@ -1724,13 +1753,27 @@ function getBoothUserDetails(){
 	url:"getBoothUserDetailsAction.action",
 	data:{task:JSON.stringify(jsObj)}
 	}).done(function(result){
+		$("#viewDataLoadingImg").hide();
 			if(result != null && result != ''){
-				getBoothUserDetailsbuild(result);
+			  getBoothUserDetailsbuild(result,selectLocationName);
 			}else{
 				$("#userDetailsId").html(' <center> No Data available... </center>');
 			}
 		});
 	}
-	</script>
+</script>
+<script>
+var tableToExcel = (function() {
+   var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+	return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+</script>
   </body>
 </html>
