@@ -5347,7 +5347,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		    	          " left join UA.localElectionBody LEB " +
 		    	          " left join UA.panchayat P " +
 		 				 " where model.alertId =:alertId  " );
-		 /*if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
+		if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_STATE_LEVEL_ID)
 			 queryStr.append(" and UA.stateId in (:levelValues)");
 	   	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_ZONE_LEVEL_ID)
 	   	    	queryStr.append(" and UA.zoneId in (:levelValues)");
@@ -5366,7 +5366,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	   	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_MUNICIPALITY_LEVEL_ID)
 	   	    	queryStr.append(" and UA.localElectionBodyId in (:levelValues)");
 	   	    else if(levelId != null && levelValues != null && !levelValues.isEmpty() && levelId.longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
-	   	    	queryStr.append(" and UA.panchayatId in (:levelValues)");*/
+	   	    	queryStr.append(" and UA.panchayatId in (:levelValues)");
 		 if(deptsList != null && deptsList.size()>0){
 			 queryStr.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:deptsList)");
 		 }
@@ -5378,9 +5378,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 				 		 " and model.isDeleted = 'N' ");
 		 Query query = getSession().createQuery(queryStr.toString());
 		 query.setParameter("alertId", alertId);
-		 /*if(levelId != null && levelValues != null && levelValues.size()>0){
+		 if(levelId != null && levelValues != null && levelValues.size()>0){
 	    	 query.setParameterList("levelValues", levelValues);
-	     }*/
+	     }
 		 
 		 if(govtScopeIds != null && govtScopeIds.size() >0){
 			 query.setParameterList("govtScopeIds", govtScopeIds);
