@@ -9,6 +9,14 @@ $(document).on("click",".switch-btn li",function(){
 	var stateId = $(this).attr("attr_type");
 	globalstateId=stateId;
 	getDistrictsForStates(globalstateId);
+	
+	if(stateId =='36' || stateId =='1'){
+	$('#committeeTypeDivId').hide();
+	$('#committeeLevelDivId').hide();
+	$("#errorMessegeId").html('');
+	  $("#constituencyId").html('');
+	}
+	
 });
 
 function getDistrictsForStates(globalstateId){
@@ -57,6 +65,7 @@ $(document).on('change','#leaderTypeId',function(){
 		getCommitteeTypeDetails();
        $('#committeeTypeDivId').show();
 		$('#committeeLevelDivId').show();
+		$('#leadersDetailsDiv').hide();
 	 }else if(leadrId == 2){
 		getCommitteeRoles();
 		getCommitteeLevelDetails();
@@ -71,6 +80,7 @@ $(document).on('change','#leaderTypeId',function(){
 		$('#committeeLevelDivId').hide();
 		$("#designationId").html('');
 		$("#designationId").append('<option value="0"> All </option>');
+		$('#leadersDetailsDiv').hide();
 		}
 });
 	  
@@ -128,7 +138,6 @@ function getLeadersDetasils(searchType){
 	var mandalIds = $('#mandalId').val();
 	var constituencyIds = $('#constituencyId').val();
 	var districtIds = $('#districtId').val();
-		
 	var committeeLevelIdsArr = $('#committeeLevelId').val();
 	var committeeTypeIdsArr = $('#committeeTypeId').val();
 	var enrollmentIdsArr = $('#enrollmentId').val();
@@ -139,20 +148,21 @@ function getLeadersDetasils(searchType){
 	if(committeeTypeIdsArr == null )
 		committeeTypeIdsArr=[];	
 	
-	  errMsg="";	
+	 var errMsg="";	
+	 
+	 if(districtIds == null || districtIds.length==0){
+		errMsg=errMsg+"Please select atleast one district.<br/>";
+	} 
+	
 	if(enrollmentIdsArr == null || enrollmentIdsArr.length==0){
 		errMsg=errMsg+"Please select atleast one enrollment year . <br/>";
-	}
-	if(errMsg.length>0){
-		$("#errorMessegeId").html(errMsg);
-	}else{
-		$("#errorMessegeId").html('');
 	}
 	
 	if(designationIdArr == null || designationIdArr.length==0){
 		errMsg=errMsg+"Please select atleast one designation. <br/>";
 	}	  
-	 if(representativeTypeId == 2){	
+	
+	 if(representativeTypeId == 2 || representativeTypeId == 0){	
 		if(pageType == 'District'){	 
 			if(districtIds == null || districtIds==0){
 				errMsg=errMsg+"Please select atleast one district. <br/>";
@@ -178,6 +188,7 @@ function getLeadersDetasils(searchType){
 	}else{
 		$("#errorMessegeId").html('');
 	}
+	
 	$('#leadersDetailsDiv').show();
 	
 	if(pageType == 'Constituency'){
