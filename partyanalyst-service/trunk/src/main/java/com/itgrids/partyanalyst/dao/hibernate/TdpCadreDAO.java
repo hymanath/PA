@@ -6937,6 +6937,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 							"");
 		if(enrollmentId != null && enrollmentId.longValue()>0L)
 			queryString.append("   and model1.isDeleted='N' and model1.enrollmentYearId = :enrollmentId ");
+			queryString.append(" GROUP BY model1.tdpCadreId ");
 			Query query=getSession().createQuery(queryString.toString());
 			
 			query.setParameter("memberShipNo", memberShipNo);
