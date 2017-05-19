@@ -3172,4 +3172,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;			
 	}
+	public String getStateLevelAlertDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDate=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			Long stateId=jObj.getLong("stateId");
+			
+			alertOverviewVO = alertService.getStateLevelAlertDetails(fromDate,toDate,stateId,deptId,sourceId);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getLocationWiseFeebbackAlert Method",e);
+		}
+		return Action.SUCCESS;
+	}
 }
