@@ -52,6 +52,7 @@ public class Event implements java.io.Serializable{
 	private Date eventEndDate;
 	
 	private String isVisible;
+	private String attendanceEnrolmentYear;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -231,6 +232,14 @@ public class Event implements java.io.Serializable{
 	}
 	public void setEventEndDate(Date eventEndDate) {
 		this.eventEndDate = eventEndDate;
+	}
+	
+	@Column(name="attendance_enrolment_year")
+	public String getAttendanceEnrolmentYear() {
+		return attendanceEnrolmentYear;
+	}
+	public void setAttendanceEnrolmentYear(String attendanceEnrolmentYear) {
+		this.attendanceEnrolmentYear = attendanceEnrolmentYear;
 	}
 	
 	

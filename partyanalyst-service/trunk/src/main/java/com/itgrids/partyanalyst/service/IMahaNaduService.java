@@ -57,7 +57,7 @@ public interface IMahaNaduService {
 	 
 	 public ResultStatus insertDataintoEventInfo1(Date startDate,Date endDate,Long parentEventId,List<Long> subEventIds);
 	 public List<IdNameVO> getSubEventsOfNewEvent(Long eventId);
-	 public ResultStatus savingBloodDonateCandidateDetails(String name,String mobileNo,String memberShipId,String fromDateStr,String time);
+	 public ResultStatus savingBloodDonateCandidateDetails(String name,String mobileNo,String memberShipId,String fromDateTimeStr);
 	 public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(String type,String attendedType);
 }
 
