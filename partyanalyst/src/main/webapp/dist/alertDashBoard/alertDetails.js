@@ -1540,7 +1540,10 @@ function alertComments(result)
 	}
 
 	setTimeout(function(){
-		if(globalTdpCadreId != globalAssignedCadreId){
+		 if(globalTdpCadreId == "" || globalTdpCadreId == null){
+			;//alert("same");
+		}
+		else if(globalTdpCadreId != globalAssignedCadreId){
 			;//alert("not same");
 			$("#statusId").prop('disabled', true);
 			$("#commentsId").prop('disabled', true);
@@ -1551,9 +1554,6 @@ function alertComments(result)
 			var select = new Dropkick("#statusId");
 				select.refresh();
 			$("#assignedCadreId").prop('disabled', true).trigger("chosen:updated");
-		}
-		else{
-			;//alert("same");
 		}
 		}, 3000);
 	}
