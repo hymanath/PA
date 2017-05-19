@@ -4163,87 +4163,6 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 		}
 		return null;
 	}*/  
-	
-	
-	/* Extra Code Santosh */
-	/*public List<AlertVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId,Long editionId,String filterType,List<Long> districtIds,List<Long> alertStatusIds){
-		List<AlertVO> finalResultList = new ArrayList<AlertVO>(0);
-		try{
-			List<AlertVO> resultList = getRequiredData(fromDateStr,toDateStr,stateId,scopeIdList,activityMemberId,group,alertTypeId,editionId,filterType,districtIds);
-			    finalResultList.addAll(resultList);
-			if(filterType != null && filterType.equalsIgnoreCase("District") && districtIds.size() ==0l){
-				List<AlertVO> stateDataList = getRequiredData(fromDateStr,toDateStr,stateId,scopeIdList,activityMemberId,group,alertTypeId,editionId,"State",districtIds,"State");
-				setResultToFinalList(stateDataList,finalResultList,"State Level");
-			}else if(filterType != null && filterType.equalsIgnoreCase("Constituency")){
-				List<Long> scopeIds = new ArrayList<Long>();
-				scopeIds.add(2l);
-				scopeIds.add(8l);
-				List<AlertVO> districtDataList = getRequiredData(fromDateStr,toDateStr,stateId,scopeIds,activityMemberId,group,alertTypeId,editionId,"District",districtIds,"District");
-				setResultToFinalList(districtDataList,finalResultList,"District/GMC CORP Impact Level");
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-			LOG.error("Error occured getTotalAlertGroupByLocationThenStatus() method of AlertService{}");	
-		}
-		return finalResultList;
-	}
-	public void setResultToFinalList(List<AlertVO> list,List<AlertVO> finalResultList,String level){
-		try{
-			if(list != null && list.size() > 0){
-				AlertVO VO = new AlertVO();
-				boolean flag = true;
-				for(AlertVO locationVO:list){
-					if(flag){
-						VO.setStatusId(0l);
-						VO.setStatus(level);
-						VO.setCount(0l);
-						if(locationVO != null && locationVO.getSubList1().size() > 0){
-							for(AlertVO statusVO:locationVO.getSubList1()){
-								AlertVO sttuVO = new AlertVO();
-								sttuVO.setCategoryId(statusVO.getCategoryId());
-								sttuVO.setCategory(statusVO.getCategory());
-								if(VO.getSubList1() == null){
-									VO.setSubList1(new ArrayList<AlertVO>());
-								}
-								VO.getSubList1().add(sttuVO);
-								
-							}
-						}
-					}
-					VO.setCount(VO.getCount()+locationVO.getCount());
-					VO.getDeptIdList().add(locationVO.getStatusId());
-					if(VO.getSubList1() != null && VO.getSubList1().size() > 0){
-						for(AlertVO statusVO:VO.getSubList1()){
-							AlertVO matchVO = getStatusMatchVO(locationVO.getSubList1(),statusVO.getCategoryId());
-							 if(matchVO != null){
-								 statusVO.setCategoryCount(statusVO.getCategoryCount()+matchVO.getCategoryCount());
-							 }
-						}
-					}
-					flag = false;
-				}
-				finalResultList.add(VO);
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-			LOG.error("Error occured setResultToFinalList() method of AlertService{}");	
-		}
-	}
-	public AlertVO getStatusMatchVO(List<AlertVO> resultList,Long statusId){
-		try{
-			if(resultList == null || resultList.size() == 0)
-				return null;
-			for(AlertVO vo:resultList){
-				if(vo.getCategoryId().equals(statusId)){
-					return vo;
-				}
-			}
-		}catch(Exception e){
-			e.printStackTrace();
-			LOG.error("Error occured getStatusMatchVO() method of AlertService{}");	
-		}
-		return null;
-	}*/
 	public List<AlertOverviewVO> getTotalAlertGroupByLocationThenStatus(String fromDateStr, String toDateStr, Long stateId,List<Long> scopeIdList, Long activityMemberId, String group,Long alertTypeId,Long editionId,String filterType,Long locationValue,List<Long> alertStatusIds,String sortingType,Long disctrictId){
 		LOG.info("Entered in getTotalAlertGroupByLocationThenStatus() method of AlertService{}");
 		try{  
@@ -9395,7 +9314,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
     			}
     		}
     	}catch(Exception e){
-    		LOG.error("Error occured at getStatusMatchVO() in CoreDashboardMainService ",e);	
+    		LOG.error("Error occured at getAlertStatusMatchVO() in CoreDashboardMainService ",e);	
     	}
     	return null;
     }
