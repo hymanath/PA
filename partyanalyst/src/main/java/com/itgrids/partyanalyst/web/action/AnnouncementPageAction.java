@@ -280,7 +280,19 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 		}
 		return Action.SUCCESS;
 		
+	} 
+	public String getBoothUserDetails(){
+		try{
+			jObj=new JSONObject(getTask());
+			session = request.getSession();
+			Long constituencyId=jObj.getLong("constituencyId");
+			Long mandalId=jObj.getLong("mandalId");
+			Long boothId=jObj.getLong("boothId");
+			statesList = announcementService.getBoothUserDetails(constituencyId, mandalId, boothId);
+		}catch(Exception e){
+			LOG.error("Exception rised in getpartyLeaderDetails",e);
+		}
+		return Action.SUCCESS;
 	}
-	
 	
 }
