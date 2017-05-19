@@ -1196,11 +1196,12 @@ function clearFields(){
 		  });
 $(document).on("click",".interestedPeopleId",function(){
 	$("#interestedmodalId").modal("show");
-	getAllBloodDonateRegiCandidateDetails();
+	getAllBloodDonateRegiCandidate();
 });
-function getAllBloodDonateRegiCandidateDetails(){
+function getAllBloodDonateRegiCandidate(){
 	jObj = {
-		type:"no"
+		type:"no",
+		attendedType:""
 	}
 		$.ajax({
 		  type:'GET',
@@ -1776,14 +1777,14 @@ $( document ).on("click",".cadreCls",function(){
 		}
 });
 $(document).on("change","#donatedMembersId",function(){
-	getAllBloodDonateRegiCandidateDetails("all");
+	var type = $("#donatedMembersId").val();
+	getAllBloodDonateRegiCandidateDetails(type);
 });
-function getAllBloodDonateRegiCandidateDetails(attendedType){
+function getAllBloodDonateRegiCandidateDetails(type){
 	$("#rangeWiseExportBoothReport").html("");
-	var type = $(this).val();
 	jObj = {
 		type:type,
-		attendedType:attendedType
+		attendedType:""
 	}
 		$.ajax({
 		  type:'GET',
@@ -1800,9 +1801,10 @@ function getAllBloodDonateRegiCandidateDetails(attendedType){
 $(document).on("click","#attendedCheckId",function(){
   if($(this).is(":checked"))
   {
-   getAllBloodDonateRegiCandidateDetails("attended");
+   getAllBloodDonateRegiCandidateDetails("");
   }else{
-    getAllBloodDonateRegiCandidateDetails("all");
+	  var type =$("#donatedMembersId").val();
+    getAllBloodDonateRegiCandidateDetails(type);
   }
 });
 </script>
