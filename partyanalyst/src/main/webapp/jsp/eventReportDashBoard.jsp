@@ -1355,7 +1355,8 @@ $('.totalAttendedRadioBtnCls').click(function() {
    var checked = $(this).attr('checked', true);
    if(checked){ 
     sliderFunctionForCaste(gblmaxTotalAttended);
-    buildCasteGraphBySlide(500);
+	//buildCasteGraphBySlide(500);
+    buildCasteGraphBySlide(gblmaxTotalAttended); /* srishailam default attendance chenged from 500 */
 	$("#casteWiseTableId").html(' ');
     $("#casteWiseExportToExcelTableId").html(' ');
 	buildCasteWiseRslt(gblCasteWiseRslt,"",500,"totalAttended");
