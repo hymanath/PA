@@ -8070,7 +8070,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
 				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
 					if(alertType != null && alertType.equalsIgnoreCase("alert")){
-					alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,socialMediaTypeIds,null);
+					alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,socialMediaTypeIds,null,null);
 					}else if(alertType != null && alertType.equalsIgnoreCase("subTask")){
 					 alertList = govtAlertSubTaskDAO.getSubTaskAlertCntBasedOnDepartmentLevel(fromDate, toDate, stateId, electronicIdList, printIdList, levelId, levelValues, govtDepartmentId, parentGovtDepartmentScopeId, deptScopeIdList, group, searchType, calCntrIdList, filterParentScopeId, filterScopeValue,socialMediaTypeIds);
 					}
@@ -10088,13 +10088,16 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			LinkedHashMap<Long,Long> levelIdAndAlertCountMap = null;
 			List<AlertCoreDashBoardVO> returnList = new ArrayList<AlertCoreDashBoardVO>();
 			List<Object[]> alertList = null;
+			List<Object[]> alertListForCallCenter = null;
 			List<Object[]> feedbackList = null;
 			List<Object[]> feedbackListForPending = null;
 			List<Object[]> notSatisfiedList = null;
 			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
 				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
 					if(alertType != null && alertType.equalsIgnoreCase("alert")){
-						alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,null,source);
+						alertList = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,null,source,null);
+						//only for call center and social media if source is 0 or null
+						alertListForCallCenter = alertAssignedOfficerNewDAO.getAlertDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,null,source,"pending");
 						//get location wise feedback count
 						feedbackList = alertAssignedOfficerNewDAO.getAlertFeedBackDetailsLocationWiseBasedOnDepartmentLevel(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,group,searchType,calCntrIdList,filterParentScopeId,filterScopeValue,"false",source,"other");
 						//get location wise feedback count for pending
@@ -10107,7 +10110,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 						if(searchType != null && searchType.equalsIgnoreCase("statusWise")){
 							prepareResultForState(alertList,returnList,sortingType,order,alertType,searchType);
 							if(returnList != null && returnList.size() > 0){
-								pushFeedBackDataForState(returnList,alertList,feedbackList,feedbackListForPending);
+								pushFeedBackDataForState(returnList,alertListForCallCenter,feedbackList,feedbackListForPending);
 							}
 							if(returnList != null && returnList.size() > 0){
 								pushReopenDataForState(returnList, notSatisfiedList);
@@ -10153,6 +10156,20 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 						locIdThenLvlIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[1]), levelIdAndAlertCountMap);
 					}
 					levelIdAndAlertCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+			}
+			
+			//for pending
+			Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCountForPending = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+			LinkedHashMap<Long,Long> levelIdAndAlertCountMapForPending = null;
+			if(alertListForCallCenter != null && alertListForCallCenter.size() > 0){   
+				for(Object[] param : alertListForCallCenter){
+					levelIdAndAlertCountMapForPending = locIdThenLvlIdThenAlertCountForPending.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+					if(levelIdAndAlertCountMapForPending == null){
+						levelIdAndAlertCountMapForPending = new LinkedHashMap<Long,Long>();
+						locIdThenLvlIdThenAlertCountForPending.put(commonMethodsUtilService.getLongValueForObject(param[1]), levelIdAndAlertCountMapForPending);
+					}
+					levelIdAndAlertCountMapForPending.put(commonMethodsUtilService.getLongValueForObject(param[3]), commonMethodsUtilService.getLongValueForObject(param[4]));
 				}
 			}
 
@@ -10211,7 +10228,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 				}
 			}
 			if(returnList != null && returnList.size() > 0){
-				pushFeedBackData(returnList, locIdThenLvlIdThenAlertCount,feedbackList,feedbackListForPending);
+				pushFeedBackData(returnList, locIdThenLvlIdThenAlertCountForPending,feedbackList,feedbackListForPending);
 			}
 			if(returnList != null && returnList.size() > 0){
 				pushReopenData(returnList, notSatisfiedList);
@@ -10234,7 +10251,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		}
 		return null;
 	}
-	public void pushFeedBackData(List<AlertCoreDashBoardVO> returnList,Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCount,List<Object[]> feedbackList,List<Object[]> feedbackListForPending){
+	public void pushFeedBackData(List<AlertCoreDashBoardVO> returnList,Map<Long,LinkedHashMap<Long,Long>> locIdThenLvlIdThenAlertCountForPending,List<Object[]> feedbackList,List<Object[]> feedbackListForPending){
 		try{
 			List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getFeedBackStatus();
 			//create map of feedBackId and status map
@@ -10319,7 +10336,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			//first create a map for locationId and closed alrts
 			Map<Long,Long> locationIdAndClosedAlerts = new HashMap<Long,Long>();
 			
-			for(Entry<Long,LinkedHashMap<Long,Long>> entry : locIdThenLvlIdThenAlertCount.entrySet()){
+			for(Entry<Long,LinkedHashMap<Long,Long>> entry : locIdThenLvlIdThenAlertCountForPending.entrySet()){
 				Long closedAlerts = new Long(0L);//completed and closed alerts
 				if(entry.getValue() != null && entry.getValue().get(4L) != null){
 					closedAlerts = closedAlerts + entry.getValue().get(4L);//Completed status
@@ -10387,18 +10404,18 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			e.printStackTrace();
 		}
 	}
-	public void pushFeedBackDataForState(List<AlertCoreDashBoardVO> returnList,List<Object[]> alertList,List<Object[]> feedbackList,List<Object[]> feedbackListForPending){
+	public void pushFeedBackDataForState(List<AlertCoreDashBoardVO> returnList,List<Object[]> alertListForCallCenter,List<Object[]> feedbackList,List<Object[]> feedbackListForPending){
 		try{
-			Map<Long,LinkedHashMap<Long,Long>> lvlIdThenStatusIdThenAlertCount = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
-			LinkedHashMap<Long,Long> statusIdThenAlertCount = null;
-			if(alertList != null && alertList.size() > 0){
-    			for(Object[] param : alertList){
-    				statusIdThenAlertCount = lvlIdThenStatusIdThenAlertCount.get(commonMethodsUtilService.getLongValueForObject(param[3]));
-					if(statusIdThenAlertCount == null){
-						statusIdThenAlertCount = new LinkedHashMap<Long,Long>();
-						lvlIdThenStatusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[3]), statusIdThenAlertCount);
+			Map<Long,LinkedHashMap<Long,Long>> lvlIdThenStatusIdThenAlertCountForPending = new LinkedHashMap<Long,LinkedHashMap<Long,Long>>();
+			LinkedHashMap<Long,Long> statusIdThenAlertCountForPending = null;
+			if(alertListForCallCenter != null && alertListForCallCenter.size() > 0){
+    			for(Object[] param : alertListForCallCenter){
+    				statusIdThenAlertCountForPending = lvlIdThenStatusIdThenAlertCountForPending.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+					if(statusIdThenAlertCountForPending == null){
+						statusIdThenAlertCountForPending = new LinkedHashMap<Long,Long>();
+						lvlIdThenStatusIdThenAlertCountForPending.put(commonMethodsUtilService.getLongValueForObject(param[3]), statusIdThenAlertCountForPending);
 					}
-					statusIdThenAlertCount.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
+					statusIdThenAlertCountForPending.put(commonMethodsUtilService.getLongValueForObject(param[4]), commonMethodsUtilService.getLongValueForObject(param[5]));
 				}
     		}
 			
@@ -10485,7 +10502,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			//first create a map for locationId and closed alrts
 			Map<Long,Long> locationIdAndClosedAlerts = new HashMap<Long,Long>();
 			
-			for(Entry<Long,LinkedHashMap<Long,Long>> entry : lvlIdThenStatusIdThenAlertCount.entrySet()){
+			for(Entry<Long,LinkedHashMap<Long,Long>> entry : lvlIdThenStatusIdThenAlertCountForPending.entrySet()){
 				Long closedAlerts = new Long(0L);//completed and closed alerts
 				if(entry.getValue() != null && entry.getValue().get(4L) != null){
 					closedAlerts = closedAlerts + entry.getValue().get(4L);//Completed status
