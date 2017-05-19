@@ -42,44 +42,43 @@ public class BloodDonorInfoDAO extends GenericDaoHibernate<BloodDonorInfo, Long>
 	return query.list();
    }*/
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getBloodDonorDetails(String dataType,int firstIndex,int maxResult){
-		Query query = null;
+	public List<Object[]> getBloodDonorDetails(String dataType,int firstIndex,int maxResult,String attended){
+		StringBuilder  str = new StringBuilder();
 		if(dataType != null && dataType.equalsIgnoreCase("count")){
-			query = getSession().createQuery(" select " +
+			str.append(" select " +
 					" count( distinct model.bloodDonorInfoId), ''  from BloodDonorInfo model " +
 					" left join model.tdpCadre tdpCadre " +
 					" where model.isDeleted = 'N' and model.registeredSource = 'app' ");
+		}else{
+			if(attended.equalsIgnoreCase("true")){
+				str.append(" select " +
+						" distinct model.bloodDonorInfoId," +
+						" model.donorName,model.mobileNo," +
+						" model.donationTime, " +
+						" model.tdpCadre.memberShipNo " +
+						" from EventAttendee model2,BloodDonorInfo model " +
+						" where ");
+				str.append(" model.tdpCadreId = model2.tdpCadreId  and model2.eventId >= 51l and " );
+			}else{
+				str.append(" select " +
+						" distinct model.bloodDonorInfoId," +
+						" model.donorName,model.mobileNo," +
+						" model.donationTime, " +
+						" tdpCadre.memberShipNo " +
+						" from BloodDonorInfo model " +
+						" left join model.tdpCadre tdpCadre " +
+						" where ");
+				
+			}
+			
+			str.append(" model.isDeleted = 'N' and model.registeredSource = 'app' ");
+			
 		}
-		else{
-			query = getSession().createQuery(" select " +
-					" distinct model.bloodDonorInfoId," +
-					" model.donorName,model.mobileNo," +
-					" model.donationTime, " +
-					" tdpCadre.memberShipNo " +
-					" from BloodDonorInfo model " +
-					" left join model.tdpCadre tdpCadre " +
-					" where model.isDeleted = 'N' and model.registeredSource = 'app' ");
-		}
-		
+		Query query = getSession().createQuery(str.toString());
 		if(maxResult >0){
 			query.setFirstResult(firstIndex);
 			query.setMaxResults(maxResult);
 		}
 		return query.list();
-	 }
-	@SuppressWarnings("unchecked")
-	public List<Object[]>  getEventAteendedDetails()
-	  {
-	    Query query = getSession().createQuery(" select " +
-	          " distinct model.bloodDonorInfoId," +
-	          " model.donorName,model.mobileNo," +
-	          " model.donationTime, " +
-	          " model.tdpCadre.memberShipNo " +
-	          " from BloodDonorInfo model,EventAttendee model2 " +
-	          " where " +
-	          " model.tdpCadreId = model2.tdpCadreId " +
-	          " and model.isDeleted = 'N' " +
-	          " and model.registeredSource = 'app' and model2.eventId >= 51l ");
-	    return query.list();
-	  }
+	}
 }

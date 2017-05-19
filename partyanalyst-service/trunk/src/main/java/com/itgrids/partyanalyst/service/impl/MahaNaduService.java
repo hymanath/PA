@@ -4336,7 +4336,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		List<IdAndNameVO> finalList = new ArrayList<IdAndNameVO>(0);
 		try{
 			
-			List<Object[]> countList = bloodDonorInfoDAO.getBloodDonorDetails("count",0,0);
+			List<Object[]> countList = bloodDonorInfoDAO.getBloodDonorDetails("count",0,0,attendedType);
 			int totalCount =0;
 			if(commonMethodsUtilService.isListOrSetValid(countList)){
 				Object[] obj = countList.get(0);
@@ -4357,7 +4357,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	                if(maxcount<filterCount)
 	                    j = i+maxcount;
 	                
-	                List<Object[]>  tempList  = bloodDonorInfoDAO.getBloodDonorDetails("data",i,j);
+	                List<Object[]>  tempList  = bloodDonorInfoDAO.getBloodDonorDetails("data",i,j,attendedType);
 	                   if(commonMethodsUtilService.isListOrSetValid(tempList)){
 	                	   mainList.addAll(tempList);
 	                   }
@@ -4434,19 +4434,6 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						}
 					}
 				}	
-			}else{
-				List<Object[]> attendedList = bloodDonorInfoDAO.getEventAteendedDetails();
-				if(attendedList != null && attendedList.size() >0){
-					for (Object[] objects : attendedList) {
-						IdAndNameVO vo = new IdAndNameVO();
-						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						vo.setMobileNumber(commonMethodsUtilService.getStringValueForObject(objects[2]));
-						vo.setStartTime(commonMethodsUtilService.getStringValueForObject(objects[3]).substring(0, 16));
-						vo.setMembershipNo(commonMethodsUtilService.getStringValueForObject(objects[4]));
-						//vo.setFlag("no");
-						finalList.add(vo);
-					}
-				}
 			}			
 		}catch (Exception e) {
 			LOG.error(" Exception Raised in getAllBloodDonateRegiCandidateDetails ",e);
