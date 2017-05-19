@@ -743,7 +743,7 @@
 				<select id="donatedMembersId" style="margin-bottom:10px;">
 					<option value="all">All members</option>
 					<option value="yes">Donated Members</option>
-					<option value="no">Not Donated Members</option>
+					<option value="no" selected>Not Donated Members</option>
 				</select>
 			</div>
 		</div>
@@ -1196,12 +1196,12 @@ function clearFields(){
 		  });
 $(document).on("click",".interestedPeopleId",function(){
 	$("#interestedmodalId").modal("show");
-	getAllBloodDonateRegiCandidate();
+	getAllBloodDonateRegiCandidate("false");
 });
-function getAllBloodDonateRegiCandidate(){
+function getAllBloodDonateRegiCandidate(attendedType){
 	jObj = {
 		type:"no",
-		attendedType:""
+		attendedType:attendedType
 	}
 		$.ajax({
 		  type:'GET',
@@ -1777,14 +1777,18 @@ $( document ).on("click",".cadreCls",function(){
 		}
 });
 $(document).on("change","#donatedMembersId",function(){
-	var type = $("#donatedMembersId").val();
-	getAllBloodDonateRegiCandidateDetails(type);
+	if($("#attendedCheckId").is(":checked"))
+  {
+   getAllBloodDonateRegiCandidateDetails("true");
+  }else{
+    getAllBloodDonateRegiCandidateDetails("false");
+  }
 });
-function getAllBloodDonateRegiCandidateDetails(type){
+function getAllBloodDonateRegiCandidateDetails(attendedType){
 	$("#rangeWiseExportBoothReport").html("");
 	jObj = {
-		type:type,
-		attendedType:""
+		type:$("#donatedMembersId").val(),
+		attendedType:attendedType
 	}
 		$.ajax({
 		  type:'GET',
@@ -1801,10 +1805,9 @@ function getAllBloodDonateRegiCandidateDetails(type){
 $(document).on("click","#attendedCheckId",function(){
   if($(this).is(":checked"))
   {
-   getAllBloodDonateRegiCandidateDetails("");
+   getAllBloodDonateRegiCandidateDetails("true");
   }else{
-	  var type =$("#donatedMembersId").val();
-    getAllBloodDonateRegiCandidateDetails(type);
+    getAllBloodDonateRegiCandidateDetails("false");
   }
 });
 </script>
