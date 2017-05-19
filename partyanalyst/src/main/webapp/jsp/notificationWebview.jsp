@@ -69,7 +69,7 @@ function getAllNotificationsByuser(){
 	var jsObj = {};
 	$.ajax({
 			type : 'POST',
-			url : 'getNotificationTypeDetailsAction',
+			url : 'getNotificationTypeDetailsAction.action',
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
@@ -131,9 +131,8 @@ function getNotificationTypeDetailsStats(typeId){
 			}
 			
 			$("#addNotificationTextUpdateId").html(str);
-			$("#addNotificationTextUpdateId").dropkick();
-			var select2 = new Dropkick("#addNotificationTextUpdateId");
-			select2.refresh(); 
+			
+			
 		});
 }
 function addNotification(){
@@ -151,19 +150,24 @@ $("#pushNotificationCodeId,#ntfctnTypeTextSuccessId,#notificationSuccessId,#upda
 		$("#addNotificationTypeTextErrId").html("Please type one notification.");
 		return;
 	}
-	var JSONObject= {"notificationTypeId":notificationTypeId, "notification":notificationText };
+	var JSONObject= {"notificationTypeId":notificationTypeId, "notificationText":notificationText };
 	
 	$.ajax({
 		type : 'POST',
 		url : 'pushNotificationAction.action',
-		contentType: "application/json; charset=utf-8",
 		dataType : 'json',
 		data: {task:JSON.stringify(JSONObject)}
 	}).done(function(result){  
-	if(result=="SUCCESS"){
+	if(result=="Success"){
 		$("#notificationSuccessId").html("Notification Added Successfully");
-		var select = new Dropkick("#ID");
-		select.refresh();
+		$("#notificationTypeId").val(0);
+		$("#notificationTypeId").trigger("chosen:updated");
+		$("#addNotificationTextId").val('');
+		setTimeout(function(){ 
+			$( "#notificationSuccessId" ).fadeOut( "slow" );
+		}, 2000);
+	}else{
+		$("#notificationSuccessId").html("Please Try again...");
 	}
 });
 }
