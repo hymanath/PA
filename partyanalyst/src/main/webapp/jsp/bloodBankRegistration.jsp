@@ -680,8 +680,9 @@
 
 
 //$("#dobId").daterangepicker({singleDatePicker:true});
-$("#dobId").datetimepicker({format:'MM/DD/YYYY'});
-$("#dtfDntnId").datetimepicker({format:'MM/DD/YYYY'});
+$("#dobId").datetimepicker({format:'MM/DD/YYYY',maxDate : 'now'});
+$("#dtfDntnId").datetimepicker({format:'MM/DD/YYYY',maxDate : 'now'});
+
 //$("#dtfDntnId").daterangepicker({singleDatePicker:true});
 $("#dtfDntnId").val(" ");
 $("#dobId").val(" ");
