@@ -4213,7 +4213,10 @@ function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevel
 		levelValues :		 levelValues,
 		subTaskStatusIdList: subStatusIdArr,
 		isMoreThanYrChkd: 	 "false",
-		isLagChkd : "false"
+		isLagChkd : "false",
+		filterSocialMediaIdsArr : [],
+		filterCallCenterArr :[],
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
 		type:'GET',
@@ -4606,6 +4609,7 @@ function buildSubTaskCommetDtls(result){
 }
 
 function getSearchAlertsDtls(alertId){
+	$("#alertIdSearch").val('');
 	var jsObj ={
 		alertId:alertId 
 	}

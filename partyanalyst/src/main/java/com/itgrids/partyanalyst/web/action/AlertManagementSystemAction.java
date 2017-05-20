@@ -3596,42 +3596,42 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						}
 						String isMoreThanYrChkd =jObj.getString("isMoreThanYrChkd");
 						String isLagChkd =jObj.getString("isLagChkd");
+						JSONArray filterSocialMediaIdsArr = jObj.getJSONArray("filterSocialMediaIdsArr");  
+						List<Long> filterSocialMediaIds = new ArrayList<Long>();
+						if(filterSocialMediaIdsArr != null && filterSocialMediaIdsArr.length() > 0){
+							for (int i = 0; i < filterSocialMediaIdsArr.length(); i++){
+								filterSocialMediaIds.add(Long.parseLong(filterSocialMediaIdsArr.getString(i)));        
+							} 
+						}
+						JSONArray filterCallCenterArr = jObj.getJSONArray("filterCallCenterArr");  
+						List<Long> filterCallCenterIdList = new ArrayList<Long>();
+						for (int i = 0; i < filterCallCenterArr.length(); i++){
+							filterCallCenterIdList.add(Long.parseLong(filterCallCenterArr.getString(i)));        
+						}
+						JSONArray socialMediaTypeIdsArr = jObj.getJSONArray("socialMediaTypeIdsArr");  
+						List<Long> socialMediaTypeIds = new ArrayList<Long>();
+						if(socialMediaTypeIdsArr != null && socialMediaTypeIdsArr.length() > 0){
+							for (int i = 0; i < socialMediaTypeIdsArr.length(); i++){
+								socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
+							} 
+						}
 						if(statusIdList.isEmpty() && subTaskStatusIdList.isEmpty()){
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew1(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd);
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertBySubTaskStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds);
 							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 						}
 						if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0 && !subTaskStatusIdList.isEmpty()){
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd);
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds);
 							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 						}
 						if(statusIdList != null && statusIdList.contains(1L) && !statusIdList.isEmpty()){
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd);
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds);
 							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 							statusIdList.remove(1L);
 						}
 						if(statusIdList != null && !statusIdList.contains(1L) && !statusIdList.isEmpty()){
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd);
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds);
 							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 						}
-						/*if(statusIdList.isEmpty() && subTaskStatusIdList.isEmpty()){
-							//if(statusIdList != null && statusIdList.contains(1L) && !statusIdList.isEmpty())
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd);
-							List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
-							if(alertCoreDashBoardVOs != null){
-								list1.addAll(alertCoreDashBoardVOs);
-							}
-							//statusIdList.remove(1L);
-							//if(statusIdList != null && !statusIdList.contains(1L))
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd);
-							List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
-							if(alertCoreDashBoardVOs != null ){
-								list2.addAll(alertCoreDashBoardVOs);
-							}
-							alertCoreDashBoardVOs.clear();
-							alertCoreDashBoardVOs.addAll(list1);
-							alertCoreDashBoardVOs.addAll(list2);
-							alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
-						}*/
 						
 					}catch(Exception e){
 						LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
