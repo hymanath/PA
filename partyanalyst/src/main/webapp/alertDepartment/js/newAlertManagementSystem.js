@@ -2485,7 +2485,7 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 		backdrop: 'static'
 	});
 	$("#alertManagementPopupBody").html(spinner);
-	
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdArr);//srujana
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
