@@ -1744,7 +1744,7 @@ function buildAlertDetails(result,status,alertStatusId){
 						str+='<th  style="text-align:center"> CREATED BY</th>'; 
 						str+='<th  style="text-align:center"> FEEDBACK STATUS  </th>'; 
 						
-						if(alertStatusId !=null && alertStatusId>0 &&  (alertStatusId == 4 || alertStatusId == 12)){
+						if(alertStatusId !=null && alertStatusId>0 &&  ( alertStatusId == 12)){
 							str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
 						}else{
 							str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
@@ -1804,7 +1804,7 @@ function buildAlertDetails(result,status,alertStatusId){
 							}
 						str+='</td>';
 						
-						if(result[i].statusId !=null && result[i].statusId>0 &&  (result[i].statusId == 4 || result[i].statusId == 12)){
+						if(result[i].statusId !=null && result[i].statusId>0 &&  ( result[i].statusId == 12)){
 							str+='<td>';
 								str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
 							str+='</td>';
@@ -1830,6 +1830,8 @@ $(document).on("click",".updateAlertCls",function(){
 	var alertId = $(this).attr("attr_alert_id");
 	var sourceId =$(this).attr("attr_alert__source_id");
 	var statusId =$(this).attr("attr_alert__status_id");
+	$('#reopenCheckboxId').attr('checked', false);
+	$("#reOpenSpanId").hide();
 	getAlertCallerDetails(alertId);
 	$("#hiddenAlertId").val(alertId);
 	$("#hiddenSourceId").val(sourceId);
