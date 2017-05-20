@@ -1814,7 +1814,8 @@ h5[filters-list-title] b
 	transition: opacity .5s linear, transform .7s cubic-bezier(.56, .48, 0, .99);
 }
 .tbtn {
-	background: #555555;
+	background: #4E5D76;
+	height: 39px;
 	color: #FFFFFF!important;
 	height: auto;
 	padding: 10px;
@@ -1834,13 +1835,14 @@ h5[filters-list-title] b
 }
 .linkinner {
 	display: block;
-	height: 36px;
+	height: 39px;
 }
 .linkinner .form-control
 {
-	border-radius:0px;
-	background-color:#555;
-	color:#fff
+	border-radius: 0px;
+    background-color: #4E5D76;
+    color: #fff;
+    border: 0px;
 }
 .border_0
 {
