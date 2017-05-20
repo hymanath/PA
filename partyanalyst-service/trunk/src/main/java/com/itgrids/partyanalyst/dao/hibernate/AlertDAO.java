@@ -6465,11 +6465,11 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     public List<Object[]> getAlertCallerDetails(Long alertId){
     	StringBuilder sb = new StringBuilder();
     	 	sb.append("select distinct model.alertSource.alertSourceId," +
-    	 			" model.alertCaller.callerName," +
-    	 			" model.alertCaller.address," +
-    	 			" model.alertCaller.mobileNo, model.title,model.description , date(model.createdTime)" +
-    	 			" from Alert model " +
-    	 			" where " );
+    	 			" ac.callerName," +
+    	 			" ac.address," +
+    	 			" ac.mobileNo, model.title,model.description , date(model.createdTime)" +
+    	 			" from Alert model left join model.alertCaller ac " +
+    	 			" where  " );
     	 			//"model.isDeleted = 'N' ");
     	 	if(alertId != null && alertId.longValue() >0l)
     	 	{
