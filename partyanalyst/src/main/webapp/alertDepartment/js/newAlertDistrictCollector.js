@@ -5,7 +5,14 @@ var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","Electronic Media":"#8D69C8","Call Center":"#EFC000","Facebook":"#00ABED","Twitter":"#F7776C","Social Media":"#00ABED"};	 
 var globaldepartmentsArrForFilterView=[];
-
+var globalDepartmentIdsArr = [];
+var newspapersGlobalArr = [];
+var channelGlobalArr = [];
+var callCenterGlobalArr = [];
+var globalDepartmentIdArr = globalDepartmentIdsArr;
+var globalNewsPaperIdArr = newspapersGlobalArr;
+var globalChannelIdArr = channelGlobalArr;
+var globalCallCenterArr = callCenterGlobalArr;
 	function getAlertType(){
 		 var alertType = ''; 
 		$('.switch-btn-alertType li').each(function(i, obj){

@@ -839,7 +839,7 @@ function onLoadClicks()
 			actionurl = window.location.pathname; //live
 		}
 		
-		if(actionurl = "alertDistOfficeManagement.action" || "alertDistManagement.action" || "alertUserManagementAction.action")
+		if(actionurl == "alertDistOfficeManagement.action" || actionurl == "alertDistManagement.action" || actionurl == "alertUserManagementAction.action")
 		{
 			$("[filters-list='locLevel']").closest(".row").hide();
 		}
