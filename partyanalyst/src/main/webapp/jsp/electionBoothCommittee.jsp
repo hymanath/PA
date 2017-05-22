@@ -217,6 +217,7 @@
 			</div> 
 			  <div id="locationDivId"></div>
 			<div id="userDetailsId"></div>
+			<!-- <div id ="totStaredNotStartedConstiencyId"></div> -->
 		</div>
 		
 		<div id="printDiv">		
@@ -615,6 +616,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 			}
 		});
 		 
+		 getBoothsByConstituencyIds();
 		});
 		
 	function getCommitteeLocations(){
@@ -1761,6 +1763,49 @@ function getBoothUserDetails(){
 			}
 		});
 	}
+function getBoothsByConstituencyIds(){
+	var jsObj =
+			{
+			constituencyId : globalLocationId	
+			}
+			
+			$.ajax({
+					type : "POST",
+					url : "getBoothsByConstituencyAction.action",
+					data : {task:JSON.stringify(jsObj)} ,
+				}).done(function(result){
+					if(result != null){
+						buildTotalConstituency(result);
+					}else{
+						$("#totStaredNotStartedConstiencyId").html('No Data Available');
+					}
+				});
+		
+}
+
+function buildTotalConstituency(result){
+	var str ='';
+	str +='<table class="table table-bordered" id="totalStartedConstituencyId">';
+	str +='<thead>'
+	str +='<tr>'
+	str +='<th>Total Constituency</th>';
+	str +='<th>Total Started Constituency</th>';
+	str +='<th>Total Not Started Constituency</th>';
+	str +='</tr>';
+	str +='</thead>';
+	str +='<tbody>';
+	str +='<tr>';
+	if(result != null){
+		alert(result.totalCount);
+		str +='<td>'+result.totalCount+'</td>';
+		str +='<td>'+result.total+'</td>';
+		str +='<td>'+result.totNotStartedBothCnt+'</td>';
+		str +='</tr>';
+	}
+	str +='</tbody>';
+	str +='</table>'
+	$("#totStaredNotStartedConstiencyId").html(str);
+}
 </script>
 <script>
 var tableToExcel = (function() {

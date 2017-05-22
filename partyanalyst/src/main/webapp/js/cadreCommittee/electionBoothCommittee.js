@@ -1766,4 +1766,3 @@ function exportToExcel(tableId)
 {
 	tableToExcel(''+tableId+'', 'Booth Committee Details.. ');
 }
- 
