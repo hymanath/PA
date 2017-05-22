@@ -262,4 +262,10 @@ public class EventDAO extends GenericDaoHibernate<Event, Long> implements IEvent
 		}
 		return  (Object[]) query.uniqueResult();
 	}
+	public String getYouTubeUrls(){
+		
+		Query query = getSession().createQuery("select model.youTubeUrl from Event model where eventId=51");
+		
+		return  (String) query.uniqueResult();
+	}
 }
