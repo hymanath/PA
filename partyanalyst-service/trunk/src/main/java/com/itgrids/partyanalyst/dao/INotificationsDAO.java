@@ -13,7 +13,8 @@ public interface INotificationsDAO extends GenericDao<Notifications,Long>{
 	public List<Long> getInactiveNotificationsTypeDetails ();
 	public String isActiveStatusNotification(Long NotificatonsId);
 	
-	public List<Object[]> getNotificationsByTypeId (Long typeId);
+	public List<Object[]> getNotificationsByTypeId (Long typeId,Long userId);
 	public Long getMaxOrderNoBasedOnNotificationType(Long notificationType);
 	public List<Object[]> getAllNotifications();
+	public List<Object[]> getAllNotificationsbyUser(Long userId);
 }
