@@ -1741,7 +1741,7 @@ function getBoothUserDetailsbuild(result,locationName){
 								str +='<td>'+result[i].panchayatName+'</td>';
 								str +='<td>'+result[i].boothName+'</td>';
 								str +='<td><span title="http://www.mytdp.com/cadre_images/'+result[i].url+'"></span>'+'Booth No - '+result[i].boothNumber+'</td>';
-				str +='<td><img src="http://www.mytdp.com/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+				str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
 								str +='<td>'+result[i].firstName+'</td>';	
 								str +='<td>'+result[i].mobileNumber+'</td>';	
 								str +='<td>'+result[i].memberShipNo+'</td>';
