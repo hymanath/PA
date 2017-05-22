@@ -4900,4 +4900,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return vo;
 	 }
+	
+	 public String getYouTubeUrls(){
+		  String url = null;
+		  try{			  
+			   url = mahaNaduService.getYouTubeUrls();	
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getYouTubeUrls()  method in WebServiceHandlerService");
+		  }
+		  return url;
+	  }
 }

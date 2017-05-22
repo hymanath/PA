@@ -59,5 +59,6 @@ public interface IMahaNaduService {
 	 public List<IdNameVO> getSubEventsOfNewEvent(Long eventId);
 	 public ResultStatus savingBloodDonateCandidateDetails(String name,String mobileNo,String memberShipId,String fromDateTimeStr);
 	 public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(String type,String attendedType);
+	 public String getYouTubeUrls();
 }
 

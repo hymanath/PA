@@ -4460,4 +4460,15 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 		return finalList;		
 	}
+	public String getYouTubeUrls(){
+		  String url = null;
+		  try{			  
+			   url = eventDAO.getYouTubeUrls();	
+		  }catch(Exception e){
+			  e.printStackTrace();
+			  LOG.error("exception occured in  the getYouTubeUrls()  method in WebServiceHandlerService");
+		  }
+		  return url;
+	  }  		
+	
 }

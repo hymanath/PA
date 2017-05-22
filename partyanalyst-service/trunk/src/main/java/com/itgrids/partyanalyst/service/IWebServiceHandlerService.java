@@ -218,4 +218,5 @@ public interface IWebServiceHandlerService {
     public List<AlertCoreDashBoardVO> getDeptWiseStatusWiseAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long statusId);
     public List<GrievanceAlertVO> getAllGrievancesForCaller(String mobileNo);
     public NotificationDeviceVO getAccommodationDetails(String notificationId,Long constId);
+    public String getYouTubeUrls();
 }

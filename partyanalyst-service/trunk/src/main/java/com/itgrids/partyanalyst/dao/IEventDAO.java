@@ -36,4 +36,6 @@ public interface IEventDAO extends GenericDao<Event, Long> {
 	
 	public List<Object[]> getSubEventsDetailsByParentEventId(Long parentEventId);
 	public Object[] getBetweenDatesOfEvent(Long eventId);
+	public String getYouTubeUrls();
+	
 }

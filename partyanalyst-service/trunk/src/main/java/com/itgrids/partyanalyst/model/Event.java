@@ -53,6 +53,7 @@ public class Event implements java.io.Serializable{
 	
 	private String isVisible;
 	private String attendanceEnrolmentYear;
+	private String youTubeUrl;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -241,7 +242,11 @@ public class Event implements java.io.Serializable{
 	public void setAttendanceEnrolmentYear(String attendanceEnrolmentYear) {
 		this.attendanceEnrolmentYear = attendanceEnrolmentYear;
 	}
-	
-	
-	
+	@Column(name="youtube_url")
+	public String getYouTubeUrl() {
+		return youTubeUrl;
+	}
+	public void setYouTubeUrl(String youTubeUrl) {
+		this.youTubeUrl = youTubeUrl;
+	}
 }
