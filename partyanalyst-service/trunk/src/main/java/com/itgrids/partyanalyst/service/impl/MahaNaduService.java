@@ -2450,7 +2450,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
  }*/
  
  
- public List<MahanaduEventVO> getSubEventCount(Long parentId,List<Long> subEventIds,String startDate,String endDate)
+ public List<MahanaduEventVO> getSubEventCount(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> enrollmentYearIds)
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
 	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -2525,7 +2525,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		  
 		 	
 		  
-		     List<Object[]> attendeeInfo =eventAttendeeDAO.getStateWiseEventAttendeeCounts(parentId,eventStrDate,eventEndDate,subEventIds);
+		     List<Object[]> attendeeInfo =eventAttendeeDAO.getStateWiseEventAttendeeCounts(parentId,eventStrDate,eventEndDate,subEventIds,enrollmentYearIds);
 		     if(attendeeInfo != null && attendeeInfo.size() > 0)
 			 {
 		    	  for(Object[] params : attendeeInfo)
@@ -2571,7 +2571,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		     }
 		     
 		     //TOTAL UNIQUE VISITORS ATTENDED.
-			 Long totalUniqueVisitorsAttended= eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentId,eventStrDate,eventEndDate,subEventIds);
+			 Long totalUniqueVisitorsAttended= eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentId,eventStrDate,eventEndDate,subEventIds,enrollmentYearIds);
 			 
 			 if(totalUniqueVisitorsAttended != null && totalUniqueVisitorsAttended > 0){
 				 
@@ -2579,7 +2579,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				 resultList.get(0).setUniqueNonInviteeVisitorsAttended(totalUniqueVisitorsAttended);
 				 
 				//TOTAL UNIQUE INVITEE AND NON INVITEE VISITORS.
-				 Long  uniqueInviteeVisitorsAttended= eventAttendeeDAO.getUniqueInviteeVisitorsAttendedcount(parentId,eventStrDate,eventEndDate,subEventIds);
+				 Long  uniqueInviteeVisitorsAttended= eventAttendeeDAO.getUniqueInviteeVisitorsAttendedcount(parentId,eventStrDate,eventEndDate,subEventIds,enrollmentYearIds);
 				 if( uniqueInviteeVisitorsAttended != null && uniqueInviteeVisitorsAttended > 0l){
 					 resultList.get(0).setUniqueInviteeVisitorsAttended(uniqueInviteeVisitorsAttended);
 					 resultList.get(0).setUniqueNonInviteeVisitorsAttended(totalUniqueVisitorsAttended - uniqueInviteeVisitorsAttended);
@@ -2684,7 +2684,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 
 		return null;
 	}
- public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate )
+ public List<MahanaduEventVO> getHourWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,List<Long> enrollmentYearIds)
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
 	 Date eventStrDate = null;
@@ -2694,7 +2694,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 if(startDate != null && !startDate.isEmpty())
 		 eventStrDate = format.parse(startDate);
 		 List<Long> eventIds = new ArrayList<Long>();
-		 List<Object[]> hourWiseResult = eventAttendeeDAO.getHourWiseVisitorsCount(parentEventId,eventStrDate,subEventIds);
+		 List<Object[]> hourWiseResult = eventAttendeeDAO.getHourWiseVisitorsCount(parentEventId,eventStrDate,subEventIds,enrollmentYearIds);
 		 if(hourWiseResult != null && hourWiseResult.size() > 0){
 			 for(Object[] obj :hourWiseResult){				
 				if(!eventIds.contains((Long)obj[1])){
@@ -2729,7 +2729,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
  }
  
   
- public List<MahanaduEventVO> getDayWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate )
+ public List<MahanaduEventVO> getDayWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate,List<Long> enrollmentYearIds)
  {
 	 List<MahanaduEventVO> resultList = new ArrayList<MahanaduEventVO>();
 	
@@ -2743,7 +2743,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 if(endDate != null && !endDate.isEmpty())
 		 eventEndDate = format.parse(endDate);
 		 List<Long> eventIds = new ArrayList<Long>();
-		 List<Object[]> dayWiseResult = eventAttendeeDAO.getDayWiseVisitorsCount(parentEventId,subEventIds,eventStrDate,eventEndDate);
+		 List<Object[]> dayWiseResult = eventAttendeeDAO.getDayWiseVisitorsCount(parentEventId,subEventIds,eventStrDate,eventEndDate,enrollmentYearIds);
 		 List<String> dates = new ArrayList<String>();
 		 if(dayWiseResult != null && dayWiseResult.size() > 0){
 			 for(Object[] obj :dayWiseResult)
@@ -2819,7 +2819,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	      
     return daysList;
 }
- public List<MahanaduEventVO> getEventMembersCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate)
+ public List<MahanaduEventVO> getEventMembersCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate,List<Long> enrollmentYearIds)
  {
 	 List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();
 	try{
@@ -2832,7 +2832,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 if(endDate != null && !endDate.isEmpty())
 		 eventEndDate = format.parse(endDate);
 		Map<Long,Long> eventCount = new HashMap<Long, Long>();
-		List<Object[]> list = eventAttendeeDAO.getEventCountsByParentEventId(parentEventId,subEventIds,eventStrDate,eventEndDate);
+		List<Object[]> list = eventAttendeeDAO.getEventCountsByParentEventId(parentEventId,subEventIds,eventStrDate,eventEndDate,enrollmentYearIds);
 		List<Long> eventIds = new ArrayList<Long>();
 		if(list != null && list.size() > 0)
 		{
@@ -2857,7 +2857,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 					{
 						MahanaduEventVO eventVo = new MahanaduEventVO();
 						Long count = eventCount.get(eventId) ;
-						List<Object[]> unionCounts = eventAttendeeDAO.getUnionMembersForEvent(eventId,compareEventId,eventStrDate,eventEndDate);
+						List<Object[]> unionCounts = eventAttendeeDAO.getUnionMembersForEvent(eventId,compareEventId,eventStrDate,eventEndDate,enrollmentYearIds);
 						eventVo.setId(compareEventId);
 						eventVo.setName(eventDAO.get(compareEventId).getName());
 						if(unionCounts != null)
