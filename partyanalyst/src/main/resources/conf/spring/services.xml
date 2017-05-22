@@ -4235,8 +4235,9 @@
 		<property name="alertFeedbackStatusDAO" ref="alertFeedbackStatusDAO" ></property>  
 		<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO" ></property>
 		<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO" ></property> 
-		<property name="alertService" ref="alertService" ></property>	  
+		<property name="alertService" ref="alertService" ></property>
 		<property name="alertCallerRelationDAO" ref="alertCallerRelationDAO" ></property>
+		<property name="govtDepartmentRelationDAO" ref="govtDepartmentRelationDAO" ></property>	  
    </bean>
 </beans>			
 	

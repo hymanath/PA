@@ -4109,4 +4109,36 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;	
 	}
+	public String getAllMainDepartments(){
+		try {
+			
+			idnameVoList = alertManagementSystemService.getAllMainDepartments();
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAllMainDepartments() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String changeDepartmentStatusToAlert(){
+		try{
+			
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");			
+			if(regVo == null)
+				return null;
+			
+			Long userId = regVo.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			Long alertId = jObj.getLong("alertId");
+			Long newDeptId = jObj.getLong("newDeptId");
+			
+			successMsg = alertManagementSystemService.changeDepartmentStatusToAlert(alertId,newDeptId,userId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in changeDepartmentStatusToAlert() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

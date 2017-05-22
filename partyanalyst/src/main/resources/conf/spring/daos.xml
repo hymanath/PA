@@ -3987,5 +3987,8 @@
 	 <bean id="alertCallerRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertCallerRelationDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="govtDepartmentRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentRelationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 
 </beans>		
