@@ -63,9 +63,18 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 		return (String)query.uniqueResult();
 		
 	}
-	public List<Object[]> getNotificationsByTypeId (Long notificationTypeId){
-		Query query = getSession().createQuery("select model.notificationsId,model.notification from Notifications model where model.notificationTypeId=:notificationTypeId and model.isActive='true' ");
-		query.setParameter("notificationTypeId", notificationTypeId);
+	public List<Object[]> getNotificationsByTypeId (Long notificationTypeId,Long userId){
+		Query query;
+		if(userId !=null){
+			query = getSession().createQuery("select model.notificationsId,model.notification, model.successCount,model.failureCount,model.insertedTime from Notifications model where model.notificationTypeId=:notificationTypeId and model.userId=:userId and model.isActive='true' ");
+			query.setParameter("userId", userId);
+			query.setParameter("notificationTypeId", notificationTypeId);
+
+		}else{
+			query = getSession().createQuery("select model.notificationsId,model.notification, model.successCount,model.failureCount,model.insertedTime from Notifications model where model.notificationTypeId=:notificationTypeId and model.isActive='true' ");
+			query.setParameter("notificationTypeId", notificationTypeId);
+			
+		}
 		return query.list();
 	}
 	
@@ -82,6 +91,15 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 		Query query = getSession().createQuery("select model.notificationTypeId.notificationTypeId, " +
 				" model.notification,model.insertedTime,model.userId,model.notificationType.notificationType "+
 				" from Notifications model where model.isActive='true' ");
+		return query.list();
+	}
+
+	@Override
+	public List<Object[]> getAllNotificationsbyUser(Long userId) {
+		Query query = getSession().createQuery("select count(model.notificationTypeId.notificationTypeId),model.notificationTypeId.notificationTypeId,model.notificationType.notificationType "+
+				" from Notifications model where model.isActive='true' and model.userId= :userId" +
+				" GROUP BY model.notificationTypeId.notificationTypeId HAVING COUNT(model.notificationTypeId.notificationTypeId) > 1");
+		query.setParameter("userId", userId);
 		return query.list();
 	}
 }
