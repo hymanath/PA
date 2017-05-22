@@ -3609,7 +3609,7 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 	});
 	$("#alertManagementPopupBody").html(spinner);
 	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
-	
+   
     var jsObj ={
 		fromDate:currentFromDate,
       toDate:currentToDate,

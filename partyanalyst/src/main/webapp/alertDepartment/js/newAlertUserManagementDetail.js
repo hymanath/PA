@@ -638,7 +638,7 @@ function onLoadClicks()
 					}
 				}
 				
-			}else if(blockName == 'alertStatus' || blockName == 'alertSubtaskStatus' || blockName == 'alertDepartments'){
+			}else if(blockName == 'alertStatus' || blockName == 'alertSubtaskStatus'){
 				if(valueId == 'All')
 				{
 					$("[filters-list='"+blockName+"'] li").removeClass("active").find("span.remove").remove();
@@ -646,10 +646,27 @@ function onLoadClicks()
 				}
 			}else if(blockName == 'alertDepartments')
 			{
-				$("[filters-list="+blockName+"] li").removeClass("active").find("span.remove").remove();
-				$(this).addClass("active");
-				getlevlsForDepartmnt(valueId);
-				getlevlsForDepartmnt(valueId);
+				if(valueId == 'All')
+				{
+					$("[filters-list='"+blockName+"'] li").removeClass("active").find("span.remove").remove();
+					$("[filters-list='"+blockName+"'] li").addClass("active").append("<span class='remove' filer-selection='true'><i class='glyphicon glyphicon-remove'></i></span>")
+					var str = '';
+					for(var i in scopesListFilters)
+					{
+						str+='<li attr_id='+scopesListFilters[i].id+'>'+scopesListFilters[i].name+'</li>'
+					}
+					
+					if(scopesListFilters.length > 4)
+					{
+						$(".scopes-list").mCustomScrollbar({setHeight : '150px'});
+					}
+					$("[filters-list='impactLevel']").html(str);
+				}else{
+					$("[filters-list="+blockName+"] li").removeClass("active").find("span.remove").remove();
+					$(this).addClass("active").append("<span class='remove' filer-selection='true'><i class='glyphicon glyphicon-remove'></i></span>")
+					getlevlsForDepartmnt(valueId);
+				}
+				
 			}else if(blockName == 'locLevel')
 			{
 				if(locLevel == 'state' )
@@ -812,7 +829,20 @@ function onLoadClicks()
 		$("[expanded-block="+expandBlockName+"]").hide();
 		$("[expand-main]").removeClass("col-sm-4").addClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
 	});
+	
 	$(document).on("click",".filters-icon",function(){
+		var actionurl
+		if(window.location.hostname == "localhost")
+		{
+			actionurl = window.location.pathname.split("/")[2]; //local
+		}else{
+			actionurl = window.location.pathname; //live
+		}
+		
+		if(actionurl = "alertDistOfficeManagement.action" || "alertDistManagement.action" || "alertUserManagementAction.action")
+		{
+			$("[filters-list='locLevel']").closest(".row").hide();
+		}
 		$("#filter").toggle();
 	});
 
@@ -3074,6 +3104,7 @@ function getDocumentsForAlert(alertId){
 
 var printMediaFilters = [];
 var electronicMediaFilters = [];
+var scopesListFilters = [];
 function popUpFilter(type,result,statusName,statuscount)
 {
 	var str='';
@@ -3186,12 +3217,12 @@ function popUpFilter(type,result,statusName,statuscount)
 							str+='<li attr_id="All">All</li>';
 							for(var i in result.alertSubTaskStatusList	)
 							{
-								if(statusName == result.alertSubTaskStatusList[i].name)
+								/* if(statusName == result.alertSubTaskStatusList[i].name)
 								{
 									str+='<li class="active" attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else{
+								}else{ */
 									str+='<li attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'</li>';
-								}
+								//}
 							}
 						str+='</ul>';
 					str+='</div>';
@@ -3201,7 +3232,7 @@ function popUpFilter(type,result,statusName,statuscount)
 					str+='<div class="scroller-alertDepartments">';
 						str+='<ul class="filters-list" filters-list="alertDepartments">';
 							str+='<li attr_id="All">All</li>';
-							for(var i in result.alertDepartMentList		)
+							for(var i in result.alertDepartMentList)
 							{
 								if(statusName == result.alertDepartMentList[i].name)
 								{
@@ -3215,7 +3246,15 @@ function popUpFilter(type,result,statusName,statuscount)
 				str+='</div>';
 				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize" filters-list-title="impactLevel"><b>Impact Level</b></h5>';
-					str+='<ul class="filters-list" filters-list="impactLevel"></ul>';
+					str+='<div class="scopes-list">';
+						str+='<ul class="filters-list" filters-list="impactLevel">';
+							for(var i in result.scopesList)
+							{
+								scopesListFilters.push({"name":result.scopesList[i].name,"id":result.scopesList[i].id})
+								//str+='<li attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'</li>';
+							}	
+						str+='</ul>';
+					str+='</div>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row m_top20">';	
@@ -3247,14 +3286,14 @@ function popUpFilter(type,result,statusName,statuscount)
 						}
 					str+='</ul>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
+				/* str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize" filters-list-title="printMedia" style="display:none"><b>Print Media</b></h5>';
 					str+='<div class="scroller-print">';
 						str+='<ul class="filters-list" filters-list="printMedia">';
 							for(var i in result.editionsList)
 							{
 								printMediaFilters.push({"name":result.editionsList[i].name,"id":result.editionsList[i].id})
-								//str+='<li attr_id='+result.editionsList[i].id+'>'+result.editionsList[i].name+'</li>';
+								str+='<li attr_id='+result.editionsList[i].id+'>'+result.editionsList[i].name+'</li>';
 							}
 						str+='</ul>';
 					str+='</div>';
@@ -3266,11 +3305,11 @@ function popUpFilter(type,result,statusName,statuscount)
 							for(var i in result.tvNewsChannelList)
 							{
 								electronicMediaFilters.push({"name":result.tvNewsChannelList[i].name,"id":result.tvNewsChannelList[i].id})
-								//str+='<li attr_id='+result.tvNewsChannelList[i].id+'>'+result.tvNewsChannelList[i].name+'</li>';
+								str+='<li attr_id='+result.tvNewsChannelList[i].id+'>'+result.tvNewsChannelList[i].name+'</li>';
 							}
 						str+='</ul>';
 					str+='</div>';
-				str+='</div>';
+				str+='</div>'; */
 				str+='<div class="col-sm-12 m_top10">';
 					str+='<h5 class="text-capitalize" filters-list-title="lagDays"><b>Lag Days</b><small class="clear" filer-selection-clear="lagDays">(Clear All)</small></h5>';
 					str+='<div id="tourSlider" style="width:900px"></div>';
@@ -3975,6 +4014,7 @@ function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdA
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		popUpFilter('body',result,statusName,statuscount);
+		$("#filter").hide();
 	});
 }
 //swadhin
