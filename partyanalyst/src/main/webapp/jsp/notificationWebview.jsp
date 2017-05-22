@@ -108,18 +108,18 @@ function getAllNotificationsByuser(){
 				str +='<table class="table table-bordered" id="leadersDetailsTab">'
 					str +='<thead>';
 						str +='<tr>';
-						str +='<th>NotificationTypeId</th>';
-						str +='<th>NotificationType</th>';
-						str +='<th>TotalCount</th>';
+						str +='<th style="text-align: center;">NotificationTypeId</th>';
+						str +='<th style="text-align: center;">NotificationType</th>';
+						str +='<th style="text-align: center;">TotalCount</th>';
 						str +='</tr>';
 						str +='</thead>';
 						str +='<tbody>';
 							
 							for(var i in result){
 								str +='<tr>';
-								str +='<td  attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].notificationTypeId+'</td>';
-								str +='<td attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].notificationType+'</td>';
-								str +='<td attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].orderNo+'</td>'
+								str +='<td  align="center" attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise"><a>'+result[i].notificationTypeId+'</a></td>';
+								str +='<td  align="center" attr_notification="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].notificationType+'</td>';
+								str +='<td  align="center" attr_notification="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].orderNo+'</td>'
 								str +='</tr>';
 							}
 						str +='</tbody>';
