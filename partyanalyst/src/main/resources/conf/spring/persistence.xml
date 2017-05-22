@@ -1250,6 +1250,7 @@
 					   <value>com.itgrids.partyanalyst.model.GovtDepartmentIssueType</value>
 					   <value>com.itgrids.partyanalyst.model.SocialMediaType</value>
 					   <value>com.itgrids.partyanalyst.model.AlertCallerRelation</value>
+					   <value>com.itgrids.partyanalyst.model.GovtDepartmentRelation</value>
 					   
 	                   <!--  Govt Alert module end-->
 	                   

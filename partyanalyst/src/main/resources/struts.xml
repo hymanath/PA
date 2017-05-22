@@ -17348,5 +17348,15 @@
 			<param name="root">notificationTypeList</param>
 		</result>
 	</action>
+	<action name="getAllMainDepartmentsAction" class="alertManagementSystemAction"  method="getAllMainDepartments">
+		<result type="json" name="success">    
+			<param name="root">idNameVOList</param>       
+		</result> 
+	</action>
+	<action name="changeDepartmentStatusToAlertAction" class="alertManagementSystemAction"  method="changeDepartmentStatusToAlert">
+		<result type="json" name="success">    
+			<param name="root">successMsg</param>       
+		</result> 
+	</action>
  </package>
 </struts>
