@@ -55,14 +55,14 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	
 	public Long stateWiseEventAttendeeCounts(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId ,String statesType,List<Long> enrollmentYearIds);
 	public List<Object[]> stateWiseEventAttendeeCountsByDates(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,Long stateId ,String statesType,List<Long> enrollmentYearIds);
-	public List<Object[]> getDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
-	public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
-	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
-	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
-	public List<Object[]> getOtherStateDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
-	public List<Object[]> getOtherStateConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr);
-	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
-	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate);
+	public List<Object[]> getDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr,List<Long> enrollmentIds);
+	public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr,List<Long> enrolmentIds);
+	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate,List<Long> enrolmentIds);
+	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate,List<Long> enrollmentIds);
+	public List<Object[]> getOtherStateDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr,List<Long> enrollmentIds);
+	public List<Object[]> getOtherStateConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr,List<Long> enrollmentIds);
+	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate,List<Long> enrollmentIds);
+	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate,List<Long> enrollmentIds);
 	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId);
 	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId);
 	public List<Object[]> getEventAttendedDetails(Long cadreId,Long eventId);
