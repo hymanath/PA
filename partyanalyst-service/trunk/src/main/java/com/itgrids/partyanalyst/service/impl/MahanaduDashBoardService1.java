@@ -140,7 +140,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	   *   output: List<MahanaduEventVO>
 	   *   
 	  */	  
-	public List<MahanaduEventVO> LocationWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,Long reportLevelId,List<Long> stateIds,String stateType){
+	public List<MahanaduEventVO> LocationWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,Long reportLevelId,List<Long> stateIds,String stateType,List<Long> enrollmentYearIds){
 		
 		List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -169,7 +169,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
 				 
 				 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
-				 getAttendeesAndinviteesCount(locationType,eventStrDate,eventEndDate,parenteventId,subEventIds,reportLevelId,stateIds,stateType,finalMap,betweenDates);
+				 getAttendeesAndinviteesCount(locationType,eventStrDate,eventEndDate,parenteventId,subEventIds,reportLevelId,stateIds,stateType,finalMap,betweenDates,enrollmentYearIds);
 				
 				 
 				 if( finalMap!= null && finalMap.size() > 0){
@@ -197,7 +197,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		}
 		return resultList;
 	}
-	public void getAttendeesAndinviteesCount(String locationType,Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Long reportLevelId,List<Long> stateIds,String stateType,Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates){
+	public void getAttendeesAndinviteesCount(String locationType,Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Long reportLevelId,List<Long> stateIds,String stateType,Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,List<Long> enrollmentYearIds){
 		
 		Set<Long> locationIds = new HashSet<Long>();
 		try{
@@ -206,10 +206,10 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				
 				 StringBuilder locationQueryString = new StringBuilder();
 				 locationQueryString.append(" and model.tdpCadre.userAddress.state.stateId is not null ");
-				 boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
+				 boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId,enrollmentYearIds);
 				 setTotalDayDataExist(finalMap);
 				 if(isDataAvailable){
-					 getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap); 
+					 getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,locationQueryString.toString(),finalMap,enrollmentYearIds); 
 				 }
 			 }else{
 				 
@@ -242,21 +242,21 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						
 						
 						if(apTsStatesExist){
-							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
+							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId,enrollmentYearIds);
 							setTotalDayDataExist(finalMap);
 							if(isDataAvailable){
-								getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap);
+								getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,apTsLocationQueryString.toString(),finalMap,enrollmentYearIds);
 							}
 						}
 						if(otherStatesExist){
-							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId);
+							boolean  isDataAvailable = getAttendeeAndinviteeCounts(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap,locationIds,betweenDates,parenteventId,enrollmentYearIds);
 							
 							if(!apTsStatesExist){
 								setTotalDayDataExist(finalMap);
 							}
 							
 							if(isDataAvailable){
-								getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap);
+								getAttendeeAndinviteeCountsDateWise(locationType,eventStrDate,eventEndDate,subEventIds,otherStatesLocationQueryString.toString(),finalMap,enrollmentYearIds);
 							}
 						}
 				}
@@ -265,7 +265,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 			
 			if(locationIds != null && locationIds.size() > 0){
-				 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByLocation(locationType,locationIds,parenteventId);
+				 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByLocation(locationType,locationIds,parenteventId,enrollmentYearIds);
 				 if( inviteesList!= null && inviteesList.size() > 0){
 					 for( Object[] obj : inviteesList){
 						 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
@@ -314,20 +314,20 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		return firstLocationVO;
 	}
 	
-	public boolean getAttendeeAndinviteeCounts(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap,Set<Long> locationIds,List<Date> betweenDates,Long parentEventId){
+	public boolean getAttendeeAndinviteeCounts(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap,Set<Long> locationIds,List<Date> betweenDates,Long parentEventId,List<Long> enrollmentYearIds){
 		 
 		 boolean isDataAvailable = false;
-		List<Object[]> totalAttendeeList = eventAttendeeDAO.locationWiseEventAttendeeCountsQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,locationQueryString);
+		List<Object[]> totalAttendeeList = eventAttendeeDAO.locationWiseEventAttendeeCountsQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,locationQueryString,enrollmentYearIds);
 		 
 		 if(totalAttendeeList!=null && totalAttendeeList.size() > 0){
 			 
 			 isDataAvailable = true;
-			 List<Object[]> totalInviteeList = eventAttendeeDAO.locationWiseEventAttendeeCountsQuery(locationType,"invitee",eventStrDate,eventEndDate,subEventIds,locationQueryString);
+			 List<Object[]> totalInviteeList = eventAttendeeDAO.locationWiseEventAttendeeCountsQuery(locationType,"invitee",eventStrDate,eventEndDate,subEventIds,locationQueryString,enrollmentYearIds);
 			 
 			 setDataToMap(totalAttendeeList,finalMap,"attendee",locationIds,betweenDates,locationType);
 			 setDataToMap(totalInviteeList,finalMap,"invitee",locationIds,betweenDates,locationType);
 			 
-			 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds);
+			 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parentEventId,eventStrDate,eventEndDate,subEventIds,enrollmentYearIds);
 		     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended);
 		 }
 		 return  isDataAvailable;
@@ -346,13 +346,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 	    
 	  }
 	
-	public void getAttendeeAndinviteeCountsDateWise(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap){
+	public void getAttendeeAndinviteeCountsDateWise(String locationType,Date eventStrDate,Date eventEndDate,List<Long> subEventIds,String locationQueryString, Map<Long,MahanaduEventVO>  finalMap,List<Long> enrollmentYearIds){
 		 
-		 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.locationWiseEventAttendeeCountsByDateQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,locationQueryString);
+		 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.locationWiseEventAttendeeCountsByDateQuery(locationType,"attendee",eventStrDate,eventEndDate,subEventIds,locationQueryString,enrollmentYearIds);
 		 
 		 if(dateWiseAttendeeList!=null && dateWiseAttendeeList.size()>0){
 			 
-			 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.locationWiseEventAttendeeCountsByDateQuery(locationType,"invitee",eventStrDate,eventEndDate,subEventIds,locationQueryString);
+			 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.locationWiseEventAttendeeCountsByDateQuery(locationType,"invitee",eventStrDate,eventEndDate,subEventIds,locationQueryString,enrollmentYearIds);
 			 
 			 setDateDataToMap(dateWiseAttendeeList,finalMap,"attendee");
 			 setDateDataToMap(dateWiseInviteeList,finalMap,"invitee");
@@ -481,7 +481,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   
 		  */
 	
-		public StatesEventVO stateWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,boolean forPdf){
+		public StatesEventVO stateWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,boolean forPdf,List<Long> enrollmentYearIds){
 				
 				SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				
@@ -505,32 +505,32 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					if(forPdf){
 						  
 						//OverAll Data
-						StatesEventVO allStatesVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,null,"overall");
+						StatesEventVO allStatesVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,null,"overall",enrollmentYearIds);
 						calcLowHighPercantage(allStatesVO);
 						finalVO.setAllStatesVO(allStatesVO);
 						
 					}else{
 						
 						//AP  DATA
-						StatesEventVO apStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,1l,"particular");
+						StatesEventVO apStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,1l,"particular",enrollmentYearIds);
 						calcLowHighPercantage(apStateVO);
 						finalVO.setApStateVO(apStateVO);
 						
 						
 						//TS  DATA
-						StatesEventVO tsStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,36l,"particular");
+						StatesEventVO tsStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,36l,"particular",enrollmentYearIds);
 						calcLowHighPercantage(tsStateVO);
 						finalVO.setTsStateVO(tsStateVO);
 						
 						
 						//Other States DATA
-						StatesEventVO otherStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,0l,"particular");
+						StatesEventVO otherStateVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,0l,"particular",enrollmentYearIds);
 						calcLowHighPercantage(otherStateVO);
 						finalVO.setOtherStatesVO(otherStateVO);
 						
 						
 						//OverAll Data
-						StatesEventVO allStatesVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,null,"overall");
+						StatesEventVO allStatesVO = getDataToAState(eventStrDate,eventEndDate,subEventIds,betweenDates,null,"overall",enrollmentYearIds);
 						calcLowHighPercantage(allStatesVO);
 						finalVO.setAllStatesVO(allStatesVO);
 					}
@@ -541,7 +541,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				return finalVO;
 			}
 			
-		public StatesEventVO getDataToAState(Date eventStrDate,Date eventEndDate,List<Long> subEventIds,List<Date>  betweenDates,Long stateId,String statesType){
+		public StatesEventVO getDataToAState(Date eventStrDate,Date eventEndDate,List<Long> subEventIds,List<Date>  betweenDates,Long stateId,String statesType,List<Long> enrollmentYearIds){
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			
@@ -550,14 +550,14 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				
 				String currentDateStr = sdf.format(dateUtilService.getCurrentDateAndTime()); 
 						
-				Long attendeedCount = eventAttendeeDAO.stateWiseEventAttendeeCounts("attendee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
+				Long attendeedCount = eventAttendeeDAO.stateWiseEventAttendeeCounts("attendee",eventStrDate,eventEndDate,subEventIds,stateId,statesType,enrollmentYearIds);
 				
 				if(attendeedCount != null && attendeedCount > 0l){
 					
 					stateVO.setAttendees(attendeedCount);
 					stateVO.setNonInvitees(attendeedCount);
 					
-					Long inviteedCount = eventAttendeeDAO.stateWiseEventAttendeeCounts("invitee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
+					Long inviteedCount = eventAttendeeDAO.stateWiseEventAttendeeCounts("invitee",eventStrDate,eventEndDate,subEventIds,stateId,statesType,enrollmentYearIds);
 					if( inviteedCount != null && inviteedCount > 0l){
 						stateVO.setInvitees(inviteedCount);
 						stateVO.setNonInvitees(attendeedCount - stateVO.getInvitees());
@@ -585,11 +585,11 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					 }
 					
 					
-					List<Object[]> dayWiseAttendeedCountList = eventAttendeeDAO.stateWiseEventAttendeeCountsByDates("attendee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
+					List<Object[]> dayWiseAttendeedCountList = eventAttendeeDAO.stateWiseEventAttendeeCountsByDates("attendee",eventStrDate,eventEndDate,subEventIds,stateId,statesType,enrollmentYearIds);
 					
 					if(dayWiseAttendeedCountList != null && dayWiseAttendeedCountList.size() > 0){
 						
-						List<Object[]> dayWiseInviteeCountList = eventAttendeeDAO.stateWiseEventAttendeeCountsByDates("invitee",eventStrDate,eventEndDate,subEventIds,stateId,statesType);
+						List<Object[]> dayWiseInviteeCountList = eventAttendeeDAO.stateWiseEventAttendeeCountsByDates("invitee",eventStrDate,eventEndDate,subEventIds,stateId,statesType,enrollmentYearIds);
 						
 						setDateDataToCorrespondingState(dayWiseAttendeedCountList,stateVO,"attendee");
 						setDateDataToCorrespondingState(dayWiseInviteeCountList,stateVO,"invitee");
@@ -973,7 +973,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		
 		
 		
-		public void getAllImages(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> stateIds){
+		public void getAllImages(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> stateIds){/*
 			LOG.info("\n\n entered in to getAllImages() method in mahanadu dashboardd service \n" );
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try{
@@ -1078,7 +1078,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			}catch(Exception e){
 				LOG.error("Exception in getAllImages() : "+e);
 			}
-		}
+		*/}
 		public StringBuffer PublicrepresentiveBlock(List<MahanaduEventVO> pubList,String time){
 			
 			StringBuffer str = new StringBuffer();
@@ -1753,7 +1753,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			  return finallist;
 		  }*/
 		
-		public List<MahanaduEventVO> getPublicrepresentatives(String startDateStr,String endDateStr,Long eventId,List<Long> subEventIds){
+		public List<MahanaduEventVO> getPublicrepresentatives(String startDateStr,String endDateStr,Long eventId,List<Long> subEventIds,List<Long> enrollmentIds){
 			  
 			 //Adding Order
 			  Map<String,Long> orderMap = new HashMap<String, Long>();
@@ -1785,25 +1785,25 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				  List<Long> designationIds =Arrays.asList(IConstants.PUBLIC_REPR_DESIGNATION_IDS);
 				  Map<String,MahanaduEventVO> designationsMap = new LinkedHashMap<String, MahanaduEventVO>();
 				  //TOTAL INVITEES
-				  List<Object[]> inviteesList = eventInviteeDAO.getPublicRepresentiveInvitessForEvent(eventId,designationIds);
+				  List<Object[]> inviteesList = eventInviteeDAO.getPublicRepresentiveInvitessForEvent(eventId,designationIds,enrollmentIds);
 			
 				  setDataFordesignationsMap(designationsMap,inviteesList,startDateStr,endDateStr,"PR",orderMap);
 				  
 				  // COMMITTEE LEVEL 
 				  List<Long> committeeLevelIds =Arrays.asList(IConstants.COMMITTEE_LEVEL_IDS);
-				  List<Object[]> committeLevelInvitees =  eventInviteeDAO.getCommitteeLevelInvitessForEvent(eventId, committeeLevelIds);
+				  List<Object[]> committeLevelInvitees =  eventInviteeDAO.getCommitteeLevelInvitessForEvent(eventId, committeeLevelIds,enrollmentIds);
 				  setDataFordesignationsMap(designationsMap,committeLevelInvitees,startDateStr,endDateStr,"CommitteeLevel",orderMap);
 				  
 				  
 				  //Committee Role Wise
 				  
 				  List<Long> committeeroleIds =Arrays.asList(IConstants.COMMITTEE_ROLE_IDS);
-				  List<Object[]> committeRoleInvitees =  eventInviteeDAO.getCommitteeRoleInvitessForEvent(eventId, committeeroleIds);
+				  List<Object[]> committeRoleInvitees =  eventInviteeDAO.getCommitteeRoleInvitessForEvent(eventId, committeeroleIds,enrollmentIds);
 				  setDataFordesignationsMap(designationsMap,committeRoleInvitees,startDateStr,endDateStr,"CommitteeRole",orderMap);
 				  
 				  
 				  //Affliated Committee Wise
-				   List<Object[]> affliatedCommitteeInvitees =  eventInviteeDAO.getDistrictAffliatedCommitteeInvitessForEvent(eventId, committeeroleIds);
+				   List<Object[]> affliatedCommitteeInvitees =  eventInviteeDAO.getDistrictAffliatedCommitteeInvitessForEvent(eventId, committeeroleIds,enrollmentIds);
 				   setDataFordesignationsMap(designationsMap,affliatedCommitteeInvitees,startDateStr,endDateStr,"affliatedCommittee",orderMap);
 				  
 				  
@@ -2099,7 +2099,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
 					 }
 				 }
-				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds);
+				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,null);
 			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
 				
 				//total cadre 
@@ -2240,7 +2240,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
 					 }
 				 }
-				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds);
+				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,null);
 			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
 			     
 				if(ageWiseIds != null && ageWiseIds.size() > 0){
@@ -2463,7 +2463,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						      }
 						 }
 					 }
-					 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds);
+					 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,null);
 				     calCulatingGenderWiseinviteeNonInviteePercantage(finalVO,totalAttended);
 					 
 					 List<Object[]> genderCadreData = tdpCadreDAO.genderWiseTdpCadre();
@@ -2757,7 +2757,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
 					 }
 				 }
-				Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds);
+				Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,null);
 				calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
 				
 				
