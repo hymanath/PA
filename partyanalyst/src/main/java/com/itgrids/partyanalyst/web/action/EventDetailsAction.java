@@ -425,7 +425,16 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 						subEventIds.add(new Long(arr.get(i).toString()));
 				}			
 			}
-			resultList = mahaNaduService.getDaysUniqueAndRevisitSummary(eventId,stateId,reportLevelId,subEventIds,jObj.getString("dateValues"));
+			 org.json.JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsList");
+		      List<Long> enrollmentIdsList = new ArrayList<Long>(0);
+		      if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0){
+		        for (int i = 0; i < enrollmentIdsArr.length(); i++) {
+		          if(enrollmentIdsArr.get(i) != null && !enrollmentIdsArr.get(i).toString().trim().isEmpty())
+		            enrollmentIdsList.add(Long.valueOf(enrollmentIdsArr.get(i).toString().trim()));
+		        }
+		      }
+		      
+			resultList = mahaNaduService.getDaysUniqueAndRevisitSummary(eventId,stateId,reportLevelId,subEventIds,jObj.getString("dateValues"),enrollmentIdsList);
 						
 		}catch (Exception e) {
 			LOG.error(" Entered Into getDaysUniqueAndRevisitSummary",e);
@@ -447,7 +456,17 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 						subEventIds.add(new Long(arr.get(i).toString()));
 				}			
 			String date = jObj.getString("date");
-			resultList = mahaNaduService.getDayWiseVisitSummary(eventId,stateId,reportLevelId,subEventIds,date);
+			
+		      org.json.JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsList");
+		      List<Long> enrollmentIdsList = new ArrayList<Long>(0);
+		      if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0){
+		        for (int i = 0; i < enrollmentIdsArr.length(); i++) {
+		          if(enrollmentIdsArr.get(i) != null && !enrollmentIdsArr.get(i).toString().trim().isEmpty())
+		            enrollmentIdsList.add(Long.valueOf(enrollmentIdsArr.get(i).toString().trim()));
+		        }
+		      }
+		      
+			resultList = mahaNaduService.getDayWiseVisitSummary(eventId,stateId,reportLevelId,subEventIds,date,enrollmentIdsList);
 			
 		}catch (Exception e) {
 			LOG.error(" Entered Into getDayWiseVisitSummary",e);

@@ -201,7 +201,16 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 			
 			jObj = new JSONObject(getTask());
 			
-			mahanaduVisitList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoList(jObj.getLong("eventId"),jObj.getString("dateValues"));
+		      JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsList");
+		      List<Long> enrollmentIdsList = new ArrayList<Long>(0);
+		      if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0){
+		        for (int i = 0; i < enrollmentIdsArr.length(); i++) {
+		          if(enrollmentIdsArr.get(i) != null && !enrollmentIdsArr.get(i).toString().trim().isEmpty())
+		            enrollmentIdsList.add(Long.valueOf(enrollmentIdsArr.get(i).toString().trim()));
+		        }
+		      }
+		      
+			mahanaduVisitList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoList(jObj.getLong("eventId"),jObj.getString("dateValues"),enrollmentIdsList);
 		}catch(Exception e){
 			LOG.error("Exception rised in getTodayTotalAndCurrentUsersInfo()",e);
 		}
@@ -214,8 +223,17 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 		
 		try
 		{
-			jObj = new JSONObject(getTask());			
-			mahanaduVisitVO=mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(jObj.getLong("eventId"),jObj.getString("date"));
+			jObj = new JSONObject(getTask());	
+			org.json.JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsList");
+		      List<Long> enrollmentIdsList = new ArrayList<Long>(0);
+		      if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0){
+		        for (int i = 0; i < enrollmentIdsArr.length(); i++) {
+		          if(enrollmentIdsArr.get(i) != null && !enrollmentIdsArr.get(i).toString().trim().isEmpty())
+		            enrollmentIdsList.add(Long.valueOf(enrollmentIdsArr.get(i).toString().trim()));
+		        }
+		      }
+		      
+			mahanaduVisitVO=mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(jObj.getLong("eventId"),jObj.getString("date"),enrollmentIdsList);
 		}catch(Exception e){
 			LOG.info("Error occured in getTodayTotalVisitorsInfo()",e);
 		}
@@ -256,7 +274,15 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	public String getHourWiseNowInCampusCadresCount(){
 		try {
 			jObj = new JSONObject(getTask());
-			mahanaduEventVOList = mahanaduDashBoardService.getHourWiseNowInCampusCadresCount(jObj.getString("dayVal"),jObj.getLong("eventId"));
+			JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsList");
+			List<Long> enrollmentIdsList = new ArrayList<Long>(0);
+			if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0){
+				for (int i = 0; i < enrollmentIdsArr.length(); i++) {
+					if(enrollmentIdsArr.get(i) != null && !enrollmentIdsArr.get(i).toString().trim().isEmpty())
+						enrollmentIdsList.add(Long.valueOf(enrollmentIdsArr.get(i).toString().trim()));
+				}
+			}
+			mahanaduEventVOList = mahanaduDashBoardService.getHourWiseNowInCampusCadresCount(jObj.getString("dayVal"),jObj.getLong("eventId"),enrollmentIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHourWiseNowInCampusCadresCount", e);
 		}
