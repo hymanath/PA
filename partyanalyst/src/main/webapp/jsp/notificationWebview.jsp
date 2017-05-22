@@ -12,6 +12,8 @@
 <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <style type='text/css'>
 .nav li a
 {
@@ -91,6 +93,8 @@
  
 <script src='dist/2016DashBoard/js/bootstrap.js' type='text/javascript'></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javaScript">
 $(".chosenClass").css("width","100%");
 getNotificationTypeDetails();
@@ -108,18 +112,21 @@ function getAllNotificationsByuser(){
 				str +='<table class="table table-bordered" id="leadersDetailsTab">'
 					str +='<thead>';
 						str +='<tr>';
-						str +='<th style="text-align: center;">NotificationTypeId</th>';
-						str +='<th style="text-align: center;">NotificationType</th>';
-						str +='<th style="text-align: center;">TotalCount</th>';
+					//	str +='<th style="text-align: center;">NotificationTypeId</th>';
+						str +='<th style="text-align: center;">Notification Type</th>';
+						str +='<th style="text-align: center;">Total Count</th>';
 						str +='</tr>';
 						str +='</thead>';
 						str +='<tbody>';
 							
 							for(var i in result){
 								str +='<tr>';
-								str +='<td  align="center" attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise"><a>'+result[i].notificationTypeId+'</a></td>';
-								str +='<td  align="center" attr_notification="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].notificationType+'</td>';
-								str +='<td  align="center" attr_notification="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].orderNo+'</td>'
+								//str +='<td  align="center" attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise"><a>'+result[i].notificationTypeId+'</a></td>';
+								str +='<td  align="center"  attr_notification_id="'+result[i].notificationTypeId+'" attr_notification="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="">'+result[i].notificationType+'</td>';
+								if(result[i].orderNo != null && result[i].orderNo>0)
+									str +='<td  align="center"  attr_notification_id="'+result[i].notificationTypeId+'" attr_notification="'+result[i].notificationTypeId+'" style="cursor:pointer;color:green;font-weight:bold;" class="getAlertDtlsOnCategoryWise"><u>'+result[i].orderNo+'</u></td>';
+								else 
+									str +='<td align="center" > - </td>';
 								str +='</tr>';
 							}
 						str +='</tbody>';
@@ -131,7 +138,9 @@ function getAllNotificationsByuser(){
 					  $('.notificationType').hide();
 					});
 			}
-			
+			else{
+				$("#NotificationDetailsId").html('No Data available...');
+			}
 			
 		});
 }
@@ -165,7 +174,7 @@ $(document).on("change","#notificationTypeId",function(){
 	getNotificationTypeDetailsStats(typeId);
 });
 
-$("#trigger,#loginId").hide();
+$("#loginId").hide();
 
 function getNotificationTypeDetailsStats(typeId){
 	
@@ -209,7 +218,11 @@ $(document).on("click",".getAlertDtlsOnCategoryWise",function(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},
 		}).done(function(result){
+			if(result != null && result.length>0){
 			  buildGrivenceDetailsTableOld(result);
+			}else{
+				$('#notificationsdetailId').html(' No Data available...');
+			}
 		});
 	});
 function addNotification(){
@@ -279,6 +292,7 @@ function buildGrivenceDetailsTableOld(result){
 				   str+='</table>';
 				   
 				   $("#notificationsdetailId").html(str);
+				   $('#alertIdListTableId').dataTable({});
 }
 
 </script>
