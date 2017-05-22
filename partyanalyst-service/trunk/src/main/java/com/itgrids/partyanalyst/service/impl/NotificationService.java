@@ -529,6 +529,7 @@ public class NotificationService implements INotificationService{
 				 vo.setOrderNo(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 				 vo.setNotificationTypeId(Long.valueOf(objects[1] != null ? objects[1].toString():"0"));
 				 vo.setNotificationType(objects[2] != null ? objects[2].toString():"");
+				 
 				 notificationDeviceVO.add(vo);
 			 }
 			return notificationDeviceVO;
@@ -548,6 +549,8 @@ public class NotificationService implements INotificationService{
 				vo.setNotification(obj[1] != null ? obj[1].toString():"");
 				vo.setSuccessCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 				vo.setFailureCount(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+				String date= commonMethodsUtilService.getStringValueForObject(obj[4]);
+				 vo.setLastUpdatedTime(date.substring(0, date.length() - 2));
 				notificationList.add(vo);
 			}
 		 }
