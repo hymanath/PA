@@ -162,4 +162,6 @@ public interface IAlertManagementSystemService {
 				Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
 				String group,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,
 				Long filterScopeValue,String searchType,Long statusId,Long sourseId);
+	 public List<IdNameVO> getAllMainDepartments();
+	 public String changeDepartmentStatusToAlert(final Long alertId,final Long changedDeptId,final Long userId);
 }        
