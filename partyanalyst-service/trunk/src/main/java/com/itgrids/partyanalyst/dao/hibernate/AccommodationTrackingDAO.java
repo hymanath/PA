@@ -79,8 +79,8 @@ public class AccommodationTrackingDAO extends GenericDaoHibernate<AccommodationT
 		Query query = getSession().createQuery(" select model.notificationTypeId, " +
 				" model.locationName," +
 				" model.address," +
-				" model.longitude," +
 				" model.latitude," +
+				" model.longitude," +
 				" model.accommodationTrackingId " +
 				" from AccommodationTracking model " +
 				" where model.notificationTypeId in (:notificationTypeIds) and " +
