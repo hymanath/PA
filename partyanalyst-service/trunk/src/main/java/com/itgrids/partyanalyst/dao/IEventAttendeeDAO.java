@@ -23,15 +23,15 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getStateWiseEventAttendeeCounts(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
 	
 	public List<Object[]> getMembersDetailsBySubEvent(Long eventId,Date startDate,Date endDate,Integer startIndex,Integer maxIndex);
-	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId,Long entryId);
-	public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId);
+	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId,Long entryId,List<Long> enrollmentIdsList);
+	public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId,List<Long> enrollmentIdsList);
 	public List<Object[]> getCadreVisitInfo(Date todayDate,Long entryEventId,Long exitEventId);
-	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds);
-	public List<Object[]> getEventAttendeesSummary(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds);
+	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds,List<Long> enrollmentIdsList);
+	public List<Object[]> getEventAttendeesSummary(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds,List<Long> enrollmentIdsList);
 	public List<Object[]> getOtherStateDeligatesCount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
 	public List<Object[]> getStateCount(Long eventId,Date startDate,Date endDate);
 	public List<Object[]> getOtherStateCount(Long eventId,Date startDate,Date endDate);
-	public BigInteger getCurrentInviteeVisitors(Date todayDate,Long entryEventId,Long exitEventId);
+	public BigInteger getCurrentInviteeVisitors(Date todayDate,Long entryEventId,Long exitEventId,List<Long> enrollmentIdsList);
 	public List<Object[]> getEventAttendeeInfoDynamicIndiDatesForInvities(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds);
 	public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds);
 	public List<Object[]> getEventDetailsOfCadre(Long cadreId);
@@ -44,12 +44,12 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	
 	public Long getUniqueInviteeVisitorsAttendedcount(Long parentEventId,Date startDate,Date endDate,List<Long> subeventIds);
 	
-	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId,Long entryEventId);
+	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId,Long entryEventId,List<Long> enrollmentIdsList);
 	public List<Object[]> getHourWiseTotalVisitorsCount1(Long parentEventId,Date date,List<Long> subeventIds,String type);
-	public List<Object[]> getHourWiseCurrentVisitorsCount(Date todayDate,Long entryEventId,Long exitEventId,String type);
+	public List<Object[]> getHourWiseCurrentVisitorsCount(Date todayDate,Long entryEventId,Long exitEventId,String type,List<Long> enrollmentIdsList);
 	
-	public List<Object[]> getHourWiseTotalVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds,String type);
-	public Long getTotalAttendedCountOfEvent(Long eventId);
+	public List<Object[]> getHourWiseTotalVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds,String type,List<Long> enrollmentIdsLis);
+	public Long getTotalAttendedCountOfEvent(Long eventId,List<Long> enrollmentIdsList);
 	public List<Object[]>  locationWiseEventAttendeeCountsQuery(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds,String queryString);
 	public List<Object[]> locationWiseEventAttendeeCountsByDateQuery(String locationType,String inviteeType,Date startDate,Date endDate,List<Long> eventIds,String queryString);
 	
