@@ -45,7 +45,7 @@
 								</div>
 								
 								<div class="col-md-6 col-md-offset-3">
-								<input type="button" id="notificationId" attr_success="NOTIFICATION ADDED..." class="btn btn-success btn-block"   value="SEND NOTIFICATION"  onclick="addNotification();"/>
+								<input type="button" id="notificationId" attr_success="NOTIFICATION ADDED..." style="padding-top: 5px; margin-top: 14px;"  class="btn btn-success btn-block"   value="SEND NOTIFICATION"  onclick="addNotification();"/>
 								<div id="notificationSuccessId" sytle="color:green"></div>
 								</div>
 								
@@ -54,9 +54,33 @@
 
 						</div>
 					</div>
+				<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title text-capital" >  Notification Details </h4>
+				</div>
+				<div class="panel-body">
+					<div class="table text-capital" id="NotificationDetailsId"></div>
+				</div>
+			</div>	
 			</div>
 		</div>
 	</div>
+	<!-- Modal -->
+   <div class="modal fade" id="notificationDtlsModalId" role="dialog">
+    <div class="modal-dialog" style="width:65%">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button id="removeClassModal" type="button" class="close" data-dismiss="modal">&times;</button>
+         <div id="grivenaceModalHeedingId"> </div> 
+         <div id="NotificationHeadinId"> </div> 
+        </div>
+        <div class="modal-body">
+            <div class="table-responsive" id="totalDetailsTableId"> </div>
+			<div id="notificationsdetailId"  class="table-responsive"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
  
 <script src='dist/2016DashBoard/js/bootstrap.js' type='text/javascript'></script>
@@ -69,11 +93,40 @@ function getAllNotificationsByuser(){
 	var jsObj = {};
 	$.ajax({
 			type : 'POST',
-			url : 'getNotificationTypeDetailsAction.action',
+			url : 'getAllNotificationsByuserAction.action',
 			dataType : 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			var str = '';
+			if(result!=null){
+				var str = '';
+				str +='<table class="table table-bordered" id="leadersDetailsTab">'
+					str +='<thead>';
+						str +='<tr>';
+						str +='<th>NotificationTypeId</th>';
+						str +='<th>NotificationType</th>';
+						str +='<th>TotalCount</th>';
+						str +='</tr>';
+						str +='</thead>';
+						str +='<tbody>';
+							
+							for(var i in result){
+								str +='<tr>';
+								str +='<td  attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].notificationTypeId+'</td>';
+								str +='<td attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].notificationType+'</td>';
+								str +='<td attr_notification_id="'+result[i].notificationTypeId+'" style="cursor:pointer;" class="getAlertDtlsOnCategoryWise">'+result[i].orderNo+'</td>'
+								str +='</tr>';
+							}
+						str +='</tbody>';
+				str +='</table>'; 
+				$("#NotificationDetailsId").html(str);
+				$('#notificationType').hover(function() {
+					   $('.notificationType').show();
+					},function() {
+					  $('.notificationType').hide();
+					});
+			}
+			
+			
 		});
 }
 function getNotificationTypeDetails(){
@@ -135,6 +188,24 @@ function getNotificationTypeDetailsStats(typeId){
 			
 		});
 }
+$(document).on("click",".getAlertDtlsOnCategoryWise",function(){
+	
+	    var notificationId = $(this).attr("attr_notification_id");
+		$("#totalDetailsTableId").html("");  
+		$("#notificationsdetailId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+		$("#notificationDtlsModalId").modal("show");     
+		var jobj = {
+		  notificationTypeId: notificationId,                              
+		  }
+		$.ajax({    
+		  type : "POST",
+		  url  : "getNotificationTypeDetailsuserAction.action",  
+		  dataType: 'json',
+		  data: {task:JSON.stringify(jobj)},
+		}).done(function(result){
+			  buildGrivenceDetailsTableOld(result);
+		});
+	});
 function addNotification(){
 $("#pushNotificationCodeId,#ntfctnTypeTextSuccessId,#notificationSuccessId,#updateNtfctnTypeSuccessId,#updateNotificationSuccessId").html("");
 
@@ -171,5 +242,32 @@ $("#pushNotificationCodeId,#ntfctnTypeTextSuccessId,#notificationSuccessId,#upda
 	}
 });
 }
+function buildGrivenceDetailsTableOld(result){
+	 $("#NotificationHeadinId").html('<h3>Notification Details</h3>');
+	 var str='';
+	
+	str+='<table id="alertIdListTableId" class="table  table-bordered" cellspacing="0" width="100%">';
+                    str+='<thead>';
+                    str+='<tr>';
+				    str+=' <th>Notification</th>';
+					str+=' <th>Success Count</th>';   
+					str+=' <th>Failure Count</th>';   					 
+                    str+='</tr>';
+					str+=' </thead>';
+					str+='<tbody>';
+				   
+				   for(var i in result){
+					 str+='<tr>';
+					 str+='<td >'+result[i].notification+'</td>';
+					 str+='<td>'+result[i].successCount+'</td>';
+					  str+='<td>'+result[i].failureCount+'</td>';
+					 str+='</tr>';
+				    }
+				   str+='</tbody>';    
+				   str+='</table>';
+				   
+				   $("#notificationsdetailId").html(str);
+}
+
 </script>
 </html>
