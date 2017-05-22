@@ -254,7 +254,16 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 				}
 			}
 			
-			mahanaduEventVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(jObj.getLong("eventId"),statesList,jObj.getString("date"));
+			List<Long> enrollmentIdsList = new ArrayList<Long>(0);
+			JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsList");
+			 if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0){
+				for (int i = 0; i < enrollmentIdsArr.length(); i++) {
+				  if(enrollmentIdsArr.get(i) != null && !enrollmentIdsArr.get(i).toString().trim().isEmpty())
+					enrollmentIdsList.add(Long.valueOf(enrollmentIdsArr.get(i).toString().trim()));
+				}
+			 }
+			
+			mahanaduEventVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(jObj.getLong("eventId"),statesList,jObj.getString("date"),enrollmentIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDistrictWiseMembersCountInCampus", e);
 		}
@@ -311,7 +320,16 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 				}
 			}
 			
-			mahanaduEventVO = mahanaduDashBoardService.getConstituencyWiseMembersCountInCampus(jObj.getLong("eventId"),statesList,jObj.getString("date"));
+			List<Long> enrollmentIdsList = new ArrayList<Long>(0);
+			JSONArray enrollmentIdsArr = jObj.getJSONArray("enrollmentIdsList");
+			 if(enrollmentIdsArr != null && enrollmentIdsArr.length()>0){
+				for (int i = 0; i < enrollmentIdsArr.length(); i++) {
+				  if(enrollmentIdsArr.get(i) != null && !enrollmentIdsArr.get(i).toString().trim().isEmpty())
+					enrollmentIdsList.add(Long.valueOf(enrollmentIdsArr.get(i).toString().trim()));
+				}
+			 }
+			
+			mahanaduEventVO = mahanaduDashBoardService.getConstituencyWiseMembersCountInCampus(jObj.getLong("eventId"),statesList,jObj.getString("date"),enrollmentIdsList);
 		} catch (Exception e) {
 			LOG.error("Exception riased at getConstituencyWiseMembersCountInCampus ", e);
 		}

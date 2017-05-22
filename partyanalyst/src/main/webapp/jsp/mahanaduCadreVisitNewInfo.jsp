@@ -67,7 +67,7 @@
 				<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="enrollmentId">
 					<option value="0">All</option>
 					<option value="3" >2014-2016</option>
-					<option value="4" >2016-2018</option>
+					<option value="4" selected>2016-2018</option>
 				</select>
 				<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="mainEventSelectId">
 					<option value="0">Select Event</option>
@@ -537,7 +537,7 @@ $(".panelDefault").height(maxHeight);
 	var stateId =0;
 	var eventId = $("#mainEventSelectId").val();
 	 if(globalMainEntryId !=null && globalMainEntryId>0){
-		subEvents1 = globalMainEntryId; // -- MAHANADU MAIN ENTRY
+		subEvents1.push(globalMainEntryId); // -- MAHANADU MAIN ENTRY
 	 }
 	 
 	 var attrDateValue = $("#eventDatesSelectId option:selected").attr("attr_dates");
@@ -546,7 +546,7 @@ $(".panelDefault").height(maxHeight);
 			eventId:eventId,			
 			stateId:stateId,
 			reportLevelId:0,
-			subEvents : [subEvents1],	
+			subEvents : subEvents1,	
 			dateValues : attrDateValue,
 			enrollmentIdsList:enrollmentIdsArr
 		}	
@@ -1053,7 +1053,7 @@ $(".panelDefault").height(maxHeight);
 	var stateId =0;
 	 var eventId = $("#mainEventSelectId").val();
 	 if(globalMainEntryId !=null && globalMainEntryId>0){
-		subEvents1 = globalMainEntryId; // -- MAHANADU MAIN ENTRY
+		subEvents1.push(globalMainEntryId); // -- MAHANADU MAIN ENTRY
 	 }
 	 $("#totalVisitorsDtlsId").html(' ');
      $("#dayWsVstrsPrcssngImgId").show();
@@ -1061,7 +1061,7 @@ $(".panelDefault").height(maxHeight);
 			eventId:eventId,			
 			stateId:stateId,
 			reportLevelId:0,
-			subEvents : [subEvents1],
+			subEvents : subEvents1,
 			date:$("#eventDatesSelectId option:selected").attr("attr_dates"),
 			enrollmentIdsList:enrollmentIdsArr
 		}	
@@ -1138,6 +1138,7 @@ function buildTotalVisitorsResult(result){
 	function getDistrictWiseMembersCountInCampus(){
 		
 		var stateIds = [];
+		var enrollmentYearIds = [];
 		$("#distWiseTableId").html('<img src="images/Loading-data.gif" style="width:70px;height:60px;"/>');
 		if($("#tsSwitch").is(":checked")){
 			stateIds.push($("#tsSwitch").val());
@@ -1152,12 +1153,14 @@ function buildTotalVisitorsResult(result){
 		}
 		
 		var t = $("#eventDatesSelectId").find("option:selected").attr("attr_dates").split(",");
-		
+		enrollmentYearIds.push($("#enrollmentId").val());
+        
 		if(stateIds.length > 0){
 			var jObj = {
 				eventId:$("#mainEventSelectId").val(),			
 				stateIds:stateIds,
-				date:t[t.length-2]
+				date:t[t.length-2],
+				enrollmentIdsList : enrollmentYearIds
 			}	
 			$("#distWiseTableAjax").show();
 			$.ajax({
@@ -1236,6 +1239,7 @@ function buildTotalVisitorsResult(result){
 		
 		
 		var stateIds = [];
+		var enrollmentYearIds = [];
 		$("#distWiseTableId").html('<img src="images/Loading-data.gif" style="width:70px;height:60px;"/>');
 		if($("#tsSwitch").is(":checked")){
 			stateIds.push($("#tsSwitch").val());
@@ -1250,12 +1254,13 @@ function buildTotalVisitorsResult(result){
 		}
 		
 		var t = $("#eventDatesSelectId").find("option:selected").attr("attr_dates").split(",");
-		
+		enrollmentYearIds.push($("#enrollmentId").val());
 		if(stateIds.length > 0){
 			var jObj = {
 				eventId:$("#mainEventSelectId").val(),			
 				stateIds:stateIds,
-				date:t[t.length-2]
+				date:t[t.length-2],
+				enrollmentIdsList : enrollmentYearIds
 			}	
 			$("#constWiseTableAjax").show();
 			$.ajax({
