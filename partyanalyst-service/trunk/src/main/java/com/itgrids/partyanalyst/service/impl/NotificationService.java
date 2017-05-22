@@ -164,7 +164,7 @@ public class NotificationService implements INotificationService{
 			notification.addProperty("body", notifyVO.getNotification());
 			notification.addProperty("click_action",".Activitys.Activity_Notifications");
 			List<String> notificationKeysList = notificationDeviceDAO.getNotificationActiveKeys();
-			NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(), notification,notificationKeysList, userId);
+			NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),notifyVO.getDeviceName(), notification,notificationKeysList, userId);
 
 			Long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notifyVO.getNotificationTypeId());
 			 if(orderNo == null || orderNo.longValue() ==0L)
