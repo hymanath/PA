@@ -500,4 +500,5 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	 public Constituency getConstituencyIdByTehsilId(Long tehsilId);
 	 public List<Object[]> getBoothsForTehsilId(List<Long> tehsilIds,Long constituencyId);
 	 public List<Object[]> getBoothsForMuncipality(List<Long> lcalElcBdyId,Long constituencyId);
+	 public Long getTotalBoothsByConstituencyId(Long constituencyId);
 }

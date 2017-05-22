@@ -85,4 +85,25 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		return (BoothIncharge) query.uniqueResult();
 		
 	}
+	
+	public Long getStartedBothCountByConstiId(Long constituencyId){
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select  count(distinct model.boothId) " +
+				  " from BoothIncharge model " +
+				  " where model.booth.constituency.constituencyId = :constituencyId " +
+				  " and model.booth.publicationDate.publicationDateId = :publicationDate " +
+				  " and model.isActive ='Y' ");
+		
+		Query qry = getSession().createQuery(sb.toString());
+		
+		if(constituencyId != null && constituencyId.longValue()>0l){
+			qry.setParameter("constituencyId", constituencyId);
+		}
+		
+		qry.setParameter("publicationDate", IConstants.VOTER_DATA_PUBLICATION_ID);
+		
+		return (Long) qry.uniqueResult();
+	}	
 }
