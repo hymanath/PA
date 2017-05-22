@@ -226,8 +226,14 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 			}
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
+			List<Long> enrollmentYrIds = new ArrayList<Long>();
+			JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+			for(int i=0;i<enrollmentYrIdsArr.length();i++){
+				enrollmentYrIds.add(new Long(enrollmentYrIdsArr.get(i).toString()));
+			}
+			
 		
-			resultList =  mahanaduDashBoardService1.casteWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds);
+			resultList =  mahanaduDashBoardService1.casteWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds,enrollmentYrIds);
 			
 		}
 		catch(Exception e)
@@ -249,8 +255,13 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 			}
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
+			List<Long> enrollmentYrIds = new ArrayList<Long>();
+			JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+			for(int i=0;i<enrollmentYrIdsArr.length();i++){
+				enrollmentYrIds.add(new Long(enrollmentYrIdsArr.get(i).toString()));
+			}
 		
-			resultList =  mahanaduDashBoardService1.ageWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds);
+			resultList =  mahanaduDashBoardService1.ageWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds,enrollmentYrIds);
 			
 		}
 		catch(Exception e)
@@ -273,8 +284,13 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 			}
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
+			List<Long> enrollmentYrIds = new ArrayList<Long>();
+			JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+			for(int i=0;i<enrollmentYrIdsArr.length();i++){
+				enrollmentYrIds.add(new Long(enrollmentYrIdsArr.get(i).toString()));
+			}
 		
-			eventGenderVO =  mahanaduDashBoardService1.genderWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds);
+			eventGenderVO =  mahanaduDashBoardService1.genderWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds,enrollmentYrIds);
 			
 		}
 		catch(Exception e)
@@ -304,9 +320,16 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 				for(int i=0;i<arr.length();i++){
 					subEventIds.add(new Long(arr.get(i).toString()));
 				}
+				
+				List<Long> enrollmentYrIds = new ArrayList<Long>();
+				JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+				for(int i=0;i<enrollmentYrIdsArr.length();i++){
+					enrollmentYrIds.add(new Long(enrollmentYrIdsArr.get(i).toString()));
+				}
+				
 				String startDate = jObj.getString("startDate");
 				String endDate = jObj.getString("endDate");
-				resultList=mahanaduDashBoardService1.casteCategoryWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds);
+				resultList=mahanaduDashBoardService1.casteCategoryWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds,enrollmentYrIds);
 			
 	      }catch(Exception e){
 	    		LOG.error(" Entered Into casteCategoryWiseEventAttendeeCounts",e);

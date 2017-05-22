@@ -91,13 +91,21 @@ table{margin-bottom:0px !important;}
 					  <span>April 1, 2015 - April 30, 2015</span> <b class="caret"></b>
 				   </div>
 				</div>
-				<div class="col-md-7">
+				<div class="col-md-5">
 					<div class="refreshButton">
 						<span  class="text">Last Updated Time <br/><span id="timeUpdationId"></span>&nbsp;&nbsp;&nbsp;</span>
 						<a title=" Page Refresh" class="refreshIcon" style="cursor:pointer">
 							<span class="glyphicon glyphicon-refresh"></span>
 						</a>
 					</div>
+				</div>
+				<div class="col-md-2">
+					<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="enrollmentYrId">
+						<option value="0">All</option>
+						<option value="3">2014-2016</option>
+						<option value="4" >2016-2018</option>
+						
+					</select>
 				</div>
 				<div class="col-md-2">
 					<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="mainEventSelectId">
@@ -107,6 +115,7 @@ table{margin-bottom:0px !important;}
 						<option value="51" selected>Mahanadu 2017</option>
 					</select>
 				</div>
+				
 			</div>
 		</div>
 		<div class="row">
@@ -252,6 +261,17 @@ var gblmaxTotalAttendedPrcntg=0;
    $(document).on("change","#mainEventSelectId",function(){
 	   parentEventId = $("#mainEventSelectId").val();
 	   if(parentEventId != null && parentEventId !=0){
+	   subEvents=[];
+	   $("#casteExcelExpBtnId").hide();
+	   $("#genderWiseExcelExpBtnId").hide();
+	   $("#ageWsExcelExpBtnId").hide();
+	   $("#casteCategoryExcelExpBtnId").hide();
+	   getEventDateAndSubEvent();
+	   }	   
+   });
+    $(document).on("change","#enrollmentYrId",function(){
+	   enrollmentYrId = $("#enrollmentYrId").val();
+	   if(enrollmentYrId != null && enrollmentYrId !=0){
 	   subEvents=[];
 	   $("#casteExcelExpBtnId").hide();
 	   $("#genderWiseExcelExpBtnId").hide();
@@ -429,11 +449,16 @@ function getSubCasteWiseEventAttendeeCounts(startDate,endDate)
 			$("#cstPrcntgWsHghChrtId").html(' ');
 	       $("#cstWstblPrcssngImgId").show();
 		   $("#castePerHighChartPrcssngImgId").show();
+		   var enrollmentYrIds=[];
+		   if($("#enrollmentYrId").val() !=null && $("#enrollmentYrId").val()>0){
+			   enrollmentYrIds.push($("#enrollmentYrId").val());
+		   }
 	         var jsObj = {
 					startDate    :startDate,
 					endDate      :endDate,
 					parentEventId:parentEventId,
-					subEvents : subEvents
+					subEvents : subEvents,
+				enrollmentYrIds:enrollmentYrIds
 				}
 			$.ajax({
 	          type:'GET',
@@ -613,11 +638,16 @@ function getAgeWiseEventAttendeeCounts(startDate,endDate){
 	
 	$("#ageWiseTableId").html("");  
 	$("#ageWstblPrcssngImgId").show();
+	var enrollmentYrIds=[];
+	if($("#enrollmentYrId").val() !=null && $("#enrollmentYrId").val()>0){
+			   enrollmentYrIds.push($("#enrollmentYrId").val());
+		   }
     var jsObj = {
 		startDate    :startDate,
 		endDate      :endDate,
 		parentEventId:parentEventId,
-		subEvents : subEvents
+		subEvents : subEvents,
+		enrollmentYrIds:enrollmentYrIds
 	}
 	$.ajax({
         type:'GET',
@@ -764,11 +794,16 @@ function getGenderWiseEventAttendeeCounts(startDate,endDate)
 {			
 	 $("#genderWiseTableId").html(' ');
 	 $("#genderWisePrcssngImgId").show();
+	 var enrollmentYrIds=[];
+	 if($("#enrollmentYrId").val() !=null && $("#enrollmentYrId").val()>0){
+			   enrollmentYrIds.push($("#enrollmentYrId").val());
+		   }
          var jsObj = {
 				startDate    :startDate,
 				endDate      :endDate,
 				parentEventId      :parentEventId,
-				subEvents : subEvents
+				subEvents : subEvents,
+				enrollmentYrIds:enrollmentYrIds
 			}
 		$.ajax({
           type:'GET',
@@ -1383,11 +1418,16 @@ function casteCategoryWiseEventAttendeeCounts(startDate,endDate){
 	     
 		 $("#casteCategoryWiseTableId").html(' ');
 		 $("#cstCtgryWstblPrcssngImgId").show();
+		 var enrollmentYrIds=[];
+		 if($("#enrollmentYrId").val() !=null && $("#enrollmentYrId").val()>0){
+			   enrollmentYrIds.push($("#enrollmentYrId").val());
+		   }
 		 var jsObj = {
 				startDate  :startDate,
 				endDate    :endDate,
 				parentEventId:parentEventId,
-				subEvents : subEvents
+				subEvents : subEvents,
+				enrollmentYrIds:enrollmentYrIds
 			}
 		$.ajax({
           type:'GET',
