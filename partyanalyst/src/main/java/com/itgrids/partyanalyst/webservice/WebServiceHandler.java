@@ -2673,4 +2673,19 @@ public class WebServiceHandler {
 		}
 		return null;
 	}
+	@GET
+    @Path("/getYouTubeUrl")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getYouTubeUrls()
+    {
+		try{
+			return webServiceHandlerService.getYouTubeUrls();
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getYouTubeUrls() method, Exception is "+e);
+			return "FAIL:URL not found"; 
+			//e.printStackTrace();
+		}
+    }
 }
