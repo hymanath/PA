@@ -684,7 +684,6 @@ $(document).on("click",".overAllCount",function(){
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
 	getFilterSectionAlertDetails(statusName,totalCount,departmentIdsForAlertSoutceArr);
-	
 	var jObj = {
 		govtDepDesigOffcrIds : globalgovtDeptDesigOffcrIds,
 		govtOfficerIds : globalgovtOfficerIds,
