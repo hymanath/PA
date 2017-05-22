@@ -25,7 +25,7 @@ public class GcmService {
 	
 	private static final Logger LOG = Logger.getLogger(GcmService.class);
 	JsonParser parser = new JsonParser();
-	public NotificationDeviceVO sendNotification(String registeredId,JsonObject notification, List<String> notificationKeysList,Long userId) {
+	public NotificationDeviceVO sendNotification(String registeredId,String youtbeUrl, JsonObject notification, List<String> notificationKeysList,Long userId) {
 
 		String result = null;
 		final String GOOGLE_SERVER_KEY = IConstants.GOOGLE_SERVER_KEY;
@@ -39,6 +39,7 @@ public class GcmService {
 				int failurecount = 0;
 				json.add("notification", notification);
 				notification.remove("click_action");
+				notification.addProperty("youtubeLink", youtbeUrl);
 				json.add("data", notification);
 				for (String registereduId : notificationKeysList) {
 					json.addProperty("to", registereduId);
