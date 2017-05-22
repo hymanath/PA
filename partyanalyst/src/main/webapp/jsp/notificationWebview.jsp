@@ -40,8 +40,9 @@
 								
 								<div class="col-md-6 col-md-offset-3">
 								<label>Notification Text:</label>
-								<input type="text"  name="name"  class="form-control" id="addNotificationTextId" placeholder="Please Enter Notification Text"/>
-								<div style="color:red;" id="addNotificationTypeTextErrId"></div>
+								<textarea type="text"  name="name"  class="form-control" id="addNotificationTextId"
+ 										placeholder="Please Enter Notification Text"></textarea>								
+ 									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
 								
 								<div class="col-md-6 col-md-offset-3">
