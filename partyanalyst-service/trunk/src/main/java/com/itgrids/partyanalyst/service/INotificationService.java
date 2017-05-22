@@ -19,5 +19,7 @@ public interface INotificationService {
 	 public String saveNotificationType(String notificationTypeText);
 	 public NotificationDeviceVO getEventAccommodationParkingDetails(List<Long> notificationIds,Long locationId);
 	 public List<NotificationDeviceVO> getAllNotifications();
+	 public List<NotificationDeviceVO> getAllNotificationsByuser(Long userId);
+	 public List<NotificationDeviceVO> getNotificationDetailsByUserTypeId(Long typeId,Long userId);
 
 }
