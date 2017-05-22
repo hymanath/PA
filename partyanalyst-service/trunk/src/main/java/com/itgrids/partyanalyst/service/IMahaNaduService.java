@@ -52,8 +52,8 @@ public interface IMahaNaduService {
 	 public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId);
 	 public List<MahanaduEventVO> getAttendeeSummaryForEventsList(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds);
 	 public List<IdNameVO> getSubEventsOfEvent(Long eventId);
-	 public List<MahanaduEventVO> getDaysUniqueAndRevisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String dateValues);
-	 public List<MahanaduEventVO> getDayWiseVisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String date);
+	 public List<MahanaduEventVO> getDaysUniqueAndRevisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String dateValues,List<Long> enrollmentIdsList);
+	 public List<MahanaduEventVO> getDayWiseVisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String date,List<Long> enrollmentIdsList);
 	 
 	 public ResultStatus insertDataintoEventInfo1(Date startDate,Date endDate,Long parentEventId,List<Long> subEventIds);
 	 public List<IdNameVO> getSubEventsOfNewEvent(Long eventId);
