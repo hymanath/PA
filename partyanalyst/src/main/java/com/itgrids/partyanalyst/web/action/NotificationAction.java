@@ -200,4 +200,29 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 		this.request=request;		
 	}
 	
+	public String getAllNotificationsByuser(){
+		
+		try{
+			LOG.info("Entered into getAllNotificationsByuser() method of NotificationAction");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			notificationTypeList =  notificationService.getAllNotificationsByuser(regVO.getRegistrationID());
+		}catch(Exception e){
+			LOG.error("Exception raised at PushNotificationDetails() method of NotificationAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getNotificationDetailsByUserTypeId(){//second select box
+		try{
+			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long typeId = jObj.getLong("notificationTypeId");
+			notificationTypeList =  notificationService.getNotificationDetailsByUserTypeId(typeId,regVO.getRegistrationID());
+		}catch(Exception e){
+			LOG.error("Exception raised at PushNotificationDetails() method of NotificationAction", e);
+		}
+		return Action.SUCCESS;
+	}
 }
