@@ -40,6 +40,7 @@ public class AlertAssignedOfficerTrackingNew {
 	private Date updatedTime;
 	private String isApproved;
 	private Long alertSeviorityId;
+	private Long govtDepartmentId;
 	
 	private AlertSeverity alertSeviority;
 	private AlertAssignedOfficerNew alertAssignedOfficer;
@@ -52,6 +53,8 @@ public class AlertAssignedOfficerTrackingNew {
 	private AlertDepartmentDocumentNew alertDepartmentDocument;
 	private User insertedUser;
 	private User updatedUser;
+	
+	private GovtDepartment govtDepartment;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -287,7 +290,24 @@ public class AlertAssignedOfficerTrackingNew {
 		this.updatedUser = updatedUser;
 	}
 	
+	@Column(name = "govt_department_id")
+	public Long getGovtDepartmentId() {
+		return govtDepartmentId;
+	}
+	public void setGovtDepartmentId(Long govtDepartmentId) {
+		this.govtDepartmentId = govtDepartmentId;
+	}
 	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="govt_department_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtDepartment getGovtDepartment() {
+		return govtDepartment;
+	}
+	public void setGovtDepartment(GovtDepartment govtDepartment) {
+		this.govtDepartment = govtDepartment;
+	}
 	
 	
 }

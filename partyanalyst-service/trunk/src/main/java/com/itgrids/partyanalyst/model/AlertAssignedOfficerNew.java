@@ -35,11 +35,13 @@ public class AlertAssignedOfficerNew {
 	private Date updatedTime;
 	private String isApproved;
 	private String isDeleted;
+	private Long govtDepartmentId;
 	
 	private Alert alert;
 	private GovtDepartmentDesignationOfficerNew govtDepartmentDesignationOfficer;
 	private GovtOfficerNew govtOfficer;
 	private AlertStatus alertStatus;
+	private GovtDepartment govtDepartment;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -176,4 +178,25 @@ public class AlertAssignedOfficerNew {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+	
+	@Column(name = "govt_department_id")
+	public Long getGovtDepartmentId() {
+		return govtDepartmentId;
+	}
+	public void setGovtDepartmentId(Long govtDepartmentId) {
+		this.govtDepartmentId = govtDepartmentId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="govt_department_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtDepartment getGovtDepartment() {
+		return govtDepartment;
+	}
+	public void setGovtDepartment(GovtDepartment govtDepartment) {
+		this.govtDepartment = govtDepartment;
+	}
+	
+	
 }
