@@ -17358,5 +17358,10 @@
 			<param name="root">successMsg</param>       
 		</result> 
 	</action>
+	<action name="getBoothsByConstituencyAction" class="cadreCommitteeAction"  method="getTotalBoothsCountByConstituency">
+		<result type="json" name="success">    
+			<param name="root">locationVO</param>         
+		</result> 
+	</action>
  </package>
 </struts>

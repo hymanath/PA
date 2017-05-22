@@ -109,7 +109,7 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 	private String endDate;
 	private List<CadreCommitteeVO>  cadreCommitteeList;
 	private Long locationValue;
-	
+	private LocationWiseBoothDetailsVO  locationVO;
 	
 	public Long getLocationValue() {
 		return locationValue;
@@ -610,6 +610,14 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 
 	public void setCastes(List<IdNameVO> castes) {
 		this.castes = castes;
+	}
+	
+	public LocationWiseBoothDetailsVO getLocationVO() {
+		return locationVO;
+	}
+
+	public void setLocationVO(LocationWiseBoothDetailsVO locationVO) {
+		this.locationVO = locationVO;
 	}
 
 	public String execute()
@@ -2844,6 +2852,22 @@ public String updateCommitteeMemberDesignationByCadreId(){
 			
 			jObj = new JSONObject(getTask());
 			status = cadreCommitteeService.removeMbrFromCurentLocation(userId,jObj.getLong("tdpCadreId"));
+		}catch(Exception e){
+			LOG.error("Exception occured in saveElectionBoothCommitteeDetails() At CadreCommitteeAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getTotalBoothsCountByConstituency(){
+		try{
+			jObj = new JSONObject(getTask());
+			//RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			//Long userId = regVO.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			locationVO = cadreCommitteeService.getTotalBoothsCountByConstituenctIds(constituencyId);
 		}catch(Exception e){
 			LOG.error("Exception occured in saveElectionBoothCommitteeDetails() At CadreCommitteeAction",e);
 		}
