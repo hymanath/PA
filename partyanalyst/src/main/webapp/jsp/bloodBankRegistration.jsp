@@ -70,7 +70,7 @@
                                             <input type="radio" name="advncdSearch" class="advancedSearchCls" id="casteId" value="2"/>Caste
                                         </label>
 										<label class="radio-inline">
-                                            <input type="radio" name="advncdSearch" class="advancedSearchCls" id="ageId" value="3"/>Age
+                                            <input type="radio" name="advncdSearch" class="advancedSearchCls" id="advanceAgeId" value="3"/>Age
                                         </label>
 										<label class="radio-inline">
                                             <input type="radio" name="advncdSearch" class="advancedSearchCls" id="casteGroupId" value="4"/>Caste Group
@@ -754,6 +754,9 @@
   </div>
   </div>
 </div>
+
+<input type="hidden" id="hidenMemShipId"></input>
+
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/activityDashboard/SelectDropDown/dropkick.js" type="text/javascript"></script>
@@ -1033,13 +1036,14 @@ function validateFields(){
      var mobileNo=$("#mobileNoId").val();
      var dob=$("#dobId").val();
 	 var gender=$("#seltBxSxId").val();
-	 var membserShipId = $("#membershipInputId").val();
+	 var membserShipId = $("#membershipId").val();
+	 var serchMobileNo = $("#mobileNo").val();
 	 
 	 if(membserShipId==null || membserShipId==undefined || membserShipId.trim().length==0){
-			 $(".cadreNoErrorCls").html("Please Enter Cadre Number.");
+			 $(".searchTypeCls").html("Please Enter Cadre Number.");
 		     return;
 		 }
-	 $(".cadreNoErrorCls").html(" ");
+	 $(".searchTypeCls").html(" ");
 	if(name==null || name==undefined || name.trim().length==0){
 	   $(".nameErrorCls").html("Please Enter Name.");
       return	 
@@ -1088,13 +1092,12 @@ function validateFields(){
 }); 
 $(document).on("click","#submitBtnId",function(){
 	var status=validateFields();
-	  if(status!=null && status!=undefined && status==true){
+	 if(status!=null && status!=undefined && status==true){
 		printdocumentDetails();
 	  }
 })
 function printdocumentDetails(){
-	
-	
+
 	$("#printpriewBtn").show();
 	$("#printBloddBankId").removeAttr("value");
 	//$("#printBloddBankCancelId").removeAttr("value");
@@ -1118,7 +1121,7 @@ function printdocumentDetails(){
 		  cadreDtlsArr.push($("#wllngTdntEmrgncyId").val());
 		  cadreDtlsArr.push($("#wllngTBClldFrDntnId").val());
 		  cadreDtlsArr.push($("#rmrksId").val());
-		  cadreDtlsArr.push( $("#membershipInputId").val());
+		  cadreDtlsArr.push($("#hidenMemShipId").val());
 		  cadreDtlsArr.push($("#hiddenCampId").val());
 		  
 		 $("#cdrDtlsSavingPrcssngImgId").show();
@@ -1139,7 +1142,7 @@ function printdocumentDetails(){
 			$("#printnameId").html(''+$("#nameId").val()+'');
 			$("#printageId").html(''+$("#ageId").val()+'');
 			$("#printnoOfTmBldDntnId").html(''+$("#noOfTmBldDntnId").val()+'');
-			$("#printmembershipInputId").html(''+$("#membershipInputId").val()+'');
+			$("#printmembershipInputId").html(''+$("#hidenMemShipId").val()+'');
 			$("#printdobId").html(''+$("#dobId").val()+'');
 			$("#printseltBxSxId").html(''+$("#seltBxSxId").val()+'');
 			$("#printspouseId").html(''+$("#spouseId").val()+'');
@@ -1709,7 +1712,7 @@ $( document ).on("click",".cadreCls",function(){
 	    globalSelectedMemberIdsArr = [];
 	    $("#involvedMembers").html('(0 - Members added)');
  
-		$('#nameId').val('');
+		/*$('#nameId').val('');
 		$('#spouseId').val('');
 		$('#addressId').val('');
 		$('#mobileNoId').val('');
@@ -1740,7 +1743,7 @@ $( document ).on("click",".cadreCls",function(){
 		$(".chosenSelect").trigger("chosen:updated");
 		if($("#addressCheckId").is(':checked')){ 
 			$("#addressCheckId").trigger("click");
-		}
+		}*/
 		
 	if($(this).is(':checked')){ 
 	   $(".cadreCls").prop("checked" ,false);
@@ -1750,6 +1753,7 @@ $( document ).on("click",".cadreCls",function(){
 		//var candiId = $(this).attr("attr_nominated_post_candidate_id"); 
 		//globalNPCandiId = $(this).attr("attr_nominated_post_candidate_id"); 
 		var mebmerShipId = $(this).attr("attr_membership_id"); 
+		$("#hidenMemShipId").val(mebmerShipId);
 		  if($(this).is(':checked')){
 			$(".ramakrishnaCls").show();
 			$("#addedRefferalsDiv").show();
