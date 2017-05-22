@@ -1041,11 +1041,11 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			        entryExitPdfStr.append("<br/><br/>");
 			      }
 			      
-			      MahanaduEventVO distWiseVisitorsVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(parentId, stateIds,currentDateStr);
+			      MahanaduEventVO distWiseVisitorsVO = mahanaduDashBoardService.getDistrictWiseTotalAndPresentCadre(parentId, stateIds,currentDateStr,null);
 			      StringBuffer distWiseVisitors = districtWiseUniqueCampusCount(distWiseVisitorsVO,time);
 			      entryExitPdfStr.append(distWiseVisitors);
 			      
-			      MahanaduEventVO constWiseVisitorsVO = mahanaduDashBoardService.getConstituencyWiseMembersCountInCampus(parentId, stateIds,currentDateStr);
+			      MahanaduEventVO constWiseVisitorsVO = mahanaduDashBoardService.getConstituencyWiseMembersCountInCampus(parentId, stateIds,currentDateStr,null);
 			      StringBuffer constWiseVisitors = constWiseUniqueCampusCount(constWiseVisitorsVO,time);
 			      entryExitPdfStr.append(constWiseVisitors);
 				
