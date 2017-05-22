@@ -451,41 +451,84 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return query.list();
 	}
 		
-	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId,Long entryId){
-		Query query=getSession().createQuery("select count(distinct tdpCadreId) from EventAttendee model where date(model.attendedTime) =:todayDate " +
-				//" and model.event.parentEventId =:parentEventId " +
-				" and model.eventId = :entryId");
+	public Long getTodayTotalVisitors(Date todayDate,Long parentEventId,Long entryId,List<Long> enrollmentIdsList ){
+		
+		if(enrollmentIdsList != null && enrollmentIdsList.contains(0L))
+			enrollmentIdsList.clear();
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.tdpCadreId) from EventAttendee model ");
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+	      }
+		str.append(" where  date(model.attendedTime) =:todayDate  and model.eventId = :entryId ");
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+	        str.append(" tcey.enrollmentYearId in (:enrollmentIdsList)  and tcey.isDeleted='N' ");
+	      }
+		
+		Query query=getSession().createQuery(str.toString());
 		query.setDate("todayDate", todayDate);
 		//query.setParameter("parentEventId", parentEventId);
 		query.setParameter("entryId", entryId);
-		
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		      query.setParameterList("enrollmentIdsList", enrollmentIdsList);
+
 		 return (Long)query.uniqueResult();
 	}
 	
-	public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId){
-		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event_attendee ea1 inner join " +
+	public BigInteger getCurrentVisitors(Date todayDate,Long entryEventId,Long exitEventId,List<Long> enrollmentIdsList){
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct ea1.tdp_cadre_id) from event_attendee ea1 inner join " +
 				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
 						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
-						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time where " +
-				        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId order by tdp_cadre_id;");
+						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time  " );
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" , tdp_cadre tc, tdp_cadre_enrollment_year tcey ");
+	      }
+		
+		str.append(" where date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId  ");
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" and ea1.tdp_cadre_id = tc.tdp_cadre_id and tc.tdp_cadre_id  = tcey.tdp_cadre_id and ");
+	        str.append(" tcey.enrollment_year_id in (:enrollmentIdsList) and tc.is_deleted='N' and tcey.is_deleted='N' ");
+	      }
+		
+		str.append(" order by ea1.tdp_cadre_id ");
+		Query query=getSession().createSQLQuery(str.toString());
 		query.setDate("todayDate", todayDate);
 		query.setParameter("exitEventId", exitEventId);
-		query.setParameter("entryEventId", entryEventId);
+		query.setParameter("entryEventId", entryEventId);	  
+		  if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		      query.setParameterList("enrollmentIdsList", enrollmentIdsList);
+
 		
 		return (BigInteger)query.uniqueResult();
 	}
 	
-	public BigInteger getCurrentInviteeVisitors(Date todayDate,Long entryEventId,Long exitEventId){
-		Query query=getSession().createSQLQuery("select count(distinct ea1.tdp_cadre_id) from event e,event ee,event_invitee ei,event_attendee ea1 inner join " +
+	public BigInteger getCurrentInviteeVisitors(Date todayDate,Long entryEventId,Long exitEventId,List<Long> enrollmentIdsList){
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct ea1.tdp_cadre_id) from event e,event ee,event_invitee ei,event_attendee ea1 inner join " +
 				        " (select tdp_cadre_id as cadre_id, max(attended_time) as max_time from event_attendee " +
 						" where date(attended_time) =:todayDate and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as ea2 " +
-						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time " +
-						" where " +
-						" ea1.event_id = e.event_id " +
+						" ON ea1.tdp_cadre_id =  ea2.cadre_id and ea1.attended_time = ea2.max_time  ");
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" , tdp_cadre tc, tdp_cadre_enrollment_year tcey ");
+	      }
+		 str.append(" where  ea1.event_id = e.event_id " +
 						" and ei.event_id = ee.event_id " +
 						" and e.is_invitee_exist ='Y' " +
 						" and e.parent_event_id = ee.event_id " +
-				        " and date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId and ea1.tdp_cadre_id = ei.tdp_cadre_id order by ei.tdp_cadre_id;");
+				        " and date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId and ea1.tdp_cadre_id = ei.tdp_cadre_id ");
+		 if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+		        str.append(" and ea1.tdp_cadre_id = tc.tdp_cadre_id and tc.tdp_cadre_id  = tcey.tdp_cadre_id and ");
+		        str.append(" tcey.enrollment_year_id in (:enrollmentIdsList) and tc.is_deleted='N' and tcey.is_deleted='N' ");
+		      }
+		 
+		 str.append(" order by ei.tdp_cadre_id ");
+		Query query=getSession().createSQLQuery(str.toString());
+		
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		      query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 		query.setDate("todayDate", todayDate);
 		query.setParameter("exitEventId", exitEventId);
 		query.setParameter("entryEventId", entryEventId);
@@ -517,7 +560,10 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	
 	
 	
-	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds){
+	public List<Object[]> getEventAttendeeInfoDynamicIndiDates(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds,List<Long> enrollmentIdsList){
+		if(enrollmentIdsList != null && enrollmentIdsList.contains(0L))
+			enrollmentIdsList.clear();
+		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.event.eventId,count(distinct model.tdpCadre.tdpCadreId), ");
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
@@ -528,10 +574,21 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		}
 		str.append(" date(model.attendedTime)");
 		str.append(" from EventAttendee model ");
+		
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+	      }
+		
 		str.append(" where model.event.eventId in(:subEventIds) ");
 		str.append(" and (date(model.attendedTime) between :eventStartDate  and :eventEndDate) ");
 		str.append(" and model.event.isActive =:isActive " +
 				   " and model.tdpCadre.isDeleted = 'N' ");
+		
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+	        str.append(" tcey.enrollmentYearId in (:enrollmentIdsList) and tc.isDeleted='N' and tcey.isDeleted='N' ");
+	      }
+
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
 			str.append(" group by model.event.eventId,model.tdpCadre.userAddress.constituency.district.districtId," +
 					" date(model.attendedTime) order by model.event.eventId," +
@@ -547,6 +604,9 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 					" date(model.attendedTime)");
 		}
 		Query query = getSession().createQuery(str.toString());
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		      query.setParameterList("enrollmentIdsList", enrollmentIdsList);
+
 		query.setDate("eventStartDate", eventStartDate);
 		query.setDate("eventEndDate",eventEndDate);
 		query.setParameter("isActive", IConstants.TRUE);
@@ -554,7 +614,10 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return query.list();
 	}
 	
-	public List<Object[]> getEventAttendeesSummary(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds){
+	public List<Object[]> getEventAttendeesSummary(String locationType,Date eventStartDate,Date eventEndDate,List<Long> subEventIds,List<Long> enrollmentIdsList){
+		
+		if(enrollmentIdsList != null && enrollmentIdsList.contains(0L))
+			enrollmentIdsList.clear();
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCadre.tdpCadreId," +
@@ -568,10 +631,20 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		}
 		
 		str.append(" from EventAttendee model ");
+		
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+	      }
+		
 		str.append(" where model.event.eventId in(:subEventIds) ");
 		str.append(" and date(model.attendedTime) between :eventStartDate and :eventEndDate ");
 		str.append(" and model.event.isActive =:isActive " +
 				   " and model.tdpCadre.isDeleted = 'N' ");
+		
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+	        str.append(" tcey.enrollmentYearId in (:enrollmentIdsList) and tc.isDeleted='N' and tcey.isDeleted='N' ");
+	      }
 		
 		if(locationType.equalsIgnoreCase(IConstants.DISTRICT)){
 			str.append(" group by model.tdpCadre.tdpCadreId," +
@@ -590,6 +663,9 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 					" date(model.attendedTime)");
 		}
 		Query query = getSession().createQuery(str.toString());
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		      query.setParameterList("enrollmentIdsList", enrollmentIdsList);
+
 		query.setDate("eventStartDate", eventStartDate);
 		query.setDate("eventEndDate", eventEndDate);
 		query.setParameter("isActive", IConstants.TRUE);
@@ -819,14 +895,28 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return  query.list(); 	
 }
 	
-	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId,Long entryEventId){
-		Query query=getSession().createQuery("select count(distinct model.tdpCadreId) from EventAttendee model,EventInvitee model1 where date(model.attendedTime) =:todayDate " +
-				//" and model.event.parentEventId =:parentEventId " +
-				" and model.eventId =:entryEventId " +
+	public Long getTodayTotalInviteeVisitors(Date todayDate,Long parentEventId,Long entryEventId,List<Long> enrollmentIdsList){
+		if(enrollmentIdsList != null && enrollmentIdsList.contains(0L))
+			enrollmentIdsList.clear();
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.tdpCadreId) from EventAttendee model,EventInvitee model1  ");
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+	      }
+		str.append(" where date(model.attendedTime) =:todayDate  " +
+				"and model.eventId =:entryEventId " +
 				" and model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId " +				
 				" and model1.tdpCadreId = model.tdpCadreId " +
 				" and model.tdpCadre.isDeleted = 'N' " +
-				" and model.tdpCadre.enrollmentYear =:enrollmentYear" );
+				" and model.tdpCadre.enrollmentYear =:enrollmentYear " );
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" and model1.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+	        str.append(" tcey.enrollmentYearId in (:enrollmentIdsList) and tc.isDeleted='N' and tcey.isDeleted='N' ");
+	      }
+		Query query=getSession().createQuery(str.toString());
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		      query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 		query.setDate("todayDate", todayDate);
 		//query.setParameter("parentEventId", parentEventId);
 		query.setParameter("entryEventId", entryEventId);
@@ -863,7 +953,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		
 	}
 	
-	public List<Object[]> getHourWiseCurrentVisitorsCount(Date todayDate,Long entryEventId,Long exitEventId,String type){
+	public List<Object[]> getHourWiseCurrentVisitorsCount(Date todayDate,Long entryEventId,Long exitEventId,String type,List<Long> enrollmentIdsList){
 		
 			StringBuilder str = new StringBuilder();
 		
@@ -875,8 +965,17 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			if(type !=null && type.equalsIgnoreCase("Invitee")){
 				str.append(" ,event_invitee ei ");
 			}	
+			
+			if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+				str.append(" , tdp_cadre tc, tdp_cadre_enrollment_year tcey ");
+			}
 			str.append(" where " +
-			        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId" );
+			        " date(ea1.attended_time) =:todayDate and ea1.event_id =:entryEventId " );
+			
+			if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+				str.append(" and ea1.tdp_cadre_id = tc.tdp_cadre_id and tc.tdp_cadre_id  = tcey.tdp_cadre_id and ");
+				str.append(" tcey.enrollment_year_id in (:enrollmentIdsList) and tc.is_deleted='N' and tcey.is_deleted='N' ");
+			}
 			
 			if(type !=null && type.equalsIgnoreCase("Invitee")){
 				str.append(" and ea1.tdp_cadre_id = ei.tdp_cadre_id  ");
@@ -886,6 +985,8 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("count",Hibernate.LONG)
 				.addScalar("hour",Hibernate.LONG);
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+			query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 		
 		query.setDate("todayDate", todayDate);
 		query.setParameter("exitEventId", exitEventId);
@@ -895,7 +996,7 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 	}
 	
 	//Invited,non-invited and Total for Today Visitors
-	public List<Object[]> getHourWiseTotalVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds,String type){
+	public List<Object[]> getHourWiseTotalVisitorsCount(Long parentEventId,Date date,List<Long> subeventIds,String type,List<Long> enrollmentIdsList){
 		
 		StringBuilder str = new StringBuilder();
 		
@@ -910,25 +1011,49 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" and date(EA.attended_time) = :date " +
 				" and E.event_id = :parentEventId " +
 				" group by  hour(EA.attended_time) order by hour(EA.attended_time);");*/
-		str.append("select count(tdp_cadre_id) as TOTAL,Hours as HOUR" +
-				" from (select distinct tdp_cadre_id,max(hour(attended_time)) Hours from event_attendee " +
-				" where event_id=:parentEventId and date(attended_time)=:date group by tdp_cadre_id) sadf group by Hours");
+		str.append("select count(distinct sadf.tdp_cadre_id) as TOTAL,Hours as HOUR " +
+				" from (select distinct tdp_cadre_id,max(hour(attended_time)) Hours from event_attendee  " );
+		str.append(" where event_id=:parentEventId and date(attended_time)=:date group by tdp_cadre_id) sadf ");
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" , tdp_cadre tc, tdp_cadre_enrollment_year tcey where ");
+	      }
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append("  sadf.tdp_cadre_id = tc.tdp_cadre_id and tc.tdp_cadre_id  = tcey.tdp_cadre_id and ");
+	        str.append(" tcey.enrollment_year_id in (:enrollmentIdsList) and tc.is_deleted='N' and tcey.is_deleted='N' ");
+	      }
+		
+		str.append(" group by Hours ");
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("TOTAL",Hibernate.LONG)
 				.addScalar("HOUR",Hibernate.LONG);
-		
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		      query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 		query.setDate("date", date);			
 		query.setParameter("parentEventId",parentEventId);
 		
 		return query.list();
 		
 	}
-	public Long getTotalAttendedCountOfEvent(Long eventId){
-	    Query query = getSession().createQuery("select count(distinct model.tdpCadreId) from EventAttendee model" +
-	        " where" +
-	        " model.event.parentEventId = :eventId " );
-	    
+	public Long getTotalAttendedCountOfEvent(Long eventId,List<Long> enrollmentIdsList){
+		if(enrollmentIdsList != null && enrollmentIdsList.contains(0L))
+			enrollmentIdsList.clear();
+		
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.tdpCadreId)  from EventAttendee model ");
+
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+		        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+		 }
+		str.append(" where model.event.parentEventId = :eventId ");
+		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
+	        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+	        str.append(" tcey.enrollmentYearId in (:enrollmentIdsList) and tc.isDeleted='N' and tcey.isDeleted='N' ");
+	      }
+		
+	    Query query = getSession().createQuery(str.toString());
+	    if(enrollmentIdsList != null && enrollmentIdsList.size()>0)
+		      query.setParameterList("enrollmentIdsList", enrollmentIdsList);
 	    query.setParameter("eventId",eventId);
 	    
 	    return (Long)query.uniqueResult();
@@ -2865,4 +2990,5 @@ public List<Object[]> getMahanaduEventCadreDetails(List<Long> eventIds,Long tdpC
 		query.setParameterList("extraEventIdsList", extraEventIdsList);
 		return (String)query.uniqueResult();
 	}
+
 }
