@@ -167,7 +167,14 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 				}
 			}
 			
-			resultList = mahaNaduService.getSubEventCount(jObj.getLong("parentEventId"),subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			org.json.JSONArray yearIdsArr = jObj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIdsArr != null && yearIdsArr.length() > 0){
+				for (int i = 0; i < yearIdsArr.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIdsArr.get(i).toString()));
+				}
+			}
+			resultList = mahaNaduService.getSubEventCount(jObj.getLong("parentEventId"),subEventIds,jObj.getString("startDate"),jObj.getString("endDate"),enrollmentYearIds);
 		}
 		catch(Exception e)
 		{
@@ -223,10 +230,18 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 						subEventIds.add(new Long(arr.get(i).toString()));
 				}
 			}
+			
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			org.json.JSONArray yearIdsArr = jObj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIdsArr != null && yearIdsArr.length() > 0){
+				for (int i = 0; i < yearIdsArr.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIdsArr.getString(i).toString()));
+				}
+			}
 			if(jObj.getString("startDate").equalsIgnoreCase(jObj.getString("endDate")))
-			resultList =  mahaNaduService.getHourWiseSubEventsCount(parentEventId,subEventIds,jObj.getString("startDate"));
+			resultList =  mahaNaduService.getHourWiseSubEventsCount(parentEventId,subEventIds,jObj.getString("startDate"),enrollmentYearIds);
 			else
-				resultList =  mahaNaduService.getDayWiseSubEventsCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));	
+				resultList =  mahaNaduService.getDayWiseSubEventsCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"),enrollmentYearIds);	
 			
 		}
 		catch(Exception e)
@@ -252,7 +267,15 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 						subEventIds.add(new Long(arr.get(i).toString()));
 				}
 			}
-			resultList =  mahaNaduService.getEventMembersCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
+			
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			org.json.JSONArray yearIdsArr = jObj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIdsArr != null && yearIdsArr.length() > 0){
+				for (int i = 0; i < yearIdsArr.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIdsArr.getString(i).toString()));
+				}
+			}
+			resultList =  mahaNaduService.getEventMembersCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"),enrollmentYearIds);
 			
 		}
 		catch(Exception e)
