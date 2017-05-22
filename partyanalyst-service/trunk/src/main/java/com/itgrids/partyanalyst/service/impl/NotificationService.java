@@ -455,13 +455,15 @@ public class NotificationService implements INotificationService{
 	 }
 	 public List<NotificationDeviceVO> getNotificationDetailsByTypeId(Long typeId){
 		 List<NotificationDeviceVO> notificationList = new ArrayList<NotificationDeviceVO>();
-		 List<Object[]> notificationsLst = notificationsDAO.getNotificationsByTypeId(typeId);
+		 List<Object[]> notificationsLst = notificationsDAO.getNotificationsByTypeId(typeId,null);
 		 if(notificationsLst != null && notificationsLst.size() > 0){
 			 for (Object[] obj : notificationsLst) {
 				 NotificationDeviceVO vo = new NotificationDeviceVO();
-				
+				 
 				vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
-				vo.setDeviceName(obj[1] != null ? obj[1].toString():"");
+				vo.setNotification(obj[1] != null ? obj[1].toString():"");
+				vo.setSuccessCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				vo.setFailureCount(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
 				notificationList.add(vo);
 			}
 		 }
@@ -499,14 +501,15 @@ public class NotificationService implements INotificationService{
 	public List<NotificationDeviceVO> getAllNotifications() {
 		try{
 			List<Object[]> objList = notificationsDAO.getAllNotifications();
-			List<NotificationDeviceVO> notificationDeviceVO =new ArrayList<NotificationDeviceVO>(); ;
+			List<NotificationDeviceVO> notificationDeviceVO =new ArrayList<NotificationDeviceVO>(); 
 			 for (Object[] objects : objList) {
 				 NotificationDeviceVO vo = new NotificationDeviceVO();
 				 vo.setNotification(objects[1] != null ? objects[1].toString():"");
-				 vo.setNotificationTypeId(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
-				 vo.setLastUpdatedTime(objects[2] != null ? objects[2].toString():"");
-				 vo.setUserId(Long.valueOf(objects[3] != null ? objects[3].toString():"0"));
-				 vo.setNotificationType(objects[4] != null ? objects[4].toString():"");
+				 vo.setNotificationTypeId(commonMethodsUtilService.getLongValueForObject(objects[0]));//Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+				 String date= commonMethodsUtilService.getStringValueForObject(objects[2]);
+				 vo.setLastUpdatedTime(date.substring(0, date.length() - 2));
+				 vo.setUserId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+				 vo.setNotificationType(commonMethodsUtilService.getStringValueForObject(objects[4]));
 				 notificationDeviceVO.add(vo);
 			 }
 			return notificationDeviceVO;
@@ -515,4 +518,41 @@ public class NotificationService implements INotificationService{
 			return null;
 		}
 	}
+
+	@Override
+	public List<NotificationDeviceVO> getAllNotificationsByuser(Long userId) {
+		try{
+			List<Object[]> objList = notificationsDAO.getAllNotificationsbyUser(userId);
+			List<NotificationDeviceVO> notificationDeviceVO =new ArrayList<NotificationDeviceVO>(); 
+			 for (Object[] objects : objList) {
+				 NotificationDeviceVO vo = new NotificationDeviceVO();
+				 vo.setOrderNo(Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+				 vo.setNotificationTypeId(Long.valueOf(objects[1] != null ? objects[1].toString():"0"));
+				 vo.setNotificationType(objects[2] != null ? objects[2].toString():"");
+				 notificationDeviceVO.add(vo);
+			 }
+			return notificationDeviceVO;
+		}catch(Exception e){
+			
+			log.error("Exception occured in getAllNotificationsByuser() Method ",e);
+			return null;
+		}
+	}
+	 public List<NotificationDeviceVO> getNotificationDetailsByUserTypeId(Long typeId,Long userId){
+		 List<NotificationDeviceVO> notificationList = new ArrayList<NotificationDeviceVO>();
+		 List<Object[]> notificationsLst = notificationsDAO.getNotificationsByTypeId(typeId,userId);
+		 if(notificationsLst != null && notificationsLst.size() > 0){
+			 for (Object[] obj : notificationsLst) {
+				 NotificationDeviceVO vo = new NotificationDeviceVO();
+				 vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+				vo.setNotification(obj[1] != null ? obj[1].toString():"");
+				vo.setSuccessCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+				vo.setFailureCount(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+				notificationList.add(vo);
+			}
+		 }
+		return notificationList;
+		 
+		 }
+		
  }
