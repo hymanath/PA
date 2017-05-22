@@ -124,8 +124,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			List<Long> subEventIds = new ArrayList<Long>();
 			
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++){
-				subEventIds.add(new Long(arr.get(i).toString()));
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}
 			}
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
@@ -157,8 +160,12 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			jObj = new JSONObject(getTask());
 			List<Long> subEventIds = new ArrayList<Long>();
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++)
-			subEventIds.add(new Long(arr.get(i).toString()));
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}
+			}
 			
 			resultList = mahaNaduService.getSubEventCount(jObj.getLong("parentEventId"),subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
 		}
@@ -181,8 +188,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			Long reportLevelId = jObj.getLong("reportLevelId");
 			
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++){
-				subEventIds.add(new Long(arr.get(i).toString()));
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}
 			}
 			String startDate = jObj.getString("startDate");
 			String endDate = jObj.getString("endDate");
@@ -207,8 +217,12 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			Long parentEventId = jObj.getLong("parentEventId");
 			List<Long> subEventIds = new ArrayList<Long>();
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++)
-			subEventIds.add(new Long(arr.get(i).toString()));
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}
+			}
 			if(jObj.getString("startDate").equalsIgnoreCase(jObj.getString("endDate")))
 			resultList =  mahaNaduService.getHourWiseSubEventsCount(parentEventId,subEventIds,jObj.getString("startDate"));
 			else
@@ -232,8 +246,12 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		//	Long reportLevelId = jObj.getLong("reportLevelId");
 			List<Long> subEventIds = new ArrayList<Long>();
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++)
-			subEventIds.add(new Long(arr.get(i).toString()));
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}
+			}
 			resultList =  mahaNaduService.getEventMembersCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
 			
 		}
@@ -301,8 +319,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			Long stateId = jObj.getLong("stateId");
 			Long reportLevelId = jObj.getLong("reportLevelId");
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++){
-				subEventIds.add(new Long(arr.get(i).toString()));
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}
 			}
 			resultList =  mahaNaduService.getAttendeeSummaryForEvents(eventId,stateId,reportLevelId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
 			
@@ -322,8 +343,12 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		
 			List<Long> subEventIds = new ArrayList<Long>();
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++)
-			subEventIds.add(new Long(arr.get(i).toString()));
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}
+			}
 			resultList =  mahaNaduService.getOtherStateDeligatesCount(parentEventId,subEventIds,jObj.getString("startDate"),jObj.getString("endDate"));
 			
 			
@@ -360,8 +385,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			Long stateId = jObj.getLong("stateId");
 			Long reportLevelId = jObj.getLong("reportLevelId");
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++){
-				subEventIds.add(new Long(arr.get(i).toString()));
+			if(arr != null && arr.length()>0){
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}
 			}
 			resultList =  mahaNaduService.getAttendeeSummaryForEventsList(eventId,stateId,reportLevelId,subEventIds);
 			
@@ -393,7 +421,8 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
 			if(arr != null && arr.length()>0){
 				for(int i=0;i<arr.length();i++){
-					subEventIds.add(new Long(arr.get(i).toString()));
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
 				}			
 			}
 			resultList = mahaNaduService.getDaysUniqueAndRevisitSummary(eventId,stateId,reportLevelId,subEventIds,jObj.getString("dateValues"));
@@ -412,9 +441,11 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			Long stateId = jObj.getLong("stateId");
 			Long reportLevelId = jObj.getLong("reportLevelId");
 			org.json.JSONArray arr = jObj.getJSONArray("subEvents");
-			for(int i=0;i<arr.length();i++){
-				subEventIds.add(new Long(arr.get(i).toString()));
-			}			
+			if(arr != null && arr.length()>0)
+				for(int i=0;i<arr.length();i++){
+					if(arr.get(i).toString().trim().length()>0)
+						subEventIds.add(new Long(arr.get(i).toString()));
+				}			
 			String date = jObj.getString("date");
 			resultList = mahaNaduService.getDayWiseVisitSummary(eventId,stateId,reportLevelId,subEventIds,date);
 			
