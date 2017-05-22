@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Scanner;
 
@@ -47,8 +48,9 @@ public class GcmService {
 					conn.setDoOutput(true);
 					conn.setRequestMethod("POST");
 					conn.setRequestProperty("Authorization", "key="+ GOOGLE_SERVER_KEY);
-					conn.setRequestProperty("Content-Type", "application/json");
-					OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+					conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+					OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(),
+						     Charset.forName("UTF-8").newEncoder());
 					wr.write(json.toString());
 					wr.flush();
 					InputStream is = conn.getInputStream();
