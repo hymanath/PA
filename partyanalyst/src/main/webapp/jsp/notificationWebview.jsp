@@ -253,6 +253,7 @@ function buildGrivenceDetailsTableOld(result){
 				    str+=' <th>Notification</th>';
 					str+=' <th>Success Count</th>';   
 					str+=' <th>Failure Count</th>';   					 
+					str+=' <th>Time </th>';
                     str+='</tr>';
 					str+=' </thead>';
 					str+='<tbody>';
@@ -261,7 +262,8 @@ function buildGrivenceDetailsTableOld(result){
 					 str+='<tr>';
 					 str+='<td >'+result[i].notification+'</td>';
 					 str+='<td>'+result[i].successCount+'</td>';
-					  str+='<td>'+result[i].failureCount+'</td>';
+					 str+='<td>'+result[i].failureCount+'</td>';
+					 str+='<td>'+result[i].lastUpdatedTime+'</td>';
 					 str+='</tr>';
 				    }
 				   str+='</tbody>';    
