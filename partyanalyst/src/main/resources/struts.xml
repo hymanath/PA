@@ -17338,5 +17338,15 @@
 			<param name="root">alertOverviewVO</param>         
 		</result> 
 	</action>
+	<action name="getAllNotificationsByuserAction" class="notificationAction" method="getAllNotificationsByuser">
+		   <result type="json" name="success">
+			<param name="root">notificationTypeList</param>
+		</result>
+	</action>
+	<action name="getNotificationTypeDetailsuserAction" class="notificationAction" method="getNotificationDetailsByUserTypeId">
+		<result type="json" name="success">
+			<param name="root">notificationTypeList</param>
+		</result>
+	</action>
  </package>
 </struts>
