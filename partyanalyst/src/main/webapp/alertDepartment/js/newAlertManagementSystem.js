@@ -4,15 +4,16 @@ var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","El
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var globalStateId = 1;  
-var globalNewsPaperIdArr = [];
-var globalChannelIdArr = [];
-var globalDepartmentIdArr = [];
+var newspapersGlobalArr = [];
+var channelGlobalArr = [];
+var globalDepartmentIdsArr = [];
 var globalUserLevelId=0;
 var globalUserLevelValues = [0];
 var globalDesignationId=0;
-var globalCallCenterArr = [];
+var callCenterGlobalArr = [];
 var globalsocialMediaTypeIdsArr = [];
 var subLevels = [];
+
 
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 
@@ -30,25 +31,25 @@ function onLoadInitialisations()
 	$(".newsPaperListCls").each(function(){
 		if($(this).is(":checked"))
 		{
-			globalNewsPaperIdArr.push($(this).attr("attr_val"));
+			newspapersGlobalArr.push($(this).attr("attr_val"));
 		}
 	});
 	$(".chanelListCls").each(function(){
 		if($(this).is(":checked"))
 		{
-			globalChannelIdArr.push($(this).attr("attr_val"));
+			channelGlobalArr.push($(this).attr("attr_val"));
 		}
 	});
 	$(".departmentsCls").each(function(){
 		if($(this).is(":checked"))
 		{
-			globalDepartmentIdArr.push($(this).attr("attr_val"));
+			globalDepartmentIdsArr.push($(this).attr("attr_val"));
 		}
 	});
 	$(".callcenterCls").each(function(){
 		if($(this).is(":checked"))
 		{
-			globalCallCenterArr.push($(this).attr("attr_val"));
+			callCenterGlobalArr.push($(this).attr("attr_val"));
 		}
 	});
 	$(".mediaTypeCls").each(function(){
@@ -73,33 +74,33 @@ function onLoadInitialisations()
 	});
 	
 	$(document).on("click",".filtersSubmitDivId",function(){
-		globalNewsPaperIdArr = [];
-		globalChannelIdArr = [];
-		globalDepartmentIdArr = [];
-		globalCallCenterArr = [];
+		newspapersGlobalArr = [];
+		channelGlobalArr = [];
+		globalDepartmentIdsArr = [];
+		callCenterGlobalArr = [];
 		globalsocialMediaTypeIdsArr = [];
 		$(".newsPaperListCls").each(function(){
 			if($(this).is(":checked"))
 			{
-				globalNewsPaperIdArr.push($(this).attr("attr_val"));
+				newspapersGlobalArr.push($(this).attr("attr_val"));
 			}
 		});
 		$(".chanelListCls").each(function(){
 			if($(this).is(":checked"))
 			{
-				globalChannelIdArr.push($(this).attr("attr_val"));
+				channelGlobalArr.push($(this).attr("attr_val"));
 			}
 		});
 		$(".departmentsCls").each(function(){
 			if($(this).is(":checked"))
 			{
-				globalDepartmentIdArr.push($(this).attr("attr_val"));
+				globalDepartmentIdsArr.push($(this).attr("attr_val"));
 			}
 		});
 		$(".callcenterCls").each(function(){
 			if($(this).is(":checked"))
 			{
-				globalCallCenterArr.push($(this).attr("attr_val"));
+				callCenterGlobalArr.push($(this).attr("attr_val"));
 			}
 		});
 		
@@ -109,16 +110,16 @@ function onLoadInitialisations()
 			globalsocialMediaTypeIdsArr.push($(this).attr("attr_val"));
 		}
 	   });
-		var newsPaperIdLen = globalNewsPaperIdArr.length;
-		var channelIdLen = globalChannelIdArr.length;
-		var callCenterIdLen = globalCallCenterArr.length;
+		var newsPaperIdLen = newspapersGlobalArr.length;
+		var channelIdLen = channelGlobalArr.length;
+		var callCenterIdLen = callCenterGlobalArr.length;
 		var mediaTypeLenLen = globalsocialMediaTypeIdsArr.length;
 		
 		if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen == 0 && mediaTypeLenLen==0){
 			alert("Please Select Atleast One Option.");   
 			return;
 		}
-		var departmentIdLen = globalDepartmentIdArr.length;
+		var departmentIdLen = globalDepartmentIdsArr.length;
 		if(departmentIdLen == 0){
 			alert("Please Select Atleast One Department.");
 			return;
@@ -209,7 +210,7 @@ function onLoadInitialisations()
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount);
-		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
 	});
 	$(document).on("click",".getTotalAlertBylocationLvl",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -222,7 +223,7 @@ function onLoadInitialisations()
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		getTotalAlertBylocationLvl(statusId,statusName,statuscount);
-		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
 	});
 	$(document).on("click",".totalAlertCls",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -238,7 +239,7 @@ function onLoadInitialisations()
 		}else{
 			getTotalAlertBylocationLvl(0,"Alert",totalAlertCnt);
 		}
-		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
 	});
 	
 	$(document).on("click",".getTotalAlertBylocationLvlThenDept",function(){
@@ -253,7 +254,7 @@ function onLoadInitialisations()
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
 		getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,departmentId);
-		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
 	});
 	$(document).on("click",".getTotalAlertByStatusThenDept",function(){
 		$("#totalAlertsModalTabId").html(spinner);
@@ -267,7 +268,7 @@ function onLoadInitialisations()
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
 		getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmentId);
-		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
 	});
 	
 }
@@ -332,10 +333,10 @@ function getStatusWiseAlertOverviewCnt()
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : globalStateId,
-      deptIdArr : globalDepartmentIdArr,  
-      paperIdArr : globalNewsPaperIdArr,
-      chanelIdArr : globalChannelIdArr,
-	  callCenterArr : globalCallCenterArr,
+      deptIdArr : globalDepartmentIdsArr,  
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr : channelGlobalArr,
+	  callCenterArr : callCenterGlobalArr,
 	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
     $.ajax({
@@ -493,10 +494,10 @@ function getLevelWiseAlertOverviewCnt()
 		fromDate:currentFromDate,
 		toDate:currentToDate,
 		stateId : globalStateId,
-		deptIdArr : globalDepartmentIdArr,  
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,
-		callCenterArr : globalCallCenterArr,
+		deptIdArr : globalDepartmentIdsArr,  
+		paperIdArr : newspapersGlobalArr,
+		chanelIdArr : channelGlobalArr,
+		callCenterArr : callCenterGlobalArr,
 		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
 	}
 	$.ajax({
@@ -721,10 +722,10 @@ function getDepartmentWiseAlertOverviewCnt(type,id)
 		fromDate:currentFromDate,
 		toDate:currentToDate,
 		stateId : globalStateId,
-		deptIdArr : globalDepartmentIdArr,  
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,
-		callCenterArr : globalCallCenterArr,
+		deptIdArr : globalDepartmentIdsArr,  
+		paperIdArr : newspapersGlobalArr,
+		chanelIdArr : channelGlobalArr,
+		callCenterArr : callCenterGlobalArr,
 		alertStatusIdArr:alertStatusIdArr,
 		deptScopeLevelIdArr:deptScopeLevelIdArr,
 		resultType:type,
@@ -904,10 +905,10 @@ function getAlertDtlsBasedOnStatusClick(statusId,statusName,statuscount){
 		fromDate:currentFromDate,
 		toDate:currentToDate,
 		stateId : globalStateId,
-		deptIdArr : globalDepartmentIdArr,  
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr, 
-		callCenterArr : globalCallCenterArr,		
+		deptIdArr : globalDepartmentIdsArr,  
+		paperIdArr : newspapersGlobalArr,
+		chanelIdArr : channelGlobalArr, 
+		callCenterArr : callCenterGlobalArr,		
 		statusId : statusId ,
 		impactLevelArr :impactLevelArr,
         priorityArr :priorityArr,
@@ -935,10 +936,10 @@ function getTotalAlertBylocationLvl(statusId,statusName,statuscount){
 		fromDate:currentFromDate,
 		toDate:currentToDate,
 		stateId : globalStateId,
-		deptIdArr : globalDepartmentIdArr,  
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,
-		callCenterArr : globalCallCenterArr,		
+		deptIdArr : globalDepartmentIdsArr,  
+		paperIdArr : newspapersGlobalArr,
+		chanelIdArr : channelGlobalArr,
+		callCenterArr : callCenterGlobalArr,		
 		statusId : 0,
 		govtDeptScopeId : statusId,
 		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
@@ -962,10 +963,10 @@ function getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmen
 		fromDate:currentFromDate,
 		toDate:currentToDate,
 		stateId : globalStateId,
-		deptIdArr : globalDepartmentIdArr,  
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr, 
-		callCenterArr : globalCallCenterArr,	
+		deptIdArr : globalDepartmentIdsArr,  
+		paperIdArr : newspapersGlobalArr,
+		chanelIdArr : channelGlobalArr, 
+		callCenterArr : callCenterGlobalArr,	
 		statusId : departmentId,
 		deptId : statusId,
         socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr		
@@ -989,10 +990,10 @@ function getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,depa
 		fromDate:currentFromDate,
 		toDate:currentToDate,
 		stateId : globalStateId,
-		deptIdArr : globalDepartmentIdArr,  
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,
-		callCenterArr : globalCallCenterArr,		
+		deptIdArr : globalDepartmentIdsArr,  
+		paperIdArr : newspapersGlobalArr,
+		chanelIdArr : channelGlobalArr,
+		callCenterArr : callCenterGlobalArr,		
 		statusId : 0,
 		govtDeptScopeId : departmentId,    
 		deptId : statusId,
@@ -1015,7 +1016,7 @@ function getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,depa
 function getDeptNamesForMultiLevel(){ 
 $("#levelWiseDepartmentDetailsId").html(spinner);
  var jsObj = {
-	  deptIdArr : globalDepartmentIdArr  
+	  deptIdArr : globalDepartmentIdsArr  
  }
   $.ajax({
       type:'GET',
@@ -1329,9 +1330,9 @@ function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartme
 		fromDate:currentFromDate,
 		toDate:currentToDate,
 		stateId : globalStateId,
-		paperIdArr : globalNewsPaperIdArr,
-		chanelIdArr : globalChannelIdArr,
-		callCenterArr : globalCallCenterArr,
+		paperIdArr : newspapersGlobalArr,
+		chanelIdArr : channelGlobalArr,
+		callCenterArr : callCenterGlobalArr,
 		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : parentGovtDepartmentScopeId, 
 		districtWorkLocationId : 0,  
@@ -1981,9 +1982,9 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 		  fromDate:currentFromDate,
 		  toDate:currentToDate,
 		  stateId : globalStateId,
-		  paperIdArr : globalNewsPaperIdArr,
-		  chanelIdArr : globalChannelIdArr,
-		  callCenterArr : globalCallCenterArr,      
+		  paperIdArr : newspapersGlobalArr,
+		  chanelIdArr : channelGlobalArr,
+		  callCenterArr : callCenterGlobalArr,      
 		  govtDepartmentId : departmentId,
 		  parentGovtDepartmentScopeId : districtLevelId,
 		  alertType:"alert",
@@ -2049,9 +2050,9 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 			fromDate:currentFromDate,
 			toDate:currentToDate,
 			stateId : globalStateId,
-			paperIdArr : globalNewsPaperIdArr,
-			chanelIdArr : globalChannelIdArr,
-			callCenterArr : globalCallCenterArr,			
+			paperIdArr : newspapersGlobalArr,
+			chanelIdArr : channelGlobalArr,
+			callCenterArr : callCenterGlobalArr,			
 			govtDepartmentId : departmentId,
 			parentGovtDepartmentScopeId : subLevelId,
 			parentGovtDepartmentScopeValue:locationValue,
@@ -2098,13 +2099,13 @@ var locationLevelIdClickArr=[];
 		fromDate:currentFromDate,
 		toDate:currentToDate,
 		stateId : 1,
-		paperIdArr:globalNewsPaperIdArr,
-		chanelIdArr:globalChannelIdArr,
+		paperIdArr:newspapersGlobalArr,
+		chanelIdArr:channelGlobalArr,
 		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : parentGovtDepartmentScopeId,
 		deptScopeId : levelId,    
 		statusId:statusId,   
-		callCenterArr:globalCallCenterArr,
+		callCenterArr:callCenterGlobalArr,
 		locationValue : locationValue,
 		alertType:"alert",
 		alertCategoryId:alertCategoryId,
@@ -2135,10 +2136,10 @@ function getAlertSourceWiseAlert()
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : globalStateId,
-      deptIdArr : globalDepartmentIdArr,  
-      paperIdArr : globalNewsPaperIdArr,
-      chanelIdArr : globalChannelIdArr,
-	  callCenterArr : globalCallCenterArr,
+      deptIdArr : globalDepartmentIdsArr,  
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr : channelGlobalArr,
+	  callCenterArr : callCenterGlobalArr,
 	  userType :"admin",
 	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
     }
@@ -2485,15 +2486,15 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 		backdrop: 'static'
 	});
 	$("#alertManagementPopupBody").html(spinner);
-	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdArr);//srujana
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);//srujana
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : globalStateId,
-      deptIdArr : globalDepartmentIdArr,  
-      paperIdArr : globalNewsPaperIdArr,
-      chanelIdArr : globalChannelIdArr,
-	  callCenterArr : globalCallCenterArr,
+      deptIdArr : globalDepartmentIdsArr,  
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr : channelGlobalArr,
+	  callCenterArr : callCenterGlobalArr,
 	  alertCategoryId:alertCategoryId,
 	  userType :"admin",
 	  alertStatusId:alertStatusId,

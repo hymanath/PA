@@ -90,7 +90,7 @@ var globaldepartmentsArrForFilterView=[];
 		});
 	}
 	
-	var globalDepartmentIdArr = [];
+	var globalDepartmentIdsArr = [];
 	function getDistrictOfficerAlertsCountView(){
 	$("#myAlertsDivID").html(spinner);
 	$("#mySubTasksDivID").html(spinner);
@@ -116,7 +116,7 @@ var globaldepartmentsArrForFilterView=[];
 		$("#assignedSubTasksDivID").html('');
 		if(result !=null){
 			globalDepartmentId = result.departmentId;
-			globalDepartmentIdArr.push(result.departmentId);
+			globalDepartmentIdsArr.push(result.departmentId);
 			globalDepartmentName = result.deptName;
 			globalgovtDeptDesigOffcrId = result.govtDeptDesigOffcrIds[0];
 			globalgovtOfficerId = result.govtOfficerIds[0];
@@ -690,6 +690,7 @@ $(document).on("click",".overAllCount",function(){
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
 	//alertIdArr=($(this).attr("attr_overcunt").split(','));
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
 	var govtDepDesigOffcrIds = [globalgovtDeptDesigOffcrId];
 	var govtOfficerIds = [globalgovtOfficerId];
 	var jObj = {
@@ -731,6 +732,7 @@ $(document).on("click",".todayCountCls",function(){
 	var alertType = $(this).attr("attr_alert_type");
 	var govtDepDesigOffcrIds = [globalgovtDeptDesigOffcrId];
 	var govtOfficerIds = [globalgovtOfficerId];
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
 	var jObj = {
 		govtDepDesigOffcrIds : govtDepDesigOffcrIds,
 		govtOfficerIds : govtOfficerIds,
@@ -1906,7 +1908,7 @@ function getChildLocationBasedOnParentLocation(departmentId,levelId,subLevelId,c
 }
 	
 function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName,totalCount,locationValue,parentGovtDepartmentScopeId,alertCategoryId,locationLevelId){
-	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdArr);
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
 	var locationLevelIdClickArr=[];
 	 if(locationLevelId == null || locationLevelId == 0){
 			 locationLevelIdClickArr =[];

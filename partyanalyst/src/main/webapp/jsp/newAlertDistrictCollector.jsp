@@ -305,7 +305,7 @@ var globalDepartmentName;
 var newspapersGlobalArr =[];
 var channelGlobalArr =[];
 var callCenterGlobalArr=[];
-var departmentIdsForAlertSoutceArr=[];
+var globalDepartmentIdsArr=[];
 var globalsocialMediaTypeIdsArr = [];
 
 google.load("elements", "1", {
