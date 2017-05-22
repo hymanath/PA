@@ -15,7 +15,6 @@ function onLoadClicks()
 	"use strict";
 	
 	
-	
 	/*alert Assigned Part Start*/
 	$(document).on('click', '.imageShowOpen li', function(){
 		var id = $(this).attr("attr_doc_id");
@@ -23,7 +22,7 @@ function onLoadClicks()
 		window.open(path);
 	});
 	$(document).on('change', '#locationLevelSelectId', function(){
-		
+	
 		getParentLevelsOfLevel($(this).attr('id'));
 	});
 	$(document).on('change','.locationsCls', function(evt, params) {
@@ -215,7 +214,7 @@ function onLoadClicks()
 		var statusCount = $(this).attr("attr_status_count");
 		$(".filters-list").each(function(){
 			blockName = $(this).attr("filters-list");
-			if(blockName == 'electronicMedia')
+			/* if(blockName == 'electronicMedia')
 			{
 				var  id = '';
 				$("[filters-list="+blockName+"] li.active").each(function(){
@@ -230,7 +229,8 @@ function onLoadClicks()
 					id = $(this).attr("attr_id");
 					printMediaArr.push(id);
 				});
-			}else if(blockName == 'priority')
+			}else  */
+			if(blockName == 'priority')
 			{
 				var  id = '';
 				$("[filters-list="+blockName+"] li.active").each(function(){
@@ -250,9 +250,16 @@ function onLoadClicks()
 				$("[filters-list="+blockName+"] li.active").each(function(){
 					id = $(this).attr("attr_id");
 					alertSourceArr.push(id);
+					var value = $(this).text();
+					/* if(value == "")
+					{
+						electronicMediaArr.push(id)
+					} */
+					
 				});
 			}
 		})
+		
 		getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevelArr,priorityArr,alertSourceArr,printMediaArr,electronicMediaArr);
 	});
 	
@@ -3349,7 +3356,13 @@ function popUpFilter(type,result,statusName,statuscount)
 		{
 			$(".scroller-alertDepartments").mCustomScrollbar({setHeight : '130px'});
 		}
-		
+		$("[filters-list='alertDepartments'] li").each(function(){
+			if($(this).hasClass("active"))
+			{
+				$(this).trigger("click");
+			}
+			
+		});
 	}
 }
 function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
@@ -4003,9 +4016,9 @@ function alertStatusHistory(result,alertId)
  
  
 
-function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdArr){
+function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr){
 	var jsObj={
-		deptIdArr : globalDepartmentIdArr
+		deptIdArr : globalDepartmentIdsArr
 	}
 	$.ajax({   
 		type:'GET',
@@ -4237,10 +4250,10 @@ function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevel
 		fromDate:     		 currentFromDate,
 		toDate:       		 currentToDate,
 		stateId :     		 1,
-		deptIdArr :     	 globalDepartmentIdArr,  
-		paperIdArr :     	 globalNewsPaperIdArr,
-		chanelIdArr :     	 globalChannelIdArr, 
-		callCenterArr :   	 globalCallCenterArr,    
+		deptIdArr :     	 globalDepartmentIdsArr,  
+		paperIdArr :     	 newspapersGlobalArr,
+		chanelIdArr :     	 channelGlobalArr, 
+		callCenterArr :   	 callCenterGlobalArr,    
 		statusId :       	 statusIdArr,
 		impactLevelArr :  	 impactLevelArr,
 		priorityArr :    	 priorityArr,

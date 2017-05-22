@@ -5,14 +5,7 @@ var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","Electronic Media":"#8D69C8","Call Center":"#EFC000","Facebook":"#00ABED","Twitter":"#F7776C","Social Media":"#00ABED"};	 
 var globaldepartmentsArrForFilterView=[];
-var globalDepartmentIdsArr = [];
-var newspapersGlobalArr = [];
-var channelGlobalArr = [];
-var callCenterGlobalArr = [];
-var globalDepartmentIdArr = globalDepartmentIdsArr;
-var globalNewsPaperIdArr = newspapersGlobalArr;
-var globalChannelIdArr = channelGlobalArr;
-var globalCallCenterArr = callCenterGlobalArr;
+
 	function getAlertType(){
 		 var alertType = ''; 
 		$('.switch-btn-alertType li').each(function(i, obj){
@@ -690,7 +683,7 @@ $(document).on("click",".overAllCount",function(){
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
-	getFilterSectionAlertDetails(statusName,totalCount,departmentIdsForAlertSoutceArr);
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
 	var jObj = {
 		govtDepDesigOffcrIds : globalgovtDeptDesigOffcrIds,
 		govtOfficerIds : globalgovtOfficerIds,
@@ -726,7 +719,7 @@ $(document).on("click",".todayCountCls",function(){
 	var statusName = $(this).attr("attr_name");
 	var totalCount = $(this).attr("attr_total_count")
 	var alertType = $(this).attr("attr_alert_type");
-	
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
 	var jObj = {
 		govtDepDesigOffcrIds : globalgovtDeptDesigOffcrIds,
 		govtOfficerIds : globalgovtOfficerIds,
@@ -796,7 +789,7 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 
 /*Alert Source Start */
 
-function getAlertSourceWiseAlert(departmentIdsForAlertSoutceArr)
+function getAlertSourceWiseAlert(globalDepartmentIdsArr)
 {
 	 
 	$("#alertSourceWiseDetilsDivId").html(spinner);
@@ -804,7 +797,7 @@ function getAlertSourceWiseAlert(departmentIdsForAlertSoutceArr)
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
-	  deptIdArr : departmentIdsForAlertSoutceArr,  
+	  deptIdArr : globalDepartmentIdsArr,  
       paperIdArr:newspapersGlobalArr,
 	  chanelIdArr:channelGlobalArr,
 	  callCenterArr:callCenterGlobalArr,
@@ -1156,12 +1149,12 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 
 	$("#alertManagementPopupBody").html(spinner);
 	
-	getFilterSectionAlertDetails(statusName,totalCount,departmentIdsForAlertSoutceArr);
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
     var jsObj ={
 		fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
-      deptIdArr : departmentIdsForAlertSoutceArr,  
+      deptIdArr : globalDepartmentIdsArr,  
 	  paperIdArr:newspapersGlobalArr,
 	  chanelIdArr:channelGlobalArr,
 	  callCenterArr:callCenterGlobalArr,
@@ -1193,15 +1186,15 @@ function getGovtDepartmentDetails(){
 		}).done(function(result){
 			if(result !=null && result.length>0){
 				globaldepartmentsArrForFilterView =result;
-				departmentIdsForAlertSoutceArr=[];
+				globalDepartmentIdsArr=[];
 				$("#govtDepartmentsId").append('<option value="0">Select Department</option>');
 				for(var i in result){
-					departmentIdsForAlertSoutceArr.push(result[i].id);
+					globalDepartmentIdsArr.push(result[i].id);
 					$("#govtDepartmentsId").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
 				}
 			}
 			var alertType = getAlertType();
-			getAlertSourceWiseAlert(departmentIdsForAlertSoutceArr);
+			getAlertSourceWiseAlert(globalDepartmentIdsArr);
 			getGovtDeptScopeDetails(0);
 			getDistrictLevelDeptWiseStatusOverView(alertType,"Decending",0,0,"departmentWiseGraphViewDetails"); 
 		});
@@ -1214,7 +1207,7 @@ function getGovtDepartmentDetails(){
 		 if(departmentId != null && departmentId > 0){
 			 deptArr.push(departmentId);
 		 }else{
-			 deptArr = departmentIdsForAlertSoutceArr;
+			 deptArr = globalDepartmentIdsArr;
 		 }
 		 var jObj ={
      	   deptArr:deptArr
@@ -1240,7 +1233,7 @@ function getGovtDepartmentDetails(){
 		if(departmentId > 0){
 				deptArr.push(departmentId);
 		}else{
-			deptArr = departmentIdsForAlertSoutceArr
+			deptArr = globalDepartmentIdsArr
 		}
 		var jObj = {
 			startDate: currentFromDate,
@@ -1675,7 +1668,7 @@ function getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departm
 	if(departmentId > 0){
 			deptArr.push(departmentId);
 	}else{
-		deptArr = departmentIdsForAlertSoutceArr
+		deptArr = globalDepartmentIdsArr
 	}
 	
 	var locationLevelIdArr = []
