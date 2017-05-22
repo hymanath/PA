@@ -836,7 +836,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return null;
 	 }
 	 
-	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds,String date){
+	public MahanaduEventVO getDistrictWiseTotalAndPresentCadre(Long eventId,List<Long> stateIds,String date,List<Long> enrollmentIdsList){
 		
 		MahanaduEventVO finalVO = new MahanaduEventVO();
 		
@@ -860,11 +860,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			StringBuilder districtQueryStr1 = new StringBuilder();
 			
 			if(stateIds.containsAll(twoStateIds)){				
-				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 23 ");				
+				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,517,518) ");				
 			}else if(stateIds.contains(1l)){				
-				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 11 and 23 ");				
+				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId in (11,12,13,14,15,16,17,18,19,20,21,22,23,517)  ");				
 			}else if(stateIds.contains(36l)){
-				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId between 1 and 10 ");
+				districtQueryStr1.append(" and model.tdpCadre.userAddress.constituency.district.districtId in (1,2,3,4,5,6,7,8,9,10,518) ");
 			}
 			
 			StringBuilder otherStatesLocationQueryString = new StringBuilder();
@@ -921,7 +921,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			/*Current Cadre In Campus*/
 				
 			//0.current Cadre Count,1.districtId
-			  List<Object[]> currentCountList = eventAttendeeDAO.getDistrictWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,districtQueryStr.toString());
+			  List<Object[]> currentCountList = eventAttendeeDAO.getDistrictWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,districtQueryStr.toString(),enrollmentIdsList);
 			  
 			  if(currentCountList !=null && currentCountList.size()>0){
 				  for(Object[] objects : currentCountList) {				
@@ -938,7 +938,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			  
 			  /*Total,Invited and Non invited Cadre*/		  
 			  //0.total,1.districtId,2.districtName
-			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(entryEventId,districtQueryStr1.toString(),todayDate);
+			  List<Object[]> totalCountList = eventAttendeeDAO.getDistrictWiseTotalInvitedAndNonInvitedCount(entryEventId,districtQueryStr1.toString(),todayDate,enrollmentIdsList);
 			  
 			  if(totalCountList !=null && totalCountList.size()>0){				  
 				  for(Object[] obj : totalCountList) {							  
@@ -962,7 +962,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  List<MahanaduEventVO> otherStatesfinalRslt = new ArrayList<MahanaduEventVO>(0);
 				  
 				  Map<Long,Long> distWiseCountsMap = new HashMap<Long, Long>(0);
-				  List<Object[]> otherStateRslt = eventAttendeeDAO.getOtherStateDistrictWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,otherStatesLocationQueryString.toString());
+				  List<Object[]> otherStateRslt = eventAttendeeDAO.getOtherStateDistrictWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,otherStatesLocationQueryString.toString(),enrollmentIdsList);
 				  
 				  if(otherStateRslt != null && otherStateRslt.size() > 0){
 					  for (Object[] objects : otherStateRslt) {
@@ -972,7 +972,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  
 				  /*Total,Invited and Non invited Cadre for other states*/		  
 				  //0.total,1.districtId,2.districtName
-				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(entryEventId,otherStatesLocationQueryString1.toString(),todayDate);
+				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(entryEventId,otherStatesLocationQueryString1.toString(),todayDate,enrollmentIdsList);
 				  
 				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
 					  for (Object[] obj : otherStatesTotalCountList) {
@@ -998,9 +998,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		
 	}
 	
-	public MahanaduEventVO getConstituencyWiseMembersCountInCampus(Long eventId,List<Long> stateIds,String date){
+	public MahanaduEventVO getConstituencyWiseMembersCountInCampus(Long eventId,List<Long> stateIds,String date,List<Long> enrollmentIds){
 		MahanaduEventVO finalVO = new MahanaduEventVO();
-		
 		try{
 			boolean otherStatesExist = false;
 			
@@ -1079,7 +1078,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			/*Current Cadre In Campus*/
 			
 			//0.current Cadre Count,1.constituencyId
-			  List<Object[]> currentCountList = eventAttendeeDAO.getConstituencyWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,districtQueryStr.toString());
+			  List<Object[]> currentCountList = eventAttendeeDAO.getConstituencyWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,districtQueryStr.toString(),enrollmentIds);
 			  
 			  if(currentCountList !=null && currentCountList.size()>0){
 				  for(Object[] objects : currentCountList) {				
@@ -1095,7 +1094,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			  
 			  /*Total,Invited and Non invited Cadre*/		  
 			  //0.total,1.contId,2.constName
-			  List<Object[]> totalCountList = eventAttendeeDAO.getConstituencyWiseTotalInvitedAndNonInvitedCount(entryEventId,constituencyQueryStr1.toString(),todayDate);
+			  List<Object[]> totalCountList = eventAttendeeDAO.getConstituencyWiseTotalInvitedAndNonInvitedCount(entryEventId,constituencyQueryStr1.toString(),todayDate,enrollmentIds);
 			  
 			  if(totalCountList !=null && totalCountList.size()>0){				  
 				  for(Object[] obj : totalCountList) {							  
@@ -1117,7 +1116,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  List<MahanaduEventVO> otherStatesfinalRslt = new ArrayList<MahanaduEventVO>(0);
 				  
 				  Map<Long,Long> constWiseCountsMap = new HashMap<Long, Long>(0);
-				  List<Object[]> otherStateRslt = eventAttendeeDAO.getOtherStateConstituencyWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,otherStatesLocationQueryString.toString());
+				  List<Object[]> otherStateRslt = eventAttendeeDAO.getOtherStateConstituencyWiseCurrentCadreInCampus(todayDate,entryEventId,exitEventId,otherStatesLocationQueryString.toString(),enrollmentIds);
 				  
 				  if(otherStateRslt != null && otherStateRslt.size() > 0){
 					  for (Object[] objects : otherStateRslt) {
@@ -1127,7 +1126,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  
 				  /*Total,Invited and Non invited Cadre for other states*/		  
 				  //0.total,1.districtId,2.districtName
-				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(entryEventId,otherStatesLocationQueryString1.toString(),todayDate);
+				  List<Object[]>  otherStatesTotalCountList = eventAttendeeDAO.getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(entryEventId,otherStatesLocationQueryString1.toString(),todayDate,enrollmentIds);
 				  
 				  if(otherStatesTotalCountList != null && otherStatesTotalCountList.size() > 0){
 					  for (Object[] obj : otherStatesTotalCountList) {
