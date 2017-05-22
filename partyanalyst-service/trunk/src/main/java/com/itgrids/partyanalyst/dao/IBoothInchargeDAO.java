@@ -11,4 +11,5 @@ public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	
 	public List<Long> getCadreIdsForLocation(List<Long> tdpCadreIds);
 	public BoothIncharge getExistingMember(Long locationId,String type);
+	public Long getStartedBothCountByConstiId(Long constituencyId);
 }

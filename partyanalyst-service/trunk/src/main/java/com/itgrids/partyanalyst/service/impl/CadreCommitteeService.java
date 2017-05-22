@@ -22387,4 +22387,31 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 	 }
 	 return status;
  }
+ 
+ public LocationWiseBoothDetailsVO getTotalBoothsCountByConstituenctIds(Long constituencyId){
+	 LocationWiseBoothDetailsVO locationVO = new LocationWiseBoothDetailsVO() ;
+	 try{
+		 LOG.info("Entered into CadreCommitteeService of getTotalBoothsCountByConstituenctIds");
+		  Long totNotStartedBothCnt =0l;
+		  
+		  Long  totBothsCnt = boothDAO.getTotalBoothsByConstituencyId(constituencyId);//total Booths count
+			if(totBothsCnt.longValue()>0l){
+				locationVO.setTotalCount(totBothsCnt);
+			}
+		
+		 Long totStartedBoothCnt = boothInchargeDAO.getStartedBothCountByConstiId(constituencyId);//total Started Booth counts
+	         if(totStartedBoothCnt.longValue()>0l){
+	        	 locationVO.setCount(totStartedBoothCnt);
+	         }
+         
+         totNotStartedBothCnt = ((locationVO.getTotalCount())-(locationVO.getCount()));
+       
+         locationVO.setTotNotStartedBothCnt(totNotStartedBothCnt);
+         
+	}catch(Exception e){
+		 LOG.error("Exception raised in CadreCommitteeService of getTotalBoothsCountByConstituenctIds", e);
+	 }
+	 return locationVO;
+}
+ 
 }

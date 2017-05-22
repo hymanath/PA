@@ -59,7 +59,7 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	private String tableName;
 	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>();
 	private String status;
-	
+	private Long totNotStartedBothCnt =0l;
 	
 	public String getStatus() {
 		return status;
@@ -358,5 +358,11 @@ public class LocationWiseBoothDetailsVO implements Serializable,Cloneable{
 	}
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
+	}
+	public Long getTotNotStartedBothCnt() {
+		return totNotStartedBothCnt;
+	}
+	public void setTotNotStartedBothCnt(Long totNotStartedBothCnt) {
+		this.totNotStartedBothCnt = totNotStartedBothCnt;
 	}
 }
