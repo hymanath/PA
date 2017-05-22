@@ -4,6 +4,14 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var globaldepartmentsArrForFilterView=[];
+var globalDepartmentIdsArr = [];
+var newspapersGlobalArr = [];
+var channelGlobalArr = [];
+var callCenterGlobalArr = [];
+var globalDepartmentIdArr = globalDepartmentIdsArr;
+var globalNewsPaperIdArr = newspapersGlobalArr;
+var globalChannelIdArr = channelGlobalArr;
+var globalCallCenterArr = callCenterGlobalArr;
 onLoadCallsForState(); 
 $(document).on("click",".filterSubmitBtnCls",function(){
 		var newsPaperIdLen = newspapersGlobalArr.length;
@@ -1802,6 +1810,7 @@ $(document).on("click",".alertCountCls",function(){
 	var searchType = $(this).attr("attr_search_type");
 	getTotalAlertCountDetails(deptId,0,0,type,deptName,count,searchType)
 	getFilterSectionAlertDetails(deptName,count,globalDepartmentIdsArr);
+	
 });
 function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType,resultType){
   $("#alertManagementPopupBody").html('')
