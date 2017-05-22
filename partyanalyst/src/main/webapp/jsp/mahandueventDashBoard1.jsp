@@ -120,13 +120,22 @@
 	
 	<div class="well well-sm" style="background:#999">
 		<div class="row">
-			<div class="col-md-3">
-				 <div id="reportrange" class="pull-right calendar-style">
-				  <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-				  <span>April 1, 2015 - April 30, 2015</span> <b class="caret"></b>
+			<div class="col-md-5">
+				<div id="reportrange" class="col-md-7">
+					<div class=" pull-right calendar-style">
+						<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+						<span>April 1, 2015 - April 30, 2015</span> <b class="caret"></b>
+					</div>
+			   </div>
+			   <div id="enrollmentDivId" class="col-md-5">
+					<select class="form-control" id="enrollmentYearSelId">
+						<option value="0">All</option>
+						<option value="3">2014 - 2016</option>
+						<option value="4" selected>2017 - 2018</option>
+					</select>
 			   </div>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-7">
 				<div id="mahanaduEventDashBoardLinkId" style="display:none">
 					<button id="mahanaduLinkId" type="button" class="btn btn-primary pull-right">ENTRY/EXIT DASHBOARD</button>
 				</div>
@@ -507,7 +516,7 @@ var subEvents = [];
 var startDate;
 var endDate;
 var dataRetrievingType = "intermediate"; // intermediate dynamic
-
+var enrollmentYearIdsArrGlob = [];
 
 function getEvents()
 {
@@ -591,7 +600,9 @@ eventUpdate();
 var dpCurentDate;
 var formatedDpCurentDate;
  $(document).ready(function() {
-
+		if($("#enrollmentYearSelId").val() != 0)
+			enrollmentYearIdsArrGlob.push($("#enrollmentYearSelId").val());
+		
                   var cb = function(start, end, label) {
                     //alert(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('D MMMM,YYYY') + ' - ' + end.format('D MMMM,YYYY'));
@@ -731,7 +742,8 @@ $(".maineventCls").each(function(){
 				startDate    :startDate,
 				endDate      :endDate,
 				parentEventId:parentEventId,
-				subEventIds : subEvents
+				subEventIds : subEvents,
+				enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 			}
 			$.ajax({
 			type : 'GET',
@@ -959,7 +971,8 @@ function getLocationWiseVisitorsCount(eventId,reportLevelId)
 			endDate : endDate,
 		    dataRetrievingType : dataRetrievingType,
 			parentEventId:parentEventId,
-			eventType : "parentEvent"
+			eventType : "parentEvent",
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 		}	
 		
 		$.ajax({
@@ -1012,7 +1025,8 @@ function getLocationWiseVisitorsCountForDistrict(eventId,reportLevelId)
 			endDate : endDate,
 		    dataRetrievingType : dataRetrievingType, 
             parentEventId:parentEventId,
-			eventType : "parentEvent"			
+			eventType : "parentEvent",
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob			
 		}	
 		
 		$.ajax({
@@ -1097,7 +1111,8 @@ var jObj = {
 			endDate : endDate,
 		    dataRetrievingType : dataRetrievingType, 
 			eventType : eventType,
-			parentEventId:parentEventId
+			parentEventId:parentEventId,
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob 
 		}	
 		
 		$.ajax({
@@ -1603,7 +1618,8 @@ function getSubEventDetails(parentEventId){
 			parentEventId:parentEventId,	
 			subEvents : subEvents,
 			startDate : startDate,
-			endDate   :  endDate
+			endDate   :  endDate,
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 		}	
 		
 		$.ajax({
@@ -2081,7 +2097,8 @@ $("#hourWiseContainer").html("");
 			parentEventId:parentEventId,
 			subEvents : subEvents,
 			startDate : startDate,
-			endDate : endDate
+			endDate : endDate,
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 		}	
 		
 		$.ajax({
@@ -2385,7 +2402,8 @@ $('#columnChartAjax').show();
 			parentEventId:parentEventId,			
 		    subEvents : subEvents,
 			startDate : startDate,
-			endDate : endDate
+			endDate : endDate,
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 		}	
 		
 		$.ajax({
@@ -2905,7 +2923,8 @@ function getPublicrepresentatives(){
 				startDate    :startDate,
 				endDate      :endDate,
 				parentEventId      :parentEventId,
-				subEventIds : subEvents
+				subEventIds : subEvents,
+				enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 			}
 			$.ajax({
 			type : 'GET',

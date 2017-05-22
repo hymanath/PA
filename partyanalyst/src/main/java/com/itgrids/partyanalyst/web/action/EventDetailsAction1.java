@@ -105,7 +105,15 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 			}
 			String stateType = jObj.getString("stateType");
 			
-			resultList =  mahanaduDashBoardService1.LocationWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds,reportLevelId,stateIds,stateType);
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			JSONArray yearIdsArr = jObj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIdsArr != null && yearIdsArr.length() > 0){
+				for (int i = 0; i < yearIdsArr.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIdsArr.get(i).toString()));
+				}
+			}
+			
+			resultList =  mahanaduDashBoardService1.LocationWiseEventAttendeeCounts(startDate,endDate,parentEventId,subEventIds,reportLevelId,stateIds,stateType,enrollmentYearIds);
 			
 		}
 		catch(Exception e)
@@ -131,7 +139,15 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 				subEventIds.add(new Long(arr.get(i).toString()));
 			}
 			
-			statesEventVO =  mahanaduDashBoardService1.stateWiseEventAttendeeCounts(startDate,endDate,parenteventId,subEventIds,false);
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			JSONArray yearIdsArr = jObj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIdsArr != null && yearIdsArr.length() > 0){
+				for (int i = 0; i < yearIdsArr.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIdsArr.getString(i)));
+				}
+			}
+			
+			statesEventVO =  mahanaduDashBoardService1.stateWiseEventAttendeeCounts(startDate,endDate,parenteventId,subEventIds,false,enrollmentYearIds);
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -182,7 +198,14 @@ public class EventDetailsAction1 extends ActionSupport implements ServletRequest
 				subEventIds.add(new Long(arr.get(i).toString()));
 			}
 			
-			resultList = mahanaduDashBoardService1.getPublicrepresentatives(startDate,endDate,eventId,subEventIds);
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			JSONArray yearIds = jObj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIds != null && yearIds.length() > 0){
+				for (int i = 0; i < yearIds.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIds.getString(i)));
+				}
+			}
+			resultList = mahanaduDashBoardService1.getPublicrepresentatives(startDate,endDate,eventId,subEventIds,enrollmentYearIds);
 			
 		}catch (Exception e) {
 			e.printStackTrace();
