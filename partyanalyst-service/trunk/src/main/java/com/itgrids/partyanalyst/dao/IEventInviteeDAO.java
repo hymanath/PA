@@ -36,12 +36,12 @@ public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	public List<Object[]> totalCommitteeRoleInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds);
 	public List<Object[]> totalDistrictAffliatedCommitteeInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds);
 	
-	public List<Object[]> getEventInviteesCountByCasteIds(Set<Long> casteIds,Long eventId);
-	public List<Object[]> getEventInviteesCountByageWiseIds(Set<Long> ageRangeIds,Long eventId);
-	public List<Object[]> getEventInviteesCountByGender(Long eventId);
-	public List<Object[]> getTotalCadresCountByCasteIds(Set<Long> casteIds);
-	public List<Object[]> getEventInviteesCountByCasteCategoryIdsExcludingMinorities(Set<Long> casteCategoryIds,Long eventId);
-	public Long getEventInviteesCountForMinorities(Long eventId);
+	public List<Object[]> getEventInviteesCountByCasteIds(Set<Long> casteIds,Long eventId,List<Long> enrollmentYrIds);
+	public List<Object[]> getEventInviteesCountByageWiseIds(Set<Long> ageRangeIds,Long eventId,List<Long> enrollmentYrIds);
+	public List<Object[]> getEventInviteesCountByGender(Long eventId,List<Long> enrollmentYrIds);
+	public List<Object[]> getTotalCadresCountByCasteIds(Set<Long> casteIds,List<Long> enrollmentYrIds);
+	public List<Object[]> getEventInviteesCountByCasteCategoryIdsExcludingMinorities(Set<Long> casteCategoryIds,Long eventId,List<Long> enrollmentYrIds);
+	public Long getEventInviteesCountForMinorities(Long eventId,List<Long> enrollmentYrIds);
 	public List<Object[]> getEventInviteesCountByCadreLocation(String locationType,Long locationId,Long eventId,String searchType,String mandalType);
 	public List<Object[]> getInviteedCountByEventsAndLocations(List<Long> eventIds,List<Long> locationValues,Long locationId);
 	public List<Object[]> getInviteeAttendeeCountByEventsAndLocations(List<Long> eventIds,List<Long> locationValues,Long locationId);

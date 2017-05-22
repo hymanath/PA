@@ -73,20 +73,20 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getAttendenceDetailsForCadre(List<Long> cadreIds,Long eventId);
 	
 	//caste wise
-	public List<Object[]>  casteWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
-	public List<Object[]> casteWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
+	public List<Object[]>  casteWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
+	public List<Object[]> casteWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
 	
-	public List<Object[]>  ageWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
-	public List<Object[]> ageWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
+	public List<Object[]>  ageWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
+	public List<Object[]> ageWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
 	
-	public List<Object[]>  genderWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
-	public List<Object[]> genderWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
+	public List<Object[]>  genderWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
+	public List<Object[]> genderWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
 	
-	public List<Object[]>  casteCategoryWiseEventAttendeeCountsExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
-	public Long  casteCategoryWiseEventAttendeeCountsForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
+	public List<Object[]>  casteCategoryWiseEventAttendeeCountsExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
+	public Long  casteCategoryWiseEventAttendeeCountsForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
 	
-	public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
-	public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds);
+	public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
+	public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
 	public List<Object[]> getLocationWiseAttendeesCount(String locationType, Long locationId, Long eventId , String inviteeType,String searchType,Date startDate, Date endDate,String mandalData);
 	public List<Object[]> cadreLocationWiseEventAttendeeCountsByDateQuery(String locationType,String inviteeType,Date startDate,Date endDate,Long eventId,Long locationId,String searchType,String mandalType);
 	public Long getUniqueVisitorsAttendedCountForCadre(Long eventId,Date startDate,Date endDate);
