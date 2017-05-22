@@ -112,10 +112,12 @@ public class NotificationAction extends ActionSupport implements ServletRequestA
 			LOG.info("Entered into PushNotificationDetails() method of NotificationAction");
 			Long notifctionTypeId=jObj.getLong("notificationTypeId");
 			String notificatonTxt=jObj.getString("notificationText");
+			String deviceName=jObj.getString("addYoutubeUrl");
 			
 			NotificationDeviceVO notifyVO = new NotificationDeviceVO();
 			notifyVO.setNotificationTypeId(notifctionTypeId);
 			notifyVO.setNotification(notificatonTxt);
+			notifyVO.setDeviceName(deviceName);
 			status=notificationService.pushNotification(notifyVO,regVO.getRegistrationID());
 		}catch(Exception e){
 			LOG.error("Exception raised at PushNotificationDetails() method of NotificationAction", e);
