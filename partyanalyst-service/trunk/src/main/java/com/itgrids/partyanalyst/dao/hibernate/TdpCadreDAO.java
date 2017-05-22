@@ -7017,38 +7017,79 @@ public List<Long> getCadreIdsByMemberShip(Long enrollmentId,String searchType,St
  		
  		return query.list();
  	}
- 	public List<Object[]> getTotalCadreCountAgeRangeIdWise(Set<Long> ageWiseIds){
- 		Query query = getSession().createQuery(" select VAR.voterAgeRangeId,count(distinct TC.tdpCadreId) from VoterAgeRange VAR, TdpCadre TC" +
+ 	public List<Object[]> getTotalCadreCountAgeRangeIdWise(Set<Long> ageWiseIds,List<Long> enrollmentYrIds){
+ 		StringBuilder str = new StringBuilder();
+ 		
+ 		str.append(" select VAR.voterAgeRangeId,count(distinct TC.tdpCadreId) from VoterAgeRange VAR, TdpCadre TC,TdpCadreEnrollmentYear model1" +
  				" where TC.age >= VAR.minValue and  TC.age <= VAR.maxValue and VAR.voterAgeRangeId in (:ageWiseIds) and TC.isDeleted = 'N' and TC.enrollmentYear = '2014' and VAR.voterAgeRangeId != 7 " +
- 				" group by VAR.voterAgeRangeId");
+ 				" and model1.tdpCadre.tdpCadreId = TC.tdpCadreId and model1.isDeleted = 'N' ");
+ 		
+ 		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			str.append("		and model1.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
+		}
+ 		
+ 				str.append(" group by VAR.voterAgeRangeId");
+ 		Query query = getSession().createQuery(str.toString());
+ 		
+ 		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
+ 		
  		query.setParameterList("ageWiseIds", ageWiseIds);
  		return query.list();
  	}
- 	public List<Object[]> genderWiseTdpCadre()
+ 	public List<Object[]> genderWiseTdpCadre(List<Long> enrollmentYrIds)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.gender,count(distinct model.tdpCadreId)" +
-				   " from   TdpCadre model " +
+				   " from   TdpCadre model ,TdpCadreEnrollmentYear model1 " +
 				   " where  model.gender is not null " +
 				   "        and model.isDeleted = 'N' and model.enrollmentYear = 2014 " +
-				   " group by model.gender ");
+				   " and model1.tdpCadre.tdpCadreId = model.tdpCadreId and model1.isDeleted = 'N'" );
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			str.append("		and model1.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
+		}
+		str.append(" group by model.gender ");
 		Query query = getSession().createQuery(str.toString());
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		return query.list();
 	}
- 	public List<Object[]> getTotalCadreCountByCasteCategoryexcludingMinorities(Set<Long> casteCategoryWiseIds){
- 		Query query = getSession().createQuery(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName," +
- 				"count(distinct model.tdpCadreId) from TdpCadre model" +
+ 	public List<Object[]> getTotalCadreCountByCasteCategoryexcludingMinorities(Set<Long> casteCategoryWiseIds,List<Long> enrollmentYrIds){
+ 		StringBuilder str = new StringBuilder();
+ 		str.append(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName," +
+ 				"count(distinct model.tdpCadreId) from TdpCadre model,TdpCadreEnrollmentYear model1 " +
  				" where model.isDeleted = 'N' and model.enrollmentYear = '2014' " +
  				"       and model.casteState.casteCategoryGroup.casteCategory.casteCategoryId in (:casteCategoryWiseIds) " +
- 				"       and model.casteState.casteStateId  not in("+IConstants.NEW_MINORITY_CASTE_IDS+")" +
- 				" group by model.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
+ 				"       and model.casteState.casteStateId  not in("+IConstants.NEW_MINORITY_CASTE_IDS+") and model1.tdpCadre.tdpCadreId = model.tdpCadreId and model1.isDeleted = 'N' " );
+ 		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			str.append("		and model1.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
+		}
+ 		str.append(" group by model.casteState.casteCategoryGroup.casteCategory.casteCategoryId");
+ 				
+ 				Query query = getSession().createQuery(str.toString());
  		query.setParameterList("casteCategoryWiseIds", casteCategoryWiseIds);
+ 		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
  		return query.list();
  	}
- 	public Long getTotalCadreCountByForMinorities(){
- 		Query query = getSession().createQuery(" select count(distinct model.tdpCadreId) from TdpCadre model" +
+ 	public Long getTotalCadreCountByForMinorities(List<Long> enrollmentYrIds){
+ 		StringBuilder str = new StringBuilder();
+ 		str.append(" select count(distinct model.tdpCadreId) from TdpCadre model,TdpCadreEnrollmentYear model1 " +
  				" where model.isDeleted = 'N' and model.enrollmentYear = '2014' " +
- 				" and model.casteState.casteStateId  in("+IConstants.NEW_MINORITY_CASTE_IDS+")");
+ 				" and model.casteState.casteStateId  in("+IConstants.NEW_MINORITY_CASTE_IDS+") " +
+ 						"and model1.tdpCadre.tdpCadreId = model.tdpCadreId and model1.isDeleted = 'N' ");
+ 		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			str.append("		and model1.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
+		}
+ 		Query query = getSession().createQuery(str.toString());
+ 		
+ 		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
+ 		
  		return (Long)query.uniqueResult();
  	}
 

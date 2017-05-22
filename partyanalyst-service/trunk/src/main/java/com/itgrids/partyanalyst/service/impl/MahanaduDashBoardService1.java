@@ -2019,7 +2019,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   output: List<MahanaduEventVO>
 		   *   
 		  */	
-		public List<MahanaduEventVO> casteWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+		public List<MahanaduEventVO> casteWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,List<Long> enrollmentYrIds){
 			
 			List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -2038,7 +2038,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
 				 
 				 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
-				 getAllDaysCasteWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates);
+				 getAllDaysCasteWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates,enrollmentYrIds);
 				
 				 
 				 if( finalMap!= null && finalMap.size() > 0){
@@ -2067,21 +2067,21 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		return resultList;
 		}
 		
-		public void getAllDaysCasteWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates){
+		public void getAllDaysCasteWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,List<Long> enrollmentYrIds){
 			
 			Set<Long> casteIds = new HashSet<Long>();
 			try{	
-					 boolean  isDataAvailable = getAttendeeAndinviteeCountsCasteWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,casteIds);
+					 boolean  isDataAvailable = getAttendeeAndinviteeCountsCasteWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,casteIds,enrollmentYrIds);
 					 setTotalDayDataExist(finalMap);
 					 
 					 //DATE WSIE
 					 if(isDataAvailable){
-						 getAttendeeAndinviteeCountsDateWiseByCaste(eventStrDate,eventEndDate,subEventIds,finalMap); 
+						 getAttendeeAndinviteeCountsDateWiseByCaste(eventStrDate,eventEndDate,subEventIds,finalMap,enrollmentYrIds); 
 					 }
 				
 				
 				if(casteIds != null && casteIds.size() > 0){
-					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByCasteIds(casteIds,parenteventId);
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByCasteIds(casteIds,parenteventId,enrollmentYrIds);
 					 if( inviteesList!= null && inviteesList.size() > 0){
 						 for( Object[] obj : inviteesList){
 							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
@@ -2099,12 +2099,12 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
 					 }
 				 }
-				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,null);
+				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
 				
 				//total cadre 
 				if(casteIds != null && casteIds.size() > 0){
-					 List<Object[]> totalCadreList = eventInviteeDAO.getTotalCadresCountByCasteIds(casteIds);
+					 List<Object[]> totalCadreList = eventInviteeDAO.getTotalCadresCountByCasteIds(casteIds,enrollmentYrIds);
 					 if( totalCadreList!= null && totalCadreList.size() > 0){
 						 for( Object[] obj : totalCadreList){
 							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
@@ -2121,15 +2121,15 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 		}
 	  
-		public boolean getAttendeeAndinviteeCountsCasteWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> casteIds){
+		public boolean getAttendeeAndinviteeCountsCasteWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> casteIds,List<Long> enrollmentYrIds){
 			 
 			boolean isDataAvailable = false;
-			List<Object[]> totalAttendeeList = eventAttendeeDAO.casteWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> totalAttendeeList = eventAttendeeDAO.casteWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 
 			 if(totalAttendeeList!=null && totalAttendeeList.size() > 0){
 				 
 				 isDataAvailable = true;
-				 List<Object[]> totalInviteeList = eventAttendeeDAO.casteWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> totalInviteeList = eventAttendeeDAO.casteWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 
 				 settingMapData(totalAttendeeList,finalMap,"attendee",betweenDates,casteIds);
 				 settingMapData(totalInviteeList,finalMap,"invitee",betweenDates,casteIds);
@@ -2138,13 +2138,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			 return  isDataAvailable;
 		}
 		
-		public void getAttendeeAndinviteeCountsDateWiseByCaste(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap){
+		public void getAttendeeAndinviteeCountsDateWiseByCaste(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Long> enrollmentYrIds){
 			 
-			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.casteWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.casteWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 
 			 if(dateWiseAttendeeList!=null && dateWiseAttendeeList.size()>0){
 				 
-				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.casteWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.casteWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 
 				 settingDateDataToMap(dateWiseAttendeeList,finalMap,"attendee");
 				 settingDateDataToMap(dateWiseInviteeList,finalMap,"invitee");
@@ -2160,7 +2160,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   output: List<MahanaduEventVO>
 		   *   
 		  */	
-		public List<MahanaduEventVO> ageWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+		public List<MahanaduEventVO> ageWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,List<Long> enrollmentYrIds){
 			
 			List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -2179,7 +2179,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
 				 
 				 Map<Long,MahanaduEventVO>  finalMap = new LinkedHashMap<Long,MahanaduEventVO>();
-				 getAllDaysAgeWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates);
+				 getAllDaysAgeWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates,enrollmentYrIds);
 				
 				 
 				 if( finalMap!= null && finalMap.size() > 0){
@@ -2208,21 +2208,21 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		return resultList;
 		}
 		
-		public void getAllDaysAgeWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates){
+		public void getAllDaysAgeWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,List<Long> enrollmentYrIds){
 			
 			Set<Long> ageWiseIds = new HashSet<Long>();
 			try{	
-					 boolean  isDataAvailable = getAttendeeAndinviteeCountsAgeWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,ageWiseIds);
+					 boolean  isDataAvailable = getAttendeeAndinviteeCountsAgeWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,ageWiseIds,enrollmentYrIds);
 					 setTotalDayDataExist(finalMap);
 					 
 					 //DATE WSIE
 					 if(isDataAvailable){
-						 getAttendeeAndinviteeCountsDateWiseByAge(eventStrDate,eventEndDate,subEventIds,finalMap);
+						 getAttendeeAndinviteeCountsDateWiseByAge(eventStrDate,eventEndDate,subEventIds,finalMap,enrollmentYrIds);
 					 }
 				
 				
 				if(ageWiseIds != null && ageWiseIds.size() > 0){
-					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByageWiseIds(ageWiseIds,parenteventId);
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByageWiseIds(ageWiseIds,parenteventId,enrollmentYrIds);
 					 if( inviteesList!= null && inviteesList.size() > 0){
 						 for( Object[] obj : inviteesList){
 							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
@@ -2240,11 +2240,11 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
 					 }
 				 }
-				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,null);
+				 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			     calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
 			     
 				if(ageWiseIds != null && ageWiseIds.size() > 0){
-					List<Object[]> ageRangeIdAndCadreCount = tdpCadreDAO.getTotalCadreCountAgeRangeIdWise(ageWiseIds);
+					List<Object[]> ageRangeIdAndCadreCount = tdpCadreDAO.getTotalCadreCountAgeRangeIdWise(ageWiseIds,enrollmentYrIds);
 					if(ageRangeIdAndCadreCount != null && ageRangeIdAndCadreCount.size() > 0){
 						 for( Object[] obj : ageRangeIdAndCadreCount){
 							 MahanaduEventVO  locationVO= finalMap.get((Long)obj[0]);
@@ -2263,15 +2263,15 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 		}
 	   
-		public boolean getAttendeeAndinviteeCountsAgeWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> ageWiseIds){
+		public boolean getAttendeeAndinviteeCountsAgeWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> ageWiseIds,List<Long> enrollmentYrIds){
 			 
 			boolean isDataAvailable = false;
-			List<Object[]> totalAttendeeList = eventAttendeeDAO.ageWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> totalAttendeeList = eventAttendeeDAO.ageWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 
 			 if(totalAttendeeList!=null && totalAttendeeList.size() > 0){
 				 
 				 isDataAvailable = true;
-				 List<Object[]> totalInviteeList = eventAttendeeDAO.ageWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> totalInviteeList = eventAttendeeDAO.ageWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 
 				 settingMapData(totalAttendeeList,finalMap,"attendee",betweenDates,ageWiseIds);
 				 settingMapData(totalInviteeList,finalMap,"invitee",betweenDates,ageWiseIds);
@@ -2291,13 +2291,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		     }
 		    
 		  }
-		public void getAttendeeAndinviteeCountsDateWiseByAge(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap){
+		public void getAttendeeAndinviteeCountsDateWiseByAge(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<Long,MahanaduEventVO>  finalMap,List<Long> enrollmentYrIds){
 			 
-			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.ageWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.ageWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 
 			 if(dateWiseAttendeeList!=null && dateWiseAttendeeList.size()>0){
 				 
-				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.ageWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.ageWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 
 				 settingDateDataToMap(dateWiseAttendeeList,finalMap,"attendee");
 				 settingDateDataToMap(dateWiseInviteeList,finalMap,"invitee");
@@ -2413,7 +2413,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   output: List<MahanaduEventVO>
 		   *   
 		  */	
-		public EventGenderVO genderWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+		public EventGenderVO genderWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,List<Long> enrollmentYrIds){
 			
 			 EventGenderVO  finalVO = new EventGenderVO();
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -2430,7 +2430,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				}
 				
 				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
-				 getAllDaysGenderWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalVO,betweenDates);
+				 getAllDaysGenderWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalVO,betweenDates,enrollmentYrIds);
 				 
 		}catch(Exception e){
 			Log.error("Exception rised in CasteWiseEventAttendeeCounts()",e); 
@@ -2438,19 +2438,19 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		return finalVO;
 		}
 		
-     public void getAllDaysGenderWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,EventGenderVO  finalVO,List<Date> betweenDates){
+     public void getAllDaysGenderWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,EventGenderVO  finalVO,List<Date> betweenDates,List<Long> enrollmentYrIds){
 			
 			
 			try{	
-					 boolean  isDataAvailable = getAttendeeAndinviteeCountsGenderWise(eventStrDate,eventEndDate,subEventIds,finalVO,betweenDates,parenteventId);
+					 boolean  isDataAvailable = getAttendeeAndinviteeCountsGenderWise(eventStrDate,eventEndDate,subEventIds,finalVO,betweenDates,parenteventId,enrollmentYrIds);
 					 //setTotalDayDataExist(finalMap);
 					 
 					 //DATE WSIE
 					 if(isDataAvailable){
-						 getAttendeeAndinviteeCountsDateWiseByGender(eventStrDate,eventEndDate,subEventIds,finalVO); 
+						 getAttendeeAndinviteeCountsDateWiseByGender(eventStrDate,eventEndDate,subEventIds,finalVO,enrollmentYrIds); 
 					 }
 				
-					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByGender(parenteventId);
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByGender(parenteventId,enrollmentYrIds);
 					 if( inviteesList!= null && inviteesList.size() > 0){
 						 for( Object[] obj : inviteesList){
 							
@@ -2463,10 +2463,10 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						      }
 						 }
 					 }
-					 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,null);
+					 Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				     calCulatingGenderWiseinviteeNonInviteePercantage(finalVO,totalAttended);
 					 
-					 List<Object[]> genderCadreData = tdpCadreDAO.genderWiseTdpCadre();
+					 List<Object[]> genderCadreData = tdpCadreDAO.genderWiseTdpCadre(enrollmentYrIds);
 					 if( genderCadreData != null && genderCadreData .size() > 0){
 						 
 						 for( Object[] obj : genderCadreData){
@@ -2488,15 +2488,15 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 		}
      
-       public boolean getAttendeeAndinviteeCountsGenderWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, EventGenderVO  finalVO,List<Date> betweenDates,Long parentEventId){
+       public boolean getAttendeeAndinviteeCountsGenderWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, EventGenderVO  finalVO,List<Date> betweenDates,Long parentEventId,List<Long> enrollmentYrIds){
     	   SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			boolean isDataAvailable = false;
-			List<Object[]> totalAttendeeList = eventAttendeeDAO.genderWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> totalAttendeeList = eventAttendeeDAO.genderWiseEventAttendeeCountsQuery("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 
 			 if(totalAttendeeList!=null && totalAttendeeList.size() > 0){
 				 
 				 isDataAvailable = true;
-				 List<Object[]> totalInviteeList = eventAttendeeDAO.genderWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> totalInviteeList = eventAttendeeDAO.genderWiseEventAttendeeCountsQuery("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 
 				 settingGenderMapData(totalAttendeeList,finalVO,"attendee",betweenDates);
 				 settingGenderMapData(totalInviteeList,finalVO,"invitee",betweenDates);
@@ -2517,13 +2517,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			 }
 			 return  isDataAvailable;
 		}
-       public void getAttendeeAndinviteeCountsDateWiseByGender(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, EventGenderVO  finalVO){
+       public void getAttendeeAndinviteeCountsDateWiseByGender(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, EventGenderVO  finalVO,List<Long> enrollmentYrIds){
 			 
-			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.genderWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds);
+			 List<Object[]> dateWiseAttendeeList = eventAttendeeDAO.genderWiseEventAttendeeCountsByDateQuery("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 
 			 if(dateWiseAttendeeList!=null && dateWiseAttendeeList.size()>0){
 				 
-				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.genderWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> dateWiseInviteeList = eventAttendeeDAO.genderWiseEventAttendeeCountsByDateQuery("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 
 				 settingGenderWiseDateData(dateWiseAttendeeList,finalVO,"attendee");
 				 settingGenderWiseDateData(dateWiseInviteeList,finalVO,"invitee");
@@ -2670,7 +2670,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		   *   output: List<MahanaduEventVO>
 		   *   
 		  */	
-		public List<MahanaduEventVO> casteCategoryWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds){
+		public List<MahanaduEventVO> casteCategoryWiseEventAttendeeCounts(String startDate,String endDate,Long parenteventId,List<Long> subEventIds,List<Long> enrollmentYrIds){
 			
 			List<MahanaduEventVO>  resultList = new ArrayList<MahanaduEventVO>();
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -2689,7 +2689,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				 List<Date>  betweenDates= commonMethodsUtilService.getBetweenDates(eventStrDate,eventEndDate);
 				 
 				 Map<String,MahanaduEventVO>  finalMap = new LinkedHashMap<String,MahanaduEventVO>();
-				 getAllDaysCasteCategoryWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates);
+				 getAllDaysCasteCategoryWiseAttendeesAndinviteesCount(eventStrDate,eventEndDate,parenteventId,subEventIds,finalMap,betweenDates, enrollmentYrIds);
 				
 				 
 				 if( finalMap!= null && finalMap.size() > 0){
@@ -2718,21 +2718,21 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		return resultList;
 		}
 		
-		public void getAllDaysCasteCategoryWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<String,MahanaduEventVO>  finalMap,List<Date> betweenDates){
+		public void getAllDaysCasteCategoryWiseAttendeesAndinviteesCount(Date eventStrDate,Date eventEndDate,Long parenteventId,List<Long> subEventIds,Map<String,MahanaduEventVO>  finalMap,List<Date> betweenDates,List<Long> enrollmentYrIds){
 			
 			Set<Long> casteCategoryIds = new HashSet<Long>();
 			try{	
-					 boolean  isDataAvailable = getAttendeeAndinviteeCountsCasteCategoryWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,casteCategoryIds);
+					 boolean  isDataAvailable = getAttendeeAndinviteeCountsCasteCategoryWise(eventStrDate,eventEndDate,subEventIds,finalMap,betweenDates,parenteventId,casteCategoryIds,enrollmentYrIds);
 					 setTotalDayDataExist(finalMap);
 					 
 					 //DATE WSIE
 					 if(isDataAvailable){
-						 getAttendeeAndinviteeCountsDateWiseByCasteCategory(eventStrDate,eventEndDate,subEventIds,finalMap);
+						 getAttendeeAndinviteeCountsDateWiseByCasteCategory(eventStrDate,eventEndDate,subEventIds,finalMap,enrollmentYrIds);
 					 }
 				
 				
 				if(casteCategoryIds != null && casteCategoryIds.size() > 0){
-					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByCasteCategoryIdsExcludingMinorities(casteCategoryIds,parenteventId);
+					 List<Object[]> inviteesList = eventInviteeDAO.getEventInviteesCountByCasteCategoryIdsExcludingMinorities(casteCategoryIds,parenteventId,enrollmentYrIds);
 					 if( inviteesList!= null && inviteesList.size() > 0){
 						 for( Object[] obj : inviteesList){
 							 MahanaduEventVO  locationVO= finalMap.get(obj[1].toString());
@@ -2742,7 +2742,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 }
 					 }
 				 }
-				Long minorityInvitees = eventInviteeDAO.getEventInviteesCountForMinorities(parenteventId);
+				Long minorityInvitees = eventInviteeDAO.getEventInviteesCountForMinorities(parenteventId,enrollmentYrIds);
 				if( minorityInvitees != null ){
 					MahanaduEventVO  locationVO= finalMap.get("MINORITIES");
 					 if(locationVO != null){
@@ -2757,12 +2757,12 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 totalNonInvitees =  totalNonInvitees + entry.getValue().getNonInvitees();
 					 }
 				 }
-				Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,null);
+				Long totalAttended = eventAttendeeDAO.getUniqueVisitorsAttendedCount(parenteventId,eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				calCulatinginviteeNonInviteePercantage(finalMap,totalAttended,totalNonInvitees);
 				
 				
 				if(casteCategoryIds != null && casteCategoryIds.size() > 0){
-					List<Object[]> cadreCount = tdpCadreDAO.getTotalCadreCountByCasteCategoryexcludingMinorities(casteCategoryIds);
+					List<Object[]> cadreCount = tdpCadreDAO.getTotalCadreCountByCasteCategoryexcludingMinorities(casteCategoryIds,enrollmentYrIds);
 					if(cadreCount != null && cadreCount.size() > 0){
 						 for( Object[] obj : cadreCount){
 							 MahanaduEventVO  locationVO= finalMap.get(obj[1].toString());
@@ -2772,7 +2772,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 						 }
 					}
 				}
-				Long   minorityCadreCount = tdpCadreDAO.getTotalCadreCountByForMinorities();
+				Long   minorityCadreCount = tdpCadreDAO.getTotalCadreCountByForMinorities(enrollmentYrIds);
 				if(minorityCadreCount!=null){
 					MahanaduEventVO  locationVO= finalMap.get("MINORITIES");
 					 if(locationVO != null){
@@ -2786,19 +2786,19 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 		}
 	   
-		public boolean getAttendeeAndinviteeCountsCasteCategoryWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<String,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> casteCategoryIds){
+		public boolean getAttendeeAndinviteeCountsCasteCategoryWise(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<String,MahanaduEventVO>  finalMap,List<Date> betweenDates,Long parentEventId,Set<Long> casteCategoryIds,List<Long> enrollmentYrIds){
 			 
 			boolean isDataAvailable = false;
-			List<Object[]> attendeesExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsExcludingMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> attendeesExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsExcludingMinorities("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			
 			 if(attendeesExcludingMinorities!=null && attendeesExcludingMinorities.size() > 0){
 				 isDataAvailable = true;
-				 List<Object[]> inviteeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsExcludingMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> inviteeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsExcludingMinorities("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 
 				 setExcludingMinorityData(attendeesExcludingMinorities,finalMap,"attendee",betweenDates,casteCategoryIds);
 				 setExcludingMinorityData(inviteeExcludingMinorities,finalMap,"invitee",betweenDates,casteCategoryIds);
 			 }
-			 Long attendeeMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsForMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
+			 Long attendeeMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsForMinorities("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 
 			 if( attendeeMinorities != null && attendeeMinorities.longValue() > 0l){
 				 isDataAvailable = true;
@@ -2808,7 +2808,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					 minorityVO.setAttendees(attendeeMinorities );
 					 minorityVO.setNonInvitees(attendeeMinorities);
 				 }
-				 Long inviteeMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsForMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+				 Long inviteeMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsForMinorities("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 if( inviteeMinorities!= null && inviteeMinorities.longValue() > 0l){
 					 minorityVO.setInvitees(inviteeMinorities);
 					 minorityVO.setNonInvitees(minorityVO.getAttendees() - inviteeMinorities);	
@@ -2818,16 +2818,16 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			 return  isDataAvailable;
 		}
 		
-		public void getAttendeeAndinviteeCountsDateWiseByCasteCategory(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<String,MahanaduEventVO>  finalMap){
+		public void getAttendeeAndinviteeCountsDateWiseByCasteCategory(Date eventStrDate,Date eventEndDate,List<Long> subEventIds, Map<String,MahanaduEventVO>  finalMap,List<Long> enrollmentYrIds){
 			 
-			 List<Object[]> dateWiseAttendeeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
+			 List<Object[]> dateWiseAttendeeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 if(dateWiseAttendeeExcludingMinorities!=null && dateWiseAttendeeExcludingMinorities.size()>0){
-				 List<Object[]> dateWiseInviteeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+				 List<Object[]> dateWiseInviteeExcludingMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 				 setExcludingMinoritiesDateDataToMap(dateWiseAttendeeExcludingMinorities,finalMap,"attendee");
 				 setExcludingMinoritiesDateDataToMap(dateWiseInviteeExcludingMinorities,finalMap,"invitee");
 			 }
-			 List<Object[]> dateWiseAttendeeForMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateForMinorities("attendee",eventStrDate,eventEndDate,subEventIds);
-			 List<Object[]> dateWiseInviteeForMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateForMinorities("invitee",eventStrDate,eventEndDate,subEventIds);
+			 List<Object[]> dateWiseAttendeeForMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateForMinorities("attendee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
+			 List<Object[]> dateWiseInviteeForMinorities = eventAttendeeDAO.casteCategoryWiseEventAttendeeCountsByDateForMinorities("invitee",eventStrDate,eventEndDate,subEventIds,enrollmentYrIds);
 			 setMinoritiesDateDataToMap(dateWiseAttendeeForMinorities,finalMap,"attendee");
 			 setMinoritiesDateDataToMap(dateWiseInviteeForMinorities,finalMap,"invitee");
 		}

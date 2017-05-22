@@ -6464,16 +6464,15 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     
     public List<Object[]> getAlertCallerDetails(Long alertId){
     	StringBuilder sb = new StringBuilder();
-    	 	sb.append("select distinct model.alertSource.alertSourceId," +
-    	 			" ac.callerName," +
-    	 			" ac.address," +
-    	 			" ac.mobileNo, model.title,model.description , date(model.createdTime)" +
-    	 			" from Alert model left join model.alertCaller ac " +
-    	 			" where  " );
+    	 	sb.append("select distinct model.alert.alertSource.alertSourceId," +
+    	 			" model.alertCaller.callerName," +
+    	 			" model.alertCaller.address," +
+    	 			" model.alertCaller.mobileNo, model.alert.title,model.alert.description , date(model.alert.createdTime)" +
+    	 			" from AlertCallerRelation model   " );
     	 			//"model.isDeleted = 'N' ");
     	 	if(alertId != null && alertId.longValue() >0l)
     	 	{
-    	 		sb.append("  model.alertId = :alertId");
+    	 		sb.append( " where  model.alert.alertId = :alertId");
     	 	}
     	 	Query query = getSession().createQuery(sb.toString());
     	 	if(alertId != null && alertId.longValue() >0l)

@@ -1820,20 +1820,24 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		return query.list();
 	}
 	////Caste wise.
-   public List<Object[]>  casteWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]>  casteWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();	
 		sb.append("select model.tdpCadre.casteState.caste.casteId,model.tdpCadre.casteState.caste.casteName,count(distinct model.tdpCadre.tdpCadreId) ");	
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model where ");
+			sb.append(" from EventAttendee model,TdpCadreEnrollmentYear model2 where ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sb.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
-		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
+				" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
 		}
 		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
 		sb.append(" group by model.tdpCadre.casteState.caste.casteId " +
@@ -1845,10 +1849,13 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
-   public List<Object[]> casteWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]> casteWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();
 		
@@ -1856,15 +1863,19 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		sb.append(" date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId) ");
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model where ");
+			sb.append(" from EventAttendee model,TdpCadreEnrollmentYear model2 where ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sb.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		
-		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
+				" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
 		}
 		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
 		sb.append("  group by model.tdpCadre.casteState.caste.casteId,date(model.attendedTime)" +
@@ -1876,25 +1887,31 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
   }
    
    //age wise
    
-   public List<Object[]>  ageWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]>  ageWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();	
 		sb.append("select ageRange.voterAgeRangeId,ageRange.ageRange,count(distinct model.tdpCadre.tdpCadreId) ");	
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model,VoterAgeRange ageRange where model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue ");
+			sb.append(" from EventAttendee model,VoterAgeRange ageRange,TdpCadreEnrollmentYear model2 where model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1,VoterAgeRange ageRange where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue  ");
+			sb.append(" from EventAttendee model,EventInvitee model1,VoterAgeRange ageRange,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue  ");
 		}
 		sb.append("  and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
-		sb.append("  and ageRange.voterAgeRangeId != 7 ");
+		sb.append("  and ageRange.voterAgeRangeId != 7  and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
+		}
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
 		}
@@ -1905,29 +1922,36 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
        Query query = getSession().createQuery(sb.toString());
 		query.setDate("startDate", startDate);
 		query.setDate("endDate", endDate);
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
-   public List<Object[]> ageWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]> ageWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();
 	
 		sb.append("select ageRange.voterAgeRangeId,ageRange.ageRange,date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId) ");	
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model,VoterAgeRange ageRange where model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue ");
+			sb.append(" from EventAttendee model,VoterAgeRange ageRange,TdpCadreEnrollmentYear model2 where model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1,VoterAgeRange ageRange where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue  ");
+			sb.append(" from EventAttendee model,EventInvitee model1,VoterAgeRange ageRange,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and model.tdpCadre.age>= ageRange.minValue and model.tdpCadre.age<= ageRange.maxValue  ");
 		}
 		
-		sb.append(" and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		sb.append(" and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
+				" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
 		sb.append("  and ageRange.voterAgeRangeId != 7 ");
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
 		}
 		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
 		sb.append("  group by ageRange.voterAgeRangeId,date(model.attendedTime)" +
@@ -1939,27 +1963,34 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
  }
    //gender wise
-   public List<Object[]>  genderWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]>  genderWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();	
 		sb.append("select model.tdpCadre.gender,count(distinct model.tdpCadre.tdpCadreId) ");	
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model where  ");
+			sb.append(" from EventAttendee model,TdpCadreEnrollmentYear model2 where  ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sb.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		sb.append(" model.tdpCadre.gender is not null and model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
 		
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
 		}
-		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
+		}
+		sb.append("  and date(model.attendedTime) between :startDate and :endDate " +
+				" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
 		sb.append(" group by model.tdpCadre.gender " +
 				  " order by count(distinct model.tdpCadre.tdpCadreId) desc ");
       
@@ -1969,23 +2000,30 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
-   public List<Object[]> genderWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]> genderWiseEventAttendeeCountsByDateQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();
 		
 		sb.append(" select model.tdpCadre.gender,date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId)");
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model where ");
+			sb.append(" from EventAttendee model,TdpCadreEnrollmentYear model2 where ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sb.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId and  ");
 		}
 		
-		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		sb.append("  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
+				" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
+		}
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
 		}
@@ -1999,11 +2037,14 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
  }
    //castecategory wise
-   public List<Object[]>  casteCategoryWiseEventAttendeeCountsExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]>  casteCategoryWiseEventAttendeeCountsExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();	
 		sb.append("select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId," +
@@ -2011,15 +2052,19 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				"         count(distinct model.tdpCadre.tdpCadreId) ");	
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model where ");
+			sb.append(" from EventAttendee model,TdpCadreEnrollmentYear model2 where ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sb.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
-				  " and  model.tdpCadre.casteState.casteStateId not in("+IConstants.NEW_MINORITY_CASTE_IDS+") ");
+				  " and  model.tdpCadre.casteState.casteStateId not in("+IConstants.NEW_MINORITY_CASTE_IDS+") " +
+				  		" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
 		}
 		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
 		sb.append(" group by model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId " +
@@ -2031,25 +2076,32 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
 	}
    
-   public Long  casteCategoryWiseEventAttendeeCountsForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public Long  casteCategoryWiseEventAttendeeCountsForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();	
 		sb.append(" select count(distinct model.tdpCadre.tdpCadreId) ");
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model where ");
+			sb.append(" from EventAttendee model,TdpCadreEnrollmentYear model2 where ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sb.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
-				  " and  model.tdpCadre.casteState.casteStateId  in("+IConstants.NEW_MINORITY_CASTE_IDS+") ");
+				  " and  model.tdpCadre.casteState.casteStateId  in("+IConstants.NEW_MINORITY_CASTE_IDS+") " +
+				  		" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
 		}
 		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
       
@@ -2059,11 +2111,14 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return (Long)query.uniqueResult();
 	}
    
-   public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateExcludingMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();
 		
@@ -2071,14 +2126,18 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		sb.append("        date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId) ");
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model where ");
+			sb.append(" from EventAttendee model,TdpCadreEnrollmentYear model2 where ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sb.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		
 		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
-				 "  and model.tdpCadre.casteState.casteStateId not in("+IConstants.NEW_MINORITY_CASTE_IDS+")");
+				 "  and model.tdpCadre.casteState.casteStateId not in("+IConstants.NEW_MINORITY_CASTE_IDS+")" +
+				 		" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
+		}
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
 		}
@@ -2092,26 +2151,33 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
 		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
+		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();
    }
-   public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds){
+   public List<Object[]> casteCategoryWiseEventAttendeeCountsByDateForMinorities(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds){
 		
 		StringBuilder sb =  new StringBuilder();
 		
 		sb.append(" select date(model.attendedTime),count(distinct model.tdpCadre.tdpCadreId) ");
 		
 		if(inviteeType.equalsIgnoreCase("attendee")){
-			sb.append(" from EventAttendee model where ");
+			sb.append(" from EventAttendee model,TdpCadreEnrollmentYear model2 where ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sb.append(" from EventAttendee model,EventInvitee model1 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sb.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear model2 where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		
 		sb.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 " +
-				 "  and model.tdpCadre.casteState.casteStateId  in("+IConstants.NEW_MINORITY_CASTE_IDS+")");
+				 "  and model.tdpCadre.casteState.casteStateId  in("+IConstants.NEW_MINORITY_CASTE_IDS+")" +
+				 		" and model2.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model2.isDeleted = 'N' ");
 		if(eventIds != null && eventIds.size() > 0){
 			sb.append(" and model.event.eventId in  (:eventIds)");
+		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			sb.append("		and model2.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
 		}
 		sb.append("  and date(model.attendedTime) between :startDate and :endDate ");
 		sb.append("  group by date(model.attendedTime)");
@@ -2122,6 +2188,9 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setDate("endDate", endDate);
 		if(eventIds != null && eventIds.size() > 0){
 			query.setParameterList("eventIds", eventIds);
+		}
+		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
+			query.setParameterList("enrollmentYrIds",enrollmentYrIds);
 		}
 		query.setParameter("isActive", IConstants.TRUE);
 		return query.list();

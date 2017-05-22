@@ -442,11 +442,11 @@ public interface ITdpCadreDAO extends GenericDao<TdpCadre, Long>{
 	  public Long getCadreIdByMemberShip(String memberShipNo);
 	  public List<Long> getCadreIdsByMemberShip(Long enrollmentId,String searchType,String searchValue);
 	  public List<Object[]> getMobileNumberDetailsByTdpCadre(Long tdpCadreId);
-	  public List<Object[]> getTotalCadreCountAgeRangeIdWise(Set<Long> ageWiseIds);
-	  public List<Object[]> genderWiseTdpCadre();
+	  public List<Object[]> getTotalCadreCountAgeRangeIdWise(Set<Long> ageWiseIds,List<Long> enrollmentYrIds);
+	  public List<Object[]> genderWiseTdpCadre(List<Long> enrollmentYrIds);
 	  public List<Object[]> getUserAddressForCadre(List<Long> tdpCadreIds);
-	  public List<Object[]> getTotalCadreCountByCasteCategoryexcludingMinorities(Set<Long> casteCategoryWiseIds);
-	  public Long getTotalCadreCountByForMinorities();
+	  public List<Object[]> getTotalCadreCountByCasteCategoryexcludingMinorities(Set<Long> casteCategoryWiseIds,List<Long> enrollmentYrIds);
+	  public Long getTotalCadreCountByForMinorities(List<Long> enrollmentYrIds);
 	  public List<Object[]> getCadrAddressDetailsByCadred(Long tdpCadreId);
 	  public Long getPublicationDateId(Long tdpCadreId);
 	  public Long getVoterIdByTdpCadreId(Long tdpCadreId);
