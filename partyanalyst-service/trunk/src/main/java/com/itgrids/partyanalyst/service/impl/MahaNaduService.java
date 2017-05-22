@@ -3348,9 +3348,9 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			
 			
 			
-			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates(locationType, eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> list = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates(locationType, eventStrDate,eventEndDate,subEventIds,null);
 			
-			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates("ALL", eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates("ALL", eventStrDate,eventEndDate,subEventIds,null);
 			
 			
 			//DISTRICTS
@@ -3385,7 +3385,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				}
 			}
 			
-			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds,null);
 			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
 			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
 			if(Rsltlist!=null && Rsltlist.size()>0){
@@ -3484,7 +3484,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 			
 			
-			List<Object[]> locationRslt = eventAttendeeDAO.getEventAttendeesSummary(locationType, eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> locationRslt = eventAttendeeDAO.getEventAttendeesSummary(locationType, eventStrDate,eventEndDate,subEventIds,null);
 			Map<Long,List<Long>> locationCadreMap = new HashMap<Long, List<Long>>();
 			if(locationRslt!=null && locationRslt.size()>0){
 				for(Object[] obj:locationRslt){
@@ -4086,7 +4086,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}		
 	}
 	
-	public List<MahanaduEventVO> getDaysUniqueAndRevisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String dateValues){
+	public List<MahanaduEventVO> getDaysUniqueAndRevisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String dateValues,List<Long> enrollmentIdsList){
 		
 		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
 		
@@ -4108,7 +4108,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 				eventEndDate	 = datesList[1] !=null ? (Date)datesList[1]:null;			
 			}*/
 							
-			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds,enrollmentIdsList);
 			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
 			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
 			if(Rsltlist!=null && Rsltlist.size()>0){
@@ -4127,7 +4127,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 			
 			//DAY'S UNIQUE AND REVISIT SUMMARY Block
-			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates("ALL", eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> list_temp = eventAttendeeDAO.getEventAttendeeInfoDynamicIndiDates("ALL", eventStrDate,eventEndDate,subEventIds,enrollmentIdsList);
 			if(list_temp!=null && list_temp.size()>0){			
 					for(Object[] obj:list_temp){
 						MahanaduEventVO temp = new MahanaduEventVO();
@@ -4184,7 +4184,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	}
 	
 	
-	public List<MahanaduEventVO> getDayWiseVisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String date){
+	public List<MahanaduEventVO> getDayWiseVisitSummary(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String date,List<Long> enrollmentIdsList){
 		List<MahanaduEventVO> finalList = new ArrayList<MahanaduEventVO>();
 		try{
 			
@@ -4210,7 +4210,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}*/
 			
 			
-			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds);
+			List<Object[]> Rsltlist = eventAttendeeDAO.getEventAttendeesSummary("ALL", eventStrDate,eventEndDate,subEventIds,enrollmentIdsList);
 			Map<Long,Long> cadreAttendedCntMap = new HashMap<Long, Long>(); //EACH INDIVIDUAL ATTENDED TIMES
 			Map<String,List<Long>> datesAttendedCadreMap = new HashMap<String, List<Long>>();
 			if(Rsltlist!=null && Rsltlist.size()>0){
@@ -4250,7 +4250,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			}
 			Collections.sort(finalList,idSort);
 			
-			Long totalVisitorsCount=eventAttendeeDAO.getTotalAttendedCountOfEvent(eventId);
+			Long totalVisitorsCount=eventAttendeeDAO.getTotalAttendedCountOfEvent(eventId,enrollmentIdsList);
 			if(finalList!=null && finalList.size()>0){
 				finalList.get(0).setTotalVisitorsCount(totalVisitorsCount);
 			}

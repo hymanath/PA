@@ -1028,13 +1028,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				String dateStr = getRequiredDates(datesList);
 				
 				StringBuffer entryExitPdfStr = new StringBuffer();
-				MahanaduVisitVO mahanaduVisitVO = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(parentId,currentDateStr);
+				MahanaduVisitVO mahanaduVisitVO = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoListNew(parentId,currentDateStr,null);
 			      StringBuffer entryStr = entryExitBlock(mahanaduVisitVO,time);
 			      entryExitPdfStr.append(entryStr);
 			      entryExitPdfStr.append("<br/><br/><br/>");
 			      
 			      
-			      List<MahanaduVisitVO> hoursWiseVisitorsList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoList(parentId,dateStr);
+			      List<MahanaduVisitVO> hoursWiseVisitorsList = mahanaduDashBoardService.getTodayTotalAndCurrentUsersInfoList(parentId,dateStr,null);
 			      if( hoursWiseVisitorsList != null && hoursWiseVisitorsList.size() > 0){
 			        StringBuffer hoursVisitors = hoursWiseVisitors(hoursWiseVisitorsList,time);    
 			        entryExitPdfStr.append(hoursVisitors);
