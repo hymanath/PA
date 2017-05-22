@@ -656,10 +656,12 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
 	      }
 		
-		str.append(" where model.event.eventId in(:subEventIds) ");
+		str.append(" where model.tdpCadre.isDeleted = 'N' ");
+		if(subEventIds != null && subEventIds.size() >0l)
+			str.append(" and model.event.eventId in(:subEventIds) ");
 		str.append(" and (date(model.attendedTime) between :eventStartDate  and :eventEndDate) ");
-		str.append(" and model.event.isActive =:isActive " +
-				   " and model.tdpCadre.isDeleted = 'N' ");
+		str.append(" and model.event.isActive =:isActive " );
+				  
 		
 		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
 	        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
@@ -687,7 +689,8 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		query.setDate("eventStartDate", eventStartDate);
 		query.setDate("eventEndDate",eventEndDate);
 		query.setParameter("isActive", IConstants.TRUE);
-		query.setParameterList("subEventIds", subEventIds);
+		if(subEventIds != null && subEventIds.size() >0l)
+			query.setParameterList("subEventIds", subEventIds);
 		return query.list();
 	}
 	
@@ -707,16 +710,17 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 			str.append(" ,model.tdpCadre.userAddress.constituency.constituencyId ");
 		}
 		
-		str.append(" from EventAttendee model ");
-		
+		str.append(" from EventAttendee model " );
 		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
 	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
 	      }
+		 str.append(" where model.tdpCadre.isDeleted = 'N'");
 		
-		str.append(" where model.event.eventId in(:subEventIds) ");
+		if(subEventIds != null && subEventIds.size() > 0l)
+			str.append(" and model.event.eventId in(:subEventIds) ");
 		str.append(" and date(model.attendedTime) between :eventStartDate and :eventEndDate ");
-		str.append(" and model.event.isActive =:isActive " +
-				   " and model.tdpCadre.isDeleted = 'N' ");
+		str.append(" and model.event.isActive =:isActive " );
+				   
 		
 		if(enrollmentIdsList != null && enrollmentIdsList.size()>0){
 	        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
@@ -746,7 +750,8 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		query.setDate("eventStartDate", eventStartDate);
 		query.setDate("eventEndDate", eventEndDate);
 		query.setParameter("isActive", IConstants.TRUE);
-		query.setParameterList("subEventIds", subEventIds);
+		if(subEventIds != null && subEventIds.size() > 0l)
+			query.setParameterList("subEventIds", subEventIds);
 		return query.list();
 	}
 	
@@ -1136,30 +1141,39 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 	    return (Long)query.uniqueResult();
 	  }
 	
-	public List<Object[]> getDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String districtQueryStr){
+	public List<Object[]> getDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String districtQueryStr,List<Long> enrollmentIds){
+		if(enrollmentIds != null && enrollmentIds.contains(0L))
+			enrollmentIds.clear();
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,d.district_id as districtId " +
-				" from " +
-				" tdp_cadre TC,user_address UA,district d,event_attendee EA inner join " +
-				" (select tdp_cadre_id as cadre_id, max(attended_time) as max_time" +
-				" from event_attendee " +
+				" from " );
+		str.append(" tdp_cadre TC,user_address UA,district d,event_attendee EA inner join " +
+				" (select ea.tdp_cadre_id as cadre_id, max(ea.attended_time) as max_time" +
+				" from event_attendee ea" );
+				if(enrollmentIds != null && enrollmentIds.size() > 0l)
+					str.append(",tdp_cadre_enrollment_year tcey " +
 				" where " +
-				" date(attended_time) =:todayDate " +
-				" and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as EA2" +
+				" date(ea.attended_time) =:todayDate and" );
+				if(enrollmentIds != null && enrollmentIds.size() > 0l){
+					str.append(" ea.tdp_cadre_id  = tcey.tdp_cadre_id and " +
+					        " tcey.enrollment_year_id in (:enrollmentIds)  and tcey.is_deleted='N' and " );
+				}
+				str.append(" (ea.event_id =:entryEventId or ea.event_id =:exitEventId) group by ea.tdp_cadre_id) as EA2" +
 				" ON EA.tdp_cadre_id =  EA2.cadre_id and EA.attended_time = EA2.max_time" +
 				" where " +
 				" date(EA.attended_time) =:todayDate and EA.event_id =:entryEventId " +
 				" and EA.tdp_cadre_id = TC.tdp_cadre_id" +
 				" and TC.address_id = UA.user_address_id " +
-				" and UA.district_id = d.district_id " );
+				" and UA.district_id = d.district_id " +
+				" and TC.is_deleted='N'" );
 		
 			if(districtQueryStr !=null && !districtQueryStr.isEmpty()){
 				str.append(districtQueryStr);
 			}
-		
-				str.append(" group by UA.district_id"); 
+			
+			str.append(" group by d.district_id"); 
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("currentCadre",Hibernate.LONG)
@@ -1168,23 +1182,29 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("entryEventId", entryEventId);
 		query.setParameter("exitEventId", exitEventId);
 		query.setDate("todayDate", todayDate);
+		if(enrollmentIds != null && enrollmentIds.size()>0)
+		      query.setParameterList("enrollmentIds", enrollmentIds);
 		
 				
 		return query.list();
 	}
 	
-	public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String constituecnyQueryStr){
+public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String constituecnyQueryStr,List<Long> enrollmentIds){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,c.constituency_id as constituecnyId " +
-				" from " +
-				" tdp_cadre TC,user_address UA,constituency c,event_attendee EA inner join " +
+				" from " );
+			if(enrollmentIds != null && enrollmentIds.size()>0){
+		        str.append("  tdp_cadre_enrollment_year tcey , ");
+		      }
+		str.append(" tdp_cadre TC,user_address UA,constituency c,event_attendee EA inner join " +
 				" (select tdp_cadre_id as cadre_id, max(attended_time) as max_time" +
 				" from event_attendee " +
 				" where " +
 				" date(attended_time) =:todayDate " +
 				" and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as EA2" +
+				//" left join on TCEY.tdp_cadre_id = TC.tdp_cadre_id " +
 				" ON EA.tdp_cadre_id =  EA2.cadre_id and EA.attended_time = EA2.max_time" +
 				" where " +
 				" date(EA.attended_time) =:todayDate and EA.event_id =:entryEventId " +
@@ -1192,11 +1212,15 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" and TC.address_id = UA.user_address_id " +
 				" and UA.constituency_id=c.constituency_id" );
 		
-			if(constituecnyQueryStr !=null && !constituecnyQueryStr.isEmpty()){
-				str.append(constituecnyQueryStr);
-			}
+		if(constituecnyQueryStr !=null && !constituecnyQueryStr.isEmpty()){
+			str.append(constituecnyQueryStr);
+		}
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" and  TC.tdp_cadre_id  = tcey.tdp_cadre_id and ");
+	        str.append(" tcey.enrollment_year_id in (:enrollmentIds) and TC.is_deleted='N' and tcey.is_deleted='N' ");
+	      }
 		
-				str.append(" group by UA.constituency_id"); 
+			str.append(" group by UA.constituency_id"); 
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("currentCadre",Hibernate.LONG)
@@ -1205,15 +1229,17 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("entryEventId", entryEventId);
 		query.setParameter("exitEventId", exitEventId);
 		query.setDate("todayDate", todayDate);
-		
+		if(enrollmentIds != null && enrollmentIds.size() > 0)
+			query.setParameterList("enrollmentIds", enrollmentIds);		
 				
 		return query.list();
 	}
 	
-	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String districtQueryStr,Date toDayDate){
+	public List<Object[]> getDistrictWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String districtQueryStr,Date toDayDate,List<Long> enrollmentIds){
 		
 		StringBuilder str = new StringBuilder();
-		
+		if(enrollmentIds != null && enrollmentIds.contains(0L))
+			enrollmentIds.clear();
 		/*str.append("select count(distinct EA.tdp_cadre_id) as total,count(distinct EI.tdp_cadre_id) as invitees," +
 				"(count(distinct EA.tdp_cadre_id)-count(distinct EI.tdp_cadre_id)) as NonInvitees,d.district_id as districtId,d.district_name as districtName" +
 				" from " +
@@ -1248,34 +1274,52 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				.addScalar("districtName",Hibernate.STRING);*/
 		
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName " +
-				" from EventAttendee model " +
-				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
-			if(districtQueryStr !=null && !districtQueryStr.isEmpty()){
-					str.append(districtQueryStr);
-			}
-		str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.district.districtId");
+				" from EventAttendee model ");
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+	      }
+		    str.append(" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
+		if(districtQueryStr !=null && !districtQueryStr.isEmpty()){
+			str.append(districtQueryStr);
+		}
+		 if(enrollmentIds != null && enrollmentIds.size()>0){
+		        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+		        str.append(" tcey.enrollmentYearId in (:enrollmentIds) and tcey.isDeleted='N' ");
+		  }
+		    str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.district.districtId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("entryEventId", entryEventId);
 		query.setDate("toDayDate", toDayDate);
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_NUMBER);
-		
+		if(enrollmentIds != null && enrollmentIds.size()>0)
+		      query.setParameterList("enrollmentIds", enrollmentIds);
 		return query.list();
 	}
 	
-	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String constituencyQueryStr,Date toDayDate){
+	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String constituencyQueryStr,Date toDayDate,List<Long> enrollmentIds){
 		
 		StringBuilder str = new StringBuilder();
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name " +
-				" from EventAttendee model " +
-				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
-			if(constituencyQueryStr !=null && !constituencyQueryStr.isEmpty()){
-					str.append(constituencyQueryStr);
-			}
+				" from EventAttendee model " );
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+	      }
+			str.append(" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
+		if(constituencyQueryStr !=null && !constituencyQueryStr.isEmpty()){
+				str.append(constituencyQueryStr);
+		}
+		 if(enrollmentIds != null && enrollmentIds.size()>0){
+		        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+		        str.append(" tcey.enrollmentYearId in (:enrollmentIds) and tcey.isDeleted='N' ");
+		 }
 		str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.constituencyId");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("entryEventId", entryEventId);
-		query.setDate("toDayDate", toDayDate);
-		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+			query.setParameter("entryEventId", entryEventId);
+			query.setDate("toDayDate", toDayDate);
+			query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_NUMBER);
+		if(enrollmentIds != null && enrollmentIds.size()>0)
+			query.setParameterList("enrollmentIds", enrollmentIds);
+		
 		
 		return query.list();
 	}
@@ -1522,31 +1566,44 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 			return query.list();
 	   }
 	 
-	public List<Object[]> getOtherStateDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr){
+	public List<Object[]> getOtherStateDistrictWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr,List<Long> enrollmentIds){
 		
 		StringBuilder str = new StringBuilder();
+		if(enrollmentIds != null && enrollmentIds.contains(0L))
+			enrollmentIds.clear();
 		
 		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,d.district_id as districtId " +
-				" from " +
-				" tdp_cadre TC,user_address UA,constituency constituency,district d,event_attendee EA inner join " +
-				" (select tdp_cadre_id as cadre_id, max(attended_time) as max_time" +
-				" from event_attendee " +
-				" where " +
-				" date(attended_time) =:todayDate " +
-				" and (event_id =:entryEventId or event_id =:exitEventId) group by tdp_cadre_id) as EA2" +
+				" from " );
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" tdp_cadre_enrollment_year tcey, ");
+	      }
+		str.append(" tdp_cadre TC,user_address UA,constituency constituency,district d,event_attendee EA inner join " +
+				" (select ea.tdp_cadre_id as cadre_id, max(ea.attended_time) as max_time" +
+				" from event_attendee ea");
+				if(enrollmentIds != null && enrollmentIds.size()>0){
+			        str.append(" ,tdp_cadre_enrollment_year tcey ");
+			      }
+				str.append(" where " +
+				" date(ea.attended_time) =:todayDate ");
+				if(enrollmentIds != null && enrollmentIds.size()>0){
+			        str.append(" and ea.tdp_cadre_id  = tcey.tdp_cadre_id and ");
+			        str.append(" tcey.enrollment_year_id in (:enrollmentIds) and tcey.is_deleted='N' ");
+			      }
+				str.append(" and (ea.event_id =:entryEventId or ea.event_id =:exitEventId) group by ea.tdp_cadre_id) as EA2" +
 				" ON EA.tdp_cadre_id =  EA2.cadre_id and EA.attended_time = EA2.max_time" +
 				" where " +
 				" date(EA.attended_time) =:todayDate and EA.event_id =:entryEventId " +
 				" and EA.tdp_cadre_id = TC.tdp_cadre_id" +
 				" and TC.address_id = UA.user_address_id " +
 				" and UA.constituency_id = constituency.constituency_id " +
-				" and constituency.district_id = d.district_id " );
+				" and constituency.district_id = d.district_id " +
+				" and TC.is_deleted='N' " );
 		
 			if(queryStr !=null && !queryStr.isEmpty()){
 				str.append(queryStr);
 			}
-		
-				str.append(" group by d.district_id"); 
+			
+			str.append(" group by d.district_id"); 
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("currentCadre",Hibernate.LONG)
@@ -1555,18 +1612,23 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 		query.setParameter("entryEventId", entryEventId);
 		query.setParameter("exitEventId", exitEventId);
 		query.setDate("todayDate", todayDate);
-		
+		if(enrollmentIds != null && enrollmentIds.size()>0)
+		      query.setParameterList("enrollmentIds", enrollmentIds);
 				
 		return query.list();
 	}
 	
-	public List<Object[]> getOtherStateConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr){
+	public List<Object[]> getOtherStateConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr,List<Long> enrollmentIds){
 		
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,c.constituency_id as constituencyId " +
 				" from " +
-				" tdp_cadre TC,user_address UA,constituency c,event_attendee EA inner join " +
+				" tdp_cadre TC,user_address UA,constituency c," );
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" tdp_cadre_enrollment_year tcey, ");
+	      }
+		str.append(" event_attendee EA inner join " +
 				" (select tdp_cadre_id as cadre_id, max(attended_time) as max_time" +
 				" from event_attendee " +
 				" where " +
@@ -1579,27 +1641,34 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" and TC.address_id = UA.user_address_id " +
 				" and UA.constituency_id = c.constituency_id " );
 		
-			if(queryStr !=null && !queryStr.isEmpty()){
-				str.append(queryStr);
-			}
-		
-				str.append(" group by c.constituency_id"); 
+		if(queryStr !=null && !queryStr.isEmpty()){
+			str.append(queryStr);
+		}
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" and TC.tdp_cadre_id  = tcey.tdp_cadre_id and ");
+	        str.append(" tcey.enrollment_year_id in (:enrollmentIds) and TC.is_deleted='N' and tcey.is_deleted='N' ");
+	      }
+			str.append(" group by c.constituency_id"); 
 		
 		Query query = getSession().createSQLQuery(str.toString())
 				.addScalar("currentCadre",Hibernate.LONG)
 				.addScalar("constituencyId",Hibernate.LONG);
 		
-		query.setParameter("entryEventId", entryEventId);
-		query.setParameter("exitEventId", exitEventId);
-		query.setDate("todayDate", todayDate);
-		
+			query.setParameter("entryEventId", entryEventId);
+			query.setParameter("exitEventId", exitEventId);
+			query.setDate("todayDate", todayDate);
+		if(enrollmentIds != null && enrollmentIds.size()>0)
+		      query.setParameterList("enrollmentIds", enrollmentIds);
 				
 		return query.list();
 	}
 	
-	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String queryStr,Date todateDate){
+	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String queryStr,Date todateDate,List<Long> enrollmentIds){
 		
 		StringBuilder str = new StringBuilder();
+		if(enrollmentIds != null && enrollmentIds.contains(0L))
+			enrollmentIds.clear();
+		
 		
 		/*str.append("select count(distinct EA.tdp_cadre_id) as total,count(distinct EI.tdp_cadre_id) as invitees," +
 				"(count(distinct EA.tdp_cadre_id)-count(distinct EI.tdp_cadre_id)) as NonInvitees,d.district_id as districtId,d.district_name as districtName" +
@@ -1636,34 +1705,51 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				.addScalar("districtId",Hibernate.LONG)
 				.addScalar("districtName",Hibernate.STRING);*/
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.district.districtId,model.tdpCadre.userAddress.constituency.district.districtName " +
-				"from EventAttendee model " +
-				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
-			if(queryStr !=null && !queryStr.isEmpty()){
-					str.append(queryStr);
-			}
+				"from EventAttendee model ");
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+	      }
+			str.append(	" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
+		if(queryStr !=null && !queryStr.isEmpty()){
+				str.append(queryStr);
+		}
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+	        str.append(" tcey.enrollmentYearId in (:enrollmentIds) and tcey.isDeleted='N' ");
+	      }
 		str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.district.districtId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("entryEventId", entryEventId);
 		query.setDate("toDayDate", todateDate);
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_YEAR);
-		
+		if(enrollmentIds != null && enrollmentIds.size()>0)
+		      query.setParameterList("enrollmentIds", enrollmentIds);
 		return query.list();
 	}
 	
-	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String queryStr,Date todayDate){
+	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String queryStr,Date todayDate,List<Long> enrollmentIds){
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name " +
-				"from EventAttendee model " +
-				" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
+				"from EventAttendee model " );
+		if(enrollmentIds != null && enrollmentIds.size()>0){
+	        str.append(" , TdpCadre tc, TdpCadreEnrollmentYear tcey ");
+	      }
+		str.append(" where model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = :ernrolYear ");
 			if(queryStr !=null && !queryStr.isEmpty()){
 					str.append(queryStr);
 			}
+		 if(enrollmentIds != null && enrollmentIds.size()>0){
+		        str.append(" and model.tdpCadreId = tc.tdpCadreId and tc.tdpCadreId  = tcey.tdpCadreId and ");
+		        str.append(" tcey.enrollmentYearId in (:enrollmentIds) and tcey.isDeleted='N' ");
+		   }
 		str.append(" and date(model.attendedTime)=:toDayDate and model.eventId=:entryEventId group by model.tdpCadre.userAddress.constituency.constituencyId");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("entryEventId", entryEventId);
 		query.setDate("toDayDate", todayDate);
 		query.setParameter("ernrolYear", IConstants.CADRE_ENROLLMENT_YEAR);
+		if(enrollmentIds != null && enrollmentIds.size()>0)
+		      query.setParameterList("enrollmentIds", enrollmentIds);
 		
 		return query.list();
 		
