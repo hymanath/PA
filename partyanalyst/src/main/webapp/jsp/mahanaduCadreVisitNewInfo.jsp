@@ -52,7 +52,7 @@
 		  <div class="col-md-4" style="margin-top:5px;">
 			 <h4 class="m_0 panel-title text-capitalise">mahanadu visitors info dashboard</h4>
 		  </div>
-		  <div class="col-md-4 col-md-offset-1">
+		  <div class="col-md-2 col-md-offset-1">
 			<div id="mahanaduEventDashBoardLinkId" style="display:none">
 			  <button id="mahanaduLinkId" type="button" class="btn btn-primary pull-right">ENTRY/EXIT DASHBOARD</button>
 			</div>
@@ -63,13 +63,18 @@
 			  </a>
 			</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md">
+				<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="enrollmentId">
+					<option value="0">All</option>
+					<option value="3" >2014-2016</option>
+					<option value="4" >2016-2018</option>
+				</select>
 				<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="mainEventSelectId">
 					<option value="0">Select Event</option>
 					<option value="7" >Mahanadu 2015</option>
 					<option value="30" >Mahanadu 2016</option>
 					<option value="51" selected>Mahanadu 2017</option>
-				</select>
+				</select>				
 				<select style="height:32px;display:inline-block;width:100px;" class="form-control" id="eventDatesSelectId"></select>
 			</div>
 		</div>
@@ -302,7 +307,7 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 	
 <script type="text/javascript">
-
+ var enrollmentIdsArr=[];
  var maxHeight = 0;
 $(".panelDefault").each(function(){
    if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
@@ -377,14 +382,15 @@ $(".panelDefault").height(maxHeight);
 			  type:'GET',
 			  url: 'getSubEventsOfEventAction.action',
 			  data :{task:JSON.stringify(jsObj)}
-          }).done(function(result){			  
+          }).done(function(result){	
+			 	  
 			  if(result !=null && result.length>0){
 				  for(var i in result){
-					  if(result[i].name == "Main Entry"){
+					  if(result[i].name == "Main Entry" ||  result[i].name.trim() == "Main Entry" ){
 						 globalMainEntryId = result[i].id;
 					  }
 				  }
-				  getEventDates();
+				  getEventDates();	
 			  }			  
 		  });
 	  }
@@ -453,7 +459,8 @@ $(".panelDefault").height(maxHeight);
 	
 	function getEventDates(){
 		var jsObj={
-			eventId : $("#mainEventSelectId").val()
+			eventId : $("#mainEventSelectId").val(),
+			enrollmentIdsList:enrollmentIdsArr
 		}
 		  
 		$.ajax({
@@ -511,6 +518,9 @@ $(".panelDefault").height(maxHeight);
 	}
 	
 	function allCalls(){
+		enrollmentIdsArr=[];
+		enrollmentIdsArr.push($('#enrollmentId').val());
+		
 		getDaysUniqueAndRevisitSummary();	
         getTodayTotalVisitors(); 
         getDetails();		
@@ -537,7 +547,8 @@ $(".panelDefault").height(maxHeight);
 			stateId:stateId,
 			reportLevelId:0,
 			subEvents : [subEvents1],	
-			dateValues : attrDateValue
+			dateValues : attrDateValue,
+			enrollmentIdsList:enrollmentIdsArr
 		}	
 		$("#daysSummaryUniqueTableId").html(' ');
 		$("#dayWsUnquVstrsPrcssngImgId").show();
@@ -580,7 +591,8 @@ $(".panelDefault").height(maxHeight);
    	var eventId = $("#mainEventSelectId").val();
 	   var jObj = {
 			eventId:eventId,
-			date : presentDate
+			date : presentDate,
+			enrollmentIdsList:enrollmentIdsArr
 		}
 		
 		$.ajax({
@@ -620,7 +632,8 @@ $(".panelDefault").height(maxHeight);
     	 var  eventId = $("#mainEventSelectId").val();
 		   var jsObj={
 			   eventId:eventId,
-			   dateValues:attrDateValue
+			   dateValues:attrDateValue,
+				enrollmentIdsList:enrollmentIdsArr
 		   }
 		  $.ajax({
 			  type:'GET',
@@ -1049,7 +1062,8 @@ $(".panelDefault").height(maxHeight);
 			stateId:stateId,
 			reportLevelId:0,
 			subEvents : [subEvents1],
-			date:$("#eventDatesSelectId option:selected").attr("attr_dates")
+			date:$("#eventDatesSelectId option:selected").attr("attr_dates"),
+			enrollmentIdsList:enrollmentIdsArr
 		}	
 		
 		$.ajax({
@@ -1122,7 +1136,7 @@ function buildTotalVisitorsResult(result){
 	});
 	
 	function getDistrictWiseMembersCountInCampus(){
-		$("#distWiseTableAjax").show();
+		
 		var stateIds = [];
 		$("#distWiseTableId").html('<img src="images/Loading-data.gif" style="width:70px;height:60px;"/>');
 		if($("#tsSwitch").is(":checked")){
@@ -1145,7 +1159,7 @@ function buildTotalVisitorsResult(result){
 				stateIds:stateIds,
 				date:t[t.length-2]
 			}	
-			
+			$("#distWiseTableAjax").show();
 			$.ajax({
 			  type:'GET',
 			  url: 'getDistrictWiseMembersCountInCampusAction.action',
@@ -1220,7 +1234,7 @@ function buildTotalVisitorsResult(result){
 	
 	function getConstituencyWiseMembersCountInCampus(){
 		
-		$("#constWiseTableAjax").show();
+		
 		var stateIds = [];
 		$("#distWiseTableId").html('<img src="images/Loading-data.gif" style="width:70px;height:60px;"/>');
 		if($("#tsSwitch").is(":checked")){
@@ -1243,7 +1257,7 @@ function buildTotalVisitorsResult(result){
 				stateIds:stateIds,
 				date:t[t.length-2]
 			}	
-			
+			$("#constWiseTableAjax").show();
 			$.ajax({
 			  type:'GET',
 			  url: 'getConstituencyWiseMembersCountInCampusAction.action',
@@ -1344,7 +1358,8 @@ function buildTotalVisitorsResult(result){
 		
 		var jObj = {
 				dayVal:date,
-				eventId : $("#mainEventSelectId").val()
+				eventId : $("#mainEventSelectId").val(),
+				enrollmentIdsList:enrollmentIdsArr
 			}	
 			
 			$.ajax({
@@ -1433,6 +1448,13 @@ function generateExcel(){
 function generateExcel1(){
 	tableToExcel(constWiseTableId, 'Constituency Wise Report');
 }
+
+$(document).on("change","#enrollmentId",function(){
+	enrollmentIdsArr=[];
+	enrollmentIdsArr.push($(this).val());
+	$( "#mainEventSelectId" ).trigger('change');
+});
+
 </script>
 <script>
 var tableToExcel = (function() {
