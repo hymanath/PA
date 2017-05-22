@@ -476,9 +476,9 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		toDateCal.setTime(toDate);
 		
 		Date todayDate = dateUtilService.getCurrentDateAndTime();
-		totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);
-		currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
-		currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
+		totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId,null);
+		currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId,null)).longValue();
+		currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId,null)).longValue();
 		
 		
 			if(!(toDate.before(fromDate))){
@@ -562,7 +562,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return returnList;
 	}
 	
-	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId,String dateValues){
+	public List<MahanaduVisitVO> getTodayTotalAndCurrentUsersInfoList(Long eventId,String dateValues,List<Long> enrollmentIdsList){
 		List<MahanaduVisitVO> returnList = new ArrayList<MahanaduVisitVO>();
 		Long totalVisitors = 0l;
 		Long currentVisitors = 0l;
@@ -599,9 +599,9 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long exitEventId = entryExitInfo.getExitId();
 			parentEventId = entryExitInfo.getParentEventId();
 			reqParentEventId = parentEventId;
-			totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);
-			currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
-			currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
+			totalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId,enrollmentIdsList);
+			currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId,enrollmentIdsList)).longValue();
+			currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId,enrollmentIdsList)).longValue();
 		}
 			if(!(toDate.before(fromDate))){
 			    int from = fromDateCal.get(Calendar.DAY_OF_MONTH);
@@ -699,7 +699,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return returnList;
 	}
 	
-	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId,String eventCurrentDate){		
+	public MahanaduVisitVO getTodayTotalAndCurrentUsersInfoListNew(Long eventId,String eventCurrentDate,List<Long> enrollmentIdsList){		
 		
 		MahanaduVisitVO finalVo = new MahanaduVisitVO();
 		
@@ -731,10 +731,10 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			}
 			
 			
-			toDaytotalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId);			
-			toDaytotalInviteeVisitors=eventAttendeeDAO.getTodayTotalInviteeVisitors(todayDate,parentEventId,entryEventId);			
-			currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId)).longValue();
-			currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId)).longValue();
+			toDaytotalVisitors = eventAttendeeDAO.getTodayTotalVisitors(todayDate,parentEventId,entryEventId,enrollmentIdsList);			
+			toDaytotalInviteeVisitors=eventAttendeeDAO.getTodayTotalInviteeVisitors(todayDate,parentEventId,entryEventId,enrollmentIdsList);			
+			currentVisitors = (eventAttendeeDAO.getCurrentVisitors(todayDate, entryEventId, exitEventId,enrollmentIdsList)).longValue();
+			currentInviteeVisitors = (eventAttendeeDAO.getCurrentInviteeVisitors(todayDate, entryEventId, exitEventId,enrollmentIdsList)).longValue();
 			
 			
 			finalVo.setTotalVisitors(toDaytotalVisitors);
@@ -749,7 +749,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				finalVo.setCurrentNonInviteeVisitors(currentVisitors - currentInviteeVisitors);
 			}
 			
-			List<MahanaduEventVO>  totalHourVisitors= getHourWiseTotalVisitorsCount(parentEventId,todayDate,null);//total Visitors Hours wise For Today
+			List<MahanaduEventVO>  totalHourVisitors= getHourWiseTotalVisitorsCount(parentEventId,todayDate,null,enrollmentIdsList);//total Visitors Hours wise For Today
 			//getHourWiseTotalVisitorsCount(parentEventId,todayDate,"Invitee");//total Invited Visitors Hours wise Flow For Today
 			
 			//getHourWiseCurrentVisitorsCount(todayDate,entryEventId,exitEventId,null);
@@ -764,7 +764,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return finalVo;
 		
 	}
-	public List<MahanaduEventVO> getHourWiseTotalVisitorsCount(Long parentEventId,Date startDate,String type )
+	public List<MahanaduEventVO> getHourWiseTotalVisitorsCount(Long parentEventId,Date startDate,String type,List<Long> enrollmentIdsList )
 	 {	
 		 try{
 			 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -774,7 +774,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			 List<Long> subEventIds = new ArrayList<Long>(0);
 			 
 			 //0.total,1.invited count,2.non-invited count,3.hour
-			 List<Object[]> hourWiseResult = eventAttendeeDAO.getHourWiseTotalVisitorsCount(parentEventId,startDate,subEventIds,type);
+			 List<Object[]> hourWiseResult = eventAttendeeDAO.getHourWiseTotalVisitorsCount(parentEventId,startDate,subEventIds,type,enrollmentIdsList);
 			 List<MahanaduEventVO> defaultHoursList =  setHoursList();
 			 if(hourWiseResult != null && hourWiseResult.size() > 0){
 				 for(Object[] obj :hourWiseResult){														
@@ -1172,7 +1172,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return Long.parseLong(day+"");
 	}
 	
-	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId){
+	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId,List<Long> enrollmentIdsList){
 		List<MahanaduEventVO> defaultHoursList =  setHoursList();
 		try {
 			Object[] dateObj = eventDAO.getEventDates(eventId);
@@ -1191,7 +1191,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			
 			//get now in campus counts
 			//0-cadreids count,1-hour
-			List<Object[]> currentInCampusObjList = eventAttendeeDAO.getHourWiseCurrentVisitorsCount(date,entryEventId,exitEventId,null);
+			List<Object[]> currentInCampusObjList = eventAttendeeDAO.getHourWiseCurrentVisitorsCount(date,entryEventId,exitEventId,null,enrollmentIdsList);
 			
 			MahanaduEventVO vo = new MahanaduEventVO();
 			
@@ -1321,7 +1321,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			
 			//get total counts
 			//0-total,1-hour
-			List<Object[]> totalCountsObjList = eventAttendeeDAO.getHourWiseTotalVisitorsCount(entryEventId,date,null,null);
+			List<Object[]> totalCountsObjList = eventAttendeeDAO.getHourWiseTotalVisitorsCount(entryEventId,date,null,null,enrollmentIdsList);
 			MahanaduEventVO vo1 = new MahanaduEventVO();
 			if(totalCountsObjList != null && totalCountsObjList.size() > 0){
 				for (Object[] objects : totalCountsObjList) {
@@ -1849,4 +1849,5 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		}
 		return null;
 	}
+
 }
