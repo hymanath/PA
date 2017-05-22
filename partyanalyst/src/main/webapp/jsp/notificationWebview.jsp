@@ -31,21 +31,26 @@
 						<div class="tab-content">
 
 							<div role="tabpanel" class="tab-pane active" id="createNotification">
-								<div class="col-md-6 col-md-offset-3">
+								<div class="col-md-4 col-md-offset-3">
 									<label>Notification Type:</label>
 									<select class="chosenClass" id="notificationTypeId">
 									</select>
 									<div style="color:red;" id="notificationTypeErrId"></div>
 								</div>
 								
-								<div class="col-md-6 col-md-offset-3">
+								<div class="col-md-4 col-md-offset-3">
 								<label>Notification Text:</label>
 								<textarea type="text"  name="name"  class="form-control" id="addNotificationTextId"
  										placeholder="Please Enter Notification Text"></textarea>								
  									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
+								<div class="col-md-4 col-md-offset-3">
+								<label>URL Link:</label>
+								<input type="text"  name="name"  class="form-control" id="addYoutubeUrlId"	placeholder="Please Enter URL Key"/>								
+ 									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
+								</div>
 								
-								<div class="col-md-6 col-md-offset-3">
+								<div class="col-md-4 col-md-offset-3">
 								<input type="button" id="notificationId" attr_success="NOTIFICATION ADDED..." style="padding-top: 5px; margin-top: 14px;"  class="btn btn-success btn-block"   value="SEND NOTIFICATION"  onclick="addNotification();"/>
 								<div id="notificationSuccessId" sytle="color:green"></div>
 								</div>
@@ -214,6 +219,7 @@ $("#pushNotificationCodeId,#ntfctnTypeTextSuccessId,#notificationSuccessId,#upda
 	$("#addNotificationTypeTextErrId").html("");
 	var notificationTypeId = $("#notificationTypeId").val();
 	var notificationText = $("#addNotificationTextId").val().trim();
+	var addYoutubeUrl = $("#addYoutubeUrlId").val().trim();
 	if(notificationTypeId==0){
 		$("#notificationTypeErrId").html("Please select one notification type.");
 		return;
@@ -222,7 +228,9 @@ $("#pushNotificationCodeId,#ntfctnTypeTextSuccessId,#notificationSuccessId,#upda
 		$("#addNotificationTypeTextErrId").html("Please type one notification.");
 		return;
 	}
-	var JSONObject= {"notificationTypeId":notificationTypeId, "notificationText":notificationText };
+	var JSONObject= {"notificationTypeId":notificationTypeId,
+	"notificationText":notificationText,
+	"addYoutubeUrl":addYoutubeUrl};
 	
 	$.ajax({
 		type : 'POST',
@@ -231,10 +239,11 @@ $("#pushNotificationCodeId,#ntfctnTypeTextSuccessId,#notificationSuccessId,#upda
 		data: {task:JSON.stringify(JSONObject)}
 	}).done(function(result){  
 	if(result=="Success"){
-		$("#notificationSuccessId").html("Notification Added Successfully");
+		$("#notificationSuccessId").html("Notification Sent Done Successfully");
 		$("#notificationTypeId").val(0);
 		$("#notificationTypeId").trigger("chosen:updated");
 		$("#addNotificationTextId").val('');
+		$("#addYoutubeUrlId").val('');
 		setTimeout(function(){ 
 			$( "#notificationSuccessId" ).fadeOut( "slow" );
 		}, 2000);
@@ -252,7 +261,7 @@ function buildGrivenceDetailsTableOld(result){
                     str+='<tr>';
 				    str+=' <th>Notification</th>';
 					str+=' <th>Success Count</th>';   
-					str+=' <th>Failure Count</th>';   					 
+					str+=' <th>Failure Count</th>';   
 					str+=' <th>Time </th>';
                     str+='</tr>';
 					str+=' </thead>';
