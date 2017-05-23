@@ -40,7 +40,7 @@
         box-sizing: border-box;
     }
     .onoffswitch-inner:before {
-        content: "WITH OUT URL";
+        content: "WITHOUT URL";
         padding-left: 16px;
         background-color: #EEEEEE; color: #999999;
     }
@@ -64,6 +64,8 @@
     .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
         right: 0px; 
     }
+.text-capital{text-transform:uppercase}
+
 </style>
 </head>
 <section>
@@ -91,23 +93,22 @@
 					</div>
 					<div class="panel-body">
 						<div class="tab-content">
-
 							<div role="tabpanel" class="tab-pane active" id="createNotification">
 								<div class="col-md-4 col-md-offset-3">
-									<label>Notification Type:</label>
+									<label>NOTIFICATION TYPE:</label>
 									<select class="chosenClass" id="notificationTypeId">
 									</select>
 									<div style="color:red;" id="notificationTypeErrId"></div>
 								</div>
 								
 								<div class="col-md-4 col-md-offset-3">
-								<label>Notification Text:</label>
+								<label>NOTIFICATION TEXT:</label>
 								<textarea type="text"  name="name"  class="form-control" id="addNotificationTextId"
  										placeholder="Please Enter Notification Text"></textarea>								
  									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
 								<div class="col-md-4 col-md-offset-3 urlLinkDivCls" style="display:none;">
-									<label>URL Link:</label>
+									<label>URL LINK:</label>
 									<input type="text"  name="name"  class="form-control" id="addYoutubeUrlId"	placeholder="Please Enter URL Key"/>								
  									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
@@ -134,8 +135,8 @@
 		</div>
 	</div>
 	<!-- Modal -->
-   <div class="modal fade" id="notificationDtlsModalId" role="dialog">
-    <div class="modal-dialog" style="width:65%">
+   <div class="modal fade text-capital" id="notificationDtlsModalId" role="dialog">
+    <div class="modal-dialog" style="width:85%">
       <div class="modal-content">
         <div class="modal-header">
           <button id="removeClassModal" type="button" class="close" data-dismiss="modal">&times;</button>
@@ -353,12 +354,17 @@ function buildGrivenceDetailsTableOld(result){
 				   
 				   $("#notificationsdetailId").html(str);
 				   $('#alertIdListTableId').dataTable({});
+				   
 }
 $("#myonoffswitch").click(function(){
   if($('#myonoffswitch').is(":checked")){
 		$(".urlLinkDivCls").hide();
+		$("#notificationTypeId").val(0);
+	$("#notificationTypeId").trigger("chosen:updated");
   }else{
 	$(".urlLinkDivCls").show();
+	$("#notificationTypeId").val(7);
+	$("#notificationTypeId").trigger("chosen:updated");
   }
 });
 </script>
