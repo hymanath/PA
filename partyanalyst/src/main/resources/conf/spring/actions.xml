@@ -1441,7 +1441,8 @@
 	   <property name="regionServiceDataImp" ref="regionServiceDataImp" /> 
 	   <property name="entitlementsHelper" ref="entitlementsHelper" /> 
 	   <property name="cadreCommitteeService" ref="cadreCommitteeService" />   
-	   <property name="notificationService" ref="notificationService" />    
+	   <property name="notificationService" ref="notificationService" />
+	   <property name="schedulerService" ref="schedulerService" />    
 	</bean>
 	<bean id="cmsAdminAction" class="com.itgrids.partyanalyst.web.action.CmsAdminAction" singleton="false"></bean>
 	
