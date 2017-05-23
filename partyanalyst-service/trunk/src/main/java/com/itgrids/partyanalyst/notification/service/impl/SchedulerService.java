@@ -78,6 +78,7 @@ import com.itgrids.partyanalyst.dto.EmailAttributesVO;
 import com.itgrids.partyanalyst.dto.OfficeMemberVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.model.TrainingCampBatchAttendee;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICadreSurveyTransactionService;
@@ -1004,13 +1005,22 @@ public class SchedulerService implements ISchedulerService{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try{
 			
-			Long parenteventId = 30l;
+			Long parenteventId = 58l;
+			DateUtilService dateUtilService = new DateUtilService();
 		     
 		     Object[] dates = eventDAO.getEventDates(parenteventId);
 		     String startDate = sdf.format((Date)dates[0]);
 		     String endDate   = sdf.format((Date)dates[1]);
+		     
+		     Event event = eventDAO.get(parenteventId);
+		     
+		    Date presentTime = dateUtilService.getCurrentDateAndTime();
+		    Date startTime = dateUtilService.getDateAndTime(dateUtilService.getCurrentDateInStringFormatYYYYMMDD()+" "+event.getStartTime());
+		    Date endTime = dateUtilService.getDateAndTime(dateUtilService.getCurrentDateInStringFormatYYYYMMDD()+" "+event.getEndTime());
 			
-			    
+		    if(!(startTime.getTime() <= presentTime.getTime() && presentTime.getTime() <= endTime.getTime()))
+		    	return;    
+		    	
 		     List<Long> stateIds = new ArrayList<Long>();
 			 stateIds.add(1l);
 			 stateIds.add(36l);
