@@ -605,7 +605,7 @@
                         <h2><i class="fa fa-wrench line_heightDiv"></i>Mahanadu 2017</h2>
                        <ul>
 							<li>
-								<a href="eventDashboardAction.action?eventId=51"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
+								<a href="eventDashboardAction.action?eventId=58"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
 							</li>
 							<li>
 								<a href="mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
@@ -944,7 +944,7 @@
 									<h2><i class="fa fa-wrench line_heightDiv"></i>Mahanadu 2017</h2>
 								   <ul>
 										<li>
-											<a href="eventDashboardAction.action?eventId=51"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
+											<a href="eventDashboardAction.action?eventId=58"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Event Dashoard</span></a>
 										</li>
 										<li>
 											<a href="mahanaduCadreVisitNewInfoAction.action"><i class="fa fa-dashboard ico-white"></i><span>&nbsp;&nbsp;Mahanadu Entry /Exit Dashboard</span></a>
