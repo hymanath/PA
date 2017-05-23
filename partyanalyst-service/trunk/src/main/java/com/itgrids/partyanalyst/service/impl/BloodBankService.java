@@ -389,7 +389,7 @@ public class BloodBankService implements IBloodBankService{
 				    	bloodDonorInfo.setAddress(bloodBanKVO.getAddress());
 				    }
 				    
-				    Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(bloodBanKVO.getMembershipNo().trim());				    
+				    Long tdpCadreId = tdpCadreDAO.getCadreIdByMemberShip(bloodBanKVO.getMembershipNo().trim(),null);				    
 				    bloodDonorInfo.setTdpCadreId(tdpCadreId);				    
 				    bloodDonorInfo.setInsertedTime(presentDate.getCurrentDateAndTime());
 				    bloodDonorInfo.setUpdatedTime(presentDate.getCurrentDateAndTime());
