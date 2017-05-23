@@ -7317,6 +7317,12 @@
 			</result>
 		</action>
 		
+		<action name="mahanaduEventPdfReportAction" class="mahaNaduAction" method="getPdf">
+			<result type="json" name="success">
+				<param name="root">cadreVo</param>
+			</result>
+		</action>
+		
 		<action name="getBoothsInPublication" class="mahaNaduAction" method="getBooths">
 			<result type="json" name="success">
 				<param name="root">boothsList</param>
