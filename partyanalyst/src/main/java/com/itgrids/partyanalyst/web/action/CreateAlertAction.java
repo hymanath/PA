@@ -3180,8 +3180,43 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long deptId=jObj.getLong("deptId");
 			Long sourceId=jObj.getLong("sourceId");
 			Long stateId=jObj.getLong("stateId");
+			String level=jObj.getString("level");
 			
-			alertOverviewVO = alertService.getStateLevelAlertDetails(fromDate,toDate,stateId,deptId,sourceId);
+			alertOverviewVO = alertService.getStateLevelAlertDetails(fromDate,toDate,stateId,deptId,sourceId,level);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getLocationWiseFeebbackAlert Method",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getReopenCountDtls(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDate=jObj.getString("toDateStr");
+			Long stateId=jObj.getLong("stateId");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			String groupType=jObj.getString("groupType");
+			Long reopenType=jObj.getLong("reopenType");
+			Long locationId=jObj.getLong("locationId");
+			
+			alertCoreDashBoardVOs = alertService.getReopenCountDtls(fromDate,toDate,stateId,deptId,sourceId,groupType,reopenType,locationId);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getLocationWiseFeebbackAlert Method",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getTotalAlertGroupByStatusForStateLvlGrievancePage(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDate=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			Long stateId=jObj.getLong("stateId");
+			String level=jObj.getString("level");
+			Long statusId=jObj.getLong("statusId");
+			alertCoreDashBoardVOs = alertService.getTotalAlertGroupByStatusForStateLvlGrievancePage(fromDate,toDate,stateId,deptId,sourceId,statusId,level);
 		}catch(Exception e){
 			LOG.error("Excpetion raised at getLocationWiseFeebbackAlert Method",e);
 		}
