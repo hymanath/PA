@@ -17363,5 +17363,15 @@
 			<param name="root">locationVO</param>         
 		</result> 
 	</action>
+	<action name="getReopenCountDtlsAction" class="createAlertAction"  method="getReopenCountDtls">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>         
+		</result> 
+	</action>
+	<action name="getTotalAlertGroupByStatusForStateLvlGrievancePageAction" class="createAlertAction"  method="getTotalAlertGroupByStatusForStateLvlGrievancePage">
+		<result type="json" name="success">    
+			<param name="root">alertCoreDashBoardVOs</param>         
+		</result> 
+	</action>
  </package>
 </struts>
