@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
 import com.itgrids.partyanalyst.service.INotificationService;
@@ -59,6 +60,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	JSONObject jObj = null;
 	private String task = null;
 	 private EntitlementsHelper entitlementsHelper;
+	 private ISchedulerService schedulerService;
+
 	/**
 	 * lists used to populate address select dropdowns
 	 */
@@ -113,6 +116,9 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private INotificationService notificationService;
 	private String status;
 	
+	public void setSchedulerService(ISchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
 	
 	public INotificationService getNotificationService() {
 		return notificationService;
@@ -1081,5 +1087,17 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public String getPdf()
+	{
+		try{
+			schedulerService.sendPdfReport();
+			
+		}catch(Exception e)
+		{
+			LOG.error(e);
+		}
+		return Action.SUCCESS;
 	}
 }
