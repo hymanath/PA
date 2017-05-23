@@ -1368,7 +1368,7 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 			if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 				sbM.append(",TdpCadreEnrollmentYear cadreEnrollYear ");
 			}
-			sbM.append(" cadreEnrollYear where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
+			sbM.append(" where model.event.isInviteeExist = 'Y' and model.event.parentEventId = model1.event.eventId and model.tdpCadre.tdpCadreId = model1.tdpCadre.tdpCadreId  and ");
 		}
 		
 		sbM.append(" model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
