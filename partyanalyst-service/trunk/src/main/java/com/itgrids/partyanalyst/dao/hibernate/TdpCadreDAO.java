@@ -7022,7 +7022,7 @@ public List<Long> getCadreIdsByMemberShip(Long enrollmentId,String searchType,St
  		
  		str.append(" select VAR.voterAgeRangeId,count(distinct TC.tdpCadreId) from VoterAgeRange VAR, TdpCadre TC,TdpCadreEnrollmentYear model1" +
  				" where TC.age >= VAR.minValue and  TC.age <= VAR.maxValue and VAR.voterAgeRangeId in (:ageWiseIds) and TC.isDeleted = 'N' and TC.enrollmentYear = '2014' and VAR.voterAgeRangeId != 7 " +
- 				" and model1.tdpCadre.tdpCadreId = TC.tdpCadreId and model1.isDeleted = 'N' ");
+ 				" and model1.tdpCadre.tdpCadreId = TC.tdpCadreId and model1.isDeleted = 'N' and VAR.voterAgeRangeId=TC.voterAgeRangeId ");
  		
  		if(enrollmentYrIds != null && enrollmentYrIds.size() >0){
 			str.append("		and model1.enrollmentYear.enrollmentYearId in (:enrollmentYrIds) " );
