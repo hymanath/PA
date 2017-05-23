@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.BloodDonationVo;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreBasicVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -2629,16 +2630,14 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
-	@GET
-	@Path("/savingBloodDonateCandidateDetails/{name}/{mobileNo}/{memberShipId}/{dateTime}")
+	@POST
+	@Path("/savingBloodDonateCandidateDetails")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ResultStatus savingcandidateDetails(@PathParam("name") String name,
-			           @PathParam("mobileNo") String mobileNo, 			          
-			           @PathParam("memberShipId") String memberShipId,
-			           @PathParam("dateTime") String dateTime){
+	public ResultStatus savingcandidateDetails(BloodDonationVo bloodDonationVo){
 		try{			
-			return mahaNaduService.savingBloodDonateCandidateDetails(name,mobileNo,memberShipId,dateTime);			
+			return mahaNaduService.savingBloodDonateCandidateDetails(bloodDonationVo.getName(),bloodDonationVo.getMobileNo(),
+					bloodDonationVo.getMemberShipId(),bloodDonationVo.getDateTime());			
 		}catch(Exception e){
 			LOG.error("Exception Occured in savingCandidateDetails() Method, Exception is ",e);
 			return null;
