@@ -21,6 +21,8 @@
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/jquery.filer.css"  type="text/css" rel="stylesheet"/>
 <link href="dragAndDropPhoto/css/themes/jquery.filer-dragdropbox-theme.css"  type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
@@ -235,6 +237,7 @@
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
