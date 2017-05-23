@@ -110,9 +110,10 @@ table{margin-bottom:0px !important;}
 				<div class="col-md-2">
 					<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="mainEventSelectId">
 						<option value="0">Select Event</option>
-						<option value="7">Mahanadu 2015</option>
-						<option value="30" >Mahanadu 2016</option>
-						<option value="51" selected>Mahanadu 2017</option>
+						<option value="7" >Mahanadu - 2015</option>
+						<option value="30" >Mahanadu - 2016</option>
+						<option value="51">Mahanadu - 2017</option>
+						<option value="58" selected>T-Mahanadu - 2017</option>
 					</select>
 				</div>
 				
@@ -1391,11 +1392,11 @@ $('.totalAttendedRadioBtnCls').click(function() {
    if(checked){ 
     sliderFunctionForCaste(gblmaxTotalAttended);
 	//buildCasteGraphBySlide(500);
-	buildCasteGraphBySlide(gblmaxTotalAttended); /* srishailam default attendance chenged from 500 */
+    buildCasteGraphBySlide(gblmaxTotalAttended); /* srishailam default attendance chenged from 500 */
 	$("#casteWiseTableId").html(' ');
     $("#casteWiseExportToExcelTableId").html(' ');
-	buildCasteWiseRslt(gblCasteWiseRslt,"",gblmaxTotalAttended,"totalAttended");
-	buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",gblmaxTotalAttended,"totalAttended"); 
+	buildCasteWiseRslt(gblCasteWiseRslt,"",500,"totalAttended");
+	buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",500,"totalAttended"); 
    $("#castContainerChart").show();
    $("#castPerContainerChart").hide();
    $(".totalAttendedRadioBtnPerCls").attr('checked', false);
