@@ -69,7 +69,10 @@ public class AlertOverviewVO {
 	private String fromDateStr;
 	private String toDateStr;
 	private Long reopenCount = 0L;
+	private Long reopenCountForOfficer = 0L;
+	private Long overallReopenCount = 0L;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
+	private String type;
 	
 	public Long getGovtAlertCnt() {
 		return govtAlertCnt;
@@ -390,6 +393,24 @@ public class AlertOverviewVO {
 	}
 	public void setReopenCount(Long reopenCount) {
 		this.reopenCount = reopenCount;
+	}
+	public Long getReopenCountForOfficer() {
+		return reopenCountForOfficer;
+	}
+	public void setReopenCountForOfficer(Long reopenCountForOfficer) {
+		this.reopenCountForOfficer = reopenCountForOfficer;
+	}
+	public Long getOverallReopenCount() {
+		return overallReopenCount;
+	}
+	public void setOverallReopenCount(Long overallReopenCount) {
+		this.overallReopenCount = overallReopenCount;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	
