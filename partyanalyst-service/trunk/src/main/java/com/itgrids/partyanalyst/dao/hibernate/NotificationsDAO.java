@@ -66,7 +66,10 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 	public List<Object[]> getNotificationsByTypeId (Long notificationTypeId,Long userId){
 		Query query;
 		if(userId !=null){
-			query = getSession().createQuery("select model.notificationsId,model.notification, model.successCount,model.failureCount,model.insertedTime from Notifications model where model.notificationTypeId=:notificationTypeId and model.userId=:userId and model.isActive='true' ");
+			query = getSession().createQuery("select model.notificationsId,model.notification, model.successCount," +
+					"model.failureCount,model.insertedTime from Notifications model where " +
+					"model.notificationTypeId=:notificationTypeId and model.userId=:userId " +
+					"and model.isActive='true'");
 			query.setParameter("userId", userId);
 			query.setParameter("notificationTypeId", notificationTypeId);
 
@@ -90,7 +93,7 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 	public List<Object[]> getAllNotifications() {
 		Query query = getSession().createQuery("select model.notificationTypeId.notificationTypeId, " +
 				" model.notification,model.insertedTime,model.userId,model.notificationType.notificationType "+
-				" from Notifications model where model.isActive='true' order by model.notificationsId desc");
+				" from Notifications model where model.isActive='true' and model.insertedTime like date_format(now(), '%Y-%m-%d%') order by model.notificationsId desc");
 		return query.list();
 	}
 
