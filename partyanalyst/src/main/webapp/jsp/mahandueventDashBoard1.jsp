@@ -255,7 +255,7 @@
     </div>
 	<div>
 	<div class="row">
-	<div class="col-md-12" style="display:none;">
+	<div class="col-md-12">
 	  <div class="panel panel-default panel-custom-default m_0">
 		  <div class="panel-heading" style="padding: 10px;">
 			  <h4 class="panel-title m_0">PUBLIC REPRESENTATIVE ATTENDEE COUNT</h4>
