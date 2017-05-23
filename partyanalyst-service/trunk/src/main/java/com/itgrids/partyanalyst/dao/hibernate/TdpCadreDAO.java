@@ -6947,16 +6947,22 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		return (Object[]) query.uniqueResult();
 }
 	
- public Long getCadreIdByMemberShip(String memberShipNo){
-	 
-	 Query query = getSession().createQuery("select model.tdpCadreId from TdpCadreEnrollmentYear model " +
+ public Long getCadreIdByMemberShip(String memberShipNo,Long enrollmentYearId){
+	 StringBuilder sb = new StringBuilder();
+	 sb.append("select model.tdpCadreId from TdpCadreEnrollmentYear model " +
 	 		" where " +
 	 		" model.tdpCadre.memberShipNo = :memberShipNo " +
-	 		" and model.tdpCadre.isDeleted = 'N' and model.isDeleted='N' and model.enrollmentYearId = 4 " +
-	 		" and model.tdpCadre.enrollmentYear = :enrollmentYear ");
+	 		" and model.tdpCadre.isDeleted = 'N' and model.isDeleted='N' ");
+	if(enrollmentYearId != null && enrollmentYearId.longValue() > 0l)
+		sb.append("and model.enrollmentYearId = :enrollmentYearId ");
+	
+	    sb.append(" and model.tdpCadre.enrollmentYear = :enrollmentYear ");
 	 
-	 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
-	 query.setParameter("memberShipNo", memberShipNo.trim());
+	  Query query = getSession().createQuery(sb.toString());
+		 query.setParameter("enrollmentYear",IConstants.CADRE_ENROLLMENT_YEAR);
+		 query.setParameter("memberShipNo", memberShipNo.trim());
+	  if(enrollmentYearId != null && enrollmentYearId.longValue() > 0l)
+		  query.setParameter("enrollmentYearId", enrollmentYearId);
 	 return (Long) query.uniqueResult();
  }
 
