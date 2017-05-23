@@ -50,6 +50,8 @@ $(document).on("click",".daterangeClorCls",function(){
 
 function onLoadCalls()
 {
+	getStateLevelAlertDetails("state");   
+	getStateLevelAlertDetails("overall");
 	getGrievanceReport();
 	getCadreGreivienceEfficiency(2);
 	getDistIdAndNameList();
@@ -62,9 +64,6 @@ function onLoadCalls()
 function getGrievanceReport(){
 $("#grivenaceTableId").html(spinner);
 $("#barGraph").html(spinner);
-$("#statusWiseAlertCntId").html(spinner);
-$("#feedbackWiseAlertCntId").html(spinner);
-$("#reopenAlertCntId").html(spinner);
     var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
     var jsObj ={
@@ -82,17 +81,10 @@ $("#reopenAlertCntId").html(spinner);
 			}).done(function(result){
 				$("#grivenaceTableId").html('');
 				$("#barGraph").html('');
-				$("#statusWiseAlertCntId").html('');
-				$("#feedbackWiseAlertCntId").html('');
-				$("#reopenAlertCntId").html('');
 			if(result !=null && result.length>0){
 				buildGrievanceReport(result);
-				buildLocationWiseGrivenacereportGraph(result);
-				
 		    }else{
-				$("#statusWiseAlertCntId").html('No Data Available');
 				$("#grivenaceTableId").html('No Data Available');
-				$("#totalAlertCountId").html("-");
 			}
 	}); 
 }	
@@ -108,15 +100,17 @@ $("#reopenAlertCntId").html(spinner);
 					for(var i in result[0].subList1){       
 			           if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
 						str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
-						}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
-							str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
 						}else{
 							str+='<th>'+result[0].subList1[i].statusType+'</th>';
 						}
 					}
+					for(var j in result[0].subList){         
+						str+='<th style="background-color:#ecebd6">'+result[0].subList[j].name+'</th>';
+					}
 					for(var j in result[0].subList2){         
 						str+='<th style="background-color:#ecebd6">'+result[0].subList2[j].day+'</th>';
 					}
+					
 				str+=' </tr>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -138,6 +132,14 @@ $("#reopenAlertCntId").html(spinner);
 							str+='<td>-</td>';
 						}      
 					}
+					for(var j in result[i].subList){
+						if(result[i].subList[j].totalAlertCnt == 0){
+							str+='<td>-</td>';
+						}else{
+							str+='<th style="cursor:pointer;" class="getReopenDtlsForLocationCls" attr_area_type="district" attr_group_type="district" attr_reopen_type="'+result[i].subList[j].id+'" attr_location_id="'+result[i].id+'">'+result[i].subList[j].totalAlertCnt+'</th>';
+						}
+						
+					}
 					for(var j in result[i].subList2){  
 						if(result[i].subList2[j].totalAlertCnt != 0){        
 							str+='<td style="cursor:pointer;" class="getAlertDtlsCls" attr_type="other" attr_pattern="'+result[i].subList2[j].day+'" attr_location_id="'+result[i].id+'" attr_group_type="day">'+result[i].subList2[j].totalAlertCnt+'</td>';
@@ -157,6 +159,9 @@ $("#reopenAlertCntId").html(spinner);
 							str+='<td>'+result[0].subList1[i].grandTotal+'</td>';
 						}
 	 				}
+					for(var j in result[0].subList){         
+						str+='<th>'+result[0].subList[j].grandTotal+'</th>';
+					}
 	 				for(var i in result[0].subList2){
 						if(result[0].subList2[i].grandTotal == 0){
 							str+='<td>-</td>';
@@ -168,7 +173,6 @@ $("#reopenAlertCntId").html(spinner);
 	 		str+='</tbody>';
  		 str+='</table>';
 	 $('#grivenaceTableId').html(str);
-	 $("#totalAlertCountId").html(locTotal);
 	 $('#grievanceReportTableId').DataTable({
 		 "order": [[ 1, "asc" ]]  
 	 });  
@@ -244,27 +248,25 @@ function getDistrintInformation(){
 				buildGrievanceReportDayWise(result,rangeType);
 			}else{
 				$("#dayWiseGrivenaceTableId").html('No Data Available.');
-				$("#totalAlertCountId").html("-");
 			}
 	}); 
 }	 
 //on change media 	
  function getMediaInformation(){
 	 $("#sliderValue").remove();
-	getSliderDetails();
+	 getStateLevelAlertDetails("state");   
+	 getStateLevelAlertDetails("overall"); 
+	 getSliderDetails();
 	 getDistIdAndNameList();
 	 getAverageIssuePendingDays();
 	 getGrievanceReportDayWise();
 	 getTotalAlertGroupByCategoryThenStatus();
-	getCadreGreivienceEfficiency(2);	 
- $("#statusWiseAlertCntId").html(spinner);
-$("#feedbackWiseAlertCntId").html(spinner);
-$("#reopenAlertCntId").html(spinner);
- $("#grivenaceTableId").html(spinner);
+	 getCadreGreivienceEfficiency(2);	 
+     $("#grivenaceTableId").html(spinner);
      var sourceId=$("#selectMediaId").val();
      var deptId=$("#selecDepartmentId").val();
 	 var rangeType=$("#dateRangeId").attr("value");
- 	var jobj = {
+ 	 var jobj = {
             fromDate: callCenterUserFDate,                       
  		   toDateStr:callCenterUserTDate,  
  		   deptId:deptId,
@@ -278,17 +280,11 @@ $("#reopenAlertCntId").html(spinner);
  		 dataType: 'json',
  		 data: {task:JSON.stringify(jobj)},
      }).done(function(result){
-		 $("#statusWiseAlertCntId").html('');
-		 $("#feedbackWiseAlertCntId").html('');
-		 $("#reopenAlertCntId").html('');
 		$("#grivenaceTableId").html('');
 		 if(result != null && result.length > 0){
 			buildGrievanceReport(result);
-			buildLocationWiseGrivenacereportGraph(result);
 		 }else{
-			 $("#statusWiseAlertCntId").html('No Data Available');
 			 $("#grivenaceTableId").html('No Data Available');
-			 $("#totalAlertCountId").html("-");
 		 }
 
  	});
@@ -296,27 +292,26 @@ $("#reopenAlertCntId").html(spinner);
 
 //on dept change
  function getDepartmentInformation(){
-	  $("#sliderValue").remove();
+	$("#sliderValue").remove();
+	getStateLevelAlertDetails("state");   
+	getStateLevelAlertDetails("overall");
 	getSliderDetails();
-	 getDistIdAndNameList();
-	 getAverageIssuePendingDays();
-	 getGrievanceReportDayWise();
-	 getTotalAlertGroupByCategoryThenStatus(); 
-	 getCadreGreivienceEfficiency(2)
-	 $("#statusWiseAlertCntId").html(spinner);
-	 $("#feedbackWiseAlertCntId").html(spinner);
-	$("#reopenAlertCntId").html(spinner);
-	 $("#grivenaceTableId").html(spinner);
-     var sourceId=$("#selectMediaId").val();
-     var deptId=$("#selecDepartmentId").val();
-	 var rangeType=$("#dateRangeId").attr("value");
-	 var jobj = {
-           fromDate: callCenterUserFDate,                       
- 		  toDateStr:callCenterUserTDate,  
- 		  deptId:deptId,
- 		  sourceId:sourceId,
- 		  rangeType:rangeType,   
- 		  stateId:1
+	getDistIdAndNameList();
+	getAverageIssuePendingDays();
+	getGrievanceReportDayWise();
+	getTotalAlertGroupByCategoryThenStatus(); 
+	getCadreGreivienceEfficiency(2)
+	$("#grivenaceTableId").html(spinner);
+	var sourceId=$("#selectMediaId").val();
+	var deptId=$("#selecDepartmentId").val();
+	var rangeType=$("#dateRangeId").attr("value");
+	var jobj = {
+		fromDate: callCenterUserFDate,                       
+		toDateStr:callCenterUserTDate,  
+		deptId:deptId,
+		sourceId:sourceId,
+		rangeType:rangeType,   
+		stateId:1
  	}
  	$.ajax({
         type : "GET",
@@ -324,60 +319,47 @@ $("#reopenAlertCntId").html(spinner);
         dataType: 'json',
         data: {task:JSON.stringify(jobj)},
      }).done(function(result){
-		 $("#statusWiseAlertCntId").html('');
-		 $("#feedbackWiseAlertCntId").html('');
-		$("#reopenAlertCntId").html('');
 		$("#grivenaceTableId").html('');
 		if(result !=null && result.length>0){
 			buildGrievanceReport(result);
-			buildLocationWiseGrivenacereportGraph(result);
 		}else{
-			$("#statusWiseAlertCntId").html('No Data Available');
 			$("#grivenaceTableId").html('No Data Available');
-			$("#totalAlertCountId").html("-");
 		}
  	});
  }
 //on change daterangepicker
  function getTotalLocationWiseGrivenaceReport(){
-	  $("#sliderValue").remove();
-	 getSliderDetails();
-	 getDistIdAndNameList();
-	 getAverageIssuePendingDays();
-	 getGrievanceReportDayWise();
-	 getTotalAlertGroupByCategoryThenStatus(); 
-	 getCadreGreivienceEfficiency(2);
- $("#grivenaceTableId").html(spinner);
- $("#statusWiseAlertCntId").html(spinner);
- $("#feedbackWiseAlertCntId").html(spinner);
-$("#reopenAlertCntId").html(spinner);
-     var sourceId=$("#selectMediaId").val();
-     var deptId=$("#selecDepartmentId").val();
-	 var rangeType=$("#dateRangeId").attr("value");
-     var jsObj ={
- 		fromDate:callCenterUserFDate,                         
+	$("#sliderValue").remove();
+	getStateLevelAlertDetails("state");   
+	getStateLevelAlertDetails("overall");  
+	getSliderDetails();
+	getDistIdAndNameList();
+	getAverageIssuePendingDays();
+	getGrievanceReportDayWise();
+	getTotalAlertGroupByCategoryThenStatus(); 
+	getCadreGreivienceEfficiency(2);
+	$("#grivenaceTableId").html(spinner);
+	var sourceId=$("#selectMediaId").val();
+	var deptId=$("#selecDepartmentId").val();
+	var rangeType=$("#dateRangeId").attr("value");
+	var jsObj ={
+		fromDate:callCenterUserFDate,                         
  		toDateStr:callCenterUserTDate,
-         sourceId :sourceId,  
-         deptId:deptId,
+		sourceId :sourceId,  
+		deptId:deptId,
  		rangeType:rangeType,
-         stateId:1		 
-     }
+		stateId:1		 
+	}
      $.ajax({
      type:'GET',         
      url: 'getGrievanceReportAction.action',
      data: {task :JSON.stringify(jsObj)}
      }).done(function(result){
 		  $("#grivenaceTableId").html('');
-		 $("#statusWiseAlertCntId").html('');
-		 $("#feedbackWiseAlertCntId").html('');
-		$("#reopenAlertCntId").html('');
  		if(result !=null && result.length>0){
 			buildGrievanceReport(result);
-			buildLocationWiseGrivenacereportGraph(result);
 		}else{
-			$("#statusWiseAlertCntId").html('No Data Available');
 			$("#grivenaceTableId").html('No Data Available');
-			$("#totalAlertCountId").html("-");
 		}
  	});
  }
@@ -408,58 +390,42 @@ $("#reopenAlertCntId").html(spinner);
 		//getTotalAlertGroupByCategoryThenStatus();       
 		if(result !=null && result.length>0){
 			buildGrievanceReport(result);
-			//buildLocationWiseGrivenacereportGraph(result);
 		}else{
-			$("#statusWiseAlertCntId").html('No Data Available');
 			$("#grivenaceTableId").html('No Data Available');
-			$("#totalAlertCountId").html("-");
 		}
 	});
 });
 //Graph building
  function buildLocationWiseGrivenacereportGraph(result){
+	 //status wise
 	var statusNamesArray =[];
 	var statusIdNameArr=[];
-	for(var i in result[0].subList1){
-		 var type = "other";
-			if(result[0].subList1[i].name != "reopen" && result[0].subList1[i].name != "feebbackAlert" && result[0].subList1[i].name != "pendingFeedBack"){
-				
-				 if(result[0].subList1[i].name != null){
-				   type = result[0].subList1[i].name;
-				 } 
-				 statusNamesArray.push(result[0].subList1[i].statusType);
-				 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId,"type":type});
-			}
-		}	
-				
-		buildHighchart("statusWiseAlertCntId",statusNamesArray,statusIdNameArr);
-		statusNamesArray =[];
-		statusIdNameArr=[];
-	     for(var i in result[0].subList1){
-			 var type = "other";
-			if(result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){
-				if(result[0].subList1[i].name != null){
-				   type = result[0].subList1[i].name;
-				 } 
-				 statusNamesArray.push(result[0].subList1[i].statusType);
-				 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId,"type":type});
-				 
-			}
-		}
-		buildHighchart("feedbackWiseAlertCntId",statusNamesArray,statusIdNameArr);
-		statusNamesArray =[];
-		statusIdNameArr=[];
-		for(var i in result[0].subList1){
-			 var type = "other";
-			if(result[0].subList1[i].name == "reopen"){
-				if(result[0].subList1[i].name != null){
-				   type = result[0].subList1[i].name;
-				 } 
-				 statusNamesArray.push(result[0].subList1[i].statusType);
-				 statusIdNameArr.push({"y":result[0].subList1[i].grandTotal,"status":result[0].subList1[i].statusType,"id":result[0].subList1[i].statusTypeId,"type":type});
-			}
-		}
-		buildHighchart("reopenAlertCntId",statusNamesArray,statusIdNameArr); 
+	var total = 0;
+	for(var i in result.subList1){
+		total = parseInt(total)+parseInt(result.subList1[i].alertCnt);
+		statusNamesArray.push(result.subList1[i].name);
+		statusIdNameArr.push({"y":result.subList1[i].alertCnt,"status":result.subList1[i].name,"id":result.subList1[i].id,"type":"other"});    
+	}	
+	$("#totalAlertCountId").html(total);     		
+	buildHighchart("statusWiseAlertCntId",statusNamesArray,statusIdNameArr);
+	//feedback type wise
+	statusNamesArray =[];
+	statusIdNameArr=[];
+	for(var i in result.subList2){
+		statusNamesArray.push(result.subList2[i].name);
+		statusIdNameArr.push({"y":result.subList2[i].alertCnt,"status":result.subList2[i].name,"id":result.subList2[i].id,"type":result.subList2[i].type});   
+	}
+	buildHighchart("feedbackWiseAlertCntId",statusNamesArray,statusIdNameArr);
+	//for reopen
+	statusNamesArray =[];         
+	statusIdNameArr=[];
+	statusNamesArray.push("Reopen by Call Center");
+	statusNamesArray.push("Reopen by Officer");
+	statusNamesArray.push("Reopen by Overall");      
+	statusIdNameArr.push({"y":result.reopenCount,"status":"reopen","id":1,"type":"reopen"});
+	statusIdNameArr.push({"y":result.reopenCountForOfficer,"status":"reopen","id":2,"type":"reopen"});
+	statusIdNameArr.push({"y":result.overallReopenCount,"status":"reopen","id":3,"type":"reopen"});
+	buildHighchart("reopenAlertCntId",statusNamesArray,statusIdNameArr); 
 		
  }
  function buildHighchart(divId,statusNamesArray,statusIdNameArr){
@@ -470,7 +436,7 @@ $("#reopenAlertCntId").html(spinner);
                  type: 'column'
              },
              title:{
-                 text: null,
+                 text: null,  
                  align: 'left'
              },
              xAxis: {
@@ -534,11 +500,15 @@ $("#reopenAlertCntId").html(spinner);
 						events: {
 							 click: function () {
 								var type = this.type;
-								 if(type!="other"){
-								   getStatusWiseFeebbackAlertDtls(this.id,this.type);
-								 }else{
-								  getAlertStatusWise(this.id,this.status);   
-								 }
+								if(type=="reopen"){
+									getReopenAlertDtls(this.id);
+									return;
+								}
+								if(type!="other"){
+									getStatusWiseFeebbackAlertDtls(this.id,this.type);
+								}else{
+									getAlertStatusWise(this.id,this.status);   
+								}
 							 }
 						 }
 					 }
@@ -558,7 +528,7 @@ $("#reopenAlertCntId").html(spinner);
              }],
          });
 } 
- 
+ //11111
  function getAlertStatusWise(statusId,status){
 	$("#totalAlertDistricTableId").html("");   
 	$("#grievanceDtlsModalId").modal("show");     
@@ -695,7 +665,7 @@ function onLoadInitialisations(){
 			var str ='';
 			if(result != null){
 				if(group=="day"){ 
-				buildTotalAlertDistrictTable(result);
+				buildTotalAlertDistrictTable(result);//aaaa
 				}
 				buildGrivenceDetailsTable(result,group);
 			}
@@ -825,7 +795,6 @@ function onLoadInitialisations(){
 		  data: {task:JSON.stringify(jobj)},    
 		}).done(function(result){
 			$("#demo"+positionValue).html('');
-				
 			buildGrievanceReportForPanchayat(result,positionValue,locationId,groupType);         
 		});
 	});
@@ -1004,6 +973,203 @@ function onLoadInitialisations(){
 			  buildGrivenceDetailsTableOld(result);
 		});
 	});
+	
+	$(document).on("click",".getAlertDtlsOnReopen",function(){
+		$("#grivenaceModalHeedingId").html("");    
+		$("#grievanceDtlsModalId").modal("show"); 
+		$("#removeClassModal").removeClass("closeSecondModal")	
+		$("#grevinceDetailsId").html(spinner);
+		var sourceId=$("#selectMediaId").val();
+		var deptId=$("#selecDepartmentId").val();
+		var fromDate = $(this).attr("attr_from_date");
+		var toDate = $(this).attr("attr_to_date");
+		var grpType = $(this).attr("attr_group_type");
+		var reopenType = $(this).attr("attr_reopen_type");
+		var locationId = $("#selectDistrictId").val();                      
+		var jsObj ={
+			fromDate: fromDate,                       
+			toDateStr:toDate,            
+			deptId:deptId,
+			sourceId:sourceId,
+			groupType:grpType,
+			reopenType:reopenType,  
+			locationId:locationId,   	
+			stateId:1
+		}        
+		$.ajax({
+			type:'GET',         
+			url: 'getReopenCountDtlsAction.action',
+			data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					buildGrivenceDetailsTableOld(result);
+				}else{
+					
+				}
+			}); 
+		});
+		$(document).on("click",".getReopenDtlsForLocationCls",function(){
+		$("#grivenaceModalHeedingId").html("");    
+		$("#grievanceDtlsModalId").modal("show"); 
+		$("#removeClassModal").removeClass("closeSecondModal")	
+		$("#grevinceDetailsId").html(spinner);
+		var sourceId=$("#selectMediaId").val();
+		var deptId=$("#selecDepartmentId").val();
+		var grpType = $(this).attr("attr_group_type");
+		var reopenType = $(this).attr("attr_reopen_type");
+		var locationId = $(this).attr("attr_location_id");
+		//alert(deptId+":"+sourceId+":"+grpType+":"+reopenType+":"+locationId);  
+		var jsObj ={
+			fromDate:callCenterUserFDate,                       
+			toDateStr:callCenterUserTDate,            
+			deptId:deptId,
+			sourceId:sourceId,
+			groupType:grpType,
+			reopenType:reopenType,  
+			locationId:locationId,   	
+			stateId:1
+		}        
+		$.ajax({
+			type:'GET',         
+			url: 'getReopenCountDtlsAction.action',
+			data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					buildGrivenceDetailsTableOld(result);
+				}else{
+					
+				}
+			}); 
+		});
+		$(document).on("click",".getReopenDtlsForFixedRangeCls",function(){
+		$("#grivenaceModalHeedingId").html("");    
+		$("#grievanceDtlsModalId").modal("show"); 
+		$("#removeClassModal").removeClass("closeSecondModal")	
+		$("#grevinceDetailsId").html(spinner);
+		var sourceId=$("#selectMediaId").val();
+		var deptId=$("#selecDepartmentId").val();
+		var fromDate = $(this).attr("attr_from_date");
+		var toDate = $(this).attr("attr_to_date");
+		var grpType = $(this).attr("attr_group_type");
+		var reopenType = $(this).attr("attr_reopen_type");
+		var locationId = $(this).attr("attr_location_id");                      
+		var jsObj ={
+			fromDate: fromDate,                       
+			toDateStr:toDate,            
+			deptId:deptId,
+			sourceId:sourceId,
+			groupType:grpType,
+			reopenType:reopenType,  
+			locationId:locationId,   	
+			stateId:1
+		}        
+		$.ajax({
+			type:'GET',         
+			url: 'getReopenCountDtlsAction.action',
+			data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					buildGrivenceDetailsTableOld(result);
+				}else{
+					
+				}
+			}); 
+		});
+		$(document).on("click",".getAlertDtlsForFeedbackOnCategoryWise",function(){
+			$("#grivenaceModalHeedingId").html("");    
+			$("#grievanceDtlsModalId").modal("show"); 
+			$("#removeClassModal").removeClass("closeSecondModal")	
+			$("#grevinceDetailsId").html(spinner);
+			var sourceId=$(this).attr("attr_category_id"); 
+			var statusId=$(this).attr("attr_status_id");
+			var deptId=$("#selecDepartmentId").val();
+			var rangeType=$("#dateRangeId").attr("value");
+			var type = '';
+			if(statusId == 4){
+				type="pendingFeedBack";
+			}else{
+				type="feebbackAlert";
+			}
+			var jobj = {
+			  fromDate: callCenterUserFDate,                       
+			  toDateStr:callCenterUserTDate,  
+			  deptId:deptId,
+			  sourceId:sourceId,                                      
+			  stateId:1,
+			  locationId:0,
+			  statusId : statusId,      
+			  rangeType:"day",
+			  type:type          
+			  }
+			$.ajax({    
+			  type : "POST",
+			  url  : "getFeedbackAlertAction.action",  
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jobj)},
+			}).done(function(result){
+				$("#grevinceDetailsId").html('');
+				  buildGrivenceDetailsTableOld(result);
+			});
+		});
+		$(document).on("click",".getAlertDtlsForReopenOnCategoryWise",function(){
+		$("#grivenaceModalHeedingId").html("");    
+		$("#grievanceDtlsModalId").modal("show"); 
+		$("#removeClassModal").removeClass("closeSecondModal")	
+		$("#grevinceDetailsId").html(spinner);
+		var sourceId=$(this).attr("attr_source_id");
+		var deptId=$("#selecDepartmentId").val();
+		var reopenType = $(this).attr("attr_reopen_type");                    
+		var jsObj ={
+			fromDate: callCenterUserFDate,                       
+			toDateStr:callCenterUserTDate,            
+			deptId:deptId,
+			sourceId:sourceId,
+			groupType:"",
+			reopenType:reopenType,  
+			locationId:0,      	
+			stateId:1
+		}        
+		$.ajax({
+			type:'GET',         
+			url: 'getReopenCountDtlsAction.action',
+			data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					buildGrivenceDetailsTableOld(result);
+				}else{
+					
+				}
+			}); 
+		});
+		$(document).on("click",".getAlertDtlsStateLvlCls",function(){
+		$("#grivenaceModalHeedingId").html("");    
+		$("#grievanceDtlsModalId").modal("show"); 
+		$("#removeClassModal").removeClass("closeSecondModal")	
+		$("#grevinceDetailsId").html(spinner);
+		var sourceId=$("#selectMediaId").val();
+		var deptId=$("#selecDepartmentId").val();
+		var statusId = $(this).attr("attr_status_id");                      
+		var jsObj ={
+			fromDate: callCenterUserFDate,                       
+			toDateStr:callCenterUserTDate,            
+			deptId:deptId,
+			sourceId:sourceId,
+			level:"state",
+			statusId:statusId,
+			stateId:1
+		}        
+		$.ajax({
+			type:'GET',         
+			url: 'getTotalAlertGroupByStatusForStateLvlGrievancePageAction.action',
+			data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					buildGrivenceDetailsTableOld(result);
+				}else{
+					
+				}
+			}); 
+		});
 }
 //swadhin   
 function buildGrievanceReportForBellowLocation(result,locationId,locationName,groupType){
@@ -1024,11 +1190,12 @@ function buildGrievanceReportForBellowLocation(result,locationId,locationName,gr
 					for(var i in result[0].subList1){
 						if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
 						str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
-						}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
-							str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
 						}else{
 							str+='<th>'+result[0].subList1[i].statusType+'</th>';
 						}
+					}
+					for(var j in result[0].subList){         
+						str+='<th style="background-color:#ecebd6">'+result[0].subList[j].name+'</th>';
 					}
 				str+='</tr>';
 			str+='</thead>';
@@ -1065,6 +1232,17 @@ function buildGrievanceReportForBellowLocation(result,locationId,locationName,gr
 							str+='<td>-</td>';
 						}      
 					}
+					for(var j in result[i].subList){
+						if(result[i].subList[j].totalAlertCnt == 0){
+							str+='<td>-</td>';
+						}else{
+							if(result[i].name == "OTHER"){
+								str+='<th style="cursor:pointer;" class="getReopenDtlsForLocationCls" attr_area_type="tehsil" attr_group_type="district" attr_reopen_type="'+result[i].subList[j].id+'" attr_location_id="'+result[i].id+'">'+result[i].subList[j].totalAlertCnt+'</th>';
+							}else{
+								str+='<th style="cursor:pointer;" class="getReopenDtlsForLocationCls" attr_area_type="tehsil" attr_group_type="tehsil" attr_reopen_type="'+result[i].subList[j].id+'" attr_location_id="'+result[i].id+'">'+result[i].subList[j].totalAlertCnt+'</th>';
+							}
+						}
+					}
 				str+='</tr>';
 				
 						
@@ -1097,11 +1275,12 @@ function buildGrievanceReportForPanchayat(result,positionValue,locationId,groupT
 				for(var i in result[0].subList1){       
 					if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
 						str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
-						}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
-							str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
-						}else{
-							str+='<th>'+result[0].subList1[i].statusType+'</th>';
-						}
+					}else{
+						str+='<th>'+result[0].subList1[i].statusType+'</th>';
+					}
+				}
+				for(var j in result[0].subList){         
+					str+='<th style="background-color:#ecebd6">'+result[0].subList[j].name+'</th>';
 				}
 			str+='</tr>';
 		str+='</thead>';
@@ -1132,6 +1311,17 @@ function buildGrievanceReportForPanchayat(result,positionValue,locationId,groupT
 						str+='<td>-</td>';
 					}      
 				}
+				for(var j in result[i].subList){ 
+					if(result[i].subList[j].totalAlertCnt == 0){
+						str+='<td>-</td>';
+					}else{
+						if(result[i].name == "OTHER"){
+							str+='<th style="cursor:pointer;" class="getReopenDtlsForLocationCls" attr_area_type="panchayat" attr_group_type="tehsil" attr_reopen_type="'+result[i].subList[j].id+'" attr_location_id="'+result[i].id+'">'+result[i].subList[j].totalAlertCnt+'</th>';
+						}else{
+							str+='<th style="cursor:pointer;" class="getReopenDtlsForLocationCls" attr_area_type="panchayat" attr_group_type="panchayat" attr_reopen_type="'+result[i].subList[j].id+'" attr_location_id="'+result[i].id+'">'+result[i].subList[j].totalAlertCnt+'</th>';
+						}
+					}  
+				}       
 			str+='</tr>';
 		}
 		str+='</tbody>';
@@ -1684,19 +1874,20 @@ function buildTotalAlertDistrictTable(result){
         str+='<tr>'; 
 		str+='<th>Total</th>';
 	    for(var i in result[0].subList1){       
-          if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
+			if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
 				str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
-				}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
-					str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
-				}else{
-					str+='<th>'+result[0].subList1[i].statusType+'</th>';
-				}
+			}else{
+				str+='<th>'+result[0].subList1[i].statusType+'</th>';
+			}
 		}
-	        str+='<tr>';	 
-	        str+='</thead>';	
-			str+='<tbody>'
-			str+='<tr>';
-			str+='<td style="cursor:pointer;"  attr_type="other" class="getAlertDtlsOnLocCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="0" attr_location_id="'+result[0].id+'">'+result[0].totalAlertCnt+'</td>';
+		for(var i in result[0].subList){
+			str+='<th>'+result[0].subList[i].name+'</th>';
+		}
+		str+='<tr>';	 
+		str+='</thead>';	
+		str+='<tbody>'
+		str+='<tr>';
+		str+='<td style="cursor:pointer;"  attr_type="other" class="getAlertDtlsOnLocCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_status_id="0" attr_location_id="'+result[0].id+'">'+result[0].totalAlertCnt+'</td>';
 	
 		for( var i in result[0].subList1){
 	        var type = "other";			
@@ -1708,27 +1899,20 @@ function buildTotalAlertDistrictTable(result){
 			}else{
 				str+='<td>-</td>'; 
 			}
-		    
-       }
-			str+='<tr>'; 
-	        str+='</tbody>'
-			str+='</table>';
-		 $("#totalAlertDistricTableId").html(str);
+		}
+		for(var j in result[0].subList){
+			if(result[0].subList[j].totalAlertCnt == 0){
+				str+='<td>-</td>'; 
+			}else{
+				str+='<td style="cursor:pointer;" class="getReopenDtlsForFixedRangeCls" attr_from_date="'+result[0].fromDateStr+'" attr_to_date="'+result[0].toDateStr+'" attr_area_type="district" attr_group_type="district" attr_reopen_type="'+result[0].subList[j].id+'" attr_location_id="'+result[0].id+'">'+result[0].subList[j].totalAlertCnt+'</td>';
+			}
+		}
+		str+='<tr>'; 
+		str+='</tbody>'
+		str+='</table>';
+		$("#totalAlertDistricTableId").html(str);
 }
-
-
-
-
-
-
-
-
-
-
-
-
 //date wise report
-
 function getGrievanceReportDayWise(){
 	$("#dayWiseGrivenaceTableId").html(spinner);
 	var rangeType=$("#dateRangeId").attr("value");
@@ -1769,57 +1953,67 @@ function buildGrievanceReportDayWise(result,rangeType) {
 			str+='<th>Month</th>';   
 		}else{
 			str+='<th>Category</th>'; 
-		}
-            
+		}   
         str+='<th>Total</th>';
 		for(var i in result[0].subList1){       
-           if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
-						str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
-						}else if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "reopen"){
-							str+='<th style="background-color:#C9AC82">'+result[0].subList1[i].statusType+'</th>';
-						}else{
-							str+='<th>'+result[0].subList1[i].statusType+'</th>';
-						}
+			if(result[0].subList1[i].name !=null && result[0].subList1[i].name == "feebbackAlert" || result[0].subList1[i].name == "pendingFeedBack"){	
+				str+='<th style="background-color:#ECEBD6">'+result[0].subList1[i].statusType+'</th>';
+			}else{
+				str+='<th>'+result[0].subList1[i].statusType+'</th>';
+			}
 		}
-		
+		for(var i in result[0].subList){
+			str+='<th>'+result[0].subList[i].name+'</th>';
+		}
         str+=' </tr>';
         str+='</thead>';
 		str+='<tbody>';
 		var locTotal = 0;
-		for(var i in result){  
-		 
-		   
+		for(var i in result){
 			str+='<tr>'; 
-				str+='<td data-toggle="tooltip" data-placement="top" title="'+result[i].fromDateStr+"-"+result[i].toDateStr+'">'+result[i].day+'</td>';
-				if(result[i].totalAlertCnt == 0){
-					str+='<td>-</td>';
-				}else{
-					str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_type="other" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="0" attr_location_id="0">'+result[i].totalAlertCnt+'</td>';
-				}
+			str+='<td data-toggle="tooltip" data-placement="top" title="'+result[i].fromDateStr+"-"+result[i].toDateStr+'">'+result[i].day+'</td>';
+			if(result[i].totalAlertCnt == 0){
+				str+='<td>-</td>';
+			}else{
+				str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise" attr_type="other" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="0" attr_location_id="0">'+result[i].totalAlertCnt+'</td>';
+			}
 				
-				locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
+			locTotal = parseInt(locTotal) + parseInt(result[i].totalAlertCnt);
 			for(var j in result[i].subList1){
-				  var alertType = "other";
+				var alertType = "other";
 				if(result[i].subList1[j].totalAlertCnt != 0){
 					 if(result[i].subList1[j].name != null && result[i].subList1[j].name.length > 0){
 				         alertType = result[i].subList1[j].name;
-			           }
+					}
 					str+='<td style="cursor:pointer;" class="getAlertDtlsOnDateWise"  attr_type="'+alertType+'" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_status_id="'+result[i].subList1[j].statusTypeId+'" attr_location_id="0">'+result[i].subList1[j].totalAlertCnt+'</td>';
 				}else{
 					str+='<td>-</td>';
 				}      
 			}
-         
+			for(var j in result[i].subList){
+				if(result[i].subList[j].totalAlertCnt != 0){
+					str+='<td style="cursor:pointer;" class="getAlertDtlsOnReopen" attr_from_date="'+result[i].fromDateStr+'" attr_to_date="'+result[i].toDateStr+'" attr_group_type="district" attr_area_type="district" attr_reopen_type="'+result[i].subList[j].id+'">'+result[i].subList[j].totalAlertCnt+'</td>';
+				}else{
+					str+='<td>-</td>';
+				}
+			}
 			str+='</tr>';
 		}  
  		str+='<tr>';
- 			str+='<td>Grand Total</td>';
- 			str+='<td>'+locTotal+'</td>';
+			str+='<td>Grand Total</td>';
+			str+='<td>'+locTotal+'</td>';
 			for(var i in result[0].subList1){
 				if(result[0].subList1[i].grandTotal == 0){
 					str+='<td>-</td>';
 				}else{
 					str+='<td>'+result[0].subList1[i].grandTotal+'</td>';
+				}
+			}
+			for(var j in result[0].subList){
+				if(result[0].subList[j].grandTotal == 0){
+					str+='<td>-</td>';
+				}else{
+					str+='<td>'+result[0].subList[j].grandTotal+'</td>';
 				}
 			}
 		str+='</tr>';
@@ -1874,7 +2068,9 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 		for(var i in result[0].subList2){       
            str+='<th>'+result[0].subList2[i].name+'</th>';
 		}
-		str+='<th>Reopen</th>';
+		str+='<th>Reopen By Call Center</th>';
+		str+='<th>Reopen By Officer</th>';
+		str+='<th>Reopen By Overall</th>';
         str+=' </tr>';
         str+='</thead>';
 		str+='<tbody>';
@@ -1893,13 +2089,23 @@ function buildTotalAlertGroupByCategoryThenStatus(result) {
 			}
 			for(var j in result[i].subList2){
 				if(result[i].subList2[j].totalAlertCnt != 0){
-					str+='<td>'+result[i].subList2[j].totalAlertCnt+'</td>';
+					str+='<td style="cursor:pointer;" class="getAlertDtlsForFeedbackOnCategoryWise" attr_status_id="'+result[i].subList2[j].id+'" attr_category_id="'+result[i].id+'">'+result[i].subList2[j].totalAlertCnt+'</td>';
 				}else{
 					str+='<td>-</td>';
 				}      
 			}
 			if(result[i].reopenCount != 0){
-				str+='<td>'+result[i].reopenCount+'</td>';
+				str+='<td style="cursor:pointer;" class="getAlertDtlsForReopenOnCategoryWise" attr_reopen_type="1" attr_source_id="'+result[i].id+'">'+result[i].reopenCount+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].reopenCountForOfficer != 0){
+				str+='<td style="cursor:pointer;" class="getAlertDtlsForReopenOnCategoryWise" attr_reopen_type="2" attr_source_id="'+result[i].id+'">'+result[i].reopenCountForOfficer+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}
+			if(result[i].overallReopenCount != 0){
+				str+='<td style="cursor:pointer;" class="getAlertDtlsForReopenOnCategoryWise" attr_reopen_type="3" attr_source_id="'+result[i].id+'">'+result[i].overallReopenCount+'</td>';
 			}else{
 				str+='<td>-</td>';
 			}
@@ -2068,12 +2274,12 @@ $(document).on("change",".grievanceEffOnchange",function(){
 
 function getStatusWiseFeebbackAlertDtls(statusId,type){
        
-	   $("#grivenaceModalHeedingId").html("");    
+		$("#grivenaceModalHeedingId").html("");    
 		$("#grievanceDtlsModalId").modal("show"); 
 		$("#removeClassModal").removeClass("closeSecondModal")	
 		$("#grevinceDetailsId").html(spinner);
 	
-         var sourceId=$("#selectMediaId").val();
+        var sourceId=$("#selectMediaId").val();
         var deptId=$("#selecDepartmentId").val();
         var rangeType=$("#dateRangeId").attr("value");
         
@@ -2098,3 +2304,135 @@ function getStatusWiseFeebbackAlertDtls(statusId,type){
               buildGrivenceDetailsTableOld(result);
         });
     }
+	
+	function getStateLevelAlertDetails(level){
+		$("#stateLevelGrivenaceTableId").html(spinner);
+		$("#statusWiseAlertCntId").html(spinner);
+		$("#feedbackWiseAlertCntId").html(spinner);
+		$("#reopenAlertCntId").html(spinner);
+        var sourceId=$("#selectMediaId").val();
+        var deptId=$("#selecDepartmentId").val();
+        var jobj = {
+			fromDate: callCenterUserFDate,                          
+			toDateStr:callCenterUserTDate,  
+			deptId:deptId,   
+			sourceId:sourceId,                                      
+			stateId:1,
+			level:level
+        }
+        $.ajax({    
+          type : "POST",
+          url  : "getStateLevelAlertDetailsAction.action",  
+          dataType: 'json',
+          data: {task:JSON.stringify(jobj)},
+        }).done(function(result){
+			if(result != null && result.subList1.length > 0){
+				if(level=="state"){
+					buildStateLevelAlertDetails(result);
+				}else{
+					buildLocationWiseGrivenacereportGraph(result);
+				}
+			}else{
+				if(level=="state"){
+					$("#stateLevelGrivenaceTableId").html("No Data Available");      
+				}else{
+					$("#statusWiseAlertCntId").html("No Data Available");
+					$("#feedbackWiseAlertCntId").html("No Data Available");
+					$("#reopenAlertCntId").html("No Data Available");
+					$("#totalAlertCountId").html("-");  
+				}
+			}
+        });
+    }
+	function buildStateLevelAlertDetails(result){
+		var str='';
+        str+='<table id="stateLevelGrievanceReportTableId" class="table table-bordered " cellspacing="0">';
+        str+='<thead>';
+        str+='<tr>';
+		str+='<th>Total</th>';
+		for(var i in result.subList1){       
+           str+='<th>'+result.subList1[i].name+'</th>';   
+		}
+		for(var i in result.subList2){       
+           str+='<th>'+result.subList2[i].name+'</th>';
+		}
+		str+='<th>Reopen By Call Center</th>';
+		str+='<th>Reopen By Officer</th>';
+		str+='<th>Overall Reopen</th>';
+        str+=' </tr>';
+        str+='</thead>'; 
+		str+='<tbody>';
+		var stateTotal = 0;
+		for(var j in result.subList1){
+			stateTotal = parseInt(stateTotal)+parseInt(result.subList1[j].alertCnt);
+		}
+		str+='<tr>';
+			str+='<td style="cursor:pointer;" class="getAlertDtlsStateLvlCls" attr_status_id="0">'+stateTotal+'</td>';  
+		for(var j in result.subList1){
+			
+			if(result.subList1[j].alertCnt != 0){
+				str+='<td style="cursor:pointer;" class="getAlertDtlsStateLvlCls" attr_status_id="'+result.subList1[j].id+'">'+result.subList1[j].alertCnt+'</td>';
+			}else{
+				str+='<td>-</td>';  
+			}      
+		}
+		for(var j in result.subList2){
+			if(result.subList2[j].alertCnt != 0){
+				str+='<td>'+result.subList2[j].alertCnt+'</td>';
+			}else{
+				str+='<td>-</td>';
+			}      
+		}
+		if(result.reopenCount != 0){
+			str+='<td>'+result.reopenCount+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result.reopenCountForOfficer != 0){
+			str+='<td>'+result.reopenCountForOfficer+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		if(result.overallReopenCount != 0){
+			str+='<td>'+result.overallReopenCount+'</td>';
+		}else{
+			str+='<td>-</td>';
+		}
+		str+='</tr>';   
+		   
+		str+='</tbody>';
+		str+='</table>';
+		$('#stateLevelGrivenaceTableId').html(str);  
+		 $('#stateLevelGrievanceReportTableId').DataTable({  
+			"order": [[ 1, "asc" ]]  
+		});
+	}
+	function getReopenAlertDtls(id){
+		$("#grivenaceModalHeedingId").html("");    
+		$("#grievanceDtlsModalId").modal("show"); 
+		$("#removeClassModal").removeClass("closeSecondModal")	
+		$("#grevinceDetailsId").html(spinner);
+		var sourceId=$("#selectMediaId").val();
+		var deptId=$("#selecDepartmentId").val();
+		var jsObj ={
+			fromDate:callCenterUserFDate,                       
+			toDateStr:callCenterUserTDate,            
+			deptId:deptId,
+			sourceId:sourceId,
+			groupType:"",
+			reopenType:id,  
+			locationId:0,      	
+			stateId:1
+		}        
+		$.ajax({
+			type:'GET',         
+			url: 'getReopenCountDtlsAction.action',
+			data: {task :JSON.stringify(jsObj)}
+			}).done(function(result){
+				if(result != null && result.length > 0){
+					buildGrivenceDetailsTableOld(result);
+				}else{
+					
+				}
+			}); 
+	}
