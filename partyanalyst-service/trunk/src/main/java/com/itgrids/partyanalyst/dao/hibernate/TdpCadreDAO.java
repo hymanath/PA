@@ -6947,9 +6947,9 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		return (Object[]) query.uniqueResult();
 }
 	
- public Long getCadreIdByMemberShip(String memberShipNo,Long enrollmentYearId){
+ public List<Long> getCadreIdByMemberShip(String memberShipNo,Long enrollmentYearId){
 	 StringBuilder sb = new StringBuilder();
-	 sb.append("select model.tdpCadreId from TdpCadreEnrollmentYear model " +
+	 sb.append("select  model.tdpCadreId from TdpCadreEnrollmentYear model " +
 	 		" where " +
 	 		" model.tdpCadre.memberShipNo = :memberShipNo " +
 	 		" and model.tdpCadre.isDeleted = 'N' and model.isDeleted='N' ");
@@ -6963,7 +6963,7 @@ public List<Object[]> getCandidatesConstituency(List<Long> tdpCadreIds){
 		 query.setParameter("memberShipNo", memberShipNo.trim());
 	  if(enrollmentYearId != null && enrollmentYearId.longValue() > 0l)
 		  query.setParameter("enrollmentYearId", enrollmentYearId);
-	 return (Long) query.uniqueResult();
+	 return  query.list();
  }
 
 public List<Long> getCadreIdsByMemberShip(Long enrollmentId,String searchType,String searchValue){
