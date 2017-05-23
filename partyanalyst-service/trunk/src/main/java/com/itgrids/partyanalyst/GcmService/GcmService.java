@@ -38,7 +38,6 @@ public class GcmService {
 				int successcount = 0;
 				int failurecount = 0;
 				json.add("notification", notification);
-				notification.remove("click_action");
 				notification.addProperty("youtubeLink", youtbeUrl);
 				json.add("data", notification);
 				for (String registereduId : notificationKeysList) {
