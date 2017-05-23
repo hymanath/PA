@@ -105,28 +105,28 @@
 						<h3 class=" text-center issue-title"><span id="averageIssueId"></span></h3>
 					</div>
 				</div>
-				<div class="col-md-5">   
+				<div class="col-md-6">   
 					<div>
 						<h1 class="text-center">
 							<div id="statusWiseAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
 						</h1>
 					</div>
 				</div>
-				<div class="col-md-3">   
+				<div class="col-md-2">   
 					<div>
 						<h1 class="text-center">
 							<div id="feedbackWiseAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
 						</h1>
 					</div>
 				</div>
-				<div class="col-md-1">   
+				<div class="col-md-2">               
 					<div>
 						<h1 class="text-center">
 							<div id="reopenAlertCntId" style="min-width:10px; height: 400px; margin: 0 auto display:none"> </div>
 						</h1>
 					</div>
 				</div>
-				<div class="col-md-1" style="margin-left: 60px;">
+				<div class="col-md-1">  
 					<div style="padding-top: 80px">
 						<h4 class="text-center issue-title total" style="letter-spacing: 14px;">TOTAL</h4>
 						<h1 style="font-size: 4em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
@@ -143,12 +143,7 @@
 				<div class="panel-heading headingColor">
 					<div class="row">
 						<div class="col-md-6 col-xs-12 col-sm-6">
-							<h4 class="m_0 panel-title text-capital fontColor" id="cadreGrievanceTitle" style="display:block;"> Alert Efficiency 
-								<!--<span style="margin-left:300px;font-size:13px;" class="fontColor">AVERAGE ISSUE PENDING DAYS : 
-								<span id="issuePendingCntId"></span></span>-->
-							<!--<span class="pull-right"><input id="proposalId" onClick="getCadreGreivienceEfficiency()" class="form-check-input" type="checkbox" value="Include" checked>   
-							<span style="font-size:12px;">Include Proposal</span></span>-->
-							</h4>
+							<h4 class="m_0 panel-title text-capital fontColor" id="cadreGrievanceTitle" style="display:block;">Alert Efficiency</h4>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6 pull-right">
 							<input id="sliderValue" data-slider-id="sliderValue" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="2"/>&nbsp;&nbsp;&nbsp;
@@ -214,6 +209,27 @@
 					<div  class="row">  
 						<div class="col-md-12">
 							<div class="table-responsive m_top20" id="CategoryWiseGrivenaceTableId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading headingColor">
+					<div  class="row">
+						<div class="col-md-10 m_top5">   
+							<h4 class="panel-title text-capital fontColor">State Level Grievance Report </h4>  
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-success btn-sm" onclick="generateExcel4();">
+								<i class="glyphicon glyphicon-download-alt"></i> Download
+							</button>   
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div  class="row">
+						<div class="col-md-12">
+							<div class="table-responsive m_top20" id="stateLevelGrivenaceTableId"></div>         
 						</div>
 					</div>
 				</div>
@@ -360,12 +376,12 @@
 <script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
-<script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>    
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <!-- Custom Script Files Data End-->
 <script type="text/javascript">
 google.load("elements", "1", {
-	packages: "transliteration"
+	packages: "transliteration"        
 });
 </script>
 <script type="text/javascript">
@@ -401,8 +417,11 @@ function generateExcel1(){
 function generateExcel2(){
 	tableToExcel('dayWiseGrievanceReportTableId', 'Grievance Report Day Wise');
 }
-function generateExcel3(){
+function generateExcel3(){  
 	tableToExcel('CatWiseGrievanceReportTableId', 'Grievance Report');
+}
+function generateExcel4(){
+	tableToExcel('stateLevelGrievanceReportTableId', 'Grievance Report');
 }
 var tableToExcel = (function() {
   var uri = 'data:application/vnd.ms-excel;base64,'
