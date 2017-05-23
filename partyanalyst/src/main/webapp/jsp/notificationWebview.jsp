@@ -8,7 +8,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-<title>Notification</title>
+<title>Send Notification</title>
 <link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
@@ -19,6 +19,51 @@
 {
 	padding:10px
 }
+.onoffswitch {
+        position: relative; width: 144px;
+        -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    }
+    .onoffswitch-checkbox {
+        display: none;
+    }
+    .onoffswitch-label {
+        display: block; overflow: hidden; cursor: pointer;
+        border: 2px solid #999999; border-radius: 20px;
+    }
+    .onoffswitch-inner {
+        display: block; width: 200%; margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+    .onoffswitch-inner:before, .onoffswitch-inner:after {
+        display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+        font-size: 13px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+        box-sizing: border-box;
+    }
+    .onoffswitch-inner:before {
+        content: "WITH OUT URL";
+        padding-left: 16px;
+        background-color: #EEEEEE; color: #999999;
+    }
+    .onoffswitch-inner:after {
+        content: "WITH URL";
+        padding-right: 16px;
+        background-color: #34A7C1; color: #FFFFFF;
+        text-align: right;
+    }
+    .onoffswitch-switch {
+        display: block; width: 18px; margin: 8px;
+        background: #FFFFFF;
+        position: absolute; top: 0; bottom: 3px;
+        right: 110px;
+        border: 2px solid #999999; border-radius: 20px;
+        transition: all 0.3s ease-in 0s; 
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+        right: 0px; 
+    }
 </style>
 </head>
 <section>
@@ -27,7 +72,22 @@
 			<div class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title">SEND NOTIFICATION </h4>
+					<div class="row">
+						<div class="col-sm-6">
+							<h4 class="panel-title">SEND NOTIFICATION </h4>
+						</div>
+						<div class="col-sm-6">
+							<div class="onoffswitch pull-right">
+								<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+								<label class="onoffswitch-label" for="myonoffswitch">
+									<span class="onoffswitch-inner"></span>
+									<span class="onoffswitch-switch"></span>
+								</label>
+							</div>
+						</div>
+					</div>
+						
+						
 					</div>
 					<div class="panel-body">
 						<div class="tab-content">
@@ -46,15 +106,15 @@
  										placeholder="Please Enter Notification Text"></textarea>								
  									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
-								<div class="col-md-4 col-md-offset-3">
-								<label>URL Link:</label>
-								<input type="text"  name="name"  class="form-control" id="addYoutubeUrlId"	placeholder="Please Enter URL Key"/>								
+								<div class="col-md-4 col-md-offset-3 urlLinkDivCls" style="display:none;">
+									<label>URL Link:</label>
+									<input type="text"  name="name"  class="form-control" id="addYoutubeUrlId"	placeholder="Please Enter URL Key"/>								
  									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
 								
 								<div class="col-md-4 col-md-offset-3">
-								<input type="button" id="notificationId" attr_success="NOTIFICATION ADDED..." style="padding-top: 5px; margin-top: 14px;"  class="btn btn-success btn-block"   value="SEND NOTIFICATION"  onclick="addNotification();"/>
-								<div id="notificationSuccessId" sytle="color:green"></div>
+									<input type="button" id="notificationId" attr_success="NOTIFICATION ADDED..." style="padding-top: 5px; margin-top: 14px;"  class="btn btn-success btn-block"   value="SEND NOTIFICATION"  onclick="addNotification();"/>
+									<div id="notificationSuccessId" sytle="color:green"></div>
 								</div>
 								
 							</div>
@@ -91,7 +151,7 @@
   </div>
 </section>
  
-<script src='dist/2016DashBoard/js/bootstrap.js' type='text/javascript'></script>
+<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
@@ -294,6 +354,12 @@ function buildGrivenceDetailsTableOld(result){
 				   $("#notificationsdetailId").html(str);
 				   $('#alertIdListTableId').dataTable({});
 }
-
+$("#myonoffswitch").click(function(){
+  if($('#myonoffswitch').is(":checked")){
+		$(".urlLinkDivCls").hide();
+  }else{
+	$(".urlLinkDivCls").show();
+  }
+});
 </script>
 </html>
