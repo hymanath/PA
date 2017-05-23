@@ -1310,4 +1310,5 @@ public interface IConstants {
 	public static final Long MAHANADU_2017_EVENT_ID=51l;
 	public static String FCM_URL = "https://fcm.googleapis.com/fcm/send";
 	public static final String FEEDBACK_ALERT_CATEGORY_ID="4,5";
+	public static final Long MAHANADU_EVENT_ID = 51L;
 }
