@@ -128,10 +128,10 @@
 					</div>
 			   </div>
 			   <div id="enrollmentDivId" class="col-md-5">
-					<select class="form-control" id="enrollmentYearSelId">
+					<select class="form-control" id="enrollmentYearSelId" onchange="eventUpdate();">
 						<option value="0">All</option>
 						<option value="3">2014 - 2016</option>
-						<option value="4" selected>2017 - 2018</option>
+						<option value="4" selected>2016 - 2018</option>
 					</select>
 			   </div>
 			</div>
@@ -255,7 +255,7 @@
     </div>
 	<div>
 	<div class="row">
-	<div class="col-md-12">
+	<div class="col-md-12" style="display:none;">
 	  <div class="panel panel-default panel-custom-default m_0">
 		  <div class="panel-heading" style="padding: 10px;">
 			  <h4 class="panel-title m_0">PUBLIC REPRESENTATIVE ATTENDEE COUNT</h4>
@@ -3031,6 +3031,8 @@ function getPublicrepresentatives(){
 			$("#publicRepresentativeDiv").html("NO DATA AVAILABLE");
 		}
 	} 
+
+ 
 </script>
 </body>
 </html>
