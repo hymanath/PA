@@ -1153,8 +1153,8 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 				" (select ea.tdp_cadre_id as cadre_id, max(ea.attended_time) as max_time" +
 				" from event_attendee ea" );
 				if(enrollmentIds != null && enrollmentIds.size() > 0l)
-					str.append(",tdp_cadre_enrollment_year tcey " +
-				" where " +
+					str.append(",tdp_cadre_enrollment_year tcey ");
+				str.append(" where " +
 				" date(ea.attended_time) =:todayDate and" );
 				if(enrollmentIds != null && enrollmentIds.size() > 0l){
 					str.append(" ea.tdp_cadre_id  = tcey.tdp_cadre_id and " +
@@ -1192,6 +1192,9 @@ public List<Object[]> getEventAttendeesSummaryForInvities(String locationType,Da
 public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String constituecnyQueryStr,List<Long> enrollmentIds){
 		
 		StringBuilder str = new StringBuilder();
+		
+		if(enrollmentIds != null && enrollmentIds.contains(0L))
+			enrollmentIds.clear();
 		
 		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,c.constituency_id as constituecnyId " +
 				" from " );
@@ -1299,6 +1302,10 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 	public List<Object[]> getConstituencyWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String constituencyQueryStr,Date toDayDate,List<Long> enrollmentIds){
 		
 		StringBuilder str = new StringBuilder();
+		
+		if(enrollmentIds != null && enrollmentIds.contains(0L))
+			enrollmentIds.clear();
+		
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name " +
 				" from EventAttendee model " );
 		if(enrollmentIds != null && enrollmentIds.size()>0){
@@ -1622,6 +1629,9 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		
 		StringBuilder str = new StringBuilder();
 		
+		if(enrollmentIds != null && enrollmentIds.contains(0L))
+			enrollmentIds.clear();
+		
 		str.append(" select count(distinct EA.tdp_cadre_id) as currentCadre,c.constituency_id as constituencyId " +
 				" from " +
 				" tdp_cadre TC,user_address UA,constituency c," );
@@ -1729,6 +1739,9 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 	
 	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long entryEventId,String queryStr,Date todayDate,List<Long> enrollmentIds){
 		StringBuilder str = new StringBuilder();
+		
+		if(enrollmentIds != null && enrollmentIds.contains(0L))
+			enrollmentIds.clear();
 		
 		str.append(" select count(distinct model.tdpCadreId),model.tdpCadre.userAddress.constituency.constituencyId,model.tdpCadre.userAddress.constituency.name " +
 				"from EventAttendee model " );
