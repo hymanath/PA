@@ -743,7 +743,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 					 Multipart multipart = new MimeMultipart();
 	        		 
 		        	 BodyPart htmlPart = new MimeBodyPart();
-		        	 String msgText="Please Find The Attached  Pdf Document For Mahanadu 2016 Event Dashboard on "+emailAttributesVO.getTime() ;
+		        	 String msgText="Please Find The Attached  Pdf Document For Telangana Mahanadu 2017 Event Dashboard on "+emailAttributesVO.getTime() ;
 		        	 //htmlPart.setContent(getContent(fileNamesVO.getImages()),"text/html");
 		             htmlPart.setContent(emailAttributesVO.getBodyText(),"text/html");
 		        	 multipart.addBodyPart(htmlPart);
@@ -973,10 +973,13 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		
 		
 		
-		public void getAllImages(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> stateIds){/*
+		public void getAllImages(Long parentId,List<Long> subEventIds,String startDate,String endDate,List<Long> stateIds){
 			LOG.info("\n\n entered in to getAllImages() method in mahanadu dashboardd service \n" );
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try{
+				List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+				enrollmentYearIds.add(3L);
+				enrollmentYearIds.add(4L);
 				
 				Date currentDateAndTime = dateUtilService.getCurrentDateAndTime();
 				
@@ -1001,24 +1004,24 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				//Event Dashboard
 				
 				StringBuffer mainDashboardPdfStr = new StringBuffer();
-				StatesEventVO  finalVO = stateWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,true);
+				StatesEventVO  finalVO = stateWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,true,enrollmentYearIds);
 				if( finalVO.getAllStatesVO() != null ){
 					StringBuffer allStatesStr = allStatesBlock(finalVO.getAllStatesVO(),time);
 					mainDashboardPdfStr.append(allStatesStr);
 					mainDashboardPdfStr.append("<br/>");
 				}
 				
-				List<MahanaduEventVO> publicReprestList = getPublicrepresentatives(startDate,endDate,parentId,subEventIds);
+				List<MahanaduEventVO> publicReprestList = getPublicrepresentatives(startDate,endDate,parentId,subEventIds,enrollmentYearIds);
 				StringBuffer pubStr = PublicrepresentiveBlock(publicReprestList,time);
 				mainDashboardPdfStr.append(pubStr);
 				mainDashboardPdfStr.append("<br/>");
 				
-				List<MahanaduEventVO>  distList =LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,3l,stateIds,"particular");
+				List<MahanaduEventVO>  distList =LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,3l,stateIds,"particular",enrollmentYearIds);
 				StringBuffer distStr = constWiseCounts(distList,time,"District");
 				mainDashboardPdfStr.append(distStr);
 				mainDashboardPdfStr.append("<br/>");
 				
-				List<MahanaduEventVO>  constList = LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,4l,stateIds,"particular");
+				List<MahanaduEventVO>  constList = LocationWiseEventAttendeeCounts(startDate,endDate,parentId,subEventIds,4l,stateIds,"particular",enrollmentYearIds);
 				StringBuffer constStr = constWiseCounts(constList,time,"Constituency");
 				mainDashboardPdfStr.append(constStr);
 				mainDashboardPdfStr.append("<br/>");
@@ -1058,17 +1061,18 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				
 				List<String> emailIds = new ArrayList<String>();
 				emailIds.add("a.dakavaram@gmail.com");
-				emailIds.add("sreedhar.itgrids.hyd@gmail.com");
-				emailIds.add("chandug11@gmail.com");
-				emailIds.add("bezawada.srikanth@gmail.com");
-				emailIds.add("maddineni.ramesh@gmail.com");
+				emailIds.add("chandrashekar.gurudu@itgrids.com");
+				emailIds.add("abdul.shaik@itgrids.com");
+				emailIds.add("srikanth.bezawada@itgrids.com");
+				/*emailIds.add("maddineni.ramesh@gmail.com");
 				emailIds.add("grajesh@telugudesam.org");
-				emailIds.add("aravind.itgrids.hyd@gmail.com");
+				emailIds.add("aravind.itgrids.hyd@gmail.com");*/
+				emailIds.add("kamalakar@itgrids.com");
 				
 				emailAttributesVO.setEmailIds(emailIds);
 				emailAttributesVO.setTime(time);
-				emailAttributesVO.setSubject("Mahandu Event 2016 Dashboard");
-				emailAttributesVO.setBodyText("Please Find The Attached  Pdf Documents For Mahanadu 2016 Event Dashboard on "+time);
+				emailAttributesVO.setSubject("Telangana Mahandu Event 2017 Dashboard");
+				emailAttributesVO.setBodyText("Please Find The Attached  Pdf Documents For Telangana Mahanadu 2017 Event Dashboard on "+time);
 				
 				
 				if( emailAttributesVO.getPdfNames() != null && emailAttributesVO.getPdfNames().size() > 0){
@@ -1078,7 +1082,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			}catch(Exception e){
 				LOG.error("Exception in getAllImages() : "+e);
 			}
-		*/}
+		}
 		public StringBuffer PublicrepresentiveBlock(List<MahanaduEventVO> pubList,String time){
 			
 			StringBuffer str = new StringBuffer();
@@ -1187,7 +1191,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 			str.append("<table width='100%'>");
 			    str.append("<tr bgcolor='#fed501'>");
-			    	str.append("<td style='text-align:center;color:#fff'><font size='6'>MAHANADU 2016 ATTENDANCE SUMMARY</font></td>");
+			    	str.append("<td style='text-align:center;color:#fff'><font size='6'>TS MAHANADU 2017 ATTENDANCE SUMMARY</font></td>");
 			    str.append("</tr>");
 		    str.append("</table>");
 		    str.append("<br/>");
@@ -1440,7 +1444,8 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 		    str.append("<table width='100%' border='1'>");
 		    str.append("<tr bgcolor='#ccc'>");
 		    int colspan = dayscount + 1;
-		    str.append("<td colspan='"+colspan+"' style='text-align:center;color:#D64D54'><font size='4'>HOURS WISE VISITORS PRESENT IN CAMPUS <font size = '2'>("+hoursWiseVisitorsList.get(hoursWiseVisitorsList.size()-1).getLastUpdated()+")</font></font></td>");
+		    //str.append("<td colspan='"+colspan+"' style='text-align:center;color:#D64D54'><font size='4'>HOURS WISE VISITORS PRESENT IN CAMPUS <font size = '2'>("+hoursWiseVisitorsList.get(hoursWiseVisitorsList.size()-1).getLastUpdated()+")</font></font></td>");
+		    str.append("<td colspan='"+colspan+"' style='text-align:center;color:#D64D54'><font size='4'>HOURS WISE VISITORS PRESENT IN CAMPUS <font size = '2'></font></font></td>");
 		    str.append("</tr>");
 		    
 		    str.append("<tr bgcolor='#eaeaea' style='text-align:center;color:#01AF7C'>");
