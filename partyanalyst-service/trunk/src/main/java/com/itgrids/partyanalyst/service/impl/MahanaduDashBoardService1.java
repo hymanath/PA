@@ -1810,32 +1810,32 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				  
 				  
 				   //PR Day Wise Attended.
-				  List<Object[]> dayWiseList = eventInviteeDAO.dayWisePublicRepInviteesAttendedForEvent(startDate,endDate,subEventIds,designationIds);
+				  List<Object[]> dayWiseList = eventInviteeDAO.dayWisePublicRepInviteesAttendedForEvent(startDate,endDate,subEventIds,designationIds,enrollmentIds);
 				 setDataForDayWise(designationsMap,dayWiseList,"PR");
 				 //COMMITTEE LEVEL  Attended.
-				 List<Object[]> committeLevelDayWiseList = eventInviteeDAO.dayWiseCommitteeLevelInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeLevelIds);
+				 List<Object[]> committeLevelDayWiseList = eventInviteeDAO.dayWiseCommitteeLevelInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeLevelIds,enrollmentIds);
 				 setDataForDayWise(designationsMap,committeLevelDayWiseList,"CommitteeLevel");
 				 
 				 //COMMITTEE Role  Attended.
-				 List<Object[]> committeRoleDayWiseList = eventInviteeDAO.dayWiseCommitteeRoleInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeroleIds);
+				 List<Object[]> committeRoleDayWiseList = eventInviteeDAO.dayWiseCommitteeRoleInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeroleIds,enrollmentIds);
 				 setDataForDayWise(designationsMap,committeRoleDayWiseList,"CommitteeRole");
 				 
 				 //Affliated Committee  Attended.
-				 List<Object[]> affliatedCommitteeDayWiseList = eventInviteeDAO.dayWiseDistrictAffliatedCommitteeInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeroleIds);
+				 List<Object[]> affliatedCommitteeDayWiseList = eventInviteeDAO.dayWiseDistrictAffliatedCommitteeInviteesAttendedForEvent(startDate,endDate,subEventIds,committeeroleIds,enrollmentIds);
 				 setDataForDayWise(designationsMap,affliatedCommitteeDayWiseList,"affliatedCommittee");
 				 // Total Attended
 				 //PR
-				 List<Object[]> totalAttendedCnt = eventInviteeDAO.totalPublicRepInviteesAttendedForEvent(subEventIds,designationIds);
+				 List<Object[]> totalAttendedCnt = eventInviteeDAO.totalPublicRepInviteesAttendedForEvent(subEventIds,designationIds,enrollmentIds);
 				 setDataForTotalAttended(designationsMap,totalAttendedCnt,"PR");
 				 //COMMITTEE LEVEL  Attended.
-				 List<Object[]> totalCommitteLevelAttendedCnt = eventInviteeDAO.totalCommitteeLevelInviteesAttendedForEvent(subEventIds,designationIds);
+				 List<Object[]> totalCommitteLevelAttendedCnt = eventInviteeDAO.totalCommitteeLevelInviteesAttendedForEvent(subEventIds,designationIds,enrollmentIds);
 				 setDataForTotalAttended(designationsMap,totalCommitteLevelAttendedCnt,"CommitteeLevel");
 				//COMMITTEE Role  Attended.
-				 List<Object[]> totalCommitteRoleAttendedCnt = eventInviteeDAO.totalCommitteeRoleInviteesAttendedForEvent(subEventIds,committeeroleIds);
+				 List<Object[]> totalCommitteRoleAttendedCnt = eventInviteeDAO.totalCommitteeRoleInviteesAttendedForEvent(subEventIds,committeeroleIds,enrollmentIds);
 				 setDataForTotalAttended(designationsMap,totalCommitteRoleAttendedCnt,"CommitteeRole");
 				 
 				//Affliated Committee  Attended.
-				 List<Object[]> totalAffliatedCommitteeAttendedCnt = eventInviteeDAO.totalDistrictAffliatedCommitteeInviteesAttendedForEvent(subEventIds,committeeroleIds);
+				 List<Object[]> totalAffliatedCommitteeAttendedCnt = eventInviteeDAO.totalDistrictAffliatedCommitteeInviteesAttendedForEvent(subEventIds,committeeroleIds,enrollmentIds);
 				 setDataForTotalAttended(designationsMap,totalAffliatedCommitteeAttendedCnt,"affliatedCommittee");
 				 
 				 
