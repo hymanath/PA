@@ -77,9 +77,9 @@
 					<span class="settingsIcon pull-right" style="margin-top:7px;background-color:#4a5863; color: #ffffff">
 								<i class="fa fa-gears" data-toggle="tooltip" data-placement="top" title="" data-original-title="Settings"></i>
 					</span>
-					<div class="settingsBlockDropDown notesArrow documentCloseClass" style="width:240px">
+					<div class="settingsBlockDropDown notesArrow documentCloseClass" >
 						<i class="glyphicon glyphicon-remove setClose pull-right"></i>
-						<div class="row">
+						<!--<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12"> 
 								<label class="checkbox-inline"><input type="checkbox" class="selectAllCls " checked />Select All</label>
 							</div>
@@ -98,6 +98,112 @@
 							<div class="col-md-12 col-xs-12 col-sm-12  m_top10"> 
 								<input class="btn btn-success btn-sm" value="APPLY" type="button" onClick="onLoadCallsAMU();" />
 							</div>
+						</div>-->
+						<div class="row">
+							<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+								<ul class="nav nav-tabs navTabsSettings" role="tablist">
+									<li role="presentation" class="active text-capital"><a href="#mediaAlerts" aria-controls="mediaAlerts" role="tab" data-toggle="tab">Media Type</a></li>
+									<li role="presentation" class="text-capital"><a href="#callCenterAlerts" aria-controls="callCenterAlerts" role="tab" data-toggle="tab">Call Center</a></li>
+									<li role="presentation" class="text-capital"><a href="#socialMediaType" aria-controls="socialMediaType" role="tab" data-toggle="tab">Social Media Type</a></li>
+									<li role="presentation" class="text-capital"><a href="#alertSeverityType" aria-controls="alertSeverityType" role="tab" data-toggle="tab">Alert Severity</a></li>
+									<li role="presentation" class="text-capital"><a href="#alertStatusType" aria-controls="alertStatusType" role="tab" data-toggle="tab">Alert Status</a></li>
+									<li role="presentation" class="text-capital"><a href="#alertSubTaskType" aria-controls="alertSubTaskType" role="tab" data-toggle="tab">Alert Sub Task Status</a></li>
+								</ul>
+							</div>
+							<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+								<div class="tab-content navTabsSettingsContent">
+									<div role="tabpanel" class="tab-pane active" id="mediaAlerts">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Media Type</h4>
+										<hr style ="margin-bottom:0px;" />
+										<div class="">
+											<ul class="settingsUl">
+												<li>
+													<label><input type="checkbox" class="selectAllPaperCls" checked />Select All</label>
+												</li>
+												<li>
+													<label class="checkbox-inline"><input type="checkbox" class="newsPaperListCls checkedSelected" checked  />Print Media</label>
+												</li>
+												<li>
+													<label class="checkbox-inline"><input type="checkbox" class="chanelListCls checkedSelected" checked />Electronic Media</label>
+												</li>
+											</ul>
+										</div>
+									</div>
+									
+									<div role="tabpanel" class="tab-pane" id="callCenterAlerts">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Call Center</h4>
+										<hr style ="margin-bottom:0px;" />
+										<div class="scrollerBlockDepartments">
+											<ul class="settingsUl">
+												<li>
+													<label><input type="checkbox" class="selectAllcallcenterCls" checked />Select All</label>
+												</li>
+												<li>
+													<label class="checkbox-inline"><input type="checkbox" class="callcenterCls checkedSelected" checked />Call Center</label>
+												</li>
+											</ul>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="socialMediaType">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Social Media Type</h4>
+										<hr style ="margin-bottom:0px;" />
+										<ul class="settingsUl">
+											<li>
+												<label><input type="checkbox" class="selectAllMediaType" checked />Select All</label>
+											</li>
+												<li>
+													<label class="checkbox-inline"><input type="checkbox" class="socialMediaCls checkedSelected" checked />Social Media</label>
+												</li>
+										</ul>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="alertSeverityType">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Severity Type</h4>
+										<hr style ="margin-bottom:0px;" />
+										<ul class="settingsUl">
+											<li>
+												<label><input type="checkbox" class="selectAllSeverityType" checked />Select All</label>
+											</li>
+											<c:forEach items="${alertSeverityList}"  var="severityType">
+												<li>
+													<label class="checkbox-inline"><input type="checkbox" class="severityTypeCls checkedSelected" checked  attr_val="${severityType.id}" />${severityType.name}</label>
+												</li>
+											</c:forEach>
+										</ul>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="alertStatusType">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Alert Status</h4>
+										<hr style ="margin-bottom:0px;" />
+										<ul class="settingsUl">
+											<li>
+												<label><input type="checkbox" class="selectAllStatusType" checked />Select All</label>
+											</li>
+											<c:forEach items="${alertStatusList}"  var="alertStatusType">
+												<li>
+													<label class="checkbox-inline"><input type="checkbox" class="statusTypeCls checkedSelected" checked  attr_val="${alertStatusType.id}"/>${alertStatusType.name}</label>
+												</li>
+											</c:forEach>
+										</ul>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="alertSubTaskType">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Alert Sub Task Status</h4>
+										<hr style ="margin-bottom:0px;" />
+										<ul class="settingsUl">
+											<li>
+												<label><input type="checkbox" class="selectAllSubTaskType" checked />Select All</label>
+											</li>
+											<c:forEach items="${govtAlertSubTaksStatusList}"  var="alertSubTaskType">
+												<li>
+													<label class="checkbox-inline"><input type="checkbox" class="subTaskTypeCls checkedSelected" checked attr_val="${alertSubTaskType.id}" />${alertSubTaskType.name}</label>
+												</li>
+											</c:forEach>
+										</ul>
+									</div>
+								</div>
+							  
+							</div>
+							<div class="col-md-8 col-md-offset-4 col-xs-12 col-sm-9 col-sm-offset-3 m_top10">
+								<input class="btn btn-success btn-sm" value="APPLY" type="button" onClick="onLoadCallsAMU();" />
+							</div>
 						</div>
 					</div>
 					<div class="input-group dateRangePickerCls m_top5 pull-right" style="margin-right: 15px">
@@ -106,8 +212,20 @@
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
 					</div>
+					<div class="row">
+						<div class="col-sm-12 m_top10">
+							<div class="panel panel-default">
+								<div class="panel-heading headingColor">
+											<h4 class="panel-title text-capital fontColor">Alert Source Wise - Details</h4>
+								</div>
+								<div class="panel-body">
+									<div id="alertSourceWiseDetilsDivId"></div>
+								</div>
+							</div>
+						</div>
+					</div>
 						<div class="row">
-							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
+							<div class="col-md-4 col-xs-12 col-sm-12 ">
 								<div class="panel panel-default panelheights">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">My Alerts</h4>
@@ -117,7 +235,7 @@
 								  </div>
 								</div>
 							</div>
-							<div class="col-md-4 col-xs-12 col-sm-12 m_top30">
+							<div class="col-md-4 col-xs-12 col-sm-12 ">
 								<div class="panel panel-default panelheights">
 								  <div class="panel-heading headingColor">
 									<h4 class="panel-title text-capital fontColor">My Sub Tasks</h4>
@@ -138,14 +256,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="panel panel-default">
-							<div class="panel-heading headingColor">
-										<h4 class="panel-title text-capital fontColor">Alert Source Wise - Details</h4>
-							</div>
-							<div class="panel-body">
-								<div id="alertSourceWiseDetilsDivId"></div>
-							</div>
-						</div>
+						
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="panel panel-default">
@@ -307,7 +418,9 @@ var channelGlobalArr =[];
 var callCenterGlobalArr=[];
 var globalDepartmentIdsArr=[];
 var globalsocialMediaTypeIdsArr = [];
-
+var globalAlertSeverityIdsArr = [];
+var globalAlertStatusIdsArr = [];
+var globalAlertSubTaskStatusIdsArr = [];
 google.load("elements", "1", {
 	packages: "transliteration"
 });
@@ -324,32 +437,86 @@ $(document).on("click",function(){
 $(document).on("click",".documentCloseClass",function(e){
 	e.stopPropagation();
 });
-onLoadPrintAndChannelAndCallCen();
-$(document).on("click",".selectAllCls",function(){
+onLoadPrintAndChannel();
+onLoadCallcenter();
+onLoadSocialMedia();
+onLoadAlertSeverity();
+onLoadAlertStatus();
+onLoadAlertSubTaskStatus();
+$(document).on("click",".selectAllPaperCls",function(){
 	if($(this).prop('checked')) {
 		$(".newsPaperListCls").prop('checked', true);
 		$(".chanelListCls").prop('checked', true);
-		$(".callcenterCls").prop('checked', true);
-		$(".socialMediaCls").prop('checked', true);
-		onLoadPrintAndChannelAndCallCen();
+		onLoadPrintAndChannel();
 
 	}else{
 		$(".newsPaperListCls").prop('checked', false);
 		$(".chanelListCls").prop('checked', false);
-		$(".callcenterCls").prop('checked', false);
-		$(".socialMediaCls").prop('checked', false);
+		
 		newspapersGlobalArr=[];
 		channelGlobalArr=[];
-		callCenterGlobalArr=[];
-		globalsocialMediaTypeIdsArr=[];
 	}
 	
 });
-function onLoadPrintAndChannelAndCallCen(){
+$(document).on("click",".selectAllcallcenterCls",function(){
+	if($(this).prop('checked')) {
+		$(".callcenterCls").prop('checked', true);
+		onLoadCallcenter();
+
+	}else{
+		$(".callcenterCls").prop('checked', false);
+		callCenterGlobalArr=[];
+	}
+	
+});
+$(document).on("click",".selectAllMediaType",function(){
+	if($(this).prop('checked')) {
+		$(".socialMediaCls").prop('checked', true);
+		onLoadSocialMedia();
+
+	}else{
+		$(".socialMediaCls").prop('checked', false);
+		globalsocialMediaTypeIdsArr = [];
+	}
+	
+});
+$(document).on("click",".selectAllSeverityType",function(){
+	if($(this).prop('checked')) {
+		$(".severityTypeCls").prop('checked', true);
+		onLoadAlertSeverity();
+
+	}else{
+		$(".severityTypeCls").prop('checked', false);
+		globalAlertSeverityIdsArr = [];
+	}
+	
+});
+$(document).on("click",".selectAllStatusType",function(){
+	if($(this).prop('checked')) {
+		$(".statusTypeCls").prop('checked', true);
+		onLoadAlertStatus();
+
+	}else{
+		$(".statusTypeCls").prop('checked', false);
+		globalAlertStatusIdsArr = [];
+	}
+	
+});
+$(document).on("click",".selectAllSubTaskType",function(){
+	if($(this).prop('checked')) {
+		$(".subTaskTypeCls").prop('checked', true);
+		onLoadAlertSubTaskStatus();
+
+	}else{
+		$(".subTaskTypeCls").prop('checked', false);
+		globalAlertSubTaskStatusIdsArr = [];
+		
+	}
+	
+});
+function onLoadPrintAndChannel(){
 	newspapersGlobalArr=[];
 	channelGlobalArr=[];
-	callCenterGlobalArr=[];
-	globalsocialMediaTypeIdsArr=[];
 	$(".newsPaperListCls").each(function(){
 	if($(this).is(":checked"))
 	{
@@ -359,6 +526,7 @@ function onLoadPrintAndChannelAndCallCen(){
 		 </c:forEach>
 	}
 });
+
 $(".chanelListCls").each(function(){
 	if($(this).is(":checked"))
 	{
@@ -368,7 +536,11 @@ $(".chanelListCls").each(function(){
 		 </c:forEach>
 	}
 });
-$(".callcenterCls").each(function(){
+
+}
+function onLoadCallcenter(){
+	callCenterGlobalArr =[];
+	$(".callcenterCls").each(function(){
 	if($(this).is(":checked"))
 	{
 		
@@ -379,7 +551,10 @@ $(".callcenterCls").each(function(){
 		 
 	}
 });
-$(".socialMediaCls").each(function(){
+}
+function onLoadSocialMedia(){
+	globalsocialMediaTypeIdsArr = [];
+	$(".socialMediaCls").each(function(){
 	if($(this).is(":checked"))
 	{
 		 <c:forEach items="${socailMediaTypeList}"  var="socailMediaType">
@@ -387,12 +562,43 @@ $(".socialMediaCls").each(function(){
 			globalsocialMediaTypeIdsArr.push(socialGlobalObj)
 		 </c:forEach>
 	}
-}); 
+});
 }
-
-
+function onLoadAlertSeverity(){
+	globalAlertSeverityIdsArr=[];
+	$(".severityTypeCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalAlertSeverityIdsArr.push($(this).attr("attr_val"));
+		}
+	});
+} 
+function onLoadAlertStatus(){
+	globalAlertStatusIdsArr=[];
+	$(".statusTypeCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalAlertStatusIdsArr.push($(this).attr("attr_val"));
+		}
+	});
+}
+function onLoadAlertSubTaskStatus(){
+	globalAlertSubTaskStatusIdsArr=[];
+	$(".subTaskTypeCls").each(function(){
+		if($(this).is(":checked"))
+		{
+			globalAlertSubTaskStatusIdsArr.push($(this).attr("attr_val"));
+		}
+	});
+}
 $(document).on("click",".checkedSelected",function(){
-		onLoadPrintAndChannelAndCallCen();
+		onLoadPrintAndChannel();
+		onLoadCallcenter();
+		onLoadSocialMedia();
+		onLoadAlertSeverity();
+		onLoadAlertStatus();
+		onLoadAlertSubTaskStatus();
+		
 });
 onLoadCallsAMU();
 </script>

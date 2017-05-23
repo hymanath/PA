@@ -1,5 +1,5 @@
 /*global Function and variables Start*/
- var globalLevelObj =  {"1":"STATE","2":"ZONE","3":"REGION","4":"CIRCLE","5":"DISTRICT","6":"DIVISION","7":"SUB DIVISION","8":"MANDAL","9":"MUNICIPALITY","10":"PANCHAYAT"};
+ var globalLevelObj =  {"1":"STATE","2":"ZONE","3":"REGION","4":"CIRCLE","5":"DISTRICT","6":"DIVISION","7":"SUB DIVISION","8":"MANDAL","9":"MUNICIPALITY","10":"PANCHAYAT","11":"WARD","12":"GMC","13":"CLUSTER"};
 var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","Electronic Media":"#8D69C8","Call Center":"#EFC000","Facebook":"#00ABED","Twitter":"#F7776C","Social Media":"#00ABED"};	 
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
@@ -13,6 +13,9 @@ var globalDesignationId=0;
 var callCenterGlobalArr = [];
 var globalsocialMediaTypeIdsArr = [];
 var subLevels = [];
+var globalAlertSeverityIdsArr = [];
+var globalAlertStatusIdsArr = [];
+var globalAlertSubTaskStatusIdsArr = [];
 
 
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
@@ -1346,7 +1349,10 @@ function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartme
 		subLevels:locationLevelIdArr,
 		filterParentScopeId :filterParentScopeId,
 		filterScopeValue:filterScopeValue,
-		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+		alertSeverityIdsArr:globalAlertSeverityIdsArr,
+        alertStatusIdsArr:globalAlertStatusIdsArr,
+        alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
     }
     $.ajax({
     type:'GET',         
@@ -1674,6 +1680,9 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 				 var mandalArr = [];
 				 var municipalityArr = [];
 				 var panchayatArr = [];
+				 var wardArr = [];
+				 var gmcArr = [];
+				 var clusterArr = [];
 				 
 			for(var i in result){
 				 locationNamesArr.push(result[i].name)
@@ -1700,6 +1709,12 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 							 municipalityArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id});
 						}else if(result[i].subList[j].id==10){
 							 panchayatArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id});
+						}else if(result[i].subList[j].id==11){
+							 wardArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id});
+						}else if(result[i].subList[j].id==12){
+							 gmcArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id});
+						}else if(result[i].subList[j].id==13){
+							 clusterArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id});
 						}
 					}
 				}
@@ -1734,6 +1749,15 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 			  }
 			  if(panchayatArr != null && panchayatArr.length > 0){
 				mainJosnObjLocArr.push({name:'Panchayat',data:panchayatArr,color:"#663198"});  
+			  } 
+			  if(wardArr != null && wardArr.length > 0){
+				mainJosnObjLocArr.push({name:'Ward',data:wardArr,color:"#975955"});  
+			  } 
+			  if(gmcArr != null && gmcArr.length > 0){
+				mainJosnObjLocArr.push({name:'GMC',data:gmcArr,color:"#A05955"});  
+			  } 
+			  if(clusterArr != null && clusterArr.length > 0){
+				mainJosnObjLocArr.push({name:'CLUSTER',data:clusterArr,color:"#06A247"});  
 			  } 
 		
 		}
@@ -1989,7 +2013,10 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 		  parentGovtDepartmentScopeId : districtLevelId,
 		  alertType:"alert",
 		  subLevelArr:subLevelArr,
-		  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+		  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+		  alertSeverityIdsArr:globalAlertSeverityIdsArr,
+		  alertStatusIdsArr:globalAlertStatusIdsArr,
+          alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -2058,7 +2085,10 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 			parentGovtDepartmentScopeValue:locationValue,
 			childLevelId:childLevelId,
 			alertType:"alert",
-			socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+			socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+			alertSeverityIdsArr:globalAlertSeverityIdsArr,
+            alertStatusIdsArr:globalAlertStatusIdsArr,
+            alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -2094,6 +2124,13 @@ var locationLevelIdClickArr=[];
 		});
 		$("#alertManagementPopupBody").html(spinner);
    
+
+     var statusIdsArr = [];
+	  if(statusId != null && statusId == 0){
+		  statusIdsArr = globalAlertStatusIdsArr;
+	  }else{
+		  statusIdsArr.push(statusId);
+	  }
    
     var jsObj ={
 		fromDate:currentFromDate,
@@ -2104,13 +2141,14 @@ var locationLevelIdClickArr=[];
 		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : parentGovtDepartmentScopeId,
 		deptScopeId : levelId,    
-		statusId:statusId,   
+		alertStatusIdsArr:statusIdsArr,   
 		callCenterArr:callCenterGlobalArr,
 		locationValue : locationValue,
 		alertType:"alert",
 		alertCategoryId:alertCategoryId,
 		subLevels:locationLevelIdClickArr,
-		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+		alertSeverityIdsArr:globalAlertSeverityIdsArr
     }
     $.ajax({
     type:'GET',                        
@@ -2141,7 +2179,10 @@ function getAlertSourceWiseAlert()
       chanelIdArr : channelGlobalArr,
 	  callCenterArr : callCenterGlobalArr,
 	  userType :"admin",
-	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+	  alertSeverityIdsArr:globalAlertSeverityIdsArr,
+      alertStatusIdsArr:globalAlertStatusIdsArr,
+      alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
     }
     $.ajax({
       type:'GET',
@@ -2487,6 +2528,13 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 	});
 	$("#alertManagementPopupBody").html(spinner);
 	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);//srujana
+	 var statusIdsArr = [];
+	  if(alertStatusId != null && alertStatusId == 0){
+		  statusIdsArr = globalAlertStatusIdsArr;
+	  }else{
+		  statusIdsArr.push(alertStatusId);
+	  }
+	
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
@@ -2497,8 +2545,9 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 	  callCenterArr : callCenterGlobalArr,
 	  alertCategoryId:alertCategoryId,
 	  userType :"admin",
-	  alertStatusId:alertStatusId,
-	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+	  alertStatusIdsArr:statusIdsArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+	  alertSeverityIdsArr:globalAlertSeverityIdsArr,
     }
 	
     $.ajax({
