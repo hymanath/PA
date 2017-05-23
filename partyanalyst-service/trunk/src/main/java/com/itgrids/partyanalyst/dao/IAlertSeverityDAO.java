@@ -9,5 +9,6 @@ import com.itgrids.partyanalyst.model.AlertSeverity;
 
 public interface IAlertSeverityDAO extends GenericDao<AlertSeverity, Long> {
 	public List<Object[]> getFilterSectionDetailsOnSeverity();
+	public List<Object[]> getAlertSeverity();
 
 }
