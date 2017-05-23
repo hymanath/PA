@@ -963,7 +963,7 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 			//}
 		}  
 		$("#alertManagementPopup1 .modal-footer").html(str1);
-		$("#alertManagementPopup1 .modal-footer").html(' ');
+		//$("#alertManagementPopup1 .modal-footer").html(' '); // commented by srishailam pittala
 		var options = {
 	  sourceLanguage:
 		  google.elements.transliteration.LanguageCode.ENGLISH,
