@@ -90,7 +90,7 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 	public List<Object[]> getAllNotifications() {
 		Query query = getSession().createQuery("select model.notificationTypeId.notificationTypeId, " +
 				" model.notification,model.insertedTime,model.userId,model.notificationType.notificationType "+
-				" from Notifications model where model.isActive='true' ");
+				" from Notifications model where model.isActive='true' order by model.notificationsId desc");
 		return query.list();
 	}
 
@@ -98,7 +98,7 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 	public List<Object[]> getAllNotificationsbyUser(Long userId) {
 		Query query = getSession().createQuery("select count(model.notificationTypeId.notificationTypeId),model.notificationTypeId.notificationTypeId,model.notificationType.notificationType "+
 				" from Notifications model where model.isActive='true' and model.userId= :userId" +
-				" GROUP BY model.notificationTypeId.notificationTypeId HAVING COUNT(model.notificationTypeId.notificationTypeId) > 1");
+				" GROUP BY model.notificationTypeId.notificationTypeId HAVING COUNT(model.notificationTypeId.notificationTypeId) >= 1");
 		query.setParameter("userId", userId);
 		return query.list();
 	}
