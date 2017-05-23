@@ -1429,7 +1429,7 @@
     	<property name="cronExpression" value="0 0 * * * ?" />
 	</bean> -->
 	
-	<!-- scheduler for mail attachment
+	<!-- scheduler for mail attachment -->
 	<bean name="mahanaduEventPdfReport" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="insertTriggerForMahanaduEventPdfReport" />
     	<property name="cronExpression" value="0 0/30 * * * ?" />
@@ -1438,7 +1438,7 @@
   		<property name="targetObject" ref="scheduler" />
 	  	<property name="targetMethod" value="sendPdfReport" />
     </bean> 
-    -->
+
     	
 	<bean name="updateTrainingCampSpeakers" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="updateTrainingCampSpeakerDtls" />
@@ -1786,7 +1786,7 @@
 			<ref bean="updateTrainingCampSpeakers" />
 			<!--<ref bean="cronTriggerForEveryDayJobEmployeeAttendance" />-->
 			<ref bean="cronTriggerForJobEmployeeAttendanceOnDept" />
-			<!-- <ref bean="mahanaduEventPdfReport" /> swadhin-->
+			<ref bean="mahanaduEventPdfReport" />
 			
 			<!--  <ref bean="insertTriggerForEveryDayChangeApptStatus" /> -->
 			
