@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -166,7 +167,7 @@ public class NotificationService implements INotificationService{
 			List<String> notificationKeysList = notificationDeviceDAO.getNotificationActiveKeys();
 			NotificationDeviceVO notificationDeviceVO = gcmService.sendNotification(notifyVO.getRegisteredId(),notifyVO.getDeviceName(), notification,notificationKeysList, userId);
 
-			Long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(notifyVO.getNotificationTypeId());
+			Long orderNo = notificationsDAO.getMaxOrderNoBasedOnNotificationType(null);
 			 if(orderNo == null || orderNo.longValue() ==0L)
 				 orderNo =0L;
 			Notifications notifications = new Notifications();
@@ -179,7 +180,6 @@ public class NotificationService implements INotificationService{
 			notifications.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 			notifications.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 			notifications.setIsActive("true");
-			notifications.setOrderNo(orderNo+1);
 			notificationsDAO.save(notifications);
 
 			return IConstants.SUCCESS;
@@ -496,21 +496,24 @@ public class NotificationService implements INotificationService{
 		 return finalVo;
 	  }
 
-	@SuppressWarnings("null")
 	@Override
 	public List<NotificationDeviceVO> getAllNotifications() {
 		try{
+			Date currentDate = Calendar.getInstance().getTime();
+		    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			List<Object[]> objList = notificationsDAO.getAllNotifications();
 			List<NotificationDeviceVO> notificationDeviceVO =new ArrayList<NotificationDeviceVO>(); 
 			 for (Object[] objects : objList) {
 				 NotificationDeviceVO vo = new NotificationDeviceVO();
+				 if(df.format(currentDate).equalsIgnoreCase(df.format(objects[2]))){
 				 vo.setNotification(objects[1] != null ? objects[1].toString():"");
-				 vo.setNotificationTypeId(commonMethodsUtilService.getLongValueForObject(objects[0]));//Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+				 vo.setNotificationTypeId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				 String date= commonMethodsUtilService.getStringValueForObject(objects[2]);
 				 vo.setLastUpdatedTime(date.substring(0, date.length() - 2));
 				 vo.setUserId(commonMethodsUtilService.getLongValueForObject(objects[3]));
 				 vo.setNotificationType(commonMethodsUtilService.getStringValueForObject(objects[4]));
 				 notificationDeviceVO.add(vo);
+				 }
 			 }
 			return notificationDeviceVO;
 		}catch(Exception e){
