@@ -8997,7 +8997,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 	return query.list();   								
 	}
-	public List<Long> getFeedbackAlertIds(Date fromDate, Date toDate, Long stateId, Long departmentId,Long alertCategoryId,List<Long> statusIds,String type,Long locationId,Long feedBackStatusId){
+	public List<Long> getFeedbackAlertIds(Date fromDate, Date toDate, Long stateId, Long departmentId,Long alertCategoryId,List<Long> statusIds,String type,Long locationId,Long feedBackStatusId,String level){
 		
 	       StringBuilder queryStr = new StringBuilder();  
 	
@@ -9015,7 +9015,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 							" and model.govtDepartment.govtDepartmentId = :departmentId ");
 		    
 		    if(alertCategoryId != null && alertCategoryId.longValue() != 0L){
-			  queryStr.append(" and model.alertCategory.alertCategoryId = :alertCategoryId");
+		    	queryStr.append(" and model.alertCategory.alertCategoryId = :alertCategoryId");
 			}else{
 				queryStr.append(" and (model.alertCategory.alertCategoryId  in ("+IConstants.FEEDBACK_ALERT_CATEGORY_ID+"))");	
 			}
@@ -9036,8 +9036,6 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		    }
 			if(type != null && type.equalsIgnoreCase("pendingFeedback")){
 				queryStr.append(" and model.alertFeedbackStatusId is null ");
-			}else if(type != null && type.equalsIgnoreCase("reopen")){
-				queryStr.append(" and model.alertFeedbackStatusId in (2,3)");
 			}
 			if(stateId != null && stateId.longValue() >= 0L){ 
 				if(stateId.longValue() == 1L){
@@ -9048,7 +9046,11 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 					queryStr.append(" and state.stateId in (1,36) ");
 				}
 			}
-			
+			if(level != null && level.trim().equalsIgnoreCase("state")){
+				queryStr.append(" and district.districtId is null ");
+			}else if(level != null && level.trim().equalsIgnoreCase("district")){
+				queryStr.append(" and district.districtId is not null ");
+			}
 		    Query query = getSession().createQuery(queryStr.toString());
 		
 			if(departmentId != null && departmentId.longValue() > 0L){
