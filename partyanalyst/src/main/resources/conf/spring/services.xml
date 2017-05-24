@@ -1786,7 +1786,7 @@
 			<ref bean="updateTrainingCampSpeakers" />
 			<!--<ref bean="cronTriggerForEveryDayJobEmployeeAttendance" />-->
 			<ref bean="cronTriggerForJobEmployeeAttendanceOnDept" />
-			<ref bean="mahanaduEventPdfReport" />
+			<!-- <ref bean="mahanaduEventPdfReport" /> -->
 			
 			<!--  <ref bean="insertTriggerForEveryDayChangeApptStatus" /> -->
 			
