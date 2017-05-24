@@ -1198,8 +1198,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			if(currentInCampusObjList != null && currentInCampusObjList.size() > 0){
 				for (Object[] objects : currentInCampusObjList) {
 					if((Long)objects[1]<=8){
-						vo.setEightam(vo.getEightam()+(Long)objects[0]);
-						vo.setNineam(vo.getEightam());
+						vo.setEightam(vo.getEightam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setNineam(vo.getEightam());
 						vo.setTenam(vo.getEightam());
 						vo.setElevenam(vo.getEightam());
 						vo.setTwelvpm(vo.getEightam());
@@ -1210,10 +1210,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo.setFivepm(vo.getEightam());
 						vo.setSixpm(vo.getEightam());
 						vo.setSevenpm(vo.getEightam());
-						vo.setEightpm(vo.getEightam());
+						vo.setEightpm(vo.getEightam());*/
 					}
 					if((Long)objects[1]==9){
-						vo.setNineam(vo.getEightam()+(Long)objects[0]);
+						vo.setNineam(vo.getNineam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setNineam(vo.getEightam()+(Long)objects[0]);
 						vo.setTenam(vo.getNineam());
 						vo.setElevenam(vo.getNineam());
 						vo.setTwelvpm(vo.getNineam());
@@ -1224,10 +1225,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo.setFivepm(vo.getNineam());
 						vo.setSixpm(vo.getNineam());
 						vo.setSevenpm(vo.getNineam());
-						vo.setEightpm(vo.getNineam());
+						vo.setEightpm(vo.getNineam());*/
 					}
 					if((Long)objects[1]==10){
-						vo.setTenam(vo.getNineam()+(Long)objects[0]);
+						vo.setTenam(vo.getTenam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setTenam(vo.getNineam()+(Long)objects[0]);
 						vo.setElevenam(vo.getTenam());
 						vo.setTwelvpm(vo.getTenam());
 						vo.setOnepm(vo.getTenam());
@@ -1237,10 +1239,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo.setFivepm(vo.getTenam());
 						vo.setSixpm(vo.getTenam());
 						vo.setSevenpm(vo.getTenam());
-						vo.setEightpm(vo.getTenam());
+						vo.setEightpm(vo.getTenam());*/
 					}
 					if((Long)objects[1]==11){
-						vo.setElevenam(vo.getTenam()+(Long)objects[0]);
+						vo.setElevenam(vo.getElevenam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setElevenam(vo.getTenam()+(Long)objects[0]);
 						vo.setTwelvpm(vo.getElevenam());
 						vo.setOnepm(vo.getElevenam());
 						vo.setTwopm(vo.getElevenam());
@@ -1249,10 +1252,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo.setFivepm(vo.getElevenam());
 						vo.setSixpm(vo.getElevenam());
 						vo.setSevenpm(vo.getElevenam());
-						vo.setEightpm(vo.getElevenam());
+						vo.setEightpm(vo.getElevenam());*/
 					}
 					if((Long)objects[1]==12){
-						vo.setTwelvpm(vo.getElevenam()+(Long)objects[0]);
+						vo.setTwelvpm(vo.getTwelvpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setTwelvpm(vo.getElevenam()+(Long)objects[0]);
 						vo.setOnepm(vo.getTwelvpm());
 						vo.setTwopm(vo.getTwelvpm());
 						vo.setThreepm(vo.getTwelvpm());
@@ -1260,59 +1264,67 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo.setFivepm(vo.getTwelvpm());
 						vo.setSixpm(vo.getTwelvpm());
 						vo.setSevenpm(vo.getTwelvpm());
-						vo.setEightpm(vo.getTwelvpm());
+						vo.setEightpm(vo.getTwelvpm());*/
 					}
 					if((Long)objects[1]==13){
-						vo.setOnepm(vo.getTwelvpm()+(Long)objects[0]);
+						vo.setOnepm(vo.getOnepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setOnepm(vo.getTwelvpm()+(Long)objects[0]);
 						vo.setTwopm(vo.getOnepm());
 						vo.setThreepm(vo.getOnepm());
 						vo.setFourpm(vo.getOnepm());
 						vo.setFivepm(vo.getOnepm());
 						vo.setSixpm(vo.getOnepm());
 						vo.setSevenpm(vo.getOnepm());
-						vo.setEightpm(vo.getOnepm());
+						vo.setEightpm(vo.getOnepm());*/
 					}
 					if((Long)objects[1]==14){
-						vo.setTwopm(vo.getOnepm()+(Long)objects[0]);
+						vo.setTwopm(vo.getTwopm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setTwopm(vo.getOnepm()+(Long)objects[0]);
 						vo.setThreepm(vo.getTwopm());
 						vo.setFourpm(vo.getTwopm());
 						vo.setFivepm(vo.getTwopm());
 						vo.setSixpm(vo.getTwopm());
 						vo.setSevenpm(vo.getTwopm());
-						vo.setEightpm(vo.getTwopm());
+						vo.setEightpm(vo.getTwopm());*/
 					}
 					if((Long)objects[1]==15){
-						vo.setThreepm(vo.getTwopm()+(Long)objects[0]);
+						vo.setThreepm(vo.getThreepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setThreepm(vo.getTwopm()+(Long)objects[0]);
 						vo.setFourpm(vo.getThreepm());
 						vo.setFivepm(vo.getThreepm());
 						vo.setSixpm(vo.getThreepm());
 						vo.setSevenpm(vo.getThreepm());
-						vo.setEightpm(vo.getThreepm());
+						vo.setEightpm(vo.getThreepm());*/
 					}
 					if((Long)objects[1]==16){
-						vo.setFourpm(vo.getThreepm()+(Long)objects[0]);
+						vo.setFourpm(vo.getFourpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setFourpm(vo.getThreepm()+(Long)objects[0]);
 						vo.setFivepm(vo.getFourpm());
 						vo.setSixpm(vo.getFourpm());
 						vo.setSevenpm(vo.getFourpm());
-						vo.setEightpm(vo.getFourpm());
+						vo.setEightpm(vo.getFourpm());*/
 					}
 					if((Long)objects[1]==17){
-						vo.setFivepm(vo.getFourpm()+(Long)objects[0]);
+						vo.setFivepm(vo.getFivepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setFivepm(vo.getFourpm()+(Long)objects[0]);
 						vo.setSixpm(vo.getFivepm());
 						vo.setSevenpm(vo.getFivepm());
-						vo.setEightpm(vo.getFivepm());
+						vo.setEightpm(vo.getFivepm());*/
 					}
 					if((Long)objects[1]==18){
-						vo.setSixpm(vo.getFivepm()+(Long)objects[0]);
+						vo.setSixpm(vo.getSixpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setSixpm(vo.getFivepm()+(Long)objects[0]);
 						vo.setSevenpm(vo.getSixpm());
-						vo.setEightpm(vo.getSixpm());
+						vo.setEightpm(vo.getSixpm());*/
 					}
 					if((Long)objects[1]==19){
-						vo.setSevenpm(vo.getSixpm()+(Long)objects[0]);
-						vo.setEightpm(vo.getSevenpm());
+						vo.setSevenpm(vo.getSevenpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo.setSevenpm(vo.getSixpm()+(Long)objects[0]);
+						vo.setEightpm(vo.getSevenpm());*/
 					}
 					if((Long)objects[1]>=20 && (Long)objects[1]<=24){
-						vo.setEightpm(vo.getSevenpm()+(Long)objects[0]);
+						vo.setEightpm(vo.getEightpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						//vo.setEightpm(vo.getSevenpm()+(Long)objects[0]);
 					}
 				}
 			}		
@@ -1325,7 +1337,8 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			if(totalCountsObjList != null && totalCountsObjList.size() > 0){
 				for (Object[] objects : totalCountsObjList) {
 					if((Long)objects[1]<=8){
-						vo1.setEightam(vo1.getEightam()+(Long)objects[0]);
+						vo1.setEightam(vo.getEightam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setEightam(vo1.getEightam()+(Long)objects[0]);
 						vo1.setNineam(vo1.getEightam());
 						vo1.setTenam(vo1.getEightam());
 						vo1.setElevenam(vo1.getEightam());
@@ -1337,10 +1350,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setFivepm(vo1.getEightam());
 						vo1.setSixpm(vo1.getEightam());
 						vo1.setSevenpm(vo1.getEightam());
-						vo1.setEightpm(vo1.getEightam());
+						vo1.setEightpm(vo1.getEightam());*/
 					}
 					if((Long)objects[1]==9){
-						vo1.setNineam(vo1.getEightam()+(Long)objects[0]);
+						vo1.setNineam(vo.getNineam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setNineam(vo1.getEightam()+(Long)objects[0]);
 						vo1.setTenam(vo1.getNineam());
 						vo1.setElevenam(vo1.getNineam());
 						vo1.setTwelvpm(vo1.getNineam());
@@ -1351,10 +1365,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setFivepm(vo1.getNineam());
 						vo1.setSixpm(vo1.getNineam());
 						vo1.setSevenpm(vo1.getNineam());
-						vo1.setEightpm(vo1.getNineam());
+						vo1.setEightpm(vo1.getNineam());*/
 					}
 					if((Long)objects[1]==10){
-						vo1.setTenam(vo1.getNineam()+(Long)objects[0]);
+						vo1.setTenam(vo.getTenam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setTenam(vo1.getNineam()+(Long)objects[0]);
 						vo1.setElevenam(vo1.getTenam());
 						vo1.setTwelvpm(vo1.getTenam());
 						vo1.setOnepm(vo1.getTenam());
@@ -1364,10 +1379,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setFivepm(vo1.getTenam());
 						vo1.setSixpm(vo1.getTenam());
 						vo1.setSevenpm(vo1.getTenam());
-						vo1.setEightpm(vo1.getTenam());
+						vo1.setEightpm(vo1.getTenam());*/
 					}
 					if((Long)objects[1]==11){
-						vo1.setElevenam(vo1.getTenam()+(Long)objects[0]);
+						vo1.setElevenam(vo.getElevenam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setElevenam(vo1.getTenam()+(Long)objects[0]);
 						vo1.setTwelvpm(vo1.getElevenam());
 						vo1.setOnepm(vo1.getElevenam());
 						vo1.setTwopm(vo1.getElevenam());
@@ -1376,10 +1392,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setFivepm(vo1.getElevenam());
 						vo1.setSixpm(vo1.getElevenam());
 						vo1.setSevenpm(vo1.getElevenam());
-						vo1.setEightpm(vo1.getElevenam());
+						vo1.setEightpm(vo1.getElevenam());*/
 					}
 					if((Long)objects[1]==12){
-						vo1.setTwelvpm(vo1.getElevenam()+(Long)objects[0]);
+						vo1.setTwelvpm(vo.getTwelvpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setTwelvpm(vo1.getElevenam()+(Long)objects[0]);
 						vo1.setOnepm(vo1.getTwelvpm());
 						vo1.setTwopm(vo1.getTwelvpm());
 						vo1.setThreepm(vo1.getTwelvpm());
@@ -1387,60 +1404,68 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setFivepm(vo1.getTwelvpm());
 						vo1.setSixpm(vo1.getTwelvpm());
 						vo1.setSevenpm(vo1.getTwelvpm());
-						vo1.setEightpm(vo1.getTwelvpm());
+						vo1.setEightpm(vo1.getTwelvpm());*/
 					}
 					if((Long)objects[1]==13){
-						vo1.setOnepm(vo1.getTwelvpm()+(Long)objects[0]);
+						vo1.setOnepm(vo.getOnepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setOnepm(vo1.getTwelvpm()+(Long)objects[0]);
 						vo1.setTwopm(vo1.getOnepm());
 						vo1.setThreepm(vo1.getOnepm());
 						vo1.setFourpm(vo1.getOnepm());
 						vo1.setFivepm(vo1.getOnepm());
 						vo1.setSixpm(vo1.getOnepm());
 						vo1.setSevenpm(vo1.getOnepm());
-						vo1.setEightpm(vo1.getOnepm());
+						vo1.setEightpm(vo1.getOnepm());*/
 					}
 					if((Long)objects[1]==14){
-						vo1.setTwopm(vo1.getOnepm()+(Long)objects[0]);
+						vo1.setTwopm(vo.getTwopm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setTwopm(vo1.getOnepm()+(Long)objects[0]);
 						vo1.setThreepm(vo1.getTwopm());
 						vo1.setFourpm(vo1.getTwopm());
 						vo1.setFivepm(vo1.getTwopm());
 						vo1.setSixpm(vo1.getTwopm());
 						vo1.setSevenpm(vo1.getTwopm());
-						vo1.setEightpm(vo1.getTwopm());
+						vo1.setEightpm(vo1.getTwopm());*/
 					}
 					if((Long)objects[1]==15){
-						vo1.setThreepm(vo1.getTwopm()+(Long)objects[0]);
+						vo1.setThreepm(vo.getThreepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setThreepm(vo1.getTwopm()+(Long)objects[0]);
 						vo1.setFourpm(vo1.getThreepm());
 						vo1.setFivepm(vo1.getThreepm());
 						vo1.setSixpm(vo1.getThreepm());
 						vo1.setSevenpm(vo1.getThreepm());
-						vo1.setEightpm(vo1.getThreepm());
+						vo1.setEightpm(vo1.getThreepm());*/
 					}
 					if((Long)objects[1]==16){
-						vo1.setFourpm(vo1.getThreepm()+(Long)objects[0]);
+						vo1.setFourpm(vo.getFourpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setFourpm(vo1.getThreepm()+(Long)objects[0]);
 						vo1.setFivepm(vo1.getFourpm());
 						vo1.setSixpm(vo1.getFourpm());
 						vo1.setSevenpm(vo1.getFourpm());
-						vo1.setEightpm(vo1.getFourpm());
+						vo1.setEightpm(vo1.getFourpm());*/
 					}
 					if((Long)objects[1]==17){
-						vo1.setFivepm(vo1.getFourpm()+(Long)objects[0]);
+						vo1.setFivepm(vo.getFivepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setFivepm(vo1.getFourpm()+(Long)objects[0]);
 						vo1.setSixpm(vo1.getFivepm());
 						vo1.setSevenpm(vo1.getFivepm());
-						vo1.setEightpm(vo1.getFivepm());
+						vo1.setEightpm(vo1.getFivepm());*/
 					}
 					if((Long)objects[1]==18){
-						vo1.setSixpm(vo1.getFivepm()+(Long)objects[0]);
+						vo1.setSixpm(vo.getSixpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setSixpm(vo1.getFivepm()+(Long)objects[0]);
 						vo1.setSevenpm(vo1.getSixpm());
-						vo1.setEightpm(vo1.getSixpm());
+						vo1.setEightpm(vo1.getSixpm());*/
 						
 					}
 					if((Long)objects[1]==19){
-						vo1.setSevenpm(vo1.getSixpm()+(Long)objects[0]);
-						vo1.setEightpm(vo1.getSevenpm());
+						vo1.setSevenpm(vo.getSevenpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						/*vo1.setSevenpm(vo1.getSixpm()+(Long)objects[0]);
+						vo1.setEightpm(vo1.getSevenpm());*/
 					}
 					if((Long)objects[1]>=20 && (Long)objects[1]<=24){
-						vo1.setEightpm(vo1.getSevenpm()+(Long)objects[0]);
+						vo1.setEightpm(vo.getEightpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						//vo1.setEightpm(vo1.getSevenpm()+(Long)objects[0]);
 					}
 					/*vo.setTotal((Long)objects[0]);
 					vo.setCadreCount(curentInCampusMap.get((Long)objects[3]) != null ? curentInCampusMap.get((Long)objects[3]) : 0l);
