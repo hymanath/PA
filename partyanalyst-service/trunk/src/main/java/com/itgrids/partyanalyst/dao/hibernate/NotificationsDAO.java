@@ -93,7 +93,7 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 	public List<Object[]> getAllNotifications() {
 		Query query = getSession().createQuery("select model.notificationTypeId.notificationTypeId, " +
 				" model.notification,model.insertedTime,model.userId,model.notificationType.notificationType "+
-				" from Notifications model where model.isActive='true' and model.insertedTime like date_format(now(), '%Y-%m-%d%') order by model.notificationsId desc");
+				" from Notifications model where model.isActive='true' and model.insertedTime like date_format(now(), '%Y-%m-%d%') order by model.insertedTime desc");
 		return query.list();
 	}
 
