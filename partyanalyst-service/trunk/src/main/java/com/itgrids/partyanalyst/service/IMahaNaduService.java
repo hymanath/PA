@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.CadreRegisterInfo;
 import com.itgrids.partyanalyst.dto.CadreVo;
@@ -60,5 +62,6 @@ public interface IMahaNaduService {
 	 public ResultStatus savingBloodDonateCandidateDetails(String name,String mobileNo,String memberShipId,String fromDateTimeStr);
 	 public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(String type,String attendedType);
 	 public String getYouTubeUrls();
+	 public Map<Long,Set<Long>> getTdpcadreIdsByEventIds(List<Long> eventIds);
 }
 

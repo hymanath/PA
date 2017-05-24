@@ -4470,5 +4470,25 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		  }
 		  return url;
 	  }  		
+	public Map<Long,Set<Long>> getTdpcadreIdsByEventIds(List<Long> eventIds){
+		Map<Long,Set<Long>> newCadreIdsMap = new HashMap<Long,Set<Long>>();
+		try{
+			LOG.info("entered into  mahanadu service of getTdpcadreIdsByEventIds");
+			List<Object[]> tdpcadreObjsList = eventInviteeDAO.getTdpCadreIdsByEventIds(eventIds);
+			if(tdpcadreObjsList != null && tdpcadreObjsList.size()>0){
+				for(Object[] param : tdpcadreObjsList){
+					Set<Long> cadreIdsSet = newCadreIdsMap.get(param[0]);
+					if(cadreIdsSet == null){
+						cadreIdsSet = new HashSet<Long>();
+						newCadreIdsMap.put((Long)param[0], cadreIdsSet);
+					}
+					cadreIdsSet.add(param[1] !=null ? (Long)param[0]:0l);	
+				}
+			}
+	}catch(Exception e){
+		LOG.error("Exception Occured into mahanadu service of getTdpcadreIdsByEventIds", e);
+	}
+	return newCadreIdsMap;
+}
 	
 }
