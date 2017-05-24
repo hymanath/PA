@@ -1363,4 +1363,15 @@ public List<Object[]> getLocationWiseEventInviteedCntBasedOnUserType(Long userAc
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getTdpCadreIdsByEventIds(List<Long> eventIds){
+		 Query query = getSession().createQuery(" select distinct model.eventId,model.tdpCadreId " +
+				                                " from EventInvitee model " +
+				                                " where model.eventId in (:eventIds) ");
+		
+		if(eventIds != null && !eventIds.isEmpty() && eventIds.size() > 0){
+			query.setParameterList("eventIds", eventIds);
+		}
+	     return query.list();
+	}	
 }
