@@ -19347,7 +19347,7 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				toDate = format.parse(inputVo.getEndDate().trim().toString());
 			}
 			
-			 List<Object[]> counstList = activityInfoDocumentDAO.getEventsDocumentsCountByLocationInbfo(inputVo,startDate,toDate,null,null);
+			List<Object[]> counstList = activityInfoDocumentDAO.getEventsDocumentsCountByLocationInbfo(inputVo,startDate,toDate,null,null);
 		Map<String , EventDocumentVO> datesMap = new LinkedHashMap<String, EventDocumentVO>();
 		Map<String,EventDocumentVO> documentsMap = new TreeMap<String, EventDocumentVO>();
 		if(commonMethodsUtilService.isListOrSetValid(counstList)){
@@ -22209,7 +22209,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 	 }
 	public CadreCommitteeVO getCadreDetailsForBothsCommittee(Long locationLevel,Long locationId, String searchName,String memberShipCardNo,
 			String voterCardNo, String trNumber, String mobileNo,Long casteStateId,String casteCategory,Long fromAge,Long toAge,String houseNo,String gender,int startIndex,int maxIndex,boolean isRemoved,Long enrollmentId,String searchType){
-	   CadreCommitteeVO committeevo = new CadreCommitteeVO();
+		CadreCommitteeVO committeevo = new CadreCommitteeVO();
 		try{
 			
 			Map<Long,CadreCommitteeVO> cadreMap = new LinkedHashMap<Long, CadreCommitteeVO>(0);
@@ -22222,12 +22222,13 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 				for (CadreCommitteeVO vo: committeevo.getPreviousRoles()){
 					tdpCadreId = vo.getTdpCadreId();
 					tdpCadreIds.add(tdpCadreId);
+					vo.setType("Not Added");
 					cadreMap.put(vo.getTdpCadreId(), vo);
 				}
 			}
-			List<Long> boothCadreIdList = boothInchargeDAO.getCadreIdsForLocation(tdpCadreIds);
-			if(tdpCadreIds != null && tdpCadreIds.size() > 0l){
-				for (Long long1 : tdpCadreIds) {
+			List<Object[]> boothCadreIdList = boothInchargeDAO.getCadreIdsForLocation(tdpCadreIds);
+			if(boothCadreIdList != null && boothCadreIdList.size() > 0l){
+				/*for (Long long1 : tdpCadreIds) {
 					CadreCommitteeVO vo = cadreMap.get(long1);
 					if(boothCadreIdList != null && boothCadreIdList.size() > 0l){
 						if(boothCadreIdList.contains(long1)){
@@ -22235,11 +22236,28 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 							}else{
 								vo.setType("Not Added");
 							}
+						
 						}
 						else{
 							vo.setType("Not Added");
 						}
+					}*/
+				for(Object[] Obj: boothCadreIdList){
+					CadreCommitteeVO vo = cadreMap.get(commonMethodsUtilService.getLongValueForObject(Obj[0]));
+						if(vo !=null){
+							 vo.setType("Added Member");
+							 vo.setBoothNumber(commonMethodsUtilService.getLongValueForObject(Obj[1]));
+							 vo.setPanchayat(commonMethodsUtilService.getStringValueForObject(Obj[2]));
+							 vo.setTehsilId(commonMethodsUtilService.getLongValueForObject(Obj[3]));
+							 vo.setLocalElectionId(commonMethodsUtilService.getLongValueForObject(Obj[5]));
+							 if(Obj[3] == null){
+								 vo.setLocalElectionBody(commonMethodsUtilService.getStringValueForObject(Obj[6]));	 
+							 }else{
+								 vo.setTehsil(commonMethodsUtilService.getStringValueForObject(Obj[4]));
+							 }
+						}
 					}
+
 				}
 			
 			

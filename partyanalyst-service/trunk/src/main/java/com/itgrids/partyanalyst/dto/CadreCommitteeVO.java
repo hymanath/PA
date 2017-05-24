@@ -50,7 +50,21 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String electionType;
 	private String electionYear;
 	private String enrollmentYears;
+	private Long tehsilId;
+	private Long LocalElectionId;
 	
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	public Long getLocalElectionId() {
+		return LocalElectionId;
+	}
+	public void setLocalElectionId(Long localElectionId) {
+		LocalElectionId = localElectionId;
+	}
 	private String committeeMemberStatus;
 	
 	public String getEnrollmentYears() {
@@ -94,8 +108,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private String reportPath;
 	private String reportDate;
 	private String year;
-	
-	
+	private Long boothNumber;
+
+	public Long getBoothNumber() {
+		return boothNumber;
+	}
+	public void setBoothNumber(Long boothNumber) {
+		this.boothNumber = boothNumber;
+	}
 	public String getYear() {
 		return year;
 	}
