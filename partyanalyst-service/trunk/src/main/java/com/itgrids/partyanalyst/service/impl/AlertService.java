@@ -13617,7 +13617,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}
 			return voList;
 		}
-		public List<AlertCoreDashBoardVO> getFeedbackAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String type){
+		public List<AlertCoreDashBoardVO> getFeedbackAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String type,String level){
 			try{
 				List<AlertCoreDashBoardVO> dtlsList = new ArrayList<AlertCoreDashBoardVO>();
 				Date fromDate = null;        
@@ -13629,11 +13629,9 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				}
 				List<Long> alertIds = null;
 				if(type != null && type.equalsIgnoreCase("feebbackAlert")){
-					alertIds = alertDAO.getFeedbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, null, null, locationId, statusId);
+					alertIds = alertDAO.getFeedbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, null, null, locationId, statusId,level);
 				}else if(type.equalsIgnoreCase("pendingFeedBack")){
-					alertIds = alertDAO.getFeedbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, new ArrayList<Long>(){{add(12l);}}, "pendingFeedback", locationId, null);
-				}else if(type.equalsIgnoreCase("reopen")){
-					alertIds = alertDAO.getFeedbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, new ArrayList<Long>(){{add(11l);}}, "reopen", locationId, null);
+					alertIds = alertDAO.getFeedbackAlertIds(fromDate, toDate, stateId, deptId, sourceId, new ArrayList<Long>(){{add(12l);}}, "pendingFeedback", locationId, null,level);
 				}
 				List<Object[]> altDtlsList = alertDAO.getAlertDtlsForGrievance(alertIds);
 				setAlertDtls(dtlsList,altDtlsList);
