@@ -4482,7 +4482,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						cadreIdsSet = new HashSet<Long>();
 						newCadreIdsMap.put((Long)param[0], cadreIdsSet);
 					}
-					cadreIdsSet.add(param[1] !=null ? (Long)param[0]:0l);	
+					cadreIdsSet.add(param[1] !=null ? (Long)param[1]:0l);	
 				}
 			}
 	}catch(Exception e){
