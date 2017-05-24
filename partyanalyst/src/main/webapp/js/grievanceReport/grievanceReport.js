@@ -177,8 +177,6 @@ $("#barGraph").html(spinner);
 		 "order": [[ 1, "asc" ]]  
 	 });  
 }
-
-//abcd
  
  function getAverageIssuePendingDays(){
 	var sourceId=$("#selectMediaId").val();
@@ -205,7 +203,7 @@ $("#barGraph").html(spinner);
     var jobj = {
 		deptIds :deptIds,
 		sourceIds:sourceIds,  
-		alertstatusIds:$("#statusId").val(),
+		alertstatusIds:$("#grievanceStatusId").val(),
 		fromDate : callCenterUserFDate,//2016-11-01
 		toDate:callCenterUserTDate//2017-05-01
     }
@@ -925,16 +923,17 @@ function onLoadInitialisations(){
 	}
 		function getFeedbackAlert(fromDate,toDate,deptId,sourceId,locationId,statusId,rangeType,type){
 				var jobj = {
-				  fromDate: fromDate,                       
-				  toDateStr:toDate,  
-				  deptId:deptId,
-				  sourceId:sourceId,                                      
-				  stateId:1,
-				  locationId:locationId,
-				  statusId : statusId,      
-				  rangeType:rangeType,
-                  type:type				  
-				  }
+					fromDate: fromDate,                       
+					toDateStr:toDate,  
+					deptId:deptId,
+					sourceId:sourceId,                                      
+					stateId:1,
+					locationId:locationId,
+					statusId : statusId,      
+					rangeType:rangeType,
+					type:type,
+					level:"district"
+				}
 				$.ajax({    
 				  type : "POST",
 				  url  : "getFeedbackAlertAction.action",  
@@ -1091,16 +1090,17 @@ function onLoadInitialisations(){
 				type="feebbackAlert";
 			}
 			var jobj = {
-			  fromDate: callCenterUserFDate,                       
-			  toDateStr:callCenterUserTDate,  
-			  deptId:deptId,
-			  sourceId:sourceId,                                      
-			  stateId:1,
-			  locationId:0,
-			  statusId : statusId,      
-			  rangeType:"day",
-			  type:type          
-			  }
+				fromDate:callCenterUserFDate,                       
+				toDateStr:callCenterUserTDate,  
+				deptId:deptId,
+				sourceId:sourceId,                                      
+				stateId:1,
+				locationId:0,
+				statusId : statusId,      
+				rangeType:"day",
+				type:type,
+				level:"overall"
+			}
 			$.ajax({    
 			  type : "POST",
 			  url  : "getFeedbackAlertAction.action",  
@@ -1169,6 +1169,43 @@ function onLoadInitialisations(){
 					
 				}
 			}); 
+		});
+		$(document).on("click",".getAlertDtlsForFeedbackOnStateLevel",function(){
+			$("#grivenaceModalHeedingId").html("");    
+			$("#grievanceDtlsModalId").modal("show"); 
+			$("#removeClassModal").removeClass("closeSecondModal")	
+			$("#grevinceDetailsId").html(spinner);
+			var sourceId=$("#selectMediaId").val();
+			var statusId=$(this).attr("attr_status_id");
+			var deptId=$("#selecDepartmentId").val();
+			var rangeType=$("#dateRangeId").attr("value");
+			var type = '';
+			if(statusId == 4){
+				type="pendingFeedBack";
+			}else{
+				type="feebbackAlert";
+			}
+			var jobj = {
+				fromDate:callCenterUserFDate,                       
+				toDateStr:callCenterUserTDate,  
+				deptId:deptId,
+				sourceId:sourceId,                                      
+				stateId:1,
+				locationId:0,
+				statusId : statusId,      
+				rangeType:"day",
+				type:type,
+				level:"state"          
+			}
+			$.ajax({    
+			  type : "POST",
+			  url  : "getFeedbackAlertAction.action",  
+			  dataType: 'json',
+			  data: {task:JSON.stringify(jobj)},
+			}).done(function(result){
+				$("#grevinceDetailsId").html('');
+				  buildGrivenceDetailsTableOld(result);
+			});
 		});
 }
 //swadhin   
@@ -2149,19 +2186,20 @@ function getDistIdAndNameList(){
 			$('#selectDistrictId').trigger("chosen:updated");
 			
 	}); 
-} 
-//abcd
+}
 	
 function getCadreGreivienceEfficiency(sliderVal){
 	$("#totalHeadingRangeCount").html('');
 	getAverageIssuePendingDays();
 	$("#efficiencyId").html(spinner);
+	$("#efficiencyRangeId").html(spinner);
     var alertstatusIds = [];
 	var deptIds=[];
 	var sourceIds =[];
 	
 	var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
+	var alertStatus = $("#grievanceStatusId").val();
 	deptIds.push(deptId);  
 	if(sourceId==0){
 		sourceIds.push(5);       
@@ -2181,7 +2219,7 @@ function getCadreGreivienceEfficiency(sliderVal){
 		deptIds :deptIds,
 		sourceIds:sourceIds,
 		rangeValue:sliderVal,         
-		alertstatusIds:$("#statusId").val(),
+		alertstatusIds:alertStatus,
 		fromDate: callCenterUserFDate,                           
 		toDateStr:callCenterUserTDate, 
     }
@@ -2192,6 +2230,7 @@ function getCadreGreivienceEfficiency(sliderVal){
       data: {task:JSON.stringify(jobj)},
     }).done(function(result){
 		$("#efficiencyId").html('');
+		$("#efficiencyRangeId").html('');
       if(result!=null){
 		  if(result[0] !=null){
 			  $("#totalHeadingRangeCount").html(result[0].ttlAlrtss);
@@ -2202,7 +2241,7 @@ function getCadreGreivienceEfficiency(sliderVal){
 				var str = "";
 				var str1 = "";
 				str+='<div class="col-sm-12">';
-				str+='<ul class="list-inline slickSlider">';
+				str+='<ul class="list-inline slickSliderDayWise">';
 					for(var  i in result)
 					{
 						str+='<li class="col-sm-2">';
@@ -2246,7 +2285,7 @@ function getCadreGreivienceEfficiency(sliderVal){
 			}
 			
 			$("#efficiencyId").html(str);
-			$('.slickSlider').slick({
+			$('.slickSliderDayWise').slick({
 						slide: 'li',
 						slidesToShow: 6,
 						slidesToScroll: 3,
@@ -2283,7 +2322,7 @@ function getStatusWiseFeebbackAlertDtls(statusId,type){
         var deptId=$("#selecDepartmentId").val();
         var rangeType=$("#dateRangeId").attr("value");
         
-        var jobj = {
+		var jobj = {
           fromDate: callCenterUserFDate,                       
           toDateStr:callCenterUserTDate,  
           deptId:deptId,
@@ -2292,8 +2331,9 @@ function getStatusWiseFeebbackAlertDtls(statusId,type){
           locationId:0,
           statusId : statusId,      
           rangeType:rangeType,
-          type:type          
-          }
+          type:type,
+		  level:"overall"
+		}
         $.ajax({    
           type : "POST",
           url  : "getFeedbackAlertAction.action",  
@@ -2344,6 +2384,7 @@ function getStatusWiseFeebbackAlertDtls(statusId,type){
 			}
         });
     }
+	//abcd
 	function buildStateLevelAlertDetails(result){
 		var str='';
         str+='<table id="stateLevelGrievanceReportTableId" class="table table-bordered " cellspacing="0">';
@@ -2369,7 +2410,6 @@ function getStatusWiseFeebbackAlertDtls(statusId,type){
 		str+='<tr>';
 			str+='<td style="cursor:pointer;" class="getAlertDtlsStateLvlCls" attr_status_id="0">'+stateTotal+'</td>';  
 		for(var j in result.subList1){
-			
 			if(result.subList1[j].alertCnt != 0){
 				str+='<td style="cursor:pointer;" class="getAlertDtlsStateLvlCls" attr_status_id="'+result.subList1[j].id+'">'+result.subList1[j].alertCnt+'</td>';
 			}else{
@@ -2378,7 +2418,7 @@ function getStatusWiseFeebbackAlertDtls(statusId,type){
 		}
 		for(var j in result.subList2){
 			if(result.subList2[j].alertCnt != 0){
-				str+='<td>'+result.subList2[j].alertCnt+'</td>';
+				str+='<td style="cursor:pointer;" class="getAlertDtlsForFeedbackOnStateLevel" attr_status_id="'+result.subList2[j].id+'">'+result.subList2[j].alertCnt+'</td>';
 			}else{
 				str+='<td>-</td>';
 			}      
