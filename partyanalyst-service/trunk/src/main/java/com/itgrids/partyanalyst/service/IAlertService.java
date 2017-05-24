@@ -158,7 +158,7 @@ public interface IAlertService {
     public List<AlertsSummeryVO> getAlertEfficiencyList2(List<Long> departmentIds,List<Long> sourceIds,List<Long> alertstatusIds
 			,String startDate,String endDate,int rangeValue);
     public List<IdNameVO> getAllCategoryForLocationWiseGrievance();
-    public List<AlertCoreDashBoardVO> getFeedbackAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String type);
+    public List<AlertCoreDashBoardVO> getFeedbackAlertDetails(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String type,String level);
     public List<AlertCoreDashBoardVO> getLocationWiseFeebBackAlert(String fromDateStr,String toDateStr,Long stateId,Long deptId,Long sourceId,Long locationId,Long statusId,String areaType,String groupType,String type);
     public AlertOverviewVO getStateLevelAlertDetails(String fromDateStr, String toDateStr,Long stateId,Long departmentId,Long sourceId,String level);
     public List<AlertCoreDashBoardVO> getReopenCountDtls(String fromDateStr,String toDateStr, Long stateId, Long departmentId,Long sourceId, String groupType,Long reopenType, Long locationId);
