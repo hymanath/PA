@@ -67,6 +67,7 @@ import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
@@ -10066,7 +10067,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		LOG.error("Error occured getSearchAlertsDtls() method of AlertManagementSystemService{}");
 	}
 	return returnAlertId;
-}
+	} 
 	public List<AlertCoreDashBoardVO> getOfficerLocationWiseDepartmentOverviewAlertCount(String fromDateStr, String toDateStr, Long stateId, 
 			List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
 			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
@@ -10119,6 +10120,13 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			List<Object[]> feedbackList = null;
 			List<Object[]> feedbackListForPending = null;
 			List<Object[]> notSatisfiedList = null;
+			/*Thread T1 = new Thread(){
+				public void run(){
+					String myName = alertAssignedOfficerNewDAO.getData();
+					System.out.println(myName);
+				}
+			};
+			T1.start();*/
 			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
 				if(group != null && !group.trim().isEmpty() && group.trim().equalsIgnoreCase("status") ){
 					if(alertType != null && alertType.equalsIgnoreCase("alert")){
@@ -10971,6 +10979,113 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			LOG.error("Error occured changeCNPDepartment() method of AlertManagementSystemService{}");
 		}
 		return status;
+	}
+	public List<AlertsSummeryVO> getCadreGreivienceEfficiency(String fromDateStr, String toDateStr, Long stateId, 
+			List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+			Long parentGovtDepartmentScopeId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> sublevels,Long source,List<Long> statusIdList,int rangeValue){
+		try{
+			List<AlertsSummeryVO> finalList = new ArrayList<AlertsSummeryVO>();
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			//prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList);//Prepare Parameter
+
+			List<Long> levelValues = new ArrayList<Long>();    
+			Long levelId = 0L;
+			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+				for(Object[] param : lvlValueAndLvlIdList){
+					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				}
+			}
+
+			List<Object[]> childDeptScopeIdList = govtDepartmentScopeLevelDAO.getChildDeptScopeIdList(govtDepartmentId,parentGovtDepartmentScopeId);
+			List<Long> deptScopeIdList = new ArrayList<Long>();
+			if(childDeptScopeIdList != null && childDeptScopeIdList.size() > 0){
+				for(Object [] param : childDeptScopeIdList){
+					deptScopeIdList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			if(sublevels != null && sublevels.size() > 0){//In the case of filter data scope wise we are sending selected values
+				deptScopeIdList.clear();
+				deptScopeIdList.addAll(sublevels);
+			}
+			
+			List<Object[]> totalAlertsDateWise = null;
+			
+			if(deptScopeIdList != null && deptScopeIdList.size() > 0){
+				totalAlertsDateWise = alertAssignedOfficerNewDAO.getDifferenceTimeList(fromDate,toDate,stateId,electronicIdList,printIdList,levelId,levelValues,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeIdList,calCntrIdList,socialMediaTypeIds,source,statusIdList);
+			}
+			Long ttlAlts = 0L;
+			if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
+				ttlAlts = Long.valueOf(totalAlertsDateWise.size());
+			}
+			
+			//create a map for date and count
+			Map<Long,Long> noOfDayAndCountMap = new HashMap<Long,Long>();
+			if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
+				for(Object[] param : totalAlertsDateWise){
+					noOfDayAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), (commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[3])))+1L));
+				}
+			}
+			List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);
+			Long maxDays = Collections.max(noOfDayAndCountMap.keySet());
+			int maxVal = Integer.parseInt(maxDays.toString());
+			
+			AlertsSummeryVO alertVO = null;
+			if(dayList != null && dayList.size() > 0 && totalAlertsDateWise != null && totalAlertsDateWise.size() > 0){
+				int order = rangeValue;
+				int loopCount = maxVal/rangeValue;
+				if(maxVal%rangeValue > 0){
+					loopCount+=1;
+				}
+				if(maxVal == 0){
+					loopCount = 1;
+				}
+				int cnt = 0;
+				for(int i = 1 ; i <= loopCount ; i++){
+					alertVO = new AlertsSummeryVO();
+					if(dayList.size() <= rangeValue){
+						alertVO.setName("<="+dayList.size()+" Days");
+					}else{
+						alertVO.setName("<= "+order+" Days");
+					}
+					alertVO.setRange(cnt+"-"+order);
+					for(int k=cnt ; k<=order ; k++){
+						alertVO.setRangeCount(alertVO.getRangeCount()+commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(Long.valueOf(k))));
+					}
+					if(cnt == 0){
+						cnt++;
+					}
+					cnt+=rangeValue;
+					
+					alertVO.setTtlAlrtss(commonMethodsUtilService.getLongValueForObject(ttlAlts));
+					for(int j=0 ; j<=order ; j++){
+						alertVO.setEffcncyAlerts(alertVO.getEffcncyAlerts()+commonMethodsUtilService.getLongValueForObject(noOfDayAndCountMap.get(Long.valueOf(j))));
+					}
+					finalList.add(alertVO); 
+					order+=rangeValue;
+				}
+			}
+			if(finalList != null && finalList.size() > 0){
+				for(AlertsSummeryVO param : finalList){
+					String percentage = "0.0";
+					if(totalAlertsDateWise != null && totalAlertsDateWise.size() > 0)
+						percentage = (new BigDecimal(param.getEffcncyAlerts()*(100.0)/ttlAlts)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+						param.setEffcncyPrcnt(commonMethodsUtilService.getStringValueForObject(percentage));
+				}
+			}
+			return finalList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamicNew() method of AlertManagementSystemService",e);
+		}
+		return null;
 	}
 	
 }
