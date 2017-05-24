@@ -104,7 +104,7 @@
 								<div class="col-md-4 col-md-offset-3">
 								<label>NOTIFICATION TEXT:</label>
 								<textarea type="text"  name="name"  class="form-control" id="addNotificationTextId"
- 										placeholder="Please Enter Notification Text"></textarea>								
+ 									 maxlength="150" placeholder="Please Enter Notification Text"></textarea>								
  									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
 								<div class="col-md-4 col-md-offset-3 urlLinkDivCls" style="display:none;">
@@ -318,9 +318,10 @@ $("#pushNotificationCodeId,#ntfctnTypeTextSuccessId,#notificationSuccessId,#upda
 		$("#notificationTypeId").trigger("chosen:updated");
 		$("#addNotificationTextId").val('');
 		$("#addYoutubeUrlId").val('');
+		getAllNotificationsByuser();
 		setTimeout(function(){ 
 			$( "#notificationSuccessId" ).fadeOut( "slow" );
-		}, 2000);
+		}, 5000);
 	}else{
 		$("#notificationSuccessId").html("Please Try again...");
 	}
