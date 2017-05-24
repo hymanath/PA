@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
@@ -90,7 +91,17 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdAndNameVO> alertSeverityList;
 	private List<IdAndNameVO> alertStatusList;
 	private List<IdAndNameVO> govtAlertSubTaksStatusList;
+	private List<AlertsSummeryVO> alertsSummeryVOList;
 	
+	
+	public List<AlertsSummeryVO> getAlertsSummeryVOList() {
+		return alertsSummeryVOList;
+	}
+
+	public void setAlertsSummeryVOList(List<AlertsSummeryVO> alertsSummeryVOList) {
+		this.alertsSummeryVOList = alertsSummeryVOList;
+	}
+
 	public List<IdNameVO> getIdNameVOList() {
 		return idNameVOList;
 	}
@@ -4630,4 +4641,47 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getCadreGreivienceEfficiency(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDateStr");
+			String toDateStr = jObj.getString("toDateStr");
+			Long stateId = jObj.getLong("stateId");
+			
+			JSONArray printIdArr = null;
+			JSONArray electronicIdArr = null;
+			
+			List<Long> printIdList = new ArrayList<Long>(0);
+			List<Long> electronicIdList = new ArrayList<Long>();
+			
+			Long govtDepartmentId = jObj.getLong("govtDepartmentId");
+			Long parentGovtDepartmentScopeId = jObj.getLong("parentGovtDepartmentScopeId");
+			
+			JSONArray subLevelsArr = jObj.getJSONArray("subLevels");  
+			List<Long> sublevels = new ArrayList<Long>();
+			if(subLevelsArr != null && subLevelsArr.length() > 0){
+				for (int i = 0; i < subLevelsArr.length(); i++){
+					sublevels.add(Long.parseLong(subLevelsArr.getString(i)));          
+				}  
+			}
+			JSONArray alertstatusIdsArr = jObj.getJSONArray("alertstatusIds");
+			List<Long> alertstatusIds = new ArrayList<Long>();
+			for (int i = 0; i < alertstatusIdsArr.length(); i++) {
+				alertstatusIds.add(Long.parseLong(alertstatusIdsArr.getString(i)));
+			}
+			Long sourceId = jObj.getLong("source");
+			int rangeValue = jObj.getInt("rangeValue");
+			alertsSummeryVOList = alertManagementSystemService.getCadreGreivienceEfficiency(fromDateStr,toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,null,null,sublevels,sourceId,alertstatusIds,rangeValue);
+	        
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverview() method, Exception - ",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
 }
