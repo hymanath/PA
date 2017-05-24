@@ -3991,4 +3991,16 @@
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
 
+	<bean id="mondayGrievanceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MondayGrievanceTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="janmabhoomiTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.JanmabhoomiTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="specialGrievanceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SpecialGrievanceTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="generalGrievanceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GeneralGrievanceTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		

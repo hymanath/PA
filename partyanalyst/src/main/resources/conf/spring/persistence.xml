@@ -1264,6 +1264,11 @@
 		      		   <value>com.itgrids.partyanalyst.model.BoothInchargeHistory</value>
 		      		   <value>com.itgrids.partyanalyst.model.AlertCallCenterType</value>
 		      		   
+		      		   <value>com.itgrids.partyanalyst.model.MondayGrievanceType</value>
+		      		   <value>com.itgrids.partyanalyst.model.JanmabhoomiType</value>
+		      		   <value>com.itgrids.partyanalyst.model.SpecialGrievanceType</value>
+		      		   <value>com.itgrids.partyanalyst.model.GeneralGrievanceType</value>
+		      		   
 				  </list>
 			
 		</property>
