@@ -33,6 +33,7 @@ public class AlertVO {
 	private String panchayat;
 	private String hamlet;
 	private String ward;
+	private Long alertCallerId;
 	
 	private List<IdNameVO> idNamesList = new ArrayList<IdNameVO>(0);
 	private List<IdNameVO> assignList = new ArrayList<IdNameVO>(0);
@@ -539,6 +540,12 @@ public class AlertVO {
 	}
 	public void setVerifyStatus(String verifyStatus) {
 		this.verifyStatus = verifyStatus;
+	}
+	public Long getAlertCallerId() {
+		return alertCallerId;
+	}
+	public void setAlertCallerId(Long alertCallerId) {
+		this.alertCallerId = alertCallerId;
 	}
 	
 	

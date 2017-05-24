@@ -155,17 +155,21 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     					" , model.insertedTime " +//12
     					" , model.updatedBy " +//13
     					" , model.alert.govtDepartment.govtDepartmentId " +//14
-    					" , model.alert.govtDepartment.departmentName " +//15
+    					" , model.alert.govtDepartment.departmentName" +
+    					" ,alertFeedbackStatus.alertFeedbackStatusId " +
+    					",alertFeedbackStatus.status  " +//15
     					" from AlertAssignedOfficerTrackingNew model " +
     					" left outer join model.alertDepartmentComment alertDepartmentComment " +
     					" left outer join model.alertStatus alertStatus " +
     					" left outer join model.alertDepartmentDocument alertDepartmentDocument " +
-    					" left outer join model.alertSeviority alertSeviority , " +
+    					" left outer join model.alertSeviority alertSeviority " +
+    					" left outer join model.alert.alertFeedbackStatus alertFeedbackStatus, " +
     					" GovtAlertActionType govtAlertActionType " +
     					" where " +
     					" govtAlertActionType.govtAlertActionTypeId = model.govtAlertActionType.govtAlertActionTypeId " +
     					" and model.alert.alertId = :alertId " +
-    					" and model.alert.isDeleted = 'N' " +
+    					" and model.alert.isDeleted = 'N'" +
+    					" and alertFeedbackStatus.isDeleted = 'N' " +
     					" order by model.insertedTime ");
     	Query query = getSession().createQuery(queryStr.toString());
     	query.setParameter("alertId",alertId);

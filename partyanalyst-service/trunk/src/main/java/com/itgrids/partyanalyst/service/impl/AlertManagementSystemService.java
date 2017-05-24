@@ -40,7 +40,6 @@ import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
-import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.IEditionsDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
@@ -62,7 +61,6 @@ import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AlertAssignedOfficerDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
@@ -9669,12 +9667,13 @@ public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId, String task
 						alertTrackingVO.setActionType(commonMethodsUtilService.getStringValueForObject(param[2]));
 						alertTrackingVO.setTrackingDate(commonMethodsUtilService.getStringValueForObject(param[12]).trim().substring(0, 10));
 						alertTrackingVO.setTrackingTime(sdf1.format(sdf.parse(commonMethodsUtilService.getStringValueForObject(param[12]).trim().substring(11, 19))));
-						alertTrackingVO.setComment(commonMethodsUtilService.getStringValueForObject(param[4]));  
+						alertTrackingVO.setComment(commonMethodsUtilService.getStringValueForObject(param[4]));//  
 						alertTrackingVO.setDocument(commonMethodsUtilService.getStringValueForObject(param[6]));
 						alertTrackingVO.setDueDate(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertTrackingVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[9]));
 						alertTrackingVO.setSeverty(commonMethodsUtilService.getStringValueForObject(param[11]));
-						
+						alertTrackingVO.setAlertFeedbackStatusId(commonMethodsUtilService.getLongValueForObject(param[16]));
+						alertTrackingVO.setAlertFeedbackStatus(commonMethodsUtilService.getStringValueForObject(param[17]));
 						
 						alertTrackingVO.setPosition(userIdAndStatusMap.get(commonMethodsUtilService.getLongValueForObject(param[13])));
 						

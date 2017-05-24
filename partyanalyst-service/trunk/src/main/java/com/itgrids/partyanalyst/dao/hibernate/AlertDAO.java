@@ -8,7 +8,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
-import org.hibernate.Session;
 
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dto.AlertInputVO;
@@ -6467,6 +6466,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
     	 			" model.alertCaller.callerName," +
     	 			" model.alertCaller.address," +
     	 			" model.alertCaller.mobileNo, model.alert.title,model.alert.description , date(model.alert.createdTime)" +
+    	 			",model.alertCaller.alertCallerId " +
     	 			" from AlertCallerRelation model   " );
     	 			//"model.isDeleted = 'N' ");
     	 	if(alertId != null && alertId.longValue() >0l)
@@ -10028,5 +10028,12 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 			return query.list(); 
 		}
+	 	public Alert getModal(Long alertId){
+	 		Query query = getSession().createQuery( " select modal from Alert modal where modal.alertId=:alertId and modal.isDeleted='N'   ");
+	 		if(alertId != null && alertId.longValue() > 0L){
+				query.setParameter("alertId",alertId);
+			}
+	 		return (Alert)query.uniqueResult();
+	 		
+	 	}
 }
-
