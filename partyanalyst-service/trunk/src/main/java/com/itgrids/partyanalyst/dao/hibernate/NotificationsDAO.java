@@ -89,7 +89,6 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 		return (Long) query.uniqueResult();
 	}
 
-	@Override
 	public List<Object[]> getAllNotifications() {
 		Query query = getSession().createQuery("select model.notificationTypeId.notificationTypeId, " +
 				" model.notification,model.insertedTime,model.userId,model.notificationType.notificationType "+
@@ -97,7 +96,6 @@ public class NotificationsDAO extends GenericDaoHibernate<Notifications,Long> im
 		return query.list();
 	}
 
-	@Override
 	public List<Object[]> getAllNotificationsbyUser(Long userId) {
 		Query query = getSession().createQuery("select count(model.notificationTypeId.notificationTypeId),model.notificationTypeId.notificationTypeId,model.notificationType.notificationType "+
 				" from Notifications model where model.isActive='true' and model.userId= :userId" +

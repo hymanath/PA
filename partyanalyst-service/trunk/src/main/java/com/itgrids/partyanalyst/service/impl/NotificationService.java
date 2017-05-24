@@ -496,7 +496,6 @@ public class NotificationService implements INotificationService{
 		 return finalVo;
 	  }
 
-	@Override
 	public List<NotificationDeviceVO> getAllNotifications() {
 		try{
 			Date currentDate = Calendar.getInstance().getTime();
@@ -522,7 +521,6 @@ public class NotificationService implements INotificationService{
 		}
 	}
 
-	@Override
 	public List<NotificationDeviceVO> getAllNotificationsByuser(Long userId) {
 		try{
 			List<Object[]> objList = notificationsDAO.getAllNotificationsbyUser(userId);
