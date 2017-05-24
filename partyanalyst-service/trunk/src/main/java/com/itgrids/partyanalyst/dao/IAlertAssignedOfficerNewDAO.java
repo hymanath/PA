@@ -113,4 +113,7 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
      		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue, String reopen,Long source,Long statusId);
     public List<Object[]> getDataAvailableAlertStatus();
+    public List<Object[]> getDifferenceTimeList(Date fromDate,Date toDate,
+     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
+     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> socialMediaTypeIds,Long source,List<Long> alertStatusIds);
 }
