@@ -23,12 +23,14 @@
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
 <link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/grievanceReport.css" type="text/css"/>
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
-<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
-<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+
+
 <style>
 .dateColorCls{
 	background-color:#FFCF2D;
@@ -128,14 +130,12 @@
 				</div>
 				<div class="col-md-1">  
 					<div style="padding-top: 80px">
-						<h4 class="text-center issue-title total" style="letter-spacing: 14px;">TOTAL</h4>
-						<h1 style="font-size: 4em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
+						<h4 class="text-center issue-title total" style="letter-spacing: 10px;">TOTAL</h4>
+						<h1 style="font-size: 3em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
 					</div>
 				</div>
 			</div>
 		</div>
-    
-
        <section class="container m_top20">
 	   <div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12">
@@ -156,7 +156,7 @@
 						<div class="row">
 							<div class="col-md-3 col-xs-12 col-sm-4" style="width: auto;">
 								<label>Select Status</label>
-								<select class="chosenSelect grievanceEffOnchange" multiple id="statusId">
+								<select class="chosenSelect grievanceEffOnchange" multiple id="grievanceStatusId">
 									<option value="1">Pending</option>
 									<option value="2">Notified</option>
 									<option value="3">Action In Progess</option>
@@ -371,13 +371,14 @@
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="js/grievanceReport/grievanceReport.js" type="text/javascript"></script>
+<script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
-<script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>    
-<script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
+<script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
+<script src="js/grievanceReport/grievanceReport.js" type="text/javascript"></script>    
+
 <!-- Custom Script Files Data End-->
 <script type="text/javascript">
 google.load("elements", "1", {

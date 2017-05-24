@@ -3119,8 +3119,8 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			Long locationId=jObj.getLong("locationId");
 			Long statusId=jObj.getLong("statusId");
 			String type = jObj.getString("type");
-			
-			alertCoreDashBoardVOs = alertService.getFeedbackAlertDetails(fromDate,toDateStr,stateId,deptId,sourceId,locationId,statusId,type);
+			String level = jObj.getString("level");
+			alertCoreDashBoardVOs = alertService.getFeedbackAlertDetails(fromDate,toDateStr,stateId,deptId,sourceId,locationId,statusId,type,level);
 		}catch(Exception e){
 			LOG.error("Excpetion raised at getFeedbackAlert Method",e);
 		}
