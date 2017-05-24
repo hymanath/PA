@@ -3637,6 +3637,8 @@
 		<property name="alertGovtOfficerSmsDetailsDAO" ref="alertGovtOfficerSmsDetailsDAO"></property>
 		<property name="regionScopesDAO" ref="regionScopesDAO"></property>
 		<property name="alertCallerRelationDAO" ref="alertCallerRelationDAO"></property>
+		<property name="alertDepartmentCommentDAO" ref="alertDepartmentCommentDAO"></property>
+        <property name="alertDepartmentCommentNewDAO" ref="alertDepartmentCommentNewDAO"></property>		
 	</bean>            
 	<!-- Debate End -->
 	
