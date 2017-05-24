@@ -1364,7 +1364,7 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 			sbM.append(" where ");
 		}
 		if(inviteeType.equalsIgnoreCase("invitee")){
-			sbM.append(" from EventAttendee model,EventInvitee model1,TdpCadreEnrollmentYear ");
+			sbM.append(" from EventAttendee model,EventInvitee model1 ");
 			if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 				sbM.append(",TdpCadreEnrollmentYear cadreEnrollYear ");
 			}
