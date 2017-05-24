@@ -1675,7 +1675,7 @@ function saveAlertStatusDetails()
 			$("#statusErrMsgId").html("Please Select Anyone ");
 			return;
 		}
-				
+		
 		var jObj = {
 			alertId : alertId,
 			comment : comment,
@@ -2204,7 +2204,11 @@ $("#buildUpdateDivId").html(str);
 			}else{
 				str+='<td>-</td>';
 			}
-			str+='<td><input type="radio" name="modalRadio" class="modalRadioCls" attr_btn_divId="modalSubmitId'+i+'"/>';	
+			if(result[i].status != null && result[i].status == "Closed" || result[i].status == "Completed"){
+				str+='<td><input type="radio" disabled name="modalRadio" class="modalRadioCls" attr_btn_divId="modalSubmitId'+i+'"/>';
+			}else{
+				str+='<td><input type="radio" name="modalRadio" class="modalRadioCls" attr_btn_divId="modalSubmitId'+i+'"/>';
+			}			
 				str+='<button class="btn btn-success btn-sm modalBtnCls" id="modalSubmitId'+i+'" attr_loading_img="modalLoadingImgId'+i+'" attr_alert_id='+result[i].alertId+' style="display:none;margin-left:5px;">Duplicate</button><img id="modalLoadingImgId'+i+'" style="width:50px;height:50px;display:none;"  src="./images/Loading-data.gif" alt="Processing Image"/>';
 			str+='</td>';
 		str+='</tr>';
