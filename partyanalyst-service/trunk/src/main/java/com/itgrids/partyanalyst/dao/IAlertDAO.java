@@ -170,4 +170,8 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getDateWiseReopenAlertDtls(Date fromDate, Date toDate, Long stateId, Long departmentId,Long alertCategoryId,String reopenType,Long locationId);
 	public List<Long> getReopenCountDtls(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String groupType,Long reopenType, Long locationId);
 	public List<Long> getTotalAlertGroupByStatusForStateLvlGrievancePage(Date fromDate, Date toDate, Long stateId,Long sourceId,Long deptId,Long statusId,String level);
+	//public List<Object[]> getTotalAlertGroupByStatusForGrievancePage(Date fromDate, Date toDate, Long stateId,Long sourceId,Long deptId);
+	//public List<Object[]> getStateLevalfeedbackAlertCnt(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId,String type,List<Long> statusIds);
+	public Alert getModal(Long alertId);
+	
 }

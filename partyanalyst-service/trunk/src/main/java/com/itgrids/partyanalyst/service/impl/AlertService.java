@@ -50,6 +50,8 @@ import com.itgrids.partyanalyst.dao.IAlertClarificationStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentAssigneeDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentDAO;
+import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertFeedbackStatusDAO;
@@ -148,6 +150,7 @@ import com.itgrids.partyanalyst.model.AlertClarificationComments;
 import com.itgrids.partyanalyst.model.AlertClarificationStatus;
 import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertCommentAssignee;
+import com.itgrids.partyanalyst.model.AlertDepartmentCommentNew;
 import com.itgrids.partyanalyst.model.AlertDocument;
 import com.itgrids.partyanalyst.model.AlertFeedbackStatus;
 import com.itgrids.partyanalyst.model.AlertGovtOfficerSmsDetails;
@@ -269,8 +272,8 @@ private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 private IAlertGovtOfficerSmsDetailsDAO alertGovtOfficerSmsDetailsDAO;
 private IAlertCallerRelationDAO alertCallerRelationDAO;
-
-
+private IAlertDepartmentCommentDAO alertDepartmentCommentDAO;  
+private IAlertDepartmentCommentNewDAO alertDepartmentCommentNewDAO;
 public IAlertCallerRelationDAO getAlertCallerRelationDAO() {
 	return alertCallerRelationDAO;
 }
@@ -854,6 +857,23 @@ public IRegionScopesDAO getRegionScopesDAO() {
 }
 public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
 	this.regionScopesDAO = regionScopesDAO;
+}
+public IAlertDepartmentCommentDAO getAlertDepartmentCommentDAO() {
+	return alertDepartmentCommentDAO;
+}
+
+public void setAlertDepartmentCommentDAO(
+		IAlertDepartmentCommentDAO alertDepartmentCommentDAO) {
+	this.alertDepartmentCommentDAO = alertDepartmentCommentDAO;
+}
+
+public IAlertDepartmentCommentNewDAO getAlertDepartmentCommentNewDAO() {
+	return alertDepartmentCommentNewDAO;
+}
+
+public void setAlertDepartmentCommentNewDAO(
+		IAlertDepartmentCommentNewDAO alertDepartmentCommentNewDAO) {
+	this.alertDepartmentCommentNewDAO = alertDepartmentCommentNewDAO;
 }
 
 public List<BasicVO> getCandidatesByName(String candidateName){
@@ -10361,6 +10381,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					vo.setTitle(commonMethodsUtilService.getStringValueForObject(objects[4]));
 					vo.setDesc(commonMethodsUtilService.getStringValueForObject(objects[5]));
 					vo.setDate1(commonMethodsUtilService.getStringValueForObject(objects[6]));
+					vo.setAlertCallerId(commonMethodsUtilService.getLongValueForObject(objects[7]));
 					returnList.add(vo);
 				}
 			}
@@ -10418,13 +10439,13 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				public Object doInTransaction(TransactionStatus status) {
 					
 					//Saving comment In alertComment
-					AlertComment alertComment = new AlertComment();
-					alertComment.setAlertId(alertvo.getAlertId());
-					alertComment.setComments(alertvo.getComment());
+					AlertDepartmentCommentNew alertComment = new AlertDepartmentCommentNew();
+					//alertComment.setAlertId(alertvo.getAlertId());
+					alertComment.setComment(alertvo.getComment());
 					alertComment.setInsertedBy(userId);
 					alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-					alertComment.setIsDeleted("N");
-					alertComment = alertCommentDAO.save(alertComment);
+					//alertComment.setIsDeleted("N");
+					alertComment = alertDepartmentCommentNewDAO.save(alertComment);
 					
 					//saving alertTtrcking
 					AlertTracking alertTracking = new AlertTracking();
@@ -10437,7 +10458,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						alertTracking.setAlertTrackingActionId(3l);
 					}
 					
-					alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
+					alertTracking.setAlertCommentId(alertComment.getAlertDepartmentCommentId());//srujana
 					
 					alertTracking.setInsertedBy(userId);
 					alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
@@ -10445,9 +10466,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					alertTracking.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
 					alertTrackingDAO.save(alertTracking);
 					
-					Alert alert = alertDAO.get(alertvo.getAlertId());
+					Alert alert = alertDAO.getModal(alertvo.getAlertId());
 					if(alert != null){
-						
 						alert.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
 						if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
 							alert.setAlertStatusId(alertvo.getNewAlertStatusId());
@@ -10461,7 +10481,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 
 					// if alert status is Reopen 
 					
-					if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
+					//if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
 					
 						List<AlertAssignedOfficerNew> alertAssignedOfficerNewObj =  alertAssignedOfficerNewDAO.getModelForApprovedAlert(alertvo.getAlertId());
 						
@@ -10472,11 +10492,14 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						}
 						
 						if(alertAssignedOfficer !=null){
-							alertAssignedOfficer.setAlertStatusId(alertvo.getNewAlertStatusId());
-							alertAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							alertAssignedOfficer.setUpdatedBy(userId);	
+							if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
+								alertAssignedOfficer.setAlertStatusId(alertvo.getNewAlertStatusId());
+								alertAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								alertAssignedOfficer.setUpdatedBy(userId);	
+								
+								alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+							}
 							
-							alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
 							
 							//Officer Assigning Tracking
 							AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
@@ -10487,11 +10510,20 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 							alertAssignedOfficerTracking.setInsertedBy(userId);
 							alertAssignedOfficerTracking.setUpdatedBy(userId);
 							alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
-							alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());						
-							alertAssignedOfficerTracking.setAlertStatusId(alertvo.getNewAlertStatusId());
-							alertAssignedOfficerTracking.setGovtAlertActionTypeId(6l);
+							alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());	
+							if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
+								alertAssignedOfficerTracking.setAlertStatusId(alertvo.getNewAlertStatusId());
+							}
+							if(alertvo.getFeedBackStatusId() != null && alertvo.getFeedBackStatusId()> 0l){
+								alertAssignedOfficerTracking.setGovtAlertActionTypeId(9l);
+							}else{
+							    alertAssignedOfficerTracking.setGovtAlertActionTypeId(6l);
+							}
+							alertAssignedOfficerTracking.setAlertDepartmentCommentId(alertComment.getAlertDepartmentCommentId());
 							alertAssignedOfficerTracking.setIsApproved("Y");
 							alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+							//alertAssignedOfficerTracking.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
+							
 		
 							alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
 							
@@ -10502,12 +10534,16 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					          if(commonMethodsUtilService.isListOrSetValid(userIdsList)){
 					            Long assignedToUserID = userIdsList.get(0);
 					            if(mobileNos != null && mobileNos.size() > 0 && mobileNos.get(0).trim().length() > 0 && !mobileNos.get(0).trim().isEmpty()){
-					            	alertManagementSystemService.sendSMSTOAlertAssignedOfficer(designationId,alertAssignedOfficer.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),6L,assignedToUserID,alertStatusDAO.get(alertvo.getNewAlertStatusId()).getAlertStatus(),"",userId);  
+					            	if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
+					            		alertManagementSystemService.sendSMSTOAlertAssignedOfficer(designationId,alertAssignedOfficer.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),9L,assignedToUserID,alertStatusDAO.get(alertvo.getNewAlertStatusId()).getAlertStatus(),"",userId);
+					            	}else{
+					            		alertManagementSystemService.sendSMSTOAlertAssignedOfficer(designationId,alertAssignedOfficer.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),9L,assignedToUserID,alertStatusDAO.get(alert.getAlertStatusId()).getAlertStatus(),"",userId);
+					            	}
 					            }
 					          } 
 							
 						}	
-					}
+					//}
 					
 					
 					return "success";
@@ -11470,7 +11506,6 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			prepareLocationWiseFeebbackAlert(feebbackStatusObjLst,rtrnfeedbackStatusObjLst,locationMap);//feebback status alert
 			prepareLocationWiseFeebbackAlert(pendingFeebbakObjLst,rtrnfeedbackStatusObjLst,locationMap);//pending feebback alert 
 			prepareLocationWiseReopenAlert(finalList,reopeObjLst,reopeObjLstForOfficer);
-			
 			//Calculating Grand Total alert
 			Map<String,Long> totalCntMap = new HashMap<String, Long>();
 			if(locationMap != null && locationMap.size() > 0){

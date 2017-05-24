@@ -555,7 +555,7 @@ public class Alert extends BaseModel implements Serializable {
 	}
 
 	public void setAlertFeedbackStatusId(Long alertFeedbackStatusId) {
-		alertFeedbackStatusId = alertFeedbackStatusId;
+		this.alertFeedbackStatusId = alertFeedbackStatusId;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
