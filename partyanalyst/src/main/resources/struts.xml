@@ -17379,5 +17379,10 @@
 			<param name="root">alertCoreDashBoardVOs</param>         
 		</result> 
 	</action>
+	<action name="getAlertEfficiencyAction" class="alertManagementSystemAction"  method="getCadreGreivienceEfficiency">
+		<result type="json" name="success">    
+			<param name="root">alertsSummeryVOList</param>       
+		</result> 
+  </action>
  </package>
 </struts>

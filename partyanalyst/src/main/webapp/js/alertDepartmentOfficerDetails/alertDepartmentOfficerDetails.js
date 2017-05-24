@@ -474,3 +474,33 @@ function getAlertDetailsForGrievanceReportClick(parentId,alertType,locationValId
 		}
 	});
 }
+
+getCadreGreivienceEfficiency(5);
+function getCadreGreivienceEfficiency(sliderVal){
+	var alertStatus = [];
+	alertStatus.push(4);               
+	alertStatus.push(12);      
+	var locationLevelIdArr = [];   
+	var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+	
+    var jobj = {
+		govtDepartmentId:deptId,
+		source:sourceId,
+		parentGovtDepartmentScopeId:1,                               
+		subLevels:locationLevelIdArr, 
+		rangeValue:sliderVal,         
+		alertstatusIds:alertStatus,
+		fromDateStr:callCenterUserFDate,                                        
+		toDateStr:callCenterUserTDate,
+		stateId:1
+    }
+    $.ajax({
+		type : "POST",
+		url  : "getAlertEfficiencyAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jobj)},
+    }).done(function(result){
+		
+	});
+}
