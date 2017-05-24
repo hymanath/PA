@@ -590,6 +590,17 @@
 					str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
 				}
 				
+				var  panchayatOrWard= $('#panchayatWardByMandal').val();
+				
+				if(parseInt(1+""+result[i].tehsilId) == panchayatOrWard || parseInt(2+""+result[i].tehsilId) == panchayatOrWard){
+				
+				}
+				else{
+					if(result[i].tehsil !=null && result[i].tehsil != 0 && result[i].tehsil != '')
+					str+='<div style="color:green">This Person is already member in '
+					+ result[i].tehsil + ' Mandal ' +result[i].panchayat + ' Panchayat Booth No - ' +result[i].boothNumber+'</div>';
+				}
+				
 				str+='</ul>';
 				
 				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
@@ -1665,6 +1676,14 @@ function getCadreDetailsForBoothBySearchCriteria()
 
 function saveBoothDetails(tdpCadreId){
 	 var committeeLocationId =$("#committeeLocationId").val();
+
+	var confm = confirm("Are you sure to add this member as booth no - " +committeeLocationId+ " incharge");
+    if (confm == true) {
+
+    } else {
+		return;
+    }
+
 	var jsObj =
 		{
 			boothId : committeeLocationId,
@@ -1677,12 +1696,14 @@ function saveBoothDetails(tdpCadreId){
 				data : {task:JSON.stringify(jsObj)} ,
 			}).done(function(result){
 				 if(result.resultCode == 0){
-					$("#errMsgId").html("<span style='color:green;'>Member added successfully.....</span>");
+					 alert("Member added successfully.....")
+					/* $("#errMsgId").html("<span style='color:green;'>Member added successfully.....</span>"); */
 					setTimeout(function(){
 						getCadreDetailsForBoothBySearchCriteria();
 					},1200);
 				}else{
-					$("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>");
+					alert("Member added failed.Please try again..")
+					/* $("#errMsgId").html("<span style='color:green;'>Member added failed.Please try again..</span>"); */
 				} 
 			});
 }
