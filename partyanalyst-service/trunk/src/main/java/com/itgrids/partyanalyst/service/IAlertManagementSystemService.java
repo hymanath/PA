@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
@@ -167,4 +168,7 @@ public interface IAlertManagementSystemService {
 	 public List<IdAndNameVO> getSubTaskAlertStatus();
 	 public List<IdNameVO> getAllMainDepartments();
 	 public String changeDepartmentStatusToAlert(final Long alertId,final Long changedDeptId,final Long userId);
+	 public List<AlertsSummeryVO> getCadreGreivienceEfficiency(String fromDateStr, String toDateStr, Long stateId, 
+				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
+				Long parentGovtDepartmentScopeId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> sublevels,Long source,List<Long> statusIdList,int rangeValue);
 }        
