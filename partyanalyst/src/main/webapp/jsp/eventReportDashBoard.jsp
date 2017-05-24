@@ -453,6 +453,9 @@ function getSubCasteWiseEventAttendeeCounts(startDate,endDate)
 		   var enrollmentYrIds=[];
 		   if($("#enrollmentYrId").val() !=null && $("#enrollmentYrId").val()>0){
 			   enrollmentYrIds.push($("#enrollmentYrId").val());
+		   }else{
+			   enrollmentYrIds.push(3);
+			   enrollmentYrIds.push(4);
 		   }
 	         var jsObj = {
 					startDate    :startDate,
@@ -642,6 +645,9 @@ function getAgeWiseEventAttendeeCounts(startDate,endDate){
 	var enrollmentYrIds=[];
 	if($("#enrollmentYrId").val() !=null && $("#enrollmentYrId").val()>0){
 			   enrollmentYrIds.push($("#enrollmentYrId").val());
+		   }else{
+			   enrollmentYrIds.push(3);
+			   enrollmentYrIds.push(4);
 		   }
     var jsObj = {
 		startDate    :startDate,
@@ -798,6 +804,9 @@ function getGenderWiseEventAttendeeCounts(startDate,endDate)
 	 var enrollmentYrIds=[];
 	 if($("#enrollmentYrId").val() !=null && $("#enrollmentYrId").val()>0){
 			   enrollmentYrIds.push($("#enrollmentYrId").val());
+		   }else{
+			   enrollmentYrIds.push(3);
+			   enrollmentYrIds.push(4);
 		   }
          var jsObj = {
 				startDate    :startDate,
@@ -1422,6 +1431,9 @@ function casteCategoryWiseEventAttendeeCounts(startDate,endDate){
 		 var enrollmentYrIds=[];
 		 if($("#enrollmentYrId").val() !=null && $("#enrollmentYrId").val()>0){
 			   enrollmentYrIds.push($("#enrollmentYrId").val());
+		   }else{
+			   enrollmentYrIds.push(3);
+			   enrollmentYrIds.push(4);
 		   }
 		 var jsObj = {
 				startDate  :startDate,
