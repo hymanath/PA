@@ -4023,13 +4023,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
             	List<IdNameVO> finalList = new ArrayList<IdNameVO>(0);
             	try {
             		
-            		Map<Long,IdNameVO> levelMap = new HashMap<Long, IdNameVO>();
+            		Map<Long,IdNameVO> levelMap = new LinkedHashMap<Long, IdNameVO>();
             		
             		//ScopeId,levelName
             		List<Object[]> subLevelObj = govtDepartmentScopeLevelDAO.getParentLevelsOfLevel(departmentId,levelId);
             		
             		if(subLevelObj !=null && subLevelObj.size()>0){
-            				Set<Long> subLevelIds = new HashSet<Long>();
+            				Set<Long> subLevelIds = new LinkedHashSet<Long>();
             				for (Object[] param : subLevelObj) {		
             					if(parentLevelId <= (Long)param[0]){
             						IdNameVO vo = new IdNameVO();						
@@ -10851,7 +10851,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 					
 					String successStatus = "success";
 					
-					Alert alert = alertDAO.get(alertId);
+					Alert alert = alertDAO.get(alertId);					
 					Long oldDeptId = alert.getGovtDepartmentId();
 					String oldDepartment = alert.getGovtDepartment().getDepartmentName();
 					
@@ -10868,8 +10868,8 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 					
 					if(commonMethodsUtilService.isListOrSetValid(assingedIdsObj)){
 						for (Long assingedId : assingedIdsObj) {
-							AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
-							alertAssignedOfficer = alertAssignedOfficerNewDAO.get(assingedId);
+							//AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
+							AlertAssignedOfficerNew alertAssignedOfficer = alertAssignedOfficerNewDAO.get(assingedId);
 							
 							alertAssignedOfficer.setGovtDepartmentId(changedDeptId);							
 							alertAssignedOfficer.setAlertStatusId(1l);
