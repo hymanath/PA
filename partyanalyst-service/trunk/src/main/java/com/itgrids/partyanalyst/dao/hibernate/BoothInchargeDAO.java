@@ -47,15 +47,25 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		return query1.list();
 	}
 	
-	public List<Long> getCadreIdsForLocation(List<Long> tdpCadreIds){
+	public List<Object[]> getCadreIdsForLocation(List<Long> tdpCadreIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select " +
-				" model.tdpCadre.tdpCadreId " +
+				" model.tdpCadre.tdpCadreId," +
+				" b.partNo, " +
+				" p.panchayatName, " +
+				" t.tehsilId, " +
+				" t.tehsilName, " +
+				" l.localElectionBodyId, " +
+				" l.name " +
 				" from BoothIncharge model " +
+				" left join model.booth b " +
+				" left join b.panchayat p " +
+				" left join b.tehsil t " +
+				" left join b.localBody l " +
 				" where model.isActive = 'Y' and model.isDeleted = 'N'");
 		if(tdpCadreIds != null && tdpCadreIds.size() > 0l)
-		{
-			sb.append(" and model.tdpCadre.tdpCadreId in (:tdpCadreIds)");
+		{ 
+			sb.append(" and model.tdpCadreId in (:tdpCadreIds)");
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
