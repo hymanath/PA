@@ -688,7 +688,7 @@ var formatedDpCurentDate;
 				formatedDpCurentDate = moment().format('DD/MM/YYYY');
 				 $('[data-toggle="tooltip"]').tooltip()
 				
-				if(parentEventId == 7 || parentEventId == 30){
+				if(parentEventId == 7 || parentEventId == 30 || parentEventId == 58 || parentEventId == 51){
 					$("#stateDivsId").show();
 				}else{
 					$("#stateDivsId").hide();
@@ -1929,7 +1929,7 @@ $('#donutchart').removeClass("errorDiv");
 	
 	$(".maineventCls").each(function(){
 		if($(this).is(":checked")){
-			if($(this).val()==7 || $(this).val()==30){
+			if($(this).val()==7 || $(this).val()==30 || $(this).val() == 58 || $(this).val() == 51){
 				$("#stateDivsId").show();
 			}else{
 				$("#stateDivsId").hide();
