@@ -293,15 +293,24 @@ public List<Object[]> totalPublicRepInviteesAttendedForEvent(List<Long> eventIds
 		return query.list();
 	}
 	
-	public List<Long> getCandidateTdpCadreIds(Long eventId,Long designationId){
-		Query query = getSession().createQuery(" select model.tdpCadreId " +
-				" from EventInvitee model,TdpCadreCandidate tcc,PublicRepresentative pr " +
-				"  where model.eventId=:eventId " +
-				" and model.tdpCadreId=tcc.tdpCadreId " +
-				" and tcc.candidateId=pr.candidateId " +
+	public List<Long> getCandidateTdpCadreIds(Long eventId,Long designationId,List<Long> enrollmentYearIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.tdpCadreId " +
+				" from EventInvitee model,TdpCadreCandidate tcc,PublicRepresentative pr ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			sb.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+		}
+		sb.append("  where model.tdpCadreId=tcc.tdpCadreId " +
+				" and tcc.candidateId=pr.candidateId ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			sb.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+		}
+		sb.append(" and model.eventId=:eventId" +
 				" and pr.publicRepresentativeTypeId=:designationId ");
+		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("eventId", eventId);
 		query.setParameter("designationId", designationId);
+		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
 		return query.list();
 	}
 	
@@ -551,24 +560,41 @@ public List<Object[]> dayWiseDistrictAffliatedCommitteeInviteesAttendedForEvent(
 }
 
 
-public List<Long> getCandidateTdpCadreIdsForCommitteeLevel(Long eventId,Long committeeLevelId){
-	Query query = getSession().createQuery(" select model.tdpCadreId " +
-			" from EventInvitee model,TdpCommitteeMember TCM " +
-			"  where model.eventId=:eventId " +
-			" and model.tdpCadreId=TCM.tdpCadreId " +
+public List<Long> getCandidateTdpCadreIdsForCommitteeLevel(Long eventId,Long committeeLevelId,List<Long> enrollmentYearIds){
+	StringBuilder sb = new StringBuilder();
+	sb.append(" select model.tdpCadreId " +
+			" from EventInvitee model,TdpCommitteeMember TCM ");
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		sb.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+	}
+	sb.append("  where model.tdpCadreId=TCM.tdpCadreId ");
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		sb.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+	}
+	sb.append(" and model.eventId=:eventId " +
 			" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=:committeeLevelId ");
+	Query query = getSession().createQuery(sb.toString());
 	query.setParameter("eventId", eventId);
 	query.setParameter("committeeLevelId", committeeLevelId);
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	}
 	return query.list();
 }
 
 
-public List<Long> getCandidateTdpCadreIdsForCommitteeRole(Long eventId,Long committeeRoleId,String committeeLevel){
+public List<Long> getCandidateTdpCadreIdsForCommitteeRole(Long eventId,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
 	StringBuilder str = new StringBuilder();
-	str.append(" select model.tdpCadreId " +
-			" from EventInvitee model,TdpCommitteeMember TCM " +
-			"  where model.eventId=:eventId " +
-			" and model.tdpCadreId=TCM.tdpCadreId " +
+	str.append(" select model.tdpCadreId ");
+	str.append(" from EventInvitee model,TdpCommitteeMember TCM ");
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+	}
+	str.append("  where model.tdpCadreId = TCM.tdpCadreId ");
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+	}
+	str.append(" and model.eventId=:eventId " +
 			" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 			" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1");
 	if(committeeLevel.equalsIgnoreCase("District"))
@@ -578,14 +604,23 @@ public List<Long> getCandidateTdpCadreIdsForCommitteeRole(Long eventId,Long comm
 	Query query = getSession().createQuery(str.toString());
 	query.setParameter("eventId", eventId);
 	query.setParameter("committeeRoleId", committeeRoleId);
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	}
 	return query.list();
 }
-public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(Long eventId,Long committeeRoleId,String committeeLevel){
+public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(Long eventId,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
 	StringBuilder str = new StringBuilder();
 	str.append(" select model.tdpCadreId " +
-			" from EventInvitee model,TdpCommitteeMember TCM " +
-			"  where model.eventId=:eventId " +
-			" and model.tdpCadreId=TCM.tdpCadreId " +
+			" from EventInvitee model,TdpCommitteeMember TCM ");
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+	}
+	str.append(" where model.tdpCadreId=TCM.tdpCadreId ");
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+	}
+	str.append(" and model.eventId=:eventId " +
 			" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 			" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1");
 	if(committeeLevel.equalsIgnoreCase("District"))
@@ -595,6 +630,9 @@ public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(Long eventId,
 	Query query = getSession().createQuery(str.toString());
 	query.setParameter("eventId", eventId);
 	query.setParameter("committeeRoleId", committeeRoleId);
+	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+	}
 	return query.list();
 }
 

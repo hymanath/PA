@@ -3039,7 +3039,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		}
 	}
 	
-	public List<MahanaduEventVO> getMembersDetailsBySubEvent(Long eventId,String startDate,String endDate,Integer startIndex,Integer maxIndex ){
+	public List<MahanaduEventVO> getMembersDetailsBySubEvent(Long eventId,String startDate,String endDate,Integer startIndex,Integer maxIndex,List<Long> enrollmentYearIds){
 		List<Long> tdpCadreIds = new ArrayList<Long>();
 		List<MahanaduEventVO> resultList= new ArrayList<MahanaduEventVO>();		
 		Date eventStrDate = null;
@@ -3052,7 +3052,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			if(endDate != null && !endDate.isEmpty())
 				eventEndDate = format.parse(endDate);
 		
-			List<Object[]> list = eventAttendeeDAO.getMembersDetailsBySubEvent(eventId,eventStrDate,eventEndDate,startIndex,maxIndex);
+			List<Object[]> list = eventAttendeeDAO.getMembersDetailsBySubEvent(eventId,eventStrDate,eventEndDate,startIndex,maxIndex,enrollmentYearIds);
 			if(list != null && list.size() > 0){
 				  for(Object[] params : list){
 					  MahanaduEventVO vo = new MahanaduEventVO();
@@ -3652,7 +3652,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	return resultList;
 	}
 	
-	public List<MahanaduEventVO> getStatewiseCount(Long eventId,String startDate,String endDate)
+	public List<MahanaduEventVO> getStatewiseCount(Long eventId,String startDate,String endDate,List<Long> enrollmentYearIds)
 	{
 		Long apCnt =0l;
 		Long tsCnt =0l;
@@ -3667,7 +3667,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 		 if(endDate != null && !endDate.isEmpty())
 		 eventEndDate = format.parse(endDate);
 		
-		List<Object[]> list = eventAttendeeDAO.getStateCount(eventId,eventStrDate,eventEndDate);
+		List<Object[]> list = eventAttendeeDAO.getStateCount(eventId,eventStrDate,eventEndDate,enrollmentYearIds);
 		if(list != null && list.size() > 0)
 		{
 			for(Object[] params : list)
@@ -3692,7 +3692,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 			resultList.add(vo);resultList.add(vo1);
 		}
 		
-		List<Object[]> otherStates =eventAttendeeDAO.getOtherStateCount(eventId,eventStrDate,eventEndDate);
+		List<Object[]> otherStates =eventAttendeeDAO.getOtherStateCount(eventId,eventStrDate,eventEndDate,enrollmentYearIds);
 		if(otherStates != null && otherStates.size() > 0)
 		{
 			for(Object[] params : otherStates)
