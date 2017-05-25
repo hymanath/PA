@@ -116,5 +116,6 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Object[]> getDifferenceTimeList(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> socialMediaTypeIds,Long source,List<Long> alertStatusIds);
+    public List<Object[]> getMainDeptAndItsSubDepartment();
     public List<Object[]> getPresentAssignedDepartmentOfAlert(Long alertId);
 }

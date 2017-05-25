@@ -120,7 +120,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		Query query = getSession().createQuery(" SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus " +
     				" FROM AlertAssignedOfficerNew model " +
     				" WHERE  " +
-    				" model.isDeleted = 'N' " +
+    				" model.isDeleted = 'N' and model.alertStatus.alertStatusId != 1 " +
     				" GROUP BY model.alertStatus.alertStatusId " +
     				" ORDER BY model.alertStatus.statusOrder ");
     		return query.list();
@@ -6403,6 +6403,29 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 return query.list();
 				 
 	 }
+	 public List<Object[]> getMainDeptAndItsSubDepartment(){
+ 		
+		StringBuilder sb = new StringBuilder();  
+		sb.append("select");
+		sb.append(" gd.govt_department_id as parentDeptId ,gd.department_name as parentName,gd.color color," +
+				  " gd1.govt_department_id as childDeptId,gd1.department_name as childDeptName,gd1.color as color1 "+
+		          " from govt_department_relation gdr,govt_department gd,govt_department gd1" +
+				  " where gdr.parent_govt_department_id = gd.govt_department_id"+
+				  " and gdr.sub_govt_department_id = gd1.govt_department_id"+ 
+				  " group by gdr.parent_govt_department_id,gd1.govt_department_id " +
+				  " order by gd.govt_department_id,gd1.govt_department_id");
+ 	    
+ 	    SQLQuery query = getSession().createSQLQuery(sb.toString());
+ 	
+ 		query.addScalar("parentDeptId", Hibernate.LONG);
+ 		query.addScalar("parentName", Hibernate.STRING);
+ 		query.addScalar("color", Hibernate.STRING);
+ 		query.addScalar("childDeptId", Hibernate.LONG);
+ 		query.addScalar("childDeptName", Hibernate.STRING);
+ 		query.addScalar("color1", Hibernate.STRING);
+ 	    
+ 	      return query.list();
+ 	}
 	 public List<Object[]> getDifferenceTimeList(Date fromDate,Date toDate,
 	     		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
 	     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> socialMediaTypeIds,Long source,List<Long> alertStatusIds){
@@ -6413,11 +6436,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	     	queryStr.append(" GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
 	     	queryStr.append(" GDWL1.location_name as locationName, ");//2
 	     	
-     		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
-     			queryStr.append(" GDWL.govt_department_scope_id as GDSI, AAO.alert_status_id as govtDepartmentScopeId, ");//3
-     		}else{
-     			queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
-     		}*/
+  		if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() == 1L){
+  			queryStr.append(" GDWL.govt_department_scope_id as GDSI, AAO.alert_status_id as govtDepartmentScopeId, ");//3
+  		}else{
+  			queryStr.append(" AAO.alert_status_id as govtDepartmentScopeId, ");//3
+  		}*/
 	     	
 	     	queryStr.append(" A.alert_id, A.created_time, A.updated_time, TIMESTAMPDIFF(DAY,A.created_time,A.updated_time) ");
 	     	
@@ -6490,9 +6513,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 				queryStr.append(" and GDWL1.govt_department_work_location_id = GUA.cluster_id  ");
 			}
 			
- 			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
- 			  queryStr.append(" and GDWL1.govt_department_scope_id=:parentGovtDepartmentScopeId   ");
- 		    }
+			if(parentGovtDepartmentScopeId != null && parentGovtDepartmentScopeId.longValue() > 0L){
+			  queryStr.append(" and GDWL1.govt_department_scope_id=:parentGovtDepartmentScopeId   ");
+		    }
 	 		
 	 		if(govtDepartmentId != null && govtDepartmentId.longValue() > 0L){
 	 			queryStr.append(" and GDWL.govt_department_id = :govtDepartmentId   ");
