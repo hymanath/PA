@@ -307,12 +307,14 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="">Modal title</h4>
+				<h4 class="modal-title" id="">ASSIGN DEPARTMENT</h4>
 			</div>
 			<div class="modal-body">
 				<div id="alertDepartmentsPopupBody"></div>
 			</div>
 			<div class="modal-footer">
+				<span id="assignDeptSuccessMsg"></span>
+				<span id="saveButtonAssignDept"></span>
 				<button type="button closeSecondModal" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
