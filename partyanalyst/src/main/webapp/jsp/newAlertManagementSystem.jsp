@@ -310,6 +310,7 @@
 				<h4 class="modal-title" id="">ASSIGN DEPARTMENT</h4>
 			</div>
 			<div class="modal-body">
+				<span id="presentDeptId"> </span>
 				<div id="alertDepartmentsPopupBody"></div>
 			</div>
 			<div class="modal-footer">

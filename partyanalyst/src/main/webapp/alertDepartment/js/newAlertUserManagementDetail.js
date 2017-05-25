@@ -1484,9 +1484,9 @@ function rightSideExpandView(alertId)
 							str+='<div class="col-sm-8 pull-right" style="">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
 									
-									/*str+='<li data-toggle="tooltip" data-placement="top" title="Departments" id="departDivId" style="display:none;">';
+									str+='<li data-toggle="tooltip" data-placement="top" title="Departments" id="departDivId" style="display:none;">';
 										str+='<span class=""></span><span id="mainDeprtmntId" attr_alert_id="'+alertId+'"><i class="fa fa-empire" aria-hidden="true"></i></span>';
-									str+='</li>'; */
+									str+='</li>';
 									
 									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
@@ -4800,6 +4800,7 @@ $(document).on('change', '#assignDepartmentId1', function(){
 $(document).on("click","#mainDeprtmntId",function(){
 	var alertId = $(this).attr("attr_alert_id");
 	buildMainDepartmentsPopup(alertId);
+	getPresentAssignedDepartmentOfAlert(alertId);
 });
 
 function buildMainDepartmentsPopup(alertId){
@@ -4852,6 +4853,12 @@ $(document).on("click",".saveBtnCls",function(){
 	var alertId =$(this).attr("attr_alert_id");
 	var newDeptId = $("#newDepartmentId").val();
 	
+	if(newDeptId == null || newDeptId == 0 || newDeptId == "undefined"){
+		$("#assignDeptSuccessMsg").html("Please Select Department");
+	}else{
+		$("#assignDeptSuccessMsg").html("");
+	}
+
 	var jsObj={
 		alertId : alertId,
 		newDeptId : newDeptId
@@ -4870,11 +4877,32 @@ $(document).on("click",".saveBtnCls",function(){
 				$( "#assignDeptSuccessMsg" ).fadeOut( "slow", function() {});
 				$("#alertDeprtmntPopup").modal('hide');
 				rightSideExpandView(alertId);
+				setTimeout(function(){
+					$("[expanded-block='block1']").show();
+				},750);
 			},1500);
 			  
 		}else{
-			alert("Please try again")
+			alert("Please try again");
 		}
 	});
 });
+
+function getPresentAssignedDepartmentOfAlert(alertId){
+	$("#presentDeptId").html("");
+	var jsObj={
+		alertId : alertId,
+	}	
+	$.ajax({   
+		type:'GET',
+		url:'getPresentAssignedDepartmentOfAlertAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			$("#presentDeptId").html("<label>Present Deparment</label> : "+result[0].name+"");
+		}
+		
+	});
+}
 	
