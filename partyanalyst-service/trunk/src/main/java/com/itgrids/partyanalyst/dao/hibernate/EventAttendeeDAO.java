@@ -505,7 +505,7 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		
 		str.append(" where model.tdpCadre.isDeleted = 'N' ");
 		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
-			str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId = (:enrollmentYearIds) ");
+			str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 		}
 		str.append(" and model.event.eventId = :eventId and  model.event.isActive =:isActive ");
 		
