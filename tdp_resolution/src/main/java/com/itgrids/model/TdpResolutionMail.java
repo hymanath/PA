@@ -1,96 +1,53 @@
 package com.itgrids.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.CascadeType;
 
-@Entity
-@Table(name = "tdp_resolution")
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
+
 public class TdpResolutionMail {
 
+	private Long tdpResolutionMailId;
+	private TdpResolution tdpResolution;
+	private TdpEmail tdpEmail;
+	
 	@Id
-	@Column(name="tdp_resolution_id")
+	@Column(name="tdp_resolution_mail_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	private Long tdpResoultionId;
-
-	@Column(name="subject")
-	private String subject;
+	public Long getTdpResolutionMailId() {
+		return tdpResolutionMailId;
+	}
+	public void setTdpResolutionEmailId(Long tdpResolutionMailId) {
+		this.tdpResolutionMailId = tdpResolutionMailId;
+	}
 	
-	@Column(name="description")
-	private String description;
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "tdp_resolution_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpResolution getTdpResolution() {
+		return tdpResolution;
+	}
+	public void setResolution(TdpResolution tdpResolution) {
+		this.tdpResolution = tdpResolution;
+	}
 	
-	@Column(name="video_url")
-	private String videourl;
-	
-	@Column(name="is_deleted")
-	private boolean isDeleted;
-	
-	@Column(name="inserted_time")
-	private Date InsertedTime;
-	
-	@Column(name="updated_time")
-	private Date UpdatedTime;
-
-	public Long getTdpResoultionId() {
-		return tdpResoultionId;
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "tdp_email_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TdpEmail getTdpEmail() {
+		return tdpEmail;
 	}
-
-	public void setTdpResoultionId(Long tdpResoultionId) {
-		this.tdpResoultionId = tdpResoultionId;
+	public void setTdpEmail(TdpEmail tdpEmail) {
+		this.tdpEmail = tdpEmail;
 	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getVideourl() {
-		return videourl;
-	}
-
-	public void setVideourl(String videourl) {
-		this.videourl = videourl;
-	}
-
-	public boolean isDeleted() {
-		return isDeleted;
-	}
-
-	public void setDeleted(boolean isDeleted) {
-		this.isDeleted = isDeleted;
-	}
-
-	public Date getInsertedTime() {
-		return InsertedTime;
-	}
-
-	public void setInsertedTime(Date insertedTime) {
-		InsertedTime = insertedTime;
-	}
-
-	public Date getUpdatedTime() {
-		return UpdatedTime;
-	}
-
-	public void setUpdatedTime(Date updatedTime) {
-		UpdatedTime = updatedTime;
-	}
-
-	
 }
