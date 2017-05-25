@@ -4747,4 +4747,14 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getPresentAssignedDepartmentOfAlert(){
+		try {
+			jObj = new JSONObject(getTask());
+			idNameVOList = alertManagementSystemService.getPresentAssignedDepartmentOfAlert(jObj.getLong("alertId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getPresentAssignedDepartmentOfAlert() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

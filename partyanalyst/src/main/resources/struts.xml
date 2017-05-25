@@ -17394,5 +17394,10 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	<action name="getPresentAssignedDepartmentOfAlertAction" class="alertManagementSystemAction" method="getPresentAssignedDepartmentOfAlert">
+		<result type="json" name="success">
+   			<param name="root">idNameVOList</param>
+   		</result>
+	</action>
  </package>
 </struts>
