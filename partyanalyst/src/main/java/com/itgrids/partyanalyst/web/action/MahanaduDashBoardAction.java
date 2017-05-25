@@ -338,8 +338,14 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 	public String getCandidateDetails(){
 		try {
 			jObj = new JSONObject(getTask());
-			
-			candidateDetailsVOList = mahanaduDashBoardService.getCandidateDetails(jObj.getLong("designationId"),jObj.getString("inviteeType"),jObj.getLong("eventId"),jObj.getString("day"),jObj.getString("roleType"),jObj.getString("level"));
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			JSONArray yearIdsArr = jObj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIdsArr != null && yearIdsArr.length() > 0){
+				for (int i = 0; i < yearIdsArr.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIdsArr.getString(i)));
+				}
+			}
+			candidateDetailsVOList = mahanaduDashBoardService.getCandidateDetails(jObj.getLong("designationId"),jObj.getString("inviteeType"),jObj.getLong("eventId"),jObj.getString("day"),jObj.getString("roleType"),jObj.getString("level"),enrollmentYearIds);
 			
 		} catch (Exception e) {
 			LOG.error("Exception riased at getCandidateDetails ", e);

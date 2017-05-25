@@ -320,9 +320,16 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	{
 		try{
 		 jObj = new JSONObject(getTask());
+		 List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+		 org.json.JSONArray yearIdsArr = jObj.getJSONArray("enrollmentYearIdsArr");
+		 if(yearIdsArr != null && yearIdsArr.length() > 0){
+			 for (int i = 0; i < yearIdsArr.length(); i++) {
+				enrollmentYearIds.add(Long.parseLong(yearIdsArr.getString(i)));
+			}
+		 }
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-			resultList = mahaNaduService.getMembersDetailsBySubEvent(jObj.getLong("eventId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+			resultList = mahaNaduService.getMembersDetailsBySubEvent(jObj.getLong("eventId"),jObj.getString("startDate"),jObj.getString("endDate"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"),enrollmentYearIds);
 		}
 		catch(Exception e)
 		{
@@ -387,7 +394,15 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 			
 			jObj = new JSONObject(getTask());
 			
-			resultList =  mahaNaduService.getStatewiseCount(jObj.getLong("eventId"),jObj.getString("startDate"),jObj.getString("endDate"));
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			org.json.JSONArray yearIdsArr = jObj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIdsArr != null && yearIdsArr.length() > 0){
+				for (int i = 0; i < yearIdsArr.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIdsArr.getString(i)));
+				}
+			}
+			
+			resultList =  mahaNaduService.getStatewiseCount(jObj.getLong("eventId"),jObj.getString("startDate"),jObj.getString("endDate"),enrollmentYearIds);
 			
 			
 		}

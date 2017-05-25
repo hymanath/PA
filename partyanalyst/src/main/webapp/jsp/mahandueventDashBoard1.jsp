@@ -2581,8 +2581,8 @@ function getSubEventMembers(eventId,startIndex,count,name){
 			startDate : startDate,
 			endDate : endDate,
 			startIndex:startIndex,
-			
-			maxIndex : 25
+			maxIndex : 25,
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 		}	
 		
 		$.ajax({
@@ -2652,8 +2652,8 @@ function getStateWiseOverview(eventId){
 		var jObj = {
 			eventId:eventId,
 			startDate : startDate,
-			endDate : endDate
-			
+			endDate : endDate,
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 			
 		}	
 		
@@ -2869,7 +2869,8 @@ var tableToExcel = (function() {
 			 day            : day,
 			 eventId		: eventId,
 			 roleType:roleType,
-			 level:level
+			 level:level,
+			 enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 		}	
 		
 		 $.ajax({
