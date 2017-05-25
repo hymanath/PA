@@ -176,4 +176,5 @@ public interface IAlertManagementSystemService {
 	 public List<IdAndNameVO> getSpecialGrievanceTypeList();
 	 public List<IdAndNameVO> getGeneralGrievanceTypeList();
 	 public List<IdNameVO> getSubDeptsFrParentDept(Long parentDeptId);
+	 public List<IdNameVO> getPresentAssignedDepartmentOfAlert(Long alertId);
 }        
