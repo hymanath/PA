@@ -92,8 +92,46 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	private List<IdAndNameVO> alertStatusList;
 	private List<IdAndNameVO> govtAlertSubTaksStatusList;
 	private List<AlertsSummeryVO> alertsSummeryVOList;
+	private List<IdAndNameVO> mondayGrievanceTypeList;
+	private List<IdAndNameVO> janmabhoomiTypeList;
+	private List<IdAndNameVO> specialGrievanceTypeList;
+	private List<IdAndNameVO> generalGrievanceTypeList;
 	
 	
+	public List<IdAndNameVO> getMondayGrievanceTypeList() {
+		return mondayGrievanceTypeList;
+	}
+
+	public void setMondayGrievanceTypeList(List<IdAndNameVO> mondayGrievanceTypeList) {
+		this.mondayGrievanceTypeList = mondayGrievanceTypeList;
+	}
+
+	public List<IdAndNameVO> getJanmabhoomiTypeList() {
+		return janmabhoomiTypeList;
+	}
+
+	public void setJanmabhoomiTypeList(List<IdAndNameVO> janmabhoomiTypeList) {
+		this.janmabhoomiTypeList = janmabhoomiTypeList;
+	}
+
+	public List<IdAndNameVO> getSpecialGrievanceTypeList() {
+		return specialGrievanceTypeList;
+	}
+
+	public void setSpecialGrievanceTypeList(
+			List<IdAndNameVO> specialGrievanceTypeList) {
+		this.specialGrievanceTypeList = specialGrievanceTypeList;
+	}
+
+	public List<IdAndNameVO> getGeneralGrievanceTypeList() {
+		return generalGrievanceTypeList;
+	}
+
+	public void setGeneralGrievanceTypeList(
+			List<IdAndNameVO> generalGrievanceTypeList) {
+		this.generalGrievanceTypeList = generalGrievanceTypeList;
+	}
+
 	public List<AlertsSummeryVO> getAlertsSummeryVOList() {
 		return alertsSummeryVOList;
 	}
@@ -414,6 +452,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			deptList = alertManagementSystemService.getDeptListForUser(userId);
 			socailMediaTypeList = alertManagementSystemService.getSocialMediaTypeList();
 			alertCallCenterTypeIdList = alertManagementSystemService.getAlertCallCenterType();
+			mondayGrievanceTypeList = alertManagementSystemService.getMondayGrievanceTypeList();
+			janmabhoomiTypeList = alertManagementSystemService.getJanmabhoomiTypeList();
+			specialGrievanceTypeList = alertManagementSystemService.getSpecialGrievanceTypeList();
+			generalGrievanceTypeList = alertManagementSystemService.getGeneralGrievanceTypeList();
 		return Action.SUCCESS;
 		
 	  }
@@ -435,6 +477,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		      alertSeverityList = alertManagementSystemService.getAlertSeverity();
 		      alertStatusList = alertManagementSystemService.getAlertStatus();
 		      govtAlertSubTaksStatusList = alertManagementSystemService.getSubTaskAlertStatus();
+		      mondayGrievanceTypeList = alertManagementSystemService.getMondayGrievanceTypeList();
+		      janmabhoomiTypeList = alertManagementSystemService.getJanmabhoomiTypeList();
+		      specialGrievanceTypeList = alertManagementSystemService.getSpecialGrievanceTypeList();
+		      generalGrievanceTypeList = alertManagementSystemService.getGeneralGrievanceTypeList();
 		    }catch(Exception e){
 		      e.printStackTrace();
 		      LOG.error("Exception occured in getDepartmentDetails() of CccDashboardAction",e);
@@ -1702,6 +1748,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 			      alertSeverityList = alertManagementSystemService.getAlertSeverity();
 			      alertStatusList = alertManagementSystemService.getAlertStatus();
 			      govtAlertSubTaksStatusList = alertManagementSystemService.getSubTaskAlertStatus();
+			      mondayGrievanceTypeList = alertManagementSystemService.getMondayGrievanceTypeList();
+			      janmabhoomiTypeList = alertManagementSystemService.getJanmabhoomiTypeList();
+			      specialGrievanceTypeList = alertManagementSystemService.getSpecialGrievanceTypeList();
+			      generalGrievanceTypeList = alertManagementSystemService.getGeneralGrievanceTypeList();
 			    
 		    } catch (Exception e) {
 		      LOG.error("Exception Occured in alertDistManagement() method, Exception - ",e);
@@ -1727,6 +1777,10 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 	      alertSeverityList = alertManagementSystemService.getAlertSeverity();
 	      alertStatusList = alertManagementSystemService.getAlertStatus();
 	      govtAlertSubTaksStatusList = alertManagementSystemService.getSubTaskAlertStatus();
+	      mondayGrievanceTypeList = alertManagementSystemService.getMondayGrievanceTypeList();
+	      janmabhoomiTypeList = alertManagementSystemService.getJanmabhoomiTypeList();
+	      specialGrievanceTypeList = alertManagementSystemService.getSpecialGrievanceTypeList();
+	      generalGrievanceTypeList = alertManagementSystemService.getGeneralGrievanceTypeList();
 	     return Action.SUCCESS; 
 	   }
 	 public String getDeptListForMultiLvl(){    
