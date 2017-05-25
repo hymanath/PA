@@ -61,6 +61,7 @@ import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
+import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
@@ -10956,13 +10957,20 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		                  JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 		         Client client = Client.create(clientConfig);
 	
-				//WebResource webResource = client
-					//.resource("http://localhost:8080/CommunityNewsPortal/webservice/changeCNPDepartment/"+alertCategoryId+"/"+alertCategoryTypeId+"/"+newDeptId+"/"+oldDeptId+" ");
-	     
-		        WebResource webResource = client
-						.resource("http://www.mytdp.com/CommunityNewsPortal/webservice/changeCNPDepartment/"+alertCategoryId+"/"+alertCategoryTypeId+"/"+newDeptId+"/"+oldDeptId+" ");
+		         ActionableVO vo = new ActionableVO();
+		         vo.setAlertCategory(alertCategoryId);
+		         vo.setAlertType(alertCategoryTypeId);//AlertCategoryTypeId
+		         vo.setStatusId(newDeptId);//NewDepatId
+		         vo.setId(oldDeptId);//oldDeptId
+		         
+				WebResource webResource = client
+					.resource("http://localhost:8080/CommunityNewsPortal/webservice/changeCNPDepartment");
+	            ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class,vo);
+					
+				/*WebResource webResource = client
+				.resource("http://www.mytdp.com/CommunityNewsPortal/webservice/changeCNPDepartment/"+alertCategoryId+"/"+alertCategoryTypeId+"/"+newDeptId+"/"+oldDeptId+" ");
 			
-				ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
+				ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);*/
 			
 		 	      if(response.getStatus() != 200){
 		 	    	throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());			 		     
@@ -11134,5 +11142,24 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		}
 		return null;
 	}
+	public List<IdNameVO> getSubDeptsFrParentDept(Long parentDeptId){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> subDeptList = govtDepartmentRelationDAO.getSubDeptsForParentDept(parentDeptId);
+			if(subDeptList != null && subDeptList.size() > 0l){
+				for (Object[] objects : subDeptList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured getSubDeptsFrParentDeptt() method of AlertManagementSystemService{}");
+		}
+		return finalList;
+	}
+	
 }
 

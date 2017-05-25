@@ -175,4 +175,5 @@ public interface IAlertManagementSystemService {
 	 public List<IdAndNameVO> getJanmabhoomiTypeList();
 	 public List<IdAndNameVO> getSpecialGrievanceTypeList();
 	 public List<IdAndNameVO> getGeneralGrievanceTypeList();
+	 public List<IdNameVO> getSubDeptsFrParentDept(Long parentDeptId);
 }        
