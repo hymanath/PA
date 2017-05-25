@@ -64,7 +64,7 @@ header.eventsheader
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane active" id="createNotification">
 								<div class="col-md-4 col-md-offset-3">
-									<label>MEMBERSHIPID:</label>
+									<label>CADRE MEMBERSHIP ID:</label>
 									<input type="text"  name="name"  class="form-control" id="TdpCardeId"
 											placeholder="Please Enter MemberShip ID"/>								
 									<div style="color:red;" id="TdpCardeIdErrId"></div>
@@ -82,14 +82,14 @@ header.eventsheader
 									<div style="color:red;" id="DescriptionErrId"></div>
 								</div>
 								<div class="col-md-4 col-md-offset-3">
-									<label>URL LINK:</label>
+									<label>YOUTUBE URL LINK:</label>
 									<input type="text"  name="name"  class="form-control" id="addYoutubeUrlId"	placeholder="Please Enter URL Key"/>								
 									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
 									
 								<div class="col-md-4 col-md-offset-3">
-									<input type="button" id="notificationId" attr_success="Mail Sended..." style="padding-top: 5px; margin-top: 14px;"  class="btn btn-success btn-block"   value="SEND EMAIL"  onclick="SendMails();"/>
-									<div id="notificationSuccessId" sytle="color:green"></div>
+									<input type="button" id="#submitId" style="padding-top: 5px; margin-top: 14px;"  class="btn btn-success btn-block"   value="SEND EMAIL"  onclick="SendMails();"/>
+									<div id="notificationSuccessId" style="margin-top:10px;"></div>
 								</div>
 							</div>
 						</div>
@@ -109,6 +109,8 @@ function SendMails(){
 	$("#TdpCardeIdErrId").html("");
 	$("#ResoultionTypeErrId").html("");
 	$("#DescriptionERRId").html("");
+	$("#notificationSuccessId").html("");
+
 	var TdpCardeId = $("#TdpCardeId").val();
 	var ResoultionTypeId = $("#ResoultionTypeId").val().trim();
 	var DescriptionId = $("#DescriptionId").val().trim();
@@ -125,7 +127,7 @@ function SendMails(){
 		$("#DescriptionERRId").html("Please type one Description.");
 		return;
 	}
-	var JSONObject= {"TdpCardeId":TdpCardeId,
+	var jsObj= {"TdpCardeId":TdpCardeId,
 	"subject":ResoultionTypeId,
 	"description":DescriptionId,
 	"addYoutubeUrl":addYoutubeUrl};
@@ -133,19 +135,31 @@ function SendMails(){
 		type : 'POST',
 		url : 'sentresolutionMail',
 		dataType : 'json',
-		data: JSONObject
-	}).done(function(result){  
-	if(result=="Success"){
-		$("#submitId").html("Notification Sent Done Successfully");
+		contentType: "application/json; charset=utf-8",
+		data: JSON.stringify(jsObj)
+	}).done(function(result){
+	
+	if(result.responseData == "SUCCESS"){
+		$("#notificationSuccessId").html("Emails Sent Successfully..");
+		$("#notificationSuccessId").css("color", "Green");
 		$("#TdpCardeId").val('');
 		$("#ResoultionTypeId").val('');
 		$("#DescriptionId").val('');
 		$("#addYoutubeUrlId").val('');
 		setTimeout(function(){ 
-			$( "#submitId" ).fadeOut( "slow" );
-		}, 2000);
+			$( "#notificationSuccessId" ).fadeOut( "slow" );
+		}, 3000);
+	
 	}else{
-		$("#submitId").html("Please Try again...");
+		$("#notificationSuccessId").html("Emails not Sent..");
+		$("#notificationSuccessId").css("color", "red");
+		$("#TdpCardeId").val('');
+		$("#ResoultionTypeId").val('');
+		$("#DescriptionId").val('');
+		$("#addYoutubeUrlId").val('');
+		setTimeout(function(){ 
+			$( "#notificationSuccessId" ).fadeOut( "slow" );
+		}, 2000);
 	}
 });
 }
