@@ -3,7 +3,7 @@ var globalUserLevelId=0;
 var globalUserLevelValues = [];	
 var callCenterUserFDate=moment().startOf('month').format("DD/MM/YYYY");
 var callCenterUserTDate=moment().format("DD/MM/YYYY");
-
+var parentLevelId='';
 
 $('#reportrange').daterangepicker({
 	opens: 'right',
@@ -46,21 +46,25 @@ $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 	$("#statusWiseAlertCntId").html(spinner);
 	$("#feedbackWiseAlertCntId").html(spinner);
 	$("#reopenAlertCntId").html(spinner);
-	getDepartmentDetailsByDepartmentId();  
+	getDepartmentDetailsByDepartmentId();
+		
 });
 function getMediaInformation(){
 	$("#statusWiseAlertCntId").html(spinner);
 	$("#feedbackWiseAlertCntId").html(spinner);
 	$("#reopenAlertCntId").html(spinner);
-	getDepartmentDetailsByDepartmentId();  
+	getDepartmentDetailsByDepartmentId();
+		
 }
 function getDepartmentInformation(){
 	$("#statusWiseAlertCntId").html(spinner);
 	$("#feedbackWiseAlertCntId").html(spinner);
 	$("#reopenAlertCntId").html(spinner);
-	getDepartmentDetailsByDepartmentId();  
+	getDepartmentDetailsByDepartmentId();
+		
 } 
-getDepartmentDetailsByDepartmentId();     
+getDepartmentDetailsByDepartmentId();
+    
 function getDepartmentDetailsByDepartmentId(){
 
 	var departmentId = $("#selecDepartmentId").val();
@@ -75,6 +79,7 @@ function getDepartmentDetailsByDepartmentId(){
     }).done(function(result){
 		if(result != null && result.length > 0){
 			getLevelWiseAlerts(result,departmentId);
+			getCadreGreivienceEfficiency(2); 
 		}else{
 			$("#statusWiseAlertCntId").html("No Data Available.");
 			$("#feedbackWiseAlertCntId").html("No Data Available.");
@@ -87,6 +92,7 @@ function getDepartmentDetailsByDepartmentId(){
 function getLevelWiseAlerts(result,departmentId){
 	if(result[0].subList1 != null && result[0].subList1.length > 0){
 		buildTableDivId(result);
+		parentLevelId  = result[0].subList1[0].id;
 		for(var i in result[0].subList1){
 			getStateThenGovtDeptScopeWiseAlertCount(departmentId,result[0].subList1[i].id,"statusWise","alert","","count","desc",0,0,"","",0,i,"overall");
 		}
@@ -475,19 +481,23 @@ function getAlertDetailsForGrievanceReportClick(parentId,alertType,locationValId
 	});
 }
 
-getCadreGreivienceEfficiency(5);
+
 function getCadreGreivienceEfficiency(sliderVal){
-	var alertStatus = [];
-	alertStatus.push(4);               
-	alertStatus.push(12);      
-	var locationLevelIdArr = [];   
+	$("#totalHeadingRangeCount").html('');
+	$("#efficiencyId").html(spinner);
+	$("#efficiencyRangeId").html(spinner);
+    var locationLevelIdArr = []; 
+	
 	var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
+	var alertStatus = $("#grievanceStatusId").val();
+	 
+	
 	
     var jobj = {
 		govtDepartmentId:deptId,
 		source:sourceId,
-		parentGovtDepartmentScopeId:1,                               
+		parentGovtDepartmentScopeId:parentLevelId,                               
 		subLevels:locationLevelIdArr, 
 		rangeValue:sliderVal,         
 		alertstatusIds:alertStatus,
@@ -501,6 +511,83 @@ function getCadreGreivienceEfficiency(sliderVal){
 		dataType: 'json',
 		data: {task:JSON.stringify(jobj)},
     }).done(function(result){
-		
+		$("#efficiencyId").html('');
+		$("#efficiencyRangeId").html('');
+      if(result!=null){
+		  if(result[0] !=null){
+			  $("#totalHeadingRangeCount").html(result[0].ttlAlrtss);
+		  }else{
+			  $("#totalHeadingRangeCount").html(" - ");
+		  }
+			
+				var str = "";
+				var str1 = "";
+				str+='<div class="col-sm-12">';
+				str+='<ul class="list-inline slickSliderDayWise">';
+					for(var  i in result)
+					{
+						str+='<li class="col-sm-2">';
+							str+='<table class="table table-condensed">';
+								str+='<tr>';
+									
+									str+='<td>'+result[i].name+'</td>';
+								str+='</tr>';
+								str+='<tr>';
+									
+									str+='<td class="text-success" style="border-bottom:1px solid #d3d3d3;">'+result[i].effcncyPrcnt+' %</td>';
+								str+='</tr>';
+								
+							str+='</table>';
+						str+='</li>';
+					}
+					str+='</ul>';
+					str+='</div>';
+					
+					str1+='<div class="col-sm-12 m_top20">';
+				str1+='<ul class="list-inline slickSliderRange">';
+					for(var  i in result)
+					{
+						str1+='<li class="col-sm-2">';
+							str1+='<table class="table table-condensed">';
+								str1+='<tr>';
+									
+									str1+='<td>'+result[i].range+' (days)</td>';
+								str1+='</tr>';
+								str1+='<tr>';
+									
+									str1+='<td class="text-success" style="border-bottom:1px solid #d3d3d3;">'+result[i].rangeCount+'</td>';
+								str1+='</tr>';
+								
+							str1+='</table>';
+						str1+='</li>';
+					}
+					str1+='</ul>';
+					str1+='</div>';
+				
+			}
+			
+			$("#efficiencyId").html(str);
+			$('.slickSliderDayWise').slick({
+						slide: 'li',
+						slidesToShow: 6,
+						slidesToScroll: 3,
+						infinite: false,
+						swipe:false,
+						touchMove:false,
+						variableWidth: false
+					});
+			$("#efficiencyRangeId").html(str1);
+			$('.slickSliderRange').slick({
+						slide: 'li',
+						slidesToShow: 6,
+						slidesToScroll: 3,
+						infinite: false,
+						swipe:false,
+						touchMove:false,
+						variableWidth: false
+					});
 	});
 }
+$(document).on("change",".grievanceEffOnchange",function(){ 
+    getCadreGreivienceEfficiency(sliderVa1);
+}); 
