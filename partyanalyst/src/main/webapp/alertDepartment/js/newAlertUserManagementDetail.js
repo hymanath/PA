@@ -1484,9 +1484,9 @@ function rightSideExpandView(alertId)
 							str+='<div class="col-sm-8 pull-right" style="">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
 									
-									str+='<li data-toggle="tooltip" data-placement="top" title="main departments" id="departDivId" style="display:none;">';
-										str+='<span class="status-icon arrow-icon"></span><span id="mainDeprtmntId" attr_alert_id="'+alertId+'">Departments</span>';
-									str+='</li>';
+									/*str+='<li data-toggle="tooltip" data-placement="top" title="Departments" id="departDivId" style="display:none;">';
+										str+='<span class=""></span><span id="mainDeprtmntId" attr_alert_id="'+alertId+'"><i class="fa fa-empire" aria-hidden="true"></i></span>';
+									str+='</li>'; */
 									
 									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
@@ -3744,11 +3744,12 @@ function assignUser(alertId)
 	$("#assignedUser").html(str);
 	$(".chosenSelect").chosen({width:'100%'});
 	$('#displayAssignIconId').show();
+	
 	getDepartmentDetailsOfAlert(alertId);
 }
+
 function getDepartmentDetailsOfAlert(alertId)
 {
-	
 	var jsObj={
 		alertId : alertId
 	}
@@ -4813,15 +4814,17 @@ function buildMainDepartmentsPopup(alertId){
 			//str+='<option value="49">RWS</option>';
 		str+='</select>';
 	str+='</div>';
-	str+='<div class="col-sm-6">';
-		str+='<button class="btn btn-sm saveBtnCls" attr_alert_id="'+alertId+'">SAVE</button>';
 	str+='</div>';
-	str+='</div>';
+	//str+='<div class="col-sm-2">';
+		$("#saveButtonAssignDept").html('<button class="btn btn-default saveBtnCls" attr_alert_id="'+alertId+'">SAVE</button>')
+		
+		//str+='<button class="btn btn-sm saveBtnCls" attr_alert_id="'+alertId+'">SAVE</button>';
+	//str+='</div>';
 	$("#alertDepartmentsPopupBody").html(str);
-	getDepartmentDetailsOfAlert();
+	getAllMainDepartments();
 }
 
-function getDepartmentDetailsOfAlert()
+function getAllMainDepartments()
 {
 	var jsObj={
 	}
@@ -4838,6 +4841,7 @@ function getDepartmentDetailsOfAlert()
 				    newStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
 				}
 				$("#newDepartmentId").html(newStr);
+				$("#newDepartmentId").chosen();
 				$("#newDepartmentId").trigger("chosen:updated");
 			}
 		
@@ -4859,16 +4863,18 @@ $(document).on("click",".saveBtnCls",function(){
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-			if(result !=null && result.length>0){
-				var newStr='';
-				newStr+='<option value="0">Select Department</option>';
-				for(var i in result){
-				    newStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
-				}
-				$("#newDepartmentId").html(newStr);
-				$("#newDepartmentId").trigger("chosen:updated");
-			}
-		
+		if(result != null && result == 'success')
+		{
+			$("#assignDeptSuccessMsg").html('Assign Department Updated Successfully');
+			setTimeout(function(){
+				$( "#assignDeptSuccessMsg" ).fadeOut( "slow", function() {});
+				$("#alertDeprtmntPopup").modal('hide');
+				rightSideExpandView(alertId);
+			},1500);
+			  
+		}else{
+			alert("Please try again")
+		}
 	});
 });
 	
