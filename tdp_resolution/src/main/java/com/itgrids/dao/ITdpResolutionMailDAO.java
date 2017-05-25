@@ -4,7 +4,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.model.TdpResolutionMail;
 
-public interface ITdpResolutionMailDAO extends GenericDao<TdpResolutionMail,Integer> {
+public interface ITdpResolutionMailDAO extends GenericDao<TdpResolutionMail,Long> {
 	
 	
 
