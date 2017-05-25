@@ -6055,7 +6055,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		queryStr.append(" where ");
  		queryStr.append(" A.alert_id = AAO.alert_id and A.is_deleted='N'  ");
  		queryStr.append(" and A.alert_category_id = ALTC.alert_category_id  ");
- 		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+ 		
  		queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
  		queryStr.append(" and A.alert_type_id in ("+IConstants.GOVT_ALERT_TYPE_ID+")  ");
  		
@@ -6066,8 +6066,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		queryStr.append(" and GUA.user_address_id = GDWL.govt_user_address_id  ");
  		queryStr.append(" and GDDO.address_id = GUA.user_address_id  ");
  		if(feedbackType != null && feedbackType.trim().equalsIgnoreCase("pending")){
- 			queryStr.append(" and ALTS.alert_status_id in (4,12) ");
- 			queryStr.append(" and AAO.alert_status_id in (4,12) ");
+ 			queryStr.append(" and ALTS.alert_status_id in (12) ");
+ 			queryStr.append(" and AAO.alert_status_id in (12) ");
+ 			queryStr.append(" and A.alert_category_id in (4,5)  ");
+ 		}else{
+ 			queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
  		}
  		
  		if(deptScopeIdList != null && deptScopeIdList.size() > 0){
@@ -6248,7 +6251,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	if(source != null && source.longValue() > 0L){
 		queryStr.append(" and A.alert_category_id =:source  ");
 	}else{
-		queryStr.append(" and A.alert_category_id in ("+IConstants.GOVT_ALERT_CATEGORY_ID+")  ");
+		queryStr.append(" and A.alert_category_id in (4,5)  ");  
 	}
 	
 	queryStr.append(" and A.alert_type_id = ALTT.alert_type_id  ");
@@ -6319,7 +6322,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     }
  	
 	if(statusId != null && statusId.longValue() == 4l){
-		queryStr.append(" and ALTFS.alert_feedback_status_id in (2,3)  ");
+		queryStr.append(" and ALTFS.alert_feedback_status_id in (1,2,3)  ");
+		queryStr.append(" and A.alert_status_id = 12 and AAO.alert_status_id = 12");      
 	}else if(statusId != null && statusId.longValue() > 0l){
 		queryStr.append(" and ALTFS.alert_feedback_status_id = :statusId   ");
 	}
