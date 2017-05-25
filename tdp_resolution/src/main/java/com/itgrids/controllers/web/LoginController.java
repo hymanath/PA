@@ -2,10 +2,17 @@ package com.itgrids.controllers.web;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.google.gson.JsonObject;
+import com.itgrids.rest.Response;
+import com.itgrids.service.ExampleService;
+import com.itgrids.service.IResolutionmailservice;
 
 @EnableAutoConfiguration
 @Controller
@@ -13,9 +20,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LoginController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+	@Autowired
+	private IResolutionmailservice resolutionmailservice;
 	
 	@RequestMapping(value = "/loginPage", method = RequestMethod.GET)
     public String viewLogin() {
         return "login";
+    }
+	@RequestMapping(value = "/resolutionMail", method = RequestMethod.GET)
+    public String viewSent() {
+        return "sentResolution";
+    }
+	@RequestMapping(value = "/sentresolutionMail", method = RequestMethod.POST)
+    public Response sentMail(@RequestBody String json) {
+		Response response = null;
+
+		try {
+			response = new Response(200, "success", resolutionmailservice.sentmail(json));
+			return response;
+		} catch (Exception e) {
+			LOG.error("Error in getting example", e);
+			response = new Response(207, "Failed", e.getMessage());
+			return response;
+		}
+
     }
 }
