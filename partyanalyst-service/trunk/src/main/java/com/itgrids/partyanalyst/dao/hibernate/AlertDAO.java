@@ -10036,4 +10036,20 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		return (Alert)query.uniqueResult();
 	 		
 	 	}
+	 	public List<Object[]> getMondayGrievanceTypeList(){
+	    	Query query = getSession().createQuery("select model.mondayGrievanceTypeId,model.type from MondayGrievanceType model ");
+	    	return query.list();
+	    }
+	 	public List<Object[]> getJanmabhoomiTypeList(){
+	    	Query query = getSession().createQuery("select model.janmabhoomiTypeId,model.type from JanmabhoomiType model ");
+	    	return query.list();
+	    }
+	 	public List<Object[]> getSpecialGrievanceTypeList(){
+	    	Query query = getSession().createQuery("select model.specialGrievanceTypeId,model.type from SpecialGrievanceType model ");
+	    	return query.list();
+	    }
+	 	public List<Object[]> getGeneralGrievanceTypeList(){
+	    	Query query = getSession().createQuery("select model.generalGrievanceTypeId,model.type from GeneralGrievanceType model ");
+	    	return query.list();
+	    }
 }
