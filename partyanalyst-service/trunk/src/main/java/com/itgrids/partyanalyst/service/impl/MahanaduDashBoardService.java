@@ -1568,7 +1568,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return voList;
 	}
 	
-	public List<CandidateDetailsVO> getCandidateDetails(Long designationId,String inviteeType,Long eventId,String day,String roleType,String level){
+	public List<CandidateDetailsVO> getCandidateDetails(Long designationId,String inviteeType,Long eventId,String day,String roleType,String level,List<Long> enrollmentYearIds){
 		List<CandidateDetailsVO> resultVOList = new ArrayList<CandidateDetailsVO>(0);
 		try {
 			//get candidate details for invitees
@@ -1576,13 +1576,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			if(inviteeType.equalsIgnoreCase("total")){
 				//0-tdpCadreId,1-name,2-publicRepresentativeTypeId,3-type,4-levelId,5-levelValue
 				if(roleType.equalsIgnoreCase("PR"))
-			    cadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId);
+			    cadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("CommitteeLevel"))
-					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId);
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("CommitteeRole"))
-					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level);
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("affliatedCommittee"))
-					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level);
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level,enrollmentYearIds);
 				
 				if(cadreIds != null && cadreIds.size() > 0){
 					getCandidateDetailsByCadreIds(cadreIds,resultVOList,null,eventId,roleType);
@@ -1593,13 +1593,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				if(day != null && !day.isEmpty())
 				 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
 				if(roleType.equalsIgnoreCase("PR"))
-				cadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,date,designationId);
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,date,designationId,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("CommitteeLevel"))
-					cadreIds =eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,date,designationId);	
+					cadreIds =eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,date,designationId,enrollmentYearIds);	
 				if(roleType.equalsIgnoreCase("CommitteeRole"))
-					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,date,designationId,level);
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("affliatedCommittee"))	
-					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level);
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
 				
 					if(cadreIds != null && cadreIds.size() > 0){
 					getCandidateDetailsByCadreIds(cadreIds,resultVOList,date,eventId,roleType);
@@ -1613,28 +1613,28 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				if(roleType.equalsIgnoreCase("PR"))
 					{
 					
-						 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId);
-						 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,date,designationId);
+						 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId,enrollmentYearIds);
+						 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,date,designationId,enrollmentYearIds);
 					}
 				if(roleType.equalsIgnoreCase("CommitteeLevel"))
 				{
 				
-					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,date,designationId);	
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId,enrollmentYearIds);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,date,designationId,enrollmentYearIds);	
 				}
 				
 				if(roleType.equalsIgnoreCase("CommitteeRole"))
 				{
 				
-					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,date,designationId,level);
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level,enrollmentYearIds);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
 				}
 				
 				if(roleType.equalsIgnoreCase("affliatedCommittee"))
 				{
 				
-					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level);
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level,enrollmentYearIds);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
 				}
 				if(totalCadreIds != null && attendedCadreIds != null){
 					totalCadreIds.removeAll(attendedCadreIds);
@@ -1848,7 +1848,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				  for( int i=0;i<betweenDates.size();i++){
 					  MahanaduEventVO dayVO = new MahanaduEventVO();
 					  dayVO.setName("Day"+(i+1));
-					  if(dayMap.get(format.format(betweenDates.get(i))) != null)
+					  if(dayMap != null && dayMap.get(format.format(betweenDates.get(i))) != null)
 					  dayVO.setTotalDaydataExist(true);
 					  else
 					  dayVO.setTotalDaydataExist(false);

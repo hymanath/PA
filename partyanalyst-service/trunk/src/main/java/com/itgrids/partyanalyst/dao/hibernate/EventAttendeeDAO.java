@@ -493,13 +493,22 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return query.list();
 	}
 
-	public List<Object[]> getMembersDetailsBySubEvent(Long eventId,Date startDate,Date endDate,Integer startIndex,Integer maxIndex)
+	public List<Object[]> getMembersDetailsBySubEvent(Long eventId,Date startDate,Date endDate,Integer startIndex,Integer maxIndex,List<Long> enrollmentYearIds)
 	{
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select distinct model.tdpCadre.tdpCadreId,model.tdpCadre.firstname,model.tdpCadre.userAddress.constituency.name,model.tdpCadre.mobileNo,model.tdpCadre.image ");
-		str.append(" from EventAttendee model where ");
-		str.append(" model.event.eventId = :eventId and  model.event.isActive =:isActive and model.tdpCadre.isDeleted = 'N' ");
+		str.append(" from EventAttendee model ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+		}
+		
+		str.append(" where model.tdpCadre.isDeleted = 'N' ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId = (:enrollmentYearIds) ");
+		}
+		str.append(" and model.event.eventId = :eventId and  model.event.isActive =:isActive ");
+		
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
@@ -525,6 +534,9 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		if(maxIndex != null)
 			query.setMaxResults(maxIndex);
 		query.setParameter("isActive", IConstants.TRUE);
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
 		return query.list();
 	}
 		
@@ -786,12 +798,19 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		return query.list();
 	}
 	
-	public List<Object[]> getStateCount(Long eventId,Date startDate,Date endDate)
+	public List<Object[]> getStateCount(Long eventId,Date startDate,Date endDate,List<Long> enrollmentYearIds)
 	{
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.tdpCadre.userAddress.constituency.district.districtId,count(distinct model.tdpCadre.tdpCadreId),date(model.attendedTime) ");
-		str.append("  from EventAttendee model where model.event.eventId = :eventId");
+		str.append("  from EventAttendee model ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+		}
+		str.append(" where model.event.eventId = :eventId");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+		}
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
@@ -814,15 +833,25 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		}
 		query.setParameter("eventId", eventId);
 		query.setParameter("isActive", IConstants.TRUE);
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
 		return query.list();
 	}
 	
-	public List<Object[]> getOtherStateCount(Long eventId,Date startDate,Date endDate)
+	public List<Object[]> getOtherStateCount(Long eventId,Date startDate,Date endDate,List<Long> enrollmentYearIds)
 	{
 		
 		StringBuilder str = new StringBuilder();
-		str.append("select count(distinct model.tdpCadre.tdpCadreId),model.tdpCadre.userAddress.state.stateId,model.tdpCadre.userAddress.state.stateName,date(model.attendedTime) from EventAttendee model where model.event.eventId =:eventId");
-		
+		str.append("select count(distinct model.tdpCadre.tdpCadreId),model.tdpCadre.userAddress.state.stateId,model.tdpCadre.userAddress.state.stateName,date(model.attendedTime) " +
+				" from EventAttendee model ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+		}
+		str.append(" where model.event.eventId =:eventId ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size()  > 0){
+			str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted='N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+		}
 		if((startDate != null && endDate != null))
 		{
 			if(startDate.equals(endDate))
@@ -845,6 +874,9 @@ public List<Object[]> getHourWiseVisitorsCount(Long parentEventId,Date date,List
 		
 		query.setParameter("eventId", eventId);
 		query.setParameter("isActive", IConstants.TRUE);
+		if(enrollmentYearIds != null && enrollmentYearIds.size()  > 0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
 		return query.list();
 	}
 		
@@ -1789,14 +1821,20 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		return query.list();
 	}
 	
-	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId){
+	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId,List<Long> enrollmentYearIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.tdpCadreId " +
-				" from EventAttendee model,TdpCadreCandidate tcc,PublicRepresentative pr " +
-				" where " +
+				" from EventAttendee model,TdpCadreCandidate tcc,PublicRepresentative pr ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+		}
+		str.append(" where " +
 				" model.tdpCadreId = tcc.tdpCadreId " +
-				" and tcc.candidateId=pr.candidateId " +
-				" and  pr.publicRepresentativeTypeId=:designationId " +
+				" and tcc.candidateId=pr.candidateId ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+		}
+		str.append(" and  pr.publicRepresentativeTypeId=:designationId " +
 				" and model.event.parentEventId=:eventId " +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		if(date != null)
@@ -1806,7 +1844,9 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		if(date != null)
 		query.setDate("date", date);
 		query.setParameter("designationId", designationId);
-		
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
 		return query.list();
 	}
 	
@@ -1837,13 +1877,18 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		return query.list();
 	}
 	
-	public List<Long> getCadreIdsForAttendeesForCommitteeLevel(Long eventId,Date date,Long committeeLevelId){
+	public List<Long> getCadreIdsForAttendeesForCommitteeLevel(Long eventId,Date date,Long committeeLevelId,List<Long> enrollmentYearIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.tdpCadreId " +
-				" from EventAttendee model,TdpCommitteeMember TCM ,EventInvitee ei" +
-				" where " +
-				"  ei.tdpCadreId=TCM.tdpCadreId  and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId" +
-				" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=:committeeLevelId " +
+				" from EventAttendee model,TdpCommitteeMember TCM ,EventInvitee ei ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+		}
+		str.append(" where ei.tdpCadreId=TCM.tdpCadreId  and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(" and ei.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted='N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+		}
+		str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=:committeeLevelId " +
 				" and model.event.parentEventId=:eventId and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive" +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		if(date != null)
@@ -1854,16 +1899,25 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		query.setDate("date", date);
 		query.setParameter("committeeLevelId", committeeLevelId);
 		query.setParameter("isActive", IConstants.TRUE);
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
 		return query.list();
 	}
 	
-	public List<Long> getCadreIdsForAttendeesForCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel){
+	public List<Long> getCadreIdsForAttendeesForCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.tdpCadreId " +
-				" from EventAttendee model,TdpCommitteeMember TCM,EventInvitee ei " +
-				"  where model.event.parentEventId=:eventId " +
-				" and ei.tdpCadreId=TCM.tdpCadreId and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId " +
-				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
+				" from EventAttendee model,TdpCommitteeMember TCM,EventInvitee ei ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+		}
+		str.append("  where  " +
+				" ei.tdpCadreId=TCM.tdpCadreId and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(" and ei.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+		}
+		str.append(" and model.event.parentEventId=:eventId and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1" +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
 				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
@@ -1879,16 +1933,25 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		if(date != null)
 		query.setDate("date", date);
 		query.setParameter("isActive", IConstants.TRUE);
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
 		return query.list();
 	}
 	
-	public List<Long> getCadreIdsForAttendeesForAffliatedCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel){
+	public List<Long> getCadreIdsForAttendeesForAffliatedCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.tdpCadreId " +
-				" from EventAttendee model,TdpCommitteeMember TCM,EventInvitee ei " +
-				"  where model.event.parentEventId=:eventId " +
-				" and ei.tdpCadreId=TCM.tdpCadreId and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId " +
-				" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
+				" from EventAttendee model,TdpCommitteeMember TCM,EventInvitee ei ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(",TdpCadreEnrollmentYear cadreEnrollmentYear ");
+		}
+		str.append("  where  " +
+				"  ei.tdpCadreId=TCM.tdpCadreId and model.event.parentEventId = ei.event.eventId and model.tdpCadre.tdpCadreId = ei.tdpCadre.tdpCadreId ");
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			str.append(" and ei.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+		}
+		str.append(" and model.event.parentEventId=:eventId and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1" +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
 				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
@@ -1904,6 +1967,9 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		if(date != null)
 		query.setDate("date", date);
 		query.setParameter("isActive", IConstants.TRUE);
+		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
+			query.setParameterList("enrollmentYearIds", enrollmentYearIds);
+		}
 		return query.list();
 	}
 	

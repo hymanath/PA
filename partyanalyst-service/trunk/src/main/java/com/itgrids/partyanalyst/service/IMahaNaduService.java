@@ -45,12 +45,12 @@ public interface IMahaNaduService {
 	 public List<MahanaduEventVO> getEventInfoByReportType(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate,String dataRetrievingType,Long parentEventId,String eventType);
 	 public List<MahanaduEventVO> getDayWiseSubEventsCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate,List<Long> enrollmentYearIds);
 	 public List<MahanaduEventVO> getSubEvent(Long eventId);
-	 public List<MahanaduEventVO> getMembersDetailsBySubEvent(Long eventId,String startDate,String endDate,Integer startIndex,Integer maxIndex);
+	 public List<MahanaduEventVO> getMembersDetailsBySubEvent(Long eventId,String startDate,String endDate,Integer startIndex,Integer maxIndex,List<Long> enrollmentYearIds);
 	 public String updateTabAllocationDetails(Long authId,String cause,Long userId);
 	 public List<CadreRegisterInfo> getAuthDetails(Long id,String variable);
 	 public List<MahanaduEventVO> getAttendeeSummaryForEvents(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds,String startDate,String endDate);
 	 public List<MahanaduEventVO> getOtherStateDeligatesCount(Long parentEventId,List<Long> subEventIds,String startDate,String endDate);
-	 public List<MahanaduEventVO> getStatewiseCount(Long eventId,String startDate,String endDate);
+	 public List<MahanaduEventVO> getStatewiseCount(Long eventId,String startDate,String endDate,List<Long> enrollmentYearIds);
 	 public PartyMeetingVO getParticipatedCandidateEventDetails(Long tdpCadreId);
 	 public List<MahanaduEventVO> getAttendeeSummaryForEventsList(Long eventId,Long stateId,Long reportLevelId,List<Long> subEventIds);
 	 public List<IdNameVO> getSubEventsOfEvent(Long eventId);
