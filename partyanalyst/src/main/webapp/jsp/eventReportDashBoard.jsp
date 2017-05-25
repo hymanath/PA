@@ -112,8 +112,8 @@ table{margin-bottom:0px !important;}
 						<option value="0">Select Event</option>
 						<option value="7" >Mahanadu - 2015</option>
 						<option value="30" >Mahanadu - 2016</option>
-						<option value="51">Mahanadu - 2017</option>
-						<option value="58" selected>T-Mahanadu - 2017</option>
+						<option value="51" selected>Mahanadu - 2017</option>
+						<option value="58" >T-Mahanadu - 2017</option>
 					</select>
 				</div>
 				

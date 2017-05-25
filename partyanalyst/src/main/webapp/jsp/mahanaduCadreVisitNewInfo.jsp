@@ -73,8 +73,8 @@
 					<option value="0">Select Event</option>
 					<option value="7" >Mahanadu - 2015</option>
 					<option value="30" >Mahanadu - 2016</option>
-					<option value="51">Mahanadu - 2017</option>
-					<option value="58" selected>T-Mahanadu - 2017</option>
+					<option value="51" selected>Mahanadu - 2017</option>
+					<option value="58" >T-Mahanadu - 2017</option>
 				</select>				
 				<select style="height:32px;display:inline-block;width:100px;" class="form-control" id="eventDatesSelectId"></select>
 			</div>
@@ -520,7 +520,15 @@ $(".panelDefault").height(maxHeight);
 	
 	function allCalls(){
 		enrollmentIdsArr=[];
-		enrollmentIdsArr.push($('#enrollmentId').val());
+
+		var enrollmentId=$('#enrollmentId').val();
+		if(enrollmentId ==null || parseInt(enrollmentId)==0){
+			enrollmentIdsArr.push(3);
+			enrollmentIdsArr.push(4);
+		}else{
+			enrollmentIdsArr.push(enrollmentId);
+		}
+		
 		
 		getDaysUniqueAndRevisitSummary();	
         getTodayTotalVisitors(); 
@@ -1457,7 +1465,13 @@ function generateExcel1(){
 
 $(document).on("change","#enrollmentId",function(){
 	enrollmentIdsArr=[];
-	enrollmentIdsArr.push($(this).val());
+	var enrollmentId=$('#enrollmentId').val();
+	if(enrollmentId ==null || parseInt(enrollmentId)==0){
+		enrollmentIdsArr.push(3);
+		enrollmentIdsArr.push(4);
+	}else{
+		enrollmentIdsArr.push(enrollmentId);
+	}
 	$( "#mainEventSelectId" ).trigger('change');
 });
 
