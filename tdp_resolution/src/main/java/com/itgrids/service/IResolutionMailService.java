@@ -1,7 +1,10 @@
 package com.itgrids.service;
 
-public interface IResolutionMailService{
+import com.itgrids.dto.TdpResolutionVo;
 
-	public String sentEmails(String json);
+public interface IResolutionMailService {
+
+		public String sentEmails(TdpResolutionVo tdpResolutionVo);
+
 
 }
