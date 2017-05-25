@@ -16,7 +16,7 @@ var subLevels = [];
 var globalAlertSeverityIdsArr = [];
 var globalAlertStatusIdsArr = [];
 var globalAlertSubTaskStatusIdsArr = [];
-
+var globalDepartmentObj;
 
 //var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 //var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><img src="alertDepartment/img/alert logo.png" alt="alert Logo"  class="alert-logo"/></div></div>';
@@ -248,36 +248,139 @@ function onLoadInitialisations()
 	});
 	
 	$(document).on("click",".getTotalAlertBylocationLvlThenDept",function(){
-		$("#totalAlertsModalTabId").html(spinner);
-		$("#alertManagementPopup").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
 		var statusId = $(this).attr("attr_status_id");
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
-		getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,departmentId);
-		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
+		$(".hiddenDiv").hide();
+		$("#subDepartmentsBlockDiv"+statusId).toggle();
+		var childDepts="";
+		if(globalDepartmentObj != null && globalDepartmentObj.length > 0){
+			for(var i in globalDepartmentObj){
+				if(globalDepartmentObj[i].id==statusId){
+					childDepts = globalDepartmentObj[i].subList1;
+				}
+			} //departmentId - > statusId
+			  //statusId - > deptId
+		}
+		if(childDepts != null && childDepts.length > 0){
+			/* $("#subLevelDeptDivId").html(spinner);
+			$("#childDeptSummaryModalId").modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+			}); */
+			buildSubLevelDepartment(childDepts,departmentId,"department",statusId);
+		}else{
+			$("#totalAlertsModalTabId").html(spinner);
+			$("#alertManagementPopup").modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
+			getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,departmentId);
+			getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
+		}
 	});
 	$(document).on("click",".getTotalAlertByStatusThenDept",function(){
-		$("#totalAlertsModalTabId").html(spinner);
-		$("#alertManagementPopup").modal({
-			show: true,
-			keyboard: false,
-			backdrop: 'static'
-		});
+		var childDeptValue = $(this).attr("attr_child_dept_value");
+		
 		var statusId = $(this).attr("attr_status_id");
 		var statusName = $(this).attr("attr_status_name");
 		var statuscount = $(this).attr("attr_status_count");
 		var departmentId = $(this).attr("attr_department_id");
-		getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmentId);
-		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
+		$(".hiddenDiv").hide();
+		$("#subDepartmentsBlockDiv"+statusId).toggle();
+		var childDepts="";
+		if(globalDepartmentObj != null && globalDepartmentObj.length > 0){
+			for(var i in globalDepartmentObj){
+				if(globalDepartmentObj[i].id==statusId){
+					childDepts = globalDepartmentObj[i].subList1;
+				}
+			} //departmentId - > statusId	
+			  //statusId - > deptId
+		}
+		if(childDepts != null && childDepts.length > 0){
+			/* $("#subLevelDeptDivId").html(spinner);
+			$("#childDeptSummaryModalId").modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+			}); */
+			buildSubLevelDepartment(childDepts,departmentId,"status",statusId);
+		}else{
+			$("#totalAlertsModalTabId").html(spinner);
+			$("#alertManagementPopup").modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
+		 getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmentId);
+		 getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
+		}
+	});
+	
+	
+	$(document).on("click",".getTotalAlertByStatusWisechildType",function(){
+		
+		var statusId = $(this).attr("attr_status_id");
+		var statusName = $(this).attr("attr_status_name");
+		var statuscount = $(this).attr("attr_status_count");
+		var departmentId = $(this).attr("attr_department_id");
+		
+			$("#totalAlertsModalTabId").html(spinner);
+			$("#alertManagementPopup").modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
+		 getTotalAlertByStatusThenDept(statusId,statusName,statuscount,departmentId);
+		 getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
+		
+	});
+	
+	$(document).on("click",".getTotalAlertByLevelWisechildType",function(){
+		
+		var statusId = $(this).attr("attr_status_id");
+		var statusName = $(this).attr("attr_status_name");
+		var statuscount = $(this).attr("attr_status_count");
+		var departmentId = $(this).attr("attr_department_id");
+			$("#totalAlertsModalTabId").html(spinner);
+			$("#alertManagementPopup").modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
+			getTotalAlertBylocationLvlThenDept(statusId,statusName,statuscount,departmentId);
+			getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
+		
 	});
 	
 }
-
+function buildSubLevelDepartment(deptObj,departmentId,type,statusId){
+	$("#subDepartmentsBlockDiv"+statusId).html('');
+	var str = '';
+	str+='<div class="row">';
+		str+='<div class="col-sm-12 m_top10">';
+			str+='<ul style="list-style:none;" class="textAlignDepartment">';
+			for(var i in deptObj){
+				if(deptObj[i].alertCnt > 0){
+						if(type == "status"){
+							str+='<li style="cursor:pointer;" class="getTotalAlertByStatusWisechildType" attr_status_id="'+deptObj[i].id+'"  attr_department_id="'+departmentId+'"  attr_status_name="'+deptObj[i].name+'" attr_status_count="'+deptObj[i].alertCnt+'"><span  data-toggle="tooltip" data-placement="top" title="'+deptObj[i].name+'">'+deptObj[i].name.substring(0,40)+'...</span>'; 
+							str+='<span style="cursor:pointer;color:#ee935d;" class="pull-right" >'+deptObj[i].alertCnt+'</span></li>';
+						}else if(type == "department"){
+							str+='<li style="cursor:pointer;" class="getTotalAlertByLevelWisechildType" attr_status_id="'+deptObj[i].id+'"  attr_department_id="'+departmentId+'"  attr_status_name="'+deptObj[i].name+'" attr_status_count="'+deptObj[i].alertCnt+'"><span  data-toggle="tooltip" data-placement="top" title="'+deptObj[i].name+'">'+deptObj[i].name.substring(0,40)+'...</span>'; 
+							str+='<span style="cursor:pointer;color:#ee935d;" class="pull-right" >'+deptObj[i].alertCnt+'</span></li>';
+						}
+						
+				}
+							
+			}
+			str+='</ul>';
+		str+='</div>';
+	str+='</div>';	
+	$("#subDepartmentsBlockDiv"+statusId).html(str);
+}
 function responsiveTabs()
 {
 	var $this = $(this);
@@ -706,6 +809,7 @@ function getDepartmentScope()
 
 function getDepartmentWiseAlertOverviewCnt(type,id)
 {
+	globalDepartmentObj=""; 
 	var alertStatusIdArr = [];
 	var deptScopeLevelIdArr = [];
 	if(type== 'status')
@@ -741,6 +845,7 @@ function getDepartmentWiseAlertOverviewCnt(type,id)
 		url: 'getDepartmentWiseAlertOverviewCntAction.action',
 		data: {task :JSON.stringify(jsObj)}
     }).done(function(result){
+		 globalDepartmentObj = result;
 		if(result != null && result.length > 0)
 		{
 			buildDepartmentWiseAlertOverviewCnt(result,type,id);
@@ -760,20 +865,21 @@ function buildDepartmentWiseAlertOverviewCnt(result,type,id)
 						str+='<ul style="list-style:none;" class="textAlignDepartment dynamicHeightApply">';
 						for(var i in result)
 						{
+							
 							if(result[i].name !=null && result[i].name.length > 40){
 								if(type== 'status')
 								{
-									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getTotalAlertByStatusThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';  
+									str+='<li class="getTotalAlertByStatusThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" style="cursor:pointer;"><span  data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span  class="pull-right">'+result[i].alertCnt+'</span><div id="subDepartmentsBlockDiv'+result[i].id+'" style="display:none;" class="hiddenDiv"></div></li>';  
 								}else if(type == 'department'){
-									str+='<li><span style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span style="cursor:pointer;" class="pull-right getTotalAlertBylocationLvlThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"   attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';  
+									str+='<li class="getTotalAlertBylocationLvlThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"   attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" style="cursor:pointer;" ><span data-toggle="tooltip" data-placement="top" title="'+result[i].name+'">'+result[i].name.substring(0,40)+'...</span> <span  class="pull-right ">'+result[i].alertCnt+'</span><div id="subDepartmentsBlockDiv'+result[i].id+'" style="display:none;" class="hiddenDiv"></div></li>';  
 								}
 								
 							}else{
 								if(type== 'status')
 								{
-									str+='<li>'+result[i].name+' <span style="cursor:pointer;" class="pull-right getTotalAlertByStatusThenDept" attr_department_id="'+id+'"  attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';
+									str+='<li class="getTotalAlertByStatusThenDept" attr_department_id="'+id+'"  attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" style="cursor:pointer;">'+result[i].name+' <span  class="pull-right" >'+result[i].alertCnt+'</span><div id="subDepartmentsBlockDiv'+result[i].id+'" style="display:none;" class="hiddenDiv"></div></li>';
 								}else if(type == 'department'){
-									str+='<li>'+result[i].name+' <span style="cursor:pointer;" class="pull-right getTotalAlertBylocationLvlThenDept"  attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" >'+result[i].alertCnt+'</span></li>';
+									str+='<li class="getTotalAlertBylocationLvlThenDept" attr_department_id="'+id+'" attr_status_id="'+result[i].id+'"  attr_status_name="'+result[i].name+'" attr_status_count="'+result[i].alertCnt+'" style="cursor:pointer;">'+result[i].name+' <span  class="pull-right" >'+result[i].alertCnt+'</span><div id="subDepartmentsBlockDiv'+result[i].id+'" style="display:none;" class="hiddenDiv"></div></li>';
 								}
 								
 							}
