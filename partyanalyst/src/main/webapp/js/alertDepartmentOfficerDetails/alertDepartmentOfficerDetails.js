@@ -99,8 +99,9 @@ function getLevelWiseAlerts(result,departmentId){
 			getStateThenGovtDeptScopeWiseAlertCount(departmentId,result[0].subList1[i].id,"statusWise","alert","","count","desc",0,0,"","",0,i,"overall");
 		}
 	}
-}      
-function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartmentScopeId,searchType,alertType,divId,sortingType,orderType,filterParentScopeId,filterScopeValue,actionType,selectionType,locationLevelId,position,callType){      
+}
+//getStateThenGovtDeptScopeWiseAlertCount(49,5,"statusWise","alert","","count","desc",0,0,"","",0,0,"overall");   
+function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartmentScopeId,searchType,alertType,divId,sortingType,orderType,filterParentScopeId,filterScopeValue,actionType,selectionType,locationLevelId,position,callType){
 	 var source = $("#selectMediaId").val();
 	
 	 var locationLevelIdArr=[];
@@ -261,17 +262,15 @@ function buildHighchart(divId,statusNamesArray,statusIdNameArr,parentGovtDepartm
 					 point: {
 						events: {
 							 click: function () {
-								var value = (this.extra).split("-");
-								if(parentGovtDepartmentScopeId == 1){
+									var value = (this.extra).split("-");
 									var alertType = value[0];
-									var locationValId =0;
-									var filterParentScopeId =0;
+									var locationValId =0;     
+									var filterParentScopeId =0;   
 									var filterScopeValue =0;
 									var statusName = value[1];
 									var statusId = value[2];
 									var totalCount = value[3];
-								}
-								getAlertDetailsForGrievanceReportClick(parentGovtDepartmentScopeId,alertType,locationValId,filterParentScopeId,filterScopeValue,statusId,statusName,totalCount)
+									getAlertDetailsForGrievanceReportClick(parentGovtDepartmentScopeId,alertType,locationValId,filterParentScopeId,filterScopeValue,statusId,statusName,totalCount)
 							 }
 						 }
 					 }
@@ -425,7 +424,7 @@ $(document).on("click",".getAlertDetailsCls",function(){
 		getAlertDetailsForGrievanceReportClick(parentId,alertType,locationValId,filterParentScopeId,filterScopeValue,statusId,statusName,totalCount)
 		
 });
-function getAlertDetailsForGrievanceReportClick(parentId,alertType,locationValId,filterParentScopeId,filterScopeValue,statusId,statusName,totalCount){      
+function getAlertDetailsForGrievanceReportClick(parentId,alertType,locationValId,filterParentScopeId,filterScopeValue,statusId,statusName,totalCount){  
 	var source = $("#selectMediaId").val();
 	var newspapersGlobalArr =[];
 	var channelGlobalArr =[];
@@ -458,7 +457,7 @@ function getAlertDetailsForGrievanceReportClick(parentId,alertType,locationValId
 		govtDepartmentId : departmentId,
 		parentGovtDepartmentScopeId : parentId,//result.sublist[0]
 		sortingType :"",
-		order :"",
+		order :"",             
 		alertType :alertType,//alert-graph,feedback,reopen
 		group :"status",//status
 		subLevels:locationLevelIdArr,   
