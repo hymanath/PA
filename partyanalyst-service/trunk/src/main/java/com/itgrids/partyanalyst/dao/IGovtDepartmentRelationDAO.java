@@ -8,4 +8,5 @@ import com.itgrids.partyanalyst.model.GovtDepartmentRelation;
 
 public interface IGovtDepartmentRelationDAO extends GenericDao<GovtDepartmentRelation, Long>{
 	public List<Object[]> getAllMainDepartments();
+	public List<Object[]> getSubDeptsForParentDept(Long parentDeptId);
 }
