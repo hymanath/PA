@@ -600,10 +600,14 @@ eventUpdate();
 var dpCurentDate;
 var formatedDpCurentDate;
  $(document).ready(function() {
-		if($("#enrollmentYearSelId").val() != 0)
+		if($("#enrollmentYearSelId").val() == 0){
+			enrollmentYearIdsArrGlob.push(3);
+			enrollmentYearIdsArrGlob.push(4);
+		}else{
 			enrollmentYearIdsArrGlob.push($("#enrollmentYearSelId").val());
-		
-                  var cb = function(start, end, label) {
+		}
+			
+			      var cb = function(start, end, label) {
                     //alert(start.toISOString(), end.toISOString(), label);
                     $('#reportrange span').html(start.format('D MMMM,YYYY') + ' - ' + end.format('D MMMM,YYYY'));
 					
@@ -1746,7 +1750,12 @@ function buildStartingPrograms(result,parentEventId){
 				str+='<ul class="spanBorderRight">';
 				for(var j in result[i].subList){
 					if(result[i].subList[j].attendees !=null && result[i].subList[j].attendees > 0){
-						str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';  
+						if(result[i].id == 56 || result[i].id == 57){//dias entry and exit
+							str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;<span class="dayCountClickCls" attr_day_date="'+result[i].subList[j].dateStr+'" attr_event_id="'+result[i].id+'">'+result[i].subList[j].attendees+'</span></li>';
+						}else{
+							str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';
+						}
+						  
 					}else{
 						str+='<li>'+result[i].subList[j].name+' : -  </li>'; 
 					}
@@ -1891,7 +1900,13 @@ $('#donutchart').removeClass("errorDiv");
 }
 
  function eventUpdate(checkDateChange){
-	
+	enrollmentYearIdsArrGlob=[];
+	if($("#enrollmentYearSelId").val() == 0){
+			enrollmentYearIdsArrGlob.push(3);
+			enrollmentYearIdsArrGlob.push(4);
+		}else{
+			enrollmentYearIdsArrGlob.push($("#enrollmentYearSelId").val());
+		}
 	 if(checkDateChange != 'dateChange')
 	 updateDatesButton();
 	 
@@ -3031,7 +3046,23 @@ function getPublicrepresentatives(){
 			$("#publicRepresentativeDiv").html("NO DATA AVAILABLE");
 		}
 	} 
-
+	
+	$(document).on("click",".dayCountClickCls",function(){
+		var jsObj = {
+			date : $(this).attr("attr_day_date"),
+			eventId : $(this).attr("attr_event_id")
+		}
+		
+		$.ajax({
+			type : 'GET',
+			url : 'getDiasEntryExitCandisTimeDeatailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}  
+		}).done(function(result){ 
+			
+		});
+		
+	});
  
 </script>
 </body>

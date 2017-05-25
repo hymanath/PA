@@ -17384,5 +17384,11 @@
 			<param name="root">alertsSummeryVOList</param>       
 		</result> 
   </action>
+	<action name="getDiasEntryExitCandisTimeDeatailsAction" class="mahaNaduAction"  method="getDiasEntryExitCandisTimeDeatails">
+		<result type="json" name="success">    
+			<param name="root">idAndNameVOList</param>         
+		</result> 
+	</action>
+	
  </package>
 </struts>
