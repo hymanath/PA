@@ -11086,6 +11086,53 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		}
 		return null;
 	}
-	
+	public List<IdAndNameVO> getMondayGrievanceTypeList(){   
+		try{
+			List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>();
+			List<Object[]> rtrnObjList = alertDAO.getMondayGrievanceTypeList();
+			setDataToList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<IdAndNameVO> getJanmabhoomiTypeList(){   
+		try{
+			List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>();
+			List<Object[]> rtrnObjList = alertDAO.getJanmabhoomiTypeList();
+			setDataToList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<IdAndNameVO> getSpecialGrievanceTypeList(){   
+		try{
+			List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>();
+			List<Object[]> rtrnObjList = alertDAO.getSpecialGrievanceTypeList();
+			setDataToList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<IdAndNameVO> getGeneralGrievanceTypeList(){   
+		try{
+			List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>();
+			List<Object[]> rtrnObjList = alertDAO.getGeneralGrievanceTypeList();
+			setDataToList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
 }
 

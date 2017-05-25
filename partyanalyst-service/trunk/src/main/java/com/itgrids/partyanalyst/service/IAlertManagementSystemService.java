@@ -171,4 +171,8 @@ public interface IAlertManagementSystemService {
 	 public List<AlertsSummeryVO> getCadreGreivienceEfficiency(String fromDateStr, String toDateStr, Long stateId, 
 				List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
 				Long parentGovtDepartmentScopeId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> sublevels,Long source,List<Long> statusIdList,int rangeValue);
+	 public List<IdAndNameVO> getMondayGrievanceTypeList();
+	 public List<IdAndNameVO> getJanmabhoomiTypeList();
+	 public List<IdAndNameVO> getSpecialGrievanceTypeList();
+	 public List<IdAndNameVO> getGeneralGrievanceTypeList();
 }        
