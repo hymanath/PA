@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.gson.JsonObject;
 import com.itgrids.rest.Response;
-import com.itgrids.service.ExampleService;
-import com.itgrids.service.IResolutionmailservice;
+import com.itgrids.service.IResolutionMailService;
 
 @EnableAutoConfiguration
 @Controller
@@ -20,8 +18,9 @@ import com.itgrids.service.IResolutionmailservice;
 public class LoginController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LoginController.class);
+	
 	@Autowired
-	private IResolutionmailservice resolutionmailservice;
+	private IResolutionMailService resolutionMailService;
 	
 	@RequestMapping(value = "/loginPage", method = RequestMethod.GET)
     public String viewLogin() {
@@ -36,7 +35,7 @@ public class LoginController {
 		Response response = null;
 
 		try {
-			response = new Response(200, "success", resolutionmailservice.sentmail(json));
+			response = new Response(200, "success", resolutionMailService.sentEmails(json));
 			return response;
 		} catch (Exception e) {
 			LOG.error("Error in getting example", e);
