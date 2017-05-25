@@ -1100,4 +1100,14 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getDiasEntryExitCandisTimeDeatails(){
+		try {
+			jObj = new JSONObject(getTask());
+			idAndNameVOList = mahaNaduService.getDiasEntryExitCandisTimeDeatails(jObj.getLong("eventId"),jObj.getString("date"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDiasEntryExitCandisTimeDeatails", e);
+		}
+		return Action.SUCCESS;
+	}
 }
