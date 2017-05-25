@@ -302,6 +302,22 @@
 		</div>
   </div>
 </div>
+<div class="modal fade" id="alertDeprtmntPopup" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:45%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="alertDepartmentsPopupBody"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button closeSecondModal" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+  </div>
+</div>
 
 <!-- Scripts-->
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
