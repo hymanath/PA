@@ -2818,6 +2818,9 @@ function buildCommentsForAlert(result)
 						if(result[i][j].alertFeedbackStatus != null && result[i][j].alertFeedbackStatus != ""){
 							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Feed back Status </span>: '+result[i][j].alertFeedbackStatus+'</p>'; 
 						}
+						if(result[i][j].alertCallerName != null && result[i][j].alertCallerName != ""){
+							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Caller Name </span>: '+result[i][j].alertCallerName+'</p>';
+						}
 						if(result[i][j].status != null && result[i][j].status != ""){
 							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Alert Status </span>: '+result[i][j].status+'</p>';
 						}
@@ -3841,10 +3844,13 @@ function alertHistory(result)
 						if(result[i][j].alertFeedbackStatus != null && result[i][j].alertFeedbackStatus != ""){
 							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Feed back Status </span>: '+result[i][j].alertFeedbackStatus+'</p>'; 
 						}
+						
 						if(result[i][j].status != null && result[i][j].status != ""){
 							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Alert Status </span>: '+result[i][j].status+'</p>';
 						}
-						
+						if(result[i][j].alertCallerName != null && result[i][j].alertCallerName != ""){
+							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Caller Name </span>: '+result[i][j].alertCallerName+'</p>';
+						}
 						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
 						
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';
