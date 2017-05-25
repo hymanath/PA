@@ -41,7 +41,8 @@ public class AlertAssignedOfficerTrackingNew {
 	private String isApproved;
 	private Long alertSeviorityId;
 	private Long govtDepartmentId;
-	//private Long alertFeedbackStatusId;
+	private Long alertFeedbackStatusId;
+	private Long alertCallerId;
 	
 	private AlertSeverity alertSeviority;
 	private AlertAssignedOfficerNew alertAssignedOfficer;
@@ -54,7 +55,8 @@ public class AlertAssignedOfficerTrackingNew {
 	private AlertDepartmentDocumentNew alertDepartmentDocument;
 	private User insertedUser;
 	private User updatedUser;
-	//private AlertFeedbackStatus alertFeedbackStatus;
+	private AlertFeedbackStatus alertFeedbackStatus;
+	private AlertCaller alertCaller;
 	
 	
 	private GovtDepartment govtDepartment;
@@ -312,7 +314,7 @@ public class AlertAssignedOfficerTrackingNew {
 		this.govtDepartment = govtDepartment;
 	}
 	
-	/*@Column(name = "alert_feedback_status_id")
+	@Column(name = "alert_feedback_status_id")
 	public Long getAlertFeedbackStatusId() {
 		return alertFeedbackStatusId;
 	}
@@ -330,6 +332,26 @@ public class AlertAssignedOfficerTrackingNew {
 	public void setAlertFeedbackStatus(AlertFeedbackStatus alertFeedbackStatus) {
 		this.alertFeedbackStatus = alertFeedbackStatus;
 	}
-	*/
+	
+	@Column(name = "alert_caller_id")
+	public Long getAlertCallerId() {
+		return alertCallerId;
+	}
+	public void setAlertCallerId(Long alertCallerId) {
+		this.alertCallerId = alertCallerId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="alert_caller_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public AlertCaller getAlertCaller() {
+		return alertCaller;
+	}
+	public void setAlertCaller(AlertCaller alertCaller) {
+		this.alertCaller = alertCaller;
+	}
+	
+	
 	
 }
