@@ -130,7 +130,7 @@
 				</div>
 				<div class="col-md-1">  
 					<div style="padding-top: 80px">
-						<h4 class="text-center issue-title total" style="letter-spacing: 10px;">TOTAL</h4>
+						<h4 class="text-center issue-title total" style="letter-spacing: 5px;">TOTAL</h4>
 						<h1 style="font-size: 3em ;" class=" text-center issue-title"><span style="cursor:pointer;" id="totalAlertCountId"></span></h1>
 					</div>
 				</div>
