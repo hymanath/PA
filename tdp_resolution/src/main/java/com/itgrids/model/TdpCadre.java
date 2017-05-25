@@ -13,7 +13,7 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
-public class TdpCadre extends BaseEntity{
+public class TdpCadre{
 
 	private static final long serialVersionUID = 9175948318272399511L;
 	
