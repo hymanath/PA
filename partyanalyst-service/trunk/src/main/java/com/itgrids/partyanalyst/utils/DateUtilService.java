@@ -9,9 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -612,4 +610,26 @@ public class DateUtilService {
 		}
 		return null;
 	}
+	
+	public Long getMinutesBetweenTwoDates(String fromDate,String toDate){//yyyy-MM-dd hh:mm
+		Long diffMinutes = 0l;
+		if(fromDate != null && !fromDate.trim().isEmpty() && toDate != null && !toDate.trim().isEmpty()){
+			String fromDateArr[] = fromDate.split("-");
+			String toDateArr[] = toDate.split("-");
+			
+			Calendar c1 = Calendar.getInstance();
+			c1.set(Integer.parseInt(fromDateArr[0]),Integer.parseInt(fromDateArr[1]),Integer.parseInt(fromDateArr[2].split(" ")[0]),Integer.parseInt(fromDateArr[2].split(" ")[1].split(":")[0]),
+					Integer.parseInt(fromDateArr[2].split(" ")[1].split(":")[1]));
+			Calendar c2 = Calendar.getInstance();
+			c2.set(Integer.parseInt(toDateArr[0]),Integer.parseInt(toDateArr[1]),Integer.parseInt(toDateArr[2].split(" ")[0]),Integer.parseInt(toDateArr[2].split(" ")[1].split(":")[0]),
+					Integer.parseInt(toDateArr[2].split(" ")[1].split(":")[1]));
+			long milliseconds1 = c1.getTimeInMillis();
+			long milliseconds2 = c2.getTimeInMillis();
+			long diff = milliseconds2 - milliseconds1;
+			diffMinutes = diff / (60 * 1000);
+		}
+		return diffMinutes;
+	}
+	
+
 }

@@ -3291,5 +3291,14 @@ public List<Object[]> getMahanaduEventCadreDetails(List<Long> eventIds,Long tdpC
 		query.setParameterList("extraEventIdsList", extraEventIdsList);
 		return (String)query.uniqueResult();
 	}
-
+	
+	public List<Object[]> getDiasEntryExitCandisTimeDeatails(Long eventId,Date eventDate){
+		Query query = getSession().createQuery(" select model.tdpCadreId,model.eventId,model.attendedTime " +
+				" from EventAttendee model " +
+				" where model.eventId = :eventId and model.tdpCadre.isDeleted = 'N' and date(model.attendedTime) = :eventDate " +
+				" order by model.tdpCadreId,model.eventAttendeeId asc ");
+		query.setParameter("eventId", eventId);
+		query.setDate("eventDate", eventDate);
+		return query.list();
+	}
 }

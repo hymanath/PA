@@ -109,5 +109,5 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getCadreDetailedReportEventAttendeeMinTime(List<Long> extraEventIdsList);
 	public String getCadreDetailedReportEventAttendeeMaxTime1(List<Long> extraEventIdsList);
 	public String  getCadreDetailedReportEventAttendeeMinTime1(List<Long> extraEventIdsList);
-	
+	public List<Object[]> getDiasEntryExitCandisTimeDeatails(Long eventId,Date eventDate);
 }

@@ -63,5 +63,6 @@ public interface IMahaNaduService {
 	 public List<IdAndNameVO> getAllBloodDonateRegiCandidateDetails(String type,String attendedType);
 	 public String getYouTubeUrls();
 	 public Map<Long,Set<Long>> getTdpcadreIdsByEventIds(List<Long> eventIds);
+	 public List<IdAndNameVO> getDiasEntryExitCandisTimeDeatails(Long eventId,String date);
 }
 
