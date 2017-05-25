@@ -10507,9 +10507,9 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			
 			for(Entry<Long,LinkedHashMap<Long,Long>> entry : locIdThenLvlIdThenAlertCountForPending.entrySet()){
 				Long closedAlerts = new Long(0L);//completed and closed alerts
-				if(entry.getValue() != null && entry.getValue().get(4L) != null){
+				/*if(entry.getValue() != null && entry.getValue().get(4L) != null){
 					closedAlerts = closedAlerts + entry.getValue().get(4L);//Completed status
-				}
+				}*/
 				if(entry.getValue() != null && entry.getValue().get(12L) != null){
 					closedAlerts = closedAlerts + entry.getValue().get(12L);//Closed status
 				}
@@ -10543,7 +10543,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 							Long totalClosedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndClosedAlerts.get(locationId));
 							Long totalFeedbackCollectedAlert = commonMethodsUtilService.getLongValueForObject(locationIdAndFeedbackCollectedAlerts.get(locationId));
 							innerParam.setCount(totalClosedAlert-totalFeedbackCollectedAlert);
-							feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L) != null ? feedbackStatusIdAndTotalCount.get(4L) : 0L +(totalClosedAlert-totalFeedbackCollectedAlert));
+							feedbackStatusIdAndTotalCount.put(4L, feedbackStatusIdAndTotalCount.get(4L) != null ? (feedbackStatusIdAndTotalCount.get(4L)+(totalClosedAlert-totalFeedbackCollectedAlert)) : (totalClosedAlert-totalFeedbackCollectedAlert));
 							/*Long pending = totalClosedAlert-totalFeedbackCollectedAlert;
 							if(pending.longValue() < 0L){
 								innerParam.setCount(0L);
@@ -10673,9 +10673,9 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			
 			for(Entry<Long,LinkedHashMap<Long,Long>> entry : lvlIdThenStatusIdThenAlertCountForPending.entrySet()){
 				Long closedAlerts = new Long(0L);//completed and closed alerts
-				if(entry.getValue() != null && entry.getValue().get(4L) != null){
+				/*if(entry.getValue() != null && entry.getValue().get(4L) != null){
 					closedAlerts = closedAlerts + entry.getValue().get(4L);//Completed status
-				}
+				}*/
 				if(entry.getValue() != null && entry.getValue().get(12L) != null){
 					closedAlerts = closedAlerts + entry.getValue().get(12L);//Closed status
 				}
