@@ -701,9 +701,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 				if(alertCountList != null && alertCountList.size() > 0){
 					totalList.addAll(alertCountList);
 				}
+				setAlertCount(totalList,finalAlertVOs);//Pending Alert setting department wise
 			}
 			//get all the alert status and build the template
 			List<Long> levelValues = new ArrayList<Long>();    
+			Map<Long,AlertVO> departmentMap = new LinkedHashMap<Long, AlertVO>();
 			Long levelId = 0L;
 			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
 			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
@@ -712,20 +714,72 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
 				}
 			}
+			List<Object[]> rtrnObjLst = null;
+			List<Object[]> deptObjLst = alertAssignedOfficerNewDAO.getMainDeptAndItsSubDepartment();
+			prepareParentChildDeptTemplate(deptObjLst,departmentMap);
 			
 			if(resultType != null && resultType.equalsIgnoreCase("Status") && (alertStatusIds.size() == 0l || !alertStatusIds.contains(1l))){
-				List<Object[]> rtrnObjLst  = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null);
-				if(rtrnObjLst != null && rtrnObjLst.size() > 0){
-					totalList.addAll(rtrnObjLst);
-				}
+				  rtrnObjLst  = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null);
 			}
 			if(resultType != null && resultType.equalsIgnoreCase("Department")){
-				List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null);
-				if(rtrnObjLst != null && rtrnObjLst.size() > 0){
-					totalList.addAll(rtrnObjLst);
+				 rtrnObjLst = alertAssignedOfficerNewDAO.getAlertCntByRequiredType(fromDate,toDate,stateId,printIdList,electronicIdList,deptIdList,levelId,levelValues,"Department",alertStatusIds,departmentScopeIds,calCntrIdList,socialMediaTypeIds,null);
+			}
+			
+			setDepartmentWiseAlertCnt(rtrnObjLst,departmentMap);
+			
+			if(totalList != null && totalList.size() > 0){//in the case of overall and pending alert we are merging data in required format
+					if(departmentMap != null && departmentMap.size() > 0){
+						for(Entry<Long,AlertVO> deptEntry:departmentMap.entrySet()){
+							if(deptEntry.getValue().getSubMap() != null && deptEntry.getValue().getSubMap().size() > 0){
+								for(Entry<Long,AlertVO> childDeptEntry:deptEntry.getValue().getSubMap().entrySet()){
+									 AlertVO matchVO = getMatchVO1(finalAlertVOs,childDeptEntry.getKey());
+									 if(matchVO != null){
+										 childDeptEntry.getValue().setAlertCnt(childDeptEntry.getValue().getAlertCnt()+matchVO.getAlertCnt());
+										 deptEntry.getValue().setAlertCnt(deptEntry.getValue().getAlertCnt()+matchVO.getAlertCnt());
+									 }
+								}
+							}
+							
+						}
+					}
+					if(departmentMap != null && departmentMap.size() > 0){
+						for(Entry<Long,AlertVO> deptEntry:departmentMap.entrySet()){
+							AlertVO matchVO = getMatchVO1(finalAlertVOs,deptEntry.getKey());
+							if(matchVO != null){
+								   matchVO.setAlertCnt(deptEntry.getValue().getAlertCnt());
+								   matchVO.setSubList1(new ArrayList<AlertVO>(deptEntry.getValue().getSubMap().values()));
+								   matchVO.setChildDeptIds(new HashSet<Long>(deptEntry.getValue().getSubMap().keySet()));
+								   deptEntry.getValue().getSubMap().clear();
+							}else{
+								   matchVO = new AlertVO();
+								   matchVO.setId(deptEntry.getValue().getId());
+								   matchVO.setName(deptEntry.getValue().getName());
+								   matchVO.setColor(deptEntry.getValue().getColor()); 
+								   matchVO.setAlertCnt(deptEntry.getValue().getAlertCnt());
+								   matchVO.setSubList1(new ArrayList<AlertVO>(deptEntry.getValue().getSubMap().values()));
+								   matchVO.setChildDeptIds(new HashSet<Long>(deptEntry.getValue().getSubMap().keySet()));
+								   deptEntry.getValue().getSubMap().clear();
+								   if(deptEntry.getValue().getAlertCnt() > 0){
+									   finalAlertVOs.add(matchVO);   
+								   }
+								   
+							}
+						}
+				 }
+			}else{
+				if(departmentMap != null && departmentMap.size() > 0){
+					for(Entry<Long,AlertVO> deptEntry:departmentMap.entrySet()){
+						deptEntry.getValue().setSubList1(new ArrayList<AlertVO>(deptEntry.getValue().getSubMap().values()));
+						deptEntry.getValue().setChildDeptIds(new HashSet<Long>(deptEntry.getValue().getSubMap().keySet()));
+						deptEntry.getValue().getSubMap().values().clear();
+						if(deptEntry.getValue().getAlertCnt() != null && deptEntry.getValue().getAlertCnt() > 0){
+							finalAlertVOs.add(deptEntry.getValue());	
+						}
+					}
 				}
 			}
-			setAlertCount(totalList,finalAlertVOs);
+			
+			calculatePer(finalAlertVOs);
 			return finalAlertVOs; 
 		}catch(Exception e){
 			e.printStackTrace();
@@ -733,7 +787,78 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 		}
 		return null;
 	}
-	
+	public void calculatePer(List<AlertVO> finalList){
+		try{
+			Long totalAlertCnt = 0l;
+			if(finalList != null && finalList.size() > 0){
+				for(AlertVO vo:finalList){
+					totalAlertCnt = totalAlertCnt + vo.getAlertCnt();
+				}
+				for(AlertVO parentDeptVO:finalList){
+					parentDeptVO.setPercentage(calculatePercantage(parentDeptVO.getAlertCnt(), totalAlertCnt));
+					if(parentDeptVO.getSubList1() != null && parentDeptVO.getSubList1().size() > 0){
+						for(AlertVO childDeptVO:parentDeptVO.getSubList1()){
+							childDeptVO.setPercentage(calculatePercantage(childDeptVO.getAlertCnt(), parentDeptVO.getAlertCnt()));
+						}
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured calculatePer() method of AlertManagementSystemService{}");
+		}
+	}
+	public void prepareParentChildDeptTemplate(List<Object[]> objList,Map<Long,AlertVO> departmentMap){
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					AlertVO deptVO = departmentMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 if(deptVO == null){
+						 deptVO = new AlertVO();
+						 deptVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));//parent deptId
+						 deptVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));//name 
+						 deptVO.setColor(commonMethodsUtilService.getStringValueForObject(param[2])); 
+						 deptVO.setSubMap(new LinkedHashMap<Long, AlertVO>());
+						 departmentMap.put(deptVO.getId(), deptVO);
+					 }
+					    AlertVO subDetpVO = deptVO.getSubMap().get(commonMethodsUtilService.getLongValueForObject(param[3]));
+						   subDetpVO = new AlertVO();
+						   subDetpVO.setId(commonMethodsUtilService.getLongValueForObject(param[3]));//child deptId
+						   subDetpVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));//name
+						   subDetpVO.setColor(commonMethodsUtilService.getStringValueForObject(param[5])); 
+						   deptVO.getSubMap().put(subDetpVO.getId(), subDetpVO);
+			 }
+		  }
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setDepartmentWiseAlertCnt() method of AlertManagementSystemService{}");
+		}
+	}
+	public void setDepartmentWiseAlertCnt(List<Object[]> objLst,Map<Long,AlertVO> departmentMap){
+		try{
+			Map<Long,Long> deptIdCntMap = new HashMap<Long, Long>();
+			if(objLst != null && objLst.size() > 0){
+				for(Object[] param:objLst){
+					deptIdCntMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getLongValueForObject(param[3]));
+				}
+			}
+			if(departmentMap != null && departmentMap.size() > 0){
+				for(Entry<Long,AlertVO> parentDeptEntry:departmentMap.entrySet()){
+					if(parentDeptEntry.getValue().getSubMap()  != null && parentDeptEntry.getValue().getSubMap().size() > 0){
+						 for(Entry<Long,AlertVO> childDeptEntry:parentDeptEntry.getValue().getSubMap().entrySet()){
+							 if(deptIdCntMap.get(childDeptEntry.getKey()) != null){
+								 childDeptEntry.getValue().setAlertCnt(deptIdCntMap.get(childDeptEntry.getKey()));
+								 parentDeptEntry.getValue().setAlertCnt(parentDeptEntry.getValue().getAlertCnt()+deptIdCntMap.get(childDeptEntry.getKey()));
+							 }
+						 }
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setDepartmentWiseAlertCnt() method of AlertManagementSystemService{}");
+		}
+	}
 	//sandeep
 		public ResultStatus updateComment(final Long alertId,final String comment,final Long userId){
 			final ResultStatus rs = new ResultStatus();

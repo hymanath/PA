@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class AlertVO {
 	private Long alertTypeId;
@@ -86,7 +88,9 @@ public class AlertVO {
 	
 	private Long newAlertStatusId;
 	private String callerDuplicate;
-	
+    private Map<Long,AlertVO> subMap;	
+    private Set<Long> childDeptIds;
+
 	
 	public String getCallerDuplicate() {
 		return callerDuplicate;
@@ -547,6 +551,17 @@ public class AlertVO {
 	public void setAlertCallerId(Long alertCallerId) {
 		this.alertCallerId = alertCallerId;
 	}
-	
-	
+	public Map<Long, AlertVO> getSubMap() {
+		return subMap;
+	}
+	public void setSubMap(Map<Long, AlertVO> subMap) {
+		this.subMap = subMap;
+	}
+	public Set<Long> getChildDeptIds() {
+		return childDeptIds;
+	}
+	public void setChildDeptIds(Set<Long> childDeptIds) {
+		this.childDeptIds = childDeptIds;
+	}
+    	
 }
