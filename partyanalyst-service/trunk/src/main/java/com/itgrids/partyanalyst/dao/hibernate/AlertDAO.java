@@ -10052,4 +10052,11 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	    	Query query = getSession().createQuery("select model.generalGrievanceTypeId,model.type from GeneralGrievanceType model ");
 	    	return query.list();
 	    }
+	 	
+	 	public Long getPresentStatusOfAlert(Long alertId){
+	 		Query query = getSession().createQuery("select model.alertStatusId from Alert model " +
+	 				" WHERE model.alertId = :alertId ");
+	 		query.setParameter("alertId", alertId);
+	    	return (Long) query.uniqueResult();
+	 	}
 }

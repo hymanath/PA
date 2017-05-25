@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerDetailsNew;
+import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class GovtDepartmentDesignationOfficerDetailsNewDAO extends GenericDaoHibernate<GovtDepartmentDesignationOfficerDetailsNew, Long>
@@ -53,11 +54,11 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
     	  return query.list();
       }
       
-      public List<Long> getDesignationOfficerIdsNew(Long levelId,Long levelValue,Long designationId,Long officerId){
+      public List<GovtDepartmentDesignationOfficerNew> getDesignationOfficerIdsNew(Long levelId,Long levelValue,Long designationId,Long officerId){
     		
     		StringBuilder sb = new StringBuilder();
     		
-    		sb.append("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId" +
+    		sb.append("select distinct model.govtDepartmentDesignationOfficer " +
     											" from GovtDepartmentDesignationOfficerDetailsNew model" +
     											" where model.govtDepartmentDesignationOfficer.govtDepartmentScopeId = :levelId" +
     											" and model.govtDepartmentDesignationOfficer.levelValue = :levelValue" +

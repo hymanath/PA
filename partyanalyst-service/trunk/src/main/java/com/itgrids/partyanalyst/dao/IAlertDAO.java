@@ -175,5 +175,6 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getJanmabhoomiTypeList();
 	public List<Object[]> getSpecialGrievanceTypeList();
 	public List<Object[]> getGeneralGrievanceTypeList();
+	public Long getPresentStatusOfAlert(Long alertId);
 	
 }

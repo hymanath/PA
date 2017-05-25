@@ -1764,10 +1764,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					
 					//Get Department Designation Officer Ids
 					Long desigOfficerId = null;
-					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(),
+					List<GovtDepartmentDesignationOfficerNew> govtDepartmentDesignationOfficerList = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(),
 							inputvo.getGovtOfficerId());
-					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
-						desigOfficerId = designationOfficerIds.get(0);
+					if(govtDepartmentDesignationOfficerList != null && !govtDepartmentDesignationOfficerList.isEmpty())
+						desigOfficerId = govtDepartmentDesignationOfficerList.get(0).getGovtDepartmentDesignationOfficerId();
 					
 					//Officer Assigning
 					AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
@@ -1781,7 +1781,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					alertAssignedOfficer.setAlertStatusId(2l);
 					alertAssignedOfficer.setIsDeleted("N");
 					alertAssignedOfficer.setIsApproved("Y");
-					alertAssignedOfficer.setGovtDepartmentId(alert.getGovtDepartmentId() !=null ? alert.getGovtDepartmentId().longValue():null);
+					//alertAssignedOfficer.setGovtDepartmentId(alert.getGovtDepartmentId() !=null ? alert.getGovtDepartmentId().longValue():null);
+					
+					alertAssignedOfficer.setGovtDepartmentId(govtDepartmentDesignationOfficerList !=null && 
+							govtDepartmentDesignationOfficerList.size()>0 ? govtDepartmentDesignationOfficerList.get(0).getGovtDepartmentDesignation().getGovtDepartmentId():null);
 					
 					//check whether the alert is asigned to somebody or not, if already assigned delete that assignment
 					List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(inputvo.getAlertId());
@@ -1826,7 +1829,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					alertAssignedOfficerTracking.setAlertStatusId(2l);
 					alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
 					alertAssignedOfficerTracking.setIsApproved("Y");
-					alertAssignedOfficerTracking.setGovtDepartmentId(alert.getGovtDepartmentId() !=null ? alert.getGovtDepartmentId().longValue():null);
+					alertAssignedOfficerTracking.setGovtDepartmentId(govtDepartmentDesignationOfficerList !=null && 
+							govtDepartmentDesignationOfficerList.size()>0 ? govtDepartmentDesignationOfficerList.get(0).getGovtDepartmentDesignation().getGovtDepartmentId():null);
 					alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
 					
 					alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
@@ -3036,10 +3040,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 
 						//Get Department Designation Officer Ids
 						Long desigOfficerId = null;
-						List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(),
+						List<GovtDepartmentDesignationOfficerNew> govtDepartmentDesignationOfficer = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationOfficerIdsNew(inputvo.getLevelId(), inputvo.getLevelValue(), inputvo.getDesignationId(),
 								inputvo.getGovtOfficerId());
-						if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
-							desigOfficerId = designationOfficerIds.get(0);
+						if(govtDepartmentDesignationOfficer != null && !govtDepartmentDesignationOfficer.isEmpty())
+							desigOfficerId = govtDepartmentDesignationOfficer.get(0).getGovtDepartmentDesignationOfficerId();
 						
 						//Subtask Assigning to Officer
 						GovtAlertSubTask govtAlertSubTask = new GovtAlertSubTask();
@@ -7435,6 +7439,8 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			              
   			              Alert alert  = alertDAO.get(alertId);
   			              
+  			              	Long alertPresentStatusId = alertDAO.getPresentStatusOfAlert(alertId);
+  			              
   			              String userType = null;
   			              //whether this alert is belongs to same logedin user or not.
   			              //get all govt dept desig off ids
@@ -7525,7 +7531,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			              
   			              if(finalList != null && finalList.size() > 0){
   			            	IdNameVO vo  =finalList.get(0);
-  			            	vo.setApplicationStatus(userType+" - "+alert.getAlertStatusId());
+  			            	vo.setApplicationStatus(userType+" - "+alertPresentStatusId);
   			            	vo.setUserStatus(userStatus);
   			            	List<Object[]> list = alertCallerRelationDAO.getAlertCallerDetailsByAlert(alertId);
   			            	if(list != null && !list.isEmpty()){
@@ -10914,7 +10920,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 					
 					/* SMS sending after changing dept */
 					
-					List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(alertAssignedOfficerNew.getGovtOfficerId());
+					/*List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(alertAssignedOfficerNew.getGovtOfficerId());
 					List<Long> userIdsList = govtDepartmentDesignationOfficerDetailsNewDAO.getuserIdDtlsForDesignationOfficerId(alertAssignedOfficerNew.getGovtDepartmentDesignationOfficerId());
 					if(commonMethodsUtilService.isListOrSetValid(userIdsList)){
 						Long assignedToUserID = userIdsList.get(0);
@@ -10922,7 +10928,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 							 sendSMSTOAlertAssignedOfficer(alertAssignedOfficerNew.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignationId(),alertAssignedOfficerNew.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),
 									 alertAssignedOfficerTracking.getGovtAlertActionTypeId(),assignedToUserID,"","",userId);	
 						}
-					}
+					}*/
 					
 					if(alert.getAlertCategoryId() !=null && alert.getAlertCategoryId() == 2l || alert.getAlertCategoryId() == 3l){
 						
@@ -10930,9 +10936,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 						Long cnpChangedDeptId = govtDepartmentDAO.getCNPGovtDepartmentIdForGovtDepartment(changedDeptId);
 						
 						String articleStatus = changeCNPDepartment(alert.getAlertCategoryId(),alert.getAlertCategoryTypeId(),cnpChangedDeptId,cnpOldDeptId);	
-						if(articleStatus !="success"){
-							successStatus = "failure";
-						}
+							successStatus = articleStatus;						
 					}
 					
 					return successStatus;
@@ -10942,6 +10946,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Error occured changeDepartmentStatusToAlert() method of AlertManagementSystemService{}");
+			return "failure";
 		}
 		return status;
 	}
@@ -10966,14 +10971,14 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		         vo.setStatusId(newDeptId);//NewDepatId
 		         vo.setId(oldDeptId);//oldDeptId
 		         
-				WebResource webResource = client
-					.resource("http://localhost:8080/CommunityNewsPortal/webservice/changeCNPDepartment");
-	            ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class,vo);
-					
 				/*WebResource webResource = client
-				.resource("http://www.mytdp.com/CommunityNewsPortal/webservice/changeCNPDepartment/"+alertCategoryId+"/"+alertCategoryTypeId+"/"+newDeptId+"/"+oldDeptId+" ");
+					.resource("http://localhost:8080/CommunityNewsPortal/webservice/changeCNPDepartment");
+	            ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class,vo);*/
+					
+				WebResource webResource = client
+				.resource("http://www.mytdp.com/CommunityNewsPortal/webservice/changeCNPDepartment");
 			
-				ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);*/
+				ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class,vo);
 			
 		 	      if(response.getStatus() != 200){
 		 	    	throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());			 		     
@@ -11160,6 +11165,24 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			}
 		}catch(Exception e){
 			LOG.error("Error occured getSubDeptsFrParentDeptt() method of AlertManagementSystemService{}");
+		}
+		return finalList;
+	}
+	public List<IdNameVO> getPresentAssignedDepartmentOfAlert(Long alertId){
+		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
+		try{
+			
+			List<Object[]> subDeptList = alertAssignedOfficerNewDAO.getPresentAssignedDepartmentOfAlert(alertId);
+			if(subDeptList != null && subDeptList.size() > 0l){
+				for (Object[] objects : subDeptList) {
+					IdNameVO vo = new IdNameVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Error occured getPresentAssignedDepartmentOfAlert() method of AlertManagementSystemService{}");
 		}
 		return finalList;
 	}
