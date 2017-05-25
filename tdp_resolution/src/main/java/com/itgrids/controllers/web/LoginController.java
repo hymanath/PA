@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.TdpResolutionVo;
 import com.itgrids.rest.Response;
@@ -31,12 +32,15 @@ public class LoginController {
     public String viewSent() {
         return "sentResolution";
     }
+	
 	@RequestMapping(value = "/sentresolutionMail", method = RequestMethod.POST)
+	@ResponseBody
     public Response sentMail(@RequestBody TdpResolutionVo tdpResolutionVo) {
 		Response response = null;
 
 		try {
 			response = new Response(200, "success", resolutionMailService.sentEmails(tdpResolutionVo));
+			
 			return response;
 		} catch (Exception e) {
 			LOG.error("Error in getting example", e);
