@@ -64,31 +64,31 @@ header.eventsheader
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane active" id="createNotification">
 								<div class="col-md-4 col-md-offset-3">
-									<label>TDPCardeId:</label>
+									<label>MEMBERSHIPID:</label>
 									<input type="text"  name="name"  class="form-control" id="TdpCardeId"
-											placeholder="Please Enter Tdp CadreId Text"/>								
+											placeholder="Please Enter MemberShip ID"/>								
 									<div style="color:red;" id="TdpCardeIdErrId"></div>
 								</div>
 								<div class="col-md-4 col-md-offset-3">
-									<label>ResoultionType:</label>
+									<label>Subject:</label>
 									<input type="text"  name="name"  class="form-control" id="ResoultionTypeId"
-											placeholder="Please Enter Notification Text"/>								
+											placeholder="Please Enter Subject Text"/>								
 									<div style="color:red;" id="ResoultionTypeErrId"></div>
 								</div>
 								<div class="col-md-4 col-md-offset-3">
-									<label>Description:</label>
+									<label>Mail Body Description:</label>
 									<textarea type="text"  name="name"  class="form-control" id="DescriptionId"
-											placeholder="Please Enter Notification Text"></textarea>								
+											placeholder="Please Enter Body Text"></textarea>								
 									<div style="color:red;" id="DescriptionErrId"></div>
 								</div>
-								<div class="col-md-4 col-md-offset-3 urlLinkDivCls" style="display:none;">
+								<div class="col-md-4 col-md-offset-3">
 									<label>URL LINK:</label>
 									<input type="text"  name="name"  class="form-control" id="addYoutubeUrlId"	placeholder="Please Enter URL Key"/>								
 									<div style="color:red;" id="addNotificationTypeTextErrId"></div>
 								</div>
 									
 								<div class="col-md-4 col-md-offset-3">
-									<input type="button" id="notificationId" attr_success="NOTIFICATION ADDED..." style="padding-top: 5px; margin-top: 14px;"  class="btn btn-success btn-block"   value="SEND NOTIFICATION"  onclick="SendMails();"/>
+									<input type="button" id="notificationId" attr_success="Mail Sended..." style="padding-top: 5px; margin-top: 14px;"  class="btn btn-success btn-block"   value="SEND EMAIL"  onclick="SendMails();"/>
 									<div id="notificationSuccessId" sytle="color:green"></div>
 								</div>
 							</div>
@@ -126,8 +126,8 @@ function SendMails(){
 		return;
 	}
 	var JSONObject= {"TdpCardeId":TdpCardeId,
-	"ResoultionTypeId":ResoultionTypeId,
-	"DescriptionId":DescriptionId,
+	"subject":ResoultionTypeId,
+	"description":DescriptionId,
 	"addYoutubeUrl":addYoutubeUrl};
 	$.ajax({
 		type : 'POST',
