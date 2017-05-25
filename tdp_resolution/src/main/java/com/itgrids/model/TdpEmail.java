@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tdp_email")
-public class TdpEmailmodel extends BaseEntity {
+public class TdpEmail{
 	
 
 	private static final long serialVersionUID = -2853930539938433902L;
@@ -27,6 +27,8 @@ public class TdpEmailmodel extends BaseEntity {
 	
 	@Column(name="is_active")
 	private boolean isActive;
+	
+	public TdpEmail(){}
 	
 	public String getEmail() {
 		return email;
@@ -59,5 +61,4 @@ public class TdpEmailmodel extends BaseEntity {
 	public void setTdpEmailId(Long tdpEmailId) {
 		this.tdpEmailId = tdpEmailId;
 	}
-
 }
