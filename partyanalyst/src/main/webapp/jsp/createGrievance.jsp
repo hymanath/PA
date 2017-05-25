@@ -1663,6 +1663,7 @@ function saveAlertStatusDetails()
 		var sourceId = $("#hiddenSourceId").val();
 		var statusId = $("#hiddenStatusId").val();
 		var newAlertStatusId = $('#reopenCheckboxId').prop('checked') ? $('#reopenCheckboxId').val() : 0;
+		var alertCallerId =$("#alertCallerList").val();
 		
 		$("#commentErrMsgId").html('');
 		$("#statusErrMsgId").html('');
@@ -1675,14 +1676,18 @@ function saveAlertStatusDetails()
 			$("#statusErrMsgId").html("Please Select Anyone ");
 			return;
 		}
-		
+		if(alertCallerId == null || alertCallerId == 0 || alertCallerId == "undefined" ){
+			$("#callrErrMsgId").html("Please Select Anyone ");
+			return;
+		}
 		var jObj = {
 			alertId : alertId,
 			comment : comment,
 			alertStatusId : statusId,
 			alertFeedBackStatusId : feedBackStatus,
 			alertSourceId : sourceId,
-			newAlertStatusId:newAlertStatusId
+			newAlertStatusId:newAlertStatusId,
+			alertCallerId:alertCallerId
 		}
 		$.ajax({
 		  type:'GET',
@@ -1843,11 +1848,20 @@ function buildAlertCallerDetails(result){
 	
 	//	str+='<div class="panel panel-default m_top10">';
 		//	str+='<div class="panel-body">';
-			
-				for(var i in result){
+			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<h5><span>Title : </span> <span>'+result[0].title+'</span></h5>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
+					str+='<h5><span>description : </span> <span>'+result[0].desc+'</span></h5>';
+					str+='</div>';
+					str+='<div class="col-md-12 col-xs-12 col-sm-12  m_top10">';
+					str+='<label>Comment<span style="color:red">*</span></label><span id="commentErrMsgId" style="color:red"></span><br>';
+					str+='<textarea id="comntId" rows="3" style="width: 799px;"></textarea>';
+					str+='</div>';
+				
 				//str+='<p> Given By : '+result[i].name+' - '+result[i].mobileNo+'</p>';
 					//str+='<div class="col-md-12 col-xs-12 col-sm-12">';
-					str+='<div class="col-md-4 col-xs-12 col-sm-6">';
+					/* str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 					str+='<p><span>Given By : </span> <span>'+result[i].name+'</span></p>';
 					str+='</div>';
 					str+='<div class="col-md-4 col-xs-12 col-sm-6">';
@@ -1855,19 +1869,29 @@ function buildAlertCallerDetails(result){
 					str+='</div>';
 					str+='<div class="col-md-4 col-xs-12 col-sm-6">';
 					str+='<p><span>Created On : </span> <span>'+result[i].date1+'</span></p>';
-					str+='</div>';
+					str+='</div>'; 
 					//str+='</div>';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-					str+='<h5><span>Title : </span> <span>'+result[i].title+'</span></h5>';
+					str+='<h5><span>Title : </span> <span>'+result[0].title+'</span></h5>';
 					str+='</div>';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top10">';
-					str+='<h5><span>description : </span> <span>'+result[i].desc+'</span></h5>';
+					str+='<h5><span>description : </span> <span>'+result[0].desc+'</span></h5>';
 					str+='</div>';
 					str+='<div class="col-md-12 col-xs-12 col-sm-12  m_top10">';
 					str+='<label>Comment<span style="color:red">*</span></label><span id="commentErrMsgId" style="color:red"></span><br>';
 					str+='<textarea id="comntId" rows="3" style="width: 799px;"></textarea>';
+					str+='</div>';*/
+					
+					str+='<div class="col-md-12 col-xs-12 col-sm-12  m_top10">';
+					str+=' <label>Alert Callers :<span style="color:red">*</span><span id="callrErrMsgId" style="color:red"></span></label><br>';
+					str+='<select id="alertCallerList" class="form-control">';
+					str+='<option value="0"> Select Alert Caller</option>';
+					for(var i in result){
+						str+='<option value="'+result[i].alertCallerId+'"> '+result[i].name+'-'+result[i].mobileNo+'</option>';
+					}
+					str+=' </select>';
 					str+='</div>';
-				}
+				
 			 
 		//	str+='</div>';
 		//str+='</div>';

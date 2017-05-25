@@ -2491,6 +2491,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 			alertVO.setFeedBackStatusId(jObj.getLong("alertFeedBackStatusId"));
 			alertVO.setAlertSourceId(jObj.getLong("alertSourceId"));
 			alertVO.setNewAlertStatusId(jObj.getLong("newAlertStatusId"));
+			alertVO.setAlertCallerId(jObj.getLong("alertCallerId"));
 			
 			status = alertService.saveAlertFeedbackStatusDetails(alertVO,userId);
 		}
