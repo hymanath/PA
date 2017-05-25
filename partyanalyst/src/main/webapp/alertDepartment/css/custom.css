@@ -331,6 +331,7 @@ h1, h2, h3, h4, h5, h6, p, ul, .table {
 .textAlignDepartment li {
     font-size: 12px;
     line-height: 30px;
+	position:relative;
 }
 .panelNewCustom {
     border: 2px solid #ee935d;
@@ -1996,4 +1997,38 @@ h5[filters-list-title] b
 		transform: translate3d(0px, 0px, 0);
 		opacity:1;
 	}  
+}
+.hiddenDiv
+{
+	padding-left: 20px;
+}
+.hiddenDiv ul li:after
+{
+	border-top: 1px dashed #ee935d;
+    content: " ";
+    display: block;
+    height: 1px;
+    left: -14px;
+    position: absolute;
+    top: 15px;
+    width: 15px;
+}
+.hiddenDiv ul li:before
+{
+	border-left: 1px dashed #ee935d;
+    content: "";
+    display: block;
+    height: 25px;
+    left: -14px;
+    position: absolute;
+    top: -9px;
+    width: 2px;
+}
+.hiddenDiv .m_top10
+{
+	margin-top:0px !important;
+}
+.hiddenDiv ul li span
+{
+	color:#ee935d;
 }
