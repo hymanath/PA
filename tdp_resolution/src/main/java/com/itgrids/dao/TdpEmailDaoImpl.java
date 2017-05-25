@@ -27,7 +27,7 @@ public class TdpEmailDaoImpl extends GenericDaoHibernate<TdpEmailmodel, Integer>
 	@SuppressWarnings("unchecked")
 	public  List<Object[]> getAllTdpEmailmodel() {
 		Query criteria =getSession().createQuery("select model.tdpEmailId, model.email,model.isActive from" +
-				" TdpEmail model");
+				" TdpEmailmodel model");
 		return criteria.list();
 	}
 
