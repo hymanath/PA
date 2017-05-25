@@ -2,7 +2,9 @@ var globalUserLevelValues = [0];
 var globalUserLevelId = 0;
 var callCenterUserFDate=moment().startOf('month').format("DD/MM/YYYY");
 var callCenterUserTDate=moment().format("DD/MM/YYYY");
-var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+//var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+//var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><img src="alertDepartment/img/alert logo.png" alt="alert Logo"  class="alert-logo"/></div></div>';
+var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner-logo"><img src="alertDepartment/img/spinner/1.png" class="right-arrow"/><img src="alertDepartment/img/spinner/2.png" class="right-arrow1"/><img src="alertDepartment/img/spinner/3.png" class="left-arrow"/><img src="alertDepartment/img/spinner/4.png" class="left-arrow1"/><img src="alertDepartment/img/spinner/5.png" class="main-icon"/></div></div></div>';
 
 $('#reportrange').daterangepicker({
 	opens: 'right',
@@ -530,7 +532,7 @@ function getDistrintInformation(){
  function getAlertStatusWise(statusId,status){
 	$("#totalAlertDistricTableId").html("");   
 	$("#grievanceDtlsModalId").modal("show");     
-	$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
+	$("#grevinceDetailsId").html(spinner);    
 	var sourceId=$("#selectMediaId").val();
 	var deptId=$("#selecDepartmentId").val();
 	var rangeType=$("#dateRangeId").attr("value");  
@@ -549,6 +551,7 @@ function getDistrintInformation(){
 	  dataType: 'json',
 	  data: {task:JSON.stringify(jobj)},
 	}).done(function(result){
+		$("#grevinceDetailsId").html(''); 
 		buildAlertStatusWise(result,status);      
 	});
  }
@@ -615,7 +618,7 @@ function onLoadInitialisations(){
 		$("#totalAlertDistricTableId").html("");  
 		$("#grievanceDtlsModalId").modal("show");
 		$("#removeClassModal").removeClass("closeSecondModal")	
-		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+		$("#grevinceDetailsId").html(spinner);
 		var rangeType=$("#dateRangeId").attr("value");
 		var locationId = $(this).attr("attr_location_id");
 		var group = $(this).attr("attr_group_type");
@@ -660,6 +663,7 @@ function onLoadInitialisations(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jobj)},
 		}).done(function(result){
+			$("#grevinceDetailsId").html('');
 			var str ='';
 			if(result != null){
 				if(group=="day"){ 
@@ -675,7 +679,7 @@ function onLoadInitialisations(){
 		$("#dateRangeId").attr("value",$(this).attr("attr_range_val"));
 	});
 	$(document).on("click",".getAlertDtlsOnLocCls",function(){
-		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');  
+		$("#grevinceDetailsId").html(spinner);  
 		var locationId = $(this).attr("attr_location_id");
 		var statusId = $(this).attr("attr_status_id");
 		var fromDate = $(this).attr("attr_from_date");
@@ -704,6 +708,7 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},
 		}).done(function(result){
+			$("#grevinceDetailsId").html(''); 
 			buildGrivenceDetailsTableOld(result);    
 		});
 	});
@@ -801,7 +806,7 @@ function onLoadInitialisations(){
 			$("#grievanceDtlsModalId").modal("show");
 			 $("#removeClassModal").addClass("closeSecondModal")
 			$("#totalAlertDistricTableId").html('');     
-			$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');    
+			$("#grevinceDetailsId").html(spinner);    
 			var deptId=$("#selecDepartmentId").val();
 			var sourceId=$("#selectMediaId").val();
 			var locationId = $(this).attr("attr_location_id");
@@ -848,6 +853,7 @@ function onLoadInitialisations(){
 				  dataType: 'json',       
 				  data: {task:JSON.stringify(jobj)},        
 				}).done(function(result){
+					$("#grevinceDetailsId").html('');
 					buildAlertStatusWise(result,status);  
 				});
 			} 
@@ -885,7 +891,7 @@ function onLoadInitialisations(){
 		$("#totalAlertDistricTableId").html("");  
 		$("#grivenaceModalHeedingId").html("");    
 		$("#grievanceDtlsModalId").modal("show");     
-		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+		$("#grevinceDetailsId").html(spinner);
 		var locationId = $("#selectDistrictId").val();
 		var statusId = $(this).attr("attr_status_id");
 		var fromDate = $(this).attr("attr_from_date");
@@ -918,6 +924,7 @@ function onLoadInitialisations(){
 			  dataType: 'json',
 			  data: {task:JSON.stringify(jobj)},
 			}).done(function(result){
+				$("#grevinceDetailsId").html('');
 				  buildGrivenceDetailsTableOld(result);
 			});
 	}
@@ -940,13 +947,14 @@ function onLoadInitialisations(){
 				  dataType: 'json',
 				  data: {task:JSON.stringify(jobj)},
 				}).done(function(result){
+					$("#grevinceDetailsId").html('');
 					  buildGrivenceDetailsTableOld(result);
 				});
 		}
 	$(document).on("click",".getAlertDtlsOnCategoryWise",function(){
 		$("#totalAlertDistricTableId").html("");  
 		$("#grivenaceModalHeedingId").html("");
-		$("#grevinceDetailsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+		$("#grevinceDetailsId").html(spinner);
 		$("#grievanceDtlsModalId").modal("show");     
 		var locationId = $(this).attr("attr_location_id");
 		var statusId = $(this).attr("attr_status_id");
@@ -969,6 +977,7 @@ function onLoadInitialisations(){
 		  dataType: 'json',
 		  data: {task:JSON.stringify(jobj)},
 		}).done(function(result){
+			$("#grevinceDetailsId").html('');
 			  buildGrivenceDetailsTableOld(result);
 		});
 	});
@@ -2064,7 +2073,7 @@ function buildGrievanceReportDayWise(result,rangeType) {
 //category wise count
 
 function getTotalAlertGroupByCategoryThenStatus(){
-	$("#CategoryWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	$("#CategoryWiseGrivenaceTableId").html(spinner);
 	var rangeType=$("#dateRangeId").attr("value");
     var sourceId=$("#selectMediaId").val();
     var deptId=$("#selecDepartmentId").val();
@@ -2082,6 +2091,7 @@ function getTotalAlertGroupByCategoryThenStatus(){
 		url: 'getTotalAlertGroupByCategoryThenStatusAction.action',
 		data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
+			$("#CategoryWiseGrivenaceTableId").html('');
 			if(result != null && result.length > 0){
 				buildTotalAlertGroupByCategoryThenStatus(result);
 			}else{
@@ -2090,7 +2100,7 @@ function getTotalAlertGroupByCategoryThenStatus(){
 		}); 
 }
 function buildTotalAlertGroupByCategoryThenStatus(result) {  
-	$("#CategoryWiseGrivenaceTableId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	
      var str='';
         str+='<table id="CatWiseGrievanceReportTableId" class="table table-bordered " cellspacing="0">';
         str+='<thead>';
