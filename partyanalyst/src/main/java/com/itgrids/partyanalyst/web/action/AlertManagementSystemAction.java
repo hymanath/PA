@@ -4737,5 +4737,14 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;	
 	}
-	
+	public String getSubDeptsFrParentDept(){
+		try{
+			jObj = new JSONObject(getTask());
+			
+			idNameVOList = alertManagementSystemService.getSubDeptsFrParentDept(jObj.getLong("parntDeptId"));
+		}catch(Exception e){
+			LOG.error("Exception Occured in getSubDeptsFrParentDept() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

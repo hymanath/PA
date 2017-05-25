@@ -1447,6 +1447,9 @@ function getStatusCompletionInfo(alertId){
 				$('#displaySubTasksliId,#docAttachmentId,#displayPriority,#displayDueDate2').hide();
 				$('#displayDueDate1').show();
 			}
+			 if(globalStatusId ==8 || globalStatusId ==9){
+				$("#departDivId").show();
+			} 
 			
 			//alert(" isStatusAvailable :"+isStatusAvailable);
 		}else{
@@ -1480,6 +1483,10 @@ function rightSideExpandView(alertId)
 							str+='</div>';
 							str+='<div class="col-sm-8 pull-right" style="">';
 								str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
+									
+									str+='<li data-toggle="tooltip" data-placement="top" title="main departments" id="departDivId" style="display:none;">';
+										str+='<span class="status-icon arrow-icon"></span><span id="mainDeprtmntId" attr_alert_id="'+alertId+'">Departments</span>';
+									str+='</li>';
 									
 									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
@@ -1781,10 +1788,16 @@ function buildAssignUIAttributes(alertId){
 					str+='</div>';
 					str+='<div class="col-sm-6">';
 						str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId1"></span></label>';
-						str+='<select class="chosenSelect" id="departmentsId1" name="alertAssigningVO.departmentId">	';
+						str+='<select class="chosenSelect" id="assignDepartmentId1">';
 						str+='</select>'; 
 					str+='</div>';
-					
+					str+='<div class="col-sm-6">';
+								str+='<label>Sub Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
+								str+='<select class="chosenSelect" id="departmentsId1" name="alertAssigningVO.departmentId">	';
+									str+='<option value="0">Select Sub Department</option>';
+									//str+='<option value="49">RWS</option>';
+								str+='</select>';
+							str+='</div>';
 					str+='<div class="col-sm-6">';
 						str+='<label>Impact Level<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgLvlId1"></span></label>';
 						str+='<select  class="chosenSelect" id="locationLevelSelectId1" name="alertAssigningVO.levelId">	';
@@ -3681,8 +3694,15 @@ function assignUser(alertId)
 							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
-								str+='<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	';
+								str+='<select class="chosenSelect" id="assignDepartmentId">';
 									str+='<option value="0">Select Department</option>';
+									//str+='<option value="49">RWS</option>';
+								str+='</select>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<label>Sub Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
+								str+='<select class="chosenSelect" id="departmentsId" name="alertAssigningVO.departmentId">	';
+									str+='<option value="0">Select Sub Department</option>';
 									//str+='<option value="49">RWS</option>';
 								str+='</select>';
 							str+='</div>';
@@ -3741,8 +3761,8 @@ function getDepartmentDetailsOfAlert(alertId)
 				var newStr='';		
 				newStr+='<option value="0">Select Department</option>';
 				newStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
-				$("#departmentsId").html(newStr);
-				$("#departmentsId").trigger("chosen:updated");
+				$("#assignDepartmentId").html(newStr);
+				$("#assignDepartmentId").trigger("chosen:updated");
 			}
 		}	
 	});
@@ -4034,8 +4054,8 @@ function alertStatusHistory(result,alertId)
 	}
 		
 	if(globalStatusId == 8 || globalStatusId == 9){
-		$("#changeStatudCheckBoxId").hide();   
-	}
+		$("#changeStatudCheckBoxId").hide(); 
+    }
 		var options = {
 	  sourceLanguage:
 		  google.elements.transliteration.LanguageCode.ENGLISH,
@@ -4109,7 +4129,7 @@ function getAssignUIAttributes(alertId){
 }
 function getGovtAllDepartmentDetails(){
 	
-	$("#departmentsId1").html('');
+	$("#assignDepartmentId1").html('');
 	var jsObj={
 		
 	}
@@ -4120,15 +4140,15 @@ function getGovtAllDepartmentDetails(){
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			$("#departmentsId1").append("<option value='0'>Select Department</option>")
+			$("#assignDepartmentId1").append("<option value='0'>Select Department</option>")
 			for(var i in result){
-				$("#departmentsId1").append("<option value="+result[i].id+">"+result[i].name+"</option>")
+				$("#assignDepartmentId1").append("<option value="+result[i].id+">"+result[i].name+"</option>")
 			}
 			
 			
 		}
-		$("#departmentsId1").chosen();
-			$("#departmentsId1").trigger("chosen:updated");
+		$("#assignDepartmentId1").chosen();
+			$("#assignDepartmentId1").trigger("chosen:updated");
 	});
 }
 
@@ -4733,3 +4753,116 @@ $(document).on("click",".linkedArticlesClickId",function(){
 	$(this).attr('src',$(".mainImage").attr('src'));
 	$(".mainImage").attr('src',temp);
 });
+$(document).on('change', '#assignDepartmentId', function(){
+		var deptId = $(this).val();
+		getSubDepartmentsFrPrntDept(deptId,$(this).attr('id'));
+});
+function getSubDepartmentsFrPrntDept(deptId,buildId){
+	
+	var jsObj = {
+			parntDeptId : deptId
+	}
+	$.ajax({
+      type:'GET',
+      url: 'getSubDeptsFrParentDeptAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			buildSubDepartmentsFrPrntDept(result,buildId);
+		}
+	});
+	
+}
+function buildSubDepartmentsFrPrntDept(result,tempBuildId){
+	var buildId='departmentsId';
+	if(tempBuildId =='assignDepartmentId1')
+		buildId='departmentsId1';
+	var str='';	
+	str+='<option value="0">Select Sub Department</option>';
+	for(var i in result){
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+	}
+	
+	$("#"+buildId+"").html(str);
+	$("#"+buildId+"").trigger("chosen:updated");
+}
+$(document).on('change', '#assignDepartmentId1', function(){
+		var deptId = $(this).val();
+		getSubDepartmentsFrPrntDept(deptId,$(this).attr('id'));
+});
+$(document).on("click","#mainDeprtmntId",function(){
+	var alertId = $(this).attr("attr_alert_id");
+	buildMainDepartmentsPopup(alertId);
+});
+
+function buildMainDepartmentsPopup(alertId){
+	$("#alertDeprtmntPopup").modal('show');
+	$("#alertDepartmentsPopupBody").html(spinner)
+	var str = '';
+	str+='<div class="row">';
+	str+='<div class="col-sm-6">';
+		str+='<label>Department<span style="color:red">*</span>&nbsp;&nbsp; <span style="color:#18A75A;" id="errMsgDeptId"></span></label>';
+		str+='<select class="chosenSelect" id="newDepartmentId">';
+			str+='<option value="0">Select Department</option>';
+			//str+='<option value="49">RWS</option>';
+		str+='</select>';
+	str+='</div>';
+	str+='<div class="col-sm-6">';
+		str+='<button class="btn btn-sm saveBtnCls" attr_alert_id="'+alertId+'">SAVE</button>';
+	str+='</div>';
+	str+='</div>';
+	$("#alertDepartmentsPopupBody").html(str);
+	getDepartmentDetailsOfAlert();
+}
+
+function getDepartmentDetailsOfAlert()
+{
+	var jsObj={
+	}
+	$.ajax({   
+		type:'GET',
+		url:'getAllMainDepartmentsAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+			if(result !=null && result.length>0){
+				var newStr='';
+				newStr+='<option value="0">Select Department</option>';
+				for(var i in result){
+				    newStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#newDepartmentId").html(newStr);
+				$("#newDepartmentId").trigger("chosen:updated");
+			}
+		
+	});
+}
+
+$(document).on("click",".saveBtnCls",function(){
+	var alertId =$(this).attr("attr_alert_id");
+	var newDeptId = $("#newDepartmentId").val();
+	
+	var jsObj={
+		alertId : alertId,
+		newDeptId : newDeptId
+	}
+	
+	$.ajax({   
+		type:'GET',
+		url:'changeDepartmentStatusToAlertAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+			if(result !=null && result.length>0){
+				var newStr='';
+				newStr+='<option value="0">Select Department</option>';
+				for(var i in result){
+				    newStr+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+				}
+				$("#newDepartmentId").html(newStr);
+				$("#newDepartmentId").trigger("chosen:updated");
+			}
+		
+	});
+});
+	
