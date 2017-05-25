@@ -9673,9 +9673,12 @@ public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId, String task
 						alertTrackingVO.setDueDate(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertTrackingVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[9]));
 						alertTrackingVO.setSeverty(commonMethodsUtilService.getStringValueForObject(param[11]));
-						alertTrackingVO.setAlertFeedbackStatusId(commonMethodsUtilService.getLongValueForObject(param[16]));
-						alertTrackingVO.setAlertFeedbackStatus(commonMethodsUtilService.getStringValueForObject(param[17]));
-						
+						if(task != null && !task.trim().isEmpty() && task.trim().length() > 0 && task.trim().equalsIgnoreCase("task")){
+							alertTrackingVO.setAlertFeedbackStatusId(commonMethodsUtilService.getLongValueForObject(param[16]));
+							alertTrackingVO.setAlertFeedbackStatus(commonMethodsUtilService.getStringValueForObject(param[17]));
+							alertTrackingVO.setAlertCallerId(commonMethodsUtilService.getLongValueForObject(param[18]));
+							alertTrackingVO.setAlertCallerName(commonMethodsUtilService.getStringValueForObject(param[19]));
+						}
 						alertTrackingVO.setPosition(userIdAndStatusMap.get(commonMethodsUtilService.getLongValueForObject(param[13])));
 						
 						if(userMap != null && userMap.get(commonMethodsUtilService.getLongValueForObject(param[13])) != null){

@@ -10522,11 +10522,32 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 							alertAssignedOfficerTracking.setAlertDepartmentCommentId(alertComment.getAlertDepartmentCommentId());
 							alertAssignedOfficerTracking.setIsApproved("Y");
 							alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
-							//alertAssignedOfficerTracking.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
-							
+							alertAssignedOfficerTracking.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
+							alertAssignedOfficerTracking.setAlertCallerId(alertvo.getAlertCallerId());
 		
 							alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
 							
+							if(alertvo.getNewAlertStatusId() !=null && alertvo.getNewAlertStatusId().longValue()>0l){
+								AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking1 = new AlertAssignedOfficerTrackingNew();
+								alertAssignedOfficerTracking1.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+								alertAssignedOfficerTracking1.setAlertId(alert.getAlertId());
+								alertAssignedOfficerTracking1.setGovtDepartmentDesignationOfficerId(alertAssignedOfficer.getGovtDepartmentDesignationOfficerId());
+								alertAssignedOfficerTracking1.setGovtOfficerId(alertAssignedOfficer.getGovtOfficerId());
+								alertAssignedOfficerTracking1.setInsertedBy(userId);
+								alertAssignedOfficerTracking1.setUpdatedBy(userId);
+								alertAssignedOfficerTracking1.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficerTracking1.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());	
+								alertAssignedOfficerTracking1.setAlertStatusId(alertvo.getNewAlertStatusId());
+								alertAssignedOfficerTracking1.setGovtAlertActionTypeId(6l);
+								
+								alertAssignedOfficerTracking1.setAlertDepartmentCommentId(alertComment.getAlertDepartmentCommentId());
+								alertAssignedOfficerTracking1.setIsApproved("Y");
+								alertAssignedOfficerTracking1.setAlertSeviorityId(alert.getAlertSeverityId());
+								alertAssignedOfficerTracking1.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
+								alertAssignedOfficerTracking1.setAlertCallerId(alertvo.getAlertCallerId());
+			
+								alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking1);
+							}
 							//Sms Sending
 							Long designationId = alertAssignedOfficer.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignationId();							
 							List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(alertAssignedOfficer.getGovtOfficerId());							

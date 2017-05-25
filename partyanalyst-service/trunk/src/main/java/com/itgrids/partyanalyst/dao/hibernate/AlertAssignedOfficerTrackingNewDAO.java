@@ -141,8 +141,8 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     	StringBuilder queryStr = new StringBuilder();
     	queryStr.append(" select " +
     					" model.alert.alertId " +//0
-    					" , model.govtAlertActionType.govtAlertActionTypeId " +//1
-    					" , model.govtAlertActionType.actionType " +//2
+    					" , govtAlertActionType.govtAlertActionTypeId " +//1
+    					" , govtAlertActionType.actionType " +//2
     					" , alertDepartmentComment.alertDepartmentCommentId " +//3
     					" , alertDepartmentComment.comment " +//4
     					" , alertDepartmentDocument.alertDepartmentDocumentId " +//5
@@ -154,22 +154,27 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     					" , alertSeviority.severity " +//11
     					" , model.insertedTime " +//12
     					" , model.updatedBy " +//13
-    					" , model.alert.govtDepartment.govtDepartmentId " +//14
-    					" , model.alert.govtDepartment.departmentName" +
+    					" , govtDepartment.govtDepartmentId " +//14
+    					" , govtDepartment.departmentName" +//15
     					" ,alertFeedbackStatus.alertFeedbackStatusId " +
-    					",alertFeedbackStatus.status  " +//15
+    					",alertFeedbackStatus.status" +
+    					",alertCaller.alertCallerId" +
+    					",alertCaller.callerName  " +
     					" from AlertAssignedOfficerTrackingNew model " +
     					" left outer join model.alertDepartmentComment alertDepartmentComment " +
     					" left outer join model.alertStatus alertStatus " +
     					" left outer join model.alertDepartmentDocument alertDepartmentDocument " +
     					" left outer join model.alertSeviority alertSeviority " +
-    					" left outer join model.alert.alertFeedbackStatus alertFeedbackStatus, " +
-    					" GovtAlertActionType govtAlertActionType " +
+    					" left outer join model.alertFeedbackStatus alertFeedbackStatus with alertFeedbackStatus.isDeleted = 'N' " +
+    					" left outer join model.alertCaller alertCaller, " +
+    					" GovtAlertActionType govtAlertActionType," +
+    					" GovtDepartment govtDepartment " +
     					" where " +
     					" govtAlertActionType.govtAlertActionTypeId = model.govtAlertActionType.govtAlertActionTypeId " +
     					" and model.alert.alertId = :alertId " +
     					" and model.alert.isDeleted = 'N'" +
-    					" and alertFeedbackStatus.isDeleted = 'N' " +
+    					//" and alertFeedbackStatus.isDeleted = 'N'" +
+    					" and govtDepartment.govtDepartmentId = model.alert.govtDepartment.govtDepartmentId   " +
     					" order by model.insertedTime ");
     	Query query = getSession().createQuery(queryStr.toString());
     	query.setParameter("alertId",alertId);

@@ -42,6 +42,8 @@ public class AlertTrackingVO {
 	private String position;
 	private Long alertFeedbackStatusId;
 	private String alertFeedbackStatus;
+	private Long alertCallerId;
+	private String alertCallerName;
 	public AlertTrackingVO(){}
 	public AlertTrackingVO(Long alertId,String comment,String date){
 		this.alertId=alertId;
@@ -282,6 +284,18 @@ public class AlertTrackingVO {
 	}
 	public void setAlertFeedbackStatus(String alertFeedbackStatus) {
 		this.alertFeedbackStatus = alertFeedbackStatus;
+	}
+	public Long getAlertCallerId() {
+		return alertCallerId;
+	}
+	public void setAlertCallerId(Long alertCallerId) {
+		this.alertCallerId = alertCallerId;
+	}
+	public String getAlertCallerName() {
+		return alertCallerName;
+	}
+	public void setAlertCallerName(String alertCallerName) {
+		this.alertCallerName = alertCallerName;
 	}
 	
 	
