@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.itgrids.dto.TdpResolutionVo;
 import com.itgrids.rest.Response;
 import com.itgrids.service.IResolutionMailService;
 
@@ -31,11 +32,11 @@ public class LoginController {
         return "sentResolution";
     }
 	@RequestMapping(value = "/sentresolutionMail", method = RequestMethod.POST)
-    public Response sentMail(@RequestBody String json) {
+    public Response sentMail(@RequestBody TdpResolutionVo tdpResolutionVo) {
 		Response response = null;
 
 		try {
-			response = new Response(200, "success", resolutionMailService.sentEmails(json));
+			response = new Response(200, "success", resolutionMailService.sentEmails(tdpResolutionVo));
 			return response;
 		} catch (Exception e) {
 			LOG.error("Error in getting example", e);
