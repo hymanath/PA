@@ -23,6 +23,9 @@
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" href="dist/sliderbar/bootstrap-slider.css">
 <link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="css/grievanceReport.css" type="text/css"/>
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
@@ -108,7 +111,7 @@
 		</div>
 	</div>
 	<section class="container m_top20">
-		<div class="row" style="display:none;">             
+		<div class="row" >             
 			<div class="col-md-12 col-xs-12 col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading headingColor">
@@ -117,7 +120,7 @@
 							<h4 class="m_0 panel-title text-capital fontColor" id="cadreGrievanceTitle" style="display:block;">Alert Efficiency</h4>
 						</div>
 						<div class="col-md-6 col-xs-12 col-sm-6 pull-right">
-							<input id="sliderValue" data-slider-id="sliderValue" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="2"/>&nbsp;&nbsp;&nbsp;
+							<input id="sliderValueOficer" data-slider-id="sliderValueOficer" type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="2"/>&nbsp;&nbsp;&nbsp;
 							<span>Value : <span id="getSliderVal"></span></span>
 						</div> 
 					</div>
@@ -199,9 +202,10 @@
 <script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="dist/alertDashBoard/dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="js/alertDepartmentOfficerDetails/alertDepartmentOfficerDetails.js" type="text/javascript"></script>
+<script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
+<script src="js/alertDepartmentOfficerDetails/alertDepartmentOfficerDetails.js" type="text/javascript"></script>
 <script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
 <script src="alertDepartment/js/newAlertUserManagementDetail.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -220,6 +224,21 @@ $("#selecDepartmentId").chosen()
 $("#selectMediaId").chosen()
 $("#selecDepartmentId").trigger("chosen:updated")
 $("#selectMediaId").trigger("chosen:updated")
+getSliderDetails();
+var sliderVa1;
+function getSliderDetails(){
+		var slider = new Slider('#sliderValueOficer', {
+	   formatter: function(value) {
+		   $("#getSliderVal").text(value);
+		   sliderVa1=value;
+		 return 'Current value: ' + value;
+	   }
+	});
+	
+	$( "#sliderValueOficer" ).mouseup(function() {
+		getCadreGreivienceEfficiency(sliderVa1);
+	});
+}
 function generateExcel1(){
 	tableToExcel('grievanceReportTableId', 'Grievance Report');
 }
