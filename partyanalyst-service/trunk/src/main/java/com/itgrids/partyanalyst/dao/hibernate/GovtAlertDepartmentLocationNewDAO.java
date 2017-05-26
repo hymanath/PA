@@ -58,4 +58,20 @@ public class GovtAlertDepartmentLocationNewDAO extends GenericDaoHibernate<GovtA
 		query.setParameter("assignedUserId", assignedUserId);
 		return query.list();
 	}
+	
+	public List<Object[]> getRegionScopeValuesForUser(Long userId,Long deptId){
+		Query query = getSession().createQuery(" select distinct " +  
+												" model.govtDepartmentWorkLocation.alertRegionScopesId," +
+												" model.govtDepartmentWorkLocation.locationValue," +
+												" model.govtDepartmentScopeId," +
+												" model.levelValue" +
+												" from GovtAlertDepartmentLocationNew model" +
+												" where model.user.userId = :userId" +
+												" and model.govtDepartmentId = :deptId" +
+												" and model.isDeleted = 'N'" +
+												" and model.govtDepartmentWorkLocation.isDeleted = 'N'");
+		query.setParameter("userId", userId);
+		query.setParameter("deptId", deptId);
+		return query.list();
+	}
 }

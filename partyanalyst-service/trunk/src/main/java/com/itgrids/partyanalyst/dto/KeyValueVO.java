@@ -12,6 +12,7 @@ public class KeyValueVO implements Serializable {
 	private List<KeyValueVO> list = new ArrayList<KeyValueVO>(0);
 	private Long totalCount = 0l;
 	private List<KeyValueVO> subList = new ArrayList<KeyValueVO>(0);
+	private Long scopeValue = 0l;
 	
 	
 	public Long getId() {
@@ -49,5 +50,11 @@ public class KeyValueVO implements Serializable {
 	}
 	public void setSubList(List<KeyValueVO> subList) {
 		this.subList = subList;
+	}
+	public Long getScopeValue() {
+		return scopeValue;
+	}
+	public void setScopeValue(Long scopeValue) {
+		this.scopeValue = scopeValue;
 	}
 }

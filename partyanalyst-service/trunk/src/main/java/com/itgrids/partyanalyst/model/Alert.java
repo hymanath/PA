@@ -90,6 +90,15 @@ public class Alert extends BaseModel implements Serializable {
 	private  AlertCallCenterType alertCallCenterType;
 	
 	private String isVerified;
+	private Long mondayGrievanceTypeId;
+	private Long janmabhoomiTypeId;
+	private Long specialGrievanceTypeId;
+	private Long generalGrievanceTypeId;
+	
+	private MondayGrievanceType mondayGrievanceType;
+	private JanmabhoomiType janmabhoomiType;
+	private SpecialGrievanceType specialGrievanceType;
+	private GeneralGrievanceType generalGrievanceType;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -650,8 +659,80 @@ public class Alert extends BaseModel implements Serializable {
 	public void setIsVerified(String isVerified) {
 		this.isVerified = isVerified;
 	}
-	
-	
 
-	
+	@Column(name = "monday_grievance_type_id")
+	public Long getMondayGrievanceTypeId() {
+		return mondayGrievanceTypeId;
+	}
+	public void setMondayGrievanceTypeId(Long mondayGrievanceTypeId) {
+		this.mondayGrievanceTypeId = mondayGrievanceTypeId;
+	}
+
+	@Column(name = "janmabhoomi_type_id")
+	public Long getJanmabhoomiTypeId() {
+		return janmabhoomiTypeId;
+	}
+	public void setJanmabhoomiTypeId(Long janmabhoomiTypeId) {
+		this.janmabhoomiTypeId = janmabhoomiTypeId;
+	}
+
+	@Column(name = "special_grievance_type_id")
+	public Long getSpecialGrievanceTypeId() {
+		return specialGrievanceTypeId;
+	}
+	public void setSpecialGrievanceTypeId(Long specialGrievanceTypeId) {
+		this.specialGrievanceTypeId = specialGrievanceTypeId;
+	}
+
+	@Column(name = "general_grievance_type_id")
+	public Long getGeneralGrievanceTypeId() {
+		return generalGrievanceTypeId;
+	}
+	public void setGeneralGrievanceTypeId(Long generalGrievanceTypeId) {
+		this.generalGrievanceTypeId = generalGrievanceTypeId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "monday_grievance_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public MondayGrievanceType getMondayGrievanceType() {
+		return mondayGrievanceType;
+	}
+	public void setMondayGrievanceType(MondayGrievanceType mondayGrievanceType) {
+		this.mondayGrievanceType = mondayGrievanceType;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "janmabhoomi_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public JanmabhoomiType getJanmabhoomiType() {
+		return janmabhoomiType;
+	}
+	public void setJanmabhoomiType(JanmabhoomiType janmabhoomiType) {
+		this.janmabhoomiType = janmabhoomiType;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "special_grievance_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public SpecialGrievanceType getSpecialGrievanceType() {
+		return specialGrievanceType;
+	}
+	public void setSpecialGrievanceType(SpecialGrievanceType specialGrievanceType) {
+		this.specialGrievanceType = specialGrievanceType;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "general_grievance_type_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public GeneralGrievanceType getGeneralGrievanceType() {
+		return generalGrievanceType;
+	}
+	public void setGeneralGrievanceType(GeneralGrievanceType generalGrievanceType) {
+		this.generalGrievanceType = generalGrievanceType;
+	}
 }

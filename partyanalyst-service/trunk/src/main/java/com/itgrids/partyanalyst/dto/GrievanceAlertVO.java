@@ -61,8 +61,16 @@ public class GrievanceAlertVO {
 	private Long alertCallCenterTypeId; 
 	private List<GrievanceAlertVO> subList = new ArrayList<GrievanceAlertVO>();
 	private String callerDuplicate;
+	private Long alertCategoryId;
 	
 	
+	
+	public Long getAlertCategoryId() {
+		return alertCategoryId;
+	}
+	public void setAlertCategoryId(Long alertCategoryId) {
+		this.alertCategoryId = alertCategoryId;
+	}
 	public String getCallerDuplicate() {
 		return callerDuplicate;
 	}

@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.StatusTrackingVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public interface IAlertService {
 	public List<BasicVO> getCandidatesByName(String candidateName);
@@ -163,4 +164,8 @@ public interface IAlertService {
     public AlertOverviewVO getStateLevelAlertDetails(String fromDateStr, String toDateStr,Long stateId,Long departmentId,Long sourceId,String level);
     public List<AlertCoreDashBoardVO> getReopenCountDtls(String fromDateStr,String toDateStr, Long stateId, Long departmentId,Long sourceId, String groupType,Long reopenType, Long locationId);
     public List<AlertCoreDashBoardVO> getTotalAlertGroupByStatusForStateLvlGrievancePage(String fromDateStr,String toDateStr, Long stateId, Long departmentId,Long sourceId, Long statusId,String level);
+    
+    public String createMeekosamGrievanceAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
+    public UserAddress saveUserAddressForMeekosamGrievanceAlert(final GrievanceAlertVO inputVO);
+    public KeyValueVO getRegionScopeValuesForUser(Long userId,Long deptId);
 }
