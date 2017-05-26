@@ -488,8 +488,9 @@
      <div class="modal-body pad_0">
 	 <center ><img id="publicRepresentativelinkAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
 	  <div id="radioBtnsDivId"></div>
-	  <div id="hoursWiseVisitors"></div>
+	  <!--<div id="hoursWiseVisitors"></div>-->
 	 <div id="showModelConstcy"></div>
+	 
 	  </div>
 	  </div>
 	  </div>
@@ -3134,7 +3135,8 @@ function getPublicrepresentatives(){
 						str+='<td>Yes</td>';
 					}else if(!result[i].status){
 						str+='<td>No</td>';
-					}
+					}					
+					
 					for(var j in result[i].datesList)
 					{
 						if(result[i].datesList[j].totalDaydataExist == true){
@@ -3276,11 +3278,12 @@ function getPublicrepresentatives(){
 									borderWidth: 0
 								}
 							},
-							series: [{
+							series: [
+							/*{
 								name: 'Total Dias Entries ',
 								data: totalAttendedArr
 
-							}, {
+							},*/ {
 								name: 'Now On Dias',
 								data: nowInCampusArr
 
