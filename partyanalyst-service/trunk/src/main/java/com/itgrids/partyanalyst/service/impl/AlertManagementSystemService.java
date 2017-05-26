@@ -7540,7 +7540,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      		List<IdNameVO> finalList = new ArrayList<IdNameVO>();
 	      		try {
 	      			
-	      			List<Object[]> list = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtAllDepartmentDetails();
+	      			List<Object[]> list = govtDepartmentRelationDAO.getAllMainDepartments();
 	      			if(list !=null && list.size()>0){
 	      				for (Object[] objects : list) {							
 	      					IdNameVO vo = new IdNameVO();
