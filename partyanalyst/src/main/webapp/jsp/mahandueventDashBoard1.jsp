@@ -129,9 +129,9 @@
 			   </div>
 			   <div id="enrollmentDivId" class="col-md-5">
 					<select class="form-control" id="enrollmentYearSelId" onchange="eventUpdate();">
-						<option value="0">All</option>
+						<option value="0" selected >All</option>
 						<option value="3">2014 - 2016</option>
-						<option value="4" selected>2016 - 2018</option>
+						<option value="4">2016 - 2018</option>
 					</select>
 			   </div>
 			</div>
@@ -487,6 +487,8 @@
       </div>
      <div class="modal-body pad_0">
 	 <center ><img id="publicRepresentativelinkAjax" src="images/Loading-data.gif" style="display:none;width:65px;height:60px;"/></center>
+	  <div id="radioBtnsDivId"></div>
+	  <div id="hoursWiseVisitors"></div>
 	 <div id="showModelConstcy"></div>
 	  </div>
 	  </div>
@@ -501,8 +503,8 @@
 					<!--<h4 class="modal-title" id="myModalLabel">Hour Wise At Dias Counts</h4>-->
 				</div>
 				<div class="modal-body">
-					<div id="radioBtnsDivId"></div>
-					<div id="hoursWiseVisitors"></div>
+				<!--	<div id="radioBtnsDivId"></div>
+					<div id="hoursWiseVisitors"></div>-->
 				</div>
 			</div>
 		</div>
@@ -1781,7 +1783,7 @@ function buildStartingPrograms(result,parentEventId){
 				str+='<td>';
 				if(count >0 && result[i].id !=null){
 					if(result[i].id == 56 || result[i].id == 57){
-						str+='<span attr_event_id="'+result[i].id+'" attr_parent_event_id="'+parentEventId+'" aria-hidden="true" class="glyphicon glyphicon-info-sign hourWiseAtDiasClass"></span>';
+						str+='<span attr_event_id="'+result[i].id+'" attr_parent_event_id="'+parentEventId+'" aria-hidden="true" class="glyphicon glyphicon-info-sign hourWiseAtDiasClass" style="cursor:pointer;"></span>';
 					}
 					str+='<span class="pull-right label-custom"  style="width:45px;text-align:center"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
 				}
@@ -3084,13 +3086,13 @@ function getPublicrepresentatives(){
 		
 	});
 	//getDiasetails("");
- function getDiasetails(roleType){
+ function getDiasetails(roleType,date){
    $("#showModelConstcy").html('');
 	 $("#popupId").modal("show");
 	 $("#publicRepresentativelinkAjax").show();
    var jsObj = {
       //date : '25/05/2017',
-      date : '2017-05-25',
+      date : date,
       eventId : 56
     }
     
@@ -3112,6 +3114,7 @@ function getPublicrepresentatives(){
 			else
 				str+='<th>ROLE</th>';
 				str+='<th>LOCATION</th>';
+				str+='<th>INVITEE</th>';
 				str+='<th>ATTENDED</th>';
 				for(var i in result[0].datesList)
 				str+='<th>'+ result[0].datesList[i].name+'</th>';
@@ -3122,6 +3125,11 @@ function getPublicrepresentatives(){
 					str+='<td>'+result[i].candidateName+'</td>';
 					str+='<td>'+result[i].designation+'</td>';
 					str+='<td class="text-capitalize">'+result[i].stateName+'</td>';
+					if(result[i].shortName != null && result[i].shortName.trim()=='true'){
+						str+='<td>Yes</td>';
+					}else{
+						str+='<td>No</td>';
+					}
 					if(result[i].status){
 						str+='<td>Yes</td>';
 					}else if(!result[i].status){
@@ -3129,16 +3137,20 @@ function getPublicrepresentatives(){
 					}
 					for(var j in result[i].datesList)
 					{
-						if(result[i].datesList[j].totalDaydataExist == true)
-							str+='<td>YES</td>';
+						if(result[i].datesList[j].totalDaydataExist == true){
+							str+='<td>YES ';
+							if(result[i].datesList[j].desc != null)
+								str+=' ('+result[i].datesList[j].desc.trim()+')';
+						}
 						else
-						str+='<td>NO</td>';	
+						str+='<td>NO';	
 					}
+					str+='</td>';
 					str+='</tr>';
 				}
 				str+='</table>';
 			}else{
-				str+='No Date Availabel.';
+				//str+='No Date Availabel.';
 			}
 			$("#showModelConstcy").html(str);
 			$('#dataTableForPublicRep').DataTable({
@@ -3157,7 +3169,8 @@ function getPublicrepresentatives(){
 	$(document).on("click",".hourWiseAtDiasClass",function(){
 		var eventId = $(this).attr("attr_event_id");
 		getEventDates($(this).attr("attr_parent_event_id"));
-		$("#diasDetialsModalId").modal("show");
+		getDiasetails("","2017-05-27");
+		//$("#diasDetialsModalId").modal("show");
 	});
 	
 	function getEventDates(eventId){
@@ -3176,9 +3189,9 @@ function getPublicrepresentatives(){
 					var str="";
 					for(var i in result){
 						if(result[i].percentage == "toDay")
-							str+='<input attr_event_id="'+eventId+'" class="dayClass" name="dayRadioName" type="radio" value="'+datesArr[i]+'" checked> Day - '+(i+1);
+							str+='<input  style="margin-left: 15px;" attr_event_id="'+eventId+'" class="dayClass" name="dayRadioName" type="radio" value="'+datesArr[i]+'" checked> Day - '+(parseInt(i)+1);
 						else
-							str+='<input attr_event_id="'+eventId+'" class="dayClass" name="dayRadioName" type="radio" value="'+datesArr[i]+'"> Day - '+(i+1);
+							str+='<input attr_event_id="'+eventId+'" class="dayClass" name="dayRadioName" type="radio" value="'+datesArr[i]+'" style="margin-left: 15px;"> Day - '+(parseInt(i)+1);
 					}
 					$("#radioBtnsDivId").html(str);
 					if($('input[name=dayRadioName]:checked').val() != "undefined");
@@ -3190,7 +3203,8 @@ function getPublicrepresentatives(){
 	
 	function getHourWiseNowInCampusCadresCount(eventId,date){
 		$('#hoursWiseVisitors').html("");
-		$("#hrWiseVstrsHghChrtPrcssngImgId").show();
+	//	$("#hrWiseVstrsHghChrtPrcssngImgId").show();
+		
 		
 		var jObj = {
 				dayVal:date,
@@ -3233,7 +3247,7 @@ function getPublicrepresentatives(){
 								type: 'column'
 							},
 							title: {
-								text: 'Hour Wise In Dias Counts'
+								text: 'Hour Wise Members on the Dias '
 							},
 							subtitle: {
 								text: ''
@@ -3251,7 +3265,7 @@ function getPublicrepresentatives(){
 							tooltip: {
 								headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
 								pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-									'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+									'<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
 								footerFormat: '</table>',
 								shared: true,
 								useHTML: true
@@ -3263,11 +3277,11 @@ function getPublicrepresentatives(){
 								}
 							},
 							series: [{
-								name: 'Total',
+								name: 'Total Dias Entries ',
 								data: totalAttendedArr
 
 							}, {
-								name: 'Now In Campus',
+								name: 'Now On Dias',
 								data: nowInCampusArr
 
 							}]
@@ -3280,7 +3294,9 @@ function getPublicrepresentatives(){
 	}
 	
 	$(document).on("click",".dayClass",function(){
+		getDiasetails("",$(this).val());
 		getHourWiseNowInCampusCadresCount($(this).attr("attr_event_id"),$(this).val());
+		
 	});
 </script>
 </body>
