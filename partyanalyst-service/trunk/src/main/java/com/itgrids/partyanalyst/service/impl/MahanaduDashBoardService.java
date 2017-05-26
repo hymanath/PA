@@ -596,7 +596,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		
 		Date todayDate = dateUtilService.getCurrentDateAndTime();
 		Long parentEventId = 0L;
-		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
 		if(entryExitInfo != null){
 			Long entryEventId = entryExitInfo.getEntryId();
 			Long exitEventId = entryExitInfo.getExitId();
@@ -719,7 +719,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long exitEventId = 0L;
 			Long parentEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -886,7 +886,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -1046,7 +1046,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -1174,7 +1174,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return Long.parseLong(day+"");
 	}
 	
-	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId,List<Long> enrollmentIdsList){
+	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId,List<Long> enrollmentIdsList,String eventType){
 		List<MahanaduEventVO> defaultHoursList =  setHoursList();
 		try {
 			Object[] dateObj = eventDAO.getEventDates(eventId);
@@ -1185,7 +1185,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Date date = format.parse(dayCount);
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,eventType);
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -1340,7 +1340,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			if(totalCountsObjList != null && totalCountsObjList.size() > 0){
 				for (Object[] objects : totalCountsObjList) {
 					if((Long)objects[1]<=8){
-						vo1.setEightam(vo.getEightam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setEightam(vo1.getEightam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setEightam(vo1.getEightam()+(Long)objects[0]);
 						vo1.setNineam(vo1.getEightam());
 						vo1.setTenam(vo1.getEightam());
@@ -1356,7 +1356,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getEightam());*/
 					}
 					if((Long)objects[1]==9){
-						vo1.setNineam(vo.getNineam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setNineam(vo1.getNineam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setNineam(vo1.getEightam()+(Long)objects[0]);
 						vo1.setTenam(vo1.getNineam());
 						vo1.setElevenam(vo1.getNineam());
@@ -1371,7 +1371,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getNineam());*/
 					}
 					if((Long)objects[1]==10){
-						vo1.setTenam(vo.getTenam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setTenam(vo1.getTenam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setTenam(vo1.getNineam()+(Long)objects[0]);
 						vo1.setElevenam(vo1.getTenam());
 						vo1.setTwelvpm(vo1.getTenam());
@@ -1398,7 +1398,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getElevenam());*/
 					}
 					if((Long)objects[1]==12){
-						vo1.setTwelvpm(vo.getTwelvpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setTwelvpm(vo1.getTwelvpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setTwelvpm(vo1.getElevenam()+(Long)objects[0]);
 						vo1.setOnepm(vo1.getTwelvpm());
 						vo1.setTwopm(vo1.getTwelvpm());
@@ -1421,7 +1421,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getOnepm());*/
 					}
 					if((Long)objects[1]==14){
-						vo1.setTwopm(vo.getTwopm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setTwopm(vo1.getTwopm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setTwopm(vo1.getOnepm()+(Long)objects[0]);
 						vo1.setThreepm(vo1.getTwopm());
 						vo1.setFourpm(vo1.getTwopm());
@@ -1431,7 +1431,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getTwopm());*/
 					}
 					if((Long)objects[1]==15){
-						vo1.setThreepm(vo.getThreepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setThreepm(vo1.getThreepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setThreepm(vo1.getTwopm()+(Long)objects[0]);
 						vo1.setFourpm(vo1.getThreepm());
 						vo1.setFivepm(vo1.getThreepm());
@@ -1440,7 +1440,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getThreepm());*/
 					}
 					if((Long)objects[1]==16){
-						vo1.setFourpm(vo.getFourpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setFourpm(vo1.getFourpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setFourpm(vo1.getThreepm()+(Long)objects[0]);
 						vo1.setFivepm(vo1.getFourpm());
 						vo1.setSixpm(vo1.getFourpm());
@@ -1448,26 +1448,26 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getFourpm());*/
 					}
 					if((Long)objects[1]==17){
-						vo1.setFivepm(vo.getFivepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setFivepm(vo1.getFivepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setFivepm(vo1.getFourpm()+(Long)objects[0]);
 						vo1.setSixpm(vo1.getFivepm());
 						vo1.setSevenpm(vo1.getFivepm());
 						vo1.setEightpm(vo1.getFivepm());*/
 					}
 					if((Long)objects[1]==18){
-						vo1.setSixpm(vo.getSixpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setSixpm(vo1.getSixpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setSixpm(vo1.getFivepm()+(Long)objects[0]);
 						vo1.setSevenpm(vo1.getSixpm());
 						vo1.setEightpm(vo1.getSixpm());*/
 						
 					}
 					if((Long)objects[1]==19){
-						vo1.setSevenpm(vo.getSevenpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setSevenpm(vo1.getSevenpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setSevenpm(vo1.getSixpm()+(Long)objects[0]);
 						vo1.setEightpm(vo1.getSevenpm());*/
 					}
 					if((Long)objects[1]>=20 && (Long)objects[1]<=24){
-						vo1.setEightpm(vo.getEightpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setEightpm(vo1.getEightpm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						//vo1.setEightpm(vo1.getSevenpm()+(Long)objects[0]);
 					}
 					/*vo.setTotal((Long)objects[0]);
