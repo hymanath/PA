@@ -6,6 +6,6 @@ import com.itgrids.partyanalyst.model.EntryExitInfo;
 
 public interface IEntryExitInfoDAO  extends GenericDao<EntryExitInfo, Long>{
 	
-	public EntryExitInfo getEntryDetails(Long parentEventId);
+	public EntryExitInfo getEntryDetails(Long parentEventId,String eventType);
 
 }

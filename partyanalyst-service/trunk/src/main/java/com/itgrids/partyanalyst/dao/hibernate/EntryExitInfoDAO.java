@@ -12,12 +12,13 @@ public class EntryExitInfoDAO  extends GenericDaoHibernate<EntryExitInfo, Long> 
 		super(EntryExitInfo.class);
 	}
 	
-	public EntryExitInfo getEntryDetails(Long parentEventId){
+	public EntryExitInfo getEntryDetails(Long parentEventId,String eventType){
 		
 		Query query = getSession().createQuery("select model from EntryExitInfo model " +
-				" where model.parentEventId = :parentEventId ");
+				" where model.parentEventId = :parentEventId and model.eventType = :eventType ");
 		
 		query.setParameter("parentEventId", parentEventId);
+		query.setParameter("eventType", eventType);
 		return (EntryExitInfo) query.uniqueResult();
 	}
 	

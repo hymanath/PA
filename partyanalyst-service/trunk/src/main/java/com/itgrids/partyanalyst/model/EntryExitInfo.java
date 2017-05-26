@@ -20,6 +20,7 @@ public class EntryExitInfo {
 	Long exitId;
 	Long parentEventId;
 	String serviceRunReq;
+	String eventType;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,6 +62,14 @@ public class EntryExitInfo {
 	}
 	public void setServiceRunReq(String serviceRunReq) {
 		this.serviceRunReq = serviceRunReq;
+	}
+	
+	@Column(name = "event_type")
+	public String getEventType() {
+		return eventType;
+	}
+	public void setEventType(String eventType) {
+		this.eventType = eventType;
 	}
 	
 	
