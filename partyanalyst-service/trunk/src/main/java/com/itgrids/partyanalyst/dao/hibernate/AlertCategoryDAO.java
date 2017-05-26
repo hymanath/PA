@@ -22,7 +22,7 @@ public class AlertCategoryDAO extends GenericDaoHibernate<AlertCategory, Long>
 		return query.list();
 	}
 	public List<Object[]> getAllCategory1(){
-		Query query = getSession().createQuery("select model.alertCategoryId, model.category from AlertCategory model where model.alertCategoryId  in (2,3,4,5) order by model.order ");
+		Query query = getSession().createQuery("select model.alertCategoryId, model.category from AlertCategory model where model.alertCategoryId  not in (1) order by model.order ");
 		return query.list();
 	}
 	public List<Object[]> getAlertCategoryByCategoryIds(List<Long> alertCategoryIds){
