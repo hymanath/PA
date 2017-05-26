@@ -93,6 +93,10 @@
 													<li role="presentation" class="text-capital"><a href="#electronicMediaAlerts" aria-controls="electronicMediaAlerts" role="tab" data-toggle="tab">Electronic Media</a></li>
 													<li role="presentation" class="text-capital"><a href="#callcenterAlerts" aria-controls="callcenterAlerts" role="tab" data-toggle="tab">Manual</a></li>
 													<li role="presentation" class="text-capital"><a href="#socialMediaType" aria-controls="socialMediaType" role="tab" data-toggle="tab">Social Media Type</a></li>
+													<li role="presentation" class="text-capital"><a href="#mondayGrievanceType" aria-controls="mondayGrievanceType" role="tab" data-toggle="tab">Monday Grievance Type</a></li>
+													<li role="presentation" class="text-capital"><a href="#janmabhoomiType" aria-controls="janmabhoomiType" role="tab" data-toggle="tab">Janmabhoomi Type</a></li>
+													<li role="presentation" class="text-capital"><a href="#specialGrievanceType" aria-controls="specialGrievanceType" role="tab" data-toggle="tab">Special Grievance Type</a></li>
+													<li role="presentation" class="text-capital"><a href="#generalGrievanceType" aria-controls="generalGrievanceType" role="tab" data-toggle="tab">General Grievance Type</a></li>
 													<li role="presentation" class="text-capital"><a href="#departmentAlerts" aria-controls="departmentAlerts" role="tab" data-toggle="tab">Department</a></li>
 												</ul>
 											</div>
@@ -159,6 +163,66 @@
 																<li>
 																	<label><input type="checkbox" class="mediaTypeCls" checked attr_val="${socailMediaType.id}"/>
 																	${socailMediaType.name}</label>
+																</li>
+															</c:forEach>
+														</ul>
+													</div>
+													<div role="tabpanel" class="tab-pane" id="mondayGrievanceType">
+														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Monday Grievance Type</h4>
+														<hr style ="margin-bottom:0px;" />
+														<ul class="settingsUl">
+															<li>
+																<label><input type="checkbox" class="selectAllMondayGrievanceType" checked />Select All</label>
+															</li>
+															<c:forEach items="${mondayGrievanceTypeList}"  var="mondayGrievanceType">
+																<li>
+																	<label><input type="checkbox" class="mondayGrievanceCls" checked attr_val="${mondayGrievanceType.id}"/>
+																	${mondayGrievanceType.name}</label>
+																</li>
+															</c:forEach>
+														</ul>
+													</div>
+													<div role="tabpanel" class="tab-pane" id="janmabhoomiType">
+														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Janmabhoomi Type</h4>
+														<hr style ="margin-bottom:0px;" />
+														<ul class="settingsUl">
+															<li>
+																<label><input type="checkbox" class="selectAllJanmabhoomiType" checked />Select All</label>
+															</li>
+															<c:forEach items="${janmabhoomiTypeList}"  var="janmabhoomiType">
+																<li>
+																	<label><input type="checkbox" class="janmabhoomiCls" checked attr_val="${janmabhoomiType.id}"/>
+																	${janmabhoomiType.name}</label>
+																</li>
+															</c:forEach>
+														</ul>
+													</div>
+													<div role="tabpanel" class="tab-pane" id="specialGrievanceType">
+														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Special Grievance Type</h4>
+														<hr style ="margin-bottom:0px;" />
+														<ul class="settingsUl">
+															<li>
+																<label><input type="checkbox" class="selectAllSpecialGrievanceType" checked />Select All</label>
+															</li>
+															<c:forEach items="${specialGrievanceTypeList}"  var="specialGrievanceType">
+																<li>
+																	<label><input type="checkbox" class="specialGrievanceCls" checked attr_val="${specialGrievanceType.id}"/>
+																	${specialGrievanceType.name}</label>
+																</li>
+															</c:forEach>
+														</ul>
+													</div>
+													<div role="tabpanel" class="tab-pane" id="generalGrievanceType">
+														<h4 class="text-capital pad_5" style="color:#99A0A5;">Select General Grievance Type</h4>
+														<hr style ="margin-bottom:0px;" />
+														<ul class="settingsUl">
+															<li>
+																<label><input type="checkbox" class="selectAllGeneralGrievanceType" checked />Select All</label>
+															</li>
+															<c:forEach items="${generalGrievanceTypeList}"  var="generalGrievanceType">
+																<li>
+																	<label><input type="checkbox" class="generalGrievanceCls" checked attr_val="${generalGrievanceType.id}"/>
+																	${generalGrievanceType.name}</label>
 																</li>
 															</c:forEach>
 														</ul>
@@ -307,7 +371,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="">ASSIGN DEPARTMENT</h4>
+                <h4 class="modal-title" id="">ASSIGN DEPARTMENT</h4>
 			</div>
 			<div class="modal-body">
 				<span id="presentDeptId"> </span>

@@ -106,6 +106,10 @@
 									<li role="presentation" class="active text-capital"><a href="#mediaAlerts" aria-controls="mediaAlerts" role="tab" data-toggle="tab">Media Type</a></li>
 									<li role="presentation" class="text-capital"><a href="#callCenterAlerts" aria-controls="callCenterAlerts" role="tab" data-toggle="tab">Call Center</a></li>
 									<li role="presentation" class="text-capital"><a href="#socialMediaType" aria-controls="socialMediaType" role="tab" data-toggle="tab">Social Media Type</a></li>
+									<li role="presentation" class="text-capital"><a href="#mondayGrievanceType" aria-controls="mondayGrievanceType" role="tab" data-toggle="tab">Monday Grievance Type</a></li>
+									<li role="presentation" class="text-capital"><a href="#janmabhoomiType" aria-controls="janmabhoomiType" role="tab" data-toggle="tab">Janmabhoomi Type</a></li>
+									<li role="presentation" class="text-capital"><a href="#specialGrievanceType" aria-controls="specialGrievanceType" role="tab" data-toggle="tab">Special Grievance Type</a></li>
+									<li role="presentation" class="text-capital"><a href="#generalGrievanceType" aria-controls="generalGrievanceType" role="tab" data-toggle="tab">General Grievance Type</a></li>
 									<li role="presentation" class="text-capital"><a href="#alertSeverityType" aria-controls="alertSeverityType" role="tab" data-toggle="tab">Alert Severity</a></li>
 									<li role="presentation" class="text-capital"><a href="#alertStatusType" aria-controls="alertStatusType" role="tab" data-toggle="tab">Alert Status</a></li>
 									<li role="presentation" class="text-capital"><a href="#alertSubTaskType" aria-controls="alertSubTaskType" role="tab" data-toggle="tab">Alert Sub Task Status</a></li>
@@ -154,6 +158,58 @@
 											</li>
 												<li>
 													<label class="checkbox-inline"><input type="checkbox" class="socialMediaCls checkedSelected" checked />Social Media</label>
+												</li>
+										</ul>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="mondayGrievanceType">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Monday Grievance Type</h4>
+										<hr style ="margin-bottom:0px;" />
+										<ul class="settingsUl">
+											<li>
+												<label><input type="checkbox" class="selectAllMondayGrievanceType" checked />Select All</label>
+											</li>
+											<li>
+												<label><input type="checkbox" class="mondayGrievanceCls checkedSelected" checked />
+													Monday Grievance</label>
+												</li>
+										</ul>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="janmabhoomiType">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Janmabhoomi Type</h4>
+										<hr style ="margin-bottom:0px;" />
+										<ul class="settingsUl">
+											<li>
+												<label><input type="checkbox" class="selectAllJanmabhoomiType" checked />Select All</label>
+											</li>
+												<li>
+													<label><input type="checkbox" class="janmabhoomiCls checkedSelected" checked />
+													Janmabhoomi Type</label>
+												</li>
+										</ul>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="specialGrievanceType">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Special Grievance Type</h4>
+										<hr style ="margin-bottom:0px;" />
+										<ul class="settingsUl">
+											<li>
+												<label><input type="checkbox" class="selectAllSpecialGrievanceType checkedSelected" checked />Select All</label>
+											</li>
+												<li>
+													<label><input type="checkbox" class="specialGrievanceCls" checked />
+													Special Grievance Type</label>
+												</li>
+										</ul>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="generalGrievanceType">
+										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select General Grievance Type</h4>
+										<hr style ="margin-bottom:0px;" />
+										<ul class="settingsUl">
+											<li>
+												<label><input type="checkbox" class="selectAllGeneralGrievanceType" checked />Select All</label>
+											</li>
+												<li>
+													<label><input type="checkbox" class="generalGrievanceCls checkedSelected" checked />
+													General Grievance Type</label>
 												</li>
 										</ul>
 									</div>
@@ -371,6 +427,11 @@ var subLevels = [];
 var distWiseDistLevelArr=[];
 var divisionWiseDistLevelArr=[];
 var globalDepartmentName;
+/*new four categories global variable name.*/
+var globalMondayGrievanceTypeIdsArr = [];
+var globalJanmabhoomiTypeIdsArr = [];
+var globalSpecialGrievanceTypeIdsArr = [];
+var globalGeneralGrievanceTypeIdsArr = [];
 google.load("elements", "1", {
 	packages: "transliteration"
 });
@@ -395,6 +456,10 @@ onLoadSocialMedia();
 onLoadAlertSeverity();
 onLoadAlertStatus();
 onLoadAlertSubTaskStatus();
+onLoadMondayGrievanceType();
+onLoadJanmabhoomiType();
+onLoadSpecialGrievanceType();
+onLoadGeneralGrievanceType();
 $(document).on("click",".selectAllPaperCls",function(){
 	if($(this).prop('checked')) {
 		$(".newsPaperListCls").prop('checked', true);
@@ -465,6 +530,50 @@ $(document).on("click",".selectAllSubTaskType",function(){
 		
 	}
 	
+});
+$(document).on("click",".selectAllMondayGrievanceType",function(){
+	if($(this).prop('checked')) {
+		$(".mondayGrievanceCls").prop('checked', true);
+		onLoadMondayGrievanceType();
+
+	}else{
+		$(".mondayGrievanceCls").prop('checked', false);
+		globalMondayGrievanceTypeIdsArr=[];
+		
+	}
+});
+$(document).on("click",".selectAllJanmabhoomiType",function(){
+	if($(this).prop('checked')) {
+		$(".janmabhoomiCls").prop('checked', true);
+		onLoadJanmabhoomiType();
+
+	}else{
+		$(".janmabhoomiCls").prop('checked', false);
+		globalJanmabhoomiTypeIdsArr=[];
+		
+	}
+});
+$(document).on("click",".selectAllSpecialGrievanceType",function(){
+	if($(this).prop('checked')) {
+		$(".specialGrievanceCls").prop('checked', true);
+		onLoadSpecialGrievanceType();
+
+	}else{
+		$(".specialGrievanceCls").prop('checked', false);
+		globalSpecialGrievanceTypeIdsArr=[];
+		
+	}
+});
+$(document).on("click",".selectAllGeneralGrievanceType",function(){
+	if($(this).prop('checked')) {
+		$(".generalGrievanceCls").prop('checked', true);
+		onLoadGeneralGrievanceType();
+
+	}else{
+		$(".generalGrievanceCls").prop('checked', false);
+		globalGeneralGrievanceTypeIdsArr=[];
+		
+	}
 });
 function onLoadPrintAndChannel(){
 	newspapersGlobalArr=[];
@@ -543,6 +652,58 @@ function onLoadAlertSubTaskStatus(){
 		}
 	});
 }
+function onLoadMondayGrievanceType(){
+	globalMondayGrievanceTypeIdsArr = [];
+	$(".mondayGrievanceCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		var mondayGrievanceObj='';
+		<c:forEach items="${mondayGrievanceTypeList}"  var="mondayGrievanceType">
+			mondayGrievanceObj = '${mondayGrievanceType.id}'
+			globalMondayGrievanceTypeIdsArr.push(mondayGrievanceObj)
+		 </c:forEach>
+	}
+});
+}
+function onLoadJanmabhoomiType(){
+	globalJanmabhoomiTypeIdsArr = [];
+	$(".janmabhoomiCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		var janmabhoomiTypeObj='';
+		<c:forEach items="${janmabhoomiTypeList}"  var="janmabhoomiType">
+			janmabhoomiTypeObj = '${janmabhoomiType.id}'
+			globalJanmabhoomiTypeIdsArr.push(janmabhoomiTypeObj)
+		 </c:forEach>
+	}
+});
+}
+function onLoadSpecialGrievanceType(){
+	globalSpecialGrievanceTypeIdsArr = [];
+	$(".specialGrievanceCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		var specialGrievanceTypeObj='';
+		<c:forEach items="${specialGrievanceTypeList}"  var="specialGrievanceType">
+			specialGrievanceTypeObj = '${specialGrievanceType.id}'
+			globalSpecialGrievanceTypeIdsArr.push(specialGrievanceTypeObj)
+		 </c:forEach>
+	}
+});
+}
+function onLoadGeneralGrievanceType(){
+	globalGeneralGrievanceTypeIdsArr = [];
+	$(".generalGrievanceCls").each(function(){
+	if($(this).is(":checked"))
+	{
+		var generalGrievanceTypeObj='';
+		<c:forEach items="${generalGrievanceTypeList}"  var="generalGrievanceType">
+			generalGrievanceTypeObj = '${generalGrievanceType.id}'
+			globalGeneralGrievanceTypeIdsArr.push(generalGrievanceTypeObj)
+		 </c:forEach>
+	}
+});
+}
 $(document).on("click",".checkedSelected",function(){
 		onLoadPrintAndChannel();
 		onLoadCallcenter();
@@ -550,7 +711,10 @@ $(document).on("click",".checkedSelected",function(){
 		onLoadAlertSeverity();
 		onLoadAlertStatus();
 		onLoadAlertSubTaskStatus();
-		
+		onLoadMondayGrievanceType();
+		onLoadJanmabhoomiType();
+		onLoadSpecialGrievanceType();
+		onLoadGeneralGrievanceType();
 });	
 onLoadCallsAMU();	
 </script>

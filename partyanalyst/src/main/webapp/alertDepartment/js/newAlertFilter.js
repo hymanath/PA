@@ -556,7 +556,11 @@ function getSubOrdinateFilterAlertsOverview(){
 		paperIdArr:newspapersGlobalArr,
 		chanelIdArr:channelGlobalArr,
 		callCenterArr:callCenterGlobalArr,
-		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+		mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+	    janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+		specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+		generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr		
     
 	}
 	$.ajax({
@@ -872,7 +876,11 @@ function getLocationFilterClickDetails(designationId,levelId,locationValueId,sta
 		paperIdArr:newspapersGlobalArr,
 		chanelIdArr:channelGlobalArr,
 		callCenterArr:callCenterGlobalArr,
-		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+		mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+	    janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+		specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+		generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr	
     
 	}
 	$.ajax({

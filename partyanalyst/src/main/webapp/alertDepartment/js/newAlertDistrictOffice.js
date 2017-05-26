@@ -58,7 +58,10 @@ $("#dateRangePickerAUM").daterangepicker({
 			var callCenterIdLen = callCenterGlobalArr.length;
 			var socialMediaIdLen = globalsocialMediaTypeIdsArr.length;
 			var alertSeverityLen = globalAlertSeverityIdsArr.length;
-			
+			var mondayGrievanceTypeLen = globalMondayGrievanceTypeIdsArr.length;
+			var janmabhoomiTypeLen = globalJanmabhoomiTypeIdsArr.length;
+			var specialGrievanceTypeLen = globalSpecialGrievanceTypeIdsArr.length;
+			var generalGrievanceTypeLen = globalGeneralGrievanceTypeIdsArr.length;
 			
 			var alertStatusId = globalAlertStatusIdsArr[0];
 			 if(alertStatusId == 0){
@@ -72,8 +75,8 @@ $("#dateRangePickerAUM").daterangepicker({
 			 var alertStatusLen = globalAlertStatusIdsArr.length;
 		     var subTaskLen = globalAlertSubTaskStatusIdsArr.length;
 		     
-			if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen ==0 && socialMediaIdLen == 0){
-				alert("Please Select Atleast One (Media Type or Call Center or Social Media).");
+			if(newsPaperIdLen == 0 && channelIdLen == 0 && callCenterIdLen ==0 && socialMediaIdLen == 0 && mondayGrievanceTypeLen == 0 && janmabhoomiTypeLen == 0 && specialGrievanceTypeLen == 0 && generalGrievanceTypeLen == 0){
+				alert("Please Select Atleast One Media Type.");
 				return;
 			}
 			if(alertStatusLen > 0){
@@ -137,7 +140,11 @@ $("#dateRangePickerAUM").daterangepicker({
 	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
 	  alertSeverityIdsArr:globalAlertSeverityIdsArr,
       alertStatusIdsArr:globalAlertStatusIdsArr,
-      alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
+      alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr,
+	  mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+	  janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+	  specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+	  generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
     }
     $.ajax({
       type:'GET',
@@ -739,7 +746,11 @@ $(document).on("click",".overAllCount",function(){
         socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
         alertSeverityIdsArr:globalAlertSeverityIdsArr,
         alertStatusIdsArr:globalAlertStatusIdsArr,
-        alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr		
+        alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr,
+		mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+		janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+		specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+		generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
 	}
 	$.ajax({
       type:'GET',
@@ -782,8 +793,11 @@ $(document).on("click",".todayCountCls",function(){
 		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
 		alertSeverityIdsArr:globalAlertSeverityIdsArr,
         alertStatusIdsArr:globalAlertStatusIdsArr,
-        alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
-		
+        alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr,
+		mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+		janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+		specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+		generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
 	}
 	$.ajax({
       type:'GET',
@@ -1190,7 +1204,11 @@ function getStateThenGovtDeptScopeWiseAlertCount(departmentId,parentGovtDepartme
 		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
 		alertSeverityIdsArr:globalAlertSeverityIdsArr,
         alertStatusIdsArr:globalAlertStatusIdsArr,
-        alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
+        alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr,
+		mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+		janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+		specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+		generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
 	}
     $.ajax({
     type:'GET',         
@@ -1334,6 +1352,10 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 				 var electronicMediaArr = [];
 				 var callCenterArr = [];
 				 var socialMediaArr = [];
+				 var mondayGrievanceArr=[];
+				 var janmabhoomiArr=[];
+				 var specialGrievanceArr=[];
+				 var generalGrievanceArr=[];
 				 
 				 for(var i in result){
 					
@@ -1352,6 +1374,14 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 								 callCenterArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id+"-"+result[i].stateId});
 							}else if(result[i].subList[j].id==5){
 								 socialMediaArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id+"-"+result[i].stateId});
+							}else if(result[i].subList[j].id==6){
+								 mondayGrievanceArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id+"-"+result[i].stateId});
+							}else if(result[i].subList[j].id==7){
+								 janmabhoomiArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id+"-"+result[i].stateId});
+							}else if(result[i].subList[j].id==8){
+								 specialGrievanceArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id+"-"+result[i].stateId});
+							}else if(result[i].subList[j].id==9){
+								 generalGrievanceArr.push({"y":result[i].subList[j].count,"extra":result[i].subList[j].id+"-"+result[i].subList[j].name+"-"+result[i].subList[j].count+"-"+result[i].id+"-"+result[i].stateId});
 							}
 
 							
@@ -1376,7 +1406,18 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 				  if(socialMediaArr != null && socialMediaArr.length > 0){
 					mainJosnObjArr.push({name:'Social Media',data:socialMediaArr,color:"#00ABED"});  
 				  }
-				  
+				  if(mondayGrievanceArr != null && mondayGrievanceArr.length > 0){
+					mainJosnObjArr.push({name:'Monday Grievance',data:mondayGrievanceArr,color:"#FA8072"});  
+				  }
+				   if(janmabhoomiArr != null && janmabhoomiArr.length > 0){
+					mainJosnObjArr.push({name:'Janmabhoomi',data:janmabhoomiArr,color:"#00FF00"});  
+				  }
+				   if(specialGrievanceArr != null && specialGrievanceArr.length > 0){
+					mainJosnObjArr.push({name:'Special Grievance',data:specialGrievanceArr,color:"#0000FF"});  
+				  }
+				   if(generalGrievanceArr != null && generalGrievanceArr.length > 0){
+					mainJosnObjArr.push({name:'General Grievance',data:generalGrievanceArr,color:"#808000"});  
+				  }
 			
 				}
 				 
@@ -1917,7 +1958,11 @@ function getLocationBasedOnDepartmentLevel(departmentId,parentScopeId,districtLe
 		  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
 		  alertSeverityIdsArr:globalAlertSeverityIdsArr,
           alertStatusIdsArr:globalAlertStatusIdsArr,
-          alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
+          alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr,
+		  mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+		  janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+	      specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+	      generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -1955,7 +2000,11 @@ function getChildLocationBasedOnParentLocation(departmentId,levelId,subLevelId,c
 		   socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
 		   alertSeverityIdsArr:globalAlertSeverityIdsArr,
            alertStatusIdsArr:globalAlertStatusIdsArr,
-           alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr
+           alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr,
+		   mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+		   janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+	       specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+	       generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
 		}
 		$.ajax({
 		type:'GET',                  
@@ -2023,7 +2072,11 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 		alertCategoryId:alertCategoryId,
 		subLevels:locationLevelIdClickArr,
 		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
-		alertSeverityIdsArr:globalAlertSeverityIdsArr
+		alertSeverityIdsArr:globalAlertSeverityIdsArr,
+		mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+		janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+		specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+		generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
 		
     }
     $.ajax({
@@ -2070,7 +2123,11 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 		chanelIdArr:channelGlobalArr,
 		callCenterArr:callCenterGlobalArr,
 		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
-		alertSeverityIdsArr:globalAlertSeverityIdsArr
+		alertSeverityIdsArr:globalAlertSeverityIdsArr,
+		mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+		janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+		specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+		generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
 	}
 	$.ajax({
       type:'GET',
@@ -2105,7 +2162,11 @@ function getBellowDistrictOfficerAlertsCountView(task){
             socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
             alertSeverityIdsArr:globalAlertSeverityIdsArr,
             alertStatusIdsArr:globalAlertStatusIdsArr,
-            alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr			
+            alertSubTaskStatusIdsArr:globalAlertSubTaskStatusIdsArr,
+			mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+			janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+			specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+			generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr			
 		}
 		$.ajax({
 			type:'GET',
@@ -2494,7 +2555,11 @@ function getBellowDistrictOfficerAlertsDtls(designationOfficerId,officerId,offic
 			chanelIdArr:channelGlobalArr,
 			callCenterArr:callCenterGlobalArr,
 			socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
-			alertSeverityIdsArr:globalAlertSeverityIdsArr
+			alertSeverityIdsArr:globalAlertSeverityIdsArr,
+			mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+			janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+			specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+			generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
 		}
 	$.ajax({
       type:'GET',
