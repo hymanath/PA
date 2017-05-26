@@ -758,6 +758,7 @@
 		<pattern>/createGrievance*</pattern>
 		<pattern>/locationWiseGrivenceReportAction*</pattern>
 		<pattern>/createSocialAlert*</pattern>
-		<pattern>/officerWiseAlertReportAction*</pattern>        
+		<pattern>/officerWiseAlertReportAction*</pattern>    
+		<pattern>/createMeekosamGrievanceAction*</pattern>    
 	 </decorator>
 </decorators>

@@ -3223,4 +3223,63 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String createMeekosamGrievance(){
+		session = request.getSession();
+		RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		if(regVo != null){
+			//keyValueVO = alertService.getRegionScopeValuesForUser(regVo.getRegistrationID());
+			return Action.SUCCESS;
+		}
+		else
+			return Action.ERROR;
+	}
+	
+	public String createMeekosamGrievanceAlert()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			int i = 0;
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				if(files != null && files.length > 0){
+					for(File f : files){
+						String fileName  =multiPartRequestWrapper.getFileNames(key)[i];
+						//fileName = StringEscapeUtils.escapeJava(fileName);
+						mapfiles.put(f,fileName);  
+						i++;
+					}
+				}
+			}
+			status = alertService.createMeekosamGrievanceAlert(grievanceAlertVO,regVo.getRegistrationID(),mapfiles);
+			
+			inputStream = new StringBufferInputStream(status);
+			
+		}
+		catch (Exception e) {
+			LOG.error("Exception rised in createMeekosamGrievanceAlert",e);
+		}
+		return Action.SUCCESS;	
+	}
+	
+	public String getRegionScopeValuesForUser(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			
+			if(regVo != null){
+				jObj = new JSONObject(getTask());
+				Long deptId = jObj.getLong("deptId");
+				keyValueVO = alertService.getRegionScopeValuesForUser(regVo.getRegistrationID(),deptId);
+			}
+		} catch (Exception e) {
+			LOG.error("Exception rised in getRegionScopeValuesForUser",e);
+		}
+		return Action.SUCCESS;
+	}
 }

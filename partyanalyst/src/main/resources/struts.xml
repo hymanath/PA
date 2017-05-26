@@ -17344,6 +17344,15 @@
 			<param name="root">alertOverviewVO</param>         
 		</result> 
 	</action>
+	<action name="createMeekosamGrievanceAction" class="createAlertAction" method="createMeekosamGrievance">
+		<result name="success">/jsp/meekosamGrievance.jsp</result>
+		<result name="error" type="redirect">login.action</result>
+	</action>
+	<action name="saveMeekosamGrievanceAlertAction" class="createAlertAction" method="createMeekosamGrievanceAlert">
+  	  <result name="success" type="stream">			   
+		    <param name="inputName">inputStream</param>
+	  </result>	
+  </action>
 	<action name="getAllNotificationsByuserAction" class="notificationAction" method="getAllNotificationsByuser">
 		   <result type="json" name="success">
 			<param name="root">notificationTypeList</param>
@@ -17369,6 +17378,11 @@
 			<param name="root">locationVO</param>         
 		</result> 
 	</action>
+	<action name="getRegionScopeValuesForUserAction" class="createAlertAction" method="getRegionScopeValuesForUser">
+	  	  <result type="json" name="success">			   
+			    <param name="root">keyValueVO</param>
+		  </result>	
+	  </action>
 	<action name="getReopenCountDtlsAction" class="createAlertAction"  method="getReopenCountDtls">
 		<result type="json" name="success">    
 			<param name="root">alertCoreDashBoardVOs</param>         
