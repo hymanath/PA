@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -1585,7 +1588,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level,enrollmentYearIds);
 				
 				if(cadreIds != null && cadreIds.size() > 0){
-					getCandidateDetailsByCadreIds(cadreIds,resultVOList,null,eventId,roleType);
+					getCandidateDetailsByCadreIds(cadreIds,resultVOList,null,eventId,roleType,"parentId");
 				}
 			}else if(inviteeType.equalsIgnoreCase("attendee")){//get details for attended members
 				
@@ -1602,7 +1605,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
 				
 					if(cadreIds != null && cadreIds.size() > 0){
-					getCandidateDetailsByCadreIds(cadreIds,resultVOList,date,eventId,roleType);
+					getCandidateDetailsByCadreIds(cadreIds,resultVOList,date,eventId,roleType,"parentId");
 				}
 			}else if(inviteeType.equalsIgnoreCase("notAttendee")){//get details for not attended members
 				List<Long> totalCadreIds = null;
@@ -1638,7 +1641,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				}
 				if(totalCadreIds != null && attendedCadreIds != null){
 					totalCadreIds.removeAll(attendedCadreIds);
-					getCandidateDetailsByCadreIds(totalCadreIds,resultVOList,date,eventId,roleType);
+					getCandidateDetailsByCadreIds(totalCadreIds,resultVOList,date,eventId,roleType,"parentId");
 				}
 			}
 		} catch (Exception e) {
@@ -1647,13 +1650,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return resultVOList;
 	}
 	
-	public void getCandidateDetailsByCadreIds(List<Long> cadreIds,List<CandidateDetailsVO> resultVOList,Date date,Long eventId,String roleType){
+	public void getCandidateDetailsByCadreIds(List<Long> cadreIds,List<CandidateDetailsVO> resultVOList,Date date,Long eventId,String roleType,String eventType){
 		if(cadreIds != null && cadreIds.size() >0){
 			//get attendence details
-			List<Long> attendedCadreIds = eventAttendeeDAO.getAttendenceDetails(cadreIds,date,eventId);
+			List<Long> attendedCadreIds = eventAttendeeDAO.getAttendenceDetails(cadreIds,date,eventId,eventType);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Map<Long,Map<String,Boolean>> cadreAttendedMap = new HashMap<Long, Map<String,Boolean>>();
-			List<Object[]> attendedListForCadre = eventAttendeeDAO.getAttendenceDetailsForCadre(cadreIds,eventId);
+			List<Object[]> attendedListForCadre = eventAttendeeDAO.getAttendenceDetailsForCadre(cadreIds,eventId,eventType);
 			if(attendedListForCadre != null && attendedListForCadre.size() > 0)
 			{
 				for(Object[] obj : attendedListForCadre)
@@ -1676,6 +1679,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			if(cadreIds != null && cadreIds.size() > 0){
 				//tdpCadreId,name,publicRepresentativeTypeId,type,levelId,levelValue,image
 				List<Object[]> candidateDetailsList = null;
+				cadreIds.add(5161592l);
 				if(roleType.equalsIgnoreCase("PR"))
 				candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetails(cadreIds);
 				else
@@ -1872,6 +1876,74 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			}
 		}
 		return null;
+	}
+	
+	public List<CandidateDetailsVO> getDiasEntryExitCandisTimeDeatails(Long eventId,String day){
+		List<CandidateDetailsVO> voList = new ArrayList<CandidateDetailsVO>(0);
+		DateUtilService dateUtilService = new DateUtilService();
+		try {
+			List<Object[]> objList = eventAttendeeDAO.getDiasEntryExitCandisTimeDeatails(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day));
+			Map<Long,Long> finalMap = new HashMap<Long, Long>();
+			if(objList != null && objList.size() > 0){
+				Map<Long,LinkedList<Object[]>> cadreWiseDataMap = new HashMap<Long, LinkedList<Object[]>>(0);
+				for (Object[] objects : objList) {
+					if(cadreWiseDataMap.get((Long)objects[0]) == null){
+						LinkedList<Object[]> ll = new LinkedList<Object[]>();
+						ll.add(objects);
+						cadreWiseDataMap.put((Long)objects[0], ll);
+					}else{
+						cadreWiseDataMap.get((Long)objects[0]).add(objects);
+					}
+				}
+				if(cadreWiseDataMap != null && cadreWiseDataMap.size() > 0){
+					for (Entry<Long, LinkedList<Object[]>> entry : cadreWiseDataMap.entrySet()) {
+						Long cadreId = entry.getKey();
+						String fromTime = "",endTime="";
+						for (Object[] objects : entry.getValue()) {
+							if((Long)objects[1] == 56l){
+								fromTime = objects[2].toString();
+							}else if((Long)objects[1] == 57l){
+								endTime = objects[2].toString();
+								Long diff = dateUtilService.getMinutesBetweenTwoDates(fromTime, endTime);
+								if(diff > 0l){
+									if(finalMap.get(cadreId) == null){
+										finalMap.put(cadreId, diff);
+									}else{
+										finalMap.put(cadreId, finalMap.get(cadreId)+diff);
+									}
+								}
+							}
+						}
+						
+					}
+				}
+			}
+			
+			if(finalMap != null && finalMap.size() > 0){
+				Set<Long> cadreIds = finalMap.keySet();
+				List<Long> cadreIdsList = new ArrayList<Long>();
+				cadreIdsList.addAll(cadreIds);
+				cadreIdsList.add(5161592l);
+				Date date = null;
+				if(day != null && !day.isEmpty())
+				 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
+				getCandidateDetailsByCadreIds(cadreIdsList,voList,date,eventId,"diasEntry","childEvent");
+				/*List<Object[]> detailsObjList = tdpCadreDAO.getCadreFormalDetails(cadreIdsList);
+				if(detailsObjList != null && detailsObjList.size() > 0){
+					for (Object[] objects : detailsObjList) {
+						IdAndNameVO vo = new IdAndNameVO();
+						vo.setTdpcadreId((Long)objects[0]);
+						vo.setName(objects[1].toString());
+						vo.setImagePathStr(objects[5].toString());
+						vo.setId(finalMap.get((Long)objects[0]));
+						voList.add(vo);
+					}
+				}*/
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDiasEntryExitCandisTimeDeatails service", e);
+		}
+		return voList;
 	}
 
 }

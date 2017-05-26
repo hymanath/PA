@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -31,7 +30,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.google.gdata.data.threading.Total;
 import com.itgrids.partyanalyst.dao.IBloodDonationDAO;
 import com.itgrids.partyanalyst.dao.IBloodDonorInfoDAO;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
@@ -4493,66 +4491,5 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 	return newCadreIdsMap;
 }
 	
-	public List<IdAndNameVO> getDiasEntryExitCandisTimeDeatails(Long eventId,String date){
-		List<IdAndNameVO> voList = new ArrayList<IdAndNameVO>(0);
-		DateUtilService dateUtilService = new DateUtilService();
-		try {
-			List<Object[]> objList = eventAttendeeDAO.getDiasEntryExitCandisTimeDeatails(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(date));
-			Map<Long,Long> finalMap = new HashMap<Long, Long>();
-			if(objList != null && objList.size() > 0){
-				Map<Long,LinkedList<Object[]>> cadreWiseDataMap = new HashMap<Long, LinkedList<Object[]>>(0);
-				for (Object[] objects : objList) {
-					if(cadreWiseDataMap.get((Long)objects[0]) == null){
-						LinkedList<Object[]> ll = new LinkedList<Object[]>();
-						ll.add(objects);
-						cadreWiseDataMap.put((Long)objects[0], ll);
-					}else{
-						cadreWiseDataMap.get((Long)objects[0]).add(objects);
-					}
-				}
-				if(cadreWiseDataMap != null && cadreWiseDataMap.size() > 0){
-					for (Entry<Long, LinkedList<Object[]>> entry : cadreWiseDataMap.entrySet()) {
-						Long cadreId = entry.getKey();
-						String fromTime = "",endTime="";
-						for (Object[] objects : entry.getValue()) {
-							if((Long)objects[1] == 56l){
-								fromTime = objects[2].toString();
-							}else if((Long)objects[1] == 57l){
-								endTime = objects[2].toString();
-								Long diff = dateUtilService.getMinutesBetweenTwoDates(fromTime, endTime);
-								if(diff > 0l){
-									if(finalMap.get(cadreId) == null){
-										finalMap.put(cadreId, diff);
-									}else{
-										finalMap.put(cadreId, finalMap.get(cadreId)+diff);
-									}
-								}
-							}
-						}
-						
-					}
-				}
-			}
-			
-			if(finalMap != null && finalMap.size() > 0){
-				Set<Long> cadreIds = finalMap.keySet();
-				List<Long> cadreIdsList = new ArrayList<Long>();
-				cadreIdsList.addAll(cadreIds);
-				List<Object[]> detailsObjList = tdpCadreDAO.getCadreFormalDetails(cadreIdsList);
-				if(detailsObjList != null && detailsObjList.size() > 0){
-					for (Object[] objects : detailsObjList) {
-						IdAndNameVO vo = new IdAndNameVO();
-						vo.setTdpcadreId((Long)objects[0]);
-						vo.setName(objects[1].toString());
-						vo.setImagePathStr(objects[5].toString());
-						vo.setId(finalMap.get((Long)objects[0]));
-						voList.add(vo);
-					}
-				}
-			}
-		} catch (Exception e) {
-			LOG.error("Exception raised at getDiasEntryExitCandisTimeDeatails service", e);
-		}
-		return voList;
-	}
+	
 }

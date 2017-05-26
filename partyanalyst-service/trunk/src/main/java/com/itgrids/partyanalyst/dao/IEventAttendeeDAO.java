@@ -63,14 +63,14 @@ public interface IEventAttendeeDAO extends GenericDao<EventAttendee, Long>{
 	public List<Object[]> getOtherStateConstituencyWiseCurrentCadreInCampus(Date todayDate,Long entryEventId,Long exitEventId,String queryStr,List<Long> enrollmentIds);
 	public List<Object[]> getOtherStatesDistrictWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate,List<Long> enrollmentIds);
 	public List<Object[]> getOtherStatesConstituencyWiseTotalInvitedAndNonInvitedCount(Long eventId,String queryStr,Date todayDate,List<Long> enrollmentIds);
-	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId);
+	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId,String eventType);
 	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId,List<Long> enrollmentYearIds);
 	public List<Object[]> getEventAttendedDetails(Long cadreId,Long eventId);
 	public List<Object[]> getEventAttendedInfoForCadre(Long cadreId,Long eventId);
 	public List<Long> getCadreIdsForAttendeesForCommitteeLevel(Long eventId,Date date,Long committeeLevelId,List<Long> enrollmentYearIds);
 	public List<Long> getCadreIdsForAttendeesForCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds);
 	public List<Long> getCadreIdsForAttendeesForAffliatedCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel,List<Long> enrollemtYearIds);
-	public List<Object[]> getAttendenceDetailsForCadre(List<Long> cadreIds,Long eventId);
+	public List<Object[]> getAttendenceDetailsForCadre(List<Long> cadreIds,Long eventId,String eventType);
 	
 	//caste wise
 	public List<Object[]>  casteWiseEventAttendeeCountsQuery(String inviteeType,Date startDate,Date endDate,List<Long> eventIds,List<Long> enrollmentYrIds);
