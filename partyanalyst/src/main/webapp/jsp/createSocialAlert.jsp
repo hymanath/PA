@@ -1053,7 +1053,7 @@ function getAllDepartments(){
 	var jsObj={}
 	$.ajax({
 		type:"POST",
-		url :"getAllDeptsAction.action",
+		url :"getAllMainDepartmentsAction.action",
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
