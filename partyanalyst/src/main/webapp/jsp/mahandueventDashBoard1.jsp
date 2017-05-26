@@ -492,7 +492,23 @@
 	  </div>
 	  </div>
 	  </div>
-	  
+	<!-- dias modal start --> 
+	<div class="modal fade bs-example-modal-lg" id="diasDetialsModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<!--<h4 class="modal-title" id="myModalLabel">Hour Wise At Dias Counts</h4>-->
+				</div>
+				<div class="modal-body">
+					<div id="radioBtnsDivId"></div>
+					<div id="hoursWiseVisitors"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- dias modal end -->  
 <script  src="js/eventDashboard.js" type="text/javascript"></script>
 <script src="dist/eventDashboard/js/jquery-1.11.2.min.js" type="text/javascript"></script>
 <script src="dist/eventDashboard/js/bootstrap.min.js" type="text/javascript"></script>
@@ -1763,8 +1779,11 @@ function buildStartingPrograms(result,parentEventId){
 				str+='</ul>';
 				str+='</td>';
 				str+='<td>';
-				if(count >0 && result[i].id !=null){    
-					str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
+				if(count >0 && result[i].id !=null){
+					if(result[i].id == 56 || result[i].id == 57){
+						str+='<span attr_event_id="'+result[i].id+'" attr_parent_event_id="'+parentEventId+'" aria-hidden="true" class="glyphicon glyphicon-info-sign hourWiseAtDiasClass"></span>';
+					}
+					str+='<span class="pull-right label-custom"  style="width:45px;text-align:center"><a style="cursor:pointer;" title="Click To See Visitors Details" onClick="getSubEventMembers('+result[i].id+',0,'+count+',\''+result[i].name+'\');getStateWiseOverview('+result[i].id+')">'+count+'</a></span>';  
 				}
 				else{
 					str+='  <span class="pull-right label-custom"  style="width:45px;text-align:center">'+count+'</span>';
@@ -3135,6 +3154,134 @@ function getPublicrepresentatives(){
     });
     
  }
+	$(document).on("click",".hourWiseAtDiasClass",function(){
+		var eventId = $(this).attr("attr_event_id");
+		getEventDates($(this).attr("attr_parent_event_id"));
+		$("#diasDetialsModalId").modal("show");
+	});
+	
+	function getEventDates(eventId){
+		var jsObj={
+			eventId : eventId
+		} 
+		$.ajax({
+			type:'GET',
+			url: 'getEventDatesAction.action',
+			data :{task:JSON.stringify(jsObj)}
+        }).done(function(result){
+			if(result != null && result.length > 0){
+				var dates = result[(result.length)-1].name;
+				var datesArr = dates.split(",");
+				if(result != null && result.length > 0){
+					var str="";
+					for(var i in result){
+						if(result[i].percentage == "toDay")
+							str+='<input attr_event_id="'+eventId+'" class="dayClass" name="dayRadioName" type="radio" value="'+datesArr[i]+'" checked> Day - '+(i+1);
+						else
+							str+='<input attr_event_id="'+eventId+'" class="dayClass" name="dayRadioName" type="radio" value="'+datesArr[i]+'"> Day - '+(i+1);
+					}
+					$("#radioBtnsDivId").html(str);
+					if($('input[name=dayRadioName]:checked').val() != "undefined");
+						getHourWiseNowInCampusCadresCount(eventId,$('input[name=dayRadioName]:checked').val());
+				}
+			}
+		});
+	}
+	
+	function getHourWiseNowInCampusCadresCount(eventId,date){
+		$('#hoursWiseVisitors').html("");
+		$("#hrWiseVstrsHghChrtPrcssngImgId").show();
+		
+		var jObj = {
+				dayVal:date,
+				eventId : 0,
+				enrollmentIdsList:enrollmentYearIdsArrGlob,
+				eventType : "DIAS ENTRY"
+			}	
+			
+			$.ajax({
+			  type:'GET',
+			  url: 'getHourWiseNowInCampusCadresCountAction.action',
+			  data : {task:JSON.stringify(jObj)} ,
+			}).done(function(result){
+				$("#hoursWiseVisitors").html("loading..");
+				if(result != null && result.length > 0){
+					
+					var categoriesArr=[];
+					var totalAttendedArr=[];
+					var nowInCampusArr=[];
+					
+					//var d = new Date();
+					//var n = d.getHours(); 
+					var n = 20;
+					for(var i in result){
+						
+						if(result[i].id <= n){
+							categoriesArr.push(result[i].name);
+							totalAttendedArr.push(parseInt(result[i].total));
+							nowInCampusArr.push(parseInt(result[i].cadreCount));
+						}else{
+							categoriesArr.push(result[i].name);
+							totalAttendedArr.push(0);
+							nowInCampusArr.push(0);
+						}
+					}
+					
+					$(function () {
+						$('#hoursWiseVisitors').highcharts({
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: 'Hour Wise In Dias Counts'
+							},
+							subtitle: {
+								text: ''
+							},
+							xAxis: {
+								categories: categoriesArr,
+								crosshair: true
+							},
+							yAxis: {
+								min: 0,
+								title: {
+									text: 'Members Count'
+								}
+							},
+							tooltip: {
+								headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+								pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+									'<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+								footerFormat: '</table>',
+								shared: true,
+								useHTML: true
+							},
+							plotOptions: {
+								column: {
+									pointPadding: 0.2,
+									borderWidth: 0
+								}
+							},
+							series: [{
+								name: 'Total',
+								data: totalAttendedArr
+
+							}, {
+								name: 'Now In Campus',
+								data: nowInCampusArr
+
+							}]
+						});
+					});
+				}else{
+					$('#hoursWiseVisitors').html("No Data Availabel.");
+				}
+			});
+	}
+	
+	$(document).on("click",".dayClass",function(){
+		getHourWiseNowInCampusCadresCount($(this).attr("attr_event_id"),$(this).val());
+	});
 </script>
 </body>
 </html>

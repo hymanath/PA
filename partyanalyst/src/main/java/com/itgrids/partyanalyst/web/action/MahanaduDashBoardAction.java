@@ -291,7 +291,7 @@ public class MahanaduDashBoardAction implements ServletRequestAware {
 						enrollmentIdsList.add(Long.valueOf(enrollmentIdsArr.get(i).toString().trim()));
 				}
 			}
-			mahanaduEventVOList = mahanaduDashBoardService.getHourWiseNowInCampusCadresCount(jObj.getString("dayVal"),jObj.getLong("eventId"),enrollmentIdsList);
+			mahanaduEventVOList = mahanaduDashBoardService.getHourWiseNowInCampusCadresCount(jObj.getString("dayVal"),jObj.getLong("eventId"),enrollmentIdsList,jObj.getString("eventType"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getHourWiseNowInCampusCadresCount", e);
 		}
