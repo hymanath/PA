@@ -323,8 +323,8 @@
 											</div>
 											<div class="col-md-2 col-xs-12 col-sm-12 ">
 												<ul class="alertType-subordinate pull-right">       
-													<li  attr_type="task" class="active">Alerts</li>
-													<li attr_type="subTask">Sub Tasks</li>
+													<li  attr_type="task" class="alertSubOridanateCls">Alerts</li>
+													<li attr_type="subTask" class="subTaskSubOrdinate">Sub Tasks</li>
 												</ul>
 											</div>
 										</div>
@@ -353,8 +353,8 @@
 										</div>
 										<div class="col-md-2 col-xs-12 col-sm-12 ">
 											<ul class="switch-btn-alertType pull-right">
-												<li  attr_type="alert" class="active">Alerts</li>
-												<li attr_type="subTask">Sub Tasks</li>
+												<li  attr_type="alert" class="alertTrigger">Alerts</li>
+												<li class="subTaskTrigger" attr_type="subTask">Sub Tasks</li>
 												
 											</ul>
 										</div>

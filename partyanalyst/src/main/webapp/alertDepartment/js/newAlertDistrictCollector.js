@@ -136,6 +136,21 @@ var globaldepartmentsArrForFilterView=[];
 		}
 		
 		 var alertType = getAlertType();
+		 var statusId = globalAlertStatusIdsArr[0];
+			var statusTaskStatusId = globalAlertSubTaskStatusIdsArr[0];
+			if(statusId == 0 && statusTaskStatusId != 0){
+				$(".switch-btn-alertType li").removeClass("active");
+				$(".alertType-subordinate  li").removeClass("active");
+				$(".subTaskTrigger").addClass("active");
+				$(".subTaskSubOrdinate").addClass("active");
+			}else{
+				$(".switch-btn-alertType li").removeClass("active");
+				$(".alertType-subordinate li").removeClass("active");
+				$(".alertTrigger").addClass("active");
+				$(".alertSubOridanateCls").addClass("active");
+			}
+			
+		 
 		 $(".documentCloseClass").hide();
 		 getDistrictOfficerAlertsCountView();
 		 getGovtDepartmentDetails();
@@ -2109,7 +2124,7 @@ function getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departm
 		$("#alertManagementPopupBody").html(spinner);
 		var alertType = getAlertType();
 		
-		var statusIdsArr = [];
+		 var statusIdsArr = [];
 		if(alertType != null && alertType=="alert"){
 			   if(statusId != null && statusId == 0){
 				 statusIdsArr = globalAlertStatusIdsArr;
