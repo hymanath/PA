@@ -73,6 +73,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEditionTypeDAO;
+import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationHierarchyDAO;
@@ -80,8 +81,11 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentIssueTypeDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationRelationDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalityDAO;
@@ -128,6 +132,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CallCenterVO;
 import com.itgrids.partyanalyst.dto.ClarificationDetailsCountVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
+import com.itgrids.partyanalyst.dto.GovtOfficerSmsDetailsVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -163,6 +168,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.GovtDepartment;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignation;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationNew;
+import com.itgrids.partyanalyst.model.GovtDepartmentWorkLocation;
 import com.itgrids.partyanalyst.model.GovtOfficer;
 import com.itgrids.partyanalyst.model.GovtOfficerNew;
 import com.itgrids.partyanalyst.model.MemberType;
@@ -272,6 +278,47 @@ private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 private IAlertGovtOfficerSmsDetailsDAO alertGovtOfficerSmsDetailsDAO;
 private IAlertCallerRelationDAO alertCallerRelationDAO;
+private IGovtDepartmentWorkLocationDAO govtDepartmentWorkLocationDAO;
+private IGovtDepartmentWorkLocationRelationDAO govtDepartmentWorkLocationRelationDAO;
+private IGovtSmsActionTypeDAO govtSmsActionTypeDAO;
+private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
+
+
+public IGovtAlertDepartmentLocationNewDAO getGovtAlertDepartmentLocationNewDAO() {
+	return govtAlertDepartmentLocationNewDAO;
+}
+
+public void setGovtAlertDepartmentLocationNewDAO(
+		IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO) {
+	this.govtAlertDepartmentLocationNewDAO = govtAlertDepartmentLocationNewDAO;
+}
+
+public IGovtSmsActionTypeDAO getGovtSmsActionTypeDAO() {
+	return govtSmsActionTypeDAO;
+}
+
+public void setGovtSmsActionTypeDAO(IGovtSmsActionTypeDAO govtSmsActionTypeDAO) {
+	this.govtSmsActionTypeDAO = govtSmsActionTypeDAO;
+}
+
+public IGovtDepartmentWorkLocationRelationDAO getGovtDepartmentWorkLocationRelationDAO() {
+	return govtDepartmentWorkLocationRelationDAO;
+}
+
+public void setGovtDepartmentWorkLocationRelationDAO(
+		IGovtDepartmentWorkLocationRelationDAO govtDepartmentWorkLocationRelationDAO) {
+	this.govtDepartmentWorkLocationRelationDAO = govtDepartmentWorkLocationRelationDAO;
+}
+
+public IGovtDepartmentWorkLocationDAO getGovtDepartmentWorkLocationDAO() {
+	return govtDepartmentWorkLocationDAO;
+}
+
+public void setGovtDepartmentWorkLocationDAO(
+		IGovtDepartmentWorkLocationDAO govtDepartmentWorkLocationDAO) {
+	this.govtDepartmentWorkLocationDAO = govtDepartmentWorkLocationDAO;
+}
+
 private IAlertDepartmentCommentDAO alertDepartmentCommentDAO;  
 private IAlertDepartmentCommentNewDAO alertDepartmentCommentNewDAO;
 public IAlertCallerRelationDAO getAlertCallerRelationDAO() {
@@ -9735,6 +9782,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							alertAssignedOfficer.setAlertStatusId(2l);
 							alertAssignedOfficer.setIsDeleted("N");
 							alertAssignedOfficer.setIsApproved("Y");
+							alertAssignedOfficer.setGovtDepartmentId(inputVO.getDepartmentId());
 							alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
 
 							//Officer Assigning Tracking
@@ -9751,7 +9799,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
 							alertAssignedOfficerTracking.setIsApproved("Y");
 							alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
-
+							alertAssignedOfficerTracking.setGovtDepartmentId(inputVO.getDepartmentId());
 							alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
 						}
 						
@@ -10067,7 +10115,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAddress.setState(stateDAO.get(inputVO.getStateId()));
 				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
 				//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
-				userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+				List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId());
+				if(list != null && !list.isEmpty())
+					userAddress.setConstituency(list.get(0));
+				//userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
 				userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
 				userAddress.setPanchayatId(inputVO.getPanchayatId());
 				userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
@@ -10077,7 +10128,9 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 				userAddress.setState(stateDAO.get(inputVO.getStateId()));
 				userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
 				//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
-				userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+				List<Constituency> list = boothDAO.getConstituencyIdByLebId(inputVO.getMandalId());
+				if(list != null && !list.isEmpty())
+					userAddress.setConstituency(list.get(0));
 				userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));
 				userAddress.setUrbanLocalityId(inputVO.getPanchayatId());
 				userAddress.setUrbanBlockId(inputVO.getHamletId());
@@ -12997,7 +13050,10 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
 					
 					if(inputVO.getLocationLevelId() ==  5l){
-						userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+						List<Constituency> constituencyList = boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId());
+						if(constituencyList !=null && constituencyList.size()>0){
+							userAddress.setConstituency(constituencyList.get(0));
+						}
 						userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
 					}					
 					else{	
@@ -13017,7 +13073,11 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					
 					if(inputVO.getLocationLevelId() ==  6l)
 					{
-						userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+						List<Constituency> constituencyList = boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId());
+						if(constituencyList !=null && constituencyList.size()>0){
+							userAddress.setConstituency(constituencyList.get(0));
+						}
+						//userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
 						userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
 						userAddress.setPanchayatId(inputVO.getPanchayatId());
 					}
@@ -13036,7 +13096,10 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					userAddress.setState(stateDAO.get(inputVO.getStateId()));
 					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
 					//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
-					userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+					List<Constituency> constituencyList = boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId());
+					if(constituencyList !=null && constituencyList.size()>0){
+						userAddress.setConstituency(constituencyList.get(0));
+					}
 					userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
 					userAddress.setPanchayatId(inputVO.getPanchayatId());
 					userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
@@ -13046,7 +13109,10 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					userAddress.setState(stateDAO.get(inputVO.getStateId()));
 					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
 					//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
-					userAddress.setConstituency(boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId()));
+					List<Constituency> constituencyList = boothDAO.getConstituencyIdByLebId(inputVO.getMandalId());
+					if(constituencyList !=null && constituencyList.size()>0){
+						userAddress.setConstituency(constituencyList.get(0));
+					}
 					userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));
 					userAddress.setUrbanLocalityId(inputVO.getPanchayatId());
 					userAddress.setUrbanBlockId(inputVO.getHamletId());
@@ -13980,6 +14046,638 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				e.printStackTrace();
 			}
 	 	}
+	 	
+	 	public String createMeekosamGrievanceAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles)
+		{
+			String resultStatus = null;
+			try {
+				resultStatus = (String) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus status) {
+						String rs = new String();
+						DateUtilService date = new DateUtilService();
+						String callCenterVersion = IConstants.CALL_CENTER_VERSION.toString();
+						Long levelValue = 999999L;
+						Long alertId = null;
+						
+						if(inputVO.getAlertId() != null && inputVO.getAlertId().longValue() > 0l){
+							AlertCallerRelation alertCallerRelation = new AlertCallerRelation();
+
+							List<Long> existingList = alertCallerDAO.checkIsExist(inputVO.getMobileNo(),inputVO.getName());
+							if(!commonMethodsUtilService.isListOrSetValid(existingList)){
+								AlertCaller alertCaller = new AlertCaller();
+								alertCaller.setCallerName(inputVO.getName());
+								alertCaller.setAddress(inputVO.getAddress());
+								alertCaller.setMobileNo(inputVO.getMobileNo());
+								alertCaller.setEmail(inputVO.getEmailId());
+								alertCaller = alertCallerDAO.save(alertCaller);
+								//alert.setAlertCallerId(alertCaller.getAlertCallerId());
+								alertCallerRelation.setAlertCallerId(alertCaller.getAlertCallerId());
+							}
+							else{
+								//alert.setAlertCallerId(existingList.get(0));
+								alertCallerRelation.setAlertCallerId(existingList.get(0));
+							}
+							Alert alert = alertDAO.get(inputVO.getAlertId());
+							alertCallerRelation.setAlertId(inputVO.getAlertId());
+							alertCallerRelation.setIsDeleted("N");
+							alertCallerRelation = alertCallerRelationDAO.save(alertCallerRelation);
+							
+							levelValue = alert.getUserAddress(). getConstituency() != null ? alert.getUserAddress().getConstituency().getConstituencyId() : 999999L;
+							alertId = alert.getAlertId();
+						}
+						else{
+							Alert alert = new Alert();
+							AlertCallerRelation alertCallerRelation = new AlertCallerRelation();
+
+							List<Long> existingList = alertCallerDAO.checkIsExist(inputVO.getMobileNo(),inputVO.getName());
+							if(!commonMethodsUtilService.isListOrSetValid(existingList)){
+								AlertCaller alertCaller = new AlertCaller();
+								alertCaller.setCallerName(inputVO.getName());
+								alertCaller.setAddress(inputVO.getAddress());
+								alertCaller.setMobileNo(inputVO.getMobileNo());
+								alertCaller.setEmail(inputVO.getEmailId());
+								alertCaller = alertCallerDAO.save(alertCaller);
+								//alert.setAlertCallerId(alertCaller.getAlertCallerId());
+								alertCallerRelation.setAlertCallerId(alertCaller.getAlertCallerId());
+							}
+							else{
+								//alert.setAlertCallerId(existingList.get(0));
+								alertCallerRelation.setAlertCallerId(existingList.get(0));
+							}
+
+							alert.setAlertSeverityId(2l);
+							alert.setAlertTypeId(2l);
+							alert.setImpactLevelId(inputVO.getLocationLevelId());
+							alert.setImpactLevelValue(inputVO.getLocationValue());
+							alert.setDescription(inputVO.getDescription().toString());
+							alert.setCreatedBy(userId);
+							alert.setUpdatedBy(userId);
+							/*if(inputVO.getLocationTypeStr() != null && inputVO.getLocationTypeStr().trim().equalsIgnoreCase("Rural"))
+								alert.setImpactScopeId(7l);
+							else if(inputVO.getLocationTypeStr() != null && inputVO.getLocationTypeStr().trim().equalsIgnoreCase("Urban"))
+								alert.setImpactScopeId(13l);*/
+							if(inputVO.getLocationLevelId() == 2l)
+								alert.setImpactScopeId(1l);
+							else if(inputVO.getLocationLevelId() == 3l)
+								alert.setImpactScopeId(2l);
+							else if(inputVO.getLocationLevelId() == 5l)
+								alert.setImpactScopeId(5l);
+							else if(inputVO.getLocationLevelId() == 6l)
+								alert.setImpactScopeId(6l);
+							else if(inputVO.getLocationLevelId() == 7l)
+								alert.setImpactScopeId(12l);
+							else if(inputVO.getLocationLevelId() == 11l)
+								alert.setImpactScopeId(7l);
+							else if(inputVO.getLocationLevelId() == 12l)
+								alert.setImpactScopeId(14l);
+							else if(inputVO.getLocationLevelId() == 13l)
+								alert.setImpactScopeId(13l);
+
+							alert.setAlertStatusId(2l);// default pending status
+
+							alert.setAlertSourceId(inputVO.getInformationSourceId());
+							alert.setCreatedTime(date.getCurrentDateAndTime());
+							alert.setUpdatedTime(date.getCurrentDateAndTime());
+							alert.setIsDeleted("N");
+							alert.setAlertCategoryId(inputVO.getAlertCategoryId());
+							alert.setTitle(inputVO.getAlertTitle());
+
+							UserAddress userAddress = saveUserAddressForMeekosamGrievanceAlert(inputVO);
+							alert.setAddressId(userAddress.getUserAddressId());
+							
+							levelValue=userAddress.getConstituency() != null ? userAddress.getConstituency() .getConstituencyId():999999L;
+
+							alert.setAlertCallerTypeId(inputVO.getCallerTypeId());
+							alert.setAlertEntrySourceId(inputVO.getEntrySourceId());
+							alert.setAlertIssueTypeId(inputVO.getIssueTypeId());
+							
+							if(inputVO.getAlertCategoryId() == 6l){
+								alert.setAlertSourceId(7l);
+								alert.setMondayGrievanceTypeId(1l);
+							}
+							else if(inputVO.getAlertCategoryId() == 7l){
+								alert.setAlertSourceId(8l);
+								alert.setJanmabhoomiTypeId(1l);
+							}
+							else if(inputVO.getAlertCategoryId() == 8l){
+								alert.setAlertSourceId(9l);
+								alert.setSpecialGrievanceTypeId(1l);
+							}
+							else if(inputVO.getAlertCategoryId() == 9l){
+								alert.setAlertSourceId(10l);
+								alert.setGeneralGrievanceTypeId(1l);
+							}
+								
+							alert.setGovtDepartmentId(inputVO.getDepartmentId());
+							alert.setAlertIssueSubTypeId(inputVO.getAlertIssueSubTypeId());
+							alert.setIsMultiple("N");
+							//alert.setAlertCallCenterTypeId(inputVO.getAlertCallCenterTypeId() !=null ? inputVO.getAlertCallCenterTypeId():null);
+
+							alert = alertDAO.save(alert);
+							
+							alertId = alert.getAlertId();
+							alertCallerRelation.setAlertId(alert.getAlertId());
+							alertCallerRelation.setIsDeleted("N");
+							alertCallerRelation = alertCallerRelationDAO.save(alertCallerRelation);
+
+							//saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+							saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
+
+							AlertComment alertComment = new AlertComment();
+							alertComment.setComments(inputVO.getDescription().toString());
+							alertComment.setAlertId(alert.getAlertId());
+							alertComment.setInsertedTime(date.getCurrentDateAndTime());
+							alertComment.setIsDeleted("N");
+							alertComment.setInsertedBy(userId);
+							alertComment = alertCommentDAO.save(alertComment);
+
+							AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+							alertTrackingVO.setUserId(userId);
+							alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
+							alertTrackingVO.setAlertUserTypeId(inputVO.getEntrySourceId());
+							/*if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+							 {
+								 alertTrackingVO.setAlertStatusId(2l);
+							 }else{*/
+							alertTrackingVO.setAlertStatusId(2l);
+							//}
+
+							alertTrackingVO.setAlertId(alert.getAlertId());
+							alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+
+							saveAlertTrackingDetails(alertTrackingVO);	
+
+							//Get Department Designation Officer Ids
+							Long desigOfficerId = null;
+							List<Long> designationOfficerIds = null;
+							
+							if(callCenterVersion.trim().equalsIgnoreCase("old"))
+								designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationOfficerIds(inputVO.getLevelId(), inputVO.getMandalId(), inputVO.getDesignationId(), inputVO.getGovtOfficerId());
+							else if(callCenterVersion.trim().equalsIgnoreCase("new"))
+								designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getNewDesignationOfficerIdsNew(inputVO.getLevelId(), inputVO.getLevelValue(), inputVO.getDesignationId(), inputVO.getGovtOfficerId());
+							
+							if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
+								desigOfficerId = designationOfficerIds.get(0);
+
+							//Officer Assigning
+							if(callCenterVersion.trim().equalsIgnoreCase("old")){
+								AlertAssignedOfficer alertAssignedOfficer = new AlertAssignedOfficer();
+								alertAssignedOfficer.setAlertId(alert.getAlertId());
+								alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+								alertAssignedOfficer.setGovtOfficerId(inputVO.getGovtOfficerId() !=null ? (Long)inputVO.getGovtOfficerId():null);
+								alertAssignedOfficer.setInsertedBy(userId);
+								alertAssignedOfficer.setUpdatedBy(userId);
+								alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficer.setAlertStatusId(2l);
+								alertAssignedOfficer.setIsDeleted("N");
+								alertAssignedOfficer.setIsApproved("Y");
+								alertAssignedOfficer = alertAssignedOfficerDAO.save(alertAssignedOfficer);
+
+								//Officer Assigning Tracking
+								AlertAssignedOfficerTracking alertAssignedOfficerTracking = new AlertAssignedOfficerTracking();
+								alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+								alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
+								alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+								alertAssignedOfficerTracking.setGovtOfficerId(inputVO.getGovtOfficerId());
+								alertAssignedOfficerTracking.setInsertedBy(userId);
+								alertAssignedOfficerTracking.setUpdatedBy(userId);
+								alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficerTracking.setAlertStatusId(2l);
+								//alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
+								alertAssignedOfficerTracking.setIsApproved("Y");
+								//alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+
+								alertAssignedOfficerTracking = alertAssignedOfficerTrackingDAO.save(alertAssignedOfficerTracking);
+							}
+							else if(callCenterVersion.trim().equalsIgnoreCase("new")){
+								AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
+								alertAssignedOfficer.setAlertId(alert.getAlertId());
+								alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+								alertAssignedOfficer.setGovtOfficerId(inputVO.getGovtOfficerId() !=null ? (Long)inputVO.getGovtOfficerId():null);
+								alertAssignedOfficer.setInsertedBy(userId);
+								alertAssignedOfficer.setUpdatedBy(userId);
+								alertAssignedOfficer.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficer.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficer.setAlertStatusId(2l);
+								alertAssignedOfficer.setIsDeleted("N");
+								alertAssignedOfficer.setIsApproved("Y");
+								alertAssignedOfficer.setGovtDepartmentId(inputVO.getDepartmentId());
+								alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+
+								//Officer Assigning Tracking
+								AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
+								alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+								alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
+								alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+								alertAssignedOfficerTracking.setGovtOfficerId(inputVO.getGovtOfficerId());
+								alertAssignedOfficerTracking.setInsertedBy(userId);
+								alertAssignedOfficerTracking.setUpdatedBy(userId);
+								alertAssignedOfficerTracking.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficerTracking.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+								alertAssignedOfficerTracking.setAlertStatusId(2l);
+								alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
+								alertAssignedOfficerTracking.setIsApproved("Y");
+								alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+								alertAssignedOfficerTracking.setGovtDepartmentId(inputVO.getDepartmentId());
+								alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+							}
+							
+							/* SMS sending while assigning a new alert to any officer */
+							
+							List<String> mobileNos = govtOfficerNewDAO.getOfficerDetailsByOfficerId(inputVO.getGovtOfficerId());
+							List<Long> userIdsList = govtDepartmentDesignationOfficerDetailsNewDAO.getuserIdDtlsForDesignationOfficerId(desigOfficerId);
+							if(commonMethodsUtilService.isListOrSetValid(userIdsList)){
+								Long assignedToUserID = userIdsList.get(0);
+								if(mobileNos != null && mobileNos.size() > 0 && mobileNos.get(0).trim().length() > 0 && !mobileNos.get(0).trim().isEmpty()){
+									 sendSMSTOAlertAssignedOfficer(inputVO.getDesignationId(),inputVO.getGovtOfficerId(),mobileNos!= null ? mobileNos.get(0):null,alert.getAlertId(),1l,assignedToUserID,"","",userId);	
+								}
+							}
+							
+						}
+						
+						rs = "success";
+						return rs;
+					}
+
+				});
+			} catch (Exception e) {
+				resultStatus = "failure";
+				LOG.error("Error occured getAlertCallerTypes() method of AlertService{}",e);
+			}
+
+			return resultStatus;
+		}
+	 	
+	 	 public ResultStatus sendSMSTOAlertAssignedOfficer(Long designationId,Long govtOfficerId,String mobileNo,Long alertId,Long actionTypeId,Long userId,String status,String comment,Long mainUserId){
+           	ResultStatus rs = new ResultStatus();
+           	try {
+           		Long alertStatusId =0L;
+           		String callerName = "";
+       			String callerMobileNo = "";
+           		String userNameStr="ADMIN";
+ 				String departmentStr=" - ";
+ 				String designationStr=" - ";
+ 				String location="";
+ 				if(userId != null && userId.longValue()>0L){
+ 					List<Object[]> userdtls = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigNameForUser(userId);
+ 					if(commonMethodsUtilService.isListOrSetValid(userdtls)){
+ 						for (Object[] param : userdtls) {
+ 							userNameStr = commonMethodsUtilService.getStringValueForObject(param[0]);
+ 							designationStr = commonMethodsUtilService.getStringValueForObject(param[1]);
+ 							departmentStr = commonMethodsUtilService.getStringValueForObject(param[2]);
+ 							
+ 							Long locationTypeId = commonMethodsUtilService.getLongValueForObject(param[3]);
+ 							Long scopeValue = commonMethodsUtilService.getLongValueForObject(param[4]);
+ 							
+ 							if(locationTypeId != null && locationTypeId.longValue()>0L){
+ 								GovtDepartmentWorkLocation workLocation = govtDepartmentWorkLocationDAO.get(scopeValue);
+ 								if(workLocation != null){
+ 									location=workLocation.getLocationName()+" "+(workLocation.getGovtDepartmentScope() != null? workLocation.getGovtDepartmentScope().getLevelName():"");
+ 								}
+ 							}
+ 						}
+ 					}
+ 				}
+ 				
+           		GovtSMSAPIService govtSMSAPIService = new GovtSMSAPIService();
+           		//get asigned officer dept, alert title
+           		//0-title,1-deptId,2-deptName
+           		Alert tempSMSAlert = alertDAO.get(16894L);// testing alert id for custom mobile no
+           		Object[] objArr = alertDAO.getAlertDetailsForSMS(alertId);
+           		List<Object[]> levelDetails = alertAssignedOfficerNewDAO.getAlertAssignedLevelDetails(alertId);
+           		Long levelId=0L;
+           		Long levelValue=0L;
+           		List<Long> levelValuesList = new ArrayList<Long>(0);
+           		if(commonMethodsUtilService.isListOrSetValid(levelDetails)){
+           			levelId=commonMethodsUtilService.getLongValueForObject(levelDetails.get(0)[0]);
+               		levelValue=commonMethodsUtilService.getLongValueForObject(levelDetails.get(0)[1]);
+               		
+               		List<Object[]> alertAssignedScopeDtls = govtDepartmentWorkLocationRelationDAO.getParentGovtSuperLevelInfo(levelValue);
+               		if(commonMethodsUtilService.isListOrSetValid(alertAssignedScopeDtls)){
+               			for (Object[] objects : alertAssignedScopeDtls) {
+               				levelId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+               				Long tempLevelValue=commonMethodsUtilService.getLongValueForObject(objects[1]);
+                   			levelValuesList.add(tempLevelValue);
+							}
+               		}
+           		}
+           		if(objArr != null){
+           			alertStatusId = commonMethodsUtilService.getLongValueForObject(objArr[3]);
+           			callerName = commonMethodsUtilService.getStringValueForObject(objArr[4]);
+           			callerMobileNo = commonMethodsUtilService.getStringValueForObject(objArr[5]);              			
+           			String message = "Alert is assigned to you,Please follow up and resolve.\nTitle : "+objArr[0].toString()+" \nDept"+objArr[2].toString();
+           			List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,1L,1L,1L);//1 
+            			
+            			if(commonMethodsUtilService.isListOrSetValid(smsText)){
+            				message = smsText.get(0) != null ? smsText.get(0).toString():message;
+            				message=message.replace("flag0", "\n");
+            				message=message.replace("flag1", objArr[0].toString()+"\n");
+            				message=message.replace("flag2", userNameStr.toString()+"\n");
+            				message=message.replace("flag3", designationStr.toString()+"\n");
+            				message=message.replace("flag4", location.toString()+"\n");
+            				message=message.replace("flag5", departmentStr.toString());
+            				message=message.replace("flag6", comment.toString()+"\n");
+            				message=message.replace("flag7", status.toString()+"\n");
+            				message=message.replace("flag_99", alertId.toString());
+            			}
+            			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
+            				mobileNo=tempSMSAlert.getDescription().trim();
+            			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
+            				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message); 
+            			
+            		    //srujana
+            			if(mobileNo != null && !mobileNo.isEmpty()){
+            			String[] mobileNOArr = mobileNo.split(",");
+            			if(mobileNOArr != null && mobileNOArr.length>0){
+            				for (int i = 0; i < mobileNOArr.length; i++) {
+		              			GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO(); 
+		              			smsDetailsVO.setUserId(mainUserId);
+		               			smsDetailsVO.setGovtOfficerId(govtOfficerId);
+		               			smsDetailsVO.setAlertStatusId(alertStatusId);
+		               			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
+		               			smsDetailsVO.setAlertId(alertId);
+		               			smsDetailsVO.setSmsText(message);
+		               			smsDetailsVO.setActionTypeId(actionTypeId);
+		               			saveGovtOfficerSmsDetails(smsDetailsVO);
+            				}
+            			}
+            			}
+           		}
+           		mobileNo="";
+           		//get parent designation Id
+           		List<Long> parentDesigIds = govtDepartmentDesignationHierarchyDAO.getParentDepartment(designationId);
+           		if(parentDesigIds != null && parentDesigIds.size() > 0){
+           			//get high level officer mobile nums
+           			List<String> mobilenums = govtDepartmentDesignationOfficerDetailsNewDAO.getHigherOfficerMobileNums(parentDesigIds,levelId,levelValuesList);
+           			
+           			if(mobilenums != null && mobilenums.size() > 0){
+           				String message = "Alert is assigned to "+objArr[2].toString()+" - "+govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo+".\n Please follow up.";
+           			
+           				for (String tempMobileNo : mobilenums) {
+           					if(tempMobileNo != null && !tempMobileNo.trim().isEmpty())
+           						mobileNo = mobileNo.equalsIgnoreCase("")?tempMobileNo:mobileNo+","+tempMobileNo;
+           				}
+           				
+           				List<String> smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,1L,1L,2L);//2 immidiate superior 
+                			
+                			if(commonMethodsUtilService.isListOrSetValid(smsText)){
+                				message = smsText.get(0) != null ? smsText.get(0).toString():message;
+                				//message=message.replace("flag3", objArr[2].toString());
+                				//message=message.replace("flag4", govtDepartmentDesignationDAO.getDepartmentDetails(designationId)+" - "+ mobileNo);
+                				message=message.replace("flag0", "\n");
+                				message=message.replace("flag1", objArr[0].toString()+"\n");
+                				message=message.replace("flag2", userNameStr.toString()+"\n");
+                				message=message.replace("flag3", designationStr.toString()+"\n");
+                				message=message.replace("flag4", location.toString()+"\n");
+                				message=message.replace("flag5", departmentStr.toString());
+                				message=message.replace("flag6", comment.toString()+"\n");
+                				message=message.replace("flag7", status.toString()+"\n");
+                				message=message.replace("flag8", status.toString()+"\n");
+                				message=message.replace("flag_99", alertId.toString());
+                			}
+                			
+                			
+                			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
+                				mobileNo=tempSMSAlert.getDescription().trim();
+                			if(mobileNo != null && mobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
+                				govtSMSAPIService.senedSMSForGovtAlert(mobileNo,message);
+                			
+                		   //srujana
+                			if(mobileNo != null && !mobileNo.isEmpty()){
+                			String[] mobileNOArr = mobileNo.split(",");
+                			if(mobileNOArr != null && mobileNOArr.length>0){
+                				for (int i = 0; i < mobileNOArr.length; i++) {
+		              				GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
+		              				smsDetailsVO.setUserId(mainUserId);
+		                   			//smsDetailsVO.setGovtOfficerId(govtOfficerId);
+		              				smsDetailsVO.setAlertStatusId(alertStatusId);
+		                   			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(mobileNOArr[i]));
+		                   			smsDetailsVO.setAlertId(alertId);
+		                   			smsDetailsVO.setSmsText(message);
+		                   			smsDetailsVO.setActionTypeId(actionTypeId);
+		                   			saveGovtOfficerSmsDetails(smsDetailsVO);
+                				}
+                			}
+                		 }
+                			
+                			if(callerName != null && !callerName.isEmpty() && callerName.length()>0 && 
+                					 alertStatusId != null && alertStatusId.longValue() == 12L && actionTypeId != null && actionTypeId.longValue()== 6L){//alert closed, 6 - status change 
+                				smsText = govtSmsActionTypeDAO.getSMSTextforActionTypeId(actionTypeId,1L,1L,3L);//3 Alert Caller
+                    			
+                    			if(commonMethodsUtilService.isListOrSetValid(smsText)){
+                    				message = smsText.get(0) != null ? smsText.get(0).toString():message;
+                    				message=message.replace("flag0", callerName);
+                    				message=message.replace("flag1", status+"\n");
+                    				message=message.replace("flag2", objArr[0].toString()+"\n");
+                    				message=message.replace("flag3", comment+"\n");
+                    			}
+                				
+                    			if(tempSMSAlert.getDescription() != null && !tempSMSAlert.getDescription().isEmpty())
+                    				callerMobileNo=tempSMSAlert.getDescription().trim();
+                    			
+                    			if(callerMobileNo != null && callerMobileNo.trim().length()>0 && message != null && !message.isEmpty() && message.length()>0)
+                    				govtSMSAPIService.senedSMSForGovtAlert(callerMobileNo,message);
+                    			
+                				GovtOfficerSmsDetailsVO smsDetailsVO =new GovtOfficerSmsDetailsVO();
+	              				smsDetailsVO.setUserId(mainUserId);
+	                   			smsDetailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(callerMobileNo));
+	                   			smsDetailsVO.setAlertStatusId(alertStatusId);
+	                   			smsDetailsVO.setAlertId(alertId);
+	                   			smsDetailsVO.setSmsText(message);
+	                   			smsDetailsVO.setActionTypeId(actionTypeId);
+	                   			saveGovtOfficerSmsDetails(smsDetailsVO);
+                			}
+           			}
+           		}
+           		
+           		
+           		rs.setExceptionMsg("success");
+           	} catch (Exception e) {
+           		rs.setExceptionMsg("failure");
+           		LOG.error("Error occured sendSMSTOAlertAssignedOfficer() method of AlertManagementSystemService{}");
+           	}
+           	return rs;
+           }    
+	 	 
+	 	public ResultStatus saveGovtOfficerSmsDetails(final GovtOfficerSmsDetailsVO smsDetailsVO){
+			
+			final ResultStatus rs = new ResultStatus();
+			try {
+				
+			        	//Date currentDateAndTime  = dateUtilService.getCurrentDateAndTime();
+			        	AlertGovtOfficerSmsDetails smsDetails =new AlertGovtOfficerSmsDetails();
+			        	if(smsDetailsVO.getUserId() != null){
+			        		smsDetails.setUserId(smsDetailsVO.getUserId());
+			        	}
+						if(smsDetailsVO.getGovtOfficerId() != null){
+							smsDetails.setGovtOfficerId(smsDetailsVO.getGovtOfficerId());
+						}
+						if(smsDetailsVO.getMobileNo() != null){
+							smsDetails.setMobileNo(smsDetailsVO.getMobileNo());
+						}
+						if(smsDetailsVO.getAlertId() != null){
+							smsDetails.setAlertId(smsDetailsVO.getAlertId());
+						}
+						if(smsDetailsVO.getAlertStatusId() != null){
+							smsDetails.setAlertStatusId(smsDetailsVO.getAlertStatusId());
+						}
+						if(smsDetailsVO.getSmsText() != null){
+							smsDetails.setSmsText(smsDetailsVO.getSmsText());
+						}
+						
+						smsDetails.setInsertTime(dateUtilService.getCurrentDateAndTime());
+						
+						if(smsDetailsVO.getActionTypeId() != null){
+							smsDetails.setGovtAlertActionTypeId(smsDetailsVO.getActionTypeId());
+						}
+						if(smsDetailsVO.getGovtSubTaskId() != null){
+							smsDetails.setGovtAlertSubTaskId(smsDetailsVO.getGovtSubTaskId());
+						}
+			        	smsDetails = alertGovtOfficerSmsDetailsDAO.save(smsDetails);
+					
+				rs.setExceptionMsg("success");
+				rs.setResultCode(0);
+				
+			} catch (Exception e) {
+				rs.setExceptionMsg("failure");
+				rs.setResultCode(1);
+				LOG.error("Exception raised at saveGovtOfficerSmsDetails() in AlertService class ", e);
+			}
+			return rs;
+			
+			
+			 
+	      }
+	 	
+	 	public UserAddress saveUserAddressForMeekosamGrievanceAlert(final GrievanceAlertVO inputVO)
+		{
+			UserAddress userAddress = new UserAddress();
+			try{
+				
+				if(inputVO.getLocationLevelId().longValue() == 2l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+				}
+				else if(inputVO.getLocationLevelId().longValue() == 3l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					
+				}
+				
+				else if(inputVO.getLocationLevelId().longValue() == 4l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+				}
+				else if(inputVO.getLocationLevelId().longValue() == 5l || inputVO.getLocationLevelId().longValue() == 7l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+					
+					if(inputVO.getLocationLevelId() ==  5l){
+						List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId());
+						if(list != null && !list.isEmpty())
+							userAddress.setConstituency(list.get(0));
+						userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+					}
+					else{
+						List<Constituency> list = boothDAO.getConstituencyIdByLebId(inputVO.getMandalId());
+						if(list != null && !list.isEmpty())
+							userAddress.setConstituency(list.get(0));
+						userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));	
+					}
+				}
+				
+				else if(inputVO.getLocationLevelId().longValue() == 6l || inputVO.getLocationLevelId().longValue() == 12l)
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+					
+					if(inputVO.getLocationLevelId() ==  6l)
+					{
+						List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId());
+						if(list != null && !list.isEmpty())
+							userAddress.setConstituency(list.get(0));
+						userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+						userAddress.setPanchayatId(inputVO.getPanchayatId());
+					}
+					else
+					{
+						List<Constituency> list = boothDAO.getConstituencyIdByLebId(inputVO.getMandalId());
+						if(list != null && !list.isEmpty())
+							userAddress.setConstituency(list.get(0));
+						userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));	
+						//userAddress.setWard(constituencyDAO.get(inputVO.getPanchayatId()));
+						userAddress.setUrbanLocalityId(inputVO.getPanchayatId());
+					}
+				}
+				else if(inputVO.getLocationLevelId().toString().equalsIgnoreCase("11"))
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+					List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(inputVO.getMandalId());
+					if(list != null && !list.isEmpty())
+						userAddress.setConstituency(list.get(0));
+					userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+					userAddress.setPanchayatId(inputVO.getPanchayatId());
+					userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
+				}
+				else if(inputVO.getLocationLevelId().toString().equalsIgnoreCase("13"))
+				{
+					userAddress.setState(stateDAO.get(inputVO.getStateId()));
+					userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
+					//userAddress.setConstituency(constituencyDAO.get(inputVO.getConstituencyId()));
+					List<Constituency> list = boothDAO.getConstituencyIdByLebId(inputVO.getMandalId());
+					if(list != null && !list.isEmpty())
+						userAddress.setConstituency(list.get(0));
+					userAddress.setLocalElectionBody(localElectionBodyDAO.get(inputVO.getMandalId()));
+					userAddress.setUrbanLocalityId(inputVO.getPanchayatId());
+					userAddress.setUrbanBlockId(inputVO.getHamletId());
+					//userAddress.setTehsil(tehsilDAO.get(inputVO.getMandalId()));
+					//userAddress.setPanchayatId(inputVO.getPanchayatId());
+					//userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
+				}
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			return userAddress;
+		}
+	 	
+	 	public KeyValueVO getRegionScopeValuesForUser(Long userId,Long deptId){
+	 		KeyValueVO returnvo = new KeyValueVO();
+	 		try {
+				List<Object[]> list = govtAlertDepartmentLocationNewDAO.getRegionScopeValuesForUser(userId,deptId);
+				if(list != null && !list.isEmpty()){
+					for (Object[] obj : list) {
+						Long scopeId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						Long scopeValue = Long.valueOf(obj[1] != null ? obj[1].toString():"0");
+						returnvo.setId(scopeId);
+						returnvo.setTotalCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+						returnvo.setScopeValue(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+						if(scopeId == 3l)
+							returnvo.setCount(scopeValue);
+						else if(scopeId == 5l)
+							returnvo.setCount(tehsilDAO.get(scopeValue).getDistrict().getDistrictId());
+						else if(scopeId == 7l)
+							returnvo.setCount(localElectionBodyDAO.get(scopeValue).getDistrict().getDistrictId());
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised at getRegionScopeValuesForUser() in AlertService class ", e);
+			}
+	 		return returnvo;
+	 	}
+
 	 	void prepareStateLevelReopenAlertsForOfficer(AlertOverviewVO finalVO,List<Object[]> reopeObjLst){
 	 		try{
 				if(reopeObjLst != null && reopeObjLst.size() > 0){
