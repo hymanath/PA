@@ -446,7 +446,8 @@ function getEventBasicCntDtls(){
 	var eventIds=[];
 	eventIds.push(7);
 	eventIds.push(30);
-	
+	eventIds.push(51);
+	eventIds.push(58);
 	var jsObj ={ 
 				 activityMemberId : globalActivityMemberId,
 				 stateId : globalStateId,
