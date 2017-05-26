@@ -1005,7 +1005,7 @@ public class SchedulerService implements ISchedulerService{
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		try{
 			
-			Long parenteventId = 58l;
+			Long parenteventId = 51l;
 			DateUtilService dateUtilService = new DateUtilService();
 		     
 		     Object[] dates = eventDAO.getEventDates(parenteventId);
@@ -1015,8 +1015,8 @@ public class SchedulerService implements ISchedulerService{
 		     Event event = eventDAO.get(parenteventId);
 		     
 		    Date presentTime = dateUtilService.getCurrentDateAndTime();
-		    Date startTime = dateUtilService.getDateAndTime(dateUtilService.getCurrentDateInStringFormatYYYYMMDD()+" "+event.getStartTime());
-		    Date endTime = dateUtilService.getDateAndTime(dateUtilService.getCurrentDateInStringFormatYYYYMMDD()+" "+event.getEndTime());
+		    Date startTime = dateUtilService.getDateAndTime(dateUtilService.getCurrentDateInStringFormatYYYYMMDD()+" 07:00:00");
+		    Date endTime = dateUtilService.getDateAndTime(dateUtilService.getCurrentDateInStringFormatYYYYMMDD()+" 22:00:00");
 			
 		    if(!(startTime.getTime() <= presentTime.getTime() && presentTime.getTime() <= endTime.getTime()))
 		    	return;    
