@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -36,12 +39,17 @@ import com.itgrids.partyanalyst.dto.MahanaduVisitVO;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitDetails;
 import com.itgrids.partyanalyst.model.CadreMahanaduVisitInfo;
 import com.itgrids.partyanalyst.model.EntryExitInfo;
+import com.itgrids.partyanalyst.model.Event;
 import com.itgrids.partyanalyst.service.ICadreDetailsUtils;
 import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
+/**
+ * @author Administrator
+ *
+ */
 public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 
 	private IEventAttendeeDAO eventAttendeeDAO;
@@ -59,12 +67,20 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 	private ITehsilDAO tehsilDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IStateDAO stateDAO;
+	private ITdpCadreDAO tdpCadreDAO; 
 	
 	private static final Logger LOG = Logger.getLogger(MahanaduDashBoardService.class);
 	private DateUtilService dateUtilService = new DateUtilService();
 	
 	
-	
+	public ITdpCadreDAO getTdpCadreDAO() {
+		return tdpCadreDAO;
+	}
+
+	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
+		this.tdpCadreDAO = tdpCadreDAO;
+	}
+
 	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
@@ -1681,9 +1697,9 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				List<Object[]> candidateDetailsList = null;
 				//cadreIds.add(5161592l);
 				if(roleType.equalsIgnoreCase("PR"))
-				candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetails(cadreIds);
+					candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetails(cadreIds);
 				else
-				candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetailsForCommittee(cadreIds);
+					candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetailsForCommittee(cadreIds);
 					
 				List<Long> parliamentAssemblyIds = new ArrayList<Long>(0);
 				List<Long> districtIds = new ArrayList<Long>(0);
@@ -1761,6 +1777,29 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				}
 				
 				}
+				
+				if(roleType.equalsIgnoreCase("diasEntry")){
+					for (Object[] objects : candidateDetailsList) {
+						cadreIds.remove(objects[0] != null? (Long)objects[0] : 0l);
+					}
+					if(commonMethodsUtilService.isListOrSetValid(cadreIds)){
+							List<Object[]> detailsObjList = tdpCadreDAO.getCadreFormalDetails(cadreIds);
+							if(detailsObjList != null && detailsObjList.size() > 0){
+								for (Object[] objects : detailsObjList) {
+									CandidateDetailsVO vo = new CandidateDetailsVO();
+									vo.setCadreId((Long)objects[0]);
+									vo.setCandidateName(objects[1].toString());
+									vo.setImage(objects[5].toString());
+									vo.setDatesList(getEventDatesByEventId(eventId,vo.getCadreId(),cadreAttendedMap));
+									vo.setDesignation("");
+									vo.setStateName("");
+									resultVOList.add(vo);
+								}
+						}
+					}
+						
+				}
+				
 				//set data to return list
 				//0-tdpCadreId,1-name,2-publicRepresentativeTypeId,3-type,4-levelId,5-levelValue,6-image
 				for (Object[] objects : candidateDetailsList) {
@@ -1882,10 +1921,24 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		List<CandidateDetailsVO> voList = new ArrayList<CandidateDetailsVO>(0);
 		DateUtilService dateUtilService = new DateUtilService();
 		try {
+			Event event = eventDAO.get(eventId); 
+			List<Long> eventIdsList = new ArrayList<Long>(0);
+			eventIdsList.add(eventId);
+			Set<Long> inviteeIdsList = new HashSet<Long>(0);
+			List<Object[]> inviteeList = eventInviteeDAO.getTdpCadreIdsByEventIds(eventIdsList);
+			
+			if(commonMethodsUtilService.isListOrSetValid(inviteeList)){
+				for (Object[] param : inviteeList) {
+					inviteeIdsList.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			
+			List<String> datesList = commonMethodsUtilService.getBetweenDatesInString(event.getEventStartTime(), event.getEventEndDate());
 			List<Object[]> objList = eventAttendeeDAO.getDiasEntryExitCandisTimeDeatails(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day));
-			Map<Long,Long> finalMap = new HashMap<Long, Long>();
+			Map<Long,Map<String,String>> finalMap = new HashMap<Long,Map<String, String>>();
+			Map<Long,LinkedList<Object[]>> cadreWiseDataMap = new HashMap<Long, LinkedList<Object[]>>(0);
 			if(objList != null && objList.size() > 0){
-				Map<Long,LinkedList<Object[]>> cadreWiseDataMap = new HashMap<Long, LinkedList<Object[]>>(0);
+				
 				for (Object[] objects : objList) {
 					if(cadreWiseDataMap.get((Long)objects[0]) == null){
 						LinkedList<Object[]> ll = new LinkedList<Object[]>();
@@ -1906,40 +1959,77 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 								endTime = objects[2].toString();
 								Long diff = dateUtilService.getMinutesBetweenTwoDates(fromTime, endTime);
 								if(diff > 0l){
+									Map<String,String> daywisefinalMap = finalMap.get(cadreId);
 									if(finalMap.get(cadreId) == null){
-										finalMap.put(cadreId, diff);
-									}else{
-										finalMap.put(cadreId, finalMap.get(cadreId)+diff);
+										if(daywisefinalMap == null){
+											if(commonMethodsUtilService.isListOrSetValid(datesList)){
+												daywisefinalMap = new LinkedHashMap<String, String>();
+												for (String dateStr : datesList)
+													daywisefinalMap.put(dateStr, "0");
+											}
+										}
 									}
+									if(daywisefinalMap.get(fromTime.toString().subSequence(0, 10)) != null){
+										Long temp1 = Long.valueOf(daywisefinalMap.get(fromTime.toString().subSequence(0, 10).toString()));
+										daywisefinalMap.put(fromTime.toString().subSequence(0, 10).toString(), String.valueOf((diff+temp1)));
+									}
+									else{
+										daywisefinalMap.put(fromTime.toString().subSequence(0, 10).toString(), diff.toString());
+									}
+									finalMap.put(cadreId, daywisefinalMap);
 								}
 							}
 						}
-						
 					}
 				}
 			}
 			
-			if(finalMap != null && finalMap.size() > 0){
-				Set<Long> cadreIds = finalMap.keySet();
-				List<Long> cadreIdsList = new ArrayList<Long>();
-				cadreIdsList.addAll(cadreIds);
-				//cadreIdsList.add(5161592l);
-				Date date = null;
-				if(day != null && !day.isEmpty())
-				 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
+			
+			Date date = null;
+			if(day != null && !day.isEmpty())
+			 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
+			List<Long> cadreIdsList = new ArrayList<Long>();
+			cadreIdsList.addAll(cadreWiseDataMap.keySet());
+			if(commonMethodsUtilService.isListOrSetValid(cadreIdsList)){
 				getCandidateDetailsByCadreIds(cadreIdsList,voList,date,eventId,"diasEntry","childEvent");
-				/*List<Object[]> detailsObjList = tdpCadreDAO.getCadreFormalDetails(cadreIdsList);
-				if(detailsObjList != null && detailsObjList.size() > 0){
-					for (Object[] objects : detailsObjList) {
-						IdAndNameVO vo = new IdAndNameVO();
-						vo.setTdpcadreId((Long)objects[0]);
-						vo.setName(objects[1].toString());
-						vo.setImagePathStr(objects[5].toString());
-						vo.setId(finalMap.get((Long)objects[0]));
-						voList.add(vo);
-					}
-				}*/
+				
 			}
+			
+			if(commonMethodsUtilService.isListOrSetValid(voList)){
+				for (CandidateDetailsVO vo : voList) {
+					vo.setShortName("false");
+					vo.setStatus(false);
+					if(inviteeIdsList.contains(vo.getCadreId()))
+						vo.setShortName("true");
+					
+					Map<String,String> daywisefinalMap =  finalMap.get(vo.getCadreId());
+					if(commonMethodsUtilService.isMapValid(daywisefinalMap)){
+						for (String dayStr : daywisefinalMap.keySet()) {
+							if(commonMethodsUtilService.isListOrSetValid(vo.getDatesList())){
+								for (MahanaduEventVO vo1 : vo.getDatesList()) {
+									if(dayStr.trim().equalsIgnoreCase(vo1.getDateStr().trim())){
+										double time = Integer.valueOf(daywisefinalMap.get(dayStr.trim()))/60;
+										String timeS = Double.toString(time);
+										String[] hourMin = timeS.replace(".","::").split("::");
+										if(hourMin != null && hourMin.length>0){
+											String h = hourMin[0];
+											String m = hourMin[1];
+											if(!h.trim().equalsIgnoreCase("0") && !m.trim().equalsIgnoreCase("0"))
+												vo1.setDesc(h+".hr,"+m+".Min.");
+											else if(!h.trim().equalsIgnoreCase("0"))
+												vo1.setDesc(h+".hr");
+										}
+										else if(daywisefinalMap.get(dayStr.trim()) != null && Integer.valueOf(daywisefinalMap.get(dayStr.trim()))<60)
+											vo1.setDesc(Integer.valueOf(daywisefinalMap.get(dayStr.trim()))+".Min.");
+										vo.setStatus(true);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDiasEntryExitCandisTimeDeatails service", e);
 		}
