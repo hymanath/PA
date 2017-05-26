@@ -2008,19 +2008,21 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 							if(commonMethodsUtilService.isListOrSetValid(vo.getDatesList())){
 								for (MahanaduEventVO vo1 : vo.getDatesList()) {
 									if(dayStr.trim().equalsIgnoreCase(vo1.getDateStr().trim())){
-										double time = Integer.valueOf(daywisefinalMap.get(dayStr.trim()))/60;
-										String timeS = Double.toString(time);
-										String[] hourMin = timeS.replace(".","::").split("::");
-										if(hourMin != null && hourMin.length>0){
-											String h = hourMin[0];
-											String m = hourMin[1];
-											if(!h.trim().equalsIgnoreCase("0") && !m.trim().equalsIgnoreCase("0"))
-												vo1.setDesc(h+".hr,"+m+".Min.");
-											else if(!h.trim().equalsIgnoreCase("0"))
-												vo1.setDesc(h+".hr");
-										}
-										else if(daywisefinalMap.get(dayStr.trim()) != null && Integer.valueOf(daywisefinalMap.get(dayStr.trim()))<60)
+										if(daywisefinalMap.get(dayStr.trim()) != null && Integer.valueOf(daywisefinalMap.get(dayStr.trim()))<60)
 											vo1.setDesc(Integer.valueOf(daywisefinalMap.get(dayStr.trim()))+".Min.");
+										else{
+											double time = Integer.valueOf(daywisefinalMap.get(dayStr.trim()))/60;
+											String timeS = Double.toString(time);
+											String[] hourMin = timeS.replace(".","::").split("::");
+											if(hourMin != null && hourMin.length>0){
+												String h = hourMin[0];
+												String m = hourMin[1];
+												if(!h.trim().equalsIgnoreCase("0") && !m.trim().equalsIgnoreCase("0"))
+													vo1.setDesc(h+".hr,"+m+".Min.");
+												else if(!h.trim().equalsIgnoreCase("0"))
+													vo1.setDesc(h+".hr");
+											}
+										}
 										vo.setStatus(true);
 									}
 								}
