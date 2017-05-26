@@ -110,10 +110,10 @@ table{margin-bottom:0px !important;}
 				<div class="col-md-2">
 					<select style="height:32px;display:inline-block;width:150px;" class="form-control" id="mainEventSelectId">
 						<option value="0">Select Event</option>
-						<option value="7" >Mahanadu - 2015</option>
-						<option value="30" >Mahanadu - 2016</option>
 						<option value="51" selected>Mahanadu - 2017</option>
 						<option value="58" >T-Mahanadu - 2017</option>
+						<option value="30" >Mahanadu - 2016</option>
+						<option value="7" >Mahanadu - 2015</option>
 					</select>
 				</div>
 				
