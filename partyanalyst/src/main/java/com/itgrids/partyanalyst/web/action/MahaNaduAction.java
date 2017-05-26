@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dto.CadreVo;
+import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
 import com.itgrids.partyanalyst.dto.NotificationDeviceVO;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.notification.service.ISchedulerService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IMahaNaduService;
+import com.itgrids.partyanalyst.service.IMahanaduDashBoardService;
 import com.itgrids.partyanalyst.service.INotificationService;
 import com.itgrids.partyanalyst.service.IPartyStrengthService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -61,6 +63,8 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private String task = null;
 	 private EntitlementsHelper entitlementsHelper;
 	 private ISchedulerService schedulerService;
+	 private IMahanaduDashBoardService mahanaduDashBoardService;
+	 private List<CandidateDetailsVO> candidateDetailsVOList = new ArrayList<CandidateDetailsVO>(0);
 
 	/**
 	 * lists used to populate address select dropdowns
@@ -116,6 +120,23 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	private INotificationService notificationService;
 	private String status;
 	
+	public List<CandidateDetailsVO> getCandidateDetailsVOList() {
+		return candidateDetailsVOList;
+	}
+	public void setCandidateDetailsVOList(
+			List<CandidateDetailsVO> candidateDetailsVOList) {
+		this.candidateDetailsVOList = candidateDetailsVOList;
+	}
+	
+	public IMahanaduDashBoardService getMahanaduDashBoardService() {
+		return mahanaduDashBoardService;
+	}
+
+	public void setMahanaduDashBoardService(
+			IMahanaduDashBoardService mahanaduDashBoardService) {
+		this.mahanaduDashBoardService = mahanaduDashBoardService;
+	}
+
 	public void setSchedulerService(ISchedulerService schedulerService) {
 		this.schedulerService = schedulerService;
 	}
@@ -1104,7 +1125,7 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	public String getDiasEntryExitCandisTimeDeatails(){
 		try {
 			jObj = new JSONObject(getTask());
-			idAndNameVOList = mahaNaduService.getDiasEntryExitCandisTimeDeatails(jObj.getLong("eventId"),jObj.getString("date"));
+			candidateDetailsVOList = mahanaduDashBoardService.getDiasEntryExitCandisTimeDeatails(jObj.getLong("eventId"),jObj.getString("date"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDiasEntryExitCandisTimeDeatails", e);
 		}

@@ -17400,7 +17400,7 @@
   </action>
 	<action name="getDiasEntryExitCandisTimeDeatailsAction" class="mahaNaduAction"  method="getDiasEntryExitCandisTimeDeatails">
 		<result type="json" name="success">    
-			<param name="root">idAndNameVOList</param>         
+			<param name="root">candidateDetailsVOList</param>         
 		</result> 
 	</action>
 	<action name="getSubDeptsFrParentDeptAction" class="alertManagementSystemAction" method="getSubDeptsFrParentDept">

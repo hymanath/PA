@@ -3064,7 +3064,77 @@ function getPublicrepresentatives(){
 		});
 		
 	});
- 
+	//getDiasetails("");
+ function getDiasetails(roleType){
+   $("#showModelConstcy").html('');
+	 $("#popupId").modal("show");
+	 $("#publicRepresentativelinkAjax").show();
+   var jsObj = {
+      //date : '25/05/2017',
+      date : '2017-05-25',
+      eventId : 56
+    }
+    
+    $.ajax({
+      type : 'GET',
+      url : 'getDiasEntryExitCandisTimeDeatailsAction.action',
+      dataType : 'json',
+      data : {task:JSON.stringify(jsObj)}  
+    }).done(function(result){ 
+       $("#publicRepresentativelinkAjax").hide();
+			var str='';
+			if(result != null && result.length > 0){
+				str+='<table class="table table-bordered" id="dataTableForPublicRep">';
+				str+='<thead>';
+				str+='<th>IMAGE</th>';
+				str+='<th>NAME</th>';
+				if(roleType == "PR")
+				str+='<th>DESIGNATION</th>';
+			else
+				str+='<th>ROLE</th>';
+				str+='<th>LOCATION</th>';
+				str+='<th>ATTENDED</th>';
+				for(var i in result[0].datesList)
+				str+='<th>'+ result[0].datesList[i].name+'</th>';
+				str+='</thead>';
+				for(var i in result){
+					str+='<tr>';
+					str+='<td><img src="'+result[i].image+'" class="img-responsive"  style="width:60px;height:80px"/></td>';
+					str+='<td>'+result[i].candidateName+'</td>';
+					str+='<td>'+result[i].designation+'</td>';
+					str+='<td class="text-capitalize">'+result[i].stateName+'</td>';
+					if(result[i].status){
+						str+='<td>Yes</td>';
+					}else if(!result[i].status){
+						str+='<td>No</td>';
+					}
+					for(var j in result[i].datesList)
+					{
+						if(result[i].datesList[j].totalDaydataExist == true)
+							str+='<td>YES</td>';
+						else
+						str+='<td>NO</td>';	
+					}
+					str+='</tr>';
+				}
+				str+='</table>';
+			}else{
+				str+='No Date Availabel.';
+			}
+			$("#showModelConstcy").html(str);
+			$('#dataTableForPublicRep').DataTable({
+				 "paging":   true,
+				 "info":     true,
+				 "searching": true,
+				 "autoWidth": true,
+				"sDom": '<"top"fl>rt<"bottom"ip><"clear">',
+				"ordering": false
+				
+			});
+		 
+    });
+    
+ }
 </script>
 </body>
 </html>
