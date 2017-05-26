@@ -596,7 +596,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		
 		Date todayDate = dateUtilService.getCurrentDateAndTime();
 		Long parentEventId = 0L;
-		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
+		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 		if(entryExitInfo != null){
 			Long entryEventId = entryExitInfo.getEntryId();
 			Long exitEventId = entryExitInfo.getExitId();
@@ -719,7 +719,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long exitEventId = 0L;
 			Long parentEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -886,7 +886,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -1046,7 +1046,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -1174,7 +1174,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return Long.parseLong(day+"");
 	}
 	
-	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId,List<Long> enrollmentIdsList,String eventType){
+	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId,List<Long> enrollmentIdsList){
 		List<MahanaduEventVO> defaultHoursList =  setHoursList();
 		try {
 			Object[] dateObj = eventDAO.getEventDates(eventId);
@@ -1185,7 +1185,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Date date = format.parse(dayCount);
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,eventType);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -1197,7 +1197,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			
 			MahanaduEventVO vo = new MahanaduEventVO();
 			
-			Map<Long,Long> curentInCampusMap = new HashMap<Long, Long>(0);
+			//Map<Long,Long> curentInCampusMap = new HashMap<Long, Long>(0);
 			if(currentInCampusObjList != null && currentInCampusObjList.size() > 0){
 				for (Object[] objects : currentInCampusObjList) {
 					if((Long)objects[1]<=8){
@@ -1385,7 +1385,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getTenam());*/
 					}
 					if((Long)objects[1]==11){
-						vo1.setElevenam(vo.getElevenam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setElevenam(vo1.getElevenam()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setElevenam(vo1.getTenam()+(Long)objects[0]);
 						vo1.setTwelvpm(vo1.getElevenam());
 						vo1.setOnepm(vo1.getElevenam());
@@ -1410,7 +1410,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						vo1.setEightpm(vo1.getTwelvpm());*/
 					}
 					if((Long)objects[1]==13){
-						vo1.setOnepm(vo.getOnepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
+						vo1.setOnepm(vo1.getOnepm()+Long.valueOf(objects[0] != null ? objects[0].toString():"0"));
 						/*vo1.setOnepm(vo1.getTwelvpm()+(Long)objects[0]);
 						vo1.setTwopm(vo1.getOnepm());
 						vo1.setThreepm(vo1.getOnepm());
@@ -1679,7 +1679,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			if(cadreIds != null && cadreIds.size() > 0){
 				//tdpCadreId,name,publicRepresentativeTypeId,type,levelId,levelValue,image
 				List<Object[]> candidateDetailsList = null;
-				cadreIds.add(5161592l);
+				//cadreIds.add(5161592l);
 				if(roleType.equalsIgnoreCase("PR"))
 				candidateDetailsList = tdpCadreCandidateDAO.getCandidateDetails(cadreIds);
 				else
@@ -1923,7 +1923,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				Set<Long> cadreIds = finalMap.keySet();
 				List<Long> cadreIdsList = new ArrayList<Long>();
 				cadreIdsList.addAll(cadreIds);
-				cadreIdsList.add(5161592l);
+				//cadreIdsList.add(5161592l);
 				Date date = null;
 				if(day != null && !day.isEmpty())
 				 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
