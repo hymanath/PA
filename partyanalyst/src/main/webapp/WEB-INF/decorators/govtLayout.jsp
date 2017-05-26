@@ -158,7 +158,11 @@ globalValue = resultValue[resultValue.length-1];
 						<a href="locationWiseGrivenceReportAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;Location Wise Report</span></a>
 					</li>
 			</c:if>
-			
+			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT_NEW')}">
+				<li>
+					<a href="createMeekosamGrievanceAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;New Grievance</span></a>
+				</li>
+			</c:if>
 				<li>
 					<a href="govtLogoutAction.action"><span class="fa fa-sign-out ico-white"></span><span>&nbsp;&nbsp;LOGOUT (${sessionScope.officerName})</span></a>
 				</li> 
