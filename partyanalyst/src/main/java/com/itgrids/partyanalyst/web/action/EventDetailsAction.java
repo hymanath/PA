@@ -108,9 +108,9 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 	public String execute()
 	{
 		
-		HttpSession session = request.getSession();
+		/*HttpSession session = request.getSession();
 		if(session.getAttribute(IConstants.USER) == null)
-			return INPUT;
+			return INPUT;*/
 		return Action.SUCCESS;
 		
 	}
