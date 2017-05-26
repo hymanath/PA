@@ -2109,7 +2109,7 @@ function getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departm
 		$("#alertManagementPopupBody").html(spinner);
 		var alertType = getAlertType();
 		
-		
+		var statusIdsArr = [];
 		if(alertType != null && alertType=="alert"){
 			   if(statusId != null && statusId == 0){
 				 statusIdsArr = globalAlertStatusIdsArr;
