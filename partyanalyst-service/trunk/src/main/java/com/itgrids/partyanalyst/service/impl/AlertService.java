@@ -5915,9 +5915,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						alertCoreDashBoardVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[20]));
 					}
 					//hiii
-						if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 4L){//call Center
-							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
-						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 2L){//print
+					   if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 2L){//print
 							if(param[17] != null){
 								alertSource = commonMethodsUtilService.getStringValueForObject(param[17]);
 							}else{
@@ -5930,8 +5928,8 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							}else{
 								alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
 							}
-						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 5L){////Social Media
-							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
+						}else{
+							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);//for social media,call center and other category
 						}
 						alertCoreDashBoardVO.setSource(alertSource);
 					 
