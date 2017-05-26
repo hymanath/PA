@@ -1804,11 +1804,17 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		
 	}*/
 	
-	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId){
+	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId,String eventType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.tdpCadreId " +
-				" from EventAttendee model where model.tdpCadreId in (:cadreIds) and model.event.parentEventId=:eventId" +
+				" from EventAttendee model where model.tdpCadreId in (:cadreIds) " +
 				" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		
+		if(eventType != null && eventType.equalsIgnoreCase("parentId")){
+			sb.append(" and model.event.parentEventId=:eventId ");
+		}else{
+			sb.append(" and model.event.eventId=:eventId ");
+		}
 		if(date != null){
 			sb.append(" and date(model.attendedTime)=:date");
 		}
@@ -1973,11 +1979,17 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		return query.list();
 	}
 	
-	public List<Object[]> getAttendenceDetailsForCadre(List<Long> cadreIds,Long eventId){
+	public List<Object[]> getAttendenceDetailsForCadre(List<Long> cadreIds,Long eventId,String eventType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.tdpCadreId,date(model.attendedTime) " +
-				" from EventAttendee model where model.tdpCadreId in (:cadreIds) and model.event.parentEventId=:eventId" +
+				" from EventAttendee model where model.tdpCadreId in (:cadreIds) " +
 				" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
+		
+		if(eventType != null && eventType.equalsIgnoreCase("parentId")){
+			sb.append(" and model.event.parentEventId=:eventId ");
+		}else{
+			sb.append(" and model.event.eventId=:eventId ");
+		}
 		sb.append(" group by model.tdpCadreId,date(model.attendedTime)");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("cadreIds", cadreIds);
