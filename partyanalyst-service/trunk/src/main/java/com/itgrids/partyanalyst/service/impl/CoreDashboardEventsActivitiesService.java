@@ -161,7 +161,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 		Map<Long,EventDetailsVO> eventDtlsMap = new HashMap<Long, EventDetailsVO>(0);
 		Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
 		  try{
-			
+			  stateId = 0L;
 			    List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 			    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
 			      for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
@@ -289,7 +289,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	  Map<Long,Set<Long>> locationLevelMap = null;
 	  Map<Long,Map<Long,UserTypeVO>> userTypeMapDtls = null;
 	  try{
-		  
+		  stateId = 0L;
 		     ActivityMemberVO activityMemberVO = new ActivityMemberVO();
 		     activityMemberVO.setUserId(userId);
 		     activityMemberVO.setActivityMemberId(activityMemberId);
@@ -492,6 +492,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	 Map<Long,String> twnDivsionidNameMap = new HashMap<Long, String>(0);
 	 
 	 try{
+		 stateId =0L;
 		  List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
 		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
 		      for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
