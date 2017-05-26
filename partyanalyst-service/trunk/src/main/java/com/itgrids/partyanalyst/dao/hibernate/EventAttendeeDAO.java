@@ -3373,10 +3373,10 @@ public List<Object[]> getMahanaduEventCadreDetails(List<Long> eventIds,Long tdpC
 	public List<Object[]> getDiasEntryExitCandisTimeDeatails(Long eventId,Date eventDate){
 		Query query = getSession().createQuery(" select model.tdpCadreId,model.eventId,model.attendedTime " +
 				" from EventAttendee model " +
-				" where model.eventId in (56,57)  and model.tdpCadre.isDeleted = 'N' and date(model.attendedTime) = :eventDate " +
+				" where model.eventId in (56,57)  and model.tdpCadre.isDeleted = 'N' " +
 				" order by model.tdpCadreId,model.attendedTime asc ");
 		//query.setParameter("eventId", eventId);
-		query.setDate("eventDate", eventDate);
+		//query.setDate("eventDate", eventDate);
 		return query.list();
 	}
 }
