@@ -20,7 +20,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	super(AlertAssignedOfficerNew.class);
         }
         public List<Object[]> getAlertCntByRequiredType(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,
-        		String type,List<Long> alertStatusIds,List<Long> departmentScopeIds,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+        		String type,List<Long> alertStatusIds,List<Long> departmentScopeIds,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
+        		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
     		StringBuilder sb = new StringBuilder();  
     	    sb.append("select ");
     	    if(type.equalsIgnoreCase("Status")){
@@ -53,8 +54,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	     if(departmentIds != null && !departmentIds.isEmpty())
     	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
     	    
-    	      if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
-    	  	      sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds))) ");
+    	      if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+    	  	      sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) ) ");
     		   } 
     	     
     	      if(fromDate != null && toDate != null)
@@ -90,11 +91,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    if(departmentIds != null && !departmentIds.isEmpty())
     	      query.setParameterList("departmentIds", departmentIds);
     	    
-    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
+    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null  && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
     	       query.setParameterList("printIdList", printIdsList);
        	       query.setParameterList("electronicIdList", electronicIdsList);
        	       query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
        	       query.setParameterList("calCntrIds", calCntrIds);
+	       	   query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+	 		   query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+	 		   query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+	 		   query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
        	     }  
     	    if(fromDate != null && toDate != null){
     	        query.setDate("fromDate", fromDate);
@@ -150,8 +155,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		query.setParameter("alertId", alertId);
     		return query.list();
       }
-      
-        public List<Object[]> getDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+     
+        public List<Object[]> getDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
         	StringBuilder sb = new StringBuilder();
 	    	  
         	if(type != null && type.equalsIgnoreCase("today")){
@@ -165,8 +170,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	                  " left join model.alert.alertCallCenterType ACCT ");
         	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' " );
         	
-             if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
-      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)))");
+             if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
       	     }
         	 if(govtOffcrIds != null && govtOffcrIds.size()>0){
 	    		  sb.append(" and model.govtOfficer.govtOfficerId in(:govtOffcrIds) " );
@@ -199,11 +204,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  query.setDate("fromDate", fromDate);
 	    		  query.setDate("toDate", toDate);
 	    	  }
-	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
 	    	      query.setParameterList("calCntrIdList", calCntrIdList);
 	    	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+	    		   query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		   query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		   query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		   query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 	    	   }  
 	    	  if(alertSeverityIds != null && alertSeverityIds.size() > 0){
 	    		  query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -213,13 +222,13 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
         }
-        
+       
         //swadhin alertids based on status.
         public List<Long> getTotalAlertByOtherStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, 
         		List<Long> electronicIdsList,List<Long> departmentIds, Long statusId,Long levelId,List<Long> levelValues,
         		Long govtDepartmentScopeId, Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,
         		List<Long> priorityIdList,List<Long> alertSourceIdList,
-        		List<Long> printMediaIdList,List<Long> electronicMediaIdList,List<Long> socialMediaTypeIds){
+        		List<Long> printMediaIdList,List<Long> electronicMediaIdList,List<Long> socialMediaTypeIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
     		StringBuilder sb = new StringBuilder();  
     	    sb.append("select distinct model.alert.alertId ");
     	    sb.append(" from AlertAssignedOfficerNew model" +
@@ -255,8 +264,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	    }
     	    }
     	    
-    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
-    	  	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds))) ");
+    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+    	  	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) ) ");
     		 } 
     	 
     	      
@@ -299,11 +308,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	    }
     	    }
     	    
-    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
+    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
     	    	 query.setParameterList("printIdList", printIdsList);
        	         query.setParameterList("electronicIdList", electronicIdsList);
        	         query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
        	         query.setParameterList("calCntrIds", calCntrIds);
+       	         query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+	 		     query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+	 		     query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+	 		     query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
        	    }
     	      
     	  
@@ -373,7 +386,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDistrictLevelDeptWiseLocationLevelView(Date fromDate, Date toDate,List<Long> deptIds,List<Long> printIdsList,
 			List<Long> electronicIdsList,List<Long> calCntrIdList,Long levelId,List<Long> levelValues,String type,List<Long> deptScopeIds,
-			List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+			List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,
+			List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 	  		StringBuilder sb = new StringBuilder();  
 	  		 sb.append("select ");
 	  	     sb.append(" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
@@ -405,8 +419,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
             if(deptScopeIds != null && deptScopeIds.size() > 0){
             	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId in(:deptScopeIds) ");
             }
-	  	   if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
-     	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or(SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)))");
+	  	   if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+     	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or(SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList))  or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
      	    }
 	  	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
 	  		   sb.append(" and model.alert.alertSeverityId in (:alertSeverityIds)");
@@ -444,11 +458,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  	    if(deptIds != null && deptIds.size() > 0){
 	  	    	query.setParameterList("deptIds", deptIds);
 	  	    }
-	  	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
+	  	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
     	      query.setParameterList("printIdList", printIdsList);
     	      query.setParameterList("electronicIdList", electronicIdsList);
     	      query.setParameterList("calCntrIdList", calCntrIdList);
     	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+    	 	  query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+	 		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+	 		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+	 		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
     	    }
 		  	if(levelId != null && levelValues != null && !levelValues.isEmpty()){
 	  			query.setParameterList("levelValues",levelValues);
@@ -467,10 +485,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  	    }
 	  	    return query.list();
 	  	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDistrictLevelDeptWiseStatusOverView(Date fromDate, Date toDate,Long levelId,List<Long> deptIds,
 			Long filterLevelId,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> levelValues,
-			List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+			List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 	  		StringBuilder sb = new StringBuilder();  
 	  		
 	  	     sb.append("select ");
@@ -504,8 +523,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  	    if(filterLevelId != null && filterLevelId.longValue() > 0){
 	  	    	sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId =:filterLevelId ");
 	  	     }
-	  	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
-      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) ) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)))");
+	  	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList) ) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
       	    }
 	  	    
 	  	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
@@ -542,11 +561,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  	  if(querySb.length() > 0){
   			query.setParameterList("levelValues",levelValues);
   		  }
-	 	 if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
+	 	 if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
   	      query.setParameterList("printIdList", printIdsList);
   	      query.setParameterList("electronicIdList", electronicIdsList);
   	      query.setParameterList("calCntrIdList", calCntrIdList);
   	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+  	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
   	    }
  	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
  	    	query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -560,7 +583,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	public List<Long> getAlertIdsForDeptAndLevelId(Long deptId,Long locationLevelId,List<Long> statusIds,
 			Date fromDate,Date toDate,Long desigDeptOfficerId,Long officerId,Long levelId,List<Long> levelValues,
 			List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,Long alertCategoryId,
-			List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+			List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
+			List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.alert.alertId "+
 				  " from " +
@@ -604,8 +628,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	 sb.append(querySb); 
 	      }
 		
-		if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
-    	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or(SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)))");
+		if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() >0 ){
+    	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or(SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
     	}
 		//sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId >= :scopeId ");
 		Query query = getSession().createQuery(sb.toString());
@@ -626,11 +650,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 if(officerId != null && officerId.longValue() > 0){
 		 	query.setParameter("officerId",officerId);
 		 }
-		 if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
+		 if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() >0 ){
 	   	      query.setParameterList("printIdList", printIdsList);
 	   	      query.setParameterList("electronicIdList", electronicIdsList);
 	   	      query.setParameterList("calCntrIdList", calCntrIdList);
 	   	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+	   	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+ 		      query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+ 		      query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+ 		      query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 	   	  }
 		  if(querySb.length() > 0){
 	  			query.setParameterList("levelValues",levelValues);
@@ -834,7 +862,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     	    	
         }
         
-        public List<Long> getDistrictOfficerAlertsIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList,Date fromDate,Date toDate,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+        public List<Long> getDistrictOfficerAlertsIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList,Date fromDate,Date toDate,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
         	  
         	  StringBuilder sb = new StringBuilder();
 	    	  
@@ -848,8 +876,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
         	  sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' " );
         	
         	  
-        	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
-                  sb.append(" and (EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) or(SMT.socialMediaTypeId in(:socialMediaTypeIds)) or(ACCT.alertCallCenterTypeId in(:calCntrIdList)))");
+        	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+                  sb.append(" and (EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) or(SMT.socialMediaTypeId in(:socialMediaTypeIds)) or(ACCT.alertCallCenterTypeId in(:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
               }
         	  
         	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
@@ -886,11 +914,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  query.setParameter("toDate",toDate);
 	    	  }
 	    	  
-	    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
+	    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
 	    	      query.setParameterList("printIdsList", printIdsList);
 	    	      query.setParameterList("electronicIdsList", electronicIdsList);
 	    	      query.setParameterList("calCntrIdList", calCntrIdList);
 	    	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+	    	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 	    	     }  
 		    	  if(alertSeverityIds != null && alertSeverityIds.size() > 0){
 		    		  query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -2239,7 +2271,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
     		return query.list();
         }
     @SuppressWarnings("unchecked")
-    public List<Object[]> getDistrictOfficerMyAlertsCountView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date startDate,Date endDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypes,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+    public List<Object[]> getDistrictOfficerMyAlertsCountView(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,String type,Date startDate,Date endDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypes,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
         	StringBuilder sb = new StringBuilder();
         	  
         	if(type != null && type.equalsIgnoreCase("today")){
@@ -2268,8 +2300,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(startDate != null && endDate!= null){
 	    		  sb.append(" and date(model.insertedTime) between  :startDate and  :endDate " ); 
 	    	  }
-	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypes != null && !socialMediaTypes.isEmpty() ){
-	      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypes)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)))");
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypes != null && !socialMediaTypes.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+	      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypes)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds))  )");
 	      	  }
 	    	  if(alertSeverityIds != null && alertSeverityIds.size() > 0){
 	    		  sb.append(" and model.alert.alertSeverityId in (:alertSeverityIds)");
@@ -2291,11 +2323,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  query.setDate("startDate", startDate);
 	    		  query.setDate("endDate", endDate);
 	    	  }
-	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypes != null && !socialMediaTypes.isEmpty() ){
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypes != null && !socialMediaTypes.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
 	    	      query.setParameterList("calCntrIdList", calCntrIdList);
 	    	      query.setParameterList("socialMediaTypes", socialMediaTypes);
+	    	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 	    	   }  
 	    	  if(alertSeverityIds != null && alertSeverityIds.size() > 0){
 	    		  query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -2305,7 +2341,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  }
 	    	  return query.list();
         }  
-	public List<Object[]> getDistrictOfficerMyAlertsStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,Date startDate,Date endDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusids){
+	public List<Object[]> getDistrictOfficerMyAlertsStatusWiseDetails(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,Date startDate,Date endDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusids,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
         	StringBuilder sb = new StringBuilder();
         	sb.append(" select model.alertStatus.alertStatusId," +
         			"  model.alertStatus.alertStatus," +
@@ -2327,8 +2363,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
 	    		  sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId in(:govtDepDesigOffcrIds) " );
 	    	  }
-	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
-	      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)))");
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+	      	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
 	      	  }
 	    	  if(startDate != null && endDate != null){
 	    		  sb.append(" and date(model.insertedTime) between :startDate and :endDate ");
@@ -2353,11 +2389,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    		  query.setDate("startDate", startDate);
 	    		  query.setDate("endDate", endDate);
 	    	  }
-	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
 	    	      query.setParameterList("printIdList", printIdsList);
 	    	      query.setParameterList("electronicIdList", electronicIdsList);
 	    	      query.setParameterList("calCntrIdList", calCntrIdList);
 	    	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+	    	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 	    	   } 
 	    	  if(alertSeverityIds != null && alertSeverityIds.size() > 0){
 	    		  query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -3398,7 +3438,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		}
 		return query.list();
     }
-	 public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsView(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,String type,List<Long> alertStatusIds,List<Long> departmentScopeIds,List<Long> callCenterIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+	 public List<Object[]> stateLevelDeptOfficerDepartmentWiseAlertsView(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,String type,List<Long> alertStatusIds,List<Long> departmentScopeIds,List<Long> callCenterIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
  		StringBuilder sb = new StringBuilder();  
  	    sb.append("select ");
  	    if(type.equalsIgnoreCase("Status")){
@@ -3429,8 +3469,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	    if(departmentIds != null && !departmentIds.isEmpty())
  	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
  	    
- 	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
- 	    	sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:callCenterIds)))");
+ 	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+ 	    	sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:callCenterIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
          }
  	    if(fromDate != null && toDate != null)
  	      sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
@@ -3461,11 +3501,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	    Query query = getSession().createQuery(sb.toString());
  	    if(departmentIds != null && !departmentIds.isEmpty())
  	      query.setParameterList("departmentIds", departmentIds);
- 	   if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
+ 	   if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
  	      query.setParameterList("printIdList", printIdsList);
  	      query.setParameterList("electronicIdList", electronicIdsList);
  	      query.setParameterList("callCenterIds", callCenterIds);
  	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+ 	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		   query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		   query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		   query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
  	    }  
  	  
  	    if(fromDate != null && toDate != null){
@@ -3488,7 +3532,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	      return query.list();
  	}
 	 
-	 public List<Long> getDistrictOffrAlertsIds(List<Long> govtDeptDesigOffceIds,List<Long> govtOffceIds,Date fromDate,Date toDate,List<Long> alertStatusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+	 public List<Long> getDistrictOffrAlertsIds(List<Long> govtDeptDesigOffceIds,List<Long> govtOffceIds,Date fromDate,Date toDate,List<Long> alertStatusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 	    	StringBuilder sb = new StringBuilder();
 	    	  
 	    	  sb.append(" select distinct model.alert.alertId from AlertAssignedOfficerNew model ");
@@ -3500,8 +3544,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  
 	    	  sb.append(" where model.isDeleted = 'N' and  model.alert.isDeleted='N' " );
 	    	
-	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
-	              sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)))");
+	    	  if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+	              sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds))  )");
 		       }
 	    	  
 	    	  if(govtOffceIds != null && govtOffceIds.size() >0){
@@ -3535,11 +3579,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  			query.setDate("toDate", toDate);
 	  		}
 	    	  
-    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
+    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
     	      query.setParameterList("printIdsList", printIdsList);
     	      query.setParameterList("electronicIdsList", electronicIdsList);
     	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
     	      query.setParameterList("calCntrIdList", calCntrIdList);
+    	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+	 		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+	 		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+	 		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
     	    }  
     	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
 	    		 query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -3560,7 +3608,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      }
 	 public List<Long> getStateLevelAlertclickViewAlertsIds(List<Long> govtDepDesigOffcrIds,List<Long> govtOffcrIds,
 			 String type,List<Long> deptIds,List<Long> statusIds,Date fromDate,Date endDate,List<Long> printIdsList,
-			 List<Long> electronicIdsList,List<Long> callCenterIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+			 List<Long> electronicIdsList,List<Long> callCenterIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
      	 StringBuilder sb = new StringBuilder();
 	    	  
      	  sb.append(" select  distinct model.alert.alertId from AlertAssignedOfficerNew model ");
@@ -3571,8 +3619,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      	
      	  sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' " );
      	
-     	  if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
-   	    	sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:callCenterIds)))");
+     	  if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+   	    	sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:callCenterIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
            }
      	  
      	  if(govtOffcrIds != null && govtOffcrIds.size()>0){
@@ -3612,11 +3660,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	  if(deptIds != null && deptIds.size() > 0){
 	    		  query.setParameterList("deptIds", deptIds);
 	    	  }
-	    	  if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
+	    	  if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && callCenterIds !=null && !callCenterIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
 	     	      query.setParameterList("printIdList", printIdsList);
 	     	      query.setParameterList("electronicIdList", electronicIdsList);
 	     	      query.setParameterList("callCenterIds", callCenterIds);
 	     	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+	     	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 	     	  }  
 	    	  if(alertSeverityIds != null && alertSeverityIds.size() > 0){
 	    		  query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -3675,7 +3727,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 return query.list();
 	 }
 	 @SuppressWarnings("unchecked")
-		public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,List<Long> statusIds,Date fromDate,Date toDate,Long levelId,List<Long> levelValues,List<Long> printIdList,List<Long> electronicIdList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+		public List<Long> getStateLevelDeptWiseFlterClick(List<Long> deptIds,Long locationLevelId,List<Long> statusIds,Date fromDate,Date toDate,Long levelId,List<Long> levelValues,List<Long> printIdList,List<Long> electronicIdList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 			 StringBuilder sb = new StringBuilder();
 			 sb.append(" select distinct model.alert.alertId "+
 					  " from " +
@@ -3694,8 +3746,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 				if(locationLevelId != null && locationLevelId.longValue() > 0){
 					sb.append(" and model.govtDepartmentDesignationOfficer.govtDepartmentScope.govtDepartmentScopeId = :locationLevelId ");
 				}
-				if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
-		             sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)))");
+				if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+		             sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
 		        }
 			
 				if(statusIds != null && statusIds.size() >0){
@@ -3729,11 +3781,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 			 if(statusIds != null && statusIds.size() >0){
 				query.setParameterList("statusIds",statusIds);
 			  }
-			 if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
+			 if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
 				query.setParameterList("printIdList",printIdList);
 				query.setParameterList("electronicIdList",electronicIdList);
 				query.setParameterList("calCntrIdList",calCntrIdList);
 				query.setParameterList("socialMediaTypeIds",socialMediaTypeIds);
+				query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 			 }
 			 if(fromDate != null && toDate != null){
 				query.setDate("fromDate",fromDate);
@@ -3766,7 +3822,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 //Santosh
      public List<Object[]> getLocationBasedOnDepartmentLevelId(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
-     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,
+     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
      	StringBuilder queryStr = new StringBuilder();
      	queryStr.append(" select ");
      	queryStr.append(" distinct GDWL1.govt_department_work_location_id as govtDepartmentWorkLocationId, ");//1
@@ -3774,12 +3831,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      	queryStr.append(" from ");
  		
  		queryStr.append(" alert A ");
- 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
- 			queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
- 			queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
- 			queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
- 			queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
- 		}
+ 		
+ 		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
+ 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
+ 		queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
+ 		queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
+ 		
  		queryStr.append(" ,alert_status ALTS, ");
  		queryStr.append(" alert_assigned_officer_new AAO, ");
  		queryStr.append(" govt_department_designation_officer_new GDDO, ");
@@ -3849,8 +3906,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(fromDate != null && toDate != null){
  			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
  		}
- 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
- 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) or (SMT.social_media_type_id in(:socialMediaTypeIds)) or(ACCT.alert_call_center_type_id in(:calCntrIds)))  ");
+ 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+ 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) or (SMT.social_media_type_id in(:socialMediaTypeIds)) or (ACCT.alert_call_center_type_id in(:calCntrIds)) or (A.monday_grievance_type_id in (:mondayGrievanceTypeIds)) or (A.janmabhoomi_type_id in (:janmabhoomiTypeIds))  or (A.special_grievance_type_id in (:specialGrievanceTypeIds)) or (A.general_grievance_type_id in (:generalGrievanceTypeIds)) )  ");
  		}
  		
  		if(alertSeverityIds != null && alertSeverityIds.size() > 0){
@@ -3876,11 +3933,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  			query.setDate("fromDate", fromDate);
  			query.setDate("toDate", toDate);
  		}
- 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
+ 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
  			query.setParameterList("printIdList", printIdList);  
  			query.setParameterList("electronicIdList", electronicIdList);
  			query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
  			query.setParameterList("calCntrIds", calCntrIds);
+ 			query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+ 			query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+ 			query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+ 			query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
  		}
  		if(querySb.length() > 0){
  			query.setParameterList("levelValues",levelValues);
@@ -3904,7 +3965,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      }
      public List<Object[]> getChildLocationBasedOnParentLocation(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
      		Long levelId,List<Long> levelValues,Long govtDepartmentId,List<Long> deptScopeIdList,
-     		Long parentGovtDepartmentScopeId,Long parentGovtDepartmentScopeValue, Long childLevelId,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+     		Long parentGovtDepartmentScopeId,Long parentGovtDepartmentScopeValue, Long childLevelId,
+     		List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,
+     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
     	 
      	StringBuilder queryStr = new StringBuilder();    
      	queryStr.append(" select distinct ");  
@@ -3913,12 +3976,12 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      
     	queryStr.append(" from ");
  		queryStr.append(" alert A ");
- 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
- 			queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
- 			queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
-			queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
- 			queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
- 		}
+ 		
+ 		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
+ 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
+		queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
+ 		queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
+ 		
  		queryStr.append(" ,alert_status ALTS, ");
  		queryStr.append(" alert_assigned_officer_new AAO, ");
  		queryStr.append(" govt_department_designation_officer_new GDDO, ");
@@ -4022,8 +4085,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 		if(fromDate != null && toDate != null){
 	 			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
 	 		}
-	 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
-	 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) or (SMT.social_media_type_id in(:socialMediaTypeIds)) or(ACCT.alert_call_center_type_id in(:calCntrIds)))  ");
+	 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+	 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) or (SMT.social_media_type_id in(:socialMediaTypeIds)) or (ACCT.alert_call_center_type_id in(:calCntrIds)) or (A.monday_grievance_type_id in (:mondayGrievanceTypeIds)) or (A.janmabhoomi_type_id in (:janmabhoomiTypeIds))  or (A.special_grievance_type_id in (:specialGrievanceTypeIds)) or (A.general_grievance_type_id in (:generalGrievanceTypeIds)) )  ");
 	 		}
 	 		
 	 		if(alertSeverityIds != null && alertSeverityIds.size() > 0){
@@ -4049,11 +4112,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  			query.setDate("fromDate", fromDate);
  			query.setDate("toDate", toDate);
  		}
- 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
+ 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
  			query.setParameterList("printIdList", printIdList);  
  			query.setParameterList("electronicIdList", electronicIdList);
  			query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
  			query.setParameterList("calCntrIds", calCntrIds);
+ 			query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+ 			query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+ 			query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+ 			query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
  		}
  		if(querySb.length() > 0){
  			query.setParameterList("levelValues",levelValues);  
@@ -4086,7 +4153,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      public List<Object[]> getAlertDetailsLocationWiseBasedOnDepartmentLevel(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
-     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,List<Long> socialMediaTypeIds,Long source,String pendingType,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+     		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,List<Long> socialMediaTypeIds,
+     		Long source,String pendingType,List<Long> alertSeverityIds,List<Long> alertStatusIds,
+     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
     	 
      	StringBuilder queryStr = new StringBuilder();
      	queryStr.append(" select ");
@@ -4119,12 +4188,14 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		queryStr.append(" from ");
  		
  		queryStr.append(" alert A ");
- 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
- 			queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
- 			queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
-			queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
- 			queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
- 		}
+ 		
+ 		//if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
+ 			
+ 		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
+ 		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
+		queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
+ 		queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
+ 		//}
  		queryStr.append(" ,alert_status ALTS, ");
  		queryStr.append(" alert_assigned_officer_new AAO, ");
  		queryStr.append(" govt_department_designation_officer_new GDDO, ");
@@ -4237,8 +4308,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		if(fromDate != null && toDate != null){
  			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
  		}
- 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
- 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) or (SMT.social_media_type_id in(:socialMediaTypeIds)) or(ACCT.alert_call_center_type_id in(:calCntrIds)))  ");
+ 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+ 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) or (SMT.social_media_type_id in(:socialMediaTypeIds)) or (ACCT.alert_call_center_type_id in(:calCntrIds)) or (A.monday_grievance_type_id in (:mondayGrievanceTypeIds)) or (A.janmabhoomi_type_id in (:janmabhoomiTypeIds))  or (A.special_grievance_type_id in (:specialGrievanceTypeIds)) or (A.general_grievance_type_id in (:generalGrievanceTypeIds)) )  ");
  		}
  		
  		if(alertSeverityIds != null && alertSeverityIds.size() > 0){
@@ -4291,11 +4362,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  			query.setDate("fromDate", fromDate);
  			query.setDate("toDate", toDate);
  		}
- 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
+ 		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
  			query.setParameterList("printIdList", printIdList);  
  			query.setParameterList("electronicIdList", electronicIdList);
  			query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
  			query.setParameterList("calCntrIds", calCntrIds);
+ 			query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+ 			query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+ 			query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+ 			query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
  		}
  		if(querySb.length() > 0){
  			query.setParameterList("levelValues",levelValues);
@@ -4327,19 +4402,20 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      public List<Long> getAlertIdsBasedOnRequiredParameter(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,
     		 List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
       		Long parentGovtDepartmentScopeId,Long locationValue,List<Long> calCntrIds,Long deptLevelId,
-      		List<Long> alertStatusIds,Long alertCategoryId,List<Long> deptScopeIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+      		List<Long> alertStatusIds,Long alertCategoryId,List<Long> deptScopeIds,List<Long> socialMediaTypeIds,
+      		List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
      	 
       	StringBuilder queryStr = new StringBuilder();
       	queryStr.append(" select ");
       	queryStr.append(" distinct AAO.alert_id as alertId ");
      	queryStr.append(" from alert A ");
-  		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
-  			queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
-  			queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
-			queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
- 			queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
+  			
+     	queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
+  		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
+		queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
+ 		queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
 
-  		}
+  		
   		queryStr.append(" ,alert_status ALTS, ");
   		queryStr.append(" alert_assigned_officer_new AAO, ");
   		queryStr.append(" govt_department_designation_officer_new GDDO, ");
@@ -4419,8 +4495,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   		if(fromDate != null && toDate != null){
   			queryStr.append(" and date(AAO.inserted_time) between :fromDate and :toDate ");
   		}
-  		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() ){
- 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) or (SMT.social_media_type_id in(:socialMediaTypeIds)) or(ACCT.alert_call_center_type_id in(:calCntrIds)))  ");
+  		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+ 			queryStr.append(" AND ( EDS.news_paper_id in (:printIdList)  or (TNC.tv_news_channel_id in (:electronicIdList)) or (SMT.social_media_type_id in(:socialMediaTypeIds)) or (ACCT.alert_call_center_type_id in(:calCntrIds)) or (A.monday_grievance_type_id in (:mondayGrievanceTypeIds)) or (A.janmabhoomi_type_id in (:janmabhoomiTypeIds))  or (A.special_grievance_type_id in (:specialGrievanceTypeIds)) or (A.general_grievance_type_id in (:generalGrievanceTypeIds)) )  ");
  		}
   		
   		if(alertSeverityIds != null && alertSeverityIds.size() > 0){
@@ -4440,11 +4516,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
   			query.setDate("fromDate", fromDate);
   			query.setDate("toDate", toDate);
   		}
-  		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
+  		if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
  			query.setParameterList("printIdList", printIdList);  
  			query.setParameterList("electronicIdList", electronicIdList);
  			query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
  			query.setParameterList("calCntrIds", calCntrIds);
+ 			query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+ 			query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+ 			query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+ 			query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
  		}
   		if(querySb.length() > 0){
   			query.setParameterList("levelValues",levelValues);
@@ -4522,10 +4602,10 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		    	   
 		 		return query.list();
 		 	}
-	     
+	    
 	     public List<Object[]> getSubOrdinateFilterAlertsDetails(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
 	    			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,
-	    			List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId,List<Long> deptIds,List<Long> socialMediaTypeIds){
+	    			List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId,List<Long> deptIds,List<Long> socialMediaTypeIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 	        	
 	        	StringBuilder sb = new StringBuilder();  
 	        	
@@ -4640,8 +4720,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	        	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
 	          	      sb.append(" and GDS.govtDepartmentScopeId = P.govtDepartmentScope.govtDepartmentScopeId  and P.govtDepartmentScope.govtDepartmentScopeId in (:govtScopeIds) ");
 	    	    
-	    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
-	       	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)))");
+	    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null  && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+	       	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
 	       	   /*  if( calCntrIdList !=null && !calCntrIdList.isEmpty() && calCntrIdList.get(0) != 0){
 	   	    	    	  sb.append(" or model.alert.alertCallerId is not null ");
 	   	  			}else{
@@ -4714,11 +4794,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    if(statusIds != null && statusIds.size() > 0){
 	    	    	query.setParameterList("statusIds", statusIds);
 	    	    }
-	    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() ){
+	    	    if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null  && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
 	      	      query.setParameterList("printIdList", printIdsList);
 	      	      query.setParameterList("electronicIdList", electronicIdsList);
 	      	      query.setParameterList("calCntrIdList", calCntrIdList);
 	      	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+	      	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 	      	    }
 	    	    if(deptIds != null && !deptIds.isEmpty())
 	    	    	query.setParameterList("deptIds", deptIds);
@@ -4906,8 +4990,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	 		}*/
 	    	 		return query.list();
 	    	     }
-	    	 
-	    	 public List<Long> getAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,List<Long> calCntrIds,Long alertCategoryId,List<Long> alertStatusIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+	    	
+	    	 public List<Long> getAlertCntByAlertCategory(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,List<Long> calCntrIds,Long alertCategoryId,List<Long> alertStatusIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 	     		StringBuilder sb = new StringBuilder();  
 	     	     sb.append("select ");
 	     	     sb.append(" distinct model.alert.alertId ");
@@ -4925,9 +5009,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	     	    if(departmentIds != null && !departmentIds.isEmpty())
 	     	      sb.append("  and model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 	     	    
-	     	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
-	     	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds))) ");
-	 	        } 
+	     	   if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+	    	  	      sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) ) ");
+	    		} 
 	     	    if(alertCategoryId != null && alertCategoryId.longValue() > 0){
 	     	       sb.append(" and AC.alertCategoryId =:alertCategoryId");
 	     	    }
@@ -4954,13 +5038,16 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	     	    	query.setParameterList("departmentIds", departmentIds);
 	     	    }
 	     	      
-	     	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty()){
-	     	      query.setParameterList("printIdList", printIdsList);
-	     	      query.setParameterList("electronicIdList", electronicIdsList);
-	     	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
-	     	      query.setParameterList("calCntrIds", calCntrIds);
-	     	    }  
-	     	 
+	     	   if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+	    	       query.setParameterList("printIdList", printIdsList);
+	       	       query.setParameterList("electronicIdList", electronicIdsList);
+	       	       query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+	       	       query.setParameterList("calCntrIds", calCntrIds);
+		       	   query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		   query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		   query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		   query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
+	       	     }  
 	     	    if(fromDate != null && toDate != null){
 	     	        query.setDate("fromDate", fromDate);
 	     	        query.setDate("toDate", toDate);
@@ -4980,7 +5067,9 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		     	  }
 	     	      return query.list();
 	     	}
-	  public List<Long> getTotalAlertByAllAlertStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, List<Long> statusIdList,Long levelId,List<Long> levelValues, Long govtDepartmentScopeId, Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long scopeId,List<Long> locationList,List<Long> filterSocialMediaIds,List<Long> filterCallCenterIdList,List<Long> socialMediaTypeIds){
+	    	
+	  public List<Long> getTotalAlertByAllAlertStatus(Date fromDate, Date toDate, Long stateId, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds, List<Long> statusIdList,Long levelId,List<Long> levelValues, Long govtDepartmentScopeId, Long deptId,List<Long> calCntrIds,List<Long> impactLevelIdList,List<Long> priorityIdList,List<Long> alertSourceIdList,List<Long> printMediaIdList,List<Long> electronicMediaIdList,Long scopeId,List<Long> locationList,List<Long> filterSocialMediaIds,List<Long> filterCallCenterIdList,List<Long> socialMediaTypeIds,
+			  List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 	    		StringBuilder sb = new StringBuilder();  
 	    	    sb.append("select distinct model.alert.alertId ");
 	    	    sb.append(" from AlertAssignedOfficerNew model" +
@@ -5018,8 +5107,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    }
 	    	     
 	      
-	    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() &&  calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
-	    	    	sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) or(SMT.socialMediaTypeId in(:socialMediaTypeIds)) or(ACCT.alertCallCenterTypeId in(:calCntrIds))) ");
+	    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() &&  calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+	    	    	sb.append(" and ( EDS.newsPaperId in (:printIdsList)  or (TNC.tvNewsChannelId in (:electronicIdsList)) or(SMT.socialMediaTypeId in(:socialMediaTypeIds)) or(ACCT.alertCallCenterTypeId in(:calCntrIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds))  ) ");
 	    		}
 	    	      
 	    	    if(fromDate != null && toDate != null){
@@ -5101,11 +5190,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	    	    
 	    	    
 	    	      
-	    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() &&  calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty()){
+	    	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() &&  calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
 	    	      query.setParameterList("printIdsList", printIdsList);
 	    	      query.setParameterList("electronicIdsList", electronicIdsList);
 	    	      query.setParameterList("calCntrIds", calCntrIds);
 	  			  query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+		  		  query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
 	    	    }  
 	    	    else if(printIdsList != null && printIdsList.size()>0){
 	    	      query.setParameterList("printIdList", printIdsList);
@@ -5151,7 +5244,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	  		   }
 	    	    return query.list();
 	    	}
-	public List<Object[]> getBellowLvlDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds){
+	 
+	public List<Object[]> getBellowLvlDistrictOfficerAlertsCount(List<Long> govtDepDesigOffcrIds,Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select " +
 				  " model.govtDepartmentDesignationOfficer.govtDepartmentDesignationOfficerId, " +
@@ -5168,8 +5262,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       			  " left join model.alert.alertCallCenterType ACCT ");
       	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' " );//and model.isApproved = 'Y'
       	
-      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
-      		sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)))");
+      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+      		sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
       	}
 	      	
       	if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size() > 0){
@@ -5197,11 +5291,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       		query.setDate("fromDate", fromDate);
       		query.setDate("toDate", toDate);
       	}
-      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
+      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
       		query.setParameterList("printIdList", printIdsList);
       		query.setParameterList("electronicIdList", electronicIdsList);
       		query.setParameterList("calCntrIdList", calCntrIdList);
       		query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+      	    query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+ 		    query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+ 		    query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+ 		    query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
       	} 
     	if(alertSeverityIds != null && alertSeverityIds.size() > 0){
     		query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -5211,7 +5309,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	}
       	return query.list();
 	}
-	public List<Long> getBellowDistrictOfficerAlertsDtls(Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,Long statusId,Long govtDepDesigOffcrId,Long officerId,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds){
+	public List<Long> getBellowDistrictOfficerAlertsDtls(Date fromDate,Date toDate,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,Long statusId,Long govtDepDesigOffcrId,Long officerId,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.alert.alertId " +
 				  " from " +
@@ -5223,8 +5321,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       			  " left join model.alert.alertCallCenterType ACCT ");
       	sb.append(" where model.isDeleted = 'N' and model.alert.isDeleted='N' " );//and model.isApproved = 'Y'
       	
-      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
-      		sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)))");
+      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+      		sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
       	}
           	
       	if(govtDepDesigOffcrId != null && govtDepDesigOffcrId.longValue() > 0L){
@@ -5258,11 +5356,16 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       		query.setDate("fromDate", fromDate);
       		query.setDate("toDate", toDate);
       	}
-      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
+      	if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
       		query.setParameterList("printIdList", printIdsList);
       		query.setParameterList("electronicIdList", electronicIdsList);
       		query.setParameterList("calCntrIdList", calCntrIdList);
       		query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+      	    query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+ 		    query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+ 		    query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+ 		    query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
+   	    
       	} 
     	if(alertSeverityIds != null && alertSeverityIds.size() > 0){
     		query.setParameterList("alertSeverityIds", alertSeverityIds);
@@ -5270,7 +5373,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
       	return query.list();
 	}
 	public List<Long> getLocationFilterClickAlertIds(Long userId,Date fromDate,Date endDate , List<Long> govtScopeIds,List<Long> locationValues,Long levelId,List<Long> levelValues,
- 			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId,List<Long> socialMediaTypeIds){
+ 			List<Long> desigIds,Long priorityId,List<Long> statusIds,List<Long> printIdsList,List<Long> electronicIdsList,List<Long> calCntrIdList,List<Long> childLevelVals,Long childLevelId,List<Long> socialMediaTypeIds,
+ 			List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
      	
      	StringBuilder sb = new StringBuilder();  
      	
@@ -5345,8 +5449,8 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
      	    else if(govtScopeIds != null && govtScopeIds.get(0).longValue() == IConstants.GOVT_DEPARTMENT_PANCHAYAT_LEVEL_ID)
        	      sb.append(" and GDS.govtDepartmentScopeId = P.govtDepartmentScope.govtDepartmentScopeId  and P.govtDepartmentScope.govtDepartmentScopeId in (:govtScopeIds) ");
  	    
- 	       if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
-    	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)))");
+ 	       if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null  && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
+    	      sb.append(" and ( EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList)) or (SMT.socialMediaTypeId in (:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in (:calCntrIdList)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) )");
     	    }
  	    
  	    if(priorityId != null && priorityId.longValue() >0l)
@@ -5413,11 +5517,15 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	    if(statusIds != null && statusIds.size() > 0){
  	    	query.setParameterList("statusIds", statusIds);
  	    }
- 	   if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() ){
+ 	   if(printIdsList != null && printIdsList.size() > 0 && electronicIdsList != null && electronicIdsList.size() > 0 && calCntrIdList !=null && !calCntrIdList.isEmpty() && socialMediaTypeIds!= null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null  && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0 ){
    	      query.setParameterList("printIdList", printIdsList);
    	      query.setParameterList("electronicIdList", electronicIdsList);
    	      query.setParameterList("calCntrIdList", calCntrIdList);
    	      query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+   	      query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		  query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		  query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		  query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
    	    }
  	    
  	    return query.list();
