@@ -1068,11 +1068,12 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 				emailIds.add("grajesh@telugudesam.org");
 				emailIds.add("aravind.itgrids.hyd@gmail.com");*/
 				emailIds.add("kamalakar@itgrids.com");
+				emailIds.add("srishailam.pittala@itgrids.com");
 				
 				emailAttributesVO.setEmailIds(emailIds);
 				emailAttributesVO.setTime(time);
-				emailAttributesVO.setSubject("Telangana Mahandu Event 2017 Dashboard");
-				emailAttributesVO.setBodyText("Please Find The Attached  Pdf Documents For Telangana Mahanadu 2017 Event Dashboard on "+time);
+				emailAttributesVO.setSubject("AP Mahandu Event 2017 Dashboard");
+				emailAttributesVO.setBodyText("Please Find The Attached  Pdf Documents For AP Mahanadu 2017 Event Dashboard on "+time);
 				
 				
 				if( emailAttributesVO.getPdfNames() != null && emailAttributesVO.getPdfNames().size() > 0){
@@ -1191,7 +1192,7 @@ public class MahanaduDashBoardService1 implements IMahanaduDashBoardService1{
 			
 			str.append("<table width='100%'>");
 			    str.append("<tr bgcolor='#fed501'>");
-			    	str.append("<td style='text-align:center;color:#fff'><font size='6'>TS MAHANADU 2017 ATTENDANCE SUMMARY</font></td>");
+			    	str.append("<td style='text-align:center;color:#fff'><font size='6'>AP MAHANADU 2017 ATTENDANCE SUMMARY</font></td>");
 			    str.append("</tr>");
 		    str.append("</table>");
 		    str.append("<br/>");
