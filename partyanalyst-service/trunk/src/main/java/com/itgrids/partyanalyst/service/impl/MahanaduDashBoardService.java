@@ -612,7 +612,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		
 		Date todayDate = dateUtilService.getCurrentDateAndTime();
 		Long parentEventId = 0L;
-		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+		EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
 		if(entryExitInfo != null){
 			Long entryEventId = entryExitInfo.getEntryId();
 			Long exitEventId = entryExitInfo.getExitId();
@@ -735,7 +735,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long exitEventId = 0L;
 			Long parentEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -902,7 +902,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -1062,7 +1062,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
 			
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,"MAIN ENTRY");
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
@@ -1190,7 +1190,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return Long.parseLong(day+"");
 	}
 	
-	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId,List<Long> enrollmentIdsList){
+	public List<MahanaduEventVO> getHourWiseNowInCampusCadresCount(String dayCount,Long eventId,List<Long> enrollmentIdsList,String eventType){
 		List<MahanaduEventVO> defaultHoursList =  setHoursList();
 		try {
 			Object[] dateObj = eventDAO.getEventDates(eventId);
@@ -1201,7 +1201,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			Date date = format.parse(dayCount);
 			Long entryEventId = 0L;
 			Long exitEventId = 0L;
-			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId);
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventId,eventType);
 			if(entryExitInfo != null){
 				entryEventId = entryExitInfo.getEntryId();
 				exitEventId = entryExitInfo.getExitId();
