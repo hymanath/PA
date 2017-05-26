@@ -1969,12 +1969,15 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 						value = splitNameArr[0];  
 					
 					str6+='<div class="media">';
+					if(result[0].assignedOfficerStr != null){
 						str6+='<div class="media-left">';
-							str6+='<span class="icon-name icon-primary">'+result[0].assignedOfficerStr.substring(0,2)+'</span>';
+						str6+='<span class="icon-name icon-primary">'+result[0].assignedOfficerStr.substring(0,2)+'</span>';
 						str6+='</div>';
+					}
 						str6+='<div class="media-body">';
 							str6+='<p> SUB TASK ASSIGN TO: <i class="fa fa-level-down "></i></p> ';
 							//str6+='<p>'+result[0].assignedOfficerStr+' - '+result[0].deptName+'</p>';
+						if(result[0].assignedOfficerStr != null)
 							str6+='<p>'+result[0].assignedOfficerStr+'</p>';
 							str6+='<p><i class="glyphicon glyphicon-phone"></i> '+result[0].mobileNo+'</p>';
 							str6+='<p><b>Location :</b>'+result[0].callerName+'</p>';
@@ -4891,7 +4894,7 @@ $(document).on("click",".saveBtnCls",function(){
 function getPresentAssignedDepartmentOfAlert(alertId){
 	$("#presentDeptId").html("");
 	var jsObj={
-		alertId : alertId,
+		alertId : alertId
 	}	
 	$.ajax({   
 		type:'GET',
