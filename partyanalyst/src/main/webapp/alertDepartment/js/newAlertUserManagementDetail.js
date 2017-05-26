@@ -4333,7 +4333,11 @@ function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevel
 		isLagChkd : "false",
 		filterSocialMediaIdsArr : [],
 		filterCallCenterArr :[],
-		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr
+		socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+		mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+		janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+		specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+		generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
     }
     $.ajax({
 		type:'GET',

@@ -528,8 +528,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 				} 
 			}
-		
-			alertVOs = alertManagementSystemService.getStatusWiseAlertOverviewcnt(fromDate, toDate, stateId, paperIdList, chanelIdList,deptIdList,userId,calCntrIdList,socialMediaTypeIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+           alertVOs = alertManagementSystemService.getStatusWiseAlertOverviewcnt(fromDate, toDate, stateId, paperIdList, chanelIdList,deptIdList,userId,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 		}catch(Exception e){
 			LOG.error("Exception occured in getStatusWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
 		}
@@ -575,7 +603,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 				} 
 			}
-			alertVOs = alertManagementSystemService.getLevelWiseAlertOverviewCnt(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,calCntrIdList,socialMediaTypeIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			alertVOs = alertManagementSystemService.getLevelWiseAlertOverviewCnt(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 		}catch(Exception e){
 			LOG.error("Exception occured in getLevelWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
 		}
@@ -632,7 +689,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 				} 
 			}
-			alertVOs = alertManagementSystemService.getDepartmentWiseAlertOverviewCnt(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,alertStatusIds,deptScopeLevelIds,resultType,calCntrIdList,socialMediaTypeIds);;
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			} 
+           
+			alertVOs = alertManagementSystemService.getDepartmentWiseAlertOverviewCnt(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,alertStatusIds,deptScopeLevelIds,resultType,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);;
 		}catch(Exception e){
 			LOG.error("Exception occured in getDepartmentWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
 		}
@@ -720,7 +807,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 				} 
 			}
-		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId,startDate,endDate,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+		   	districtOfficeViewAlertVO = alertManagementSystemService.getDistrictOfficerAlertsCountView(userId,startDate,endDate,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -838,20 +954,48 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 				} 
 			}
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
 			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
 			if(statusId != null && statusId.longValue() == 1L){//pending
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,socialMediaTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,socialMediaTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else{
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,null,calCntrIdList,null,null,null,null,null,socialMediaTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,null,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
 				if(alertCoreDashBoardVOs != null){
 					list1.addAll(alertCoreDashBoardVOs);
 				}
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,null,null,null,null,null,socialMediaTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,null,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
 				if(alertCoreDashBoardVOs != null ){
 					list2.addAll(alertCoreDashBoardVOs);
@@ -934,7 +1078,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 				} 
 			}
-			alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,govtDeptScopeId,null,calCntrIdList,null,null,null,null,null,socialMediaTypeIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,govtDeptScopeId,null,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
@@ -990,19 +1163,48 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 				} 
 			}
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
 			if(statusId != null && statusId.longValue() == 1L){//pending
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else if(statusId != null && statusId.longValue() > 1L){//other than pending
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}else{
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,1L,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
 				if(alertCoreDashBoardVOs != null){
 					list1.addAll(alertCoreDashBoardVOs);
 				}
-				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds);
+				alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,null,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
 				if(alertCoreDashBoardVOs != null ){
 					list2.addAll(alertCoreDashBoardVOs);
@@ -1068,7 +1270,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 				} 
 			}
-			alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,govtDeptScopeId,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatus(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusId,userId,govtDeptScopeId,deptId,calCntrIdList,null,null,null,null,null,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDetailsForEdit() of CreateAlertAction",e);
@@ -1144,8 +1375,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 				} 
 			}
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
 			
-			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseStatusOverView(scopeId,startDateStr,fromDateStr,type,deptIdList,sortingType,levelId,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseStatusOverView(scopeId,startDateStr,fromDateStr,type,deptIdList,sortingType,levelId,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1228,7 +1487,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				} 
 			}
 			String resultType = jObj.getString("resultType");
-			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptIdList,sortingType,paperIdList,chanelIdList,calCntrIdList,resultType,deptScopeList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			alertVOs = alertManagementSystemService.getDistrictLevelDeptWiseLocationLevelView(scopeId,startDateStr,fromDateStr,type,deptIdList,sortingType,paperIdList,chanelIdList,calCntrIdList,resultType,deptScopeList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1503,10 +1792,39 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 				} 
 			}
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
 			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+
 			alertCoreDashBoardVOs = alertManagementSystemService.getLocationWiseDepartmentOverviewAlertCount(fromDate,
 					toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,
-					order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,calCntrIdList,sublevels,filterParentScopeId,filterScopeValue,searchType,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+					order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,calCntrIdList,sublevels,filterParentScopeId,filterScopeValue,searchType,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 	
 			//alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamic(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,calCntrIdList,sublevels);
 		} catch (Exception e) {
@@ -1572,8 +1890,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 					alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
 				} 
 			}
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
 			
-			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,alertStatusIds,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList,alertCategoryId,socialMediaTypeIds,alertSeverityIds);
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+		
+			alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseFlterClick(scopeId,deptId,levelId,alertStatusIds,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList,alertCategoryId,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1882,7 +2229,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 					} 
 				}	
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptDesiOffIdList,govtOffcrIdList,countType,alertType,paperIdList,chanelIdList,calCntrIdList,fromDate,toDate,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictOfficerAlertDetails(govtDeptDesiOffIdList,govtOffcrIdList,countType,alertType,paperIdList,chanelIdList,calCntrIdList,fromDate,toDate,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				
 				alertCoreDashBoardVOs =alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
@@ -2335,7 +2711,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
 					} 
 				}
-				alertVOs = alertManagementSystemService.stateLevelDeptOfficerStatusOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds);
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				
+				alertVOs = alertManagementSystemService.stateLevelDeptOfficerStatusOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			}catch(Exception e){
 				LOG.error("Exception occured in stateLevelDeptOfficerStatusOverview() of AlertManagementSystemAction",e);
 			}
@@ -2398,7 +2804,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
 					} 
 				}
-				alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds);
+				
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverview(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			}catch(Exception e){
 				LOG.error("Exception occured in stateLevelDeptOfficerLocationLevelOverview() of AlertManagementSystemAction",e);
 			}
@@ -2455,8 +2891,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
 					} 
 				}
-	     		 
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAlertsCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds);
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAlertsCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			}catch(Exception e){
 				e.printStackTrace();
 				LOG.error("Exception occured in getIASOfficerMyAlertsCountView() of AlertManagementSystemAction",e);
@@ -2506,7 +2971,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 					} 
 				}	
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMySubTasksCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,subTaskAlertStatusIds);
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMySubTasksCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -2557,7 +3051,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 					} 
 				}	
-			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAssignedSubTasksCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,subTaskAlertStatusIds);
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+			   	districtOfficeViewAlertVO = alertManagementSystemService.getIASOfficerMyAssignedSubTasksCountView(userId,startDateStr,endDateStr,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				
 			}catch(Exception e){
 				e.printStackTrace();
@@ -2936,9 +3459,9 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 					} 
 				}
-				alertCoreDashBoardVOs = alertManagementSystemService.getLocationWiseDepartmentOverviewAlertCount(fromDate,
+				/*alertCoreDashBoardVOs = alertManagementSystemService.getLocationWiseDepartmentOverviewAlertCount(fromDate,
 						toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortType,
-						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,callCenterIds,sublevels,filterParentScopeId,filterScopeValue,searchType,socialMediaTypeIds,null,null,null);
+						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,callCenterIds,sublevels,filterParentScopeId,filterScopeValue,searchType,socialMediaTypeIds,null,null,null,null,null,null);*/
 		
 			} catch (Exception e) {  
 				LOG.error("Exception Occured in getDistrictOfficeGraphicalView() method, Exception - ",e); 
@@ -3048,13 +3571,42 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 					} 
 				}
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
 				
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+
 				/*alertCoreDashBoardVOs = alertManagementSystemService.getWorkLocationWiseThenGovtDeptScopeWiseAlertCountForOverviewDynamic(fromDateStr,
 						toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
 						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,chanelIdList,sublevels);*/
 				        alertCoreDashBoardVOs = alertManagementSystemService.getLocationWiseDepartmentOverviewAlertCount(fromDateStr,
 						toDateStr,stateId,printIdList,electronicIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,sortingType,
-						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,callCenterIdList,sublevels,filterParentScopeId,filterScopeValue,searchType,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+						order,alertType,districtWorkLocationId,divisionWorkLocationId,subDivisionWorkLocationId,group,callCenterIdList,sublevels,filterParentScopeId,filterScopeValue,searchType,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 		
 				
 			} catch (Exception e) {
@@ -3119,8 +3671,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						alertSeverityIds.add(Long.parseLong(alertSeverityIdsArr.getString(i)));        
 					} 
 				}
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
 				
-				alertVOs = alertManagementSystemService.stateLevelDeptOfficerDepartmentWiseAlertsView(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIds,socialMediaTypeIds,alertSeverityIds,alertStatusIds);
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+				alertVOs = alertManagementSystemService.stateLevelDeptOfficerDepartmentWiseAlertsView(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIds,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			}catch(Exception e){
 				LOG.error("Exception occured in getStatusWiseAlertOverviewCnt() of AlertManagementSystemAction",e);
 			}
@@ -3196,8 +3776,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 						alertSeverityIds.add(Long.parseLong(alertSeverityIdsArr.getString(i)));        
 					} 
 				}
+				JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+				List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+				if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+						mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+					}
+				}
+				JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+				List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+				if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+					for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+						janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+					} 
+				}
+				JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+				List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+				if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+						specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
 				
-				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(govtDeptDesiOffIdList,govtOffcrIdList,alertStatusIds,formDateStr,toDateStr,clickType,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds);
+				JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+				List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+				if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+					for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+						generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+					} 
+				}
+			
+				alertCoreDashBoardVOs = alertManagementSystemService.getDistrictLevelDeptWiseAlertClick(govtDeptDesiOffIdList,govtOffcrIdList,alertStatusIds,formDateStr,toDateStr,clickType,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 			}catch(Exception e){
 				e.printStackTrace();
@@ -3252,7 +3861,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 						} 
 					}
-					alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverviewBySubTasks(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIdsList,socialMediaTypeIds,subTaskAlertStatusIds);
+					JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+					List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+					if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+							mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+						}
+					}
+					JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+					List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+					if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+						for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+							janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+						} 
+					}
+					JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+					List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+					if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+							specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					
+					JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+					List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+					if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+							generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					alertVOs = alertManagementSystemService.stateLevelDeptOfficerLocationLevelOverviewBySubTasks(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIdsList,socialMediaTypeIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				}catch(Exception e){
 					LOG.error("Exception occured in stateLevelDeptOfficerLocationLevelOverviewBySubTasks() of AlertManagementSystemAction",e);
 				}
@@ -3305,8 +3943,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 						} 
 					}
+					JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+					List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+					if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+							mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+						}
+					}
+					JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+					List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+					if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+						for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+							janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+						} 
+					}
+					JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+					List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+					if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+							specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
 					
-					alertVOs = alertManagementSystemService.stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIdsList,socialMediaTypeIds,subTaskAlertStatusIds);
+					JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+					List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+					if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+							generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					alertVOs = alertManagementSystemService.stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,userId,callCenterIdsList,socialMediaTypeIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				}catch(Exception e){
 					LOG.error("Exception occured in stateLevelDeptOfficerDepartmentWiseAlertsViewBySubTasksClick() of AlertManagementSystemAction",e);
 				}
@@ -3436,8 +4102,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
 						} 
 					}
+					JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+					List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+					if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+							mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+						}
+					}
+					JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+					List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+					if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+						for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+							janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+						} 
+					}
+					JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+					List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+					if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+							specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
 					
-					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptList,alertStatusIds,type,desigDeptOfficerIds,officerIdList,searchType,startDate,endDate,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds);
+					JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+					List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+					if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+							generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelAlertclickView(deptList,alertStatusIds,type,desigDeptOfficerIds,officerIdList,searchType,startDate,endDate,paperIdList,chanelIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
@@ -3570,7 +4265,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
 						} 
 					}
-					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelDeptWiseFlterClick(scopeId,deptIdList,levelId,alertStatusIds,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList,stateId,levelType,assignType,socialMediaTypeIds,alertSeverityIds);
+					JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+					List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+					if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+							mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+						}
+					}
+					JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+					List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+					if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+						for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+							janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+						} 
+					}
+					JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+					List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+					if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+							specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					
+					JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+					List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+					if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+							generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					alertCoreDashBoardVOs = alertManagementSystemService.getStateLevelDeptWiseFlterClick(scopeId,deptIdList,levelId,alertStatusIds,type,formDateStr,endDateStr,desigDeptOfficerId,officerId,paperIdList,chanelIdList,calCntrIdList,stateId,levelType,assignType,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
@@ -3659,8 +4383,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 						} 
 					}
-							
-					idnameVoList = alertManagementSystemService.getLocationBasedOnDepartmentLevel(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,alertType,calCntrIdList,deptScopeList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+					JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+					List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+					if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+							mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+						}
+					}
+					JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+					List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+					if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+						for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+							janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+						} 
+					}
+					JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+					List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+					if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+							specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					
+					JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+					List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+					if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+							generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					idnameVoList = alertManagementSystemService.getLocationBasedOnDepartmentLevel(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,alertType,calCntrIdList,deptScopeList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				} catch (Exception e) {
 					LOG.error("Exception Occured in getLocationBasedOnDepartmentLevel() method, Exception - ",e); 
 				}
@@ -3734,8 +4486,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 						} 
 					}
+					JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+					List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+					if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+							mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+						}
+					}
+					JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+					List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+					if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+						for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+							janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+						} 
+					}
+					JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+					List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+					if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+							specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
 					
-					idnameVoList = alertManagementSystemService.getChildLocationBasedOnParentLocation(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,parentGovtDepartmentScopeValue,childLevelId,alertType ,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+					JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+					List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+					if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+							generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					idnameVoList = alertManagementSystemService.getChildLocationBasedOnParentLocation(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,parentGovtDepartmentScopeValue,childLevelId,alertType ,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 				} catch (Exception e) {
 					LOG.error("Exception Occured in getChildLocationBasedOnParentLocation() method, Exception - ",e); 
 				}
@@ -3809,8 +4589,36 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
 						} 
 					}
+					JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+					List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+					if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+							mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+						}
+					}
+					JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+					List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+					if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+						for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+							janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+						} 
+					}
+					JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+					List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+					if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+							specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
 					
-					alertCoreDashBoardVOs = alertManagementSystemService.getAlertDetailsBasedOnLocation(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeId,alertStatusIds,calCntrIdList,locationValue,alertType,alertCategoryId,deptSubLevelIds,socialMediaTypeIds,alertSeverityIds);
+					JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+					List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+					if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+						for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+							generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+						} 
+					}
+					alertCoreDashBoardVOs = alertManagementSystemService.getAlertDetailsBasedOnLocation(fromDate,toDate,stateId,paperIdList,chanelIdList,userId,govtDepartmentId,parentGovtDepartmentScopeId,deptScopeId,alertStatusIds,calCntrIdList,locationValue,alertType,alertCategoryId,deptSubLevelIds,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 					alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 				}catch(Exception e){
 					e.printStackTrace();
@@ -3969,8 +4777,37 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 								socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 							} 
 						}
+						JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+						List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+						if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+								mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+							}
+						}
+						JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+						List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+						if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+							for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+								janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+							} 
+						}
+						JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+						List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+						if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+								specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+							} 
+						}
+						
+						JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+						List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+						if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+								generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+							} 
+						}
 						districtOfficeViewAlertVOList = alertManagementSystemService.getSubOrdinateFilterAlertsOverview(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId,statusIds,deptIds,
-								lagStartCnt,lagEndCnt,alertType,isMoreThanYrChkd,isLagChkd,paperIdList,chanelIdList,calCntrIdList,childLevelVals,childLevelId,socialMediaTypeIds);
+								lagStartCnt,lagEndCnt,alertType,isMoreThanYrChkd,isLagChkd,paperIdList,chanelIdList,calCntrIdList,childLevelVals,childLevelId,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 					} catch (Exception e) {
 						LOG.error("Exception occured in getSubOrdinateFilterAlertsOverview() of alertManagementSystemAction",e);
 					}
@@ -4081,26 +4918,58 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 								socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 							} 
 						}
+						
+						JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+						List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+						if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+								mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+							}
+						}
+						JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+						List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+						if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+							for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+								janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+							} 
+						}
+						JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+						List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+						if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+								specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+							} 
+						}
+						
+						JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+						List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+						if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+								generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+							} 
+						}
+						
+						
 						List<AlertCoreDashBoardVO> list1 = new ArrayList<AlertCoreDashBoardVO>();
 						List<AlertCoreDashBoardVO> list2 = new ArrayList<AlertCoreDashBoardVO>();
 						List<AlertCoreDashBoardVO> list3 = new ArrayList<AlertCoreDashBoardVO>();
 						List<AlertCoreDashBoardVO> list4 = new ArrayList<AlertCoreDashBoardVO>();
 						if(statusIdList.isEmpty() && subTaskStatusIdList.isEmpty()){
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertBySubTaskStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds);
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertBySubTaskStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 							//alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 							if(alertCoreDashBoardVOs != null){
 								list1.addAll(alertCoreDashBoardVOs);
 							}
 						}
 						if(subTaskStatusIdList != null && subTaskStatusIdList.size()>0 && !subTaskStatusIdList.isEmpty()){
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds);
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 							//alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 							if(alertCoreDashBoardVOs != null){
 								list2.addAll(alertCoreDashBoardVOs);
 							}
 						}
 						if(statusIdList != null && statusIdList.contains(1L) && !statusIdList.isEmpty()){
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds);
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 							//alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 							statusIdList.remove(1L);
 							if(alertCoreDashBoardVOs != null){
@@ -4108,7 +4977,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 							}
 						}
 						if(statusIdList != null && !statusIdList.contains(1L) && !statusIdList.isEmpty()){
-							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds);
+							alertCoreDashBoardVOs = alertManagementSystemService.getTotalAlertByOtherStatusNew(fromDate, toDate, stateId, paperIdList, chanelIdList, deptIdList,statusIdList,userId,null,null,calCntrIdList,impactLevelIdList,priorityIdList,alertSourceIdList,printMediaIdList,electronicMediaIdList,startDay,endDay,scopeId,locationIdList,subTaskStatusIdList,isMoreThanYrChkd,isLagChkd,filterSocialMediaIds,filterCallCenterIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 							//alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 							if(alertCoreDashBoardVOs != null){
 								list4.addAll(alertCoreDashBoardVOs);
@@ -4204,7 +5073,38 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 								subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 							} 
 						}
-						districtOfficeViewAlertVOList = alertManagementSystemService.getBellowDistrictOfficerAlertsCountView(userId,fromDate,toDate,paperIdList,chanelIdList,calCntrIdList,task,sortingType,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+						
+						JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+						List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+						if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+								mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+							}
+						}
+						JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+						List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+						if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+							for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+								janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+							} 
+						}
+						JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+						List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+						if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+								specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+							} 
+						}
+						
+						JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+						List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+						if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+							for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+								generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+							} 
+						}
+						
+						districtOfficeViewAlertVOList = alertManagementSystemService.getBellowDistrictOfficerAlertsCountView(userId,fromDate,toDate,paperIdList,chanelIdList,calCntrIdList,task,sortingType,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 					}catch(Exception e){
 						e.printStackTrace();
 						LOG.error("Exception occured in getFilterSectionAlertDetails() of alertManagementSystemAction",e);
@@ -4276,7 +5176,36 @@ public String getAlertSourceWiseAlert(){
 					subTaskAlertStatusIds.add(Long.parseLong(alertSubTaskStatusIdsArr.getString(i)));        
 				} 
 			}
-			alertVOs = alertManagementSystemService.getAlertSourceWiseAlert(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,calCntrIdList,userType,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			alertVOs = alertManagementSystemService.getAlertSourceWiseAlert(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,calCntrIdList,userType,socialMediaTypeIds,alertSeverityIds,alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertSourceWiseAlert() of AlertManagementSystemAction",e);
 		}
@@ -4339,7 +5268,36 @@ public String getAlertSourceWiseAlert(){
 					alertSeverityIds.add(Long.parseLong(alertSeverityIdsArr.getString(i)));        
 				} 
 			}
-     	    alertCoreDashBoardVOs = alertManagementSystemService.getAlertDtlsByAlertSource(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,calCntrIdList,alertCategoryId,userType,alertStatusIds,socialMediaTypeIds,alertSeverityIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+     	    alertCoreDashBoardVOs = alertManagementSystemService.getAlertDtlsByAlertSource(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId,calCntrIdList,alertCategoryId,userType,alertStatusIds,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			LOG.error("Exception occured in getAlertDtlsByAlertSource() of AlertManagementSystemAction",e);
@@ -4393,7 +5351,36 @@ public String getAlertSourceWiseAlert(){
 					alertSeverityIds.add(Long.parseLong(alertSeverityIdsArr.getString(i)));        
 				} 
 			}
-			alertCoreDashBoardVOs = alertManagementSystemService.getBellowDistrictOfficerAlertsDtls(fromDate,toDate,paperIdList,chanelIdList,calCntrIdList,task,statusId,desigDeptOfficerId,officerId,socialMediaTypeIds,alertSeverityIds);
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			alertCoreDashBoardVOs = alertManagementSystemService.getBellowDistrictOfficerAlertsDtls(fromDate,toDate,paperIdList,chanelIdList,calCntrIdList,task,statusId,desigDeptOfficerId,officerId,socialMediaTypeIds,alertSeverityIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -4567,9 +5554,37 @@ public String getAlertSourceWiseAlert(){
 					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
 				} 
 			}
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
 			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
 			alertCoreDashBoardVOs = alertManagementSystemService.getLocationFilterClickDetails(userId,fromDateStr,toDateStr,govtScopeIdsList,locationValuesList,desigIdsList,priorityId,statusIds,deptIds,
-					lagStartCnt,lagEndCnt,alertType,isMoreThanYrChkd,isLagChkd,paperIdList,chanelIdList,calCntrIdList,childLevelId,socialMediaTypeIds);
+					lagStartCnt,lagEndCnt,alertType,isMoreThanYrChkd,isLagChkd,paperIdList,chanelIdList,calCntrIdList,childLevelId,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		} catch (Exception e) {
 			LOG.error("Exception occured in getLocationFilterClickDetails() of alertManagementSystemAction",e);
