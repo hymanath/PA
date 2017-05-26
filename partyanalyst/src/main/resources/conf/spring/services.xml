@@ -3122,7 +3122,7 @@
 	     <property name="tehsilDAO" ref="tehsilDAO" />
 	     <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 	      <property name="stateDAO" ref="stateDAO" />
-	     
+	    <property name="tdpCadreDAO" ref="tdpCadreDAO" />
 	  </bean>
 	
 	<bean name="trainingCampService" class="com.itgrids.partyanalyst.service.impl.TrainingCampService">
