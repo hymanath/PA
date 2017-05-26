@@ -1373,7 +1373,8 @@ function buildTotalVisitorsResult(result){
 		var jObj = {
 				dayVal:date,
 				eventId : $("#mainEventSelectId").val(),
-				enrollmentIdsList:enrollmentIdsArr
+				enrollmentIdsList:enrollmentIdsArr,
+				eventType : "MAIN ENTRY"
 			}	
 			
 			$.ajax({
