@@ -1404,8 +1404,8 @@ $('.totalAttendedRadioBtnCls').click(function() {
     buildCasteGraphBySlide(gblmaxTotalAttended); /* srishailam default attendance chenged from 500 */
 	$("#casteWiseTableId").html(' ');
     $("#casteWiseExportToExcelTableId").html(' ');
-	buildCasteWiseRslt(gblCasteWiseRslt,"",500,"totalAttended");
-	buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",500,"totalAttended"); 
+	buildCasteWiseRslt(gblCasteWiseRslt,"",gblmaxTotalAttended,"totalAttended");
+	buildCasteWiseRslt(gblCasteWiseRslt,"exportToExcel",gblmaxTotalAttended,"totalAttended"); 
    $("#castContainerChart").show();
    $("#castPerContainerChart").hide();
    $(".totalAttendedRadioBtnPerCls").attr('checked', false);
