@@ -1852,7 +1852,8 @@ function addressFieldsValidation()
 	var workHamlet=$("#dhamletId").val();
 	
 	//stateErrId
-	
+	return isError;
+		
 	var pAreaTypeStr = $('#PareaTypeStr').val();
 	
 		if(prsmtHno == null || prsmtHno.length ==0 )

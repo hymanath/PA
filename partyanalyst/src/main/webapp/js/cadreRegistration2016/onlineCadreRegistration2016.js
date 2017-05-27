@@ -531,7 +531,7 @@ $(document).on("click", "#changeNomineeId", function(e) {
     });  
 	
 	function savingCadreDetails(){
-	
+	//alert(11111);
 		$("#nomineeDivId").html(""); 
 		if(!imageValidations())
 		{
@@ -539,13 +539,13 @@ $(document).on("click", "#changeNomineeId", function(e) {
 			$("#imagDivId").scroll();
 			return;
 		}	
-	/*	if(addressFieldsValidation())
+		if(addressFieldsValidation())
 		{
 			//alert("fail 2");
 			$("#cadrePrvNomneDivId").scroll();
 			return;
 		}
-		*/
+		
 		//alert("333");
 		var tdpCadreId = $("#hiddenTdpCadreId").val();
 		if(tdpCadreId != null && tdpCadreId != ""){
