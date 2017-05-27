@@ -35,6 +35,9 @@ public class TdpResolution {
 	
 	@Column(name="updated_time")
 	private Date UpdatedTime;
+	
+	@Column(name="membership_id")
+	private Long membershipId;
 
 	public Long getTdpResoultionId() {
 		return tdpResoultionId;
@@ -90,6 +93,14 @@ public class TdpResolution {
 
 	public void setUpdatedTime(Date updatedTime) {
 		UpdatedTime = updatedTime;
+	}
+	
+	public Long getMembershipId() {
+		return membershipId;
+	}
+
+	public void setMembershipId(Long membershipId) {
+		this.membershipId = membershipId;
 	}
 
 	
