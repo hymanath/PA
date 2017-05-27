@@ -14115,7 +14115,7 @@
 			<param name="root">idAndNameVO</param>
 		</result>
 	</action>
-	<action name="getMandalsForConstituencyAction" class="cadreRegistrationAction"  method="getConstitencyWiseTehsil">
+	<action name="getMandalsForConstituenciAction" class="cadreRegistrationAction"  method="getConstitencyWiseTehsil">
 			<result type="json" name="success">
 			<param name="root">idAndNameVO</param>
 		</result>
