@@ -49,4 +49,22 @@ public class LoginController {
 		}
 
     }
+	
+	@RequestMapping(value = "/getresolutionList", method = RequestMethod.POST)
+	@ResponseBody
+	public Response getExample(@RequestBody String days) {
+
+		Response response = null;
+
+		try {
+
+			response = new Response(200, "success", resolutionMailService.getResolutions(days));
+			return response;
+		} catch (Exception e) {
+			LOG.error("Error in getting Example", e);
+			response = new Response(207, "Failed", e.getMessage());
+			return response;
+		}
+
+	}
 }
