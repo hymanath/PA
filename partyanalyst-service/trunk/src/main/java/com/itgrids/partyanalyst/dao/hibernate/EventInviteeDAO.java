@@ -293,7 +293,7 @@ public List<Object[]> totalPublicRepInviteesAttendedForEvent(List<Long> eventIds
 		return query.list();
 	}
 	
-	public List<Long> getCandidateTdpCadreIds(Long eventId,Long designationId,List<Long> enrollmentYearIds){
+	public List<Long> getCandidateTdpCadreIds(List<Long> eventIds,Long designationId,List<Long> enrollmentYearIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select model.tdpCadreId " +
 				" from EventInvitee model,TdpCadreCandidate tcc,PublicRepresentative pr ");
@@ -305,10 +305,10 @@ public List<Object[]> totalPublicRepInviteesAttendedForEvent(List<Long> eventIds
 		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 			sb.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 		}
-		sb.append(" and model.eventId=:eventId" +
+		sb.append(" and model.eventId in (:eventIds) " +
 				" and pr.publicRepresentativeTypeId=:designationId ");
 		Query query = getSession().createQuery(sb.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameterList("eventIds", eventIds);
 		query.setParameter("designationId", designationId);
 		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
 		return query.list();
@@ -560,7 +560,7 @@ public List<Object[]> dayWiseDistrictAffliatedCommitteeInviteesAttendedForEvent(
 }
 
 
-public List<Long> getCandidateTdpCadreIdsForCommitteeLevel(Long eventId,Long committeeLevelId,List<Long> enrollmentYearIds){
+public List<Long> getCandidateTdpCadreIdsForCommitteeLevel(List<Long> eventIds,Long committeeLevelId,List<Long> enrollmentYearIds){
 	StringBuilder sb = new StringBuilder();
 	sb.append(" select model.tdpCadreId " +
 			" from EventInvitee model,TdpCommitteeMember TCM ");
@@ -571,10 +571,10 @@ public List<Long> getCandidateTdpCadreIdsForCommitteeLevel(Long eventId,Long com
 	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 		sb.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 	}
-	sb.append(" and model.eventId=:eventId " +
+	sb.append(" and model.eventId in (:eventIds)  " +
 			" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=:committeeLevelId ");
 	Query query = getSession().createQuery(sb.toString());
-	query.setParameter("eventId", eventId);
+	query.setParameterList("eventIds", eventIds);
 	query.setParameter("committeeLevelId", committeeLevelId);
 	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
@@ -583,7 +583,7 @@ public List<Long> getCandidateTdpCadreIdsForCommitteeLevel(Long eventId,Long com
 }
 
 
-public List<Long> getCandidateTdpCadreIdsForCommitteeRole(Long eventId,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
+public List<Long> getCandidateTdpCadreIdsForCommitteeRole(List<Long> eventIds,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
 	StringBuilder str = new StringBuilder();
 	str.append(" select model.tdpCadreId ");
 	str.append(" from EventInvitee model,TdpCommitteeMember TCM ");
@@ -594,7 +594,7 @@ public List<Long> getCandidateTdpCadreIdsForCommitteeRole(Long eventId,Long comm
 	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 		str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 	}
-	str.append(" and model.eventId=:eventId " +
+	str.append(" and model.eventId in (:eventIds) " +
 			" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 			" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1");
 	if(committeeLevel.equalsIgnoreCase("District"))
@@ -602,14 +602,14 @@ public List<Long> getCandidateTdpCadreIdsForCommitteeRole(Long eventId,Long comm
 	if(committeeLevel.equalsIgnoreCase("Mandal"))
 		str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 5 ");
 	Query query = getSession().createQuery(str.toString());
-	query.setParameter("eventId", eventId);
+	query.setParameterList("eventIds", eventIds);
 	query.setParameter("committeeRoleId", committeeRoleId);
 	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 		query.setParameterList("enrollmentYearIds", enrollmentYearIds);
 	}
 	return query.list();
 }
-public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(Long eventId,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
+public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(List<Long> eventIds,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
 	StringBuilder str = new StringBuilder();
 	str.append(" select model.tdpCadreId " +
 			" from EventInvitee model,TdpCommitteeMember TCM ");
@@ -620,7 +620,7 @@ public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(Long eventId,
 	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 		str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 	}
-	str.append(" and model.eventId=:eventId " +
+	str.append(" and model.eventId in (:eventIds) " +
 			" and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 			" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1");
 	if(committeeLevel.equalsIgnoreCase("District"))
@@ -628,7 +628,7 @@ public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(Long eventId,
 	if(committeeLevel.equalsIgnoreCase("Mandal"))
 		str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 5 ");
 	Query query = getSession().createQuery(str.toString());
-	query.setParameter("eventId", eventId);
+	query.setParameterList("eventIds", eventIds);
 	query.setParameter("committeeRoleId", committeeRoleId);
 	if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 		query.setParameterList("enrollmentYearIds", enrollmentYearIds);

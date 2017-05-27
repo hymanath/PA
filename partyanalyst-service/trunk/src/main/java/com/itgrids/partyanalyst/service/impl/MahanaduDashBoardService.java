@@ -195,11 +195,10 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
     	List<EntryExitInfo>  entryExitInfoList = entryExitInfoDAO.getAll();
     	if(commonMethodsUtilService.isListOrSetValid(entryExitInfoList)){
     		for (EntryExitInfo entryExitInfo : entryExitInfoList) {
-				if(entryExitInfo.getParentEventId().longValue() == IConstants.MAHANADU_EVENT_ID && entryExitInfo.getEventType().trim().equalsIgnoreCase("MAIN ENTRY")){
+				if(entryExitInfo.getParentEventId() == IConstants.MAHANADU_EVENT_ID && entryExitInfo.getEventType().trim().equalsIgnoreCase("MAIN ENTRY")){
 					if(entryExitInfo.getServiceRunReq().equalsIgnoreCase("true")){
 				    	  getTodayTotalVisitors(entryExitInfo.getEntryId(),entryExitInfo.getExitId(),entryExitInfo.getParentEventId());
 				    }
-					break;
 				}
 			}
     	}
@@ -1599,20 +1598,23 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		List<CandidateDetailsVO> resultVOList = new ArrayList<CandidateDetailsVO>(0);
 		try {
 			//get candidate details for invitees
+			List<Long> eventIds = new ArrayList<Long>();
+			eventIds.add(eventId);
 			List<Long> cadreIds = null;
 			if(inviteeType.equalsIgnoreCase("total")){
 				//0-tdpCadreId,1-name,2-publicRepresentativeTypeId,3-type,4-levelId,5-levelValue
 				if(roleType.equalsIgnoreCase("PR"))
-			    cadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId,enrollmentYearIds);
+			    cadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventIds,designationId,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("CommitteeLevel"))
-					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId,enrollmentYearIds);
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventIds,designationId,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("CommitteeRole"))
-					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level,enrollmentYearIds);
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventIds,designationId,level,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("affliatedCommittee"))
-					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level,enrollmentYearIds);
+					cadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventIds,designationId,level,enrollmentYearIds);
+				
 				
 				if(cadreIds != null && cadreIds.size() > 0){
-					getCandidateDetailsByCadreIds(cadreIds,resultVOList,null,eventId,roleType,"parentId");
+					getCandidateDetailsByCadreIds(cadreIds,resultVOList,null,null,eventIds,roleType,"parentId");
 				}
 			}else if(inviteeType.equalsIgnoreCase("attendee")){//get details for attended members
 				
@@ -1620,16 +1622,16 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				if(day != null && !day.isEmpty())
 				 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
 				if(roleType.equalsIgnoreCase("PR"))
-					cadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,date,designationId,enrollmentYearIds);
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventIds,date,designationId,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("CommitteeLevel"))
-					cadreIds =eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,date,designationId,enrollmentYearIds);	
+					cadreIds =eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventIds,date,designationId,enrollmentYearIds);	
 				if(roleType.equalsIgnoreCase("CommitteeRole"))
-					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventIds,date,designationId,level,enrollmentYearIds);
 				if(roleType.equalsIgnoreCase("affliatedCommittee"))	
-					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
+					cadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventIds,date,designationId,level,enrollmentYearIds);
 				
 					if(cadreIds != null && cadreIds.size() > 0){
-					getCandidateDetailsByCadreIds(cadreIds,resultVOList,date,eventId,roleType,"parentId");
+					getCandidateDetailsByCadreIds(cadreIds,resultVOList,date,date,eventIds,roleType,"parentId");
 				}
 			}else if(inviteeType.equalsIgnoreCase("notAttendee")){//get details for not attended members
 				List<Long> totalCadreIds = null;
@@ -1640,32 +1642,32 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				if(roleType.equalsIgnoreCase("PR"))
 					{
 					
-						 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventId,designationId,enrollmentYearIds);
-						 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventId,date,designationId,enrollmentYearIds);
+						 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIds(eventIds,designationId,enrollmentYearIds);
+						 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendees(eventIds,date,designationId,enrollmentYearIds);
 					}
 				if(roleType.equalsIgnoreCase("CommitteeLevel"))
 				{
 				
-					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventId,designationId,enrollmentYearIds);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventId,date,designationId,enrollmentYearIds);	
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeLevel(eventIds,designationId,enrollmentYearIds);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeLevel(eventIds,date,designationId,enrollmentYearIds);	
 				}
 				
 				if(roleType.equalsIgnoreCase("CommitteeRole"))
 				{
 				
-					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventId,designationId,level,enrollmentYearIds);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForCommitteeRole(eventIds,designationId,level,enrollmentYearIds);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForCommitteeRole(eventIds,date,designationId,level,enrollmentYearIds);
 				}
 				
 				if(roleType.equalsIgnoreCase("affliatedCommittee"))
 				{
 				
-					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventId,designationId,level,enrollmentYearIds);
-					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventId,date,designationId,level,enrollmentYearIds);
+					 totalCadreIds = eventInviteeDAO.getCandidateTdpCadreIdsForAffliatedCommitteeRole(eventIds,designationId,level,enrollmentYearIds);
+					 attendedCadreIds = eventAttendeeDAO.getCadreIdsForAttendeesForAffliatedCommitteeRole(eventIds,date,designationId,level,enrollmentYearIds);
 				}
 				if(totalCadreIds != null && attendedCadreIds != null){
 					totalCadreIds.removeAll(attendedCadreIds);
-					getCandidateDetailsByCadreIds(totalCadreIds,resultVOList,date,eventId,roleType,"parentId");
+					getCandidateDetailsByCadreIds(totalCadreIds,resultVOList,date,date,eventIds,roleType,"parentId");
 				}
 			}
 		} catch (Exception e) {
@@ -1674,13 +1676,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return resultVOList;
 	}
 	
-	public void getCandidateDetailsByCadreIds(List<Long> cadreIds,List<CandidateDetailsVO> resultVOList,Date date,Long eventId,String roleType,String eventType){
+	public void getCandidateDetailsByCadreIds(List<Long> cadreIds,List<CandidateDetailsVO> resultVOList,Date startDate,Date endDate,List<Long> eventIds,String roleType,String eventType){
 		if(cadreIds != null && cadreIds.size() >0){
 			//get attendence details
-			List<Long> attendedCadreIds = eventAttendeeDAO.getAttendenceDetails(cadreIds,date,eventId,eventType);
+			List<Long> attendedCadreIds = eventAttendeeDAO.getAttendenceDetails(cadreIds,startDate,endDate,eventIds,eventType);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Map<Long,Map<String,Boolean>> cadreAttendedMap = new HashMap<Long, Map<String,Boolean>>();
-			List<Object[]> attendedListForCadre = eventAttendeeDAO.getAttendenceDetailsForCadre(cadreIds,eventId,eventType);
+			List<Object[]> attendedListForCadre = eventAttendeeDAO.getAttendenceDetailsForCadre(cadreIds,eventIds,eventType);
 			if(attendedListForCadre != null && attendedListForCadre.size() > 0)
 			{
 				for(Object[] obj : attendedListForCadre)
@@ -1798,7 +1800,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 									vo.setCadreId((Long)objects[0]);
 									vo.setCandidateName(objects[1].toString());
 									vo.setImage(objects[5].toString());
-									vo.setDatesList(getEventDatesByEventId(eventId,vo.getCadreId(),cadreAttendedMap));
+									vo.setDatesList(getEventDatesByEventId(eventIds,vo.getCadreId(),cadreAttendedMap));
 									vo.setDesignation("");
 									vo.setStateName("");
 									resultVOList.add(vo);
@@ -1816,7 +1818,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						CandidateDetailsVO vo = new CandidateDetailsVO();
 						vo.setCadreId(objects[0] != null? (Long)objects[0] : 0l);
 						vo.setCandidateName(objects[1] != null? objects[1].toString() : "");
-						vo.setDatesList(getEventDatesByEventId(eventId,vo.getCadreId(),cadreAttendedMap));
+						vo.setDatesList(getEventDatesByEventId(eventIds,vo.getCadreId(),cadreAttendedMap));
 						vo.setDesignationId(objects[2] != null? (Long)objects[2] : 0l);
 						vo.setDesignation(objects[3] != null? objects[3].toString() : "");
 						if(roleType.equalsIgnoreCase("PR"))
@@ -1885,13 +1887,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		}
 	}
 	
-	public List<MahanaduEventVO> getEventDatesByEventId(Long eventId,Long cadreId,Map<Long,Map<String,Boolean>> cadreAttendedMap)
+	public List<MahanaduEventVO> getEventDatesByEventId(List<Long> eventIds,Long cadreId,Map<Long,Map<String,Boolean>> cadreAttendedMap)
 	{
 		List<MahanaduEventVO> datesList = new ArrayList<MahanaduEventVO>();
 		try{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		
-		Object[] obj = eventDAO.getEventDates(eventId);
+		Object[] obj = eventDAO.getEventDates(Long.valueOf(eventIds.get(0).toString()));
 		List<Date>  betweenDates=new CommonMethodsUtilService().getBetweenDates((Date)obj[0],(Date)obj[1]);
 		Map<String,Boolean> dayMap = cadreAttendedMap.get(cadreId);
 			if(betweenDates != null && betweenDates.size() > 0)
@@ -1925,12 +1927,13 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		return null;
 	}
 	
-	public List<CandidateDetailsVO> getDiasEntryExitCandisTimeDeatails(Long eventId,String day){
+	public List<CandidateDetailsVO> getDiasEntryExitCandisTimeDeatails(List<Long> eventIds,List<Long> enrollmentYrIds,String startDate,String endDate){
 		List<CandidateDetailsVO> voList = new ArrayList<CandidateDetailsVO>(0);
 		DateUtilService dateUtilService = new DateUtilService();
 		try {
-			Event event = eventDAO.get(eventId); 
+			Event event = eventDAO.get(eventIds.get(0)); 
 			List<Long> eventIdsList = new ArrayList<Long>(0);
+			Long eventId =Long.valueOf(eventIds.get(0).toString());
 			eventIdsList.add(eventId);
 			Set<Long> inviteeIdsList = new HashSet<Long>(0);
 			List<Object[]> inviteeList = eventInviteeDAO.getTdpCadreIdsByEventIds(eventIdsList);
@@ -1942,7 +1945,7 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 			}
 			
 			List<String> datesList = commonMethodsUtilService.getBetweenDatesInString(event.getEventStartTime(), event.getEventEndDate());
-			List<Object[]> objList = eventAttendeeDAO.getDiasEntryExitCandisTimeDeatails(eventId,new SimpleDateFormat("yyyy-MM-dd").parse(day));
+			List<Object[]> objList = eventAttendeeDAO.getDiasEntryExitCandisTimeDeatails(eventIds,new SimpleDateFormat("dd/MM/yyyy").parse(startDate),new SimpleDateFormat("dd/MM/yyyy").parse(endDate));
 			Map<Long,Map<String,String>> finalMap = new HashMap<Long,Map<String, String>>();
 			Map<Long,LinkedList<Object[]>> cadreWiseDataMap = new HashMap<Long, LinkedList<Object[]>>(0);
 			if(objList != null && objList.size() > 0){
@@ -1992,14 +1995,16 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 				}
 			}
 			
-			
-			Date date = null;
-			if(day != null && !day.isEmpty())
-			 date = new SimpleDateFormat("yyyy-MM-dd").parse(day);
+
+			Date date1 = null;
+			Date date2 = null;
+			if(startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty())
+				date1 = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+				date2 = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
 			List<Long> cadreIdsList = new ArrayList<Long>();
 			cadreIdsList.addAll(cadreWiseDataMap.keySet());
 			if(commonMethodsUtilService.isListOrSetValid(cadreIdsList)){
-				getCandidateDetailsByCadreIds(cadreIdsList,voList,date,eventId,"diasEntry","childEvent");
+				getCandidateDetailsByCadreIds(cadreIdsList,voList,date1,date2,eventIds,"diasEntry","childEvent");
 				
 			}
 			

@@ -21,16 +21,16 @@ public interface IEventInviteeDAO extends GenericDao<EventInvitee, Long>{
 	
 	public List<Object[]> getPublicRepresentiveInvitessForEvent(Long eventId,List<Long> designationIds,List<Long> enrollmentYearIds);
 	public List<Object[]> dayWisePublicRepInviteesAttendedForEvent(Date startDate,Date endDate,List<Long> eventIds,List<Long> designationIds,List<Long> enrollmentYearIds);
-	public List<Long> getCandidateTdpCadreIds(Long eventId,Long designationId,List<Long> enrollmentYearIds);
+	public List<Long> getCandidateTdpCadreIds(List<Long> eventIds,Long designationId,List<Long> enrollmentYearIds);
 	public List<Object[]> getCommitteeLevelInvitessForEvent(Long eventId,List<Long> committeeLevelIds,List<Long> enrollmentYearIds);
 	public List<Object[]> getCommitteeRoleInvitessForEvent(Long eventId,List<Long> committeeRoleIds,List<Long> enrollmentYearIds);
 	public List<Object[]> dayWiseCommitteeLevelInviteesAttendedForEvent(Date startDate,Date endDate,List<Long> eventIds,List<Long> designationIds,List<Long> enrollmentYearIds);
 	public List<Object[]> dayWiseCommitteeRoleInviteesAttendedForEvent(Date startDate,Date endDate,List<Long> eventIds,List<Long> designationIds,List<Long> enrollmentYearIds);
 	public List<Object[]> getDistrictAffliatedCommitteeInvitessForEvent(Long eventId,List<Long> committeeRoleIds,List<Long> enrollmentYearIds);
 	public List<Object[]> dayWiseDistrictAffliatedCommitteeInviteesAttendedForEvent(Date startDate,Date endDate,List<Long> eventIds,List<Long> designationIds,List<Long> enrollmentYearIds);
-	public List<Long> getCandidateTdpCadreIdsForCommitteeLevel(Long eventId,Long committeeLevelId,List<Long> enrollmentYearIds);
-	public List<Long> getCandidateTdpCadreIdsForCommitteeRole(Long eventId,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds);
-	public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(Long eventId,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds);
+	public List<Long> getCandidateTdpCadreIdsForCommitteeLevel(List<Long> eventIds,Long committeeLevelId,List<Long> enrollmentYearIds);
+	public List<Long> getCandidateTdpCadreIdsForCommitteeRole(List<Long> eventIds,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds);
+	public List<Long> getCandidateTdpCadreIdsForAffliatedCommitteeRole(List<Long> eventIds,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds);
 	public List<Object[]> totalPublicRepInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds,List<Long> enrollmentYearIds);
 	public List<Object[]> totalCommitteeLevelInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds,List<Long> enrollmentYearIds);
 	public List<Object[]> totalCommitteeRoleInviteesAttendedForEvent(List<Long> eventIds,List<Long> designationIds,List<Long> enrollmentYearIds);
