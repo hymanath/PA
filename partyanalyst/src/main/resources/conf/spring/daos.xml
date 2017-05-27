@@ -4003,4 +4003,63 @@
 	 <bean id="generalGrievanceTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GeneralGrievanceTypeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 
+	 
+	 <bean id="meekosamIssueTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamIssueTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtDepartmentMeekosamIssueTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtDepartmentMeekosamIssueTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="alertAttatchTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertAttatchTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamPetitionerDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamPetitionerDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamIssueFieldDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamIssueFieldDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamIssueFieldTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamIssueFieldTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamIssueFieldRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamIssueFieldRelationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamIssueFieldDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamIssueFieldDataDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamIssueFieldRelationDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamIssueFieldRelationDataDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="alertMeekosamIssueFieldRelationDataDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertMeekosamIssueFieldRelationDataDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="alertMeekosamPetitionerDAO" class="com.itgrids.partyanalyst.dao.hibernate.AlertMeekosamPetitionerDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamPublicRepresentativeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamPublicRepresentativeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamPublicRepresentativeTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamPublicRepresentativeTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamPublicRepresentativeTypeRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamPublicRepresentativeTypeRelationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamPetitionerLandDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamPetitionerLandDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamOccupationDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamOccupationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamCasteCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamCasteCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamArgeeCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamArgeeCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="meekosamAnnualIncomeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamAnnualIncomeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
