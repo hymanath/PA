@@ -614,7 +614,7 @@ str+='<span id="errormsg" class="errorDiv"></span>';
 str+='<button class="btn btn-block btn-default btn-custom"   onclick="eventUpdate()">UPDATE</button>';
 $("#accordion").html(str);
 eventUpdate();
-
+getDiasetails("","");
 }
 
 var dpCurentDate;
@@ -762,7 +762,8 @@ $(".maineventCls").each(function(){
 		$("#apStateAjax").show();
 		$("#tsStateAjax").show();
 		$("#otherStateAjax").show();
-		var jsObj = {
+		
+			var jsObj = {
 				startDate    :startDate,
 				endDate      :endDate,
 				parentEventId:parentEventId,
