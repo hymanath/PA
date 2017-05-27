@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!doctype html>
@@ -70,9 +71,18 @@ header.eventsheader
 									<div style="color:red;" id="TdpCardeIdErrId"></div>
 								</div>
 								<div class="col-md-4 col-md-offset-3">
+									<label>ResoultionDate:</label>
+									<select class="form-control resoultionTypeMuti" multiple data-placeholder="select ResoultionType" id ="resolutionId" >
+									<option value="Day1">Day1</option>
+									<option value="Day2">Day2</option>
+									<option value="Day3">Day3</option>
+									</select>								
+									<div style="color:red;" id="ResoultionErrId"></div>
+								</div>
+								<div class="col-md-4 col-md-offset-3">
 									<label>Subject:</label>
-									<input type="text"  name="name"  class="form-control" id="ResoultionTypeId"
-											placeholder="Please Enter Subject Text"/>								
+									<select class="chosenClass" multiple id="ResoultionTypeId">
+									</select>
 									<div style="color:red;" id="ResoultionTypeErrId"></div>
 								</div>
 								<div class="col-md-4 col-md-offset-3">
@@ -105,6 +115,8 @@ header.eventsheader
 <script src="resolutionStyles/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".chosenClass").css("width","100%");
+$(".resoultionTypeMuti").chosen();
+$("#ResoultionTypeId").chosen();
 function SendMails(){
 	$("#TdpCardeIdErrId").html("");
 	$("#ResoultionTypeErrId").html("");
@@ -112,9 +124,11 @@ function SendMails(){
 	$("#notificationSuccessId").html("");
 
 	var TdpCardeId = $("#TdpCardeId").val();
-	var ResoultionTypeId = $("#ResoultionTypeId").val().trim();
+	var ResoultionTypeId = $("#ResoultionTypeId").val();
 	var DescriptionId = $("#DescriptionId").val().trim();
 	var addYoutubeUrl = $("#addYoutubeUrlId").val().trim();
+	var resolution =  $("#resolutionId").val();
+	
 	if(TdpCardeId==0){
 		$("#TdpCardeIdErrId").html("Please select one Cadre Id.");
 		return;
@@ -127,10 +141,12 @@ function SendMails(){
 		$("#DescriptionERRId").html("Please type one Description.");
 		return;
 	}
-	var jsObj= {"TdpCardeId":TdpCardeId,
-	"subject":ResoultionTypeId,
-	"description":DescriptionId,
-	"addYoutubeUrl":addYoutubeUrl};
+	var jsObj= {
+		membershipId:TdpCardeId,
+		listSubjects:ResoultionTypeId,
+		description:DescriptionId,
+		videourl:addYoutubeUrl
+		};
 	$.ajax({
 		type : 'POST',
 		url : 'sentresolutionMail',
@@ -143,9 +159,12 @@ function SendMails(){
 		$("#notificationSuccessId").html("Emails Sent Successfully..");
 		$("#notificationSuccessId").css("color", "Green");
 		$("#TdpCardeId").val('');
-		$("#ResoultionTypeId").val('');
+		$("#ResoultionTypeId").val(0);
+		$("#ResoultionTypeId").trigger("chosen:updated");
 		$("#DescriptionId").val('');
 		$("#addYoutubeUrlId").val('');
+		$("#resolutionId").val(0);
+		$("#resolutionId").trigger("chosen:updated");
 		setTimeout(function(){ 
 			$( "#notificationSuccessId" ).fadeOut( "slow" );
 		}, 3000);
@@ -157,12 +176,46 @@ function SendMails(){
 		$("#ResoultionTypeId").val('');
 		$("#DescriptionId").val('');
 		$("#addYoutubeUrlId").val('');
+		$("#resolutionId").val(0);
+		$("#resolutionId").trigger("chosen:updated");
+		$("#ResoultionTypeId").val(0);
+		$("#ResoultionTypeId").trigger("chosen:updated");
 		setTimeout(function(){ 
 			$( "#notificationSuccessId" ).fadeOut( "slow" );
 		}, 2000);
 	}
 });
 }
+$(document).on("change","#resolutionId",function(){
+	 var daysStr = '';
+	 var days = $(this).val();
+	  if(days != null && days.length > 0){
+		 for(var i in days){
+			 if(i == 0){
+			  daysStr = days[i];	 
+			 }else{
+				daysStr = daysStr +","+days[i];	
+			 }
+		}
+		var jsObj={daysStr:daysStr};
+		$.ajax({
+		type : 'POST',
+		url : 'getresolutionList',
+		dataType : 'json',
+		contentType: "application/json; charset=utf-8",
+		data: JSON.stringify(jsObj)
+		}).done(function(result){
+			var resultdata= result.responseData
+			for( var i in resultdata){
+			 $("#ResoultionTypeId").append('<option value=\''+resultdata[i].resolutionName+'\'>'+resultdata[i].resolutionName+'</option>');
+			}
+			$("#ResoultionTypeId").chosen();
+			$("#ResoultionTypeId").trigger('chosen:updated')
+		});
+	
+	} 
+	
+});
 </script>
 </body>
 </html>
