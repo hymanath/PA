@@ -291,7 +291,10 @@ public class EventDetailsAction extends ActionSupport implements ServletRequestA
 		 jObj = new JSONObject(getTask());
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
-			resultList = mahaNaduService.getEventsForUser(regVO.getRegistrationID());
+			if(regVO != null && regVO.getRegistrationID() != null)
+				resultList = mahaNaduService.getEventsForUser(regVO.getRegistrationID());
+			else
+				resultList = mahaNaduService.getEventsForUser(1L);
 		}
 		catch(Exception e)
 		{
