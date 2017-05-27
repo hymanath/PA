@@ -280,7 +280,7 @@ textarea {
 	 <div class="row PaymentCls">
 		<div class="col-md-12 col-xs-12 col-sm-12">
         	<div class="panel panel-default panel1Registration">
-				<div id="savingStatusDivId" style="padding: 55px;"></div>
+				<div id="savingStatusDivId"></div>
 			</div>
 		</div>
 	</div>
