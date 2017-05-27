@@ -1804,30 +1804,31 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		
 	}*/
 	
-	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date date,Long eventId,String eventType){
+	public List<Long> getAttendenceDetails(List<Long> cadreIds,Date startDate,Date endDate,List<Long> eventIds,String eventType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.tdpCadreId " +
 				" from EventAttendee model where model.tdpCadreId in (:cadreIds) " +
 				" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
 		
 		if(eventType != null && eventType.equalsIgnoreCase("parentId")){
-			sb.append(" and model.event.parentEventId=:eventId ");
+			sb.append(" and model.event.parentEventId in (:eventIds) ");
 		}else{
-			sb.append(" and model.event.eventId=:eventId ");
+			sb.append(" and model.event.eventId in (:eventIds)");
 		}
-		if(date != null){
-			sb.append(" and date(model.attendedTime)=:date");
+		if(startDate != null && endDate != null ){
+			sb.append(" and date(model.attendedTime) between :startDate and :endDate ");
 		}
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("cadreIds", cadreIds);
-		query.setParameter("eventId", eventId);
-		if(date != null){
-			query.setDate("date", date);
+		query.setParameterList("eventIds", eventIds);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
 		}
 		return query.list();
 	}
 	
-	public List<Long> getCadreIdsForAttendees(Long eventId,Date date,Long designationId,List<Long> enrollmentYearIds){
+	public List<Long> getCadreIdsForAttendees(List<Long> eventIds,Date date,Long designationId,List<Long> enrollmentYearIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.tdpCadreId " +
 				" from EventAttendee model,TdpCadreCandidate tcc,PublicRepresentative pr ");
@@ -1841,12 +1842,12 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 			str.append(" and model.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 		}
 		str.append(" and  pr.publicRepresentativeTypeId=:designationId " +
-				" and model.event.parentEventId=:eventId " +
+				" and model.event.parentEventId in (:eventIds) " +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		if(date != null)
-		str.append("and date(model.attendedTime)=:date");
+		str.append("and date(model.attendedTime) between :date and :date ");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameterList("eventIds", eventIds);
 		if(date != null)
 		query.setDate("date", date);
 		query.setParameter("designationId", designationId);
@@ -1883,7 +1884,7 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		return query.list();
 	}
 	
-	public List<Long> getCadreIdsForAttendeesForCommitteeLevel(Long eventId,Date date,Long committeeLevelId,List<Long> enrollmentYearIds){
+	public List<Long> getCadreIdsForAttendeesForCommitteeLevel(List<Long> eventIds,Date date,Long committeeLevelId,List<Long> enrollmentYearIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.tdpCadreId " +
 				" from EventAttendee model,TdpCommitteeMember TCM ,EventInvitee ei ");
@@ -1895,12 +1896,12 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 			str.append(" and ei.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted='N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 		}
 		str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId=:committeeLevelId " +
-				" and model.event.parentEventId=:eventId and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive" +
+				" and model.event.parentEventId in (:eventIds) and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive" +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014");
 		if(date != null)
-		str.append("and date(model.attendedTime)=:date");
+		str.append("and date(model.attendedTime) between :date and :date ");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameterList("eventIds", eventIds);
 		if(date != null)
 		query.setDate("date", date);
 		query.setParameter("committeeLevelId", committeeLevelId);
@@ -1911,7 +1912,7 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		return query.list();
 	}
 	
-	public List<Long> getCadreIdsForAttendeesForCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
+	public List<Long> getCadreIdsForAttendeesForCommitteeRole(List<Long> eventIds,Date date,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.tdpCadreId " +
 				" from EventAttendee model,TdpCommitteeMember TCM,EventInvitee ei ");
@@ -1923,18 +1924,18 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 			str.append(" and ei.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 		}
-		str.append(" and model.event.parentEventId=:eventId and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
+		str.append(" and model.event.parentEventId in (:eventIds) and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1" +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
 				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
 		if(date != null)
-		str.append("and date(model.attendedTime)=:date");
+		str.append("and date(model.attendedTime) between :date and :date ");
 		if(committeeLevel.equalsIgnoreCase("District"))
 			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
 		if(committeeLevel.equalsIgnoreCase("Mandal"))
 			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 5 ");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameterList("eventIds", eventIds);
 		query.setParameter("committeeRoleId", committeeRoleId);
 		if(date != null)
 		query.setDate("date", date);
@@ -1945,7 +1946,7 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		return query.list();
 	}
 	
-	public List<Long> getCadreIdsForAttendeesForAffliatedCommitteeRole(Long eventId,Date date,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
+	public List<Long> getCadreIdsForAttendeesForAffliatedCommitteeRole(List<Long> eventIds,Date date,Long committeeRoleId,String committeeLevel,List<Long> enrollmentYearIds){
 		StringBuilder str = new StringBuilder();
 		str.append(" select distinct model.tdpCadreId " +
 				" from EventAttendee model,TdpCommitteeMember TCM,EventInvitee ei ");
@@ -1957,18 +1958,18 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		if(enrollmentYearIds != null && enrollmentYearIds.size() > 0){
 			str.append(" and ei.tdpCadreId = cadreEnrollmentYear.tdpCadreId and cadreEnrollmentYear.isDeleted = 'N' and cadreEnrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
 		}
-		str.append(" and model.event.parentEventId=:eventId and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
+		str.append(" and model.event.parentEventId in (:eventIds) and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId != 1" +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
 				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
 		if(date != null)
-		str.append("and date(model.attendedTime)=:date");
+		str.append("and date(model.attendedTime) between :date and :date");
 		if(committeeLevel.equalsIgnoreCase("District"))
 			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
 		if(committeeLevel.equalsIgnoreCase("Mandal"))
 			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 5 ");
 		Query query = getSession().createQuery(str.toString());
-		query.setParameter("eventId", eventId);
+		query.setParameterList("eventIds", eventIds);
 		query.setParameter("committeeRoleId", committeeRoleId);
 		if(date != null)
 		query.setDate("date", date);
@@ -1979,21 +1980,21 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		return query.list();
 	}
 	
-	public List<Object[]> getAttendenceDetailsForCadre(List<Long> cadreIds,Long eventId,String eventType){
+	public List<Object[]> getAttendenceDetailsForCadre(List<Long> cadreIds,List<Long> eventIds,String eventType){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct model.tdpCadreId,date(model.attendedTime) " +
 				" from EventAttendee model where model.tdpCadreId in (:cadreIds) " +
 				" and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014 ");
 		
 		if(eventType != null && eventType.equalsIgnoreCase("parentId")){
-			sb.append(" and model.event.parentEventId=:eventId ");
+			sb.append(" and model.event.parentEventId in (:eventIds) ");
 		}else{
-			sb.append(" and model.event.eventId=:eventId ");
+			sb.append(" and model.event.eventId in (:eventIds) ");
 		}
 		sb.append(" group by model.tdpCadreId,date(model.attendedTime)");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameterList("cadreIds", cadreIds);
-		query.setParameter("eventId", eventId);
+		query.setParameterList("eventIds", eventIds);
 		return query.list();
 	}
 	////Caste wise.
@@ -3370,13 +3371,14 @@ public List<Object[]> getMahanaduEventCadreDetails(List<Long> eventIds,Long tdpC
 		return (String)query.uniqueResult();
 	}
 	
-	public List<Object[]> getDiasEntryExitCandisTimeDeatails(Long eventId,Date eventDate){
+	public List<Object[]> getDiasEntryExitCandisTimeDeatails(List<Long> eventIds,Date startDate,Date endDate){
 		Query query = getSession().createQuery(" select model.tdpCadreId,model.eventId,model.attendedTime " +
 				" from EventAttendee model " +
-				" where model.eventId in (56,57)  and model.tdpCadre.isDeleted = 'N' " +
+				" where model.eventId in (:eventIds)  and model.tdpCadre.isDeleted = 'N'  " +
 				" order by model.tdpCadreId,model.attendedTime asc ");
-		//query.setParameter("eventId", eventId);
-		//query.setDate("eventDate", eventDate);
+		query.setParameterList("eventIds", eventIds);
+		//query.setDate("startDate", startDate);
+		//query.setDate("endDate", endDate);
 		return query.list();
 	}
 }
