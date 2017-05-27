@@ -195,10 +195,11 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
     	List<EntryExitInfo>  entryExitInfoList = entryExitInfoDAO.getAll();
     	if(commonMethodsUtilService.isListOrSetValid(entryExitInfoList)){
     		for (EntryExitInfo entryExitInfo : entryExitInfoList) {
-				if(entryExitInfo.getParentEventId() == IConstants.MAHANADU_EVENT_ID && entryExitInfo.getEventType().trim().equalsIgnoreCase("MAIN ENTRY")){
+				if(entryExitInfo.getParentEventId().longValue() == IConstants.MAHANADU_EVENT_ID && entryExitInfo.getEventType().trim().equalsIgnoreCase("MAIN ENTRY")){
 					if(entryExitInfo.getServiceRunReq().equalsIgnoreCase("true")){
 				    	  getTodayTotalVisitors(entryExitInfo.getEntryId(),entryExitInfo.getExitId(),entryExitInfo.getParentEventId());
 				    }
+					break;
 				}
 			}
     	}
