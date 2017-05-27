@@ -610,8 +610,9 @@ function startSearchingPage(){
 				str+= '</div>';
 				str+= '</div>';
 				$('#savingStatusDivId').html(str);			
-				$('.panelRegistration').css("padding","15px");
-				$('.panelRegistration').css("margin-top","50px");
+				$('.panelRegistration').hide();			
+				$('#savingStatusDivId').css("padding","15px");
+				$('#savingStatusDivId').css("margin-top","50px");
 		}		
 		else
 		 {
