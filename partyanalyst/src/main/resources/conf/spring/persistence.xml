@@ -1269,6 +1269,25 @@
 		      		   <value>com.itgrids.partyanalyst.model.SpecialGrievanceType</value>
 		      		   <value>com.itgrids.partyanalyst.model.GeneralGrievanceType</value>
 		      		   
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamIssueType</value>
+		      		   <value>com.itgrids.partyanalyst.model.GovtDepartmentMeekosamIssueType</value>
+		      		   <value>com.itgrids.partyanalyst.model.AlertAttatchType</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamPetitioner</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamIssueField</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamIssueFieldType</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamIssueFieldRelation</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamIssueFieldData</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamIssueFieldRelationData</value>
+		      		   <value>com.itgrids.partyanalyst.model.AlertMeekosamIssueFieldRelationData</value>
+		      		   <value>com.itgrids.partyanalyst.model.AlertMeekosamPetitioner</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamPublicRepresentative</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamPublicRepresentativeType</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamPublicRepresentativeTypeRelation</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamPetitionerLandDetails</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamOccupation</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamCasteCategory</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamArgeeCategory</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamAnnualIncome</value>
 				  </list>
 			
 		</property>
