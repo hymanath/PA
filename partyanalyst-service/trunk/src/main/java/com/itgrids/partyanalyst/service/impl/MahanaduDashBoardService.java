@@ -1932,6 +1932,18 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		DateUtilService dateUtilService = new DateUtilService();
 		try {
 			Event event = eventDAO.get(eventIds.get(0)); 
+			EntryExitInfo entryExitInfo = entryExitInfoDAO.getEntryDetails(eventIds.get(0),"DIAS ENTRY");
+			Long entryEventId=0L;
+			Long exitEventId =0L;
+			if(entryExitInfo != null){
+				entryEventId = entryExitInfo.getEntryId();
+				exitEventId = entryExitInfo.getExitId();
+				
+				eventIds.clear();
+				eventIds.add(entryEventId);
+				eventIds.add(exitEventId);
+				
+			}
 			List<Long> eventIdsList = new ArrayList<Long>(0);
 			Long eventId =Long.valueOf(eventIds.get(0).toString());
 			eventIdsList.add(eventId);
@@ -1964,9 +1976,9 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 						Long cadreId = entry.getKey();
 						String fromTime = "",endTime="";
 						for (Object[] objects : entry.getValue()) {
-							if((Long)objects[1] == 56l){
+							if((Long)objects[1] == entryEventId.longValue()){
 								fromTime = objects[2].toString();
-							}else if((Long)objects[1] == 57l){
+							}else if((Long)objects[1] == exitEventId.longValue()){
 								endTime = objects[2].toString();
 								Long diff = dateUtilService.getMinutesBetweenTwoDates(fromTime, endTime);
 								if(diff > 0l){
