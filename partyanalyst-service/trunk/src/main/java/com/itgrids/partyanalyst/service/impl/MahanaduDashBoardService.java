@@ -191,9 +191,16 @@ public class MahanaduDashBoardService implements IMahanaduDashBoardService {
 		}
     	
     	try{
-    	EntryExitInfo entryExitInfo = entryExitInfoDAO.getAll().get(1);
-    	if(entryExitInfo.getServiceRunReq().equalsIgnoreCase("true")){
-    	  getTodayTotalVisitors(entryExitInfo.getEntryId(),entryExitInfo.getExitId(),entryExitInfo.getParentEventId());
+    	//EntryExitInfo entryExitInfo = entryExitInfoDAO.getAll().get(1);
+    	List<EntryExitInfo>  entryExitInfoList = entryExitInfoDAO.getAll();
+    	if(commonMethodsUtilService.isListOrSetValid(entryExitInfoList)){
+    		for (EntryExitInfo entryExitInfo : entryExitInfoList) {
+				if(entryExitInfo.getParentEventId() == IConstants.MAHANADU_EVENT_ID && entryExitInfo.getEventType().trim().equalsIgnoreCase("MAIN ENTRY")){
+					if(entryExitInfo.getServiceRunReq().equalsIgnoreCase("true")){
+				    	  getTodayTotalVisitors(entryExitInfo.getEntryId(),entryExitInfo.getExitId(),entryExitInfo.getParentEventId());
+				    }
+				}
+			}
     	}
       }catch(Exception e){
 		 LOG.error("Exception rised in getTodayTotalVisitorsForSchedular()",e);
