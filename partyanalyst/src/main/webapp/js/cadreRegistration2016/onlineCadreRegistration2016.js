@@ -589,7 +589,7 @@ function startSearchingPage(){
 		var str = '';
 		
 		var resultArr = result.split(',');
-		console.log(resultArr);
+		//console.log(resultArr);
 		
 		if(result.search('SUCCESS') != -1)
 		{			
@@ -610,7 +610,8 @@ function startSearchingPage(){
 				str+= '</div>';
 				str+= '</div>';
 				$('#savingStatusDivId').html(str);			
-				$('.panelRegistration').hide();
+				$('.panelRegistration').css("padding","15px");
+				$('.panelRegistration').css("margin-top","50px");
 		}		
 		else
 		 {
