@@ -888,7 +888,7 @@ textarea {
                         	<button class="btn btn-success btn-block btn-lg text-capital" type="button" id="saveBtnId" onclick="savingCadreDetails();">submit</button>
                         </div>
 						 <span id="savingCadreDivIdImg" style="display:none;"><img src="images/search.gif"/></span>
-						<div id="savingStatussDivId" style="padding:15px;margin-top:50px;"></div>
+						<div id="savingStatussDivId" ></div>
                     </div>
 					</form>
                 </div>
