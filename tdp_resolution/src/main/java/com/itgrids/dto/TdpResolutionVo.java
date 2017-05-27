@@ -1,6 +1,6 @@
 package com.itgrids.dto;
 
-import java.util.Date;
+import java.util.List;
 
 public class TdpResolutionVo {
 	
@@ -17,6 +17,18 @@ public class TdpResolutionVo {
 	private String InsertedTime;
 	
 	private String UpdatedTime;
+	
+	private Long membershipId;
+	
+	private List<String> listSubjects;
+
+	public List<String> getListSubjects() {
+		return listSubjects;
+	}
+
+	public void setListSubjects(List<String> listSubjects) {
+		this.listSubjects = listSubjects;
+	}
 
 	public Long getTdpResoultionId() {
 		return tdpResoultionId;
@@ -75,4 +87,13 @@ public class TdpResolutionVo {
 	}
 	
 
+	public Long getMembershipId() {
+		return membershipId;
+	}
+
+	public void setMembershipId(Long membershipId) {
+		this.membershipId = membershipId;
+	}
+
+	
 }
