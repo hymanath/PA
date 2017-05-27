@@ -214,7 +214,15 @@ public class CadreRegistrationVO implements Serializable{
 	private String nomineeAadharNo;
 	private String newNomineeRelationType;
 	private Long tabPrimaryKey;
+	private String appVersion;
 	
+	
+	public String getAppVersion() {
+		return appVersion;
+	}
+	public void setAppVersion(String appVersion) {
+		this.appVersion = appVersion;
+	}
 	public Long getTabPrimaryKey() {
 		return tabPrimaryKey;
 	}
