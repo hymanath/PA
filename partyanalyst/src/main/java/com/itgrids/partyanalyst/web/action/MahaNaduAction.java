@@ -1125,7 +1125,30 @@ public class MahaNaduAction extends ActionSupport implements ServletRequestAware
 	public String getDiasEntryExitCandisTimeDeatails(){
 		try {
 			jObj = new JSONObject(getTask());
-			candidateDetailsVOList = mahanaduDashBoardService.getDiasEntryExitCandisTimeDeatails(jObj.getLong("eventId"),jObj.getString("date"));
+			
+			JSONArray eventIdsArr = jObj.getJSONArray("eventIds");
+			List<Long> eventIds = new ArrayList<Long>();
+			if(eventIdsArr != null && eventIdsArr.length()>0)
+			{
+				for(int k=0;k<eventIdsArr.length();k++)
+				{
+					eventIds.add(Long.valueOf(eventIdsArr.getInt(k)));
+				}
+			}
+			JSONArray enrollmentYrIdsArr = jObj.getJSONArray("enrollmentYrIds");
+			List<Long> enrollmentYrIds = new ArrayList<Long>();
+			if(enrollmentYrIdsArr != null && enrollmentYrIdsArr.length()>0)
+			{
+				for(int k=0;k<enrollmentYrIdsArr.length();k++)
+				{
+					enrollmentYrIds.add(Long.valueOf(enrollmentYrIdsArr.getInt(k)));
+				}
+			}
+			
+			String startDate =jObj.getString("startDate");
+			String endDate =jObj.getString("endDate");
+			
+			candidateDetailsVOList = mahanaduDashBoardService.getDiasEntryExitCandisTimeDeatails(eventIds,enrollmentYrIds,startDate,endDate);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getDiasEntryExitCandisTimeDeatails", e);
 		}

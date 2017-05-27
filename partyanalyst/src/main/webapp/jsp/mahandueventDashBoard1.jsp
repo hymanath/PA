@@ -614,6 +614,7 @@ str+='<span id="errormsg" class="errorDiv"></span>';
 str+='<button class="btn btn-block btn-default btn-custom"   onclick="eventUpdate()">UPDATE</button>';
 $("#accordion").html(str);
 eventUpdate();
+
 }
 
 var dpCurentDate;
@@ -761,7 +762,7 @@ $(".maineventCls").each(function(){
 		$("#apStateAjax").show();
 		$("#tsStateAjax").show();
 		$("#otherStateAjax").show();
-			var jsObj = {
+		var jsObj = {
 				startDate    :startDate,
 				endDate      :endDate,
 				parentEventId:parentEventId,
@@ -3086,15 +3087,23 @@ function getPublicrepresentatives(){
 		});
 		
 	});
-	//getDiasetails("");
+	//getDiasetails("","");
  function getDiasetails(roleType,date){
-   $("#showModelConstcy").html('');
+	$("#showModelConstcy").html('');
 	 $("#popupId").modal("show");
 	 $("#publicRepresentativelinkAjax").show();
+	 var eventIds =[];
+	 eventIds.push(parentEventId);
+	 //alert(startDate)
+	 //var enrollmentYearIdsArrGlob = [];
+	 //enrollmentYearIdsArrGlob.push(3);
+	 //enrollmentYearIdsArrGlob.push(4);
    var jsObj = {
       //date : '25/05/2017',
-      date : date,
-      eventId : 56
+      startDate : startDate,
+	  endDate:endDate,
+      eventIds : eventIds,
+	  enrollmentYrIds:enrollmentYearIdsArrGlob
     }
     
     $.ajax({
@@ -3301,6 +3310,7 @@ function getPublicrepresentatives(){
 		getHourWiseNowInCampusCadresCount($(this).attr("attr_event_id"),$(this).val());
 		
 	});
+	
 </script>
 </body>
 </html>
