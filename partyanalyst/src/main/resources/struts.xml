@@ -17413,5 +17413,9 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
+	<action name="meekosamGrievanceRequestAction" class="meekosamGrievanceAction">
+		<result name="success">/jsp/createMeekosamRequest.jsp</result>
+		<result name="error" type="redirect">login.action</result>
+	</action>
  </package>
 </struts>

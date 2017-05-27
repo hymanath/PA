@@ -4245,5 +4245,8 @@
 		<property name="alertCallerRelationDAO" ref="alertCallerRelationDAO" ></property>
 		<property name="govtDepartmentRelationDAO" ref="govtDepartmentRelationDAO" ></property>	  
    </bean>
+   <bean name="meekosamGrievanceService" class="com.itgrids.partyanalyst.service.impl.MeekosamGrievanceService">
+   
+   </bean>
 </beans>			
 	

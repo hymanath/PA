@@ -1783,6 +1783,8 @@
 		<property name="cccDashboardService" ref="cccDashboardService" />
 		<property name="alertManagementSystemService" ref="alertManagementSystemService" />
 	</bean>	
-	
+	<bean id="meekosamGrievanceAction" class="com.itgrids.partyanalyst.web.action.MeekosamGrievanceAction" singleton="false">
+		<property name="meekosamGrievanceService" ref="meekosamGrievanceService" />
+	</bean>	
 </beans>	
 	
