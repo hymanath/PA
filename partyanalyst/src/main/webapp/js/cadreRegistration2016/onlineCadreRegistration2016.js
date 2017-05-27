@@ -539,13 +539,13 @@ $(document).on("click", "#changeNomineeId", function(e) {
 			$("#imagDivId").scroll();
 			return;
 		}	
-		if(addressFieldsValidation())
+	/*	if(addressFieldsValidation())
 		{
 			//alert("fail 2");
 			$("#cadrePrvNomneDivId").scroll();
 			return;
 		}
-		
+		*/
 		//alert("333");
 		var tdpCadreId = $("#hiddenTdpCadreId").val();
 		if(tdpCadreId != null && tdpCadreId != ""){
@@ -577,7 +577,9 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		YAHOO.util.Connect.asyncRequest('POST','savingCadreDetailsAction.action',uploadHandler);
 	}
 	
-	
+function startSearchingPage(){
+	window.location.reload();
+}
  function showSbmitStatus(myResult)
  {
 		
@@ -587,7 +589,38 @@ $(document).on("click", "#changeNomineeId", function(e) {
 		var str = '';
 		
 		var resultArr = result.split(',');
-		//console.log(resultArr);
+		console.log(resultArr);
+		
+		if(result.search('SUCCESS') != -1)
+		{			
+				$('#saveBtnId').hide();
+				str+= '<div class="container m_top10" id="yourElement">';
+				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<p class="text-align">Thank You For Your Registration</p>';
+				str+= '<h3 class="text-align"> Successfully Registration Completed </h3>';
+				str+= '</div>';
+				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<p class="text-align">Your Membership No : '+resultArr[2]+' </p>';
+				str+= '<p class="text-align">Your Enrollment No : '+resultArr[1]+' </p>';			
+				str+= '</div>';
+				str+= '</div>';
+				str+= '<div class="container m_top10" id="yourElement">';
+				str+= '<div class="span12  show-grid" style="position: relative;">';
+				str+= '<a href="javascript:{startSearchingPage();}" class="btn btn-success  offset5 border-radius-0"  >Continue  <span class="glyphicon glyphicon-chevron-right"></span></a>';
+				str+= '</div>';
+				str+= '</div>';
+				$('#savingStatusDivId').html(str);			
+				$('.panelRegistration').hide();
+		}		
+		else
+		 {
+			/*$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>"+resultArr[0]+" ,Application Submission Failed.Please try Again./span>"); */
+			alert("Application Submission Failed.Please try Again.");
+			$('#saveBtnId').show();
+		 }
+		
+		return;
+		
 		if(result.search('SUCCESS') != -1)
 		{				
 			$('.subBlock').html('');

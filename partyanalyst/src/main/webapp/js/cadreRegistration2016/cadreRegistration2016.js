@@ -359,13 +359,13 @@ $(document).on("click", "#changeNomineeId", function(e) {
 	function savingCadreDetails(){
 	
 		$("#nomineeDivId").html(""); 
-		if(!validations())
+	/*	if(!validations())
 		{
 		return;
 		}
 		if(!validationDetails()){
 		return;
-		}
+		}*/
 		var tdpCadreId = $("#hiddenTdpCadreId").val();
 		if(tdpCadreId != null && tdpCadreId != ""){
 		$(".isNomineeChangd").each(function(){

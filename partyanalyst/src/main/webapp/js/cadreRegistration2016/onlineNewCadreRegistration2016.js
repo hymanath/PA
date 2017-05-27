@@ -164,7 +164,7 @@
    }
     $.ajax({
           type:'GET',
-          url: 'getMandalsForConstituencyAction.action',
+          url: 'getMandalsForConstituenciAction.action',
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
    }).done(function(result){
