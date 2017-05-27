@@ -472,7 +472,7 @@ textarea {
             
 				<div id="populatingDtsDivImgId" style="display:none;"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>
 				<form name="submitCadreForm" id="submitCadreForm"  method="post" enctype="multipart/form-data">
-				<input type="hidden" class="form-control" id="dataSourceType" value="2.0" name="cadreRegistrationVO.appVersion"/>
+				<input type="hidden" class="form-control" id="" value="2.0" name="cadreRegistrationVO.appVersion"/>
 				<input type="hidden" class="form-control" id="dataSourceType" value="WEB" name="cadreRegistrationVO.dataSourceType"/>
 				<input type="hidden" class="form-control" id="webUserId" value="1" name="cadreRegistrationVO.webUserId"/>
 				
