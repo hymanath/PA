@@ -116,7 +116,16 @@ header
 				</div>
 			</div>
 		</div>
-		<img src="alertDepartment/img/alert logo.png" alt="alert Logo"  class="alert-logo"/>
+		<div style="position: relative;" class="col-sm-2 col-sm-offset-5">
+			<div class="spinner-logo">
+				<img src="alertDepartment/img/spinner/1.png" class="right-arrow">
+				<img src="alertDepartment/img/spinner/2.png" class="right-arrow1">
+				<img src="alertDepartment/img/spinner/3.png" class="left-arrow">
+				<img src="alertDepartment/img/spinner/4.png" class="left-arrow1">
+				<img src="alertDepartment/img/spinner/5.png" class="main-icon">
+			</div>
+		</div>
+		<!--<img src="alertDepartment/img/alert logo.png" alt="alert Logo"  class="alert-logo"/>-->
 	</section>
 	
 	<section class="work">
