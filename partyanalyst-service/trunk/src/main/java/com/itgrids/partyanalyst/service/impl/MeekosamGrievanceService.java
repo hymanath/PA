@@ -110,6 +110,8 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	}
 	/*
 	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IMeekosamGrievanceService#saveMeekosamPetitionerDetails(com.itgrids.partyanalyst.dto.PetitionerDetailsVO)
 	 */
 	public String saveMeekosamPetitionerDetails(final PetitionerDetailsVO inputvo){
 		String status = null;
@@ -182,6 +184,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 		}
 		return null;
 	}
+	/*
+	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IMeekosamGrievanceService#getAllMandalsByDistrictID(java.lang.Long)
+	 */
 	public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		try{
 			List<IdNameVO> returnList = new ArrayList<IdNameVO>();
@@ -212,6 +219,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 		}
 		return null;
 	}
+	/*
+	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IMeekosamGrievanceService#getAllHamletByPanchayatID(java.lang.Long)
+	 */
 	public List<IdNameVO> getAllHamletByPanchayatID(Long panchayatId){
 		try{
 			List<IdNameVO> returnList = new ArrayList<IdNameVO>();
@@ -232,6 +244,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 		}
 		return null;
 	}
+	/*
+	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IMeekosamGrievanceService#getMeekosamOccupationList()
+	 */
 	public List<IdAndNameVO> getMeekosamOccupationList(){   
 		try{
 			List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>();
@@ -244,6 +261,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 		}
 		return null;
 	}
+	/*
+	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IMeekosamGrievanceService#getMeekosamCasteCategoryList()
+	 */
 	public List<IdAndNameVO> getMeekosamCasteCategoryList(){   
 		try{
 			List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>();
@@ -256,6 +278,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 		}
 		return null;
 	}
+	/*
+	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IMeekosamGrievanceService#getMeekosamArgeeCategoryList()
+	 */
 	public List<IdAndNameVO> getMeekosamArgeeCategoryList(){   
 		try{
 			List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>();
@@ -268,6 +295,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 		}
 		return null;
 	}
+	/*
+	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IMeekosamGrievanceService#getMeekosamAnnualIncomeList()
+	 */
 	public List<IdAndNameVO> getMeekosamAnnualIncomeList(){   
 		try{
 			List<IdAndNameVO> resultList = new ArrayList<IdAndNameVO>();
