@@ -74,7 +74,21 @@
 					</div>
 				</div>
 				<div class="panel-body">
+					<div class="row">      
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
 					<div class="row">
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">      
 					</div>
 				</div>
 			</div>
