@@ -5772,4 +5772,192 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getFinancialAssistanceAlertCntCategoryWise(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+			List<Long> deptIdList = new ArrayList<Long>();
+			for (int i = 0; i < deptIdArr.length(); i++){
+				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+			}  
+			
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			for (int i = 0; i < paperIdArr.length(); i++){
+				paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+			} 
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			for (int i = 0; i < chanelIdArr.length(); i++){
+				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+			}
+			
+			JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+			List<Long> calCntrIdList = new ArrayList<Long>();
+			for (int i = 0; i < calCntrIdArr.length(); i++){
+				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+			} 
+			String userType = jObj.getString("userType");
+			
+			JSONArray socialMediaTypeIdsArr = jObj.getJSONArray("socialMediaTypeIdsArr");  
+			List<Long> socialMediaTypeIds = new ArrayList<Long>();
+			if(socialMediaTypeIdsArr != null && socialMediaTypeIdsArr.length() > 0){
+				for (int i = 0; i < socialMediaTypeIdsArr.length(); i++){
+					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray alertSeverityIdsArr = jObj.getJSONArray("alertSeverityIdsArr");  
+			List<Long> alertSeverityIds = new ArrayList<Long>();
+			if(alertSeverityIdsArr != null && alertSeverityIdsArr.length() > 0){
+				for (int i = 0; i < alertSeverityIdsArr.length(); i++){
+					alertSeverityIds.add(Long.parseLong(alertSeverityIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray alertStatusIdsArr = jObj.getJSONArray("alertStatusIdsArr");  
+			List<Long> alertStatusIds = new ArrayList<Long>();
+			if(alertStatusIdsArr != null && alertStatusIdsArr.length() > 0){
+				for (int i = 0; i < alertStatusIdsArr.length(); i++){
+					alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			alertVOs = alertManagementSystemService.getFinancialAssistanceAlertCntCategoryWise(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId, calCntrIdList, userType, socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+		}catch(Exception e){
+			LOG.error("Exception occured in getFinancialAssistanceAlertCntCategoryWise() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getFinancialAssistanceAlertCntDtls(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			Long stateId = jObj.getLong("stateId");
+			
+			JSONArray deptIdArr = jObj.getJSONArray("deptIdArr");  
+			List<Long> deptIdList = new ArrayList<Long>();
+			for (int i = 0; i < deptIdArr.length(); i++){
+				deptIdList.add(Long.parseLong(deptIdArr.getString(i)));        
+			}  
+			
+			JSONArray paperIdArr = jObj.getJSONArray("paperIdArr");  
+			List<Long> paperIdList = new ArrayList<Long>();
+			for (int i = 0; i < paperIdArr.length(); i++){
+				paperIdList.add(Long.parseLong(paperIdArr.getString(i)));        
+			} 
+			
+			JSONArray chanelIdArr = jObj.getJSONArray("chanelIdArr");  
+			List<Long> chanelIdList = new ArrayList<Long>();
+			for (int i = 0; i < chanelIdArr.length(); i++){
+				chanelIdList.add(Long.parseLong(chanelIdArr.getString(i)));        
+			}
+			
+			JSONArray calCntrIdArr = jObj.getJSONArray("callCenterArr");  
+			List<Long> calCntrIdList = new ArrayList<Long>();
+			for (int i = 0; i < calCntrIdArr.length(); i++){
+				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
+			} 
+			
+			String userType = jObj.getString("userType");
+			JSONArray socialMediaTypeIdsArr = jObj.getJSONArray("socialMediaTypeIdsArr");  
+			List<Long> socialMediaTypeIds = new ArrayList<Long>();
+			if(socialMediaTypeIdsArr != null && socialMediaTypeIdsArr.length() > 0){
+				for (int i = 0; i < socialMediaTypeIdsArr.length(); i++){
+					socialMediaTypeIds.add(Long.parseLong(socialMediaTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray alertStatusIdsArr = jObj.getJSONArray("alertStatusIdsArr");  
+			List<Long> alertStatusIds = new ArrayList<Long>();
+			if(alertStatusIdsArr != null && alertStatusIdsArr.length() > 0){
+				for (int i = 0; i < alertStatusIdsArr.length(); i++){
+					alertStatusIds.add(Long.parseLong(alertStatusIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray alertSeverityIdsArr = jObj.getJSONArray("alertSeverityIdsArr");  
+			List<Long> alertSeverityIds = new ArrayList<Long>();
+			if(alertSeverityIdsArr != null && alertSeverityIdsArr.length() > 0){
+				for (int i = 0; i < alertSeverityIdsArr.length(); i++){
+					alertSeverityIds.add(Long.parseLong(alertSeverityIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray mondayGrievanceTypeIdsArr = jObj.getJSONArray("mondayGrievanceTypeIdsArr");  
+			List<Long> mondayGrievanceTypeIds = new ArrayList<Long>();
+			if(mondayGrievanceTypeIdsArr != null && mondayGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < mondayGrievanceTypeIdsArr.length(); i++){
+					mondayGrievanceTypeIds.add(Long.parseLong(mondayGrievanceTypeIdsArr.getString(i)));        
+				}
+			}
+			JSONArray janmabhoomiTypeIdsArr = jObj.getJSONArray("janmabhoomiTypeIdsArr");  
+			List<Long> janmabhoomiTypeIds = new ArrayList<Long>();
+			if(janmabhoomiTypeIdsArr != null && janmabhoomiTypeIdsArr.length() > 0){
+				for (int i = 0; i < janmabhoomiTypeIdsArr.length(); i++){
+					janmabhoomiTypeIds.add(Long.parseLong(janmabhoomiTypeIdsArr.getString(i)));        
+				} 
+			}
+			JSONArray specialGrievanceTypeIdsArr = jObj.getJSONArray("specialGrievanceTypeIdsArr");  
+			List<Long> specialGrievanceTypeIds = new ArrayList<Long>();
+			if(specialGrievanceTypeIdsArr != null && specialGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < specialGrievanceTypeIdsArr.length(); i++){
+					specialGrievanceTypeIds.add(Long.parseLong(specialGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			
+			JSONArray generalGrievanceTypeIdsArr = jObj.getJSONArray("generalGrievanceTypeIdsArr");  
+			List<Long> generalGrievanceTypeIds = new ArrayList<Long>();
+			if(generalGrievanceTypeIdsArr != null && generalGrievanceTypeIdsArr.length() > 0){
+				for (int i = 0; i < generalGrievanceTypeIdsArr.length(); i++){
+					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
+				} 
+			}
+			Long propasalCategoryId = jObj.getLong("propasalCategoryId");
+			Long propasalStatusId = jObj.getLong("propasalStatusId");
+			
+     	    alertCoreDashBoardVOs = alertManagementSystemService.getFinancialAssistanceAlertCntDtls(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId, calCntrIdList, userType, socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds,propasalCategoryId,propasalStatusId);
+			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
+		}catch(Exception e){
+			LOG.error("Exception occured in getFinancialAssistanceAlertCntDtls() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
 }
