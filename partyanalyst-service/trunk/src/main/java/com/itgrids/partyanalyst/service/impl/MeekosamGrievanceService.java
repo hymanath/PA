@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itgrids.partyanalyst.dao.IAlertCandidateDAO;
-import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -19,10 +16,10 @@ import com.itgrids.partyanalyst.dao.IMeekosamAnnualIncomeDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamArgeeCategoryDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamCasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamOccupationDAO;
+import com.itgrids.partyanalyst.dao.IMeekosamPetitionerDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
-import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.PetitionerDetailsVO;
@@ -48,55 +45,49 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	private IMeekosamCasteCategoryDAO meekosamCasteCategoryDAO;
 	private IMeekosamArgeeCategoryDAO meekosamArgeeCategoryDAO;
 	private IMeekosamAnnualIncomeDAO meekosamAnnualIncomeDAO;
+	private IMeekosamPetitionerDAO meekosamPetitionerDAO;
 	
+	public void setMeekosamPetitionerDAO(
+			IMeekosamPetitionerDAO meekosamPetitionerDAO) {
+		this.meekosamPetitionerDAO = meekosamPetitionerDAO;
+	}
 	public void setCommonMethodsUtilService(
 			CommonMethodsUtilService commonMethodsUtilService) {
 		this.commonMethodsUtilService = commonMethodsUtilService;
 	}
-
 	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
 		this.userAddressDAO = userAddressDAO;
 	}
-
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
 	}
-
 	public void setDistrictDAO(IDistrictDAO districtDAO) {
 		this.districtDAO = districtDAO;
 	}
-
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
 	}
-
 	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
 		this.localElectionBodyDAO = localElectionBodyDAO;
 	}
-
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
 	}
-
 	public void setHamletDAO(IHamletDAO hamletDAO) {
 		this.hamletDAO = hamletDAO;
 	}
-
 	public void setMeekosamOccupationDAO(
 			IMeekosamOccupationDAO meekosamOccupationDAO) {
 		this.meekosamOccupationDAO = meekosamOccupationDAO;
 	}
-
 	public void setMeekosamCasteCategoryDAO(
 			IMeekosamCasteCategoryDAO meekosamCasteCategoryDAO) {
 		this.meekosamCasteCategoryDAO = meekosamCasteCategoryDAO;
 	}
-
 	public void setMeekosamArgeeCategoryDAO(
 			IMeekosamArgeeCategoryDAO meekosamArgeeCategoryDAO) {
 		this.meekosamArgeeCategoryDAO = meekosamArgeeCategoryDAO;
 	}
-
 	public void setMeekosamAnnualIncomeDAO(
 			IMeekosamAnnualIncomeDAO meekosamAnnualIncomeDAO) {
 		this.meekosamAnnualIncomeDAO = meekosamAnnualIncomeDAO;
@@ -104,7 +95,6 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
-
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
@@ -142,6 +132,7 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 						meekosamPetitioner.setUpdatedBy(inputvo.getUserId());
 						meekosamPetitioner.setInsertedTime(date.getCurrentDateAndTime());
 						meekosamPetitioner.setUpdatedTime(date.getCurrentDateAndTime());
+						meekosamPetitionerDAO.save(meekosamPetitioner);
 						status = "susscess";
 						return status;
 					}catch(Exception e){
