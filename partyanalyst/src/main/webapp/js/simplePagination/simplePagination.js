@@ -118,7 +118,7 @@
 
 			// Generate Prev link
 			if (o.prevText) {
-				methods._appendItem.call(this, o.currentPage - 1, {text: o.prevText, classes: 'prev'});
+				methods._appendItem.call(this, o.currentPage - 1, {text: o.prevText, classes: ''});
 			}
 
 			// Generate start edges
@@ -154,7 +154,7 @@
 
 			// Generate Next link
 			if (o.nextText) {
-				methods._appendItem.call(this, o.currentPage + 1, {text: o.nextText, classes: 'next'});
+				methods._appendItem.call(this, o.currentPage + 1, {text: o.nextText, classes: ''});
 			}
 		},
 
