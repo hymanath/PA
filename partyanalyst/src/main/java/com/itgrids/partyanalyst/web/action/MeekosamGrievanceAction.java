@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -7,6 +9,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.IdAndNameVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.PetitionerDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IMeekosamGrievanceService;
 import com.opensymphony.xwork2.Action;
@@ -20,8 +25,36 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 	private JSONObject jObj;
 	private String task;
 	private IMeekosamGrievanceService meekosamGrievanceService;
+	private PetitionerDetailsVO petitionerDetailsVO;
+	private String successMsg;
+	private List<IdNameVO> idNameVOs;
+	private List<IdAndNameVO> idAndNameVOs;
 	
 	
+	public List<IdNameVO> getIdNameVOs() {
+		return idNameVOs;
+	}
+	public void setIdNameVOs(List<IdNameVO> idNameVOs) {
+		this.idNameVOs = idNameVOs;
+	}
+	public List<IdAndNameVO> getIdAndNameVOs() {
+		return idAndNameVOs;
+	}
+	public void setIdAndNameVOs(List<IdAndNameVO> idAndNameVOs) {
+		this.idAndNameVOs = idAndNameVOs;
+	}
+	public String getSuccessMsg() {
+		return successMsg;
+	}
+	public void setSuccessMsg(String successMsg) {
+		this.successMsg = successMsg;
+	}
+	public PetitionerDetailsVO getPetitionerDetailsVO() {
+		return petitionerDetailsVO;
+	}
+	public void setPetitionerDetailsVO(PetitionerDetailsVO petitionerDetailsVO) {
+		this.petitionerDetailsVO = petitionerDetailsVO;
+	}
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
@@ -65,5 +98,72 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 			return Action.SUCCESS;
 		else
 			return Action.ERROR;
+	}
+	public String saveMeekosamPetitionerDetails(){
+	   try {
+		   session = request.getSession();
+		   RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+		   if(regVo == null)
+			   successMsg = "failure";
+		   Long userId = regVo.getRegistrationID();
+		   petitionerDetailsVO.setUserId(userId);
+		   successMsg = meekosamGrievanceService.saveMeekosamPetitionerDetails(petitionerDetailsVO);
+		   
+		} catch (Exception e) {
+			LOG.error("Exception Raised in saveMeekosamPetitionerDetails() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
+	public String getAllMandalsByDistrictID(){
+	   try {
+		   jObj = new JSONObject(getTask());
+		   Long districtId = jObj.getLong("districtId");
+		   idNameVOs = meekosamGrievanceService.getAllMandalsByDistrictID(districtId);
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getAllMandalsByDistrictID() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
+	public String getAllHamletByPanchayatID(){
+	   try {
+		   jObj = new JSONObject(getTask());
+		   Long panchayatId = jObj.getLong("panchayatId");
+		   idNameVOs = meekosamGrievanceService.getAllHamletByPanchayatID(panchayatId);
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getAllHamletByPanchayatID() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
+	public String getMeekosamOccupationList(){
+	   try {
+		   idAndNameVOs = meekosamGrievanceService.getMeekosamOccupationList();
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMeekosamOccupationList() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
+	public String getMeekosamCasteCategoryList(){
+	   try {
+		   idAndNameVOs = meekosamGrievanceService.getMeekosamCasteCategoryList();
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMeekosamCasteCategoryList() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
+	public String getMeekosamArgeeCategoryList(){
+	   try {
+		   idAndNameVOs = meekosamGrievanceService.getMeekosamArgeeCategoryList();
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMeekosamArgeeCategoryList() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
+	public String getMeekosamAnnualIncomeList(){
+	   try {
+		   idAndNameVOs = meekosamGrievanceService.getMeekosamAnnualIncomeList();
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getMeekosamAnnualIncomeList() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
 	}
 }
