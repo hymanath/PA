@@ -67,6 +67,7 @@ import com.itgrids.partyanalyst.service.ICoreDashboardService1;
 import com.itgrids.partyanalyst.service.ICoreDashboardToursService;
 import com.itgrids.partyanalyst.service.INewsCoreDashBoardService;
 import com.itgrids.partyanalyst.service.IPaymentGatewayService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ImageAndStringConverter;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -3282,7 +3283,9 @@ public String savingCadreDetails(){
 			cadreRegistrationVO.setWebUserId(user.getRegistrationID());
 		//cadreRegistrationVO.setDataSourceType("WEB");// srishailam : dont remove comment it , i already mentioned in web registration page as web for this property
 		
-		if(cadreRegistrationVO.getIsNewImageExist().equalsIgnoreCase("newImage")){
+		if(cadreRegistrationVO.getFamilyVoterId() != null && cadreRegistrationVO.getFamilyVoterId().longValue()>0L){
+    		cadreRegistrationVO.setPhotoType(IConstants.CADRE_IMAGE_TYPE_NEW);
+		}else if(cadreRegistrationVO.getIsNewImageExist().equalsIgnoreCase("newImage") ){
 			cadreRegistrationVO.setPhotoType("NEW");
 		}else if(cadreRegistrationVO.getIsNewImageExist().equalsIgnoreCase("existImage")){
 			if(cadreRegistrationVO.getTdpCadreId() != null && cadreRegistrationVO.getTdpCadreId().longValue() > 0l){
