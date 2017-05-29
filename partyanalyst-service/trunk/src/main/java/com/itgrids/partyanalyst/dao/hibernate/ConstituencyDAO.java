@@ -2173,6 +2173,47 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 	  query.setParameterList("districtIds", districtIds);
 	  return query.list();
   }
+  public List<Object[]> getTehsilsByDistrict(Long districtId){
+		Query query = getSession().createSQLQuery(" select distinct " +
+				" T.tehsil_id as tehsilId , " +
+				" T.tehsil_name as name from " +
+				" tehsil T, constituency CON, constituency_tehsil CT  " +
+				" where " +
+				" CON.constituency_id = CT.constituency_id and " +
+				" T.tehsil_id = CT.tehsil_id and " +
+				" CON.district_id = :districtId order by T.tehsil_name")
+				.addScalar("tehsilId",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING);
+		query.setParameter("districtId", districtId);
+		return query.list();
+	}
+	
+	public List<Object[]> getLocalElectionBodiesByDistrict(Long districtId){
+		Query query = getSession().createSQLQuery("select distinct " +
+				" localBody.local_election_body_id as id," +
+				" concat(localBody.name,' ',et.election_type) as name " +
+				" from " +
+				" assembly_local_election_body assemblyLocalBody,local_election_body  localBody, election_type et,constituency CON  " +
+				" where " +
+				" assemblyLocalBody.local_election_body_id = localBody.local_election_body_id and  " +
+				" year =  (select max(year) from assembly_local_election_body) and " +
+				" et.election_type_id = localBody.election_type_id and" +
+				" assemblyLocalBody.constituency_id = CON.constituency_id and" +
+				" CON.district_id = :districtId " +
+				" order by localBody.name ")
+				.addScalar("id",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING);
+		query.setParameter("districtId", districtId);
+		return query.list();
+		
+	}
+	public List<Object[]> getHamletByPanchayat(Long panchayatId){
+		Query query = getSession().createSQLQuery(" select H.hamlet_id as id, H.hamlet_name as name from hamlet H, panchayat_hamlet PH where H.hamlet_id = PH.hamlet_id and PH.panchayat_id=:panchayatId ")
+				.addScalar("id",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING);
+		query.setParameter("panchayatId", panchayatId);
+		return query.list();
+		
+	}
+	
 }
-
-
