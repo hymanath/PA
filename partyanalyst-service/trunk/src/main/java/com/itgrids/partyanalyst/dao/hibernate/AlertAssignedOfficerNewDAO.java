@@ -11,6 +11,7 @@ import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
+import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -6693,4 +6694,175 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 return query.list();
 	 }
 	 
+	 public List<Object[]> getAlertProposalCategoryWiseAlertCnt(Date fromDate, Date toDate, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,
+     		List<Long> alertStatusIds,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
+     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
+ 		
+		  StringBuilder sb = new StringBuilder();  
+ 	      
+		  sb.append("select ");
+ 	      sb.append(" model.govtProposalCategory.govtProposalCategoryId," +
+ 	      		    " model.govtProposalCategory.category," +
+ 	      		    " model.govtProposalStatus.govtProposalStatusId," +
+ 	      		    " model.govtProposalStatus.status " );
+ 	      
+  	     sb.append(" ,count(distinct model.alert.alertId),sum(model.proposalAmount) ");
+ 	      
+	 	 sb.append(" from GovtProposalPropertyCategory model" +
+	 	          " left join model.alert.edition EDS " +
+	 	          " left join model.alert.tvNewsChannel TNC " +
+	 	          " left join model.alert.alertCategory AC" +
+	 	          " left join model.alert.socialMediaType SMT " +
+	 	          " left join model.alert.alertCallCenterType ACCT,AlertAssignedOfficerNew model1," +
+	 	          " GovtDepartmentDesignationOfficerNew GDDON," +
+	 	          " GovtUserAddress UA  ");
+	     sb.append(" where model1.alertId = model.alert.alertId " +
+	     		  "  and model1.govtDepartmentDesignationOfficerId=GDDON.govtDepartmentDesignationOfficerId " +
+	     		  "  and GDDON.addressId=UA.userAddressId " +
+	     		  "  and model.alert.isDeleted='N' and model.isDeleted = 'N' and model1.isDeleted='N' " +
+	 	          "  and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") and " +
+	 	    	  "  AC.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
+ 	    
+ 	     if(departmentIds != null && !departmentIds.isEmpty())
+ 	      sb.append("  and model1.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
+ 	    
+ 	      if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+ 	  	      sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) ) ");
+ 		   } 
+ 	     
+ 	      if(fromDate != null && toDate != null)
+   	        sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+ 	    
+ 	      StringBuilder querySb = prepareQueryBasedOnUserAccessLevel(levelId,levelValues);//Getting Dynamic Query Based on Access Level
+ 	      
+ 	      if(querySb.length() > 0){
+ 	    	 sb.append(querySb); 
+ 	      }
+ 	    
+ 	    if(alertStatusIds != null && alertStatusIds.size() > 0){
+ 	    	sb.append(" and model1.alertStatus.alertStatusId in (:alertStatusIds)");
+ 	    }
+ 	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
+ 	    	sb.append(" and model.alert.alertSeverityId in (:alertSeverityIds)");
+ 	    }
+ 	    sb.append(" group by model.govtProposalCategory.govtProposalCategoryId,model.govtProposalStatus.govtProposalStatusId" +
+ 	    		"  order by model.govtProposalCategory.govtProposalCategoryId,model.govtProposalStatus.govtProposalStatusId ");
+ 	  
+ 	    Query query = getSession().createQuery(sb.toString());
+ 	    if(departmentIds != null && !departmentIds.isEmpty())
+ 	      query.setParameterList("departmentIds", departmentIds);
+ 	    
+ 	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null  && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+ 	       query.setParameterList("printIdList", printIdsList);
+    	       query.setParameterList("electronicIdList", electronicIdsList);
+    	       query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+    	       query.setParameterList("calCntrIds", calCntrIds);
+	       	   query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+	 		   query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+	 		   query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+	 		   query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
+    	     }  
+ 	    if(fromDate != null && toDate != null){
+ 	        query.setDate("fromDate", fromDate);
+ 	        query.setDate("toDate", toDate);
+ 	    }
+ 	    if(querySb.length()>0){
+ 	    	query.setParameterList("levelValues", levelValues);
+ 	    }
+ 	    if(alertStatusIds != null && alertStatusIds.size() > 0){
+ 	    	 query.setParameterList("alertStatusIds", alertStatusIds);
+ 	    }
+ 	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
+ 	    	query.setParameterList("alertSeverityIds", alertSeverityIds);
+ 	    }
+ 	      return query.list();
+ 	}
+	 public List<Long> getAlertProposalCategoryWiseAlertDtls(Date fromDate, Date toDate, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,
+	     		List<Long> alertStatusIds,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
+	     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,
+	     		List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long proposalCategoryId,Long proposalStatusId){
+	 		
+			  StringBuilder sb = new StringBuilder();  
+			  
+	 	     sb.append(" select distinct model.alert.alertId ");
+	 	     
+	 	 	 sb.append(" from GovtProposalPropertyCategory model" +
+		 	          " left join model.alert.edition EDS " +
+		 	          " left join model.alert.tvNewsChannel TNC " +
+		 	          " left join model.alert.alertCategory AC" +
+		 	          " left join model.alert.socialMediaType SMT " +
+		 	          " left join model.alert.alertCallCenterType ACCT,AlertAssignedOfficerNew model1," +
+		 	          " GovtDepartmentDesignationOfficerNew GDDON," +
+		 	          " GovtUserAddress UA  ");
+		     sb.append(" where model1.alertId = model.alert.alertId " +
+		     		  "  and model1.govtDepartmentDesignationOfficerId=GDDON.govtDepartmentDesignationOfficerId " +
+		     		  "  and GDDON.addressId=UA.userAddressId " +
+		     		  "  and model.alert.isDeleted='N' and model.isDeleted = 'N' and model1.isDeleted='N' " +
+		 	          "  and model.alert.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") and " +
+		 	    	  "  AC.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
+	 	    
+	 	     if(departmentIds != null && !departmentIds.isEmpty())
+	 	      sb.append("  and model1.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
+	 	    
+	 	      if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+	 	  	      sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) ) ");
+	 		   } 
+	 	     
+	 	      if(fromDate != null && toDate != null)
+	   	        sb.append(" and date(model.insertedTime) between :fromDate and :toDate");
+	 	    
+	 	      StringBuilder querySb = prepareQueryBasedOnUserAccessLevel(levelId,levelValues);//Getting Dynamic Query Based on Access Level
+	 	      
+	 	      if(querySb.length() > 0){
+	 	    	 sb.append(querySb); 
+	 	      }
+	 	    
+	 	    if(alertStatusIds != null && alertStatusIds.size() > 0){
+	 	    	sb.append(" and model1.alertStatus.alertStatusId in (:alertStatusIds)");
+	 	    }
+	 	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
+	 	    	sb.append(" and model.alert.alertSeverityId in (:alertSeverityIds)");
+	 	    }
+	 	    if(proposalCategoryId != null && proposalCategoryId.longValue() > 0){
+	 	      sb.append(" and model.govtProposalCategory.govtProposalCategoryId=:proposalCategoryId");
+	 	    }
+	 	   if(proposalStatusId != null && proposalStatusId.longValue() > 0){
+		 	  sb.append(" and model.govtProposalStatus.govtProposalStatusId=:proposalStatusId");
+		 	}
+	 	    Query query = getSession().createQuery(sb.toString());
+	 	    if(departmentIds != null && !departmentIds.isEmpty())
+	 	      query.setParameterList("departmentIds", departmentIds);
+	 	    
+	 	    if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null  && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
+	 	       query.setParameterList("printIdList", printIdsList);
+	    	       query.setParameterList("electronicIdList", electronicIdsList);
+	    	       query.setParameterList("socialMediaTypeIds", socialMediaTypeIds);
+	    	       query.setParameterList("calCntrIds", calCntrIds);
+		       	   query.setParameterList("mondayGrievanceTypeIds", mondayGrievanceTypeIds);
+		 		   query.setParameterList("janmabhoomiTypeIds", janmabhoomiTypeIds);
+		 		   query.setParameterList("specialGrievanceTypeIds", specialGrievanceTypeIds);
+		 		   query.setParameterList("generalGrievanceTypeIds", generalGrievanceTypeIds);
+	    	     }  
+	 	    if(fromDate != null && toDate != null){
+	 	        query.setDate("fromDate", fromDate);
+	 	        query.setDate("toDate", toDate);
+	 	    }
+	 	    if(querySb.length()>0){
+	 	    	query.setParameterList("levelValues", levelValues);
+	 	    }
+	 	    if(alertStatusIds != null && alertStatusIds.size() > 0){
+	 	    	 query.setParameterList("alertStatusIds", alertStatusIds);
+	 	    }
+	 	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
+	 	    	query.setParameterList("alertSeverityIds", alertSeverityIds);
+	 	    }
+	 	   if(proposalCategoryId != null && proposalCategoryId.longValue() > 0){
+	 		  query.setParameter("proposalCategoryId", proposalCategoryId);
+		   }
+		   if(proposalStatusId != null && proposalStatusId.longValue() > 0){
+			   query.setParameter("proposalStatusId", proposalStatusId);
+		   }
+	 	      return query.list();
+	 	}
+    
 }

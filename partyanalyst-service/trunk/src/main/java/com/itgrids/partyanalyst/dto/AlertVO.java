@@ -90,6 +90,7 @@ public class AlertVO {
 	private String callerDuplicate;
     private Map<Long,AlertVO> subMap;	
     private Set<Long> childDeptIds;
+    private Long proposalAmount=0l;
 
 	
 	public String getCallerDuplicate() {
@@ -562,6 +563,12 @@ public class AlertVO {
 	}
 	public void setChildDeptIds(Set<Long> childDeptIds) {
 		this.childDeptIds = childDeptIds;
+	}
+	public Long getProposalAmount() {
+		return proposalAmount;
+	}
+	public void setProposalAmount(Long proposalAmount) {
+		this.proposalAmount = proposalAmount;
 	}
     	
 }
