@@ -460,8 +460,9 @@
 						<h4 class="panel-header text-center"></h4>
 					  </div>
 					  <div id="stateWiseOverView"></div>
+					    <div id="paginationDivId"  style="margin-top:0px;margin-left:190px;"></div>
 						<div id="eventMembersDiv" style="margin-top:15px;padding:15px;margin-bottom:10px;"></div>
-						<div id="paginationDivId"  style="margin-top:0px;margin-left:20px;"></div>
+						<div id="paginationDivId1"  style="margin-top:0px;margin-left:20px;"></div>
 				</div>
 			</div>
     </div>
@@ -614,7 +615,6 @@ str+='<span id="errormsg" class="errorDiv"></span>';
 str+='<button class="btn btn-block btn-default btn-custom"   onclick="eventUpdate()">UPDATE</button>';
 $("#accordion").html(str);
 eventUpdate();
-getDiasetails("","");
 }
 
 var dpCurentDate;
@@ -1774,7 +1774,7 @@ function buildStartingPrograms(result,parentEventId){
 						if(result[i].id == 56 || result[i].id == 57){//dias entry and exit
 							str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;<span class="dayCountClickCls" attr_day_date="'+result[i].subList[j].dateStr+'" attr_event_id="'+result[i].id+'">'+result[i].subList[j].attendees+'</span></li>';
 						}else{
-							str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';
+							str+='<li>'+result[i].subList[j].name+':'+result[i].subList[j].attendees+'</li>';
 						}
 						  
 					}else{
@@ -2665,6 +2665,18 @@ function getSubEventMembers(eventId,startIndex,count,name){
 			}
 		});
 	}	
+	 if(jObj.startIndex==0){
+		   $("#paginationDivId1").pagination({
+			items: count,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*25;
+					getSubEventMembers(eventId,num,count,name);
+				
+			}
+		});
+	}
 			$('#eventMembersDialog').find('h4').html('<span class="text-uppercase" id="dialogueHead">'+name+' EVENT VISITORS DETAILS</span>');
 		
 			$("#eventMembersDialog").modal("show");		
@@ -2756,15 +2768,15 @@ function closeDialogue()
 $( "#processingDialogue" ).dialog('close');
 }
 
-function getRegistrationsCnt()
+function getRegistrationsCnt() 
 {
-
 
 	$("#RegistrationCntDiv").html('<center><img id="img" src="images/icons/loading.gif" style="width:30px;height:30px;"/></center>');
 		var jObj = {
 			
 			startDate : startDate,
-			endDate : endDate
+			endDate : endDate,
+			enrollmentYearIdsArr : enrollmentYearIdsArrGlob
 		}	
 		
 		$.ajax({
@@ -2949,7 +2961,7 @@ var tableToExcel = (function() {
 				 "searching": true,
 				 "autoWidth": true,
 				"sDom": '<"top"fl>rt<"bottom"ip><"clear">',
-				"ordering": false
+				"ordering": [ 4, 'desc' ]
 				
 			});
 		 });
@@ -2982,7 +2994,8 @@ function getPublicrepresentatives(){
 		
 		var str='';
 		if(result !=null && result.length>0){
-			str+='<table class="table table-bordered" style="background: rgb(239, 243, 244) none repeat scroll 0px 0px;">';
+			str+='<table class="table table-bordered" style="background: rgb(239, 243, 244) none repeat scroll 0px 0px;" id="dataTablePublicRep">';
+			str+='<thead>';
 			  str+='<tr>';
 				str+='<td rowspan="2"></td>';
 				str+='<td class="text-center text-capitalize" style="vertical-align:middle" rowspan="2">Total Invitees</td>';
@@ -3011,6 +3024,8 @@ function getPublicrepresentatives(){
 						}
 				}
 			  str+='</tr>';
+			  str+='</thead>';
+			  str+='<tbody>';
 			  	for(var j in result){
 					str+='<tr>';
 						str+='<td>'+result[j].name+'</td>';
@@ -3064,12 +3079,21 @@ function getPublicrepresentatives(){
 						}
 					str+='</tr>';
 				}
-			
+			str+='</tbody>';
 			str+='</table>';
 			$("#publicRepresentativeDiv").html(str);
 		}else{
 			$("#publicRepresentativeDiv").html("NO DATA AVAILABLE");
 		}
+		 $('#dataTablePublicRep').DataTable({
+				 "paging":   true,
+				 "info":     true,
+				 "searching": true,
+				 "autoWidth": true,
+				"sDom": '<"top"fl>rt<"bottom"ip><"clear">',
+				"ordering": [ 4, 'desc' ]
+				
+			}); 
 	} 
 	
 	$(document).on("click",".dayCountClickCls",function(){
@@ -3171,7 +3195,7 @@ function getPublicrepresentatives(){
 				 "searching": true,
 				 "autoWidth": true,
 				"sDom": '<"top"fl>rt<"bottom"ip><"clear">',
-				"ordering": false
+				"ordering": [ 4, 'desc' ]
 				
 			});
 		 

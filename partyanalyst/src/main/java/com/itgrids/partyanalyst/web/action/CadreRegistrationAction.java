@@ -2387,7 +2387,15 @@ public class CadreRegistrationAction  extends ActionSupport implements ServletRe
 			
 			jobj = new JSONObject(getTask());
 			
-			cardPrintUserVO =  cadreRegistrationService.getCadrePrintDetails(jobj.getString("startDate"),jobj.getString("endDate"));
+			List<Long> enrollmentYearIds = new ArrayList<Long>(0);
+			JSONArray yearIds = jobj.getJSONArray("enrollmentYearIdsArr");
+			if(yearIds != null && yearIds.length() > 0){
+				for (int i = 0; i < yearIds.length(); i++) {
+					enrollmentYearIds.add(Long.parseLong(yearIds.getString(i)));
+				}
+			}
+			
+			cardPrintUserVO =  cadreRegistrationService.getCadrePrintDetails(jobj.getString("startDate"),jobj.getString("endDate"),enrollmentYearIds);
 		}
 		catch (Exception e) {
 			LOG.error(" Entered Into getCadreReprintCount",e);
