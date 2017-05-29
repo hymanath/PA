@@ -2493,7 +2493,7 @@ public CadreVo getDetailToPopulate(String voterIdCardNo,Long publicationId)
 						   dateVO.setDateStr(betweenDates.get(i)!=null?sdf.format(betweenDates.get(i)):"");
 						   dateVO.setDataExist(false);
 						   int dayCount = i+1;
-						   dateVO.setName("Day- "+dayCount);
+						   dateVO.setName("Day-"+dayCount);
 						   if(vo.getSubMap() == null){
 							   vo.setSubMap(new LinkedHashMap<String, MahanaduEventVO>());
 						   }
