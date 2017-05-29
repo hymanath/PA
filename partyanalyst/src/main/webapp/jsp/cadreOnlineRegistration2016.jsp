@@ -1235,6 +1235,7 @@ textarea {
         <h4 class="modal-title" id="myModalLabel">VALIDATING CADRE DETAILS WITH MOBILE NUMBER</h4>
       </div>
       <div class="modal-body">
+	  <!--
 	  <div>
 		<label>OTP Send To:</label>
 		 <input type="text" id="checkMblNoId" disabled/>
@@ -1253,6 +1254,9 @@ textarea {
 			   <button id="newRegOKDivId" type="button" class="btn btn-success  btn-sm btn-xs" style="margin-left:9px;" onclick="confirmOtpDetails();">Validate</button>
 			   <button id="renwalOKDivId" type="button" class="btn btn-success validateROTPCls  btn-sm btn-xs" style="margin-left:9px;" onclick="renwalOtpDetails();">Validate</button>
 		</div>	
+		-->		
+		<button id="newRegOKDivId" type="button" class="btn btn-success  btn-sm btn-xs" style="margin-left:9px;" onclick="confirmOtpDetails();">Validate</button>
+	   <button id="renwalOKDivId" type="button" class="btn btn-success validateROTPCls  btn-sm btn-xs  pull-right" style="margin-left:9px;" onclick="renwalOtpDetails();">Validate</button>
 		<div><span id="otpStusErrDivId"></span><span id="otpStusErrImgId" style="display:none;"><img src="images/search.gif"/></span></div>
       </div>
       <div class="modal-footer">
