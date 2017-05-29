@@ -6724,7 +6724,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 	    	  "  AC.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
  	    
  	     if(departmentIds != null && !departmentIds.isEmpty())
- 	      sb.append("  and model1.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
+ 	      sb.append("  and GDDON.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
  	    
  	      if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
  	  	      sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) ) ");
@@ -6802,7 +6802,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 		 	    	  "  AC.alertCategoryId in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
 	 	    
 	 	     if(departmentIds != null && !departmentIds.isEmpty())
-	 	      sb.append("  and model1.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
+	 	      sb.append("  and GDDON.govtDepartmentDesignation.govtDepartment.govtDepartmentId in (:departmentIds)");
 	 	    
 	 	      if(printIdsList != null && !printIdsList.isEmpty() && electronicIdsList != null && !electronicIdsList.isEmpty() && calCntrIds !=null && !calCntrIds.isEmpty() && socialMediaTypeIds != null && !socialMediaTypeIds.isEmpty() && mondayGrievanceTypeIds != null && mondayGrievanceTypeIds.size() > 0 && janmabhoomiTypeIds != null && janmabhoomiTypeIds.size() > 0 && specialGrievanceTypeIds != null && specialGrievanceTypeIds.size() > 0 && generalGrievanceTypeIds != null && generalGrievanceTypeIds.size() > 0){
 	 	  	      sb.append(" and (EDS.newsPaperId in (:printIdList)  or (TNC.tvNewsChannelId in (:electronicIdList))  or (SMT.socialMediaTypeId in(:socialMediaTypeIds)) or (ACCT.alertCallCenterTypeId in(:calCntrIds)) or (model.alert.mondayGrievanceTypeId in (:mondayGrievanceTypeIds)) or (model.alert.janmabhoomiTypeId in (:janmabhoomiTypeIds)) or (model.alert.specialGrievanceTypeId in (:specialGrievanceTypeIds)) or (model.alert.generalGrievanceTypeId in (:generalGrievanceTypeIds)) ) ");
