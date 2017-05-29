@@ -102,6 +102,8 @@ $(document).on("click",".filterSubmitBtnCls",function(){
 			stateLevelDeptOfficerLocationLevelOverview();
 			stateLevelDeptOfficerDepartmentWiseAlertsView();
 			getAlertSourceWiseAlert();
+			//getFinancialAssistanceAlertCntCategoryWise();
+			//getFinancialAssistanceAlertCntDtls();
 		});
 	}
 
@@ -3915,3 +3917,66 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
     });
 }
 /*Alert Source End*/
+
+/* Financial Assistance Block Start */
+
+function getFinancialAssistanceAlertCntCategoryWise()
+{
+	 
+	$("#alertSourceWiseDetilsDivId").html(spinner);
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : 1,
+      deptIdArr : globalDepartmentIdsArr,  
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr : channelGlobalArr,
+	  callCenterArr : callCenterGlobalArr,
+	  userType :"stateLevel",
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+	  alertSeverityIdsArr:globalAlertSeverityIdsArr,
+      alertStatusIdsArr:globalAlertStatusIdsArr,
+      mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+	  janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+	  specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+	  generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getFinancialAssistanceAlertCntCategoryWiseAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+	    console.log(result);
+    });
+}
+function getFinancialAssistanceAlertCntDtls()
+{
+	 
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : 1,
+      deptIdArr : globalDepartmentIdsArr,  
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr : channelGlobalArr,
+	  callCenterArr : callCenterGlobalArr,
+	  userType :"stateLevel",
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+	  alertSeverityIdsArr:globalAlertSeverityIdsArr,
+      alertStatusIdsArr:globalAlertStatusIdsArr,
+      mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+	  janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+	  specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+	  generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr,
+	  propasalCategoryId:1,
+	  propasalStatusId:0
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getFinancialAssistanceAlertCntDtlsAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+	    console.log(result);
+    });
+}
+/* Financial Assistance Block End  */
