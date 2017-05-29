@@ -4062,4 +4062,16 @@
 	 <bean id="meekosamAnnualIncomeDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamAnnualIncomeDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="govtProposalCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtProposalCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtProposalStatusDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtProposalStatusDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtProposalPropertyCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtProposalPropertyCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="govtProposalPropertyCategoryTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtProposalPropertyCategoryTrackingDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
