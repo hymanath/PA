@@ -1,0 +1,11 @@
+package com.itgrids.partyanalyst.dao;
+
+import org.appfuse.dao.GenericDao;
+
+import com.itgrids.partyanalyst.model.GovtProposalPropertyCategory;
+
+public interface IGovtProposalPropertyCategoryDAO extends GenericDao<GovtProposalPropertyCategory, Long>{
+	
+	public GovtProposalPropertyCategory getExistingStatusByAlertId(Long alertId);
+
+}
