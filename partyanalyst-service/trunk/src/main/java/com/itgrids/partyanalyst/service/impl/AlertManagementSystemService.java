@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
@@ -11455,4 +11456,160 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		}
 		return finalList;
 	}
+	/*
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getFinancialAssistanceAlertCntCategoryWise(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long, java.util.List, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List)
+	 */
+	public List<AlertVO> getFinancialAssistanceAlertCntCategoryWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,String userType,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
+		LOG.info("Entered in getFinancialAssistanceAlertCntCategoryWise() method of AlertManagementSystemService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+			
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//Prepare Parameter
+			
+			if(deptIdList != null && deptIdList.size() == 0){
+				deptIdList.add(0L);  
+			}
+				List<Long> levelValues = new ArrayList<Long>();    
+				Long levelId = 0L;
+				List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+				if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+					for(Object[] param : lvlValueAndLvlIdList){
+						levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					}
+				}
+			     
+				Map<Long,AlertVO> catgoryMap = new LinkedHashMap<Long, AlertVO>(0);
+				Map<Long,String> categoryNameAndIdMap = new HashMap<Long, String>(0);
+				   
+			    List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertProposalCategoryWiseAlertCnt(fromDate, toDate, printIdList, electronicIdList, deptIdList, levelId, levelValues, alertStatusIds, calCntrIdList, socialMediaTypeIds, alertSeverityIds, mondayGrievanceTypeIds, janmabhoomiTypeIds, specialGrievanceTypeIds, generalGrievanceTypeIds);
+			
+			    setAlertProposalCategoryWiseAlertcnt(rtrnObjLst,catgoryMap,categoryNameAndIdMap);
+			
+			  Long totalAmount = 0l;
+			 if(catgoryMap != null && catgoryMap.size() >0){
+				 for(Entry<Long,AlertVO> categoryEntry:catgoryMap.entrySet()){
+					 AlertVO  categoryVO = new AlertVO();
+					 categoryVO.setId(categoryEntry.getKey());
+					 categoryVO.setName(categoryNameAndIdMap.get(categoryEntry.getKey()));
+					 if(categoryEntry.getValue().getSubList2() != null && categoryEntry.getValue().getSubList2().size() > 0){
+						 for(AlertVO statusVO:categoryEntry.getValue().getSubList2()){
+							 categoryVO.getSubList2().add(statusVO);
+							 categoryVO.setAlertCnt(categoryVO.getAlertCnt()+statusVO.getAlertCnt());
+							 categoryVO.setProposalAmount(categoryVO.getProposalAmount()+statusVO.getProposalAmount());
+							 totalAmount = totalAmount +statusVO.getProposalAmount();
+						 }
+					 }
+					 finalAlertVOs.add(categoryVO);
+				 }
+			 }
+			 if(finalAlertVOs != null && finalAlertVOs.size() > 0){
+				 finalAlertVOs.get(0).setCount(totalAmount);//Setting total amount
+			 }
+			return finalAlertVOs; 
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getFinancialAssistanceAlertCntCategoryWise() method of AlertManagementSystemService{}");
+		}
+		return null;
+	}
+	public void setAlertProposalCategoryWiseAlertcnt(List<Object[]> objList,Map<Long,AlertVO> categoryMap,Map<Long,String> categoryIdAndNameMap){
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					 AlertVO categoryVO = categoryMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));//CategoryId
+					 if(categoryVO == null){
+						 categoryVO = new AlertVO();
+						 categoryVO.setSubList2(getAlertProposalStatusList(objList));
+						 categoryIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+						 categoryMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), categoryVO);
+						 
+					 }
+					 Long propalStatusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					 AlertVO statusVO = getmatchedVo(categoryVO.getSubList2(),propalStatusId);
+					 if(statusVO != null){
+						 statusVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(param[4]));//AlertCnt
+						 statusVO.setProposalAmount(commonMethodsUtilService.getLongValueForObject(param[5]));//amount
+					 }
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setAlertProposalCategoryWiseAlertcnt() method of AlertManagementSystemService{}");
+		}
+	}
+	public List<AlertVO> getAlertProposalStatusList(List<Object[]> objList){
+		List<AlertVO> statuList = new ArrayList<AlertVO>();
+		Map<Long,AlertVO> statuMap = new TreeMap<Long, AlertVO>();
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					 AlertVO statusVO = new AlertVO();
+					 statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));//StatusId
+					 statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));//StatusName
+					 statuMap.put(statusVO.getId(), statusVO);
+				}
+			}
+			if(statuMap != null && statuMap.size() > 0){
+				statuList.addAll(statuMap.values());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertProposalStatusList() method of AlertManagementSystemService{}");
+		}
+		return statuList;
+	}
+	/*
+	 * Santosh (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getFinancialAssistanceAlertCntDtls(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long, java.util.List, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.lang.Long, java.lang.Long)
+	 */
+	public List<AlertCoreDashBoardVO> getFinancialAssistanceAlertCntDtls(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,String userType,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long proposalCategoryId,Long proposalStatusId){
+		LOG.info("Entered in getFinancialAssistanceAlertCntDtls() method of AlertManagementSystemService{}");
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			}
+			
+			List<AlertCoreDashBoardVO> finalAlertVOs = new ArrayList<AlertCoreDashBoardVO>();
+			
+			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//Prepare Parameter
+			
+			if(deptIdList != null && deptIdList.size() == 0){
+				deptIdList.add(0L);  
+			}
+				List<Long> levelValues = new ArrayList<Long>();    
+				Long levelId = 0L;
+				List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+				if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+					for(Object[] param : lvlValueAndLvlIdList){
+						levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					}
+				}
+			    List<Long> alertIds = alertAssignedOfficerNewDAO.getAlertProposalCategoryWiseAlertDtls(fromDate, toDate, printIdList, electronicIdList, deptIdList, levelId, levelValues, alertStatusIds, calCntrIdList, socialMediaTypeIds, alertSeverityIds, mondayGrievanceTypeIds, janmabhoomiTypeIds, specialGrievanceTypeIds, generalGrievanceTypeIds,proposalCategoryId,proposalStatusId);
+			     if(alertIds != null && alertIds.size() > 0){
+			    	 List<Object[]> alertDtlsLst = alertDAO.getAlertDtls(new HashSet<Long>(alertIds));
+					  setAlertDtls(finalAlertVOs, alertDtlsLst); 
+			     }
+			   return finalAlertVOs; 
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getFinancialAssistanceAlertCntDtls() method of AlertManagementSystemService{}");
+		}
+		return null;
+	}
+	
 }
