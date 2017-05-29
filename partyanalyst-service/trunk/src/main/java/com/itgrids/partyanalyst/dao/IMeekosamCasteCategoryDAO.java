@@ -7,4 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.MeekosamCasteCategory;
 
 public interface IMeekosamCasteCategoryDAO  extends GenericDao<MeekosamCasteCategory, Long>{
+	public List<Object[]> getMeekosamCasteCategoryList();
 }
