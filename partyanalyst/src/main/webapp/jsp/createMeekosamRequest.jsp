@@ -106,7 +106,7 @@
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
 <script type="text/javascript" src="alertDepartment/js/newAlertUserManagementDetail.js"></script>
-
+<script type="text/javascript" src="alertDepartment/js/createMeekosamRequest.js"></script>
 <script>
 
 </script>
