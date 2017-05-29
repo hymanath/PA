@@ -1489,6 +1489,18 @@ $(document).keypress(function(e) {
 */
 function confirmOtpDetails()
 {
+	$("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
+	$("#otpStusErrImgId").show();
+	$("#otpInputId").val('');
+	$("#otpMsgDivId").html('');
+	setTimeout(function(){
+		$("#memChckBoxModalId").modal('hide');
+		getSearchByMyVoterIdDetails();
+		$("#otpStusErrImgId").hide();
+	}, 1500);
+	
+	return;
+	
 	/*
 	 $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
 		    $("#otpStusErrImgId").show();
@@ -1594,6 +1606,16 @@ $(document).on("click",".searchChkboxClsR",function(){
 //7777
 function renwalOtpDetails()
 {	
+	 $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
+	$("#otpStusErrImgId").show();
+	$("#otpInputId").val('');
+	$("#otpMsgDivId").html('');
+	setTimeout(function(){
+	   $("#memChckBoxModalId").modal('hide');
+		renMemberDetails();
+		$("#otpStusErrImgId").hide();
+	}, 1500);
+	return;			
 /*
 $("#otpStusErrDivId").html("<span style='color:green;'>Your OTP validate Successfully..Please wait...</span>");
 		   $("#otpStusErrImgId").show();
