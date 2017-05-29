@@ -17417,5 +17417,40 @@
 		<result name="success">/jsp/createMeekosamRequest.jsp</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	<action name="saveMeekosamPetitionerDetailsAction" class="meekosamGrievanceAction"  method="saveMeekosamPetitionerDetails">
+		<result type="json" name="success">		   
+			<param name="root">successMsg</param>
+		</result>
+	</action>
+	<action name="getAllMandalsByDistrictIDAction" class="meekosamGrievanceAction"  method="getAllMandalsByDistrictID">
+		<result type="json" name="success">		   
+			<param name="root">idNameVOs</param>
+		</result>
+	</action>
+	<action name="getAllHamletByPanchayatIDAction" class="meekosamGrievanceAction"  method="getAllHamletByPanchayatID">
+		<result type="json" name="success">		   
+			<param name="root">idNameVOs</param>
+		</result>
+	</action>
+	<action name="getMeekosamOccupationListAction" class="meekosamGrievanceAction"  method="getMeekosamOccupationList">
+		<result type="json" name="success">		   
+			<param name="root">idAndNameVOs</param>
+		</result>
+	</action>
+	<action name="getMeekosamCasteCategoryListAction" class="meekosamGrievanceAction"  method="getMeekosamCasteCategoryList">
+		<result type="json" name="success">		   
+			<param name="root">idAndNameVOs</param>
+		</result>
+	</action>
+	<action name="getMeekosamArgeeCategoryListAction" class="meekosamGrievanceAction"  method="getMeekosamArgeeCategoryList">
+		<result type="json" name="success">		   
+			<param name="root">idAndNameVOs</param>
+		</result>
+	</action>
+	<action name="getMeekosamAnnualIncomeListAction" class="meekosamGrievanceAction"  method="getMeekosamAnnualIncomeList">
+		<result type="json" name="success">		   
+			<param name="root">idAndNameVOs</param>
+		</result>
+	</action>
  </package>
 </struts>
