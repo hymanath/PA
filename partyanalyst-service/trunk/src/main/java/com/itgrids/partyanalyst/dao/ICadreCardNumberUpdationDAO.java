@@ -12,5 +12,5 @@ public interface ICadreCardNumberUpdationDAO extends GenericDao<CadreCardNumberU
 	public List<Object[]> getPrintCountsForAllUser(Date startDate,Date endDate);
 	public List<Object[]> getPrintCountsForUser(Date startDate,Date endDate,Long userId);
 	public List<Object[]> getReprintCountsForAllUser(Date startDate,Date endDate);
-	public List getReprintCountsByDate(Date startDate,Date endDate);
+	public List getReprintCountsByDate(Date startDate,Date endDate,List<Long> enrollmentYearIds);
 }

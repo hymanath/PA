@@ -10729,7 +10729,7 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 		return returnList;
 	}
 	
-	public CardPrintUserVO getCadrePrintDetails(String startDate,String endDate)
+	public CardPrintUserVO getCadrePrintDetails(String startDate,String endDate,List<Long> enrollmentYearIds)
 	{
 		CardPrintUserVO vo = new CardPrintUserVO();
 		try{
@@ -10740,12 +10740,12 @@ public List<CadrePrintVO> getTDPCadreDetailsByMemberShip(CadrePrintInputVO input
 			startDate1=new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
 			if(endDate != null && !endDate.isEmpty())
 		    endDate1=new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
-			  List reprintList = cadreCardNumberUpdationDAO.getReprintCountsByDate(startDate1,endDate1);
+			  List reprintList = cadreCardNumberUpdationDAO.getReprintCountsByDate(startDate1,endDate1,enrollmentYearIds);
 			  if(reprintList != null && reprintList.size() > 0)
 			  {
 				  vo.setReprintCnt((Long)reprintList.get(0));
 			  }
-				List cadreCnt = tdpCadreDAO.getNewlyRegistredCadreCnt(startDate1,endDate1);
+				List cadreCnt = tdpCadreDAO.getNewlyRegistredCadreCnt(startDate1,endDate1,enrollmentYearIds);
 				if(cadreCnt != null && cadreCnt.size() > 0)
 				{
 					vo.setTotal((Long)cadreCnt.get(0));

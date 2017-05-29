@@ -5328,7 +5328,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return qry.list();
 		}
 		
-		public List<Object[]> getCadrePartialDetailsByMemberShip(List<String> memberCardNos)	{
+		public List<Object[]> getCadrePartialDetailsByMemberShip(List<String> memberCardNos){
 			Query query = getSession().createQuery("select model.memberShipNo , " +
 					" model.voterId," +
 					" model.firstname," +
@@ -5392,9 +5392,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			return (Long) query.uniqueResult();
 		}
 		
-		public List getNewlyRegistredCadreCnt(Date fromDate,Date toDate){
+		public List getNewlyRegistredCadreCnt(Date fromDate,Date toDate,List<Long> enrollmentYearIds){
 			StringBuilder queryStr = new StringBuilder();
-			queryStr.append("select count(model.tdpCadreId) from TdpCadre model where model.isDeleted = 'N' and  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
+			queryStr.append("select count(model.tdpCadreId) from TdpCadre model,TdpCadreEnrollmentYear model1 " +
+					" where model.isDeleted = 'N' and  model1.tdpCadre.tdpCadreId = model.tdpCadreId and model1.isDeleted = 'N' and " +
+					"  model.userAddress.state.stateId = 1 and model.enrollmentYear = 2014 ");
 			
 			/*if(fromDate != null){
 				queryStr.append(" and date(model.surveyTime) >=:fromDate ");
@@ -5408,13 +5410,19 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 				queryStr.append("  and date(model.surveyTime) =:fromDate");
 			else if((fromDate != null))
 				queryStr.append("  and date(model.surveyTime) >=:fromDate and date(model.surveyTime) <=:toDate ");
+			if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+				queryStr.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");
+			}
 			Query query = getSession().createQuery(queryStr.toString());
 			if((fromDate != null && toDate != null) && fromDate.equals(toDate)){
 			   query.setDate("fromDate", fromDate);
 			}
 			if((fromDate != null && toDate != null) && !fromDate.equals(toDate)){
 				query.setDate("fromDate", fromDate);
-			  query.setDate("toDate", toDate);
+			    query.setDate("toDate", toDate);
+			}
+			if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+				query.setParameterList("enrollmentYearIds", enrollmentYearIds);
 			}
 			return query.list();
 		}
