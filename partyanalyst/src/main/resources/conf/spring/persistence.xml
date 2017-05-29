@@ -1251,7 +1251,11 @@
 					   <value>com.itgrids.partyanalyst.model.SocialMediaType</value>
 					   <value>com.itgrids.partyanalyst.model.AlertCallerRelation</value>
 					   <value>com.itgrids.partyanalyst.model.GovtDepartmentRelation</value>
-					   
+					   <value>com.itgrids.partyanalyst.model.GovtProposalCategory</value>
+		      		   <value>com.itgrids.partyanalyst.model.GovtProposalStatus</value>
+		      		   <value>com.itgrids.partyanalyst.model.GovtProposalPropertyCategory</value>
+		      		   <value>com.itgrids.partyanalyst.model.GovtProposalPropertyCategoryTracking</value>
+		      		   
 	                   <!--  Govt Alert module end-->
 	                   
 	                   <value>com.itgrids.partyanalyst.model.RedirectUrl</value>
