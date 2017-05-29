@@ -181,7 +181,7 @@ public interface ICadreRegistrationService {
 	public List<SelectOptionVO> getBloodGroups();
 	
 	public List<TdpCadreFamilyDetailsVO> getFamilyDetailsByCadreId(Long tdpCadreId);
-	public CardPrintUserVO getCadrePrintDetails(String startDate,String endDate);
+	public CardPrintUserVO getCadrePrintDetails(String startDate,String endDate,List<Long> enrollmentYearIds);
 	public  List<CadreRegistrationVO> getCadreWithFamilyDetailsOfEachCadre(Long cadreId);
 	public ResultStatus updateMobileNumberForCadre(Long tdpCadreId,String mobileNo,Long userId);
 	public String sendSMS(String mobileNo,String message);

@@ -88,16 +88,18 @@ public class CadreCardNumberUpdationDAO extends GenericDaoHibernate<CadreCardNum
 		
 	}
 	
-	public List getReprintCountsByDate(Date startDate,Date endDate)
+	public List getReprintCountsByDate(Date startDate,Date endDate,List<Long> enrollmentYearIds)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select count(model.cadreCardNumberUpdationId) from CadreCardNumberUpdation model " +
-				" where model.cardNumber is not null");
+		str.append("select count(model.cadreCardNumberUpdationId) from CadreCardNumberUpdation model,TdpCadreEnrollmentYear model1 " +
+				" where model.cardNumber is not null and model1.tdpCadre.tdpCadreId = model.tdpCadre.tdpCadreId and model1.isDeleted = 'N' ");
 		if((startDate != null && endDate != null) && startDate.equals(endDate))
 			str.append("  and date(model.insertedTime) =:startDate");
 		else if((startDate != null))
 		str.append("  and date(model.insertedTime) >=:startDate and date(model.insertedTime) <=:endDate ");
-	
+	    if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+	    	str.append(" and model1.enrollmentYear.enrollmentYearId in (:enrollmentYearIds) ");	
+	    }
 		Query query = getSession().createQuery(str.toString());
 		if((startDate != null && endDate != null) && startDate.equals(endDate))
 		{
@@ -108,6 +110,9 @@ public class CadreCardNumberUpdationDAO extends GenericDaoHibernate<CadreCardNum
 			query.setDate("startDate", startDate);	
 			query.setDate("endDate", endDate);
 		}
+		 if(enrollmentYearIds != null && enrollmentYearIds.size()>0){
+			 query.setParameterList("enrollmentYearIds", enrollmentYearIds); 
+		 }
 		return query.list();
 		
 	}
