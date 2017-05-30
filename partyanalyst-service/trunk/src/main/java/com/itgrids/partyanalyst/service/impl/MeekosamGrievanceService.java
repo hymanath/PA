@@ -10,6 +10,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -30,6 +31,7 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMeekosamGrievanceService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 
@@ -48,7 +50,13 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	private IMeekosamArgeeCategoryDAO meekosamArgeeCategoryDAO;
 	private IMeekosamAnnualIncomeDAO meekosamAnnualIncomeDAO;
 	private IMeekosamPetitionerDAO meekosamPetitionerDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
+	
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
 	public void setMeekosamPetitionerDAO(
 			IMeekosamPetitionerDAO meekosamPetitionerDAO) {
 		this.meekosamPetitionerDAO = meekosamPetitionerDAO;
@@ -327,4 +335,112 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 			LOG.error("Error occured setDataToList() method of MeekosamGrievanceService",e);
     	}
     }
+	public List<PetitionerDetailsVO> searchPetitionerDetailsByVoterNoAadharNoMobileNo(String cardNo, String type){
+		try{
+			List<PetitionerDetailsVO> detailsVOs = new ArrayList<PetitionerDetailsVO>();
+			if(type != null && !type.trim().isEmpty() && type.trim().equalsIgnoreCase("voter")){
+				serchByVoterCardNo(detailsVOs,cardNo,type);
+			}else{
+				serchByMobileNoAadharNo(detailsVOs,cardNo,type);
+			}
+			return detailsVOs;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured searchPetitionerDetailsByVoterNoAadharNoMobileNo() method of MeekosamGrievanceService",e);
+		}
+		return null;
+	}
+	public void serchByMobileNoAadharNo(List<PetitionerDetailsVO> detailsVOs,String cardNo,String type){
+		try{
+			List<Object[]> petitionerDetailsList = meekosamPetitionerDAO.getPetitionerDetailsByCardNoMobileNoAadharNo(cardNo, type);
+			prepareFinalList(petitionerDetailsList,detailsVOs);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void serchByVoterCardNo(List<PetitionerDetailsVO> detailsVOs,String cardNo,String type){
+		try{
+			PetitionerDetailsVO detailsVO = null;
+			List<Object[]> petitionerDetailsList = meekosamPetitionerDAO.getPetitionerDetailsByCardNoMobileNoAadharNo(cardNo, type);
+			if(petitionerDetailsList != null && petitionerDetailsList.size() > 0){
+				prepareFinalList(petitionerDetailsList,detailsVOs);
+			}else{
+				petitionerDetailsList = boothPublicationVoterDAO.getVoterIdDetailsByPublicationIdAndCardNo(cardNo,IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+				if(petitionerDetailsList != null && petitionerDetailsList.size() > 0){
+					for(Object[] param : petitionerDetailsList){
+						detailsVO = new PetitionerDetailsVO();
+						detailsVO.setName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						detailsVO.setRelativeName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						detailsVO.setGender(commonMethodsUtilService.getStringValueForObject(param[6]));
+						detailsVO.setHouseNo(commonMethodsUtilService.getStringValueForObject(param[9]));
+						detailsVO.setAadharNo(commonMethodsUtilService.getStringValueForObject(param[27]));
+						detailsVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(param[25]));
+						detailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[26]));
+						detailsVO.setEmailId(commonMethodsUtilService.getStringValueForObject(param[28]));
+						detailsVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
+						if(param[17] != null){
+							detailsVO.setTehsil("0,"+commonMethodsUtilService.getStringValueForObject(param[17]));
+						}else if(param[22] != null){
+							detailsVO.setTehsil("1,"+commonMethodsUtilService.getStringValueForObject(param[22]));
+						}
+						if(param[15] != null){
+							detailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[15]));
+						}else if(param[23] != null){
+							detailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[23]));
+						}
+						detailsVOs.add(detailsVO);
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void prepareFinalList(List<Object[]> petitionerDetailsList,List<PetitionerDetailsVO> detailsVOs){
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+			PetitionerDetailsVO detailsVO = null;
+			if(petitionerDetailsList != null && petitionerDetailsList.size() > 0){
+				for(Object[] param : petitionerDetailsList){
+					detailsVO = new PetitionerDetailsVO();
+					detailsVO.setPetitionerId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					detailsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					detailsVO.setRelativeName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					Date dob = sdf.parse(commonMethodsUtilService.getStringValueForObject(param[3]));
+					detailsVO.setDateOfBirth(sdf1.format(dob));
+					detailsVO.setGender(commonMethodsUtilService.getStringValueForObject(param[4]));
+					detailsVO.setHouseNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+					detailsVO.setAadharNo(commonMethodsUtilService.getStringValueForObject(param[6]));
+					detailsVO.setVoterCardNo(commonMethodsUtilService.getStringValueForObject(param[7]));
+					detailsVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[8]));
+					detailsVO.setEmailId(commonMethodsUtilService.getStringValueForObject(param[9]));
+					detailsVO.setMeekosamOccupationId(commonMethodsUtilService.getLongValueForObject(param[10]));
+					detailsVO.setMeekosamCasteCategoryId(commonMethodsUtilService.getLongValueForObject(param[11]));
+					detailsVO.setMeekosamArgeeCategoryId(commonMethodsUtilService.getLongValueForObject(param[12]));
+					detailsVO.setMeekosamAnnualIncomeId(commonMethodsUtilService.getLongValueForObject(param[13]));
+					detailsVO.setDuration(commonMethodsUtilService.getStringValueForObject(param[14]));
+					detailsVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[15]));
+					if(param[16] != null){
+						detailsVO.setTehsil("0,"+commonMethodsUtilService.getStringValueForObject(param[16]));
+					}else if(param[17] != null){
+						detailsVO.setTehsil("1,"+commonMethodsUtilService.getStringValueForObject(param[17]));
+					}
+					if(param[18] != null){
+						detailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[18]));
+					}else if(param[19] != null){
+						detailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[19]));
+					}
+					if(param[20] != null){
+						detailsVO.setHamletId(commonMethodsUtilService.getLongValueForObject(param[20]));
+					}
+					
+					detailsVOs.add(detailsVO);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }
