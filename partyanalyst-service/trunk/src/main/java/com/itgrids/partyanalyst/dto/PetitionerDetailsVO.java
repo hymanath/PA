@@ -27,6 +27,7 @@ public class PetitionerDetailsVO implements Serializable {
 		private Long meekosamCasteCategoryId;
 		private Long meekosamArgeeCategoryId;
 		private Long meekosamAnnualIncomeId;
+		private String duration;
 		public String getName() {
 			return name;
 		}
@@ -170,5 +171,11 @@ public class PetitionerDetailsVO implements Serializable {
 		}
 		public void setUserId(Long userId) {
 			this.userId = userId;
+		}
+		public String getDuration() {
+			return duration;
+		}
+		public void setDuration(String duration) {
+			this.duration = duration;
 		}
 }

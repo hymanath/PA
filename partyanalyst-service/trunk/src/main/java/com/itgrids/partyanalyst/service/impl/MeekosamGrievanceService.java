@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -111,11 +113,16 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					String status = null;
 					try{
 						DateUtilService date = new DateUtilService();
+						SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 						MeekosamPetitioner meekosamPetitioner = new MeekosamPetitioner();
 						meekosamPetitioner.setName(inputvo.getName());
 						meekosamPetitioner.setRelativeName(inputvo.getRelativeName());
 						meekosamPetitioner.setAge(inputvo.getAge());
-						//meekosamPetitioner.setDateOfBirth();
+						Date dob = null;
+						if(inputvo.getDateOfBirth() != null && !inputvo.getDateOfBirth().trim().isEmpty() && inputvo.getDateOfBirth().trim().length() > 0){
+							dob = sdf.parse(inputvo.getDateOfBirth().trim());
+						}
+						meekosamPetitioner.setDateOfBirth(dob);
 						meekosamPetitioner.setGender(inputvo.getGender());
 						UserAddress userAddress = saveUserAddress(inputvo);
 						meekosamPetitioner.setUserAddressId(userAddress.getUserAddressId());
@@ -128,10 +135,12 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 						meekosamPetitioner.setMeekosamCasteCategoryId(inputvo.getMeekosamCasteCategoryId());
 						meekosamPetitioner.setMeekosamArgeeCategoryId(inputvo.getMeekosamArgeeCategoryId());
 						meekosamPetitioner.setMeekosamAnnualIncomeId(inputvo.getMeekosamAnnualIncomeId());
+						meekosamPetitioner.setDuration(inputvo.getDuration());
 						meekosamPetitioner.setInsertedBy(inputvo.getUserId());
 						meekosamPetitioner.setUpdatedBy(inputvo.getUserId());
 						meekosamPetitioner.setInsertedTime(date.getCurrentDateAndTime());
 						meekosamPetitioner.setUpdatedTime(date.getCurrentDateAndTime());
+						meekosamPetitioner.setIsDeleted("N");
 						meekosamPetitionerDAO.save(meekosamPetitioner);
 						status = "susscess";
 						return status;
