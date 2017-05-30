@@ -584,16 +584,12 @@
 				str+='<li>Gender: '+result[i].gender+'</li>';
 				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
 				str+='<li>Caste: '+result[i].casteName+'</li>';
-				if(result[i].type == "Added Member"){
-					str+='<li>Voter ID: '+result[i].voterCardNo+'</li>&nbsp;&nbsp;<span class="text-danger remveMbrCls" attr_cadre_id="'+result[i].tdpCadreId+'" attr_location_id="'+locationId+'" style="cursor:pointer;" title="Click here to remove member">x</span>';
-					if(addressVO != null ){
+				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>&nbsp;&nbsp;<span class="text-danger remveMbrCls" attr_cadre_id="'+result[i].tdpCadreId+'" attr_location_id="'+locationId+'" style="cursor:pointer;" title="Click here to remove member">x</span>';
+				  if(addressVO != null ){
 					str+='<li>MandalName: '+addressVO.mandalName+'</li>';
                     str+='<li>panchayatName: '+addressVO.panchayatName+'</li>';				
 					}
-				  }else{
-					str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';   
-				}
-				
+				 
 				var  panchayatOrWard= $('#panchayatWardByMandal').val();
 				
 				if(parseInt(1+""+result[i].tehsilId) == panchayatOrWard || parseInt(2+""+result[i].tehsilId) == panchayatOrWard){
