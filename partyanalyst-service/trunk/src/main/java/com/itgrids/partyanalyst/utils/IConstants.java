@@ -1182,6 +1182,7 @@ public interface IConstants {
 	public static final Long CONSTITUENCY_INCHARGE_USER_TYPE_ID = 9l;
 	public static final Long SECRETARY_USER_TYPE_ID = 11l;
 	public static final Long INCHARGE_MINISTER_USER_TYPE_ID = 12l;
+	public static final Long PARLIAMENT_INCHARGE_USER_TYPE_ID = 14l;
 	
 	//Debate Core
 	
@@ -1240,6 +1241,7 @@ public interface IConstants {
 	public static final Long MP_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
 	public static final Long SECRETARY_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
 	public static final Long INCHARGE_MINISTER_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
+	public static final Long PARLIAMENT_INCHARGE_SUB_LEVEL_DESIG_IDS[] = {7L,8L};
 	public static final Long STATE_SUB_LEVEL_DESIG_IDS [] = {1L,2L,3L,4L,5L,6L,7L,8L,9L};
 	
 	public static final String CADRE_NEW_MINORITY_CASTE_IDS = "81,97,107,292,299,300,301";

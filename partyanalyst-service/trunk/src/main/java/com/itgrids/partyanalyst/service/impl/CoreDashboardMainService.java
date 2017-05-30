@@ -2096,7 +2096,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 					   if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 						   strLocationId="1"+strLocationId;
 					   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-						    	|| userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+						|| userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
 						   strLocationId="2"+strLocationId;
 					   }else if(userTypeId != null && userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
 						   if(status.equalsIgnoreCase("Tehsil")){
@@ -2125,7 +2125,7 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 					   if(userTypeId.longValue()==IConstants.STATE_TYPE_USER_ID || userTypeId.longValue()==IConstants.COUNTRY_TYPE_USER_ID || userTypeId.longValue()==IConstants.GENERAL_SECRETARY_USER_TYPE_ID){
 						   strLocationId="1"+strLocationId;
 					   }else if(userTypeId != null && userTypeId.longValue()==IConstants.SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.ORGANIZING_SECRETARY_USER_TYPE_ID || userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID
-						    	|| userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+						   || userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
 						   strLocationId="2"+strLocationId;
 					   }else if(userTypeId != null && userTypeId.longValue()==IConstants.MLA_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_USER_TYPE_ID || userTypeId.longValue()==IConstants.CONSTITUENCY_INCHARGE_USER_TYPE_ID){
 						   if(status.equalsIgnoreCase("Tehsil")){

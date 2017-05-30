@@ -195,7 +195,9 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS));
 		      }else if(userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.INCHARGE_MINISTER_SUB_LEVEL_DESIG_IDS));	
-		      }  
+		      }else if(userTypeId.longValue() == IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.PARLIAMENT_INCHARGE_SUB_LEVEL_DESIG_IDS));	
+		      }     
 		   }
 		
 		   return query.list();  
@@ -623,7 +625,9 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.DISTRICT_PRESIDENT_SUB_LEVEL_DESIG_IDS));
 		      }else if(userTypeId.longValue()==IConstants.INCHARGE_MINISTER_USER_TYPE_ID){
 		     		query.setParameterList("designationIds",Arrays.asList(IConstants.INCHARGE_MINISTER_SUB_LEVEL_DESIG_IDS));	
-		      }  
+		      }else if(userTypeId.longValue() == IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
+		     		query.setParameterList("designationIds",Arrays.asList(IConstants.PARLIAMENT_INCHARGE_SUB_LEVEL_DESIG_IDS));	
+		      }    
 		   }
 		
 		   return query.list();  

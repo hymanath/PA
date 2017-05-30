@@ -68,7 +68,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
 	                  }else{
 	            		  queryStr.append(" model1.constituencyId,");	  
 	            	  }
-              }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID ){
+              }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
             	    queryStr.append(" model3.assemblyId,") ; 
               }
               queryStr.append("  sum(model.cadre2014) from TdpCadreLocationInfo model ");
@@ -86,7 +86,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
 	              }else{
 	            	  queryStr.append(" ,Constituency model1 where model1.constituencyId = model.locationValue and model1.electionScope.electionScopeId=2 and model.locationScopeId=4 and model1.deformDate is null ");  
 	              }
-           	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+           	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
            	  queryStr.append(" ,ParliamentAssembly model3 where model3.assemblyId = model.locationValue and model.locationScopeId=4 ");	 
            	 }
              if(userTypeId.longValue()==IConstants.DISTRICT_PRESIDENT_USER_TYPE_ID ){
@@ -100,7 +100,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
 	           	  if(activityMemberId != null && activityMemberId.longValue()==50l){//50 ActivityMemberId person is one District President.He has Access only this constituency(354,355,356,357,358,368).so that we are removing remaining constituencies
          	    	  queryStr.append(" and model1.constituencyId not in (133,134,135,136,137,138,140,141,359)");
          	      }
-         	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+         	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
          		 if(locationValue != null && locationValue.size() > 0){
          			 queryStr.append(" and model3.parliamentId in (:locationValue)"); 
          		 } 
@@ -124,7 +124,7 @@ public class TdpCadreLocationInfoDAO extends GenericDaoHibernate<TdpCadreLocatio
         		 }else{
         			 queryStr.append("  group by model1.constituencyId ");	 
         		 }
-        	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID){
+        	 }else if(userTypeId.longValue()==IConstants.MP_USER_TYPE_ID || userTypeId.longValue()==IConstants.PARLIAMENT_INCHARGE_USER_TYPE_ID){
         		  queryStr.append("  group by model3.assemblyId "); 
         	 }
 	      
