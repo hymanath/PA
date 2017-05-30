@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "govt_department_meekosam_issue_type")
+@Table(name = "meekosam_petitioner")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MeekosamPetitioner extends BaseModel implements Serializable {
 	private Long meekosamPetitionerId;
@@ -40,6 +40,7 @@ public class MeekosamPetitioner extends BaseModel implements Serializable {
 	private Long meekosamCasteCategoryId;
 	private Long meekosamArgeeCategoryId;
 	private Long meekosamAnnualIncomeId;
+	private String duration;
 	private Long insertedBy;
 	private Long updatedBy;
 	private Date insertedTime;
@@ -163,6 +164,13 @@ public class MeekosamPetitioner extends BaseModel implements Serializable {
 	}
 	public void setMeekosamAnnualIncomeId(Long meekosamAnnualIncomeId) {
 		this.meekosamAnnualIncomeId = meekosamAnnualIncomeId;
+	}
+	@Column(name = "duration")
+	public String getDuration() {
+		return duration;
+	}
+	public void setDuration(String duration) {
+		this.duration = duration;
 	}
 	@Column(name = "inserted_by")
 	public Long getInsertedBy() {
