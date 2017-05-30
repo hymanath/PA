@@ -218,7 +218,7 @@
 											</li>
 											<c:forEach items="${alertSeverityList}"  var="severityType">
 												<li>
-													<label class="checkbox-inline"><input type="checkbox" class="severityTypeCls checkedSelected" checked  attr_val="${severityType.id}" />${severityType.name}</label>
+													<label class="checkbox-inline"><input type="checkbox" class="severityTypeCls checkedSelected" checked  attr_val="${severityType.id}" /><span>${severityType.name}</span></label>
 												</li>
 											</c:forEach>
 										</ul>
@@ -338,7 +338,7 @@
 				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 			</div>
 			<div class="modal-body modal-insurance">
-				<div id="filter" style="display:none;"></div>
+				<!--<div id="filter" style="display:none;"></div>-->
 				<div id="alertManagementPopupBody"></div>
 			</div>
 		</div>

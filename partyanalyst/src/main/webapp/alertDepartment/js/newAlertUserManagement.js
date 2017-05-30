@@ -1911,11 +1911,21 @@ $(document).on("click",".alertCountCls",function(){
 	var count = $(this).attr("attr_count");
 	var type = $(this).attr("attr_type");
 	var searchType = $(this).attr("attr_search_type");
-	getTotalAlertCountDetails(deptId,0,0,type,deptName,count,searchType)
+	getTotalAlertCountDetails(deptId,0,0,type,deptName,count,searchType,'')
 });
 function getTotalAlertCountDetails(departmentId,statusId,levelId,type,statusName,statuscount,searchType,resultType){
 	$("#alertManagementPopupBody").html('')
-	getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr);
+	if(resultType !="OverAll"){
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,'',departmentId,'');
+	}else if(resultType == "OverAll"){
+		if(type == "alert"){
+			getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,'','mainAlert');
+		}else{
+			getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,'','mainAlertSubTask');
+		}
+		
+	}
+	
     $("#alertManagementPopup").modal({
       show: true,
       keyboard: false,
@@ -2000,6 +2010,27 @@ $(document).on("click",".getDtlsAlertsCls",function(){
 		 }
 		
 		getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,levelId,statusId,type,statusName,statuscount,"","");
+		if(resultType=="overall"){
+			if(statusId !=0 && type == "alert"){
+				getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,'','mainAlert');
+			}else if(statusId !=0 && type == "subTask"){
+				getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,'','mainAlertSubTask');
+			}
+			
+			if(levelId !=0 && type == "alert"){
+				getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,levelId,'','locationLevel');
+			}
+		}else{
+			if(statusId !=0 && type == "alert"){
+				getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,departmentIds,'mainAlert');
+			}else if(statusId !=0 && type == "subTask"){
+				getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,departmentIds,'mainAlertSubTask');
+			}
+			
+		}
+		
+		
+		
 	});
 	//santosh
   $(document).on("click",".overAllAlertCls",function(){
@@ -2021,6 +2052,7 @@ $(document).on("click",".getDtlsAlertsCls",function(){
 			deptArr.push(deptId);
 		}
 		getTotalAlertCountDetailsForStatusAndLocationView(deptArr,0,0,resultType,"Total",totalAlertCnt,levelType,alertType);
+		getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,'','','');
 	 });
 //click functioality...
 function getTotalAlertCountDetailsForStatusAndLocationView(departmentIdsArr,levelId,statusId,type,statusName,statuscount,levelType,alertType){
@@ -3346,6 +3378,11 @@ function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName
 			backdrop: 'static'
 		});
 		$("#alertManagementPopupBody").html(spinner);
+		if(statusId !=0){
+			getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,statusId,departmentId,'mainAlert');
+		}else{
+			getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,'',departmentId,'');
+		}
 	var alertType = getAlertType();
 	var locationLevelIdClickArr=[];
 	 if(locationLevelId == null || locationLevelId == 0){
@@ -3557,7 +3594,7 @@ function buildAlertSouceWiseDetails(result)
 							totalAlert+=result[i].alertCnt;
 							str+='<tr>';
 								str+='<td><span class="label" style="background-color:'+globalAlertSourceColorObj[result[i].name.trim()]+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-								str+='<td style="cursor:pointer;" onclick="getAlertDtlsByAlertSource(\''+result[i].name+'\','+result[i].alertCnt+','+result[i].id+',0);" class="alertSourceCls" attr_alert_source_name="'+result[i].name+'" attr_alert_count="'+result[i].alertCnt+'" attr_source_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
+								str+='<td style="cursor:pointer;" onclick="getAlertDtlsByAlertSource(\''+result[i].name+'\','+result[i].alertCnt+','+result[i].id+',0,\'alertSource\');" class="alertSourceCls" attr_alert_source_name="'+result[i].name+'" attr_alert_count="'+result[i].alertCnt+'" attr_source_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
 								
 							str+='</tr>';
 						}
@@ -3574,7 +3611,7 @@ function buildAlertSouceWiseDetails(result)
 	$("#alertSourceWiseDetilsDivId").html(str);
 	var str2='';
 	var statusName = "Total"
-	str2+='<h4 style="cursor:pointer;" class="text-center alertSourceCls" onclick="getAlertDtlsByAlertSource(\''+statusName+'\','+totalAlert+',0,0);" attr_alert_source_name="Total" attr_alert_count='+totalAlert+' attr_source_id="0">TOTAL '+totalAlert+'</h4>';
+	str2+='<h4 style="cursor:pointer;" class="text-center alertSourceCls" onclick="getAlertDtlsByAlertSource(\''+statusName+'\','+totalAlert+',0,0,\'alertSource\');" attr_alert_source_name="Total" attr_alert_count='+totalAlert+' attr_source_id="0">TOTAL '+totalAlert+'</h4>';
 	//$("#alertSourceWiseTotal").html("<h4  class='text-center alertSourceCls' style='cursor:pointer;' onclick='getAlertDtlsByAlertSource(\'Total'\ ,"+totalAlert+",0);' attr_alert_source_name='Total' attr_alert_count="+totalAlert+" attr_source_id='0'>TOTAL "+totalAlert+"</h4>");
 	$("#alertSourceWiseTotal").html(str2);
 	var statusOverviewArrss =[];
@@ -3841,8 +3878,8 @@ function buildAlertSouceWiseDetails(result)
 										var statusName = value[1];
 										var totalCount = value[2];
 										var alertCategoryId=value[3]; 
-										
-										getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,statusId);
+										var alertSourceType = 'alertSource'
+										getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,statusId,alertSourceType);
 										
 									}
 								}
@@ -3860,13 +3897,13 @@ function buildAlertSouceWiseDetails(result)
 			
 				 $.each($('#alertSourceWisebarGraphView').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
-						$(this).attr("onclick","getAlertDtlsByAlertSource(\'"+result[index].name+"\',\'"+result[index].alertCnt+"\',\'"+result[index].id+"\',0)");
+						$(this).attr("onclick","getAlertDtlsByAlertSource(\'"+result[index].name+"\',\'"+result[index].alertCnt+"\',\'"+result[index].id+"\',0,\'alertSource\')");
 					
 				
 				});
 		}
 }
-function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertStatusId)
+function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertStatusId,alertSourceType)
 {
 	$("#alertManagementPopupBody").html('')
 	
@@ -3876,7 +3913,12 @@ function getAlertDtlsByAlertSource(statusName,totalCount,alertCategoryId,alertSt
 		backdrop: 'static'
 	});
 	$("#alertManagementPopupBody").html(spinner);
-	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
+	if(statusName == "Total"){
+		getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,'','','');
+	}else{
+		getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,alertCategoryId,'',alertSourceType);
+	}
+	
    
 	  var statusIdsArr = [];
 	  if(alertStatusId != null && alertStatusId == 0){

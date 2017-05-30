@@ -161,7 +161,7 @@
 															</li>
 															<c:forEach items="${socailMediaTypeList}"  var="socailMediaType">
 																<li>
-																	<label><input type="checkbox" class="mediaTypeCls" checked attr_val="${socailMediaType.id}"/>
+																	<label><input type="checkbox" class="socialMediaCls" checked attr_val="${socailMediaType.id}"/>
 																	${socailMediaType.name}</label>
 																</li>
 															</c:forEach>
