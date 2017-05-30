@@ -571,7 +571,7 @@
 		{
 			for(var i in result)
 			{
-				
+				var addressVO = result[i].addressVO;
 				str+='<div class="media">';
 				str+='<span href="#" class="media-left">';
 				str+='<img style="width: 64px; height: 64px;" src="https://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" />';
@@ -580,14 +580,18 @@
 				str+='<h5 class="media-heading"> <span style="font-weight:bold;"> Name:</span> '+result[i].cadreName+' ; ';				
 				str+=' <span style="font-weight:bold;"> Relative Name: </span>'+result[i].relativeName+' </h5>';
 				str+='<ul class="list-inline">';
-				str+='<li>Age:'+result[i].age+';</i>';
-				str+='<li>Gender: '+result[i].gender+'</i>';
-				str+='<li>Mobile No: '+result[i].mobileNo+'</i>';
-				str+='<li>Caste: '+result[i].casteName+'</i>';
+				str+='<li>Age:'+result[i].age+';</li>';
+				str+='<li>Gender: '+result[i].gender+'</li>';
+				str+='<li>Mobile No: '+result[i].mobileNo+'</li>';
+				str+='<li>Caste: '+result[i].casteName+'</li>';
 				if(result[i].type == "Added Member"){
-					str+='<li>Voter ID: '+result[i].voterCardNo+'</i>&nbsp;&nbsp;<span class="text-danger remveMbrCls" attr_cadre_id="'+result[i].tdpCadreId+'" attr_location_id="'+locationId+'" style="cursor:pointer;" title="Click here to remove member">x</span>';
-				}else{
-					str+='<li>Voter ID: '+result[i].voterCardNo+'</i>';
+					str+='<li>Voter ID: '+result[i].voterCardNo+'</li>&nbsp;&nbsp;<span class="text-danger remveMbrCls" attr_cadre_id="'+result[i].tdpCadreId+'" attr_location_id="'+locationId+'" style="cursor:pointer;" title="Click here to remove member">x</span>';
+					if(addressVO != null ){
+					str+='<li>MandalName: '+addressVO.mandalName+'</li>';
+                    str+='<li>panchayatName: '+addressVO.panchayatName+'</li>';				
+					}
+				  }else{
+					str+='<li>Voter ID: '+result[i].voterCardNo+'</li>';   
 				}
 				
 				var  panchayatOrWard= $('#panchayatWardByMandal').val();
