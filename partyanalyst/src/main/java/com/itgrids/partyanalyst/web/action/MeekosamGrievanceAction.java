@@ -29,8 +29,15 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 	private String successMsg;
 	private List<IdNameVO> idNameVOs;
 	private List<IdAndNameVO> idAndNameVOs;
+	private List<PetitionerDetailsVO> detailsVOs;
 	
 	
+	public List<PetitionerDetailsVO> getDetailsVOs() {
+		return detailsVOs;
+	}
+	public void setDetailsVOs(List<PetitionerDetailsVO> detailsVOs) {
+		this.detailsVOs = detailsVOs;
+	}
 	public List<IdNameVO> getIdNameVOs() {
 		return idNameVOs;
 	}
@@ -166,4 +173,16 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 		}
 		   return Action.SUCCESS;
 	}
+	public String searchPetitionerDetailsByVoterNoAadharNoMobileNo(){
+		   try {
+			   jObj = new JSONObject(getTask());
+			   String cardNo = jObj.getString("cardNo");
+			   String type = jObj.getString("type");
+			   detailsVOs = meekosamGrievanceService.searchPetitionerDetailsByVoterNoAadharNoMobileNo(cardNo,type);
+			   
+			} catch (Exception e) {
+				LOG.error("Exception Raised in getMeekosamAnnualIncomeList() in MeekosamGrievanceAction",e);
+			}
+			   return Action.SUCCESS;
+		}
 }

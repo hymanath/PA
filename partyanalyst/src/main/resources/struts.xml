@@ -17462,5 +17462,10 @@
 				<param name="root">alertCoreDashBoardVOs</param>       
 			</result>
   	</action>
+  	<action name="searchPetitionerDetailsByVoterNoAadharNoMobileNoAction" class="meekosamGrievanceAction"  method="searchPetitionerDetailsByVoterNoAadharNoMobileNo">
+			<result type="json" name="success">    
+				<param name="root">detailsVOs</param>       
+			</result>
+  	</action>
  </package>
 </struts>

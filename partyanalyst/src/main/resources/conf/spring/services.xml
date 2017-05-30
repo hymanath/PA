@@ -4260,6 +4260,7 @@
 		<property name="meekosamArgeeCategoryDAO" ref="meekosamArgeeCategoryDAO" ></property>
 		<property name="meekosamAnnualIncomeDAO" ref="meekosamAnnualIncomeDAO" ></property>
 		<property name="meekosamPetitionerDAO" ref="meekosamPetitionerDAO" ></property>
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" ></property>
    </bean>
 </beans>			
 	
