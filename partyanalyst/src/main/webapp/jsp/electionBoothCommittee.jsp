@@ -147,7 +147,7 @@
 			</div>
 			
 		</div> -->
-		
+		<div id="errorMessegeId" style="color: red; padding-left: 15px; border-top-width: 2px; margin-left: 199px;"></div>
 		<div class="row-fluid m_top20" id="mandalMainDivId">
 			<div class="form-group col-md-8 col-md-offset-2  col-sm-6 col-xs-6">
 					<label for="">SELECT Mandal/Municipality/Corporation <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
@@ -312,13 +312,13 @@
 	   
 		</div>
 	</div>
-			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center">
-				<h4 id="headingDiv" class="text-uppercase"> Search Candidate For selected Designation </h4>
+			<div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 text-center" style="margin-left: 175px;">
+				<h4 id="headingDiv" class="text-uppercase" style="margin-left: -262;"> Search Candidate For Booth Committee Incharge </h4>
 			
 			</div>
 			
 			<div class="col-md-8 col-md-offset-2 col-sm-12 col-sm-offset-0 col-xs-12 col-xs-offset-0 text-center" >
-				<div class="form-inline ">
+				<div class="form-inline " style="margin-left: -212px;">
 					<div class="radio">
 						<label><input type="radio" name="searchBasedOn" checked="true" class="searchTypeCls" onclick="refreshExistingDetails();" id="membershipId" value="1"> Membership ID &nbsp;&nbsp;</label>
 					
@@ -539,7 +539,8 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 			$('.searchTypeCls').click(function(){
 			
 			var highlightCls = $('#basicCommitteeTab').attr('class');
-			
+			  $("#searchBy").html("");
+			  $("#cadreDetailsDiv").hide();
 			var id = $(this).attr('id');
 			$('#nonAfflitCommitteeIdErr').html('');			
 			$('#advancedSearchDiv').hide();			
@@ -966,7 +967,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 	}
 	function populateDefaultValue(level){
 		$("#affiliCommitteeAllInfoDivId").html("");
-	
+	    $("#searchcadrenewDiv").hide();
 		$("#addMembrsBtn").show();
 		$("#viewMembrsBtn").show();
 		 $("#cadreDetailsDiv,#step3Id,#searchcadrenewDiv,#designationDivId,#step1Id,#committeeMainId").hide();
@@ -1714,14 +1715,39 @@ function getBoothsByMandal(mandalId){
 		});
 	}
 	function showSearchDiv(){
+		
+	var errMsg ="";
+	$("#userDetailsId").html("");
+	$("#searchBy").html('');
+	 var mandalId = $("#panchayatWardByMandal").val();
+	 var boothId = $("#committeeLocationId").val();
+	 
+	  if(mandalId == 0 || mandalId.length==0){
+		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
+	  } 
+		if(boothId == 0 || boothId.length ==0){
+			errMsg=errMsg+"Please select atleast one location<br/>";
+		}
+	
+	    if(errMsg.length>0){
+		  $("#errorMessegeId").html(errMsg);
+		     return;
+	   }else{
+		 $("#errorMessegeId").html('');
+	    } 
+		
 		$("#searchcadrenewDiv").show();
-		$("#userDetailsId").hide();
+		
 	}
 
 function getBoothUserDetails(){
-	$("#viewDataLoadingImg").show();
+	$("#searchcadrenewDiv").hide();
+	$("#cadreDetailsDiv").hide();
 	$("#userDetailsId").html('');
 	$("#locationDivId").html('');
+	$("#searchBy").val('');
+	$("#membershipId").trigger("click");
+	var errMsg="";	
 	var constiName ='${finalStatus}';
 	var selectLocationName = constiName+" Constituency";
 	var mandalId = $("#panchayatWardByMandal").val();
@@ -1729,6 +1755,13 @@ function getBoothUserDetails(){
 	var mandalName = $("#panchayatWardByMandal option:selected").text();
 	var boothName = $("#committeeLocationId option:selected").text();
 	
+	
+	  if(mandalId == 0 || mandalId.length==0){
+		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
+	  } 
+	  if(boothId == 0 || boothId.length ==0){
+			errMsg=errMsg+"Please select atleast one location<br/>";
+	  }
 	  if(boothId !=0 && boothId>0)
 		{
 			boothId = boothId;
@@ -1741,7 +1774,13 @@ function getBoothUserDetails(){
 			boothId = 0;
 			selectLocationName = mandalName;
 		}
-		
+		if(errMsg.length>0){
+		  $("#errorMessegeId").html(errMsg);
+		     return;
+	   }else{
+		 $("#errorMessegeId").html('');
+	    } 
+		$("#viewDataLoadingImg").show();
 	
 	var jsObj={
 		constituencyId:globalLocationId,
