@@ -593,7 +593,7 @@
 				var  panchayatOrWard= $('#panchayatWardByMandal').val();
 				
 				if(parseInt(1+""+result[i].tehsilId) == panchayatOrWard || parseInt(2+""+result[i].tehsilId) == panchayatOrWard){
-				
+					;
 				}
 				else{
 					if(result[i].tehsil !=null && result[i].tehsil != 0 && result[i].tehsil != '')
@@ -603,77 +603,23 @@
 				
 				str+='</ul>';
 				
-				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0)
+				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0 && result[i].type != null && result[i].type.trim() == 'Added Member')
 				{
-					str+='<ul>';
-					
-					//showing current designation in committees.
-					if(result[i].committeeMemberStatus != null && result[i].committeeMemberStatus.trim().length > 0){
-						if(result[i].committeeMemberStatus.trim() == 'F'){
-							str+='<li style="font-weight:bold;">Current Designation : '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer;font-size:12px; border-radius:50%; padding:3px; " title="Click here to delete current designation"></i><img style="width: 25px; height: 20px;display:none;" src="images/icons/loading.gif" class="dataLoadingImgCls"></li>';	
-							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' added as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
-						}else if(result[i].committeeMemberStatus.trim() == 'P'){
-							str+='<li style="font-weight:bold;">Current Designation : Proposed For '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'<i class="glyphicon glyphicon-remove text-danger updateMemberCls" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" style="background-color:#ddd; cursor:pointer; font-size:12px; border-radius:50%; padding:3px;" title="Click here to delete current designation"></i><img style="width: 25px; height: 20px;display:none;" src="images/icons/loading.gif" class="dataLoadingImgCls"></li>';	
-							str+='<input type="hidden" id="existingRole'+i+'" value=" Aleady  '+result[i].cadreName+' Proposed as '+result[i].committeePosition+' for '+result[i].committeeName+' Committee in '+result[i].committeeLocation+'"/>';
-						}
-					}
-					//showing current designation in Electrols.
-					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
-						for(var j in result[i].previousRoles){
-							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
-						}
+					str+='<ul  style="color:#449D44;">';
+					if(result[i].type != null && result[i].type.trim().length > 0){						
+						if(result[i].localElectionBody == null )
+							str+='<li style="font-weight:bold;"> Aleary Member in Booth No -'+result[i].boothNumber+' ,'+result[i].panchayat+' Panchayat , '+result[i].tehsil+' Mandal. </li>';	
+						else if(result[i].tehsil == null )
+							str+='<li style="font-weight:bold;"> Aleary Member in Booth No -'+result[i].boothNumber+' , '+result[i].tehsil+' Muncipality. </li>';	
+						else 
+							str+='<li style="font-weight:bold;"> Aleary Member in Booth No -'+result[i].boothNumber+' ,'+result[i].tehsil+' Mandal/Muncipality. </li>';	
 					}
 					str+='</ul>';	
 					str+='</div>';
 					str+='</div>';
-					if(committeeMngntTypeId == 1)
-					{
-						//str+='<div class="form-inline ">';
-						//str+='<a onclick="javascript:{getCadreProfileInfo('+result[i].tdpCadreId+',\'existingRole'+i+'\','+result[i].voterId+')}" class="btn btn-success btn-medium m_top5" > SELECT & UPDATE PROFILE</a>';
-						//str+='</div>	';	
-					}
-					else if(committeeMngntTypeId == 2)
-					{
-
-						str+='<div class="form-inline  m_top5" id="elecroleDiv'+result[i].tdpCadreId+'" ">';
-						str+='</div>	';					
-						
-						str+='<div class="row">	';
-						str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group addmoreId'+result[i].tdpCadreId+'" id="updateBtnId'+result[i].tdpCadreId+'">';
-						str+='<a href="javascript:{addMoreEligibleRoles(\'elecroleDiv'+result[i].tdpCadreId+'\',0,\'updateBtnId'+result[i].tdpCadreId+'\','+result[i].tdpCadreId+');}" class="btn btn-success  btn-xs ">Click here to Add+ Details</a>';	
-						str+='</div>';
-						str+='</div>';	
-						
-						str+='<div class="row">	';
-							str+='<div class="col-md-12 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
-							str+='</div>';
-						str+='</div>';	
-						
-						str+='<div class="form-inline ">';
-						str+='<a onclick="jacascript:{addAsElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'addmoreId'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 elecroleDiv'+result[i].tdpCadreId+'" style="display:none;" > UPDATE ELECTORAL DETAILS </a>';
-						str+='</div>	';
-					}	
-					else if(committeeMngntTypeId == 3)
-					{
-						str+='<div class="row">	';
-							str+='<div class="col-md-8 col-sm-12 col-xs-12 form-group" id="statusDiv'+result[i].tdpCadreId+'">';
-							str+='</div>';
-						str+='</div>';	
-						
-						str+='<div class="form-inline elecroleDiv'+result[i].tdpCadreId+'">';
-						str+='<a onclick="jacascript:{addAsAfiliatedElectrole('+result[i].tdpCadreId+',\'elecroleDiv'+result[i].tdpCadreId+'\',\'statusDiv'+result[i].tdpCadreId+'\')}" class="btn btn-success btn-medium m_top5 " > ADD AS AFFILIATED ELECTROLE </a>';
-						str+='</div>	';
-					}								
+													
 				}
 				else{
-					 //showing current designation in Electrols.
-					if(result[i].previousRoles != null && result[i].previousRoles.length > 0){
-					    str+='<ul>';
-						for(var j in result[i].previousRoles){
-							str+='<li style="font-weight:bold;">Electoral for '+result[i].previousRoles[j].committeeName+' Committee in '+result[i].previousRoles[j].committeeLocation+'</i>';
-						}
-					    str+='</ul>';
-					}
 					str+='</div>';
 					str+='</div>';
 					
@@ -1676,8 +1622,8 @@ function getCadreDetailsForBoothBySearchCriteria()
 
 function saveBoothDetails(tdpCadreId){
 	 var committeeLocationId =$("#committeeLocationId").val();
-
-	var confm = confirm("Are you sure to add this member as booth no - " +committeeLocationId+ " incharge");
+	var boothNo =$("#committeeLocationId option:selected").text();
+	var confm = confirm("Are you sure want to add this member as incharge for " +boothNo+ " ");
     if (confm == true) {
 
     } else {
@@ -1741,31 +1687,41 @@ function getBoothUserDetailsbuild(result,locationName){
 				 str +='<thead>';
 					 str +='<tr class="text-center">';
 					 
-						str +='<th>Constituency Name</th>';
-						str +='<th>Mandal Name</th>';
-						str +='<th>Panchayat Name</th>';
-						str +='<th>Booth Name</th>';
-						str +='<th>Booth Number</th>';
+						str +='<th>Constituency&nbsp;Name</th>';
+						str +='<th>Mandal&nbsp;Name</th>';
+						str +='<th>Panchayat&nbsp;Name</th>';
+						str +='<th>Village&nbsp;Covered </th>';	
+						str +='<th>Booth&nbsp;No</th>';						
 						str +='<th>Photo</th>';
-						str +='<th>Cadre Name</th>';
-						str +='<th>Mobile Number</th>';
-						str +='<th>Member ShipId</th>';
+						str +='<th>Membership&nbsp;No</th>';
+						str +='<th>Cadre&nbsp;Name</th>';
+						str +='<th>Mobile&nbsp;No</th>';
+						
 					 						 
 					 str +='</tr>';
 				 str +='</thead>';			 
 			  str +='<tbody>';
 						for(var i in result){
+							var membershipNo = result[i].memberShipNo != null ? result[i].memberShipNo+"":"-";
+							//alert(membershipNo.length);
 							
 							str +='<tr>';
 								str +='<td>'+result[i].name+'</td>';
 								str +='<td>'+result[i].mandalName+'</td>';
 								str +='<td>'+result[i].panchayatName+'</td>';
 								str +='<td>'+result[i].boothName+'</td>';
+																
 								str +='<td><span title="http://www.mytdp.com/cadre_images/'+result[i].url+'"></span>'+'Booth No - '+result[i].boothNumber+'</td>';
-				str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+								str +='<td><img src="http://www.mytdp.com/images/cadre_images/'+result[i].url+'" onerror="setDefaultImage(this);" style="width: 50px; height: 50px;"></img></td>';
+								if( membershipNo.length==8)
+									str +='<td>'+result[i].memberShipNo+'</td>';
+								else if(membershipNo.length==7)
+									str +='<td>0'+result[i].memberShipNo+'</td>';
+								else 
+									str +='<td>  -  </td>';
 								str +='<td>'+result[i].firstName+'</td>';	
 								str +='<td>'+result[i].mobileNumber+'</td>';	
-								str +='<td>'+result[i].memberShipNo+'</td>';
+								
 									
 							str +='</tr>';
 							}
