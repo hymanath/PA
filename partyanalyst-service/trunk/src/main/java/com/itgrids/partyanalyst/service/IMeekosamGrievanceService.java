@@ -14,5 +14,5 @@ public interface IMeekosamGrievanceService {
 	public List<IdAndNameVO> getMeekosamCasteCategoryList();
 	public List<IdAndNameVO> getMeekosamArgeeCategoryList();
 	public List<IdAndNameVO> getMeekosamAnnualIncomeList();
-
+	public List<PetitionerDetailsVO> searchPetitionerDetailsByVoterNoAadharNoMobileNo(String cardNo, String type);
 }
