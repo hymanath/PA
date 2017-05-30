@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dto;
 import java.io.Serializable;
 
 public class PetitionerDetailsVO implements Serializable {
+		private Long petitionerId;
 		private String name;
 		private String relativeName;
 		private Long age;
@@ -19,7 +20,8 @@ public class PetitionerDetailsVO implements Serializable {
 		private Long annulIncomeId;
 		private Long districtId;
 		private Long constituencyId;
-		private String  tehsil;
+		private Long tehsilId;
+		private String tehsil;
 		private Long panchayatId;
 		private Long hamletId;
 		private Long userId;
@@ -178,4 +180,18 @@ public class PetitionerDetailsVO implements Serializable {
 		public void setDuration(String duration) {
 			this.duration = duration;
 		}
+		public Long getPetitionerId() {
+			return petitionerId;
+		}
+		public void setPetitionerId(Long petitionerId) {
+			this.petitionerId = petitionerId;
+		}
+		public Long getTehsilId() {
+			return tehsilId;
+		}
+		public void setTehsilId(Long tehsilId) {
+			this.tehsilId = tehsilId;
+		}
+		
+		
 }
