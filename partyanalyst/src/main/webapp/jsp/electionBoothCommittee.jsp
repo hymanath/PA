@@ -147,36 +147,47 @@
 			</div>
 			
 		</div> -->
-		<div id="errorMessegeId" style="color: red; padding-left: 15px; border-top-width: 2px; margin-left: 199px;"></div>
-		<div class="row-fluid m_top20" id="mandalMainDivId">
-			<div class="form-group col-md-8 col-md-offset-2  col-sm-6 col-xs-6">
-					<label for="">SELECT Mandal/Municipality/Corporation <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
-				<!--	<select id="" class="form-control" onchange="(1);"><option value="0">Select Location</option></select>-->
-				<!--	<div id=""></div> -->
-					<div id="mandalDivId"></div>
-					<!--<div id="mandalDivIdErr"></div>-->
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3> 
 			</div>
-		</div> 	
-		<div class="row m_top20">
-			<div class="col-md-4 col-md-offset-2  col-sm-6 col-xs-6 ">
-				<div class="form-group col-xs-12 pull-right">
-					<label for="committeeLocationId">SELECT LOCATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
-					<select onchange="populateDefaultValue(1);" class="form-control" id="committeeLocationId" ><option value="0">Select Location</option></select >
-					<!--<div id="committeeLocationIdErr"></div>-->
-				 </div>
-			</div>
-			<div class="col-md-4 col-sm-6 col-xs-6" id="commitTypeId">
-				<div class="form-group col-xs-12">
-					<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
-					<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);" >
-						<option value="0">Select Committee Type</option>
-						<option value="3">View All Committee Info</option>
-						<option value="1">Main Committee</option>
-						<option value="2">Affiliated Committee</option>
-					</select >
-					
-					<div id="committeeTypeIdErr"></div>
-				 </div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-4" id="mandalMainDivId">
+						<label for="">SELECT Mandal/M1unicipality/Corporation <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
+						<div id="mandalDivId"></div>
+					</div>
+					<div class="col-sm-4" id="committeePanchayatId">
+						<label for="committeeLocationId">SELECT PANCHAYAT <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+						<select onchange="populateDefaultValue(1);gePanchayatOrBooth();" class="form-control" id="committeeLocationId" ><option value="0">Select PANCHAYAT</option></select >
+					</div>
+					<div class="col-sm-4">
+						<label for="committeeLocationId1">SELECT LOCATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
+						<select onchange="populateDefaultValue(1);" class="form-control" id="committeeLocationId1" ><option value="0">Select Location</option></select >
+					</div>
+					<div class="col-sm-4" id="commitTypeId">
+						<label for="committeeTypeId">COMMITTEE TYPE <span style="color:red">*</span></label>
+						<select class="form-control" id="committeeTypeId" onchange="getAffiliatedCommitsForALoc();populateDefaultValue(2);getCommitteCadreMembersInfo(1);" >
+							<option value="0">Select Committee Type</option>
+							<option value="3">View All Committee Info</option>
+							<option value="1">Main Committee</option>
+							<option value="2">Affiliated Committee</option>
+						</select >
+						
+						<div id="committeeTypeIdErr"></div>
+					</div>
+					<div class="col-sm-4" style="margin-top:25px;">
+						<ul class="list-inline">
+							<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getBoothUserDetails();" value="VIEW" /></li>
+							<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchDiv();" value="ADD" /></li>
+						</ul>
+						<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
+					</div>
+					<div class="col-sm-12">
+						<div id="locationDivId"></div>
+						<div id="userDetailsId"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<!--<div id="committeeMainId" class="row">	
@@ -208,15 +219,10 @@
 		</div>-->
 		<div class="row">	
 			<div class="col-md-12 col-sm-12 col-xs-12 text-center">
-					<ul class="list-inline">
-						<li><input type="button" id="viewMembrsBtn" class="btn btn-success" onclick="getBoothUserDetails();" value="VIEW" /></li>
-						<li><input type="button" id="addMembrsBtn" class="btn btn-success" onclick="showSearchDiv();" value="ADD" /></li>
-						</ul>
-						<img id="viewDataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/>
+					
 					
 			</div> 
-			  <div id="locationDivId"></div>
-			<div id="userDetailsId"></div>
+			 
 			<!-- <div id ="totStaredNotStartedConstiencyId"></div> -->
 		</div>
 		
@@ -1625,7 +1631,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 		window.location.replace('committeeInfoAction.action');
 	});
 	function getTdpCommitteeMandalCorporationsByConstituency(num)
-	{
+	{	
 	$("#dataLoadingImgForMandal").show();
 		var jsObj = {
 			locationId :'${locationValue}',
@@ -1640,7 +1646,8 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 			$("#dataLoadingImgForMandal").hide();
 				var str='';
 				if(result !=null){
-						str+='<select id="panchayatWardByMandal" class="form-control" onChange="gePanchayatOrBooth('+num+')">';
+					if(num == 2)
+						str+='<select id="panchayatWardByMandal" class="form-control" onChange="getTdpCommitteePanchayatWardByMandal()">';
 						str+='<option value="0">Select Location</option>';
 						for(var i in result)
 						{
@@ -1655,12 +1662,25 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 	getTdpCommitteePanchayatWardByMandal($(this).val());
 });	*/	
 			
-	function getTdpCommitteePanchayatWardByMandal(mandalId){
+	function getTdpCommitteePanchayatWardByMandal(){
+		var mandalId = $('#panchayatWardByMandal').val();
+		//alert(mandalId);
 		    $("#committeeLocationId  option").remove();
+			 $("#committeeLocationId1  option").remove();
+			var num =$("#panchayatWardByMandal").val();
+	      var res = num.charAt(0);
+			var enrllmentId=2;
+			if(parseInt(res) == 1){
+				$("#committeePanchayatId").hide();
+				gePanchayatOrBooth();
+				enrllmentId = 0;
+			}else{
+				$("#committeePanchayatId").show();
+			}
 			var jsObj={
 				mandalId:mandalId,
 				constituencyId:'${locationValue}',
-				enrollmentId:2
+				enrollmentId:enrllmentId
 			}
 		$("#dataLoadingsImg").show();
 		$("#dataLoadingImg").show();
@@ -1672,26 +1692,30 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
 			if(result != null){
-					$("#committeeLocationId").append('<option value="0">Select Location</option>');
+					$("#committeeLocationId").append('<option value="0">Select Panchayat</option>');
+					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
 				for(var i in result){
 						$("#committeeLocationId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
+						
 				}
 			}
 			
 		});	
 			
 	}
-function gePanchayatOrBooth(num){
-	if(num == 1){
-		getTdpCommitteePanchayatWardByMandal($('#panchayatWardByMandal').val());	
-	}else if(num == 2){
+function gePanchayatOrBooth(){
+	alert(567890);
+	var num =$("#panchayatWardByMandal").val();
+	var res = num.charAt(0);
+	if(res == 1){
+		getTdpCommitteePanchayatWardByMandal1();	
+	}else if(res == 2){
 		getBoothsByMandal($('#panchayatWardByMandal').val());
 	}
 	
 }
-
 function getBoothsByMandal(mandalId){
-		    $("#committeeLocationId  option").remove();
+		    $("#committeeLocationId1  option").remove();
 			var jsObj={
 				mandalId:mandalId,
 				constituencyId:'${locationValue}',
@@ -1707,9 +1731,10 @@ function getBoothsByMandal(mandalId){
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
 			if(result != null){
-					$("#committeeLocationId").append('<option value="0">Select Location</option>');
+				alert(5678);
+					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
 				for(var i in result){
-						$("#committeeLocationId").append('<option value='+result[i].id+'>Booth No - '+result[i].roleId+' ('+result[i].relativeName+' )</option>');
+						$("#committeeLocationId1").append('<option value='+result[i].id+'>Booth No - '+result[i].roleId+' ('+result[i].relativeName+' )</option>');
 				}
 			}
 		});
@@ -1751,7 +1776,7 @@ function getBoothUserDetails(){
 	var constiName ='${finalStatus}';
 	var selectLocationName = constiName+" Constituency";
 	var mandalId = $("#panchayatWardByMandal").val();
-	var boothId = $("#committeeLocationId").val();
+	var boothId = $("#committeeLocationId1").val();
 	var mandalName = $("#panchayatWardByMandal option:selected").text();
 	var boothName = $("#committeeLocationId option:selected").text();
 	
@@ -1835,7 +1860,7 @@ function buildTotalConstituency(result){
 	str +='<tbody>';
 	str +='<tr>';
 	if(result != null){
-		alert(result.totalCount);
+		//alert(result.totalCount); //srujana
 		str +='<td>'+result.totalCount+'</td>';
 		str +='<td>'+result.total+'</td>';
 		str +='<td>'+result.totNotStartedBothCnt+'</td>';
@@ -1845,6 +1870,40 @@ function buildTotalConstituency(result){
 	str +='</table>'
 	$("#totStaredNotStartedConstiencyId").html(str);
 }
+function getTdpCommitteePanchayatWardByMandal1(){
+	alert(3456789);
+		var mandalId = $('#panchayatWardByMandal').val();
+		    $("#committeeLocationId1  option").remove();
+			//var num =$("#panchayatWardByMandal").val();
+	      var res = mandalId.charAt(0);
+			var enrllmentId=2;
+			if(parseInt(res) == 1){
+				enrllmentId = 0;
+			}
+			var jsObj={
+				mandalId:mandalId,
+				constituencyId:'${locationValue}',
+				enrollmentId:enrllmentId
+			}
+		$("#dataLoadingsImg").show();
+		$("#dataLoadingImg").show();
+			$.ajax({
+				type : "POST",
+				url : "getTdpCommitteePanchayatWardByMandalAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){	
+		$("#dataLoadingsImg").hide();
+		$("#dataLoadingImg").hide();
+			if(result != null){
+					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
+				for(var i in result){
+						$("#committeeLocationId1").append('<option value='+result[i].locationId+'>Booth No - '+result[i].locationName+'</option>');
+				}
+			}
+			
+		});	
+			
+	}
 </script>
 <script>
 var tableToExcel = (function() {
