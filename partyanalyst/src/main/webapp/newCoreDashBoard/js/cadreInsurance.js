@@ -1419,6 +1419,8 @@
 		
 			highcharts(idTs2,type,xAxis,yAxisTH,legend,dataTs2,plotOptions,tooltip); 
 		}
+		
+		
 	/* Comparison Block Start */
 	
 	//getAllItsSubUserTypeIdsByParentUserTypeForInsurance(); default call
@@ -1557,13 +1559,14 @@ function buildChildTypeMembersForInsuranceReslt(result,childUserType){
 					 }
 				 str+='</thead>';
 				 str+='</tbody>';
-				 str+='<tr>';
+				 str+='<tr style="font-size:11px">';
+				 
 				 // positiveCount : this key contain approved amount
-					 str+='<td>'+result[i].totalCount+'('+result[i].positiveCount+')</td>';
+					 str+='<td>'+result[i].totalCount+'(<i class="fa fa-inr" aria-hidden="true"></i>'+result[i].positiveCount+'/-)</td>';
 					  if(result[i].subList != null && result[i].subList.length > 0){
 						 for(var j in result[i].subList){
 							 if(result[i].subList[j].totalCount > 0){
-								str+='<th>'+result[i].subList[j].totalCount+'('+result[i].subList[j].positiveCount+')</th>';	 	
+								str+='<td>'+result[i].subList[j].totalCount+'(<i class="fa fa-inr" aria-hidden="true"></i>'+result[i].subList[j].positiveCount+'/-)</td>';	 	
 							 }
 						 }
 					 }
@@ -1685,7 +1688,7 @@ function buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,
 						 }
 					 }
 				str+'=</thead>';
-		str+='<tbody>';
+		str+='<tbody style="font-size:11px">';
 		var rank=1;
 		 for(var i in result){
 		 var yourValues = result[i].locationName;
@@ -1760,6 +1763,7 @@ function buildDirectChildMemberCadreInsuranceDtlsRlst(result,selectedMemberName,
 		str+='</div>';
 	    $("#"+childActivityMemberDivId).html(str);
 	}
+	
 function getCandiateWiseCadreInsurencaeDtls(userTypeId,activityMemberId,selectedMemberName,selectedUserType){
 	        $("#DeathHeadingId").hide();
 			$("#HospitalizationHeadingId").hide();
