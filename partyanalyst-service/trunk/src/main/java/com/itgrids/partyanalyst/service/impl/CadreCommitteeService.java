@@ -20890,11 +20890,13 @@ public List<LocationWiseBoothDetailsVO> getTdpCommitteePanchayatWardByMandal(Str
 	   if(localBodyIds.size() > 0){
 		   List<Object[]> localBodyList = new ArrayList<Object[]>();
 		   //0wardId,1pwardName,2localBdyName
-		   if(constituencyId == null || constituencyId.longValue() == 0L)
+		   if(constituencyId == null || constituencyId.longValue() == 0L){
 			   localBodyList = constituencyDAO.getWardsInLocalElectionBody(localBodyIds);
-		   else
-			   localBodyList = tdpCommitteeDAO.getTdpCommitteeWardsInLocalElectionBody(localBodyIds, constituencyId);
-		   
+		   }
+		   if(enrollmentId != null && enrollmentId.longValue() == 0L) // enrollment year id is zero 
+			     localBodyList =boothDAO.getBoothsForMuncipalitys(localBodyIds,constituencyId);
+		     else
+				 localBodyList = tdpCommitteeDAO.getTdpCommitteeWardsInLocalElectionBody(localBodyIds, constituencyId);
         	for(Object[] localBody:localBodyList){
         		vo = new LocationWiseBoothDetailsVO();
 	        	vo.setLocationId(Long.valueOf("2"+commonMethodsUtilService.getLongValueForObject(localBody[0])));
