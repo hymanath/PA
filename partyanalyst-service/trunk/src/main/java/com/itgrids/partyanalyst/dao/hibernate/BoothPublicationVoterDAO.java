@@ -8745,31 +8745,36 @@ public List<Object[]> getTotalVoterGroupByLocationUrbWard(String location, Long 
 
 
 public List<Object[]> getVoterIdDetailsByPublicationIdAndCardNo(String voterCardNo,Long publicationId){
-	Query query=getSession().createSQLQuery("select distinct C.constituency_id as cid," +
-			"B.booth_id as boothId," +
-			"B.publication_date_id as pid," +
+	Query query=getSession().createSQLQuery("select distinct " +
+			" C.constituency_id as cid," +//0
+			"B.booth_id as boothId," +//1
+			"B.publication_date_id as pid," +//2
 			"V.voter_id as voterId," +//3
 			"V.name as voterName ," +//4
 			"V.age as age," +//5
 			"V.gender as gender," +//6
-			"C.district_id as distId" +
+			"C.district_id as distId" +//7
 			",V.relative_name as relativeName," +//8
 			"V.house_no as hno," +//9
 			"V.relationship_type as relationType," +//10
-			"C.name as constName," +
-			"D.district_name as distName," +
-			"B.part_no as partNo," +
+			"C.name as constName," +//11
+			"D.district_name as distName," +//12
+			"B.part_no as partNo," +//13
 			"0 as zero," +//14
 			" B.panchayat_id as panchayatId," +//15
-			"P.panchayat_name as panchayatName," +
-			"T.tehsil_id as tehsilId," +
-			"T.tehsil_name as tehsilName," +
-			"C.state_id as stateId," +
+			"P.panchayat_name as panchayatName," +//16
+			"T.tehsil_id as tehsilId," +//17
+			"T.tehsil_name as tehsilName," +//18
+			"C.state_id as stateId," +//19
 			"S.state_name as stateName," +//20
-			" L.name as localBodyName," +
-			"L.local_election_body_id as localBodyId," +
-			"W.constituency_id as wardId," +//23
-			"W.name as wardName" +
+			" L.name as localBodyName," +//21
+			"L.local_election_body_id as localBodyId," +//22
+			"W.constituency_id as wardId, " +//23
+			"W.name as wardName, " +//24
+			"V.voter_id_card_no as voterIdCardNo, " +//25
+			"V.mobile_no as mobileNo," +//26
+			"V.aadhar_no as aadharNo, " +//27
+			"V.email as email " +//28
 			" from booth_publication_voter BPV ,voter V,district D,state S,booth B left outer join tehsil T on B.tehsil_id = T.tehsil_id " +
 			" left outer join panchayat P on B.panchayat_id=P.panchayat_id " +
 			" left outer join constituency C on B.constituency_id=C.constituency_id " +
@@ -8802,7 +8807,11 @@ public List<Object[]> getVoterIdDetailsByPublicationIdAndCardNo(String voterCard
 		.addScalar("localBodyName", Hibernate.STRING)
 		.addScalar("localBodyId", Hibernate.LONG)
 		.addScalar("wardId", Hibernate.LONG)
-		.addScalar("wardName", Hibernate.STRING);
+		.addScalar("wardName", Hibernate.STRING)
+		.addScalar("voterIdCardNo", Hibernate.STRING)
+		.addScalar("mobileNo", Hibernate.STRING)
+		.addScalar("aadharNo", Hibernate.STRING)
+		.addScalar("email", Hibernate.STRING);
 	query.setParameter("voterCardNo", voterCardNo);
 	query.setParameter("publicationId", publicationId);
 	return query.list();
