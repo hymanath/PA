@@ -26,8 +26,10 @@
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/iThing.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/RangeSlider/jquery-ui-1.8.10.custom.css" type="text/css" rel="stylesheet"/>
-<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/customLess.less" rel="stylesheet" type="text/less">
+<!--<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">-->
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
@@ -414,5 +416,7 @@ google.load("elements", "1", {
 	packages: "transliteration"
 });
 </script>
+
+
 </body>
 </html>
