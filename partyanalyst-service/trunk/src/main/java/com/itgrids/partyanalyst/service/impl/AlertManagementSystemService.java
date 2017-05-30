@@ -11460,7 +11460,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 	 * Santosh (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getFinancialAssistanceAlertCntCategoryWise(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long, java.util.List, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List)
 	 */
-	public List<AlertVO> getFinancialAssistanceAlertCntCategoryWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,String userType,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
+	public List<AlertVO> getFinancialAssistanceAlertCntCategoryWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
 		LOG.info("Entered in getFinancialAssistanceAlertCntCategoryWise() method of AlertManagementSystemService{}");
 		try{
 			Date fromDate = null;
@@ -11572,7 +11572,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 	 * Santosh (non-Javadoc)
 	 * @see com.itgrids.partyanalyst.service.IAlertManagementSystemService#getFinancialAssistanceAlertCntDtls(java.lang.String, java.lang.String, java.lang.Long, java.util.List, java.util.List, java.util.List, java.lang.Long, java.util.List, java.lang.String, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.util.List, java.lang.Long, java.lang.Long)
 	 */
-	public List<AlertCoreDashBoardVO> getFinancialAssistanceAlertCntDtls(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,String userType,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long proposalCategoryId,Long proposalStatusId){
+	public List<AlertCoreDashBoardVO> getFinancialAssistanceAlertCntDtls(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long proposalCategoryId,Long proposalStatusId){
 		LOG.info("Entered in getFinancialAssistanceAlertCntDtls() method of AlertManagementSystemService{}");
 		try{
 			Date fromDate = null;
