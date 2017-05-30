@@ -1,8 +1,9 @@
 var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3){
-wurl = url.substr(0,(url.indexOf(".in")+3));
+	wurl = url.substr(0,(url.indexOf(".in")+3));
 }
+var actionUrl = '';
 var alertStatusGlobalId = 0;  
 onLoadCalls()
 function onLoadCalls()
@@ -212,6 +213,7 @@ function onLoadClicks()
 		var statusId = $(this).attr("attr_status_id");
 		var statusName = $(this).attr("attr_status_name");
 		var statusCount = $(this).attr("attr_status_count");
+		var departmentId = $(this).attr("attr_department_id");
 		$(".filters-list").each(function(){
 			blockName = $(this).attr("filters-list");
 			/* if(blockName == 'electronicMedia')
@@ -838,17 +840,19 @@ function onLoadClicks()
 	});
 	
 	$(document).on("click",".filters-icon",function(){
-		var actionurl
 		if(window.location.hostname == "localhost")
 		{
-			actionurl = window.location.pathname.split("/")[2]; //local
+			actionUrl = window.location.pathname.split("/")[2]; //local
 		}else{
-			actionurl = window.location.pathname; //live
+			actionUrl = window.location.pathname; //live
 		}
 		
-		if(actionurl == "alertDistOfficeManagement.action" || actionurl == "alertDistManagement.action" || actionurl == "alertUserManagementAction.action")
+		if(actionUrl == "alertDistOfficeManagement.action" || actionUrl == "alertDistManagement.action" || actionUrl == "alertUserManagementAction.action")
 		{
-			$("[filters-list='locLevel']").closest(".row").hide();
+			setTimeout(function(){
+				$("[filters-list='locLevel']").closest(".row").hide();
+			},500);
+			
 		}
 		$("#filter").toggle();
 	});
@@ -868,7 +872,7 @@ function onLoadClicks()
 		});
 		$("#alertManagementPopupBody").html("<div class='row'><div id='rightSideExpandView'></div></div>");
 		rightSideExpandView(alertId);
-		//popUpFilter('heading','','','');
+		//popUpFilter('heading','','','','','','');
 		$(".flipview-btn,.filters-icon").hide();
 		var alertId = '';
 		$("#modalHeadingTotal").html("Alert Status");
@@ -3148,7 +3152,7 @@ function getDocumentsForAlert(alertId){
 var printMediaFilters = [];
 var electronicMediaFilters = [];
 var scopesListFilters = [];
-function popUpFilter(type,result,statusName,statuscount)
+function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,alertTaskType)
 {
 	var str='';
 	var str1='';
@@ -3180,43 +3184,46 @@ function popUpFilter(type,result,statusName,statuscount)
 				str+='<div class="col-sm-4">';
 				str+='</div>';
 			str+='</div>';
-			str+='<div class="row m_top10">';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="locLevel"><b>Location Level</b></h5>';
-					str+='<ul class="filters-list" filters-list="locLevel">';
-						str+='<li attr_level="state" attr_levelVal="statesLevel" attr_id="1">STATE</li>';
-						str+='<li attr_level="district" attr_levelVal="districtsLevel" attr_id="2">DISTRICT</li>';
-						str+='<li attr_level="constituency" attr_levelVal="consLevel" attr_id="3">CONSTITUENCY</li>';
-						str+='<li attr_level="mandal" attr_levelVal="mandalLevel" attr_id="4">MANDAL</li>';
-						str+='<li attr_level="panchayat" attr_levelVal="panLevel" attr_id="5">PANCHAYAT</li>';
-						str+='<li attr_level="village" attr_levelVal="villageLevel" attr_id="6">VILLAGE</li>';
-					str+='</ul>';
-				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="statesLevel"><b>State Level</b></h5>';
-					str+='<div class="scroller-state">';
-						str+='<ul class="filters-list" filters-list="statesLevel">';
-							str+='<li attr_id="1">ANDHRA PRADESH</li>';
+			if(actionUrl == "alertManagementAction.action")
+			{
+				str+='<div class="row m_top10">';
+					str+='<div class="col-sm-3">';
+						str+='<h5 class="text-capitalize" filters-list-title="locLevel"><b>Location Level</b></h5>';
+						str+='<ul class="filters-list" filters-list="locLevel">';
+							str+='<li attr_level="state" attr_levelVal="statesLevel" attr_id="1">STATE</li>';
+							str+='<li attr_level="district" attr_levelVal="districtsLevel" attr_id="2">DISTRICT</li>';
+							str+='<li attr_level="constituency" attr_levelVal="consLevel" attr_id="3">CONSTITUENCY</li>';
+							str+='<li attr_level="mandal" attr_levelVal="mandalLevel" attr_id="4">MANDAL</li>';
+							str+='<li attr_level="panchayat" attr_levelVal="panLevel" attr_id="5">PANCHAYAT</li>';
+							str+='<li attr_level="village" attr_levelVal="villageLevel" attr_id="6">VILLAGE</li>';
 						str+='</ul>';
 					str+='</div>';
-					str+='<h5 class="text-capitalize m_top10" filters-list-title="districtsLevel"><b>District Level</b></h5>';
-					str+='<div class="scroller-district">';
-						str+='<ul class="filters-list" filters-list="districtsLevel"></ul>';
+					str+='<div class="col-sm-3">';
+						str+='<h5 class="text-capitalize" filters-list-title="statesLevel"><b>State Level</b></h5>';
+						str+='<div class="scroller-state">';
+							str+='<ul class="filters-list" filters-list="statesLevel">';
+								str+='<li attr_id="1">ANDHRA PRADESH</li>';
+							str+='</ul>';
+						str+='</div>';
+						str+='<h5 class="text-capitalize m_top10" filters-list-title="districtsLevel"><b>District Level</b></h5>';
+						str+='<div class="scroller-district">';
+							str+='<ul class="filters-list" filters-list="districtsLevel"></ul>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-3">';
+						str+='<h5 class="text-capitalize m_top10" filters-list-title="consLevel"><b>Constituency Level</b></h5>';
+						str+='<div class="scroller-cons">';
+							str+='<ul class="filters-list" filters-list="consLevel"></ul>';
+						str+='</div>';
+					str+='</div>';
+					str+='<div class="col-sm-3">';
+						str+='<h5 class="text-capitalize m_top10" filters-list-title="mandalLevel"><b>Mandal Level</b></h5>';
+						str+='<div class="scroller-mandal">';
+							str+='<ul class="filters-list" filters-list="mandalLevel"></ul>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize m_top10" filters-list-title="consLevel"><b>Constituency Level</b></h5>';
-					str+='<div class="scroller-cons">';
-						str+='<ul class="filters-list" filters-list="consLevel"></ul>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize m_top10" filters-list-title="mandalLevel"><b>Mandal Level</b></h5>';
-					str+='<div class="scroller-mandal">';
-						str+='<ul class="filters-list" filters-list="mandalLevel"></ul>';
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
+			}
 			str+='<div class="row m_top10">';
 				
 				str+='<div class="col-sm-3">';
@@ -3240,15 +3247,42 @@ function popUpFilter(type,result,statusName,statuscount)
 							str+='<li attr_id="All">All</li>';
 							if(result.alertStatusList != null && result.alertStatusList.length>0)
 							{
-								for(var i in result.alertStatusList)
+								if(alertTaskType == 'mainAlert')
 								{
-									if(statusName == result.alertStatusList[i].name)
+									for(var i in result.alertStatusList)
+									{
+										if(statusName == result.alertStatusList[i].name || statusId == result.alertStatusList[i].id)
+										{
+											str+='<li class="active" attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+										}else{
+											str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+										}
+									}
+								}else if(alertTaskType == 'alertSource'){
+									for(var i in result.alertStatusList)
+									{
+										if(statusName == result.alertStatusList[i].name || departmentId == result.alertStatusList[i].id)
+										{
+											str+='<li class="active" attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+										}else{
+											str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+										}
+									}
+								}else{
+									for(var i in result.alertStatusList)
+									{
+										str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+									}
+								}
+								/* for(var i in result.alertStatusList)
+								{
+									if((statusName == result.alertStatusList[i].name))
 									{
 										str+='<li class="active" attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
 									}else{
 										str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
 									}
-								}
+								} */
 							}
 						str+='</ul>';
 					str+='</div>';
@@ -3258,14 +3292,14 @@ function popUpFilter(type,result,statusName,statuscount)
 					str+='<div class="scroller-alertSubtask">';
 						str+='<ul class="filters-list" filters-list="alertSubtaskStatus">';
 							str+='<li attr_id="All">All</li>';
-							for(var i in result.alertSubTaskStatusList	)
+							for(var i in result.alertSubTaskStatusList)
 							{
-								/* if(statusName == result.alertSubTaskStatusList[i].name)
+								if((statusName == result.alertSubTaskStatusList[i].name || departmentId == result.alertSubTaskStatusList[i].id || statusId == result.alertStatusList[i].id) && alertTaskType == 'mainAlertSubTask')
 								{
 									str+='<li class="active" attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else{ */
+								}else{
 									str+='<li attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'</li>';
-								//}
+								}
 							}
 						str+='</ul>';
 					str+='</div>';
@@ -3277,7 +3311,7 @@ function popUpFilter(type,result,statusName,statuscount)
 							str+='<li attr_id="All">All</li>';
 							for(var i in result.alertDepartMentList)
 							{
-								if(statusName == result.alertDepartMentList[i].name)
+								if(departmentId == result.alertDepartMentList[i].id)
 								{
 									str+='<li class="active" attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
 								}else{
@@ -3291,9 +3325,13 @@ function popUpFilter(type,result,statusName,statuscount)
 					str+='<h5 class="text-capitalize" filters-list-title="impactLevel"><b>Impact Level</b></h5>';
 					str+='<div class="scopes-list">';
 						str+='<ul class="filters-list" filters-list="impactLevel">';
+						
 							for(var i in result.scopesList)
 							{
 								scopesListFilters.push({"name":result.scopesList[i].name,"id":result.scopesList[i].id})
+								 if(statusId == result.scopesList[i].id && alertTaskType == 'locationLevel'){
+									str+='<li class="active" attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								}
 								//str+='<li attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'</li>';
 							}	
 						str+='</ul>';
@@ -3304,13 +3342,34 @@ function popUpFilter(type,result,statusName,statuscount)
 				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize" filters-list-title="priority"><b>priority</b></h5>';
 					str+='<ul class="filters-list" filters-list="priority">';
+					var severityId='';
+							$('.severityTypeCls').each(function(i, obj){
+									 if($(this).is(":checked")){
+										severityId = $(this).attr("attr_val");
+									 }
+							});	
 						for(var i in result.severityList)
 						{
-							if(statusName == result.severityList[i].name)
+							/* if(statusName == result.severityList[i].name && statusId == result.severityList[i].id)
 							{
 								str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
 							}else{
 								str+='<li attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'</li>';
+							} */
+							
+							
+							if($('.severityTypeCls:checked').length == 3){
+								str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+							}else{
+								if(severityId == 1 && result.severityList[i].id == 1){
+									str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								}else if(severityId == 2 && result.severityList[i].id == 2){
+									str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								}else if(severityId == 3 && result.severityList[i].id == 3){
+									str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								}else{
+									str+='<li attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'</li>';
+								}
 							}
 						}
 					str+='</ul>';
@@ -3318,15 +3377,36 @@ function popUpFilter(type,result,statusName,statuscount)
 				str+='<div class="col-sm-3">';
 					str+='<h5 class="text-capitalize m_top20" filters-list-title="alertSourceType"><b>alert source type</b></h5>';
 					str+='<ul class="filters-list" filters-list="alertSourceType">';
-						for(var i in result.categoryList)
+						if(alertTaskType == 'alertSource')
 						{
-							if(statusName == result.categoryList[i].name)
+							for(var i in result.categoryList)
 							{
-								str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-							}else{
-								str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
+								if(statusName == result.categoryList[i].name || statusId == result.categoryList[i].id)
+								{
+									str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								}else{
+									str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
+								}
+							}
+						}else{
+							for(var i in result.categoryList)
+							{
+								if(	$(".socialMediaCls").is(":checked") && result.categoryList[i].name == "Social Media" || 
+									$(".newsPaperListCls").is(":checked") && result.categoryList[i].name == "Print Media" || 
+									$(".chanelListCls").is(":checked") && result.categoryList[i].name == "Electronic Media" || 
+									$(".callcenterCls").is(":checked") && result.categoryList[i].name == "Call Center" || 
+									$(".mondayGrievanceCls").is(":checked") && result.categoryList[i].name == "Monday Grievance"|| 
+									$(".janmabhoomiCls").is(":checked") && result.categoryList[i].name == "Janmabhoomi"|| 
+									$(".specialGrievanceCls").is(":checked") && result.categoryList[i].name == "Special Grievance - SC/ST"|| 
+									$(".generalGrievanceCls").is(":checked") && result.categoryList[i].name == "General Grievance")
+								{
+									str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								}else{
+									str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
+								}
 							}
 						}
+						
 					str+='</ul>';
 				str+='</div>';
 				/* str+='<div class="col-sm-3">';
@@ -3355,13 +3435,14 @@ function popUpFilter(type,result,statusName,statuscount)
 				str+='</div>'; */
 				str+='<div class="col-sm-12 m_top10">';
 					str+='<h5 class="text-capitalize" filters-list-title="lagDays"><b>Lag Days</b><small class="clear" filer-selection-clear="lagDays">(Clear All)</small></h5>';
-					str+='<div id="tourSlider" style="width:900px"></div>';
+					str+='<label class="checkbox-inline"><input type="checkbox" name="lagDays" id="lagDaysId" checked/>Lag Days</label>';
+					str+='<div id="tourSlider"></div>';
 					str+='<label class="checkbox-inline pull-right"><input type="checkbox" class="yearCheckbox"/>More than 365 Days</label>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row">';
 				str+='<div class="col-sm-3 m_top20">';
-					str+='<button class="btn btn-primary btn-block filters-apply" attr_status_count="'+statuscount+'" attr_status_name="'+statusName+'" type="button">APPLY FILTERS</button>';
+					str+='<button class="btn btn-primary btn-block filters-apply" attr_status_count="'+statuscount+'" attr_status_name="'+statusName+'" attr_status_id ="'+statusId+'" attr_department_id = "'+departmentId+'" type="button">APPLY FILTERS</button>';
 				str+='</div>';
 				str+='<div class="col-sm-3 m_top20">';
 					str+='<button class="btn btn-default btn-block filters-cancel">CANCEL</button>';
@@ -3392,20 +3473,20 @@ function popUpFilter(type,result,statusName,statuscount)
 		{
 			$(".scroller-alertDepartments").mCustomScrollbar({setHeight : '130px'});
 		}
-		$("[filters-list='alertDepartments'] li").each(function(){
+		/* $("[filters-list='alertDepartments'] li").each(function(){
 			if($(this).hasClass("active"))
 			{
 				$(this).trigger("click");
 			}
 			
-		});
+		}); */
 	}
 }
 function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 {
 	
 	var str='';
-	popUpFilter('heading','','','','');
+	popUpFilter('heading','','','','','','');
 	var alertId = '';
 	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
 	str+='<div class="row">';
@@ -3421,6 +3502,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 						str+='<th><span class="channel-name">Status</span></th>';
 						str+='<th><span class="channel-name">Ofcr Name</span></th>';
 						str+='<th><span class="channel-name">Ofcr Designation</span></th>';
+						str+='<th><span class="channel-name">Lag Days</span></th>';
 						str+='<th>Subtask <i class="fa fa-level-down"></i></th>';
 						str+='<th></th>';
 					str+='</thead>';
@@ -3496,6 +3578,15 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 									if(result[i].subList[j].relatedTo != null)
 									{
 										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].relatedTo+'">'+result[i].subList[j].relatedTo+'</span>';
+									}else{
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
+									}
+									
+								str+='</td>';
+								str+='<td class="text-center">';
+									if(result[i].subList[j].interval != null)
+									{
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].interval+'">'+result[i].subList[j].interval+'</span>';
 									}else{
 										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
 									}
@@ -4080,7 +4171,8 @@ function alertStatusHistory(result,alertId)
  
  
 
-function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr){
+function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,departmentId,alertType){
+	$("#filter").hide();
 	var jsObj={
 		deptIdArr : globalDepartmentIdsArr
 	}
@@ -4090,8 +4182,10 @@ function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIds
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		popUpFilter('body',result,statusName,statuscount);
-		$("#filter").hide();
+		//$("#alertManagementPopup .modal-header").html('');
+		$("#filter").html('');
+		popUpFilter('body',result,statusName,statuscount,statusId,departmentId,alertType);
+		
 	});
 }
 //swadhin
@@ -4256,8 +4350,8 @@ function buildChildLevelValuesForSubTask(result,departmentId){
 } 
 function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevelArr,priorityArr,alertSourceArr,printMediaArr,electronicMediaArr){
 	$("#alertManagementPopupBody").html(spinner);
-	var fromDays = $("#tourSlider").rangeSlider("min");
-	var toDays = $("#tourSlider").rangeSlider("max");
+	var fromDays = $("#tourSlider").rangeSlider("min").toFixed(0);
+	var toDays = $("#tourSlider").rangeSlider("max").toFixed(0);
 	var statusIdArr = [];
 	var subStatusIdArr = [];
 	$("[filters-list='alertStatus'] li.active").each(function(){
@@ -4310,11 +4404,23 @@ function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevel
 	}else{
 		isMoreThanYrChkd = "false"
 	}
+	var departmentsIds = [];
+	$("[filters-list='alertDepartments'] li").each(function(){
+		if($(this).hasClass("active"))
+		{
+			departmentsIds.push($(this).attr("attr_id"));
+		}
+	});
+	if(departmentsIds.length < 0)
+	{
+		departmentsIds = globalDepartmentIdsArr;
+	}
+	
 	var jsObj ={
 		fromDate:     		 currentFromDate,
 		toDate:       		 currentToDate,
 		stateId :     		 1,
-		deptIdArr :     	 globalDepartmentIdsArr,  
+		deptIdArr :     	 departmentsIds,  
 		paperIdArr :     	 newspapersGlobalArr,
 		chanelIdArr :     	 channelGlobalArr, 
 		callCenterArr :   	 callCenterGlobalArr,    
@@ -4637,8 +4743,8 @@ function languageChangeHandler(){
 	}
 }
 function languageChangeHandler1(){
-	var lang1 = $("input[name=language1]:checked").val();
-	if(lang1 =="en"){
+	var lang2 = $("input[name=language1]:checked").val();
+	if(lang2 =="en"){
 		control.disableTransliteration();
 	}else{
 		control.enableTransliteration();
@@ -4749,7 +4855,7 @@ function getSearchAlertsDtls(alertId){
 			var alertId =result;
 			$("#alertManagementPopupBody").html("<div class='row'><div id='rightSideExpandView'></div></div>");
 			rightSideExpandView(alertId);
-			popUpFilter('heading','','','');
+			popUpFilter('heading','','','','','','');
 			$(".flipview-btn,.filters-icon").hide();
 			var alertId = '';
 			$("#modalHeadingTotal").html("Alert Status");
@@ -4912,4 +5018,3 @@ function getPresentAssignedDepartmentOfAlert(alertId){
 		
 	});
 }
-	

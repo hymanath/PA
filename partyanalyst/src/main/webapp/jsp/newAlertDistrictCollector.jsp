@@ -221,7 +221,7 @@
 											</li>
 											<c:forEach items="${alertSeverityList}"  var="severityType">
 												<li>
-													<label class="checkbox-inline"><input type="checkbox" class="severityTypeCls checkedSelected" checked  attr_val="${severityType.id}" />${severityType.name}</label>
+													<label class="checkbox-inline"><input type="checkbox" class="severityTypeCls checkedSelected" checked  attr_val="${severityType.id}" /><span>${severityType.name}</span></label>
 												</li>
 											</c:forEach>
 										</ul>
@@ -318,10 +318,10 @@
 								<div class="panel panel-default">
 									<div class="panel-heading headingColor">
 										<div class="row">
-											<div class="col-md-10 col-xs-12 col-sm-12">
+											<div class="col-md-8 col-xs-12 col-sm-8">
 												<h4 class="panel-title text-capital fontColor">COLLECTORATE Alerts</h4>
 											</div>
-											<div class="col-md-2 col-xs-12 col-sm-12 ">
+											<div class="col-md-4 col-xs-12 col-sm-4">
 												<ul class="alertType-subordinate pull-right">       
 													<li  attr_type="task" class="alertSubOridanateCls">Alerts</li>
 													<li attr_type="subTask" class="subTaskSubOrdinate">Sub Tasks</li>
@@ -340,22 +340,19 @@
 							<div class="panel panel-default">
 								<div class="panel-heading headingColor ">
 									<div class="row">
-										<div class="col-md-4 col-xs-12 col-sm-12">
+										<div class="col-md-4 col-xs-12 col-sm-4">
 											<h4 class="panel-title text-capital fontColor">District Level - Department Wise</h4>
 										</div>
-										<div class="col-md-6 col-xs-12 col-sm-12">
+										<div class="col-md-8 col-xs-12 col-sm-8">
+											<ul class="switch-btn-alertType pull-right">
+												<li  attr_type="alert" class="alertTrigger">Alerts</li>
+												<li class="subTaskTrigger" attr_type="subTask">Sub Tasks</li>
+											</ul>
 											<ul class="switch-btn pull-right activeCls">
 												<li attr_type="status" attr_department_type="statuswise" class="active">status overview</li>
 												<li attr_type="scopeLevel" attr_department_type="scopewise" class="" >location level</li>
 												<li attr_type="alertCategory" attr_department_type="alertSource" class="" >Alert Source</li>
 												<li attr_type="filterView" attr_department_type="filterView" class="" id="filterViewId" >Filter</li>
-											</ul>
-										</div>
-										<div class="col-md-2 col-xs-12 col-sm-12 ">
-											<ul class="switch-btn-alertType pull-right">
-												<li  attr_type="alert" class="alertTrigger">Alerts</li>
-												<li class="subTaskTrigger" attr_type="subTask">Sub Tasks</li>
-												
 											</ul>
 										</div>
 									</div>
@@ -416,7 +413,7 @@
 				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 			</div>
 			<div class="modal-body modal-insurance">
-				<div id="filter" style="display:none;"></div>
+				<!--<div id="filter" style="display:none;"></div>-->
 				<div id="alertManagementPopupBody"></div>
 			</div>
 		</div>

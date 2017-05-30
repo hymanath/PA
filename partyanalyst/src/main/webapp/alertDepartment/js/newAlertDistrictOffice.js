@@ -734,7 +734,7 @@ $(document).on("click",".overAllCount",function(){
 	var totalCount = $(this).attr("attr_total_count");
 	var alertType = $(this).attr("attr_alert_type");
 	//alertIdArr=($(this).attr("attr_overcunt").split(','));
-	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,'','','');
 	var govtDepDesigOffcrIds = [globalgovtDeptDesigOffcrId];
 	var govtOfficerIds = [globalgovtOfficerId];
 	var jObj = {
@@ -783,7 +783,7 @@ $(document).on("click",".todayCountCls",function(){
 	var alertType = $(this).attr("attr_alert_type");
 	var govtDepDesigOffcrIds = [globalgovtDeptDesigOffcrId];
 	var govtOfficerIds = [globalgovtOfficerId];
-	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
+	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,'','','');
 	var jObj = {
 		govtDepDesigOffcrIds : govtDepDesigOffcrIds,
 		govtOfficerIds : govtOfficerIds,
@@ -2043,7 +2043,12 @@ function getChildLocationBasedOnParentLocation(departmentId,levelId,subLevelId,c
 	}
 	
 function getAlertDetailsBasedOnLocation(departmentId,levelId,statusId,statusName,totalCount,locationValue,parentGovtDepartmentScopeId,alertCategoryId,locationLevelId){
-	getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
+	if(statusId !=0){
+		getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,statusId,departmentId,'mainAlert');
+	}else{
+		getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,'',departmentId,'');
+	}
+	
 	var locationLevelIdClickArr=[];
 	 if(locationLevelId == null || locationLevelId == 0){
 			 locationLevelIdClickArr =[];
@@ -2122,7 +2127,12 @@ function getDistrictLevelDeptWiseAlertClick(StatusId,name,totalCount,clickType)
 			backdrop: 'static'
 		});
 		$("#alertManagementPopupBody").html(spinner);
-		
+		if(clickType == "alert"){
+			getFilterSectionAlertDetails(name,totalCount,globalDepartmentIdsArr,StatusId,'','mainAlert');
+		}else{
+			getFilterSectionAlertDetails(name,totalCount,globalDepartmentIdsArr,StatusId,'','mainAlertSubTask');
+		}
+	
 	   var govtDepDesigOffcrIds = [globalgovtDeptDesigOffcrId];
 	   var govtOfficerIds = [globalgovtOfficerId];
 	   
