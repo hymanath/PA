@@ -5805,7 +5805,6 @@ public String getAlertSourceWiseAlert(){
 			for (int i = 0; i < calCntrIdArr.length(); i++){
 				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 			} 
-			String userType = jObj.getString("userType");
 			
 			JSONArray socialMediaTypeIdsArr = jObj.getJSONArray("socialMediaTypeIdsArr");  
 			List<Long> socialMediaTypeIds = new ArrayList<Long>();
@@ -5859,7 +5858,7 @@ public String getAlertSourceWiseAlert(){
 					generalGrievanceTypeIds.add(Long.parseLong(generalGrievanceTypeIdsArr.getString(i)));        
 				} 
 			}
-			alertVOs = alertManagementSystemService.getFinancialAssistanceAlertCntCategoryWise(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId, calCntrIdList, userType, socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+			alertVOs = alertManagementSystemService.getFinancialAssistanceAlertCntCategoryWise(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId, calCntrIdList, socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
 		}catch(Exception e){
 			LOG.error("Exception occured in getFinancialAssistanceAlertCntCategoryWise() of AlertManagementSystemAction",e);
 		}
@@ -5899,7 +5898,6 @@ public String getAlertSourceWiseAlert(){
 				calCntrIdList.add(Long.parseLong(calCntrIdArr.getString(i)));        
 			} 
 			
-			String userType = jObj.getString("userType");
 			JSONArray socialMediaTypeIdsArr = jObj.getJSONArray("socialMediaTypeIdsArr");  
 			List<Long> socialMediaTypeIds = new ArrayList<Long>();
 			if(socialMediaTypeIdsArr != null && socialMediaTypeIdsArr.length() > 0){
@@ -5953,7 +5951,7 @@ public String getAlertSourceWiseAlert(){
 			Long propasalCategoryId = jObj.getLong("propasalCategoryId");
 			Long propasalStatusId = jObj.getLong("propasalStatusId");
 			
-     	    alertCoreDashBoardVOs = alertManagementSystemService.getFinancialAssistanceAlertCntDtls(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId, calCntrIdList, userType, socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds,propasalCategoryId,propasalStatusId);
+     	    alertCoreDashBoardVOs = alertManagementSystemService.getFinancialAssistanceAlertCntDtls(fromDate,toDate,stateId,paperIdList,chanelIdList,deptIdList,userId, calCntrIdList, socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds,propasalCategoryId,propasalStatusId);
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			LOG.error("Exception occured in getFinancialAssistanceAlertCntDtls() of AlertManagementSystemAction",e);
