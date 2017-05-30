@@ -114,4 +114,14 @@
 			}
 		});
 	}
+	function saveMeekosamPetitionerDetails(){
+		var uploadHandler = {
+			upload: function(o) {
+				uploadResult = o.responseText;
+			}
+		};   
+		YAHOO.util.Connect.setForm('meekosamPetitionerDetails',true);
+		YAHOO.util.Connect.asyncRequest('POST','saveMeekosamPetitionerDetailsAction.action',uploadHandler);
+	
+	}
 	
