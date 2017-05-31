@@ -4262,5 +4262,7 @@
 		<property name="meekosamPetitionerDAO" ref="meekosamPetitionerDAO" ></property>
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" ></property>
    </bean>
+   <bean name="newConstituencyPageService" class="com.itgrids.partyanalyst.service.impl.NewConstituencyPageService">			  
+   </bean>
 </beans>			
 	
