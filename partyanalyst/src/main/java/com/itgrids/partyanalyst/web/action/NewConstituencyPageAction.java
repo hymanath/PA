@@ -1,47 +1,17 @@
 package com.itgrids.partyanalyst.web.action;
 
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringBufferInputStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.apache.struts2.RequestUtils;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
-import org.imgscalr.Scalr;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
-import com.itgrids.partyanalyst.dto.CandidateVO;
-import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
-import com.itgrids.partyanalyst.dto.DataTransferVO;
-import com.itgrids.partyanalyst.dto.EmailDetailsVO;
-import com.itgrids.partyanalyst.dto.NavigationVO;
-import com.itgrids.partyanalyst.dto.ProblemBeanVO;
-import com.itgrids.partyanalyst.dto.ProblemDetailsVO;
-import com.itgrids.partyanalyst.dto.RegistrationVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
-import com.itgrids.partyanalyst.service.IAnanymousUserService;
-import com.itgrids.partyanalyst.service.IMailService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
-import com.itgrids.partyanalyst.service.IThumbnailService;
-import com.itgrids.partyanalyst.util.IWebConstants;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.service.INewConstituencyPageService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -53,6 +23,16 @@ public class NewConstituencyPageAction extends ActionSupport implements ServletR
 	private HttpSession session;
 	private String task;
 	private JSONObject jObj;
+	private INewConstituencyPageService newConstituencyPageService;
+	
+	
+	public INewConstituencyPageService getNewConstituencyPageService() {
+		return newConstituencyPageService;
+	}
+	public void setNewConstituencyPageService(
+			INewConstituencyPageService newConstituencyPageService) {
+		this.newConstituencyPageService = newConstituencyPageService;
+	}
 	public HttpServletRequest getRequest() {
 		return request;
 	}
