@@ -12,18 +12,16 @@
 <!-- Bootstrap -->
 <!--<link href="dist/2016DashBoard/css/bootstrap.css" rel="stylesheet" type="text/css">-->
 <link href="alertDepartment/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
-<!--<link href="dist/Alert/custom.css" rel="stylesheet" type="text/css">-->
-<!-- JQuery files (Start) -->
-
-<!--<script src="dist/js/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="dist/js/bootstrap.js"></script>-->
-<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
-<link href="dist/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
-<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
 <link href="dist/DateRange/daterangepicker.css" type="text/css" rel="stylesheet"/>
-	<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link href="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
+<link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
+<link href="dist/alertDashBoard/dist/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="alertDepartment/css/customLess.less" rel="stylesheet" type="text/less">
+<!--<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">-->
+<!-- JQuery files (Start) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
 
 <!-- YUI Dependency files (Start) -->
 <script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -68,13 +66,36 @@
 <div class="container" style="margin-top:30px">
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-					</div>
+			<div class="panel panel-default">
+				<div class="panel-heading headingColor">
+					<h4 class="panel-title text-capital fontColor">Create New Grievance</h4>
 				</div>
 				<div class="panel-body">
 					<div class="row">      
+						<div class="col-sm-12">
+							<h4 class="panel-title text-capital">grievance using</h4>
+						</div>
+						<div class="col-sm-12 m_top10">
+							<label class="radio-inline">
+								<input type="radio" name="typeOfSearch" class="typeOfSearch" value="aadhar"/>Aadhar Number
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="typeOfSearch" class="typeOfSearch" value="mobile"/>Mobile Number
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="typeOfSearch" class="typeOfSearch" value="voter"/>Voter Card
+							</label>
+						</div>
+						<div class="m_top20 col-sm-4">
+							<input type="text" class="form-control searchValue" placeholder="Enter Aadhar Number"/>
+						</div>
+						<div class="m_top20 col-sm-4">
+							<button class="btn btn-success text-capital" onclick="searchPetitionerDetailsByVoterNoAadharNoMobileNo()">search</button>
+						</div>
+						<div class="col-sm-12 m_top20">
+							<div id="searchPetitionerDetailsByVoterNoAadharNoMobileNo"></div>
+						</div>
+						<div id="buildProfileData"></div>
 					</div>
 				</div>
 			</div>
@@ -82,8 +103,8 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-12">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
+			<div class="panel panel-default">
+				<div class="panel-heading headingColor">
 					<div class="row">
 					</div>
 				</div>
@@ -95,20 +116,10 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script src="dist/DateRange/moment.js" type="text/javascript"></script>
-<script src="dist/DateRange/daterangepicker.js" type="text/javascript"></script>
-<script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<script src="alertDepartment/js/jquery.hotkeys.js" type="text/javascript"></script>
-<script src="dragAndDropPhoto/js/jquery.filer.js" type="text/javascript"></script>
-<script src="dragAndDropPhoto/js/alertManagementSystemNewUpload.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
-<script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
-<script type="text/javascript" src="alertDepartment/js/newAlertUserManagementDetail.js"></script>
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
 <script type="text/javascript" src="alertDepartment/js/createMeekosamRequest.js"></script>
-<script>
-
-</script>
 </body>
 </html>
