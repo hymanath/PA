@@ -59,14 +59,9 @@ function getAllMandalsByDistrictID(districtId){
 	}).done(function(result){
 		if(result != null && result.length > 0){
 			$("#mandals").html('');
-			var type=0;
 			$('#mandals').append('<option value="0">Select One Mandal or Town</option>');
-			for(var i in result){
-				if(result[i].name.indexOf("Mandal") == -1) 
-					type = 1 ;
-				else
-					type = 0 ; 
-				$('#mandals').append('<option value='+type+","+result[i].id+'>'+result[i].name+'</option>');
+			for(var i in result){ 
+				$('#mandals').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 			$("#mandals").trigger("chosen:updated");
 		}
@@ -75,9 +70,9 @@ function getAllMandalsByDistrictID(districtId){
 
 var LocationType = "";
 function getAllPanchayatByMandalId(tehsilId){
-	var mandalTypeAndId = tehsilId.split(",");
-	var mandalId = mandalTypeAndId[1];
-	if(mandalTypeAndId[0]==0){
+	var mandalTypeId = tehsilId.substring(0, 1);
+	var mandalId = tehsilId.substring(1);
+	if(mandalTypeId==1){
 		LocationType = "Mandal";
 	}else{
 		LocationType = "muncipality";
