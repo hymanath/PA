@@ -294,10 +294,10 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		StringBuilder queryStr  = new StringBuilder();
 		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,as1.alert_status as alert_status , count(distinct a.alert_id) as count ");
 		queryStr.append(" from ");
-		queryStr.append(" alert a ");
+		queryStr.append("  alert_caller_relation acr,alert_caller ac,alert a ");
 		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
-		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
-		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		//queryStr.append(" LEFT JOIN alert_caller_relation ac on a.alert_id = ac.alert_id  ");
+		queryStr.append(" where acr.alert_id = a.alert_id and acr.alert_caller_id = ac.alert_caller_id and a.is_deleted='N'  and acr.is_deleted='N' ");
 		
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 			queryStr.append(" and ac.mobile_no =:mobile_no ");
@@ -342,12 +342,12 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,a.alert_feedback_status_id as feedbackStatusId , af.status as status ," +
 				" count(distinct a.alert_id) as count ");
 		queryStr.append(" from ");
-		queryStr.append(" alert a ");
+		queryStr.append("  alert_caller_relation acr,alert_caller ac,alert a ");
 		queryStr.append(" LEFT JOIN  alert_feedback_status af on a.alert_feedback_status_id = af.alert_feedback_status_id ");
 		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
-		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		//queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
 
-		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		queryStr.append(" where acr.alert_id = a.alert_id and acr.alert_caller_id = ac.alert_caller_id and a.is_deleted='N'  and acr.is_deleted='N' ");
 		
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 			queryStr.append(" and ac.mobile_no =:mobile_no ");
@@ -396,12 +396,12 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" SELECT  as1.alert_status_id as alert_status_id ,smt.social_media_type_id as socialMediaTypeId , smt.type as type ," +
 				" count(distinct a.alert_id) as count ");
 		queryStr.append(" from ");
-		queryStr.append(" alert a ");
+		queryStr.append(" alert_caller_relation acr,alert_caller ac,alert a ");
 		queryStr.append(" LEFT JOIN  social_media_type smt on a.social_media_type_id = smt.social_media_type_id ");
 		queryStr.append(" LEFT JOIN  alert_status as1 on a.alert_status_id = as1.alert_status_id ");
-		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		//queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
 
-		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		queryStr.append(" where acr.alert_id = a.alert_id and acr.alert_caller_id = ac.alert_caller_id and a.is_deleted='N'  and acr.is_deleted='N' ");
 		
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 			queryStr.append(" and ac.mobile_no =:mobile_no ");
@@ -448,10 +448,10 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		StringBuilder queryStr  = new StringBuilder();
 		queryStr.append(" SELECT  afs.alert_feedback_status_id as alert_feedback_status_id ,afs.status as status , count(distinct a.alert_id) as count ");
 		queryStr.append(" from ");
-		queryStr.append(" alert a ");
+		queryStr.append("  alert_caller_relation acr,alert_caller ac,alert a ");
 		queryStr.append(" LEFT JOIN  alert_feedback_status afs on a.alert_feedback_status_id = afs.alert_feedback_status_id ");
-		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
-		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		//queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		queryStr.append(" where acr.alert_id = a.alert_id and acr.alert_caller_id = ac.alert_caller_id and a.is_deleted='N'  and acr.is_deleted='N' ");
 		
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 			queryStr.append(" and ac.mobile_no =:mobile_no ");
@@ -489,12 +489,12 @@ public class AlertTrackingDAO extends GenericDaoHibernate<AlertTracking, Long>
 		queryStr.append(" SELECT  afs.alert_feedback_status_id as alert_feedback_status_id ,smt.social_media_type_id as socialMediaTypeId , smt.type as type ," +
 				" count(distinct a.alert_id) as count ");
 		queryStr.append(" from ");
-		queryStr.append(" alert a ");
+		queryStr.append(" alert_caller_relation acr,alert_caller ac,alert a ");
 		queryStr.append(" LEFT JOIN  social_media_type smt on a.social_media_type_id = smt.social_media_type_id ");
 		queryStr.append(" LEFT JOIN  alert_feedback_status afs on a.alert_feedback_status_id = afs.alert_feedback_status_id ");
-		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		//queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
 
-		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null ");
+		queryStr.append(" where acr.alert_id = a.alert_id and acr.alert_caller_id = ac.alert_caller_id and a.is_deleted='N'  and acr.is_deleted='N' ");
 		
 		if(mobileNo != null && !mobileNo.isEmpty()) 
 			queryStr.append(" and ac.mobile_no =:mobile_no ");

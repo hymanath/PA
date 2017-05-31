@@ -10574,7 +10574,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 							alertAssignedOfficerTracking.setIsApproved("Y");
 							alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
 							alertAssignedOfficerTracking.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
-							alertAssignedOfficerTracking.setAlertCallerId(alertvo.getAlertCallerId());
+							alertAssignedOfficerTracking.setAlertCallerId(alertvo.getAlertCallerId() !=null 
+									&& alertvo.getAlertCallerId().longValue()>0l ? alertvo.getAlertCallerId():null);
 		
 							alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
 							
@@ -10595,7 +10596,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 								alertAssignedOfficerTracking1.setIsApproved("Y");
 								alertAssignedOfficerTracking1.setAlertSeviorityId(alert.getAlertSeverityId());
 								alertAssignedOfficerTracking1.setAlertFeedbackStatusId(alertvo.getFeedBackStatusId());
-								alertAssignedOfficerTracking1.setAlertCallerId(alertvo.getAlertCallerId());
+								alertAssignedOfficerTracking1.setAlertCallerId(alertvo.getAlertCallerId() !=null 
+										&& alertvo.getAlertCallerId().longValue()>0l ? alertvo.getAlertCallerId():null);
 			
 								alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking1);
 							}
@@ -13355,6 +13357,7 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 				List<Object[]> alertList = alertDAO.getSocialAlertDetials(mobileNo,alertStatusId,fromDate,toDate,deptId,feedbackStatusId,categoryId,userId,smTypeId);
 				
 				if(alertList != null && alertList.size() > 0l){
+					List<Long> alertIds = new ArrayList<Long>(0);
 					for (Object[] objects : alertList) {
 						AlertVO vo = new AlertVO();
 						vo.setAlertId(commonMethodsUtilService.getLongValueForObject(objects[0]));
@@ -13374,8 +13377,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						vo.setHamlet(commonMethodsUtilService.getStringValueForObject(objects[13]));
 						vo.setLocalBody(commonMethodsUtilService.getStringValueForObject(objects[14]));
 						vo.setWard(commonMethodsUtilService.getStringValueForObject(objects[15]));
-						vo.setName(commonMethodsUtilService.getStringValueForObject(objects[16]));
-						vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[17]));
+						//vo.setName(commonMethodsUtilService.getStringValueForObject(objects[16]));
+						//vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(objects[17]));
 						
 						vo.setUserName(commonMethodsUtilService.getStringValueForObject(objects[18]));
 						vo.setSmTypeId(commonMethodsUtilService.getLongValueForObject(objects[19]));
@@ -13383,8 +13386,33 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 						vo.setVerifyStatus(commonMethodsUtilService.getStringValueForObject(objects[21]));
 						vo.setState(commonMethodsUtilService.getStringValueForObject(objects[22]));
 						
+						alertIds.add(vo.getAlertId());
 						returnList.add(vo);
 					}
+					
+					List<Object[]> list = alertCallerRelationDAO.getAlertCallerDetailsForAlerts(alertIds);
+					if(list != null && !list.isEmpty()){
+						for (Object[] obj : list) {
+							Long alertId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+							AlertVO vo = getMatchedAlertVO(returnList, alertId);
+							if(vo != null){
+								IdNameVO callervo = new IdNameVO();
+								callervo.setName(obj[2] != null ? obj[2].toString():"");
+								callervo.setMobileNo(obj[3] != null ? obj[3].toString():"");
+								callervo.setStatus(obj[4] != null ? obj[4].toString():"");
+								callervo.setId(obj[0] != null ? (Long)obj[0]:null);
+								vo.getIdNamesList().add(callervo);
+							}
+						}
+					}
+					
+					if(returnList != null && !returnList.isEmpty()){
+						for (AlertVO alertVO : returnList) {
+							if(alertVO.getIdNamesList().size() > 1)
+								alertVO.setCallerDuplicate("YES");
+						}
+					}
+					
 				}
 			}catch(Exception e){
 				LOG.error("Error occured getSocialAlertDetailsByStatus() method of AlertService{}",e);
