@@ -24,8 +24,10 @@
 <link href="newCoreDashBoard/Plugins/Slick/slick.css" type="text/css" rel="stylesheet"/>
 <link href="newCoreDashBoard/Plugins/Slick/slick-theme.css" type="text/css" rel="stylesheet"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
-<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">
+<link href="alertDepartment/css/customLess.less" rel="stylesheet" type="text/less">
+<!--<link href="alertDepartment/css/custom.css" rel="stylesheet" type="text/css">-->
 <link href="alertDepartment/css/responsive.css" rel="stylesheet" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
