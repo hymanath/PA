@@ -2,6 +2,7 @@
 //var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 //var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><img src="alertDepartment/img/alert logo.png" alt="alert Logo"  class="alert-logo"/></div></div>';
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner-logo"><img src="alertDepartment/img/spinner/1.png" class="right-arrow"/><img src="alertDepartment/img/spinner/2.png" class="right-arrow1"/><img src="alertDepartment/img/spinner/3.png" class="left-arrow"/><img src="alertDepartment/img/spinner/4.png" class="left-arrow1"/><img src="alertDepartment/img/spinner/5.png" class="main-icon"/></div></div></div>';
+var globalFinancialAssColorObj = {"Financial Assistance Required":"#B59AE9","Policy Decision Required":"#6EB6F0","Others":"#3FE2CD"}; 
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
 var globaldepartmentsArrForFilterView=[];
@@ -175,6 +176,7 @@ $("#dateRangePickerAUM").daterangepicker({
 		
 		}
 		buildDistrictOfficerAlertsCountView(result);
+		getFinancialAssistanceAlertCntCategoryWise();
 		//getDepartmentLevels1();
     });
 }
@@ -2605,3 +2607,366 @@ function getBellowDistrictOfficerAlertsDtls(designationOfficerId,officerId,offic
 	});
 	
 }
+/* Financial Assistance Block Start */
+
+function getFinancialAssistanceAlertCntCategoryWise()
+{
+	 
+	$("#financialAssistanceDetilsDivId").html(spinner);
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : 1,
+      deptIdArr : globalDepartmentIdsArr,  
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr : channelGlobalArr,
+	  callCenterArr : callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+	  alertSeverityIdsArr:globalAlertSeverityIdsArr,
+      alertStatusIdsArr:globalAlertStatusIdsArr,
+      mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+	  janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+	  specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+	  generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getFinancialAssistanceAlertCntCategoryWiseAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+	    $("#financialAssistanceDetilsDivId").html('');
+	   if(result !=null && result.length>0){
+		   buildFinancialAssistanceDetails(result);
+	   }else{
+		   $("#financialAssistanceDetilsDivId").html('No Data Available.');
+	   }
+    });
+}
+function buildFinancialAssistanceDetails(result)
+{
+	var str='';
+	var totalAlert = 0;
+	var totalfar=0;
+	var approvedAmount=0;
+	str+='<div class="row">';
+		str+='<div class="col-md-2 col-xs-12 col-sm-4">';
+			str+='<div id="finanicialAssGraphView" ></div>';
+		str+='</div>';
+	
+		 str+='<div class="col-md-2 col-xs-12 col-sm-4" style="margin-top:30px">';
+			str+='<div class="scrollerDivCls">';
+				str+='<table class="table tableGraph">';
+					
+					str+='<tbody>';
+						for(var i in result)
+						{	
+							totalAlert+=result[i].alertCnt;
+							totalfar = result[0].count;
+							if(result[i].id == 1){
+								if(result[i].subList2 !=null && result[i].subList2.length>0){
+									for(var j in result[i].subList2){
+										if(result[i].subList2[j].id == 3){
+											approvedAmount = result[i].subList2[j].proposalAmount;
+										}
+									}
+									
+								}
+							}
+							
+							
+							str+='<tr>';
+								str+='<td><span class="label" style="background-color:'+globalFinancialAssColorObj[result[i].name.trim()]+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
+								str+='<td style="cursor:pointer;" onclick="getFinancialAssistanceAlertCntDtls(\''+result[i].name+'\','+result[i].alertCnt+','+result[i].id+',0);" class="alertSourceCls" attr_alert_source_name="'+result[i].name+'" attr_alert_count="'+result[i].alertCnt+'" attr_source_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
+							str+='</tr>';
+						}
+					str+='</tbody>';  
+				str+='</table>';
+			str+='</div>';
+		str+='</div>'; 
+		str+='<div class="col-md-8 col-xs-12 col-sm-4" style="box-shadow: -3px 0 3px 3px rgba(0, 0, 0, 0.4);">';
+		str+='<div class="scollerDivFinancialAss">';
+			str+='<div id="financialAssbarGraphView" ></div>';
+		str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-12 m_top10">';
+				str+='<h4><span><span style="font-size: 16px;">TOTAL PROPOSAL</span> - <span onclick="getFinancialAssistanceAlertCntDtls(\'PROPOSAL\','+totalAlert+',0,0);" style="cursor:pointer;">'+totalAlert+'</span></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><span style="font-size: 16px;"> FAR</span> - <i class="fa fa-inr" aria-hidden="true"></i>'+totalfar+'/-</span>&nbsp;&nbsp;&nbsp; <span style="font-size: 16px;"> APPROVED AMOUNT</span> - <i class="fa fa-inr" aria-hidden="true"></i>'+approvedAmount+'/-</span></h4>';
+		str+='</div>';
+	str+='</div>';
+	$("#financialAssistanceDetilsDivId").html(str);
+	
+	var financialMainArr =[];
+	if(result.length > 7)
+	{
+		$(".scrollerDivCls").mCustomScrollbar({setHeight:'300px'});
+	}
+	for(var i in result)
+	{
+		
+		financialPercent = result[i].percentage;
+		financialName = result[i].name;
+		var cnt = result[i].alertCnt;
+		var stsId = result[i].id;
+		var colorsId = globalFinancialAssColorObj[result[i].name.trim()];
+		//var color = getColorCodeByStatus(result[i].coreDashBoardVOList[j].organization);
+		
+		var obj = {
+			name: financialName,
+			y:cnt,
+			count:cnt,   
+			sts:stsId,
+			color:colorsId
+		}
+		financialMainArr.push(obj);
+	}
+	
+	
+		$("#finanicialAssGraphView").highcharts({
+			chart: {
+				type: 'pie',
+				options3d: {
+					enabled: true,
+					alpha: 25
+				}
+			},
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: null
+			},
+			tooltip: {
+				useHTML: true,
+				backgroundColor: '#FCFFC5', 
+				formatter: function() {
+					var cnt = this.point.count;
+					return "<b style='color:"+this.point.color+"'>"+this.point.name+" - <br/>"+cnt+"("+Highcharts.numberFormat(this.percentage,1)+"%)</b>";
+				}  
+			}, 
+			plotOptions: {
+				series: {
+					dataLabels: {
+						enabled: false,
+						formatter: function() {
+							return Math.round(this.percentage*100)/100 + ' %';
+						},
+						distance: -30,
+						color:'black'
+					},
+					point:{
+						events:{
+							click:function(){
+								getData(this.count,this.sts);     
+							}
+						}
+					}
+				},
+				pie: {
+					innerSize: 80,
+					depth: 120,
+					dataLabels:{
+						enabled: false,
+						  formatter: function() {
+								if (this.y === 0) {
+									return null;
+								} else {
+									return Highcharts.numberFormat(this.percentage,1)+ '%';
+								}
+							} 
+					},
+					showInLegend: false
+				},
+			},
+			series: [{
+				data: financialMainArr
+			}]
+		});
+	
+		if(result !=null  && result.length>0){
+				var financialNamesArr=[];
+				var proposalPendingArr=[];
+				var proposalRejectedArr = [];
+				var proposalAcceptArr = [];
+				
+				
+			for(var i in result){
+				
+				 financialNamesArr.push(result[i].name)
+				if(result[i].subList2 !=null && result[i].subList2.length>0){
+					for(var j in result[i].subList2){
+						if(result[i].subList2[j].id==1){
+								proposalPendingArr.push({"y":result[i].subList2[j].alertCnt,"extra":result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].alertCnt+"-"+result[i].id}); 
+							}else if(result[i].subList2[j].id==2){
+								 proposalRejectedArr.push({"y":result[i].subList2[j].alertCnt,"extra":result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].alertCnt+"-"+result[i].id});
+							}else if(result[i].subList2[j].id==3){
+								 proposalAcceptArr.push({"y":result[i].subList2[j].alertCnt,"extra":result[i].subList2[j].id+"-"+result[i].subList2[j].name+"-"+result[i].subList2[j].alertCnt+"-"+result[i].id});
+							}
+					}
+				
+				var mainFinancialJosnObjArr = [];
+					   if(proposalPendingArr != null && proposalPendingArr.length > 0){
+						mainFinancialJosnObjArr.push({name:'Proposal Pending',data:proposalPendingArr,color:"#FEA723"});  
+					  }
+					   if(proposalRejectedArr != null && proposalRejectedArr.length > 0){
+						mainFinancialJosnObjArr.push({name:'Proposal Rejected',data:proposalRejectedArr,color:"#F15A25"});  
+					  }
+					  if(proposalAcceptArr != null && proposalAcceptArr.length > 0){
+						mainFinancialJosnObjArr.push({name:'Proposal Accept',data:proposalAcceptArr,color:"#82CA9C"});  
+					  }
+					  
+				}
+			}
+				var heightOfDiv = financialNamesArr.length ;
+				if(heightOfDiv >7){
+					$(".scollerDivFinancialAss").mCustomScrollbar({setHeight:'300px'})
+				}else{
+					$("#financialAssbarGraphView").css("height","auto");
+					$(".scollerDivFinancialAss").removeAttr('style')
+					$(".scollerDivFinancialAss").mCustomScrollbar('destroy');
+				  }
+				$('#financialAssbarGraphView').highcharts({
+					chart: {
+						type: 'bar',
+						backgroundColor:'transparent'
+					
+					},
+					title: {
+						text: null
+					},
+					subtitle: {
+						text: null
+					},
+					xAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+						categories: financialNamesArr
+					},
+					yAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+						title: {
+							text: null
+						},
+						labels: {
+							enabled:false
+						},
+						stackLabels: {
+							//useHTML: true,
+							//align: 'left',
+							enabled: true,
+							style: {
+								fontWeight: 'bold',
+								color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+							},
+							formatter: function() {
+							
+								//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+								//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+								return (this.total);
+							} 
+						
+						}
+					
+					},
+					tooltip: {
+						formatter: function () {
+						var s = '<b>' + this.x + '</b>';
+
+							$.each(this.points, function () {
+								if(this.series.name != "Series 1")  
+								s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+								this.y/* +' - ' +
+								(Highcharts.numberFormat(this.percentage,1)+'%'); */
+							});
+
+							return s;
+						},
+						shared: true
+					},
+					plotOptions: {
+						bar: {
+							stacking: 'normal',
+							pointWidth: 30,
+							gridLineWidth: 15
+						},series: {
+							cursor: 'pointer',
+							point: {
+							events: {
+									click: function () {
+										var value = (this.extra).split("-");
+										var statusId = value[0];
+										var statusName = value[1];
+										var totalCount = value[2];
+										var categoryId=value[3]; 
+										
+										getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,statusId);
+										
+									}
+								}
+							}
+				        }
+					},
+					legend: {
+						verticalAlign:'top',
+						enabled: true
+					},
+					series: mainFinancialJosnObjArr
+				});
+		
+			
+			
+				 $.each($('#financialAssbarGraphView').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+					$(this).attr("style","cursor:pointer;"); 
+						$(this).attr("onclick","getFinancialAssistanceAlertCntDtls(\'"+result[index].name+"\',\'"+result[index].alertCnt+"\',\'"+result[index].id+"\',0)");
+					
+				
+				});
+		}
+}
+function getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,statusId)
+{
+	 
+		$("#alertManagementPopupBody").html('')
+	
+		$("#alertManagementPopup").modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+		$("#alertManagementPopupBody").html(spinner);
+		getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
+   
+	  
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : 1,
+      deptIdArr : globalDepartmentIdsArr,  
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr : channelGlobalArr,
+	  callCenterArr : callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+	  alertSeverityIdsArr:globalAlertSeverityIdsArr,
+      alertStatusIdsArr:globalAlertStatusIdsArr,
+      mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+	  janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+	  specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+	  generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr,
+	  propasalCategoryId:categoryId,
+	  propasalStatusId:statusId
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getFinancialAssistanceAlertCntDtlsAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+	   if(result != null && result.length > 0){
+		$("#totalAlertsModalTabId").html('');
+			buildAlertDtlsBasedOnStatusClick(result,statusName,totalCount);
+		}else{
+			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
+		}
+    });
+}
+/* Financial Assistance Block End  */

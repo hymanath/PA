@@ -325,7 +325,16 @@
 										</div>
 									</div>
 								</div>
-								
+									<div class="col-sm-12 m_top10">
+										<div class="panel panel-default">
+											<div class="panel-heading headingColor">
+														<h4 class="panel-title text-capital fontColor">Financial Assistance</h4>
+											</div>
+											<div class="panel-body">
+												<div id="financialAssistanceDetilsDivId"></div>
+											</div>
+										</div>
+									</div>
 								<!-- Level Wise Department Wise  -->
 									<div id="levelWiseDepartmentDetailsId"></div>
 							</div>
