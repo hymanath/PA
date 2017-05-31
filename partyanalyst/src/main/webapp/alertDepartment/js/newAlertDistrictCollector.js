@@ -2137,9 +2137,9 @@ function getDistrictLevelDeptWiseLocationLevelView(alertType,sortingType,departm
 		});
 		$("#alertManagementPopupBody").html(spinner);
 		if(statusId !=0){
-			getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,statusId,departmentId,'mainAlert');
+			getFilterSectionAlertDetails(name,totalCount,globalDepartmentIdsArr,statusId,departmentId,'mainAlert');
 		}else{
-			getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr,'',departmentId,'');
+			getFilterSectionAlertDetails(name,totalCount,globalDepartmentIdsArr,'',departmentId,'');
 		}
 		
 		

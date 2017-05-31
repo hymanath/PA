@@ -97,9 +97,22 @@ function onLoadClicks()
 		
 	});
 	$(document).on("click",".changeStatsCls",function(){
+		$(".alert-status-change").prop("checked",false);
+		$(this).prop("checked",true);
+		$('#propasalupdateStatusChangeBody').hide();
 		$('#updateStatusChangeBody').hide();
 		if($(this).is(':checked')){
 			$('#updateStatusChangeBody').show();
+		}
+	});
+	$(document).on("click",".propasalchangeStatsCls",function(){
+		var alertId = $(this).attr("attr_alert_id");
+		$(".alert-status-change").prop("checked",false);
+		$(this).prop("checked",true);
+		$('#propasalupdateStatusChangeBody').hide();
+		$('#updateStatusChangeBody').hide();
+		if($(this).is(':checked')){
+			$('#propasalupdateStatusChangeBody').show();
 		}
 	});
 	$(document).on("click",".subTaskCls",function(){
@@ -341,6 +354,12 @@ function onLoadClicks()
 	
 	$(document).on("click",".alertStatusCls",function(){
 		alertStatusGlobalId= $(this).attr("attr_id");
+		var statusSelectedName = $("#radio-"+alertStatusGlobalId).parent().find('span').html();
+		if(statusSelectedName == "Proposal"){
+			$(".proposalAppendBlockDivCls").show();
+		}else{
+			$(".proposalAppendBlockDivCls").hide();
+		}
 	});
 	
 	$(document).on("click","#updateStatusChange",function(){
@@ -884,6 +903,133 @@ function onLoadClicks()
 	$(".tbtn").click(function(){
 		$(".themeControll").toggleClass("active");
 	});
+	
+	$(document).on("click","#updateStatusChangeId",function(){
+		
+		//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
+		var comment = $("#updateStatusChangeComment").val()
+		var alertId = $(this).attr("attr_alert_id");
+		//var statusId=$('input[name=statusChange]:checked', '#updateStatusChangeBody').val();
+		var subTaskId = $(this).attr("subTaskId");
+		var proposalCategoryId =0;
+		 var amount = 0;
+		if(alertStatusGlobalId == 13){
+			 proposalCategoryId= $("input[name=statusChekBx]:checked").val();
+			 amount = $("#amountId").val();
+		}
+		//var proposalCategoryId=$(".proposalCheckbox").val();
+		
+		if(subTaskId != null && subTaskId>0){
+			comment = $("#updateStatusChangeComment1").val()
+		}
+		if(alertStatusGlobalId != null && alertStatusGlobalId==0){
+			alert("Please Select Status");
+			return;
+		}
+		
+		if(alertStatusGlobalId == 13){
+			if(typeof proposalCategoryId == "undefined"){
+				alert("Please Check Any Proposal Category");
+				return;
+			}
+			if(proposalCategoryId == 1){
+				if(amount == 0){
+				alert("Please Enter Amount");
+				return;
+			 }
+			}
+		}
+		if(comment == null || comment.trim() == "")
+		{
+			alert("Please Enter Comment");
+			return;
+		}
+		
+		/* if(statusId == null || statusId =='')
+			statusId=globalStatusId;
+		 */
+		$("#updateStatusChangeAjaxSymbol").html(spinner);
+		var jsObj ={
+				alertId : alertId,
+				statusId : alertStatusGlobalId,
+				subTaskId:subTaskId,
+				comment: comment,
+				proposalCategoryId : proposalCategoryId,
+				proposalAmount : amount
+			}
+			
+		if(subTaskId != null && subTaskId>0){
+			var jsObj ={
+				alertId : alertId,
+				statusId : alertStatusGlobalId,
+				subTaskId:subTaskId,
+				comment: comment
+			}
+		}
+		/* if($("#displayStatusId #statusId").html() == 'Proposal'){
+			var jsObj ={
+				alertId : alertId,
+				proposalStatusId : alertStatusGlobalId
+			}	
+		} */
+			
+		//1111
+	
+		var callURL = 'updateAlertStatusCommentAction.action';
+		if(subTaskId != null && subTaskId>0){
+			callURL = 'updateSubTaskStatusCommentAction.action';
+		}
+		/* if($("#displayStatusId #statusId").html() == 'Proposal'){
+			callURL = 'updateProposalStatusFrAlertAction.action';
+		} */
+		$.ajax({
+			type:'POST',
+			url: callURL,
+			data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+			$("#updateStatusChangeAjaxSymbol").html('');
+			if(result != null && result.exceptionMsg == 'success' && result.message == null)
+			{
+				$("#updateStatusChangeMsg").html("status updated successfully");
+				$("#commentPostingSpinner").html("status updated successfully");
+				
+				if(subTaskId == null || subTaskId.length == 0){
+					getCommentsForAlert(alertId);
+					
+				}else{
+					getSubAlertsDetails(alertId,subTaskId);
+				}
+				
+				setTimeout(function(){
+					$("#commentPostingSpinner").html(" ");
+					$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
+					$('#alertManagementPopup1').modal('hide');
+					
+					
+				},1500);
+				rightSideExpandView(alertId);
+					setTimeout(function(){
+						$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
+					},750);
+			}else if(result.message != null && result.message == "Already In ProposalStatus"){
+				alert("This Alert Already In ProposalStatus.Just Update Proposal Status");
+			}else{
+				alert("try again");
+			}
+		});
+	});
+	$(document).on("click",".proposalCheckbox",function(){
+		$(".proposalCheckbox").prop("checked",false);
+		$(this).prop("checked",true);
+		var value = $(this).val();
+		if(value == 1)
+		{
+			$(".amountCls").toggle();
+		}else{
+			$(".amountCls").hide();
+		}
+	});
 }
 /*Default Image*/
 	
@@ -958,11 +1104,21 @@ function alertSubTaskStatusHistory(result,subTaskId,alertId){
 		if(isAdmin == "false"){
 			//if(globalUserType != "same"){
 				str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
-					str1+='<label class="checkbox-inline">';
+					
 					if(subTaskStatusChangAvailable)
-						str1+='<input type="checkbox" attr_alert_id="'+alertId+'" subTaskId="'+subTaskId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
-					str1+='</label>';  
+					{
+						str1+='<label class="checkbox-inline">';
+							str1+='<input type="checkbox" attr_alert_id="'+alertId+'" subTaskId="'+subTaskId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';
+						str1+='</label>';
+						/* if($("#displayStatusId #statusId").html() == 'Proposal')
+						{
+							str1+='<label class="checkbox-inline">';
+								str1+='<input type="checkbox" attr_alert_id="'+alertId+'" subTaskId="'+subTaskId+'" class="alert-status-change propasalchangeStatsCls" /> Do You Want To Change Propasal Status'
+							str1+='</label>';
+						} */
+					}
 					str1+='<div  id="updateStatusChangeBody" style="display:none;">'+subTaskglStr+'</div>';
+					str1+='<div  id="propasalupdateStatusChangeBody" style="display:none;">'+subTaskglPropasalStr+'</div>';
 				str1+='</div>';
 			//}
 		}  
@@ -1297,6 +1453,7 @@ var isAdmin = "";
 var globalUserType = "";
 var globalStatusId = 0;
 var isStatusAvailable=true;
+var globalEntitlement= "";
 function getStatusCompletionInfo(alertId){
 	isStatusAvailable=true;
 	$("#updateStatusChangeBody").html(spinner);
@@ -1319,7 +1476,12 @@ function getStatusCompletionInfo(alertId){
 		$('#docAttachmentId').hide();	
 		
 		if(result != null && result.length>0){
-			if(result.length  == 1)
+			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
+			globalUserType = buildTypeStr;
+			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
+			globalStatusId = sttatusId; 
+			
+			if(result.length  == 1)//proposalStatus-13,Actually the statusList should be > 1
 				isStatusAvailable=false;
 			
 			if(result[0].idnameList != null && result[0].idnameList.length > 0)
@@ -1369,12 +1531,13 @@ function getStatusCompletionInfo(alertId){
 				
 			}
 			
-			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
-		
+			/* var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
 			globalUserType = buildTypeStr;
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
-			globalStatusId = sttatusId; 
+			globalStatusId = sttatusId; */ 
 			$('#historyId').show();
+			var entitlement = result[0].positionName;
+			globalEntitlement = entitlement;
 			if(result[0].dueDateStr != null && result[0].dueDateStr.trim().length>0){
 				$('.modal-date').html(result[0].dueDateStr)
 				$('.modal-date1').html(result[0].dueDateStr)
@@ -1387,7 +1550,9 @@ function getStatusCompletionInfo(alertId){
 				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
 				$('#docAttachmentId').show();	
 				$('#displayDueDate1').show();
-				$('#displayDueDate2').hide(); 
+				$('#displayDueDate2').hide();
+				
+				
 				
 				if(globalStatusId == 12 ){ // closed
 					isStatusAvailable=false;
@@ -1494,6 +1659,10 @@ function rightSideExpandView(alertId)
 									
 									str+='<li status-icon-block="alertStatus" attr_alert_id="'+alertId+'" subAlertId=""  data-toggle="tooltip" data-placement="top" title="alert status" id="displayStatusId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon" id="statusIdColor"></span><span id="statusId">Pending</span>';
+									str+='</li>';
+									
+									str+='<li data-toggle="tooltip" data-placement="top" title="Present Proposal Status" id="proposalId" style="display:none;" > ';
+										str+='<span class="status-icon arrow-icon"></span><span id="presntPrposalstatusId"></span>';
 									str+='</li>';
 									
 									 str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTasksliId" style="display:none;">';
@@ -1759,7 +1928,8 @@ function rightSideExpandView(alertId)
 	getStatusCompletionInfo(alertId);
 	getGovtAllDepartmentDetails();
 	buildAssignUIAttributes(alertId);
-	getCommentsForAlert(alertId)
+	getCommentsForAlert(alertId);
+	alertDeptmentExistInLogin(alertId)
 
 
 	lang = $("input[name=language]:checked").val();
@@ -1924,6 +2094,7 @@ function getSubTaskCommetDtls(subAlertId,alertId){
 }	
 
 var subTaskglStr='';
+var subTaskglPropasalStr='';
 var subTaskStatusChangAvailable=true;
 function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 {
@@ -2029,14 +2200,20 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 				
 				if(result[i].subList != null && result[i].subList.length>0){
 					str1+='<div class="row m_top20">';
-					str1+='<h4 class="text-muted text-capital"> Sub Task Attachments:  </h4>';	
-					for(var k in result[i].subList){
-							str1+='<div class="col-sm-3">';
-							str1+='<img class="displayImgCls img-responsive m_top20" attr_articleId="" src="../images/'+result[i].subList[k]+'" style="width: 100px; height: 100px;cursor:pointer"/>';
+						str1+='<div class="col-sm-1 text-center body-icons">';
+							str1+='<i class="fa fa-paperclip fa-2x"></i>';
+						str1+='</div>';
+						str1+='<div class="col-sm-11">';
+							str1+='<h4 class="text-muted text-capital"> Sub Task Attachments:  </h4>';	
+							str1+='<div class="row">';
+							for(var k in result[i].subList){
+								str1+='<div class="col-sm-3">';
+									str1+='<img class="displayImgCls img-responsive m_top20" attr_articleId="" src="../images/'+result[i].subList[k]+'" style="width: 100px; height: 100px;cursor:pointer"/>';
+								str1+='</div>';
+							}
 							str1+='</div>';
-					}
-					
-				str1+='</div>';
+						str1+='</div>';
+					str1+='</div>';
 				}
 				$("#subArticleAttachment").html(str1);
 				/* if(result[i].commentList != null && result[i].commentList.length>0){    
@@ -2107,33 +2284,40 @@ function buildSubTaskAlertDataNew(result,alertId,subAlertId)
 			}	
 
 				subTaskglStr='';
+				subTaskglPropasalStr='';
 				var str1='';
-				 
+				// var str2='';
 					str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
 						str1+='<div class="panel-heading">';
-							for(var i in result)
-							{
-								if(i == result.length-1)
-								
-								str1+='<label class="radio-inline">';
-									if(result[0].status != null && result[0].status.trim() ==result[i].name.trim())
-										str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked/> '+result[i].name+'';
-									else
-										str1+='<input type="radio" value="'+result[i].id +'" name="statusChange"/> '+result[i].name+'';
-								str1+='</label>';
-								
-							}
-							
+							str1+='<div class="row">';
+								for(var i in result)
+								{
+									
+									str1+='<div class="col-sm-4">';
+										str1+='<div class="radioStyling">';
+									
+										if(result[0].status != null && result[0].status.trim() ==result[i].name.trim())
+										{
+											str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" checked id="radio-'+result[i].id+'"/>';
+										}else{
+											str1+='<input type="radio" value="'+result[i].id +'" name="statusChange" id="radio-'+result[i].id+'"/> ';
+										}
+										str1+='<label class="radio-inline" for="radio-'+result[i].id+'"><span class="radio">'+result[i].name+'</span></label>';
+										str1+='</div>';
+									str1+='</div>';
+								}
+							str1+='</div>';
 						str1+='</div>';
 						str1+='<div class="panel-body pad_0">';
 							str1+='<textarea class="form-control" id="updateStatusChangeComment1" placeholder="Comment.."></textarea>';
 						str1+='</div>';
 					str1+='</div>';
+					str1+='<button class="btn btn-primary btn-sm text-capital" subTaskId="'+subAlertId+'" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
+					str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
+					str1+='<span id="updateStatusChangeMsg"></span>';
 				
-				str1+='<button class="btn btn-primary btn-sm text-capital" subTaskId="'+subAlertId+'" attr_alert_id="'+alertId+'" id="updateStatusChange">update</button>';
-				str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
-				str1+='<span id="updateStatusChangeMsg"></span>';
 				subTaskglStr=str1;
+				//subTaskglPropasalStr=str2;
 		}
 	str+='</div>';
 		$("#subAlertDetails").html(str);
@@ -2309,12 +2493,17 @@ function getAlertData(alertId)
 	});
 }
   
-  
+  var globalProposalStatus;
 function buildAlertDataNew(result)
 {
 	var str='';
 	var str1='';
 	$("#statusId").html(result[0].status);
+	if($("#displayStatusId #statusId").html() == 'Proposal'){
+		$("#proposalId").show();
+		globalProposalStatus = result[0].committeeName;
+		$("#presntPrposalstatusId").html(result[0].committeeName)
+	}
 	$("#impactLevel").html(result[0].regionScope);
 	if(result[0].severity != null)
 	{
@@ -2559,8 +2748,6 @@ function buildSubTaskInfoForAlert(result,alertId)
 					
 					str+='<div class="col-sm-11">';
 						str+='<h4 class="text-muted text-capital"> My Sub Tasks : </h4>';
-					str+='</div>';
-					str+='<div class="row col-sm-12">';
 						str+='<ul class="assign-subtask-list m_top20">';
 						for(var k in result[i].attachementsList){
 							str+='<li class="assigned subTaskCls " style="cursor:pointer;margin-left: 5px" attr_sub_alert_Id="'+result[i].attachementsList[k].alertId+'" attr_alert_id="'+alertId+'">';
@@ -2575,18 +2762,17 @@ function buildSubTaskInfoForAlert(result,alertId)
 											str+='<small class="pull-right">DEPT : <span style="color: #60bbfd;">'+result[i].attachementsList[k].deptName+'</span> DESIGNATION : <span style="color: #60bbfd;">'+result[i].attachementsList[k].designation+'</span> Location : <span style="color: #60bbfd;">'+result[i].attachementsList[k].location+'</span> </small>';
 										str+='</div>';
 										str+='<div class="col-sm-1">';
-											str+='<ul class="list-icons list-inline">';
+											str+='<span class="icon-name icon-primary" style="background-color: '+result[i].attachementsList[k].color+'" title="'+result[i].attachementsList[k].status+'"></span>';
+											/* str+='<ul class="list-icons list-inline">';
 												str+='<li> <span class="status-icon arrow-icon" id="statusIdColor" style="background-color: '+result[i].attachementsList[k].color+'" title="'+result[i].attachementsList[k].status+'"></span> </li>';
-											str+='</ul>';
-											//str+='<i class="glyphicon glyphicon-menu-right pull-right"></i>';
-										//	str+='<span class="icon-name icon-primary"></span>';
-											//str+='<span class="label label-default">...</span>';
+											str+='</ul>'; */
 										str+='</div>';
 									str+='</div>';
 							str+='</li>';
 						}
 						str+='</ul>';
 					str+='</div>';
+				str+='</div>';
 				
 			}
 			if(result[i].commentList != null && result[i].commentList.length>0){
@@ -2799,8 +2985,14 @@ function buildCommentsForAlert(result)
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
 						
 						
-						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> : '+result[i][j].status+'</p>';
-						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
+						if(result[i][j].status == 'Proposal'){
+							str+=''+result[i][j].status+'';
+							str+='<p class="text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+						}else {
+							str+=''+result[i][j].status+'</p>';
+						}
+
 						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
 						
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
@@ -3913,7 +4105,14 @@ function alertHistory(result)
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
 						
 						
-						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> : '+result[i][j].status+'</p>';
+						//str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> : '+result[i][j].status+'</p>';
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
+						if(result[i][j].status == 'Proposal'){
+							str+=''+result[i][j].status+'';
+							str+='<p class="text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+						}else {
+							str+=''+result[i][j].status+'</p>';
+						}
 						
 						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
 						
@@ -4136,19 +4335,28 @@ function alertStatusHistory(result,alertId)
 	}else{
 		$("#alertManagementPopupBody1").html(" NO HISTORY AVAILABLE...")
 	}
-	$("#alertManagementPopup1 .modal-footer").html(' ');	
+	$("#alertManagementPopup1 .modal-footer").html(' ');
+	
 	if(isAdmin == "false"){
 		if(globalUserType != "same" && globalUserType != "other"){
-			
-			str1+='<div class="text-left" id="changeStatudCheckBoxId">';     
-				str1+='<label class="checkbox-inline">';
-				
-				if(isStatusAvailable){ 
-					str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" /> I Want to change alert Status';  
-				}
-				
-				str1+='</label>';  
+			str1+='<div class="text-left" id="changeStatudCheckBoxId">'; 
+				if(isStatusAvailable){
+					str1+='<label class="checkbox-inline">';
+						str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" id="proposalCheckBxId"/> I Want to change alert Status';
+					str1+='</label>';  
+					}
+					if($("#displayStatusId #statusId").html() == 'Proposal'){
+						//<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_ENTITLEMENT_NEW' )}">
+						if(globalEntitlement != null && globalEntitlement == "true"){
+							if(globalDeprtStatus == 'true'){
+								str1+='<label class="checkbox-inline">';
+										str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change propasalchangeStatsCls" /> Do You Want To Change Propasal Status';	
+									str1+='</label>';  
+								}
+							}
+						}
 				str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
+				str1+='<div  id="propasalupdateStatusChangeBody" style="display:none;">'+globalPropasalStr+'</div>';
 			str1+='</div>';
 			$("#alertManagementPopup1 .modal-footer").html(str1);	
 		}
@@ -4157,7 +4365,16 @@ function alertStatusHistory(result,alertId)
 	if(globalStatusId == 8 || globalStatusId == 9){
 		$("#changeStatudCheckBoxId").hide(); 
     }
-		var options = {
+	
+	if(globalStatusId == 13 && globalUserType == 'own')//Hide changeStatusBlock when it is in proposal status
+	{
+		if(globalProposalStatus == 'Proposal Pending')
+			$("#alertManagementPopup1 .modal-footer").hide();
+		else if(globalProposalStatus == 'Proposal Rejected' || globalProposalStatus == 'Proposal Accept')
+			$("#alertManagementPopup1 .modal-footer").show();
+	}
+	
+	var options = {
 	  sourceLanguage:
 		  google.elements.transliteration.LanguageCode.ENGLISH,
 	  destinationLanguage:
@@ -4190,11 +4407,13 @@ function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIds
 }
 //swadhin
 var glStr='';
+var globalPropasalStr='';
 function alertStatus(result,alertId)
 {
 	glStr='';
+	globalPropasalStr='';
 	var str1='';
-	 
+	var str=''; 
 		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
 			str1+='<div class="panel-heading" style="margin-left: 20px;">';
 				str1+='<div class="row">';
@@ -4205,27 +4424,79 @@ function alertStatus(result,alertId)
 						str1+='<div class="radioStyling">';
 							if(globalStatusId == parseInt(result[i].id))
 							{
-								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+i+'">';
+								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+result[i].id+'">';
 							}else
 							{
-								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+i+'">';
+								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+result[i].id+'">';
 							}
-							str1+='<label for="radio-'+i+'"><span class="radio" >'+result[i].name+'</span></label>';
+							str1+='<label for="radio-'+result[i].id+'"><span class="radio" >'+result[i].name+'</span></label>';
 						str1+='</div>';
 					str1+='</div>';
 				}				
 				str1+='</div>';
 			str1+='</div>';
-			str1+='<div class="panel-body pad_0">';
+				str1+='<div class="panel panel-default proposalAppendBlockDivCls" style="display:none;background-color:#ededed">';
+					str1+='<div class="panel-heading" style="background-color:#ededed;padding-left:15px;">';
+						str1+='<h4 class="panel-title">Proposal Information</h4>';
+					str1+='</div>';
+					str1+='<div class="panel-body" style="background-color:#ededed">';
+						str1+='<div class="row">';
+							str1+='<div class="col-sm-12">';
+								str1+='<div class="m_top10">';
+									str1+='<label class="checkbox-inline">';
+									  str1+='<input type="checkbox" class="proposalCheckbox" value="1" name="statusChekBx">Financial Assistance<span style="color:red">*</span>';
+									str1+='</label>';
+									str1+='<label class="checkbox-inline">';
+									  str1+='<input type="checkbox" class="proposalCheckbox" value="2" name="statusChekBx">Policy Decision Required<span style="color:red">*</span>';
+									str1+='</label>';
+									str1+='<label class="checkbox-inline">';
+									  str1+='<input type="checkbox" class="proposalCheckbox" value="3" name="statusChekBx">Others<span style="color:red">*</span>';
+									str1+='</label>';
+								str1+='</div>';
+							str1+='</div>';
+							str1+='<div class="col-sm-4">';
+								str1+='<div class="input-group amountCls m_top20" style="display:none;">';
+									str1+='<span class="input-group-addon">';
+										str1+='<i class="fa fa-inr"></i>';
+									str1+='</span>';
+									str1+='<input type="text" class="form-control" placeholder="Enter Amount" id="amountId">';
+								str1+='</div>';
+							str1+='</div>';
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</div>';
+				
+			str1+='<div class="panel-body pad_0 m_top20">';
 				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
 			str1+='</div>';
 		str1+='</div>';
+
 	
 	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChangeId">update</button>';
 	str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
 	str1+='<span id="updateStatusChangeMsg"></span>';
+	
+		str+='<div class="col-sm-4">';
+			str+='<div class="radioStyling">';
+				str+='<input class="alertStatusCls" attr_id="3" type="radio" name="group1" id="radio-1">';
+				str+='<label for="radio-1"><span class="radio">Proposal Accept<span style="color:red;"> *</span></span></label>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-4">';
+			str+='<div class="radioStyling">';
+				str+='<input class="alertStatusCls" attr_id="2" type="radio" name="group1" id="radio-2">';
+				str+='<label for="radio-2"><span class="radio">Proposal Reject<span style="color:red;"> *</span></span></label>';
+			str+='</div>';
+		str+='</div>';
+	str+='<div class="panel-body pad_0">';
+		str+='<textarea class="form-control" id="acceptedStatusChangeComment" placeholder="Comment.."></textarea>';
+	str+='</div>';
+	str+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updatePrposalStatsId" >update</button>';
+	str1+='<span id="updateProposalStatusChangeMsg"></span>';
 	glStr=str1;
+	globalPropasalStr=str;
 	//$("#updateStatusChangeBody").html(str1);
+	
 }
 function getAssignUIAttributes(alertId){
 	getGovtAllDepartmentDetails();
@@ -4504,81 +4775,6 @@ function getParentLevelsOfLevelForSubTask(){
 	});
 }
 
-$(document).on("click","#updateStatusChangeId",function(){
-		
-		//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
-		var comment = $("#updateStatusChangeComment").val()
-		var alertId = $(this).attr("attr_alert_id");
-		//var statusId=$('input[name=statusChange]:checked', '#updateStatusChangeBody').val();
-		var subTaskId = $(this).attr("subTaskId");
-		
-		if(subTaskId != null && subTaskId>0){
-			comment = $("#updateStatusChangeComment1").val()
-		}
-		if(alertStatusGlobalId != null && alertStatusGlobalId==0){
-			alert("Please Select Status");
-			return;
-		}
-		if(comment == null || comment.trim() == "")
-		{
-			alert("Please Enter Comment");
-			return;
-		}
-		
-		/* if(statusId == null || statusId =='')
-			statusId=globalStatusId;
-		 */
-		$("#updateStatusChangeAjaxSymbol").html(spinner);
-		
-			var jsObj ={
-				alertId : alertId,
-				statusId : alertStatusGlobalId,
-				subTaskId:subTaskId,
-				comment: comment
-			}
-		//1111
-		var callURL = 'updateAlertStatusCommentAction.action';
-		if(subTaskId != null && subTaskId>0){
-			callURL = 'updateSubTaskStatusCommentAction.action';
-		}
-		$.ajax({
-			type:'POST',
-			url: callURL,
-			data: {task :JSON.stringify(jsObj)}
-		}).done(function(result){
-			
-			$("#updateStatusChangeAjaxSymbol").html('');
-			if(result != null && result.exceptionMsg == 'success')
-			{
-				$("#updateStatusChangeMsg").html("status updated successfully");
-				$("#commentPostingSpinner").html("status updated successfully");
-				
-				if(subTaskId == null || subTaskId.length == 0){
-					getCommentsForAlert(alertId);
-					
-				}else{
-					getSubAlertsDetails(alertId,subTaskId);
-				}
-				
-				setTimeout(function(){
-					$("#commentPostingSpinner").html(" ");
-					$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
-					$('#alertManagementPopup1').modal('hide');
-					
-					
-				},1500);
-				rightSideExpandView(alertId);
-					setTimeout(function(){
-						$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
-					},750);
-			}else{
-				alert("try again");
-			}
-		});
-		
-		
-	});
-	
 function getDistrictsListForState(id)
 {
 	var jsObj ={
@@ -5018,3 +5214,98 @@ function getPresentAssignedDepartmentOfAlert(alertId){
 		
 	});
 }
+
+/* function  getAllProposalCategories(){
+	var jsObj={
+	}	
+	$.ajax({   
+		type:'GET',
+		url:'getAllProposalCategoriesAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		/* if(result !=null && result.length>0){
+			$("#presentDeptId").html("<label>Present Deparment</label> : "+result[0].name+"");
+		} 
+		
+	});
+} */
+/* function saveProposalDetails(){
+	var categoryId =$('input[name=checkbox]:checked').val();
+	
+	var jsObj={
+		alertId : 12344,
+		proposalCategoryId : categoryId,
+		proposalAmount : "67890"
+	}	
+	$.ajax({   
+		type:'GET',
+		url:'saveProposalStatusDetailsAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		
+	});
+} */
+$(document).on("click","#updatePrposalStatsId",function(){
+	$("#updateProposalStatusChangeMsg").html(spinner)
+	var alertId =$(this).attr("attr_alert_id");
+	var comment =$("#acceptedStatusChangeComment").val();
+	
+	if(alertStatusGlobalId != null && alertStatusGlobalId==0){
+		alert("Please Select Status");
+		return;
+	}
+	if(comment != null && comment==0){
+		alert("Please Enter Comment");
+		return;
+	}
+	$("#updatePrposalStatsId").hide();
+	var jsObj={
+		alertId : alertId,
+		proposalStatusId : alertStatusGlobalId,
+		comment : comment
+	}	
+	
+	$.ajax({   
+		type:'GET',
+		url:'updateProposalStatusFrAlertAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result == "success"){
+			alert("Proposal Status Updated Successfully");
+			getCommentsForAlert(alertId);
+			setTimeout(function(){
+					//$("#commentPostingSpinner").html(" ");
+					//$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
+					$('#alertManagementPopup1').modal('hide');
+					
+				},1500);
+				rightSideExpandView(alertId);
+					setTimeout(function(){
+						$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
+					},750);
+			}else{
+				alert("try again");
+			}
+	});
+});
+var globalDeprtStatus;
+function alertDeptmentExistInLogin(alertId){
+	var jsObj={
+		alertId : alertId,
+		proposalStatusId : alertStatusGlobalId
+	}	
+	$.ajax({   
+		type:'GET',
+		url:'alertDeptmentExistInLoginAction.action',  
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null){
+			globalDeprtStatus = result;
+		}
+	});
+}
+	

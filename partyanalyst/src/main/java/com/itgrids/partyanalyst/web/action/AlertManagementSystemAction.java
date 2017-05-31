@@ -1640,7 +1640,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		   	
 		   	jObj = new JSONObject(getTask());
 		   	
-		   	resultStatus = alertManagementSystemService.updateAlertStatusComment(jObj.getLong("alertId"),jObj.getLong("statusId"),jObj.getString("comment"),regVo.getRegistrationID());
+		   	resultStatus = alertManagementSystemService.updateAlertStatusComment(jObj.getLong("alertId"),jObj.getLong("statusId"),jObj.getString("comment"),regVo.getRegistrationID(),jObj.getLong("proposalCategoryId"),jObj.getString("proposalAmount"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in updateAlertStatusComment() of updateAlertStatusComment",e);
@@ -2539,13 +2539,13 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 				RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 				if(regVo == null)
 					return null;
-				
+				List<String> entitlements = regVo.getEntitlements();
 				jObj = new JSONObject(getTask());
 				Long alertId = jObj.getLong("alertId");
 				Long levelValue = jObj.getLong("levelValue");
 				
 				//idnameVoList = alertManagementSystemService.getStatusCompletionInfo(alertId,levelValue,jObj.getLong("designationId"),jObj.getLong("levelId"),regVo.getRegistrationID());
-				idnameVoList = alertManagementSystemService.getStatusCompletionInfoNew(alertId,levelValue,jObj.getLong("designationId"),jObj.getLong("levelId"),regVo.getRegistrationID());
+				idnameVoList = alertManagementSystemService.getStatusCompletionInfoNew(alertId,levelValue,jObj.getLong("designationId"),jObj.getLong("levelId"),regVo.getRegistrationID(),entitlements);
 				
 			} catch (Exception e) {
 				LOG.error("Exception Occured in getStatusCompletionInfo() method, Exception - ",e);
@@ -5772,6 +5772,44 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;
 	}
+	/*public String saveProposalStatusDetails(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			
+			resultStatus = alertManagementSystemService.saveProposalStatusDetails(userId,jObj.getLong("alertId"),jObj.getLong("proposalCategoryId"),jObj.getString("proposalAmount"));
+		}catch(Exception e){
+			LOG.error("Exception Occured in saveProposalStatusDetails() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}*/
+	public String updateProposalStatusFrAlert(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			
+			successMsg = alertManagementSystemService.updateProposalStatusFrAlert(userId,jObj.getLong("alertId"),jObj.getLong("proposalStatusId"),jObj.getString("comment"));
+		}catch(Exception e){
+			LOG.error("Exception Occured in updateProposalStatusFrAlert() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	/*public String getAllProposalCategories(){
+		try{
+			
+			idNameVOList = alertManagementSystemService.getAllProposalCategories();
+			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAllProposalCategories() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}*/
 	public String getFinancialAssistanceAlertCntCategoryWise(){
 		try{
 			session = request.getSession();
@@ -5955,6 +5993,19 @@ public String getAlertSourceWiseAlert(){
 			alertCoreDashBoardVOs = alertManagementSystemService.groupAlertsTimeWise(alertCoreDashBoardVOs);
 		}catch(Exception e){
 			LOG.error("Exception occured in getFinancialAssistanceAlertCntDtls() of AlertManagementSystemAction",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String alertDeptmentExistInLogin(){
+		try{
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			Long userId = regVo.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			successMsg = alertManagementSystemService.alertDeptmentExistInLogin(jObj.getLong("alertId"),userId);
+		}catch(Exception e){
+			LOG.error("Exception occured in alertDeptmentExistInLogin() of AlertManagementSystemAction",e);
 		}
 		return Action.SUCCESS;
 	}

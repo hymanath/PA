@@ -3642,7 +3642,8 @@
 		<property name="govtSmsActionTypeDAO" ref="govtSmsActionTypeDAO"></property>
 		<property name="govtAlertDepartmentLocationNewDAO" ref="govtAlertDepartmentLocationNewDAO"></property>
 		<property name="alertDepartmentCommentDAO" ref="alertDepartmentCommentDAO"></property>
-        <property name="alertDepartmentCommentNewDAO" ref="alertDepartmentCommentNewDAO"></property>		
+        <property name="alertDepartmentCommentNewDAO" ref="alertDepartmentCommentNewDAO"></property>
+        <property name="govtProposalPropertyCategoryDAO" ref="govtProposalPropertyCategoryDAO"></property>		
 	</bean>            
 	<!-- Debate End -->
 	
@@ -4243,7 +4244,11 @@
 		<property name="alertImpactScopeDAO" ref="alertImpactScopeDAO" ></property> 
 		<property name="alertService" ref="alertService" ></property>
 		<property name="alertCallerRelationDAO" ref="alertCallerRelationDAO" ></property>
-		<property name="govtDepartmentRelationDAO" ref="govtDepartmentRelationDAO" ></property>	  
+		<property name="govtDepartmentRelationDAO" ref="govtDepartmentRelationDAO" ></property>
+		<property name="govtProposalPropertyCategoryDAO" ref="govtProposalPropertyCategoryDAO" ></property>
+		<property name="govtProposalPropertyCategoryTrackingDAO" ref="govtProposalPropertyCategoryTrackingDAO" ></property>
+		<property name="govtProposalCategoryDAO" ref="govtProposalCategoryDAO" ></property>
+		<property name="alertCommentDAO" ref="alertCommentDAO" ></property>				  
    </bean>
    <bean name="meekosamGrievanceService" class="com.itgrids.partyanalyst.service.impl.MeekosamGrievanceService">
    		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
