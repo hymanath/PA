@@ -2033,3 +2033,14 @@ h5[filters-list-title] b
 {
 	color:#ee935d;
 }
+
+.meekosam-profiles
+{
+	padding:10px;
+}
+.meekosam-profiles li
+{
+	padding:10px;
+	border:1px solid #ddd;
+	margin:0px 5px;
+}
