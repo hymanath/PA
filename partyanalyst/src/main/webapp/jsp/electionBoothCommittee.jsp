@@ -150,7 +150,7 @@
 		<div id="errorMessegeId" style ="color:red;"></div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h4 class="panel-title text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3> 
+				<h4 class="panel-title text-center">${finalStatus} &nbsp;CONSTITUENCY	</h4> 
 			</div>
 			<div class="panel-body">
 				<div class="row">
@@ -367,7 +367,7 @@
 						<div id="searchErrDiv"></div>
 					</div>	
 					<div class="col-md-3 col-sm-3 col-xs-3 ">
-						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsForBoothBySearchCriteria()">SEARCH</button>
+						<button class="btn btn-success btn-block" type="button" onclick="getCadreDetailsForBoothBySearchCriteria()" id="searchButnId">SEARCH</button>
 					</div>			
 				</div>			
 			</div>
@@ -1910,6 +1910,13 @@ function getTdpCommitteePanchayatWardByMandal1(){
 		});	
 			
 	}
+	// while Pressing Enter button event
+	$(document).keydown(function(event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode == '13') {
+        $('#searchButnId').click();
+    }
+});
 </script>
 <script>
 var tableToExcel = (function() {
