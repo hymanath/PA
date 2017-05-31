@@ -8311,14 +8311,14 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" SELECT  a.alert_id as alertId ,a.title as title , a.impact_level_id as levelId , date(a.created_time) as time ," +
 				"  a.alert_source_id as sourceId,rs.scope as scope ,a.alert_status_id as statusId, gd.department_name as deptName, fs.status as feedbackStattus, d.district_name as districtName," +
 				" c.name as cname, t.tehsil_name as tehsilName, p.panchayat_name as pname, h.hamlet_name as hname , leb.name as lname, " +
-				" w.name as ward,ac.caller_name as callerName,ac.mobile_no as mobileNo,user.username as username,sm.social_media_type_id as smTypeId,sm.type as smType," +
+				" w.name as ward,'' as callerName,'' as mobileNo,user.username as username,sm.social_media_type_id as smTypeId,sm.type as smType," +
 				" a.is_verified as is_verified,s.state_name as state ");
 		queryStr.append(" from ");
-		queryStr.append(" user user,alert a ");
+		queryStr.append(" alert_caller_relation acr,alert_caller ac,user user,alert a ");
 		queryStr.append(" Left Join alert_feedback_status fs on a.alert_feedback_status_id = fs.alert_feedback_status_id ");
 		queryStr.append(" Left Join region_scopes rs on a.impact_level_id = rs.region_scopes_id ");
 		queryStr.append(" LEFT JOIN alert_status as1 on a.alert_status_id = as1.alert_status_id ");
-		queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
+		//queryStr.append(" LEFT JOIN alert_caller ac on a.alert_caller_id = ac.alert_caller_id  ");
 		queryStr.append(" left join govt_department gd on a.govt_department_id = gd.govt_department_id  ");
 		queryStr.append(" left join user_address ua on a.address_id = ua.user_address_id  ");
 		
@@ -8333,7 +8333,7 @@ public List<Object[]> getDistrictAndStateImpactLevelWiseAlertDtls(Long userAcces
 		queryStr.append(" left join social_media_type sm on a.social_media_type_id = sm.social_media_type_id  ");
 		
 		
-		queryStr.append(" where a.is_deleted='N' and a.alert_caller_id is not null " +
+		queryStr.append(" where a.alert_id = acr.alert_id and acr.alert_caller_id=ac.alert_caller_id and acr.is_deleted ='N' and a.is_deleted='N'  " +
 						" and a.created_by = user.user_id");
 		if(alertStatusId != null && alertStatusId.longValue() > 0l)
 			queryStr.append(" and a.alert_status_id =:alertStatusId ");
