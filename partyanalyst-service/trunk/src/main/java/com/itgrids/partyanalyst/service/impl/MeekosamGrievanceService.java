@@ -335,6 +335,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 			LOG.error("Error occured setDataToList() method of MeekosamGrievanceService",e);
     	}
     }
+	/*
+	 * Swadhin K Lenka
+	 * (non-Javadoc)
+	 * @see com.itgrids.partyanalyst.service.IMeekosamGrievanceService#searchPetitionerDetailsByVoterNoAadharNoMobileNo(java.lang.String, java.lang.String)
+	 */
 	public List<PetitionerDetailsVO> searchPetitionerDetailsByVoterNoAadharNoMobileNo(String cardNo, String type){
 		try{
 			List<PetitionerDetailsVO> detailsVOs = new ArrayList<PetitionerDetailsVO>();
