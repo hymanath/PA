@@ -897,12 +897,12 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 						<label class="radio"><input type="checkbox" id="villageId" style="vertical-align: text-bottom;" class="scopeRd" value="village" name="selectCheck"    >&nbsp; VILLAGE / WARD &nbsp;</label>
 					</span>&nbsp;&nbsp;
 					<span class="btn btn-success btn-xs form-inline">
-						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" checked="true">&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="mandalId" style="vertical-align: text-bottom;" class="scopeRd" value="mandal" name="selectCheck" checked="true" >&nbsp; TOWN / MANDAL / DIVISION &nbsp;&nbsp;</label>
 					</span>
 					
 					
 					<span class="btn btn-success btn-xs form-inline" id="districtCommDiv">
-						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck" disabled>&nbsp; DISTRICT &nbsp;&nbsp;</label>
+						<label class="checkbox"><input type="checkbox" id="districtCommId" style="vertical-align: text-bottom;" class="scopeRd" value="districtComm" name="selectCheck"  >&nbsp; DISTRICT &nbsp;&nbsp;</label>
 					</span>
                     </div>
 	
@@ -4106,7 +4106,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 	/* script for District */
 	var globalDistrictId =0;
-	function getPopUpForSummaryForDistrict(id,name,type){
+	function getPopUpForSummaryForDistrict(id,name){
 		globalDistrictId=id;
 		//$("#popUpdistrictId  option").remove();
 		$("#popUpConstiesId option").remove();
@@ -4158,6 +4158,7 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 	
 		function getCommitteeSummaryInfo(id,committeeEnrollmentId,fromDate,toDate,reqLocationType)
 		{
+			$("#mainCommitteDivId").html('');
 		 $("#mainCommitteDivId").html('<img id=""  class="ajximgCls" style="margin-center: 10px;width:80px;margin-left:600px;" src="images/Loading-data.gif"/>');
 		 $("#AffliCommitteDivId").html('');
 		 $("#CommitteeDetails").html("");
@@ -4167,10 +4168,27 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		//$("#districtContent").html(''		
 				var reqLocationType = reqLocationType;//'District';
 				var locationId = id;
+				//var committeeLevelIdsListArr = [];
+				//committeeLevelIdsListArr.push(6);
+				//committeeLevelIdsListArr.push(8);
+				var mandalCheck=  $('#mandalId').is(':checked')?"true":"false";
+				var villageCheck=  $('#villageId').is(':checked')?"true":"false";
+				var distCheck=  $('#districtCommId').is(':checked')?"true":"false";
+
 				var committeeLevelIdsListArr = [];
-				committeeLevelIdsListArr.push(6);
-				committeeLevelIdsListArr.push(8);
-				
+		
+				if(villageCheck == "true"){
+					committeeLevelIdsListArr.push(6);
+					committeeLevelIdsListArr.push(8);
+				} 
+				if(mandalCheck == "true"){
+					committeeLevelIdsListArr.push(5);
+					committeeLevelIdsListArr.push(7);
+					committeeLevelIdsListArr.push(9);
+				}
+				if(distCheck == "true"){
+					committeeLevelIdsListArr.push(11);
+				}
 				var mainOrAfflCommitteIdsArr = []; 
 				mainOrAfflCommitteIdsArr.push(1);
 				mainOrAfflCommitteIdsArr.push(2);
@@ -4736,8 +4754,10 @@ padding-left:0px; width:272px;margin-left:-14px;font-size: 11px;
 		var title = '';
 		if(jsObj.levelId == 2)
 		title = "[VILLAGE / WARD]";
-		if(jsObj.levelId == 1)
+		else if(jsObj.levelId == 1)
 		title = "[MANDAL/TOWN/DIVISION]";
+		else if(jsObj.levelId == 11)
+		title = "[DISTRICT]";
 		str+='<tr>';
         str+='<td colspan="7" style="background-color:#669934" class="text-uppercase">'+title+' WISE <b>'+result[0].committe+' COMMITTEE <i style="color:#EF4036;">'+status+'</i></b> DETAILS <div class="pull-right" ><i class="glyphicon glyphicon-remove" style="cursor:pointer;" id="closeMemberId" onclick="removeDiv();"></i></div></td>';
         str+=' </tr>';
@@ -6491,8 +6511,8 @@ function onLoadcimmitteeDashboardCalls(){
 				//$("#apStateBodyTR").hide();
 				$("#tsStateHeadingTR").hide();
 				//$("#tsStateBodyTR").hide();
-				//getDistrictWiseCommittesSummary();
-				getConstituencyWiseCommittesSummary();
+				getDistrictWiseCommittesSummary();
+				//getConstituencyWiseCommittesSummary();
 				$("#popUpDistrictDiv").show();
 				$("#popUpConstituencyDiv").show();
 				$("#usrConstitunecyDiv").show();
