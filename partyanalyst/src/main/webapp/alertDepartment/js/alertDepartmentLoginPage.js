@@ -191,7 +191,7 @@ $('#ajaxcallimage').html('Login Successfull,Window is closing Please wait...');
 
 	              if(emailId.length == 0 || emailId == "Email" )
 	               {
-		              str += ' Uername is required<br>';
+		              str += ' Username is required<br>';
 		              eFlag = true;
 	               }
 	
