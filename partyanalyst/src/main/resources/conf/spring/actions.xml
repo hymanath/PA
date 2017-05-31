@@ -1782,9 +1782,12 @@
 	<bean id="alertManagementSystemAction" class="com.itgrids.partyanalyst.web.action.AlertManagementSystemAction" singleton="false">
 		<property name="cccDashboardService" ref="cccDashboardService" />
 		<property name="alertManagementSystemService" ref="alertManagementSystemService" />
-	</bean>	
+	</bean>
 	<bean id="meekosamGrievanceAction" class="com.itgrids.partyanalyst.web.action.MeekosamGrievanceAction" singleton="false">
 		<property name="meekosamGrievanceService" ref="meekosamGrievanceService" />
+	</bean>	
+	<bean id="newConstituencyPageAction" class="com.itgrids.partyanalyst.web.action.NewConstituencyPageAction" singleton="false">
+		<property name="newConstituencyPageAction" ref="newConstituencyPageAction" />
 	</bean>	
 </beans>	
 	
