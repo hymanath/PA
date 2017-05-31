@@ -85,6 +85,7 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationRelationDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IGovtProposalPropertyCategoryDAO;
 import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -113,6 +114,7 @@ import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
+import com.itgrids.partyanalyst.dao.hibernate.GovtProposalPropertyCategoryDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -282,6 +284,7 @@ private IGovtDepartmentWorkLocationDAO govtDepartmentWorkLocationDAO;
 private IGovtDepartmentWorkLocationRelationDAO govtDepartmentWorkLocationRelationDAO;
 private IGovtSmsActionTypeDAO govtSmsActionTypeDAO;
 private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
+private IGovtProposalPropertyCategoryDAO govtProposalPropertyCategoryDAO;
 
 
 public IGovtAlertDepartmentLocationNewDAO getGovtAlertDepartmentLocationNewDAO() {
@@ -923,6 +926,14 @@ public void setAlertDepartmentCommentNewDAO(
 	this.alertDepartmentCommentNewDAO = alertDepartmentCommentNewDAO;
 }
 
+public IGovtProposalPropertyCategoryDAO getGovtProposalPropertyCategoryDAO() {
+	return govtProposalPropertyCategoryDAO;
+}
+
+public void setGovtProposalPropertyCategoryDAO(IGovtProposalPropertyCategoryDAO govtProposalPropertyCategoryDAO) {
+	this.govtProposalPropertyCategoryDAO = govtProposalPropertyCategoryDAO;
+}
+
 public List<BasicVO> getCandidatesByName(String candidateName){
 	List<BasicVO> list = new ArrayList<BasicVO>();
 	 List<Object[]> candidate=null;
@@ -1501,6 +1512,14 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 					 alertVO.setRegionScope(params[26] != null ?params[26].toString() : "");
 					 alertVO.setStatusId(params[8] != null ? (Long)params[8] : null);
 					 alertVO.setStatus(params[9] != null ?params[9].toString() : "");
+					 if(alertVO.getStatusId() == 13l){
+						 List<Object[]> statusList =govtProposalPropertyCategoryDAO.getStatusFrALert(alertId);
+						 if(commonMethodsUtilService.isListOrSetValid(statusList)){
+							 for (Object[] objects : statusList) {
+								alertVO.setCommitteeName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+							}
+						 }
+					 }
 					 alertVO.setStatusColor(params[32] != null ?params[32].toString() : "");
 					 if(dueDateList != null && dueDateList.size() > 0){
 						 Date date =new SimpleDateFormat("yyyy-MM-dd").parse(dueDateList.get(dueDateList.size()-1).toString());

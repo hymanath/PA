@@ -32,10 +32,12 @@ public class GovtProposalPropertyCategoryTracking extends BaseModel implements S
 	private Date insertedTime;
 	private Long insertedBy;
 	private String isDeleted;
+	private Long alertCommentId;
 	
 	private Alert alert;
 	private GovtProposalCategory govtProposalCategory;
 	private GovtProposalStatus govtProposalStatus;
+	private AlertComment alertComment;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -126,6 +128,25 @@ public class GovtProposalPropertyCategoryTracking extends BaseModel implements S
 	}
 	public void setGovtProposalStatus(GovtProposalStatus govtProposalStatus) {
 		this.govtProposalStatus = govtProposalStatus;
+	}
+	
+	@Column(name = "alert_comment_id")
+	public Long getAlertCommentId() {
+		return alertCommentId;
+	}
+	public void setAlertCommentId(Long alertCommentId) {
+		this.alertCommentId = alertCommentId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "alert_comment_id", insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public AlertComment getAlertComment() {
+		return alertComment;
+	}
+	public void setAlertComment(AlertComment alertComment) {
+		this.alertComment = alertComment;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -26,6 +28,14 @@ public class GovtProposalPropertyCategoryDAO extends GenericDaoHibernate<GovtPro
 			query.setParameter("alertId", alertId);
 		
 		return (GovtProposalPropertyCategory) query.uniqueResult();
+	}
+	public List<Object[]> getStatusFrALert(Long alertId){
+		Query query = getSession().createQuery("select distinct model.govtProposalStatus.govtProposalStatusId," +
+				" model.govtProposalStatus.status" +
+				" from GovtProposalPropertyCategory model" +
+				" where model.isDeleted = 'N' and model.alert.alertId = :alertId");
+		query.setParameter("alertId", alertId);
+		return query.list();
 	}
   
 }
