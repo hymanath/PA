@@ -169,9 +169,9 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 			UserAddress userAddress = new UserAddress();
 			userAddress.setState(stateDAO.get(1L));
 			userAddress.setDistrict(districtDAO.get(inputVO.getDistrictId()));
-			String[] tehsilInfo = inputVO.getTehsil().trim().split(",");
-			if(tehsilInfo[0].equalsIgnoreCase("0")){
-				userAddress.setTehsil(tehsilDAO.get(Long.parseLong(tehsilInfo[1])));
+			String flag = inputVO.getTehsil().trim().substring(0, 1);
+			if(flag.equalsIgnoreCase("1")){
+				userAddress.setTehsil(tehsilDAO.get(Long.parseLong(inputVO.getTehsil().trim().substring(1))));
 				if(inputVO.getPanchayatId() != null){
 					userAddress.setPanchayatId(inputVO.getPanchayatId());
 				}
@@ -179,7 +179,7 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					userAddress.setHamlet(hamletDAO.get(inputVO.getHamletId()));
 				}
 			}else{
-				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.parseLong(tehsilInfo[1])));
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.parseLong(inputVO.getTehsil().trim().substring(1))));
 				if(inputVO.getPanchayatId() != null){
 					userAddress.setWard(constituencyDAO.get(inputVO.getPanchayatId()));
 				}
@@ -205,7 +205,8 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 			{
 				for(Object[] obj : mandals){
 					IdNameVO objVO = new IdNameVO();
-					objVO.setId((Long)obj[0]);
+					String tehsilId = "1"+obj[0].toString();
+					objVO.setId(Long.parseLong(tehsilId));
 					objVO.setName(obj[1].toString() +" " +"Mandal");
 					returnList.add(objVO);
 				}
@@ -215,7 +216,8 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 			{
 					for(Object[] obj : localbodies){
 						IdNameVO objVO = new IdNameVO();
-						objVO.setId((Long)obj[0]);
+						String locEleBodyId = "2"+obj[0].toString();
+						objVO.setId(Long.parseLong(locEleBodyId));
 						objVO.setName(obj[1].toString());
 						returnList.add(objVO);
 					}
@@ -384,9 +386,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 						detailsVO.setEmailId(commonMethodsUtilService.getStringValueForObject(param[28]));
 						detailsVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[7]));
 						if(param[17] != null){
-							detailsVO.setTehsil("0,"+commonMethodsUtilService.getStringValueForObject(param[17]));
+							String tehsilId = "1"+commonMethodsUtilService.getStringValueForObject(param[17]);
+							detailsVO.setTehsil(tehsilId);
 						}else if(param[22] != null){
-							detailsVO.setTehsil("1,"+commonMethodsUtilService.getStringValueForObject(param[22]));
+							String tehsilId = "2"+commonMethodsUtilService.getStringValueForObject(param[22]);
+							detailsVO.setTehsil(tehsilId);
 						}
 						if(param[15] != null){
 							detailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[15]));
@@ -412,6 +416,7 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					detailsVO = new PetitionerDetailsVO();
 					detailsVO.setPetitionerId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					detailsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					detailsVO.setAge(commonMethodsUtilService.getLongValueForObject(param[21]));
 					detailsVO.setRelativeName(commonMethodsUtilService.getStringValueForObject(param[2]));
 					Date dob = sdf.parse(commonMethodsUtilService.getStringValueForObject(param[3]));
 					detailsVO.setDateOfBirth(sdf1.format(dob));
@@ -428,9 +433,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					detailsVO.setDuration(commonMethodsUtilService.getStringValueForObject(param[14]));
 					detailsVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[15]));
 					if(param[16] != null){
-						detailsVO.setTehsil("0,"+commonMethodsUtilService.getStringValueForObject(param[16]));
+						String tehsilId = "1"+commonMethodsUtilService.getStringValueForObject(param[16]);
+						detailsVO.setTehsil(tehsilId);
 					}else if(param[17] != null){
-						detailsVO.setTehsil("1,"+commonMethodsUtilService.getStringValueForObject(param[17]));
+						String tehsilId = "2"+commonMethodsUtilService.getStringValueForObject(param[17]);
+						detailsVO.setTehsil(tehsilId);
 					}
 					if(param[18] != null){
 						detailsVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[18]));
