@@ -468,12 +468,12 @@ import com.itgrids.partyanalyst.utils.IConstants;
 				" and model.tdpCommitteeRole.tdpCommittee.district.districtId in(:districtIds)" +
 				//" and model.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpCommitteeType.tdpCommitteeTypeId = 1" +
 				" and model.isActive = 'Y' ");
-		if(startDate!=null){
-			sb.append(" and ( date(model.tdpCommitteeRole.tdpCommittee.startedDate) >= :startDate ");
+		if(startDate!=null && endDate!=null){
+			sb.append(" and  date(model.tdpCommitteeRole.tdpCommittee.startedDate) between  :startDate and :endDate ");
 		}
-		if(endDate!=null){
+		/*if(endDate!=null){
 			sb.append(" and date(model.tdpCommitteeRole.tdpCommittee.startedDate) <= :endDate ) ");
-		}
+		}*/
 		if(committeeSpanTypeIdsList != null && committeeSpanTypeIdsList.size()>0){
 			sb.append(" and model.tdpCommitteeRole.tdpCommittee.tdpCommitteeEnrollmentId in (:committeeSpanTypeIdsList) ");
 		}
@@ -483,12 +483,13 @@ import com.itgrids.partyanalyst.utils.IConstants;
 		Query query = getSession().createQuery(sb.toString());
 		
 		query.setParameterList("levelIds", levelIds);
-		if(startDate!=null){
+		if(startDate!=null && endDate!=null){
 			query.setParameter("startDate", startDate);
-		}
-		if(endDate!=null){
 			query.setParameter("endDate", endDate);
 		}
+		/*if(endDate!=null){
+			query.setParameter("endDate", endDate);
+		}*/
 		if(committeeSpanTypeIdsList != null && committeeSpanTypeIdsList.size()>0)
 			query.setParameterList("committeeSpanTypeIdsList", committeeSpanTypeIdsList);
 		query.setParameterList("districtIds", districtIds);
