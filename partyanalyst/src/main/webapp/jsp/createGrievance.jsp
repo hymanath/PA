@@ -1811,7 +1811,7 @@ function buildAlertDetails(result,status,alertStatusId){
 						
 						if(result[i].statusId !=null && result[i].statusId>0 &&  ( result[i].statusId == 12)){
 							str+='<td>';
-								str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert__source_id ="'+result[i].alertSourceId+'" attr_alert__status_id ="'+result[i].statusId+'">Update</button>';
+								str+='<button class="btn btn-success updateAlertCls btn-xs btn-mini" attr_alert_id ="'+result[i].alertId+'" attr_alert_source_id ="'+result[i].alertSourceId+'" attr_alert_status_id ="'+result[i].statusId+'">Update</button>';
 							str+='</td>';
 						}else{
 							str+='<td> - </td>';
