@@ -147,6 +147,7 @@
 			</div>
 			
 		</div> -->
+		<div id="errorMessegeId" style ="color:red;"></div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<h4 class="panel-title text-center">${finalStatus} &nbsp;CONSTITUENCY	</h3> 
@@ -154,7 +155,7 @@
 			<div class="panel-body">
 				<div class="row">
 					<div class="col-sm-4" id="mandalMainDivId">
-						<label for="">SELECT Mandal/M1unicipality/Corporation <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
+						<label for="">SELECT Mandal/Municipality/Corporation <span style="color:red">*</span><img style="width: 25px; height: 20px;" src="images/icons/loading.gif" id="dataLoadingImgForMandal"> </label>
 						<div id="mandalDivId"></div>
 					</div>
 					<div class="col-sm-4" id="committeePanchayatId">
@@ -1664,7 +1665,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 			
 	function getTdpCommitteePanchayatWardByMandal(){
 		var mandalId = $('#panchayatWardByMandal').val();
-		//alert(mandalId);
+		
 		    $("#committeeLocationId  option").remove();
 			 $("#committeeLocationId1  option").remove();
 			var num =$("#panchayatWardByMandal").val();
@@ -1743,14 +1744,18 @@ function getBoothsByMandal(mandalId){
 	$("#userDetailsId").html("");
 	$("#searchBy").html('');
 	 var mandalId = $("#panchayatWardByMandal").val();
-	 var boothId = $("#committeeLocationId").val();
+	 var panchayatId = $("#committeeLocationId").val();  
+	 var boothId = $("#committeeLocationId1").val();
 	 
 	  if(mandalId == 0 || mandalId.length==0){
 		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
 	  } 
-		if(boothId == 0 || boothId.length ==0){
-			errMsg=errMsg+"Please select atleast one location<br/>";
-		}
+	  if(panchayatId ==0 || panchayatId.length == 0){
+		  errMsg=errMsg+"Please select atleast one panchayat<br/>";
+	  }
+	  if(boothId == 0 || boothId.length ==0){
+		 errMsg=errMsg+"Please select atleast one location<br/>";
+	  }
 	
 	    if(errMsg.length>0){
 		  $("#errorMessegeId").html(errMsg);
@@ -1775,6 +1780,7 @@ function getBoothUserDetails(){
 	var selectLocationName = constiName+" Constituency";
 	var mandalId = $("#panchayatWardByMandal").val();
 	var boothId = $("#committeeLocationId1").val();
+	var panchayatId = $("#committeeLocationId").val();
 	var mandalName = $("#panchayatWardByMandal option:selected").text();
 	var boothName = $("#committeeLocationId option:selected").text();
 	
@@ -1782,6 +1788,9 @@ function getBoothUserDetails(){
 	  if(mandalId == 0 || mandalId.length==0){
 		errMsg=errMsg+"Please select atleast one Mandal/Muncipality/Corporation.<br/>";
 	  } 
+	  if(panchayatId ==0 || panchayatId.length == 0){
+		  errMsg=errMsg+"Please select atleast one panchayat<br/>";
+	  }
 	  if(boothId == 0 || boothId.length ==0){
 			errMsg=errMsg+"Please select atleast one location<br/>";
 	  }
