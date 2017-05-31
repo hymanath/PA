@@ -1785,9 +1785,8 @@
 	</bean>
 	<bean id="meekosamGrievanceAction" class="com.itgrids.partyanalyst.web.action.MeekosamGrievanceAction" singleton="false">
 		<property name="meekosamGrievanceService" ref="meekosamGrievanceService" />
-	</bean>	
-	<bean id="newConstituencyPageAction" class="com.itgrids.partyanalyst.web.action.NewConstituencyPageAction" singleton="false">
-		<property name="newConstituencyPageAction" ref="newConstituencyPageAction" />
-	</bean>	
+	</bean>
+	<bean id="locationDashboardAction" class="com.itgrids.partyanalyst.web.action.LocationDashboardAction" singleton="false">
+	</bean>		
 </beans>	
 	

@@ -11,7 +11,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.service.INewConstituencyPageService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -23,16 +22,8 @@ public class NewConstituencyPageAction extends ActionSupport implements ServletR
 	private HttpSession session;
 	private String task;
 	private JSONObject jObj;
-	private INewConstituencyPageService newConstituencyPageService;
 	
-	
-	public INewConstituencyPageService getNewConstituencyPageService() {
-		return newConstituencyPageService;
-	}
-	public void setNewConstituencyPageService(
-			INewConstituencyPageService newConstituencyPageService) {
-		this.newConstituencyPageService = newConstituencyPageService;
-	}
+
 	public HttpServletRequest getRequest() {
 		return request;
 	}
