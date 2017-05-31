@@ -48,7 +48,7 @@ public interface IAlertManagementSystemService {
 	public List<DistrictOfficeViewAlertVO> getSubOrdinateAlertsOverview(Long userId,String fromDateStr,String toDateStr , List<Long> govtScopeIds,List<Long> locationValues,
 			List<Long> desigIds,Long priorityId);
 	public ResultStatus updateAlertDueDate(Long alertId ,String date,Long userId);
-	public ResultStatus updateAlertStatusComment(Long alertId,Long statusId,String comment,Long userId);
+	public ResultStatus updateAlertStatusComment(Long alertId,Long statusId,String comment,Long userId,Long proposalCategoryId,String proposalAmount);
 	public ResultStatus uploadDocumentsForAlert(final Map<File, String> mapfiles,final Long alertId,final Long userId);
 	public List<AlertTrackingVO> viewAlertHistory(Long alertId);
 	public List<AlertCoreDashBoardVO> getStateThenGovtDeptScopeWiseAlertCount(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortType,String order);
@@ -119,7 +119,7 @@ public interface IAlertManagementSystemService {
 			List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, 
 			Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,
 			Long districtWorkLocationId,Long divisionWorkLocationId,Long subDivisionWorkLocationId, String group,List<Long> calCntrIdList,List<Long> sublevels);
-	public List<IdNameVO>  getStatusCompletionInfoNew(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId);
+	public List<IdNameVO>  getStatusCompletionInfoNew(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId,List<String> entitlements);
 	public String getOfficernameDesignationForUser(Long userId);
 	
 	 //Santosh
@@ -182,4 +182,8 @@ public interface IAlertManagementSystemService {
 	 public List<IdNameVO> getPresentAssignedDepartmentOfAlert(Long alertId);
 	 public List<AlertVO> getFinancialAssistanceAlertCntCategoryWise(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 	 public List<AlertCoreDashBoardVO> getFinancialAssistanceAlertCntDtls(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long proposalCategoryId,Long proposalStatusId);
+	 //public ResultStatus saveProposalStatusDetails(Long userId,Long alertId,Long proposalCategoryId,String proposalAmount);
+	 public String updateProposalStatusFrAlert(final Long userId,final Long alertId,final Long proposalStatusId,final String comment);
+	// public List<IdNameVO> getAllProposalCategories();
+	 public String alertDeptmentExistInLogin(Long alertId,Long userId);
 }        

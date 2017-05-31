@@ -44,6 +44,7 @@ public class AlertTrackingVO {
 	private String alertFeedbackStatus;
 	private Long alertCallerId;
 	private String alertCallerName;
+	private String proposalStatus;
 	public AlertTrackingVO(){}
 	public AlertTrackingVO(Long alertId,String comment,String date){
 		this.alertId=alertId;
@@ -296,6 +297,12 @@ public class AlertTrackingVO {
 	}
 	public void setAlertCallerName(String alertCallerName) {
 		this.alertCallerName = alertCallerName;
+	}
+	public String getProposalStatus() {
+		return proposalStatus;
+	}
+	public void setProposalStatus(String proposalStatus) {
+		this.proposalStatus = proposalStatus;
 	}
 	
 	

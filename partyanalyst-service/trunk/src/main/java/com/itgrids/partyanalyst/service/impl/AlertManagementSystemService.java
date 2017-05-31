@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertCallerRelationDAO;
 import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
+import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentCommentNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertDepartmentDocumentNewDAO;
@@ -57,11 +58,17 @@ import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentWorkLocationRelationDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtOfficerSubTaskTrackingDAO;
+import com.itgrids.partyanalyst.dao.IGovtProposalCategoryDAO;
+import com.itgrids.partyanalyst.dao.IGovtProposalPropertyCategoryDAO;
+import com.itgrids.partyanalyst.dao.IGovtProposalPropertyCategoryTrackingDAO;
 import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.AlertCommentDAO;
+import com.itgrids.partyanalyst.dao.hibernate.GovtProposalCategoryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.GovtProposalPropertyCategoryDAO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
@@ -81,6 +88,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
+import com.itgrids.partyanalyst.model.AlertComment;
 import com.itgrids.partyanalyst.model.AlertDepartmentCommentNew;
 import com.itgrids.partyanalyst.model.AlertDepartmentDocumentNew;
 import com.itgrids.partyanalyst.model.AlertGovtOfficerSmsDetails;
@@ -90,6 +98,8 @@ import com.itgrids.partyanalyst.model.GovtAlertSubTask;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
 import com.itgrids.partyanalyst.model.GovtDepartmentWorkLocation;
 import com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking;
+import com.itgrids.partyanalyst.model.GovtProposalPropertyCategory;
+import com.itgrids.partyanalyst.model.GovtProposalPropertyCategoryTracking;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -149,6 +159,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IAlertCallerRelationDAO alertCallerRelationDAO;
 	
 	private IGovtDepartmentRelationDAO govtDepartmentRelationDAO;
+	private IGovtProposalPropertyCategoryDAO govtProposalPropertyCategoryDAO;
+	private IGovtProposalPropertyCategoryTrackingDAO govtProposalPropertyCategoryTrackingDAO;
+	private IGovtProposalCategoryDAO govtProposalCategoryDAO;
+	private IAlertCommentDAO alertCommentDAO;
 	
 	
 	public IAlertCallerRelationDAO getAlertCallerRelationDAO() {
@@ -453,6 +467,39 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 
 	public void setAlertService(IAlertService alertService) {
 		this.alertService = alertService;
+	}
+
+	public IGovtProposalPropertyCategoryDAO getGovtProposalPropertyCategoryDAO() {
+		return govtProposalPropertyCategoryDAO;
+	}
+
+	public void setGovtProposalPropertyCategoryDAO(IGovtProposalPropertyCategoryDAO govtProposalPropertyCategoryDAO) {
+		this.govtProposalPropertyCategoryDAO = govtProposalPropertyCategoryDAO;
+	}
+
+	public IGovtProposalPropertyCategoryTrackingDAO getGovtProposalPropertyCategoryTrackingDAO() {
+		return govtProposalPropertyCategoryTrackingDAO;
+	}
+
+	public void setGovtProposalPropertyCategoryTrackingDAO(
+			IGovtProposalPropertyCategoryTrackingDAO govtProposalPropertyCategoryTrackingDAO) {
+		this.govtProposalPropertyCategoryTrackingDAO = govtProposalPropertyCategoryTrackingDAO;
+	}
+
+	public IGovtProposalCategoryDAO getGovtProposalCategoryDAO() {
+		return govtProposalCategoryDAO;
+	}
+
+	public void setGovtProposalCategoryDAO(IGovtProposalCategoryDAO govtProposalCategoryDAO) {
+		this.govtProposalCategoryDAO = govtProposalCategoryDAO;
+	}
+
+	public IAlertCommentDAO getAlertCommentDAO() {
+		return alertCommentDAO;
+	}
+
+	public void setAlertCommentDAO(IAlertCommentDAO alertCommentDAO) {
+		this.alertCommentDAO = alertCommentDAO;
 	}
 
 	//Business Method
@@ -958,65 +1005,11 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			return rs;
 		}
 		
-		public ResultStatus updateAlertStatusComment(final Long alertId,final Long statusId,final String comment,final Long userId){
+		public ResultStatus updateAlertStatusComment(final Long alertId,final Long statusId,final String comment,final Long userId,final Long proposalCategoryId,final String proposalAmount){
 			final ResultStatus rs = new ResultStatus();
 			try {
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
-						Alert alert = alertDAO.get(alertId);
-						if(alert != null && statusId != null && statusId.longValue()>0L){
-							alert.setAlertStatusId(statusId);
-							alert.setUpdatedBy(userId);
-							alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-							alertDAO.save(alert);
-						}
-						
-						AlertDepartmentCommentNew adcn = null;
-						if(comment != null && !comment.trim().isEmpty()){
-							adcn = new AlertDepartmentCommentNew();
-							adcn.setComment(comment);
-							adcn.setInsertedBy(userId);
-							adcn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-							adcn = alertDepartmentCommentNewDAO.save(adcn);
-						}
-						List<Long> assingedIdsList = new ArrayList<Long>(0);
-						List<AlertAssignedOfficerNew> assignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
-						if(commonMethodsUtilService.isListOrSetValid(assignedOfficersList)){
-							
-							for (AlertAssignedOfficerNew aaon : assignedOfficersList) {
-								
-								if(statusId == 8l || statusId == 9l)
-									aaon.setIsApproved("N");
-								aaon.setAlertStatusId(statusId);
-								aaon.setUpdatedBy(userId);
-								aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-								alertAssignedOfficerNewDAO.save(aaon);
-								
-								AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
-									if(statusId == 8l || statusId == 9l)
-										aaon.setIsApproved("N");
-								aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
-								aaotn.setAlertId(aaon.getAlertId());
-								aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
-								aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
-								aaotn.setGovtAlertActionTypeId(6l);
-								if(statusId != null && statusId.longValue()>0L)
-									aaotn.setAlertStatusId(statusId);
-								
-								if(adcn != null)
-									aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
-								
-								aaotn.setInsertedBy(userId);
-								aaotn.setAlertStatusId(aaon.getAlertStatusId());
-								aaotn.setUpdatedBy(userId);
-								aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-								aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-								aaotn.setIsApproved(aaon.getIsApproved());
-								alertAssignedOfficerTrackingNewDAO.save(aaotn);
-								
-								assingedIdsList.add(aaon.getAlertAssignedOfficerId());
-							}
-						}
 						
 						/* here only we are updating for one assigned officer. But we can assing to multiple members . because of this we need to update present status of alert
 						 * for every assigned user. so am iterating the whole assigned officers 
@@ -1056,6 +1049,155 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 						/* SMS sending while assigning a new alert to any officer */
 						
 						//List<Long> assingedIdsList = alertAssignedOfficerNewDAO.getAssignedDtls(alertId);
+						List<Long> assingedIdsList = new ArrayList<Long>(0);
+						Alert alert = alertDAO.get(alertId);
+						if(statusId == 13l){
+							GovtProposalPropertyCategory govtProposalPropertyExistingAlert = govtProposalPropertyCategoryDAO.getExistingStatusByAlertId(alertId);
+							if(govtProposalPropertyExistingAlert == null){
+								GovtProposalPropertyCategory govtProposalPropertyCategory = new GovtProposalPropertyCategory();
+								govtProposalPropertyCategory.setAlertId(alertId);
+								govtProposalPropertyCategory.setGovtProposalCategoryId(proposalCategoryId);
+								govtProposalPropertyCategory.setProposalAmount(proposalAmount);
+								govtProposalPropertyCategory.setGovtProposalStatusId(1l);
+								govtProposalPropertyCategory.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								govtProposalPropertyCategory.setInsertedBy(userId);
+								govtProposalPropertyCategory.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								govtProposalPropertyCategory.setUpdatedBy(userId);
+								govtProposalPropertyCategory.setIsDeleted("N");
+								govtProposalPropertyCategoryDAO.save(govtProposalPropertyCategory);
+							
+								AlertComment alertComment = new AlertComment();
+								alertComment.setAlertId(alertId);
+								alertComment.setComments(comment);
+								alertComment.setInsertedBy(userId);
+								alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								alertComment.setIsDeleted("N");
+								alertComment = alertCommentDAO.save(alertComment);
+								
+							GovtProposalPropertyCategoryTracking govtProposalPropertyCategoryTracking = new GovtProposalPropertyCategoryTracking();
+								 govtProposalPropertyCategoryTracking.setAlertId(alertId);
+								 govtProposalPropertyCategoryTracking.setGovtProposalCategoryId(proposalCategoryId);
+								 govtProposalPropertyCategoryTracking.setGovtProposalStatusId(1l);
+								 govtProposalPropertyCategoryTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								 govtProposalPropertyCategoryTracking.setInsertedBy(userId);
+								 govtProposalPropertyCategoryTracking.setIsDeleted("N");
+								 govtProposalPropertyCategoryTracking.setAlertCommentId(alertComment.getAlertCommentId());
+							     govtProposalPropertyCategoryTrackingDAO.save(govtProposalPropertyCategoryTracking);
+							     
+							     //Alert alert = alertDAO.get(alertId);
+									if(alert != null && statusId != null && statusId.longValue()>0L){
+										alert.setAlertStatusId(statusId);
+										alert.setUpdatedBy(userId);
+										alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+										alertDAO.save(alert);
+									}
+									
+									AlertDepartmentCommentNew adcn = null;
+									if(comment != null && !comment.trim().isEmpty()){
+										adcn = new AlertDepartmentCommentNew();
+										adcn.setComment(comment);
+										adcn.setInsertedBy(userId);
+										adcn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+										adcn = alertDepartmentCommentNewDAO.save(adcn);
+									}
+									//List<Long> assingedIdsList = new ArrayList<Long>(0);
+									List<AlertAssignedOfficerNew> assignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+									if(commonMethodsUtilService.isListOrSetValid(assignedOfficersList)){
+										
+										for (AlertAssignedOfficerNew aaon : assignedOfficersList) {
+											
+											if(statusId == 8l || statusId == 9l)
+												aaon.setIsApproved("N");
+											aaon.setAlertStatusId(statusId);
+											aaon.setUpdatedBy(userId);
+											aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											alertAssignedOfficerNewDAO.save(aaon);
+											
+											AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+												if(statusId == 8l || statusId == 9l)
+													aaon.setIsApproved("N");
+											aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+											aaotn.setAlertId(aaon.getAlertId());
+											aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+											aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+											aaotn.setGovtAlertActionTypeId(6l);
+											if(statusId != null && statusId.longValue()>0L)
+												aaotn.setAlertStatusId(statusId);
+											
+											if(adcn != null)
+												aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
+											
+											aaotn.setInsertedBy(userId);
+											aaotn.setAlertStatusId(aaon.getAlertStatusId());
+											aaotn.setUpdatedBy(userId);
+											aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+											aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+											aaotn.setIsApproved(aaon.getIsApproved());
+											alertAssignedOfficerTrackingNewDAO.save(aaotn);
+											
+											assingedIdsList.add(aaon.getAlertAssignedOfficerId());
+										}
+									}
+							}else{
+								rs.setMessage("Already In ProposalStatus");
+							}
+						}else{
+							//Alert alert = alertDAO.get(alertId);
+							if(alert != null && statusId != null && statusId.longValue()>0L){
+								alert.setAlertStatusId(statusId);
+								alert.setUpdatedBy(userId);
+								alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								alertDAO.save(alert);
+							}
+							
+							AlertDepartmentCommentNew adcn = null;
+							if(comment != null && !comment.trim().isEmpty()){
+								adcn = new AlertDepartmentCommentNew();
+								adcn.setComment(comment);
+								adcn.setInsertedBy(userId);
+								adcn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								adcn = alertDepartmentCommentNewDAO.save(adcn);
+							}
+							
+							List<AlertAssignedOfficerNew> assignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+							if(commonMethodsUtilService.isListOrSetValid(assignedOfficersList)){
+								
+								for (AlertAssignedOfficerNew aaon : assignedOfficersList) {
+									
+									if(statusId == 8l || statusId == 9l)
+										aaon.setIsApproved("N");
+									aaon.setAlertStatusId(statusId);
+									aaon.setUpdatedBy(userId);
+									aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									alertAssignedOfficerNewDAO.save(aaon);
+									
+									AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+										if(statusId == 8l || statusId == 9l)
+											aaon.setIsApproved("N");
+									aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+									aaotn.setAlertId(aaon.getAlertId());
+									aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+									aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+									aaotn.setGovtAlertActionTypeId(6l);
+									if(statusId != null && statusId.longValue()>0L)
+										aaotn.setAlertStatusId(statusId);
+									
+									if(adcn != null)
+										aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
+									
+									aaotn.setInsertedBy(userId);
+									aaotn.setAlertStatusId(aaon.getAlertStatusId());
+									aaotn.setUpdatedBy(userId);
+									aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									aaotn.setIsApproved(aaon.getIsApproved());
+									alertAssignedOfficerTrackingNewDAO.save(aaotn);
+									
+									assingedIdsList.add(aaon.getAlertAssignedOfficerId());
+								}
+							}
+						}
+						
 						if(commonMethodsUtilService.isListOrSetValid(assingedIdsList)){//assingedId != null){
 							for (Long assingedId : assingedIdsList) {
 								AlertAssignedOfficerNew alertAssignedOfficer2 = alertAssignedOfficerNewDAO.get(assingedId);
@@ -7563,7 +7705,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	      	}
 	      	
 
-  			public List<IdNameVO>  getStatusCompletionInfoNew(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId){
+  			public List<IdNameVO>  getStatusCompletionInfoNew(Long alertId,Long levelValue,Long designationId,Long levelId,Long userId,List<String> entitlements){
   			            List<IdNameVO> finalList = new ArrayList<IdNameVO>();
   			            try {
   			              
@@ -7663,6 +7805,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
   			            	IdNameVO vo  =finalList.get(0);
   			            	vo.setApplicationStatus(userType+" - "+alertPresentStatusId);
   			            	vo.setUserStatus(userStatus);
+  			            	if(entitlements != null && entitlements.size() > 0l){
+  			            		for (String string : entitlements) {
+  			            			if(string.trim().equalsIgnoreCase("GOVT_DEPARTMENT_ENTITLEMENT_NEW")){
+  			            				vo.setPositionName("true");
+  			            			}
+								}
+  			            	}
   			            	List<Object[]> list = alertCallerRelationDAO.getAlertCallerDetailsByAlert(alertId);
   			            	if(list != null && !list.isEmpty()){
   			            		for (Object[] obj : list) {
@@ -9948,6 +10097,10 @@ public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId, String task
 						alertTrackingVO.setDocument(commonMethodsUtilService.getStringValueForObject(param[6]));
 						alertTrackingVO.setDueDate(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertTrackingVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[9]));
+						if(alertTrackingVO.getStatus().trim().equalsIgnoreCase("Proposal")){
+							String status = govtProposalPropertyCategoryTrackingDAO.getProposalStatusFrAlert(alertId);
+							alertTrackingVO.setProposalStatus(status);
+						}
 						alertTrackingVO.setSeverty(commonMethodsUtilService.getStringValueForObject(param[11]));
 						if(task != null && !task.trim().isEmpty() && task.trim().length() > 0 && task.trim().equalsIgnoreCase("task")){
 							alertTrackingVO.setAlertFeedbackStatusId(commonMethodsUtilService.getLongValueForObject(param[16]));
@@ -11610,6 +11763,104 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			LOG.error("Error occured getFinancialAssistanceAlertCntDtls() method of AlertManagementSystemService{}");
 		}
 		return null;
+	}
+
+	/*public ResultStatus saveProposalStatusDetails(Long userId,Long alertId,Long proposalCategoryId,String proposalAmount){
+		ResultStatus status = new ResultStatus();
+		try{
+			GovtProposalPropertyCategory govtProposalPropertyCategory = new GovtProposalPropertyCategory();
+				govtProposalPropertyCategory.setAlertId(alertId);
+				govtProposalPropertyCategory.setGovtProposalCategoryId(proposalCategoryId);
+				govtProposalPropertyCategory.setProposalAmount(proposalAmount);
+				govtProposalPropertyCategory.setGovtProposalStatusId(1l);
+				govtProposalPropertyCategory.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				govtProposalPropertyCategory.setInsertedBy(userId);
+				govtProposalPropertyCategory.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				govtProposalPropertyCategory.setUpdatedBy(userId);
+				govtProposalPropertyCategory.setIsDeleted("N");
+				govtProposalPropertyCategoryDAO.save(govtProposalPropertyCategory);
+			
+				
+			GovtProposalPropertyCategoryTracking govtProposalPropertyCategoryTracking = new GovtProposalPropertyCategoryTracking();
+				 govtProposalPropertyCategoryTracking.setAlertId(alertId);
+				 govtProposalPropertyCategoryTracking.setGovtProposalCategoryId(proposalCategoryId);
+				 govtProposalPropertyCategoryTracking.setGovtProposalStatusId(1l);
+				 govtProposalPropertyCategoryTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				 govtProposalPropertyCategoryTracking.setInsertedBy(userId);
+				 govtProposalPropertyCategoryTracking.setIsDeleted("N");
+			     govtProposalPropertyCategoryTrackingDAO.save(govtProposalPropertyCategoryTracking);
+			   
+			   status.setResultCode(0);  
+				 
+		}catch(Exception e){
+			status.setResultCode(1);
+			LOG.error("Error occured saveProposalStatusDetails() method of AlertManagementSystemService{}");
+		}
+		return status;
+	}*/
+	
+	public String updateProposalStatusFrAlert(final Long userId,final Long alertId,final Long proposalStatusId,final String comment){
+		String result = null;
+		try{
+			result = (String)transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					
+					String statusRes = "success";
+					
+					AlertComment alertComment = new AlertComment();
+					alertComment.setAlertId(alertId);
+					alertComment.setComments(comment);
+					alertComment.setInsertedBy(userId);
+					alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertComment.setIsDeleted("N");
+					alertComment = alertCommentDAO.save(alertComment);
+					
+					GovtProposalPropertyCategory govtProposalPropertyCategory = govtProposalPropertyCategoryDAO.getExistingStatusByAlertId(alertId);
+					if(govtProposalPropertyCategory != null){
+						govtProposalPropertyCategory.setGovtProposalStatusId(proposalStatusId);
+						govtProposalPropertyCategory.setUpdatedBy(userId);
+						govtProposalPropertyCategory.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						govtProposalPropertyCategory = govtProposalPropertyCategoryDAO.save(govtProposalPropertyCategory);
+					} 
+					
+					GovtProposalPropertyCategoryTracking govtProposalPropertyCategoryTracking = new GovtProposalPropertyCategoryTracking();
+					govtProposalPropertyCategoryTracking.setAlertId(alertId);
+					govtProposalPropertyCategoryTracking.setGovtProposalCategoryId(govtProposalPropertyCategory.getGovtProposalCategoryId());
+					govtProposalPropertyCategoryTracking.setGovtProposalStatusId(proposalStatusId);
+					govtProposalPropertyCategoryTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					govtProposalPropertyCategoryTracking.setInsertedBy(userId);
+					govtProposalPropertyCategoryTracking.setIsDeleted("N");
+					govtProposalPropertyCategoryTracking.setAlertCommentId(alertComment.getAlertCommentId());
+					govtProposalPropertyCategoryTrackingDAO.save(govtProposalPropertyCategoryTracking);
+					
+					
+				return statusRes;
+				}
+			});
+		}catch(Exception e){
+			LOG.error("Error occured updateProposalStatusFrAlert() method of AlertManagementSystemService{}");
+			return "failure";
+		}
+		return result;
+	}
+
+	public String alertDeptmentExistInLogin(Long alertId,Long userId){
+		String result = "false";
+		try{
+			List<Object[]> userDeptList = govtAlertDepartmentLocationNewDAO.getDeptIdAndNameForUserAccessLevel(userId);
+			Long alertDeptId = alertDAO.getGovtDepartmentIdForAlert(alertId);
+			if(commonMethodsUtilService.isListOrSetValid(userDeptList)){
+				for (Object[] objects : userDeptList) {
+					Long userDeptId = commonMethodsUtilService.getLongValueForObject(objects[0]);
+					if(userDeptId.longValue() == alertDeptId.longValue()){
+						result = "true";
+					}
+				}
+			}
+		}catch(Exception e){
+ 			LOG.error("Error occured alertDeptmentExistInLogin() method of AlertManagementSystemService{}");
+		}
+		return result;
 	}
 	
 }
