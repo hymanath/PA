@@ -36,7 +36,8 @@ public class MeekosamPetitionerDAO extends GenericDaoHibernate<MeekosamPetitione
 				  " localElectionBody.localElectionBodyId, " +//17
 				  " panchayat.panchayatId, " +//18
 				  " ward.constituencyId, " +//19
-				  " hamlet.hamletId " +//20
+				  " hamlet.hamletId, " +//20
+				  " meekosamPetitioner.age " +//21
 				  " from " +
 				  " MeekosamPetitioner meekosamPetitioner " +
 				  " left outer join meekosamPetitioner.userAddress userAddress " +
