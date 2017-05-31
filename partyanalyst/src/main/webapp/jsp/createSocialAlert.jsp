@@ -1306,6 +1306,7 @@ function getSocialAlertDetails(){
 			}
 		});
 }
+var presentGlobalCallerId=0;
 function buildAlertDetails(result,status,alertStatusId,buildType){
 	var str = '';
 	if(status == 0)
@@ -1326,7 +1327,7 @@ function buildAlertDetails(result,status,alertStatusId,buildType){
 			str+='<th  style="text-align:center"> VERIFIED STATUS  </th>'; 
 			if(buildType !=null && buildType == "status"){
 				if(status != 0){
-					if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 14 || alertStatusId == 4 || alertStatusId == 12){
+					if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 14 || alertStatusId == 12){
 						str+='<th  style="text-align:center"> UPDATE STATUS  </th>'; 
 					}				
 				}
@@ -1364,7 +1365,19 @@ function buildAlertDetails(result,status,alertStatusId,buildType){
 				str+='<td>'+result[i].locationName+'</td>';
 				str+='<td style="">'+locationName+'</td>';
 				str+='<td>'+result[i].createdTime+'</td>';
-				str+='<td>'+result[i].name+'<br><i class="glyphicon glyphicon-phone"></i>:'+result[i].mobileNo+'</td>';
+				//str+='<td>'+result[i].name+'<br><i class="glyphicon glyphicon-phone"></i>:'+result[i].mobileNo+'</td>';				
+				if(result[i].idNamesList != null && result[i].idNamesList.length > 0){
+					
+					presentGlobalCallerId = result[i].idNamesList[0].id;
+					
+					str+='<td style="text-align:left;">';
+					for(var j in result[i].idNamesList){
+						str+='<p>'+result[i].idNamesList[j].name+', MNo:'+result[i].idNamesList[j].mobileNo+'</p>';
+					}
+					str+='</td>';
+				}else{
+					str+='<td> - </td>';
+				}
 				str+='<td>'+result[i].userName+'</td>';
 				str+='<td>';
 				if(result[i].feedbackStatus != null){
@@ -1388,7 +1401,7 @@ function buildAlertDetails(result,status,alertStatusId,buildType){
 						str+='<td>';
 							str+='<button class="btn btn-success updateAlertVerifyCls btn-xs btn-mini m_top10" attr_alert_id ="'+result[i].alertId+'" attr_alert_source_id ="'+result[i].alertSourceId+'" attr_alert_status_id ="'+result[i].statusId+'">Verify</button>';
 						str+='</td>';
-					}else if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 4 || alertStatusId == 12){
+					}else if(alertStatusId !=null && alertStatusId>0 && alertStatusId == 12){
 						str+='<td>';
 							str+='<button class="btn btn-success updateAlertNewCls btn-xs btn-mini m_top10" attr_alert_id ="'+result[i].alertId+'" attr_alert_source_id ="'+result[i].alertSourceId+'" attr_alert_status_id ="'+result[i].statusId+'">Update</button>';
 						str+='</td>';
@@ -1559,14 +1572,15 @@ function saveAlertStatusDetails()
 			$("#statusErrMsgId").html("Please Select Anyone ");
 			return;
 		}
-				
+		
 		var jObj = {
 			alertId : alertId,
 			comment : comment,
 			alertStatusId : statusId,
 			alertFeedBackStatusId : feedBackStatus,
 			alertSourceId : sourceId,
-			newAlertStatusId:newAlertStatusId
+			newAlertStatusId:newAlertStatusId,
+			alertCallerId:presentGlobalCallerId
 		}
 		$.ajax({
 		  type:'GET',
