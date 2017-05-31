@@ -1704,7 +1704,6 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 			
 	}
 function gePanchayatOrBooth(){
-	alert(567890);
 	var num =$("#panchayatWardByMandal").val();
 	var res = num.charAt(0);
 	if(res == 1){
@@ -1731,7 +1730,6 @@ function getBoothsByMandal(mandalId){
 		$("#dataLoadingsImg").hide();
 		$("#dataLoadingImg").hide();
 			if(result != null){
-				alert(5678);
 					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
 				for(var i in result){
 						$("#committeeLocationId1").append('<option value='+result[i].id+'>Booth No - '+result[i].roleId+' ('+result[i].relativeName+' )</option>');
@@ -1871,7 +1869,6 @@ function buildTotalConstituency(result){
 	$("#totStaredNotStartedConstiencyId").html(str);
 }
 function getTdpCommitteePanchayatWardByMandal1(){
-	alert(3456789);
 		var mandalId = $('#panchayatWardByMandal').val();
 		    $("#committeeLocationId1  option").remove();
 			//var num =$("#panchayatWardByMandal").val();
