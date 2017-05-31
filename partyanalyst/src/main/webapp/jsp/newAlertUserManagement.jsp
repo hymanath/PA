@@ -278,6 +278,18 @@
 							</div>
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+							<div class="panel panel-default">
+								<div class="panel-heading headingColor">
+											<h4 class="panel-title text-capital fontColor">Financial Assistance</h4>
+								</div>
+								<div class="panel-body">
+									<div id="financialAssistanceDetilsDivId"></div>
+								</div>
+							</div>
+						</div>
+					</div>
 						<div class="row" id="mainBlockDiv">
 							<div class="col-md-4 col-xs-12 col-sm-12 ">
 								<div class="panel panel-default panelheightsAlert">
