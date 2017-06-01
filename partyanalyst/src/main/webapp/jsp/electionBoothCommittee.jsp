@@ -714,7 +714,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 		$("#committeeTypeIdErr").html("");
 		$("#afflitCommitteeIdErr").html("");
 		$("#committeeMainId").hide();
-		alert("typeId: "+$("#committeeTypeId").val())
+	//	alert("typeId: "+$("#committeeTypeId").val())
 		var locId = $("#committeeLocationId").val();
 		
 		var panchayatWardByMandal= $("#panchayatWardByMandal").val();
@@ -742,7 +742,7 @@ var globalAccessLevel = '${sessionScope.USER.accessType}';
 			  reqLocationType ="mandal";
 			}
 			reqLocationValue=$("#committeeLocationId").val();
-			alert(reqLocationValue)
+			//alert(reqLocationValue)
 			$.ajax({
 				type : "POST",
 				url : "getAllAffiliatedCommittiesAction.action",
@@ -1868,7 +1868,7 @@ function buildTotalConstituency(result){
 	str +='<tbody>';
 	str +='<tr>';
 	if(result != null){
-		//alert(result.totalCount); //srujana
+		//alert(result.totalCount);
 		str +='<td>'+result.totalCount+'</td>';
 		str +='<td>'+result.total+'</td>';
 		str +='<td>'+result.totNotStartedBothCnt+'</td>';
