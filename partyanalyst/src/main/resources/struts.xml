@@ -17513,5 +17513,10 @@
 			<param name="root">constituencyElectionResultsVO</param>       
 		</result>
   	</action>
+  	<action name="getUserTypeWiseBoothCommitteesInchargeSummaryAction" class="coreDashboardAction" method="getUserTypeWiseBoothCommitteesInchargeSummary">
+		<result type="json" name="success">
+   			<param name="root">boothInchargeVo</param>
+   		</result>
+	</action>
  </package>
 </struts>

@@ -3805,7 +3805,10 @@
 	  <property name="debateDAO"  ref="debateDAO"></property>
 	  <property name="debateSubjectDAO"  ref="debateSubjectDAO"></property>
 	  <property name="trainingCampBatchDAO"  ref="trainingCampBatchDAO"></property>
-	  <property name="trainingCampDetailsInfoDAO"  ref="trainingCampDetailsInfoDAO"></property>    
+	  <property name="trainingCampDetailsInfoDAO"  ref="trainingCampDetailsInfoDAO"></property>
+	  <property name="boothDAO"  ref="boothDAO"></property>
+	  <property name="boothInchargeDAO"  ref="boothInchargeDAO"></property>  
+	  <property name="constituencyDAO"  ref="constituencyDAO"></property>
 	</bean>
 	
 	<bean name="newsCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.NewsCoreDashBoardService">

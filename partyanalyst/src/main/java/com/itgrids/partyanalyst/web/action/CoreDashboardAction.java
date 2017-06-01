@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.BoothInchargesVO;
 import com.itgrids.partyanalyst.dto.CadreBasicVO;
 import com.itgrids.partyanalyst.dto.CadreRegistratedCountVO;
 import com.itgrids.partyanalyst.dto.CadreRegistrationVO;
@@ -185,7 +186,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private InsuranceSimpleVO insuranceSimpleVO;
 	private ComplaintMasterVO complaintMasterVO;
 	private CoreDashboardInsuranceVO coreDashboardInsuranceVO;
-	
+	private BoothInchargesVO boothInchargeVo;
 	//setters And Getters
 	
 	
@@ -916,7 +917,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	public void setAlertService(IAlertService alertService) {
 		this.alertService = alertService;
 	}
-   
+	public BoothInchargesVO getBoothInchargeVo() {
+		return boothInchargeVo;
+	}
+
+	public void setBoothInchargeVo(BoothInchargesVO boothInchargeVo) {
+		this.boothInchargeVo = boothInchargeVo;
+	}
+
 	//business methods
 	public String execute(){
 		try {
@@ -4428,6 +4436,41 @@ public String getInsuraceStatusWiseComplaintsDetails()
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getInsuranceCompanyWiseOverviewAndStatusDetails ",e);
+		}
+		return Action.SUCCESS;
+	}
+	public String getUserTypeWiseBoothCommitteesInchargeSummary(){
+		LOG.info("Entered into getUserTypeWiseBoothCommitteesInchargeDetails()  of CoreDashboardAction");
+		try{
+			
+			 Long userId = null; 
+			 HttpSession session = request.getSession();
+			 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			 if(user == null || user.getRegistrationID() == null){
+				//return ERROR;
+				 userId = 1L;
+			 }
+			 else
+				 userId = user.getRegistrationID();
+			
+			jObj = new JSONObject(getTask());
+			
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			
+			String state = jObj.getString("state");
+	
+			String dateString = jObj.getString("dateString");
+			List<Long> committeeEnrollmentYearsIdsLst = new ArrayList<Long>();
+			JSONArray committeeEnrollmentYearArray =jObj.getJSONArray("committeeEnrollmentYearArray");
+			if(committeeEnrollmentYearArray!=null &&  committeeEnrollmentYearArray.length()>0){
+				for( int i=0;i<committeeEnrollmentYearArray.length();i++){
+					committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
+				}
+			}
+			
+			boothInchargeVo = coreDashboardMainService.getUserTypeWiseBoothCommitteesInchargeDetails(activityMemberId,state,dateString,committeeEnrollmentYearsIdsLst);
+		}catch(Exception e){
+			LOG.error("Exception raised at getUserTypeWiseBoothCommitteesInchargeSummary() method of CoreDashBoard", e);
 		}
 		return Action.SUCCESS;
 	}
