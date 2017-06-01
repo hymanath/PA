@@ -4264,8 +4264,15 @@
 		<property name="meekosamCasteCategoryDAO" ref="meekosamCasteCategoryDAO" ></property>
 		<property name="meekosamArgeeCategoryDAO" ref="meekosamArgeeCategoryDAO" ></property>
 		<property name="meekosamAnnualIncomeDAO" ref="meekosamAnnualIncomeDAO" ></property>
+		<property name="govtDepartmentMeekosamIssueTypeDAO" ref="govtDepartmentMeekosamIssueTypeDAO" ></property>
+		<property name="meekosamIssueTypeDAO" ref="meekosamIssueTypeDAO" ></property>
+		<property name="meekosamIssueFieldRelationDAO" ref="meekosamIssueFieldRelationDAO" ></property>
 		<property name="meekosamPetitionerDAO" ref="meekosamPetitionerDAO" ></property>
+		<property name="meekosamIssueFieldRelationDataDAO" ref="meekosamIssueFieldRelationDataDAO" ></property>
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" ></property>
+		<property name="boothDAO" ref="boothDAO" ></property>
+		<property name="dateUtilService" ref="dateUtilService" ></property>
+		<property name="alertDAO" ref="alertDAO" ></property>
    </bean>
   <bean name="locationDashboardService" class="com.itgrids.core.api.service.impl.LocationDashboardService">	
   		<property name="nominationDAO" ref="nominationDAO"></property>
