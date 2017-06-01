@@ -1833,8 +1833,8 @@ function buildAlertDetails(result,status,alertStatusId){
 }
 $(document).on("click",".updateAlertCls",function(){ 
 	var alertId = $(this).attr("attr_alert_id");
-	var sourceId =$(this).attr("attr_alert__source_id");
-	var statusId =$(this).attr("attr_alert__status_id");
+	var sourceId =$(this).attr("attr_alert_source_id");
+	var statusId =$(this).attr("attr_alert_status_id");
 	$('#reopenCheckboxId').attr('checked', false);
 	$("#reOpenSpanId").hide();
 	getAlertCallerDetails(alertId);
