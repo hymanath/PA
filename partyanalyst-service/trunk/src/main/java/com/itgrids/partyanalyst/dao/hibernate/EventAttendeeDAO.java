@@ -1927,9 +1927,9 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 		str.append(" and model.event.parentEventId in (:eventIds) and TCM.tdpCommitteeRole.tdpRoles.tdpRolesId=:committeeRoleId " +
 				" and TCM.tdpCommitteeRole.tdpCommittee.tdpBasicCommittee.tdpBasicCommitteeId = 1" +
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
-				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
+				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive ");
 		if(date != null)
-		str.append("and date(model.attendedTime) between :date and :date ");
+		str.append("  and date(model.attendedTime) between :date and :date ");
 		if(committeeLevel.equalsIgnoreCase("District"))
 			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
 		if(committeeLevel.equalsIgnoreCase("Mandal"))
@@ -1963,7 +1963,7 @@ public List<Object[]> getConstituencyWiseCurrentCadreInCampus(Date todayDate,Lon
 				"  and model.tdpCadre.isDeleted = 'N' and model.tdpCadre.enrollmentYear = 2014" +
 				" and model.event.isInviteeExist = 'Y' and  model.event.isActive =:isActive");
 		if(date != null)
-		str.append("and date(model.attendedTime) between :date and :date");
+		str.append("  and date(model.attendedTime) between :date and :date");
 		if(committeeLevel.equalsIgnoreCase("District"))
 			str.append(" and TCM.tdpCommitteeRole.tdpCommittee.tdpCommitteeLevel.tdpCommitteeLevelId = 11 ");
 		if(committeeLevel.equalsIgnoreCase("Mandal"))
