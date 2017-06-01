@@ -16,7 +16,7 @@ public class GovtProposalPropertyCategoryTrackingDAO extends GenericDaoHibernate
 
 	public String getProposalStatusFrAlert(Long alertId){
 		Query query = getSession().createQuery("select distinct model.govtProposalStatus.status" +
-				" from GovtProposalPropertyCategoryTracking model" +
+				" from GovtProposalPropertyCategory model" +
 				" where model.isDeleted = 'N' and model.alert.alertId = :alertId");
 		query.setParameter("alertId", alertId);
 		return (String) query.uniqueResult();
