@@ -36,7 +36,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 					" and cmic.complaint_master_id = cm.Complaint_id" +
 					" and gic.grievance_insurance_company_id = cmic.grievance_insurance_company_id" +
 					" and cm.grievance_insurance_status_id = gis.grievance_insurance_status_id" +
-					" and tcey.is_deleted = 'N' and tc.is_deleted = 'N'" +
+					//" and tcey.is_deleted = 'N' and tc.is_deleted = 'N'" +
 					" and cm.type_of_issue = 'Insurance'" +
 					" and cm.delete_status IS NULL" +
 					" and (cm.Subject IS NOT NULL OR cm.Subject != '')");
