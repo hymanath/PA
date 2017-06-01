@@ -53,7 +53,7 @@ function getAllMandalsByDistrictID(districtId){
 	}
 	$.ajax({
 		type:"POST",
-		url :"getAllMandalsByDistrictIDAction.action",
+		url :"getAllMandalByDistrictIdAction.action",
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
