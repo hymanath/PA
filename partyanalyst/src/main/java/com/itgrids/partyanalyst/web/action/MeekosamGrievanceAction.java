@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +12,10 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.MeekosamDynamicVO;
 import com.itgrids.partyanalyst.dto.PetitionerDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IMeekosamGrievanceService;
@@ -25,13 +30,28 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 	private JSONObject jObj;
 	private String task;
 	private IMeekosamGrievanceService meekosamGrievanceService;
+	private List<KeyValueVO> keyValueVOList = new ArrayList<KeyValueVO>();
 	private PetitionerDetailsVO petitionerDetailsVO;
 	private String successMsg;
 	private List<IdNameVO> idNameVOs;
 	private List<IdAndNameVO> idAndNameVOs;
+	private List<MeekosamDynamicVO> meekosamDynamicVOList = new ArrayList<MeekosamDynamicVO>();
 	private List<PetitionerDetailsVO> detailsVOs;
 	
 	
+	public List<MeekosamDynamicVO> getMeekosamDynamicVOList() {
+		return meekosamDynamicVOList;
+	}
+	public void setMeekosamDynamicVOList(
+			List<MeekosamDynamicVO> meekosamDynamicVOList) {
+		this.meekosamDynamicVOList = meekosamDynamicVOList;
+	}
+	public List<KeyValueVO> getKeyValueVOList() {
+		return keyValueVOList;
+	}
+	public void setKeyValueVOList(List<KeyValueVO> keyValueVOList) {
+		this.keyValueVOList = keyValueVOList;
+	}
 	public List<PetitionerDetailsVO> getDetailsVOs() {
 		return detailsVOs;
 	}
@@ -106,6 +126,30 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 		else
 			return Action.ERROR;
 	}
+	
+	public String getMeekosamIssueTypeListByDept(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long deptId = jObj.getLong("departmentId");
+			
+			keyValueVOList = meekosamGrievanceService.getMeekosamIssueTypeListByDept(deptId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getMeekosamIssueTypeListByDept() method in MeekosamGrievanceAction Class", e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getMeekosamSubIssueTypeListForParentIssueType(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long parentIssueTypeId = jObj.getLong("parentIssueTypeId");
+			
+			keyValueVOList = meekosamGrievanceService.getMeekosamSubIssueTypeListForParentIssueType(parentIssueTypeId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getMeekosamSubIssueTypeListForParentIssueType() method in MeekosamGrievanceAction Class", e);
+		}
+		return Action.SUCCESS;
+	}
 	public String saveMeekosamPetitionerDetails(){
 	   try {
 		   session = request.getSession();
@@ -172,6 +216,19 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 			LOG.error("Exception Raised in getMeekosamAnnualIncomeList() in MeekosamGrievanceAction",e);
 		}
 		   return Action.SUCCESS;
+	}
+	
+	public String getAllDynamicFieldsAndDataForIsueType(){
+		try {
+			jObj = new JSONObject(getTask());
+			Long issueTypeId = jObj.getLong("issueTypeId");
+			//Long parentIssueTypeId = jObj.getLong("parentIssueTypeId");
+			
+			meekosamDynamicVOList = meekosamGrievanceService.getAllDynamicFieldsAndDataForIsueType(issueTypeId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getAllDynamicFieldsAndDataForIsueType() method in MeekosamGrievanceAction Class", e);
+		}
+		return Action.SUCCESS;
 	}
 	public String searchPetitionerDetailsByVoterNoAadharNoMobileNo(){
 		   try {

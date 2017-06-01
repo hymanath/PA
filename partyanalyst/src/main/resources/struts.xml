@@ -17417,6 +17417,16 @@
 		<result name="success">/jsp/createMeekosamRequest.jsp</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
+	<action name="getMeekosamIssueTypeListByDeptAction" class="meekosamGrievanceAction" method="getMeekosamIssueTypeListByDept">
+		<result type="json" name="success">
+   			<param name="root">keyValueVOList</param>
+   		</result>
+	</action>
+	<action name="getMeekosamSubIssueTypeListForParentIssueTypeAction" class="meekosamGrievanceAction" method="getMeekosamSubIssueTypeListForParentIssueType">
+		<result type="json" name="success">
+   			<param name="root">keyValueVOList</param>
+   		</result>
+	</action>
 	<action name="saveMeekosamPetitionerDetailsAction" class="meekosamGrievanceAction"  method="saveMeekosamPetitionerDetails">
 		<result type="json" name="success">		   
 			<param name="root">successMsg</param>
@@ -17460,6 +17470,11 @@
   	<action name="getFinancialAssistanceAlertCntDtlsAction" class="alertManagementSystemAction"  method="getFinancialAssistanceAlertCntDtls">
 			<result type="json" name="success">    
 				<param name="root">alertCoreDashBoardVOs</param>       
+			</result>
+  	</action>
+  	<action name="getAllDynamicFieldsAndDataForIsueTypeAction" class="meekosamGrievanceAction"  method="getAllDynamicFieldsAndDataForIsueType">
+			<result type="json" name="success">    
+				<param name="root">meekosamDynamicVOList</param>       
 			</result>
   	</action>
   	<action name="searchPetitionerDetailsByVoterNoAadharNoMobileNoAction" class="meekosamGrievanceAction"  method="searchPetitionerDetailsByVoterNoAadharNoMobileNo">
