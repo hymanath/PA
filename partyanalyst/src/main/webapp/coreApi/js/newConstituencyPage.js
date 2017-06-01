@@ -8,6 +8,7 @@ function onLoadAjaxCalls()
 	getPrintMediaCountsForConstituencyPage(); //electronic media
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(); //problems
 	getDetailedGovtOverAllAnalysisProblemsForView();
+	getDetailedElectionInformaction()//get detailed election information
 	
 }
 function getCandidateAndPartyInfoForConstituency(){
@@ -544,4 +545,16 @@ function getDetailedGovtOverAllAnalysisProblemsForView(){
 			highcharts('problemsSolveGraph',type,xAxis,yAxis,legend,data,plotOptions);
 		}
 	});
+	function getDetailedElectionInformaction(){
+	    jsObj={
+	    	constituencyId:232
+	    }
+	    $.ajax({
+	      type : "GET",
+	      url : "getDetailedElectionInformactionAction.action",
+	      dataType : 'json',
+	      data : {task :JSON.stringify(jsObj)}
+	    }).done(function(result){  
+	  });
+	  }
 }
