@@ -17422,11 +17422,11 @@
 			<param name="root">successMsg</param>
 		</result>
 	</action>
-	<!-- <action name="getAllMandalsByDistrictIDAction" class="meekosamGrievanceAction"  method="getAllMandalsByDistrictID">
+	<action name="getAllMandalByDistrictIdAction" class="meekosamGrievanceAction"  method="getAllMandalsByDistrictID">
 		<result type="json" name="success">		   
 			<param name="root">idNameVOs</param>
 		</result>
-	</action> -->
+	</action>
 	<action name="getAllHamletByPanchayatIDAction" class="meekosamGrievanceAction"  method="getAllHamletByPanchayatID">
 		<result type="json" name="success">		   
 			<param name="root">idNameVOs</param>
