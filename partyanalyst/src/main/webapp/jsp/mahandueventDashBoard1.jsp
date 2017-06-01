@@ -831,7 +831,45 @@ $(".maineventCls").each(function(){
 				  }
 				
 				str+='</table>';
-				if( result.allStatesVO.calcPercantage != null && result.allStatesVO.calcPercantage.trim().length>0){
+				if(result.allStatesVO.subList !=null && result.allStatesVO.subList.length > 0){
+					var size = (result.allStatesVO.subList.length)-1;
+					var currentDayCount = 0,previousDayCount = 0,currentDayStr = "",previousDayStr = "";
+					var percentage = 0;
+					for(var i = size;i>=0;i--){
+						if(currentDayCount == 0 && previousDayCount == 0 && result.allStatesVO.subList[i].attendees != null && result.allStatesVO.subList[i].attendees > 0){
+							currentDayCount = result.allStatesVO.subList[i].attendees;
+							currentDayStr = result.allStatesVO.subList[i].name;
+							previousDayCount = result.allStatesVO.subList[i-1].attendees;
+							previousDayStr = result.allStatesVO.subList[i-1].name;
+						}
+					}
+					
+					if(currentDayCount > previousDayCount){
+						percentage = (((currentDayCount*100)/previousDayCount)-100).toFixed(2);
+					}else{
+						percentage = (100-((currentDayCount*100)/previousDayCount)).toFixed(2);
+					}
+					
+					var highOrLow = currentDayCount > previousDayCount ?"Higher":"Lower";
+					
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:'+percentage+'%;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center m_top10 ">'+currentDayStr+' Count is <span class="f_13 " style="font-weight:bold">'+percentage+' % </span>'+highOrLow+' than '+previousDayStr+'</p>';
+					
+					if(currentDayStr != null && currentDayStr.trim()=='Day3'){
+						$('.panelBlocksHeightSet').css('height','300px;');
+					}
+				
+				}else{
+					str+='<div class="progress progressWhite">';
+					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
+					  str+='</div>';
+					str+='</div>';
+					str+='<p class="text-center"  style="margin-top: 37px;">  </p>';
+				}
+				/* if( result.allStatesVO.calcPercantage != null && result.allStatesVO.calcPercantage.trim().length>0){
 					str+='<div class="progress progressWhite">';
 					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:'+result.allStatesVO.calcPercantage+'%;">';
 					  str+='</div>';
@@ -843,7 +881,7 @@ $(".maineventCls").each(function(){
 					  str+='</div>';
 					str+='</div>';
 					str+='<p class="text-center"  style="margin-top: 37px;">  </p>';
-				}
+				} */
 		
 		
 		
@@ -930,7 +968,45 @@ $(".maineventCls").each(function(){
 				} 
 			str+='</table>';
 			
-			if( stateVO.calcPercantage != null && stateVO.calcPercantage.trim().length>0){
+			if(stateVO.subList !=null && stateVO.subList.length > 0){
+				var size = (stateVO.subList.length)-1;
+				var currentDayCount = 0,previousDayCount = 0,currentDayStr = "",previousDayStr = "";
+				var percentage = 0;
+				for(var i = size;i>=0;i--){
+					if(currentDayCount == 0 && previousDayCount == 0 && stateVO.subList[i].attendees != null && stateVO.subList[i].attendees > 0){
+						currentDayCount = stateVO.subList[i].attendees;
+						currentDayStr = stateVO.subList[i].name;
+						previousDayCount = stateVO.subList[i-1].attendees;
+						previousDayStr = stateVO.subList[i-1].name;
+					}
+				}
+				
+				if(currentDayCount > previousDayCount){
+					percentage = (((currentDayCount*100)/previousDayCount)-100).toFixed(2);
+				}else{
+					percentage = (100-((currentDayCount*100)/previousDayCount)).toFixed(2);
+				}
+				
+				var highOrLow = currentDayCount > previousDayCount ?"Higher":"Lower";
+				
+				str+='<div class="progress progressWhite">';
+				  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:'+percentage+'%;">';
+				  str+='</div>';
+				str+='</div>';
+				str+='<p class="text-center m_top10 ">'+currentDayStr+' Count is <span class="f_13 " style="font-weight:bold">'+percentage+' % </span>'+highOrLow+' than '+previousDayStr+'</p>';
+				
+				if(currentDayStr != null && currentDayStr.trim()=='Day3'){
+					$('.panelBlocksHeightSet').css('height','300px;');
+				}
+				
+			}else{
+				str+='<div class="progress progressWhite">';
+				  str+='<div class="progress-bar" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="" style="width:0px;">';
+				  str+='</div>';
+				str+='</div>';
+				str+='<p class="text-center"  style="margin-top: 37px;">  </p>';
+			}
+			/* if( stateVO.calcPercantage != null && stateVO.calcPercantage.trim().length>0){
 					str+='<div class="progress progressWhite">';
 					  str+='<div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: '+stateVO.calcPercantage+'%;">';
 					  str+='</div>';
@@ -942,7 +1018,7 @@ $(".maineventCls").each(function(){
 					  str+='</div>';
 					str+='</div>';
 					str+='<p class="text-center"  style="margin-top: 37px;">  </p>';
-				}
+				} */
 						
 		
 		$("#"+buildDivId).html(str);
@@ -1747,7 +1823,7 @@ function buildStartingPrograms(result,parentEventId){
 							dayCount = "Day  - 3";
 						}
 						if(result[i].subList[j].attendees !=null && result[i].subList[j].attendees > 0){
-							str+='<li>'+dayCount+'&nbsp;:&nbsp;'+result[i].subList[j].attendees+'</li>';  
+							str+='<li>'+dayCount+':&nbsp;'+result[i].subList[j].attendees+'</li>';  
 						}else{
 							str+='<li>'+result[i].subList[j].name+' : -  </li>'; 
 						}
@@ -1772,9 +1848,9 @@ function buildStartingPrograms(result,parentEventId){
 				for(var j in result[i].subList){
 					if(result[i].subList[j].attendees !=null && result[i].subList[j].attendees > 0){
 						if(result[i].id == 56 || result[i].id == 57){//dias entry and exit
-							str+='<li>'+result[i].subList[j].name+'&nbsp;:&nbsp;<span class="dayCountClickCls" attr_day_date="'+result[i].subList[j].dateStr+'" attr_event_id="'+result[i].id+'">'+result[i].subList[j].attendees+'</span></li>';
+							str+='<li>'+result[i].subList[j].name+':&nbsp;<span class="dayCountClickCls" attr_day_date="'+result[i].subList[j].dateStr+'" attr_event_id="'+result[i].id+'">'+result[i].subList[j].attendees+'</span></li>';
 						}else{
-							str+='<li>'+result[i].subList[j].name+':'+result[i].subList[j].attendees+'</li>';
+							str+='<li>'+result[i].subList[j].name+':&nbsp;'+result[i].subList[j].attendees+'</li>';
 						}
 						  
 					}else{
