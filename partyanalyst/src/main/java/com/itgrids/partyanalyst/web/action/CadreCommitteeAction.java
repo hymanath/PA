@@ -2873,4 +2873,17 @@ public String updateCommitteeMemberDesignationByCadreId(){
 		}
 		return Action.SUCCESS;
 	}
+	public String getTdpCommitteeMunicipalityByWards(){
+		try{
+			jObj = new JSONObject(getTask());
+			String mandalId = jObj.getString("mandalId");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long enrollmentId = jObj.getLong("enrollmentId");
+			locations = cadreCommitteeService.getTdpCommitteeMunicipalityByWards(mandalId,constituencyId,enrollmentId);
+			
+		}catch(Exception e){	
+			LOG.error("Exception occured in getTdpCommitteeMunicipalityByWards() method ",e);
+		}
+		return Action.SUCCESS;
+	}
 }

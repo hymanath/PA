@@ -160,7 +160,7 @@
 					</div>
 					<div class="col-sm-4" id="committeePanchayatId">
 						<label for="committeeLocationId">SELECT PANCHAYAT <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
-						<select onchange="populateDefaultValue(1);gePanchayatOrBooth();" class="form-control" id="committeeLocationId" ><option value="0">Select PANCHAYAT</option></select >
+						<select onchange="populateDefaultValue(1);gePanchayatOrBooth1();" class="form-control" id="committeeLocationId" ><option value="0">Select PANCHAYAT</option></select >
 					</div>
 					<div class="col-sm-4">
 						<label for="committeeLocationId1">SELECT LOCATION <span style="color:red">*</span><img id="dataLoadingImg" src="images/icons/loading.gif" style="width:25px;height:20px;display:none;"/> </label>
@@ -1675,6 +1675,7 @@ function deleteCadreRole(tdpCommitteeMemberId,className)
 				$("#committeePanchayatId").hide();
 				gePanchayatOrBooth();
 				enrllmentId = 0;
+				return;
 			}else{
 				$("#committeePanchayatId").show();
 			}
@@ -1708,7 +1709,7 @@ function gePanchayatOrBooth(){
 	var num =$("#panchayatWardByMandal").val();
 	var res = num.charAt(0);
 	if(res == 1){
-		getTdpCommitteePanchayatWardByMandal1();	
+		getTdpCommitteePanchayatWardByMandal1($("#panchayatWardByMandal").val());	
 	}else if(res == 2){
 		getBoothsByMandal($('#panchayatWardByMandal').val());
 	}
@@ -1782,7 +1783,7 @@ function getBoothUserDetails(){
 	var boothId = $("#committeeLocationId1").val();
 	var panchayatId = $("#committeeLocationId").val();
 	var mandalName = $("#panchayatWardByMandal option:selected").text();
-	var boothName = $("#committeeLocationId option:selected").text();
+	var boothName = $("#committeeLocationId1 option:selected").text();
 	
 	
 	  if(mandalId == 0 || mandalId.length==0){
@@ -1877,8 +1878,52 @@ function buildTotalConstituency(result){
 	str +='</table>'
 	$("#totStaredNotStartedConstiencyId").html(str);
 }
-function getTdpCommitteePanchayatWardByMandal1(){
-		var mandalId = $('#panchayatWardByMandal').val();
+function getTdpCommitteePanchayatWardByMandal1(mandalId){
+		//var mandalId = $('#committeeLocationId').val();
+		    $("#committeeLocationId1  option").remove();
+			//var num =$("#panchayatWardByMandal").val();
+	      var res = mandalId.charAt(0);
+			var enrllmentId=2;
+			if(parseInt(res) == 1){
+				enrllmentId = 0;
+			}
+			var jsObj={
+				mandalId:mandalId,
+				constituencyId:'${locationValue}',
+				enrollmentId:enrllmentId
+			}
+		$("#dataLoadingsImg").show();
+		$("#dataLoadingImg").show();
+			$.ajax({
+				type : "POST",
+				url : "getTdpCommitteePanchayatWardByMandalAction1.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){	
+		$("#dataLoadingsImg").hide();
+		$("#dataLoadingImg").hide();
+			if(result != null){
+					$("#committeeLocationId1").append('<option value="0">Select Location</option>');
+				for(var i in result){
+						$("#committeeLocationId1").append('<option value='+result[i].locationId+'>Booth No - '+result[i].locationName+'</option>');
+				}
+			}
+			
+		});	
+			
+	}
+	function gePanchayatOrBooth1(){
+	var num =$("#committeeLocationId").val();
+	var res = num.charAt(0);
+	if(res == 1){
+		getTdpCommitteePanchayatWardByMandal2();	
+	}else if(res == 2){
+		getBoothsByMandal($('#committeeLocationId').val());
+	}
+	
+}
+
+function getTdpCommitteePanchayatWardByMandal2(){
+		var mandalId = $('#committeeLocationId').val();
 		    $("#committeeLocationId1  option").remove();
 			//var num =$("#panchayatWardByMandal").val();
 	      var res = mandalId.charAt(0);
