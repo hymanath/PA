@@ -286,7 +286,7 @@
 						<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 							<div class="panel panel-default">
 								<div class="panel-heading headingColor">
-											<h4 class="panel-title text-capital fontColor">Financial Assistance</h4>
+											<h4 class="panel-title text-capital fontColor">Proposal Overview</h4>
 								</div>
 								<div class="panel-body">
 									<div id="financialAssistanceDetilsDivId"></div>
