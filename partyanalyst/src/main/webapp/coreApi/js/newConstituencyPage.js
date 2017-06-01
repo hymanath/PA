@@ -2,12 +2,27 @@ onLoadAjaxCalls(); //ajaxcalls through newconstituencypage.js
 var globalConsId = 232;
 function onLoadAjaxCalls()
 {
+	getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
 	getCountsForConstituency(); //Assembly election details
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
 	getPrintMediaCountsForConstituencyPage(); //electronic media
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(); //problems
 	getDetailedGovtOverAllAnalysisProblemsForView();
+	
 }
+function getCandidateAndPartyInfoForConstituency(){
+    jsObj={
+    	constituencyId:232
+    }
+    $.ajax({
+      type : "GET",
+      url : "getCandidateAndPartyInfoForConstituencyAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+  });
+  }
+	
 function getCountsForConstituency(){
 	$("#consCountsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 	var tehsilId=0;

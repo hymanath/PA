@@ -743,6 +743,7 @@
 		<pattern>/partyLeadersDetailsAction*</pattern>
 		<pattern>/customReportAction*</pattern>
 		<pattern>/mahanaduNotificationAction*</pattern>
+		<pattern>/locationDashboardAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
