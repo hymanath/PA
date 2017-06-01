@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +11,9 @@ import org.json.JSONObject;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -26,8 +31,30 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private Long locationLevelId;
 	private ILocationDashboardService locationDashboardService;
 	private CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO;
+	private ConstituencyInfoVO constituencyDetails;
+	private IConstituencyPageService constituencyPageService;
+	private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	
-	
+	public List<ConstituencyElectionResultsVO> getConstituencyElectionResultsVO() {
+		return constituencyElectionResultsVO;
+	}
+	public void setConstituencyElectionResultsVO(
+			List<ConstituencyElectionResultsVO> constituencyElectionResultsVO) {
+		this.constituencyElectionResultsVO = constituencyElectionResultsVO;
+	}
+	public IConstituencyPageService getConstituencyPageService() {
+		return constituencyPageService;
+	}
+	public void setConstituencyPageService(
+			IConstituencyPageService constituencyPageService) {
+		this.constituencyPageService = constituencyPageService;
+	}
+	public ConstituencyInfoVO getConstituencyDetails() {
+		return constituencyDetails;
+	}
+	public void setConstituencyDetails(ConstituencyInfoVO constituencyDetails) {
+		this.constituencyDetails = constituencyDetails;
+	}
 	public CandidateDetailsForConstituencyTypesVO getCandidateDetailsForConstituencyTypesVO() {
 		return candidateDetailsForConstituencyTypesVO;
 	}
@@ -96,5 +123,16 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		  }
 		  return Action.SUCCESS;
 	  }
-	
+	 public String getDetailedElectionInformation(){
+		  try{
+			  jObj=new JSONObject(getTask());
+			  Long constituencyId = jObj.getLong("constituencyId");
+			  constituencyElectionResultsVO = constituencyPageService.getConstituencyElectionResults(constituencyId);
+			  
+		  }catch(Exception e){
+			  LOG.error("Entered into getDetailedElectionInformatiopn method in locationDashboardAction....");
+		  }
+		  return Action.SUCCESS;
+	  }
+	 
 }

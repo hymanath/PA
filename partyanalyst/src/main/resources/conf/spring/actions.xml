@@ -1788,6 +1788,7 @@
 	</bean>
 	<bean id="locationDashboardAction" class="com.itgrids.partyanalyst.web.action.LocationDashboardAction" singleton="false">
 		<property name="locationDashboardService" ref="locationDashboardService"/>
+		<property name="constituencyPageService" ref="constituencyPageService"/>
 	</bean>		
 </beans>	
 	

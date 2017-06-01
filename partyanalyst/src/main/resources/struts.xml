@@ -17493,5 +17493,10 @@
 			<param name="root">candidateDetailsForConstituencyTypesVO</param>       
 		</result>
   	</action>
+  	<action name="getDetailedElectionInformactionAction" class="locationDashboardAction"  method="getDetailedElectionInformation">
+		<result type="json" name="success">    
+			<param name="root">constituencyElectionResultsVO</param>       
+		</result>
+  	</action>
  </package>
 </struts>
