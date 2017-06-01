@@ -17482,5 +17482,16 @@
 				<param name="root">locations</param>
 			</result>
 		</action>
+  	<action name="locationDashboardAction" class="locationDashboardAction" method="locationDashboard" >
+		<result name="success">/jsp/assemblyConstituencyPage.jsp</result>
+	</action>
+	<action name="districtDashboardAction" class="locationDashboardAction" method="districtDashboard" >
+		<result name="success">/jsp/districtDashboard.jsp</result>
+	</action>
+	<action name="getCandidateAndPartyInfoForConstituencyAction" class="locationDashboardAction"  method="getCandidateAndPartyInfoForConstituency">
+		<result type="json" name="success">    
+			<param name="root">candidateDetailsForConstituencyTypesVO</param>       
+		</result>
+  	</action>
  </package>
 </struts>

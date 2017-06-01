@@ -7,6 +7,9 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.core.api.service.ILocationDashboardService;
+import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
+import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
@@ -20,8 +23,31 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private HttpSession 						session;
 	private JSONObject							jObj;
 	private String 								task;
+	private Long locationLevelId;
+	private ILocationDashboardService locationDashboardService;
+	private CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO;
 	
-
+	
+	public CandidateDetailsForConstituencyTypesVO getCandidateDetailsForConstituencyTypesVO() {
+		return candidateDetailsForConstituencyTypesVO;
+	}
+	public void setCandidateDetailsForConstituencyTypesVO(
+			CandidateDetailsForConstituencyTypesVO candidateDetailsForConstituencyTypesVO) {
+		this.candidateDetailsForConstituencyTypesVO = candidateDetailsForConstituencyTypesVO;
+	}
+	public ILocationDashboardService getLocationDashboardService() {
+		return locationDashboardService;
+	}
+	public void setLocationDashboardService(
+			ILocationDashboardService locationDashboardService) {
+		this.locationDashboardService = locationDashboardService;
+	}
+	public Long getLocationLevelId() {
+		return locationLevelId;
+	}
+	public void setLocationLevelId(Long locationLevelId) {
+		this.locationLevelId = locationLevelId;
+	}
 	public HttpServletRequest getRequest() {
 		return request;
 	}
@@ -29,6 +55,7 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		this.request = request;
 	}
 	public HttpSession getSession() {
+		
 		return session;
 	}
 	public void setSession(HttpSession session) {
@@ -46,8 +73,28 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	public void setTask(String task) {
 		this.task = task;
 	}
-	public void setServletRequest(HttpServletRequest arg0) {		
+	public void setServletRequest(HttpServletRequest request){
+		this.request = request;
 	}
-
+	
+	public String locationDashboard()
+	{
+		return Action.SUCCESS;
+	}
+	public String districtDashboard()
+	{
+		return Action.SUCCESS;
+	} 
+	 public String getCandidateAndPartyInfoForConstituency(){
+		  try{
+			  jObj=new JSONObject(getTask());
+			  Long constituencyId = jObj.getLong("constituencyId");
+			  candidateDetailsForConstituencyTypesVO = locationDashboardService.getCandidateAndPartyInfoForConstituency(constituencyId);
+			  
+		  }catch(Exception e){
+			  LOG.error("Entered into getCandidateAndPartyInfoForConstituency method in locationDashboardAction....");
+		  }
+		  return Action.SUCCESS;
+	  }
 	
 }
