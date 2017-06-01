@@ -1787,6 +1787,7 @@
 		<property name="meekosamGrievanceService" ref="meekosamGrievanceService" />
 	</bean>
 	<bean id="locationDashboardAction" class="com.itgrids.partyanalyst.web.action.LocationDashboardAction" singleton="false">
+		<property name="locationDashboardService" ref="locationDashboardService"/>
 	</bean>		
 </beans>	
 	

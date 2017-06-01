@@ -4268,6 +4268,9 @@
 		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO" ></property>
    </bean>
   <bean name="locationDashboardService" class="com.itgrids.core.api.service.impl.LocationDashboardService">	
+  		<property name="nominationDAO" ref="nominationDAO"></property>
+  		<property name="constituencyDAO" ref="constituencyDAO"></property>
+  		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" ></property>
   </bean>
 </beans>			
 	
