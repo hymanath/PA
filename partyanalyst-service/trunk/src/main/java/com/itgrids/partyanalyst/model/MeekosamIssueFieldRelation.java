@@ -26,10 +26,12 @@ public class MeekosamIssueFieldRelation extends BaseModel implements Serializabl
 	private Long meekosamIssueFieldRelationId;
 	private Long meekosamIssueFieldId;
 	private Long meekosamIssueFieldTypeId;
-	private Long isDeleted;
+	private String isDeleted;
+	private Long meekosamIssueTypeId;
 	
 	private MeekosamIssueField meekosamIssueField;
 	private MeekosamIssueFieldType meekosamIssueFieldType;
+	private MeekosamIssueType meekosamIssueType;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,10 +57,10 @@ public class MeekosamIssueFieldRelation extends BaseModel implements Serializabl
 		this.meekosamIssueFieldTypeId = meekosamIssueFieldTypeId;
 	}
 	@Column(name = "is_deleted")
-	public Long getIsDeleted() {
+	public String getIsDeleted() {
 		return isDeleted;
 	}
-	public void setIsDeleted(Long isDeleted) {
+	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -81,5 +83,24 @@ public class MeekosamIssueFieldRelation extends BaseModel implements Serializabl
 	public void setMeekosamIssueFieldType(
 			MeekosamIssueFieldType meekosamIssueFieldType) {
 		this.meekosamIssueFieldType = meekosamIssueFieldType;
+	}
+	
+	@Column(name = "meekosam_issue_type_id")
+	public Long getMeekosamIssueTypeId() {
+		return meekosamIssueTypeId;
+	}
+	public void setMeekosamIssueTypeId(Long meekosamIssueTypeId) {
+		this.meekosamIssueTypeId = meekosamIssueTypeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="meekosam_issue_type_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MeekosamIssueType getMeekosamIssueType() {
+		return meekosamIssueType;
+	}
+	public void setMeekosamIssueType(MeekosamIssueType meekosamIssueType) {
+		this.meekosamIssueType = meekosamIssueType;
 	}
 }
