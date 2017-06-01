@@ -2917,4 +2917,40 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("constituencyId", constituencyId);
 			return query.list();
 		}
+		               
+		public List<Long>  getBoothCommitteesTotalCount(Long userAccessLevelId,Set<Long> userAccessLevelValues)
+		  {
+			 
+			  StringBuilder queryStr = new StringBuilder();
+			  queryStr.append("select distinct model.boothId from Booth model where model.publicationDate.publicationDateId = :publicationDateId ");
+			  if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			         queryStr.append(" and model.constituency.state.stateId in (:userAccessLevelValues)");  
+			       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			         queryStr.append(" and model.constituency.district.districtId in (:userAccessLevelValues)");  
+			       }/*else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+			            queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+			       }*/else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+			            queryStr.append(" and model.constituency.constituencyId in (:userAccessLevelValues) ");  
+			       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			          queryStr.append(" and model.tehsil.tehsilId in (:userAccessLevelValues)");  
+			       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			          queryStr.append(" and model.localBody.localElectionBodyId in (:userAccessLevelValues)"); 
+			       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			          queryStr.append(" and model.panchayat.panchayatId in (:userAccessLevelValues)"); 
+			       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			          queryStr.append(" and model.localBodyWard.constituencyId in (:userAccessLevelValues)"); 
+			       }
+			 
+			  Query query =getSession().createQuery(queryStr.toString());
+			 
+			  query.setParameter("publicationDateId",IConstants.CADRE_REGISTRATION_2016_PUBLICATION_ID);
+		
+			  if(userAccessLevelValues != null && userAccessLevelValues.size()>0){
+				   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+			  }
+			  
+			  return query.list();
+			  
+		  }
+
 }
