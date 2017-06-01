@@ -17477,5 +17477,10 @@
 			<param name="root">successMsg</param>
 		</result>	
 	</action>
+  	<action name="getTdpCommitteePanchayatWardByMandalAction1" class="cadreCommitteeAction" method="getTdpCommitteeMunicipalityByWards">
+			<result type="json" name="success">
+				<param name="root">locations</param>
+			</result>
+		</action>
  </package>
 </struts>
