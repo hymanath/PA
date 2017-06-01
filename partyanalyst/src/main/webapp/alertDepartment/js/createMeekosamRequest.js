@@ -5,18 +5,17 @@ function onLoadClicks()
 {
 	$(".selectChosen").chosen();
 	$(document).on("change","#districts",function(){
-		getAllMandalsByDistrictID('');
+		getAllMandalsByDistrictID($(this).val(),'');
 	});
 	$(document).on("change","#mandals",function(){
-		getAllPanchayatByMandalId(tehsilId);
+		getAllPanchayatByMandalId($(this).val(),'')
 	});
 	$(document).on("change","#panchayats",function(){
-		getAllHamletByPanchayatID(hamletId);
+		getAllHamletByPanchayatID($(this).val(),'')
 	});
 }
 function onLoadCalls()
 {
-	getAllDistrictByStateId(1);
 	//getMeekosamCasteCategoryList();
 	getMeekosamArgeeCategoryList();
 	//getMeekosamAnnualIncomeList();
@@ -27,7 +26,7 @@ function setDefaultImage(img){
     img.src = "images/User.png";
 }
 	
-function getAllDistrictByStateId(stateId){
+function getAllDistrictByStateId(stateId,districtId){
 	var jobj = {
 		stateId : stateId  
 	}
@@ -43,10 +42,11 @@ function getAllDistrictByStateId(stateId){
 				$('#districts').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 			$("#districts").trigger("chosen:updated");
+			$("#districts").val(districtId).trigger("chosen:updated");
 		}
 	});
 }
-function getAllMandalsByDistrictID(districtId){
+function getAllMandalsByDistrictID(districtId,tehsilId){
 	//var districtId = $('#districts').val();
 	var jsObj={
 		districtId :districtId
@@ -64,12 +64,13 @@ function getAllMandalsByDistrictID(districtId){
 				$('#mandals').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 			$("#mandals").trigger("chosen:updated");
+			$("#mandals").val(tehsilId).trigger("chosen:updated");
 		}
 	});
 }
 
 var LocationType = "";
-function getAllPanchayatByMandalId(tehsilId){
+function getAllPanchayatByMandalId(tehsilId,panchayatId){
 	var mandalTypeId = tehsilId.substring(0, 1);
 	var mandalId = tehsilId.substring(1);
 	if(mandalTypeId==1){
@@ -95,6 +96,7 @@ function getAllPanchayatByMandalId(tehsilId){
 				$('#panchayats').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 			$("#panchayats").trigger("chosen:updated");
+			$("#panchayats").val(panchayatId).trigger("chosen:updated");
 		}
 	});
 }
@@ -102,14 +104,14 @@ function buildPanchayatList(result){
 	
 }
 
-function getAllHamletByPanchayatID(hamletId){
+function getAllHamletByPanchayatID(panchayatId,hamletId){
 	if(LocationType=="muncipality"){
 		$("#habitationId").html('');
 		return;
 	}
 	//var panchayatId = $('#panchayats').val();
 	var jsObj={
-		panchayatId :hamletId
+		panchayatId :panchayatId
 	}
 	$.ajax({
 		type:"POST",
@@ -124,6 +126,7 @@ function getAllHamletByPanchayatID(hamletId){
 				$('#habitationId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
 			$("#habitationId").trigger("chosen:updated");
+			$("#habitationId").val(hamletId).trigger("chosen:updated");
 		}
 	});
 }
@@ -316,7 +319,7 @@ function buildProfileData(i)
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
 		str+='<label>District</label>';
-		str+='<select class="selectChosen" id="districts"></select>';
+		str+='<select class="selectChosen" attr_districtId="'+districtId+'" id="districts"></select>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
 		str+='<label>Mandal</label>';
@@ -334,24 +337,59 @@ function buildProfileData(i)
 		str+='<label>House No</label>';
 		str+='<input type="text" value="'+profileData[i].houseNo+'" class="form-control" id="houseNo"/>';
 	str+='</div>';
+	str+='<div class="col-sm-12">';
+		str+='<div class="row">';
+			str+='<div class="col-sm-4 m_top20">';
+				str+='<h4 class="panel-title">Caste Information</h4>';
+				str+='<div class="panel panel-default">';
+					str+='<div class="panel-body">';
+						str+='<label class="radio-inline">';
+							str+='<input type="radio"/>SC';
+						str+='</label>';
+						str+='<label class="radio-inline">';
+							str+='<input type="radio"/>ST';
+						str+='</label>';
+						str+='<label class="radio-inline">';
+							str+='<input type="radio"/>BC';
+						str+='</label>';
+						str+='<label class="radio-inline">';
+							str+='<input type="radio"/>Minority';
+						str+='</label>';
+						str+='<label class="radio-inline">';
+							str+='<input type="radio"/>Others';
+						str+='</label>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="col-sm-12 m_top20">';
+		str+='<h4 class="panel-title">Other</h4>';
+	str+='</div>';
+	str+='<div class="col-sm-3 m_top20">';
+		str+='<label>Occupation</label>';
+		str+='<select class="selectChosen" ><option>Select Occupation</option></select>';
+	str+='</div>';
+	str+='<div class="col-sm-3 m_top20">';
+		str+='<label>Annaul Income</label>';
+		str+='<div class="panel panel-default">';
+			str+='<div class="panel-body">';
+				str+='<label class="radio-inline">';
+					str+='<input type="radio"/> < 60,000';
+				str+='</label>';
+				str+='<label class="radio-inline">';
+					str+='<input type="radio"/> 60000-75000';
+				str+='</label>';
+				str+='<label class="radio-inline">';
+					str+='<input type="radio"/> >75000';
+				str+='</label>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
 	$("#buildProfileData").html(str);
-	getAllDistrictByStateId(1);
-	setTimeout(function(){
-		$("#districts").val(districtId).trigger("chosen:updated");
-	},1000);
-	
-	getAllMandalsByDistrictID(districtId);
-	setTimeout(function(){
-		$("#mandals").val(tehsilId).trigger("chosen:updated");
-	},1000);
-	getAllPanchayatByMandalId(tehsilId);
-	setTimeout(function(){
-		$("#panchayats").val(panchayatId).trigger("chosen:updated");
-	},1000);
-	getAllHamletByPanchayatID(panchayatId)
-	
-	setTimeout(function(){
-		$("#habitationId").val(hamletId).trigger("chosen:updated");
-	},1000);
 	$(".selectChosen").chosen();
+	getAllDistrictByStateId(1,districtId);
+	getAllMandalsByDistrictID(districtId,tehsilId);
+	getAllPanchayatByMandalId(tehsilId,panchayatId);
+	getAllHamletByPanchayatID(panchayatId,hamletId)
 }
