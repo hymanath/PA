@@ -938,6 +938,11 @@ function onLoadClicks()
 				return;
 			 }
 			}
+			var numericExpression = /^[0-9]+$/;
+			if(!$('#amountId').val().trim().match(numericExpression)){
+				alert('Please Enter Numeric Value Only.....');
+				return;
+			}
 		}
 		if(comment == null || comment.trim() == "")
 		{
@@ -1481,7 +1486,7 @@ function getStatusCompletionInfo(alertId){
 			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
 			globalStatusId = sttatusId; 
 			
-			if(result.length  == 1)//proposalStatus-13,Actually the statusList should be > 1
+			if(result.length  == 1)
 				isStatusAvailable=false;
 			
 			if(result[0].idnameList != null && result[0].idnameList.length > 0)
@@ -2985,14 +2990,21 @@ function buildCommentsForAlert(result)
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
 						
 						
-						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
+						 str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
 						if(result[i][j].status == 'Proposal'){
 							str+=''+result[i][j].status+'';
 							str+='<p class="text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+							/* if(result[i][j].categoryId == 1){
+								str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'';
+								str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/-';
+								str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px">Approved Amount </span> :'+result[i][j].approvedAmount+'/-</p>';
+							}else{
+								str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
+							} */
 						}else {
 							str+=''+result[i][j].status+'</p>';
-						}
-
+						} 
+						
 						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
 						
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
@@ -4104,15 +4116,13 @@ function alertHistory(result)
 					}else if(result[i][j].actionType == 'Status Change'){
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
 						
-						
-						//str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> : '+result[i][j].status+'</p>';
 						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
 						if(result[i][j].status == 'Proposal'){
 							str+=''+result[i][j].status+'';
 							str+='<p class="text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
 						}else {
 							str+=''+result[i][j].status+'</p>';
-						}
+						} 
 						
 						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
 						
@@ -4488,7 +4498,15 @@ function alertStatus(result,alertId)
 				str+='<label for="radio-2"><span class="radio">Proposal Reject<span style="color:red;"> *</span></span></label>';
 			str+='</div>';
 		str+='</div>';
-	str+='<div class="panel-body pad_0">';
+		/* str1+='<div class="col-sm-4">';
+			str1+='<div class="input-group amountCls m_top20" style="display:none;">';
+				str1+='<span class="input-group-addon">';
+					str1+='<i class="fa fa-inr"></i>';
+				str1+='</span>';
+				str1+='<input type="text" class="form-control" placeholder="Enter Approved Amount" id="approvedAmountId">';
+			str1+='</div>';
+		str1+='</div>'; */
+	   str+='<div class="panel-body pad_0">';
 		str+='<textarea class="form-control" id="acceptedStatusChangeComment" placeholder="Comment.."></textarea>';
 	str+='</div>';
 	str+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updatePrposalStatsId" >update</button>';
@@ -5251,11 +5269,16 @@ $(document).on("click","#updatePrposalStatsId",function(){
 	$("#updateProposalStatusChangeMsg").html(spinner)
 	var alertId =$(this).attr("attr_alert_id");
 	var comment =$("#acceptedStatusChangeComment").val();
+	//var approvedAmount=$("#approvedAmountId").val();
 	
 	if(alertStatusGlobalId != null && alertStatusGlobalId==0){
 		alert("Please Select Status");
 		return;
 	}
+	/* if(approvedAmount != null && approvedAmount==0){
+		alert("Please Enter Approved Amount");
+		return;
+	} */
 	if(comment != null && comment==0){
 		alert("Please Enter Comment");
 		return;
@@ -5265,6 +5288,7 @@ $(document).on("click","#updatePrposalStatsId",function(){
 		alertId : alertId,
 		proposalStatusId : alertStatusGlobalId,
 		comment : comment
+		//approvedAmount : approvedAmount
 	}	
 	
 	$.ajax({   
