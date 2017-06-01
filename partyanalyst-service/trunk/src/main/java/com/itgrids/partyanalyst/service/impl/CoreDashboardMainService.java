@@ -24,7 +24,10 @@ import org.jfree.util.Log;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessTypeDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberRelationDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothInchargeDAO;
 import com.itgrids.partyanalyst.dao.ICharacteristicsDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDebateDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
@@ -43,6 +46,7 @@ import com.itgrids.partyanalyst.dao.ITrainingCampBatchDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampDetailsInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserTypeRelationDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.BoothInchargesVO;
 import com.itgrids.partyanalyst.dto.CommitteeDataVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
@@ -89,7 +93,9 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private IDebateSubjectDAO debateSubjectDAO;
 	 private ITrainingCampBatchDAO trainingCampBatchDAO;
 	 private ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO;
-	 
+	 private IBoothDAO boothDAO;
+	 private IBoothInchargeDAO boothInchargeDAO;
+	 private IConstituencyDAO constituencyDAO;
 	//SETTERS
 	 public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
@@ -189,6 +195,27 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	}
 	public void setTrainingCampDetailsInfoDAO(ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO) {
 		this.trainingCampDetailsInfoDAO = trainingCampDetailsInfoDAO;
+	}
+	
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+	
+	public IBoothInchargeDAO getBoothInchargeDAO() {
+		return boothInchargeDAO;
+	}
+	public void setBoothInchargeDAO(IBoothInchargeDAO boothInchargeDAO) {
+		this.boothInchargeDAO = boothInchargeDAO;
+	}
+	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
 	}
 	//santosh
 	/**
@@ -5512,6 +5539,52 @@ public void getDebateSubjects(Set<Long> debateIds,Map<Long,List<String>> subject
 	} catch (Exception e) {
 		Log.error("Exception raised at getDebateSubjects", e);
 	}
+}
+public BoothInchargesVO  getUserTypeWiseBoothCommitteesInchargeDetails(Long activityMemberId,String state,String dateString,List<Long> committeeEnrollmentYearsIdsLst){
+	  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	   BoothInchargesVO inchargeVo = new BoothInchargesVO();
+	try{
+		   Date startDate = null;
+		   Date endDate = null;
+		    Long userLocationLevelId = null;
+		    Set<Long> userLocationLevelValues = null;
+		    
+		    List<Object[]> locations = activityMemberAccessLevelDAO.getLocationsByActivityMemberId(activityMemberId);
+		    if(locations!=null && locations.size()>0){
+		    	userLocationLevelValues = new HashSet<Long>();
+		    	for(Object[] obj : locations){
+		    		userLocationLevelId = (Long)obj[0];
+		    		userLocationLevelValues.add(obj[2]!=null?(Long)obj[2]:0l);
+		    	}
+		    }
+		    Long stateId = coreDashboardGenericService.getStateIdByState(state);
+		    if(dateString != null && !dateString.isEmpty()){
+		    	// committeeBO.setDate(sdf.parse(dateString));
+		    	 String DatesArr[] = dateString.split("-");
+		    	 if(DatesArr != null && DatesArr.length>0){
+		    		 startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+		    		 endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+		    	 }
+		     }
+		    if(userLocationLevelId != null && userLocationLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		    	List<Long>	userLocationLevel =constituencyDAO.getConstistuencyWiseParliamentIds(userLocationLevelValues);
+		    	userLocationLevelValues.clear();
+		    	userLocationLevelValues.addAll(userLocationLevel);
+		    	userLocationLevelId = 5l;
+		    }
+		    Long totalCount= 0l;
+		    List<Long> bothIds =boothDAO.getBoothCommitteesTotalCount(userLocationLevelId,userLocationLevelValues);
+		    Long boothAssignInchargeCount =boothInchargeDAO.getBoothAssignInchargeCount(userLocationLevelId,userLocationLevelValues,startDate,endDate,committeeEnrollmentYearsIdsLst,null);
+		    totalCount=  (long) bothIds.size();
+		    Long notAssignedBoothInchargeCount = totalCount-boothAssignInchargeCount;
+		    inchargeVo.setTotalCount(totalCount);
+		    inchargeVo.setAssignedCount(boothAssignInchargeCount);
+		    inchargeVo.setNotAssignedCount(notAssignedBoothInchargeCount);
+		    
+	}catch(Exception e){
+		Log.error("Exception raised at getUserTypeWiseBoothCommitteesInchargeDetails", e);
+	}
+	return inchargeVo;
 }
 
 }  

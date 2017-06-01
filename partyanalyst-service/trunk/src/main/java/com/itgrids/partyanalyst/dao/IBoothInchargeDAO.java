@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -12,4 +14,5 @@ public interface IBoothInchargeDAO extends GenericDao<BoothIncharge,Long>{
 	public List<Object[]> getCadreIdsForLocation(List<Long> tdpCadreIds);
 	public BoothIncharge getExistingMember(Long locationId,String type);
 	public Long getStartedBothCountByConstiId(Long constituencyId);
+	public Long getBoothAssignInchargeCount(Long userAccessLevelId,Set<Long> userAccessLevelValues,Date startDate,Date endDate,List<Long> committeeEnrollmentYearsIdsLst,List<Long> bothIds);
 }

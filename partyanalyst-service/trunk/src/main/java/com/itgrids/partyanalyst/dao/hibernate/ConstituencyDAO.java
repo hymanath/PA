@@ -2215,5 +2215,29 @@ public List<Object[]> getDistrictBasedOnConstituenciesId(Set<Long> constituecies
 		return query.list();
 		
 	}
+	public List<Long> getConstistuencyWiseParliamentIds(Set<Long> userLocationLevelValues){
+		StringBuilder str = new StringBuilder();
+		
+		str.append(" select ac.constituency_id " +
+				" from constituency pc,delimitation_constituency dc," +
+				" delimitation_constituency_assembly_details dcad, " +
+				" constituency ac where pc.constituency_id = dc.constituency_id and " +
+				" pc.election_scope_id = 1 and pc.deform_date is null and " +
+				" dc.delimitation_constituency_id = dcad.delimitation_constituency_id " +
+				" and dcad.constituency_id = ac.constituency_id  " +
+				"  and dc.year=2009  and pc.state_id=1 ");
+		
+		 if(userLocationLevelValues !=null && userLocationLevelValues.size()>0){
+			 str.append(" and pc.constituency_id in (:userLocationLevelValues) ");
+		 }
+		 
+		 Query query = getSession().createSQLQuery(str.toString());				
+				
+	     if(userLocationLevelValues !=null && userLocationLevelValues.size()>0){
+		         query.setParameterList("userLocationLevelValues", userLocationLevelValues);
+	          }
+		 return query.list();
+		
+	}
 	
 }
