@@ -1837,10 +1837,11 @@ $(document).on("click",".updateAlertCls",function(){
 	var statusId =$(this).attr("attr_alert_status_id");
 	$('#reopenCheckboxId').attr('checked', false);
 	$("#reOpenSpanId").hide();
+
 	getAlertCallerDetails(alertId);
 	$("#hiddenAlertId").val(alertId);
-	$("#hiddenSourceId").val(sourceId);
-	$("#hiddenStatusId").val(statusId);
+	$("#hiddenSourceId").val($(this).attr("attr_alert_source_id"));
+	$("#hiddenStatusId").val($(this).attr("attr_alert_status_id"));
 });	
 	
 function buildAlertCallerDetails(result){
