@@ -586,33 +586,21 @@
 				str+='<li>Caste: '+result[i].casteName+'</li>';
 				str+='<li>Voter ID: '+result[i].voterCardNo+'</li>&nbsp;&nbsp;<span class="text-danger remveMbrCls" attr_cadre_id="'+result[i].tdpCadreId+'" attr_location_id="'+locationId+'" style="cursor:pointer;" title="Click here to remove member">x</span>';
 				  if(addressVO != null ){
-					str+='<li>Mandal : '+addressVO.mandalName+'</li>';
-                    str+='<li>Panchayat : '+addressVO.panchayatName+'</li>';				
+						str+='<li>Mandal : '+addressVO.mandalName+'</li>';
+						str+='<li>Panchayat : '+addressVO.panchayatName+'</li>';				
 					}
-				 
-				var  panchayatOrWard= $('#panchayatWardByMandal').val();
-				
-				if(parseInt(1+""+result[i].tehsilId) == panchayatOrWard || parseInt(2+""+result[i].tehsilId) == panchayatOrWard){
-					;
-				}
-				else{
-					if(result[i].tehsil !=null && result[i].tehsil != 0 && result[i].tehsil != '')
-					str+='<div style="color:green">This Person is already member in '
-					+ result[i].tehsil + ' Mandal ' +result[i].panchayat + ' Panchayat Booth No - ' +result[i].boothNumber+'</div>';
-				}
-				
 				str+='</ul>';
 				
-				if(result[i].committeePosition != null && result[i].committeePosition.trim().length > 0 && result[i].type != null && result[i].type.trim() == 'Added Member')
+				if(result[i].type != null && result[i].type.trim() == 'Added Member')
 				{
 					str+='<ul  style="color:#449D44;">';
 					if(result[i].type != null && result[i].type.trim().length > 0){						
 						if(result[i].localElectionBody == null )
-							str+='<li style="font-weight:bold;"> Aleary Member in Booth No -'+result[i].boothNumber+' ,'+result[i].panchayat+' Panchayat , '+result[i].tehsil+' Mandal. </li>';	
+							str+='<li style="font-weight:bold;"> Aleary Incharger for  Booth No - '+result[i].boothNumber+' ,'+result[i].panchayat+' Panchayat , '+result[i].tehsil+' Mandal. </li>';	
 						else if(result[i].tehsil == null )
-							str+='<li style="font-weight:bold;"> Aleary Member in Booth No -'+result[i].boothNumber+' , '+result[i].tehsil+' Muncipality. </li>';	
+							str+='<li style="font-weight:bold;"> Aleary Incharger for Booth No - '+result[i].boothNumber+' , '+result[i].tehsil+' Muncipality. </li>';	
 						else 
-							str+='<li style="font-weight:bold;"> Aleary Member in Booth No -'+result[i].boothNumber+' ,'+result[i].tehsil+' Mandal/Muncipality. </li>';	
+							str+='<li style="font-weight:bold;"> Aleary Incharger for Booth No - '+result[i].boothNumber+' ,'+result[i].tehsil+' Mandal/Muncipality. </li>';	
 					}
 					str+='</ul>';	
 					str+='</div>';
