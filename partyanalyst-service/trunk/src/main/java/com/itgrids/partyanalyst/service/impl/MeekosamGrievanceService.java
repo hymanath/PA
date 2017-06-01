@@ -1,23 +1,33 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentMeekosamIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamAnnualIncomeDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamArgeeCategoryDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamCasteCategoryDAO;
+import com.itgrids.partyanalyst.dao.IMeekosamIssueFieldRelationDAO;
+import com.itgrids.partyanalyst.dao.IMeekosamIssueFieldRelationDataDAO;
+import com.itgrids.partyanalyst.dao.IMeekosamIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamOccupationDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamPetitionerDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -25,7 +35,13 @@ import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
+import com.itgrids.partyanalyst.dto.MeekosamDynamicVO;
+import com.itgrids.partyanalyst.dto.MeekosamGrievanceVO;
 import com.itgrids.partyanalyst.dto.PetitionerDetailsVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.MeekosamPetitioner;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMeekosamGrievanceService;
@@ -49,10 +65,62 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	private IMeekosamCasteCategoryDAO meekosamCasteCategoryDAO;
 	private IMeekosamArgeeCategoryDAO meekosamArgeeCategoryDAO;
 	private IMeekosamAnnualIncomeDAO meekosamAnnualIncomeDAO;
+	private IGovtDepartmentMeekosamIssueTypeDAO govtDepartmentMeekosamIssueTypeDAO;
+	private IMeekosamIssueTypeDAO meekosamIssueTypeDAO;
+	private IMeekosamIssueFieldRelationDAO meekosamIssueFieldRelationDAO;
 	private IMeekosamPetitionerDAO meekosamPetitionerDAO;
+	private IMeekosamIssueFieldRelationDataDAO meekosamIssueFieldRelationDataDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private IBoothDAO boothDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+	private IAlertDAO alertDAO;
 	
 	
+	public IAlertDAO getAlertDAO() {
+		return alertDAO;
+	}
+	public void setAlertDAO(IAlertDAO alertDAO) {
+		this.alertDAO = alertDAO;
+	}
+	public DateUtilService getDateUtilService() {
+		return dateUtilService;
+	}
+	public void setDateUtilService(DateUtilService dateUtilService) {
+		this.dateUtilService = dateUtilService;
+	}
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+	public IMeekosamIssueFieldRelationDataDAO getMeekosamIssueFieldRelationDataDAO() {
+		return meekosamIssueFieldRelationDataDAO;
+	}
+	public void setMeekosamIssueFieldRelationDataDAO(
+			IMeekosamIssueFieldRelationDataDAO meekosamIssueFieldRelationDataDAO) {
+		this.meekosamIssueFieldRelationDataDAO = meekosamIssueFieldRelationDataDAO;
+	}
+	public IMeekosamIssueFieldRelationDAO getMeekosamIssueFieldRelationDAO() {
+		return meekosamIssueFieldRelationDAO;
+	}
+	public void setMeekosamIssueFieldRelationDAO(
+			IMeekosamIssueFieldRelationDAO meekosamIssueFieldRelationDAO) {
+		this.meekosamIssueFieldRelationDAO = meekosamIssueFieldRelationDAO;
+	}
+	public IMeekosamIssueTypeDAO getMeekosamIssueTypeDAO() {
+		return meekosamIssueTypeDAO;
+	}
+	public void setMeekosamIssueTypeDAO(IMeekosamIssueTypeDAO meekosamIssueTypeDAO) {
+		this.meekosamIssueTypeDAO = meekosamIssueTypeDAO;
+	}
+	public IGovtDepartmentMeekosamIssueTypeDAO getGovtDepartmentMeekosamIssueTypeDAO() {
+		return govtDepartmentMeekosamIssueTypeDAO;
+	}
+	public void setGovtDepartmentMeekosamIssueTypeDAO(
+			IGovtDepartmentMeekosamIssueTypeDAO govtDepartmentMeekosamIssueTypeDAO) {
+		this.govtDepartmentMeekosamIssueTypeDAO = govtDepartmentMeekosamIssueTypeDAO;
+	}
 	public void setBoothPublicationVoterDAO(
 			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
@@ -108,6 +176,9 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
+	
+	
+	
 	/*
 	 * Swadhin K Lenka
 	 * (non-Javadoc)
@@ -337,6 +408,135 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 			LOG.error("Error occured setDataToList() method of MeekosamGrievanceService",e);
     	}
     }
+	
+	public List<KeyValueVO> getMeekosamIssueTypeListByDept(Long departmentId){
+		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+		try {
+			List<Object[]> list = govtDepartmentMeekosamIssueTypeDAO.getMeekosamIssueTypeListByDept(departmentId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getMeekosamIssueTypeListByDept() method of MeekosamGrievanceService",e);
+		}
+		return returnList;
+	}
+	
+	public List<KeyValueVO> getMeekosamSubIssueTypeListForParentIssueType(Long parentIssueTypeId){
+		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+		try {
+			List<Object[]> list = meekosamIssueTypeDAO.getMeekosamSubIssueTypeListForParentIssueType(parentIssueTypeId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getMeekosamSubIssueTypeListForParentIssueType() method of MeekosamGrievanceService",e);
+		}
+		return returnList;
+	}
+	
+	public List<MeekosamDynamicVO> getAllDynamicFieldsAndDataForIsueType(Long issueTypeId){
+		List<MeekosamDynamicVO> returnList = new ArrayList<MeekosamDynamicVO>();
+		try {
+			Set<Long> issueFieldRelationIds = new HashSet<Long>();
+			
+			Long parentIssueTypeId = meekosamIssueTypeDAO.getParentIssueType(issueTypeId);
+			if(parentIssueTypeId != null && parentIssueTypeId.longValue() > 0l){
+				List<Object[]> list = meekosamIssueFieldRelationDAO.getDynamicFieldsForIssueType(parentIssueTypeId);
+				if(list != null && !list.isEmpty()){
+					MeekosamDynamicVO vo = new MeekosamDynamicVO();
+					for (Object[] obj : list) {
+						vo.setIssueTypeId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+						vo.setIssueType(obj[2] != null ? obj[2].toString():"");
+						
+						MeekosamDynamicVO subvo = new MeekosamDynamicVO();
+						Long relationId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						issueFieldRelationIds.add(relationId);
+						subvo.setId(relationId);
+						subvo.setIssueFieldId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+						subvo.setIssueField(obj[4] != null ? obj[4].toString():"");
+						subvo.setIssueFieldTypeId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+						subvo.setIssueFielsType(obj[6] != null ? obj[6].toString():"");
+						vo.getSubList().add(subvo);
+					}
+					returnList.add(vo);
+				}
+			}
+			
+			List<Object[]> list2 = meekosamIssueFieldRelationDAO.getDynamicFieldsForIssueType(issueTypeId);
+			if(list2 != null && !list2.isEmpty()){
+				MeekosamDynamicVO vo = new MeekosamDynamicVO();
+				for (Object[] obj : list2) {
+					vo.setIssueTypeId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+					vo.setIssueType(obj[2] != null ? obj[2].toString():"");
+					
+					MeekosamDynamicVO subvo = new MeekosamDynamicVO();
+					Long relationId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+					issueFieldRelationIds.add(relationId);
+					subvo.setId(relationId);
+					subvo.setIssueFieldId(Long.valueOf(obj[3] != null ? obj[3].toString():"0"));
+					subvo.setIssueField(obj[4] != null ? obj[4].toString():"");
+					subvo.setIssueFieldTypeId(Long.valueOf(obj[5] != null ? obj[5].toString():"0"));
+					subvo.setIssueFielsType(obj[6] != null ? obj[6].toString():"");
+					vo.getSubList().add(subvo);
+				}
+				returnList.add(vo);
+			}
+			
+			if(issueFieldRelationIds != null && !issueFieldRelationIds.isEmpty()){
+				List<Object[]> list1 = meekosamIssueFieldRelationDataDAO.getAllDataForRelationIds(new ArrayList<Long>(issueFieldRelationIds));
+				if(list1 != null && !list1.isEmpty()){
+					for (Object[] obj : list1) {
+						Long relationId = Long.valueOf(obj[0] != null ? obj[0].toString():"0");
+						MeekosamDynamicVO vo = getMatchedVO(returnList.get(0).getSubList(), relationId);
+						if(vo != null){
+							MeekosamDynamicVO datavo = new MeekosamDynamicVO();
+							datavo.setId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+							datavo.setName(obj[2] != null ? obj[2].toString():"");
+							vo.getSubList().add(datavo);
+						}
+						else if(vo == null && returnList.size() > 1){
+							MeekosamDynamicVO vo1 = getMatchedVO(returnList.get(1).getSubList(), relationId);
+							if(vo1 != null){
+								MeekosamDynamicVO datavo = new MeekosamDynamicVO();
+								datavo.setId(Long.valueOf(obj[1] != null ? obj[1].toString():"0"));
+								datavo.setName(obj[2] != null ? obj[2].toString():"");
+								vo1.getSubList().add(datavo);
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getAllDynamicFieldsAndDataForIsueType() method of MeekosamGrievanceService",e);
+		}
+		return returnList;
+	}
+	
+	public MeekosamDynamicVO getMatchedVO(List<MeekosamDynamicVO> list,Long id){
+		try{
+			   if(list == null || list.size() == 0)
+				   return null;
+			   for(MeekosamDynamicVO vo:list){
+				   if(vo.getId().equals(id)){
+					   return vo;
+				   }
+			   }
+		   }catch(Exception e){
+			   LOG.error("Error occured getMatchedVO() method of MeekosamGrievanceService{}",e);  
+		   }
+		   return null;
+	}
 	/*
 	 * Swadhin K Lenka
 	 * (non-Javadoc)
@@ -454,5 +654,125 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public ResultStatus saveMeekosamGrievance(final MeekosamGrievanceVO inputvo,final Long userId){
+		ResultStatus resultStatus = new ResultStatus();
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+					Alert alert = new Alert();
+					
+					alert.setAlertTypeId(2l);		//Govt
+					alert.setTitle(inputvo.getGrievanceTitle());
+					alert.setDescription(inputvo.getGrievanceDesc());
+					alert.setAlertStatusId(2l);		//Notified
+					alert.setAlertSeverityId(2l);	//Medium
+					alert.setImpactLevelId(inputvo.getGrievanceImpactLevel());
+					alert.setImpactLevelValue(inputvo.getGrievanceLevelValue());
+					
+					UserAddress alertAddress = new UserAddress();
+					alertAddress.setState(stateDAO.get(1L));
+					alertAddress.setDistrict(districtDAO.get(inputvo.getGrievanceDistrictId()));
+					if(inputvo.getGrievanceTehsilId().toString().substring(0, 1).equalsIgnoreCase("1")){
+						List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(Long.valueOf(inputvo.getGrievanceTehsilId().toString().substring(1)));
+						if(list != null && !list.isEmpty())
+							alertAddress.setConstituency(list.get(0));
+						alertAddress.setPanchayatId(inputvo.getGrievancePanchayatId());
+						//alertAddress.setHamlet(hamletDAO.get(inputvo.getgri));
+					}
+					else if(inputvo.getGrievanceTehsilId().toString().substring(0, 1).equalsIgnoreCase("2")){
+						List<Constituency> list = boothDAO.getConstituencyIdByLebId(Long.valueOf(inputvo.getGrievanceTehsilId().toString().substring(1)));
+						if(list != null && !list.isEmpty())
+							alertAddress.setConstituency(list.get(0));
+						alertAddress.setWard(constituencyDAO.get(inputvo.getGrievancePanchayatId()));
+					}
+					alertAddress = userAddressDAO.save(alertAddress);
+					
+					alert.setAddressId(alertAddress.getUserAddressId());
+					alert.setCreatedBy(userId);
+					alert.setCreatedTime(dateUtilService.getCurrentDateAndTime());
+					alert.setUpdatedBy(userId);
+					alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					alert.setIsDeleted("N");
+					alert.setAlertSourceId(inputvo.getCategoryId() - 1l);
+					alert.setAlertCategoryId(inputvo.getCategoryId());
+					if(inputvo.getGrievanceImpactLevel() != null && inputvo.getGrievanceImpactLevel().longValue() == 3l)
+						alert.setImpactScopeId(2l);
+					else if(inputvo.getGrievanceImpactLevel() != null && inputvo.getGrievanceImpactLevel().longValue() == 5l)
+						alert.setImpactScopeId(5l);
+					else if(inputvo.getGrievanceImpactLevel() != null && inputvo.getGrievanceImpactLevel().longValue() == 7l)
+						alert.setImpactScopeId(12l);
+					else if(inputvo.getGrievanceImpactLevel() != null && inputvo.getGrievanceImpactLevel().longValue() == 6l)
+						alert.setImpactScopeId(6l);
+					else if(inputvo.getGrievanceImpactLevel() != null && inputvo.getGrievanceImpactLevel().longValue() == 8l)
+						alert.setImpactScopeId(9l);
+					alert.setGovtDepartmentId(inputvo.getDepartmentId());
+					alert.setIsMultiple("N");
+					if(inputvo.getCategoryId() != null && inputvo.getCategoryId().longValue() == 6l)
+						alert.setMondayGrievanceTypeId(1l);
+					if(inputvo.getCategoryId() != null && inputvo.getCategoryId().longValue() == 7l)
+						alert.setJanmabhoomiTypeId(1l);
+					if(inputvo.getCategoryId() != null && inputvo.getCategoryId().longValue() == 8l)
+						alert.setSpecialGrievanceTypeId(1l);
+					if(inputvo.getCategoryId() != null && inputvo.getCategoryId().longValue() == 9l)
+						alert.setGeneralGrievanceTypeId(1l);
+					alert = alertDAO.save(alert);
+					
+					MeekosamPetitioner petitioner = new MeekosamPetitioner();
+					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					petitioner.setName(inputvo.getPetitionerName());
+					petitioner.setRelativeName(inputvo.getPetitionerRelativeName());
+					petitioner.setAge(inputvo.getPetitionerAge());
+					Date dob = null;
+					if(inputvo.getPetitionerDOB() != null && !inputvo.getPetitionerDOB().isEmpty())
+						try {
+							dob = sdf.parse(inputvo.getPetitionerDOB());
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+					petitioner.setDateOfBirth(dob);
+					petitioner.setGender(inputvo.getPetitionerGender());
+					
+					UserAddress petitionerAddress = new UserAddress();
+					petitionerAddress.setState(stateDAO.get(1L));
+					petitionerAddress.setDistrict(districtDAO.get(inputvo.getPetitionerDistrictId()));
+					if(inputvo.getPetitionerTehsilId().toString().substring(0, 1).equalsIgnoreCase("1")){
+						List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(Long.valueOf(inputvo.getPetitionerTehsilId().toString().substring(1)));
+						if(list != null && !list.isEmpty())
+							petitionerAddress.setConstituency(list.get(0));
+						petitionerAddress.setPanchayatId(inputvo.getPetitionerPanchayatId());
+						//alertAddress.setHamlet(hamletDAO.get(inputvo.getgri));
+					}
+					else if(inputvo.getPetitionerTehsilId().toString().substring(0, 1).equalsIgnoreCase("2")){
+						List<Constituency> list = boothDAO.getConstituencyIdByLebId(Long.valueOf(inputvo.getPetitionerTehsilId().toString().substring(1)));
+						if(list != null && !list.isEmpty())
+							petitionerAddress.setConstituency(list.get(0));
+						petitionerAddress.setWard(constituencyDAO.get(inputvo.getPetitionerPanchayatId()));
+					}
+					petitionerAddress = userAddressDAO.save(petitionerAddress);
+					
+					petitioner.setUserAddressId(petitionerAddress.getUserAddressId());
+					petitioner.setHouseNo(inputvo.getPetitionerHouseNO());
+					petitioner.setAadharNo(inputvo.getPetitionerAadharCardNo());
+					petitioner.setVoterCardNo(inputvo.getPetitionerVoterCardNo());
+					petitioner.setMobileNo(inputvo.getPetitionerMobileNo());
+					petitioner.setEmailId(inputvo.getPetitionerEmailId());
+					petitioner.setMeekosamOccupationId(inputvo.getPetitionerOccupation());
+					petitioner.setMeekosamCasteCategoryId(inputvo.getPetitionerCaste());
+					petitioner.setMeekosamArgeeCategoryId(inputvo.getPetitionerArgeeCategory());
+					petitioner.setMeekosamAnnualIncomeId(inputvo.getPetitionerAnnulaIncome());
+					petitioner.setInsertedBy(userId);
+					petitioner.setUpdatedBy(userId);
+					petitioner.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					petitioner.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					petitioner.setIsDeleted("N");
+					petitioner = meekosamPetitionerDAO.save(petitioner);
+				}
+			});
+		} catch (Exception e) {
+			LOG.error("Error occured saveMeekosamGrievance() method of MeekosamGrievanceService",e);
+		}
+		return resultStatus;
 	}
 }
