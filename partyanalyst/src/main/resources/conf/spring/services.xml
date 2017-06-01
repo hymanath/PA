@@ -1782,7 +1782,7 @@
 			<!-- <ref bean="cronTriggerForeveryDayBatchJobForPopulateVoterData" /> -->
 			<ref bean="insertTriggerForEveryDayMobiles" />
 			<!-- <ref bean="mahanaduEventInfo" /> -->
-			<ref bean="mahanaduVisitInfoTrig" />
+			<!--<ref bean="mahanaduVisitInfoTrig" /> -->
 			<ref bean="updateTrainingCampSpeakers" />
 			<!--<ref bean="cronTriggerForEveryDayJobEmployeeAttendance" />-->
 			<ref bean="cronTriggerForJobEmployeeAttendanceOnDept" />
@@ -1803,10 +1803,12 @@
 			
 			<ref bean="partyMeetingStatusUpdation" />
 			
+			<!-- 
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotal" /> 
 			<ref bean="tdpCadreDetailsUpdationForTodayAndTotalLowLevel" /> 
 		    <ref bean="tdpCadreDetailsUpdationForDateWise" />   
-		    <ref bean="cronTriggerForTabUserInfoIntoIntermediateTable" />     
+		    <ref bean="cronTriggerForTabUserInfoIntoIntermediateTable" />      
+		    -->
 		    
 		   <!--  <ref bean="tdpCadreDataHourWiseForTabUsersByToday"/> 
 		    <ref bean="tdpCadreDataHourWiseForTabUsersByOverall"/>
