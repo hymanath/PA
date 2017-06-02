@@ -97,19 +97,140 @@
 						</div>
 						<div id="buildProfileData"></div>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="panel panel-default">
-				<div class="panel-heading headingColor">
 					<div class="row">
+						<div class="col-sm-12 m_top20">
+							<h4 class="panel-title text-capital fontColor">Details From Petitioner</h4>
+						</div>
+						<div class="col-sm-3 m_top10">
+							<label>Category <span style="color:red">*</span></label>
+							<select class="selectChosen" id="categoryId">
+								<option value="0">Select Category</option>
+								<option value="6">Monday Grievance</option>
+								<option value="7">Janmabhoomi</option>
+								<option value="8">Special Grievance - SC/ST</option>
+								<option value="9">General Grievance</option>
+							</select>
+						</div>
+						<div class="col-sm-3 m_top10">
+							<label>Department <span style="color:red">*</span></label>
+							<select class="selectChosen" id="departmentId" onchange="getIssueTypesForDepartment();">
+								<option value="0">Select Department</option>
+							</select>
+						</div>
+						<div class="col-sm-3 m_top10">
+							<label>Issue Type <span style="color:red">*</span></label>
+							<select class="selectChosen" id="issueTypeId" onchange="getIssueSubTypes();">
+								<option value="0">Select Issue Type</option>
+							</select>
+						</div>
+						<div class="col-sm-3 m_top10">
+							<label>Issue Sub Type <span style="color:red">*</span></label>
+							<select class="selectChosen" id="issueSubTypeId" onchange="getDynamicValuesForIssue();">
+								<option value="0">Select Issue Sub Type</option>
+							</select>
+						</div>
+						<div id="buildPetitionerData" class="col-sm-12"></div>
+						<div class="col-sm-12 m_top20">
+							<h4 class="panel-title text-capital fontColor">Other Details</h4>
+						</div>
+						<div class="col-sm-12 m_top20">
+							<table class="table" id="petitionerTableId">
+								<thead>
+									<th>District</th>
+									<th>Mandal</th>
+									<th>Village</th>
+									<th>Survey Number</th>
+									<th>Land in Acres</th>
+									<th>Land in Cent</th>
+									<th></th>
+								</thead>
+							</table>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<label>District</label>
+							<select class="selectChosen" id="districtsPetitionerId">
+								<option>Select District</option>
+							</select>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<label>Mandal</label>
+							<select class="selectChosen" id="mandalsPetitionerId">
+								<option></option>
+							</select>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<label>Village</label>
+							<select class="selectChosen" id="villagePetitionerId">
+								<option></option>
+							</select>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<label>Survey Number</label>
+							<input type="text" class="form-control" id="surveyNoPetitionerId"/>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<label>Land In Acres</label>
+							<input type="text" class="form-control" id="landInAcresPetitionerId"/>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<label>Land In Cent</label>
+							<input type="text" class="form-control" id="landInCentPeitionerId"/>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<button class="btn btn-success" id="addOneMorePetitionerId"><i class="fa fa-plus"></i> ADD MORE</button>
+						</div>
 					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">      
+					<div class="row">
+						<div class="col-sm-8 m_top10">
+							<label>Grievance Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgTitleId"></span></label>
+							<label class="radio-inline" style="margin-bottom: 5px;">
+								<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+							</label>
+							<label class="radio-inline" style="margin-bottom: 5px;">
+								<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+							</label>
+							<input type="text" class="form-control" id="alertTitleId" name="grievanceAlertVO.alertTitle"/>
+						</div>
+						<div class="col-sm-12 m_top10">
+							<label>Grievance Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgDescId"></span></label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 m_top10">
+							<textarea class="form-control" id="alertdescriptionId" name="grievanceAlertVO.description"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 m_top10">
+							<h4 class="text-success text-capital">assign alert to department officer</h4>
+						</div>
+						<div class="col-sm-4 m_top10">
+							<label>Sub Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
+							<select  class="selectChosen" id="subDepartmentSelectId">  
+								<option value="0">Select Level</option>
+								<!--<option value="5">MANDAL</option>-->
+							</select>
+						</div>
+						<div class="col-sm-4 m_top10">
+							<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLvlId"></span></label>
+							<select  class="selectChosen" id="locationLevelSelectId">  
+								<option value="0">Select Level</option>
+								<!--<option value="5">MANDAL</option>-->
+							</select>
+						</div>
+						<div id="parentLevelDivId"> </div>
+						<div class="col-sm-4 m_top10">
+							<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgOffcrId"></span></label>
+							<select id="designationsId" class="selectChosen">
+								<option></option>
+							</select>
+						</div>
+						<div class="col-sm-4 m_top10">
+							<label>Department Officer<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgOffcrId"></span></label>
+							<select id="officerNamesId" class="selectChosen">
+								<option></option>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -120,6 +241,46 @@
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Slick/slick.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="alertDepartment/js/createMeekosamRequest.js"></script>
+<script type="text/javascript">
+google.load("elements", "1", {
+	packages: "transliteration"
+});
+var control;
+var lang;
+
+function onLoad() {
+   lang = $("input[name=language]:checked").val();
+	var options = {
+		sourceLanguage:google.elements.transliteration.LanguageCode.ENGLISH,
+		destinationLanguage:[''+lang+''],
+		shortcutKey: 'alt+t',
+		transliterationEnabled: true
+	};
+	// Create an instance on TransliterationControl with the required options.
+	control = new google.elements.transliteration.TransliterationControl(options);
+	// Enable transliteration in the textbox with id 'descrptionId'.
+	if ($('#alertTitleId').length){
+		control.makeTransliteratable(['alertTitleId']);
+	}
+	if ($('#alertdescriptionId').length){
+		control.makeTransliteratable(['alertdescriptionId']);
+	}
+	
+}
+function languageChangeHandler(){
+   var lang1 = $("input[name=language]:checked").val();
+	if(lang1 =="en"){
+		control.disableTransliteration();
+	}else{
+		control.enableTransliteration();
+		control.setLanguagePair(
+		google.elements.transliteration.LanguageCode.ENGLISH,
+		lang1);
+	}
+}
+google.setOnLoadCallback(onLoad);
+</script>
 </body>
 </html>
