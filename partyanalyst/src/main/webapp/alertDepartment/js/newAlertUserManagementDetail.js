@@ -938,10 +938,13 @@ function onLoadClicks()
 				return;
 			 }
 			}
+			
 			var numericExpression = /^[0-9]+$/;
-			if(!$('#amountId').val().trim().match(numericExpression)){
-				alert('Please Enter Numeric Value Only.....');
+			if(!$('#amountId').val().match(numericExpression)){
+				$("#errMsgAmuntId").html('<span style="color:red">Please Enter Numeric Value Only.....</span>');
 				return;
+			}else{
+				$("#errMsgAmuntId").html('');
 			}
 		}
 		if(comment == null || comment.trim() == "")
@@ -4471,6 +4474,7 @@ function alertStatus(result,alertId)
 									str1+='</span>';
 									str1+='<input type="text" class="form-control" placeholder="Enter Amount" id="amountId">';
 								str1+='</div>';
+								str1+='<span id="errMsgAmuntId"></span>';
 							str1+='</div>';
 						str1+='</div>';
 					str1+='</div>';
