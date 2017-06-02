@@ -5,17 +5,68 @@ function onLoadClicks()
 {
 	$(".selectChosen").chosen();
 	$(document).on("change","#districts",function(){
-		getAllMandalsByDistrictID($(this).val(),'');
+		getAllMandalsByDistrictID($(this).val(),'','mandals');
 	});
 	$(document).on("change","#mandals",function(){
-		getAllPanchayatByMandalId($(this).val(),'')
+		getAllPanchayatByMandalId($(this).val(),'','panchayats')
 	});
 	$(document).on("change","#panchayats",function(){
 		getAllHamletByPanchayatID($(this).val(),'')
 	});
+	$(document).on("change","#districtsPetitionerId",function(){
+		getAllMandalsByDistrictID($(this).val(),'','mandalsPetitionerId');
+	});
+	$(document).on("change","#mandalsPetitionerId",function(){
+		getAllPanchayatByMandalId($(this).val(),'','villagePetitionerId')
+	});
+	$(document).on("change","#departmentId",function(){
+		getSubDeptsFrParentDept($(this).val());
+	});
+	$(document).on('change', '#locationLevelSelectId', function(){
+		getParentLevelsOfLevel($("#subDepartmentSelectId").val());
+	});
+	$(document).on('change', '#subDepartmentSelectId', function(){
+		getDepartmentLevels($(this).val());
+	});
+	$(document).on('change','.locationCls', function(evt, params) {
+		designationsByDepartment();
+	});
+	$(document).on('change','#designationsId', function(evt, params) {
+		var designationId = $(this).val();
+		officersByDesignationAndLevel(designationId)
+	});
+	
+	$(document).on("click","#addOneMorePetitionerId",function(){
+		var str='';
+		str+='<tr>';
+			str+='<td>'+$("#districtsPetitionerId option:selected").text()+'</td>';
+			str+='<td>'+$("#mandalsPetitionerId option:selected").text()+'</td>';
+			str+='<td>'+$("#villagePetitionerId option:selected").text()+'</td>';
+			str+='<td>'+$("#surveyNoPetitionerId").val()+'</td>';
+			str+='<td>'+$("#landInAcresPetitionerId").val()+'</td>';
+			str+='<td>'+$("#landInCentPeitionerId").val()+'</td>';
+			str+='<td><i class="deletePetitionerRow glyphicon glyphicon-trash" style="cursor:pointer"></i></td>';
+		str+='</tr>';
+		$("#petitionerTableId").append(str);
+		var resetIds = ['districtsPetitionerId','mandalsPetitionerId','villagePetitionerId']
+		var resetTextIds = ['surveyNoPetitionerId','landInAcresPetitionerId','landInCentPeitionerId']
+		for(var i in resetIds)
+		{
+			$("#"+resetIds[i]).val('').trigger("chosen:updated");
+		}
+		for(var i in resetTextIds)
+		{
+			$("#"+resetTextIds[i]).val(' ');
+		}
+	});
+	$(document).on("click",".deletePetitionerRow",function(){
+		$(this).closest("tr").remove();
+	});
 }
 function onLoadCalls()
 {
+	getAllMainDepartments();
+	getAllDistrictByStateId(1,'',"districtsPetitionerId")
 	//getMeekosamCasteCategoryList();
 	getMeekosamArgeeCategoryList();
 	//getMeekosamAnnualIncomeList();
@@ -26,7 +77,7 @@ function setDefaultImage(img){
     img.src = "images/User.png";
 }
 	
-function getAllDistrictByStateId(stateId,districtId){
+function getAllDistrictByStateId(stateId,districtId,id){
 	var jobj = {
 		stateId : stateId  
 	}
@@ -37,16 +88,16 @@ function getAllDistrictByStateId(stateId,districtId){
 		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			$("#districtListId").html('');
+			$("#"+id).html('');
 			for(var i in result){	
-				$('#districts').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$('#'+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
-			$("#districts").trigger("chosen:updated");
-			$("#districts").val(districtId).trigger("chosen:updated");
+			$("#"+id).trigger("chosen:updated");
+			$("#"+id).val(districtId).trigger("chosen:updated");
 		}
 	});
 }
-function getAllMandalsByDistrictID(districtId,tehsilId){
+function getAllMandalsByDistrictID(districtId,tehsilId,id){
 	//var districtId = $('#districts').val();
 	var jsObj={
 		districtId :districtId
@@ -58,19 +109,19 @@ function getAllMandalsByDistrictID(districtId,tehsilId){
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			$("#mandals").html('');
-			$('#mandals').append('<option value="0">Select One Mandal or Town</option>');
+			$("#"+id).html('');
+			$('#'+id).append('<option value="0">Select One Mandal or Town</option>');
 			for(var i in result){ 
-				$('#mandals').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$('#'+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
-			$("#mandals").trigger("chosen:updated");
-			$("#mandals").val(tehsilId).trigger("chosen:updated");
+			$("#"+id).trigger("chosen:updated");
+			$("#"+id).val(tehsilId).trigger("chosen:updated");
 		}
 	});
 }
 
 var LocationType = "";
-function getAllPanchayatByMandalId(tehsilId,panchayatId){
+function getAllPanchayatByMandalId(tehsilId,panchayatId,id){
 	var mandalTypeId = tehsilId.substring(0, 1);
 	var mandalId = tehsilId.substring(1);
 	if(mandalTypeId==1){
@@ -90,13 +141,13 @@ function getAllPanchayatByMandalId(tehsilId,panchayatId){
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			$("#panchayats").html('');
-			$('#panchayats').append('<option value="0">Select One Panchayat or Ward</option>');
+			$("#"+id).html('');
+			$('#'+id).append('<option value="0">Select One Panchayat or Ward</option>');
 			for(var i in result){			
-				$('#panchayats').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+				$('#'+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
-			$("#panchayats").trigger("chosen:updated");
-			$("#panchayats").val(panchayatId).trigger("chosen:updated");
+			$("#"+id).trigger("chosen:updated");
+			$("#"+id).val(panchayatId).trigger("chosen:updated");
 		}
 	});
 }
@@ -371,7 +422,7 @@ function buildProfileData(i)
 		str+='<select class="selectChosen" ><option>Select Occupation</option></select>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top20">';
-		str+='<label>Annaul Income</label>';
+		str+='<label>Annual Income</label>';
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-body">';
 				str+='<label class="radio-inline">';
@@ -388,8 +439,350 @@ function buildProfileData(i)
 	str+='</div>';
 	$("#buildProfileData").html(str);
 	$(".selectChosen").chosen();
-	getAllDistrictByStateId(1,districtId);
-	getAllMandalsByDistrictID(districtId,tehsilId);
-	getAllPanchayatByMandalId(tehsilId,panchayatId);
+	getAllDistrictByStateId(1,districtId,'districts');
+	getAllMandalsByDistrictID(districtId,tehsilId,'mandals');
+	getAllPanchayatByMandalId(tehsilId,panchayatId,'panchayats');
 	getAllHamletByPanchayatID(panchayatId,hamletId)
+}
+function getAllMainDepartments(){
+	$('#departmentId').empty();
+	$('#departmentId').trigger('chosen:updated');
+	
+	var jsObj={}
+	$.ajax({
+		type:"POST",
+		url :"getAllMainDepartmentsAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		$('#departmentId').append('<option value="0">Select Department</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$('#departmentId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		}
+		$('#departmentId').trigger('chosen:updated');
+	});
+}
+
+function getIssueTypesForDepartment(){
+	$('#issueTypeId').empty();
+	$('#issueTypeId').trigger('chosen:updated');
+	
+	var deptId = $("#departmentId").val();
+	var jsObj={
+		departmentId : deptId
+	}
+	$.ajax({
+		type:"POST",
+		url :"getMeekosamIssueTypeListByDeptAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		$('#issueTypeId').append('<option value="0">Select Issue Type</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$('#issueTypeId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		}
+		$('#issueTypeId').trigger('chosen:updated');
+	});
+}
+
+function getIssueSubTypes(){
+	$('#issueSubTypeId').empty();
+	$('#issueSubTypeId').trigger('chosen:updated');
+	
+	var issueType = $("#issueTypeId").val();
+	var jsObj={
+		parentIssueTypeId : issueType
+	}
+	$.ajax({
+		type:"POST",
+		url :"getMeekosamSubIssueTypeListForParentIssueTypeAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		$('#issueSubTypeId').append('<option value="0">Select Issue SubType</option>');
+		if(result != null && result.length > 0){
+			for(var i in result){
+				$('#issueSubTypeId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		}
+		$('#issueSubTypeId').trigger('chosen:updated');
+	});
+}
+
+function getDynamicValuesForIssue(){
+	$("#buildPetitionerData").html('');
+	var issueType = $("#issueSubTypeId").val();
+	var jsObj={
+		issueTypeId : issueType
+	}
+	$.ajax({
+		type:"POST",
+		url :"getAllDynamicFieldsAndDataForIsueTypeAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result != null && result.length > 0)
+		{
+			buildDynamicValuesForIssue(result);
+		}
+		
+	});
+}
+function buildDynamicValuesForIssue(result)
+{
+	var str='';
+	for(var i in result)
+	{
+		str+='<h4 class="panel-title m_top20"><strong>'+result[i].issueType+'</strong></h4>';
+		str+='<div class="row m_top10">';
+		for(var j in result[i].subList)
+		{
+			if(result[i].subList[j].issueFielsType == 'TextBox')
+			{
+				str+='<div class="col-sm-3">';
+					str+='<label>'+result[i].subList[j].issueField+'</label>';
+					str+='<input type="text" id="'+result[i].subList[j].issueFieldId+'" class="form-control"/>';
+				str+='</div>';
+			}
+			if(result[i].subList[j].issueFielsType == 'Radio')
+			{
+				str+='<div class="col-sm-12 m_top10">';
+					str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-12">';
+							for(var k in result[i].subList[j].subList)
+							{
+								str+='<label class="radio-inline">';
+									str+='<input type="radio" name="petitionerRadio" id="'+result[i].subList[j].subList[k].id+'"/>'+result[i].subList[j].subList[k].name+'';
+								str+='</label>';
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			}
+			if(result[i].subList[j].issueFielsType == 'CheckBox')
+			{
+				str+='<div class="col-sm-12 m_top10">';
+					str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+					str+='<div class="row m_top10">';
+						str+='<div class="col-sm-12">';
+							for(var k in result[i].subList[j].subList)
+							{
+								str+='<label class="checkbox-inline">';
+									str+='<input type="checkbox" name="petitionerCheckbox" id="'+result[i].subList[j].subList[k].id+'"/>'+result[i].subList[j].subList[k].name+'';
+								str+='</label>';
+							}
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			}
+		}
+		str+='</div>';
+	}
+	$("#buildPetitionerData").html(str);
+}
+
+function getSubDeptsFrParentDept(departmentId){
+	var jobj = {
+		parntDeptId : departmentId
+	}
+	$.ajax({
+		type : 'GET',
+		url : 'getSubDeptsFrParentDeptAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jobj)} 
+	}).done(function(result){
+		if(result != null && result.length > 0){
+			$("#subDepartmentSelectId").html('');
+			$('#subDepartmentSelectId').append('<option value="0">Select Sub Department</option>')
+			for(var i in result){	
+				$('#subDepartmentSelectId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+			}
+			$("#subDepartmentSelectId").trigger("chosen:updated");
+		}
+	});
+}
+function getParentLevelsOfLevel(departmentId){
+	
+	var jsObj = {
+		departmentId : departmentId,
+		levelId : $("#locationLevelSelectId").val()
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getParentLevelsOfLevelAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildParentLevelsOfLevel(result,departmentId);
+		}
+	});
+}
+function buildParentLevelsOfLevel(result,departmentId){
+	var str='';
+		
+		for(var i in result){
+			if(i<result.length-1){
+				str+='<div class="col-sm-4 m_top10">';
+					str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLocationId"></span></label>';
+					str+='<select  class="chosenSelect" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
+				str+='</div>';
+			}else{
+				str+='<div class="col-sm-4 m_top10">';
+					str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLocationId"></span></label>';
+					str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="grievanceAlertVO.levelValue" ></select>';
+				str+='</div>';
+			}
+			
+		}
+	
+	$("#parentLevelDivId").html(str);
+	$(".chosenSelect").chosen({width:'100%'});
+	
+	for(var i in result){
+		
+		if(result[i].idnameList !=null && result[i].idnameList.length>0){
+			var newStr='';		
+			newStr+='<option value="0">Select '+result[i].name+'</option>';
+			for(var j in result[i].idnameList){
+				 newStr+='<option value="'+result[i].idnameList[j].id+'">'+result[i].idnameList[j].name+'</option>';
+			}			
+			$("#locationSubLevelSelectId"+result[i].id+"").html(newStr);
+			$("#locationSubLevelSelectId"+result[i].id+"").trigger("chosen:updated");
+		}
+	}
+	
+	$("#locationSubLevelSelectId1").val(1);
+	$("#locationSubLevelSelectId1").trigger('chosen:updated');
+	$("#locationSubLevelSelectId1").trigger("change");
+}
+
+function getDepartmentLevels(subDepartmentId){
+		
+	var jsObj = {
+		departmentId : subDepartmentId
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getDepartmentLevelsAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildDepartmentLevels(result);
+		}
+	});
+	
+}
+function buildDepartmentLevels(result){
+	
+	var str='';	
+	str+='<option value="0">Select Level</option>';
+	for(var i in result){
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+	}
+	
+	$("#locationLevelSelectId").html(str);
+	$("#locationLevelSelectId").trigger("chosen:updated");
+}
+function getGovtSubLevelInfo(departmentId,levelId){
+		
+	$("#designationsId").empty();
+	$("#designationsId").trigger("chosen:updated");
+	$("#officerNamesId").empty();
+	$("#officerNamesId").trigger("chosen:updated");	
+	
+	var levelValue=$("#locationSubLevelSelectId"+levelId+"").val();	
+	
+	var jsObj = {
+		departmentId : departmentId,
+		levelId :levelId,
+		levelValue:levelValue
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getGovtSubLevelInfoAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null){
+			buildGovtSubLevelInfoAction(result);
+		}
+			
+	});
+}
+function buildGovtSubLevelInfoAction(result){
+	
+	var str='';
+	if(result !=null){		
+		if(result.idnameList !=null && result.idnameList.length>0){
+			str+='<option value="0">Select '+result.name+'</option>';
+			for(var i in result.idnameList){
+				str+='<option value="'+result.idnameList[i].id+'">'+result.idnameList[i].name+'</option>';
+			}
+		}
+		
+		$("#locationSubLevelSelectId"+result.id+"").html(str);
+		$("#locationSubLevelSelectId"+result.id+"").trigger("chosen:updated");
+	}
+	
+}
+function designationsByDepartment()
+{
+	$("#designationsId").empty();
+	$("#designationsId").trigger("chosen:updated");
+	$("#officerNamesId").empty();
+	$("#officerNamesId").trigger("chosen:updated");
+	var LevelId = $("#locationLevelSelectId").chosen().val();
+	var deprtmntId = $("#departmentId").chosen().val();
+	var levelValue = $(".locationCls").chosen().val();
+	
+	var jsObj = {
+		departmentId	: deprtmntId,
+		levelId			: LevelId,
+		levelValue		: levelValue
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getOldDesignationsByDepartmentNewAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		var str='';
+		str+='<option value="0">Select Designation</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#designationsId").html(str);
+		$("#designationsId").trigger("chosen:updated");
+	});
+}
+function officersByDesignationAndLevel(designationId)
+{
+	$("#officerNamesId").empty();
+	$("#officerNamesId").trigger("chosen:updated");
+	var LevelId = $("#locationLevelSelectId").chosen().val()
+	var LevelValue = $(".locationCls").chosen().val()
+	
+	var jsObj = {
+		levelId				: LevelId,
+		levelValue			: LevelValue,
+		designationId		: designationId
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getOldOfficersByDesignationAndLevelNewAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		var str='';
+		str+='<option value="0">Select Officer</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#officerNamesId").html(str);
+		$("#officerNamesId").trigger("chosen:updated");
+	});
 }
