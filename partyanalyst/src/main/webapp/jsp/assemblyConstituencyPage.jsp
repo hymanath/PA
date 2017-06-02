@@ -38,6 +38,148 @@
 		<div class="row">
 			<div id="candidateProfile"></div>
 			<div id="consCountsId"></div>
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20" navbar-index="election">
+				 <h3 class="text-capitalize">Election Information Assembly Constituency</h3>
+				 <h6 class="text-capitalize text-muted">All Parties Performance in different elections</h6>
+				 <div class="block">
+					<div class="row">
+						 <div class="col-md-12 col-xs-12 col-sm-12">
+							 <label class="text-capital m_left5">
+							 	<input type="checkbox"/>ALL
+							 </label>
+							 <label class="text-capital m_left5">
+							 	<input type="checkbox"/>assembly
+							 </label>
+							 <label class="text-capital m_left5">
+							 	<input type="checkbox"/>parliament
+							 </label>
+							 
+							 <div id="test"></div>
+						 </div>
+					</div>
+				</div>
+				<div class="block">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12">
+							<h4 class="text-capitalize">Assembly Election Details</h4>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<div id="assemblyElectionDetails"></div>
+							<div id="assemblyElectionDetails1"></div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-6">
+							<div id="assemblyElectionDetailsView"></div>
+						</div>
+					</div>
+				 </div>
+			</div>
+			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="news">
+				<h3>News <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>		
+				<div class="block">
+					<div class="row">
+						<div class="col-dm-6 col-xs-12 col-sm-6 pad_right0">
+							<div class="block pad_5">
+								<h4 class="text-capitalize"><img src="coreApi/img/news.png"/>print media</h4>
+								<div id="printMediaCounts"></div>
+							</div>
+						</div>
+						<div class="col-dm-6 col-xs-12 col-sm-6 pad_left0">
+							<div class="block pad_5">
+								<h4 class="text-capitalize"><img src="coreApi/img/electronic.png"/>electronic media</h4>
+								<div id="electronicMediaCounts"></div>
+</div>
+						</div>
+					</div>
+					<div class="panel-group m_top10" id="newsCollapse" role="tablist" aria-multiselectable="true">
+					  <div class="panel panel-default">
+						<div class="panel-heading bg-fff" role="tab" id="headingOne">
+							<a role="button" data-toggle="collapse" class="collapseIcon" data-parent="#newsCollapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+							  	<h4 class="panel-title">leaders in news</h4>
+							</a>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+						  	<div class="panel-body pad_0">
+								<table class="table table-noborder f-12">
+									<thead class="bg-E9 text-capitalize">
+										<th>leader name</th>
+										<th>designation</th>
+										<th>positive</th>
+										<th>negative</th>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+											</td>
+											<td>secretary</td>
+											<td>50%</td>
+											<td>40%</td>
+										</tr>
+										<tr>
+											<td>
+												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+											</td>
+											<td>secretary</td>
+											<td>50%</td>
+											<td>40%</td>
+										</tr>
+										<tr>
+											<td>
+												<img src="coreApi/img/profile.jpg" class="img-responsive img-circle" style="height: 30px;width: 30px;display: inline-block"/> praven tej
+											</td>
+											<td>secretary</td>
+											<td>50%</td>
+											<td>40%</td>
+										</tr>
+									</tbody>
+								</table>
+						  	</div>
+						</div>
+					  </div>
+					</div>
+					<div class="pad_10">
+						<button class="btn btn-success btn-success-white">detailed news information</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-xs-12 col-sm-6 m_top20" navbar-index="problems">
+				<h3>Problems <span class="pull-right"><i class="glyphicon glyphicon-refresh f-14"></i></span></h3>						
+				<div class="block pad_5">
+					<div class="row">
+						<div class="col-md-6 col-xs-12 col-sm-12">
+							<div id="probDetailedCounts"></div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 text-center">
+							<div id="problemsDetailedGraph" style="height:200px"></div>
+							<button class="btn btn-success btn-success-white">detailed information</button>
+						</div>
+					</div>
+					<div class="panel-group m_top10" id="problemsCollapse" role="tablist" aria-multiselectable="true">
+					  <div class="panel panel-default">
+						<div class="panel-heading bg-fff" role="tab" id="headingProb">
+							<a role="button" data-toggle="collapse" class="collapseIcon" data-parent="#problemsCollapse" href="#collapseProb" aria-expanded="true" aria-controls="collapseProb">
+							  	<h4 class="panel-title text-capital">problems can be solved without money</h4>
+							</a>
+						</div>
+						<div id="collapseProb" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingProb">
+						  	<div class="panel-body">
+								<div class="row">
+									<div class="col-md-7 col-xs-12 col-sm-7">
+										<div id="problemsSolveId"></div>
+									</div>
+									<div class="col-md-5 col-xs-12 col-sm-5">
+										<div id="problemsSolveGraph" style="height:1060px;"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					  </div>
+					</div>
+					<div class="pad_10">
+						<button class="btn btn-success btn-success-white">detailed news information</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 </div>
@@ -61,7 +203,7 @@
 		<div class="media-body">
 			<h4 class="m_top20 text-success text-capital">{{candidateName}}</h4>
 			<p class="text-muted">{{constituencyName}} {{constituencyType}}</p>
-			<button class="btn btn-success btn-success-white text-capital">view candidate profile</button>
+			<a  target="_blank" href="https://mytdp.com/candidateElectionResultsAction.action?candidateId={{candidateId}}" class="btn btn-success btn-success-white text-capital">view candidate profile</a>
 		</div>
 	</div>
 </div>
@@ -136,6 +278,28 @@
 			<td>{{count}}</td>
 			<td>{{positiveCountMain}} <small class="m_left5 text-success">{{positivePerc}}%</small></td>
 			<td>{{negativCountMain}} <small class="m_left5 text-danger">{{negativePerc}}%</small></td>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
+</script>
+<script id="assemblyElectionDetailsTable" type="text/x-handlebars-template">
+<table class="table table-noborder m_top10">
+	<thead class="text-capitalize f-12 bg-E9">
+		<tr>
+			<th>Year</th>
+			<th>won candidate</th>
+			<th>majority of votes</th>
+			<th>lost candidate</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each this}}
+		<tr>
+			<td>{{electionYear}}</td>
+			<td>{{candidateResultsVO.candidateName}}</td>
+			<td>{{candidateResultsVO.votesEarned}}</td>
+			<td>{{candidateOppositionList.0.candidateName}}</td>
 		</tr>
 		{{/each}}
 	</tbody>
