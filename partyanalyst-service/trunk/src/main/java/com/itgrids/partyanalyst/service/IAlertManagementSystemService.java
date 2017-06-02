@@ -186,4 +186,5 @@ public interface IAlertManagementSystemService {
 	 public String updateProposalStatusFrAlert(final Long userId,final Long alertId,final Long proposalStatusId,final String comment);
 	// public List<IdNameVO> getAllProposalCategories();
 	 public String alertDeptmentExistInLogin(Long alertId,Long userId);
+	 public List<AlertVO> getDepartmentWiseProposalAlertCnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 }        

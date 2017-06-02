@@ -11625,12 +11625,11 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			}
 			
 			List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
-			
 			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//Prepare Parameter
 			
-			if(deptIdList != null && deptIdList.size() == 0){
-				deptIdList.add(0L);  
-			}
+				if(deptIdList != null && deptIdList.size() == 0){
+					deptIdList.add(0L);  
+				}
 				List<Long> levelValues = new ArrayList<Long>();    
 				Long levelId = 0L;
 				List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
@@ -11644,8 +11643,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 				Map<Long,AlertVO> catgoryMap = new LinkedHashMap<Long, AlertVO>(0);
 				Map<Long,String> categoryNameAndIdMap = new HashMap<Long, String>(0);
 				   
-			    List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertProposalCategoryWiseAlertCnt(fromDate, toDate, printIdList, electronicIdList, deptIdList, levelId, levelValues, alertStatusIds, calCntrIdList, socialMediaTypeIds, alertSeverityIds, mondayGrievanceTypeIds, janmabhoomiTypeIds, specialGrievanceTypeIds, generalGrievanceTypeIds);
-			
+			    List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertProposalCategoryWiseAlertCnt(fromDate, toDate, printIdList, electronicIdList, deptIdList, levelId, levelValues, alertStatusIds, calCntrIdList, socialMediaTypeIds, alertSeverityIds, mondayGrievanceTypeIds, janmabhoomiTypeIds, specialGrievanceTypeIds, generalGrievanceTypeIds,"Category");
 			    setAlertProposalCategoryWiseAlertcnt(rtrnObjLst,catgoryMap,categoryNameAndIdMap);
 			
 			  Long totalAmount = 0l;
@@ -11682,7 +11680,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 					 AlertVO categoryVO = categoryMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));//CategoryId
 					 if(categoryVO == null){
 						 categoryVO = new AlertVO();
-						 categoryVO.setSubList2(getAlertProposalStatusList(objList));
+						 categoryVO.setSubList2(getAlertProposalStatusList(objList,"category"));
 						 categoryIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 						 categoryMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), categoryVO);
 						 
@@ -11700,15 +11698,20 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			LOG.error("Error occured setAlertProposalCategoryWiseAlertcnt() method of AlertManagementSystemService{}");
 		}
 	}
-	public List<AlertVO> getAlertProposalStatusList(List<Object[]> objList){
+	public List<AlertVO> getAlertProposalStatusList(List<Object[]> objList,String type){
 		List<AlertVO> statuList = new ArrayList<AlertVO>();
 		Map<Long,AlertVO> statuMap = new TreeMap<Long, AlertVO>();
 		try{
 			if(objList != null && objList.size() > 0){
 				for(Object[] param:objList){
 					 AlertVO statusVO = new AlertVO();
-					 statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));//StatusId
-					 statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));//StatusName
+					 if(type.equalsIgnoreCase("category")){
+						 statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));//StatusId
+						 statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));//StatusName
+					 }else if(type.equalsIgnoreCase("Department")){
+						 statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[4]));//StatusId
+						 statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[5]));//StatusName
+					 }
 					 statuMap.put(statusVO.getId(), statusVO);
 				}
 			}
@@ -11861,6 +11864,128 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
  			LOG.error("Error occured alertDeptmentExistInLogin() method of AlertManagementSystemService{}");
 		}
 		return result;
+	}
+	/*
+	 * Author:Santosh
+	 */
+	public List<AlertVO> getDepartmentWiseProposalAlertCnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
+		LOG.info("Entered in getFinancialAssistanceAlertCntCategoryWise() method of AlertManagementSystemService{}");
+		try{
+				Date fromDate = null;
+				Date toDate = null;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+				if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				}
+			
+			    List<AlertVO> finalAlertVOs = new ArrayList<AlertVO>();
+			    prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//Prepare Parameter
+			
+				if(deptIdList != null && deptIdList.size() == 0){
+					deptIdList.add(0L);  
+				}
+				List<Long> levelValues = new ArrayList<Long>();    
+				Long levelId = 0L;
+				List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+				if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+					for(Object[] param : lvlValueAndLvlIdList){
+						levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+					}
+				}
+			     
+				Map<Long,AlertVO> deptartmentMap = new LinkedHashMap<Long, AlertVO>(0);
+				
+				List<Object[]> rtrnObjLst = alertAssignedOfficerNewDAO.getAlertProposalCategoryWiseAlertCnt(fromDate, toDate, printIdList, electronicIdList, deptIdList, levelId, levelValues, alertStatusIds, calCntrIdList, socialMediaTypeIds, alertSeverityIds, mondayGrievanceTypeIds, janmabhoomiTypeIds, specialGrievanceTypeIds, generalGrievanceTypeIds,"Department");
+			    setDepartmentWiseProposalCAlertcnt(rtrnObjLst,deptartmentMap);
+			
+			 //Calculating over all data
+			  if(deptartmentMap != null && deptartmentMap.size() >0){
+				 for(Entry<Long,AlertVO> deptEntry:deptartmentMap.entrySet()){
+					 if(deptEntry.getValue().getSubList2() != null && deptEntry.getValue().getSubList2().size() > 0){
+						 for(AlertVO categoryVO:deptEntry.getValue().getSubList2()){
+							  if(categoryVO.getSubList2() != null && categoryVO.getSubList2().size() > 0){
+								  for(AlertVO statusVO:categoryVO.getSubList2()){
+										 categoryVO.setAlertCnt(categoryVO.getAlertCnt()+statusVO.getAlertCnt());
+										 categoryVO.setProposalAmount(categoryVO.getProposalAmount()+statusVO.getProposalAmount());
+										 deptEntry.getValue().setProposalAmount(deptEntry.getValue().getProposalAmount()+statusVO.getProposalAmount()); 
+										 deptEntry.getValue().setAlertCnt(deptEntry.getValue().getAlertCnt()+statusVO.getAlertCnt());
+										 if(statusVO.getId().longValue() == 3l){//Proposal accepted amount
+											 deptEntry.getValue().setApprovedAmount(deptEntry.getValue().getApprovedAmount()+statusVO.getProposalAmount());
+											 
+										 }
+											 
+								  }
+							  }
+						 }
+					 }
+				 }
+			 }
+		     if(deptartmentMap != null && deptartmentMap.size() > 0){
+		    	 finalAlertVOs.addAll(deptartmentMap.values());
+		    	 deptartmentMap.clear();
+		     }
+			return finalAlertVOs; 
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getFinancialAssistanceAlertCntCategoryWise() method of AlertManagementSystemService{}");
+		}
+		return null;
+	}
+	
+	public void setDepartmentWiseProposalCAlertcnt(List<Object[]> objList,Map<Long,AlertVO> deptMap){
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					AlertVO deptVO = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					 if(deptVO == null){
+						 deptVO = new AlertVO();
+						 deptVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						 deptVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						 deptVO.setSubList2(getCategoryList(objList));
+						 deptMap.put(deptVO.getId(), deptVO);
+					 }
+					 Long categoryId = commonMethodsUtilService.getLongValueForObject(param[2]);
+					 Long statusId = commonMethodsUtilService.getLongValueForObject(param[4]);
+					 Long alertCnt = commonMethodsUtilService.getLongValueForObject(param[6]);
+					 Long proposalAmount = commonMethodsUtilService.getLongValueForObject(param[7]);
+					 AlertVO categoryVO = getMatchVO1(deptVO.getSubList2(),categoryId);
+					 if(categoryVO != null && categoryVO.getSubList2() != null && categoryVO.getSubList2().size() > 0){
+						  AlertVO statusVO = getMatchVO1(categoryVO.getSubList2(), statusId);
+						   if(statusVO !=  null){
+							   statusVO.setAlertCnt(alertCnt);
+							   statusVO.setProposalAmount(proposalAmount);
+						   }
+					 }
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setDepartmentWiseProposalCAlertcnt() method of AlertManagementSystemService{}");
+		}
+	}
+	public List<AlertVO> getCategoryList(List<Object[]> objList){
+		List<AlertVO> categoryList = new ArrayList<AlertVO>();
+		Map<Long,AlertVO> categoryMap = new TreeMap<Long, AlertVO>();
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					 AlertVO categoryVO = new AlertVO();
+					 categoryVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));//categoryId
+					 categoryVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));//categoryName
+					 categoryVO.setSubList2(getAlertProposalStatusList(objList,"Department"));
+					 categoryMap.put(categoryVO.getId(), categoryVO);
+				}
+			}
+			if(categoryMap != null && categoryMap.size() > 0){
+				categoryList.addAll(categoryMap.values());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getCategoryList() method of AlertManagementSystemService{}");
+		}
+		return categoryList;
 	}
 	
 }
