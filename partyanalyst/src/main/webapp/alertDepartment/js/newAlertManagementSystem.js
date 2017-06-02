@@ -1,9 +1,10 @@
 /*global Function and variables Start*/
- var globalLevelObj =  {"1":"STATE","2":"ZONE","3":"REGION","4":"CIRCLE","5":"DISTRICT","6":"DIVISION","7":"SUB DIVISION","8":"MANDAL","9":"MUNICIPALITY","10":"PANCHAYAT","11":"WARD","12":"GMC","13":"CLUSTER"};
+var globalLevelObj =  {"1":"STATE","2":"ZONE","3":"REGION","4":"CIRCLE","5":"DISTRICT","6":"DIVISION","7":"SUB DIVISION","8":"MANDAL","9":"MUNICIPALITY","10":"PANCHAYAT","11":"WARD","12":"GMC","13":"CLUSTER"};
 var globalFinancialAssColorObj = {"Financial Assistance Required":"#B59AE9","Policy Decision Required":"#6EB6F0","Others":"#3FE2CD"}; 
- var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","Electronic Media":"#8D69C8","Call Center":"#EFC000","Facebook":"#00ABED","Twitter":"#F7776C","Social Media":"#00ABED","Monday Grievance":"#FA8072","Janmabhoomi":"#00FF00","Special Grievance - SC/ST":"#0000FF","General Grievance":"#808000"};	 
+var globalAlertSourceColorObj =  {"Manual":"#E54BB3","Print Media":"#69BC6E","Electronic Media":"#8D69C8","Call Center":"#EFC000","Facebook":"#00ABED","Twitter":"#F7776C","Social Media":"#00ABED","Monday Grievance":"#FA8072","Janmabhoomi":"#00FF00","Special Grievance - SC/ST":"#0000FF","General Grievance":"#808000"};	 
 var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY");
 var currentToDate=moment().endOf('year').add(10, 'years').format("DD/MM/YYYY");
+ 
 var globalStateId = 1;  
 var newspapersGlobalArr = [];
 var channelGlobalArr = [];
@@ -2899,6 +2900,7 @@ function getFinancialAssistanceAlertCntCategoryWise()
 	    $("#financialAssistanceDetilsDivId").html('');
 	   if(result !=null && result.length>0){
 		   buildFinancialAssistanceDetails(result);
+		   getDepartmentWiseProposalAlertCnt();
 	   }else{
 		   $("#financialAssistanceDetilsDivId").html('No Data Available.');
 	   }
@@ -2911,49 +2913,62 @@ function buildFinancialAssistanceDetails(result)
 	var totalfar=0;
 	var approvedAmount=0;
 	str+='<div class="row">';
-		str+='<div class="col-md-2 col-xs-12 col-sm-4">';
-			str+='<div id="finanicialAssGraphView" ></div>';
-		str+='</div>';
-	
-		 str+='<div class="col-md-2 col-xs-12 col-sm-4" style="margin-top:30px">';
-			str+='<div class="scrollerDivCls">';
-				str+='<table class="table tableGraph">';
-					
-					str+='<tbody>';
-						for(var i in result)
-						{	
-							totalAlert+=result[i].alertCnt;
-							totalfar = result[0].count;
-							if(result[i].id == 1){
-								if(result[i].subList2 !=null && result[i].subList2.length>0){
-									for(var j in result[i].subList2){
-										if(result[i].subList2[j].id == 3){
-											approvedAmount = result[i].subList2[j].proposalAmount;
+		str+='<div class="col-sm-4">';
+			str+='<div class="row">';
+				str+='<div class="col-sm-6">';
+					str+='<div id="finanicialAssGraphView" style="height:290px"></div>';
+				str+='</div>';
+			
+				 str+='<div class="col-sm-6" style="margin-top:30px">';
+					str+='<div class="scrollerDivCls">';
+						str+='<table class="table tableGraph">';
+							
+							str+='<tbody>';
+								for(var i in result)
+								{	
+									totalAlert+=result[i].alertCnt;
+									totalfar = result[0].count;
+									if(result[i].id == 1){
+										if(result[i].subList2 !=null && result[i].subList2.length>0){
+											for(var j in result[i].subList2){
+												if(result[i].subList2[j].id == 3){
+													approvedAmount = result[i].subList2[j].proposalAmount;
+												}
+											}
+											
 										}
 									}
 									
+									
+									str+='<tr>';
+										str+='<td><span class="label" style="background-color:'+globalFinancialAssColorObj[result[i].name.trim()]+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
+										str+='<td style="cursor:pointer;" onclick="getFinancialAssistanceAlertCntDtls(\''+result[i].name+'\','+result[i].alertCnt+','+result[i].id+',0,0);" class="alertSourceCls" attr_alert_source_name="'+result[i].name+'" attr_alert_count="'+result[i].alertCnt+'" attr_source_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
+									str+='</tr>';
 								}
-							}
-							
-							
-							str+='<tr>';
-								str+='<td><span class="label" style="background-color:'+globalFinancialAssColorObj[result[i].name.trim()]+';padding:0px 6px;margin-right:5px;"> </span>'+result[i].name+'</td>';
-								str+='<td style="cursor:pointer;" onclick="getFinancialAssistanceAlertCntDtls(\''+result[i].name+'\','+result[i].alertCnt+','+result[i].id+',0);" class="alertSourceCls" attr_alert_source_name="'+result[i].name+'" attr_alert_count="'+result[i].alertCnt+'" attr_source_id="'+result[i].id+'">'+result[i].alertCnt+'</td>';
-							str+='</tr>';
-						}
-					str+='</tbody>';  
-				str+='</table>';
+							str+='</tbody>';  
+						str+='</table>';
+					str+='</div>';
+				str+='</div>'; 
+				str+='<div class="col-sm-12 m_top10">';
+					str+='<table class="table table-bordered" style="background-color:#ccc;">';
+						str+='<tr>';
+							str+='<td rowspan="2" style="vertical-align:middle"><span>TOTAL PROPOSAL</span> - <span onclick="getFinancialAssistanceAlertCntDtls(\'PROPOSAL\','+totalAlert+',0,0,0);" style="cursor:pointer;">'+totalAlert+'</span></td>';
+							str+='<td><span> FAR</span> - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp'+totalfar+'/-</span></td>';
+						str+='</tr>';
+						str+='<tr>';
+							str+='<td><span> APPROVED</span> - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp'+approvedAmount+'/-</span></td>';
+						str+='</tr>';
+					str+='</table>';
+				str+='</div>';
 			str+='</div>';
-		str+='</div>'; 
+		str+='</div>';
 		str+='<div class="col-md-8 col-xs-12 col-sm-4" style="box-shadow: -3px 0 3px 3px rgba(0, 0, 0, 0.4);">';
 		str+='<div class="scollerDivFinancialAss">';
 			str+='<div id="financialAssbarGraphView" ></div>';
 		str+='</div>';
 		str+='</div>';
-		str+='<div class="col-sm-12 m_top10">';
-				str+='<h4><span><span style="font-size: 16px;">TOTAL PROPOSAL</span> - <span onclick="getFinancialAssistanceAlertCntDtls(\'PROPOSAL\','+totalAlert+',0,0);" style="cursor:pointer;">'+totalAlert+'</span></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><span style="font-size: 16px;"> FAR</span> - <i class="fa fa-inr" aria-hidden="true"></i>'+totalfar+'/-</span>&nbsp;&nbsp;&nbsp; <span style="font-size: 16px;"> APPROVED AMOUNT</span> - <i class="fa fa-inr" aria-hidden="true"></i>'+approvedAmount+'/-</span></h4>';
+		str+='<div id="proposalDepartmentsDivId" class="m_top10"></div>';
 		str+='</div>';
-	str+='</div>';
 	$("#financialAssistanceDetilsDivId").html(str);
 	
 	var financialMainArr =[];
@@ -3075,6 +3090,7 @@ function buildFinancialAssistanceDetails(result)
 						mainFinancialJosnObjArr.push({name:'Proposal Accept',data:proposalAcceptArr,color:"#82CA9C"});  
 					  }
 					  
+
 				}
 			}
 				var heightOfDiv = financialNamesArr.length ;
@@ -3162,7 +3178,7 @@ function buildFinancialAssistanceDetails(result)
 										var totalCount = value[2];
 										var categoryId=value[3]; 
 										
-										getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,statusId);
+										getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,statusId,0);
 										
 									}
 								}
@@ -3180,13 +3196,13 @@ function buildFinancialAssistanceDetails(result)
 			
 				 $.each($('#financialAssbarGraphView').find(".highcharts-xaxis-labels").find("text"),function(index,item){   
 					$(this).attr("style","cursor:pointer;"); 
-						$(this).attr("onclick","getFinancialAssistanceAlertCntDtls(\'"+result[index].name+"\',\'"+result[index].alertCnt+"\',\'"+result[index].id+"\',0)");
+						$(this).attr("onclick","getFinancialAssistanceAlertCntDtls(\'"+result[index].name+"\',\'"+result[index].alertCnt+"\',\'"+result[index].id+"\',0,0)");
 					
 				
 				});
 		}
 }
-function getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,statusId)
+function getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,statusId,departmentId)
 {
 	 
 		$("#alertManagementPopupBody").html('')
@@ -3199,12 +3215,17 @@ function getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,sta
 		$("#alertManagementPopupBody").html(spinner);
 		getFilterSectionAlertDetails(statusName,totalCount,globalDepartmentIdsArr);
    
-	  
+	var deptIds=[];
+	  if(departmentId == 0){
+		  deptIds = globalDepartmentIdsArr;
+	  }else{
+		   deptIds.push(departmentId)
+	  }
     var jsObj ={
       fromDate:currentFromDate,
       toDate:currentToDate,
       stateId : 1,
-      deptIdArr : globalDepartmentIdsArr,  
+      deptIdArr : deptIds,  
       paperIdArr : newspapersGlobalArr,
       chanelIdArr : channelGlobalArr,
 	  callCenterArr : callCenterGlobalArr,
@@ -3231,4 +3252,225 @@ function getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,sta
 		}
     });
 }
+function getDepartmentWiseProposalAlertCnt()
+{
+	 
+	$("#proposalDepartmentsDivId").html(spinner);
+    var jsObj ={
+      fromDate:currentFromDate,
+      toDate:currentToDate,
+      stateId : 1,
+      deptIdArr : globalDepartmentIdsArr,  
+      paperIdArr : newspapersGlobalArr,
+      chanelIdArr : channelGlobalArr,
+	  callCenterArr : callCenterGlobalArr,
+	  socialMediaTypeIdsArr:globalsocialMediaTypeIdsArr,
+	  alertSeverityIdsArr:globalAlertSeverityIdsArr,
+      alertStatusIdsArr:globalAlertStatusIdsArr,
+      mondayGrievanceTypeIdsArr:globalMondayGrievanceTypeIdsArr,
+	  janmabhoomiTypeIdsArr:globalJanmabhoomiTypeIdsArr,
+	  specialGrievanceTypeIdsArr:globalSpecialGrievanceTypeIdsArr,
+	  generalGrievanceTypeIdsArr:globalGeneralGrievanceTypeIdsArr
+    }
+    $.ajax({
+      type:'GET',
+      url: 'getDepartmentWiseProposalAlertCntAction.action',
+      data: {task :JSON.stringify(jsObj)}
+    }).done(function(result){
+		 $("#proposalDepartmentsDivId").html('');
+		if(result !=null && result.length>1){
+			buildDepartmentWiseProposalAlertCnt(result);
+		}else{
+			//$("#proposalDepartmentsDivId").html("NO Data Available");
+		}
+		
+    });
+}
+
+	function buildDepartmentWiseProposalAlertCnt(result){
+		
+		var str='';
+			if(result !=null && result.length>0){
+				str+='<div class="col-sm-12" style="position:relative;">';
+					str+='<div style="border-top:1px dashed #333;margin-top:20px;">';
+						str+='<h4 style="text-align: center; position: relative; top: -11px;"><span  class="text-capital" style="background-color:#fff;padding:0px 10px">Department Wise</span></h4>';
+					str+='</div>';
+					
+						str+='<div class="row">';
+							str+='<ul class="list-inline slickApplyFinal">';
+							for(var i in result){
+								str+='<li class="col-sm-4">';
+									str+='<div class="panel panel-default">';
+										str+='<div class="panel-body">';
+											str+='<p>'+result[i].name+'</p>';
+											str+='<div style="height:270px;" id="proposalDepartmentGraphWiseDiv'+result[i].id+'"></div>';
+											
+												str+='<table class="table table-bordered m_top20" style="background-color:#ccc;">';
+													str+='<tr>';
+														str+='<td rowspan="2" style="vertical-align:middle"><span>TOTAL PROPOSAL</span> - <span onclick="getFinancialAssistanceAlertCntDtls(\'PROPOSAL\','+result[i].alertCnt+',0,0,'+result[i].id+');" style="cursor:pointer;">'+result[i].alertCnt+'</span></td>';
+														str+='<td><span> FAR</span> - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp'+result[i].proposalAmount+'/-</span></td>';
+													str+='</tr>';
+													str+='<tr>';
+														str+='<td><span> APPROVED</span> - <i class="fa fa-inr" aria-hidden="true"></i>&nbsp'+result[i].approvedAmount+'/-</span></td>';
+													str+='</tr>';
+												str+='</table>';
+											
+										str+='</div>';
+									str+='</div>';
+								 str+='</li>';
+							}
+							str+='</ul>';
+						str+='</div>';
+				str+='</div>';
+			}
+			$("#proposalDepartmentsDivId").html(str);
+			$('.slickApplyFinal').slick({
+				   slide: 'li',
+				  slidesToShow: 3,
+				  slidesToScroll: 1,
+				  infinite: false,
+				  swipe:false,
+				 touchMove:false,
+				  variableWidth: false
+				});
+			if(result !=null && result.length>0){
+				
+				var financialNamesArr=[];
+				for(var i in result){
+					var proposalPendingArr=[];
+					var proposalRejectedArr = [];
+					var proposalAcceptArr = [];
+					if(result[i].subList2 !=null && result[i].subList2.length>0){
+						for(var j in result[i].subList2){
+							financialNamesArr.push(result[i].subList2[j].name);
+							if(result[i].subList2[j].subList2 !=null && result[i].subList2[j].subList2.length>0){
+								for(var k in result[i].subList2[j].subList2){
+									
+									if(result[i].subList2[j].subList2[k].id==1){
+										proposalPendingArr.push({"y":result[i].subList2[j].subList2[k].alertCnt,"extra":result[i].subList2[j].subList2[k].id+"-"+result[i].subList2[j].subList2[k].name+"-"+result[i].subList2[j].subList2[k].alertCnt+"-"+result[i].subList2[j].id+"-"+result[i].id}); 
+									}else if(result[i].subList2[j].subList2[k].id==2){
+										 proposalRejectedArr.push({"y":result[i].subList2[j].subList2[k].alertCnt,"extra":result[i].subList2[j].subList2[k].id+"-"+result[i].subList2[j].subList2[k].name+"-"+result[i].subList2[j].subList2[k].alertCnt+"-"+result[i].subList2[j].id+"-"+result[i].id});
+									}else if(result[i].subList2[j].subList2[k].id==3){
+										 proposalAcceptArr.push({"y":result[i].subList2[j].subList2[k].alertCnt,"extra":result[i].subList2[j].subList2[k].id+"-"+result[i].subList2[j].subList2[k].name+"-"+result[i].subList2[j].subList2[k].alertCnt+"-"+result[i].subList2[j].id+"-"+result[i].id});
+									}
+									
+									
+								}
+								
+								var mainFinancialJosnObjArr = [];
+								   if(proposalPendingArr != null && proposalPendingArr.length > 0){
+									mainFinancialJosnObjArr.push({name:'Proposal Pending',data:proposalPendingArr,color:"#FEA723"});  
+								  }
+								   if(proposalRejectedArr != null && proposalRejectedArr.length > 0){
+									mainFinancialJosnObjArr.push({name:'Proposal Rejected',data:proposalRejectedArr,color:"#F15A25"});  
+								  }
+								  if(proposalAcceptArr != null && proposalAcceptArr.length > 0){
+									mainFinancialJosnObjArr.push({name:'Proposal Accept',data:proposalAcceptArr,color:"#82CA9C"});  
+								  }
+							}
+						}
+					}
+		
+				$("#proposalDepartmentGraphWiseDiv"+result[i].id).highcharts({
+							chart: {
+								type: 'column'
+							},
+							title: {
+								text: ''
+							},
+							xAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								categories: financialNamesArr
+							},
+							yAxis: {
+								 min: 0,
+								 gridLineWidth: 0,
+								 minorGridLineWidth: 0,
+								  stackLabels: {
+									enabled: true,
+									style: {
+										fontWeight: 'bold',
+										color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+									},
+									formatter: function() {
+											if (this.total === 0) {
+												return null;
+											} else {
+												return (this.total);
+											}
+										
+									} 
+								
+								},
+									title: {
+										text: ''
+									},
+									labels: {
+										enabled: false,
+											
+										},
+							},
+							legend: {
+								 align: 'center',
+								x: -4,
+								verticalAlign: 'bottom',
+								y: 22,
+								floating: false,
+								itemDistance: 5,
+								shadow: false
+							},
+							tooltip: {
+								formatter: function () {
+								var s = '<b>' + this.x + '</b>';
+
+									$.each(this.points, function () {
+										if(this.series.name != "Series 1")  
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+										this.y/* +' - ' +
+										(Highcharts.numberFormat(this.percentage,1)+'%'); */
+									});
+
+									return s;
+								},
+								shared: true
+							},
+							plotOptions: {
+								column: {
+									stacking: 'normal',
+									dataLabels: {
+										enabled: false,
+										color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+									}
+								},
+								series: {
+									cursor: 'pointer',
+									point: {
+									events: {
+											click: function () {
+												var value = (this.extra).split("-");
+												var statusId = value[0];
+												var statusName = value[1];
+												var totalCount = value[2];
+												var categoryId = value[3]; 
+												var departmentId = value[4]; 
+												getFinancialAssistanceAlertCntDtls(statusName,totalCount,categoryId,statusId,departmentId);
+												
+											}
+										}
+									}
+								},
+							},
+							series: mainFinancialJosnObjArr
+				});
+				$.each($("#proposalDepartmentGraphWiseDiv"+result[i].id).find(".highcharts-xaxis-labels").find("text"),function(index,item){   
+						$(this).attr("style","cursor:pointer;"); 
+						$(this).attr("onclick","getFinancialAssistanceAlertCntDtls(\'"+result[i].subList2[index].name+"\',\'"+result[i].subList2[index].alertCnt+"\',\'"+result[i].subList2[index].id+"\',0,\'"+result[i].id+"\')");
+						
+					
+				});
+			}
+		}
+	}
 /* Financial Assistance Block End  */
