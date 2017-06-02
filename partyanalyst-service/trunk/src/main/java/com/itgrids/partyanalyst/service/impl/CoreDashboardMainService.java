@@ -93,11 +93,12 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private IDebateSubjectDAO debateSubjectDAO;
 	 private ITrainingCampBatchDAO trainingCampBatchDAO;
 	 private ITrainingCampDetailsInfoDAO trainingCampDetailsInfoDAO;
-	 private IBoothDAO boothDAO;
 	 private IBoothInchargeDAO boothInchargeDAO;
 	 private IConstituencyDAO constituencyDAO;
+	 private IBoothDAO boothDAO;
 	//SETTERS
-	 public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
+	 
+	public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
 	 }
 	public void setDelimitationConstituencyAssemblyDetailsDAO(IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO){
@@ -203,19 +204,17 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	public void setBoothDAO(IBoothDAO boothDAO) {
 		this.boothDAO = boothDAO;
 	}
-	
-	public IBoothInchargeDAO getBoothInchargeDAO() {
-		return boothInchargeDAO;
-	}
-	public void setBoothInchargeDAO(IBoothInchargeDAO boothInchargeDAO) {
-		this.boothInchargeDAO = boothInchargeDAO;
-	}
-	
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	public IBoothInchargeDAO getBoothInchargeDAO() {
+		return boothInchargeDAO;
+	}
+	public void setBoothInchargeDAO(IBoothInchargeDAO boothInchargeDAO) {
+		this.boothInchargeDAO = boothInchargeDAO;
 	}
 	//santosh
 	/**
@@ -2536,14 +2535,14 @@ public List<Long> getAssemblyConstituencyIdsByParliamentConstituencyIds(List<Lon
 	}
 	}; 
 	public Double calculatePercantage(Long subCount,Long totalCount){
-	Double d=0.0d;
-	if(subCount.longValue()>0l && totalCount.longValue()==0l)
-	LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
-
-	if(totalCount.longValue() > 0l){
-		 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
-	}
-	return d;
+		Double d=0.0d;
+		if(subCount.longValue()>0l && totalCount.longValue()==0l)
+		LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount);
+	
+		if(totalCount.longValue() > 0l){
+			 d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	 
+		}
+		return d;
 	}
 	
 	
@@ -5580,6 +5579,11 @@ public BoothInchargesVO  getUserTypeWiseBoothCommitteesInchargeDetails(Long acti
 		    inchargeVo.setTotalCount(totalCount);
 		    inchargeVo.setAssignedCount(boothAssignInchargeCount);
 		    inchargeVo.setNotAssignedCount(notAssignedBoothInchargeCount);
+		    if(inchargeVo.getAssignedCount() != null && inchargeVo.getTotalCount() != null && inchargeVo.getTotalCount() >0l){
+		    	inchargeVo.setAssignedPerc(calculatePercantage(inchargeVo.getAssignedCount(),inchargeVo.getTotalCount()));
+		    	inchargeVo.setNonAssnedPerc(calculatePercantage(inchargeVo.getNotAssignedCount(),inchargeVo.getTotalCount()));
+		    }
+		    
 		    
 	}catch(Exception e){
 		Log.error("Exception raised at getUserTypeWiseBoothCommitteesInchargeDetails", e);
@@ -5587,5 +5591,145 @@ public BoothInchargesVO  getUserTypeWiseBoothCommitteesInchargeDetails(Long acti
 	return inchargeVo;
 }
 
+
+public List<BoothInchargesVO> getBoothCommitteeInchargesCount(Long activityMemberId,List<Long> committeeEnrlmntYrIds,String dateString,Long stateId){
+	List<BoothInchargesVO> returnList = new ArrayList<BoothInchargesVO>(0);
+	try{
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date startDate = null;
+		Date endDate = null;
+		if(dateString != null && !dateString.isEmpty()){
+	          // committeeBO.setDate(sdf.parse(dateString));
+	           String DatesArr[] = dateString.split("-");
+	           if(DatesArr != null && DatesArr.length>0){
+	             startDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[0]));
+	             endDate = sdf.parse(commonMethodsUtilService.getStringValueForObject(DatesArr[1]));
+	            }
+	         }
+		
+		Long locationId = 0L;
+		Set<Long> locationValuesSet = new HashSet<Long>(0);
+		List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+	    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+		   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+			   locationId = commonMethodsUtilService.getLongValueForObject(param[0]);
+			   locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+		   }
+	    } 
+	   
+	    if(locationId != null && locationId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+	    	 List<Long> locationValues1 =constituencyDAO.getConstistuencyWiseParliamentIds(locationValuesSet);
+	    	locationValuesSet.clear();
+	    	locationValuesSet.addAll(locationValues1);
+	    	locationId = 5l;
+	        }
+	    
+	    List<Object[]> boothInchargs = boothInchargeDAO.getBoothInchargeCountDetails(locationId, locationValuesSet, committeeEnrlmntYrIds, startDate, endDate);
+	    setCountForBoothCommitteeIncharges(returnList,"defaultData",0l,null);
+	    Map<Long,Long> boothMap = new HashMap<Long,Long>();
+	    if(boothInchargs != null && boothInchargs.size() >0){
+	    	for(Object[] obj :boothInchargs){
+	    		Long cnt =boothMap.get(obj[0]);
+	    		
+	    		if(cnt != null && cnt.longValue() >0l){
+	    			boothMap.put((Long)obj[0], cnt+1l);
+	    		}else{
+	    			boothMap.put((Long)obj[0], 1l);
+	    		}
+	    		
+	    	}
+	    }
+	    
+	    if(boothMap != null && boothMap.size() >0){
+	    	for(Object[] obj :boothInchargs){
+	    		Long cnt =boothMap.get(obj[0]);
+	    		if(cnt != null && cnt.longValue() >0l){
+	    			//boothMap.put((Long)obj[0], cnt+1l);
+	    			setCountForBoothCommitteeIncharges(returnList,"matchedVO",cnt,obj);
+	    		}else{
+	    			//boothMap.put((Long)obj[0], 1l);
+	    			setCountForBoothCommitteeIncharges(returnList,"matchedVO",1l,obj);
+	    		}
+	    	}
+	    }
+	    
+	}catch(Exception e){
+		e.printStackTrace();
+		Log.error("Exception raised at getBoothCommitteeInchargesCount", e);
+	}
+	
+	return returnList;
+}
+
+public void setCountForBoothCommitteeIncharges(List<BoothInchargesVO> returnList,String type,Long cnt,Object[] obj){
+	 try{
+		 
+		 if(type != null && type.equalsIgnoreCase("defaultData")){
+			 List<String> boothIncharges = new ArrayList<String>(0);
+			 boothIncharges.add("1");
+			 boothIncharges.add("2");
+			 boothIncharges.add("3");
+			 boothIncharges.add("4");
+			 boothIncharges.add("5-10");
+			 boothIncharges.add("10-Above");
+			 for(String str :boothIncharges){
+				 BoothInchargesVO vo = new BoothInchargesVO();
+				 vo.setBoothInchargesAssnd(str);
+				 returnList.add(vo);
+			 }
+		 }else{
+			 BoothInchargesVO matchedVO = null;
+			 if(cnt != null && cnt == 1l){
+				 matchedVO  = getMatchVO(returnList,"1");
+			}else if(cnt != null && cnt == 2l){
+				 matchedVO  = getMatchVO(returnList,"2");
+			}else if(cnt != null && cnt == 3l){
+				 matchedVO  = getMatchVO(returnList,"3");
+			}else if(cnt != null && cnt == 4l){
+				 matchedVO  = getMatchVO(returnList,"4");
+			}else if(cnt != null && cnt >= 5l && cnt <= 10l){
+				 matchedVO  = getMatchVO(returnList,"5-10");
+			}else if(cnt != null && cnt >= 10l){
+				 matchedVO  = getMatchVO(returnList,"10-Above");
+			}
+			 
+			 if(matchedVO != null){
+				 Long boothId = (Long)obj[0];
+				 matchedVO.getBoothIds().add(boothId);//booths
+				 if(matchedVO.getTdpCadreId() != null && matchedVO.getTdpCadreId().longValue() >0)
+					 matchedVO.setTdpCadreId(matchedVO.getTdpCadreId()+1l);//no of booth incharges
+				 else
+					 matchedVO.setTdpCadreId(1l);//no of booth incharges
+				 if(obj[2] != null){
+					 String gender = (String)obj[2];
+					 if(gender.equalsIgnoreCase("M")){
+						 if(matchedVO.getMaleCnt() != null && matchedVO.getMaleCnt().longValue() >0)
+							 matchedVO.setMaleCnt(matchedVO.getMaleCnt()+1l);
+						 else
+							 matchedVO.setMaleCnt(1l);
+					 }else if(gender.equalsIgnoreCase("F")){
+						 if(matchedVO.getFemaleCnt() != null && matchedVO.getFemaleCnt().longValue() >0)
+							 matchedVO.setFemaleCnt(matchedVO.getFemaleCnt()+1l);
+						 else
+							 matchedVO.setMaleCnt(1l);
+					 }
+				 }
+			 }
+		 }
+	 }catch(Exception e){
+		 e.printStackTrace();
+	 }
+}
+
+public BoothInchargesVO getMatchVO(List<BoothInchargesVO> returnList,String boothInchrgAss){
+	if(returnList == null || returnList.size()==1)
+		return null;
+	for(BoothInchargesVO boothIncharg:returnList){
+		 if(boothIncharg.getBoothInchargesAssnd().equalsIgnoreCase(boothInchrgAss)){
+			 return boothIncharg;
+		 }
+	}
+	return null;
+}
 }  
 

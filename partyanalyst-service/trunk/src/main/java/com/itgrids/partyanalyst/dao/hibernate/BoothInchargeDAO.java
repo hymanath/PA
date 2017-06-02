@@ -147,9 +147,9 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 				       }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 				          queryStr.append(" and model.booth.localBodyWard.constituencyId in (:userAccessLevelValues)"); 
 				       }
-				/*if(startDate != null && endDate != null){
+				if(startDate != null && endDate != null){
 					queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
-				}*/
+				}
 				if(committeeEnrollmentYearsIdsLst != null && committeeEnrollmentYearsIdsLst.size()>0){
 					queryStr.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId in(:committeeEnrollmentYearsIdsLst) ");
 				}
@@ -159,10 +159,10 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		if(userAccessLevelValues != null && userAccessLevelValues.size()>0){
 			qry.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		}
-		/*if(startDate != null && endDate != null){
+		if(startDate != null && endDate != null){
 			 qry.setDate("startDate", startDate);
 			 qry.setDate("endDate", endDate);
-		}*/
+		}
 		if(committeeEnrollmentYearsIdsLst != null && committeeEnrollmentYearsIdsLst.size()>0){
 			qry.setParameterList("committeeEnrollmentYearsIdsLst", committeeEnrollmentYearsIdsLst);
 		}
@@ -172,4 +172,55 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		return (Long) qry.uniqueResult();
 	}
 	
+	
+	public List<Object[]> getBoothInchargeCountDetails(Long userAccessLevelId ,Set<Long> userAccessLevelValues,List<Long> boothCommEnrollYrIds,Date startDate,Date endDate){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append(" select model.booth.boothId,model.tdpCadre.tdpCadreId,model.tdpCadre.gender  from BoothIncharge model " +
+				" where  model.isActive ='Y' and model.isDeleted='N' " +
+				" and model.booth.publicationDate.publicationDateId = :publicationDate "); 
+	
+		
+		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
+			   queryStr.append(" and model.booth.constituency.state.stateId in (:userAccessLevelValues)");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
+			   queryStr.append(" and model.booth.constituency.district.districtId in (:userAccessLevelValues)");  
+			 }/*else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
+		        queryStr.append(" and model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId in (:userAccessLevelValues) ");  
+			 }*/else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.ASSEMBLY_LEVEl_ACCESS_ID){
+		        queryStr.append(" and model.booth.constituency.constituencyId in (:userAccessLevelValues) ");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MANDAL_LEVEl_ID){
+			    queryStr.append(" and model.booth.tehsil.tehsilId in (:userAccessLevelValues)");  
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.MUNCIPALITY_LEVEl_ID){ //  town/division
+			    queryStr.append(" and model.booth.localBody.localElectionBodyId in (:userAccessLevelValues)"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.VILLAGE_LEVEl_ID){ 
+			    queryStr.append(" and model.booth.panchayat.panchayatId in (:userAccessLevelValues)"); 
+			 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
+			    queryStr.append(" and model.booth.localBodyWard.constituencyId in (:userAccessLevelValues)"); 
+			 }
+		
+		if(boothCommEnrollYrIds !=null && boothCommEnrollYrIds.size() > 0){
+			 queryStr.append(" and model.boothInchargeEnrollment.boothInchargeEnrollmentId in (:boothCommEnrollYrIds) " );
+		}
+		
+		if(startDate != null && endDate != null){
+			queryStr.append(" and model.insertedTime between :startDate and :endDate ");
+		}
+		Query qry = getSession().createQuery(queryStr.toString());	
+		
+		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
+			qry.setParameterList("userAccessLevelValues", userAccessLevelValues);
+		 }
+		qry.setParameter("publicationDate", IConstants.VOTER_DATA_PUBLICATION_ID);
+		if(boothCommEnrollYrIds !=null && boothCommEnrollYrIds.size() > 0){
+			qry.setParameterList("boothCommEnrollYrIds", boothCommEnrollYrIds);
+		}
+		
+		if(startDate != null && endDate != null){
+			qry.setDate("startDate", startDate);
+			qry.setDate("endDate", endDate);
+		}
+		return qry.list();
+	}
 }
