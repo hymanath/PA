@@ -18,6 +18,7 @@ public class MeekosamGrievanceVO {
 	private Long id;
 	private String name;
 	
+	private Long meekosamPetitionerId;
 	private String petitionerName;
 	private String petitionerRelativeName;
 	private String petitionerGender;
@@ -57,6 +58,7 @@ public class MeekosamGrievanceVO {
 	
 	//ForRevenueDeprtment -- LanDetails
 	private List<MeekosamLandDetailsVO> landDetailsList = new ArrayList<MeekosamLandDetailsVO>();
+	private List<MeekosamDynamicVO> dynamicDataList = new ArrayList<MeekosamDynamicVO>();
 	
 	
 	public Long getId() {
@@ -274,5 +276,17 @@ public class MeekosamGrievanceVO {
 	}
 	public void setPetitionerArgeeCategory(Long petitionerArgeeCategory) {
 		this.petitionerArgeeCategory = petitionerArgeeCategory;
+	}
+	public Long getMeekosamPetitionerId() {
+		return meekosamPetitionerId;
+	}
+	public void setMeekosamPetitionerId(Long meekosamPetitionerId) {
+		this.meekosamPetitionerId = meekosamPetitionerId;
+	}
+	public List<MeekosamDynamicVO> getDynamicDataList() {
+		return dynamicDataList;
+	}
+	public void setDynamicDataList(List<MeekosamDynamicVO> dynamicDataList) {
+		this.dynamicDataList = dynamicDataList;
 	}
 }

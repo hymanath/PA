@@ -14,11 +14,18 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
+import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
+import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertMeekosamIssueFieldRelationDataDAO;
+import com.itgrids.partyanalyst.dao.IAlertMeekosamPetitionerDAO;
+import com.itgrids.partyanalyst.dao.IAlertTrackingDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentMeekosamIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -30,19 +37,29 @@ import com.itgrids.partyanalyst.dao.IMeekosamIssueFieldRelationDataDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamOccupationDAO;
 import com.itgrids.partyanalyst.dao.IMeekosamPetitionerDAO;
+import com.itgrids.partyanalyst.dao.IMeekosamPetitionerLandDetailsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeekosamDynamicVO;
 import com.itgrids.partyanalyst.dto.MeekosamGrievanceVO;
+import com.itgrids.partyanalyst.dto.MeekosamLandDetailsVO;
 import com.itgrids.partyanalyst.dto.PetitionerDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
+import com.itgrids.partyanalyst.model.AlertComment;
+import com.itgrids.partyanalyst.model.AlertMeekosamIssueFieldRelationData;
+import com.itgrids.partyanalyst.model.AlertMeekosamPetitioner;
+import com.itgrids.partyanalyst.model.AlertTracking;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.MeekosamPetitioner;
+import com.itgrids.partyanalyst.model.MeekosamPetitionerLandDetails;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IMeekosamGrievanceService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -74,8 +91,70 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	private IBoothDAO boothDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private IAlertDAO alertDAO;
+	private IAlertMeekosamPetitionerDAO alertMeekosamPetitionerDAO;
+	private IMeekosamPetitionerLandDetailsDAO meekosamPetitionerLandDetailsDAO;
+	private IAlertMeekosamIssueFieldRelationDataDAO alertMeekosamIssueFieldRelationDataDAO;
+	private IAlertCommentDAO alertCommentDAO;
+	private IAlertTrackingDAO alertTrackingDAO;
+	private IGovtDepartmentDesignationOfficerDetailsNewDAO govtDepartmentDesignationOfficerDetailsNewDAO;
+	private IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO;
+	private IAlertAssignedOfficerTrackingNewDAO alertAssignedOfficerTrackingNewDAO;
 	
 	
+	public IAlertAssignedOfficerNewDAO getAlertAssignedOfficerNewDAO() {
+		return alertAssignedOfficerNewDAO;
+	}
+	public void setAlertAssignedOfficerNewDAO(
+			IAlertAssignedOfficerNewDAO alertAssignedOfficerNewDAO) {
+		this.alertAssignedOfficerNewDAO = alertAssignedOfficerNewDAO;
+	}
+	public IAlertAssignedOfficerTrackingNewDAO getAlertAssignedOfficerTrackingNewDAO() {
+		return alertAssignedOfficerTrackingNewDAO;
+	}
+	public void setAlertAssignedOfficerTrackingNewDAO(
+			IAlertAssignedOfficerTrackingNewDAO alertAssignedOfficerTrackingNewDAO) {
+		this.alertAssignedOfficerTrackingNewDAO = alertAssignedOfficerTrackingNewDAO;
+	}
+	public IGovtDepartmentDesignationOfficerDetailsNewDAO getGovtDepartmentDesignationOfficerDetailsNewDAO() {
+		return govtDepartmentDesignationOfficerDetailsNewDAO;
+	}
+	public void setGovtDepartmentDesignationOfficerDetailsNewDAO(
+			IGovtDepartmentDesignationOfficerDetailsNewDAO govtDepartmentDesignationOfficerDetailsNewDAO) {
+		this.govtDepartmentDesignationOfficerDetailsNewDAO = govtDepartmentDesignationOfficerDetailsNewDAO;
+	}
+	public IAlertTrackingDAO getAlertTrackingDAO() {
+		return alertTrackingDAO;
+	}
+	public void setAlertTrackingDAO(IAlertTrackingDAO alertTrackingDAO) {
+		this.alertTrackingDAO = alertTrackingDAO;
+	}
+	public IAlertCommentDAO getAlertCommentDAO() {
+		return alertCommentDAO;
+	}
+	public void setAlertCommentDAO(IAlertCommentDAO alertCommentDAO) {
+		this.alertCommentDAO = alertCommentDAO;
+	}
+	public IAlertMeekosamIssueFieldRelationDataDAO getAlertMeekosamIssueFieldRelationDataDAO() {
+		return alertMeekosamIssueFieldRelationDataDAO;
+	}
+	public void setAlertMeekosamIssueFieldRelationDataDAO(
+			IAlertMeekosamIssueFieldRelationDataDAO alertMeekosamIssueFieldRelationDataDAO) {
+		this.alertMeekosamIssueFieldRelationDataDAO = alertMeekosamIssueFieldRelationDataDAO;
+	}
+	public IMeekosamPetitionerLandDetailsDAO getMeekosamPetitionerLandDetailsDAO() {
+		return meekosamPetitionerLandDetailsDAO;
+	}
+	public void setMeekosamPetitionerLandDetailsDAO(
+			IMeekosamPetitionerLandDetailsDAO meekosamPetitionerLandDetailsDAO) {
+		this.meekosamPetitionerLandDetailsDAO = meekosamPetitionerLandDetailsDAO;
+	}
+	public IAlertMeekosamPetitionerDAO getAlertMeekosamPetitionerDAO() {
+		return alertMeekosamPetitionerDAO;
+	}
+	public void setAlertMeekosamPetitionerDAO(
+			IAlertMeekosamPetitionerDAO alertMeekosamPetitionerDAO) {
+		this.alertMeekosamPetitionerDAO = alertMeekosamPetitionerDAO;
+	}
 	public IAlertDAO getAlertDAO() {
 		return alertDAO;
 	}
@@ -659,8 +738,9 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	public ResultStatus saveMeekosamGrievance(final MeekosamGrievanceVO inputvo,final Long userId){
 		ResultStatus resultStatus = new ResultStatus();
 		try {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+			resultStatus = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus arg0) {
+					ResultStatus status = new ResultStatus();
 					Alert alert = new Alert();
 					
 					alert.setAlertTypeId(2l);		//Govt
@@ -719,7 +799,28 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 						alert.setGeneralGrievanceTypeId(1l);
 					alert = alertDAO.save(alert);
 					
+					AlertComment alertComment = new AlertComment();
+					alertComment.setComments(inputvo.getGrievanceDesc().toString());
+					alertComment.setAlertId(alert.getAlertId());
+					alertComment.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertComment.setIsDeleted("N");
+					alertComment.setInsertedBy(userId);
+					alertComment = alertCommentDAO.save(alertComment);
+					
+					AlertTracking alertTracking = new AlertTracking();
+					alertTracking.setAlertId(alert.getAlertId());
+					alertTracking.setAlertStatusId(2l);
+					alertTracking.setAlertCommentId(alertComment.getAlertCommentId());
+					alertTracking.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
+					alertTracking.setInsertedBy(userId);
+					alertTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertTracking.setAlertSourceId(alert.getAlertSourceId());
+					alertTracking = alertTrackingDAO.save(alertTracking);
+					
 					MeekosamPetitioner petitioner = new MeekosamPetitioner();
+					if(inputvo.getMeekosamPetitionerId() != null && inputvo.getMeekosamPetitionerId().longValue() > 0l)
+						petitioner = meekosamPetitionerDAO.get(inputvo.getMeekosamPetitionerId());
+					
 					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 					petitioner.setName(inputvo.getPetitionerName());
 					petitioner.setRelativeName(inputvo.getPetitionerRelativeName());
@@ -768,9 +869,98 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					petitioner.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					petitioner.setIsDeleted("N");
 					petitioner = meekosamPetitionerDAO.save(petitioner);
+					
+					AlertMeekosamPetitioner alertMeekosamPetitioner = new AlertMeekosamPetitioner();
+					alertMeekosamPetitioner.setAlertId(alert.getAlertId());
+					alertMeekosamPetitioner.setMeekosamPetitionerId(petitioner.getMeekosamPetitionerId());
+					alertMeekosamPetitioner = alertMeekosamPetitionerDAO.save(alertMeekosamPetitioner);
+					
+					if(inputvo.getDepartmentId() != null && inputvo.getDepartmentId().longValue() == 33l && inputvo.getLandDetailsList() != null && !inputvo.getLandDetailsList().isEmpty()){
+						for (MeekosamLandDetailsVO landDetailsvo : inputvo.getLandDetailsList()) {
+							MeekosamPetitionerLandDetails petitionerLandDetails = new MeekosamPetitionerLandDetails();
+							petitionerLandDetails.setAlertId(alert.getAlertId());
+							petitionerLandDetails.setMeekosamPetitionerId(petitioner.getMeekosamPetitionerId());
+							
+							UserAddress landAddress = new UserAddress();
+							landAddress.setState(stateDAO.get(1L));
+							landAddress.setDistrict(districtDAO.get(landDetailsvo.getDistrictId()));
+							if(landDetailsvo.getMandalId().toString().substring(0, 1).equalsIgnoreCase("1")){
+								List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(Long.valueOf(landDetailsvo.getMandalId().toString().substring(1)));
+								if(list != null && !list.isEmpty())
+									landAddress.setConstituency(list.get(0));
+								landAddress.setPanchayatId(landDetailsvo.getVillageId());
+								//alertAddress.setHamlet(hamletDAO.get(inputvo.getgri));
+							}
+							else if(landDetailsvo.getMandalId().toString().substring(0, 1).equalsIgnoreCase("2")){
+								List<Constituency> list = boothDAO.getConstituencyIdByLebId(Long.valueOf(landDetailsvo.getMandalId().toString().substring(1)));
+								if(list != null && !list.isEmpty())
+									landAddress.setConstituency(list.get(0));
+								landAddress.setWard(constituencyDAO.get(landDetailsvo.getVillageId()));
+							}
+							landAddress = userAddressDAO.save(landAddress);
+							
+							petitionerLandDetails.setUserAddressId(landAddress.getUserAddressId());
+							petitionerLandDetails.setSurveyNo(landDetailsvo.getSurveyNO());
+							petitionerLandDetails.setLandInAcres(landDetailsvo.getLandInAcres());
+							petitionerLandDetails.setLandInCents(landDetailsvo.getLandInCents());
+							petitionerLandDetails = meekosamPetitionerLandDetailsDAO.save(petitionerLandDetails);
+						}
+					}
+					
+					if(inputvo.getDynamicDataList() != null && !inputvo.getDynamicDataList().isEmpty()){
+						for (MeekosamDynamicVO dynamicVO : inputvo.getDynamicDataList()) {
+							AlertMeekosamIssueFieldRelationData relationData = new AlertMeekosamIssueFieldRelationData();
+							relationData.setAlertId(alert.getAlertId());
+							relationData.setMeekosamIssueFieldRelationId(dynamicVO.getIssueRelationId());
+							relationData.setMeekosamIssueFieldRelationDataId(dynamicVO.getIssueRelationDataId());
+							relationData = alertMeekosamIssueFieldRelationDataDAO.save(relationData);
+						}
+					}
+					
+					Long desigOfficerId = null;
+					List<Long> designationOfficerIds = null;
+					designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationOfficerIdsNew(inputvo.getAssignLevelId(),
+																							inputvo.getAssignLevelValue(), inputvo.getDesignationId(), inputvo.getOfficerId());
+					
+					AlertAssignedOfficerNew alertAssignedOfficer = new AlertAssignedOfficerNew();
+					alertAssignedOfficer.setAlertId(alert.getAlertId());
+					alertAssignedOfficer.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+					alertAssignedOfficer.setGovtOfficerId(inputvo.getOfficerId() !=null ? (Long)inputvo.getOfficerId():null);
+					alertAssignedOfficer.setInsertedBy(userId);
+					alertAssignedOfficer.setUpdatedBy(userId);
+					alertAssignedOfficer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertAssignedOfficer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					alertAssignedOfficer.setAlertStatusId(2l);
+					alertAssignedOfficer.setIsDeleted("N");
+					alertAssignedOfficer.setIsApproved("Y");
+					alertAssignedOfficer.setGovtDepartmentId(inputvo.getDepartmentId());
+					alertAssignedOfficer = alertAssignedOfficerNewDAO.save(alertAssignedOfficer);
+
+					//Officer Assigning Tracking
+					AlertAssignedOfficerTrackingNew alertAssignedOfficerTracking = new AlertAssignedOfficerTrackingNew();
+					alertAssignedOfficerTracking.setAlertAssignedOfficerId(alertAssignedOfficer.getAlertAssignedOfficerId());
+					alertAssignedOfficerTracking.setAlertId(alert.getAlertId());
+					alertAssignedOfficerTracking.setGovtDepartmentDesignationOfficerId(desigOfficerId);
+					alertAssignedOfficerTracking.setGovtOfficerId(inputvo.getOfficerId());
+					alertAssignedOfficerTracking.setInsertedBy(userId);
+					alertAssignedOfficerTracking.setUpdatedBy(userId);
+					alertAssignedOfficerTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					alertAssignedOfficerTracking.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+					alertAssignedOfficerTracking.setAlertStatusId(2l);
+					alertAssignedOfficerTracking.setGovtAlertActionTypeId(1l);
+					alertAssignedOfficerTracking.setIsApproved("Y");
+					alertAssignedOfficerTracking.setAlertSeviorityId(alert.getAlertSeverityId());
+					alertAssignedOfficerTracking.setGovtDepartmentId(inputvo.getDepartmentId());
+					alertAssignedOfficerTracking = alertAssignedOfficerTrackingNewDAO.save(alertAssignedOfficerTracking);
+					
+					status.setResultCode(0);
+					status.setMessage("success");
+					return status;
 				}
-			});
+			}); 
 		} catch (Exception e) {
+			resultStatus.setResultCode(1);
+			resultStatus.setMessage("failure");
 			LOG.error("Error occured saveMeekosamGrievance() method of MeekosamGrievanceService",e);
 		}
 		return resultStatus;
