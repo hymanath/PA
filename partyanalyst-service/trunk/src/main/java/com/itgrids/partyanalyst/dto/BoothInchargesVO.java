@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BoothInchargesVO implements Serializable {
 	
@@ -16,8 +18,39 @@ public class BoothInchargesVO implements Serializable {
 	private Long totalCount =0l;
 	private Long assignedCount =0l;
 	private Long notAssignedCount =0l;
+	private Long maleCnt =0l;
+	private Long femaleCnt=0l;
+	private Long totalBooths=0l;
+	private String boothInchargesAssnd;
+	private Set<Long> boothIds = new HashSet<Long>();
+	private Double assignedPerc;
+	private Double nonAssnedPerc;
 	
 	
+	public Double getAssignedPerc() {
+		return assignedPerc;
+	}
+	public void setAssignedPerc(Double assignedPerc) {
+		this.assignedPerc = assignedPerc;
+	}
+	public Double getNonAssnedPerc() {
+		return nonAssnedPerc;
+	}
+	public void setNonAssnedPerc(Double nonAssnedPerc) {
+		this.nonAssnedPerc = nonAssnedPerc;
+	}
+	public Set<Long> getBoothIds() {
+		return boothIds;
+	}
+	public void setBoothIds(Set<Long> boothIds) {
+		this.boothIds = boothIds;
+	}
+	public String getBoothInchargesAssnd() {
+		return boothInchargesAssnd;
+	}
+	public void setBoothInchargesAssnd(String boothInchargesAssnd) {
+		this.boothInchargesAssnd = boothInchargesAssnd;
+	}
 	public Long getBoothId() {
 		return boothId;
 	}
@@ -90,5 +123,24 @@ public class BoothInchargesVO implements Serializable {
 	public void setNotAssignedCount(Long notAssignedCount) {
 		this.notAssignedCount = notAssignedCount;
 	}
+	public Long getMaleCnt() {
+		return maleCnt;
+	}
+	public void setMaleCnt(Long maleCnt) {
+		this.maleCnt = maleCnt;
+	}
+	public Long getFemaleCnt() {
+		return femaleCnt;
+	}
+	public void setFemaleCnt(Long femaleCnt) {
+		this.femaleCnt = femaleCnt;
+	}
+	public Long getTotalBooths() {
+		return totalBooths;
+	}
+	public void setTotalBooths(Long totalBooths) {
+		this.totalBooths = totalBooths;
+	}
+	
 	
 }
