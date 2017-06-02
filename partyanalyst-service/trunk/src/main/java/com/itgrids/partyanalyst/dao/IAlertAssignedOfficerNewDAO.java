@@ -120,7 +120,7 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
     public List<Object[]> getPresentAssignedDepartmentOfAlert(Long alertId);
     public List<Object[]> getAlertProposalCategoryWiseAlertCnt(Date fromDate, Date toDate, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,
      		List<Long> alertStatusIds,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
-     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
+     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,String type);
     public List<Long> getAlertProposalCategoryWiseAlertDtls(Date fromDate, Date toDate, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,
      		List<Long> alertStatusIds,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
      		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,

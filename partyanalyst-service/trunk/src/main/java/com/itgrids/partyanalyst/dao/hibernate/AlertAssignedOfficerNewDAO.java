@@ -84,7 +84,7 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
        	    }else if(type.equalsIgnoreCase("Department")){
        	    	sb.append(" group by model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId " );	
        	    }else if(type.equalsIgnoreCase("alertSource")){
-     	    	sb.append("group by  model.alert.alertCategory.alertCategoryId,model.alertStatus.alertStatusId " +
+     	    	sb.append(" group by  model.alert.alertCategory.alertCategoryId,model.alertStatus.alertStatusId " +
      	    			 " order by model.alert.alertCategory.order asc,model.alertStatus.statusOrder asc");	
      	    }
     	  
@@ -4190,13 +4190,11 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  		
  		queryStr.append(" alert A ");
  		
- 		//if(printIdList != null && printIdList.size() > 0 && electronicIdList != null && electronicIdList.size() > 0 && socialMediaTypeIds != null && socialMediaTypeIds.size() > 0 && calCntrIds !=null && !calCntrIds.isEmpty()){
- 			
  		queryStr.append(" left outer join tv_news_channel TNC on ( A.tv_news_channel_id = TNC.tv_news_channel_id and TNC.is_deleted ='N')  ");
  		queryStr.append(" left outer join editions EDS on EDS.edition_id =A.edition_id  ");
 		queryStr.append(" left outer join social_media_type SMT on SMT.social_media_type_id=A.social_media_type_id ");
  		queryStr.append(" left outer join alert_call_center_type ACCT on ACCT.alert_call_center_type_id=A.alert_call_center_type_id ");
- 		//}
+ 
  		queryStr.append(" ,alert_status ALTS, ");
  		queryStr.append(" alert_assigned_officer_new AAO, ");
  		queryStr.append(" govt_department_designation_officer_new GDDO, ");
@@ -6696,18 +6694,22 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
 	 
 	 public List<Object[]> getAlertProposalCategoryWiseAlertCnt(Date fromDate, Date toDate, List<Long> printIdsList, List<Long> electronicIdsList,List<Long> departmentIds,Long levelId,List<Long> levelValues,
      		List<Long> alertStatusIds,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
-     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
+     		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,String type){
  		
 		  StringBuilder sb = new StringBuilder();  
  	      
 		  sb.append("select ");
+		  if(type != null && type.equalsIgnoreCase("Department")){
+	  	    	 sb.append(" GDDON.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+	  	    	 		  "  GDDON.govtDepartmentDesignation.govtDepartment.departmentName,") ;
+	  	  }
  	      sb.append(" model.govtProposalCategory.govtProposalCategoryId," +
  	      		    " model.govtProposalCategory.category," +
  	      		    " model.govtProposalStatus.govtProposalStatusId," +
  	      		    " model.govtProposalStatus.status " );
  	      
   	     sb.append(" ,count(distinct model.alert.alertId),sum(model.proposalAmount) ");
- 	      
+ 	     
 	 	 sb.append(" from GovtProposalPropertyCategory model" +
 	 	          " left join model.alert.edition EDS " +
 	 	          " left join model.alert.tvNewsChannel TNC " +
@@ -6745,8 +6747,18 @@ public class AlertAssignedOfficerNewDAO extends GenericDaoHibernate<AlertAssigne
  	    if(alertSeverityIds != null && alertSeverityIds.size() > 0){
  	    	sb.append(" and model.alert.alertSeverityId in (:alertSeverityIds)");
  	    }
- 	    sb.append(" group by model.govtProposalCategory.govtProposalCategoryId,model.govtProposalStatus.govtProposalStatusId" +
- 	    		"  order by model.govtProposalCategory.govtProposalCategoryId,model.govtProposalStatus.govtProposalStatusId ");
+ 	   if(type != null && type.equalsIgnoreCase("Department")){
+	    	 sb.append(" group by " +
+	    	 		   " GDDON.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+	    	 		   " model.govtProposalCategory.govtProposalCategoryId," +
+	    	 		   " model.govtProposalStatus.govtProposalStatusId" +
+	    	 		   " order by GDDON.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
+	    	 		   " model.govtProposalCategory.govtProposalCategoryId,model.govtProposalStatus.govtProposalStatusId");
+	   }else{
+		   sb.append(" group by model.govtProposalCategory.govtProposalCategoryId,model.govtProposalStatus.govtProposalStatusId" +
+	 	    		"  order by model.govtProposalCategory.govtProposalCategoryId,model.govtProposalStatus.govtProposalStatusId ");
+	  }
+ 	   
  	  
  	    Query query = getSession().createQuery(sb.toString());
  	    if(departmentIds != null && !departmentIds.isEmpty())

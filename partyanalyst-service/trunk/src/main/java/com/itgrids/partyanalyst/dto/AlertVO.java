@@ -91,6 +91,7 @@ public class AlertVO {
     private Map<Long,AlertVO> subMap;	
     private Set<Long> childDeptIds;
     private Long proposalAmount=0l;
+    private Long approvedAmount = 0l;
 
 	
 	public String getCallerDuplicate() {
@@ -570,5 +571,11 @@ public class AlertVO {
 	public void setProposalAmount(Long proposalAmount) {
 		this.proposalAmount = proposalAmount;
 	}
-    	
+	public Long getApprovedAmount() {
+		return approvedAmount;
+	}
+	public void setApprovedAmount(Long approvedAmount) {
+		this.approvedAmount = approvedAmount;
+	}
+     	
 }
