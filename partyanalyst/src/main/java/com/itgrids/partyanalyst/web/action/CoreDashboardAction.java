@@ -187,11 +187,19 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private ComplaintMasterVO complaintMasterVO;
 	private CoreDashboardInsuranceVO coreDashboardInsuranceVO;
 	private BoothInchargesVO boothInchargeVo;
+	private List<BoothInchargesVO> boothInchargesVOList;
+	
 	//setters And Getters
-	
-	
 	public List<List<ToursBasicVO>> getMemberList() {
 		return memberList;
+	}
+
+	public List<BoothInchargesVO> getBoothInchargesVOList() {
+		return boothInchargesVOList;
+	}
+
+	public void setBoothInchargesVOList(List<BoothInchargesVO> boothInchargesVOList) {
+		this.boothInchargesVOList = boothInchargesVOList;
 	}
 
 	public CoreDashboardInsuranceVO getCoreDashboardInsuranceVO() {
@@ -4474,4 +4482,40 @@ public String getInsuraceStatusWiseComplaintsDetails()
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getBoothCommitteeInchargesCount(){
+	    LOG.info("Entered into getBoothCommitteeInchargesCount()  of CoreDashboardAction");
+	    try{
+	      
+	       /*Long userId = null; 
+	       HttpSession session = request.getSession();
+	       RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+	       if(user == null || user.getRegistrationID() == null){
+	        //return ERROR;
+	         userId = 1L;
+	       }
+	       else
+	         userId = user.getRegistrationID();*/
+	      
+	      jObj = new JSONObject(getTask());
+	      
+	      Long activityMemberId = jObj.getLong("activityMemberId");
+	      
+	      Long state = jObj.getLong("state");
+	  
+	      String dateString = jObj.getString("dateString");
+	      List<Long> committeeEnrollmentYearsIdsLst = new ArrayList<Long>();
+	      JSONArray committeeEnrollmentYearArray =jObj.getJSONArray("committeeEnrollmentYearArray");
+	      if(committeeEnrollmentYearArray!=null &&  committeeEnrollmentYearArray.length()>0){
+	        for( int i=0;i<committeeEnrollmentYearArray.length();i++){
+	          committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
+	        }
+	      }
+	      
+	      boothInchargesVOList = coreDashboardMainService.getBoothCommitteeInchargesCount(activityMemberId,committeeEnrollmentYearsIdsLst,dateString,state);
+	    }catch(Exception e){
+	      LOG.error("Exception raised at getBoothCommitteeInchargesCount() method of CoreDashBoard", e);
+	    }
+	    return Action.SUCCESS;
+	  }
 }

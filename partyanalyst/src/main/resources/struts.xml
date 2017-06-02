@@ -17523,5 +17523,10 @@
 		    <param name="inputName">resultStatus</param>
 	  </result>	
   	</action>
+		<action name="getBoothCommitteeInchargesCountAction" class="coreDashboardAction" method="getBoothCommitteeInchargesCount">
+			<result type="json" name="success">
+				<param name="root">boothInchargesVOList</param>
+			</result>
+		</action>
  </package>
 </struts>
