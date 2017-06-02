@@ -13,7 +13,7 @@ function onLoadAjaxCalls()
 	
 }
 function getCandidateAndPartyInfoForConstituency(){
-	$("#candidateProfile").html(spinner);
+	$("#candidateProfile").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	var $list = $('#candidateProfile'),
         templatess = Handlebars.compile($('#candidateProfileTemplate').html());
     jsObj={
@@ -25,13 +25,20 @@ function getCandidateAndPartyInfoForConstituency(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-		$list.append(templatess(result.assemblyCandidateInfo[0]));
-		$list.append(templatess(result.parliamentCandidateInfo));
+		if(result !=null)
+		{
+			$("#candidateProfile").html('');
+			$list.append(templatess(result.assemblyCandidateInfo[0]));
+			$list.append(templatess(result.parliamentCandidateInfo));
+		}else{
+			$("#candidateProfile").html('NO DATA');
+		}
+		
 	});
   }
 	
 function getCountsForConstituency(){
-	$("#consCountsId").html(spinner);
+	$("#consCountsId").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
 	var tehsilId=0;
 	var publicationDateId = 22;
 	var type = 'constituency';
@@ -53,7 +60,10 @@ function getCountsForConstituency(){
 		url: 'getCountForLevelAction.action',
 		data: {task :JSON.stringify(jsObj)}
 	}).done(function(results){
-		$list.html(templatess(results[0]));
+		if(results != null)
+		{
+			$list.html(templatess(results[0]));
+		}
 	});		
 		 			
 }
@@ -553,7 +563,10 @@ function getDetailedGovtOverAllAnalysisProblemsForView(){
 	});
 }
 function getDetailedElectionInformaction(){
-    jsObj={
+	$("#assemblyElectionDetailsView").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
+	var $list = $('#assemblyElectionDetailsView'),
+        templatess = Handlebars.compile($('#assemblyElectionDetailsTable').html());
+	jsObj={
     	constituencyId:232
     }
     $.ajax({
@@ -562,5 +575,6 @@ function getDetailedElectionInformaction(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-  });
+		$list.html(templatess(result));
+	});
   }
