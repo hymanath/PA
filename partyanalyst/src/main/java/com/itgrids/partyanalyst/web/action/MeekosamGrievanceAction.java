@@ -16,8 +16,11 @@ import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.MeekosamDynamicVO;
+import com.itgrids.partyanalyst.dto.MeekosamGrievanceVO;
+import com.itgrids.partyanalyst.dto.MeekosamLandDetailsVO;
 import com.itgrids.partyanalyst.dto.PetitionerDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IMeekosamGrievanceService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -37,8 +40,36 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 	private List<IdAndNameVO> idAndNameVOs;
 	private List<MeekosamDynamicVO> meekosamDynamicVOList = new ArrayList<MeekosamDynamicVO>();
 	private List<PetitionerDetailsVO> detailsVOs;
+	private MeekosamGrievanceVO meekosamGrievanceVO;
+	private MeekosamDynamicVO meekosamDynamicVO;
+	private MeekosamLandDetailsVO meekosamLandDetailsVO;
+	private ResultStatus resultStatus;
 	
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public MeekosamGrievanceVO getMeekosamGrievanceVO() {
+		return meekosamGrievanceVO;
+	}
+	public void setMeekosamGrievanceVO(MeekosamGrievanceVO meekosamGrievanceVO) {
+		this.meekosamGrievanceVO = meekosamGrievanceVO;
+	}
+	public MeekosamDynamicVO getMeekosamDynamicVO() {
+		return meekosamDynamicVO;
+	}
+	public void setMeekosamDynamicVO(MeekosamDynamicVO meekosamDynamicVO) {
+		this.meekosamDynamicVO = meekosamDynamicVO;
+	}
+	public MeekosamLandDetailsVO getMeekosamLandDetailsVO() {
+		return meekosamLandDetailsVO;
+	}
+	public void setMeekosamLandDetailsVO(MeekosamLandDetailsVO meekosamLandDetailsVO) {
+		this.meekosamLandDetailsVO = meekosamLandDetailsVO;
+	}
 	public List<MeekosamDynamicVO> getMeekosamDynamicVOList() {
 		return meekosamDynamicVOList;
 	}
@@ -242,4 +273,19 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 			}
 			   return Action.SUCCESS;
 		}
+	
+	public String saveMeekosamGrievance(){
+	   try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return Action.ERROR;
+			
+			resultStatus = meekosamGrievanceService.saveMeekosamGrievance(meekosamGrievanceVO, regVo.getRegistrationID());
+			
+		} catch (Exception e) {
+			LOG.error("Exception Raised in saveMeekosamGrievance() in MeekosamGrievanceAction",e);
+		}
+	   return Action.SUCCESS;
+	}
 }

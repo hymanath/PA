@@ -17518,5 +17518,10 @@
    			<param name="root">boothInchargeVo</param>
    		</result>
 	</action>
+	<action name="saveMeekosamGrievanceAction" class="meekosamGrievanceAction"  method="saveMeekosamGrievance">
+		<result name="success" type="stream">			   
+		    <param name="inputName">resultStatus</param>
+	  </result>	
+  	</action>
  </package>
 </struts>
