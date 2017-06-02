@@ -1,5 +1,6 @@
 onLoadAjaxCalls(); //ajaxcalls through newconstituencypage.js
 var globalConsId = 232;
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 function onLoadAjaxCalls()
 {
 	getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
@@ -12,6 +13,9 @@ function onLoadAjaxCalls()
 	
 }
 function getCandidateAndPartyInfoForConstituency(){
+	$("#candidateProfile").html(spinner);
+	var $list = $('#candidateProfile'),
+        templatess = Handlebars.compile($('#candidateProfileTemplate').html());
     jsObj={
     	constituencyId:232
     }
@@ -21,11 +25,13 @@ function getCandidateAndPartyInfoForConstituency(){
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
-  });
+		$list.append(templatess(result.assemblyCandidateInfo[0]));
+		$list.append(templatess(result.parliamentCandidateInfo));
+	});
   }
 	
 function getCountsForConstituency(){
-	$("#consCountsId").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#consCountsId").html(spinner);
 	var tehsilId=0;
 	var publicationDateId = 22;
 	var type = 'constituency';
