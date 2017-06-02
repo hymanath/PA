@@ -205,7 +205,7 @@ public class BoothInchargeDAO extends GenericDaoHibernate<BoothIncharge, Long> i
 		}
 		
 		if(startDate != null && endDate != null){
-			queryStr.append(" and model.insertedTime between :startDate and :endDate ");
+			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		}
 		Query qry = getSession().createQuery(queryStr.toString());	
 		
