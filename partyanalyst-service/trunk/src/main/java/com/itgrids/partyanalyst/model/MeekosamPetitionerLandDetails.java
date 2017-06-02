@@ -29,9 +29,9 @@ public class MeekosamPetitionerLandDetails extends BaseModel implements Serializ
 	private Long locationLevelId;
 	private Long locationValue;
 	private Long userAddressId;
-	private Long surveyNo;
-	private Long landInAcres;
-	private Long landInCents;
+	private String surveyNo;
+	private String landInAcres;
+	private String landInCents;
 	
 	private Alert alert;
 	private MeekosamPetitioner meekosamPetitioner;
@@ -81,24 +81,24 @@ public class MeekosamPetitionerLandDetails extends BaseModel implements Serializ
 		this.userAddressId = userAddressId;
 	}
 	@Column(name = "survey_no")
-	public Long getSurveyNo() {
+	public String getSurveyNo() {
 		return surveyNo;
 	}
-	public void setSurveyNo(Long surveyNo) {
+	public void setSurveyNo(String surveyNo) {
 		this.surveyNo = surveyNo;
 	}
 	@Column(name = "land_in_acres")
-	public Long getLandInAcres() {
+	public String getLandInAcres() {
 		return landInAcres;
 	}
-	public void setLandInAcres(Long landInAcres) {
+	public void setLandInAcres(String landInAcres) {
 		this.landInAcres = landInAcres;
 	}
 	@Column(name = "land_in_cents")
-	public Long getLandInCents() {
+	public String getLandInCents() {
 		return landInCents;
 	}
-	public void setLandInCents(Long landInCents) {
+	public void setLandInCents(String landInCents) {
 		this.landInCents = landInCents;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
