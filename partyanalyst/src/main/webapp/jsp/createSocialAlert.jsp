@@ -1315,6 +1315,7 @@ function buildAlertDetails(result,status,alertStatusId,buildType){
 	//str+='<div class="table-responsive">';	
 	str+='<table class="table table-bordered tableStyleAlign table-condensed" style="text-align:center;" id="tabbDetails" >';
 		str+='<thead>';
+			str+='<th  style="text-align:center">Ref_No</th>';
 			str+='<th  style="text-align:center">TITLE</th>';
 			str+='<th  style="text-align:center">DEPARTMENT</th>';			
 			str+='<th  style="text-align:center">SOCIAL MEDIA TYPE</th>';
@@ -1359,6 +1360,7 @@ function buildAlertDetails(result,status,alertStatusId,buildType){
 			}
 			
 			str+='<tr>';
+				str+='<td>'+result[i].alertId+'</td>';
 				str+='<td>'+result[i].title+'</td>';
 				str+='<td>'+result[i].deptName+'</td>';
 				str+='<td>'+result[i].smType+'</td>';
