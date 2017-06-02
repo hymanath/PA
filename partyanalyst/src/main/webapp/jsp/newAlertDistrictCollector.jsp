@@ -420,7 +420,7 @@
 		</div>
 	</section>
 <div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document" style="width:85%;">
+	<div class="modal-dialog" role="document" style="width:95%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -434,7 +434,7 @@
   </div>
 </div>
 <div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document" style="width:85%;">
+	<div class="modal-dialog" role="document" style="width:90%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
