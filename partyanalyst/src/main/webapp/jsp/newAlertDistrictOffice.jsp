@@ -379,7 +379,7 @@
 				<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 			</div>
 			<div class="modal-body modal-insurance">
-				<!--<div id="filter" style="display:none;"></div>-->
+				<div id="filter" style="display:none;"></div>
 				<div id="alertManagementPopupBody"></div>
 			</div>
 		</div>

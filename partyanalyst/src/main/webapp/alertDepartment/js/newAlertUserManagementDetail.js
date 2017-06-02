@@ -603,7 +603,7 @@ function onLoadClicks()
 			$(this).addClass("active");
 			$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list-title='panLevel'],[filters-list-title='villageLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").hide();
 			$(".scroller-district,.scroller-mandal,.scroller-cons,.scroller-panchayat,.scroller-village").removeAttr("style");
-			$(".scroller-district,.scroller-mandal,.scroller-cons,.scroller-panchayat,.scroller-village").mCustomScrollbar("destroy");
+			
 		}else if(blockName == 'statesLevel' || blockName == 'districtsLevel' || blockName == 'consLevel' || blockName == 'mandalLevel' || blockName == 'panLevel' || blockName == 'villageLevel'){
 			var impactLevel = $("[filters-list='locLevel'] li.active").attr("attr_levelVal");
 			if(impactLevel != blockName)
@@ -646,10 +646,6 @@ function onLoadClicks()
 					}
 						
 					$("[filters-list='printMedia']").html(str);
-					if(printMediaFilters.length > 4)
-					{
-						$(".scroller-print").mCustomScrollbar({setHeight : '150px'});
-					}
 				}else if(value == 'Electronic Media')
 				{
 					var str='';
@@ -660,10 +656,6 @@ function onLoadClicks()
 					}
 						
 					$("[filters-list='electronicMedia']").html(str);
-					if(electronicMediaFilters.length > 4)
-					{
-						$(".scroller-electronic").mCustomScrollbar({setHeight : '150px'});
-					}
 				}
 				
 			}else if(blockName == 'alertStatus' || blockName == 'alertSubtaskStatus'){
@@ -682,11 +674,6 @@ function onLoadClicks()
 					for(var i in scopesListFilters)
 					{
 						str+='<li attr_id='+scopesListFilters[i].id+'>'+scopesListFilters[i].name+'</li>'
-					}
-					
-					if(scopesListFilters.length > 4)
-					{
-						$(".scopes-list").mCustomScrollbar({setHeight : '150px'});
 					}
 					$("[filters-list='impactLevel']").html(str);
 				}else{
@@ -866,7 +853,7 @@ function onLoadClicks()
 			actionUrl = window.location.pathname; //live
 		}
 		
-		if(actionUrl == "alertDistOfficeManagement.action" || actionUrl == "alertDistManagement.action" || actionUrl == "alertUserManagementAction.action")
+		 if(actionUrl == "alertDistOfficeManagement.action" || actionUrl == "alertDistManagement.action" || actionUrl == "alertUserManagementAction.action")
 		{
 			setTimeout(function(){
 				$("[filters-list='locLevel']").closest(".row").hide();
@@ -891,7 +878,7 @@ function onLoadClicks()
 		});
 		$("#alertManagementPopupBody").html("<div class='row'><div id='rightSideExpandView'></div></div>");
 		rightSideExpandView(alertId);
-		//popUpFilter('heading','','','','','','');
+		//popUpFilter('heading','','','','','','','');
 		$(".flipview-btn,.filters-icon").hide();
 		var alertId = '';
 		$("#modalHeadingTotal").html("Alert Status");
@@ -3359,7 +3346,7 @@ function getDocumentsForAlert(alertId){
 var printMediaFilters = [];
 var electronicMediaFilters = [];
 var scopesListFilters = [];
-function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,alertTaskType)
+function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,alertTaskType,statusIdsMulti)
 {
 	var str='';
 	var str1='';
@@ -3391,10 +3378,9 @@ function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,al
 				str+='<div class="col-sm-4">';
 				str+='</div>';
 			str+='</div>';
-			if(actionUrl == "alertManagementAction.action")
-			{
-				str+='<div class="row m_top10">';
-					str+='<div class="col-sm-3">';
+			str+='<div class="row m_top10">';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
 						str+='<h5 class="text-capitalize" filters-list-title="locLevel"><b>Location Level</b></h5>';
 						str+='<ul class="filters-list" filters-list="locLevel">';
 							str+='<li attr_level="state" attr_levelVal="statesLevel" attr_id="1">STATE</li>';
@@ -3405,246 +3391,365 @@ function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,al
 							str+='<li attr_level="village" attr_levelVal="villageLevel" attr_id="6">VILLAGE</li>';
 						str+='</ul>';
 					str+='</div>';
-					str+='<div class="col-sm-3">';
+				str+='</div>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
 						str+='<h5 class="text-capitalize" filters-list-title="statesLevel"><b>State Level</b></h5>';
 						str+='<div class="scroller-state">';
 							str+='<ul class="filters-list" filters-list="statesLevel">';
 								str+='<li attr_id="1">ANDHRA PRADESH</li>';
 							str+='</ul>';
 						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
 						str+='<h5 class="text-capitalize m_top10" filters-list-title="districtsLevel"><b>District Level</b></h5>';
 						str+='<div class="scroller-district">';
 							str+='<ul class="filters-list" filters-list="districtsLevel"></ul>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="col-sm-3">';
+				str+='</div>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
 						str+='<h5 class="text-capitalize m_top10" filters-list-title="consLevel"><b>Constituency Level</b></h5>';
 						str+='<div class="scroller-cons">';
 							str+='<ul class="filters-list" filters-list="consLevel"></ul>';
 						str+='</div>';
 					str+='</div>';
-					str+='<div class="col-sm-3">';
+				str+='</div>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
 						str+='<h5 class="text-capitalize m_top10" filters-list-title="mandalLevel"><b>Mandal Level</b></h5>';
 						str+='<div class="scroller-mandal">';
 							str+='<ul class="filters-list" filters-list="mandalLevel"></ul>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-			}
-			str+='<div class="row m_top10">';
 				
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize m_top10" filters-list-title="panLevel"><b>Panchayat Level</b></h5>';
-					str+='<div class="scroller-panchayat">';
-						str+='<ul class="filters-list" filters-list="panLevel"></ul>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize m_top10" filters-list-title="panLevel"><b>Panchayat Level</b></h5>';
+						str+='<div class="scroller-panchayat">';
+							str+='<ul class="filters-list" filters-list="panLevel"></ul>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize m_top10" filters-list-title="villageLevel"><b>Village Level</b></h5>';
-					str+='<div class="scroller-village">';
-						str+='<ul class="filters-list" filters-list="villageLevel"></ul>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize m_top10" filters-list-title="villageLevel"><b>Village Level</b></h5>';
+						str+='<div class="scroller-village">';
+							str+='<ul class="filters-list" filters-list="villageLevel"></ul>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row m_top10">';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="alertStatus"><b>alert status</b></h5>';
-					str+='<div class="scroller-alertStatus">';
-						str+='<ul class="filters-list" filters-list="alertStatus">';
-							str+='<li attr_id="All">All</li>';
-							if(result.alertStatusList != null && result.alertStatusList.length>0)
-							{
-								if(alertTaskType == 'mainAlert')
-								{
-									for(var i in result.alertStatusList)
-									{
-										if(statusName == result.alertStatusList[i].name || statusId == result.alertStatusList[i].id)
-										{
-											str+='<li class="active" attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-										}else{
-											str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
-										}
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize" filters-list-title="alertStatus"><b>alert status</b></h5>';
+						str+='<div class="scroller-alertStatus">';
+							str+='<ul class="filters-list" filters-list="alertStatus">';
+								str+='<li attr_id="All">All</li>';
+								if(alertTaskType == 'alertSource'){
+									for(var i in result.alertStatusList){
+										if(statusIdsMulti !=null && statusIdsMulti.length>0){
+											for(var k in statusIdsMulti){
+												if(result.alertStatusList[i].id == statusIdsMulti[k]){
+													str+='<li class="active" attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+												}
+											}
+											
+										} 
 									}
-								}else if(alertTaskType == 'alertSource'){
-									for(var i in result.alertStatusList)
-									{
-										if(statusName == result.alertStatusList[i].name || departmentId == result.alertStatusList[i].id)
-										{
-											str+='<li class="active" attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-										}else{
-											str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
-										}
+									
+									var differenceSttausIds=[];
+									var a = 0;	
+									var myArr=[];
+									var IdsStr="";	
+									 for(var i in result.alertStatusList){
+											myArr.push(result.alertStatusList[i].id)
+											IdsStr=i==0?result.alertStatusList[i].id:IdsStr+","+result.alertStatusList[i].id;
+											
+									}
+									var string1 = IdsStr,
+										strx1   = string1.split(',');
+										array1  = [];
+
+									array1 = array1.concat(strx1);
+									
+									$.grep(array1, function(el) {
+										if ($.inArray(el, statusIdsMulti) == -1) differenceSttausIds.push(el);
+										a++;
+									});	
+									for(var i in result.alertStatusList){
+										if(differenceSttausIds !=null && differenceSttausIds.length>0){
+											for(var k in differenceSttausIds){
+												if(result.alertStatusList[i].id == differenceSttausIds[k]){
+													str+='<li  attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+												}
+											}
+											
+										} 
 									}
 								}else{
-									for(var i in result.alertStatusList)
-									{
-										str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+									for(var i in result.alertStatusList){
+										str+='<li  attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
 									}
 								}
-								/* for(var i in result.alertStatusList)
+							str+='</ul>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize" filters-list-title="alertSubtaskStatus"><b>alert subtask status</b></h5>';
+						str+='<div class="scroller-alertSubtask">';
+							str+='<ul class="filters-list" filters-list="alertSubtaskStatus">';
+								str+='<li attr_id="All">All</li>';
+								if(alertTaskType == 'mainAlertSubTask'){
+									for(var i in result.alertSubTaskStatusList){
+										if(statusIdsMulti !=null && statusIdsMulti.length>0){
+											for(var k in statusIdsMulti){
+												if(result.alertSubTaskStatusList[i].id == statusIdsMulti[k]){
+													str+='<li class="active" attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+												}
+											}
+											
+										} 
+									}
+									
+									var differenceSubTaskSttausIds=[];
+									var a = 0;	
+									var mySubTaskArr=[];
+									var subTaskIdsStr="";	
+									 for(var i in result.alertSubTaskStatusList){
+											mySubTaskArr.push(result.alertSubTaskStatusList[i].id)
+											subTaskIdsStr=i==0?result.alertSubTaskStatusList[i].id:subTaskIdsStr+","+result.alertSubTaskStatusList[i].id;
+											
+									}
+									var string1 = subTaskIdsStr,
+										strx1   = string1.split(',');
+										array1  = [];
+
+									array1 = array1.concat(strx1);
+									
+									$.grep(array1, function(el) {
+										if ($.inArray(el, statusIdsMulti) == -1) differenceSubTaskSttausIds.push(el);
+										a++;
+									});	
+									for(var i in result.alertSubTaskStatusList){
+										if(differenceSubTaskSttausIds !=null && differenceSubTaskSttausIds.length>0){
+											for(var k in differenceSubTaskSttausIds){
+												if(result.alertSubTaskStatusList[i].id == differenceSubTaskSttausIds[k]){
+													str+='<li  attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'</li>';
+												}
+											}
+											
+										} 
+									}
+								}
+								
+								else{
+									for(var i in result.alertSubTaskStatusList){
+										str+='<li attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'</li>';
+									}
+								}
+								
+							str+='</ul>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize" filters-list-title="alertDepartments"><b>alert departments</b></h5>';
+						str+='<div class="scroller-alertDepartments">';
+							str+='<ul class="filters-list" filters-list="alertDepartments">';
+								str+='<li attr_id="All">All</li>';
+								for(var i in result.alertDepartMentList)
 								{
-									if((statusName == result.alertStatusList[i].name))
+									if(departmentId == result.alertDepartMentList[i].id)
 									{
-										str+='<li class="active" attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+										str+='<li class="active" attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
 									}else{
-										str+='<li attr_id='+result.alertStatusList[i].id+'>'+result.alertStatusList[i].name+'</li>';
+										str+='<li attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'</li>';
 									}
-								} */
-							}
-						str+='</ul>';
+								}
+							str+='</ul>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize m_top10" filters-list-title="alertSubtaskStatus"><b>alert subtask status</b></h5>';
-					str+='<div class="scroller-alertSubtask">';
-						str+='<ul class="filters-list" filters-list="alertSubtaskStatus">';
-							str+='<li attr_id="All">All</li>';
-							for(var i in result.alertSubTaskStatusList)
-							{
-								if((statusName == result.alertSubTaskStatusList[i].name || departmentId == result.alertSubTaskStatusList[i].id || statusId == result.alertStatusList[i].id) && alertTaskType == 'mainAlertSubTask')
-								{
-									str+='<li class="active" attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else{
-									str+='<li attr_id='+result.alertSubTaskStatusList[i].id+'>'+result.alertSubTaskStatusList[i].name+'</li>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize" filters-list-title="impactLevel"><b>Impact Level</b></h5>';
+						str+='<div class="scopes-list">';
+							str+='<ul class="filters-list" filters-list="impactLevel">';
+							
+								for(var i in result.scopesList){
+									scopesListFilters.push({"name":result.scopesList[i].name,"id":result.scopesList[i].id})
 								}
-							}
-						str+='</ul>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize m_top10" filters-list-title="alertDepartments"><b>alert departments</b></h5>';
-					str+='<div class="scroller-alertDepartments">';
-						str+='<ul class="filters-list" filters-list="alertDepartments">';
-							str+='<li attr_id="All">All</li>';
-							for(var i in result.alertDepartMentList)
-							{
-								if(departmentId == result.alertDepartMentList[i].id)
-								{
-									str+='<li class="active" attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else{
-									str+='<li attr_id='+result.alertDepartMentList[i].id+'>'+result.alertDepartMentList[i].name+'</li>';
+								if(alertTaskType == "locationLevel"){
+									for(var i in result.scopesList){
+										if(statusId == result.scopesList[i].id){
+											str+='<li class="active" attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+										}
+									}
 								}
-							}
-						str+='</ul>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="impactLevel"><b>Impact Level</b></h5>';
-					str+='<div class="scopes-list">';
-						str+='<ul class="filters-list" filters-list="impactLevel">';
-						
-							for(var i in result.scopesList)
-							{
-								scopesListFilters.push({"name":result.scopesList[i].name,"id":result.scopesList[i].id})
-								 if(statusId == result.scopesList[i].id && alertTaskType == 'locationLevel'){
-									str+='<li class="active" attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+								if(departmentId != "" &&  alertTaskType == "alertSource" || alertTaskType == "mainAlertSubTask" || alertTaskType == "alertCategory"){
+									
+									for(var i in result.scopesList){
+										if(statusId == result.scopesList[i].id){
+											str+='<li class="active" attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+										}
+									}
 								}
-								//str+='<li attr_id='+result.scopesList[i].id+'>'+result.scopesList[i].name+'</li>';
-							}	
-						str+='</ul>';
+								
+							str+='</ul>';
+						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row m_top20">';	
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="priority"><b>priority</b></h5>';
-					str+='<ul class="filters-list" filters-list="priority">';
-					var severityId='';
-							$('.severityTypeCls').each(function(i, obj){
-									 if($(this).is(":checked")){
-										severityId = $(this).attr("attr_val");
-									 }
-							});	
-						for(var i in result.severityList)
-						{
-							/* if(statusName == result.severityList[i].name && statusId == result.severityList[i].id)
-							{
-								str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-							}else{
-								str+='<li attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'</li>';
-							} */
-							
-							
-							if($('.severityTypeCls:checked').length == 3){
-								str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-							}else{
-								if(severityId == 1 && result.severityList[i].id == 1){
-									str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else if(severityId == 2 && result.severityList[i].id == 2){
-									str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else if(severityId == 3 && result.severityList[i].id == 3){
-									str+='<li class="active" attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else{
-									str+='<li attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'</li>';
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize" filters-list-title="priority"><b>priority</b></h5>';
+						str+='<ul class="filters-list" filters-list="priority">';
+						var severityIdsArr=[];
+						$('.severityTypeCls').each(function(i, obj){
+							 if($(this).is(":checked")){
+								 severityIdsArr.push($(this).attr("attr_val"))
+							 }
+						});
+						if(result.severityList !=null && result.severityList.length>0){
+							for(var j in result.severityList){
+								if(severityIdsArr !=null && severityIdsArr.length>0){
+									for(var k in severityIdsArr){
+										if(result.severityList[j].id == severityIdsArr[k]){	
+											str+='<li class="active" attr_id='+result.severityList[j].id+'>'+result.severityList[j].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+										}
+									}
 								}
+									
 							}
+							
+							var differenceSeverityIds=[];
+								var a = 0;	
+								var mySeverityArr=[];
+								var severityIdsStr="";	
+								 for(var i in result.severityList){
+										mySeverityArr.push(result.severityList[i].id)
+										severityIdsStr=i==0?result.severityList[i].id:severityIdsStr+","+result.severityList[i].id;
+										
+								}
+								var string1 = severityIdsStr,
+									strx1   = string1.split(',');
+									array1  = [];
+
+								array1 = array1.concat(strx1);
+								
+								$.grep(array1, function(el) {
+									if ($.inArray(el, severityIdsArr) == -1) differenceSeverityIds.push(el);
+									a++;
+								});	
+								for(var i in result.severityList){
+									if(differenceSeverityIds !=null && differenceSeverityIds.length>0){
+										for(var k in differenceSeverityIds){
+											if(result.severityList[i].id == differenceSeverityIds[k]){
+												str+='<li  attr_id='+result.severityList[i].id+'>'+result.severityList[i].name+'</li>';
+											}
+										}
+										
+									} 
+								}
 						}
-					str+='</ul>';
+						str+='</ul>';
+					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize m_top20" filters-list-title="alertSourceType"><b>alert source type</b></h5>';
-					str+='<ul class="filters-list" filters-list="alertSourceType">';
-						if(alertTaskType == 'alertSource')
-						{
-							for(var i in result.categoryList)
-							{
-								if(statusName == result.categoryList[i].name || statusId == result.categoryList[i].id)
-								{
-									str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else{
-									str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
-								}
-							}
-						}else{
-							for(var i in result.categoryList)
-							{
-								if(	$(".socialMediaCls").is(":checked") && result.categoryList[i].name == "Social Media" || 
-									$(".newsPaperListCls").is(":checked") && result.categoryList[i].name == "Print Media" || 
-									$(".chanelListCls").is(":checked") && result.categoryList[i].name == "Electronic Media" || 
-									$(".callcenterCls").is(":checked") && result.categoryList[i].name == "Call Center" || 
-									$(".mondayGrievanceCls").is(":checked") && result.categoryList[i].name == "Monday Grievance"|| 
-									$(".janmabhoomiCls").is(":checked") && result.categoryList[i].name == "Janmabhoomi"|| 
-									$(".specialGrievanceCls").is(":checked") && result.categoryList[i].name == "Special Grievance - SC/ST"|| 
-									$(".generalGrievanceCls").is(":checked") && result.categoryList[i].name == "General Grievance")
-								{
-									str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
-								}else{
-									str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
-								}
-							}
-						}
+				str+='<div class="col-sm-12">';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize" filters-list-title="alertSourceType"><b>alert source type</b></h5>';
+						str+='<ul class="filters-list" filters-list="alertSourceType">';
 						
-					str+='</ul>';
-				str+='</div>';
-				/* str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="printMedia" style="display:none"><b>Print Media</b></h5>';
-					str+='<div class="scroller-print">';
-						str+='<ul class="filters-list" filters-list="printMedia">';
-							for(var i in result.editionsList)
-							{
-								printMediaFilters.push({"name":result.editionsList[i].name,"id":result.editionsList[i].id})
-								str+='<li attr_id='+result.editionsList[i].id+'>'+result.editionsList[i].name+'</li>';
+							if(alertTaskType == 'alertCategory'){
+								for(var i in result.categoryList){
+										if(statusIdsMulti !=null && statusIdsMulti.length>0){
+											for(var k in statusIdsMulti){
+												if(result.categoryList[i].id == statusIdsMulti[k]){
+													str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+												}
+											}
+											
+										} 
+									}
+									
+									var differenceCategoryIds=[];
+									var a = 0;	
+									var myCateArr=[];
+									var cateIdsStr="";	
+									 for(var i in result.categoryList){
+											myCateArr.push(result.categoryList[i].id)
+											cateIdsStr=i==0?result.categoryList[i].id:cateIdsStr+","+result.categoryList[i].id;
+											
+									}
+									var string1 = cateIdsStr,
+										strx1   = string1.split(',');
+										array1  = [];
+
+									array1 = array1.concat(strx1);
+									
+									$.grep(array1, function(el) {
+										if ($.inArray(el, statusIdsMulti) == -1) differenceCategoryIds.push(el);
+										a++;
+									});	
+									for(var i in result.categoryList){
+										if(differenceCategoryIds !=null && differenceCategoryIds.length>0){
+											for(var k in differenceCategoryIds){
+												if(result.categoryList[i].id == differenceCategoryIds[k]){
+													str+='<li  attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
+												}
+											}
+											
+										} 
+									}
+							}else if(departmentId == "" && statusId !="" && alertTaskType == 'alertSource'){
+							
+								for(var i in result.categoryList){
+									if(statusId == result.categoryList[i].id){
+										str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+									}else{
+										str+='<li  attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
+									}
+								}
+							}else{
+								
+								for(var i in result.categoryList)
+								{
+									if(	$(".socialMediaCls").is(":checked") && result.categoryList[i].name == "Social Media" || 
+										$(".newsPaperListCls").is(":checked") && result.categoryList[i].name == "Print Media" || 
+										$(".chanelListCls").is(":checked") && result.categoryList[i].name == "Electronic Media" || 
+										$(".callcenterCls").is(":checked") && result.categoryList[i].name == "Call Center" || 
+										$(".mondayGrievanceCls").is(":checked") && result.categoryList[i].name == "Monday Grievance"|| 
+										$(".janmabhoomiCls").is(":checked") && result.categoryList[i].name == "Janmabhoomi"|| 
+										$(".specialGrievanceCls").is(":checked") && result.categoryList[i].name == "Special Grievance - SC/ST"|| 
+										$(".generalGrievanceCls").is(":checked") && result.categoryList[i].name == "General Grievance")
+									{
+										str+='<li class="active" attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'<span class="remove" filer-selection="true"><i class="glyphicon glyphicon-remove"></i></span></li>';
+									}else{
+										str+='<li attr_id='+result.categoryList[i].id+'>'+result.categoryList[i].name+'</li>';
+									}
+								}
 							}
+							
 						str+='</ul>';
 					str+='</div>';
 				str+='</div>';
-				str+='<div class="col-sm-3">';
-					str+='<h5 class="text-capitalize" filters-list-title="electronicMedia" style="display:none"><b>Electronic Media</b></h5>';
-					str+='<div class="scroller-electronic">';
-						str+='<ul class="filters-list" filters-list="electronicMedia">';
-							for(var i in result.tvNewsChannelList)
-							{
-								electronicMediaFilters.push({"name":result.tvNewsChannelList[i].name,"id":result.tvNewsChannelList[i].id})
-								str+='<li attr_id='+result.tvNewsChannelList[i].id+'>'+result.tvNewsChannelList[i].name+'</li>';
-							}
-						str+='</ul>';
-					str+='</div>';
-				str+='</div>'; */
 				str+='<div class="col-sm-12 m_top10">';
-					str+='<h5 class="text-capitalize" filters-list-title="lagDays"><b>Lag Days</b><small class="clear" filer-selection-clear="lagDays">(Clear All)</small></h5>';
-					str+='<label class="checkbox-inline"><input type="checkbox" name="lagDays" id="lagDaysId" checked/>Lag Days</label>';
-					str+='<div id="tourSlider"></div>';
-					str+='<label class="checkbox-inline pull-right"><input type="checkbox" class="yearCheckbox"/>More than 365 Days</label>';
+					str+='<div class="block-border">';
+						str+='<h5 class="text-capitalize" filters-list-title="lagDays"><b>Lag Days</b><small class="clear" filer-selection-clear="lagDays">(Clear All)</small></h5>';
+						str+='<label class="checkbox-inline"><input type="checkbox" name="lagDays" id="lagDaysId" checked/>Lag Days</label>';
+						str+='<div id="tourSlider"></div>';
+						str+='<label class="checkbox-inline pull-right"><input type="checkbox" class="yearCheckbox"/>More than 365 Days</label>';
+					str+='</div>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="row">';
@@ -3664,29 +3769,17 @@ function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,al
 		},2000);
 		
 		$("[filters-list-title='statesLevel'],[filters-list-title='districtsLevel'],[filters-list-title='consLevel'],[filters-list-title='mandalLevel'],[filters-list-title='panLevel'],[filters-list-title='villageLevel'],[filters-list='statesLevel'],[filters-list='districtsLevel'],[filters-list='consLevel'],[filters-list='mandalLevel'],[filters-list='panLevel'],[filters-list='villageLevel']").hide();
-		if(result.tvNewsChannelList.length > 4)
-		{
-			$(".scroller-electronic").mCustomScrollbar({setHeight : '120px'});
-		}
-		if(result.alertStatusList.length > 4)
-		{
-			$(".scroller-alertStatus").mCustomScrollbar({setHeight : '130px'});
-		}
-		if(result.alertSubTaskStatusList.length > 4)
-		{
-			$(".scroller-alertSubtask").mCustomScrollbar({setHeight : '130px'});
-		}
-		if(result.alertDepartMentList.length > 4)
-		{
-			$(".scroller-alertDepartments").mCustomScrollbar({setHeight : '130px'});
-		}
-		/* $("[filters-list='alertDepartments'] li").each(function(){
-			if($(this).hasClass("active"))
-			{
-				$(this).trigger("click");
-			}
-			
-		}); */
+		
+		 if(statusId == 0 || statusId == "" && departmentId !=null && departmentId>0){
+			$("[filters-list='alertDepartments'] li").each(function(){
+				if($(this).hasClass("active"))
+				{
+					$(this).trigger("click");
+				}
+				
+			});
+		} 
+		
 	}
 }
 function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
@@ -4401,7 +4494,7 @@ function alertStatusHistory(result,alertId)
  
  
 
-function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,departmentId,alertType){
+function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIdsArr,statusId,departmentId,alertType,statusIdsMulti){
 	$("#filter").hide();
 	var jsObj={
 		deptIdArr : globalDepartmentIdsArr
@@ -4414,7 +4507,7 @@ function getFilterSectionAlertDetails(statusName,statuscount,globalDepartmentIds
 	}).done(function(result){
 		//$("#alertManagementPopup .modal-header").html('');
 		$("#filter").html('');
-		popUpFilter('body',result,statusName,statuscount,statusId,departmentId,alertType);
+		popUpFilter('body',result,statusName,statuscount,statusId,departmentId,alertType,statusIdsMulti);
 		
 	});
 }
@@ -4815,10 +4908,6 @@ function getDistrictsListForState(id)
 				str+='<li attr_id='+result[i].id+'>'+result[i].name+'</li>'
 			}
 			$("[filters-list='districtsLevel']").html(str);
-			if(result.length > 4 )
-			{
-				$(".scroller-district").mCustomScrollbar({setHeight: '130px'})
-			}
 		}
 	});
 }
@@ -4840,10 +4929,7 @@ function getMandalDetailsByConstituency(id)
 				str+='<li attr_id='+result[i].locationId+'>'+result[i].locationName+'</li>'
 			}
 			$("[filters-list='mandalLevel']").html(str);
-			if(result.length > 5 )
-			{
-				$(".scroller-mandal").mCustomScrollbar({setHeight: '180px'})
-			}
+			
 		}
 	});
 }
@@ -4866,10 +4952,6 @@ function getPanchayatWardByMandal(id)
 				str+='<li attr_id='+result[i].locationId+'>'+result[i].locationName+'</li>'
 			}
 			$("[filters-list='panLevel']").html(str);
-			if(result.length > 4 )
-			{
-				$(".scroller-panchayat").mCustomScrollbar({setHeight: '130px'})
-			}
 		}
 	});
 }
@@ -4891,10 +4973,6 @@ function getHamletsForPanchayat(id)
 				str+='<li attr_id='+result[i].id+'>'+result[i].name+'</li>'
 			}
 			$("[filters-list='villageLevel']").html(str);
-			if(result.length > 4 )
-			{
-				$(".scroller-village").mCustomScrollbar({setHeight: '130px'})
-			}
 		}
 	});
 }
@@ -4916,10 +4994,6 @@ function getlevlsForDepartmnt(id)
 				str+='<li attr_id='+result[i].id+'>'+result[i].name+'</li>'
 			}
 			$("[filters-list='impactLevel']").html(str);
-			if(result.length > 4 )
-			{
-				$(".scroller-impactLevel").mCustomScrollbar({setHeight: '130px'})
-			}
 		}
 	});
 }
@@ -4942,10 +5016,6 @@ function getConstituenciesForADistrictAjax(id)
 				str+='<li attr_id='+result[i].id+'>'+result[i].name+'</li>'
 			}
 			$("[filters-list='consLevel']").html(str);
-			if(result.length > 4 )
-			{
-				$(".scroller-cons").mCustomScrollbar({setHeight: '180px'})
-			}
 		}
 	});
 }
@@ -5073,7 +5143,7 @@ function getSearchAlertsDtls(alertId){
 			var alertId =result;
 			$("#alertManagementPopupBody").html("<div class='row'><div id='rightSideExpandView'></div></div>");
 			rightSideExpandView(alertId);
-			popUpFilter('heading','','','','','','');
+			popUpFilter('heading','','','','','','','');
 			$(".flipview-btn,.filters-icon").hide();
 			var alertId = '';
 			$("#modalHeadingTotal").html("Alert Status");
