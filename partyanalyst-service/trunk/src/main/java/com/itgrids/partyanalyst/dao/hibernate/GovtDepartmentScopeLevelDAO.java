@@ -103,7 +103,7 @@ public class GovtDepartmentScopeLevelDAO extends GenericDaoHibernate<GovtDepartm
 											   " from GovtDepartmentScopeLevel model " +
 											   " where " +
 											   " model.govtDepartment.govtDepartmentId in (:deptIds) " +
-											   " order by model.govtDepartment.govtDepartmentId,model.parentGovtDepartmentScopeId ");
+											   " order by model.govtDepartment.govtDepartmentId,model.orderNo ");
 		query.setParameterList("deptIds", deptIds);
 		  
 		return query.list();
