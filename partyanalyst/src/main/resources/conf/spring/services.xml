@@ -4278,6 +4278,14 @@
 		<property name="boothDAO" ref="boothDAO" ></property>
 		<property name="dateUtilService" ref="dateUtilService" ></property>
 		<property name="alertDAO" ref="alertDAO" ></property>
+		<property name="alertMeekosamPetitionerDAO" ref="alertMeekosamPetitionerDAO" ></property>
+		<property name="meekosamPetitionerLandDetailsDAO" ref="meekosamPetitionerLandDetailsDAO" ></property>
+		<property name="alertMeekosamIssueFieldRelationDataDAO" ref="alertMeekosamIssueFieldRelationDataDAO" ></property>
+		<property name="alertCommentDAO" ref="alertCommentDAO" ></property>
+		<property name="alertTrackingDAO" ref="alertTrackingDAO" ></property>
+		<property name="govtDepartmentDesignationOfficerDetailsNewDAO" ref="govtDepartmentDesignationOfficerDetailsNewDAO" ></property>
+		<property name="alertAssignedOfficerNewDAO" ref="alertAssignedOfficerNewDAO" ></property>
+		<property name="alertAssignedOfficerTrackingNewDAO" ref="alertAssignedOfficerTrackingNewDAO" ></property>
    </bean>
   <bean name="locationDashboardService" class="com.itgrids.core.api.service.impl.LocationDashboardService">	
   		<property name="nominationDAO" ref="nominationDAO"></property>
