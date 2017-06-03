@@ -3393,8 +3393,8 @@ function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,al
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-12">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-capitalize" filters-list-title="statesLevel"><b>State Level</b></h5>';
+					str+='<div class="block-border" filters-list-title="statesLevel">';
+						str+='<h5 class="text-capitalize" ><b>State Level</b></h5>';
 						str+='<div class="scroller-state">';
 							str+='<ul class="filters-list" filters-list="statesLevel">';
 								str+='<li attr_id="1">ANDHRA PRADESH</li>';
@@ -3403,24 +3403,24 @@ function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,al
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-12">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-capitalize m_top10" filters-list-title="districtsLevel"><b>District Level</b></h5>';
+					str+='<div class="block-border" filters-list-title="districtsLevel">';
+						str+='<h5 class="text-capitalize m_top10" ><b>District Level</b></h5>';
 						str+='<div class="scroller-district">';
 							str+='<ul class="filters-list" filters-list="districtsLevel"></ul>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-12">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-capitalize m_top10" filters-list-title="consLevel"><b>Constituency Level</b></h5>';
+					str+='<div class="block-border" filters-list-title="consLevel">';
+						str+='<h5 class="text-capitalize m_top10" ><b>Constituency Level</b></h5>';
 						str+='<div class="scroller-cons">';
 							str+='<ul class="filters-list" filters-list="consLevel"></ul>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-12">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-capitalize m_top10" filters-list-title="mandalLevel"><b>Mandal Level</b></h5>';
+					str+='<div class="block-border" filters-list-title="mandalLevel">';
+						str+='<h5 class="text-capitalize m_top10" ><b>Mandal Level</b></h5>';
 						str+='<div class="scroller-mandal">';
 							str+='<ul class="filters-list" filters-list="mandalLevel"></ul>';
 						str+='</div>';
@@ -3428,16 +3428,16 @@ function popUpFilter(type,result,statusName,statuscount,statusId,departmentId,al
 				str+='</div>';
 				
 				str+='<div class="col-sm-12">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-capitalize m_top10" filters-list-title="panLevel"><b>Panchayat Level</b></h5>';
+					str+='<div class="block-border" filters-list-title="panLevel">';
+						str+='<h5 class="text-capitalize m_top10" ><b>Panchayat Level</b></h5>';
 						str+='<div class="scroller-panchayat">';
 							str+='<ul class="filters-list" filters-list="panLevel"></ul>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-12">';
-					str+='<div class="block-border">';
-						str+='<h5 class="text-capitalize m_top10" filters-list-title="villageLevel"><b>Village Level</b></h5>';
+					str+='<div class="block-border" filters-list-title="villageLevel">';
+						str+='<h5 class="text-capitalize m_top10" ><b>Village Level</b></h5>';
 						str+='<div class="scroller-village">';
 							str+='<ul class="filters-list" filters-list="villageLevel"></ul>';
 						str+='</div>';
@@ -4741,10 +4741,23 @@ function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevel
 	var statusIdArr = [];
 	var subStatusIdArr = [];
 	$("[filters-list='alertStatus'] li.active").each(function(){
-		statusIdArr.push($(this).attr("attr_id"));
+		var value = $(this).attr("attr_id");
+			statusIdArr.push(value);
+		if ($.inArray('All', statusIdArr) != -1)
+		{
+		 statusIdArr.shift();
+		}
+		
+		
 	});
 	$("[filters-list='alertSubtaskStatus'] li.active").each(function(){
-		subStatusIdArr.push($(this).attr("attr_id"));
+		var value = $(this).attr("attr_id");
+		subStatusIdArr.push(value);
+		if ($.inArray('All', subStatusIdArr) != -1)
+		{
+		 subStatusIdArr.shift();
+		}
+		
 	});
 	var levelId = $("[filters-list='locLevel'] li.active").attr("attr_id");
 	var levelValues = [];
@@ -4794,7 +4807,12 @@ function getAlertDtlsBasedOnStatusFilterClick(statusName,statusCount,impactLevel
 	$("[filters-list='alertDepartments'] li").each(function(){
 		if($(this).hasClass("active"))
 		{
-			departmentsIds.push($(this).attr("attr_id"));
+			var value = $(this).attr("attr_id");
+			departmentsIds.push(value);
+			if ($.inArray('All', departmentsIds) != -1){
+				departmentsIds.shift();
+			}
+			
 		}
 	});
 	if(departmentsIds.length < 0)

@@ -255,12 +255,14 @@ function buildDistrictOfficerAlertsCountView(result){
 			}else{
 				str+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
-				str+='<div id="myAlertGraphView" style="height:250px"></div>';
+				str+='<div class="scrollerAlert">';
+					str+='<div id="myAlertGraphView"></div>';
+				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 		$("#myAlertsDivID").html(str);
 	}else{
-		$("#myAlertsDivID").html("No Data Available");
+		$('#myAlertsDivID').html('<div class="row"><div class="col-sm-12"><img src="alertDepartment/img/NODATA.png" style="margin:auto;display:block;"></div></div>');
 	}
 	
 	
@@ -282,7 +284,16 @@ function buildDistrictOfficerAlertsCountView(result){
 			mainArrTempAT.push(tempArrAT);
 		}
 	
-	
+	if(namesArrAT.length <= 2){
+		$("#myAlertGraphView").css("height","220px");
+	}else if(namesArrAT.length > 4){
+		$("#myAlertGraphView").removeAttr('style');
+		$(".scrollerAlert").mCustomScrollbar({setHeight:'250px'});
+	}/* else{
+		$("#myAlertGraphView").removeAttr('style');
+		$(".scrollerAlert").removeAttr('style');
+		$(".scrollerAlert").mCustomScrollbar({setHeight:'auto'});
+	} */
 	 $('#myAlertGraphView').highcharts({
 			
 			chart: {
@@ -421,12 +432,14 @@ function buildDistrictOfficerAlertsCountView(result){
 			}else{
 				str1+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
+				str+='<div class="scrollerSubTask">';
 				str1+='<div id="mySubTasksGraphView" style="height:250px"></div>';
+			str1+='</div>';
 			str1+='</div>';
 		str1+='</div>';
 		$("#mySubTasksDivID").html(str1);
 	}else{
-		$("#mySubTasksDivID").html("No Data Available");
+		$('#mySubTasksDivID').html('<div class="row"><div class="col-sm-12"><img src="alertDepartment/img/NODATA.png" style="margin:auto;display:block;"></div></div>');
 	}
 	
 	
@@ -448,6 +461,16 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			mainArrTempST.push(tempArrST);
 		}
 	
+	if(namesArrAT.length <= 2){
+		$("#mySubTasksGraphView").css("height","220px");
+	}else if(namesArrAT.length > 4){
+		$("#mySubTasksGraphView").removeAttr('style');
+		$(".scrollerSubTask").mCustomScrollbar({setHeight:'250px'});
+	}/* else{
+		$("#mySubTasksGraphView").removeAttr('style');
+		$(".scrollerSubTask").removeAttr('style');
+		$(".scrollerSubTask").mCustomScrollbar({setHeight:'auto'});
+	} */
 	 $('#mySubTasksGraphView').highcharts({
 			
 			chart: {
@@ -586,12 +609,14 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			}else{
 				str2+='<p class="pad_5">OVERALL <span class="pull-right badge">0</span></p>';
 			}
+			str+='<div class="scrollerAssSubTask">';
 				str2+='<div id="assignedSubTasksGraphView" style="height:250px"></div>';
+			str2+='</div>';
 			str2+='</div>';
 		str2+='</div>';
 		$("#assignedSubTasksDivID").html(str2);
 	}else{
-		$("#assignedSubTasksDivID").html("No Data Available");
+		$('#assignedSubTasksDivID').html('<div class="row"><div class="col-sm-12"><img src="alertDepartment/img/NODATA.png" style="margin:auto;display:block;"></div></div>');
 	}
 	
 	
@@ -612,7 +637,16 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			mainArrTemp.push(tempArr);
 		}
 	
-	
+	if(namesArrAT.length <= 2){
+		$("#scrollerAssSubTask").css("height","220px");
+	}else if(namesArrAT.length > 4){
+		$("#scrollerAssSubTask").removeAttr('style');
+		$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'250px'});
+	}/* else{
+		$("#scrollerAssSubTask").removeAttr('style');
+		$(".scrollerAssSubTask").removeAttr('style');
+		$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'auto'});
+	} */
 	 $('#assignedSubTasksGraphView').highcharts({
 			
 			chart: {
@@ -719,16 +753,16 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 				
 			}]
 		}); 
-		}else{
+		}/* else{
 			$('#assignedSubTasksGraphView').html("No Data Available")
-		}
+		} */
 		
-	var maxHeight = 0;
+	/* var maxHeight = 0;
 
 	$(".panelheights").each(function(){
 	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 	});
-	$(".panelheights").height(maxHeight);
+	$(".panelheights").height(maxHeight); */
 }
 
 $(document).on("click",".overAllCount",function(){
