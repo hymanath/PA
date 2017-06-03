@@ -1,4 +1,4 @@
-    var globalStateIdForCadreInsurance=1;
+    var globalStateIdForCadreInsurance=0;
 	var cadreInsuranceFDate = moment().subtract(20,'years').startOf("year").format('DD-MM-YYYY');
 	var cadreInsuranceTDate = moment().format('DD-MM-YYYY');
 	var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
@@ -72,6 +72,44 @@
 			   'This Year': [moment().startOf('Year'), moment()]
 			}
 		}); */
+		
+		$(document).on("click",".cadreInsuranceStateCls li",function(){
+			globalStateIdForCadreInsurance = $(this).attr('attr_id');
+			var momentDate = '';
+			var date = $(".cadreInsuranceCDate li.active").html();
+			
+			if(date == 'Today')
+			{
+				cadreInsuranceFDate = moment().format('DD-MM-YYYY');
+				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
+			}else if(date == 'Week'){
+				cadreInsuranceFDate = moment().subtract(1,'week').format('DD-MM-YYYY');
+				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
+			}else if(date == 'Month'){
+				cadreInsuranceFDate = moment().subtract(1,'month').startOf("month").format('DD-MM-YYYY');
+				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
+			}else if(date == '3 Months'){
+				cadreInsuranceFDate = moment().subtract(3,'month').startOf("month").format('DD-MM-YYYY');
+				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
+			}else if(date == '6 Months'){
+				cadreInsuranceFDate = moment().subtract(6,'month').startOf("month").format('DD-MM-YYYY');
+				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
+			}else if(date == '9 Months'){
+				cadreInsuranceFDate = moment().subtract(9,'month').startOf("month").format('DD-MM-YYYY');
+				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
+			}else if(date == 'All Time'){
+				cadreInsuranceFDate = moment().subtract(20,'years').startOf("year").format('DD-MM-YYYY');
+				cadreInsuranceTDate = moment().format('DD-MM-YYYY');
+			}
+			$(".liclsChange").removeClass("active");
+			$(".addActiveCls").addClass("active");
+			var getCadreval = getCadreYearVal();
+			
+			getInsuraceCompanyAndTypeOfIssueWiseComplaintsDetails(getCadreval);
+			getUserTypeWiseTotalCadreInsuranceComplainctCnt(date,getCadreval);
+			getInsuranceCompanyWiseOverviewAndStatusDetails(getCadreval);
+		});
+		
 		$(document).on("click",".cadreInsuranceCDate li",function(){
 			var date = $(this).html();
 			var momentDate = '';
@@ -251,7 +289,7 @@
 		var jsObj={ 
 			activityMemberId: globalActivityMemberId, 
 			cadreYearId		: getCadreval, 
-			stateId 		: 1, 
+			stateId 		: globalStateIdForCadreInsurance, 
 			fromDateStr 	: cadreInsuranceFDate, 
 			toDateStr		: cadreInsuranceTDate
 		};
@@ -355,7 +393,7 @@
 		var jsObj={ 
 			activityMemberId: 44, 
 			cadreYearId		: enrollmentId, 
-			stateId 		: 1, 
+			stateId 		: globalStateIdForCadreInsurance, 
 			fromDateStr 	: cadreInsuranceFDate, 
 			toDateStr		: cadreInsuranceTDate,
 			statusStr		: status, 
@@ -496,7 +534,7 @@
 		var jsObj={ 
 			activityMemberId: 44, 
 			cadreYearId		: enrollmentId, 
-			stateId 		: 1, 
+			stateId 		: globalStateIdForCadreInsurance, 
 			statusStr		: status, 
 			companyId		: companyid, 
 			issueType		: issueType
