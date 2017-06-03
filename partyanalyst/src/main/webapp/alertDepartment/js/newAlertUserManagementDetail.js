@@ -353,12 +353,27 @@ function onLoadClicks()
 	});
 	
 	$(document).on("click",".alertStatusCls",function(){
+		$("#errMsgAprAmuntId").html('');
+		$("#approvedAmountId").val('');
 		alertStatusGlobalId= $(this).attr("attr_id");
 		var statusSelectedName = $("#radio-"+alertStatusGlobalId).parent().find('span').html();
 		if(statusSelectedName == "Proposal"){
 			$(".proposalAppendBlockDivCls").show();
 		}else{
 			$(".proposalAppendBlockDivCls").hide();
+		}
+		if(statusSelectedName == "Rejoinder"){
+			$(".rejoinderDivCls").show();
+		}else{
+			$(".rejoinderDivCls").hide();
+		}
+	});
+	$(document).on("click",".alertStatusAmountCls",function(){
+		alertStatusGlobalId= $(this).attr("attr_id");
+		if(alertStatusGlobalId == 3){
+			$(".alertStatusAmountInputCls").show();
+		}else{
+			$(".alertStatusAmountInputCls").hide();
 		}
 	});
 	
@@ -900,11 +915,14 @@ function onLoadClicks()
 		var subTaskId = $(this).attr("subTaskId");
 		var proposalCategoryId =0;
 		 var amount = 0;
+		 var rejoinderActionId = 0;
 		if(alertStatusGlobalId == 13){
 			 proposalCategoryId= $("input[name=statusChekBx]:checked").val();
 			 amount = $("#amountId").val();
 		}
-		//var proposalCategoryId=$(".proposalCheckbox").val();
+		if(alertStatusGlobalId == 10){
+			 rejoinderActionId= $("input[name=RejoinderChekBx]:checked").val();
+		}
 		
 		if(subTaskId != null && subTaskId>0){
 			comment = $("#updateStatusChangeComment1").val()
@@ -924,15 +942,16 @@ function onLoadClicks()
 				alert("Please Enter Amount");
 				return;
 			 }
-			}
-			
-			var numericExpression = /^[0-9]+$/;
+			 var numericExpression = /^[0-9]+$/;
 			if(!$('#amountId').val().match(numericExpression)){
 				$("#errMsgAmuntId").html('<span style="color:red">Please Enter Numeric Value Only.....</span>');
 				return;
 			}else{
 				$("#errMsgAmuntId").html('');
 			}
+			}
+			
+			
 		}
 		if(comment == null || comment.trim() == "")
 		{
@@ -950,7 +969,8 @@ function onLoadClicks()
 				subTaskId:subTaskId,
 				comment: comment,
 				proposalCategoryId : proposalCategoryId,
-				proposalAmount : amount
+				proposalAmount : amount,
+				rejoinderActionTypeId : 0
 			}
 			
 		if(subTaskId != null && subTaskId>0){
@@ -1015,6 +1035,8 @@ function onLoadClicks()
 		});
 	});
 	$(document).on("click",".proposalCheckbox",function(){
+		$("#errMsgAmuntId").html('');
+		$('#amountId').val('');
 		$(".proposalCheckbox").prop("checked",false);
 		$(this).prop("checked",true);
 		var value = $(this).val();
@@ -1924,7 +1946,7 @@ function rightSideExpandView(alertId)
 	getGovtAllDepartmentDetails();
 	buildAssignUIAttributes(alertId);
 	getCommentsForAlert(alertId);
-	alertDeptmentExistInLogin(alertId)
+	alertDeptmentExistInLogin(alertId);
 
 
 	lang = $("input[name=language]:checked").val();
@@ -2863,7 +2885,9 @@ function getCommentsForAlert(alertId){
 			$("#alertGeneralComments").html("NO DATA");
 		}
 	});
-}	
+}
+ var globalPropCategory;
+var	globalPropReqAunt;	
 function buildCommentsForAlert(result)
 {
 	/*var str='';
@@ -2942,7 +2966,8 @@ function buildCommentsForAlert(result)
 			str+='<li>';
 			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i][0].trackingDate+'</span>';
 			for(var j in result[i]){
-				
+				     globalPropCategory = result[i][j].category;
+					 globalPropReqAunt = result[i][j].amount;
 					if(result[i][j].actionType == 'Assigning'){     
 						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Assigned BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>    </p>';
@@ -2983,19 +3008,23 @@ function buildCommentsForAlert(result)
 						 str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
 						if(result[i][j].status == 'Proposal'){
 							str+=''+result[i][j].status+'';
-							str+='<p class="text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
-							/* if(result[i][j].categoryId == 1){
-								str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'';
-								str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/-';
-								str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px">Approved Amount </span> :'+result[i][j].approvedAmount+'/-</p>';
+								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+							 if(result[i][j].categoryId == 1 ){
+								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'';
+								if(result[i][j].proposalStatus == 'Proposal Accept'){
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/-';
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px">Approved Amount </span> :'+result[i][j].approvedAmount+'/-</p>';
+								}else{
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/- </p>';
+								}
 							}else{
-								str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
-							} */
+								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
+							}
 						}else {
 							str+=''+result[i][j].status+'</p>';
 						} 
 						
-						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Comment </span>: '+result[i][j].comment+'</p>';
 						
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
 						if(result[i][j].position != "admin"){
@@ -4215,12 +4244,23 @@ function alertHistory(result)
 						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
 						if(result[i][j].status == 'Proposal'){
 							str+=''+result[i][j].status+'';
-							str+='<p class="text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+							 if(result[i][j].categoryId == 1 ){
+								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'';
+								if(result[i][j].proposalStatus == 'Proposal Accept'){
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/-';
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px">Approved Amount </span> :'+result[i][j].approvedAmount+'/-</p>';
+								}else{
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/- </p>';
+								}
+							}else{
+								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
+							}
 						}else {
 							str+=''+result[i][j].status+'</p>';
 						} 
 						
-						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Comment </span>: '+result[i][j].comment+'</p>';
 						
 						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
 						if(result[i][j].position != "admin"){
@@ -4444,25 +4484,29 @@ function alertStatusHistory(result,alertId)
 	$("#alertManagementPopup1 .modal-footer").html(' ');
 	
 	if(isAdmin == "false"){
-		if(globalUserType != "same" && globalUserType != "other"){
+		if(globalUserType != "other"){
 			str1+='<div class="text-left" id="changeStatudCheckBoxId">'; 
+			if(globalUserType != "same"){
 				if(isStatusAvailable){
-					str1+='<label class="checkbox-inline">';
+					str1+='<label class="checkbox-inline changeStateCls">';
 						str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change changeStatsCls" id="proposalCheckBxId"/> I Want to change alert Status';
 					str1+='</label>';  
 					}
-					if($("#displayStatusId #statusId").html() == 'Proposal'){
-						//<c:if test="${ fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_ENTITLEMENT_NEW' )}">
-						if(globalEntitlement != null && globalEntitlement == "true"){
-							if(globalDeprtStatus == 'true'){
-								str1+='<label class="checkbox-inline">';
-										str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change propasalchangeStatsCls" /> Do You Want To Change Propasal Status';	
-									str1+='</label>';  
+			}
+				if($("#displayStatusId #statusId").html() == 'Proposal'){
+							if(globalEntitlement != null && globalEntitlement == "true"){
+								if(globalDeprtStatus == 'true'){
+									str1+='<label class="checkbox-inline propStatusChangeCls">';
+											str1+='<input type="checkbox" attr_alert_id="'+alertId+'" class="alert-status-change propasalchangeStatsCls" /> Do You Want To Change Proposal Status';	
+										str1+='</label>';  
+									}
 								}
 							}
-						}
-				str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
+				if(globalUserType != "same"){
+					str1+='<div  id="updateStatusChangeBody" style="display:none;">'+glStr+'</div>';
+				}
 				str1+='<div  id="propasalupdateStatusChangeBody" style="display:none;">'+globalPropasalStr+'</div>';
+				
 			str1+='</div>';
 			$("#alertManagementPopup1 .modal-footer").html(str1);	
 		}
@@ -4474,11 +4518,30 @@ function alertStatusHistory(result,alertId)
 	
 	if(globalStatusId == 13 && globalUserType == 'own')//Hide changeStatusBlock when it is in proposal status
 	{
-		if(globalProposalStatus == 'Proposal Pending')
-			$("#alertManagementPopup1 .modal-footer").hide();
-		else if(globalProposalStatus == 'Proposal Rejected' || globalProposalStatus == 'Proposal Accept')
-			$("#alertManagementPopup1 .modal-footer").show();
+		if(!globalEntitlement){
+			if(globalProposalStatus == 'Proposal Pending'){
+				//$("#alertManagementPopup1 .modal-footer").hide();
+				$(".propStatusChangeCls").hide();
+				$(".changeStateCls").hide();
+			}else if(globalProposalStatus == 'Proposal Rejected' || globalProposalStatus == 'Proposal Accept'){
+				//$("#alertManagementPopup1 .modal-footer").show();
+				$(".changeStateCls").show();
+			}
+		}else{
+			
+			if(globalProposalStatus == 'Proposal Pending'){
+				$(".propStatusChangeCls").show();
+				$(".changeStateCls").hide();
+			}else if(globalProposalStatus == 'Proposal Rejected' || globalProposalStatus == 'Proposal Accept'){
+				$(".propStatusChangeCls").hide();
+				$(".changeStateCls").show();
+			}
+			//$("#alertManagementPopup1 .modal-footer").show();
+			//$("#alertManagementPopup1 .modal-footer").show();
+		}
+		
 	}
+	
 	
 	var options = {
 	  sourceLanguage:
@@ -4541,38 +4604,60 @@ function alertStatus(result,alertId)
 				}				
 				str1+='</div>';
 			str1+='</div>';
-				str1+='<div class="panel panel-default proposalAppendBlockDivCls" style="display:none;background-color:#ededed">';
-					str1+='<div class="panel-heading" style="background-color:#ededed;padding-left:15px;">';
-						str1+='<h4 class="panel-title">Proposal Information</h4>';
-					str1+='</div>';
-					str1+='<div class="panel-body" style="background-color:#ededed">';
-						str1+='<div class="row">';
-							str1+='<div class="col-sm-12">';
-								str1+='<div class="m_top10">';
-									str1+='<label class="checkbox-inline">';
-									  str1+='<input type="checkbox" class="proposalCheckbox" value="1" name="statusChekBx">Financial Assistance<span style="color:red">*</span>';
-									str1+='</label>';
-									str1+='<label class="checkbox-inline">';
-									  str1+='<input type="checkbox" class="proposalCheckbox" value="2" name="statusChekBx">Policy Decision Required<span style="color:red">*</span>';
-									str1+='</label>';
-									str1+='<label class="checkbox-inline">';
-									  str1+='<input type="checkbox" class="proposalCheckbox" value="3" name="statusChekBx">Others<span style="color:red">*</span>';
-									str1+='</label>';
-								str1+='</div>';
+			str1+='<div class="panel panel-default proposalAppendBlockDivCls" style="display:none;background-color:#ededed">';
+				str1+='<div class="panel-heading" style="background-color:#ededed;padding-left:15px;">';
+					str1+='<h4 class="panel-title">Proposal Information</h4>';
+				str1+='</div>';
+				str1+='<div class="panel-body" style="background-color:#ededed">';
+					str1+='<div class="row">';
+						str1+='<div class="col-sm-12">';
+							str1+='<div class="m_top10">';
+								str1+='<label class="checkbox-inline">';
+								  str1+='<input type="checkbox" class="proposalCheckbox" value="1" name="statusChekBx">Financial Assistance<span style="color:red">*</span>';
+								str1+='</label>';
+								str1+='<label class="checkbox-inline">';
+								  str1+='<input type="checkbox" class="proposalCheckbox" value="2" name="statusChekBx">Policy Decision Required<span style="color:red">*</span>';
+								str1+='</label>';
+								str1+='<label class="checkbox-inline">';
+								  str1+='<input type="checkbox" class="proposalCheckbox" value="3" name="statusChekBx">Others<span style="color:red">*</span>';
+								str1+='</label>';
 							str1+='</div>';
-							str1+='<div class="col-sm-4">';
-								str1+='<div class="input-group amountCls m_top20" style="display:none;">';
-									str1+='<span class="input-group-addon">';
-										str1+='<i class="fa fa-inr"></i>';
-									str1+='</span>';
-									str1+='<input type="text" class="form-control" placeholder="Enter Amount" id="amountId">';
-								str1+='</div>';
-								str1+='<span id="errMsgAmuntId"></span>';
+						str1+='</div>';
+						str1+='<div class="col-sm-4">';
+							str1+='<div class="input-group amountCls m_top20" style="display:none;">';
+								str1+='<span class="input-group-addon">';
+									str1+='<i class="fa fa-inr"></i>';
+								str1+='</span>';
+								str1+='<input type="text" class="form-control" placeholder="Enter Amount" id="amountId">';
+							str1+='</div>';
+							str1+='<span id="errMsgAmuntId"></span>';
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</div>';
+			str1+='</div>';
+			
+
+			/* str1+='<div class="panel panel-default rejoinderDivCls" style="display:none;background-color:#ededed">';
+				str1+='<div class="panel-heading" style="background-color:#ededed;padding-left:15px;">';
+					str1+='<h4 class="panel-title">Rejoinder Status</h4>';
+				str1+='</div>';
+				str1+='<div class="panel-body" style="background-color:#ededed">';
+					str1+='<div class="row">';
+						str1+='<div class="col-sm-12">';
+							str1+='<div class="m_top10">';
+								str1+='<label class="checkbox-inline">';
+								  str1+='<input type="checkbox" class="rejoinderCheckbox" value="1" name="RejoinderChekBx">Rejoinder Request<span style="color:red">*</span>';
+								str1+='</label>';
+								str1+='<label class="checkbox-inline">';
+								  str1+='<input type="checkbox" class="rejoinderCheckbox" value="2" name="RejoinderChekBx">Rejoinder Response<span style="color:red">*</span>';
+								str1+='</label>';
 							str1+='</div>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</div>';
-				
+			str1+='</div>'; */
+
+			
 			str1+='<div class="panel-body pad_0 m_top20">';
 				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
 			str1+='</div>';
@@ -4583,30 +4668,41 @@ function alertStatus(result,alertId)
 	str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
 	str1+='<span id="updateStatusChangeMsg"></span>';
 	
+		str+='<div class="col-sm-12">';
+			str+='<div style="padding:10px;background-color:#ddd">';
+			if(globalPropCategory != null){
+				str+='<p><strong>Proposal Category </strong>:'+globalPropCategory+'</p>';
+			}
+			if(globalPropReqAunt != null){
+				str+='<p class="m_top5"><strong>Requested Amount </strong>:'+globalPropReqAunt+'/- </p>';
+			}
+			str+='</div>';	
+		str+='</div>';	
 		str+='<div class="col-sm-4">';
 			str+='<div class="radioStyling">';
-				str+='<input class="alertStatusCls" attr_id="3" type="radio" name="group1" id="radio-1">';
+				str+='<input class="alertStatusCls alertStatusAmountCls" attr_id="3" type="radio" name="group1" id="radio-1">';
 				str+='<label for="radio-1"><span class="radio">Proposal Accept<span style="color:red;"> *</span></span></label>';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="col-sm-4">';
-			str+='<div class="radioStyling">';
-				str+='<input class="alertStatusCls" attr_id="2" type="radio" name="group1" id="radio-2">';
+			str+='<div class="radioStyling ">';
+				str+='<input class="alertStatusCls alertStatusAmountCls" attr_id="2" type="radio" name="group1" id="radio-2">';
 				str+='<label for="radio-2"><span class="radio">Proposal Reject<span style="color:red;"> *</span></span></label>';
 			str+='</div>';
 		str+='</div>';
-		/* str1+='<div class="col-sm-4">';
-			str1+='<div class="input-group amountCls m_top20" style="display:none;">';
-				str1+='<span class="input-group-addon">';
-					str1+='<i class="fa fa-inr"></i>';
-				str1+='</span>';
-				str1+='<input type="text" class="form-control" placeholder="Enter Approved Amount" id="approvedAmountId">';
-			str1+='</div>';
-		str1+='</div>'; */
+		str+='<div class="col-sm-6">';
+			str+='<div class="input-group m_top5 alertStatusAmountInputCls" style="display:none;">';
+				str+='<span class="input-group-addon">';
+					str+='<i class="fa fa-inr"></i>';
+				str+='</span>';
+				str+='<input type="text" class="form-control" placeholder="Enter Approved Amount" id="approvedAmountId">';
+			str+='</div>';
+			str+='<span id="errMsgAprAmuntId"></span>';
+		str+='</div>'; 
 	   str+='<div class="panel-body pad_0">';
-		str+='<textarea class="form-control" id="acceptedStatusChangeComment" placeholder="Comment.."></textarea>';
+		str+='<textarea class="form-control m_top10" id="acceptedStatusChangeComment" placeholder="Comment.."></textarea>';
 	str+='</div>';
-	str+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updatePrposalStatsId" >update</button>';
+	str+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updatePrposalStatsId">update</button>';
 	str1+='<span id="updateProposalStatusChangeMsg"></span>';
 	glStr=str1;
 	globalPropasalStr=str;
@@ -5325,52 +5421,31 @@ function getPresentAssignedDepartmentOfAlert(alertId){
 	});
 }
 
-/* function  getAllProposalCategories(){
-	var jsObj={
-	}	
-	$.ajax({   
-		type:'GET',
-		url:'getAllProposalCategoriesAction.action',  
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		/* if(result !=null && result.length>0){
-			$("#presentDeptId").html("<label>Present Deparment</label> : "+result[0].name+"");
-		} 
-		
-	});
-} */
-/* function saveProposalDetails(){
-	var categoryId =$('input[name=checkbox]:checked').val();
-	
-	var jsObj={
-		alertId : 12344,
-		proposalCategoryId : categoryId,
-		proposalAmount : "67890"
-	}	
-	$.ajax({   
-		type:'GET',
-		url:'saveProposalStatusDetailsAction.action',  
-		dataType: 'json',
-		data: {task:JSON.stringify(jsObj)}
-	}).done(function(result){
-		
-	});
-} */
 $(document).on("click","#updatePrposalStatsId",function(){
-	$("#updateProposalStatusChangeMsg").html(spinner)
+	$("#updateProposalStatusChangeMsg").html(spinner);
 	var alertId =$(this).attr("attr_alert_id");
 	var comment =$("#acceptedStatusChangeComment").val();
-	//var approvedAmount=$("#approvedAmountId").val();
-	
+	var approvedAmount = 0;
+	if(alertStatusGlobalId == 3)
+	approvedAmount=$("#approvedAmountId").val();
+
 	if(alertStatusGlobalId != null && alertStatusGlobalId==0){
 		alert("Please Select Status");
 		return;
 	}
-	/* if(approvedAmount != null && approvedAmount==0){
+	if(alertStatusGlobalId == 3){
+		if(approvedAmount != null && approvedAmount==0){
 		alert("Please Enter Approved Amount");
 		return;
-	} */
+	 }
+	 var numericExpression = /^[0-9]+$/;
+		if(!$('#approvedAmountId').val().match(numericExpression)){
+			$("#errMsgAprAmuntId").html('<span style="color:red">Please Enter Numeric Value Only.....</span>');
+			return;
+		}else{
+			$("#errMsgAprAmuntId").html('');
+		}
+	}
 	if(comment != null && comment==0){
 		alert("Please Enter Comment");
 		return;
@@ -5379,8 +5454,8 @@ $(document).on("click","#updatePrposalStatsId",function(){
 	var jsObj={
 		alertId : alertId,
 		proposalStatusId : alertStatusGlobalId,
-		comment : comment
-		//approvedAmount : approvedAmount
+		comment : comment,
+		approvedAmount : approvedAmount
 	}	
 	
 	$.ajax({   

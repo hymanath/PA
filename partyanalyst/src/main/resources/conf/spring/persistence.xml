@@ -1255,6 +1255,7 @@
 		      		   <value>com.itgrids.partyanalyst.model.GovtProposalStatus</value>
 		      		   <value>com.itgrids.partyanalyst.model.GovtProposalPropertyCategory</value>
 		      		   <value>com.itgrids.partyanalyst.model.GovtProposalPropertyCategoryTracking</value>
+		      		   <value>com.itgrids.partyanalyst.model.GovtRejoinderAction</value>
 		      		   
 	                   <!--  Govt Alert module end-->
 	                   
