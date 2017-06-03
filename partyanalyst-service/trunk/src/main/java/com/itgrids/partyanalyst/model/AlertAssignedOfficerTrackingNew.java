@@ -43,6 +43,7 @@ public class AlertAssignedOfficerTrackingNew {
 	private Long govtDepartmentId;
 	private Long alertFeedbackStatusId;
 	private Long alertCallerId;
+	private Long govtRejoinderActionId;
 	
 	private AlertSeverity alertSeviority;
 	private AlertAssignedOfficerNew alertAssignedOfficer;
@@ -57,6 +58,7 @@ public class AlertAssignedOfficerTrackingNew {
 	private User updatedUser;
 	private AlertFeedbackStatus alertFeedbackStatus;
 	private AlertCaller alertCaller;
+	private GovtRejoinderAction govtRejoinderAction;
 	
 	
 	private GovtDepartment govtDepartment;
@@ -350,6 +352,25 @@ public class AlertAssignedOfficerTrackingNew {
 	}
 	public void setAlertCaller(AlertCaller alertCaller) {
 		this.alertCaller = alertCaller;
+	}
+	
+	@Column(name = "govt_rejoinder_action_id")
+	public Long getGovtRejoinderActionId() {
+		return govtRejoinderActionId;
+	}
+	public void setGovtRejoinderActionId(Long govtRejoinderActionId) {
+		this.govtRejoinderActionId = govtRejoinderActionId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="govt_rejoinder_action_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public GovtRejoinderAction getGovtRejoinderAction() {
+		return govtRejoinderAction;
+	}
+	public void setGovtRejoinderAction(GovtRejoinderAction govtRejoinderAction) {
+		this.govtRejoinderAction = govtRejoinderAction;
 	}
 	
 	
