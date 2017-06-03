@@ -17533,5 +17533,10 @@
 				<param name="root">boothInchargesVOList</param>
 			</result>
 		</action>
+	<action name="getVotersAndcadreAgeWiseCountAction" class="locationDashboardAction"  method="getVotersAndcadreAgeWiseCount">
+		<result type="json" name="success">    
+			<param name="root">locationVotersVOList</param>       
+		</result>
+  	</action>
  </package>
 </struts>

@@ -10,7 +10,7 @@ function onLoadAjaxCalls()
 	getDetailedGovtOverAllAnalysisProblemsForConstituencyPage(); //problems
 	getDetailedGovtOverAllAnalysisProblemsForView();
 	getDetailedElectionInformaction()//get detailed election information
-	
+	getVotersAndcadreAgeWiseCount();
 }
 function getCandidateAndPartyInfoForConstituency(){
 	$("#candidateProfile").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -578,3 +578,17 @@ function getDetailedElectionInformaction(){
 		$list.html(templatess(result));
 	});
   }
+
+function getVotersAndcadreAgeWiseCount(){
+    jsObj={
+    	constituencyId:232,
+    	publicationDateId:22
+    }
+    $.ajax({
+      type : "GET",
+      url : "getVotersAndcadreAgeWiseCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+  });
+}
