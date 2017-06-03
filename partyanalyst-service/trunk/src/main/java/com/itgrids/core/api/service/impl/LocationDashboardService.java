@@ -1,7 +1,11 @@
 package com.itgrids.core.api.service.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -10,8 +14,11 @@ import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
+import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class LocationDashboardService implements ILocationDashboardService{
@@ -19,8 +26,24 @@ public class LocationDashboardService implements ILocationDashboardService{
 	private INominationDAO nominationDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IVoterAgeInfoDAO voterAgeInfoDAO;
+	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	
 	
+	
+	public ITdpCadreEnrollmentYearDAO getTdpCadreEnrollmentYearDAO() {
+		return tdpCadreEnrollmentYearDAO;
+	}
+	public void setTdpCadreEnrollmentYearDAO(
+			ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO) {
+		this.tdpCadreEnrollmentYearDAO = tdpCadreEnrollmentYearDAO;
+	}
+	public IVoterAgeInfoDAO getVoterAgeInfoDAO() {
+		return voterAgeInfoDAO;
+	}
+	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
+		this.voterAgeInfoDAO = voterAgeInfoDAO;
+	}
 	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
@@ -203,5 +226,69 @@ public class LocationDashboardService implements ILocationDashboardService{
 		return candidateInfoList;
 	}
 	
+	public List<LocationVotersVO> getVotersAndcadreAgeWiseCount(Long constituencyId,Long publicationDateId){
+		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
+		try {
+			Map<String,LocationVotersVO> map = new LinkedHashMap<String, LocationVotersVO>();
+			List<Object[]> votersObjList = voterAgeInfoDAO.getVotersAgeWiseCount(constituencyId,publicationDateId);
+			if(votersObjList != null && votersObjList.size() > 0){
+				for (Object[] objects : votersObjList) {
+					LocationVotersVO vo = new LocationVotersVO();
+					vo.setAgeRangeId((Long)objects[0]);
+					vo.setAgeRange(objects[1].toString());
+					vo.setTotalVoters(objects[2] != null ? (Long)objects[2]:0l);
+					vo.setTotalVotersPerc(objects[3] != null ? objects[3].toString()+" %":"");
+					vo.setMaleVoters(objects[4] != null?(Long)objects[4]:0l);
+					vo.setMaleVotersPerc(objects[5] != null ? objects[5].toString()+" %":"");
+					vo.setFemaleVoters(objects[6] != null?(Long)objects[6]:0l);
+					vo.setFemaleVotersPerc(objects[7] != null?objects[7].toString()+" %":"");
+					map.put(objects[1].toString(), vo);
+				}
+			}
+			
+			List<Object[]> cadreObjList =  tdpCadreEnrollmentYearDAO.getGenderAndAgeGroupWiseCadreCount(constituencyId);
+			if(cadreObjList != null && cadreObjList.size() > 0){
+				for (Object[] objects : cadreObjList) {
+					if(map.get(objects[1].toString()) == null){
+						LocationVotersVO inVO = new LocationVotersVO();
+						map.put(objects[1].toString(), inVO);
+					}
+					
+					if(objects[2].toString().trim().equalsIgnoreCase("M")){
+						map.get(objects[1].toString()).setMaleCadres((Long)objects[3]);
+					}else if(objects[2].toString().trim().equalsIgnoreCase("F")){
+						map.get(objects[1].toString()).setFemaleCadres((Long)objects[3]);
+					}
+				}
+			}
+			
+			if(map != null && map.size() > 0){
+				Long totalCadres=0l,maleTotalCadres=0l,femaleTotalCadres=0l;
+				for (Entry<String, LocationVotersVO> entry : map.entrySet()) {
+					entry.getValue().setTotalCadres(entry.getValue().getMaleCadres()+entry.getValue().getFemaleCadres());
+					totalCadres = totalCadres+entry.getValue().getMaleCadres()+entry.getValue().getFemaleCadres();
+					maleTotalCadres = maleTotalCadres+entry.getValue().getMaleCadres();
+					femaleTotalCadres = femaleTotalCadres + entry.getValue().getFemaleCadres();
+				}
+				
+				for (Entry<String, LocationVotersVO> entry : map.entrySet()) {
+					if(totalCadres > 0l)
+						entry.getValue().setTotalCadrePerc(((entry.getValue().getTotalCadres()*100)/totalCadres)+"");
+					if(maleTotalCadres > 0l)
+						entry.getValue().setMaleCadrePerc(((entry.getValue().getMaleCadres()*100)/maleTotalCadres)+"");
+					if(femaleTotalCadres > 0l)
+						entry.getValue().setFemaleCadrePerc(((entry.getValue().getFemaleCadres()*100)/femaleTotalCadres)+"");
+				}
+				
+				for (Entry<String, LocationVotersVO> entry : map.entrySet()) {
+					voList.add(entry.getValue());
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at votersAndcadreAgeWiseCount", e);
+		}
+		return voList;
+	}
 	
 }
