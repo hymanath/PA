@@ -2,22 +2,26 @@ package com.itgrids.model;
 
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "fund_saction")
+@Table(name = "fund_sanction")
 public class FundSanction{
 	
 	
 	private static final long serialVersionUID = -2853930539938433902L;
 
 	@Id
-	@Column(name="fund_saction_id")
+	@Column(name="fund_sanction_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long fundSactionId;
 	
@@ -62,7 +66,25 @@ public class FundSanction{
 	
 	@Column(name="is_deleted")
 	private String isDeleted;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id", insertable = false, updatable = false)
+	private LocationAddress locationAddress;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "financial_year_id", insertable = false, updatable = false)
+	private FinancialYear financialYear;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "grant_type_id", insertable = false, updatable = false)
+	private GrantType grantType;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_scheme_id", insertable = false, updatable = false)
+	private GovtScheme govtScheme;
+	
 
+	
 	public Long getFundSactionId() {
 		return fundSactionId;
 	}
@@ -182,6 +204,40 @@ public class FundSanction{
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+
+	public LocationAddress getLocationAddress() {
+		return locationAddress;
+	}
+
+	public void setLocationAddress(LocationAddress locationAddress) {
+		this.locationAddress = locationAddress;
+	}
+
+	public FinancialYear getFinancialYear() {
+		return financialYear;
+	}
+
+	public void setFinancialYear(FinancialYear financialYear) {
+		this.financialYear = financialYear;
+	}
+
+	public GrantType getGrantType() {
+		return grantType;
+	}
+
+	public void setGrantType(GrantType grantType) {
+		this.grantType = grantType;
+	}
+
+	public GovtScheme getGovtScheme() {
+		return govtScheme;
+	}
+
+	public void setGovtScheme(GovtScheme govtScheme) {
+		this.govtScheme = govtScheme;
+	}
+	
+	
 	
 	
 }
