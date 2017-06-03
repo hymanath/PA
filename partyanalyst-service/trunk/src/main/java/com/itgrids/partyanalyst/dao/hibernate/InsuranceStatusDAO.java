@@ -43,11 +43,11 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		
 		if(stateId != null && stateId > 0l)
 			sb.append("and cm.state_id_cmp IN (:stateId)");
-		else
-			sb.append(" and cm.state_id_cmp IN (1,2)");
+		//else
+			//sb.append(" and cm.state_id_cmp IN (1,2)");
 		
 		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L)
-    		sb.append(" and cm.state_id_cmp IN (:locationValuesSet) ");
+    		//sb.append(" and cm.state_id_cmp IN (:locationValuesSet) ");
     	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L)
     		sb.append(" and cm.district_id IN (:locationValuesSet) ");
     	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L)
@@ -79,7 +79,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 		
 		if(stateId != null && stateId > 0l)
 			query.setParameter("stateId", stateId);
-		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0)
+		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() != 2L)
 			query.setParameterList("locationValuesSet", locationValuesSet);
 		if(cadreYearId != null && cadreYearId.longValue() > 0l)
     		query.setParameter("cadreYearId", cadreYearId);
@@ -110,18 +110,18 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 					" and cmic.complaint_master_id = cm.Complaint_id" +
 					" and gic.grievance_insurance_company_id = cmic.grievance_insurance_company_id" +
 					" and cm.grievance_insurance_status_id = gis.grievance_insurance_status_id" +
-					" and tcey.is_deleted = 'N' and tc.is_deleted = 'N'" +
+				//	" and tcey.is_deleted = 'N' and tc.is_deleted = 'N'" +
 					" and cm.type_of_issue = 'Insurance'" +
 					" and cm.delete_status IS NULL" +
 					" and (cm.Subject IS NOT NULL OR cm.Subject != '')");
 		
 		if(stateId != null && stateId > 0l)
 			sb.append("and cm.state_id_cmp IN (:stateId)");
-		else
-			sb.append(" and cm.state_id_cmp IN (1,2)");
+		//else
+		//	sb.append(" and cm.state_id_cmp IN (1,2)");
 		
 		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 2L)
-    		sb.append(" and cm.state_id_cmp IN (:locationValuesSet) ");
+    		//sb.append(" and cm.state_id_cmp IN (:locationValuesSet) ");
     	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 3L)
     		sb.append(" and cm.district_id IN (:locationValuesSet) ");
     	if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0 && locationId.longValue() == 4L)
@@ -151,7 +151,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
     	
     	if(stateId != null && stateId > 0l)
 			query.setParameter("stateId", stateId);
-		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0)
+		if(locationId != null && locationValuesSet != null && locationValuesSet.size() > 0  && locationId.longValue() != 2L)
 			query.setParameterList("locationValuesSet", locationValuesSet);
 		if(cadreYearId != null && cadreYearId.longValue() > 0l)
     		query.setParameter("cadreYearId", cadreYearId);
@@ -424,7 +424,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 			 queryStr.append(" and date(CM.Raised_Date) between :startDate and :endDate  ");
 		 }
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-		 	queryStr.append(" and state.state_id in (:userAccessLevelValues)");  
+		 	//queryStr.append(" and state.state_id in (:userAccessLevelValues)");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		    queryStr.append(" and district.district_id in (:userAccessLevelValues)");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
@@ -468,7 +468,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	     if(inputVO.getEnrollmentYearId() != null && inputVO.getEnrollmentYearId().longValue() > 0){
 	    	 sqlQuery.setParameter("enrollmentYearId", inputVO.getEnrollmentYearId());
 	     }
-		 if(inputVO.getUserAccessLevelValues() != null && inputVO.getUserAccessLevelValues().size() > 0){
+		 if(inputVO.getUserAccessLevelValues() != null && inputVO.getUserAccessLevelValues().size() > 0 && inputVO.getUserAccessLevelId().longValue() != IConstants.STATE_LEVEl_ACCESS_ID){
 		    sqlQuery.setParameterList("userAccessLevelValues", inputVO.getUserAccessLevelValues());
 		 }
 		 if(inputVO.getFromDate() !=null && inputVO.getToDate() !=null){
@@ -572,7 +572,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	     }
 	   
 	     if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
-		 	queryStr.append(" and state.state_id in (:userAccessLevelValues)");  
+		 	//queryStr.append(" and state.state_id in (:userAccessLevelValues)");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
 		    queryStr.append(" and district.district_id in (:userAccessLevelValues)");  
 		 }else if(inputVO.getUserAccessLevelId() != null && inputVO.getUserAccessLevelId().longValue()==IConstants.PARLIAMENT_LEVEl_ACCESS_ID){
@@ -627,7 +627,7 @@ public class InsuranceStatusDAO extends GenericDaoHibernate<InsuranceStatus, Lon
 	     if(inputVO.getEnrollmentYearId() != null && inputVO.getEnrollmentYearId().longValue() > 0){
 	    	 sqlQuery.setParameter("enrollmentYearId", inputVO.getEnrollmentYearId());
 	     }
-		 if(inputVO.getUserAccessLevelValues() != null && inputVO.getUserAccessLevelValues().size() > 0){
+		 if(inputVO.getUserAccessLevelValues() != null && inputVO.getUserAccessLevelValues().size() > 0 && inputVO.getUserAccessLevelId().longValue() != IConstants.STATE_LEVEl_ACCESS_ID ){
 		    sqlQuery.setParameterList("userAccessLevelValues", inputVO.getUserAccessLevelValues());
 		 }
 		 if(inputVO.getFromDate() !=null && inputVO.getToDate() !=null){
