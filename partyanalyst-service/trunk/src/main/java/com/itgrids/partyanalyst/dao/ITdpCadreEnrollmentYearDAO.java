@@ -41,4 +41,5 @@ public interface ITdpCadreEnrollmentYearDAO extends GenericDao<TdpCadreEnrollmen
 	public List<Object[]> getOverAllCadreRegistrationCounts(Long districtId,Long constituencyId);
 	 public Long getTdpCadreIdByMembership(String membershipNo);
 	 public List<Object[]> getTdpCadreDetailsByTdpCadreId(Long tdpCadreId);
+	 public List<Object[]> getGenderAndAgeGroupWiseCadreCount(Long constituencyId);
 }

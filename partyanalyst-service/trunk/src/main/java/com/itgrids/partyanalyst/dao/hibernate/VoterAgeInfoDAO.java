@@ -270,4 +270,21 @@ public class VoterAgeInfoDAO extends GenericDaoHibernate<VoterAgeInfo, Long> imp
 			
 			return query.list();
 		}
+		
+		public List<Object[]> getVotersAgeWiseCount(Long constituencyId,Long publicationDateId){
+			Query query = getSession().createQuery(" select model.voterAgeRange.voterAgeRangeId,model.voterAgeRange.ageRange," +
+					" model.totalVoters,model.totalVotersPercentage, " +
+					" model.maleVoters,model.maleVotersPercentage, " +
+					" model.femaleVoters,model.femaleVotersPercentage " +
+					" from VoterAgeInfo model " +
+					" where model.publicationDate.publicationDateId=:publicationDateId " +
+					" and model.voterReportLevel.voterReportLevelId = :levelValue " +
+					" and model.reportLevelValue = :constituencyId " +
+					" and model.voterAgeRange.voterAgeRangeId between 1 and 6 " +
+					" order by model.voterAgeRange.voterAgeRangeId ");
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("levelValue", 1l);//constituency
+			return query.list();
+		}
 }
