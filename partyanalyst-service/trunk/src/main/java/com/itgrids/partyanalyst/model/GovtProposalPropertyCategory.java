@@ -35,6 +35,7 @@ public class GovtProposalPropertyCategory extends BaseModel implements Serializa
 	private Date updatedTime;
 	private Long updatedBy;
 	private String isDeleted;
+	private String approvedAmount;
 	
 	private Alert alert;
 	private GovtProposalCategory govtProposalCategory;
@@ -153,6 +154,14 @@ public class GovtProposalPropertyCategory extends BaseModel implements Serializa
 	}
 	public void setGovtProposalStatus(GovtProposalStatus govtProposalStatus) {
 		this.govtProposalStatus = govtProposalStatus;
+	}
+	
+	@Column(name = "approved_amount")
+	public String getApprovedAmount() {
+		return approvedAmount;
+	}
+	public void setApprovedAmount(String approvedAmount) {
+		this.approvedAmount = approvedAmount;
 	}
 	
      

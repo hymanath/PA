@@ -1005,12 +1005,26 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			return rs;
 		}
 		
-		public ResultStatus updateAlertStatusComment(final Long alertId,final Long statusId,final String comment,final Long userId,final Long proposalCategoryId,final String proposalAmount){
+		public ResultStatus updateAlertStatusComment(final Long alertId,final Long statusId,final String comment,final Long userId,final Long proposalCategoryId,final String proposalAmount,final Long rejoinderActionId){
 			final ResultStatus rs = new ResultStatus();
 			try {
 				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 						
+						
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(new Date());
+						 int year = calendar.get(Calendar.YEAR);
+						 int month = calendar.get(Calendar.MONTH);
+						// int day = calendar.get(Calendar.DAY_OF_MONTH);
+						 int temp = month+1;
+						 String monthText = getMonthForInt(temp);
+						 SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+						 String dateStr = sdf.format(new Date());
+						 String yearStr = String.valueOf(year);
+						 
+						 StringBuilder str ; 
+						 
 						/* here only we are updating for one assigned officer. But we can assing to multiple members . because of this we need to update present status of alert
 						 * for every assigned user. so am iterating the whole assigned officers 
 						 * Srishailam Pittala 
@@ -1141,7 +1155,94 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							}else{
 								rs.setMessage("Already In ProposalStatus");
 							}
-						}else{
+						}/*else if(statusId == 10l){
+							
+							if(alert != null && statusId != null && statusId.longValue()>0L){
+								alert.setAlertStatusId(statusId);
+								alert.setUpdatedBy(userId);
+								alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+								alertDAO.save(alert);
+							}
+							
+							AlertDepartmentCommentNew adcn = null;
+							if(comment != null && !comment.trim().isEmpty()){
+								adcn = new AlertDepartmentCommentNew();
+								adcn.setComment(comment);
+								adcn.setInsertedBy(userId);
+								adcn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+								adcn = alertDepartmentCommentNewDAO.save(adcn);
+							}
+							//List<Long> assingedIdsList = new ArrayList<Long>(0);
+							List<AlertAssignedOfficerNew> assignedOfficersList = alertAssignedOfficerNewDAO.getModelForAlert(alertId);
+							if(commonMethodsUtilService.isListOrSetValid(assignedOfficersList)){
+								
+								for (AlertAssignedOfficerNew aaon : assignedOfficersList) {
+									
+									if(statusId == 8l || statusId == 9l)
+										aaon.setIsApproved("N");
+									aaon.setAlertStatusId(statusId);
+									aaon.setUpdatedBy(userId);
+									aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									alertAssignedOfficerNewDAO.save(aaon);
+									
+									String folderName = folderCreationForAlertsAttachmentNew();
+									AlertDepartmentDocumentNew addn = null;	
+									
+									/*if(mapfiles != null && mapfiles.size() > 0){
+										 AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
+										 for (Map.Entry<File, String> entry : mapfiles.entrySet()){
+											 str = new StringBuilder();
+											 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+											 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+											 StringBuilder pathBuilder = new StringBuilder();
+											  pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(entry.getValue());
+											 str.append(randomNumber).append(".").append(entry.getValue());
+											String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+											 
+												if(fileCpyStts.equalsIgnoreCase("error")){
+													resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+													LOG.error(" Exception Raise in copying file");
+													throw new ArithmeticException();
+												}
+												
+												addn = new AlertDepartmentDocumentNew();
+												addn.setDocument(pathBuilder.toString());
+												addn.setInsertedBy(userId);
+												addn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+												addn = alertDepartmentDocumentNewDAO.save(addn);
+									}*/
+									
+									/*AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+										if(statusId == 8l || statusId == 9l)
+											aaon.setIsApproved("N");
+									aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
+									aaotn.setAlertId(aaon.getAlertId());
+									aaotn.setGovtDepartmentDesignationOfficerId(aaon.getGovtDepartmentDesignationOfficerId());
+									aaotn.setGovtOfficerId(aaon.getGovtOfficerId());
+									aaotn.setGovtAlertActionTypeId(6l);
+									if(statusId != null && statusId.longValue()>0L)
+										aaotn.setAlertStatusId(statusId);
+									
+									if(adcn != null)
+										aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
+									
+									if(addn != null)
+										aaotn.setAlertDepartmentDocumentId(addn.getAlertDepartmentDocumentId());
+						
+									aaotn.setInsertedBy(userId);
+									aaotn.setAlertStatusId(aaon.getAlertStatusId());
+									aaotn.setUpdatedBy(userId);
+									aaotn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+									aaotn.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+									aaotn.setIsApproved(aaon.getIsApproved());
+									aaotn.setGovtRejoinderActionId(rejoinderActionId);
+									alertAssignedOfficerTrackingNewDAO.save(aaotn);
+									
+									assingedIdsList.add(aaon.getAlertAssignedOfficerId());
+								}
+							}
+						
+						}*/else{
 							//Alert alert = alertDAO.get(alertId);
 							if(alert != null && statusId != null && statusId.longValue()>0L){
 								alert.setAlertStatusId(statusId);
@@ -10098,8 +10199,16 @@ public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId, String task
 						alertTrackingVO.setDueDate(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertTrackingVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[9]));
 						if(alertTrackingVO.getStatus().trim().equalsIgnoreCase("Proposal")){
-							String status = govtProposalPropertyCategoryTrackingDAO.getProposalStatusFrAlert(alertId);
-							alertTrackingVO.setProposalStatus(status);
+							List<Object[]> statusList = govtProposalPropertyCategoryDAO.getProposalStatusFrAlert(alertId);
+							if(statusList != null && statusList.size() > 0){
+								for (Object[] objects : statusList) {
+									alertTrackingVO.setProposalStatus(commonMethodsUtilService.getStringValueForObject(objects[0]));
+									alertTrackingVO.setCategory(commonMethodsUtilService.getStringValueForObject(objects[1]));
+									alertTrackingVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+									alertTrackingVO.setAmount(commonMethodsUtilService.getStringValueForObject(objects[3]));
+									alertTrackingVO.setApprovedAmount(commonMethodsUtilService.getStringValueForObject(objects[4]));
+								}
+							}
 						}
 						alertTrackingVO.setSeverty(commonMethodsUtilService.getStringValueForObject(param[11]));
 						if(task != null && !task.trim().isEmpty() && task.trim().length() > 0 && task.trim().equalsIgnoreCase("task")){
@@ -11768,41 +11877,8 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		return null;
 	}
 
-	/*public ResultStatus saveProposalStatusDetails(Long userId,Long alertId,Long proposalCategoryId,String proposalAmount){
-		ResultStatus status = new ResultStatus();
-		try{
-			GovtProposalPropertyCategory govtProposalPropertyCategory = new GovtProposalPropertyCategory();
-				govtProposalPropertyCategory.setAlertId(alertId);
-				govtProposalPropertyCategory.setGovtProposalCategoryId(proposalCategoryId);
-				govtProposalPropertyCategory.setProposalAmount(proposalAmount);
-				govtProposalPropertyCategory.setGovtProposalStatusId(1l);
-				govtProposalPropertyCategory.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				govtProposalPropertyCategory.setInsertedBy(userId);
-				govtProposalPropertyCategory.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-				govtProposalPropertyCategory.setUpdatedBy(userId);
-				govtProposalPropertyCategory.setIsDeleted("N");
-				govtProposalPropertyCategoryDAO.save(govtProposalPropertyCategory);
-			
-				
-			GovtProposalPropertyCategoryTracking govtProposalPropertyCategoryTracking = new GovtProposalPropertyCategoryTracking();
-				 govtProposalPropertyCategoryTracking.setAlertId(alertId);
-				 govtProposalPropertyCategoryTracking.setGovtProposalCategoryId(proposalCategoryId);
-				 govtProposalPropertyCategoryTracking.setGovtProposalStatusId(1l);
-				 govtProposalPropertyCategoryTracking.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-				 govtProposalPropertyCategoryTracking.setInsertedBy(userId);
-				 govtProposalPropertyCategoryTracking.setIsDeleted("N");
-			     govtProposalPropertyCategoryTrackingDAO.save(govtProposalPropertyCategoryTracking);
-			   
-			   status.setResultCode(0);  
-				 
-		}catch(Exception e){
-			status.setResultCode(1);
-			LOG.error("Error occured saveProposalStatusDetails() method of AlertManagementSystemService{}");
-		}
-		return status;
-	}*/
 	
-	public String updateProposalStatusFrAlert(final Long userId,final Long alertId,final Long proposalStatusId,final String comment){
+	public String updateProposalStatusFrAlert(final Long userId,final Long alertId,final Long proposalStatusId,final String comment,final String approvedAmount){
 		String result = null;
 		try{
 			result = (String)transactionTemplate.execute(new TransactionCallback() {
@@ -11821,6 +11897,9 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 					GovtProposalPropertyCategory govtProposalPropertyCategory = govtProposalPropertyCategoryDAO.getExistingStatusByAlertId(alertId);
 					if(govtProposalPropertyCategory != null){
 						govtProposalPropertyCategory.setGovtProposalStatusId(proposalStatusId);
+						if(proposalStatusId == 3l)
+							govtProposalPropertyCategory.setApprovedAmount(approvedAmount);
+						
 						govtProposalPropertyCategory.setUpdatedBy(userId);
 						govtProposalPropertyCategory.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						govtProposalPropertyCategory = govtProposalPropertyCategoryDAO.save(govtProposalPropertyCategory);

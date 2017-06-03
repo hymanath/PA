@@ -10,5 +10,6 @@ public interface IGovtProposalPropertyCategoryDAO extends GenericDao<GovtProposa
 	
 	public GovtProposalPropertyCategory getExistingStatusByAlertId(Long alertId);
 	public List<Object[]> getStatusFrALert(Long alertId);
+	public List<Object[]> getProposalStatusFrAlert(Long alertId);
 
 }

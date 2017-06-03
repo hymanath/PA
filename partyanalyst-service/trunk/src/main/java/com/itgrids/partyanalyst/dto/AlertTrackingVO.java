@@ -45,6 +45,10 @@ public class AlertTrackingVO {
 	private Long alertCallerId;
 	private String alertCallerName;
 	private String proposalStatus;
+	private String amount;
+	private String category;
+	private Long categoryId;
+	private String approvedAmount;
 	public AlertTrackingVO(){}
 	public AlertTrackingVO(Long alertId,String comment,String date){
 		this.alertId=alertId;
@@ -304,7 +308,29 @@ public class AlertTrackingVO {
 	public void setProposalStatus(String proposalStatus) {
 		this.proposalStatus = proposalStatus;
 	}
+	public String getAmount() {
+		return amount;
+	}
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public Long getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+	public String getApprovedAmount() {
+		return approvedAmount;
+	}
+	public void setApprovedAmount(String approvedAmount) {
+		this.approvedAmount = approvedAmount;
+	}
 	
-	
-
 }

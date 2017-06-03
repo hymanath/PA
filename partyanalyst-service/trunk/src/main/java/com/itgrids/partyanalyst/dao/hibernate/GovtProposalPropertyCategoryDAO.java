@@ -37,5 +37,16 @@ public class GovtProposalPropertyCategoryDAO extends GenericDaoHibernate<GovtPro
 		query.setParameter("alertId", alertId);
 		return query.list();
 	}
+	public List<Object[]> getProposalStatusFrAlert(Long alertId){
+		Query query = getSession().createQuery("select distinct model.govtProposalStatus.status," +
+				" model.govtProposalCategory.category," +
+				" model.govtProposalCategory.govtProposalCategoryId," +
+				" model.proposalAmount," +
+				" model.approvedAmount" +
+				" from GovtProposalPropertyCategory model" +
+				" where model.isDeleted = 'N' and model.alert.alertId = :alertId");
+		query.setParameter("alertId", alertId);
+		return query.list();
+	}
   
 }
