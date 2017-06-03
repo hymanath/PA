@@ -103,7 +103,7 @@
 							</div>
 						</div>-->
 						<div class="row">
-							<div class="col-md-4 col-xs-12 col-sm-6 pad_right0 m_top20">
+							<div class="col-sm-6 pad_right0 m_top20">
 								<ul class="nav nav-tabs navTabsSettings" role="tablist">
 									<li role="presentation" class="active text-capital"><a href="#mediaAlerts" aria-controls="mediaAlerts" role="tab" data-toggle="tab">Media Type</a></li>
 									<li role="presentation" class="text-capital"><a href="#callCenterAlerts" aria-controls="callCenterAlerts" role="tab" data-toggle="tab">Call Center</a></li>

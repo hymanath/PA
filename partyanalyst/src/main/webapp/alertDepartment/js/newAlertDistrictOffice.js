@@ -221,7 +221,7 @@ function buildDistrictOfficerAlertsCountView(result){
 		str+='</div>';
 		$("#myAlertsDivID").html(str);
 	}else{
-		$("#myAlertsDivID").html("No Data Available");
+		$('#myAlertsDivID').html('<div class="row"><div class="col-sm-12"><img src="alertDepartment/img/NODATA.png" style="margin:auto;display:block;"></div></div>');
 	}
 	
 	
@@ -243,13 +243,16 @@ function buildDistrictOfficerAlertsCountView(result){
 			mainArrTempAT.push(tempArrAT);
 		}
 	
-	if(namesArrAT.length > 4)
-	{
-		$(".scrollerAlert").mCustomScrollbar({setHeight:'270px'});
-	}else{
+	if(namesArrAT.length <= 2){
+		$("#myAlertGraphView").css("height","220px");
+	}else if(namesArrAT.length > 4){
+		$("#myAlertGraphView").removeAttr('style');
+		$(".scrollerAlert").mCustomScrollbar({setHeight:'250px'});
+	}/* else{
+		$("#myAlertGraphView").removeAttr('style');
 		$(".scrollerAlert").removeAttr('style');
 		$(".scrollerAlert").mCustomScrollbar({setHeight:'auto'});
-	}
+	} */
 	 $('#myAlertGraphView').highcharts({
 			
 			chart: {
@@ -395,7 +398,7 @@ function buildDistrictOfficerAlertsCountView(result){
 		str1+='</div>';
 		$("#mySubTasksDivID").html(str1);
 	}else{
-		$("#mySubTasksDivID").html("No Data Available");
+		$('#mySubTasksDivID').html('<div class="row"><div class="col-sm-12"><img src="alertDepartment/img/NODATA.png" style="margin:auto;display:block;"></div></div>');
 	}
 	
 	
@@ -417,13 +420,16 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			mainArrTempST.push(tempArrST);
 		}
 	
-	if(namesArrST.length > 4)
-	{
-		$(".scrollerSubTask").mCustomScrollbar({setHeight:'270px'});
-	}else{
-		$(".scrollerSubTask").removeAttr('style');
-		$(".scrollerSubTask").mCustomScrollbar({setHeight:'auto'});
-	}
+		if(namesArrAT.length <= 2){
+			$("#mySubTasksGraphView").css("height","220px");
+		}else if(namesArrAT.length > 4){
+			$("#mySubTasksGraphView").removeAttr('style');
+			$(".scrollerSubTask").mCustomScrollbar({setHeight:'250px'});
+		}/* else{
+			$("#mySubTasksGraphView").removeAttr('style');
+			$(".scrollerSubTask").removeAttr('style');
+			$(".scrollerSubTask").mCustomScrollbar({setHeight:'auto'});
+		} */
 	
 	 $('#mySubTasksGraphView').highcharts({
 			
@@ -569,7 +575,7 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 		str2+='</div>';
 		$("#assignedSubTasksDivID").html(str2);
 	}else{
-		$("#assignedSubTasksDivID").html("No Data Available");
+		$('#assignedSubTasksDivID').html('<div class="row"><div class="col-sm-12"><img src="alertDepartment/img/NODATA.png" style="margin:auto;display:block;"></div></div>');
 	}
 	
 	
@@ -590,13 +596,16 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			mainArrTemp.push(tempArr);
 		}
 	
-	if(namesArr.length > 4)
-	{
-		$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'270px'});
-	}else{
-		$(".scrollerAssSubTask").removeAttr('style');
-		$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'auto'});
-	}
+		if(namesArrAT.length <= 2){
+			$("#scrollerAssSubTask").css("height","220px");
+		}else if(namesArrAT.length > 4){
+			$("#scrollerAssSubTask").removeAttr('style');
+			$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'250px'});
+		}/* else{
+			$("#scrollerAssSubTask").removeAttr('style');
+			$(".scrollerAssSubTask").removeAttr('style');
+			$(".scrollerAssSubTask").mCustomScrollbar({setHeight:'auto'});
+		} */
 	 $('#assignedSubTasksGraphView').highcharts({
 			
 			chart: {
@@ -707,12 +716,12 @@ if(result !=null && result.list2 !=null && result.list2.length>0){
 			$('#assignedSubTasksGraphView').html("No Data Available")
 		}
 		
-		var maxHeight = 0;
+		/* var maxHeight = 0;
 
 		$(".panelheights").each(function(){
 		   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 		});
-		$(".panelheights").height(maxHeight);
+		$(".panelheights").height(maxHeight); */
 }
 	
 	
@@ -871,10 +880,10 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 			str+='<div class="panel panel-default">';
 				str+='<div class="panel-heading headingColor ">';
 					str+='<div class="row">';
-						str+='<div class="col-md-4 col-xs-12 col-sm-4">';
-							str+='<h4 class="panel-title text-capital fontColor">SUBORDINATE - ALERTS OVERVIEW ('+departmentName+')</h4>';
+						str+='<div class="col-sm-4">';
+							str+='<h4 class="panel-title text-capital fontColor">SUBORDINATE - ALERTS OVERVIEW<br> <small>('+departmentName+')</small></h4>';
 						str+='</div>';
-						str+='<div class="col-md-6 col-xs-12 col-sm-4">';
+						str+='<div class="col-sm-5">';
 							str+='<ul class="switch-btn pull-right">';
 								str+='<li class="active" attr_type="statuswise" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">status overview</li>';
 								str+='<li attr_type="scopewise"  attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">location level</li>';
@@ -882,7 +891,7 @@ function buildDepartmentDetailsByDepartmentss(result,departmentId,departmentName
 								str+='<li id="filterViewId" attr_type="filterView" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" >Filter</li>';
 								str+='</ul>';
 						str+='</div>';
-						str+='<div class="col-md-2 col-xs-12 col-sm-4 ">';
+						str+='<div class="col-sm-3">';
 							str+='<ul class="switch-btn-alertType pull-right">';
 								str+='<li  attr_type="alert" class="active" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Alerts</li>';
 								str+='<li class="subTaskTrigger" attr_type="subTask" attr_department_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" attr_level_idstr="'+levelIdStr+'"  attr_sublevel_id="'+subLevelIdStr+'" attr_district_level_id = "'+districtLevelId+'" attr_child_id = "'+childLevelIdsStr+'">Sub Tasks</li>';
