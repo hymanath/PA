@@ -3148,7 +3148,13 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 col-xs-12 col-sm-12" expand-block-inner="cadreInsurance">
-								<ul class="activeUlCls list-inline cadreInsuranceCDate">
+								<ul class="activeUlCls cadreInsuranceStateCls list-inline">
+								  <li class="active" attr_id="0"> ALL </li>
+								  <li  attr_id="1">AP</li>
+								  <li  attr_id="2">TS</li>
+								</ul>
+							
+								<ul class="activeUlCls list-inline cadreInsuranceCDate m_top20">
 									<li>Today</li>
 									<li>Week</li>
 									<li>Months</li>
