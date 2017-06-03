@@ -1640,7 +1640,7 @@ public class AlertManagementSystemAction extends ActionSupport implements Servle
 		   	
 		   	jObj = new JSONObject(getTask());
 		   	
-		   	resultStatus = alertManagementSystemService.updateAlertStatusComment(jObj.getLong("alertId"),jObj.getLong("statusId"),jObj.getString("comment"),regVo.getRegistrationID(),jObj.getLong("proposalCategoryId"),jObj.getString("proposalAmount"));
+		   	resultStatus = alertManagementSystemService.updateAlertStatusComment(jObj.getLong("alertId"),jObj.getLong("statusId"),jObj.getString("comment"),regVo.getRegistrationID(),jObj.getLong("proposalCategoryId"),jObj.getString("proposalAmount"),jObj.getLong("rejoinderActionTypeId"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in updateAlertStatusComment() of updateAlertStatusComment",e);
@@ -5794,7 +5794,8 @@ public String getAlertSourceWiseAlert(){
 			
 			jObj = new JSONObject(getTask());
 			
-			successMsg = alertManagementSystemService.updateProposalStatusFrAlert(userId,jObj.getLong("alertId"),jObj.getLong("proposalStatusId"),jObj.getString("comment"));
+			successMsg = alertManagementSystemService.updateProposalStatusFrAlert(userId,jObj.getLong("alertId"),jObj.getLong("proposalStatusId"),jObj.getString("comment"),jObj.getString("approvedAmount"));
+			//successMsg = alertManagementSystemService.updateProposalStatusFrAlert(userId,jObj.getLong("alertId"),jObj.getLong("proposalStatusId"),jObj.getString("comment"));
 		}catch(Exception e){
 			LOG.error("Exception Occured in updateProposalStatusFrAlert() method, Exception - ",e);
 		}

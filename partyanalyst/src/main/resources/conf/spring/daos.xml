@@ -4074,4 +4074,7 @@
 	 <bean id="govtProposalPropertyCategoryTrackingDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtProposalPropertyCategoryTrackingDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="govtRejoinderActionDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtRejoinderActionDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
