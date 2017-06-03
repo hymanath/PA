@@ -4291,6 +4291,8 @@
   		<property name="nominationDAO" ref="nominationDAO"></property>
   		<property name="constituencyDAO" ref="constituencyDAO"></property>
   		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" ></property>
+  		<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" ></property>
+  		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" ></property>
   </bean>
 </beans>			
 	

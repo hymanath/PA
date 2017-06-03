@@ -13,6 +13,7 @@ import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,7 +35,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private ConstituencyInfoVO constituencyDetails;
 	private IConstituencyPageService constituencyPageService;
 	private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
+	private List<LocationVotersVO> locationVotersVOList;
 	
+	
+	public List<LocationVotersVO> getLocationVotersVOList() {
+		return locationVotersVOList;
+	}
+	public void setLocationVotersVOList(List<LocationVotersVO> locationVotersVOList) {
+		this.locationVotersVOList = locationVotersVOList;
+	}
 	public List<ConstituencyElectionResultsVO> getConstituencyElectionResultsVO() {
 		return constituencyElectionResultsVO;
 	}
@@ -134,5 +143,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		  }
 		  return Action.SUCCESS;
 	  }
+	 
+	 public String getVotersAndcadreAgeWiseCount(){
+		 try {
+			jObj = new JSONObject(getTask());
+			locationVotersVOList = locationDashboardService.getVotersAndcadreAgeWiseCount(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVotersAndcadreAgeWiseCount", e);
+		}
+		 return Action.SUCCESS;
+	 }
 	 
 }
