@@ -8,4 +8,5 @@ import com.itgrids.model.FundSanction;
 
 public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Long> getLocationValues(Long scopeId);
+	public List<Object[]> getLocationsCountDetails(Long locatioinTypeId);
 }
