@@ -24,8 +24,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	
 	@Autowired
 	private IFundSanctionDAO fundSanctionDAO;
-	@Autowired
-	private CommonMethodsUtilService commonMethodsUtilService;
+	
 	/*
 	 * Date : 05/06/2017
 	 * Author :Swadhin K Lenka
