@@ -19,8 +19,8 @@ public class GrantType{
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long grantTypeId;
 	
-	@Column(name="grant_type")
-	private String grantType;
+	@Column(name="type")
+	private String type;
 
 	public Long getGrantTypeId() {
 		return grantTypeId;
@@ -30,12 +30,12 @@ public class GrantType{
 		this.grantTypeId = grantTypeId;
 	}
 
-	public String getGrantType() {
-		return grantType;
+	public String getType() {
+		return type;
 	}
 
-	public void setGrantType(String grantType) {
-		this.grantType = grantType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	

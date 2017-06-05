@@ -1,12 +1,14 @@
+
+getLocationWiseFundDetails();
 function getLocationWiseFundDetails()
 {
-   var financialYrId;
-   var departmentId;
-   var sourceId;
-   var startDate;
-   var endDate;
-   var locationScopeId;
-   var type;
+   var financialYrId = 3;
+   var departmentId =0;
+   var sourceId = 0;
+   var startDate ='02/06/2017';
+   var endDate='02/06/2017';
+   var locationScopeId=4;
+   var type ='highest';
    
    var json = {financialYrId:financialYrId,departmentId:departmentId,sourceId:sourceId,
    startDate:startDate,endDate:endDate,locationScopeId:locationScopeId,type:type}
