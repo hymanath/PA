@@ -28,6 +28,7 @@ public class MeekosamDynamicVO {
 	private List<MeekosamDynamicVO> subList = new ArrayList<MeekosamDynamicVO>();
 	private Long issueRelationId;
 	private Long issueRelationDataId;
+	private String issueDataStr;
 	
 	
 	public Long getId() {
@@ -95,5 +96,11 @@ public class MeekosamDynamicVO {
 	}
 	public void setIssueRelationDataId(Long issueRelationDataId) {
 		this.issueRelationDataId = issueRelationDataId;
+	}
+	public String getIssueDataStr() {
+		return issueDataStr;
+	}
+	public void setIssueDataStr(String issueDataStr) {
+		this.issueDataStr = issueDataStr;
 	}
 }

@@ -23,4 +23,6 @@ public interface IMeekosamGrievanceService {
 	public List<MeekosamDynamicVO> getAllDynamicFieldsAndDataForIsueType(Long issueTypeId);
 	public List<PetitionerDetailsVO> searchPetitionerDetailsByVoterNoAadharNoMobileNo(String cardNo, String type);
 	public ResultStatus saveMeekosamGrievance(final MeekosamGrievanceVO inputvo,final Long userId);
+	public List<KeyValueVO> getAllPublicRepresentativeTypes();
+	public List<KeyValueVO> getPublicReresentativesByTypeAndDistrict(Long typeId,Long districtId);
 }
