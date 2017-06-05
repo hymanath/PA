@@ -26,6 +26,8 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "panchayat_hamlet")
 public class PanchayatHamlet {
 	
+	private static final long serialVersionUID = -2853930539938433902L;
+	
 	@Id
 	@Column(name="panchayat_hamlet_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)

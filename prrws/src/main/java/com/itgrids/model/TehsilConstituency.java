@@ -16,6 +16,7 @@ import javax.persistence.Table;
  * @author <a href="mailto:shrinu.pittala@itgrids.com">Shrinu Pittala</a> 
  * @version 1.0/
  */
+
 @Entity
 @Table(name = "tehsil_constituency")
 public class TehsilConstituency {

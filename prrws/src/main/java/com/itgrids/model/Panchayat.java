@@ -21,10 +21,11 @@ import org.hibernate.annotations.NotFoundAction;
  * @version 1.0/
  */
 
-
 @Entity
 @Table(name = "panchayat")
 public class Panchayat {
+	
+	private static final long serialVersionUID = -2853930539938433902L;
 	
 	@Id
 	@Column(name="panchayat_id")
