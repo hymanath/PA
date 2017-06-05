@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.itgrids.dao.IHamletDAO;
 
 import com.itgrids.model.Hamlet;
+
 @Repository
 public class HamletDAO extends GenericDaoHibernate<Hamlet, Long> implements IHamletDAO {
 

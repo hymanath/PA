@@ -21,19 +21,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "hamlet")
 public class Hamlet {
+	
+	private static final long serialVersionUID = -2853930539938433902L;
+	
 	@Id
 	@Column(name="hamlet_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long hamletId;
+	
 	@Column(name="hamlet_name")
 	private String hamletName;
+	
 	@Column(name="tehsil_id")
 	private Long tehsilId;
+	
 	@Column(name="name_local")
 	private String nameLocal;
-/*	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "tehsil_id", insertable = false, updatable = false)
-	private Tehsil tehsil;*/
+	private Tehsil tehsil;
 	
 	
 	public Long getHamletId() {
@@ -60,14 +67,11 @@ public class Hamlet {
 	public void setNameLocal(String nameLocal) {
 		this.nameLocal = nameLocal;
 	}
-	/*public Tehsil getTehsil() {
+	public Tehsil getTehsil() {
 		return tehsil;
 	}
 	public void setTehsil(Tehsil tehsil) {
 		this.tehsil = tehsil;
-	}*/
-	
-	
-	
+	}	
 
 }

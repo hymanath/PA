@@ -20,20 +20,29 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "fund_sanction_location")
 public class FundSanctionLocation {
+	
+	private static final long serialVersionUID = -2853930539938433902L;
+	
 	@Id
 	@Column(name="fund_sanction_location_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long fundSanctionLocationId;
+	
 	@Column(name="fund_sanction_id")
 	private Long fundSanctionId;
+	
 	@Column(name="location_scope_id")
 	private Long locationScopeId;
+	
 	@Column(name="location_value")
 	private Long locationValue;
+	
 	@Column(name="address_id")
 	private Long addressId;
+	
 	@Column(name="is_deleted")
 	private String isDeleted;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "fund_sanction_id", insertable = false, updatable = false)
 	private FundSanction fundSanction;
@@ -87,7 +96,6 @@ public class FundSanctionLocation {
 	}
 
 
-
 	public String getIsDeleted() {
 		return isDeleted;
 	}
@@ -111,5 +119,14 @@ public class FundSanctionLocation {
 	public void setLocationScope(LocationScope locationScope) {
 		this.locationScope = locationScope;
 	}
+
+	public Long getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	
 	
 }

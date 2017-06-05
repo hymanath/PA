@@ -21,9 +21,6 @@ import javax.persistence.Table;
 @Table(name = "tehsil")
 public class Tehsil {
 
-	/*
-	 * created by shrinu using for this model
-	 */
 	private static final long serialVersionUID = -2853930539938433902L;
 	
 	@Id
