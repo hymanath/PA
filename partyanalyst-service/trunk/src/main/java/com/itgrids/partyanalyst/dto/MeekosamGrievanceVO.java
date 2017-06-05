@@ -51,6 +51,10 @@ public class MeekosamGrievanceVO {
 	private Long grievanceTehsilId;
 	private Long grievancePanchayatId;
 	
+	private Long referalTypeId;
+	private Long referalDistrictId;
+	private Long referalNameId;
+	
 	private Long assignLevelId;
 	private Long assignLevelValue;
 	private Long designationId;
@@ -288,5 +292,23 @@ public class MeekosamGrievanceVO {
 	}
 	public void setDynamicDataList(List<MeekosamDynamicVO> dynamicDataList) {
 		this.dynamicDataList = dynamicDataList;
+	}
+	public Long getReferalTypeId() {
+		return referalTypeId;
+	}
+	public void setReferalTypeId(Long referalTypeId) {
+		this.referalTypeId = referalTypeId;
+	}
+	public Long getReferalDistrictId() {
+		return referalDistrictId;
+	}
+	public void setReferalDistrictId(Long referalDistrictId) {
+		this.referalDistrictId = referalDistrictId;
+	}
+	public Long getReferalNameId() {
+		return referalNameId;
+	}
+	public void setReferalNameId(Long referalNameId) {
+		this.referalNameId = referalNameId;
 	}
 }

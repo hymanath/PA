@@ -16,7 +16,8 @@ public class MeekosamIssueFieldRelationDataDAO extends GenericDaoHibernate<Meeko
 	public List<Object[]> getAllDataForRelationIds(List<Long> relationIds){
 		Query query = getSession().createQuery("select distinct model.meekosamIssueFieldRelation.meekosamIssueFieldRelationId," +
 											" model.meekosamIssueFieldData.meekosamIssueFieldDataId," +
-											" model.meekosamIssueFieldData.data" +
+											" model.meekosamIssueFieldData.data," +
+											" model.meekosamIssueFieldRelationDataId" +
 											" from MeekosamIssueFieldRelationData model" +
 											" where model.meekosamIssueFieldRelation.meekosamIssueFieldRelationId in (:relationIds)" +
 											" and model.isDeleted = 'N'");

@@ -24,14 +24,16 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class MeekosamPublicRepresentativeTypeRelation extends BaseModel implements Serializable {
 	private Long meekosamPublicRepresentativeTypeRelationId;
+	private Long meekosamPublicRepresentativeId;
 	private Long meekosamPublicRepresentativeTypeId;
 	private Long locationLevelId;
 	private Long locationValue;
 	private Long userAddressId;
-	private Long isDeleted;
+	private String isDeleted;
 	
 	private MeekosamPublicRepresentativeType meekosamPublicRepresentativeType;
 	private UserAddress userAddress;
+	private MeekosamPublicRepresentative meekosamPublicRepresentative;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -73,10 +75,10 @@ public class MeekosamPublicRepresentativeTypeRelation extends BaseModel implemen
 		this.userAddressId = userAddressId;
 	}
 	@Column(name = "is_deleted")
-	public Long getIsDeleted() {
+	public String getIsDeleted() {
 		return isDeleted;
 	}
-	public void setIsDeleted(Long isDeleted) {
+	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -99,5 +101,24 @@ public class MeekosamPublicRepresentativeTypeRelation extends BaseModel implemen
 	}
 	public void setUserAddress(UserAddress userAddress) {
 		this.userAddress = userAddress;
+	}
+	@Column(name = "meekosam_public_representative_id")
+	public Long getMeekosamPublicRepresentativeId() {
+		return meekosamPublicRepresentativeId;
+	}
+	public void setMeekosamPublicRepresentativeId(
+			Long meekosamPublicRepresentativeId) {
+		this.meekosamPublicRepresentativeId = meekosamPublicRepresentativeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="meekosam_public_representative_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MeekosamPublicRepresentative getMeekosamPublicRepresentative() {
+		return meekosamPublicRepresentative;
+	}
+	public void setMeekosamPublicRepresentative(
+			MeekosamPublicRepresentative meekosamPublicRepresentative) {
+		this.meekosamPublicRepresentative = meekosamPublicRepresentative;
 	}
 }
