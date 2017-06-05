@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,12 @@ public class FundManagementDashboardController {
 	private IFundManagementDashboardService fundManagementDashboardService;
 	
 	
+	@RequestMapping(value ="/fundManagementDashboard", method = RequestMethod.GET)
+    public String fundManagementDashboardPage(ModelMap model) {
+      
+		return "fundManagementDashboard";
+    }
+	
 	@PostMapping("/getLocationWiseAmountDetails")
 	public @ResponseBody List<LocationVO> getLocationWiseAmountDetails(){
 		String fromDateStr = "";
@@ -38,35 +45,35 @@ public class FundManagementDashboardController {
 		return locationList;
 	}
 	@RequestMapping(value = "/getLocationWiseFundDetails", method = RequestMethod.POST,
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
-			  public @ResponseBody LocationFundDetailsVO getLocationWiseFundDetails(@RequestBody Map<String,String> map)
-			  {		
-				Long financialYrId = Long.valueOf(map.get("financialYrId"));
-				Long departmentId = Long.valueOf(map.get("departmentId"));
-				Long sourceId = Long.valueOf(map.get("sourceId"));
-				String startDate = map.get("startDate");
-				String endDate = map.get("endDate");
-				Long locationScopeId = Long.valueOf(map.get("locationScopeId"));
-				String type = map.get("type");
-				//LocationFundDetailsVO  returnVO = fundManagementDashboardService.getLocationWiseFundDetails(financialYrId, departmentId, sourceId, startDate,
-						// endDate, locationScopeId, type );
-				return null;
-			  }
+	produces = MediaType.APPLICATION_JSON_VALUE,
+	consumes = MediaType.APPLICATION_JSON_VALUE)
+	  public @ResponseBody LocationFundDetailsVO getLocationWiseFundDetails(@RequestBody Map<String,String> map)
+	  {		
+		Long financialYrId = Long.valueOf(map.get("financialYrId"));
+		Long departmentId = Long.valueOf(map.get("departmentId"));
+		Long sourceId = Long.valueOf(map.get("sourceId"));
+		String startDate = map.get("startDate");
+		String endDate = map.get("endDate");
+		Long locationScopeId = Long.valueOf(map.get("locationScopeId"));
+		String type = map.get("type");
+		LocationFundDetailsVO  returnVO = fundManagementDashboardService.getLocationWiseFundDetails(financialYrId, departmentId, sourceId, startDate,
+				 endDate, locationScopeId, type );
+		return returnVO;
+	  }
+
+	@RequestMapping(value = "/getTotalFunds", method = RequestMethod.POST,
+	produces = MediaType.APPLICATION_JSON_VALUE,
+	consumes = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody LocationFundDetailsVO getTotalFunds(@RequestBody Map<String,String> map)
+	  {		
+		Long financialYrId = Long.valueOf(map.get("financialYrId"));
+		Long departmentId = Long.valueOf(map.get("departmentId"));
+		Long sourceId = Long.valueOf(map.get("sourceId"));
+		String startDate = map.get("startDate");
+		String endDate = map.get("endDate");
 	
-		@RequestMapping(value = "/getTotalFunds", method = RequestMethod.POST,
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
-			public @ResponseBody LocationFundDetailsVO getTotalFunds(@RequestBody Map<String,String> map)
-			  {		
-				Long financialYrId = Long.valueOf(map.get("financialYrId"));
-				Long departmentId = Long.valueOf(map.get("departmentId"));
-				Long sourceId = Long.valueOf(map.get("sourceId"));
-				String startDate = map.get("startDate");
-				String endDate = map.get("endDate");
-			
-			//LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalFunds(financialYrId, departmentId, sourceId, startDate,endDate);
-				return null;
-			  }
+		LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalFunds(financialYrId, departmentId, sourceId, startDate,endDate);
+		return returnVO;
+	  }
 	
 }
