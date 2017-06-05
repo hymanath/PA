@@ -3,24 +3,31 @@ onLoadCalls();
 onLoadClicks();
 function onLoadClicks()
 {
+	
 	$(".selectChosen").chosen();
 	$(document).on("change","#districts",function(){
-		getAllMandalsByDistrictID($(this).val(),'','mandals');
+		getAllMandalsByDistrictID($(this).val(),0,'mandals');
 	});
 	$(document).on("change","#mandals",function(){
-		getAllPanchayatByMandalId($(this).val(),'','panchayats')
+		getAllPanchayatByMandalId($(this).val(),0,'panchayats')
 	});
 	$(document).on("change","#panchayats",function(){
 		getAllHamletByPanchayatID($(this).val(),'')
 	});
 	$(document).on("change","#districtsPetitionerId",function(){
-		getAllMandalsByDistrictID($(this).val(),'','mandalsPetitionerId');
+		getAllMandalsByDistrictID($(this).val(),0,'mandalsPetitionerId');
 	});
 	$(document).on("change","#mandalsPetitionerId",function(){
-		getAllPanchayatByMandalId($(this).val(),'','villagePetitionerId')
+		getAllPanchayatByMandalId($(this).val(),0,'villagePetitionerId')
 	});
 	$(document).on("change","#departmentId",function(){
 		getSubDeptsFrParentDept($(this).val());
+		if($(this).val() == '33')
+		{
+			$("#revenueDeptSplBlock").show();
+		}else{
+			$("#revenueDeptSplBlock").hide();
+		}
 	});
 	$(document).on('change', '#locationLevelSelectId', function(){
 		getParentLevelsOfLevel($("#subDepartmentSelectId").val());
@@ -35,16 +42,26 @@ function onLoadClicks()
 		var designationId = $(this).val();
 		officersByDesignationAndLevel(designationId)
 	});
+	$(document).on("change","#locationDistrictId",function(){
+		getAllMandalsByDistrictID($(this).val(),0,'locationMandalId');
+	});
+	$(document).on("change","#locationMandalId",function(){
+		getAllPanchayatByMandalId($(this).val(),0,'locationVillageId')
+	});
+	$(document).on("change","#districtsReferralId",function(){
+		getPublicReresentativesByTypeAndDistrict();
+	});
 	
+	var globalIncrement = 0;
 	$(document).on("click","#addOneMorePetitionerId",function(){
 		var str='';
 		str+='<tr>';
-			str+='<td>'+$("#districtsPetitionerId option:selected").text()+'</td>';
-			str+='<td>'+$("#mandalsPetitionerId option:selected").text()+'</td>';
-			str+='<td>'+$("#villagePetitionerId option:selected").text()+'</td>';
-			str+='<td>'+$("#surveyNoPetitionerId").val()+'</td>';
-			str+='<td>'+$("#landInAcresPetitionerId").val()+'</td>';
-			str+='<td>'+$("#landInCentPeitionerId").val()+'</td>';
+			str+='<td value="'+$("#districtsPetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].districtId">'+$("#districtsPetitionerId option:selected").text()+'</td>';
+			str+='<td value="'+$("#mandalsPetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].mandalId">'+$("#mandalsPetitionerId option:selected").text()+'</td>';
+			str+='<td value="'+$("#villagePetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].villageId">'+$("#villagePetitionerId option:selected").text()+'</td>';
+			str+='<td value="'+$("#surveyNoPetitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].surveyNO">'+$("#surveyNoPetitionerId").val()+'</td>';
+			str+='<td value="'+$("#landInAcresPetitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].landInAcres">'+$("#landInAcresPetitionerId").val()+'</td>';
+			str+='<td value="'+$("#landInCentPeitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].landInCents">'+$("#landInCentPeitionerId").val()+'</td>';
 			str+='<td><i class="deletePetitionerRow glyphicon glyphicon-trash" style="cursor:pointer"></i></td>';
 		str+='</tr>';
 		$("#petitionerTableId").append(str);
@@ -58,20 +75,33 @@ function onLoadClicks()
 		{
 			$("#"+resetTextIds[i]).val(' ');
 		}
+		globalIncrement = globalIncrement+1;
 	});
 	$(document).on("click",".deletePetitionerRow",function(){
 		$(this).closest("tr").remove();
 	});
+	$(document).on("click",".buildProfileData",function(){
+		var ArrPosition = $(this).attr("attr_id")
+		$(".buildProfileData").prop("checked",false);
+		$(this).prop("checked",true);
+		buildProfileData(ArrPosition);
+		var petitionerId = $(this).attr("attr_petitionerId");
+		$("#hiddenPetitionerId").val(petitionerId);
+	});
+	
 }
 function onLoadCalls()
 {
 	getAllMainDepartments();
-	getAllDistrictByStateId(1,'',"districtsPetitionerId")
-	//getMeekosamCasteCategoryList();
-	getMeekosamArgeeCategoryList();
-	//getMeekosamAnnualIncomeList();
+	getAllDistrictByStateId(1,0,"districtsPetitionerId");
+	getAllDistrictByStateId(1,0,"districtsReferralId");
 	searchPetitionerDetailsByVoterNoAadharNoMobileNo();
-	getMeekosamOccupationList();
+	getAllPublicRepresentativeTypes();
+	getAllDistrictByStateId(1,'','districts');
+	getMeekosamArgeeCategoryList(0);
+	getMeekosamOccupationList(0);
+	getMeekosamCasteCategoryList(0);
+	getMeekosamAnnualIncomeList(0)
 }
 function setDefaultImage(img){
     img.src = "images/User.png";
@@ -110,7 +140,7 @@ function getAllMandalsByDistrictID(districtId,tehsilId,id){
 	}).done(function(result){
 		if(result != null && result.length > 0){
 			$("#"+id).html('');
-			$('#'+id).append('<option value="0">Select One Mandal or Town</option>');
+			$('#'+id).append('<option value="0">Select Mandal/Muncipality</option>');
 			for(var i in result){ 
 				$('#'+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
@@ -142,7 +172,7 @@ function getAllPanchayatByMandalId(tehsilId,panchayatId,id){
 	}).done(function(result){
 		if(result != null && result.length > 0){
 			$("#"+id).html('');
-			$('#'+id).append('<option value="0">Select One Panchayat or Ward</option>');
+			$('#'+id).append('<option value="0">Select Panchayat/Ward</option>');
 			for(var i in result){			
 				$('#'+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
@@ -151,10 +181,6 @@ function getAllPanchayatByMandalId(tehsilId,panchayatId,id){
 		}
 	});
 }
-function buildPanchayatList(result){
-	
-}
-
 function getAllHamletByPanchayatID(panchayatId,hamletId){
 	if(LocationType=="muncipality"){
 		$("#habitationId").html('');
@@ -172,7 +198,7 @@ function getAllHamletByPanchayatID(panchayatId,hamletId){
 	}).done(function(result){
 		if(result != null && result.length > 0){
 			$("#habitationId").html('');
-			$('#habitationId').append('<option value="0">Select One Hamlet</option>');
+			$('#habitationId').append('<option value="0">Select Hamlet</option>');
 			for(var i in result){			
 				$('#habitationId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 			}
@@ -182,7 +208,7 @@ function getAllHamletByPanchayatID(panchayatId,hamletId){
 	});
 }
 
-function getMeekosamOccupationList(){
+function getMeekosamOccupationList(OccupationId){
 	var jsObj={}
 	$.ajax({
 		type:"POST",
@@ -191,19 +217,21 @@ function getMeekosamOccupationList(){
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildMeekosamOccupationList(result);
+			buildMeekosamOccupationList(result,OccupationId);
 		}
 	});
 }
-function buildMeekosamOccupationList(result){
-	$("#occupationListId").html('');
-	$('#occupationListId').append('<option value="0">Select One Occupation</option>');
+function buildMeekosamOccupationList(result,OccupationId){
+	$("#occupationListId").empty().trigger("chosen:updated");
+	$('#occupationListId').append('<option value="0">Select Occupation</option>');
 	for(var i in result){			
 		$('#occupationListId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	}
+	$("#occupationListId").trigger("chosen:updated");
+	$("#occupationListId").val(OccupationId).trigger("chosen:updated");
 }
 
-function getMeekosamCasteCategoryList(){
+function getMeekosamCasteCategoryList(selectedId){
 	var jsObj={}
 	$.ajax({
 		type:"POST",
@@ -211,13 +239,26 @@ function getMeekosamCasteCategoryList(){
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		for(var i in result){
-			alert(result[i].name);
-		}
+		buildRadioBtns(result,selectedId,'casteDataId')
 	});
 }
-
-function getMeekosamArgeeCategoryList(){
+function buildRadioBtns(result,selectedId,id)
+{
+	var str='';
+	for(var i in result){
+		str+='<label class="radio-inline">';
+			if(result[i].id == selectedId)
+			{
+				str+='<input type="radio" class="'+id+'" id="'+result[i].id+'" checked/>'+result[i].name+'';
+			}else{
+				str+='<input type="radio" class="'+id+'" id="'+result[i].id+'"/>'+result[i].name+'';
+			}
+			
+		str+='</label>';
+	}
+	$("#"+id).html(str);
+}
+function getMeekosamArgeeCategoryList(CategoryId){
 	var jsObj={}
 	$.ajax({
 		type:"POST",
@@ -226,19 +267,21 @@ function getMeekosamArgeeCategoryList(){
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			buildMeekosamArgeeCategoryList(result);
+			buildMeekosamArgeeCategoryList(result,CategoryId);
 		}
 	});
 }
-function buildMeekosamArgeeCategoryList(result){
-	$("#ArgeeCategoryListId").html('');
-	$('#ArgeeCategoryListId').append('<option value="0">Select One Argee Category</option>');
+function buildMeekosamArgeeCategoryList(result,CategoryId){
+	$("#argeeCategoryListId").empty().trigger("chosen:updated");
+	$('#argeeCategoryListId').append('<option value="0">Select Argee Category</option>');
 	for(var i in result){			
-		$('#ArgeeCategoryListId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
+		$('#argeeCategoryListId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	}
+	$("#argeeCategoryListId").trigger("chosen:updated");
+	$("#argeeCategoryListId").val(CategoryId).trigger("chosen:updated");
 }
 
-function getMeekosamAnnualIncomeList(){
+function getMeekosamAnnualIncomeList(selectedId){
 	var jsObj={}
 	$.ajax({
 		type:"POST",
@@ -246,9 +289,7 @@ function getMeekosamAnnualIncomeList(){
 		dataType: 'json',
 		data: {task:JSON.stringify(jsObj)}
 	}).done(function(result){
-		for(var i in result){
-			alert(result[i].name);
-		}
+		buildRadioBtns(result,selectedId,'annaulIncomeDataId')
 	});
 }
 function saveMeekosamPetitionerDetails(){
@@ -305,7 +346,7 @@ function buildSearchPetitionerDetailsByVoterNoAadharNoMobileNo(result)
 						str+='<p><i class="fa fa-address-card-o"></i> '+result[i].voterCardNo+'</p>';
 					str+='</div>';
 				str+='</div>';
-				str+='<input type="checkbox" name="profile" onclick="buildProfileData('+i+');" class="pull-right"/>';//profile
+				str+='<input type="checkbox" name="profile" attr_id="'+i+'" attr_petitionerId="'+result[i].petitionerId+'" class="pull-right buildProfileData"/>';//profile
 			str+='</li>';
 		}
 	str+='</ul>';
@@ -325,124 +366,130 @@ function buildSearchPetitionerDetailsByVoterNoAadharNoMobileNo(result)
 }
 function buildProfileData(i)
 {
+	
 	var str='';
 	var districtId = profileData[i].districtId
 	var tehsilId = profileData[i].tehsil
 	var panchayatId = profileData[i].panchayatId
 	var hamletId = profileData[i].hamletId
+	var casteId = profileData[i].meekosamCasteCategoryId
+	var meekosamAnnualIncomeId = profileData[i].meekosamAnnualIncomeId
+	var meekosamOccupationId = profileData[i].meekosamOccupationId
+	var meekosamArgeeCategoryId = profileData[i].meekosamArgeeCategoryId
+	
 	str+='<div class="col-sm-12 m_top20">';
-		str+='<h4 class="panel-title text-capital">about petitioner</h4>';
+		str+='<h4 class="text-success text-capital">about petitioner</h4>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Name</label>';
-		str+='<input type="text" value="'+profileData[i].name+'" class="form-control"/>';
+		str+='<label>Name <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetNameId"></span></label>';
+		str+='<input type="text" value="'+profileData[i].name+'" class="form-control" id="petitionerNameId" name="meekosamGrievanceVO.petitionerName"/>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Relative Name</label>';
-		str+='<input type="text" value="'+profileData[i].relativeName+'" class="form-control"/>';
+		str+='<label>Relative Name <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetRelNameId"></span></label>';
+		str+='<input type="text" value="'+profileData[i].relativeName+'" class="form-control" id="petitionerRelativeNameId" name="meekosamGrievanceVO.petitionerRelativeName"/>';
+	str+='</div>';
+	str+='<div class="col-sm-2 m_top10">';
+		str+='<label>Gender <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetGenId"></span></label>';
+		str+='<input type="text" value="'+profileData[i].gender+'" class="form-control" id="petitionerGenderId" placeholder="Male/Female" name="meekosamGrievanceVO.petitionerGender"/>';
+	str+='</div>';
+	str+='<div class="col-sm-2 m_top10">';
+		str+='<label>Date Of Birth <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetDOBId"></span></label>';
+		str+='<div class="input-group">';
+			str+='<span class="input-group-addon">';
+				str+='<i class="glyphicon glyphicon-calendar"></i>';
+			str+='</span>';
+			str+='<input type="text" id="datePicker" class="form-control" id="petitionerDOBId" name="meekosamGrievanceVO.petitionerDOB"/>';
+		str+='</div>';
+	str+='</div>';
+	str+='<div class="col-sm-2 m_top10">';
+		str+='<label>Age <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetAgeId"></span></label>';
+		str+='<input type="text" value="'+profileData[i].age+'" class="form-control" id="petitionerAgeId" name="meekosamGrievanceVO.petitionerAge"/>';
+	str+='</div>';
+	str+='<div class="col-sm-2 m_top10">';
+		str+='<label>Phone Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetMobNoId"></span></label>';
+		str+='<input type="text" value="'+profileData[i].mobileNo+'" class="form-control" id="petitionerMobileNO" name="meekosamGrievanceVO.petitionerMobileNo"/>';
+	str+='</div>';
+	str+='<div class="col-sm-2 m_top10">';
+		str+='<label>Voter Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetVoterId"></span></label>';
+		str+='<input type="text" value="'+profileData[i].voterCardNo+'" class="form-control" id="petitionerVoterId" name="meekosamGrievanceVO.petitionerVoterCardNo"/>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Gender</label>';
-		str+='<input type="text" value="'+profileData[i].gender+'" class="form-control"/>';
-	str+='</div>';
-	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Age</label>';
-		str+='<input type="text" value="'+profileData[i].age+'" class="form-control"/>';
-	str+='</div>';
-	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Phone Number</label>';
-		str+='<input type="text" value="'+profileData[i].mobileNo+'" class="form-control"/>';
-	str+='</div>';
-	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Voter Number</label>';
-		str+='<input type="text" value="'+profileData[i].voterCardNo+'" class="form-control"/>';
-	str+='</div>';
-	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Aadhar Number</label>';
-		str+='<input type="text" value="'+profileData[i].aadharNo+'" class="form-control"/>';
+		str+='<label>Aadhar Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetAadharId"></span></label>';
+		str+='<input type="text" value="'+profileData[i].aadharNo+'" class="form-control" id="petitionerAadharId" name="meekosamGrievanceVO.petitionerAadharCardNo"/>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
 		str+='<label>Email</label>';
-		str+='<input type="text" value="'+profileData[i].emailId+'" class="form-control"/>';
+		str+='<input type="text" value="'+profileData[i].emailId+'" class="form-control" id="petitionerEmailId" name="meekosamGrievanceVO.petitionerEmailId"/>';
 	str+='</div>';
 	str+='<div class="col-sm-12 m_top20">';
-		str+='<h4 class="panel-title text-capital">about petitioner</h4>';
+		str+='<h4 class="text-success text-capital">location details</h4>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>District</label>';
-		str+='<select class="selectChosen" attr_districtId="'+districtId+'" id="districts"></select>';
+		str+='<label>District <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetDistrictId"></span></label>';
+		str+='<select class="selectChosen" attr_districtId="'+districtId+'" id="districts" name="meekosamGrievanceVO.petitionerDistrictId"></select>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Mandal</label>';
-		str+='<select class="selectChosen" id="mandals"></select>';
+		str+='<label>Mandal <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetMandalId"></span></label>';
+		str+='<select class="selectChosen" id="mandals" name="meekosamGrievanceVO.petitionerTehsilId"></select>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Village/Town</label>';
-		str+='<select class="selectChosen" id="panchayats"></select>';
+		str+='<label>Village/Town <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetVillageId"></span></label>';
+		str+='<select class="selectChosen" id="panchayats" name="meekosamGrievanceVO.petitionerPanchayatId"></select>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
 		str+='<label>Habitation</label>';
-		str+='<select class="selectChosen" id="habitationId"></select>';
+		str+='<select class="selectChosen" id="habitationId" name="meekosamGrievanceVO.petitionerHamletId"></select>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>House No</label>';
-		str+='<input type="text" value="'+profileData[i].houseNo+'" class="form-control" id="houseNo"/>';
+		str+='<label>House No <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetHouseNOId"></span></label>';
+		str+='<input type="text" value="'+profileData[i].houseNo+'" class="form-control" id="houseNo" name="meekosamGrievanceVO.petitionerHouseNO"/>';
 	str+='</div>';
 	str+='<div class="col-sm-12">';
 		str+='<div class="row">';
-			str+='<div class="col-sm-4 m_top20">';
-				str+='<h4 class="panel-title">Caste Information</h4>';
-				str+='<div class="panel panel-default">';
+			str+='<div class="col-sm-5 m_top20">';
+				str+='<h4 class="text-success text-capital">Caste Information <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetCasteId"></span></h4>';
+				str+='<div class="panel panel-default m_top10">';
 					str+='<div class="panel-body">';
-						str+='<label class="radio-inline">';
-							str+='<input type="radio"/>SC';
-						str+='</label>';
-						str+='<label class="radio-inline">';
-							str+='<input type="radio"/>ST';
-						str+='</label>';
-						str+='<label class="radio-inline">';
-							str+='<input type="radio"/>BC';
-						str+='</label>';
-						str+='<label class="radio-inline">';
-							str+='<input type="radio"/>Minority';
-						str+='</label>';
-						str+='<label class="radio-inline">';
-							str+='<input type="radio"/>Others';
-						str+='</label>';
+						str+='<div id="casteDataId"></div>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="col-sm-12 m_top20">';
-		str+='<h4 class="panel-title">Other</h4>';
+		str+='<h4 class="text-success text-capital">Other</h4>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top20">';
-		str+='<label>Occupation</label>';
-		str+='<select class="selectChosen" ><option>Select Occupation</option></select>';
+		str+='<label>Occupation <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetOccupationId"></span></label>';
+		str+='<select class="selectChosen" id="occupationListId" name="meekosamGrievanceVO.petitionerOccupation"><option value="0">Select Occupation</option></select>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top20">';
-		str+='<label>Annual Income</label>';
+		str+='<label>Argee Category <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetArgeeId"></span></label>';
+		str+='<select class="selectChosen" id="argeeCategoryListId" name="meekosamGrievanceVO.petitionerArgeeCategory"><option value="0">Select Argee Category</option></select>';
+	str+='</div>';
+	str+='<div class="col-sm-4 m_top20">';
+		str+='<label>Annual Income <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetIncomeId"></span></label>';
 		str+='<div class="panel panel-default">';
 			str+='<div class="panel-body">';
-				str+='<label class="radio-inline">';
-					str+='<input type="radio"/> < 60,000';
-				str+='</label>';
-				str+='<label class="radio-inline">';
-					str+='<input type="radio"/> 60000-75000';
-				str+='</label>';
-				str+='<label class="radio-inline">';
-					str+='<input type="radio"/> >75000';
-				str+='</label>';
+				str+='<div id="annaulIncomeDataId"></div>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
 	$("#buildProfileData").html(str);
 	$(".selectChosen").chosen();
+	$("#datePicker").datetimepicker({
+		format:'DD/MM/YYYY',
+		viewMode: 'years',
+		maxDate : moment().subtract(18,'years')
+	});
 	getAllDistrictByStateId(1,districtId,'districts');
 	getAllMandalsByDistrictID(districtId,tehsilId,'mandals');
 	getAllPanchayatByMandalId(tehsilId,panchayatId,'panchayats');
-	getAllHamletByPanchayatID(panchayatId,hamletId)
+	getAllHamletByPanchayatID(panchayatId,hamletId);
+	getMeekosamArgeeCategoryList(meekosamArgeeCategoryId);
+	getMeekosamOccupationList(meekosamOccupationId);
+	getMeekosamCasteCategoryList(casteId);
+	getMeekosamAnnualIncomeList(meekosamAnnualIncomeId)
 }
 function getAllMainDepartments(){
 	$('#departmentId').empty();
@@ -541,41 +588,65 @@ function buildDynamicValuesForIssue(result)
 		str+='<div class="row m_top10">';
 		for(var j in result[i].subList)
 		{
-			if(result[i].subList[j].issueFielsType == 'TextBox')
+			if(result[i].subList[j].issueFielsType == 'text' || result[i].subList[j].issueFielsType == 'textarea')
 			{
-				str+='<div class="col-sm-3">';
+				str+='<div class="col-sm-4">';
 					str+='<label>'+result[i].subList[j].issueField+'</label>';
-					str+='<input type="text" id="'+result[i].subList[j].issueFieldId+'" class="form-control"/>';
+					str+='<input type="'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].issueFieldId+'" class="form-control"/>';
 				str+='</div>';
 			}
-			if(result[i].subList[j].issueFielsType == 'Radio')
+			if(result[i].subList[j].issueFielsType == 'checkbox' || result[i].subList[j].issueFielsType == 'radio')
+			{
+				str+='<div class="col-sm-12 m_top10">';
+					if(result[i].subList[j].subList.length > 0)
+					{
+						str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+						str+='<div class="row m_top10">';
+							str+='<div class="col-sm-12">';
+								for(var k in result[i].subList[j].subList)
+								{
+									str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
+										str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].subList[k].issueRelationDataId+'"/>'+result[i].subList[j].subList[k].name+'';
+									str+='</label>';
+								}
+							str+='</div>';
+						str+='</div>';
+					}else{
+						str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
+							str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].issueRelationId+'"/>'+result[i].subList[j].issueField+'';
+						str+='</label>';
+					}
+					
+				str+='</div>';
+			}
+			if(result[i].subList[j].issueFielsType == 'selectBox')
 			{
 				str+='<div class="col-sm-12 m_top10">';
 					str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
 					str+='<div class="row m_top10">';
 						str+='<div class="col-sm-12">';
+							str+='<select class="selectChosen" attr_id="'+result[i].subList[j].id+'" name="petitioner'+result[i].subList[j].issueFielsType+'">';
 							for(var k in result[i].subList[j].subList)
 							{
-								str+='<label class="radio-inline">';
-									str+='<input type="radio" name="petitionerRadio" id="'+result[i].subList[j].subList[k].id+'"/>'+result[i].subList[j].subList[k].name+'';
-								str+='</label>';
+								str+='<option id="'+result[i].subList[j].subList[k].issueRelationDataId+'">'+result[i].subList[j].subList[k].name+'</option>';
 							}
+							str+='</select>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
 			}
-			if(result[i].subList[j].issueFielsType == 'CheckBox')
+			if(result[i].subList[j].issueFielsType == 'calender')
 			{
 				str+='<div class="col-sm-12 m_top10">';
 					str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
 					str+='<div class="row m_top10">';
-						str+='<div class="col-sm-12">';
-							for(var k in result[i].subList[j].subList)
-							{
-								str+='<label class="checkbox-inline">';
-									str+='<input type="checkbox" name="petitionerCheckbox" id="'+result[i].subList[j].subList[k].id+'"/>'+result[i].subList[j].subList[k].name+'';
-								str+='</label>';
-							}
+						str+='<div class="col-sm-4">';
+							str+='<div class="input-group">';
+								str+='<span class="input-group-addon">';
+									str+='<i class="glyphicon glyphicon-calendar"/>';
+								str+='</span>';
+								str+='<input type="text" class="datePickerPetitioner" attr_id="'+result[i].subList[j].id+'" name="petitioner'+result[i].subList[j].issueFielsType+'" class="form-control"/>';
+							str+='</div>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -584,6 +655,10 @@ function buildDynamicValuesForIssue(result)
 		str+='</div>';
 	}
 	$("#buildPetitionerData").html(str);
+	$(".selectChosen").chosen();
+	$(".datePickerPetitioner").datetimepicker({
+		format:"DD/MM/YYYY"
+	})
 }
 
 function getSubDeptsFrParentDept(departmentId){
@@ -628,13 +703,13 @@ function buildParentLevelsOfLevel(result,departmentId){
 		for(var i in result){
 			if(i<result.length-1){
 				str+='<div class="col-sm-4 m_top10">';
-					str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLocationId"></span></label>';
+					str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;"></span></label>';
 					str+='<select  class="chosenSelect" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
 				str+='</div>';
 			}else{
 				str+='<div class="col-sm-4 m_top10">';
-					str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;" id="errMsgLocationId"></span></label>';
-					str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'" name="grievanceAlertVO.levelValue" ></select>';
+					str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAssignLocationId"></span></label>';
+					str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'"  name="meekosamGrievanceVO.assignLevelValue"></select>';
 				str+='</div>';
 			}
 			
@@ -785,4 +860,380 @@ function officersByDesignationAndLevel(designationId)
 		$("#officerNamesId").html(str);
 		$("#officerNamesId").trigger("chosen:updated");
 	});
+}
+function displayLevelsByLevelId(){
+	var levelId = $("#alertLocLevelId").val();
+	if(levelId == 0){
+		$("#locDisDivId").hide();
+		$("#locManDivId").hide();
+		$("#locVilDivId").hide();
+	}
+	else if(levelId == 1){
+		$("#locDisDivId").show();
+		$("#locManDivId").hide();
+		$("#locVilDivId").hide();
+	}
+	else if(levelId == 2){
+		$("#locDisDivId").show();
+		$("#locManDivId").show();
+		$("#locVilDivId").hide();
+	}
+	else if(levelId == 3){
+		$("#locDisDivId").show();
+		$("#locManDivId").show();
+		$("#locVilDivId").show();
+	}
+	getAllDistrictByStateId(1,0,"locationDistrictId")
+}
+function getAllPublicRepresentativeTypes()
+{
+	$("#referredTypeId").empty();
+	$("#referredTypeId").trigger("chosen:updated");
+	
+	var jsObj = {
+		
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getAllPublicRepresentativeTypesAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		var str='';
+		str+='<option value="0">Select Referred Type</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#referredTypeId").html(str);
+		$("#referredTypeId").trigger("chosen:updated");
+	});
+}
+function getPublicReresentativesByTypeAndDistrict()
+{
+	$("#referredNameId").empty();
+	$("#referredNameId").trigger("chosen:updated");
+	var refTypeId = $("#referredTypeId").chosen().val()
+	var districtId = $("#districtsReferralId").chosen().val()
+	
+	var jsObj = {
+		typeId				: refTypeId,
+		districtId			: districtId
+	}
+	$.ajax({
+	  type:'GET',
+	  url: 'getPublicReresentativesByTypeAndDistrictAction.action',
+	  data: {task :JSON.stringify(jsObj)}
+	}).done(function(result){
+		var str='';
+		str+='<option value="0">Select Candidate</option>';
+		for(var i in result)
+		{
+			str+='<option value="'+result[i].id+'">'+result[i].name+'</option>';
+		}
+		$("#referredNameId").html(str);
+		$("#referredNameId").trigger("chosen:updated");
+	});
+}
+
+function saveGrievanceInfo(){
+	
+	$(".errorMsgClass").html("");
+	
+	var alertTitle = $("#alertTitleId").val().trim();
+	var alertDesc = $("#alertdescriptionId").val().trim();
+	var alertLevelId = $("#alertLocLevelId").val();
+	var alertDistrict = $("#locationDistrictId").val();
+	var alertMandal = $("#locationMandalId").val();
+	var alertVillage = $("#locationVillageId").val();
+	
+	var category = $("#categoryId").val();
+	var department = $("#departmentId").val();
+	
+	var petitionerName = $("#petitionerNameId").val().trim();
+	var petitionerRelativeNAme = $("#petitionerRelativeNameId").val().trim();
+	var petitionerGender = $("#petitionerGenderId").val().trim();
+	var petitionerDOB = $("#petitionerDOBId").val().trim();
+	var petitionerAge = $("#petitionerAgeId").val().trim();
+	var petitionerMobileNO = $("#petitionerMobileNO").val().trim();
+	var petitionerVoter = $("#petitionerVoterId").val().trim();
+	var petitionerAadhar = $("#petitionerAadharId").val().trim();
+	var petitionerhouseNo = $("#houseNo").val().trim();
+	var petitionerdistricts = $("#districts").val();
+	var petitionermandals = $("#mandals").val();
+	var petitionerpanchayats = $("#panchayats").val();
+	var caste = $("input[type='radio'].casteDataId:checked").val();
+	var occupation = $("#occupationListId").val();
+	var argeeCategory = $("#argeeCategoryListId").val();
+	var annaulIncome = $("input[type='radio'].annaulIncomeDataId:checked").val();
+	
+	var referredBy = $("#referredTypeId").val();
+	var referDistrict = $("#districtsReferralId").val();
+	var referName = $("#referredNameId").val();
+	
+	var subDepartment = $("#subDepartmentSelectId").val();
+	var assignLevelId = $("#locationLevelSelectId").val();
+	var assignLevelValue = $(".locationCls").val();
+	var designation = $("#designationsId").val();
+	var officer = $("#officerNamesId").val();
+	
+	
+	if(subDepartment == 0){
+		$("#errMsgSubDeptId").html("Select SubDepartment");
+		return;
+	}
+	if(assignLevelId == 0){
+		$("#errMsgLevelId").html("Select Location Level");
+		return;
+	}
+	if(assignLevelValue == 0){
+		$("#errMsgAssignLocationId").html("Select Location");
+		return;
+	}
+	if(designation == 0){
+		$("#errMsgDesignationId").html("Select Designation");
+		return;
+	}
+	if(officer == 0){
+		$("#errMsgOfficerId").html("Select Officer");
+		return;
+	}
+	
+	if(referredBy == 0){
+		$("#errMsgReferredById").html("Select Referred By");
+		return;
+	}
+	if(referDistrict == 0){
+		$("#errMsgReferDistId").html("Select District");
+		return;
+	}
+	if(referName == 0){
+		$("#errMsgReferNameId").html("Select Refer Person");
+		return;
+	}
+	
+	if(alertTitle == '' || alertTitle.length == 0){
+		$("#errMsgAlertTitleId").html("Enter Alert Title");
+		return;
+	}
+	if(alertDesc == '' || alertDesc.length == 0){
+		$("#errMsgAlertDescId").html("Enter Alert Description");
+		return;
+	}
+	if(alertLevelId == 0){
+		$("#errMsgAlertLevelId").html("Select Level");
+		return;
+	}
+	if(alertLevelId == 1){
+		if(alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		$("#hiddenAlertLocationLevelId").val(3);
+		$("#hiddenAlertLocationValueId").val(alertDistrict);
+	}
+	if(alertLevelId == 2){
+		if(alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		if(alertMandal == 0){
+			$("#errMsgAlertMandId").html("Select Mandal");
+			return;
+		}
+		
+		if(alertMandal.substring(0,1) == 1)
+			$("#hiddenAlertLocationLevelId").val(5);
+		else
+			$("#hiddenAlertLocationLevelId").val(7);
+		$("#hiddenAlertLocationValueId").val(alertMandal);
+	}
+	if(alertLevelId == 3){
+		if(alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		if(alertMandal == 0){
+			$("#errMsgAlertMandId").html("Select Mandal/Muncipality");
+			return;
+		}
+		if(alertVillage == 0){
+			$("#errMsgAlertVillId").html("Select Village/Ward");
+			return;
+		}
+		
+		if(alertMandal.substring(0,1) == 1)
+			$("#hiddenAlertLocationLevelId").val(6);
+		else
+			$("#hiddenAlertLocationLevelId").val(8);
+		$("#hiddenAlertLocationValueId").val(alertVillage);
+	}
+	
+	if(category == 0){
+		$("#errMsgCategoryId").html("Select Category");
+		return;
+	}
+	if(department == 0){
+		$("#errMsgDepartmentId").html("Select Department");
+		return;
+	}
+	
+	if(petitionerName == '' || petitionerName.length == 0){
+		$("#errMsgPetNameId").html("Enter Name");
+		return;
+	}
+	if(petitionerRelativeNAme == '' || petitionerRelativeNAme.length == 0){
+		$("#errMsgPetRelNameId").html("Enter Relative Name");
+		return;
+	}
+	if(petitionerGender == '' || petitionerGender.length == 0){
+		$("#errMsgPetGenId").html("Enter Gender");
+		return;
+	}
+	if(petitionerDOB == '' || petitionerDOB.length == 0){
+		$("#errMsgPetDOBId").html("Enter DateOfBirth");
+		return;
+	}
+	if(petitionerAge == '' || petitionerAge.length == 0){
+		$("#errMsgPetAgeId").html("Enter Age");
+		return;
+	}
+	if(petitionerMobileNO.length==0 || petitionerMobileNO==''){
+		$("#errMsgPetMobNoId").html(" Please Enter MobileNo ");
+		return;
+	}
+	if(petitionerMobileNO.length != 10){
+		$("#errMsgPetMobNoId").html(" Please Enter Valid MobileNO ");
+		return;
+	}
+	if(petitionerMobileNO.length > 0){
+		var numericExpression = /^[0-9]+$/;
+		if(!petitionerMobileNO.match(numericExpression)){
+			$('#errMsgPetMobNoId').html('Enter Numerics Only.');
+			return;
+		}
+	}
+	if(petitionerVoter == '' || petitionerVoter.length == 0){
+		$("#errMsgPetVoterId").html("Enter VoterNo");
+		return;
+	}
+	if(petitionerAadhar == '' || petitionerAadhar.length == 0){
+		$("#errMsgPetAadharId").html("Enter AadharNo");
+		return;
+	}
+	if(petitionerhouseNo == '' || petitionerhouseNo.length == 0){
+		$("#errMsgPetHouseNOId").html("Enter HouseNO");
+		return;
+	}
+	if(petitionerdistricts == 0){
+		$("#errMsgPetDistrictId").html("Select District");
+		return;
+	}
+	if(petitionermandals == 0){
+		$("#errMsgPetMandalId").html("Select Mandal/Muncipality");
+		return;
+	}
+	if(petitionerpanchayats == 0){
+		$("#errMsgPetVillageId").html("Select Village/Ward");
+		return;
+	}
+	if(caste == 0){
+		$("#errMsgPetCasteId").html("Select Caste");
+		return;
+	}
+	if(occupation == 0){
+		$("#errMsgPetOccupationId").html("Select Occupation");
+		return;
+	}
+	if(argeeCategory == 0){
+		$("#errMsgPetArgeeId").html("Select Argee Category");
+		return;
+	}
+	if(annaulIncome == 0){
+		$("#errMsgPetIncomeId").html("Select Annual Income");
+		return;
+	}
+
+	var str=''
+	var increment = 0;
+	$("input[name='petitionerradio']").each(function(){
+		if($(this).is(":checked") == true)
+		{
+			var data = $(this).val();
+			var relationId = $(this).attr("attr_id");
+			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationDataId" value="'+data+'"/>';
+			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+			increment = increment+1;
+		}
+	})
+	$("input[name='petitionercheckbox']").each(function(){
+		if($(this).is(":checked") == true)
+		{
+			var data = $(this).val();
+			var relationId = $(this).attr("attr_id");
+			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationDataId" value="'+data+'"/>';
+			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+			increment = increment+1;
+		}
+	})
+	$("input[name='petitionercalendar']").each(function(){
+		var data = $(this).val();
+		var relationId = $(this).attr("attr_id");
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueDataStr" value="'+data+'"/>';
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+		increment = increment+1;
+	})
+	$("input[name='petitionertext']").each(function(){
+		var data = $(this).val();
+		var relationId = $(this).attr("attr_id");
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueDataStr" value="'+data+'"/>';
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+		increment = increment+1;
+	});
+	$("input[name='petitionertextarea']").each(function(){
+		var data = $(this).val();
+		var relationId = $(this).attr("attr_id");
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueDataStr" value="'+data+'"/>';
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+		increment = increment+1;
+	});
+	$("select[name='petitionerselectBox']").each(function(){
+		var data = $(this).val();
+		var relationId = $(this).attr("attr_id");
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationDataId" value="'+data+'"/>';
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+		increment = increment+1;
+	});
+	$("#dynamicDataDivId").html(str);
+	$("#hiddenPetitionerCasteId").val(caste);
+	$("#hiddenPetitionerIncomeId").val(annaulIncome);
+	
+	$("#creatingLdngImg").show();
+	$("#createMeekosamId").hide();
+	
+	var uploadHandler = {
+		upload: function(o) {
+			uploadResult = o.responseText;
+			$("#createMeekosamId").show();
+			if(uploadResult.indexOf("success") !=-1)
+			{
+			 $("#successmsg").html("Alert Created And Assigned Successfully ").css("color","green");	
+			 $("#creatingLdngImg").hide();
+			 setTimeout(function(){ 
+				$("#successmsg").html("");
+				//clearFields();
+				location.reload();
+			 }, 1000);
+			}else{  
+				$("#successmsg").html("Exception Occured..Try Again...").css("color","red");	
+				$("#creatingLdngImg").hide();
+				setTimeout(function(){ 
+					$("#successmsg").html("");
+				}, 1000);
+			}  
+			return false;
+		}
+	};
+	
+	YAHOO.util.Connect.setForm('saveMeekosamGrievanceForm',true);
+	YAHOO.util.Connect.asyncRequest('POST','saveMeekosamGrievanceAction.action',uploadHandler);
 }

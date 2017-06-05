@@ -288,4 +288,28 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 		}
 	   return Action.SUCCESS;
 	}
+	
+	public String getAllPublicRepresentativeTypes(){
+	   try {
+		   jObj = new JSONObject(getTask());
+		   
+		   keyValueVOList = meekosamGrievanceService.getAllPublicRepresentativeTypes();
+		   
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getAllPublicRepresentativeTypes() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
+	public String getPublicReresentativesByTypeAndDistrict(){
+	   try {
+		   jObj = new JSONObject(getTask());
+		   Long districtId = jObj.getLong("districtId");
+		   Long typeId = jObj.getLong("typeId");
+		   keyValueVOList = meekosamGrievanceService.getPublicReresentativesByTypeAndDistrict(typeId,districtId);
+		   
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getPublicReresentativesByTypeAndDistrict() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
 }
