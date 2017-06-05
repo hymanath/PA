@@ -17528,11 +17528,21 @@
 		    <param name="inputName">resultStatus</param>
 	  </result>	
   	</action>
-		<action name="getBoothCommitteeInchargesCountAction" class="coreDashboardAction" method="getBoothCommitteeInchargesCount">
-			<result type="json" name="success">
-				<param name="root">boothInchargesVOList</param>
-			</result>
-		</action>
+	<action name="getBoothCommitteeInchargesCountAction" class="coreDashboardAction" method="getBoothCommitteeInchargesCount">
+		<result type="json" name="success">
+			<param name="root">boothInchargesVOList</param>
+		</result>
+	</action>
+	<action name="getAllPublicRepresentativeTypesAction" class="meekosamGrievanceAction"  method="getAllPublicRepresentativeTypes">
+		<result type="json" name="success">		   
+			<param name="root">keyValueVOList</param>
+		</result>
+	</action>
+	<action name="getPublicReresentativesByTypeAndDistrictAction" class="meekosamGrievanceAction"  method="getPublicReresentativesByTypeAndDistrict">
+		<result type="json" name="success">		   
+			<param name="root">keyValueVOList</param>
+		</result>
+	</action>
 	<action name="getVotersAndcadreAgeWiseCountAction" class="locationDashboardAction"  method="getVotersAndcadreAgeWiseCount">
 		<result type="json" name="success">    
 			<param name="root">locationVotersVOList</param>       
