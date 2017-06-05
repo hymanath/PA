@@ -24,12 +24,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	
 	@Autowired
 	private IFundSanctionDAO fundSanctionDAO;
-	
-	/*
-	 * Date : 05/06/2017
-	 * Author :Swadhin K Lenka
-	 */
-	public List<LocationVO> getLocationLevelInfo(){
+	@Autowired
+	private CommonMethodsUtilService commonMethodsUtilService;
+	public List<LocationVO> getLocationLevelInfo(){   
 		try{
 			
 		}catch(Exception e){
@@ -52,12 +49,10 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				fromDate = sdf.parse(fromDateStr);
 				toDate = sdf.parse(toDateStr);
 			}
-			
 			if(levelValues == null ){
 				levelValues = fundSanctionDAO.getLocationValues(levelId);
 				System.out.println("Hi");
 			}
-			
 			
 		}catch(Exception e){
 			e.printStackTrace();
