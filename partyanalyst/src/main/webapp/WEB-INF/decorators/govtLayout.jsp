@@ -154,7 +154,7 @@ globalValue = resultValue[resultValue.length-1];
 			</c:if>
 			<c:if test="${fn:contains(sessionScope.USER.entitlements, 'GOVT_DEPARTMENT_DISTRICT_OFFICER_ENTITLEMENT_NEW')}">
 				<li>
-					<a href="createMeekosamGrievanceAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;New Grievance</span></a>
+					<a href="grievanceRequestAction.action"><span class="fa fa-dashboard ico-white"></span><span>&nbsp;&nbsp;New Grievance</span></a>
 				</li>
 			</c:if>
 				<li>
