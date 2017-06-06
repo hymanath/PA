@@ -54,6 +54,7 @@ public class MeekosamGrievanceVO {
 	private Long referalTypeId;
 	private Long referalDistrictId;
 	private Long referalNameId;
+	private List<Long> referCadreIds;
 	
 	private Long assignLevelId;
 	private Long assignLevelValue;
@@ -310,5 +311,11 @@ public class MeekosamGrievanceVO {
 	}
 	public void setReferalNameId(Long referalNameId) {
 		this.referalNameId = referalNameId;
+	}
+	public List<Long> getReferCadreIds() {
+		return referCadreIds;
+	}
+	public void setReferCadreIds(List<Long> referCadreIds) {
+		this.referCadreIds = referCadreIds;
 	}
 }

@@ -25,4 +25,5 @@ public interface IMeekosamGrievanceService {
 	public ResultStatus saveMeekosamGrievance(final MeekosamGrievanceVO inputvo,final Long userId);
 	public List<KeyValueVO> getAllPublicRepresentativeTypes();
 	public List<KeyValueVO> getPublicReresentativesByTypeAndDistrict(Long typeId,Long districtId);
+	public List<Long> getUserDepartments(Long userId);
 }

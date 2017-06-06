@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentDesignationOfficerDetailsNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtDepartmentMeekosamIssueTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -105,8 +106,16 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	private IMeekosamPublicRepresentativeTypeDAO meekosamPublicRepresentativeTypeDAO;
 	private IMeekosamPublicRepresentativeTypeRelationDAO meekosamPublicRepresentativeTypeRelationDAO;
 	private IAlertMeekosamReferalDetailsDAO alertMeekosamReferalDetailsDAO;
+	private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
 	
 	
+	public IGovtAlertDepartmentLocationNewDAO getGovtAlertDepartmentLocationNewDAO() {
+		return govtAlertDepartmentLocationNewDAO;
+	}
+	public void setGovtAlertDepartmentLocationNewDAO(
+			IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO) {
+		this.govtAlertDepartmentLocationNewDAO = govtAlertDepartmentLocationNewDAO;
+	}
 	public IAlertMeekosamReferalDetailsDAO getAlertMeekosamReferalDetailsDAO() {
 		return alertMeekosamReferalDetailsDAO;
 	}
@@ -789,6 +798,7 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 						List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(Long.valueOf(inputvo.getGrievanceTehsilId().toString().substring(1)));
 						if(list != null && !list.isEmpty())
 							alertAddress.setConstituency(list.get(0));
+						alertAddress.setTehsil(tehsilDAO.get(Long.valueOf(inputvo.getGrievanceTehsilId().toString().substring(1))));
 						if(inputvo.getGrievancePanchayatId() != null && inputvo.getGrievancePanchayatId().longValue() > 0l)
 							alertAddress.setPanchayatId(inputvo.getGrievancePanchayatId());
 						//alertAddress.setHamlet(hamletDAO.get(inputvo.getgri));
@@ -797,10 +807,31 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 						List<Constituency> list = boothDAO.getConstituencyIdByLebId(Long.valueOf(inputvo.getGrievanceTehsilId().toString().substring(1)));
 						if(list != null && !list.isEmpty())
 							alertAddress.setConstituency(list.get(0));
+						alertAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(inputvo.getGrievanceTehsilId().toString().substring(1))));
 						if(inputvo.getGrievancePanchayatId() != null && inputvo.getGrievancePanchayatId().longValue() > 0l)
 							alertAddress.setWard(constituencyDAO.get(inputvo.getGrievancePanchayatId()));
 					}
 					alertAddress = userAddressDAO.save(alertAddress);
+					
+					UserAddress petitionerAddress = new UserAddress();
+					petitionerAddress.setState(stateDAO.get(1L));
+					petitionerAddress.setDistrict(districtDAO.get(inputvo.getPetitionerDistrictId()));
+					if(inputvo.getPetitionerTehsilId().toString().substring(0, 1).equalsIgnoreCase("1")){
+						List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(Long.valueOf(inputvo.getPetitionerTehsilId().toString().substring(1)));
+						if(list != null && !list.isEmpty())
+							petitionerAddress.setConstituency(list.get(0));
+						petitionerAddress.setTehsil(tehsilDAO.get(Long.valueOf(inputvo.getPetitionerTehsilId().toString().substring(1))));
+						petitionerAddress.setPanchayatId(inputvo.getPetitionerPanchayatId());
+						//alertAddress.setHamlet(hamletDAO.get(inputvo.getgri));
+					}
+					else if(inputvo.getPetitionerTehsilId().toString().substring(0, 1).equalsIgnoreCase("2")){
+						List<Constituency> list = boothDAO.getConstituencyIdByLebId(Long.valueOf(inputvo.getPetitionerTehsilId().toString().substring(1)));
+						if(list != null && !list.isEmpty())
+							petitionerAddress.setConstituency(list.get(0));
+						petitionerAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(inputvo.getPetitionerTehsilId().toString().substring(1))));
+						petitionerAddress.setWard(constituencyDAO.get(inputvo.getPetitionerPanchayatId()));
+					}
+					petitionerAddress = userAddressDAO.save(petitionerAddress);
 					
 					alert.setAddressId(alertAddress.getUserAddressId());
 					alert.setCreatedBy(userId);
@@ -808,7 +839,7 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					alert.setUpdatedBy(userId);
 					alert.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					alert.setIsDeleted("N");
-					alert.setAlertSourceId(inputvo.getCategoryId() - 1l);
+					alert.setAlertSourceId(inputvo.getCategoryId() + 1l);
 					alert.setAlertCategoryId(inputvo.getCategoryId());
 					if(inputvo.getGrievanceImpactLevel() != null && inputvo.getGrievanceImpactLevel().longValue() == 3l)
 						alert.setImpactScopeId(2l);
@@ -868,24 +899,6 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					petitioner.setDateOfBirth(dob);
 					petitioner.setGender(inputvo.getPetitionerGender());
 					
-					UserAddress petitionerAddress = new UserAddress();
-					petitionerAddress.setState(stateDAO.get(1L));
-					petitionerAddress.setDistrict(districtDAO.get(inputvo.getPetitionerDistrictId()));
-					if(inputvo.getPetitionerTehsilId().toString().substring(0, 1).equalsIgnoreCase("1")){
-						List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(Long.valueOf(inputvo.getPetitionerTehsilId().toString().substring(1)));
-						if(list != null && !list.isEmpty())
-							petitionerAddress.setConstituency(list.get(0));
-						petitionerAddress.setPanchayatId(inputvo.getPetitionerPanchayatId());
-						//alertAddress.setHamlet(hamletDAO.get(inputvo.getgri));
-					}
-					else if(inputvo.getPetitionerTehsilId().toString().substring(0, 1).equalsIgnoreCase("2")){
-						List<Constituency> list = boothDAO.getConstituencyIdByLebId(Long.valueOf(inputvo.getPetitionerTehsilId().toString().substring(1)));
-						if(list != null && !list.isEmpty())
-							petitionerAddress.setConstituency(list.get(0));
-						petitionerAddress.setWard(constituencyDAO.get(inputvo.getPetitionerPanchayatId()));
-					}
-					petitionerAddress = userAddressDAO.save(petitionerAddress);
-					
 					petitioner.setUserAddressId(petitionerAddress.getUserAddressId());
 					petitioner.setHouseNo(inputvo.getPetitionerHouseNO());
 					petitioner.setAadharNo(inputvo.getPetitionerAadharCardNo());
@@ -921,14 +934,18 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 								List<Constituency> list = boothDAO.getConstituencyIdByTehsilId(Long.valueOf(landDetailsvo.getMandalId().toString().substring(1)));
 								if(list != null && !list.isEmpty())
 									landAddress.setConstituency(list.get(0));
-								landAddress.setPanchayatId(landDetailsvo.getVillageId());
+								landAddress.setTehsil(tehsilDAO.get(Long.valueOf(landDetailsvo.getMandalId().toString().substring(1))));
+								if(landDetailsvo.getVillageId() != null && landDetailsvo.getVillageId().longValue() > 0l)
+									landAddress.setPanchayatId(landDetailsvo.getVillageId());
 								//alertAddress.setHamlet(hamletDAO.get(inputvo.getgri));
 							}
 							else if(landDetailsvo.getMandalId().toString().substring(0, 1).equalsIgnoreCase("2")){
 								List<Constituency> list = boothDAO.getConstituencyIdByLebId(Long.valueOf(landDetailsvo.getMandalId().toString().substring(1)));
 								if(list != null && !list.isEmpty())
 									landAddress.setConstituency(list.get(0));
-								landAddress.setWard(constituencyDAO.get(landDetailsvo.getVillageId()));
+								landAddress.setLocalElectionBody(localElectionBodyDAO.get(Long.valueOf(landDetailsvo.getMandalId().toString().substring(1))));
+								if(landDetailsvo.getVillageId() != null && landDetailsvo.getVillageId().longValue() > 0l)
+									landAddress.setWard(constituencyDAO.get(landDetailsvo.getVillageId()));
 							}
 							landAddress = userAddressDAO.save(landAddress);
 							
@@ -951,7 +968,7 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 						}
 					}
 					
-					Long referalRelationId = 0l;
+					/*Long referalRelationId = 0l;
 					List<Long> referelList = meekosamPublicRepresentativeTypeRelationDAO.getMeekosamPublicRepresentativeTypeRelationId(inputvo.getReferalTypeId(), inputvo.getReferalDistrictId(), inputvo.getReferalNameId());
 					if(referelList != null && !referelList.isEmpty())
 						referalRelationId = referelList.get(0);
@@ -960,10 +977,15 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					alertMeekosamReferalDetails.setAlertId(alert.getAlertId());
 					alertMeekosamReferalDetails.setMeekosamPublicRepresentativeTypeRelationId(referalRelationId);
 					alertMeekosamReferalDetails.setIsDeleted("N");
-					alertMeekosamReferalDetails = alertMeekosamReferalDetailsDAO.save(alertMeekosamReferalDetails);
+					alertMeekosamReferalDetails = alertMeekosamReferalDetailsDAO.save(alertMeekosamReferalDetails);*/
+					/*if(inputvo.getReferCadreIds() != null && !inputvo.getReferCadreIds().isEmpty()){
+						for (Long cadreId : inputvo.getReferCadreIds()) {
+							
+						}
+					}*/
 					
 					Long desigOfficerId = null;
-					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getOldDesignationOfficerIdsNew(inputvo.getAssignLevelId(),
+					List<Long> designationOfficerIds = govtDepartmentDesignationOfficerDetailsNewDAO.getNewDesignationOfficerIdsNew(inputvo.getAssignLevelId(),
 																							inputvo.getAssignLevelValue(), inputvo.getDesignationId(), inputvo.getOfficerId());
 					if(designationOfficerIds != null && !designationOfficerIds.isEmpty())
 						desigOfficerId = designationOfficerIds.get(0);
@@ -1041,6 +1063,21 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					vo.setName(obj[1] != null ? obj[1].toString():"");
 					vo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
 					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getPublicReresentativesByTypeAndDistrict() method of MeekosamGrievanceService",e);
+		}
+		return returnList;
+	}
+	
+	public List<Long> getUserDepartments(Long userId){
+		List<Long> returnList = new ArrayList<Long>();
+		try {
+			List<Object[]> list = govtAlertDepartmentLocationNewDAO.getDeptIdAndNameForUserAccessLevel(userId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					returnList.add(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
 				}
 			}
 		} catch (Exception e) {
