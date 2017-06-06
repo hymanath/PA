@@ -6,13 +6,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
@@ -20,7 +20,7 @@ import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IFundManagementDashboardService;
 
 @EnableAutoConfiguration
-@RestController
+@Controller
 @RequestMapping("/")
 public class FundManagementDashboardController {
 	@Autowired
@@ -69,5 +69,53 @@ public class FundManagementDashboardController {
 		LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalFunds(financialYrId, departmentId, sourceId, startDate,endDate);
 		return returnVO;
 	  }
+	
+	@RequestMapping(value = "/getTotalLocationsByScopeId", method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+			  public @ResponseBody LocationFundDetailsVO getTotalLocationsByScopeId(@RequestBody Map<String,String> map)
+			  {		
+				Long financialYrId = Long.valueOf(map.get("financialYrId"));
+				Long departmentId = Long.valueOf(map.get("departmentId"));
+				Long sourceId = Long.valueOf(map.get("sourceId"));
+				String startDate = map.get("startDate");
+				String endDate = map.get("endDate");
+				Long locationScopeId = Long.valueOf(map.get("locationScopeId"));
+				
+				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalLocationsByScopeId(financialYrId, departmentId, sourceId, startDate,
+						 endDate, locationScopeId );
+				return returnVO;
+			  }
+	
+	@RequestMapping(value = "/getSchemeWiseHighestAndLowestFund", method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+			  public @ResponseBody LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(@RequestBody Map<String,String> map)
+			  {		
+				Long financialYrId = Long.valueOf(map.get("financialYrId"));
+				Long departmentId = Long.valueOf(map.get("departmentId"));
+				Long sourceId = Long.valueOf(map.get("sourceId"));
+				String startDate = map.get("startDate");
+				String endDate = map.get("endDate");
+				String type = map.get("type");
+				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getSchemeWiseHighestAndLowestFund(financialYrId, departmentId, sourceId, startDate,
+						 endDate, type );
+				return returnVO;
+			  }
+	
+	@RequestMapping(value = "/getTotalSchemes", method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE,
+			consumes = MediaType.APPLICATION_JSON_VALUE)
+			public @ResponseBody LocationFundDetailsVO getTotalSchemes(@RequestBody Map<String,String> map)
+			  {		
+				Long financialYrId = Long.valueOf(map.get("financialYrId"));
+				Long departmentId = Long.valueOf(map.get("departmentId"));
+				Long sourceId = Long.valueOf(map.get("sourceId"));
+				String startDate = map.get("startDate");
+				String endDate = map.get("endDate");
+			
+				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalSchemes(financialYrId, departmentId, sourceId, startDate,endDate);
+				return returnVO;
+			  }
 	
 }

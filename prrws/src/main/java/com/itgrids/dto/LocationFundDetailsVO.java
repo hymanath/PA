@@ -13,9 +13,47 @@ public class LocationFundDetailsVO implements Serializable{
 	private String type;
 	private Double totalAmt;
 	private Double perc;
+	private Long fundedLoc;
+	private Long notFundedLoc;
+	private Double fundedPerc;
+	private Double nonFundedPerc;
+	private Long totSchemes;
+	
 	private List<IdNameVO> subList = new ArrayList<IdNameVO>();
 	
 	
+	
+	
+	public Long getTotSchemes() {
+		return totSchemes;
+	}
+	public void setTotSchemes(Long totSchemes) {
+		this.totSchemes = totSchemes;
+	}
+	public Long getFundedLoc() {
+		return fundedLoc;
+	}
+	public void setFundedLoc(Long fundedLoc) {
+		this.fundedLoc = fundedLoc;
+	}
+	public Long getNotFundedLoc() {
+		return notFundedLoc;
+	}
+	public void setNotFundedLoc(Long notFundedLoc) {
+		this.notFundedLoc = notFundedLoc;
+	}
+	public Double getFundedPerc() {
+		return fundedPerc;
+	}
+	public void setFundedPerc(Double fundedPerc) {
+		this.fundedPerc = fundedPerc;
+	}
+	public Double getNonFundedPerc() {
+		return nonFundedPerc;
+	}
+	public void setNonFundedPerc(Double nonFundedPerc) {
+		this.nonFundedPerc = nonFundedPerc;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -29,7 +29,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 	
 	public List<Object[]> getLocationsCountDetails(Long locatioinTypeId,Long financialYrId){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct model.locationScopeId,count(model.locationScopeId), sum(model.amount) from   ");
+		queryStr.append(" select distinct model.locationScopeId,count( distinct model.locationValue), sum(model.sactionAmount) from   ");
 		queryStr.append(" FundSanction model  ");
 		queryStr.append(" where model.isDeleted ='N' and model.locationAddress.district.stateId = 1 ");
 		if(locatioinTypeId != null && locatioinTypeId.longValue()>0L)
@@ -163,11 +163,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select sum(modal.sactionAmount) " );
 		
-			sb.append(" ,modal.govtScheme.govtSchemeId,modal.govtScheme.schemeName " );
+		sb.append(" ,modal.govtScheme.govtSchemeId,modal.govtScheme.schemeName " );
 		
-			
 		sb.append(" from FundSanction modal where modal.isDeleted='N' ");
-		
 		
 		if(financialYrId != null && financialYrId.longValue() >0l ){
 			sb.append(" and modal.financialYearId = :financialYrId  " );
@@ -239,9 +237,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select sum(modal.sactionAmount) " );
 		
-		sb.append(" ,grantType.grantTypeId,'' " );
+		sb.append(" ,modal.grantType.grantTypeId,'' " );
 		
-		sb.append(" from FundSanction modal, GrantType grantType where modal.isDeleted='N' and grantType.grantTypeId = modal.grantType.grantTypeId ");
+		sb.append(" from FundSanction modal where modal.isDeleted='N'  ");
 		
 		if(locationScopeId != null && locationScopeId.longValue() >0l ){
 			sb.append(" and modal.locationScopeId = :locationScopeId  " );
@@ -256,8 +254,10 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			sb.append(" and (date(modal.insertedTime) between  :sDate and :eDate) " );
 		}
 		
-		sb.append(" group by modal.locationValue,modal.grantType.grantTypeId  ");
-		
+		sb.append(" group by modal.grantType.grantTypeId  ");
+		if(locationVal != null && locationVal.longValue() >0l ){
+			sb.append(" ,modal.locationValue ");
+		}
 		
 		Query query = getSession().createQuery(sb.toString());
 		
@@ -267,6 +267,74 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		if(locationVal != null && locationVal.longValue() >0l ){
 			query.setParameter("locationVal", locationVal);
+		}
+		if(sDate != null && eDate != null){
+			query.setDate("sDate", sDate);
+			query.setDate("eDate", eDate);
+		}
+		if(financialYrId != null && financialYrId.longValue() >0l ){
+			query.setParameter("financialYrId", financialYrId);
+		}
+		return query.list();
+		
+	}
+	
+	public Long getTotalSchemes(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(distinct modal.govtScheme.govtSchemeId ) " );
+		
+		sb.append(" from FundSanction modal where modal.isDeleted='N' ");
+		
+		
+		if(financialYrId != null && financialYrId.longValue() >0l ){
+			sb.append(" and modal.financialYearId = :financialYrId  " );
+		}
+		if(sDate != null && eDate != null){
+			sb.append(" and date(modal.insertedTime) between  :sDate and :eDate " );
+		}
+		
+		sb.append(" group by modal.govtScheme.govtSchemeId ");
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(sDate != null && eDate != null){
+			query.setDate("sDate", sDate);
+			query.setDate("eDate", eDate);
+		}
+		if(financialYrId != null && financialYrId.longValue() >0l ){
+			query.setParameter("financialYrId", financialYrId);
+		}
+		return (Long)query.uniqueResult();
+		
+	}
+	
+	public List<Object[]> getSchemeWiseGrantTypesFund(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate
+			,Long schemeId){
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select sum(modal.sactionAmount) " );
+		
+		sb.append(" ,modal.govtScheme.govtSchemeId,'' " );
+		
+		sb.append(" from FundSanction modal where modal.isDeleted='N'  ");
+		
+		
+		if(schemeId != null && schemeId.longValue() >0l ){
+			sb.append(" and modal.govtScheme.govtSchemeId = :schemeId  " );
+		}
+		if(financialYrId != null && financialYrId.longValue() >0l ){
+			sb.append(" and modal.financialYearId = :financialYrId  " );
+		}
+		if(sDate != null && eDate != null){
+			sb.append(" and (date(modal.insertedTime) between  :sDate and :eDate) " );
+		}
+		
+		sb.append(" group by modal.locationValue,modal.govtScheme.govtSchemeId  ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(schemeId != null && schemeId.longValue() >0l ){
+			query.setParameter("schemeId", schemeId);
 		}
 		if(sDate != null && eDate != null){
 			query.setDate("sDate", sDate);
