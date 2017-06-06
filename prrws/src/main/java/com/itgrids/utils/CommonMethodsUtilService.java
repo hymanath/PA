@@ -139,7 +139,7 @@ public class CommonMethodsUtilService {
 		return null;
 	}
 	
-	public String stringTODateConvertion(String dateStr,String dateFormatStr,String timeFormatStr)
+	public Date stringTODateConvertion(String dateStr,String dateFormatStr,String timeFormatStr)
 	{
 		SimpleDateFormat format = null;
 		try {
@@ -153,7 +153,7 @@ public class CommonMethodsUtilService {
 				{
 					format = new SimpleDateFormat(dateFormatStr+" "+timeFormatStr);
 				}
-				return format.format(dateStr);
+				return format.parse(dateStr);
 			}
 		} catch (Exception e) {
 			LOG.error("Exception occured at stringTODateConvertion() in CommonUtilService class .",e);
@@ -712,6 +712,17 @@ public class CommonMethodsUtilService {
 				// TODO: handle exception
 			}
 		}
+		
+		public Double calculatePercantage(Long subCount,Long totalCount){
+		    Double d=0.0d;
+		    if(subCount.longValue()>0l && totalCount.longValue()==0l)
+		      LOG.error("Sub Count Value is "+subCount+" And Total Count Value  "+totalCount+" .So, Unable to calculate percentage.");
+
+		    if(totalCount.longValue() > 0l){
+		       d = new BigDecimal(subCount * 100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();   
+		    }
+		    return d;
+		  }
 		
 		
 }
