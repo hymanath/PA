@@ -186,7 +186,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			sb.append(" and modal.locationScopeId = :locationScopeId  " );
 		}
 		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
-			sb.append(" and modal.financialYearId = :financialYrId  " );
+			sb.append(" and modal.financialYearId in (:financialYearIdsList)  " );
 		}
 		
 		if(deptIdsList != null && deptIdsList.size()>0)
