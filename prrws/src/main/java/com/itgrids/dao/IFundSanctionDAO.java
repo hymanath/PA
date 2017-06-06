@@ -18,4 +18,5 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public Long getTotalFund(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate,Long scopeId);
 	public List<Object[]> getLocationWiseGrantTypesFund(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate
 			,Long locationScopeId,Long locationVal);
+	public Long getTotalSchemes(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate);
 }

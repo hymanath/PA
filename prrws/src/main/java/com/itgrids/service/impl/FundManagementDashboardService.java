@@ -33,10 +33,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	
 	@Autowired
 	private IFundSanctionDAO fundSanctionDAO;
-	@Autowired
-	private CommonMethodsUtilService commonMethodsUtilService;
-	
-	public List<LocationVO> getLocationLevelInfo(){   
+	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
+
+	/*
+	 * Date : 05/06/2017
+	 * Author :Swadhin K Lenka
+	 */
+	public List<LocationVO> getLocationLevelInfo(){
 		try{
 			
 		}catch(Exception e){
@@ -181,55 +184,24 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	 * Date : 05/06/2017
 	 * Description : { Location, Scheme & Sourse Wise Funds like Highest & Lowest & Avg Funds Details }
 	 */
-	public LocationFundDetailsVO getLocationWiseFundDetails(Long financialYrId,Long departmentId,Long sourceId,String startDate,String endDate,Long locationScopeId,String type ){
+	public LocationFundDetailsVO getLocationWiseFundDetails(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr,Long locationScopeId,String type ){
 		LocationFundDetailsVO returnVO = new LocationFundDetailsVO();
-		SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+		
 		try{
-			Date sDate =null;
-			Date eDate = null;
+			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
+		     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
+		     
+			Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,startDate,endDate,null);
 			
-			if(startDate != null && endDate != null){
-				sDate = sf.parse(startDate);
-				eDate = sf.parse(endDate);
-			}
-			Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,sDate,eDate,null);
-			List<Object[]> highFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,locationScopeId,type);
+			List<Object[]> highFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,startDate,endDate,locationScopeId,type);
 			if(highFund != null && highFund.size() >0){
 				setFundDetails(highFund,returnVO,type,totalfund);
 			}
 			
 			if(returnVO.getId() != null && returnVO.getId().longValue() >0l){
-				List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(financialYrId,departmentId,sourceId,sDate,eDate,locationScopeId,returnVO.getId());
+				List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(financialYrId,departmentId,sourceId,startDate,endDate,locationScopeId,returnVO.getId());
 				setGrantTypesToVO(locWiseGrantTypes,returnVO);
 			}
-			
-			/*Long distHighId =0l;
-			List<Object[]> highConstFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,4l,"highest");
-			
-			List<Object[]> highMandalFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,5l,"highest");
-			
-			List<Object[]> highVillgFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,6l,"highest");
-			
-			List<Object[]> lowDistFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,3l,"lowest");
-			
-			List<Object[]> lowConstFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,4l,"lowest");
-			
-			List<Object[]> lowMandalFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,5l,"lowest");
-			
-			List<Object[]> lowVillgFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,6l,"lowest");
-			
-			List<Object[]> highSchemeFund = fundSanctionDAO.getSchemeWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,"highest");
-			
-			List<Object[]> lowSchemeFund = fundSanctionDAO.getSchemeWiseFundHighAndLow(financialYrId,departmentId,sourceId,sDate,eDate,"lowest");
-			
-			Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,sDate,eDate,null);
-			
-			Long totalDistFund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,sDate,eDate,3l);
-			Long totalContFund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,sDate,eDate,4l);
-			Long totalMandalFund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,sDate,eDate,5l);
-			Long totalVillgFund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,sDate,eDate,6l);
-			
-			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(financialYrId,departmentId,sourceId,sDate,eDate,3l,distHighId);*/
 			
 		}catch(Exception e){
 			LOG.error(" Exception raised in getLocationWiseFundDetails (); ");
@@ -278,7 +250,7 @@ public void setGrantTypesToVO(List<Object[]> list ,LocationFundDetailsVO returnV
 					grantVO.setName(obj[2] != null ? (String)obj[2] : "");
 					
 					if(grantVO.getTotal() != null && grantVO.getTotal().longValue() >0l)
-					returnVO.setPerc(calculatePercantage(grantVO.getTotal().longValue(),Long.valueOf(returnVO.getTotalAmt().toString())));
+					returnVO.setPerc(calculatePercantage(grantVO.getTotal().longValue(),returnVO.getTotalAmt().longValue()));
 					
 					returnVO.getSubList().add(grantVO);
 				
@@ -290,23 +262,24 @@ public void setGrantTypesToVO(List<Object[]> list ,LocationFundDetailsVO returnV
 		}
 	}
 	
-public LocationFundDetailsVO getTotalFunds(Long financialYrId,Long departmentId,Long sourceId,String startDate,String endDate){
+
+/*
+ * Author : Hymavathi G
+ * Date : 06/06/2017
+ * Description : { Total Funds Allocating }
+ */
+public LocationFundDetailsVO getTotalFunds(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr){
 	LocationFundDetailsVO retusnVo =new LocationFundDetailsVO();
-	SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 	try{
-		Date sDate =null;
-		Date eDate = null;
-		
-		if(startDate != null && endDate != null){
-			sDate = sf.parse(startDate);
-			eDate = sf.parse(endDate);
-		}
-		Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,sDate,eDate,null);
+		Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
+	     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
+		Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,startDate,endDate,null);
 		if(totalfund != null && totalfund.longValue() > 0l){
 			retusnVo.setTotalAmt(Double.valueOf(totalfund.toString()));
 		}
 		if(retusnVo.getTotalAmt() != null && retusnVo.getTotalAmt().longValue() >0l){
-			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(financialYrId,departmentId,sourceId,sDate,eDate,null,null);
+			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(financialYrId,departmentId,sourceId,startDate,endDate,null,null);
 			setGrantTypesToVO(locWiseGrantTypes,retusnVo);
 		}
 	}catch(Exception e){
@@ -316,4 +289,92 @@ public LocationFundDetailsVO getTotalFunds(Long financialYrId,Long departmentId,
 	return retusnVo;
 }
 
+
+/*
+ * Author : Hymavathi G
+ * Date : 06/06/2017
+ * Description : { Getting locations count By Sending scopeId }
+ */
+public LocationFundDetailsVO getTotalLocationsByScopeId(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr,Long locationScopeId){
+	LocationFundDetailsVO retusnVo =new LocationFundDetailsVO();
+	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+	try{
+		
+		Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
+	     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
+		
+		 List<Object[]>  locations= fundSanctionDAO.getLocationsCountDetails(locationScopeId,financialYrId);
+		 
+		 Long totalLocations=0l;
+		 
+		 if(locationScopeId == 4l){
+			 totalLocations = 175l;
+		 }else  if(locationScopeId == 5l){
+			 totalLocations = 700l;
+		 } if(locationScopeId == 6l){
+			 totalLocations = 7000l;
+		 } 
+		 if(commonMethodsUtilService.isListOrSetValid(locations)){
+			 for(Object[] obj :locations){
+				 retusnVo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				 retusnVo.setFundedLoc(commonMethodsUtilService.getLongValueForObject(obj[1]));
+				 Long nonFunded = totalLocations-retusnVo.getFundedLoc();
+				 retusnVo.setNotFundedLoc(nonFunded.longValue());
+				 retusnVo.setFundedPerc(calculatePercantage(retusnVo.getFundedLoc(),totalLocations));
+				 retusnVo.setNonFundedPerc(calculatePercantage(retusnVo.getNotFundedLoc(),totalLocations));
+			 }
+		 }
+		 
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error(" Exception raised in getTotalFunds (); ");
+	}
+	return retusnVo;
+}
+
+/*
+ * Author : Hymavathi G
+ * Date : 06/06/2017
+ */
+public LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr,String type ){
+	LocationFundDetailsVO returnVO = new LocationFundDetailsVO();
+	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+	try{
+		Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
+	     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
+	     
+		Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,startDate,endDate,null);
+		List<Object[]> schemeFund = fundSanctionDAO.getSchemeWiseFundHighAndLow(financialYrId,departmentId,sourceId,startDate,endDate,type);
+		if(schemeFund != null && schemeFund.size() >0){
+			setFundDetails(schemeFund,returnVO,type,totalfund);
+		}
+		
+	}catch(Exception e){
+		LOG.error(" Exception raised in getSchemeWiseHighestAndLowestFund (); ");
+	}
+	return returnVO;
+}
+
+/*
+ * Author : Hymavathi G
+ * Date : 06/06/2017
+ */
+public LocationFundDetailsVO getTotalSchemes(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr){
+	LocationFundDetailsVO retusnVo =new LocationFundDetailsVO();
+	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
+	try{
+		
+		Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
+	     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
+		Long totalSchemes = fundSanctionDAO.getTotalSchemes(financialYrId, departmentId, sourceId, startDate, endDate);
+		 
+		 if(totalSchemes != null && totalSchemes.longValue() >0l){
+			 retusnVo.setTotSchemes(totalSchemes);
+		 }
+	}catch(Exception e){
+		e.printStackTrace();
+		LOG.error(" Exception raised in getTotalFunds (); ");
+	}
+	return retusnVo;
+}
 }
