@@ -11,7 +11,7 @@ public class LocationFundDetailsVO implements Serializable{
 	private Long id;
 	private String name;
 	private String type;
-	private Double totalAmt;
+	private String totalAmt;
 	private Double perc;
 	private Long fundedLoc;
 	private Long notFundedLoc;
@@ -72,10 +72,10 @@ public class LocationFundDetailsVO implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Double getTotalAmt() {
+	public String getTotalAmt() {
 		return totalAmt;
 	}
-	public void setTotalAmt(Double totalAmt) {
+	public void setTotalAmt(String totalAmt) {
 		this.totalAmt = totalAmt;
 	}
 	public Double getPerc() {

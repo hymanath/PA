@@ -312,12 +312,12 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	public void setFundDetails(List<Object[]> list ,LocationFundDetailsVO returnVO,String type,Long totalfund){
 		try{
 			Object[] obj =list.get(0);
-				returnVO.setTotalAmt(obj[0] != null ? Double.valueOf(obj[0].toString()) : 0l);
+				returnVO.setTotalAmt(obj[0] != null ? obj[0].toString() : "");
 				returnVO.setId(obj[1] != null ? (Long)obj[1] : 0l);
 				returnVO.setName(obj[2] != null ? (String)obj[2] : "");
 				returnVO.setType(type);
 				if(totalfund != null && totalfund.longValue() >0l)
-				returnVO.setPerc(commonMethodsUtilService.calculatePercantage(returnVO.getTotalAmt().longValue(),totalfund));
+				returnVO.setPerc(commonMethodsUtilService.calculatePercantage(Long.valueOf(returnVO.getTotalAmt().toString()),totalfund));
 			
 			
 		}catch(Exception e){
@@ -358,9 +358,9 @@ public LocationFundDetailsVO getTotalFunds(InputVO inputVO){
 	     Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"dd-MM-yyyy","");
 		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,null);
 		if(totalfund != null && totalfund.longValue() > 0l){
-			retusnVo.setTotalAmt(Double.valueOf(totalfund.toString()));
+			retusnVo.setTotalAmt(totalfund.toString());
 		}
-		if(retusnVo.getTotalAmt() != null && retusnVo.getTotalAmt().longValue() >0l){
+		if(retusnVo.getTotalAmt() != null){
 			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,null,null);
 			setGrantTypesToVO(locWiseGrantTypes,retusnVo);
 		}
