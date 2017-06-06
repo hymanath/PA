@@ -42,80 +42,49 @@ public class FundManagementDashboardController {
 	@RequestMapping(value = "/getLocationWiseFundDetails", method = RequestMethod.POST,
 	produces = MediaType.APPLICATION_JSON_VALUE,
 	consumes = MediaType.APPLICATION_JSON_VALUE)
-	  public @ResponseBody LocationFundDetailsVO getLocationWiseFundDetails(@RequestBody Map<String,String> map)
+	  public @ResponseBody LocationFundDetailsVO getLocationWiseFundDetails(@RequestBody InputVO inputVO)
 	  {		
-		Long financialYrId = Long.valueOf(map.get("financialYrId"));
-		Long departmentId = Long.valueOf(map.get("departmentId"));
-		Long sourceId = Long.valueOf(map.get("sourceId"));
-		String startDate = map.get("startDate");
-		String endDate = map.get("endDate");
-		Long locationScopeId = Long.valueOf(map.get("locationScopeId"));
-		String type = map.get("type");
-		LocationFundDetailsVO  returnVO = fundManagementDashboardService.getLocationWiseFundDetails(financialYrId, departmentId, sourceId, startDate,
-				 endDate, locationScopeId, type );
+		
+		
+		LocationFundDetailsVO  returnVO =  fundManagementDashboardService.getLocationWiseFundDetails(inputVO);
 		return returnVO;
 	  }
 
 	@RequestMapping(value = "/getTotalFunds", method = RequestMethod.POST,
 	produces = MediaType.APPLICATION_JSON_VALUE,
 	consumes = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody LocationFundDetailsVO getTotalFunds(@RequestBody Map<String,String> map)
+	public @ResponseBody LocationFundDetailsVO getTotalFunds(@RequestBody InputVO inputVO)
 	  {		
-		Long financialYrId = Long.valueOf(map.get("financialYrId"));
-		Long departmentId = Long.valueOf(map.get("departmentId"));
-		Long sourceId = Long.valueOf(map.get("sourceId"));
-		String startDate = map.get("startDate");
-		String endDate = map.get("endDate");
-	
-		LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalFunds(financialYrId, departmentId, sourceId, startDate,endDate);
+		
+		LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalFunds(inputVO);
 		return returnVO;
 	  }
 	
 	@RequestMapping(value = "/getTotalLocationsByScopeId", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-			  public @ResponseBody LocationFundDetailsVO getTotalLocationsByScopeId(@RequestBody Map<String,String> map)
+			  public @ResponseBody LocationFundDetailsVO getTotalLocationsByScopeId(@RequestBody InputVO inputVO)
 			  {		
-				Long financialYrId = Long.valueOf(map.get("financialYrId"));
-				Long departmentId = Long.valueOf(map.get("departmentId"));
-				Long sourceId = Long.valueOf(map.get("sourceId"));
-				String startDate = map.get("startDate");
-				String endDate = map.get("endDate");
-				Long locationScopeId = Long.valueOf(map.get("locationScopeId"));
-				
-				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalLocationsByScopeId(financialYrId, departmentId, sourceId, startDate,
-						 endDate, locationScopeId );
+				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalLocationsByScopeId(inputVO );
 				return returnVO;
 			  }
 	
 	@RequestMapping(value = "/getSchemeWiseHighestAndLowestFund", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-			  public @ResponseBody LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(@RequestBody Map<String,String> map)
+			  public @ResponseBody LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(@RequestBody InputVO inputVO)
 			  {		
-				Long financialYrId = Long.valueOf(map.get("financialYrId"));
-				Long departmentId = Long.valueOf(map.get("departmentId"));
-				Long sourceId = Long.valueOf(map.get("sourceId"));
-				String startDate = map.get("startDate");
-				String endDate = map.get("endDate");
-				String type = map.get("type");
-				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getSchemeWiseHighestAndLowestFund(financialYrId, departmentId, sourceId, startDate,
-						 endDate, type );
+				
+				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getSchemeWiseHighestAndLowestFund(inputVO);
 				return returnVO;
 			  }
 	
 	@RequestMapping(value = "/getTotalSchemes", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE,
 			consumes = MediaType.APPLICATION_JSON_VALUE)
-			public @ResponseBody LocationFundDetailsVO getTotalSchemes(@RequestBody Map<String,String> map)
+			public @ResponseBody LocationFundDetailsVO getTotalSchemes(@RequestBody InputVO inputVO)
 			  {		
-				Long financialYrId = Long.valueOf(map.get("financialYrId"));
-				Long departmentId = Long.valueOf(map.get("departmentId"));
-				Long sourceId = Long.valueOf(map.get("sourceId"));
-				String startDate = map.get("startDate");
-				String endDate = map.get("endDate");
-			
-				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalSchemes(financialYrId, departmentId, sourceId, startDate,endDate);
+				LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalSchemes(inputVO);
 				return returnVO;
 			  }
 	
