@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "grant_type;")
+@Table(name = "grant_type")
 public class GrantType{
 	
 	
