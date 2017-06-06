@@ -19,7 +19,7 @@ public class GrantType{
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long grantTypeId;
 	
-	@Column(name="type")
+	@Column(name="grant_type")
 	private String type;
 
 	public Long getGrantTypeId() {
