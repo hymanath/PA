@@ -612,29 +612,37 @@ function buildDynamicValuesForIssue(result)
 	for(var i in result)
 	{
 		str+='<h4 class="panel-title m_top20"><strong>'+result[i].issueType+'</strong></h4>';
-		str+='<div class="row m_top10">';
+		str+='<table class="table table-bordered" style="background-color:#fff;">';
 		for(var j in result[i].subList)
 		{
 			if(result[i].subList[j].issueFielsType == 'text' || result[i].subList[j].issueFielsType == 'textarea')
 			{
-				str+='<div class="col-sm-6 m_top10">';
-					str+='<label>'+result[i].subList[j].issueField+'</label>';
-				str+='</div>';
-				str+='<div class="col-sm-6 m_top10">';
-					str+='<input type="'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].issueFieldId+'" class="form-control" name="petitioner'+result[i].subList[j].issueFielsType+'"/>';
-				str+='</div>';
+				str+='<tr>';
+					str+='<td>';
+						str+='<div class="col-sm-12">';
+							str+='<label>'+result[i].subList[j].issueField+'</label>';
+						str+='</div>';
+					str+='</td>';
+					str+='<td>';
+						str+='<div class="col-sm-12">';
+							str+='<input type="'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].issueFieldId+'" class="form-control" name="petitioner'+result[i].subList[j].issueFielsType+'"/>';
+						str+='</div>';
+					str+='</td>';
+				str+='</tr>';
 			}
 			if(result[i].subList[j].issueFielsType == 'checkbox' || result[i].subList[j].issueFielsType == 'radio')
 			{
-				str+='<div class="col-sm-12 m_top10">';
+				str+='<tr>';
 					if(result[i].subList[j].subList.length > 0)
 					{
 						
-						str+='<div class="row m_top10">';
-							str+='<div class="col-sm-6">';
+						str+='<td>';
+							str+='<div class="col-sm-12">';
 								str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
 							str+='</div>';
-							str+='<div class="col-sm-6">';
+						str+='</td>';
+						str+='<td>';
+							str+='<div class="col-sm-12">';
 								str+='<div class="row">';
 								for(var k in result[i].subList[j].subList)
 								{
@@ -646,24 +654,27 @@ function buildDynamicValuesForIssue(result)
 								}
 								str+='</div>';
 							str+='</div>';
-						str+='</div>';
+						str+='</td>';
 					}else{
-						str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
-							str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'"/>'+result[i].subList[j].issueField+'';
-						str+='</label>';
+						str+='<td colspan="2">';
+							str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
+								str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'"/>'+result[i].subList[j].issueField+'';
+							str+='</label>';
+						str+='</td>';
 					}
-					
-				str+='</div>';
+				str+='</tr>';	
+				
 			}
 			if(result[i].subList[j].issueFielsType == 'selectBox')
 			{
-				str+='<div class="col-sm-12 m_top10">';
-					
-					str+='<div class="row m_top10">';
-						str+='<div class="col-sm-6">';
+				str+='<tr>';	
+					str+='<td>';
+						str+='<div class="col-sm-12">';
 							str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
 						str+='</div>';
-						str+='<div class="col-sm-6">';
+					str+='</td>';
+					str+='<td>';
+						str+='<div class="col-sm-12">';
 							str+='<select class="selectChosen" attr_id="'+result[i].subList[j].id+'" name="petitioner'+result[i].subList[j].issueFielsType+'">';
 							for(var k in result[i].subList[j].subList)
 							{
@@ -671,17 +682,19 @@ function buildDynamicValuesForIssue(result)
 							}
 							str+='</select>';
 						str+='</div>';
-					str+='</div>';
-				str+='</div>';
+					str+='</td>';
+				str+='</tr>';
 			}
 			if(result[i].subList[j].issueFielsType == 'calender')
 			{
-				str+='<div class="col-sm-6 m_top10">';
-					str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
-				str+='</div>';
-				str+='<div class="col-sm-6 m_top10">';
-					str+='<div class="row m_top10">';
-						str+='<div class="col-sm-4">';
+				str+='<tr>';
+					str+='<td>';
+						str+='<div class="col-sm-12">';
+							str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+						str+='</div>';
+					str+='</td>';
+					str+='<td>';
+						str+='<div class="col-sm-12">';
 							str+='<div class="input-group">';
 								str+='<span class="input-group-addon">';
 									str+='<i class="glyphicon glyphicon-calendar"/>';
@@ -689,11 +702,11 @@ function buildDynamicValuesForIssue(result)
 								str+='<input type="text" class="form-control datePickerPetitioner" attr_id="'+result[i].subList[j].id+'" name="petitioner'+result[i].subList[j].issueFielsType+'" class="form-control"/>';
 							str+='</div>';
 						str+='</div>';
-					str+='</div>';
-				str+='</div>';
+					str+='</td>';
+				str+='</tr>';
 			}
 		}
-		str+='</div>';
+		str+='</table>';
 	}
 	$("#buildPetitionerData").html(str);
 	$(".selectChosen").chosen();
