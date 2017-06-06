@@ -11,7 +11,15 @@ public class IdNameVO implements Serializable{
 	private Double total;
 	private double average;
 	private double percentage;
+	private Long count;
 	
+	
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
 	public Long getId() {
 		return id;
 	}

@@ -9,14 +9,16 @@
 		
     
 </head>
-<body>	
-254564
+<body>
+Welcome to Fund Management Dashboard
+<button class="btn btn-success" onclick="getSchemeWiseLocationWiseAmountDetails();"> Get Scheme Data </button>
+
 </body>
 <script src="fundManagementSystem/fundManagementDashboard.js" type="text/javascript"></script>
 
   <script type = "text/javascript" language = "javascript">
          $(document).ready(function() {
-            
+           // alert(1234);
          });
       </script>
 	  
