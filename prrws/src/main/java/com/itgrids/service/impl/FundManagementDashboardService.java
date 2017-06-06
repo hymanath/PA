@@ -1,6 +1,5 @@
 package com.itgrids.service.impl;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -287,21 +286,21 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	 * Date : 05/06/2017
 	 * Description : { Location, Scheme & Sourse Wise Funds like Highest & Lowest & Avg Funds Details }
 	 */
-	public LocationFundDetailsVO getLocationWiseFundDetails(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr,Long locationScopeId,String type ){
+	public LocationFundDetailsVO getLocationWiseFundDetails(InputVO inputVO){
 		LocationFundDetailsVO returnVO = new LocationFundDetailsVO();
 		
 		try{
-			Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
-		     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
+			Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"dd-MM-yyyy","");
+		     Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"dd-MM-yyyy","");
 		     
-			Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,startDate,endDate,null);
+			Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,null);
 			
-			List<Object[]> highFund = fundSanctionDAO.getLocationWiseFundHighAndLow(financialYrId,departmentId,sourceId,startDate,endDate,locationScopeId,type);
+			List<Object[]> highFund = fundSanctionDAO.getLocationWiseFundHighAndLow(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,inputVO.getLevelId(),inputVO.getType());
 			if(highFund != null && highFund.size() >0){
-				setFundDetails(highFund,returnVO,type,totalfund);
+				setFundDetails(highFund,returnVO,inputVO.getType(),totalfund);
 			}
 			if(returnVO.getId() != null && returnVO.getId().longValue() >0l){
-				List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(financialYrId,departmentId,sourceId,startDate,endDate,locationScopeId,returnVO.getId());
+				List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,inputVO.getLevelId(),returnVO.getId());
 				setGrantTypesToVO(locWiseGrantTypes,returnVO);
 			}
 		}catch(Exception e){
@@ -351,18 +350,18 @@ public void setGrantTypesToVO(List<Object[]> list ,LocationFundDetailsVO returnV
  * Date : 06/06/2017
  * Description : { Total Funds Allocating }
  */
-public LocationFundDetailsVO getTotalFunds(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr){
+public LocationFundDetailsVO getTotalFunds(InputVO inputVO){
 	LocationFundDetailsVO retusnVo =new LocationFundDetailsVO();
 	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 	try{
-		Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
-	     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
-		Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,startDate,endDate,null);
+		Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"dd-MM-yyyy","");
+	     Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"dd-MM-yyyy","");
+		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,null);
 		if(totalfund != null && totalfund.longValue() > 0l){
 			retusnVo.setTotalAmt(Double.valueOf(totalfund.toString()));
 		}
 		if(retusnVo.getTotalAmt() != null && retusnVo.getTotalAmt().longValue() >0l){
-			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(financialYrId,departmentId,sourceId,startDate,endDate,null,null);
+			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,null,null);
 			setGrantTypesToVO(locWiseGrantTypes,retusnVo);
 		}
 	}catch(Exception e){
@@ -377,21 +376,21 @@ public LocationFundDetailsVO getTotalFunds(Long financialYrId,Long departmentId,
  * Date : 06/06/2017
  * Description : { Getting locations count By Sending scopeId }
  */
-public LocationFundDetailsVO getTotalLocationsByScopeId(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr,Long locationScopeId){
+public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 	LocationFundDetailsVO retusnVo =new LocationFundDetailsVO();
 	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 	try{
-		 Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
-	     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
-		 List<Object[]>  locations= fundSanctionDAO.getLocationsCountDetails(locationScopeId,financialYrId);
+		 Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"dd-MM-yyyy","");
+	     Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"dd-MM-yyyy","");
+		 List<Object[]>  locations= fundSanctionDAO.getLocationsCountDetails(inputVO.getLevelId(),inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList());
 		 
 		 Long totalLocations=0l;
 		 
-		 if(locationScopeId == 4l){
+		 if(inputVO.getLevelId() == 4l){
 			 totalLocations = 175l;
-		 }else  if(locationScopeId == 5l){
+		 }else  if(inputVO.getLevelId() == 5l){
 			 totalLocations = 700l;
-		 } if(locationScopeId == 6l){
+		 } if(inputVO.getLevelId() == 6l){
 			 totalLocations = 7000l;
 		 } 
 		 if(commonMethodsUtilService.isListOrSetValid(locations)){
@@ -416,17 +415,17 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(Long financialYrId,Long 
  * Author : Hymavathi G
  * Date : 06/06/2017
  */
-public LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr,String type ){
+public LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(InputVO inputVO ){
 	LocationFundDetailsVO returnVO = new LocationFundDetailsVO();
 	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 	try{
-		Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
-	     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
+		Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"dd-MM-yyyy","");
+	     Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"dd-MM-yyyy","");
 	     
-		Long totalfund = fundSanctionDAO.getTotalFund(financialYrId,departmentId,sourceId,startDate,endDate,null);
-		List<Object[]> schemeFund = fundSanctionDAO.getSchemeWiseFundHighAndLow(financialYrId,departmentId,sourceId,startDate,endDate,type);
+		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,null);
+		List<Object[]> schemeFund = fundSanctionDAO.getSchemeWiseFundHighAndLow(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,inputVO.getType());
 		if(schemeFund != null && schemeFund.size() >0){
-			setFundDetails(schemeFund,returnVO,type,totalfund);
+			setFundDetails(schemeFund,returnVO,inputVO.getType(),totalfund);
 		}
 	}catch(Exception e){
 		LOG.error(" Exception raised in getSchemeWiseHighestAndLowestFund (); ");
@@ -438,13 +437,13 @@ public LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(Long financialYrI
  * Author : Hymavathi G
  * Date : 06/06/2017
  */
-public LocationFundDetailsVO getTotalSchemes(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr){
+public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	LocationFundDetailsVO retusnVo =new LocationFundDetailsVO();
 	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 	try{
-		Date startDate = commonMethodsUtilService.stringTODateConvertion(startDateStr,"dd-MM-yyyy","");
-	     Date endDate = commonMethodsUtilService.stringTODateConvertion(endDateStr,"dd-MM-yyyy","");
-		Long totalSchemes = fundSanctionDAO.getTotalSchemes(financialYrId, departmentId, sourceId, startDate, endDate);
+		Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"dd-MM-yyyy","");
+	     Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"dd-MM-yyyy","");
+		Long totalSchemes = fundSanctionDAO.getTotalSchemes(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(), startDate, endDate);
 		 
 		 if(totalSchemes != null && totalSchemes.longValue() >0l){
 			 retusnVo.setTotSchemes(totalSchemes);

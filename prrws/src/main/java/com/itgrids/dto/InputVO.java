@@ -14,7 +14,15 @@ public class InputVO implements Serializable {
 	private Long sourceId;
 	private String fromDateStr;
 	private String toDateStr;
+	private String type;
 	
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public List<Long> getDeptIdsList() {
 		return deptIdsList;
 	}

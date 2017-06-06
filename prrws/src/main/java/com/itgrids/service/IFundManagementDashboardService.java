@@ -11,9 +11,9 @@ public interface IFundManagementDashboardService {
 	public List<LocationVO> getLocationWiseAmountDetails(InputVO inputVO);
 	public List<FundSchemeVO> getFinancialYearWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList);
-	public LocationFundDetailsVO getLocationWiseFundDetails(Long financialYrId,Long departmentId,Long sourceId,String startDate,String endDate,Long locationScopeId,String type );
-	public LocationFundDetailsVO getTotalFunds(Long financialYrId,Long departmentId,Long sourceId,String startDate,String endDate);
-	public LocationFundDetailsVO getTotalLocationsByScopeId(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr,Long locationScopeId);
-	public LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr,String type );
-	public LocationFundDetailsVO getTotalSchemes(Long financialYrId,Long departmentId,Long sourceId,String startDateStr,String endDateStr);
+	public LocationFundDetailsVO getLocationWiseFundDetails(InputVO inputVO);
+	public LocationFundDetailsVO getTotalFunds(InputVO inputVO);
+	public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO);
+	public LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(InputVO inputVO );
+	public LocationFundDetailsVO getTotalSchemes(InputVO inputVO);
 }

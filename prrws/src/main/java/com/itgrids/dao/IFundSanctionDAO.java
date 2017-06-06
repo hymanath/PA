@@ -13,12 +13,15 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList);
 	public List<Object[]> getLocationWiseAmount(Long levelId, List<Long> levelValues,Date fromDate,Date toDate,List<Long> financialYrIdList);
 	public List<Object[]> getLocationInfo(Long levelId, List<Long> levelValues);
-	public List<Object[]> getLocationsCountDetails(Long locatioinTypeId,Long financialYrId);
-	public List<Object[]> getLocationWiseFundHighAndLow(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate,Long locationScopeId,String type);
-	public List<Object[]> getSchemeWiseFundHighAndLow(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate
-			,String type);
-	public Long getTotalFund(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate,Long scopeId);
-	public List<Object[]> getLocationWiseGrantTypesFund(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate
+	public List<Object[]> getLocationsCountDetails(Long locatioinTypeId,List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList);
+	public List<Object[]> getLocationWiseFundHighAndLow(List<Long> financialYearIdsList,List<Long> deptIdsList,
+			List<Long> sourceIdsList,Date sDate,Date eDate,Long locationScopeId,String type);
+	public List<Object[]> getSchemeWiseFundHighAndLow(List<Long> financialYearIdsList,List<Long> deptIdsList,
+			List<Long> sourceIdsList,Date sDate,Date eDate,String type);
+	public Long getTotalFund(List<Long> financialYearIdsList,List<Long> deptIdsList,
+			List<Long> sourceIdsList,Date sDate,Date eDate,Long scopeId);
+	public List<Object[]> getLocationWiseGrantTypesFund(List<Long> financialYearIdsList,List<Long> deptIdsList,
+			List<Long> sourceIdsList,Date sDate,Date eDate
 			,Long locationScopeId,Long locationVal);
-	public Long getTotalSchemes(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate);
+	public Long getTotalSchemes(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,Date sDate,Date eDate);
 }
