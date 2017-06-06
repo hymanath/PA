@@ -6,20 +6,21 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IFundManagementDashboardService;
 
 @EnableAutoConfiguration
-@Controller
+@RestController
 @RequestMapping("/")
 public class FundManagementDashboardController {
 	@Autowired
@@ -33,15 +34,8 @@ public class FundManagementDashboardController {
     }
 	
 	@PostMapping("/getLocationWiseAmountDetails")
-	public @ResponseBody List<LocationVO> getLocationWiseAmountDetails(){
-		String fromDateStr = "";
-		String toDateStr = "";
-		Long levelId = 0L;
-		List<Long> levelValues = null;
-		Long financialYrId = null;
-		Long deptId = null;
-		Long sourceId = null;
-		List<LocationVO> locationList = fundManagementDashboardService.getLocationWiseAmountDetails(fromDateStr, toDateStr, levelId, levelValues, financialYrId, deptId, sourceId);
+	public @ResponseBody List<LocationVO> getLocationWiseAmountDetails(@RequestBody InputVO inputVO){
+		List<LocationVO> locationList = fundManagementDashboardService.getLocationWiseAmountDetails(inputVO);
 		return locationList;
 	}
 	@RequestMapping(value = "/getLocationWiseFundDetails", method = RequestMethod.POST,
