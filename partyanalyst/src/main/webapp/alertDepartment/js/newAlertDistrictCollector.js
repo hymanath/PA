@@ -3071,7 +3071,12 @@ function buildStateThenGovtDeptScopeWiseAlertCount(result,departmentId,parentGov
 	if(searchType == "statuswise" || searchType == "alertSource" || searchType =="officerOverview"  ){
 		var alertType = getAlertType();
 		$("#departmentWiseBlocks"+departmentId+parentGovtDepartmentScopeId).show();
-		$(".locationLevelWiseDivCls").show();
+		if(searchType =="officerOverview"){
+			$(".locationLevelWiseDivCls").hide();
+		}else{
+			$(".locationLevelWiseDivCls").show();
+		}
+		
 		if(result !=null && result.length>0){
 			if(searchType == "statuswise" || searchType =="officerOverview" ){
 				var statusNamesArr=[];
