@@ -17413,7 +17413,7 @@
    			<param name="root">idNameVOList</param>
    		</result>
 	</action>
-	<action name="meekosamGrievanceRequestAction" class="meekosamGrievanceAction">
+	<action name="grievanceRequestAction" class="meekosamGrievanceAction">
 		<result name="success">/jsp/createMeekosamRequest.jsp</result>
 		<result name="error" type="redirect">login.action</result>
 	</action>
@@ -17548,6 +17548,11 @@
 			<param name="root">locationVotersVOList</param>       
 		</result>
   	</action>
+  	<action name="getUserDepartmentsAction" class="meekosamGrievanceAction"  method="getUserDepartments">
+		<result type="json" name="success">		   
+			<param name="root">userIdsList</param>
+		</result>
+	</action>
   	<action name="getOfficerWiseAlertCntBasedOnDepartmentScopeLevelAction" class="alertManagementSystemAction" method="getOfficerWiseAlertCntBasedOnDepartmentScopeLevel">
   	<result type="json" name="success">		   
     	<param name="root">alertCoreDashBoardVOs</param>

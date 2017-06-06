@@ -44,8 +44,15 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 	private MeekosamDynamicVO meekosamDynamicVO;
 	private MeekosamLandDetailsVO meekosamLandDetailsVO;
 	private ResultStatus resultStatus;
+	private List<Long> userIdsList;
 	
 	
+	public List<Long> getUserIdsList() {
+		return userIdsList;
+	}
+	public void setUserIdsList(List<Long> userIdsList) {
+		this.userIdsList = userIdsList;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -311,5 +318,19 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 			LOG.error("Exception Raised in getPublicReresentativesByTypeAndDistrict() in MeekosamGrievanceAction",e);
 		}
 		   return Action.SUCCESS;
+	}
+	
+	public String getUserDepartments(){
+		try {
+			session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
+			if(regVo == null)
+				return Action.ERROR;
+			
+			userIdsList = meekosamGrievanceService.getUserDepartments(regVo.getRegistrationID());
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getUserDepartments() method in MeekosamGrievanceAction Class", e);
+		}
+		return Action.SUCCESS;
 	}
 }

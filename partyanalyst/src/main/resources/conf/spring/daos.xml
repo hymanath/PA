@@ -4080,4 +4080,7 @@
 	 <bean id="govtRejoinderActionDAO" class="com.itgrids.partyanalyst.dao.hibernate.GovtRejoinderActionDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="meekosamGrievanceReferDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.MeekosamGrievanceReferDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		

@@ -1294,6 +1294,7 @@
 		      		   <value>com.itgrids.partyanalyst.model.MeekosamArgeeCategory</value>
 		      		   <value>com.itgrids.partyanalyst.model.MeekosamAnnualIncome</value>
 		      		   <value>com.itgrids.partyanalyst.model.AlertMeekosamReferalDetails</value>
+		      		   <value>com.itgrids.partyanalyst.model.MeekosamGrievanceReferDetails</value>
 				  </list>
 			
 		</property>

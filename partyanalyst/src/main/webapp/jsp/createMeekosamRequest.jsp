@@ -59,11 +59,42 @@
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"/> 
 <!-- YUI Dependency files (End) -->
-	
+<style type="text/css">
+.panelBlock
+{
+	border-radius:0px;
+	border:1px solid #FBEDBD !important;
+}
+.panelBlock .panel-heading .panel-title
+{
+	color:#EB9357 !important;
+	font-weight:600;
+}
+.panelBlock .panel-heading
+{
+	background-color:#FBEDBD;
+	border:1px solid #FBEDBD !important
+	border-radius:0px;
+}
+.panelBlock .panel-body
+{
+	background-color:#EEEFF1
+}
+.panelSpecialBlock
+{
+	border:2px solid #ddd !important;
+}
+.panelSpecialBlock .panel-body
+{
+	background-color:#fff;
+	padding:6px;
+}
+</style>
 </head>  	
 <body>
 <div class="container" style="margin-top:30px">
 	<div class="row">
+		<form id="saveMeekosamGrievanceForm" name="saveMeekosamGrievanceForm" enctype="multipart/form-data" method="POST">
 		<div class="col-sm-12">
 			<div class="panel panel-default">
 				<div class="panel-heading headingColor">
@@ -72,347 +103,463 @@
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-sm-12" id="newGrevanceDivId">
-							<form id="saveMeekosamGrievanceForm" name="saveMeekosamGrievanceForm" enctype="multipart/form-data" method="POST">
-								<div class="row">      
-									<div class="col-sm-12">
-										<h4 class="text-success text-capital">grievance using</h4>
-									</div>
-									<div class="col-sm-12 m_top10">
-										<label class="radio-inline">
-											<input type="radio" name="typeOfSearch" class="typeOfSearch" value="aadhar"/>Aadhar Number
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="typeOfSearch" class="typeOfSearch" value="mobile"/>Mobile Number
-										</label>
-										<label class="radio-inline">
-											<input type="radio" name="typeOfSearch" class="typeOfSearch" value="voter"/>Voter Card
-										</label>
-									</div>
-									<div class="m_top20 col-sm-4">
-										<input type="text" class="form-control searchValue" placeholder="Enter Aadhar Number"/>
-									</div>
-									<div class="m_top20 col-sm-4">
-										<button class="btn btn-success text-capital" onclick="searchPetitionerDetailsByVoterNoAadharNoMobileNo()">search</button>
-									</div>
-									<div class="col-sm-12 m_top20">
-										<div id="searchPetitionerDetailsByVoterNoAadharNoMobileNo"></div>
-									</div>
-									<div id="buildProfileData">
+						<div class="col-sm-12">
+							<div class="panel panel-default panelBlock">
+								<div class="panel-heading">
+									<h4 class="panel-title text-capital">grievance using</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-12 m_top10">
+											<label class="radio-inline">
+												<input type="radio" name="typeOfSearch" class="typeOfSearch" value="aadhar"/><img src="alertDepartment/img/aadhar.png">    Aadhar Number
+											</label>
+											<label class="radio-inline">
+											<input type="radio" name="typeOfSearch" class="typeOfSearch" value="mobile" checked/> <i class="fa fa-mobile" aria-hidden="true" style="font-size: 17px; color:#000;"></i>
+												Mobile Number
+											</label>
+											<label class="radio-inline">
+												<input type="radio" name="typeOfSearch" class="typeOfSearch" value="voter"/><i class="fa fa-id-badge" aria-hidden="true" style="font-size: 14px; color:#000;"></i>
+                                                Voter Card
+											</label>
+										</div>
+										<div class="m_top20 col-sm-4">
+											<input type="text" class="form-control searchValue" placeholder="Enter Aadhar Number"/>
+										</div>
+										<div class="m_top20 col-sm-4">
+											<button type="button" class="btn btn-success text-capital" onclick="searchPetitionerDetailsByVoterNoAadharNoMobileNo()">search</button>
+										</div>
+										<div class="m_top20 col-sm-4">
+											<div id="errorMsgSearchId" style="color:red"></div>
+										</div>
 										<div class="col-sm-12 m_top20">
-											<h4 class="text-success text-capital">about petitioner</h4>
+											<div id="searchPetitionerDetailsByVoterNoAadharNoMobileNo"></div>
 										</div>
-										<div class="col-sm-3 m_top10">
-											<label>Name <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetNameId"></span></label>
-											<input type="text" class="form-control" id="petitionerNameId" name="meekosamGrievanceVO.petitionerName"/>
-										</div>
-										<div class="col-sm-3 m_top10">
-											<label>Relative Name <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetRelNameId"></span></label>
-											<input type="text" class="form-control" id="petitionerRelativeNameId" name="meekosamGrievanceVO.petitionerRelativeName"/>
-										</div>
-										<div class="col-sm-2 m_top10">
-											<label>Gender <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetGenId"></span></label>
-											<input type="text" class="form-control" id="petitionerGenderId" placeholder="Male/Female" name="meekosamGrievanceVO.petitionerGender"/>
-										</div>
-										<div class="col-sm-2 m_top10">
-											<label>Date Of Birth <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetDOBId"></span></label>
-											<div class="input-group">
-												<span class="input-group-addon">
-													<i class="glyphicon glyphicon-calendar"></i>
-												</span>
-												<input type="text" id="datePicker" class="form-control" id="petitionerDOBId" name="meekosamGrievanceVO.petitionerDOB"/>
+									</div>
+								</div>
+							</div>
+							<div class="panel panel-default panelBlock">
+								<div class="panel-heading">
+									<h4 class="panel-title text-capital">petitioner information</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div id="buildProfileData">
+											<div class="col-sm-3 m_top10">
+												<label>Name <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetNameId"></span></label>
+												<input type="text" class="form-control" id="petitionerNameId" name="meekosamGrievanceVO.petitionerName"/>
 											</div>
-										</div>
-										<div class="col-sm-2 m_top10">
-											<label>Age <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetAgeId"></span></label>
-											<input type="text" class="form-control" id="petitionerAgeId" name="meekosamGrievanceVO.petitionerAge"/>
-										</div>
-										<div class="col-sm-2 m_top10">
-											<label>Phone Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetMobNoId"></span></label>
-											<input type="text" class="form-control" id="petitionerMobileNO" name="meekosamGrievanceVO.petitionerMobileNo"/>
-										</div>
-										<div class="col-sm-2 m_top10">
-											<label>Voter Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetVoterId"></span></label>
-											<input type="text" class="form-control" id="petitionerVoterId" name="meekosamGrievanceVO.petitionerVoterCardNo"/>
-										</div>
-										<div class="col-sm-3 m_top10">
-											<label>Aadhar Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetAadharId"></span></label>
-											<input type="text" class="form-control" id="petitionerAadharId" name="meekosamGrievanceVO.petitionerAadharCardNo"/>
-										</div>
-										<div class="col-sm-3 m_top10">
-											<label>Email</label>
-											<input type="text" class="form-control" id="petitionerEmailId" name="meekosamGrievanceVO.petitionerEmailId"/>
-										</div>
-										<div class="col-sm-12 m_top20">
-											<h4 class="text-success text-capital">location details</h4>
-										</div>
-										<div class="col-sm-3 m_top10">
-											<label>District <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetDistrictId"></span></label>
-											<select class="selectChosen" attr_districtId="'+districtId+'" id="districts" name="meekosamGrievanceVO.petitionerDistrictId"></select>
-										</div>
-										<div class="col-sm-3 m_top10">
-											<label>Mandal <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetMandalId"></span></label>
-											<select class="selectChosen" id="mandals" name="meekosamGrievanceVO.petitionerTehsilId"></select>
-										</div>
-										<div class="col-sm-3 m_top10">
-											<label>Village/Town <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetVillageId"></span></label>
-											<select class="selectChosen" id="panchayats" name="meekosamGrievanceVO.petitionerPanchayatId"></select>
-										</div>
-										<div class="col-sm-3 m_top10">
-											<label>Habitation</label>
-											<select class="selectChosen" id="habitationId" name="meekosamGrievanceVO.petitionerHamletId"></select>
-										</div>
-										<div class="col-sm-3 m_top10">
-											<label>House No <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetHouseNOId"></span></label>
-											<input type="text" class="form-control" id="houseNo" name="meekosamGrievanceVO.petitionerHouseNO"/>
-										</div>
-										<div class="col-sm-12">
-											<div class="row">
-												<div class="col-sm-5 m_top20">
-													<h4 class="text-success text-capital">Caste Information <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetCasteId"></span></h4>
-													<div class="panel panel-default m_top10">
-														<div class="panel-body">
-															<div id="casteDataId"></div>
+											<div class="col-sm-3 m_top10">
+												<label>Relative Name <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetRelNameId"></span></label>
+												<input type="text" class="form-control" id="petitionerRelativeNameId" name="meekosamGrievanceVO.petitionerRelativeName"/>
+											</div>
+											<div class="col-sm-2 m_top10">
+												<label>Gender <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetGenId"></span></label>
+												<select class="selectChosen" id="petitionerGenderId" name="meekosamGrievanceVO.petitionerGender">
+													<option value="0">Select Gender</option>
+													<option value="Male">Male</option>
+													<option value="Female">Female</option>
+												</select>
+												<!--<input type="text" class="form-control" id="petitionerGenderId" placeholder="Male/Female" name="meekosamGrievanceVO.petitionerGender"/>-->
+											</div>
+											<div class="col-sm-2 m_top10">
+												<label>Date Of Birth <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetDOBId"></span></label>
+												<div class="input-group">
+													<span class="input-group-addon">
+														<i class="glyphicon glyphicon-calendar"></i>
+													</span>
+													<input type="text" class="form-control" id="petitionerDOBId" name="meekosamGrievanceVO.petitionerDOB"/>
+												</div>
+											</div>
+											<div class="col-sm-2 m_top10">
+												<label>Age <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetAgeId"></span></label>
+												<input type="text" class="form-control" id="petitionerAgeId" name="meekosamGrievanceVO.petitionerAge"/>
+											</div>
+											<div class="col-sm-2 m_top10">
+												<label>Phone Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetMobNoId"></span></label>
+												<input type="text" class="form-control" id="petitionerMobileNO" name="meekosamGrievanceVO.petitionerMobileNo"/>
+											</div>
+											<div class="col-sm-2 m_top10">
+												<label>Voter Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetVoterId"></span></label>
+												<input type="text" class="form-control" id="petitionerVoterId" name="meekosamGrievanceVO.petitionerVoterCardNo"/>
+											</div>
+											<div class="col-sm-3 m_top10">
+												<label>Aadhar Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetAadharId"></span></label>
+												<input type="text" class="form-control" id="petitionerAadharId" name="meekosamGrievanceVO.petitionerAadharCardNo"/>
+											</div>
+											<div class="col-sm-3 m_top10">
+												<label>Email</label>
+												<input type="text" class="form-control" id="petitionerEmailId" name="meekosamGrievanceVO.petitionerEmailId"/>
+											</div>
+											<div class="col-sm-12 m_top20">
+												<h4 class="text-capital">location details</h4>
+											</div>
+											<div class="col-sm-3 m_top10">
+												<label>District <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetDistrictId"></span></label>
+												<select class="selectChosen" attr_districtId="'+districtId+'" id="districts" name="meekosamGrievanceVO.petitionerDistrictId"></select>
+											</div>
+											<div class="col-sm-3 m_top10">
+												<label>Mandal <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetMandalId"></span></label>
+												<select class="selectChosen" id="mandals" name="meekosamGrievanceVO.petitionerTehsilId"></select>
+											</div>
+											<div class="col-sm-3 m_top10">
+												<label>Village/Town <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetVillageId"></span></label>
+												<select class="selectChosen" id="panchayats" name="meekosamGrievanceVO.petitionerPanchayatId"></select>
+											</div>
+											<div class="col-sm-3 m_top10">
+												<label>Habitation</label>
+												<select class="selectChosen" id="habitationId" name="meekosamGrievanceVO.petitionerHamletId"></select>
+											</div>
+											<div class="col-sm-3 m_top10">
+												<label>House No <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetHouseNOId"></span></label>
+												<input type="text" class="form-control" id="houseNo" name="meekosamGrievanceVO.petitionerHouseNO"/>
+											</div>
+											<div class="col-sm-12">
+												<div class="row">
+													<div class="col-sm-5 m_top20">
+														<h4 class="text-capital">Caste Information <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetCasteId"></span></h4>
+														<div class="panel panel-default m_top10 panelSpecialBlock">
+															<div class="panel-body">
+																<div id="casteDataId"></div>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<div class="col-sm-12 m_top20">
-											<h4 class="text-success text-capital">Other</h4>
-										</div>
-										<div class="col-sm-3 m_top20">
-											<label>Occupation <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetOccupationId"></span></label>
-											<select class="selectChosen" id="occupationListId" name="meekosamGrievanceVO.petitionerOccupation"><option value="0">Select Occupation</option></select>
-										</div>
-										<div class="col-sm-3 m_top20">
-											<label>Argee Category <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetArgeeId"></span></label>
-											<select class="selectChosen" id="argeeCategoryListId" name="meekosamGrievanceVO.petitionerArgeeCategory"><option value="0">Select Argee Category</option></select>
-										</div>
-										<div class="col-sm-4 m_top20">
-											<label>Annual Income <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetIncomeId"></span></label>
-											<div class="panel panel-default">
-												<div class="panel-body">
-													<div id="annaulIncomeDataId"></div>
+											<div class="col-sm-12 m_top20">
+												<h4 class="text-capital">Other</h4>
+											</div>
+											<div class="col-sm-3 m_top20">
+												<label>Occupation <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetOccupationId"></span></label>
+												<select class="selectChosen" id="occupationListId" name="meekosamGrievanceVO.petitionerOccupation"><option value="0">Select Occupation</option></select>
+											</div>
+											<div class="col-sm-3 m_top20">
+												<label>Argee Category <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetArgeeId"></span></label>
+												<select class="selectChosen" id="argeeCategoryListId" name="meekosamGrievanceVO.petitionerArgeeCategory"><option value="0">Select Argee Category</option></select>
+											</div>
+											<div class="col-sm-4 m_top20">
+												<label>Annual Income <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetIncomeId"></span></label>
+												<div class="panel panel-default panelSpecialBlock">
+													<div class="panel-body">
+														<div id="annaulIncomeDataId"></div>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-sm-12 m_top20">
-										<h4 class="text-success text-capital">Details From Petitioner</h4>
-									</div>
-									<div class="col-sm-3 m_top10">
-										<label>Category <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgCategoryId"></span></label>
-										<select class="selectChosen" id="categoryId" name="meekosamGrievanceVO.categoryId">
-											<option value="0">Select Category</option>
-											<option value="6">Monday Grievance</option>
-											<option value="7">Janmabhoomi</option>
-											<option value="8">Special Grievance - SC/ST</option>
-											<option value="9">General Grievance</option>
-										</select>
-									</div>
-									<div class="col-sm-3 m_top10">
-										<label>Department <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgDepartmentId"></span></label>
-										<select class="selectChosen" id="departmentId" onchange="getIssueTypesForDepartment();" name="meekosamGrievanceVO.departmentId">
-											<option value="0">Select Department</option>
-										</select>
-									</div>
-									<div class="col-sm-3 m_top10">
-										<label>Issue Type <span style="color:red">*</span></label>
-										<select class="selectChosen" id="issueTypeId" onchange="getIssueSubTypes();">
-											<option value="0">Select Issue Type</option>
-										</select>
-									</div>
-									<div class="col-sm-3 m_top10">
-										<label>Issue Sub Type <span style="color:red">*</span></label>
-										<select class="selectChosen" id="issueSubTypeId" onchange="getDynamicValuesForIssue();">
-											<option value="0">Select Issue Sub Type</option>
-										</select>
-									</div>
-									<div id="buildPetitionerData" class="col-sm-12"></div>
-									<div id="revenueDeptSplBlock" style="display:none;">
-										<div class="col-sm-12 m_top20">
-											<h4 class="panel-title text-capital fontColor">Other Details</h4>
-										</div>
-										<div class="col-sm-4 m_top20">
-											<label>District</label>
-											<select class="selectChosen" id="districtsPetitionerId">
-												<option>Select District</option>
+							</div>
+							<div class="panel panel-default panelBlock">
+								<div class="panel-heading">
+									<h4 class="panel-title text-capital">details from the petitioner</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-3 m_top10">
+											<label>Category <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgCategoryId"></span></label>
+											<select class="selectChosen" id="categoryId" name="meekosamGrievanceVO.categoryId">
+												<option value="0">Select Category</option>
+												<option value="6">Monday Grievance</option>
+												<option value="7">Janmabhoomi</option>
+												<option value="8">Special Grievance - SC/ST</option>
+												<option value="9">General Grievance</option>
 											</select>
 										</div>
-										<div class="col-sm-4 m_top20">
-											<label>Mandal</label>
-											<select class="selectChosen" id="mandalsPetitionerId">
-												<option></option>
+										<div class="col-sm-3 m_top10">
+											<label>Department <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgDepartmentId"></span></label>
+											<select class="selectChosen" id="departmentId" onchange="getIssueTypesForDepartment();" name="meekosamGrievanceVO.departmentId">
+												<option value="0">Select Department</option>
+												<option value="33">Revenue</option>
+												<option value="20">Panchayat Raj</option>
+												<option value="17">Municipal Administration & Urban Development (ENC-PH) Dept</option>
 											</select>
 										</div>
-										<div class="col-sm-4 m_top20">
-											<label>Village</label>
-											<select class="selectChosen" id="villagePetitionerId">
-												<option></option>
+										<div class="col-sm-3 m_top10">
+											<label>Issue Type <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgIssueTypeId"></span></label>
+											<select class="selectChosen" id="issueTypeId" onchange="getIssueSubTypes();">
+												<option value="0">Select Issue Type</option>
 											</select>
 										</div>
-										<div class="col-sm-4 m_top20">
-											<label>Survey Number</label>
-											<input type="text" class="form-control" id="surveyNoPetitionerId"/>
+										<div class="col-sm-3 m_top10">
+											<label>Issue Sub Type <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgIssueSubTypeId"></span></label>
+											<select class="selectChosen" id="issueSubTypeId" onchange="getDynamicValuesForIssue();">
+												<option value="0">Select Issue Sub Type</option>
+											</select>
 										</div>
-										<div class="col-sm-4 m_top20">
-											<label>Land In Acres</label>
-											<input type="text" class="form-control" id="landInAcresPetitionerId"/>
+										<div id="buildPetitionerData" class="col-sm-12"></div>
+										<div id="revenueDeptSplBlock" style="display:none;">
+											
+												<div class="col-sm-12 m_top20">
+													<h4 class="panel-title text-capital fontColor">Land Details</h4>
+												</div>
+												<div class="col-sm-12 m_top20">
+													<table class="table" id="petitionerTableId" style="display:none;">
+														<thead>
+															<th>District</th>
+															<th>Mandal</th>
+															<th>Village</th>
+															<th>Survey Number</th>
+															<th>Land in Acres</th>
+															<th>Land in Cent</th>
+															<th></th>
+														</thead>
+													</table>
+												</div>
+												<div class="col-sm-11">
+													<div class="row">
+														<div class="col-sm-2 m_top20">
+															<label>District</label>
+															<select class="selectChosen" id="districtsPetitionerId">
+																<option>Select District</option>
+															</select>
+														</div>
+														<div class="col-sm-2 m_top20">
+															<label>Mandal</label>
+															<select class="selectChosen" id="mandalsPetitionerId">
+																<option></option>
+															</select>
+														</div>
+														<div class="col-sm-2 m_top20">
+															<label>Village</label>
+															<select class="selectChosen" id="villagePetitionerId">
+																<option></option>
+															</select>
+														</div>
+														<div class="col-sm-2 m_top20">
+															<label>Survey Number</label>
+															<input type="text" class="form-control" id="surveyNoPetitionerId"/>
+														</div>
+														<div class="col-sm-2 m_top20">
+															<label>Land In Acres</label>
+															<input type="text" class="form-control" id="landInAcresPetitionerId"/>
+														</div>
+														<div class="col-sm-2 m_top20">
+															<label>Land In Cent</label>
+															<input type="text" class="form-control" id="landInCentPeitionerId"/>
+														</div>
+													</div>
+													
+												</div>
+												<div class="col-sm-1 m_top20">
+													<button class="btn btn-success m_top20" type="button" id="addOneMorePetitionerId"><i class="fa fa-plus"></i> ADD</button>
+												</div>
+											
 										</div>
-										<div class="col-sm-4 m_top20">
-											<label>Land In Cent</label>
-											<input type="text" class="form-control" id="landInCentPeitionerId"/>
+									</div>
+								</div>
+							</div>
+							<!--<div class="panel panel-default panelBlock">
+								<div class="panel-heading">
+									<h4 class="panel-title text-capital">more information</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-12 m_top10">
+											<h4 class="text-capital m_top20">alert details</h4>
 										</div>
-										<div class="col-sm-4 m_top20">
-											<button class="btn btn-success" type="button" id="addOneMorePetitionerId"><i class="fa fa-plus"></i> ADD MORE</button>
+										<div class="col-sm-3 m_top10">
+											<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertLevelId"></span></label>
+											<select id="alertLocLevelId" class="selectChosen" onchange="displayLevelsByLevelId();">
+												<option value="0">Select Level</option>
+												<option value="1">District</option>
+												<option value="2">Mandal/Muncipality</option>
+												<option value="3">Village/Ward</option>
+											</select>
 										</div>
-										<div class="col-sm-12 m_top20">
-											<table class="table" id="petitionerTableId">
-												<thead>
-													<th>District</th>
-													<th>Mandal</th>
-													<th>Village</th>
-													<th>Survey Number</th>
-													<th>Land in Acres</th>
-													<th>Land in Cent</th>
-													<th></th>
-												</thead>
-											</table>
+										<div class="col-sm-3 m_top10" id="locDisDivId" style="display:none;">
+											<label>District<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertDistId"></span></label>
+											<select id="locationDistrictId" class="selectChosen" name="meekosamGrievanceVO.grievanceDistrictId">
+												<option value="0">Select District</option>
+											</select>
+										</div>
+										<div class="col-sm-3 m_top10" id="locManDivId" style="display:none;">
+											<label>Mandal/Muncipality<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertMandId"></span></label>
+											<select id="locationMandalId" class="selectChosen" name="meekosamGrievanceVO.grievanceTehsilId">
+												<option value="0">Select Mandal/Muncipality</option>
+											</select>
+										</div>
+										<div class="col-sm-3 m_top10" id="locVilDivId" style="display:none;">
+											<label>Village/Ward<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertVillId"></span></label>
+											<select id="locationVillageId" class="selectChosen" name="meekosamGrievanceVO.grievancePanchayatId">
+												<option value="0">Select Village/Ward</option>
+											</select>
 										</div>
 									</div>
 									
+										<div class="row">
+										<div class="col-sm-12 m_top10">
+											
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-12 m_top10">
+											<h4 class="text-success text-capital m_top20">referral information</h4>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<label>Referred by<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferredById"></span></label>
+											<select class="selectChosen" id="referredTypeId" name="meekosamGrievanceVO.referalTypeId">
+												<option></option>
+											</select>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<label>District by<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferDistId"></span></label>
+											<select class="selectChosen" id="districtsReferralId" name="meekosamGrievanceVO.referalDistrictId">
+												<option></option>
+											</select>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferNameId"></span></label>
+											<select class="selectChosen" id="referredNameId" name="meekosamGrievanceVO.referalNameId">
+												<option></option>
+											</select>
+										</div>
+									</div>
+									
+									
+									<div id="dynamicDataDivId"></div>
 								</div>
-								<div class="row">
-									<div class="col-sm-12 m_top10">
-										<h4 class="text-success text-capital m_top20">alert details</h4>
-									</div>
-									<div class="col-sm-3 m_top10">
-										<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertLevelId"></span></label>
-										<select id="alertLocLevelId" class="selectChosen" onchange="displayLevelsByLevelId();">
-											<option value="0">Select Level</option>
-											<option value="1">District</option>
-											<option value="2">Mandal/Muncipality</option>
-											<option value="3">Village/Ward</option>
-										</select>
-									</div>
-									<div class="col-sm-3 m_top10" id="locDisDivId" style="display:none;">
-										<label>District<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertDistId"></span></label>
-										<select id="locationDistrictId" class="selectChosen" name="meekosamGrievanceVO.grievanceDistrictId">
-											<option value="0">Select District</option>
-										</select>
-									</div>
-									<div class="col-sm-3 m_top10" id="locManDivId" style="display:none;">
-										<label>Mandal/Muncipality<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertMandId"></span></label>
-										<select id="locationMandalId" class="selectChosen" name="meekosamGrievanceVO.grievanceTehsilId">
-											<option value="0">Select Mandal/Muncipality</option>
-										</select>
-									</div>
-									<div class="col-sm-3 m_top10" id="locVilDivId" style="display:none;">
-										<label>Village/Ward<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertVillId"></span></label>
-										<select id="locationVillageId" class="selectChosen" name="meekosamGrievanceVO.grievancePanchayatId">
-											<option value="0">Select Village/Ward</option>
-										</select>
-									</div>
+							</div>-->
+							<div class="panel panel-default panelBlock">
+								<div class="panel-heading">
+									<h4 class="panel-title text-capital">more information</h4>
 								</div>
-								<div class="row m_top20">
-									<div class="col-sm-8 m_top10">
-										<label>Grievance Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertTitleId"></span></label>
-										<label class="radio-inline" style="margin-bottom: 5px;">
-											<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
-										</label>
-										<label class="radio-inline" style="margin-bottom: 5px;">
-											<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
-										</label>
-										<input type="text" class="form-control" id="alertTitleId" name="meekosamGrievanceVO.grievanceTitle"/>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-3 m_top10">
+											<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertLevelId"></span></label>
+											<select id="alertLocLevelId" class="selectChosen" onchange="displayLevelsByLevelId();">
+												<option value="0">Select Level</option>
+												<option value="1">District</option>
+												<option value="2">Mandal/Muncipality</option>
+												<option value="3">Village/Ward</option>
+											</select>
+										</div>
+										<div class="col-sm-3 m_top10" id="locDisDivId" style="display:none;">
+											<label>District<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertDistId"></span></label>
+											<select id="locationDistrictId" class="selectChosen" name="meekosamGrievanceVO.grievanceDistrictId">
+												<option value="0">Select District</option>
+											</select>
+										</div>
+										<div class="col-sm-3 m_top10" id="locManDivId" style="display:none;">
+											<label>Mandal/Muncipality<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertMandId"></span></label>
+											<select id="locationMandalId" class="selectChosen" name="meekosamGrievanceVO.grievanceTehsilId">
+												<option value="0">Select Mandal/Muncipality</option>
+											</select>
+										</div>
+										<div class="col-sm-3 m_top10" id="locVilDivId" style="display:none;">
+											<label>Village/Ward<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertVillId"></span></label>
+											<select id="locationVillageId" class="selectChosen" name="meekosamGrievanceVO.grievancePanchayatId">
+												<option value="0">Select Village/Ward</option>
+											</select>
+										</div>
 									</div>
-									<div class="col-sm-12 m_top10">
-										<label>Grievance Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertDescId"></span></label>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-12 m_top10">
-										<textarea class="form-control" id="alertdescriptionId" name="meekosamGrievanceVO.grievanceDesc"></textarea>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-12 m_top10">
-										<h4 class="text-success text-capital m_top20">referral information</h4>
-									</div>
-									<div class="col-sm-4 m_top10">
-										<label>Referred by<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferredById"></span></label>
-										<select class="selectChosen" id="referredTypeId" name="meekosamGrievanceVO.referalTypeId">
-											<option></option>
-										</select>
-									</div>
-									<div class="col-sm-4 m_top10">
-										<label>District by<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferDistId"></span></label>
-										<select class="selectChosen" id="districtsReferralId" name="meekosamGrievanceVO.referalDistrictId">
-											<option></option>
-										</select>
-									</div>
-									<div class="col-sm-4 m_top10">
-										<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferNameId"></span></label>
-										<select class="selectChosen" id="referredNameId" name="meekosamGrievanceVO.referalNameId">
-											<option></option>
-										</select>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-sm-12 m_top10">
-										<h4 class="text-success text-capital m_top20">assigning to officer</h4>
-									</div>
-									<div class="col-sm-4 m_top10">
-										<label>Sub Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgSubDeptId"></span></label>
-										<select  class="selectChosen" id="subDepartmentSelectId" name="meekosamGrievanceVO.subDeptId">  
-											<option value="0">Select Sub Department</option>
-										</select>
-									</div>
-									<div class="col-sm-4 m_top10">
-										<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgLevelId"></span></label>
-										<select  class="selectChosen" id="locationLevelSelectId" name="meekosamGrievanceVO.assignLevelId">  
-											<option value="0">Select Level</option>
-										</select>
-									</div>
-									<div id="parentLevelDivId"> </div>
-									<div class="col-sm-4 m_top10">
-										<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgDesignationId"></span></label>
-										<select id="designationsId" class="selectChosen" name="meekosamGrievanceVO.designationId">
-											<option></option>
-										</select>
-									</div>
-									<div class="col-sm-4 m_top10">
-										<label>Department Officer<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgOfficerId"></span></label>
-										<select id="officerNamesId" class="selectChosen" name="meekosamGrievanceVO.officerId">
-											<option></option>
-										</select>
+									<div class="row">
+										<div class="col-sm-8 m_top10">
+											<label>Grievance Title<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertTitleId"></span></label>
+											<label class="radio-inline" style="margin-bottom: 5px;">
+												<input type="radio" value="te" name="language" class="lang" id="telugu" checked  onclick="languageChangeHandler();"/>Telugu
+											</label>
+											<label class="radio-inline" style="margin-bottom: 5px;">
+												<input type="radio" value="en" name="language" class="lang" id="eng" onclick="languageChangeHandler();"/>English
+											</label>
+											<input type="text" class="form-control" id="alertTitleId" name="meekosamGrievanceVO.grievanceTitle"/>
+										</div>
+										<div class="col-sm-12 m_top10">
+											<label>Grievance Description : <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAlertDescId"></span></label>
+											<textarea class="form-control" id="alertdescriptionId" name="meekosamGrievanceVO.grievanceDesc"></textarea>
+										</div>
 									</div>
 								</div>
-								<div class="row">
-									<div class="col-sm-4 m_top20">
-										<button class="btn btn-success" onclick="saveGrievanceInfo();" id="createMeekosamId">SUBMIT GRIEVANCE</button>
-									</div>
-									<div class="col-sm-4 m_top20">
-										<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="creatingLdngImg"/>
-									</div>
-									<div class="col-sm-4 m_top20">
-										<span id="successmsg"></span>
+							</div>
+							<!--<div class="panel panel-default panelBlock">
+								<div class="panel-heading">
+									<h4 class="panel-title text-capital">Referal information</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-4 m_top10">
+											<label>Referred by<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferredById"></span></label>
+											<select class="selectChosen" id="referredTypeId" name="meekosamGrievanceVO.referalTypeId">
+												<option></option>
+											</select>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<label>District by<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferDistId"></span></label>
+											<select class="selectChosen" id="districtsReferralId" name="meekosamGrievanceVO.referalDistrictId">
+												<option></option>
+											</select>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<label>Name<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgReferNameId"></span></label>
+											<select class="selectChosen" id="referredNameId" name="meekosamGrievanceVO.referalNameId">
+												<option></option>
+											</select>
+										</div>
 									</div>
 								</div>
-								<div id="dynamicDataDivId"></div>
-								<input type="hidden" id="hiddenAlertLocationLevelId" name="meekosamGrievanceVO.grievanceImpactLevel" value="0"/>
-								<input type="hidden" id="hiddenAlertLocationValueId" name="meekosamGrievanceVO.grievanceLevelValue" value="0"/>
-								<input type="hidden" id="hiddenPetitionerCasteId" name="meekosamGrievanceVO.petitionerCaste" value="0"/>
-								<input type="hidden" id="hiddenPetitionerIncomeId" name="meekosamGrievanceVO.petitionerAnnulaIncome" value="0"/>
-								<input type="hidden" id="hiddenPetitionerId" name="meekosamGrievanceVO.meekosamPetitionerId" value="0"/>
-							</form>
+							</div>-->
+							<div class="panel panel-default panelBlock">
+								<div class="panel-heading">
+									<h4 class="text-capital panel-title">grievance assigning to department officer</h4>
+								</div>
+								<div class="panel-body">
+									<div class="row">
+										<div class="col-sm-4 m_top10">
+											<label>Sub Department<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgSubDeptId"></span></label>
+											<select  class="selectChosen" id="subDepartmentSelectId" name="meekosamGrievanceVO.subDeptId">  
+												<option value="0">Select Sub Department</option>
+											</select>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<label>Location Level<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgLevelId"></span></label>
+											<select  class="selectChosen" id="locationLevelSelectId" name="meekosamGrievanceVO.assignLevelId">  
+												<option value="0">Select Level</option>
+											</select>
+										</div>
+										<div id="parentLevelDivId"> </div>
+										<div class="col-sm-4 m_top10">
+											<label>Designation<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgDesignationId"></span></label>
+											<select id="designationsId" class="selectChosen" name="meekosamGrievanceVO.designationId">
+												<option></option>
+											</select>
+										</div>
+										<div class="col-sm-4 m_top10">
+											<label>Department Officer<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgOfficerId"></span></label>
+											<select id="officerNamesId" class="selectChosen" name="meekosamGrievanceVO.officerId">
+												<option></option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4 m_top20">
+							<button class="btn btn-success" type="button" onclick="saveGrievanceInfo();" id="createMeekosamId">SUBMIT GRIEVANCE</button>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<img style="display: none;" alt="Processing Image" src="./images/icons/search.gif" id="creatingLdngImg"/>
+						</div>
+						<div class="col-sm-4 m_top20">
+							<span id="successmsg"></span>
+						</div>
+					</div>
+					<div class="row">
+					<div id="dynamicDataDivId"></div>
+						<div class="col-sm-12" id="newGrevanceDivId">
+							<input type="hidden" id="hiddenAlertLocationLevelId" name="meekosamGrievanceVO.grievanceImpactLevel" value="0"/>
+							<input type="hidden" id="hiddenAlertLocationValueId" name="meekosamGrievanceVO.grievanceLevelValue" value="0"/>
+							<input type="hidden" id="hiddenPetitionerCasteId" name="meekosamGrievanceVO.petitionerCaste" value="0"/>
+							<input type="hidden" id="hiddenPetitionerIncomeId" name="meekosamGrievanceVO.petitionerAnnulaIncome" value="0"/>
+							<input type="hidden" id="hiddenPetitionerId" name="meekosamGrievanceVO.meekosamPetitionerId" value="0"/>
+							
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		</form>
 	</div>
 </div>
 <script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>

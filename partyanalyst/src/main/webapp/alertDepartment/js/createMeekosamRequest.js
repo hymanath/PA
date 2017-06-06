@@ -3,6 +3,11 @@ onLoadCalls();
 onLoadClicks();
 function onLoadClicks()
 {
+	$("#petitionerDOBId").datetimepicker({
+		format:'DD/MM/YYYY',
+		viewMode: 'years',
+		maxDate : moment().subtract(18,'years')
+	});
 	
 	$(".selectChosen").chosen();
 	$(document).on("change","#districts",function(){
@@ -54,14 +59,15 @@ function onLoadClicks()
 	
 	var globalIncrement = 0;
 	$(document).on("click","#addOneMorePetitionerId",function(){
+		$("#petitionerTableId").show();
 		var str='';
 		str+='<tr>';
-			str+='<td value="'+$("#districtsPetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].districtId">'+$("#districtsPetitionerId option:selected").text()+'</td>';
-			str+='<td value="'+$("#mandalsPetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].mandalId">'+$("#mandalsPetitionerId option:selected").text()+'</td>';
-			str+='<td value="'+$("#villagePetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].villageId">'+$("#villagePetitionerId option:selected").text()+'</td>';
-			str+='<td value="'+$("#surveyNoPetitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].surveyNO">'+$("#surveyNoPetitionerId").val()+'</td>';
-			str+='<td value="'+$("#landInAcresPetitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].landInAcres">'+$("#landInAcresPetitionerId").val()+'</td>';
-			str+='<td value="'+$("#landInCentPeitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].landInCents">'+$("#landInCentPeitionerId").val()+'</td>';
+			str+='<td><input type="hidden" value="'+$("#districtsPetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].districtId"/>'+$("#districtsPetitionerId option:selected").text()+'</td>';
+			str+='<td><input type="hidden" value="'+$("#mandalsPetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].mandalId"/>'+$("#mandalsPetitionerId option:selected").text()+'</td>';
+			str+='<td><input type="hidden" value="'+$("#villagePetitionerId option:selected").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].villageId"/>'+$("#villagePetitionerId option:selected").text()+'</td>';
+			str+='<td><input type="hidden" value="'+$("#surveyNoPetitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].surveyNO"/>'+$("#surveyNoPetitionerId").val()+'</td>';
+			str+='<td><input type="hidden" value="'+$("#landInAcresPetitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].landInAcres"/>'+$("#landInAcresPetitionerId").val()+'</td>';
+			str+='<td><input type="hidden" value="'+$("#landInCentPeitionerId").val()+'" name="meekosamGrievanceVO.landDetailsList['+globalIncrement+'].landInCents"/>'+$("#landInCentPeitionerId").val()+'</td>';
 			str+='<td><i class="deletePetitionerRow glyphicon glyphicon-trash" style="cursor:pointer"></i></td>';
 		str+='</tr>';
 		$("#petitionerTableId").append(str);
@@ -79,6 +85,13 @@ function onLoadClicks()
 	});
 	$(document).on("click",".deletePetitionerRow",function(){
 		$(this).closest("tr").remove();
+		if($("#petitionerTableId tr").length > 1)
+		{
+			$("#petitionerTableId").show();
+		}else{
+			$("#petitionerTableId").hide();
+		}
+			
 	});
 	$(document).on("click",".buildProfileData",function(){
 		var ArrPosition = $(this).attr("attr_id")
@@ -92,10 +105,10 @@ function onLoadClicks()
 }
 function onLoadCalls()
 {
-	getAllMainDepartments();
+	//getAllMainDepartments();
 	getAllDistrictByStateId(1,0,"districtsPetitionerId");
 	getAllDistrictByStateId(1,0,"districtsReferralId");
-	searchPetitionerDetailsByVoterNoAadharNoMobileNo();
+	//searchPetitionerDetailsByVoterNoAadharNoMobileNo();
 	getAllPublicRepresentativeTypes();
 	getAllDistrictByStateId(1,'','districts');
 	getMeekosamArgeeCategoryList(0);
@@ -304,6 +317,8 @@ function saveMeekosamPetitionerDetails(){
 }
 
 function searchPetitionerDetailsByVoterNoAadharNoMobileNo(){
+	$("#errorMsgSearchId").html("");
+	$("#searchPetitionerDetailsByVoterNoAadharNoMobileNo").html("");
 	var type = '';
 	
 	$(".typeOfSearch").each(function(){
@@ -312,7 +327,12 @@ function searchPetitionerDetailsByVoterNoAadharNoMobileNo(){
 			type = $(this).val();
 		}
 	});
-	var searchValue = $(".searchValue").val();
+	var searchValue = $(".searchValue").val().trim();
+	if(searchValue == '' || searchValue.length == 0){
+		$("#errorMsgSearchId").html("Enter Aadhar or MobileNo or VoterCardNo");
+		return;
+	}
+	
 	var jsObj={
 		cardNo 	:	searchValue, //"7207785117",
 		type	:	type
@@ -368,14 +388,15 @@ function buildProfileData(i)
 {
 	
 	var str='';
-	var districtId = profileData[i].districtId
-	var tehsilId = profileData[i].tehsil
-	var panchayatId = profileData[i].panchayatId
-	var hamletId = profileData[i].hamletId
-	var casteId = profileData[i].meekosamCasteCategoryId
-	var meekosamAnnualIncomeId = profileData[i].meekosamAnnualIncomeId
-	var meekosamOccupationId = profileData[i].meekosamOccupationId
-	var meekosamArgeeCategoryId = profileData[i].meekosamArgeeCategoryId
+	var districtId = profileData[i].districtId;
+	var tehsilId = profileData[i].tehsil;
+	var panchayatId = profileData[i].panchayatId;
+	var hamletId = profileData[i].hamletId;
+	var casteId = profileData[i].meekosamCasteCategoryId;
+	var meekosamAnnualIncomeId = profileData[i].meekosamAnnualIncomeId;
+	var meekosamOccupationId = profileData[i].meekosamOccupationId;
+	var meekosamArgeeCategoryId = profileData[i].meekosamArgeeCategoryId;
+	var genderId = profileData[i].gender;
 	
 	str+='<div class="col-sm-12 m_top20">';
 		str+='<h4 class="text-success text-capital">about petitioner</h4>';
@@ -390,7 +411,12 @@ function buildProfileData(i)
 	str+='</div>';
 	str+='<div class="col-sm-2 m_top10">';
 		str+='<label>Gender <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetGenId"></span></label>';
-		str+='<input type="text" value="'+profileData[i].gender+'" class="form-control" id="petitionerGenderId" placeholder="Male/Female" name="meekosamGrievanceVO.petitionerGender"/>';
+		str+='<select class="selectChosen" id="petitionerGenderId" name="meekosamGrievanceVO.petitionerGender">';
+			str+='<option value="0">Select Gender</option>';
+			str+='<option value="Male">Male</option>';
+			str+='<option value="Female">Female</option>';
+		str+='</select>';
+		/*str+='<input type="text" value="'+profileData[i].gender+'" class="form-control" id="petitionerGenderId" placeholder="Male/Female" name="meekosamGrievanceVO.petitionerGender"/>';*/
 	str+='</div>';
 	str+='<div class="col-sm-2 m_top10">';
 		str+='<label>Date Of Birth <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetDOBId"></span></label>';
@@ -398,7 +424,7 @@ function buildProfileData(i)
 			str+='<span class="input-group-addon">';
 				str+='<i class="glyphicon glyphicon-calendar"></i>';
 			str+='</span>';
-			str+='<input type="text" id="datePicker" class="form-control" id="petitionerDOBId" name="meekosamGrievanceVO.petitionerDOB"/>';
+			str+='<input type="text" value="'+profileData[i].dateOfBirth+'" class="form-control" id="petitionerDOBId" name="meekosamGrievanceVO.petitionerDOB"/>';
 		str+='</div>';
 	str+='</div>';
 	str+='<div class="col-sm-2 m_top10">';
@@ -477,11 +503,12 @@ function buildProfileData(i)
 	str+='</div>';
 	$("#buildProfileData").html(str);
 	$(".selectChosen").chosen();
-	$("#datePicker").datetimepicker({
+	$("#petitionerDOBId").datetimepicker({
 		format:'DD/MM/YYYY',
 		viewMode: 'years',
 		maxDate : moment().subtract(18,'years')
 	});
+	$("#petitionerGenderId").val(genderId).trigger("chosen:updated");
 	getAllDistrictByStateId(1,districtId,'districts');
 	getAllMandalsByDistrictID(districtId,tehsilId,'mandals');
 	getAllPanchayatByMandalId(tehsilId,panchayatId,'panchayats');
@@ -489,7 +516,7 @@ function buildProfileData(i)
 	getMeekosamArgeeCategoryList(meekosamArgeeCategoryId);
 	getMeekosamOccupationList(meekosamOccupationId);
 	getMeekosamCasteCategoryList(casteId);
-	getMeekosamAnnualIncomeList(meekosamAnnualIncomeId)
+	getMeekosamAnnualIncomeList(meekosamAnnualIncomeId);
 }
 function getAllMainDepartments(){
 	$('#departmentId').empty();
@@ -590,9 +617,11 @@ function buildDynamicValuesForIssue(result)
 		{
 			if(result[i].subList[j].issueFielsType == 'text' || result[i].subList[j].issueFielsType == 'textarea')
 			{
-				str+='<div class="col-sm-4">';
+				str+='<div class="col-sm-6 m_top10">';
 					str+='<label>'+result[i].subList[j].issueField+'</label>';
-					str+='<input type="'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].issueFieldId+'" class="form-control"/>';
+				str+='</div>';
+				str+='<div class="col-sm-6 m_top10">';
+					str+='<input type="'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].issueFieldId+'" class="form-control" name="petitioner'+result[i].subList[j].issueFielsType+'"/>';
 				str+='</div>';
 			}
 			if(result[i].subList[j].issueFielsType == 'checkbox' || result[i].subList[j].issueFielsType == 'radio')
@@ -600,20 +629,27 @@ function buildDynamicValuesForIssue(result)
 				str+='<div class="col-sm-12 m_top10">';
 					if(result[i].subList[j].subList.length > 0)
 					{
-						str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+						
 						str+='<div class="row m_top10">';
-							str+='<div class="col-sm-12">';
+							str+='<div class="col-sm-6">';
+								str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+							str+='</div>';
+							str+='<div class="col-sm-6">';
+								str+='<div class="row">';
 								for(var k in result[i].subList[j].subList)
 								{
-									str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
-										str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].subList[k].issueRelationDataId+'"/>'+result[i].subList[j].subList[k].name+'';
-									str+='</label>';
+									str+='<div class="col-sm-4">';
+										str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
+											str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].subList[k].issueRelationDataId+'"/>'+result[i].subList[j].subList[k].name+'';
+										str+='</label>';
+									str+='</div>';
 								}
+								str+='</div>';
 							str+='</div>';
 						str+='</div>';
 					}else{
 						str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
-							str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].issueRelationId+'"/>'+result[i].subList[j].issueField+'';
+							str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'"/>'+result[i].subList[j].issueField+'';
 						str+='</label>';
 					}
 					
@@ -622,13 +658,16 @@ function buildDynamicValuesForIssue(result)
 			if(result[i].subList[j].issueFielsType == 'selectBox')
 			{
 				str+='<div class="col-sm-12 m_top10">';
-					str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+					
 					str+='<div class="row m_top10">';
-						str+='<div class="col-sm-12">';
+						str+='<div class="col-sm-6">';
+							str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+						str+='</div>';
+						str+='<div class="col-sm-6">';
 							str+='<select class="selectChosen" attr_id="'+result[i].subList[j].id+'" name="petitioner'+result[i].subList[j].issueFielsType+'">';
 							for(var k in result[i].subList[j].subList)
 							{
-								str+='<option id="'+result[i].subList[j].subList[k].issueRelationDataId+'">'+result[i].subList[j].subList[k].name+'</option>';
+								str+='<option value="'+result[i].subList[j].subList[k].issueRelationDataId+'">'+result[i].subList[j].subList[k].name+'</option>';
 							}
 							str+='</select>';
 						str+='</div>';
@@ -637,15 +676,17 @@ function buildDynamicValuesForIssue(result)
 			}
 			if(result[i].subList[j].issueFielsType == 'calender')
 			{
-				str+='<div class="col-sm-12 m_top10">';
+				str+='<div class="col-sm-6 m_top10">';
 					str+='<h4 class="panel-title">'+result[i].subList[j].issueField+'</h4>';
+				str+='</div>';
+				str+='<div class="col-sm-6 m_top10">';
 					str+='<div class="row m_top10">';
 						str+='<div class="col-sm-4">';
 							str+='<div class="input-group">';
 								str+='<span class="input-group-addon">';
 									str+='<i class="glyphicon glyphicon-calendar"/>';
 								str+='</span>';
-								str+='<input type="text" class="datePickerPetitioner" attr_id="'+result[i].subList[j].id+'" name="petitioner'+result[i].subList[j].issueFielsType+'" class="form-control"/>';
+								str+='<input type="text" class="form-control datePickerPetitioner" attr_id="'+result[i].subList[j].id+'" name="petitioner'+result[i].subList[j].issueFielsType+'" class="form-control"/>';
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
@@ -821,7 +862,7 @@ function designationsByDepartment()
 	}
 	$.ajax({
 	  type:'GET',
-	  url: 'getOldDesignationsByDepartmentNewAction.action',
+	  url: 'getDesignationsByDepartmentNewAction.action',			//getOldDesignationsByDepartmentNewAction
 	  data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		var str='';
@@ -848,7 +889,7 @@ function officersByDesignationAndLevel(designationId)
 	}
 	$.ajax({
 	  type:'GET',
-	  url: 'getOldOfficersByDesignationAndLevelNewAction.action',
+	  url: 'getOfficersByDesignationAndLevelNewAction.action',				//getOldOfficersByDesignationAndLevelNewAction
 	  data: {task :JSON.stringify(jsObj)}
 	}).done(function(result){
 		var str='';
@@ -937,9 +978,65 @@ function getPublicReresentativesByTypeAndDistrict()
 
 function saveGrievanceInfo(){
 	
-	$(".errorMsgClass").html("");
 	
+	/*var str=''
+	var increment = 0;
+	$("input[name='petitionerradio']").each(function(){
+		if($(this).is(":checked") == true)
+		{
+			var data = $(this).attr("id");
+			var relationId = $(this).attr("attr_id");
+			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationDataId" value="'+data+'"/>';
+			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+			increment = increment+1;
+		}
+	})
+	$("input[name='petitionercheckbox']").each(function(){
+		if($(this).is(":checked") == true)
+		{
+			var data = $(this).attr("id");
+			var relationId = $(this).attr("attr_id");
+			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationDataId" value="'+data+'"/>';
+			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+			increment = increment+1;
+		}
+	})
+	$("input[name='petitionercalender']").each(function(){
+		var data = $(this).val();
+		var relationId = $(this).attr("attr_id");
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueDataStr" value="'+data+'"/>';
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+		increment = increment+1;
+	})
+	$("input[name='petitionertext']").each(function(){
+		var data = $(this).val();
+		var relationId = $(this).attr("attr_id");
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueDataStr" value="'+data+'"/>';
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+		increment = increment+1;
+	});
+	$("input[name='petitionertextarea']").each(function(){
+		var data = $(this).val();
+		var relationId = $(this).attr("attr_id");
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueDataStr" value="'+data+'"/>';
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+		increment = increment+1;
+	});
+	$("select[name='petitionerselectBox']").each(function(){
+		var data = $(this).val();
+		var relationId = $(this).attr("attr_id");
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationDataId" value="'+data+'"/>';
+		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
+		increment = increment+1;
+	});
+	$("#dynamicDataDivId").html(str);
+	return;
+	*/
+	
+	$(".errorMsgClass").html("");
+	//alert(1);
 	var alertTitle = $("#alertTitleId").val().trim();
+	//alert(2);
 	var alertDesc = $("#alertdescriptionId").val().trim();
 	var alertLevelId = $("#alertLocLevelId").val();
 	var alertDistrict = $("#locationDistrictId").val();
@@ -948,12 +1045,15 @@ function saveGrievanceInfo(){
 	
 	var category = $("#categoryId").val();
 	var department = $("#departmentId").val();
-	
+	var issueType = $("#issueTypeId").val();
+	var issueSubType = $("#issueSubTypeId").val();
+	//alert(3);
 	var petitionerName = $("#petitionerNameId").val().trim();
 	var petitionerRelativeNAme = $("#petitionerRelativeNameId").val().trim();
-	var petitionerGender = $("#petitionerGenderId").val().trim();
+	var petitionerGender = $("#petitionerGenderId").val();
 	var petitionerDOB = $("#petitionerDOBId").val().trim();
 	var petitionerAge = $("#petitionerAgeId").val().trim();
+	//alert(4);
 	var petitionerMobileNO = $("#petitionerMobileNO").val().trim();
 	var petitionerVoter = $("#petitionerVoterId").val().trim();
 	var petitionerAadhar = $("#petitionerAadharId").val().trim();
@@ -961,10 +1061,10 @@ function saveGrievanceInfo(){
 	var petitionerdistricts = $("#districts").val();
 	var petitionermandals = $("#mandals").val();
 	var petitionerpanchayats = $("#panchayats").val();
-	var caste = $("input[type='radio'].casteDataId:checked").val();
+	var caste = $("input[type='radio'].casteDataId:checked").attr("id");
 	var occupation = $("#occupationListId").val();
 	var argeeCategory = $("#argeeCategoryListId").val();
-	var annaulIncome = $("input[type='radio'].annaulIncomeDataId:checked").val();
+	var annaulIncome = $("input[type='radio'].annaulIncomeDataId:checked").attr("id");
 	
 	var referredBy = $("#referredTypeId").val();
 	var referDistrict = $("#districtsReferralId").val();
@@ -977,106 +1077,6 @@ function saveGrievanceInfo(){
 	var officer = $("#officerNamesId").val();
 	
 	
-	if(subDepartment == 0){
-		$("#errMsgSubDeptId").html("Select SubDepartment");
-		return;
-	}
-	if(assignLevelId == 0){
-		$("#errMsgLevelId").html("Select Location Level");
-		return;
-	}
-	if(assignLevelValue == 0){
-		$("#errMsgAssignLocationId").html("Select Location");
-		return;
-	}
-	if(designation == 0){
-		$("#errMsgDesignationId").html("Select Designation");
-		return;
-	}
-	if(officer == 0){
-		$("#errMsgOfficerId").html("Select Officer");
-		return;
-	}
-	
-	if(referredBy == 0){
-		$("#errMsgReferredById").html("Select Referred By");
-		return;
-	}
-	if(referDistrict == 0){
-		$("#errMsgReferDistId").html("Select District");
-		return;
-	}
-	if(referName == 0){
-		$("#errMsgReferNameId").html("Select Refer Person");
-		return;
-	}
-	
-	if(alertTitle == '' || alertTitle.length == 0){
-		$("#errMsgAlertTitleId").html("Enter Alert Title");
-		return;
-	}
-	if(alertDesc == '' || alertDesc.length == 0){
-		$("#errMsgAlertDescId").html("Enter Alert Description");
-		return;
-	}
-	if(alertLevelId == 0){
-		$("#errMsgAlertLevelId").html("Select Level");
-		return;
-	}
-	if(alertLevelId == 1){
-		if(alertDistrict == 0){
-			$("#errMsgAlertDistId").html("Select District");
-			return;
-		}
-		$("#hiddenAlertLocationLevelId").val(3);
-		$("#hiddenAlertLocationValueId").val(alertDistrict);
-	}
-	if(alertLevelId == 2){
-		if(alertDistrict == 0){
-			$("#errMsgAlertDistId").html("Select District");
-			return;
-		}
-		if(alertMandal == 0){
-			$("#errMsgAlertMandId").html("Select Mandal");
-			return;
-		}
-		
-		if(alertMandal.substring(0,1) == 1)
-			$("#hiddenAlertLocationLevelId").val(5);
-		else
-			$("#hiddenAlertLocationLevelId").val(7);
-		$("#hiddenAlertLocationValueId").val(alertMandal);
-	}
-	if(alertLevelId == 3){
-		if(alertDistrict == 0){
-			$("#errMsgAlertDistId").html("Select District");
-			return;
-		}
-		if(alertMandal == 0){
-			$("#errMsgAlertMandId").html("Select Mandal/Muncipality");
-			return;
-		}
-		if(alertVillage == 0){
-			$("#errMsgAlertVillId").html("Select Village/Ward");
-			return;
-		}
-		
-		if(alertMandal.substring(0,1) == 1)
-			$("#hiddenAlertLocationLevelId").val(6);
-		else
-			$("#hiddenAlertLocationLevelId").val(8);
-		$("#hiddenAlertLocationValueId").val(alertVillage);
-	}
-	
-	if(category == 0){
-		$("#errMsgCategoryId").html("Select Category");
-		return;
-	}
-	if(department == 0){
-		$("#errMsgDepartmentId").html("Select Department");
-		return;
-	}
-	
 	if(petitionerName == '' || petitionerName.length == 0){
 		$("#errMsgPetNameId").html("Enter Name");
 		return;
@@ -1085,8 +1085,8 @@ function saveGrievanceInfo(){
 		$("#errMsgPetRelNameId").html("Enter Relative Name");
 		return;
 	}
-	if(petitionerGender == '' || petitionerGender.length == 0){
-		$("#errMsgPetGenId").html("Enter Gender");
+	if(petitionerGender == 0){
+		$("#errMsgPetGenId").html("Select Gender");
 		return;
 	}
 	if(petitionerDOB == '' || petitionerDOB.length == 0){
@@ -1152,13 +1152,122 @@ function saveGrievanceInfo(){
 		$("#errMsgPetIncomeId").html("Select Annual Income");
 		return;
 	}
-
+	
+	if(category == 0){
+		$("#errMsgCategoryId").html("Select Category");
+		return;
+	}
+	if(department == 0){
+		$("#errMsgDepartmentId").html("Select Department");
+		return;
+	}
+	if(issueType == 0){
+		$("#errMsgIssueTypeId").html("Select IssueType");
+		return;
+	}
+	if(issueSubType == 0){
+		$("#errMsgIssueSubTypeId").html("Select Issue SubType");
+		return;
+	}
+	
+	if(alertLevelId == 0){
+		$("#errMsgAlertLevelId").html("Select Level");
+		return;
+	}
+	if(alertLevelId == 1){
+		if(alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		$("#hiddenAlertLocationLevelId").val(3);
+		$("#hiddenAlertLocationValueId").val(alertDistrict);
+	}
+	if(alertLevelId == 2){
+		if(alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		if(alertMandal == 0){
+			$("#errMsgAlertMandId").html("Select Mandal");
+			return;
+		}
+		
+		if(alertMandal.substring(0,1) == 1)
+			$("#hiddenAlertLocationLevelId").val(5);
+		else
+			$("#hiddenAlertLocationLevelId").val(7);
+		$("#hiddenAlertLocationValueId").val(alertMandal);
+	}
+	if(alertLevelId == 3){
+		if(alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		if(alertMandal == 0){
+			$("#errMsgAlertMandId").html("Select Mandal/Muncipality");
+			return;
+		}
+		if(alertVillage == 0){
+			$("#errMsgAlertVillId").html("Select Village/Ward");
+			return;
+		}
+		
+		if(alertMandal.substring(0,1) == 1)
+			$("#hiddenAlertLocationLevelId").val(6);
+		else
+			$("#hiddenAlertLocationLevelId").val(8);
+		$("#hiddenAlertLocationValueId").val(alertVillage);
+	}
+	if(alertTitle == '' || alertTitle.length == 0){
+		$("#errMsgAlertTitleId").html("Enter Alert Title");
+		return;
+	}
+	if(alertDesc == '' || alertDesc.length == 0){
+		$("#errMsgAlertDescId").html("Enter Alert Description");
+		return;
+	}
+	
+	if(referredBy == 0){
+		$("#errMsgReferredById").html("Select Referred By");
+		return;
+	}
+	if(referDistrict == 0){
+		$("#errMsgReferDistId").html("Select District");
+		return;
+	}
+	if(referName == 0){
+		$("#errMsgReferNameId").html("Select Refer Person");
+		return;
+	}
+	
+	if(subDepartment == 0){
+		$("#errMsgSubDeptId").html("Select SubDepartment");
+		return;
+	}
+	if(assignLevelId == 0){
+		$("#errMsgLevelId").html("Select Location Level");
+		return;
+	}
+	if(assignLevelValue == 0){
+		$("#errMsgAssignLocationId").html("Select Location");
+		return;
+	}
+	if(designation == 0){
+		$("#errMsgDesignationId").html("Select Designation");
+		return;
+	}
+	if(officer == 0){
+		$("#errMsgOfficerId").html("Select Officer");
+		return;
+	}
+	
+	
 	var str=''
 	var increment = 0;
 	$("input[name='petitionerradio']").each(function(){
 		if($(this).is(":checked") == true)
 		{
-			var data = $(this).val();
+			var data = $(this).attr("id");
 			var relationId = $(this).attr("attr_id");
 			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationDataId" value="'+data+'"/>';
 			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
@@ -1168,14 +1277,14 @@ function saveGrievanceInfo(){
 	$("input[name='petitionercheckbox']").each(function(){
 		if($(this).is(":checked") == true)
 		{
-			var data = $(this).val();
+			var data = $(this).attr("id");
 			var relationId = $(this).attr("attr_id");
 			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationDataId" value="'+data+'"/>';
 			str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueRelationId" value="'+relationId+'"/>';
 			increment = increment+1;
 		}
 	})
-	$("input[name='petitionercalendar']").each(function(){
+	$("input[name='petitionercalender']").each(function(){
 		var data = $(this).val();
 		var relationId = $(this).attr("attr_id");
 		str+='<input type="hidden" name="meekosamGrievanceVO.dynamicDataList['+increment+'].issueDataStr" value="'+data+'"/>';
@@ -1220,7 +1329,7 @@ function saveGrievanceInfo(){
 			 $("#creatingLdngImg").hide();
 			 setTimeout(function(){ 
 				$("#successmsg").html("");
-				//clearFields();
+				clearFields();
 				location.reload();
 			 }, 1000);
 			}else{  
@@ -1236,4 +1345,10 @@ function saveGrievanceInfo(){
 	
 	YAHOO.util.Connect.setForm('saveMeekosamGrievanceForm',true);
 	YAHOO.util.Connect.asyncRequest('POST','saveMeekosamGrievanceAction.action',uploadHandler);
+}
+
+function clearFields(){
+	$("#alertTitleId").html("");
+	$("#alertdescriptionId").html("");
+	$("#categoryId").val(0).trigger("chosen:updated");
 }
