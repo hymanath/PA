@@ -67,17 +67,17 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
 	//santosh
 	public List<Object[]> getLocationBasedOnDepartmentLevelId(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
-     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
+     		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long childLevelId);
     public List<Object[]> getChildLocationBasedOnParentLocation(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,
      		Long levelId,List<Long> levelValues,Long govtDepartmentId,List<Long> deptScopeIdList,
-     		Long parentGovtDepartmentScopeId,Long parentGovtDepartmentScopeValue, Long childLevelId,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
+     		Long parentGovtDepartmentScopeId,Long parentGovtDepartmentScopeValue, Long childLevelId,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long resultLevelDeptScopeId);
     public List<Object[]> getAlertDetailsLocationWiseBasedOnDepartmentLevel(Date fromDate,Date toDate,
      		Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      		Long parentGovtDepartmentScopeId,List<Long> deptScopeIdList, String group,String searchType,
      		List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,List<Long> socialMediaTypeIds,Long source,String pendingType,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
     public List<Long> getAlertIdsBasedOnRequiredParameter(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
      	 Long parentGovtDepartmentScopeId,Long locationValue,List<Long> calCntrIds,Long deptLevelId,
-     	 List<Long> alertStatusIds,Long alertCategoryId,List<Long> deptScopeIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
+     	 List<Long> alertStatusIds,Long alertCategoryId,List<Long> deptScopeIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long govtOfficerId);
     public List<Object[]> getDepartmentDetaislByDeptIds(Long departmentId);
     public List<Object[]> getDepartmentDetailsOfAlert(Long alertId);
     public List<Object[]> getAllDepartmentHasData(List<Long> deptIds,Long levelId,List<Long> levelValues);
@@ -125,4 +125,7 @@ public interface IAlertAssignedOfficerNewDAO extends GenericDao<AlertAssignedOff
      		List<Long> alertStatusIds,List<Long> calCntrIds,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
      		List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,
      		List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,Long proposalCategoryId,Long proposalStatusId);
+    public List<Object[]> getOfficerWiseAlertCountBasedOnDepartmentScopeLevel(Date fromDate,Date toDate,Long stateId,List<Long> electronicIdList,List<Long> printIdList,Long levelId,List<Long> levelValues,Long govtDepartmentId,
+     		Long parentGovtDepartmentScopeId,List<Long> calCntrIds,Long filterParentScopeId,Long filterScopeValue,List<Long> socialMediaTypeIds,
+     		List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 }

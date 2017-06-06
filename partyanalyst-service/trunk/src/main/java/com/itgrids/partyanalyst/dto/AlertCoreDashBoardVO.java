@@ -60,6 +60,13 @@ public class AlertCoreDashBoardVO implements Serializable{
 	private String range;
 	private String callerStr;
 	private Long grandTotal = 0L;
+	
+	private String levelHeading;
+	private Long departmentId;
+	private Long designationId;
+	private Long locationId;
+	private Long orderNo;
+	
 	private List<KeyValueVO> subLevels = new ArrayList<KeyValueVO>();
 	
 	private List<AlertCoreDashBoardVO> subList = new ArrayList<AlertCoreDashBoardVO>(0);
@@ -457,6 +464,45 @@ public class AlertCoreDashBoardVO implements Serializable{
 	public void setGrandTotal(Long grandTotal) {
 		this.grandTotal = grandTotal;
 	}
-	
-	
-}
+
+	public String getLevelHeading() {
+		return levelHeading;
+	}
+
+	public void setLevelHeading(String levelHeading) {
+		this.levelHeading = levelHeading;
+	}
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public Long getDesignationId() {
+		return designationId;
+	}
+
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public Long getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(Long orderNo) {
+		this.orderNo = orderNo;
+	}	
+    	
+}  
