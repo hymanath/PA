@@ -7,10 +7,32 @@ public class InputVO implements Serializable {
 	private Long levelId;
 	private List<Long> levelValues;
 	private List<Long> financialYrIdList;
+	private List<Long> deptIdsList;
+	private List<Long> sourceIdsList;
+	private List<Long> schemeIdsList;
 	private Long deptId;
 	private Long sourceId;
 	private String fromDateStr;
 	private String toDateStr;
+	
+	public List<Long> getDeptIdsList() {
+		return deptIdsList;
+	}
+	public void setDeptIdsList(List<Long> deptIdsList) {
+		this.deptIdsList = deptIdsList;
+	}
+	public List<Long> getSourceIdsList() {
+		return sourceIdsList;
+	}
+	public void setSourceIdsList(List<Long> sourceIdsList) {
+		this.sourceIdsList = sourceIdsList;
+	}
+	public List<Long> getSchemeIdsList() {
+		return schemeIdsList;
+	}
+	public void setSchemeIdsList(List<Long> schemeIdsList) {
+		this.schemeIdsList = schemeIdsList;
+	}
 	public Long getLevelId() {
 		return levelId;
 	}

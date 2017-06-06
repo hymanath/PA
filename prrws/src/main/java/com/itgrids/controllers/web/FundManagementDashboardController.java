@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.FundSchemeVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
@@ -118,4 +119,12 @@ public class FundManagementDashboardController {
 				return returnVO;
 			  }
 	
+		@RequestMapping(value="/getFinancialYearWiseScheameDetails", method = RequestMethod.POST,
+		produces = MediaType.APPLICATION_JSON_VALUE,
+		consumes = MediaType.APPLICATION_JSON_VALUE)
+		public @ResponseBody List<FundSchemeVO> getFinancialYearWiseScheameDetails(@RequestBody InputVO inputVO){
+			List<FundSchemeVO> ajaxResult = fundManagementDashboardService.getFinancialYearWiseSchemeDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),inputVO.getSchemeIdsList(),
+					inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getLevelId(),inputVO.getLevelValues());
+			return ajaxResult;
+		}	
 }
