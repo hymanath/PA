@@ -57,6 +57,62 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		criteria.add(Restrictions.eq("locationScopeId", scopeId));
 		return criteria.list();
 	}
+	@Override
+	public List<Object[]> getLocationWiseAmount(Long levelId, List<Long> levelValues,Date fromDate,Date toDate,List<Long> financialYrIdList){
+		StringBuilder sb = new StringBuilder();  
+		sb.append(" select "
+				+ " model.financialYear.financialYearId "//0
+				+ " ,model.financialYear.yearDesc "//1
+				+ " ,model.locationValue "//2
+				+ " ,count(model.locationValue) "//3
+				+ " ,sum(model.sactionAmount) "//4
+				+ " from "
+				+ " FundSanction model "
+				+ " left outer join model.locationAddress locationAddress "
+				+ " left outer join locationAddress.district district "
+				+ " left outer join locationAddress.constituency constituency "
+				+ " where "
+				+ " model.isDeleted = 'N' "
+				+ " and model.locationScopeId = :levelId "
+				+ " and model.locationValue in (:levelValues) "
+				+ " and model.insertedTime between :fromDate and :toDate ");
+		if(financialYrIdList != null && financialYrIdList.size() > 0){
+			sb.append(" and model.financialYearId = :financialYrIdList ");
+		}
+		sb.append(" group by model.financialYear.financialYearId, model.locationValue order by model.financialYear.financialYearId ");
+		Query query = getSession().createQuery(sb.toString());
+		if(financialYrIdList != null && financialYrIdList.size() > 0){
+			query.setParameterList("financialYrIdList", financialYrIdList);
+		}
+		query.setDate("fromDate", fromDate);
+		query.setDate("toDate", toDate);
+		query.setParameter("levelId", levelId);
+		query.setParameterList("levelValues", levelValues);
+		
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getLocationInfo(Long levelId, List<Long> levelValues){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.locationValue ");
+		if(levelId != null && levelId.longValue() == 3L){
+			sb.append(" , district.districtName ");
+		}else if(levelId != null && levelId.longValue() == 4L){
+			sb.append(" , constituency.name ");
+		}
+		sb.append(" from FundSanction model "
+				+ " left outer join model.locationAddress locationAddress "
+				+ " left outer join locationAddress.district district "
+				+ " left outer join locationAddress.constituency constituency "
+				+ " where "
+				+ " model.isDeleted = 'N' "
+				+ " and model.locationScopeId = :levelId "
+				+ " and model.locationValue in (:levelValues) ");
+		Query query = getSession().createQuery(sb.toString());
+		query.setParameter("levelId", levelId);
+		query.setParameterList("levelValues", levelValues);
+		return query.list();
+	}
 	
 	public List<Object[]> getLocationWiseFundHighAndLow(Long financialYrId,Long departmentId,Long sourceId,Date sDate,Date eDate
 			,Long locationScopeId,String type){
