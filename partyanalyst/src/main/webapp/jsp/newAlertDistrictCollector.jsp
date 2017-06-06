@@ -116,7 +116,7 @@
 									<li role="presentation" class="text-capital"><a href="#alertSubTaskType" aria-controls="alertSubTaskType" role="tab" data-toggle="tab">Alert Sub Task Status</a></li>
 								</ul>
 							</div>
-							<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+							<div class="col-sm-6 pad_left0 pad_right4">
 								<div class="tab-content navTabsSettingsContent">
 									<div role="tabpanel" class="tab-pane active" id="mediaAlerts">
 										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Media Type</h4>
@@ -365,6 +365,7 @@
 											<ul class="switch-btn pull-right activeCls">
 												<li attr_type="status" attr_department_type="statuswise" class="active">status overview</li>
 												<li attr_type="scopeLevel" attr_department_type="scopewise" class="" >location level</li>
+												<li attr_type="officerLevel" attr_department_type="officerOverview" class="" >Officer Overview</li>
 												<li attr_type="alertCategory" attr_department_type="alertSource" class="" >Alert Source</li>
 												<li attr_type="filterView" attr_department_type="filterView" class="" id="filterViewId" >Filter</li>
 											</ul>
@@ -402,18 +403,21 @@
 										<div class="col-sm-12 col-xs-12 col-md-12 ">
 											<div id="filterViewBodyId" style="display:none"></div>
 										</div>
-											<div id="departmentWiseGraphViewDetails"></div>
+											<div id="departmentWiseGraphViewDetails" ></div>
+											<div class="col-sm-12 col-xs-12 col-md-12 m_top10">
+												<div id="departmentWiseLocationBlockId" ></div>
+											</div>
 									</div>
 								</div>
 								
 							</div>
 							</div>
 						</div>
-						<div class="row">
+						<!--<div class="row">
 							<div class="col-sm-12 col-xs-12 col-md-12 ">
 								<div id="departmentWiseLocationBlockId" ></div>
 							</div>
-						</div>
+						</div>-->
 					</div>
 				</div>
 			</div>			

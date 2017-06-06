@@ -117,7 +117,7 @@
 									<li role="presentation" class="text-capital"><a href="#alertSubTaskType" aria-controls="alertSubTaskType" role="tab" data-toggle="tab">Alert Sub Task Status</a></li>
 								</ul>
 							</div>
-							<div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+							<div class="col-sm-6 pad_left0 pad_right4">
 								<div class="tab-content navTabsSettingsContent">
 									<div role="tabpanel" class="tab-pane active" id="mediaAlerts">
 										<h4 class="text-capital pad_5" style="color:#99A0A5;">Select Media Type</h4>

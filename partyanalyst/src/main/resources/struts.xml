@@ -17548,5 +17548,10 @@
 			<param name="root">locationVotersVOList</param>       
 		</result>
   	</action>
+  	<action name="getOfficerWiseAlertCntBasedOnDepartmentScopeLevelAction" class="alertManagementSystemAction" method="getOfficerWiseAlertCntBasedOnDepartmentScopeLevel">
+  	<result type="json" name="success">		   
+    	<param name="root">alertCoreDashBoardVOs</param>
+  	</result>	
+   </action> 	
  </package>
 </struts>
