@@ -26,4 +26,5 @@ public interface IMeekosamGrievanceService {
 	public List<KeyValueVO> getAllPublicRepresentativeTypes();
 	public List<KeyValueVO> getPublicReresentativesByTypeAndDistrict(Long typeId,Long districtId);
 	public List<Long> getUserDepartments(Long userId);
+	public List<KeyValueVO> getDistrictForGrievanceRequest(Long stateId);
 }
