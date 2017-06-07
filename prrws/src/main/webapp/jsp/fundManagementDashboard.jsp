@@ -78,7 +78,7 @@
 							</td>
 							<td>
 								<h4 class="panel-title">Low Funded Scheme</h4>
-								<div id="highFundScheme"></div>
+								<div id="lowFundScheme"></div>
 							</td>
 						</tr>
 						<tr>
@@ -109,8 +109,8 @@
 						</tr>
 						<tr>
 							<td>
-								<h4 class="panel-title">Total Funded District</h4>
-								<div id="totFundDist"></div>
+								<h4 class="panel-title">Total Funds</h4>
+								<div id="totFund"></div>
 							</td>
 							<td>
 								<h4 class="panel-title">Total Funded Costituency</h4>

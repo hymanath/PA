@@ -14,6 +14,9 @@
 		getLocationWiseAmountDetails(3,'distLevlOvervw');
 		getLocationWiseAmountDetails(4,'consLevlOvervw');
 		getLocationWiseAmountDetails(5,'mandalLevlOvervw');
+		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
+		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
+		getTotalFunds('totFund');
 		// getTotalFunds();
 		//getTotalSchemes(4,'mandalLevlOvervw');
 		// getSchemeWiseHighestAndLowestFund("highest");
@@ -241,7 +244,7 @@
 		}
 	}
 	
-	function getTotalFunds()
+	function getTotalFunds(divId)
 	{
 		  var levelValues = [];
 		  var financialYrIdArr = [1,2];
@@ -269,7 +272,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp) {
-			
+			buildLocationWiseFundDetails(ajaxresp,divId);
 			},
 			error: function(request,error) { 
 		
@@ -358,7 +361,7 @@
 	{
 		
 	}
-	function getSchemeWiseHighestAndLowestFund(type)
+	function getSchemeWiseHighestAndLowestFund(type,divId)
 	{
 		  var levelValues = [];
 		  var financialYrIdArr = [1,2];
@@ -387,6 +390,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp) {
+				buildLocationWiseFundDetails(ajaxresp,divId);
 			},
 			error: function(request,error) { 
 				//alert(request.responseText);

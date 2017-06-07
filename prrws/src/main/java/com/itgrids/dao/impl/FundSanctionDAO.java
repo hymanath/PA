@@ -83,7 +83,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(locatioinTypeId != null && locatioinTypeId.longValue()>0L)
 			queryStr.append(" and model.locationScopeId = :locatioinTypeId ");
 		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
-			queryStr.append(" and modal.financialYearId in (:financialYearIdsList)  " );
+			queryStr.append(" and model.financialYearId in (:financialYearIdsList)  " );
 		}
 		if(deptIdsList != null && deptIdsList.size()>0)
 			queryStr.append("  ");

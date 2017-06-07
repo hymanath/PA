@@ -353,16 +353,16 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	public void setFundDetails(List<Object[]> list ,LocationFundDetailsVO returnVO,String type,Long totalfund){
 		try{
 			Object[] obj =list.get(0);
-				returnVO.setTotalAmt(obj[0] != null ? obj[0].toString() : "");
-				returnVO.setId(obj[1] != null ? (Long)obj[1] : 0l);
-				returnVO.setName(obj[2] != null ? (String)obj[2] : "");
+				returnVO.setTotalAmt(commonMethodsUtilService.getStringValueForObject(obj[0]));
+				returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));
+				returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));
 				returnVO.setType(type);
 				if(totalfund != null && totalfund.longValue() >0l)
 				returnVO.setPerc(commonMethodsUtilService.calculatePercantage(Long.valueOf(returnVO.getTotalAmt().toString()),totalfund));
 			
 			
 		}catch(Exception e){
-			//e.printStackTrace();
+			e.printStackTrace();
 			LOG.error(" Exception raised in setFundDetails (); ");
 		}
 	}
@@ -370,15 +370,16 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 public void setGrantTypesToVO(List<Object[]> list ,LocationFundDetailsVO returnVO){
 		try{
 			if(list != null && list.size()>0){
-				Object[] obj =list.get(0);
+				for(Object[] obj :list){
 					IdNameVO grantVO = new IdNameVO();
 					grantVO.setTotal(obj[0] != null ? Double.valueOf(obj[0].toString()) : 0l);
-					grantVO.setId(obj[1] != null ? (Long)obj[1] : 0l);
-					grantVO.setName(obj[2] != null ? (String)obj[2] : "");
+					grantVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));
+					grantVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));
 					
 					if(grantVO.getTotal() != null && grantVO.getTotal().longValue() >0l)
-					returnVO.setPerc(commonMethodsUtilService.calculatePercantage(grantVO.getTotal().longValue(),Long.valueOf(returnVO.getTotalAmt().toString())));
+						grantVO.setPercentage(commonMethodsUtilService.calculatePercantage(grantVO.getTotal().longValue(),Long.valueOf(returnVO.getTotalAmt().toString())));
 					returnVO.getSubList().add(grantVO);
+				}
 			}
 		}catch(Exception e){
 			//e.printStackTrace();

@@ -6,9 +6,9 @@ function getLocationWiseFundDetails(locationId,dataType)
 {
 	var levelValues = [];
   var financialYrIdArr = [1,2];
-  var sourceIdsArr = [0];
-  var schemeIdsArr = [0];
-  var deptIdsArr = [0];
+  var sourceIdsArr = [];
+  var schemeIdsArr = [];
+  var deptIdsArr = [];
   
   var json = {
     levelId : 4, 
@@ -43,9 +43,9 @@ getTotalFunds();
    {
 		var levelValues = [];
   var financialYrIdArr = [1,2];
-  var sourceIdsArr = [0];
-  var schemeIdsArr = [0];
-  var deptIdsArr = [0];
+  var sourceIdsArr = [];
+  var schemeIdsArr = [];
+  var deptIdsArr = [];
   
   var json = {
     levelId : 4, 
@@ -81,9 +81,9 @@ getTotalFunds();
    {
 		var levelValues = [];
   var financialYrIdArr = [1,2];
-  var sourceIdsArr = [0];
-  var schemeIdsArr = [0];
-  var deptIdsArr = [0];
+  var sourceIdsArr = [];
+  var schemeIdsArr = [];
+  var deptIdsArr = [];
   
   var json = {
     levelId : 4, 
@@ -118,9 +118,9 @@ getTotalFunds();
    {
 		var levelValues = [];
   var financialYrIdArr = [1,2];
-  var sourceIdsArr = [0];
-  var schemeIdsArr = [0];
-  var deptIdsArr = [0];
+  var sourceIdsArr = [];
+  var schemeIdsArr = [];
+  var deptIdsArr = [];
   
   var json = {
     levelId : 4, 
@@ -155,9 +155,9 @@ function getTotalSchemes()
    {
 		var levelValues = [];
   var financialYrIdArr = [1,2];
-  var sourceIdsArr = [0];
-  var schemeIdsArr = [0];
-  var deptIdsArr = [0];
+  var sourceIdsArr = [];
+  var schemeIdsArr = [];
+  var deptIdsArr = [];
   
   var json = {
     levelId : 4, 
@@ -192,9 +192,9 @@ function getTotalSchemes()
 function getSchemeWiseLocationWiseAmountDetails(){
  var levelValues = [];
   var financialYrIdArr = [1,2];
-  var sourceIdsArr = [0];
-  var schemeIdsArr = [0];
-  var deptIdsArr = [0];
+  var sourceIdsArr = [];
+  var schemeIdsArr = [];
+  var deptIdsArr = [];
   
   var json = {
     levelId : 4, 
