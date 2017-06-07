@@ -10080,4 +10080,99 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		query.setParameter("alertId", alertId);
 	    	return (Long) query.uniqueResult();
 	 	}
+	 	public List<Object[]> getStatusWiseLocationAlert(Date fromDate, Date toDate, Long stateId, Long departmentId,Long sourceId, String groupType,String type,Set<Long> alertStatusIds){
+			StringBuilder queryStr = new StringBuilder();
+			 queryStr.append(" select ");
+			 
+			 if(type != null && type.equalsIgnoreCase("Day")){
+					queryStr.append(" date(model.createdTime), ");//2
+			 }
+			 if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("state")){
+					queryStr.append(" state.stateId, " +//0
+						       		" state.stateName, ");//1
+			}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("district")){
+				    queryStr.append(" district.districtId, " +//0
+						            " district.districtName, ");//1
+			}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("category")){
+				  queryStr.append(" model.alertCategory.alertCategoryId, " +//0
+					              " model.alertCategory.category, ");//1
+			}
+			 
+			queryStr.append(" model.alertStatus.alertStatusId," +//2
+					        " model.alertStatus.alertStatus,");//3
+			
+			queryStr.append(" count(distinct model.alertId) " +  //4  
+							" from Alert model " +
+							" left join model.userAddress userAddress " +
+							" left join userAddress.state state  " +
+							" left join userAddress.district district");
+			
+			 queryStr.append("	where model.isDeleted ='N'");
+			if(departmentId != null && departmentId.longValue() > 0){
+				queryStr.append(" and model.govtDepartment.govtDepartmentId = :departmentId ");
+			}
+			
+			if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("state")){
+				queryStr.append(" and district.districtId is null");
+			}
+			
+			if(sourceId != null && sourceId.longValue() != 0L){
+				queryStr.append(" and model.alertCategory.alertCategoryId = :sourceId");
+			}else{
+				queryStr.append(" and model.alertCategory.alertCategoryId  in ("+IConstants.GOVT_ALERT_CATEGORY_ID+") ");
+			}
+			queryStr.append(" and model.alertType.alertTypeId in ("+IConstants.GOVT_ALERT_TYPE_ID+") ");
+			queryStr.append(" and model.alertStatus.alertStatusId in (:alertStatusIds) ");
+			
+			if(fromDate != null && toDate != null){
+				queryStr.append(" and (date(model.createdTime) between :fromDate and :toDate) ");  
+			}
+			if(stateId != null && stateId.longValue() >= 0L){
+				if(stateId.longValue() == 1L){
+					queryStr.append(" and state.stateId = 1 ");
+				}else if(stateId.longValue() == 36L){
+					queryStr.append(" and state.stateId = 36 ");
+				}else if(stateId.longValue() == 0L){
+					queryStr.append(" and state.stateId in (1,36) ");
+				}
+			}
+			if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("State")){
+				queryStr.append(" group by state.stateId ");
+			}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("District")){
+				queryStr.append(" group by district.districtId ");
+			}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("category")){
+			    queryStr.append(" group by model.alertCategory.alertCategoryId");//1
+	        }
+			queryStr.append(",model.alertStatus.alertStatusId");
+			
+			if(type != null && type.equalsIgnoreCase("Day")){
+				queryStr.append(" ,date(model.createdTime) ");//2
+			}
+			
+			if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("State")){
+				queryStr.append(" order by  state.stateId ");
+			}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("District")){
+				queryStr.append(" order by district.districtId ");
+			}else if(groupType != null && !groupType.isEmpty() && groupType.equalsIgnoreCase("category")){
+			    queryStr.append(" order by model.alertCategory.alertCategoryId");
+	        }
+			queryStr.append(",model.alertStatus.alertStatusId");
+			if(type != null && type.equalsIgnoreCase("Day")){
+				queryStr.append(" ,date(model.createdTime) ");
+			}
+			Query query = getSession().createQuery(queryStr.toString());
+			
+			query.setParameterList("alertStatusIds", alertStatusIds);
+			if(departmentId != null && departmentId.longValue() > 0L){
+				query.setParameter("departmentId",departmentId);
+			}
+			if(sourceId != null && sourceId.longValue() > 0L){
+				query.setParameter("sourceId",sourceId);
+			}
+			if(fromDate != null && toDate != null){  
+				query.setDate("fromDate", fromDate);
+				query.setDate("toDate", toDate);    
+			}
+		return query.list();   
+		}
 }

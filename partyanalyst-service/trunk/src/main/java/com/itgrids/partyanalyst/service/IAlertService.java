@@ -168,4 +168,5 @@ public interface IAlertService {
     public String createMeekosamGrievanceAlert(final GrievanceAlertVO inputVO,final Long userId, final Map<File,String> mapFiles);
     public UserAddress saveUserAddressForMeekosamGrievanceAlert(final GrievanceAlertVO inputVO);
     public KeyValueVO getRegionScopeValuesForUser(Long userId,Long deptId);
+    public AlertOverviewVO getAlertCntInRequiredFormatToExportToExcel(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType);
 }

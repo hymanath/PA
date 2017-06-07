@@ -17,4 +17,5 @@ public interface IAlertDepartmentStatusDAO extends GenericDao<AlertDepartmentSta
 	 public List<Object[]> getAllStatuses(List<Long> alertStatusIds);
 	 public List<Object[]> getAlertGovtDepartmentStatus(Long deptId);
 	 public List<Object[]> getAlertStatusByDepartmentId(Long deptId);
+	 public List<Object[]> getRequiredAlertGovtDepartmentStatus();
 }
