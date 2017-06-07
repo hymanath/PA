@@ -532,4 +532,42 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		return query.list();
 	}
   
+  public List<Object[]> getVotersCasteWiseCount(Long constituencyId,Long publicationDateId){
+	  Query query = getSession().createQuery(" select model.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.casteState.casteCategoryGroup.casteCategory.categoryName, " +
+	  		" model.casteState.caste.casteId,model.casteState.caste.casteName,model.casteVoters,model.castePercentage,model.casteMaleVoters,model.casteFemaleVoters " +
+	  		" from VoterCastInfo model " +
+	  		" where model.voterReportLevel.voterReportLevelId = :levelValue " +
+	  		" and model.reportLevelValue = :constituencyId " +
+	  		" and model.publicationDateId = :publicationDateId " +
+	  		" and model.casteState.state.stateId = :stateId " +
+	  		" order by model.casteState.caste.casteId ");
+	  
+	  query.setParameter("constituencyId", constituencyId);
+	  query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("levelValue", 1l);
+	  query.setParameter("stateId", 1l);
+	  
+	  return query.list();
+  }
+  
+  public List<Object[]> getVotersCasteNAgeGroupWiseCount(Long casteGroupId,Long casteId,Long constituencyId,Long publicationDateId){
+	  Query query = getSession().createQuery(" select model. " +
+	  		" from VoterCastInfo model " +
+	  		" where model.voterReportLevel.voterReportLevelId = :levelValue " +
+	  		" and model.reportLevelValue = :constituencyId " +
+	  		" and model.publicationDateId = :publicationDateId " +
+	  		" and model.casteState.state.stateId = :stateId " +
+	  		" and model.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId " +
+	  		" and model.casteState.caste.casteId = :casteId " +
+	  		" group by  ");
+	  
+	  query.setParameter("constituencyId", constituencyId);
+	  query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("levelValue", 1l);
+	  query.setParameter("stateId", 1l);
+	  query.setParameter("casteGroupId", casteGroupId);
+	  query.setParameter("casteId", casteId);
+	  
+	  return query.list();
+  }
 }
