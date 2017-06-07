@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class InputVO implements Serializable {
-	private Long levelId;
+	private Long blockLevelId;
 	private List<Long> levelValues;
 	private List<Long> financialYrIdList;
 	private List<Long> deptIdsList;
@@ -18,6 +18,8 @@ public class InputVO implements Serializable {
 	private String sortingType;
 	private String order;
 	private String type;
+	private Long locationId;
+	private Long superLocationId;
 	
 	
 	public String getType() {
@@ -44,11 +46,12 @@ public class InputVO implements Serializable {
 	public void setSchemeIdsList(List<Long> schemeIdsList) {
 		this.schemeIdsList = schemeIdsList;
 	}
-	public Long getLevelId() {
-		return levelId;
+	
+	public Long getBlockLevelId() {
+		return blockLevelId;
 	}
-	public void setLevelId(Long levelId) {
-		this.levelId = levelId;
+	public void setBlockLevelId(Long blockLevelId) {
+		this.blockLevelId = blockLevelId;
 	}
 	public List<Long> getLevelValues() {
 		return levelValues;
@@ -103,5 +106,17 @@ public class InputVO implements Serializable {
 	}
 	public void setOrder(String order) {
 		this.order = order;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public Long getSuperLocationId() {
+		return superLocationId;
+	}
+	public void setSuperLocationId(Long superLocationId) {
+		this.superLocationId = superLocationId;
 	}
 }

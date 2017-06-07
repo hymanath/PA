@@ -25,6 +25,7 @@ public interface IFundManagementDashboardService {
 	public LocationFundDetailsVO getAverageFundForScheme(InputVO inputVO);
 	public List<LocationFundDetailsVO> getAllDistrictByStateId(Long stateId);
 	public List<LocationFundDetailsVO> getAllConstituenciesByDistrictId(Long districtId);
+	public List<LocationFundDetailsVO> getAllSubLocationsBySuperLocationId(InputVO inputVO);
 	public List<LocationVO> getAllFiniancialYears();
 	public List<LocationFundDetailsVO> getAllDepartments();
 

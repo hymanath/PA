@@ -104,7 +104,7 @@ public class FundManagementDashboardController {
 		consumes = MediaType.APPLICATION_JSON_VALUE)
 		public @ResponseBody List<FundSchemeVO> getFinancialYearWiseScheameDetails(@RequestBody InputVO inputVO){
 			List<FundSchemeVO> ajaxResult = fundManagementDashboardService.getFinancialYearWiseSchemeDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),inputVO.getSchemeIdsList(),
-					inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getLevelId(),inputVO.getLevelValues());
+					inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getBlockLevelId(),inputVO.getLevelValues());
 			return ajaxResult;
 		}	
 		
