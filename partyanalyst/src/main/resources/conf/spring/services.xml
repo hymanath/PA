@@ -308,6 +308,8 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />	
 		<property name="pashiAppUserDAO" ref="pashiAppUserDAO" />	
 		<property name="tdpCadreLoginDetailsDAO" ref="tdpCadreLoginDetailsDAO" />
+		<property name="alertManagementSystemService" ref="alertManagementSystemService" />
+		
 	  </bean>
 	
 	<bean name="registrationService" class="com.itgrids.partyanalyst.service.impl.RegistrationService" >
@@ -4253,7 +4255,9 @@
 		<property name="govtProposalPropertyCategoryDAO" ref="govtProposalPropertyCategoryDAO" ></property>
 		<property name="govtProposalPropertyCategoryTrackingDAO" ref="govtProposalPropertyCategoryTrackingDAO" ></property>
 		<property name="govtProposalCategoryDAO" ref="govtProposalCategoryDAO" ></property>
-		<property name="alertCommentDAO" ref="alertCommentDAO" ></property>				  
+		<property name="alertCommentDAO" ref="alertCommentDAO" ></property>		
+		<property name="amsOfficerOtpDetailsDAO" ref="amsOfficerOtpDetailsDAO" ></property>		
+		<property name="smsCountrySmsService" ref="smsCountrySmsService" ></property>			  
    </bean>
    <bean name="meekosamGrievanceService" class="com.itgrids.partyanalyst.service.impl.MeekosamGrievanceService">
    		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
