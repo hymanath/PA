@@ -3445,5 +3445,25 @@ IUserVoterDetailsDAO{
 			return query.list();
 		}
 	 
+	 public List<Object[]> getVotersCasteNAgeGroupWiseCount(Long casteGroupId,Long casteId,Long constituencyId,Long publicationDateId){
+		//0-ageRangeId,1-ageRange,2-gender,3-votersCount
+		 Query query = getSession().createQuery(" select model.voter.voterAgeRange.voterAgeRangeId,select model.voter.voterAgeRange.ageRange, " +
+		 		" model.voter.gender,count(model.voter.voterId) " +
+		 		" from UserVoterDetails model,BoothPublicationVoter model1 " +
+		 		" where model.voter.voterId = model1.voter.voterId " +
+		 		" and model1.booth.constituency.constituencyId = :constituencyId " +
+		 		" and model1.booth.publicationDate.publicationDateId = :publicationDateId " +
+		 		" and model.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId " +
+		 		" and model.casteState.caste.casteId = :casteId " +
+		 		" group by model.voter.voterAgeRange.voterAgeRangeId,model.voter.gender " +
+		 		" order by model.voter.voterAgeRange.voterAgeRangeId ");
+		 
+		 query.setParameter("constituencyId", constituencyId);
+		 query.setParameter("publicationDateId", publicationDateId);
+		 query.setParameter("casteGroupId", casteGroupId);
+		 query.setParameter("casteId", casteId);
+		 
+		 return query.list();
+	 }
 }
 
