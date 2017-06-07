@@ -112,7 +112,6 @@ public class FundManagementDashboardController {
 		        produces = MediaType.APPLICATION_JSON_VALUE,
 		        consumes = MediaType.APPLICATION_JSON_VALUE)
 		        public @ResponseBody List<LocationFundDetailsVO> getAllDistrictByStateId(@RequestBody Map<String,Long> map){
-			    
 		             List<LocationFundDetailsVO>  districtList=fundManagementDashboardService.getAllDistrictByStateId(map.get("stateId"));
 		             return districtList;
 		        }  
@@ -123,6 +122,15 @@ public class FundManagementDashboardController {
 		             List<LocationFundDetailsVO>  constisList=fundManagementDashboardService.getAllConstituenciesByDistrictId(map.get("districtId"));
 		             return constisList;
 		        }
+
+		@RequestMapping(value="/getAllFiniancialYears", method = RequestMethod.POST,
+		        produces = MediaType.APPLICATION_JSON_VALUE,
+		        consumes = MediaType.APPLICATION_JSON_VALUE)
+		        public @ResponseBody List<LocationVO> getAllFiniancialYears(){
+		             List<LocationVO>  financialYearList=fundManagementDashboardService.getAllFiniancialYears();
+		             return financialYearList;
+		        }
+
 		@RequestMapping(value="/getAllDepartments", method = RequestMethod.POST,
 		        produces = MediaType.APPLICATION_JSON_VALUE,
 		        consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -131,5 +139,7 @@ public class FundManagementDashboardController {
 		             List<LocationFundDetailsVO>  districtList=fundManagementDashboardService.getAllDepartments();
 		             return districtList;
 		        }  
+
+		
 		
 }

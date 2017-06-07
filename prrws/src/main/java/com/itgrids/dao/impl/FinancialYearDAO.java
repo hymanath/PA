@@ -1,6 +1,9 @@
 package com.itgrids.dao.impl;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,5 +21,14 @@ public class FinancialYearDAO extends GenericDaoHibernate<FinancialYear, Long> i
 		super(FinancialYear.class);
 
 	}
+	
+	public List<Object[]> getAllFiniancialYears(){
+	      StringBuilder sb = new StringBuilder();
+	      sb.append(" select model.financialYearId,model.yearDesc from FinancialYear model "+ 
+	                 " order by model.yearDesc desc ");
+	      Query query = getSession().createQuery(sb.toString());
+	      return query.list(); 
+	      
+	    }
 
 }
