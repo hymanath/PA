@@ -108,20 +108,19 @@ public class FundManagementDashboardController {
 			return ajaxResult;
 		}	
 		
-		@RequestMapping(value="/getDistrictIdName", method = RequestMethod.POST,
+		@RequestMapping(value="/getAllDistrictByStateId", method = RequestMethod.POST,
 		        produces = MediaType.APPLICATION_JSON_VALUE,
 		        consumes = MediaType.APPLICATION_JSON_VALUE)
-		        public @ResponseBody List<LocationFundDetailsVO> getDistrictIdName(@RequestBody Map<String,String> map){
-			    Long stateId = Long.valueOf(map.get("stateId"));
-		             List<LocationFundDetailsVO>  districtList=fundManagementDashboardService.getDistrictIdName(stateId);
+		        public @ResponseBody List<LocationFundDetailsVO> getAllDistrictByStateId(@RequestBody Map<String,Long> map){
+			    
+		             List<LocationFundDetailsVO>  districtList=fundManagementDashboardService.getAllDistrictByStateId(map.get("stateId"));
 		             return districtList;
 		        }  
-		@RequestMapping(value="/getConstituencies", method = RequestMethod.POST,
+		@RequestMapping(value="/getAllConstituenciesByDistrictId", method = RequestMethod.POST,
 		        produces = MediaType.APPLICATION_JSON_VALUE,
 		        consumes = MediaType.APPLICATION_JSON_VALUE)
-		        public @ResponseBody List<LocationFundDetailsVO> getConstituencies(@RequestBody Map<String,String> map){
-		           Long districtId = Long.valueOf(map.get("districtId"));
-		             List<LocationFundDetailsVO>  constisList=fundManagementDashboardService.getConstituencies(districtId);
+		        public @ResponseBody List<LocationFundDetailsVO> getAllConstituenciesByDistrictId(@RequestBody Map<String,Long> map){
+		             List<LocationFundDetailsVO>  constisList=fundManagementDashboardService.getAllConstituenciesByDistrictId(map.get("districtId"));
 		             return constisList;
 		        }
 		
