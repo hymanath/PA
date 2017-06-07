@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
@@ -30,8 +31,15 @@ public class LocationDashboardService implements ILocationDashboardService{
 	private IVoterAgeInfoDAO voterAgeInfoDAO;
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private IVoterCastInfoDAO voterCastInfoDAO; 
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	
 	
+	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
+		return userVoterDetailsDAO;
+	}
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
 	public IVoterCastInfoDAO getVoterCastInfoDAO() {
 		return voterCastInfoDAO;
 	}
@@ -545,9 +553,71 @@ public class LocationDashboardService implements ILocationDashboardService{
 	public List<LocationVotersVO> getCasteNAgeWiseVoterNCadreCounts(Long constituencyId,Long publicationDateId,Long casteGroupId,Long casteId){
 		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
 		try {
-			//0-castegroupId,1-castegroup,2-casteId,3-castegroup,4-voterscount,5-percentage,6-maleVotersCount,7-femaleVotersCount
-			List<Object[]> votersObjList = voterCastInfoDAO.getVotersCasteNAgeGroupWiseCount(casteGroupId,casteId,constituencyId,publicationDateId);
+			Map<Long,LocationVotersVO> map = new LinkedHashMap<Long, LocationVotersVO>();
 			
+			//0-ageRangeId,1-ageRange,2-gender,3-votersCount
+			List<Object[]> votersObjList = userVoterDetailsDAO.getVotersCasteNAgeGroupWiseCount(casteGroupId,casteId,constituencyId,publicationDateId);
+			
+			if(votersObjList != null && votersObjList.size() > 0){
+				for (Object[] objects : votersObjList) {
+					if(map.get((Long)objects[0]) == null){
+						LocationVotersVO inVO = new LocationVotersVO();
+						inVO.setAgeRangeId((Long)objects[0]);
+						inVO.setAgeRange(objects[1].toString());
+						map.put((Long)objects[0], inVO);
+					}
+					
+					if(objects[2].toString().equalsIgnoreCase("M")){
+						map.get((Long)objects[0]).setMaleVoters((Long)objects[3]);
+					}else if(objects[2].toString().equalsIgnoreCase("F")){
+						map.get((Long)objects[0]).setFemaleVoters((Long)objects[3]);
+					}
+					
+				}
+			}
+			
+			List<Object[]> cadresObjList = tdpCadreEnrollmentYearDAO.getCadresCasteNAgeGroupWiseCounts(casteGroupId,casteId,constituencyId);
+			
+			if(cadresObjList != null && cadresObjList.size() > 0){
+				for (Object[] objects : cadresObjList) {
+					if(map.get((Long)objects[0]) == null){
+						LocationVotersVO inVO = new LocationVotersVO();
+						inVO.setAgeRangeId((Long)objects[0]);
+						inVO.setAgeRange(objects[1].toString());
+						map.put((Long)objects[0], inVO);
+					}
+					
+					if(objects[2].toString().equalsIgnoreCase("M")){
+						map.get((Long)objects[0]).setMaleCadres((Long)objects[3]);
+					}else if(objects[2].toString().equalsIgnoreCase("F")){
+						map.get((Long)objects[0]).setFemaleCadres((Long)objects[3]);
+					}
+				}
+			}
+			
+			if(map != null && map.size() > 0){
+				Long totalVoters=0l,totalMaleVoters=0l,totalFemaleVoters=0l,totalCadres=0l,totalMaleCadres=0l,totalFemaleCadres=0l;
+				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
+					entry.getValue().setTotalVoters(entry.getValue().getMaleVoters()+entry.getValue().getFemaleVoters());
+					entry.getValue().setTotalCadres(entry.getValue().getMaleCadres()+entry.getValue().getFemaleCadres());
+					
+					totalVoters = totalVoters + entry.getValue().getMaleVoters()+entry.getValue().getFemaleVoters();
+					totalMaleVoters = totalMaleVoters+entry.getValue().getMaleVoters();
+					totalFemaleVoters = totalFemaleVoters+entry.getValue().getFemaleVoters();
+					totalCadres = totalCadres+entry.getValue().getMaleCadres()+entry.getValue().getFemaleCadres();
+					totalMaleCadres = totalMaleCadres+entry.getValue().getMaleCadres();
+					totalFemaleCadres = totalFemaleCadres+entry.getValue().getFemaleCadres();
+				}
+				
+				for (Entry<Long, LocationVotersVO> entry : map.entrySet()) {
+					entry.getValue().setTotalVotersPerc(((entry.getValue().getTotalVoters()*100.00)/totalVoters)+" %");
+					entry.getValue().setMaleVotersPerc(((entry.getValue().getMaleVoters()*100.00)/totalMaleVoters)+" %");
+					entry.getValue().setFemaleVotersPerc(((entry.getValue().getFemaleVoters()*100.00)/totalFemaleVoters)+" %");
+					entry.getValue().setTotalCadrePerc(((entry.getValue().getTotalCadres()*100.00)/totalCadres)+" %");
+					entry.getValue().setMaleCadrePerc(((entry.getValue().getMaleCadres()*100.00)/totalMaleCadres)+" %");
+					entry.getValue().setFemaleCadrePerc(((entry.getValue().getFemaleCadres()*100.00)/totalFemaleCadres)+" %");
+				}
+			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
 		}

@@ -1049,4 +1049,21 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
 			return query.list();
 		}
+		
+		public List<Object[]> getCadresCasteNAgeGroupWiseCounts(Long casteGroupId,Long casteId,Long constituencyId){
+			Query query = getSession().createQuery(" select model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
+					" model.tdpCadre.gender,count(model.tdpCadreId) " +
+					" from TdpCadreEnrollmentYear model " +
+					" where model.isDeleted = 'N' " +
+					" and model.tdpCadre.isDeleted = 'N' " +
+					" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
+					" and model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId = :casteGroupId " +
+					" and model.tdpCadre.casteState.caste.casteId = :casteId " +
+					" and model.tdpCadre.enrollmentYear = 2014 " +
+					" and model.enrollmentYearId = :enrollmentYearId " +
+					" group by model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.gender " +
+					" order by model.tdpCadre.voterAgeRange.voterAgeRangeId ");
+			
+			return query.list();
+		}
 }
