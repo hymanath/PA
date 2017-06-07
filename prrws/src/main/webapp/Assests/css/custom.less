@@ -8,15 +8,65 @@
 @blue_color:#BAB4FF;
 @dark_brown_color:#999999;
 @dark_blue_color:#3C46FF;
+@dark_yellow_color:#FFBA00;
 
 body
 {
 	color:@black_color;
 	background-color:@light_ash_color;
 }
+
+header
+{
+	box-shadow:0px 4px 4px 4px rgba(0,0,0,0.3);
+}
 nav
 {
-	background-color:@black_color;
+	background-color:@black_color;	
+	color:@dark_yellow_color;
+}
+.m_top10
+{
+	margin-top:10px !important;
+}
+.m_top20
+{
+	margin-top:20px !important;
+}
+.logo
+{
+	background-color:@dark_yellow_color;
+	height:70px;
+	padding:5px 12px;
+}
+.navbar-header-custom
+{
+	padding:8px 12px;
+	li
+	{
+		padding:8px 12px;
+		border-right:1px solid @black_color;
+	}
+	li:last-child
+	{
+		padding:3px 12px;
+		border-right:0px;
+		.input-group
+		{
+			top:15px;
+			.form-control
+			{
+				background-color:@light_ash_color;
+				border-left:0px;
+			}
+		}
+	}
+	
+	select
+	{
+		border: 0px;
+		background: #EBEBEB;
+	}
 }
 main
 {
