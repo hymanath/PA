@@ -2436,6 +2436,7 @@
 	   <property name="appointmentService" ref="appointmentService"/>
 	   <property name="alertsNewsPortalService" ref="alertsNewsPortalService"/>   
 	   <property name="alertManagementSystemService" ref="alertManagementSystemService"/>
+	   <property name="cccDashboardService" ref="cccDashboardService"/>
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
