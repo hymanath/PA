@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LocationVotersVO {
 	public Long ageRangeId;
 	public String ageRange;
@@ -15,6 +18,8 @@ public class LocationVotersVO {
 	public String femaleVotersPerc="";
 	public Long femaleCadres=0l;
 	public String femaleCadrePerc="";
+	public List<LocationVotersVO> locationVotersVOList = new ArrayList<LocationVotersVO>(0);
+	public List<LocationVotersVO> locationVotersVOList1 = new ArrayList<LocationVotersVO>(0);
 
 	public Long getAgeRangeId() {
 		return ageRangeId;
@@ -100,6 +105,19 @@ public class LocationVotersVO {
 	}
 	public void setFemaleCadrePerc(String femaleCadrePerc) {
 		this.femaleCadrePerc = femaleCadrePerc;
+	}
+	public List<LocationVotersVO> getLocationVotersVOList() {
+		return locationVotersVOList;
+	}
+	public void setLocationVotersVOList(List<LocationVotersVO> locationVotersVOList) {
+		this.locationVotersVOList = locationVotersVOList;
+	}
+	public List<LocationVotersVO> getLocationVotersVOList1() {
+		return locationVotersVOList1;
+	}
+	public void setLocationVotersVOList1(
+			List<LocationVotersVO> locationVotersVOList1) {
+		this.locationVotersVOList1 = locationVotersVOList1;
 	}
 	
 }

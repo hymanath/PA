@@ -1015,4 +1015,38 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 			
 			return query.list();
 		}
+		
+		public List<Object[]> getCasteWiseCadreCounts(Long constituencyId){
+			Query query = getSession().createQuery(" select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
+					" model.tdpCadre.casteState.caste.casteId,model.tdpCadre.casteState.caste.casteName,count(model.tdpCadre.tdpCadreId) " +
+					" from TdpCadreEnrollmentYear model " +
+					" where model.isDeleted = 'N' " +
+					" and model.tdpCadre.isDeleted = 'N' " +
+					" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
+					" and model.tdpCadre.enrollmentYear = 2014 " +
+					" and model.enrollmentYearId = :enrollmentYearId " +
+					" group by model.tdpCadre.casteState.caste.casteId " +
+					" order by model.tdpCadre.casteState.caste.casteId ");
+			
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+			
+			return query.list();
+		}
+		
+		public List<Object[]> getCasteNGenderWiseCadreCounts(Long constituencyId){
+			Query query = getSession().createQuery(" select model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName, " +
+					" model.tdpCadre.casteState.caste.casteId,model.tdpCadre.casteState.caste.casteName,model.tdpCadre.gender,count(model.tdpCadre.tdpCadreId) " +
+					" from TdpCadreEnrollmentYear model " +
+					" where model.isDeleted = 'N'" +
+					" and model.tdpCadre.isDeleted = 'N'" +
+					" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
+					" and model.tdpCadre.enrollmentYear = 2014 " +
+					" and model.enrollmentYearId = :enrollmentYearId " +
+					" group by model.tdpCadre.casteState.caste.casteId,model.tdpCadre.gender " +
+					" order by model.tdpCadre.casteState.caste.casteId ");
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+			return query.list();
+		}
 }

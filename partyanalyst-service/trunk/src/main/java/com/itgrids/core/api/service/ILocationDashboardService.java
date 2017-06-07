@@ -9,5 +9,7 @@ import com.itgrids.partyanalyst.dto.LocationVotersVO;
 public interface ILocationDashboardService {
 	public CandidateDetailsForConstituencyTypesVO getCandidateAndPartyInfoForConstituency(Long constituencyId);
 	public List<LocationVotersVO> getVotersAndcadreAgeWiseCount(Long constituencyId,Long publicationDateId);
-	
+	public List<LocationVotersVO> getVotersAndCadreCasteWiseCount(String type,Long constituencyId,Long publicationDateId);
+	public List<LocationVotersVO> getCasteGroupNAgeWiseVoterNCadreCounts(Long constituencyId,Long publicationDateId);
+	public List<LocationVotersVO> getCasteNAgeWiseVoterNCadreCounts(Long constituencyId,Long publicationDateId,Long casteGroupId,Long casteId);
 }
