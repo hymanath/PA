@@ -67,6 +67,9 @@ public class FundSanction{
 	@Column(name="is_deleted")
 	private String isDeleted;
 	
+	@Column(name="department_id")
+	private Long departmentId;
+	
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "address_id", insertable = false, updatable = false)
 	private LocationAddress locationAddress;
@@ -83,6 +86,9 @@ public class FundSanction{
 	@JoinColumn(name = "govt_scheme_id", insertable = false, updatable = false)
 	private GovtScheme govtScheme;
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "department_id", insertable = false, updatable = false)
+	private Department department;
 
 	
 	public Long getFundSactionId() {
@@ -236,5 +242,23 @@ public class FundSanction{
 	public void setGovtScheme(GovtScheme govtScheme) {
 		this.govtScheme = govtScheme;
 	}
+
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+	
+	
 	
 }
