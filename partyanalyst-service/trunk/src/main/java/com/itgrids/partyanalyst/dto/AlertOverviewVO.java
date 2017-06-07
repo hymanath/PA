@@ -72,7 +72,12 @@ public class AlertOverviewVO {
 	private Long reopenCountForOfficer = 0L;
 	private Long overallReopenCount = 0L;
 	private List<AlertCoreDashBoardVO> alertCoreDashBoardVOs;
+	private Double percentage=0.0d;
+	private Double overAllPer = 0.0d;
+	private Double grandOverAllper = 0.0d;
+	private List<String> list;
 	private String type;
+	private String heading;
 	
 	public Long getGovtAlertCnt() {
 		return govtAlertCnt;
@@ -411,6 +416,36 @@ public class AlertOverviewVO {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public Double getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(Double percentage) {
+		this.percentage = percentage;
+	}
+	public Double getOverAllPer() {
+		return overAllPer;
+	}
+	public void setOverAllPer(Double overAllPer) {
+		this.overAllPer = overAllPer;
+	}
+	public List<String> getList() {
+		if(list == null){
+			list = new ArrayList<String>();
+		}
+		return list;
+	}
+	public String getHeading() {
+		return heading;
+	}
+	public void setHeading(String heading) {
+		this.heading = heading;
+	}
+	public Double getGrandOverAllper() {
+		return grandOverAllper;
+	}
+	public void setGrandOverAllper(Double grandOverAllper) {
+		this.grandOverAllper = grandOverAllper;
 	}
 	
 	

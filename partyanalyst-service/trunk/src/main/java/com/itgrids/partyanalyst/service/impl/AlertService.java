@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -25,6 +26,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -114,7 +122,6 @@ import com.itgrids.partyanalyst.dao.IVerificationCommentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationConversationDAO;
 import com.itgrids.partyanalyst.dao.IVerificationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IVerificationStatusDAO;
-import com.itgrids.partyanalyst.dao.hibernate.GovtProposalPropertyCategoryDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceUserDAO;
 import com.itgrids.partyanalyst.dto.ActionTypeStatusVO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
@@ -15003,4 +15010,715 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 			}
 			return null;  
 		}
+	/*
+	 * Author:Santosh
+	 */
+	public AlertOverviewVO getAlertCntInRequiredFormatToExportToExcel(String fromDateStr, String toDateStr, Long stateId,Long departmentId, Long sourceId, String rangeType){
+		LOG.info("Entered in getAlertDetailsInRequiredFormatToExportToExcel() method of AlertService{}");
+		try{  
+			AlertOverviewVO resultVO = new AlertOverviewVO();
+			Date fromDate = null;        
+			Date toDate = null; 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+				fromDate = sdf.parse(fromDateStr);
+				toDate = sdf.parse(toDateStr);
+			
+			}
+			 Set<Long> alertStatusIds = new HashSet<Long>();
+			 List<Object[]> statuobjList = alertDepartmentStatusDAO.getRequiredAlertGovtDepartmentStatus();
+			 setAlrtSttsIds(statuobjList,alertStatusIds);
+			 
+			//getting overall alert
+			 AlertOverviewVO overAllVO = new AlertOverviewVO();
+			List<Object[]> categoryAlertObjList = alertDAO.getStatusWiseLocationAlert(fromDate, toDate, stateId, departmentId, sourceId, "Category", "",alertStatusIds);
+			List<Object[]> stateAlertObjList = alertDAO.getStatusWiseLocationAlert(fromDate, toDate, stateId, departmentId, sourceId, "State", "",alertStatusIds);
+			List<Object[]> districtAlertObjList = alertDAO.getStatusWiseLocationAlert(fromDate, toDate, stateId, departmentId, sourceId, "District", "",alertStatusIds);
+		    
+			setOverAllAlertData(categoryAlertObjList,overAllVO,statuobjList,"category");
+		    setOverAllAlertData(stateAlertObjList,overAllVO,statuobjList,"state");
+		    setOverAllAlertData(districtAlertObjList,overAllVO,statuobjList,"district");
+		   
+			//gettin day wise  alert
+			Map<Long,AlertOverviewVO> categroyMap = new LinkedHashMap<Long, AlertOverviewVO>();
+			Map<Long,AlertOverviewVO> stateMap = new LinkedHashMap<Long, AlertOverviewVO>();
+			Map<Long,AlertOverviewVO>  districtMap = new LinkedHashMap<Long, AlertOverviewVO>();
+			Map<String,Map<Long,Map<Long,Long>>> dateWiseCategoryAlertCntMap = new HashMap<String, Map<Long,Map<Long,Long>>>();
+			Map<String,Map<Long,Map<Long,Long>>> stateWiseCategoryAlertCntMap = new HashMap<String, Map<Long,Map<Long,Long>>>();
+			Map<String,Map<Long,Map<Long,Long>>> districtWiseCategoryAlertCntMap = new HashMap<String, Map<Long,Map<Long,Long>>>();
+			
+		    List<Object[]> daysCategoryAlertObjList = alertDAO.getStatusWiseLocationAlert(fromDate, toDate, stateId, departmentId, sourceId, "Category", "Day",alertStatusIds);
+			List<Object[]> daysStateAlertObjList = alertDAO.getStatusWiseLocationAlert(fromDate, toDate, stateId, departmentId, sourceId, "State", "Day",alertStatusIds);
+			List<Object[]> daysDistrictAlertObjList = alertDAO.getStatusWiseLocationAlert(fromDate, toDate, stateId, departmentId, sourceId, "District", "Day",alertStatusIds);
+			 
+			prepareResultDateWise(daysCategoryAlertObjList,categroyMap,dateWiseCategoryAlertCntMap);
+			prepareResultDateWise(daysStateAlertObjList,stateMap,stateWiseCategoryAlertCntMap);
+			prepareResultDateWise(daysDistrictAlertObjList,districtMap,districtWiseCategoryAlertCntMap);
+			
+			Map<String,List<String>> weekAndDaysMap = new LinkedHashMap<String, List<String>>();
+			Map<String,AlertOverviewVO> dateWiseMap = new LinkedHashMap<String, AlertOverviewVO>();
+			
+			String type="Day";
+			if(rangeType != null && rangeType.equalsIgnoreCase("Day")){
+			  List<String> dayList = DateUtilService.getDaysBetweenDatesStringFormat(fromDate, toDate);	
+			  weekAndDaysMap.put("Days", dayList);
+			}else if(rangeType.equalsIgnoreCase("month") || rangeType.equalsIgnoreCase("week")){
+				if(rangeType.equalsIgnoreCase("week")){
+					weekAndDaysMap = DateUtilService.getTotalWeeksMap(fromDate, toDate);
+				}else if(rangeType.equalsIgnoreCase("month")){
+					weekAndDaysMap = getMonthWeekAndDaysList(sdf.format(fromDate), sdf.format(toDate),"month");
+	    		}
+				type = "weekMonth";
+			}
+			//prepare result
+			prepareResultInRequiredFormatBasedOnDate(dateWiseMap,weekAndDaysMap,categroyMap,stateMap,districtMap,statuobjList,type);
+			setDateWiseData(dateWiseMap,dateWiseCategoryAlertCntMap,stateWiseCategoryAlertCntMap,districtWiseCategoryAlertCntMap);
+			caculateDayWiseGrandTotalAndPercentage(dateWiseMap);
+			
+			//setting date wise result to final list
+			if(dateWiseMap != null && dateWiseMap.size() > 0){
+				resultVO.getSubList().addAll(dateWiseMap.values());
+				dateWiseMap.clear();
+			}
+			//Seeting overall result to resultvo
+			resultVO.setOverAllVO(overAllVO);
+			//generateExcelReport(resultVO);
+			return resultVO;  
+	  }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertDetailsInRequiredFormatToExportToExcel() method of AlertService{}");
+	  }
+	 return null;
+	}   
+	
+	public void prepareResultDateWise(List<Object[]> objList,Map<Long,AlertOverviewVO> locationMap,Map<String,Map<Long,Map<Long,Long>>> dateWiseAlertCntMap){
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					if(param[1] != null){
+						AlertOverviewVO locationVO = locationMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+						 if(locationVO == null){
+							 locationVO = new AlertOverviewVO();
+							 locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[1]));
+							 locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
+							 locationMap.put(locationVO.getId(), locationVO);
+						 }
+						 Map<Long,Map<Long,Long>> lctnMap = dateWiseAlertCntMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));
+						 if(lctnMap == null){
+							 lctnMap = new HashMap<Long, Map<Long,Long>>();
+							 dateWiseAlertCntMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), lctnMap);
+						 }
+						 Map<Long,Long> statusMap = lctnMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));
+						  if(statusMap == null){
+							  statusMap = new HashMap<Long, Long>();
+							  lctnMap.put(commonMethodsUtilService.getLongValueForObject(param[1]), statusMap);
+						  }
+						  statusMap.put(commonMethodsUtilService.getLongValueForObject(param[3]),commonMethodsUtilService.getLongValueForObject(param[5]));
+					 }	
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured prepareResultDateWise() method of AlertService{}");
+		}
+	}
+	public void prepareResultInRequiredFormatBasedOnDate(Map<String,AlertOverviewVO> tempMap,Map<String,List<String>> weekAndDaysMap,Map<Long,AlertOverviewVO> categoryMap,Map<Long,AlertOverviewVO> stateMap,Map<Long,AlertOverviewVO> districtMap,List<Object[]> statuobjList,String type){
+		try{
+		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+		    SimpleDateFormat sdf3 = new SimpleDateFormat("MMM-dd-yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+			String fromDateStr = null;
+			String toDateStr = null;
+			
+	        if(weekAndDaysMap != null && weekAndDaysMap.size() > 0){
+            	for(Entry<String,List<String>> dateEntry:weekAndDaysMap.entrySet()){
+            		if(type != null && type.equalsIgnoreCase("Day")){
+            			if(dateEntry.getValue() != null && dateEntry.getValue().size() > 0){
+            				 for(String date:dateEntry.getValue()){
+            					 AlertOverviewVO dateVO = new AlertOverviewVO();
+            					 
+            					 fromDate = sdf2.parse(date);
+        						 toDate = sdf2.parse(date);
+        						 fromDateStr = sdf.format(fromDate);
+     							 toDateStr = sdf.format(toDate);
+     							 dateVO.setFromDateStr(fromDateStr);
+     					    	 dateVO.setToDateStr(toDateStr);
+     					    	
+        						 dateVO.setHeading(sdf3.format(fromDate) + " Report");
+            					 
+        						 dateVO.setDay(date);
+            					 dateVO.getList().add(date);
+            					 dateVO.getSubList().addAll(getRequiredList(categoryMap,statuobjList));
+            					 dateVO.setSubList1(getRequiredList(stateMap,statuobjList));
+            					 dateVO.setSubList2(getRequiredList(districtMap,statuobjList));
+            					 tempMap.put(date, dateVO);
+            				 }
+            			}
+            		}else{
+            			 AlertOverviewVO dateVO = new AlertOverviewVO();
+    					 dateVO.setDay(dateEntry.getKey());
+    					 
+    					 dateVO.setHeading(dateEntry.getKey() + " Report");
+    					 
+    					 dateVO.getList().addAll(dateEntry.getValue());
+    					 dateVO.getSubList().addAll(getRequiredList(categoryMap,statuobjList));
+    					 dateVO.setSubList1(getRequiredList(stateMap,statuobjList));
+    					 dateVO.setSubList2(getRequiredList(districtMap,statuobjList));
+    					 //Sending start and end date fo week or month
+				    	if(dateVO.getList() != null && dateVO.getList().size() > 1){
+							int len = dateVO.getList().size();
+							fromDate = sdf2.parse(dateVO.getList().get(0).trim());
+							toDate = sdf2.parse(dateVO.getList().get(len-1).trim());
+							fromDateStr = sdf.format(fromDate);
+							toDateStr = sdf.format(toDate);
+							
+						}else{
+							fromDate = sdf2.parse(dateVO.getList().get(0).trim());
+							toDate = sdf2.parse(dateVO.getList().get(0).trim());
+							fromDateStr = sdf.format(fromDate);
+							toDateStr = sdf.format(toDate);
+						}
+				    	dateVO.setFromDateStr(fromDateStr);
+				    	dateVO.setToDateStr(toDateStr);
+				    	
+    			    	tempMap.put(dateEntry.getKey(), dateVO);
+    	    		}
+            	}
+            }
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertDetailsInRequiredFormatToExportToExcel() method of AlertService{}");
+		}
+	}
+	public List<AlertOverviewVO> getRequiredList(Map<Long,AlertOverviewVO> map,List<Object[]> statuobjList){
+		List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
+		try{
+		  if(map != null && map.size() > 0){
+			  for(Entry<Long,AlertOverviewVO> entry:map.entrySet()){
+				  AlertOverviewVO locationVO = new AlertOverviewVO();
+					 locationVO.setId(entry.getValue().getId());
+					 locationVO.setName(entry.getValue().getName()); 
+					 locationVO.getSubList().addAll(prepareRequiredTemplate(statuobjList));
+					 resultList.add(locationVO);
+			  }
+		  }
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertDetailsInRequiredFormatToExportToExcel() method of AlertService{}");
+		}
+		return resultList;
+	}
+	public void setDateWiseData(Map<String,AlertOverviewVO> dateWiseMap,Map<String,Map<Long,Map<Long,Long>>> dateWiseCategoryAlertCntMap,Map<String,Map<Long,Map<Long,Long>>> stateWiseCategoryAlertCntMap,Map<String,Map<Long,Map<Long,Long>>> districtWiseCategoryAlertCntMap){
+		try{
+			 if(dateWiseMap != null && dateWiseMap.size() > 0){
+				 for(Entry<String,AlertOverviewVO> entry:dateWiseMap.entrySet()){
+					 if(entry != null && entry.getValue().getList() != null && entry.getValue().getList().size() > 0){
+						 for(String date:entry.getValue().getList()){
+							 Map<Long,Map<Long,Long>> categoryMap = dateWiseCategoryAlertCntMap.get(date);
+							 Map<Long,Map<Long,Long>> stateMap = stateWiseCategoryAlertCntMap.get(date);
+							 Map<Long,Map<Long,Long>> districtMap = districtWiseCategoryAlertCntMap.get(date);
+							 setRequiredDateBasedStatus(entry.getValue().getSubList(),categoryMap);//Setting category wise data
+							 setRequiredDateBasedStatus(entry.getValue().getSubList1(),stateMap);//Setting state wise data
+							 setRequiredDateBasedStatus(entry.getValue().getSubList2(),districtMap);//Setting distrct wise data
+						 }
+					 }
+					}
+			 }
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setDateWiseData() method of AlertService{}");
+		}
+	}
+	public void setRequiredDateBasedStatus(List<AlertOverviewVO> subList,Map<Long,Map<Long,Long>> map){
+		try{
+			 if(subList != null && subList.size() > 0){
+				 
+				   for(AlertOverviewVO vo:subList){
+					   
+					   if(map != null){
+						   
+						   Map<Long,Long> statusMap = map.get(vo.getId());
+						    
+						    List<AlertOverviewVO> mainList = vo.getSubList();
+						    
+						    if(mainList != null && mainList.size() > 0){
+						    	
+						    	for(AlertOverviewVO mainVO:mainList){
+						    		
+						    		if(mainVO != null && mainVO.getSubList() != null && mainVO.getSubList().size() > 0){
+						    			
+						    		   for(AlertOverviewVO statusVO:mainVO.getSubList()){
+						    			 
+						    			   if(statusMap != null ){
+						    				   
+						    				   if(statusMap.get(statusVO.getStatusTypeId()) != null){
+							    				   
+									    			 statusVO.setAlertCnt(statusVO.getAlertCnt()+statusMap.get(statusVO.getStatusTypeId()));
+									    		} 
+						    			   }
+						    			   
+						    		   }
+						    		}
+						    	}
+						    } 
+					   }
+					   
+				   }
+			   }
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setRequiredDateBasedStatus() method of AlertService{}");
+		}
+	}
+	public void caculateDayWiseGrandTotalAndPercentage(Map<String,AlertOverviewVO> dateWiseMap){
+		try{
+			if(dateWiseMap != null && dateWiseMap.size() > 0){
+				for(Entry<String,AlertOverviewVO> entry:dateWiseMap.entrySet()){
+					entry.getValue().getList().clear();//Clearing temp date list which is used for calculation
+					calculateDateWisePercentage(entry.getValue().getSubList());
+					calculateDateWisePercentage(entry.getValue().getSubList1());
+					calculateDateWisePercentage(entry.getValue().getSubList2());
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured caculateDayWiseGrandTotalAndPercentage() method of AlertService{}");
+		}
+	}
+	public void calculateDateWisePercentage(List<AlertOverviewVO> subList){
+		try{
+			Map<Long,Long> statusWiseTotalAlertCntMap = new HashMap<Long, Long>();
+			Long totalAlertCnt = 0l;
+			if(subList != null && subList.size() > 0){
+				
+				for(AlertOverviewVO VO:subList){//State or District or Category List
+					
+					if(VO.getSubList() != null && VO.getSubList().size() > 0){
+						
+						for(AlertOverviewVO mainVO:VO.getSubList()){
+				    		
+				    		if(subList != null && subList.size() > 0){
+				    			
+				    			 for(AlertOverviewVO statusVO:mainVO.getSubList()){
+				    				 
+				    					Long alertCnt = statusWiseTotalAlertCntMap.get(statusVO.getStatusTypeId());
+				    					
+							    		 if(alertCnt == null){
+							    			 
+							    			 statusWiseTotalAlertCntMap.put(statusVO.getStatusTypeId(),0l);
+							    		 }
+							    		 statusWiseTotalAlertCntMap.put(statusVO.getStatusTypeId(), statusWiseTotalAlertCntMap.get(statusVO.getStatusTypeId())+statusVO.getAlertCnt());
+							    		 //overall alert cnt
+							    		 totalAlertCnt = totalAlertCnt + statusVO.getAlertCnt();
+							    		 //total alert for not started,initialstage,finish,...
+							    		 mainVO.setAlertCnt(mainVO.getAlertCnt()+statusVO.getAlertCnt());
+							    		 //Total AlertCnt category or state or district wise
+							    		 VO.setAlertCnt(VO.getAlertCnt()+statusVO.getAlertCnt());
+							   }
+				    		}
+						}
+					}
+				}
+			}
+			//Calculating Grand total
+			settingGrandTotal(subList,totalAlertCnt,statusWiseTotalAlertCntMap);
+			
+	    }catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void setOverAllAlertData(List<Object[]> objList, AlertOverviewVO overAllVO,List<Object[]> statusObjList,String type){
+		try{
+			Map<Long,AlertOverviewVO> tempMap = new LinkedHashMap<Long, AlertOverviewVO>();
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					if(param[0] != null){
+						AlertOverviewVO VO = tempMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						   if(VO == null){
+							   VO = new AlertOverviewVO();
+							   VO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+							   VO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+							   VO.getSubList().addAll(prepareRequiredTemplate(statusObjList));
+							   tempMap.put(VO.getId(), VO);
+						   }
+						   Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+						   Long alertCnt = commonMethodsUtilService.getLongValueForObject(param[4]);
+						   List<AlertOverviewVO> statusList = VO.getSubList();
+						   if(statusList != null && statusList.size() > 0){
+						      for(AlertOverviewVO vo:statusList)	{
+						    	  AlertOverviewVO matchVO = getMatchVO(vo.getSubList(),statusId);
+						    	   if(matchVO != null){
+						    		   matchVO.setAlertCnt(alertCnt);
+						    	   }
+						      }
+						  }	
+					}
+				}
+			}
+			// Calculating grand total alert and percentage
+			calulateGrandTotalAndPercentage(tempMap,overAllVO,type);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setOverAllAlertData() method of AlertService{}");
+		}
+	}
+	public void calulateGrandTotalAndPercentage(Map<Long,AlertOverviewVO> resultMap,AlertOverviewVO resultVO,String type){
+		try{
+			 Map<Long,Long> statusWiseTotalAlertCntMap = new HashMap<Long, Long>();
+			 Long totalAlertCnt = 0l;
+			 if(resultMap != null && resultMap.size() > 0){
+				 
+				 for(Entry<Long,AlertOverviewVO> entry:resultMap.entrySet()){
+					 
+					    if(entry.getValue().getSubList() != null && entry.getValue().getSubList().size()>0){
+					    	
+					    	for(AlertOverviewVO mainVO:entry.getValue().getSubList()){
+					    		
+					    		if(mainVO != null && mainVO.getSubList() != null && mainVO.getSubList().size() > 0){
+					    			
+					    			 for(AlertOverviewVO statusVO:mainVO.getSubList()){
+					    				 
+					    					Long alertCnt = statusWiseTotalAlertCntMap.get(statusVO.getStatusTypeId());
+					    					
+								    		 if(alertCnt == null){
+								    			 
+								    			 statusWiseTotalAlertCntMap.put(statusVO.getStatusTypeId(),0l);
+								    		 }
+								    		 statusWiseTotalAlertCntMap.put(statusVO.getStatusTypeId(), statusWiseTotalAlertCntMap.get(statusVO.getStatusTypeId())+statusVO.getAlertCnt());
+								    		 //overall alert cnt
+								    		 totalAlertCnt = totalAlertCnt + statusVO.getAlertCnt();
+								    		 //total alert for not started,initialstage,finish,...
+								    		 mainVO.setAlertCnt(mainVO.getAlertCnt()+statusVO.getAlertCnt());
+								    		 //Total AlertCnt category or state or district wise
+								    		 entry.getValue().setAlertCnt(entry.getValue().getAlertCnt()+statusVO.getAlertCnt());
+								   }
+					    		}
+					    	}
+					    }
+				 }
+			 }	
+			 if(resultMap != null && resultMap.size() > 0){
+				 if(type != null && type.equalsIgnoreCase("category")){
+					 resultVO.getSubList().addAll(resultMap.values());
+					 settingGrandTotal(resultVO.getSubList(),totalAlertCnt,statusWiseTotalAlertCntMap);
+				 }else if(type.equalsIgnoreCase("state")){
+					 resultVO.setSubList1(new ArrayList<AlertOverviewVO>(resultMap.values()));
+					 settingGrandTotal(resultVO.getSubList1(),totalAlertCnt,statusWiseTotalAlertCntMap);
+				 }else if(type.equalsIgnoreCase("district")){
+					 resultVO.setSubList2(new ArrayList<AlertOverviewVO>(resultMap.values()));
+					 settingGrandTotal(resultVO.getSubList2(),totalAlertCnt,statusWiseTotalAlertCntMap);
+				 }
+			 }
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured calulateGrandTotalAndPercentage() method of AlertService{}");
+		}
+	}
+	public void settingGrandTotal(List<AlertOverviewVO> resultList,Long totalAlert,Map<Long,Long> statusWiseTotalAlertCntMap){
+		try{
+			//Setting grand total percentage
+			if(resultList != null && resultList.size() > 0){
+				AlertOverviewVO VO = resultList.get(0);
+				VO.setGrandTotal(totalAlert);
+				 List<AlertOverviewVO> mainList = VO.getSubList();
+				    if(mainList != null && mainList.size() > 0){
+				      for(AlertOverviewVO mainVO:mainList)	{
+				    	  if(mainVO.getSubList() != null && mainVO.getSubList().size() > 0){
+				    		  for(AlertOverviewVO statusVO:mainVO.getSubList()){
+				    			  if(statusWiseTotalAlertCntMap.get(statusVO.getStatusTypeId()) != null){
+				    			   	  statusVO.setGrandTotal(statusWiseTotalAlertCntMap.get(statusVO.getStatusTypeId()));
+				    			   	  mainVO.setGrandTotal(mainVO.getGrandTotal()+statusVO.getGrandTotal());
+							    	  statusVO.setPercentage(calculatePercantage(statusVO.getGrandTotal(), totalAlert));
+								  }
+				    		  }
+				    	  }
+				    	  mainVO.setGrandOverAllper(calculatePercantage(mainVO.getGrandTotal(),totalAlert));
+				      }
+				    }
+			}
+			// calculating percentage for notStarted,initialstage,finish,...
+           if(resultList != null && resultList.size() > 0){
+        	   for(AlertOverviewVO VO:resultList){
+        		   if(VO.getSubList() != null && VO.getSubList().size() > 0){
+        			   for(AlertOverviewVO mainVO:VO.getSubList()){
+        				   if(mainVO.getSubList() != null && mainVO.getSubList().size() > 0){
+        					   for(AlertOverviewVO statusVO:mainVO.getSubList()){
+        						   statusVO.setOverAllPer(calculatePercantage(mainVO.getAlertCnt(), VO.getAlertCnt()));
+        					   }
+        				   }
+        				   mainVO.setOverAllPer(calculatePercantage(mainVO.getAlertCnt(), VO.getAlertCnt()));
+        			   }
+        		   }
+        	   }
+           }
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured settingGrandTotal() method of AlertService{}");
+		}
+	}
+	public List<AlertOverviewVO> prepareRequiredTemplate(List<Object[]> statuobjList){
+		List<AlertOverviewVO> resultList = new ArrayList<AlertOverviewVO>();
+		try{
+			
+			 AlertOverviewVO notStatusVO = new AlertOverviewVO();
+			 notStatusVO.setStatusTypeId(1l);
+			 notStatusVO.setStatusType("NOT STARTED");
+			 
+			 AlertOverviewVO initialStageVO = new AlertOverviewVO();
+			 initialStageVO.setStatusTypeId(2l);
+			 initialStageVO.setStatusType("INITIAL STAGE");
+			 
+			 AlertOverviewVO finishVO = new AlertOverviewVO();
+			 finishVO.setStatusTypeId(3l);
+			 finishVO.setStatusType("FINISH");
+			 
+			 AlertOverviewVO mvTOthrCtgryVO = new AlertOverviewVO();
+			 mvTOthrCtgryVO.setStatusTypeId(4l);
+			 mvTOthrCtgryVO.setStatusType("MOVED TO OTHER CATEGORY");
+			 
+			if(statuobjList != null && statuobjList.size() > 0){
+				for(Object[] param:statuobjList){
+					Long statusId = commonMethodsUtilService.getLongValueForObject(param[0]).longValue();
+					if(statusId == 2l){// 2:Notify
+						notStatusVO.getSubList().add(getStatusVO(param));
+					}else if(statusId == 3l){// 3:Action in progress
+						initialStageVO.getSubList().add(getStatusVO(param));
+					}else if(statusId == 4l || statusId == 12l || statusId == 13l){// 4:completed 12:Closed 13:Proposal
+						finishVO.getSubList().add(getStatusVO(param));
+					}else if(statusId == 6l || statusId == 7l || statusId == 8l || statusId == 9l || statusId == 11){// 6:ActionNotRequired 7:Duplicate 8:Wrongly Mapped Designation 9:Wrongly Mapped Department 11:Reopen
+						mvTOthrCtgryVO.getSubList().add(getStatusVO(param));
+					}
+				}
+			}
+			resultList.add(notStatusVO);
+			resultList.add(initialStageVO);
+			resultList.add(finishVO);
+			resultList.add(mvTOthrCtgryVO);
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured prepareRequiredTemplate() method of AlertService{}");
+		}
+		return resultList;
+	}
+	public AlertOverviewVO getStatusVO(Object[] obj){
+		try{
+			if(obj != null && obj.length > 0){
+				AlertOverviewVO statusVO = new AlertOverviewVO();
+				statusVO.setStatusTypeId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				statusVO.setStatusType(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				return statusVO;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getStatusVO() method of AlertService{}");
+		}
+		return null;
+	}
+	public void setAlrtSttsIds(List<Object[]> objList,Set<Long> alertStatusIdsSet){
+		try{
+			if(objList != null && objList.size() > 0){
+				for(Object[] param:objList){
+					alertStatusIdsSet.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setAlrtSttsIds() method of AlertService{}");
+		}
+	}
+	public void generateExcelReport(AlertOverviewVO resultVO){
+		try{
+			 HSSFWorkbook workbook = new HSSFWorkbook(); 
+			 HSSFSheet spreadsheet = workbook.createSheet("Over All");
+			 spreadsheet.setColumnWidth(0, 8000);
+			 
+			 prepareExcelReportHeading(spreadsheet,workbook);//Prepare template
+			 AlertOverviewVO overViewVO = resultVO.getOverAllVO();
+			 int rowNo = 2;
+			 if(overViewVO != null){
+				 rowNo =  writeDataToExcelSheetWorkBook(overViewVO.getSubList(),"Category",spreadsheet,rowNo);
+				 rowNo = writeDataToExcelSheetWorkBook(overViewVO.getSubList1(),"State",spreadsheet,rowNo);
+				 rowNo = writeDataToExcelSheetWorkBook(overViewVO.getSubList2(),"District",spreadsheet,rowNo);
+			 }
+			 if(resultVO != null && resultVO.getSubList() != null){
+				 for(AlertOverviewVO dateVO:resultVO.getSubList()){
+					 HSSFSheet sprdsht = workbook.createSheet(dateVO.getHeading());
+					 
+					 prepareExcelReportHeading(sprdsht,workbook);//Prepare template
+					 rowNo = 2;
+					 rowNo = writeDataToExcelSheetWorkBook(dateVO.getSubList(),"Category",sprdsht,rowNo);
+					 rowNo = writeDataToExcelSheetWorkBook(dateVO.getSubList1(),"State",sprdsht,rowNo);
+					 rowNo =writeDataToExcelSheetWorkBook(dateVO.getSubList2(),"District",sprdsht,rowNo);
+				 }
+			 }
+			 /* FileOutputStream out = new FileOutputStream(new File(IConstants.EXPORT_TO_EXCEL_FOLDER_URL+"alertReport.xls"));
+				      workbook.write(out);
+				      out.close();
+				      System.out.println("Writesheet.xlsx written successfully" );*/
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured generateExcelReport() method of AlertService{}");
+		}
+	}
+	public void prepareExcelReportHeading(HSSFSheet spreadsheet,HSSFWorkbook workbook){
+		try{
+			  HSSFRow headingRow = spreadsheet.createRow(1);
+			  spreadsheet.autoSizeColumn((short)1000000);
+			 //create cell style
+			  HSSFCellStyle  cellStyle = workbook.createCellStyle();
+			  cellStyle.setWrapText(true);
+			  
+		      //cellStyle.setFillBackgroundColor(HSSFColor.YELLOW.index);
+		      //cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		     // cellStyle.setFillForegroundColor(HSSFColor.BLACK.index);
+		     // cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		      //merge required cell 
+		      spreadsheet.addMergedRegion(new CellRangeAddress(1, 1, 3, 4));
+		      spreadsheet.addMergedRegion(new CellRangeAddress(1, 1, 6, 7));
+		      spreadsheet.addMergedRegion(new CellRangeAddress(1, 1, 9, 12));
+		      spreadsheet.addMergedRegion(new CellRangeAddress(1, 1, 14, 19));
+			 
+			 Cell cell1 = headingRow.createCell(1);
+			 Cell cell2 = headingRow.createCell(2);
+			 Cell cell3 = headingRow.createCell(3);
+			 cell3.setCellValue("NOT STARTED");
+			 cell3.setCellStyle(cellStyle);
+			 
+			 Cell cell4 = headingRow.createCell(5);
+			 Cell cell5 = headingRow.createCell(6);
+			 cell5.setCellValue("INITIAL STAGE");
+			 cell5.setCellStyle(cellStyle);
+			 
+			 Cell cell6 = headingRow.createCell(8);
+			 Cell cell7 = headingRow.createCell(9);
+			 cell7.setCellValue("FINISHED");
+			 cell7.setCellStyle(cellStyle);
+			 
+			 Cell cell8 = headingRow.createCell(13);
+			 Cell cell9 = headingRow.createCell(14);
+			 cell9.setCellValue("MOVED TO OTHER CATEGORY");
+			 cell9.setCellStyle(cellStyle);
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured prepareExcelReportHeading() method of AlertService{}");
+		}
+	}
+	public int writeDataToExcelSheetWorkBook(List<AlertOverviewVO> subList,String heading,HSSFSheet spreadsheet,int noOfRow){
+		try{
+			HSSFRow row2 = spreadsheet.createRow(noOfRow++);
+			 Cell cell = null;
+			 cell = row2.createCell(1);
+			 cell.setCellValue(heading);
+			 cell = row2.createCell(2);
+			 cell.setCellValue("Total");
+			 int cellNumber=3;
+			 //building statusHeading
+			 if(subList != null && subList.size() > 0){
+				 for(AlertOverviewVO mainVO:subList.get(0).getSubList()){
+                    if(mainVO != null && mainVO.getSubList() != null && mainVO.getSubList().size() > 0){
+                    	int size = mainVO.getSubList().size();
+                    	int loopIteration = 0;
+                    	for(AlertOverviewVO statusVO:mainVO.getSubList()){
+                    		 cell = row2.createCell(cellNumber++);
+                			 cell.setCellValue(statusVO.getStatusType());
+                			 loopIteration++;
+                			 if(size == loopIteration){
+                			  cell = row2.createCell(cellNumber++); 
+                			 }
+                    	}
+                    	 cell = row2.createCell(cellNumber++); 
+                    }
+				 }
+			 }
+			 
+			  HSSFRow row = null;
+			 if(subList != null && subList.size() > 0){
+				 for(AlertOverviewVO categoryVO:subList){
+					  cellNumber = 1;
+					 row = spreadsheet.createRow(noOfRow++);
+					 cell = row.createCell(cellNumber++); 
+					 cell.setCellValue(categoryVO.getName());
+					 cell = row.createCell(cellNumber++); 
+					 cell.setCellValue(categoryVO.getAlertCnt());
+                    if(categoryVO != null && categoryVO.getSubList() != null && categoryVO.getSubList().size() > 0){
+                    	for(AlertOverviewVO mainVO:categoryVO.getSubList()){
+                    		if(mainVO.getSubList() != null && mainVO.getSubList().size() > 0){
+                    				int size = mainVO.getSubList().size();
+                                	int loopIteration = 0;
+                                	for(AlertOverviewVO statusVO:mainVO.getSubList()){
+                                		 cell = row.createCell(cellNumber++);
+                            			 cell.setCellValue(statusVO.getAlertCnt());
+                            			 loopIteration++;
+                            			 if(size == loopIteration){
+                            			  cell = row.createCell(cellNumber++); 
+                            			  cell.setCellValue(mainVO.getOverAllPer());
+                            			 }
+                                	}
+                             	 cell = row.createCell(cellNumber++); 
+                    		}
+                    	}
+                    }
+				 }
+			 } 
+			 //grand total
+			 if(subList != null && subList.size() > 0){
+				    AlertOverviewVO categoryVO = subList.get(0);
+				     cellNumber = 1;
+					 row = spreadsheet.createRow(noOfRow++);
+					 cell = row.createCell(cellNumber++); 
+					 cell.setCellValue("Grand Total");
+					 cell = row.createCell(cellNumber++); 
+					 cell.setCellValue(categoryVO.getGrandTotal());
+                    if(categoryVO != null && categoryVO.getSubList() != null && categoryVO.getSubList().size() > 0){ 
+                    	for(AlertOverviewVO mainVO:categoryVO.getSubList()){
+                    		if(mainVO.getSubList() != null && mainVO.getSubList().size() > 0){
+                    				int size = mainVO.getSubList().size();
+                                	int loopIteration = 0;
+                                	for(AlertOverviewVO statusVO:mainVO.getSubList()){
+                                		 cell = row.createCell(cellNumber++);
+                            			 cell.setCellValue(statusVO.getGrandTotal());
+                            			 loopIteration++;
+                            			 if(size == loopIteration){
+                            			  cell = row.createCell(cellNumber++); 
+                            			  cell.setCellValue(mainVO.getGrandOverAllper());
+                            			 }
+                                	}
+                             	 cell = row.createCell(cellNumber++); 
+                    		}
+                    	}
+                  } 
+                    //Status Wise overAll percentage
+                    row = spreadsheet.createRow(noOfRow++);
+                    cellNumber = 1;
+                    cell = row.createCell(cellNumber++); 
+                    cell = row.createCell(cellNumber++); 
+                    if(categoryVO != null && categoryVO.getSubList() != null && categoryVO.getSubList().size() > 0){ 
+                    	for(AlertOverviewVO mainVO:categoryVO.getSubList()){
+                    		if(mainVO.getSubList() != null && mainVO.getSubList().size() > 0){
+                    				int size = mainVO.getSubList().size();
+                                	int loopIteration = 0;
+                                	for(AlertOverviewVO statusVO:mainVO.getSubList()){
+                                		 cell = row.createCell(cellNumber++);
+                            			 cell.setCellValue(statusVO.getPercentage());
+                            			 loopIteration++;
+                            			 if(size == loopIteration){
+                            			  cell = row.createCell(cellNumber++); 
+                            			 }
+                                	}
+                             	 cell = row.createCell(cellNumber++); 
+                    		}
+                    	}
+                  } 
+		  }
+			 noOfRow = noOfRow +2;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured writeDataToExcelSheetWorkBook() method of AlertService{}");
+		}
+		
+		return noOfRow;
+	}
 }
