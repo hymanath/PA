@@ -23,6 +23,11 @@
 			</div>
 		</div>
 	</nav>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12"></div>
+		</div>
+	</div>
 </header>
 <main>
 	<section>
@@ -136,20 +141,28 @@
 						</tr>
 					</table>
 				</div>
-				<div class="col-sm-12">
+				<!--<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title text-capital">state level overview</h4>
+							<div class="row">
+								<div class="col-sm-6">
+									<h4 class="panel-title text-capital">mandal level overview</h4>
+								</div>
+								<div class="col-sm-6">
+									<ul class="switch-btn pull-right" tab-switch="stateLevel">
+										<li class="active" attr_type="overview">overview</li>
+										<li attr_type="scheme">Scheme level</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 						<div class="panel-body">
 							<div>
-								<!-- Nav tabs -->
 								<ul class="nav nav-tabs pull-right" role="tablist">
 									<li role="presentation" class="active"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 									<li role="presentation"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 								</ul>
 
-								<!-- Tab panes -->
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="stateLevelGraph">
 										<div class="row">
@@ -169,11 +182,21 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title text-capital">district level overview</h4>
+							<div class="row">
+								<div class="col-sm-6">
+									<h4 class="panel-title text-capital">district level overview</h4>
+								</div>
+								<div class="col-sm-6">
+									<ul class="switch-btn pull-right" tab-switch="distLevel">
+										<li class="active" attr_type="overview">overview</li>
+										<li attr_type="scheme">Scheme level</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 						<div class="panel-body">
 							<div>
@@ -204,20 +227,28 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-12">
+				<!--<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title text-capital">mandal level overview</h4>
+							<div class="row">
+								<div class="col-sm-6">
+									<h4 class="panel-title text-capital">mandal level overview</h4>
+								</div>
+								<div class="col-sm-6">
+									<ul class="switch-btn pull-right" tab-switch="mandalLevel">
+										<li class="active" attr_type="overview">overview</li>
+										<li attr_type="scheme">Scheme level</li>
+									</ul>
+								</div>
+							</div>
+							
 						</div>
 						<div class="panel-body">
 							<div>
-								<!-- Nav tabs -->
 								<ul class="nav nav-tabs pull-right" role="tablist">
 									<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 									<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 								</ul>
-
-								<!-- Tab panes -->
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
 										<div class="row">
@@ -237,11 +268,21 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
-							<h4 class="panel-title text-capital">constituency level overview</h4>
+							<div class="row">
+								<div class="col-sm-6">
+									<h4 class="panel-title text-capital">constituency level overview</h4>
+								</div>
+								<div class="col-sm-6">
+									<ul class="switch-btn pull-right" tab-switch="consLevel">
+										<li class="active" attr_type="overview">overview</li>
+										<li attr_type="scheme">Scheme level</li>
+									</ul>
+								</div>
+							</div>
 						</div>
 						<div class="panel-body">
 							<div>
@@ -272,16 +313,6 @@
 						</div>
 					</div>
 				</div>	
-				<div class="col-sm-12">
-					<div class="panel panel-default panel-black">
-						<div class="panel-heading">
-							<h4 class="panel-title text-capital">constituency level overview</h4>
-						</div>
-						<div class="panel-body">
-							<div id="SchemeWiseTotal"></div>
-						</div>
-					</div>
-				</div>					
 			</div>
 		</div>
 	</section>	
