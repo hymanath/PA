@@ -123,5 +123,13 @@ public class FundManagementDashboardController {
 		             List<LocationFundDetailsVO>  constisList=fundManagementDashboardService.getAllConstituenciesByDistrictId(map.get("districtId"));
 		             return constisList;
 		        }
+		@RequestMapping(value="/getAllDepartments", method = RequestMethod.POST,
+		        produces = MediaType.APPLICATION_JSON_VALUE,
+		        consumes = MediaType.APPLICATION_JSON_VALUE)
+		        public @ResponseBody List<LocationFundDetailsVO> getAllDepartments(){
+			    
+		             List<LocationFundDetailsVO>  districtList=fundManagementDashboardService.getAllDepartments();
+		             return districtList;
+		        }  
 		
 }
