@@ -154,4 +154,33 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 		 return Action.SUCCESS;
 	 }
 	 
+	 public String getVotersAndCadreCasteWiseCount(){
+		 try {
+			jObj = new JSONObject(getTask());
+			locationVotersVOList = locationDashboardService.getVotersAndCadreCasteWiseCount(jObj.getString("type"),jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVotersAndCadreCasteWiseCount", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String getCasteGroupNAgeWiseVoterNCadreCounts(){
+		 try {
+			jObj = new JSONObject(getTask());
+			locationVotersVOList = locationDashboardService.getCasteGroupNAgeWiseVoterNCadreCounts(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
+		}
+		return Action.SUCCESS;
+	 }
+	 
+	 public String getCasteNAgeWiseVoterNCadreCounts(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			 locationVotersVOList = locationDashboardService.getCasteNAgeWiseVoterNCadreCounts(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),jObj.getLong("casteGroupId"),jObj.getLong("casteId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
+		}
+		 return Action.SUCCESS;
+	 }
 }
