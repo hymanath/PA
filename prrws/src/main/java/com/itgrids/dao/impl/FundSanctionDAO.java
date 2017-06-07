@@ -134,7 +134,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 				+ " and model.locationValue in (:levelValues) "
 				+ " and model.insertedTime between :fromDate and :toDate ");
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
-			sb.append(" and model.financialYearId = :financialYrIdList ");
+			sb.append(" and model.financialYearId in (:financialYrIdList) ");  
 		}
 		sb.append(" group by model.financialYear.financialYearId, model.locationValue order by model.financialYear.financialYearId ");
 		Query query = getSession().createQuery(sb.toString());
