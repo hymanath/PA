@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
+import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
@@ -137,6 +138,17 @@ public class WebServiceHandler {
 	@Autowired
 	private IPartyMeetingService partyMeetingService;
 	
+	private AmsAppLoginVO  amsAppLoginVO ;
+	
+	
+	public AmsAppLoginVO getAmsAppLoginVO() {
+		return amsAppLoginVO;
+	}
+
+	public void setAmsAppLoginVO(AmsAppLoginVO amsAppLoginVO) {
+		this.amsAppLoginVO = amsAppLoginVO;
+	}
+
 	public PashiAppNoCadreVO getPashiAppNoCadreVO() {
 		return pashiAppNoCadreVO;
 	}
@@ -2687,4 +2699,35 @@ public class WebServiceHandler {
 			//e.printStackTrace();
 		}
     }
+	
+	@POST
+	@Path("/getAmsAppValidateLoginDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public AmsAppLoginVO getAmsAppValidateLoginDetails(AmsAppLoginVO vo)
+	{
+		try{
+			
+			amsAppLoginVO = webServiceHandlerService.getAmsAppValidateLoginDetails(vo.getUserName(),vo.getPassword());
+			return amsAppLoginVO;
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAmsAppValidateLoginDetails() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	
+	@GET
+	@Path("/getOfficerOtpStatus/{otpStr}/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String getOfficerOtpStatus(@PathParam("otpStr") String otpStr,@PathParam("userId") Long userId){
+		try{			
+			return webServiceHandlerService.getOfficerOtpStatus(userId,otpStr);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getOfficerOtpStatus() Method, Exception is ",e);
+			return null;
+		}
+	}
 }
