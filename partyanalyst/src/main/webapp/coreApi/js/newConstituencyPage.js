@@ -11,6 +11,10 @@ function onLoadAjaxCalls()
 	getDetailedGovtOverAllAnalysisProblemsForView();
 	getDetailedElectionInformaction()//get detailed election information
 	getVotersAndcadreAgeWiseCount();
+	getVotersAndCadreCasteWiseCount("voter");
+	getVotersAndCadreCasteWiseCount("cadre");
+	getCasteGroupNAgeWiseVoterNCadreCounts();
+	//getCasteNAgeWiseVoterNCadreCounts();
 }
 function getCandidateAndPartyInfoForConstituency(){
 	$("#candidateProfile").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -591,4 +595,49 @@ function getVotersAndcadreAgeWiseCount(){
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  
   });
+}
+
+function getVotersAndCadreCasteWiseCount(type){
+	jsObj={
+		type:type,
+    	constituencyId:232,
+    	publicationDateId:22
+    }
+	 $.ajax({
+      type : "GET",
+      url : "getVotersAndCadreCasteWiseCountAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+	});	
+}
+
+function getCasteGroupNAgeWiseVoterNCadreCounts(){
+	jsObj={
+		constituencyId:232,
+    	publicationDateId:22
+    }
+	 $.ajax({
+      type : "GET",
+      url : "getCasteGroupNAgeWiseVoterNCadreCountsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+	});	
+}
+
+function getCasteNAgeWiseVoterNCadreCounts(){
+	jsObj={
+		casteGroupId:1,
+		casteId:284,
+		constituencyId:232,
+    	publicationDateId:22
+    }
+	 $.ajax({
+      type : "GET",
+      url : "getCasteNAgeWiseVoterNCadreCountsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+	});	
 }
