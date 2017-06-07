@@ -51,6 +51,7 @@ import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
@@ -140,8 +141,18 @@ public class WebServiceHandler {
 	private IPartyMeetingService partyMeetingService;
 	
 	private AmsAppLoginVO  amsAppLoginVO ;
+	private DistrictOfficeViewAlertVO districtOfficeViewAlertVO;
 	
 	
+	public DistrictOfficeViewAlertVO getDistrictOfficeViewAlertVO() {
+		return districtOfficeViewAlertVO;
+	}
+
+	public void setDistrictOfficeViewAlertVO(
+			DistrictOfficeViewAlertVO districtOfficeViewAlertVO) {
+		this.districtOfficeViewAlertVO = districtOfficeViewAlertVO;
+	}
+
 	public AmsAppLoginVO getAmsAppLoginVO() {
 		return amsAppLoginVO;
 	}
@@ -2742,6 +2753,23 @@ public class WebServiceHandler {
 			LOG.error("Exception Occured in getAmsFilterCategoryTypes() Method, Exception is ",e);
 			return null;
 		}
+	}
+	
+	@POST
+	@Path("/getAmsAppAlertsBasicCounts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(AmsDataVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getAmsAppAlertsBasicCounts(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAmsAppValidateLoginDetails() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
 	}
 	
 }
