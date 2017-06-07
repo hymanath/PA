@@ -1,8 +1,8 @@
 +function ($) {
 	onLoadCalls();
 	onLoadClicks();
-	onLoadInitialisations();
-	
+	//onLoadInitialisations();
+	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
 	function onLoadCalls()
 	{
@@ -12,11 +12,11 @@
 		getLocationWiseFundDetails(4,'lowest','lowFundCons');
 		getAverageFundForAnyLevel(3,'avgFundDist');
 		getAverageFundForAnyLevel(4,'avgFundCons');
-		getLocationWiseAmountDetails(2,'stateLevlOvervw');
-		getLocationWiseAmountDetails(3,'distLevlOvervw');
-		getLocationWiseAmountDetails(4,'consLevlOvervw');
-		getLocationWiseAmountDetails(5,'mandalLevlOvervw');
-		getSchemeWiseLocationWiseAmountDetails(4,'SchemeWiseTotal');
+		//getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
+		getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
+		getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
+		//getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview');
+		
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
 		getTotalFunds('totFund');
@@ -32,11 +32,31 @@
 	}
 	function onLoadClicks()
 	{
-		
-	}
-	function onLoadInitialisations()
-	{
-		
+		$(document).on("click","[tab-switch] li",function(){
+			$(this).closest("ul").find("li").removeClass("active");
+			$(this).addClass("active");
+			var blockName = $(this).closest("ul").attr("tab-switch");
+			var blockType = $(this).attr("attr_type");
+			if(blockName == 'consLevel')
+			{
+				if(blockType == 'overview')
+				{
+					getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
+				}else if(blockType == 'scheme')
+				{
+					getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme');
+				}
+			}else if(blockName == 'distLevel')
+			{
+				if(blockType == 'overview')
+				{
+					getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
+				}else if(blockType == 'scheme')
+				{
+					getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme');
+				}
+			}
+		});
 	}
 	function highChart(divId,namesArr,DataArr)
 	{
@@ -118,6 +138,7 @@
 	}
 	function getLocationWiseFundDetails(locationId,dataType,divId)
 	{
+		$("#"+divId).html(spinner);
 		var levelValues = [];
 		var financialYrIdArr = [1,2];
 		var sourceIdsArr = [];
@@ -218,7 +239,8 @@
 		
 		$("#"+divId).html(str);
 	}
-	function getLocationWiseAmountDetails(levelId,divId){
+	function getLocationWiseAmountDetails(levelId,divId,type){
+		$("#"+divId).html(spinner);
 		var levelValues = [];
 		var financialYrIdList = [1];
 		var json = {
@@ -242,7 +264,7 @@
 			success : function(ajaxresp){
 				if(ajaxresp != null && ajaxresp.length > 0)
 				{
-					buildLocationWiseAmountDetails(ajaxresp,divId);
+					buildLocationWiseAmountDetails(ajaxresp,divId,type,levelId);
 				}else{
 					$("#"+divId).html("NO DATA AVAILABLE");
 				}
@@ -252,7 +274,7 @@
 			}
 		});
 	}
-	function buildLocationWiseAmountDetails(result,divId)
+	function buildLocationWiseAmountDetails(result,divId,type,levelId)
 	{
 		var str='';
 		str+='<div class="scroller'+divId+'">';
@@ -260,37 +282,72 @@
 		str+='</div>';
 		$("#"+divId).html(str);
 		var table='';
-		table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
-			table+='<thead>';
-				table+='<tr>';
-					table+='<th></th>';
-					table+='<th colspan="2">2014-2015</th>';
-					table+='<th colspan="2">All Financial Years</th>';
-				table+='</tr>';
-				table+='<tr>';
-					table+='<th>District</th>';
-					table+='<th>No</th>';
-					table+='<th>Amt.</th>';
-					table+='<th>No</th>';
-					table+='<th>Amt.</th>';
-				table+='</tr>';
-			table+='</thead>';
-			table+='<tbody>';
-				for(var i in result){
+		if(type == 'overview')
+		{
+			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+				table+='<thead class="text-center">';
 					table+='<tr>';
-						table+='<td>'+result[i].locationName+'</td>';
-						for(var j in result[i].locationList1){
-							table+='<td>'+result[i].locationList1[j].count+'</td>';
-							table+='<td>'+result[i].locationList1[j].amount+'</td>';
-						}
+						table+='<th></th>';
+						table+='<th colspan="2">2014-2015</th>';
+						table+='<th colspan="2">All Financial Years</th>';
 					table+='</tr>';
-				}
-				
-			table+='</tbody>';
-		table+='</table>';
+					table+='<tr>';
+						table+='<th>District</th>';
+						table+='<th>No</th>';
+						table+='<th>Amt.</th>';
+						table+='<th>No</th>';
+						table+='<th>Amt.</th>';
+					table+='</tr>';
+				table+='</thead>';
+				table+='<tbody>';
+					for(var i in result){
+						table+='<tr>';
+							table+='<td>'+result[i].locationName+'</td>';
+							for(var j in result[i].locationList1){
+								table+='<td>'+result[i].locationList1[j].count+'</td>';
+								table+='<td>'+result[i].locationList1[j].amount+'</td>';
+							}
+						table+='</tr>';
+					}
+					
+				table+='</tbody>';
+			table+='</table>';
+		}else if(type == 'scheme')
+		{
+			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+				table+='<thead class="text-center">';
+					table+='<tr>';
+						table+='<th></th>';
+						table+='<th colspan="2">2014-2015</th>';
+						table+='<th colspan="2">All Financial Years</th>';
+					table+='</tr>';
+					table+='<tr>';
+						table+='<th>District</th>';
+						table+='<th>No</th>';
+						table+='<th>Amt.</th>';
+						table+='<th>No</th>';
+						table+='<th>Amt.</th>';
+					table+='</tr>';
+				table+='</thead>';
+				table+='<tbody>';
+					for(var i in result){
+						table+='<tr>';
+							table+='<td>'+result[i].addressVO.districtName+'</td>';
+							for(var j in result[i].subList)
+							{
+								table+='<td>'+result[i].subList[0].subList[0].count+'</td>';
+								table+='<td>'+result[i].subList[0].subList[1].totalCount+'</td>';
+							}
+						table+='</tr>';
+					}
+					
+				table+='</tbody>';
+			table+='</table>';
+		}
+		
 		$("#"+divId+"Table").html(table);
 		$("#dataTable"+divId).DataTable();
-		if(result !=null && result.length>0)
+		if(type == 'overview')
 		{
 			var locationNamesArr=[];
 			var amountArr =[];
@@ -330,7 +387,101 @@
 				$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
 			}
 			$(".chart"+divId).height(height);
+		}else if(type == 'scheme')
+		{
 			
+			var locationNames=[];
+			for(var i in result){
+			  var yearArr1415=[];
+			  var yearArr1516=[];
+			  var amount2 = [];
+			  if(levelId == 3){
+				  if(result[i].addressVO !=null && result[i].addressVO.length>0){
+					  for(var j in result[i].addressVO){
+						 locationNames.push(result[i].addressVO[j].districtName); 
+					  }
+				  }
+				   
+			  }else if(levelId == 4){
+				   if(result[i].addressVO !=null && result[i].addressVO.length>0){
+					  for(var j in result[i].addressVO){
+						 locationNames.push(result[i].addressVO[j].districtName); 
+					  }
+				  }
+			  }
+			  
+			  if(result[i].subList !=null && result[i].subList.length>0){
+				for(var j in result[i].subList){
+				  
+				  if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
+					for(var k in result[i].subList[j].subList){
+					  
+					  if(result[i].subList[j].yearId==1){
+						  
+						yearArr1415.push(result[i].subList[j].subList[k].totalCount);
+						
+					  }else if(result[i].subList[j].yearId==2){
+						yearArr1516.push(result[i].subList[j].subList[k].totalCount);
+					  }
+					  
+					  
+					}
+					
+					var mainFinancialJosnObjArr = [];
+					   if(proposalPendingArr != null && proposalPendingArr.length > 0){
+					  mainFinancialJosnObjArr.push({name:'Proposal Pending',data:proposalPendingArr,color:"#FEA723"});  
+					  }
+					   if(proposalRejectedArr != null && proposalRejectedArr.length > 0){
+					  mainFinancialJosnObjArr.push({name:'Proposal Rejected',data:proposalRejectedArr,color:"#F15A25"});  
+					  }
+				  }
+				}
+			  }
+			}
+			  
+			  
+			  
+			var locationNamesArr=[];
+			var amountArr =[];
+			var amountArr1 =[];
+			for(var i in result){
+				locationNamesArr.push(result[i].addressVO.districtName);
+				
+				if(result[i].subList !=null &&  result[i].subList.length>0){
+					for(var j in result[i].subList){
+						for(var k in result[i].subList[j].subList)
+						{
+							if(result[i].subList[j].financialYearId == 1){
+								amountArr.push(result[i].subList[j].subList[k].totalCount)
+							}else if(result[i].subList[j].financialYearId == 0){
+								amountArr1.push(result[i].subList[j].subList[k].totalCount)
+							}   
+						}
+					}
+				}
+				var mainJosnObjArr=[];
+				if(amountArr != null && amountArr.length > 0){
+					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
+				}
+				if(amountArr1 != null && amountArr1.length > 0){
+					mainJosnObjArr.push({name:'All Financial Year',data:amountArr1,color:"#5B5B5B"});  
+				} 
+				
+			}
+			var length = result.length
+			var height = '';
+			if(length == 0)
+			{
+				height = length * 100;
+			}else if(length > 3){
+				height = length * 40;
+			}
+			if(length > 8)
+			{
+				$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
+			}
+			$(".chart"+divId).height(height);
+		}
 			$(".chart"+divId).highcharts({
 				chart: {
 					type: 'bar',
@@ -405,7 +556,7 @@
 				},
 				series: mainJosnObjArr
 			});
-		}
+		
 	}
 	
 	function getTotalFunds(divId)
@@ -444,7 +595,7 @@
 			}
 		});
    }
-	function getSchemeWiseLocationWiseAmountDetails(){
+	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,type){
 		var levelValues = [];
 		var financialYrIdArr = [1,2];
 		var sourceIdsArr = [];
@@ -452,7 +603,7 @@
 		var deptIdsArr = [];
 
 		var json = {
-			levelId : 4, 
+			levelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : "01-06-2013",       
@@ -472,7 +623,7 @@
 			},
 			success : function(ajaxresp){
 				if(ajaxresp != null && ajaxresp.length>0)
-					buildSchemewiseReport(ajaxresp);
+					buildLocationWiseAmountDetails(ajaxresp,divId,type);
 				else
 					alert('No data available..');
 				},
@@ -674,7 +825,7 @@
 		var deptId = 0;
 		var sourceId = 0;
 		var json = {
-			levelId : 3, 
+			levelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdList,
 			fromDateStr : "01/06/2017",       
