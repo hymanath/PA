@@ -27,7 +27,7 @@ public class FundSanctionMatrixRange {
 	private Long fundSanctionMatrixRangeId;	
 	private Long previousYearId;	
 	private Long presentYearId;
-	private String range;
+	private String rangeValue;
 	private String min;
 	private String max;
 	private String orderNo;
@@ -64,13 +64,13 @@ public class FundSanctionMatrixRange {
 		this.presentYearId = presentYearId;
 	}
 
-	@Column(name="range")
-	public String getRange() {
-		return range;
+	@Column(name="range_value")
+	public String getRangeValue() {
+		return rangeValue;
 	}
 
-	public void setRange(String range) {
-		this.range = range;
+	public void setRangeValue(String rangeValue) {
+		this.rangeValue = rangeValue;
 	}
 
 	@Column(name="min")
