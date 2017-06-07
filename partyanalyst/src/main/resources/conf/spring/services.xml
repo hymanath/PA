@@ -4302,6 +4302,7 @@
   		<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" ></property>
   		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" ></property>
   		<property name="voterCastInfoDAO" ref="voterCastInfoDAO" ></property>
+  		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" ></property>
   </bean>
 </beans>			
 	

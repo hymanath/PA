@@ -14,7 +14,7 @@ function onLoadAjaxCalls()
 	getVotersAndCadreCasteWiseCount("voter");
 	getVotersAndCadreCasteWiseCount("cadre");
 	getCasteGroupNAgeWiseVoterNCadreCounts();
-	//getCasteNAgeWiseVoterNCadreCounts();
+	getCasteNAgeWiseVoterNCadreCounts();
 }
 function getCandidateAndPartyInfoForConstituency(){
 	$("#candidateProfile").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
