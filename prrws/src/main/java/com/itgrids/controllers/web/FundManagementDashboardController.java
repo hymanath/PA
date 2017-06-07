@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,4 +107,22 @@ public class FundManagementDashboardController {
 					inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getLevelId(),inputVO.getLevelValues());
 			return ajaxResult;
 		}	
+		
+		@RequestMapping(value="/getDistrictIdName", method = RequestMethod.POST,
+		        produces = MediaType.APPLICATION_JSON_VALUE,
+		        consumes = MediaType.APPLICATION_JSON_VALUE)
+		        public @ResponseBody List<LocationFundDetailsVO> getDistrictIdName(@RequestBody Map<String,String> map){
+			    Long stateId = Long.valueOf(map.get("stateId"));
+		             List<LocationFundDetailsVO>  districtList=fundManagementDashboardService.getDistrictIdName(stateId);
+		             return districtList;
+		        }  
+		@RequestMapping(value="/getConstituencies", method = RequestMethod.POST,
+		        produces = MediaType.APPLICATION_JSON_VALUE,
+		        consumes = MediaType.APPLICATION_JSON_VALUE)
+		        public @ResponseBody List<LocationFundDetailsVO> getConstituencies(@RequestBody Map<String,String> map){
+		           Long districtId = Long.valueOf(map.get("districtId"));
+		             List<LocationFundDetailsVO>  constisList=fundManagementDashboardService.getConstituencies(districtId);
+		             return constisList;
+		        }
+		
 }
