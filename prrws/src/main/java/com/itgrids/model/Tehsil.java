@@ -22,53 +22,46 @@ import javax.persistence.Table;
 public class Tehsil {
 
 	private static final long serialVersionUID = -2853930539938433902L;
+
+	private Long tehsilId;
+	private String tehsilName;
+	private Long districtId;
+	
+	private District district;
 	
 	@Id
 	@Column(name="tehsil_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	private Long tehsilId;
-	
-	@Column(name="tehsil_name")
-	private String tehsilName;
-	
-	@Column(name="district_id")
-	private Long districtId;
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "district_id", insertable = false, updatable = false)
-	private District district;
-	
-	
-	public District getDistrict() {
-		return district;
-	}
-
-	public void setDistrict(District district) {
-		this.district = district;
-	}
-
 	public Long getTehsilId() {
 		return tehsilId;
 	}
-
 	public void setTehsilId(Long tehsilId) {
 		this.tehsilId = tehsilId;
 	}
 
+	@Column(name="tehsil_name")
 	public String getTehsilName() {
 		return tehsilName;
 	}
-
 	public void setTehsilName(String tehsilName) {
 		this.tehsilName = tehsilName;
 	}
 
+	@Column(name="district_id")
 	public Long getDistrictId() {
 		return districtId;
 	}
-
 	public void setDistrictId(Long districtId) {
 		this.districtId = districtId;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "district_id", insertable = false, updatable = false)
+	public District getDistrict() {
+		return district;
+	}
+	public void setDistrict(District district) {
+		this.district = district;
 	}
 	
 }

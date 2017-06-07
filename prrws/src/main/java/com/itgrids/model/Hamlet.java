@@ -23,50 +23,49 @@ import javax.persistence.Table;
 public class Hamlet {
 	
 	private static final long serialVersionUID = -2853930539938433902L;
+		
+	private Long hamletId;
+	private String hamletName;
+	private Long tehsilId;
+	private String nameLocal;
+	private Tehsil tehsil;
 	
 	@Id
 	@Column(name="hamlet_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	private Long hamletId;
-	
-	@Column(name="hamlet_name")
-	private String hamletName;
-	
-	@Column(name="tehsil_id")
-	private Long tehsilId;
-	
-	@Column(name="name_local")
-	private String nameLocal;
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "tehsil_id", insertable = false, updatable = false)
-	private Tehsil tehsil;
-	
-	
 	public Long getHamletId() {
 		return hamletId;
 	}
 	public void setHamletId(Long hamletId) {
 		this.hamletId = hamletId;
 	}
+	
+	@Column(name="hamlet_name")
 	public String getHamletName() {
 		return hamletName;
 	}
 	public void setHamletName(String hamletName) {
 		this.hamletName = hamletName;
 	}
+
+	@Column(name="tehsil_id")
 	public Long getTehsilId() {
 		return tehsilId;
 	}
 	public void setTehsilId(Long tehsilId) {
 		this.tehsilId = tehsilId;
 	}
+
+	@Column(name="name_local")
 	public String getNameLocal() {
 		return nameLocal;
 	}
 	public void setNameLocal(String nameLocal) {
 		this.nameLocal = nameLocal;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "tehsil_id", insertable = false, updatable = false)
 	public Tehsil getTehsil() {
 		return tehsil;
 	}
