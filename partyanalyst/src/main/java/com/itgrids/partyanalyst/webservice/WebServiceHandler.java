@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
+import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
@@ -2730,4 +2731,17 @@ public class WebServiceHandler {
 			return null;
 		}
 	}
+	@GET
+	@Path("/getAmsFilterCategoryTypes/{userId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public AmsDataVO getAmsFilterCategoryTypes(@PathParam("userId") Long userId){
+		try{			
+			return webServiceHandlerService.getAmsFilterCategoryTypes(userId);			
+		}catch(Exception e){
+			LOG.error("Exception Occured in getAmsFilterCategoryTypes() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
 }
