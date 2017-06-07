@@ -171,12 +171,20 @@
 							<h4 class="panel-title text-capital">constituency level overview</h4>
 						</div>
 						<div class="panel-body">
-							<div class="consLevlOvervwScroll">
-								<div id="consLevlOvervw"></div>
-							</div>
+							<div id="consLevlOvervw"></div>
 						</div>
 					</div>
-				</div>				
+				</div>	
+				<div class="col-sm-12">
+					<div class="panel panel-default panel-black">
+						<div class="panel-heading">
+							<h4 class="panel-title text-capital">constituency level overview</h4>
+						</div>
+						<div class="panel-body">
+							<div id="SchemeWiseTotal"></div>
+						</div>
+					</div>
+				</div>					
 			</div>
 		</div>
 	</section>	
