@@ -14,10 +14,10 @@
 		getLocationWiseAmountDetails(3,'distLevlOvervw');
 		getLocationWiseAmountDetails(4,'consLevlOvervw');
 		getLocationWiseAmountDetails(5,'mandalLevlOvervw');
-		getSchemeWiseLocationWiseAmountDetails(4,'SchemeWiseTotal');
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
 		getTotalFunds('totFund');
+		// getTotalFunds();
 		//getTotalSchemes(4,'mandalLevlOvervw');
 		// getSchemeWiseHighestAndLowestFund("highest");
 		// getSchemeWiseHighestAndLowestFund("lowest");
@@ -34,84 +34,6 @@
 	function onLoadInitialisations()
 	{
 		
-	}
-	function highChart(divId,namesArr,DataArr)
-	{
-		console.log(namesArr)
-		$(".chart"+divId).highcharts({
-			chart: {
-				type: 'bar',
-				backgroundColor:'transparent'
-			
-			},
-			title: {
-				text: null
-			},
-			subtitle: {
-				text: null
-			},
-			xAxis: {
-				min: 0,
-				gridLineWidth: 0,
-				minorGridLineWidth: 0,
-				categories: namesArr
-			},
-			yAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-				title: {
-					text: null
-				},
-				labels: {
-					enabled:false
-				},
-				stackLabels: {
-					//useHTML: true,
-					//align: 'left',
-					enabled: true,
-					style: {
-						fontWeight: 'bold',
-						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-					},
-					formatter: function() {
-					
-						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-						return (this.total);
-					} 
-				
-				}
-			
-			},
-			tooltip: {
-				formatter: function () {
-				var s = '<b>' + this.x + '</b>';
-
-					$.each(this.points, function () {
-						if(this.series.name != "Series 1")  
-						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-						this.y/* +' - ' +
-						(Highcharts.numberFormat(this.percentage,1)+'%'); */
-					});
-
-					return s;
-				},
-				shared: true
-			},
-			plotOptions: {
-				bar: {
-					stacking: 'normal',
-					pointWidth: 30,
-					gridLineWidth: 15
-				}
-			},
-			legend: {
-				verticalAlign:'top',
-				enabled: true
-			},
-			series: DataArr
-		});
 	}
 	function getLocationWiseFundDetails(locationId,dataType,divId)
 	{
@@ -215,41 +137,22 @@
 		if(result !=null && result.length>0)
 		{
 			var locationNamesArr=[];
-			
-			var financialAmount =[];
-			var mainJosnObjArr=[];
-			
 			var amountArr =[];
 			for(var i in result){
-				var obj={}
 				locationNamesArr.push(result[i].locationName);
 				
 				if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
 					for(var j in result[i].locationList1){
 						
 						amountArr.push(result[i].locationList1[j].amount)
-						financialAmount.push(result[i].locationList1[j].amount)
-						obj={
-							name:"A::",data:amountArr,color:"#FF872C"
-						}
-						
-						
 					}
 				}
-				
-				
-				
-				/* if(financialAmount != null && financialAmount.length > 0){
-					mainJosnObjArr.push({name:'All Financial Year',data:financialAmount,color:"#FF872C"});  
-				}
+				var mainJosnObjArr=[];
 				if(amountArr != null && amountArr.length > 0){
 					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
-					
-				} */
+				}
 				
 			}
-			mainJosnObjArr.push(obj);
-			console.log(mainJosnObjArr)
 			var length = result.length
 			var height = '';
 			if(length == 0)
@@ -263,7 +166,81 @@
 				$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
 			}
 			$(".chart"+divId).height(height);
-			highChart(divId,locationNamesArr,mainJosnObjArr);
+			
+			$(".chart"+divId).highcharts({
+				chart: {
+					type: 'bar',
+					backgroundColor:'transparent'
+				
+				},
+				title: {
+					text: null
+				},
+				subtitle: {
+					text: null
+				},
+				xAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+					categories: locationNamesArr
+				},
+				yAxis: {
+						min: 0,
+						gridLineWidth: 0,
+						minorGridLineWidth: 0,
+					title: {
+						text: null
+					},
+					labels: {
+						enabled:false
+					},
+					stackLabels: {
+						//useHTML: true,
+						//align: 'left',
+						enabled: true,
+						style: {
+							fontWeight: 'bold',
+							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+						},
+						formatter: function() {
+						
+							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+							return (this.total);
+						} 
+					
+					}
+				
+				},
+				tooltip: {
+					formatter: function () {
+					var s = '<b>' + this.x + '</b>';
+
+						$.each(this.points, function () {
+							if(this.series.name != "Series 1")  
+							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+							this.y/* +' - ' +
+							(Highcharts.numberFormat(this.percentage,1)+'%'); */
+						});
+
+						return s;
+					},
+					shared: true
+				},
+				plotOptions: {
+					bar: {
+						stacking: 'normal',
+						pointWidth: 30,
+						gridLineWidth: 15
+					}
+				},
+				legend: {
+					verticalAlign:'top',
+					enabled: true
+				},
+				series: mainJosnObjArr
+			});
 		}
 	}
 	
@@ -295,7 +272,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp) {
-				buildLocationWiseFundDetails(ajaxresp,divId);
+			buildLocationWiseFundDetails(ajaxresp,divId);
 			},
 			error: function(request,error) { 
 		
@@ -303,7 +280,7 @@
 			}
 		});
    }
-	function getSchemeWiseLocationWiseAmountDetails(levelId,divId){
+	function getSchemeWiseLocationWiseAmountDetails(){
 		var levelValues = [];
 		var financialYrIdArr = [1,2];
 		var sourceIdsArr = [];
@@ -311,7 +288,7 @@
 		var deptIdsArr = [];
 
 		var json = {
-			levelId : levelId, 
+			levelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : "01-06-2013",       
@@ -331,7 +308,7 @@
 			},
 			success : function(ajaxresp){
 				if(ajaxresp != null && ajaxresp.length>0)
-					buildSchemewiseReport(ajaxresp,divId);
+					buildSchemewiseReport(ajaxresp);
 				else
 					alert('No data available..');
 				},
@@ -341,50 +318,10 @@
 		});
 	}
 	
-	function buildSchemewiseReport(result,divId){
-		var str='';
-		str+='<div class="scroller'+divId+'">';
-			str+='<div class="chart'+divId+'"></div>';
-		str+='</div>';
-		$("#"+divId).html(str);
-		if(result !=null && result.length>0)
-		{
-			var locationNamesArr=[];
-			var amountArr =[];
-			for(var i in result){
-				locationNamesArr.push(result[i].addressVO.districtName);
-				
-				if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
-					for(var j in result[i].subList){
-						for(var k in result[i].subList[j].subList)
-						{
-							amountArr.push(result[i].subList[j].subList[k].totalCount)
-						}
-					}
-				}
-				var mainJosnObjArr=[];
-				if(amountArr != null && amountArr.length > 0){
-					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
-				}
-				
-			}
-			var length = result.length
-			var height = '';
-			if(length == 0)
-			{
-				height = length * 100;
-			}else if(length > 3){
-				height = length * 40;
-			}
-			if(length > 8)
-			{
-				$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
-			}
-			$(".chart"+divId).height(height);
-			highChart(divId,locationNamesArr,mainJosnObjArr);
-		}
+	function buildSchemewiseReport(result){
+		alert("result");
 	}
-	function getTotalSchemes(levelId)
+	function getTotalSchemes(levelId,divId)
 	{
 		  var levelValues = [];
 		  var financialYrIdArr = [1,2];
@@ -412,7 +349,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp) {
-				
+				buildLocationWiseAmountDetails(ajaxresp,divId);
 			},
 			error: function(request,error) { 
 				//alert(request.responseText);
@@ -555,4 +492,26 @@
 			}
 		});
 	}
+
+	getAllDepartments();
+	function getAllDepartments()
+	{
+		var json={}
+		$.ajax({                
+			  type:'POST',    
+			  url: 'getAllDepartments',  
+			  dataType: 'json',
+			  contentType: "application/json", 
+		  data : JSON.stringify(json),
+		  beforeSend :   function(xhr){
+				  xhr.setRequestHeader("Accept", "application/json");
+				  xhr.setRequestHeader("Content-Type", "application/json");
+		}  
+		}).done(function(result){
+			if(result !=null){
+				//alert("success")  
+			} 
+		});
+	   
+	}	
 }(jQuery);
