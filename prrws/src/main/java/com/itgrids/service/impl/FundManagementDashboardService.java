@@ -493,7 +493,7 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 				retusnVo.setTotalAmt(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]));
 				retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[0]))));
 				retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),Long.parseLong(retusnVo.getTotalAmt())));
-			}//[2, 1900000],[1251, 4426651000],3538490.007993605
+			}//[2, 1900000]
 			List<Object[]> grantTypeDtlsList = grantTypeDAO.getGrandTypeDtls();
 			setGrantTypeToVo(retusnVo,grantTypeDtlsList);
 			//grant wise then scope wise count and amount dtls
@@ -503,7 +503,7 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 					fundDetailsVO = (LocationFundDetailsVO)setterAndGetterUtilService.getMatchedVOfromList(retusnVo.getDetailsVOs(), "id", commonMethodsUtilService.getStringValueForObject(param[0]));
 					fundDetailsVO.setTotalAmt(commonMethodsUtilService.getStringValueForObject(param[3]));
 					fundDetailsVO.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[2]))));
-					fundDetailsVO.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),Long.parseLong(retusnVo.getTotalAmt())));
+					fundDetailsVO.setPerc(commonMethodsUtilService.calculatePercantage(fundDetailsVO.getAverageAmt().longValue(),Long.parseLong(fundDetailsVO.getTotalAmt())));
 				}
 			}
 			
