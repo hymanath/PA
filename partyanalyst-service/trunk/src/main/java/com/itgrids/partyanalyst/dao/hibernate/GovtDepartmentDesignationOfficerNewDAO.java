@@ -134,7 +134,7 @@ public class GovtDepartmentDesignationOfficerNewDAO extends GenericDaoHibernate<
 		Query query = getSession().createQuery("select distinct model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.govtDepartmentId," +
 				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName "
 				+ " from AlertAssignedOfficerNew model "
-				+ " where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentId in (:depts) ") ;
+				+ " where model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartmentId in (:depts) and model.isDeleted='N' ") ;
 		
 		query.setParameterList("depts",depts);
 		
