@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
+import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -222,4 +223,5 @@ public interface IWebServiceHandlerService {
     public String getYouTubeUrls();
     public AmsAppLoginVO getAmsAppValidateLoginDetails(String userName,String password);
     public String getOfficerOtpStatus(Long userId,String otpStr);
+    public AmsDataVO getAmsFilterCategoryTypes(Long userId);
 }

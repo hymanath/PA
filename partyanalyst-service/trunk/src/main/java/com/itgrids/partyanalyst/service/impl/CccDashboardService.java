@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.model.Alert;
@@ -3169,5 +3170,74 @@ public List<GovtDepartmentVO> getLevelsByDeptId(Long departmentId,Long userId){
 		
 		return returnList;
 	}
+	public List<AmsKeyValueVO> getNewsPapaerListForAms(){
+		
+		try{						
+			List<AmsKeyValueVO> list = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> newsPaperList = alertDAO.getNewsPapaerList();			
+			setDataToKeyValueList(newsPaperList,list);			
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerListForAms() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	
+	public List<AmsKeyValueVO> getChannelListForAms(){
+		try{
+			List<AmsKeyValueVO> list = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> channelList = tvNewsChannelDAO.getChannelList();			
+			setDataToKeyValueList(channelList,list);		
+			
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerList() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	public List<AmsKeyValueVO> getChannelListForUserForAms(Long userId){
+		try{
+			List<AmsKeyValueVO> list = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> channelList = alertDAO.getChannelListForUser();			
+			setDataToKeyValueList(channelList,list);	
+			
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerList() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	public List<AmsKeyValueVO> getDeptListForAms(){
+		try{
+			List<AmsKeyValueVO> list = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> deptList = govtDepartmentDAO.getAllDepartment();
+			setDataToKeyValueList(deptList,list);
+			
+			return list;
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured getNewsPapaerList() method of CccDashboardService",e);
+		}
+		return null;
+	}
+	
+	public void setDataToKeyValueList(List<Object[]> objList,List<AmsKeyValueVO> resultList){
+    	try{
+    		if(objList != null && objList.size() > 0){  
+				for(Object[] param : objList){
+					AmsKeyValueVO	amsKeyValueVO = new AmsKeyValueVO();
+					amsKeyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					amsKeyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					resultList.add(amsKeyValueVO);
+				}
+			}
+    	}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Error occured setDataToKeyValueList() method of AlertManagementSystemService",e);
+    	}
+    }
 	
 }

@@ -73,6 +73,7 @@ import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
+import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
@@ -11688,7 +11689,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			return resultList;
 		 }catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+			LOG.error("Error occured getMondayGrievanceTypeList() method of AlertManagementSystemService",e);
 		}
 		return null;
 	}
@@ -11700,7 +11701,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			return resultList;
 		 }catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+			LOG.error("Error occured getJanmabhoomiTypeList() method of AlertManagementSystemService",e);
 		}
 		return null;
 	}
@@ -11712,7 +11713,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			return resultList;
 		 }catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+			LOG.error("Error occured getSpecialGrievanceTypeList() method of AlertManagementSystemService",e);
 		}
 		return null;
 	}
@@ -11724,7 +11725,7 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 			return resultList;
 		 }catch(Exception e){
 			e.printStackTrace();
-			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+			LOG.error("Error occured getGeneralGrievanceTypeList() method of AlertManagementSystemService",e);
 		}
 		return null;
 	}
@@ -12400,5 +12401,107 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			}
 			return status;
 	     }
+	
+	public List<AmsKeyValueVO> getDeptListForUserForAms(Long userId){   
+		try{
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> deptList = govtAlertDepartmentLocationNewDAO.getDeptIdAndNameForUserAccessLevel(userId);
+			setDataToKeyValueList(deptList,resultList);
+			return resultList;
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getDeptListForUser() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<AmsKeyValueVO> getSocialMediaTypeListForAms(){   
+		try{
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = alertDAO.getAllSocialMediaType();
+			setDataToKeyValueList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getSocialMediaTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<AmsKeyValueVO> getAlertCallCenterTypeForAms(){   
+		try{
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = alertDAO.getAlertCallCenterType();
+			setDataToKeyValueList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertCallCenterType() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<AmsKeyValueVO> getMondayGrievanceTypeListForAms(){   
+		try{
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = alertDAO.getMondayGrievanceTypeList();
+			setDataToKeyValueList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getMondayGrievanceTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	
+	public List<AmsKeyValueVO> getJanmabhoomiTypeListForAms(){   
+		try{
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = alertDAO.getJanmabhoomiTypeList();
+			setDataToKeyValueList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getJanmabhoomiTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<AmsKeyValueVO> getSpecialGrievanceTypeListForAms(){   
+		try{
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = alertDAO.getSpecialGrievanceTypeList();
+			setDataToKeyValueList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getSpecialGrievanceTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<AmsKeyValueVO> getGeneralGrievanceTypeListForAms(){   
+		try{
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = alertDAO.getGeneralGrievanceTypeList();
+			setDataToKeyValueList(rtrnObjList,resultList);
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getGeneralGrievanceTypeList() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public void setDataToKeyValueList(List<Object[]> objList,List<AmsKeyValueVO> resultList){
+    	try{
+    		if(objList != null && objList.size() > 0){  
+				for(Object[] param : objList){
+					AmsKeyValueVO	amsKeyValueVO = new AmsKeyValueVO();
+					amsKeyValueVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					amsKeyValueVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					resultList.add(amsKeyValueVO);
+				}
+			}
+    	}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured setDataToKeyValueList() method of AlertManagementSystemService",e);
+    	}
+    }
+	
 	
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -80,5 +81,10 @@ public interface ICccDashboardService {
 	public List<IdAndNameVO> getSubDesignationOfficersInfo(Long parentOfficerId);
 	public List<IdAndNameVO> getSubDesignationsInfo(Long parentOfficerId,Long levelId);
 	public List<AlertCoreDashBoardVO> getTotalPhoneNumbers(List<AlertCoreDashBoardVO> alertCoreDashBoardVOs);
+	
+	public List<AmsKeyValueVO> getNewsPapaerListForAms();
+	public List<AmsKeyValueVO> getChannelListForAms();
+	public List<AmsKeyValueVO> getChannelListForUserForAms(Long userId);
+	public List<AmsKeyValueVO> getDeptListForAms();
 	
 } 

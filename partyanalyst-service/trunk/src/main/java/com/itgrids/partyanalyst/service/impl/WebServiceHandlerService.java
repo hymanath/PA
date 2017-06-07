@@ -69,6 +69,7 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
+import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -155,6 +156,7 @@ import com.itgrids.partyanalyst.service.IAttendanceService;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.service.ICadreRegistrationService;
+import com.itgrids.partyanalyst.service.ICccDashboardService;
 import com.itgrids.partyanalyst.service.IFieldMonitoringService;
 import com.itgrids.partyanalyst.service.IGISVisualizationService;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
@@ -267,8 +269,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IAlertsNewsPortalService alertsNewsPortalService;
     private AppointmentService appointmentService;
     private IAlertManagementSystemService alertManagementSystemService;
+    
+    private ICccDashboardService cccDashboardService;
    
     
+    
+	public void setCccDashboardService(ICccDashboardService cccDashboardService) {
+		this.cccDashboardService = cccDashboardService;
+	}
+
 	public IAlertManagementSystemService getAlertManagementSystemService() {
 		return alertManagementSystemService;
 	}
@@ -4935,5 +4944,32 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("exception occured in  the validateOfficerOTP  method in WebServiceHandlerService");
 		}
 		 return status;
+	 }
+	 
+	 public AmsDataVO getAmsFilterCategoryTypes(Long userId){
+		 try {			 
+			 
+			 AmsDataVO amsDataVO = new AmsDataVO();
+			 
+			 amsDataVO.setId(userId);
+			 amsDataVO.setNewsPaperList(cccDashboardService.getNewsPapaerListForAms());
+			 //amsDataVO.setChanelList(cccDashboardService.getChannelListForUserForAms(userId));
+			 amsDataVO.setChanelListNew(cccDashboardService.getChannelListForAms());			 
+			 //amsDataVO.setDeptListNew(cccDashboardService.getDeptListForAms());
+			 //amsDataVO.setDeptList(alertManagementSystemService.getDeptListForUserForAms(userId));
+			 
+			 amsDataVO.setSocailMediaTypeList(alertManagementSystemService.getSocialMediaTypeListForAms());
+			 amsDataVO.setAlertCallCenterTypeIdList(alertManagementSystemService.getAlertCallCenterTypeForAms());
+			 amsDataVO.setMondayGrievanceTypeList(alertManagementSystemService.getMondayGrievanceTypeListForAms());
+			 amsDataVO.setJanmabhoomiTypeList(alertManagementSystemService.getJanmabhoomiTypeListForAms());
+			 amsDataVO.setSpecialGrievanceTypeList(alertManagementSystemService.getSpecialGrievanceTypeListForAms());
+			 amsDataVO.setGeneralGrievanceTypeList(alertManagementSystemService.getGeneralGrievanceTypeListForAms());
+			
+			 return amsDataVO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("exception occured in  the getAmsFilterCategoryTypes  method in WebServiceHandlerService");
+		}
+		 return null;
 	 }
 }
