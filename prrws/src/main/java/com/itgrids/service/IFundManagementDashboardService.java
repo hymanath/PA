@@ -1,6 +1,10 @@
 package com.itgrids.service;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.FundSchemeVO;
 import com.itgrids.dto.InputVO;
@@ -21,4 +25,5 @@ public interface IFundManagementDashboardService {
 	public LocationFundDetailsVO getAverageFundForScheme(InputVO inputVO);
 	public List<LocationFundDetailsVO> getAllDistrictByStateId(Long stateId);
 	public List<LocationFundDetailsVO> getAllConstituenciesByDistrictId(Long districtId);
+	public List<LocationFundDetailsVO> getAllDepartments();
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.IFundSanctionDAO;
 import com.itgrids.dao.IGrantTypeDAO;
@@ -50,6 +51,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	private IGrantTypeDAO grantTypeDAO;
 	@Autowired
 	private SetterAndGetterUtilService setterAndGetterUtilService;
+	@Autowired
+	private IDepartmentDAO departmentDAO;
 	
 	@Override
 	/*
@@ -674,5 +677,33 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	    LOG.error(" Exception raised in getConstituencies (); ");
 	  }
 	return constincyList;  
+	}
+ 
+ /*
+	 * Date : 07/06/2017
+	 * Author :Shrinu Pittala
+	 * @description : to get All Departments
+	 * @return  List<LocationFundDetailsVO> 
+	 */
+	
+ public List<LocationFundDetailsVO> getAllDepartments(){
+	  List<LocationFundDetailsVO> finalReturnList= null;
+	  try{
+		finalReturnList=new ArrayList<LocationFundDetailsVO>();
+	    List<Object[]> DepartmentObjs =departmentDAO.getAllDepartments();
+	    if(DepartmentObjs != null && DepartmentObjs.size()>0 && !DepartmentObjs.isEmpty()){
+	    	for(Object[] Obj: DepartmentObjs){
+	    		LocationFundDetailsVO vo=new LocationFundDetailsVO();
+	    		vo.setId(commonMethodsUtilService.getLongValueForObject(Obj[0]));
+	    		vo.setName(commonMethodsUtilService.getStringValueForObject(Obj[1]));
+	    		finalReturnList.add(vo);
+	    	}
+	    }
+
+	  }catch(Exception e){
+	   // e.printStackTrace();
+	    LOG.error(" Exception raised in getConstituencies (); ");
+	  }
+	return finalReturnList;  
 	}
 }
