@@ -8,6 +8,7 @@ import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 
 public interface IFundManagementDashboardService {
+	public List<LocationVO> getLocationLevelInfo();
 	public List<LocationVO> getLocationWiseAmountDetails(InputVO inputVO);
 	public List<FundSchemeVO> getFinancialYearWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList);
@@ -16,4 +17,6 @@ public interface IFundManagementDashboardService {
 	public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO);
 	public LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(InputVO inputVO );
 	public LocationFundDetailsVO getTotalSchemes(InputVO inputVO);
+	public LocationFundDetailsVO getAverageFundForAnyLevel(InputVO inputVO);
+	public LocationFundDetailsVO getAverageFundForScheme(InputVO inputVO);
 }
