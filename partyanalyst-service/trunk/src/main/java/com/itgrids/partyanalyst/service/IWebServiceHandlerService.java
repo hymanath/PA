@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
+import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -219,4 +220,6 @@ public interface IWebServiceHandlerService {
     public List<GrievanceAlertVO> getAllGrievancesForCaller(String mobileNo);
     public NotificationDeviceVO getAccommodationDetails(String notificationId,Long constId);
     public String getYouTubeUrls();
+    public AmsAppLoginVO getAmsAppValidateLoginDetails(String userName,String password);
+    public String getOfficerOtpStatus(Long userId,String otpStr);
 }

@@ -187,4 +187,7 @@ public interface IAlertManagementSystemService {
 	 public List<AlertVO> getDepartmentWiseProposalAlertCnt(String fromDateStr, String toDateStr, Long stateId, List<Long> printIdList, List<Long> electronicIdList, List<Long> deptIdList,Long userId,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 	 public List<AlertCoreDashBoardVO> getOfficerWiseAlertCntBasedOnDepartmentScopeLevel(String fromDateStr, String toDateStr, Long stateId,List<Long> printIdList, List<Long> electronicIdList,Long userId, Long govtDepartmentId, Long parentGovtDepartmentScopeId,String sortingType, String order,String alertType,List<Long> calCntrIdList,List<Long> sublevels,Long filterParentScopeId,Long filterScopeValue,List<Long> socialMediaTypeIds,
 				List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds );
+	 public String getOfficerMobilenNo(Long userId);
+	 public String generatingAndSavingOTPDetails(String mobileNoStr);
+	 public String getOfficerOtpStatus(Long userId,String otp);
 }        

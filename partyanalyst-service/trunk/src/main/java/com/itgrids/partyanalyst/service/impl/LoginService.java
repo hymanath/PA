@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserLoginDetailsDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
+import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -94,8 +95,14 @@ public class LoginService implements ILoginService{
 	private TransactionTemplate transactionTemplate = null;
 	private IPashiAppUserDAO pashiAppUserDAO; 
 	private ITdpCadreLoginDetailsDAO tdpCadreLoginDetailsDAO;
+	private AlertManagementSystemService alertManagementSystemService;
 	
 	
+	public void setAlertManagementSystemService(
+			AlertManagementSystemService alertManagementSystemService) {
+		this.alertManagementSystemService = alertManagementSystemService;
+	}
+
 	public ITdpCadreLoginDetailsDAO getTdpCadreLoginDetailsDAO() {
 		return tdpCadreLoginDetailsDAO;
 	}
@@ -1045,5 +1052,51 @@ public String getStateBasedOnLocation(String AccessType,String accessValue){
 			log.error("Exception Rised in getPeshiAppValidateLoginDetails : ", e);
 		}
 		 return new PeshiAppLoginVO("FAILURE");
+	}
+	public AmsAppLoginVO getAmsAppValidateLoginDetails(String userName,String password)
+	{
+		AmsAppLoginVO finalVo = new AmsAppLoginVO();
+		User user = null;
+		try{
+			List<User> userObj=userDAO.getModelByUserName(userName.trim());
+			
+			if(userObj.size()==0){
+				return finalVo;
+			}
+			PBKDF2 pb= new PBKDF2();
+			
+			//Generate Md5 Password
+			String generatedPwd =  pb.generatePasswordByUser(userName.trim(),password.trim());//28b2086c174aad40b56afdaaf32538e2
+			
+			if(userObj.get(0).getPasswordHash() !=null && userObj.get(0).getPasswordSalt()!=null){
+				String salt = userObj.get(0).getPasswordSalt();
+				String hash = userObj.get(0).getPasswordHash();
+				
+				boolean validated = pb.validatePWD(generatedPwd, hash, salt);
+				if(validated){
+					user=userObj.get(0);
+				}				
+				if(user !=null){
+					finalVo.setUserId(user.getUserId());
+					finalVo.setUserName(user.getUserName());
+					finalVo.setStatus("SUCCESS");
+					
+					//AlertManagementSystemService alertManagementSystemService = new AlertManagementSystemService();
+					
+					String mobileNo = alertManagementSystemService.getOfficerMobilenNo(user.getUserId());
+					
+					if(mobileNo !=null){
+						alertManagementSystemService.generatingAndSavingOTPDetails(mobileNo);
+						finalVo.setIsOtp("true");
+					}
+				}				
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			finalVo.setStatus("FAILURE");
+			log.error("Exception Rised in getAmsAppValidateLoginDetails(-,-)  in LoginService ", e);
+		}
+		 return finalVo;
 	}
 }

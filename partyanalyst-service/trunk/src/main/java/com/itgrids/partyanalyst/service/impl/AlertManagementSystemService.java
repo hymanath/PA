@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
+import com.itgrids.partyanalyst.dao.IAmsOfficerOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.IEditionsDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
@@ -66,9 +67,6 @@ import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.AlertCommentDAO;
-import com.itgrids.partyanalyst.dao.hibernate.GovtProposalCategoryDAO;
-import com.itgrids.partyanalyst.dao.hibernate.GovtProposalPropertyCategoryDAO;
 import com.itgrids.partyanalyst.dto.ActionableVO;
 import com.itgrids.partyanalyst.dto.AlertAssigningVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
@@ -93,6 +91,7 @@ import com.itgrids.partyanalyst.model.AlertDepartmentCommentNew;
 import com.itgrids.partyanalyst.model.AlertDepartmentDocumentNew;
 import com.itgrids.partyanalyst.model.AlertGovtOfficerSmsDetails;
 import com.itgrids.partyanalyst.model.AlertSubTaskStatus;
+import com.itgrids.partyanalyst.model.AmsOfficerOtpDetails;
 import com.itgrids.partyanalyst.model.CustomReport;
 import com.itgrids.partyanalyst.model.GovtAlertSubTask;
 import com.itgrids.partyanalyst.model.GovtDepartmentDesignationOfficerNew;
@@ -100,6 +99,7 @@ import com.itgrids.partyanalyst.model.GovtDepartmentWorkLocation;
 import com.itgrids.partyanalyst.model.GovtOfficerSubTaskTracking;
 import com.itgrids.partyanalyst.model.GovtProposalPropertyCategory;
 import com.itgrids.partyanalyst.model.GovtProposalPropertyCategoryTracking;
+import com.itgrids.partyanalyst.model.TabUserOtpDetails;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
@@ -163,8 +163,23 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IGovtProposalPropertyCategoryTrackingDAO govtProposalPropertyCategoryTrackingDAO;
 	private IGovtProposalCategoryDAO govtProposalCategoryDAO;
 	private IAlertCommentDAO alertCommentDAO;
+	private IAmsOfficerOtpDetailsDAO amsOfficerOtpDetailsDAO;
+	private SmsCountrySmsService smsCountrySmsService;
 	
 	
+	public SmsCountrySmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(SmsCountrySmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+	public void setAmsOfficerOtpDetailsDAO(
+			IAmsOfficerOtpDetailsDAO amsOfficerOtpDetailsDAO) {
+		this.amsOfficerOtpDetailsDAO = amsOfficerOtpDetailsDAO;
+	}
+
 	public IAlertCallerRelationDAO getAlertCallerRelationDAO() {
 		return alertCallerRelationDAO;
 	}
@@ -12249,4 +12264,141 @@ public Long getSearchAlertsDtls(Long userId,Long alertId)
 		}
 		return null;
 	}
+	public String getOfficerMobilenNo(Long userId){
+		String mobileNo = null;
+		try {
+			
+			List<String> mobileNos =  govtDepartmentDesignationOfficerDetailsNewDAO.getOfficerMobilenNo(userId);
+			if(mobileNos !=null && mobileNos.size()>0){
+				mobileNo  =  mobileNos.get(0);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error occured getOfficerMobilenNo(-) method of AlertManagementSystemService{}");
+		}
+		return mobileNo;
+	}
+public String generatingAndSavingOTPDetails(String mobileNoStr){
+		
+		String status = null;
+		try {
+			String mobileNo=mobileNoStr.trim();
+			if(mobileNoStr.length()>10)
+				mobileNo = mobileNoStr.substring(mobileNoStr.length() - 10,mobileNoStr.length());
+			
+			List<Object[]> existingOTPDtls = amsOfficerOtpDetailsDAO.isExistOTPDetails(mobileNo,new DateUtilService().getCurrentDateAndTime());
+			if(existingOTPDtls != null && existingOTPDtls.size()>0L){
+			//	Object[] obj = existingOTPDtls.get(existingOTPDtls.size()-1);
+				Object[] obj = existingOTPDtls.get(0);
+				String otp = commonMethodsUtilService.getStringValueForObject(obj[0]);
+				String referenceNo = String.valueOf(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				String dateStr = commonMethodsUtilService.getStringValueForObject(obj[2]);
+				
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date date = sdf.parse(dateStr);
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				// next 15 min date time
+				
+				 long duration = (Calendar.getInstance().getTimeInMillis() - calendar.getTimeInMillis());
+		    	 if(duration < 15 * 60 * 1000)// if duration less than 15 min 
+		    	 {
+		    		    calendar.add(Calendar.MINUTE, 15);
+						String finalDateStr = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(calendar.getTime());
+						String message = "your OTP is "+otp+" for Reference Id # " +referenceNo+" This OTP Validate upto Next "+finalDateStr+" .";
+						String[] phoneNumbers = {mobileNo.toString()};
+						//smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+						smsCountrySmsService.sendOTPSmsFromAdmin(message, true,phoneNumbers);
+						status=referenceNo;
+		    	 }
+				else{
+					status=getNewOTPDetails(mobileNo);
+				}
+				
+			}else{
+				status=getNewOTPDetails(mobileNo);
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
+			return "failure";
+		}
+		return status;
+	}
+	public String getNewOTPDetails(String mobileNo){
+		AmsOfficerOtpDetails amsOfficerOtpDetails = null;
+		try {
+			RandomNumberGeneraion rnd = new RandomNumberGeneraion();
+			int otpRand = 0;
+			int refRand = 0;
+			try {
+				if(mobileNo != null && mobileNo.trim().length() ==10)
+					amsOfficerOtpDetailsDAO.getAllOtpsForSameMobile(mobileNo.trim());
+			} catch (Exception e) {
+				LOG.error(" Error occured while updating getAllOtpsForSameMobile as invalid ",e);
+			}
+		
+			while(otpRand <= 0 && refRand <= 0){
+				 otpRand = rnd.randomGenerator(6);
+				 refRand = rnd.randomGenerator(6);
+			}
+				String refeRenceNo = String.valueOf(refRand);
+				String otpNum = String.valueOf(otpRand);
+				String message = "your OTP is "+otpRand+" for Reference Id # " +refRand+" This OTP Validate for Next 15 mins.";
+				String[] phoneNumbers = {mobileNo.toString()};
+				//smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+				smsCountrySmsService.sendOTPSmsFromAdmin(message, true,phoneNumbers);
+				amsOfficerOtpDetails = new AmsOfficerOtpDetails();
+			
+				amsOfficerOtpDetails.setMobileNo(mobileNo);
+				amsOfficerOtpDetails.setOtpNo(otpNum);
+				amsOfficerOtpDetails.setReferenceId(refeRenceNo);
+				amsOfficerOtpDetails.setGeneratedTime(dateUtilService.getCurrentDateAndTime());
+				amsOfficerOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				amsOfficerOtpDetails.setIsValid("Y");
+				
+				amsOfficerOtpDetails = amsOfficerOtpDetailsDAO.save(amsOfficerOtpDetails);
+				return refeRenceNo;
+		} catch (Exception e) {
+			LOG.error("Exception raised in generatingAndSavingOTPDetails in CoreDashboardCadreRegistrationService service", e);
+			return "failure";
+		}
+	}
+	public String getOfficerOtpStatus(Long userId,String otp){
+		 String status = null;
+			try {
+				  Date currentTime = dateUtilService.getCurrentDateAndTime();
+				  
+				  String mobileNo = getOfficerMobilenNo(userId);
+				  
+	              List<Object[]> existingOTPDtls = amsOfficerOtpDetailsDAO.isExistOTPDetails(mobileNo,currentTime);
+	  			if(existingOTPDtls != null && existingOTPDtls.size()>0L){
+	  				Object[] obj = existingOTPDtls.get(existingOTPDtls.size()-1);
+	  				Long tabDetsId = commonMethodsUtilService.getLongValueForObject(obj[3]);
+	  				String originalotp = commonMethodsUtilService.getStringValueForObject(obj[0]);
+	  				
+					if(originalotp.toString().trim().equalsIgnoreCase(otp.toString().trim()) && tabDetsId != null && tabDetsId.longValue() > 0l){
+						AmsOfficerOtpDetails amsOfficerOtpDetails = amsOfficerOtpDetailsDAO.get(tabDetsId);
+						amsOfficerOtpDetails.setIsValid("N");
+						amsOfficerOtpDetails.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+						amsOfficerOtpDetails = amsOfficerOtpDetailsDAO.save(amsOfficerOtpDetails);
+						
+						status = "success";
+					}
+					else
+						status = "failure";
+	  			}
+	  			else
+	  				status = "failure";
+	  			
+			} catch (Exception e) {
+				status = "failure";
+				LOG.error("Exception Occured in checkOTPDetails() in CodeDashboardCadreRegistrationService class.",e);
+			}
+			return status;
+	     }
+	
 }

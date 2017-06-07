@@ -166,5 +166,17 @@ public class PBKDF2{
     	return diff == 0;
     	
     }
+    
+    public String generatePasswordByUser(String username,String password){
+    	String md5Value =null;
+    	try {
+    		
+    		md5Value=Util.MD5(Util.MD5(username.toLowerCase())+Util.MD5(password));
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return md5Value;
+    }
 
 }

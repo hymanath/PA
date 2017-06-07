@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.PeshiAppLoginVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -38,6 +39,6 @@ public interface ILoginService {
 	public String getLocationNameByIdAndType(String accessType,String accessValue);
 	public PeshiAppLoginVO getPeshiAppValidateLoginDetails(String userName,String password);
 	
-
+	public AmsAppLoginVO getAmsAppValidateLoginDetails(String userName,String password);
 	
 }

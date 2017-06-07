@@ -68,6 +68,7 @@ import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
+import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -4911,4 +4912,28 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		  }
 		  return url;
 	  }
+	 
+	 public AmsAppLoginVO getAmsAppValidateLoginDetails(String userName,String password){
+		 AmsAppLoginVO amsAppLoginVO = new AmsAppLoginVO();
+		  try{
+			  
+			  amsAppLoginVO = loginService.getAmsAppValidateLoginDetails(userName,password);
+			  
+		  }catch(Exception e){
+			  log.error("exception occured in  the getAmsAppValidateLoginDetails  method in WebServiceHandlerService");
+		  }
+		 return amsAppLoginVO;
+	  }
+	 
+	 public String getOfficerOtpStatus(Long userId,String otpStr){
+		 String status = null;
+		 try {
+			
+			 status= alertManagementSystemService.getOfficerOtpStatus(userId,otpStr);
+			 
+		} catch (Exception e) {
+			log.error("exception occured in  the validateOfficerOTP  method in WebServiceHandlerService");
+		}
+		 return status;
+	 }
 }
