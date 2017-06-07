@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.IDistrictDAO;
 import com.itgrids.dao.IFundSanctionDAO;
 import com.itgrids.dao.IGrantTypeDAO;
 import com.itgrids.dto.AddressVO;
@@ -38,6 +40,10 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	
 	@Autowired
 	private IFundSanctionDAO fundSanctionDAO;
+	@Autowired
+	private IDistrictDAO districtDAO;
+	@Autowired
+	private IConstituencyDAO constituencyDAO;
 	@Autowired
 	private CommonMethodsUtilService commonMethodsUtilService;
 	@Autowired
@@ -610,4 +616,62 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	}
 	return retusnVo;
 }
+/*
+ * Date : 06/06/2017
+ * Author :raghu t
+ * Description : { to get district id and name based on state id }
+ * 
+ */
+ public List<LocationFundDetailsVO> getDistrictIdName(Long stateId){
+	 List<LocationFundDetailsVO> voList = null;
+	 
+	 try{
+		 if(stateId != null){
+			 List<Object[]> objList = districtDAO.getDistrictIdName(stateId);
+			 if(objList != null && objList.size() > 0){
+				 voList = new ArrayList<LocationFundDetailsVO>();
+				 for (Object[] objects : objList) {
+					 LocationFundDetailsVO vo = new LocationFundDetailsVO();
+					 vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					 vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					 voList.add(vo);
+				 }
+			 }
+		 }
+	 }catch(Exception e){
+		// e.printStackTrace();
+		LOG.error(" Exception raised at getdistrictidandname(); "); 
+	 }
+	return voList;
+	
+ }
+ 
+ /*
+	 * Date : 06/06/2017
+	 * Author :kondababu kurakula
+	 * @description : to get constituencies details based on districts
+	 * @param : district Id
+	 * @return  List<LocationFundDetailsVO> 
+	 */
+	
+ public List<LocationFundDetailsVO> getConstituencies(Long districtId){
+	  List<LocationFundDetailsVO> constincyList= null;
+	  try{
+	    List<Object[]> constiesObjs =constituencyDAO.getConstituencies( districtId);
+	    if(constiesObjs != null && constiesObjs.size() > 0l){
+	      constincyList= new ArrayList<LocationFundDetailsVO>();
+	      LocationFundDetailsVO locationFundDetailsVO=null;
+	      for(Object[] obj : constiesObjs){
+	        locationFundDetailsVO =new LocationFundDetailsVO();
+	        locationFundDetailsVO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+	        locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+	        constincyList.add(locationFundDetailsVO);
+	      }
+	    }
+	  }catch(Exception e){
+	   // e.printStackTrace();
+	    LOG.error(" Exception raised in getConstituencies (); ");
+	  }
+	return constincyList;  
+	}
 }
