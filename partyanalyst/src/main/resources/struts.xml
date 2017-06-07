@@ -17563,8 +17563,7 @@
 			<param name="root">keyValueVOList</param>
 		</result>
 	</action>	
-   </action>
-  	<action name="getVotersAndCadreCasteWiseCountAction" class="locationDashboardAction"  method="getVotersAndCadreCasteWiseCount">
+   <action name="getVotersAndCadreCasteWiseCountAction" class="locationDashboardAction"  method="getVotersAndCadreCasteWiseCount">
 		<result type="json" name="success">    
 			<param name="root">locationVotersVOList</param>       
 		</result>

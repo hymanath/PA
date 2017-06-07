@@ -429,7 +429,10 @@ function buildProfileData(i)
 	str+='</div>';
 	str+='<div class="col-sm-2 m_top10">';
 		str+='<label>Age <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetAgeId"></span></label>';
-		str+='<input type="text" value="'+profileData[i].age+'" class="form-control" id="petitionerAgeId" name="meekosamGrievanceVO.petitionerAge"/>';
+		if(profileData[i].age != null && profileData[i].age > 0)
+			str+='<input type="text" value="'+profileData[i].age+'" class="form-control" id="petitionerAgeId" name="meekosamGrievanceVO.petitionerAge"/>';
+		else
+			str+='<input type="text" class="form-control" id="petitionerAgeId" name="meekosamGrievanceVO.petitionerAge"/>';
 	str+='</div>';
 	str+='<div class="col-sm-2 m_top10">';
 		str+='<label>Phone Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetMobNoId"></span></label>';
@@ -1277,7 +1280,7 @@ function saveGrievanceInfo(){
 		return;
 	}
 	
-	if(referredBy == 0){
+	/*if(referredBy == 0){
 		$("#errMsgReferredById").html("Select Referred By");
 		return;
 	}
@@ -1288,7 +1291,7 @@ function saveGrievanceInfo(){
 	if(referName == 0){
 		$("#errMsgReferNameId").html("Select Refer Person");
 		return;
-	}
+	}*/
 	
 	if(subDepartment == 0){
 		$("#errMsgSubDeptId").html("Select SubDepartment");
