@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itgrids.dao.IConstituencyDAO;
 import com.itgrids.dao.IDepartmentDAO;
 import com.itgrids.dao.IDistrictDAO;
+import com.itgrids.dao.IFinancialYearDAO;
 import com.itgrids.dao.IFundSanctionDAO;
 import com.itgrids.dao.IGrantTypeDAO;
 import com.itgrids.dto.AddressVO;
@@ -52,8 +53,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 	@Autowired
 	private SetterAndGetterUtilService setterAndGetterUtilService;
 	@Autowired
+	private IFinancialYearDAO financialYearDAO;
+
+
+	@Autowired
 	private IDepartmentDAO departmentDAO;
 	
+
 	@Override
 	/*
 	 * Date : 05/06/2017
@@ -622,9 +628,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 }
 /*
  * Date : 06/06/2017
- * Author :raghu t
+ * Author :raghupathi.tirumala@itgrids.com
  * Description : { to get district id and name based on state id }
- * 
+ * @param : district Id
+ * @return  List<LocationFundDetailsVO> 
  */
  public List<LocationFundDetailsVO>getAllDistrictByStateId(Long stateId){
 	 List<LocationFundDetailsVO> voList = null;
@@ -680,6 +687,34 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	}
  
  /*
+	 * Date : 06/06/2017
+	 * Author :raghupathiraju.tirumala@itgrids.com
+	 * @description : to get All Finiancial Years
+	 * @return  List<LocationFundDetailsVO> 
+	 */
+ public List<LocationVO> getAllFiniancialYears(){
+	  List<LocationVO> financialYearList= null;
+	  try{
+	    List<Object[]> financialYearObjs =financialYearDAO.getAllFiniancialYears();
+	    if(financialYearObjs != null && financialYearObjs.size() > 0l){
+	    	financialYearList= new ArrayList<LocationVO>();
+	    	LocationVO locationVO=null;
+	      for(Object[] obj : financialYearObjs){
+	    	  locationVO =new LocationVO();
+	    	  locationVO.setFinancialYear(commonMethodsUtilService.getStringValueForObject(obj[1]));
+	    	  financialYearList.add(locationVO);
+	      }
+	    }
+	  }catch(Exception e){
+	   // e.printStackTrace();
+	    LOG.error(" Exception raised in getAllFiniancialYears (); ");
+	  }
+	return financialYearList;  
+	}
+ 
+ 
+
+ /*
 	 * Date : 07/06/2017
 	 * Author :Shrinu Pittala
 	 * @description : to get All Departments
@@ -706,4 +741,5 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	  }
 	return finalReturnList;  
 	}
+
 }
