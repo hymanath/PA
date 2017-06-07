@@ -294,19 +294,27 @@
 		{
 			var locationNamesArr=[];
 			var amountArr =[];
+			var amountArr1 =[];
 			for(var i in result){
 				locationNamesArr.push(result[i].locationName);
 				
 				if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
 					for(var j in result[i].locationList1){
 						
-						amountArr.push(result[i].locationList1[j].amount)
+						 if(result[i].locationList1[j].financialYearId == 1){
+							amountArr.push(result[i].locationList1[j].amount)
+						}else if(result[i].locationList1[j].financialYearId == 0){
+							amountArr1.push(result[i].locationList1[j].amount)
+						}   
 					}
 				}
 				var mainJosnObjArr=[];
 				if(amountArr != null && amountArr.length > 0){
 					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
 				}
+				if(amountArr1 != null && amountArr1.length > 0){
+					mainJosnObjArr.push({name:'All Financial Year',data:amountArr1,color:"#5B5B5B"});  
+				} 
 				
 			}
 			var length = result.length
