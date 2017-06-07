@@ -12,8 +12,11 @@ public class InputVO implements Serializable {
 	private List<Long> schemeIdsList;
 	private Long deptId;
 	private Long sourceId;
+	private Long schemeId;
 	private String fromDateStr;
 	private String toDateStr;
+	private String sortingType;
+	private String order;
 	private String type;
 	
 	
@@ -82,5 +85,23 @@ public class InputVO implements Serializable {
 	}
 	public void setToDateStr(String toDateStr) {
 		this.toDateStr = toDateStr;
+	}
+	public Long getSchemeId() {
+		return schemeId;
+	}
+	public void setSchemeId(Long schemeId) {
+		this.schemeId = schemeId;
+	}
+	public String getSortingType() {
+		return sortingType;
+	}
+	public void setSortingType(String sortingType) {
+		this.sortingType = sortingType;
+	}
+	public String getOrder() {
+		return order;
+	}
+	public void setOrder(String order) {
+		this.order = order;
 	}
 }

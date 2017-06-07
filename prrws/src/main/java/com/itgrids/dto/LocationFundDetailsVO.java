@@ -11,8 +11,9 @@ public class LocationFundDetailsVO implements Serializable{
 	private Long id;
 	private String name;
 	private String type;
-	private String totalAmt;
-	private Double perc;
+	private String totalAmt="0.0";
+	private Double averageAmt=0.0D;
+	private Double perc=0.0D;
 	private Long fundedLoc;
 	private Long notFundedLoc;
 	private Double fundedPerc;
@@ -20,7 +21,7 @@ public class LocationFundDetailsVO implements Serializable{
 	private Long totSchemes;
 	
 	private List<IdNameVO> subList = new ArrayList<IdNameVO>();
-	
+	private List<LocationFundDetailsVO> detailsVOs;	
 	
 	
 	
@@ -90,7 +91,17 @@ public class LocationFundDetailsVO implements Serializable{
 	public void setSubList(List<IdNameVO> subList) {
 		this.subList = subList;
 	}
-	
-	
+	public Double getAverageAmt() {
+		return averageAmt;
+	}
+	public void setAverageAmt(Double averageAmt) {
+		this.averageAmt = averageAmt;
+	}
+	public List<LocationFundDetailsVO> getDetailsVOs() {
+		if(detailsVOs == null){
+			detailsVOs = new ArrayList<LocationFundDetailsVO>();
+		}
+		return detailsVOs;
+	}
 	
 }

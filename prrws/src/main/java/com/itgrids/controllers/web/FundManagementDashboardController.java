@@ -59,6 +59,16 @@ public class FundManagementDashboardController {
 		LocationFundDetailsVO  returnVO = fundManagementDashboardService.getTotalFunds(inputVO);
 		return returnVO;
 	  }
+	@PostMapping("/getAverageFundForAnyLevel")
+	public @ResponseBody LocationFundDetailsVO getAverageFundForAnyLevel(@RequestBody InputVO inputVO){
+		LocationFundDetailsVO locationFundDetailsVO = fundManagementDashboardService.getAverageFundForAnyLevel(inputVO);
+		return locationFundDetailsVO;
+	}
+	@PostMapping("/getAverageFundForScheme")
+	public @ResponseBody LocationFundDetailsVO getAverageFundForScheme(@RequestBody InputVO inputVO){
+		LocationFundDetailsVO locationFundDetailsVO = fundManagementDashboardService.getAverageFundForScheme(inputVO);
+		return locationFundDetailsVO;
+	}
 	
 	@RequestMapping(value = "/getTotalLocationsByScopeId", method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE,

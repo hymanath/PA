@@ -414,4 +414,76 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getTotalFundAndCountDtls(List<Long> financialYrIdList,Long departmentId,Long sourceId,Date sDate,Date eDate,Long scopeId,String group){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select " );
+		if(group.equalsIgnoreCase("two")){
+			sb.append(" modal.grantType.grantTypeId, modal.grantType.type, " );
+		}
+		sb.append(" count(modal.locationValue),sum(modal.sactionAmount) ");
+		sb.append(" from FundSanction modal where modal.isDeleted='N' ");
+		
+		
+		if(financialYrIdList != null && financialYrIdList.size() > 0){
+			sb.append(" and modal.financialYearId in (:financialYrIdList)  " );
+		}
+		if(sDate != null && eDate != null){
+			sb.append(" and date(modal.insertedTime) between  :sDate and :eDate " );
+		}
+		
+		if(scopeId != null && scopeId.longValue() > 0l ){
+			sb.append(" and modal.locationScopeId = :locationScopeId  " );
+		}
+		sb.append(" group by ");
+		if(group.equalsIgnoreCase("two")){
+			sb.append(" modal.grantType.grantTypeId,modal.locationScopeId  " );
+		}else{
+			sb.append(" modal.locationScopeId  " );
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(sDate != null && eDate != null){
+			query.setDate("sDate", sDate);
+			query.setDate("eDate", eDate);
+		}
+		if(financialYrIdList != null && financialYrIdList.size() > 0){
+			query.setParameterList("financialYrIdList", financialYrIdList);
+		}
+		
+		if(scopeId != null && scopeId.longValue() >0l ){
+			query.setParameter("locationScopeId", scopeId);
+		}
+		return query.list();
+	}
+	@Override
+	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,Long departmentId,Long sourceId,Long schemeId,Date sDate,Date eDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(distinct modal.govtScheme.govtSchemeId),sum(modal.sactionAmount) " );
+		
+		sb.append(" from FundSanction modal where modal.isDeleted='N' ");
+		if(financialYrIdList != null && financialYrIdList.size() > 0){
+			sb.append(" and modal.financialYearId in (:financialYrIdList)  " );
+		}
+		if(schemeId != null && schemeId.longValue() > 0L){
+			sb.append(" and modal.govtScheme.govtSchemeId = :schemeId " );
+		}
+		if(sDate != null && eDate != null){
+			sb.append(" and date(modal.insertedTime) between  :sDate and :eDate " );
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(financialYrIdList != null && financialYrIdList.size() > 0){
+			query.setParameterList("financialYrIdList", financialYrIdList);
+		}
+		
+		if(schemeId != null && schemeId.longValue() > 0L){
+			query.setParameter("schemeId", schemeId);
+		}
+		if(sDate != null && eDate != null){
+			query.setDate("sDate", sDate);
+			query.setDate("eDate", eDate);
+		}
+		return query.list();
+	}
 }
