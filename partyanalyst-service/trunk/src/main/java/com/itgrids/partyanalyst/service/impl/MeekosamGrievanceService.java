@@ -962,8 +962,10 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 							AlertMeekosamIssueFieldRelationData relationData = new AlertMeekosamIssueFieldRelationData();
 							relationData.setAlertId(alert.getAlertId());
 							relationData.setMeekosamIssueFieldRelationId(dynamicVO.getIssueRelationId());
-							relationData.setMeekosamIssueFieldRelationDataId(dynamicVO.getIssueRelationDataId());
+							if(dynamicVO.getIssueRelationDataId() != null && dynamicVO.getIssueRelationDataId().longValue() > 0l)
+								relationData.setMeekosamIssueFieldRelationDataId(dynamicVO.getIssueRelationDataId());
 							relationData.setData(dynamicVO.getIssueDataStr());
+							relationData.setIsDeleted("N");
 							relationData = alertMeekosamIssueFieldRelationDataDAO.save(relationData);
 						}
 					}
@@ -1082,6 +1084,25 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 			}
 		} catch (Exception e) {
 			LOG.error("Error occured getPublicReresentativesByTypeAndDistrict() method of MeekosamGrievanceService",e);
+		}
+		return returnList;
+	}
+	
+	public List<KeyValueVO> getDistrictForGrievanceRequest(Long stateId){
+		List<KeyValueVO> returnList = new ArrayList<KeyValueVO>();
+		try {
+			List<Object[]> list = districtDAO.getDistrictForGrievanceRequest(stateId);
+			if(list != null && !list.isEmpty()){
+				for (Object[] obj : list) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setId(Long.valueOf(obj[0] != null ? obj[0].toString():"0"));
+					vo.setName(obj[1] != null ? obj[1].toString():"");
+					//vo.setCount(Long.valueOf(obj[2] != null ? obj[2].toString():"0"));
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getDistrictForGrievanceRequest() method of MeekosamGrievanceService",e);
 		}
 		return returnList;
 	}
