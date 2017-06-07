@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
@@ -224,4 +225,5 @@ public interface IWebServiceHandlerService {
     public AmsAppLoginVO getAmsAppValidateLoginDetails(String userName,String password);
     public String getOfficerOtpStatus(Long userId,String otpStr);
     public AmsDataVO getAmsFilterCategoryTypes(Long userId);
+    public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(AmsDataVO vo);
 }
