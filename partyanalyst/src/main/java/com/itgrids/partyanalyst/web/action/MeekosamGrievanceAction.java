@@ -333,4 +333,17 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getDistrictForGrievanceRequest(){
+	   try {
+		   jObj = new JSONObject(getTask());
+		   Long stateId = jObj.getLong("stateId");
+		   
+		   keyValueVOList = meekosamGrievanceService.getDistrictForGrievanceRequest(stateId);
+		   
+		} catch (Exception e) {
+			LOG.error("Exception Raised in getDistrictForGrievanceRequest() in MeekosamGrievanceAction",e);
+		}
+		   return Action.SUCCESS;
+	}
 }

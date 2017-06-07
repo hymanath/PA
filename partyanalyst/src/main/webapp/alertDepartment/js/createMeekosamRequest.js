@@ -126,7 +126,7 @@ function getAllDistrictByStateId(stateId,districtId,id){
 	}
 	$.ajax({
 		type : 'GET',
-		url : 'getDistrictsForStateAction.action',
+		url : 'getDistrictForGrievanceRequestAction.action',
 		dataType : 'json',
 		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
@@ -362,8 +362,8 @@ function buildSearchPetitionerDetailsByVoterNoAadharNoMobileNo(result)
 					str+='<div class="media-body">';
 						str+='<p><i class="fa fa-user"></i> '+result[i].name+'</p>';
 						str+='<p><i class="fa fa-mobile-phone"></i> '+result[i].mobileNo+'</p>';
-						str+='<p><i class="fa fa-address-card"></i> '+result[i].aadharNo+'</p>';
-						str+='<p><i class="fa fa-address-card-o"></i> '+result[i].voterCardNo+'</p>';
+						str+='<p><img src="alertDepartment/img/aadhar.png" style="display:inline-block;width: 12px;"> '+result[i].aadharNo+'</p>';
+						str+='<p><i class="fa fa-id-badge"></i> '+result[i].voterCardNo+'</p>';
 					str+='</div>';
 				str+='</div>';
 				str+='<input type="checkbox" name="profile" attr_id="'+i+'" attr_petitionerId="'+result[i].petitionerId+'" class="pull-right buildProfileData"/>';//profile
@@ -436,11 +436,11 @@ function buildProfileData(i)
 		str+='<input type="text" value="'+profileData[i].mobileNo+'" class="form-control" id="petitionerMobileNO" name="meekosamGrievanceVO.petitionerMobileNo"/>';
 	str+='</div>';
 	str+='<div class="col-sm-2 m_top10">';
-		str+='<label>Voter Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetVoterId"></span></label>';
+		str+='<label>Voter Number </label>';
 		str+='<input type="text" value="'+profileData[i].voterCardNo+'" class="form-control" id="petitionerVoterId" name="meekosamGrievanceVO.petitionerVoterCardNo"/>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Aadhar Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetAadharId"></span></label>';
+		str+='<label>Aadhar Number </label>';
 		str+='<input type="text" value="'+profileData[i].aadharNo+'" class="form-control" id="petitionerAadharId" name="meekosamGrievanceVO.petitionerAadharCardNo"/>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
@@ -563,9 +563,46 @@ function getIssueTypesForDepartment(){
 	});
 }
 
-function getIssueSubTypes(){
-	$('#issueSubTypeId').empty();
-	$('#issueSubTypeId').trigger('chosen:updated');
+$(document).on("change",".issueTypeClass",function(){
+	var issueType = $(this).val();
+	var value = $(this).attr("attr_val");
+	var divId = $(this).attr("attr_divId");
+	var id = $(this).attr("attr_id");
+	
+	if(value == 0)
+		$(".issueClass").hide();
+	
+	$('#'+id).empty();
+	$('#'+id).trigger('chosen:updated');
+	
+	var jsObj={
+		parentIssueTypeId : issueType
+	}
+	$.ajax({
+		type:"POST",
+		url :"getMeekosamSubIssueTypeListForParentIssueTypeAction.action",
+		dataType: 'json',
+		data: {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		$('#'+id).append('<option value="0">Select Issue SubType</option>');
+		if(result != null && result.length > 0){
+			$("#"+divId).show();
+			for(var i in result){
+				$('#'+id).append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+			}
+		}
+		else{
+			getDynamicValuesForIssue(issueType);
+		}
+		$('#'+id).trigger('chosen:updated');
+	});
+});
+
+/*function getIssueSubTypes(id,divId,val){
+	if(val == 0)
+		$(".issueClass").hide();
+	$('#'+id).empty();
+	$('#'+id).trigger('chosen:updated');
 	
 	var issueType = $("#issueTypeId").val();
 	var jsObj={
@@ -585,11 +622,11 @@ function getIssueSubTypes(){
 		}
 		$('#issueSubTypeId').trigger('chosen:updated');
 	});
-}
+}*/
 
-function getDynamicValuesForIssue(){
+function getDynamicValuesForIssue(issueType){
 	$("#buildPetitionerData").html('');
-	var issueType = $("#issueSubTypeId").val();
+	//var issueType = $("#issueSubTypeId").val();
 	var jsObj={
 		issueTypeId : issueType
 	}
@@ -612,7 +649,7 @@ function buildDynamicValuesForIssue(result)
 	for(var i in result)
 	{
 		str+='<h4 class="panel-title m_top20"><strong>'+result[i].issueType+'</strong></h4>';
-		str+='<table class="table table-bordered" style="background-color:#fff;">';
+		str+='<table class="table table-bordered m_top20" style="background-color:#fff;">';
 		for(var j in result[i].subList)
 		{
 			if(result[i].subList[j].issueFielsType == 'text' || result[i].subList[j].issueFielsType == 'textarea')
@@ -648,7 +685,7 @@ function buildDynamicValuesForIssue(result)
 								{
 									str+='<div class="col-sm-4">';
 										str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
-											str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].subList[k].issueRelationDataId+'"/>'+result[i].subList[j].subList[k].name+'';
+											str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+''+result[i].subList[j].id+'" class="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="'+result[i].subList[j].subList[k].issueRelationDataId+'"/>'+result[i].subList[j].subList[k].name+'';
 										str+='</label>';
 									str+='</div>';
 								}
@@ -658,7 +695,7 @@ function buildDynamicValuesForIssue(result)
 					}else{
 						str+='<td colspan="2">';
 							str+='<label class="'+result[i].subList[j].issueFielsType+'-inline">';
-								str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'"/>'+result[i].subList[j].issueField+'';
+								str+='<input type="'+result[i].subList[j].issueFielsType+'" name="petitioner'+result[i].subList[j].issueFielsType+''+result[i].subList[j].id+'" class="petitioner'+result[i].subList[j].issueFielsType+'" attr_id="'+result[i].subList[j].id+'" id="0"/>'+result[i].subList[j].issueField+'';
 							str+='</label>';
 						str+='</td>';
 					}
@@ -865,7 +902,7 @@ function designationsByDepartment()
 	$("#officerNamesId").empty();
 	$("#officerNamesId").trigger("chosen:updated");
 	var LevelId = $("#locationLevelSelectId").chosen().val();
-	var deprtmntId = $("#departmentId").chosen().val();
+	var deprtmntId = $("#subDepartmentSelectId").chosen().val();
 	var levelValue = $(".locationCls").chosen().val();
 	
 	var jsObj = {
@@ -1059,7 +1096,7 @@ function saveGrievanceInfo(){
 	var category = $("#categoryId").val();
 	var department = $("#departmentId").val();
 	var issueType = $("#issueTypeId").val();
-	var issueSubType = $("#issueSubTypeId").val();
+	//var issueSubType = $("#issueSubTypeId").val();
 	//alert(3);
 	var petitionerName = $("#petitionerNameId").val().trim();
 	var petitionerRelativeNAme = $("#petitionerRelativeNameId").val().trim();
@@ -1125,14 +1162,14 @@ function saveGrievanceInfo(){
 			return;
 		}
 	}
-	if(petitionerVoter == '' || petitionerVoter.length == 0){
+	/*if(petitionerVoter == '' || petitionerVoter.length == 0){
 		$("#errMsgPetVoterId").html("Enter VoterNo");
 		return;
 	}
 	if(petitionerAadhar == '' || petitionerAadhar.length == 0){
 		$("#errMsgPetAadharId").html("Enter AadharNo");
 		return;
-	}
+	}*/
 	if(petitionerhouseNo == '' || petitionerhouseNo.length == 0){
 		$("#errMsgPetHouseNOId").html("Enter HouseNO");
 		return;
@@ -1178,10 +1215,10 @@ function saveGrievanceInfo(){
 		$("#errMsgIssueTypeId").html("Select IssueType");
 		return;
 	}
-	if(issueSubType == 0){
+	/*if(issueSubType == 0){
 		$("#errMsgIssueSubTypeId").html("Select Issue SubType");
 		return;
-	}
+	}*/
 	
 	if(alertLevelId == 0){
 		$("#errMsgAlertLevelId").html("Select Level");
@@ -1277,7 +1314,7 @@ function saveGrievanceInfo(){
 	
 	var str=''
 	var increment = 0;
-	$("input[name='petitionerradio']").each(function(){
+	$(".petitionerradio").each(function(){
 		if($(this).is(":checked") == true)
 		{
 			var data = $(this).attr("id");
@@ -1287,7 +1324,7 @@ function saveGrievanceInfo(){
 			increment = increment+1;
 		}
 	})
-	$("input[name='petitionercheckbox']").each(function(){
+	$(".petitionercheckbox").each(function(){
 		if($(this).is(":checked") == true)
 		{
 			var data = $(this).attr("id");
