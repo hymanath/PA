@@ -41,7 +41,7 @@ $('#reportrange').on('apply.daterangepicker', function(ev, picker) {
 		{
 			$("#reportrange").val('All');
 		}
-		
+		//getAlertCntInRequiredFormatToExportToExcel();
 		getTotalLocationWiseGrivenaceReport();
 });
 $(document).on("click",".daterangeClorCls",function(){ 
@@ -2486,3 +2486,28 @@ function getStatusWiseFeebbackAlertDtls(statusId,type){
 				}
 			}); 
 	}
+	
+	
+	function getAlertCntInRequiredFormatToExportToExcel(){
+
+	var rangeType=$("#dateRangeId").attr("value");
+    var sourceId=$("#selectMediaId").val();
+    var deptId=$("#selecDepartmentId").val();
+	var locationId=$("#selectDistrictId").val();
+    var jsObj ={
+		fromDate: callCenterUserFDate,                       
+		toDateStr:callCenterUserTDate,  
+		deptId:deptId,
+		sourceId:sourceId,
+		locationId:locationId,    
+		rangeType:rangeType,             
+		stateId:1
+	}
+	$.ajax({
+		type:'GET',         
+		url: 'getAlertCntInRequiredFormatToExportToExcelAction.action',
+		data: {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+		console.log(result);
+	}); 
+}
