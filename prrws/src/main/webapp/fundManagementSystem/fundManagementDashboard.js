@@ -226,7 +226,24 @@ function getSchemeWiseLocationWiseAmountDetails(){
     }
   });
 }
-
+getDistrictIdName();
+function getDistrictIdName()
+{
+   var stateId = 1;
+   var json = {stateId:stateId};
+    $.ajax({
+     url: 'getDistrictIdName',
+     data: JSON.stringify(json),
+     type: "POST",
+     dataType: 'json', 
+     beforeSend: function(xhr) {
+     xhr.setRequestHeader("Accept", "application/json");
+     xhr.setRequestHeader("Content-Type", "application/json");
+     },
+    }).done(function(result){
+      alert(result);
+    });
+}
 
 function buildSchemewiseReport(result){
 	alert("result");
