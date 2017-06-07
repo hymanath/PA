@@ -17,22 +17,15 @@ public class ElectionScope{
 	
 	
 	private static final long serialVersionUID = -2853930539938433902L;
+	
+	private Long electionScopeId;
+	private Long electionTypeId;
+	private Long stateId;
+	private ElectionType electionType;
 
 	@Id
 	@Column(name="election_scope_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	private Long electionScopeId;
-	
-	@Column(name="election_type_id")
-	private Long electionTypeId;
-	
-	@Column(name="state_id")
-	private Long stateId;
-	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "election_type_id", insertable = false, updatable = false)
-	private ElectionType electionType;
-
 	public Long getElectionScopeId() {
 		return electionScopeId;
 	}
@@ -40,7 +33,8 @@ public class ElectionScope{
 	public void setElectionScopeId(Long electionScopeId) {
 		this.electionScopeId = electionScopeId;
 	}
-
+	
+	@Column(name="election_type_id")
 	public Long getElectionTypeId() {
 		return electionTypeId;
 	}
@@ -49,6 +43,7 @@ public class ElectionScope{
 		this.electionTypeId = electionTypeId;
 	}
 
+	@Column(name="state_id")
 	public Long getStateId() {
 		return stateId;
 	}
@@ -57,6 +52,8 @@ public class ElectionScope{
 		this.stateId = stateId;
 	}
 
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "election_type_id", insertable = false, updatable = false)
 	public ElectionType getElectionType() {
 		return electionType;
 	}
