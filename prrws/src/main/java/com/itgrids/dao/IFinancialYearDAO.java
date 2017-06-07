@@ -7,6 +7,6 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.model.FinancialYear;
 
 public interface IFinancialYearDAO extends GenericDao<FinancialYear,Long>{
-	public List<Object[]> getAllFiniancialYears();
+	//public List<Object[]> getAllFiniancialYears();
 	
 }
