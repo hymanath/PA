@@ -1,11 +1,13 @@
 +function ($) {
 	onLoadCalls();
 	onLoadClicks();
-	//onLoadInitialisations();
+	onLoadInitialisations();
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
 	function onLoadCalls()
 	{
+		getAllDepartments();
+		getAllFiniancialYears();
 		getLocationWiseFundDetails(3,'highest','highFundDist');
 		getLocationWiseFundDetails(4,'highest','highFundCons');
 		getLocationWiseFundDetails(3,'lowest','lowFundDist');
@@ -24,7 +26,6 @@
 		// getSchemeWiseHighestAndLowestFund("highest");
 		// getSchemeWiseHighestAndLowestFund("lowest");
 		getTotalLocationsByScopeId(4,'totFundCons');
-		getAllDepartments();
 		// getTotalLocationsByScopeId(5);
 		// getTotalLocationsByScopeId(6);
 		
@@ -58,6 +59,12 @@
 			}
 		});
 	}
+	function onLoadInitialisations()
+	{
+		
+		$("#mainDate").daterangepicker();
+	}
+	
 	function highChart(divId,namesArr,DataArr)
 	{
 		console.log(namesArr)
@@ -850,24 +857,47 @@
 	}
 
 
-	function getAllDepartments()
-	{
-		var json={}
+	
+	function getAllDepartments(){
+		var json = {
+
+		}
 		$.ajax({                
-			  type:'POST',    
-			  url: 'getAllDepartments',  
-			  dataType: 'json',
-			  contentType: "application/json", 
-		  data : JSON.stringify(json),
-		  beforeSend :   function(xhr){
-				  xhr.setRequestHeader("Accept", "application/json");
-				  xhr.setRequestHeader("Content-Type", "application/json");
-		}  
+			type:'POST',    
+			url: 'getAllDepartments',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
 		}).done(function(result){
-			if(result !=null){
-				//alert("success")  
-			} 
+			if(result != null && result.length >0){
+				for(var i in result){
+					$("#DepartmentsId").append("<option value="+result[i].departmentsId+">"+result[i].departmentsName+"</option>");
+				}
+			}
 		});
-	   
-	}	
+	}
+	function getAllFiniancialYears()
+	{
+		var json = {
+		}
+		$.ajax({                
+			type:'POST',    
+			url: 'getAllFiniancialYears',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		}).done(function(result){
+			if(result != null && result.length >0){
+				for(var i in result){
+					$("#financialYearId").append("<option value="+result[i].financialYear+">"+result[i].financialYear+"</option>");
+				}
+			}
+		});
+   }
 }(jQuery);

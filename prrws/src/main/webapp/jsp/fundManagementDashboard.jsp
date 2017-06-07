@@ -7,7 +7,8 @@
 <title>FMS DASHBOARD</title>
 <link href="Assests/css/bootstrap.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" type="text/less" rel="stylesheet"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/fh-3.1.2/sc-1.4.2/datatables.min.css"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
@@ -17,15 +18,42 @@
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-sm-1"></div>
-				<div class="col-sm-1"></div>
-				<div class="col-sm-1"></div>
+				<div class="col-sm-1 pad_left0">
+					<img src="Assests/images/aplogo.png" class="logo"/>
+				</div>
+				<div class="col-sm-4 m_top10">
+					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
+					<p>Funds Management System</p>
+				</div>
+				<div class="col-sm-1 pull-right">
+					<img src="Assests/images/lokBabu.png" class="m_top20"/>
+				</div>
 			</div>
 		</div>
 	</nav>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-sm-12"></div>
+			<div class="col-sm-12">
+				<ul class="list-inline navbar-header-custom">
+					<li>Note: All Amount in Lakhs</li>
+					<li>
+						Financial Year: <select id="financialYearId"></select>
+					</li>
+					<li>
+						Department: <select id="DepartmentsId"><option>Select Department</option></select>
+					</li>
+					
+					<li>
+						<div class="input-group">
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
+							</span>
+							<input type="text" class="form-control" id="mainDate"/>
+						</div>
+					</li>
+				</ul>
+				
+			</div>
 		</div>
 	</div>
 </header>
@@ -320,11 +348,14 @@
 <footer></footer>
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
+<script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="https://code.highcharts.com/highcharts.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.15/fh-3.1.2/sc-1.4.2/datatables.min.js"></script>
 <script type="text/javascript" src="Assests/fundManagament/fundManagementDashboard.js"></script>
+
 <!--Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations-->
 </body>
 </html>
