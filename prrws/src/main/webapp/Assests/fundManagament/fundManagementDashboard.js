@@ -10,22 +10,25 @@
 		getLocationWiseFundDetails(4,'highest','highFundCons');
 		getLocationWiseFundDetails(3,'lowest','lowFundDist');
 		getLocationWiseFundDetails(4,'lowest','lowFundCons');
+		getAverageFundForAnyLevel(3,'avgFundDist');
+		getAverageFundForAnyLevel(4,'avgFundCons');
 		getLocationWiseAmountDetails(2,'stateLevlOvervw');
 		getLocationWiseAmountDetails(3,'distLevlOvervw');
 		getLocationWiseAmountDetails(4,'consLevlOvervw');
 		getLocationWiseAmountDetails(5,'mandalLevlOvervw');
+		getSchemeWiseLocationWiseAmountDetails(4,'SchemeWiseTotal');
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
 		getTotalFunds('totFund');
-		// getTotalFunds();
-		//getTotalSchemes(4,'mandalLevlOvervw');
+		getTotalSchemes(4,'totFundScheme');
 		// getSchemeWiseHighestAndLowestFund("highest");
 		// getSchemeWiseHighestAndLowestFund("lowest");
-		// getTotalLocationsByScopeId(4);
+		getTotalLocationsByScopeId(4,'totFundCons');
+		getAllDepartments();
 		// getTotalLocationsByScopeId(5);
 		// getTotalLocationsByScopeId(6);
-		//getAverageFundForAnyLevel();
-		//getAverageFundForScheme();
+		
+		getAverageFundForScheme('avgFundScheme');
 	}
 	function onLoadClicks()
 	{
@@ -34,6 +37,84 @@
 	function onLoadInitialisations()
 	{
 		
+	}
+	function highChart(divId,namesArr,DataArr)
+	{
+		console.log(namesArr)
+		$(".chart"+divId).highcharts({
+			chart: {
+				type: 'bar',
+				backgroundColor:'transparent'
+			
+			},
+			title: {
+				text: null
+			},
+			subtitle: {
+				text: null
+			},
+			xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: namesArr
+			},
+			yAxis: {
+					min: 0,
+					gridLineWidth: 0,
+					minorGridLineWidth: 0,
+				title: {
+					text: null
+				},
+				labels: {
+					enabled:false
+				},
+				stackLabels: {
+					//useHTML: true,
+					//align: 'left',
+					enabled: true,
+					style: {
+						fontWeight: 'bold',
+						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+					},
+					formatter: function() {
+					
+						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+						return (this.total);
+					} 
+				
+				}
+			
+			},
+			tooltip: {
+				formatter: function () {
+				var s = '<b>' + this.x + '</b>';
+
+					$.each(this.points, function () {
+						if(this.series.name != "Series 1")  
+						s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+						this.y/* +' - ' +
+						(Highcharts.numberFormat(this.percentage,1)+'%'); */
+					});
+
+					return s;
+				},
+				shared: true
+			},
+			plotOptions: {
+				bar: {
+					stacking: 'normal',
+					pointWidth: 30,
+					gridLineWidth: 15
+				}
+			},
+			legend: {
+				verticalAlign:'top',
+				enabled: true
+			},
+			series: DataArr
+		});
 	}
 	function getLocationWiseFundDetails(locationId,dataType,divId)
 	{
@@ -75,27 +156,66 @@
 	function buildLocationWiseFundDetails(ajaxresp,divId)
 	{
 		var str='';
-		str+='<div class="col-sm-12">';
-			//str+='<h4 class="panel-title">High Funded District</h4>';
-			if(ajaxresp.name != null)
-			{
-				str+='<h4 class="panel-title text-capital district-name"> '+ajaxresp.name+'</h4>';
-			}
+		if(ajaxresp.name != null)
+		{
+			str+='<h4 class="panel-title text-capital district-name"> '+ajaxresp.name+'</h4>';
+		}
+		if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0")
+		{
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.totalAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
-			if(ajaxresp.subList.length > 0)
-			{
-				str+='<ul class="list-inline">';
-					for(var i in ajaxresp.subList)
-					{
-						str+='<li class="text-center">';
-							str+='<p class="text-muted">'+ajaxresp.subList[i].name+'</p>';
-							str+='<p class="text-success"><small>'+ajaxresp.subList[i].percentage+'%</small></p>';
-							str+='<p class="panel-title"><i class="fa fa-inr"></i>: '+ajaxresp.subList[i].total+'</p>';
-						str+='</li>';
-					}
-				str+='</ul>';
-			}
-		str+='</div>';
+		}
+		if(ajaxresp.fundedLoc != null)
+		{
+			str+='<h3>'+ajaxresp.fundedLoc+'</h3>';
+		}
+		if(ajaxresp.totSchemes != null)
+		{
+			str+='<h3>'+ajaxresp.totSchemes+'</h3>';
+		}
+		
+		if(ajaxresp.subList.length > 0)
+		{
+			str+='<ul class="list-inline">';
+				for(var i in ajaxresp.subList)
+				{
+					str+='<li class="text-center">';
+						str+='<p class="text-muted">'+ajaxresp.subList[i].name+'</p>';
+						str+='<p class="text-success"><small>'+ajaxresp.subList[i].percentage+'%</small></p>';
+						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.subList[i].total+'</p>';
+					str+='</li>';
+				}
+			str+='</ul>';
+		}else if(ajaxresp.detailsVOs.length > 0)
+		{
+			str+='<ul class="list-inline">';
+				for(var i in ajaxresp.detailsVOs)
+				{
+					str+='<li class="text-center">';
+						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
+						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
+						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].totalAmt+'</p>';
+					str+='</li>';
+				}
+			str+='</ul>';
+		}
+		if(ajaxresp.notFundedLoc != null)
+		{
+			str+='<ul class="list-inline">';
+				str+='<li class="text-center">';
+					str+='<p class="text-muted">FUNDED</p>';
+					str+='<p>'+ajaxresp.fundedLoc+'</p>';
+					str+='<p class="text-success"><small>'+ajaxresp.fundedPerc+'%</small></p>';
+				str+='</li>';
+				str+='<li class="text-center">';
+					str+='<p class="text-muted">NOT-FUNDED</p>';
+					str+='<p class="text-muted">'+ajaxresp.notFundedLoc+'</p>';
+					str+='<p class="text-success"><small>'+ajaxresp.nonFundedPerc+'%</small></p>';
+				str+='</li>';
+			str+='</ul>';
+		}
+		
+		
+		
 		$("#"+divId).html(str);
 	}
 	function getLocationWiseAmountDetails(levelId,divId){
@@ -120,7 +240,12 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success : function(ajaxresp){
-				buildLocationWiseAmountDetails(ajaxresp,divId);
+				if(ajaxresp != null && ajaxresp.length > 0)
+				{
+					buildLocationWiseAmountDetails(ajaxresp,divId);
+				}else{
+					$("#"+divId).html("NO DATA AVAILABLE");
+				}
 			},
 			error : function(request,error){
 				alert(error);
@@ -134,6 +259,37 @@
 			str+='<div class="chart'+divId+'"></div>';
 		str+='</div>';
 		$("#"+divId).html(str);
+		var table='';
+		table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+			table+='<thead>';
+				table+='<tr>';
+					table+='<th></th>';
+					table+='<th colspan="2">2014-2015</th>';
+					table+='<th colspan="2">All Financial Years</th>';
+				table+='</tr>';
+				table+='<tr>';
+					table+='<th>District</th>';
+					table+='<th>No</th>';
+					table+='<th>Amt.</th>';
+					table+='<th>No</th>';
+					table+='<th>Amt.</th>';
+				table+='</tr>';
+			table+='</thead>';
+			table+='<tbody>';
+				for(var i in result){
+					table+='<tr>';
+						table+='<td>'+result[i].locationName+'</td>';
+						for(var j in result[i].locationList1){
+							table+='<td>'+result[i].locationList1[j].count+'</td>';
+							table+='<td>'+result[i].locationList1[j].amount+'</td>';
+						}
+					table+='</tr>';
+				}
+				
+			table+='</tbody>';
+		table+='</table>';
+		$("#"+divId+"Table").html(table);
+		$("#dataTable"+divId).DataTable();
 		if(result !=null && result.length>0)
 		{
 			var locationNamesArr=[];
@@ -318,8 +474,48 @@
 		});
 	}
 	
-	function buildSchemewiseReport(result){
-		alert("result");
+	function buildSchemewiseReport(result,divId){
+		var str='';
+		str+='<div class="scroller'+divId+'">';
+			str+='<div class="chart'+divId+'"></div>';
+		str+='</div>';
+		$("#"+divId).html(str);
+		if(result !=null && result.length>0)
+		{
+			var locationNamesArr=[];
+			var amountArr =[];
+			for(var i in result){
+				locationNamesArr.push(result[i].addressVO.districtName);
+				
+				if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
+					for(var j in result[i].subList){
+						for(var k in result[i].subList[j].subList)
+						{
+							amountArr.push(result[i].subList[j].subList[k].totalCount)
+						}
+					}
+				}
+				var mainJosnObjArr=[];
+				if(amountArr != null && amountArr.length > 0){
+					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
+				}
+				
+			}
+			var length = result.length
+			var height = '';
+			if(length == 0)
+			{
+				height = length * 100;
+			}else if(length > 3){
+				height = length * 40;
+			}
+			if(length > 8)
+			{
+				$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
+			}
+			$(".chart"+divId).height(height);
+			highChart(divId,locationNamesArr,mainJosnObjArr);
+		}
 	}
 	function getTotalSchemes(levelId,divId)
 	{
@@ -349,7 +545,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp) {
-				buildLocationWiseAmountDetails(ajaxresp,divId);
+				buildLocationWiseFundDetails(ajaxresp,divId)
 			},
 			error: function(request,error) { 
 				//alert(request.responseText);
@@ -398,7 +594,7 @@
 			}
 		});
 	}
-	function getTotalLocationsByScopeId(locScopeId)
+	function getTotalLocationsByScopeId(locScopeId,divId)
 	{
 		  var levelValues = [];
 		  var financialYrIdArr = [1,2];
@@ -426,6 +622,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success: function(ajaxresp) {
+				buildLocationWiseFundDetails(ajaxresp,divId);
 			},
 			error: function(request,error) { 
 			//alert(request.responseText);
@@ -433,7 +630,7 @@
 			}
         });
 	}	
-	function getAverageFundForScheme(){
+	function getAverageFundForScheme(divId){
 		var financialYrIdList = [1]; 
 		var deptId = 0;
 		var sourceId = 0;
@@ -456,14 +653,14 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success : function(ajaxresp){
-				alert(ajaxresp);
+				buildLocationWiseFundDetails(ajaxresp,divId);
 			},
 			error : function(request,error){
 				alert(error);
 			}
 		});
 	}
-	function getAverageFundForAnyLevel(){
+	function getAverageFundForAnyLevel(levelId,divId){
 		var levelValues = [];
 		var financialYrIdList = [1]; 
 		var deptId = 0;
@@ -485,7 +682,7 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			},
 			success : function(ajaxresp){
-				alert(ajaxresp);
+				buildLocationWiseFundDetails(ajaxresp,divId);
 			},
 			error : function(request,error){
 				alert(error);
@@ -493,7 +690,7 @@
 		});
 	}
 
-	getAllDepartments();
+
 	function getAllDepartments()
 	{
 		var json={}

@@ -8,6 +8,7 @@
 <link href="Assests/css/bootstrap.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/fh-3.1.2/sc-1.4.2/datatables.min.css"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
 </head>
@@ -38,7 +39,7 @@
 								<h4 class="panel-title">High Funded Constituency</h4>
 								<div id="highFundCons"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title">High Funded Mandal</h4>
 								<div id="highFundMandal"></div>
 							</td>
@@ -49,7 +50,7 @@
 							<td>
 								<h4 class="panel-title">High Funded Source</h4>
 								<div id="highFundSource"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title">High Funded Scheme</h4>
 								<div id="highFundScheme"></div>
@@ -64,7 +65,7 @@
 								<h4 class="panel-title">Low Funded Costituency</h4>
 								<div id="lowFundCons"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title">Low Funded Mandal</h4>
 								<div id="lowFundMandal"></div>
 							</td>
@@ -75,7 +76,7 @@
 							<td>
 								<h4 class="panel-title">Low Funded Source</h4>
 								<div id="highFundSource"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title">Low Funded Scheme</h4>
 								<div id="lowFundScheme"></div>
@@ -90,7 +91,7 @@
 								<h4 class="panel-title">Average Funded Costituency</h4>
 								<div id="avgFundCons"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title">Average Funded Mandal</h4>
 								<div id="avgFundMandal"></div>
 							</td>
@@ -101,7 +102,7 @@
 							<td>
 								<h4 class="panel-title">Average Funded Source</h4>
 								<div id="avgFundScheme"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title">Average Funded Scheme</h4>
 								<div id="avgFundScheme"></div>
@@ -116,7 +117,7 @@
 								<h4 class="panel-title">Total Funded Costituency</h4>
 								<div id="totFundCons"></div>
 							</td>
-							<td>
+							<!--<td>
 								<h4 class="panel-title">Total Funded Mandal</h4>
 								<div id="totFundMandal"></div>
 							</td>
@@ -127,7 +128,7 @@
 							<td>
 								<h4 class="panel-title">Total Funded Source</h4>
 								<div id="totFundSource"></div>
-							</td>
+							</td>-->
 							<td>
 								<h4 class="panel-title">Total Funded Scheme</h4>
 								<div id="totFundScheme"></div>
@@ -141,7 +142,31 @@
 							<h4 class="panel-title text-capital">state level overview</h4>
 						</div>
 						<div class="panel-body">
-							<div id="stateLevlOvervw"></div>
+							<div>
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs pull-right" role="tablist">
+									<li role="presentation" class="active"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+									<li role="presentation"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+								</ul>
+
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div role="tabpanel" class="tab-pane active" id="stateLevelGraph">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="stateLevlOvervw"></div>	
+											</div>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="stateLevelTable">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="stateLevlOvervwTable"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -151,7 +176,31 @@
 							<h4 class="panel-title text-capital">district level overview</h4>
 						</div>
 						<div class="panel-body">
-							<div id="distLevlOvervw"></div>
+							<div>
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs pull-right" role="tablist">
+									<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+									<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+								</ul>
+
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div role="tabpanel" class="tab-pane active" id="distLevelGraph">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="distLevlOvervw"></div>
+											</div>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="distLevelTable">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="distLevlOvervwTable"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -161,7 +210,31 @@
 							<h4 class="panel-title text-capital">mandal level overview</h4>
 						</div>
 						<div class="panel-body">
-							<div id="mandalLevlOvervw"></div>
+							<div>
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs pull-right" role="tablist">
+									<li role="presentation" class="active"><a href="#mandalLevelGraph" aria-controls="mandalLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+									<li role="presentation"><a href="#mandalLevelTable" aria-controls="mandalLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+								</ul>
+
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div role="tabpanel" class="tab-pane active" id="mandalLevelGraph">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="mandalLevlOvervw"></div>
+											</div>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="mandalLevelTable">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="mandalLevlOvervwTable"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -171,7 +244,31 @@
 							<h4 class="panel-title text-capital">constituency level overview</h4>
 						</div>
 						<div class="panel-body">
-							<div id="consLevlOvervw"></div>
+							<div>
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs pull-right" role="tablist">
+									<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
+									<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+								</ul>
+
+								<!-- Tab panes -->
+								<div class="tab-content">
+									<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="consLevlOvervw"></div>
+											</div>
+										</div>
+									</div>
+									<div role="tabpanel" class="tab-pane" id="consLevelTable">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="consLevlOvervwTable"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>	
@@ -195,6 +292,8 @@
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.15/fh-3.1.2/sc-1.4.2/datatables.min.js"></script>
 <script type="text/javascript" src="Assests/fundManagament/fundManagementDashboard.js"></script>
 
 <!--Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations-->
