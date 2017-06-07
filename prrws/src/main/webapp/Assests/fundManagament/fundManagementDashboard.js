@@ -146,7 +146,7 @@
 		var deptIdsArr = [];
   
 		  var json = {
-			levelId : 4, 
+			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : "01-06-2013",       
@@ -244,7 +244,7 @@
 		var levelValues = [];
 		var financialYrIdList = [1];
 		var json = {
-			levelId : levelId, 
+			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdList,
 			sortingType : "name",      //name,count    
@@ -568,7 +568,7 @@
 		  var deptIdsArr = [];
 		  
 		  var json = {
-			levelId : 4, 
+			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : "01-06-2013",       
@@ -603,7 +603,7 @@
 		var deptIdsArr = [];
 
 		var json = {
-			levelId : levelId, 
+			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : "01-06-2013",       
@@ -685,7 +685,7 @@
 		  var deptIdsArr = [];
 		  
 		  var json = {
-			levelId : levelId, 
+			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : "01-06-2013",       
@@ -725,7 +725,7 @@
 		  var deptIdsArr = [];
 		  
 		  var json = {
-			levelId : 4, 
+			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : "01-06-2013",       
@@ -762,7 +762,7 @@
 		  var deptIdsArr = [];
   
 		  var json = {
-			levelId : 4, 
+			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : "01-06-2013",       
@@ -825,7 +825,7 @@
 		var deptId = 0;
 		var sourceId = 0;
 		var json = {
-			levelId : levelId, 
+			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdList,
 			fromDateStr : "01/06/2017",       
