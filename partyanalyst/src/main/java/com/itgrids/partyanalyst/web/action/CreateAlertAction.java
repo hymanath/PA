@@ -3282,4 +3282,19 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		}
 		return Action.SUCCESS;
 	}
+	public String getAlertCntInRequiredFormatToExportToExcel(){
+		try{
+			jObj = new JSONObject(getTask());
+			String fromDate=jObj.getString("fromDate");
+			String toDate=jObj.getString("toDateStr");
+			Long deptId=jObj.getLong("deptId");
+			Long sourceId=jObj.getLong("sourceId");
+			String rangeType=jObj.getString("rangeType");
+			Long stateId=jObj.getLong("stateId");
+			alertOverviewVO = alertService.getAlertCntInRequiredFormatToExportToExcel(fromDate,toDate, stateId,deptId,sourceId, rangeType);
+		}catch(Exception e){
+			LOG.error("Excpetion raised at getAlertCntInRequiredFormatToExportToExcel Method",e);
+		}
+		return Action.SUCCESS;
+	}
 }
