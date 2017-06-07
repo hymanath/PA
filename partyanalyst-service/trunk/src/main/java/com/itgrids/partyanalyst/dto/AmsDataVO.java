@@ -10,19 +10,126 @@ public class AmsDataVO implements Serializable {
 	private String name;
 	
 	private List<AmsKeyValueVO> newsPaperList;
+	private List<Long> newsPaperIdsList;
 	private List<AmsKeyValueVO> chanelList;
+	private List<Long> chanelIdsList;
 	private List<AmsKeyValueVO> chanelListNew;
+	private List<Long> chanelIdsListNew;
 	private List<AmsKeyValueVO> deptList;
+	private List<Long> deptIdsList;
 	private List<AmsKeyValueVO> deptListNew;
+	private List<Long> deptIdsListNew;
 	
 	private List<AmsKeyValueVO> socailMediaTypeList;
+	private List<Long> socailMediaTypeIdsList;
 	private List<AmsKeyValueVO> alertCallCenterTypeIdList;
+	private List<Long> alertCallCenterTypeIdsList;
 	private List<AmsKeyValueVO> mondayGrievanceTypeList;
+	private List<Long> mondayGrievanceTypeIdsList;
 	private List<AmsKeyValueVO> janmabhoomiTypeList;
+	private List<Long> janmabhoomiTypeIdsList;
 	private List<AmsKeyValueVO> specialGrievanceTypeList;
+	private List<Long> specialGrievanceTypeIdsList;
 	private List<AmsKeyValueVO> generalGrievanceTypeList;
+	private List<Long> generalGrievanceTypeIdsList;
+	private List<Long> alertSeverityIdsList;
+	private List<Long> alertStatusIdsList;
+	
+	private String fromDate = null,toDate = null;
 	
 	
+	public List<Long> getAlertStatusIdsList() {
+		return alertStatusIdsList;
+	}
+	public void setAlertStatusIdsList(List<Long> alertStatusIdsList) {
+		this.alertStatusIdsList = alertStatusIdsList;
+	}
+	public List<Long> getAlertSeverityIdsList() {
+		return alertSeverityIdsList;
+	}
+	public void setAlertSeverityIdsList(List<Long> alertSeverityIdsList) {
+		this.alertSeverityIdsList = alertSeverityIdsList;
+	}
+	public List<Long> getNewsPaperIdsList() {
+		return newsPaperIdsList;
+	}
+	public void setNewsPaperIdsList(List<Long> newsPaperIdsList) {
+		this.newsPaperIdsList = newsPaperIdsList;
+	}
+	public List<Long> getChanelIdsList() {
+		return chanelIdsList;
+	}
+	public void setChanelIdsList(List<Long> chanelIdsList) {
+		this.chanelIdsList = chanelIdsList;
+	}
+	public List<Long> getChanelIdsListNew() {
+		return chanelIdsListNew;
+	}
+	public void setChanelIdsListNew(List<Long> chanelIdsListNew) {
+		this.chanelIdsListNew = chanelIdsListNew;
+	}
+	public List<Long> getDeptIdsList() {
+		return deptIdsList;
+	}
+	public void setDeptIdsList(List<Long> deptIdsList) {
+		this.deptIdsList = deptIdsList;
+	}
+	public List<Long> getDeptIdsListNew() {
+		return deptIdsListNew;
+	}
+	public void setDeptIdsListNew(List<Long> deptIdsListNew) {
+		this.deptIdsListNew = deptIdsListNew;
+	}
+	public List<Long> getSocailMediaTypeIdsList() {
+		return socailMediaTypeIdsList;
+	}
+	public void setSocailMediaTypeIdsList(List<Long> socailMediaTypeIdsList) {
+		this.socailMediaTypeIdsList = socailMediaTypeIdsList;
+	}
+	public List<Long> getAlertCallCenterTypeIdsList() {
+		return alertCallCenterTypeIdsList;
+	}
+	public void setAlertCallCenterTypeIdsList(List<Long> alertCallCenterTypeIdsList) {
+		this.alertCallCenterTypeIdsList = alertCallCenterTypeIdsList;
+	}
+	public List<Long> getMondayGrievanceTypeIdsList() {
+		return mondayGrievanceTypeIdsList;
+	}
+	public void setMondayGrievanceTypeIdsList(List<Long> mondayGrievanceTypeIdsList) {
+		this.mondayGrievanceTypeIdsList = mondayGrievanceTypeIdsList;
+	}
+	public List<Long> getJanmabhoomiTypeIdsList() {
+		return janmabhoomiTypeIdsList;
+	}
+	public void setJanmabhoomiTypeIdsList(List<Long> janmabhoomiTypeIdsList) {
+		this.janmabhoomiTypeIdsList = janmabhoomiTypeIdsList;
+	}
+	public List<Long> getSpecialGrievanceTypeIdsList() {
+		return specialGrievanceTypeIdsList;
+	}
+	public void setSpecialGrievanceTypeIdsList(
+			List<Long> specialGrievanceTypeIdsList) {
+		this.specialGrievanceTypeIdsList = specialGrievanceTypeIdsList;
+	}
+	public List<Long> getGeneralGrievanceTypeIdsList() {
+		return generalGrievanceTypeIdsList;
+	}
+	public void setGeneralGrievanceTypeIdsList(
+			List<Long> generalGrievanceTypeIdsList) {
+		this.generalGrievanceTypeIdsList = generalGrievanceTypeIdsList;
+	}
+	public String getFromDate() {
+		return fromDate;
+	}
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
 	public Long getId() {
 		return id;
 	}

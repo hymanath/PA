@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.dto.CadreVoterVO;
 import com.itgrids.partyanalyst.dto.CardNFCDetailsVO;
 import com.itgrids.partyanalyst.dto.CardPrintUserVO;
 import com.itgrids.partyanalyst.dto.CasteDetailsVO;
+import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.EventFileUploadVO;
 import com.itgrids.partyanalyst.dto.FlagVO;
@@ -4971,5 +4972,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("exception occured in  the getAmsFilterCategoryTypes  method in WebServiceHandlerService");
 		}
 		 return null;
+	 }
+	 
+	 public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(AmsDataVO amsDataVO){
+		 DistrictOfficeViewAlertVO returnVO = null;
+		 try {
+			 returnVO = alertManagementSystemService.getAmsAppAlertsBasicCounts(amsDataVO.getId(),amsDataVO.getFromDate(),amsDataVO.getToDate(),amsDataVO.getNewsPaperIdsList(),amsDataVO.getChanelIdsListNew(),
+					 amsDataVO.getAlertCallCenterTypeIdsList(),amsDataVO.getSocailMediaTypeIdsList(),amsDataVO.getAlertSeverityIdsList(),amsDataVO.getAlertStatusIdsList(),amsDataVO.getMondayGrievanceTypeIdsList(),
+					 amsDataVO.getJanmabhoomiTypeIdsList(),amsDataVO.getSpecialGrievanceTypeIdsList(),amsDataVO.getGeneralGrievanceTypeIdsList());
+		} catch (Exception e) {
+			log.error("Exception raised at getAmsAppAlertsBasicCounts", e);
+		}
+		 return returnVO;
 	 }
 }

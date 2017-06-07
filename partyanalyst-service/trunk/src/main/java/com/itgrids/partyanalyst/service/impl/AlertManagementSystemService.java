@@ -12503,5 +12503,63 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
     	}
     }
 	
+	public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(Long userId,String fromDateStr,String toDateStr,List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
+  		
+  		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
+  		try{
+  			Date fromDate = null;
+  			Date toDate = null;
+  			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+  			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+  				fromDate = sdf.parse(fromDateStr);
+  				toDate = sdf.parse(toDateStr);
+  			}
+  			List<Long> levelValues = new ArrayList<Long>();    
+  			Long levelId = 0L;
+  			List<Object[]> lvlValueAndLvlIdList = govtAlertDepartmentLocationNewDAO.getUserAccessLevels(userId);
+  			if(lvlValueAndLvlIdList != null && lvlValueAndLvlIdList.size() > 0){
+  				for(Object[] param : lvlValueAndLvlIdList){
+  					levelValues.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+  					levelId = commonMethodsUtilService.getLongValueForObject(param[0]);
+  				}
+  			}
+  			prepareRequiredParameter(printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//Prepare Parameter
+  			
+  			List<Object[]> list1 = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(userId,levelValues,levelId);
+  			
+  			List<Long> govtDepDesigOffcrIds = new ArrayList<Long>(0);
+  			List<Long> govtOffcrIds =  new ArrayList<Long>(0);
+  			if(commonMethodsUtilService.isListOrSetValid(list1)){
+  				for( Object[]  obj :list1){
+  					govtDepDesigOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+  					govtOffcrIds.add(commonMethodsUtilService.getLongValueForObject(obj[1]));
+  					returnVO.setGovtDeptDesigOffcrIds(govtDepDesigOffcrIds);
+  					returnVO.setGovtOfficerIds(govtOffcrIds);
+  					returnVO.setId(commonMethodsUtilService.getLongValueForObject(obj[1]));//officerId
+  					returnVO.setName(commonMethodsUtilService.getStringValueForObject(obj[2]));//officerName
+  					returnVO.setDepartmentId(commonMethodsUtilService.getLongValueForObject(obj[3]));//depId
+  					returnVO.setDeptName(commonMethodsUtilService.getStringValueForObject(obj[4]));//deptName
+  					returnVO.setDesignationId(commonMethodsUtilService.getLongValueForObject(obj[5]));//designationId
+  					returnVO.setDesigName(commonMethodsUtilService.getStringValueForObject(obj[6]));//designationName
+  					
+  				}
+  			}
+  			// My alerts view
+  			List<Object[]> myAlertsTodayList = null;
+  			List<Object[]> myAlertsCompletedList = null;
+  			List<Object[]> myAlertsStatusList = null;
+  			if(govtDepDesigOffcrIds != null && govtDepDesigOffcrIds.size()>0 && govtOffcrIds != null && govtOffcrIds.size() >0){
+  				myAlertsTodayList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"today",new DateUtilService().getCurrentDateAndTime(),new DateUtilService().getCurrentDateAndTime(),printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+  				myAlertsCompletedList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"completed",fromDate,toDate,printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+  				myAlertsStatusList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds,fromDate,toDate,printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+  			}
+  			setIASOfficerStatusWiseCountView(myAlertsTodayList,myAlertsCompletedList,myAlertsStatusList,returnVO,"MyAlerts");
+  			
+  		}catch(Exception e){
+  			e.printStackTrace();
+  			LOG.error("Exception Occured in AlertManagementSystemService of  getIASOfficerAlertsCountMainView() ", e);
+  		}
+  		return returnVO;
+  	}
 	
 }
