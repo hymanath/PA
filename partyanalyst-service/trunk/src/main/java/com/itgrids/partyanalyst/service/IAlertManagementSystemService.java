@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
+import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
@@ -190,4 +191,12 @@ public interface IAlertManagementSystemService {
 	 public String getOfficerMobilenNo(Long userId);
 	 public String generatingAndSavingOTPDetails(String mobileNoStr);
 	 public String getOfficerOtpStatus(Long userId,String otp);
+	 
+	 public List<AmsKeyValueVO> getDeptListForUserForAms(Long userId);
+	 public List<AmsKeyValueVO> getSocialMediaTypeListForAms();
+	 public List<AmsKeyValueVO> getAlertCallCenterTypeForAms();
+	 public List<AmsKeyValueVO> getMondayGrievanceTypeListForAms();
+	 public List<AmsKeyValueVO> getJanmabhoomiTypeListForAms();
+	 public List<AmsKeyValueVO> getSpecialGrievanceTypeListForAms() ;
+	 public List<AmsKeyValueVO> getGeneralGrievanceTypeListForAms();;
 }        
