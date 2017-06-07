@@ -535,4 +535,14 @@ public List<Object[]> getGovtDeptDesigOffrDetlsIdAndGovtOfcrId(Long userId,List<
   		query.setParameter("officerId", officerId);
   		return query.list();
   	}
+	public List<String> getOfficerMobilenNo(Long userId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.govtOfficer.mobileNo " +
+						" from " +
+						" GovtDepartmentDesignationOfficerDetailsNew model " +
+						" where  model.userId = :userId and isDeleted ='N'");
+		Query query = getSession().createQuery(queryStr.toString());
+		query.setParameter("userId", userId);
+		return query.list();
+	} 
 }
