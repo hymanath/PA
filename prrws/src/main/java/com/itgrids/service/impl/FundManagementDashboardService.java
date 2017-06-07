@@ -622,7 +622,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  * Description : { to get district id and name based on state id }
  * 
  */
- public List<LocationFundDetailsVO> getDistrictIdName(Long stateId){
+ public List<LocationFundDetailsVO>getAllDistrictByStateId(Long stateId){
 	 List<LocationFundDetailsVO> voList = null;
 	 
 	 try{
@@ -654,7 +654,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	 * @return  List<LocationFundDetailsVO> 
 	 */
 	
- public List<LocationFundDetailsVO> getConstituencies(Long districtId){
+ public List<LocationFundDetailsVO> getAllConstituenciesByDistrictId(Long districtId){
 	  List<LocationFundDetailsVO> constincyList= null;
 	  try{
 	    List<Object[]> constiesObjs =constituencyDAO.getConstituencies( districtId);
