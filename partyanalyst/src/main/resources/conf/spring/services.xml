@@ -4295,6 +4295,7 @@
 		<property name="meekosamPublicRepresentativeTypeRelationDAO" ref="meekosamPublicRepresentativeTypeRelationDAO" ></property>
 		<property name="alertMeekosamReferalDetailsDAO" ref="alertMeekosamReferalDetailsDAO" ></property>
 		<property name="govtAlertDepartmentLocationNewDAO" ref="govtAlertDepartmentLocationNewDAO" ></property>
+		<property name="alertDocumentDAO" ref="alertDocumentDAO" ></property>
    </bean>
   <bean name="locationDashboardService" class="com.itgrids.core.api.service.impl.LocationDashboardService">	
   		<property name="nominationDAO" ref="nominationDAO"></property>

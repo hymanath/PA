@@ -259,7 +259,7 @@ content: '→';
 												<input type="text" class="form-control" id="petitionerNameId" name="meekosamGrievanceVO.petitionerName"/>
 											</div>
 											<div class="col-sm-3 m_top10">
-												<label>Relative Name <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetRelNameId"></span></label>
+												<label>Relative Name </label>
 												<input type="text" class="form-control" id="petitionerRelativeNameId" name="meekosamGrievanceVO.petitionerRelativeName"/>
 											</div>
 											<div class="col-sm-2 m_top10">
@@ -305,7 +305,7 @@ content: '→';
 											</div>
 											<div class="col-sm-3 m_top10">
 												<label>District <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetDistrictId"></span></label>
-												<select class="selectChosen" attr_districtId="'+districtId+'" id="districts" name="meekosamGrievanceVO.petitionerDistrictId"></select>
+												<select class="selectChosen" id="districts" name="meekosamGrievanceVO.petitionerDistrictId"></select>
 											</div>
 											<div class="col-sm-3 m_top10">
 												<label>Mandal <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetMandalId"></span></label>
@@ -411,7 +411,7 @@ content: '→';
 									<div class="row m_top20">
 										<div class="col-sm-3 m_top10">
 											<label>Category <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgCategoryId"></span></label>
-											<select class="selectChosen" id="categoryId" name="meekosamGrievanceVO.categoryId">
+											<select class="selectChosen" id="categoryId" name="meekosamGrievanceVO.categoryId" onchange="refreshDetails();">
 												<option value="0">Select Category</option>
 												<option value="6">Monday Grievance</option>
 												<option value="7">Janmabhoomi</option>
@@ -460,9 +460,8 @@ content: '→';
 										</div>
 										<div id="buildPetitionerData" class="col-sm-12"></div>
 										<div id="revenueDeptSplBlock" style="display:none;">
-											
 												<div class="col-sm-12 m_top20">
-													<h4 class="panel-title text-capital fontColor">Land Details</h4>
+													<h4 class="panel-title text-capital fontColor">Land Details <span style="color:red">*</span>&nbsp;&nbsp;<small class="errorMsgClass" style="color:#FF4C64;" id="errMsgLandDetailsId"></small></h4>
 												</div>
 												<div class="col-sm-12 m_top20">
 													<table class="table" id="petitionerTableId" style="display:none;">
@@ -480,33 +479,33 @@ content: '→';
 												<div class="col-sm-11">
 													<div class="row">
 														<div class="col-sm-2 m_top20">
-															<label>District</label>
+															<label>District <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgLandDistId"></span></label>
 															<select class="selectChosen" id="districtsPetitionerId">
 																<option>Select District</option>
 															</select>
 														</div>
 														<div class="col-sm-2 m_top20">
-															<label>Mandal</label>
+															<label>Mandal <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgLandManId"></span></label>
 															<select class="selectChosen" id="mandalsPetitionerId">
 																<option></option>
 															</select>
 														</div>
 														<div class="col-sm-2 m_top20">
-															<label>Village</label>
+															<label>Village <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgLandVillId"></span></label>
 															<select class="selectChosen" id="villagePetitionerId">
 																<option></option>
 															</select>
 														</div>
 														<div class="col-sm-2 m_top20">
-															<label>Survey Number</label>
+															<label>Survey Number <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgLandSurNOId"></span></label>
 															<input type="text" class="form-control" id="surveyNoPetitionerId"/>
 														</div>
 														<div class="col-sm-2 m_top20">
-															<label>Land In Acres</label>
+															<label>Land In Acres <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgLandAcersId"></span></label>
 															<input type="text" class="form-control" id="landInAcresPetitionerId"/>
 														</div>
 														<div class="col-sm-2 m_top20">
-															<label>Land In Cent</label>
+															<label>Land In Cent <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgLandCentId"></span></label>
 															<input type="text" class="form-control" id="landInCentPeitionerId"/>
 														</div>
 													</div>
@@ -591,14 +590,14 @@ content: '→';
 									<div id="dynamicDataDivId"></div>
 								</div>
 							</div>-->
-							<!--<div class="panel panel-default panelBlock m_top20">
+							<div class="panel panel-default panelBlock m_top20">
 								<div class="panel-heading">
 									<h4 class="panel-title text-capital">upload attachments</h4>
 								</div>
 								<div class="panel-body">
-									<input type="file" id="uploadDivId"/>
+									<input type="file" id="uploadDivId" name="imageForDisplay"/>
 								</div>
-							</div>-->
+							</div>
 							<!--<div class="panel panel-default panelBlock">
 								<div class="panel-heading">
 									<h4 class="panel-title text-capital">Referal information</h4>

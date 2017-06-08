@@ -1,7 +1,11 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import java.util.List;
 
@@ -9,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
@@ -288,7 +293,24 @@ public class MeekosamGrievanceAction extends ActionSupport implements ServletReq
 			if(regVo == null)
 				return Action.ERROR;
 			
-			resultStatus = meekosamGrievanceService.saveMeekosamGrievance(meekosamGrievanceVO, regVo.getRegistrationID());
+			Map<File,String> mapfiles = new HashMap<File,String>();
+			MultiPartRequestWrapper multiPartRequestWrapper = (MultiPartRequestWrapper)request;
+			Enumeration<String> fileParams = multiPartRequestWrapper.getFileParameterNames();
+			int i = 0;
+			while(fileParams.hasMoreElements()){
+				String key = fileParams.nextElement();
+				File[] files = multiPartRequestWrapper.getFiles(key);
+				if(files != null && files.length > 0){
+					for(File f : files){
+						String fileName  =multiPartRequestWrapper.getFileNames(key)[i];
+						//fileName = StringEscapeUtils.escapeJava(fileName);
+						mapfiles.put(f,fileName);  
+						i++;
+					}
+				}
+			}
+			
+			resultStatus = meekosamGrievanceService.saveMeekosamGrievance(meekosamGrievanceVO, regVo.getRegistrationID(),mapfiles);
 			
 		} catch (Exception e) {
 			LOG.error("Exception Raised in saveMeekosamGrievance() in MeekosamGrievanceAction",e);
