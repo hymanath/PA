@@ -702,6 +702,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
  			List<LocationFundDetailsVO> detailsVOs = new ArrayList<LocationFundDetailsVO>();
  			LocationFundDetailsVO locationFundDetailsVO = null;
  			List<Object[]> locationList = null;
+ 			String lvlIdStr = "";
  			SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 			Date sDate = null;
 			Date eDate = null;
@@ -717,12 +718,24 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			Long superLocationLevelId = Long.parseLong(superLocationLevelIdStr);
 			if(superLocationLevelId != null && superLocationLevelId.longValue() == 2L){//get districtIds
 				locationList = fundSanctionDAO.getAllDistrictByStateId(superLocationId,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),3L,sDate,eDate);
+				lvlIdStr = "3";
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == 3L){//get constituencyIds
 				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),4L,sDate,eDate);
+				lvlIdStr = "4";
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == 4L){//get tehsilIds
 				
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == 4L){//get panchayatIds
 				
+			}
+			if(locationList != null && locationList.size() > 0){
+				for(Object[] param : locationList){
+					locationFundDetailsVO = new LocationFundDetailsVO();
+					String locId = commonMethodsUtilService.getStringValueForObject(param[0]);
+					locId = lvlIdStr.concat(locId);
+					locationFundDetailsVO.setId(Long.parseLong(locId));
+					locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					detailsVOs.add(locationFundDetailsVO);
+				}
 			}
 			return detailsVOs;
  		}catch(Exception e){
