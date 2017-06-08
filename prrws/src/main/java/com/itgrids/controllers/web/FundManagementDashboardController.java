@@ -44,8 +44,6 @@ public class FundManagementDashboardController {
 	consumes = MediaType.APPLICATION_JSON_VALUE)
 	  public @ResponseBody LocationFundDetailsVO getLocationWiseFundDetails(@RequestBody InputVO inputVO)
 	  {		
-		
-		
 		LocationFundDetailsVO  returnVO =  fundManagementDashboardService.getLocationWiseFundDetails(inputVO);
 		return returnVO;
 	  }
