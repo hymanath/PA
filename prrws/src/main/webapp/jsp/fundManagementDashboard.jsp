@@ -7,6 +7,7 @@
 <title>FMS DASHBOARD</title>
 <link href="Assests/css/bootstrap.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" type="text/less" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/fh-3.1.2/sc-1.4.2/datatables.min.css"/>
@@ -31,16 +32,16 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
 				<ul class="list-inline navbar-header-custom">
 					<li>Note: All Amount in Lakhs</li>
 					<li>
-						Financial Year: <select id="financialYearId" onchange="newOnLoadCalls();">Select Financial Year </select>
+						Financial Year: <select id="financialYearId"></select>
 					</li>
 					<li>
-						Department: <select id="DepartmentsId" onchange="newOnLoadCalls();" ><option>Select Department</option></select>
+						Department: <select id="DepartmentsId"><option>Select Department</option></select>
 					</li>
 					
 					<li>
@@ -59,117 +60,123 @@
 </header>
 <main>
 	<section>
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12">
 					<table class="table table-bordered table-overview">
 						<tr>
 							<td>
-								<h4 class="panel-title">High Funded District</h4>
-								<div id="highFundDist"></div>
+								<h4 class="panel-title text-muted">High Funded District</h4>
+								<div id="highFundDist" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">High Funded Constituency</h4>
-								<div id="highFundCons"></div>
-							</td>
-							<!--<td>
-								<h4 class="panel-title">High Funded Mandal</h4>
-								<div id="highFundMandal"></div>
+								<h4 class="panel-title text-muted">High Funded Constituency</h4>
+								<div id="highFundCons" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">High Funded Village</h4>
-								<div id="highFundVillage"></div>
+								<h4 class="panel-title text-muted">High Funded Mandal</h4>
+								<div id="highFundMandal" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">High Funded Source</h4>
-								<div id="highFundSource"></div>
-							</td>-->
-							<td>
-								<h4 class="panel-title">High Funded Scheme</h4>
-								<div id="highFundScheme"></div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h4 class="panel-title">Low Funded District</h4>
-								<div id="lowFundDist"></div>
+								<h4 class="panel-title text-muted">High Funded Village</h4>
+								<div id="highFundVillage" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">Low Funded Costituency</h4>
-								<div id="lowFundCons"></div>
-							</td>
-							<!--<td>
-								<h4 class="panel-title">Low Funded Mandal</h4>
-								<div id="lowFundMandal"></div>
+								<h4 class="panel-title text-muted">High Funded Source</h4>
+								<div id="highFundSource" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">Low Funded Village</h4>
-								<div id="lowFundVillage"></div>
-							</td>
-							<td>
-								<h4 class="panel-title">Low Funded Source</h4>
-								<div id="highFundSource"></div>
-							</td>-->
-							<td>
-								<h4 class="panel-title">Low Funded Scheme</h4>
-								<div id="lowFundScheme"></div>
+								<h4 class="panel-title text-muted">High Funded Scheme</h4>
+								<div id="highFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<h4 class="panel-title">Average Funded District</h4>
-								<div id="avgFundDist"></div>
+								<h4 class="panel-title text-muted">Low Funded District</h4>
+								<div id="lowFundDist" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">Average Funded Costituency</h4>
-								<div id="avgFundCons"></div>
-							</td>
-							<!--<td>
-								<h4 class="panel-title">Average Funded Mandal</h4>
-								<div id="avgFundMandal"></div>
+								<h4 class="panel-title text-muted">Low Funded Costituency</h4>
+								<div id="lowFundCons" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">Average Funded Village</h4>
-								<div id="avgFundScheme"></div>
+								<h4 class="panel-title text-muted">Low Funded Mandal</h4>
+								<div id="lowFundMandal" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">Average Funded Source</h4>
-								<div id="avgFundScheme"></div>
-							</td>-->
+								<h4 class="panel-title text-muted">Low Funded Village</h4>
+								<div id="lowFundVillage" class="m_top5"></div>
+							</td>
 							<td>
-								<h4 class="panel-title">Average Funded Scheme</h4>
-								<div id="avgFundScheme"></div>
+								<h4 class="panel-title text-muted">Low Funded Source</h4>
+								<div id="highFundSource" class="m_top5"></div>
+							</td>
+							<td>
+								<h4 class="panel-title text-muted">Low Funded Scheme</h4>
+								<div id="lowFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<h4 class="panel-title">Total Funds</h4>
-								<div id="totFund"></div>
+								<h4 class="panel-title text-muted">Average Funded District</h4>
+								<div id="avgFundDist" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">Total Funded Costituency</h4>
-								<div id="totFundCons"></div>
-							</td>
-							<!--<td>
-								<h4 class="panel-title">Total Funded Mandal</h4>
-								<div id="totFundMandal"></div>
+								<h4 class="panel-title text-muted">Average Funded Costituency</h4>
+								<div id="avgFundCons" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">Total Funded Village</h4>
-								<div id="totFundVillage"></div>
+								<h4 class="panel-title text-muted">Average Funded Mandal</h4>
+								<div id="avgFundMandal" class="m_top5"></div>
 							</td>
 							<td>
-								<h4 class="panel-title">Total Funded Source</h4>
-								<div id="totFundSource"></div>
-							</td>-->
+								<h4 class="panel-title text-muted">Average Funded Village</h4>
+								<div id="avgFundScheme" class="m_top5"></div>
+							</td>
 							<td>
-								<h4 class="panel-title">Total Funded Scheme</h4>
-								<div id="totFundScheme"></div>
+								<h4 class="panel-title text-muted">Average Funded Source</h4>
+								<div id="avgFundScheme" class="m_top5"></div>
+							</td>
+							<td>
+								<h4 class="panel-title text-muted">Average Funded Scheme</h4>
+								<div id="avgFundScheme" class="m_top5"></div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<h4 class="panel-title text-muted">Total Funds</h4>
+								<div id="totFund" class="m_top5"></div>
+							</td>
+							<td>
+								<h4 class="panel-title text-muted">Total Funded Costituency</h4>
+								<div id="totFundCons" class="m_top5"></div>
+							</td>
+							<td>
+								<h4 class="panel-title text-muted">Total Funded Mandal</h4>
+								<div id="totFundMandal" class="m_top5"></div>
+							</td>
+							<td>
+								<h4 class="panel-title text-muted">Total Funded Village</h4>
+								<div id="totFundVillage" class="m_top5"></div>
+							</td>
+							<td>
+								<h4 class="panel-title text-muted">Total Funded Source</h4>
+								<div id="totFundSource" class="m_top5"></div>
+							</td>
+							<td>
+								<h4 class="panel-title text-muted">Total Funded Scheme</h4>
+								<div id="totFundScheme" class="m_top5"></div>
 							</td>
 						</tr>
 					</table>
 				</div>
-				<!--<div class="col-sm-12">
+			</div>
+		</div>
+	<section>
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
 							<div class="row">
@@ -210,7 +217,7 @@
 							</div>
 						</div>
 					</div>
-				</div>-->
+				</div>
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
@@ -255,7 +262,7 @@
 						</div>
 					</div>
 				</div>
-				<!--<div class="col-sm-12">
+				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
 							<div class="row">
@@ -296,7 +303,7 @@
 							</div>
 						</div>
 					</div>
-				</div>-->
+				</div>
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
@@ -314,13 +321,11 @@
 						</div>
 						<div class="panel-body">
 							<div>
-								<!-- Nav tabs -->
 								<ul class="nav nav-tabs pull-right" role="tablist">
 									<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 									<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
 								</ul>
 
-								<!-- Tab panes -->
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
 										<div class="row">
