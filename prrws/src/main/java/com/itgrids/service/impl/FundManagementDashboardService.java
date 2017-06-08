@@ -458,6 +458,23 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 								Set<Long> availableDeptIds = new HashSet<Long>(0);
 								for (FundSchemeVO deptVO : yearVO.getSubList()) {
 									availableDeptIds.add(deptVO.getId());
+									
+									Set<Long> availableSchemeIds = new HashSet<Long>(0);
+									for (FundSchemeVO schemeVO : deptVO.getSubList()) {
+										availableSchemeIds.add(schemeVO.getId());
+									}
+									
+									for (Long schemeId : schemesMap.keySet()) {
+										if(!availableSchemeIds.contains(schemeId)){
+											FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
+											FundSchemeVO schemeVO = new FundSchemeVO();					
+											schemeVO.setId(tempSchemeVO.getId());
+											schemeVO.setName(tempSchemeVO.getName());
+											schemeVO.setCount(0L);
+											schemeVO.setTotalCount(0L);
+											deptVO.getSubList().add(schemeVO);
+										}
+									}
 								}
 								
 								for (Long deptId : deptsMap.keySet()) {
@@ -506,6 +523,48 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						for (FundSchemeVO yearVO : fundLocationVO.getSubList()) {
 							availableYearIds.add(yearVO.getYearId());
 							yearVO.setAddressVO(fundLocationVO.getAddressVO());
+							
+							Set<Long> availableDeptIds = new HashSet<Long>(0);
+							for (FundSchemeVO deptVO : yearVO.getSubList()) {
+								availableDeptIds.add(deptVO.getId());
+								
+								for (Long deptId : deptsMap.keySet()) {
+									if(!availableDeptIds.contains(deptId)){
+										FundSchemeVO tempDeptVO = deptsMap.get(deptId);
+										FundSchemeVO deptsVO = new FundSchemeVO();					
+										deptsVO.setId(tempDeptVO.getId());
+										deptsVO.setName(tempDeptVO.getName());
+										
+										for (Long schemeId : schemesMap.keySet()) {
+											FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
+											FundSchemeVO schemeVO = new FundSchemeVO();					
+											schemeVO.setId(tempSchemeVO.getId());
+											schemeVO.setName(tempSchemeVO.getName());
+											schemeVO.setCount(0L);
+											schemeVO.setTotalCount(0L);
+											deptsVO.getSubList().add(schemeVO);
+										}
+										yearVO.getSubList().add(deptsVO);
+									}
+								}
+								
+								Set<Long> availableSchemeIds = new HashSet<Long>(0);
+								for (FundSchemeVO schemeVO : deptVO.getSubList()) {
+									availableSchemeIds.add(schemeVO.getId());
+								}
+								
+								for (Long schemeId : schemesMap.keySet()) {
+									if(!availableSchemeIds.contains(schemeId)){
+										FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
+										FundSchemeVO schemeVO = new FundSchemeVO();					
+										schemeVO.setId(tempSchemeVO.getId());
+										schemeVO.setName(tempSchemeVO.getName());
+										schemeVO.setCount(0L);
+										schemeVO.setTotalCount(0L);
+										deptVO.getSubList().add(schemeVO);
+									}
+								}
+							}
 						}
 						
 						for (Long yearId : yearsMap.keySet()) {
