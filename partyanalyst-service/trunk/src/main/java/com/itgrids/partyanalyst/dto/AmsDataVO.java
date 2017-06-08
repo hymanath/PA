@@ -32,8 +32,14 @@ public class AmsDataVO implements Serializable {
 	private List<Long> specialGrievanceTypeIdsList;
 	private List<AmsKeyValueVO> generalGrievanceTypeList;
 	private List<Long> generalGrievanceTypeIdsList;
+	
+	private List<AmsKeyValueVO> alertSeverityList;	
+	private List<AmsKeyValueVO> alertStatusList;
+	private List<AmsKeyValueVO> govtAlertSubTaksStatusList;
+	
 	private List<Long> alertSeverityIdsList;
 	private List<Long> alertStatusIdsList;
+	private List<Long> govtAlertSubTaksStatusIdsList;
 	
 	private String fromDate = null,toDate = null;
 	
@@ -211,6 +217,32 @@ public class AmsDataVO implements Serializable {
 	public void setGeneralGrievanceTypeList(
 			List<AmsKeyValueVO> generalGrievanceTypeList) {
 		this.generalGrievanceTypeList = generalGrievanceTypeList;
+	}
+	public List<AmsKeyValueVO> getAlertSeverityList() {
+		return alertSeverityList;
+	}
+	public void setAlertSeverityList(List<AmsKeyValueVO> alertSeverityList) {
+		this.alertSeverityList = alertSeverityList;
+	}
+	public List<AmsKeyValueVO> getAlertStatusList() {
+		return alertStatusList;
+	}
+	public void setAlertStatusList(List<AmsKeyValueVO> alertStatusList) {
+		this.alertStatusList = alertStatusList;
+	}
+	public List<AmsKeyValueVO> getGovtAlertSubTaksStatusList() {
+		return govtAlertSubTaksStatusList;
+	}
+	public void setGovtAlertSubTaksStatusList(
+			List<AmsKeyValueVO> govtAlertSubTaksStatusList) {
+		this.govtAlertSubTaksStatusList = govtAlertSubTaksStatusList;
+	}
+	public List<Long> getGovtAlertSubTaksStatusIdsList() {
+		return govtAlertSubTaksStatusIdsList;
+	}
+	public void setGovtAlertSubTaksStatusIdsList(
+			List<Long> govtAlertSubTaksStatusIdsList) {
+		this.govtAlertSubTaksStatusIdsList = govtAlertSubTaksStatusIdsList;
 	}
 		
 	

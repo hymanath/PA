@@ -4964,8 +4964,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			 amsDataVO.setMondayGrievanceTypeList(alertManagementSystemService.getMondayGrievanceTypeListForAms());
 			 amsDataVO.setJanmabhoomiTypeList(alertManagementSystemService.getJanmabhoomiTypeListForAms());
 			 amsDataVO.setSpecialGrievanceTypeList(alertManagementSystemService.getSpecialGrievanceTypeListForAms());
-			 amsDataVO.setGeneralGrievanceTypeList(alertManagementSystemService.getGeneralGrievanceTypeListForAms());
-			
+			 amsDataVO.setGeneralGrievanceTypeList(alertManagementSystemService.getGeneralGrievanceTypeListForAms());			
+			 amsDataVO.setAlertSeverityList(alertManagementSystemService.getAlertSeverityForAms());
+			 amsDataVO.setAlertStatusList(alertManagementSystemService.getAlertStatusForAms());
+			 amsDataVO.setGovtAlertSubTaksStatusList(alertManagementSystemService.getSubTaskAlertStatusForAms());
+			 
 			 return amsDataVO;
 		} catch (Exception e) {
 			e.printStackTrace();

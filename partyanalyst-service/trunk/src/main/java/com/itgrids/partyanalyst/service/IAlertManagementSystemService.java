@@ -199,5 +199,8 @@ public interface IAlertManagementSystemService {
 	 public List<AmsKeyValueVO> getJanmabhoomiTypeListForAms();
 	 public List<AmsKeyValueVO> getSpecialGrievanceTypeListForAms() ;
 	 public List<AmsKeyValueVO> getGeneralGrievanceTypeListForAms();
+	 public List<AmsKeyValueVO> getAlertSeverityForAms();
+	 public List<AmsKeyValueVO> getAlertStatusForAms();
+	 public List<AmsKeyValueVO> getSubTaskAlertStatusForAms();
 	 public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(Long userId,String fromDateStr,String toDateStr,List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 }        

@@ -12562,4 +12562,48 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
   		return returnVO;
   	}
 	
+	public List<AmsKeyValueVO> getAlertSeverityForAms(){   
+		try{
+			
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = alertSeverityDAO.getAlertSeverity();
+			setDataToKeyValueList(rtrnObjList,resultList);			
+			
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertSeverityForAms() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+
+	public List<AmsKeyValueVO> getAlertStatusForAms(){   
+		try{
+			
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = alertAssignedOfficerNewDAO.getDataAvailableAlertStatus();
+			setDataToKeyValueList(rtrnObjList,resultList);
+					
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getAlertStatusForAms() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	public List<AmsKeyValueVO> getSubTaskAlertStatusForAms(){   
+		try{
+			
+			List<AmsKeyValueVO> resultList = new ArrayList<AmsKeyValueVO>();
+			List<Object[]> rtrnObjList = govtAlertSubTaskDAO.getDataAvailableSubTaskStatus();
+			setDataToKeyValueList(rtrnObjList,resultList);
+			
+			return resultList;
+		 }catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Error occured getSubTaskAlertStatusForAms() method of AlertManagementSystemService",e);
+		}
+		return null;
+	}
+	
 }
