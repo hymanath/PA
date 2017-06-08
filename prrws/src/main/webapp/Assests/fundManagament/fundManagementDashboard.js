@@ -47,7 +47,7 @@
 			{
 				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme');
 			}else if(blockType == 'deptscheme'){
-				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(4,'consLevlOvervw','deptscheme');
 			}
 		}else if(blockName == 'distLevel')
 		{
@@ -58,7 +58,7 @@
 			{
 				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme');
 			}else if(blockType == 'deptscheme'){
-				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(3,'distLevlOvervw','deptscheme');
 			}
 		}else if(blockName == 'stateLevel')
 		{
@@ -68,6 +68,8 @@
 			}else if(blockType == 'scheme')
 			{
 				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','scheme');
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(2,'stateLevlOvervw','deptscheme')
 			}
 		}
 	});
@@ -102,7 +104,8 @@
 		$("#mainDate").daterangepicker({
 			startDate: moment().subtract(5,'years'),
 			endDate:moment().add(5,'years'),
-			format:"DD/MM/YYYY"
+			format:"DD/MM/YYYY",
+			opens:'left'
 		});
 		$('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
 			glStartDate = picker.startDate.format('DD/MM/YYYY')
@@ -361,6 +364,8 @@
 			height = length * 100;
 		}else if(length > 3){
 			height = length * 60;
+		}else if(length > 20){
+			height = length * 160;
 		}
 		if(length > 8)
 		{
@@ -468,8 +473,22 @@
 				table+='<tbody>';
 					for(var i in result){
 						table+='<tr>';
-							table+='<td>'+result[i].addressVO.districtId+'</td>';
-							table+='<td>'+result[i].addressVO.districtName+'</td>';
+							if(levelId == '2')
+							{
+								table+='<td>1</td>';
+								table+='<td>Andhra Pradesh</td>';
+							}else if(levelId == '3'){
+								table+='<td>'+result[i].addressVO.districtId+'</td>';
+								table+='<td>'+result[i].addressVO.districtName+'</td>';
+							}else if(levelId == '4')
+							{
+								table+='<td>'+result[i].addressVO.assemblyId+'</td>';
+								table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+							}else if(levelId == '5')
+							{
+								table+='<td>'+result[i].addressVO.mandalId+'</td>';
+								table+='<td>'+result[i].addressVO.mandalName+'</td>';
+							}
 							for(var j in result[i].subList){
 								for(var k in result[i].subList[j].subList)
 								{
@@ -486,6 +505,100 @@
 			{
 				table+='</div>';
 			}	
+		}else if(type == 'deptscheme')
+		{
+			table+='<div class="table-responsive">';
+				table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+					table+='<thead class="text-center">';
+						table+='<tr>';
+							table+='<th></th>';
+							table+='<th></th>';
+							for(var j in result[0].subList)
+							{
+								table+='<th class="text-center" colspan="'+(((result[0].subList[0].subList[0].subList.length)*(result[0].subList[0].subList.length))*2)+'">'+result[0].subList[j].year+'</th>';
+							}
+						table+='</tr>';
+						table+='<tr>';
+							table+='<th></th>';
+							table+='<th></th>';
+							for(var j in result[0].subList[0].subList)
+							{
+								table+='<th class="text-center" colspan="'+((result[0].subList[0].subList[0].subList.length)*2)+'">'+result[0].subList[0].subList[j].name+'</th>';
+							}
+						table+='</tr>';
+						table+='<tr>';
+							table+='<th></th>';
+							table+='<th></th>';
+							for(var j in result[0].subList[0].subList){
+								for(var k in result[0].subList[0].subList[0].subList)
+								{
+									table+='<th colspan="2" class="text-center">'+result[0].subList[0].subList[0].subList[k].name+'</th>';
+								}
+							}
+							
+						table+='</tr>';
+						table+='<tr>';
+							table+='<th>ID</th>';
+							if(levelId == '2')
+							{
+								table+='<th>State</th>';
+							}else if(levelId == '3'){
+								table+='<th>District</th>';
+							}else if(levelId == '4')
+							{
+								table+='<th>Constituency</th>';
+							}else if(levelId == '5')
+							{
+								table+='<th>Mandal</th>';
+							}
+							for(var j in result[0].subList[0].subList){
+								for(var k in result[0].subList[0].subList[0].subList)
+								{
+									table+='<th class="text-center no-right-border">No</th>';
+									table+='<th class="text-center">Amt.</th>';
+								}
+							}
+						table+='</tr>';
+					table+='</thead>';
+					table+='<tbody>';
+						for(var i in result){
+							table+='<tr>';
+								if(levelId == '2')
+								{
+									table+='<td>1</td>';
+									table+='<td>Andhra Pradesh</td>';
+								}else if(levelId == '3'){
+									table+='<td>'+result[i].addressVO.districtId+'</td>';
+									table+='<td>'+result[i].addressVO.districtName+'</td>';
+								}else if(levelId == '4')
+								{
+									table+='<td>'+result[i].addressVO.assemblyId+'</td>';
+									table+='<td>'+result[i].addressVO.assemblyName+'</td>';
+								}else if(levelId == '5')
+								{
+									table+='<td>'+result[i].addressVO.mandalId+'</td>';
+									table+='<td>'+result[i].addressVO.mandalName+'</td>';
+								}
+								
+								for(var j in result[i].subList)
+								{
+									for(var k in result[i].subList[j].subList)
+									{
+										for(var l in result[i].subList[j].subList[k].subList)
+										{
+											table+='<td class="text-center no-right-border">'+result[i].subList[j].subList[k].subList[l].count+'</td>';
+											table+='<td class="text-center">'+result[i].subList[j].subList[k].subList[l].totalCount+'</td>';
+										}
+									}
+								}
+								
+							table+='</tr>';
+						}
+						
+					table+='</tbody>';
+				table+='</table>';
+			table+='</div>';
+				
 		}
 		
 		$("#"+divId+"Table").html(table);
@@ -928,7 +1041,6 @@
 					{
 						$(".scroller"+divId).mCustomScrollbar({setHeight:'600px'})
 					}
-						//$(".chart"+divId).css("height","1500px")
 					$(".chart"+divId).height(height);
 					$(".chart"+divId).highcharts({
 						chart: {
@@ -1004,6 +1116,164 @@
 						},
 						series: mainJosnObjArr
 					});
+					
+				}
+			}
+		}else if(type == "deptscheme"){
+			if(levelId == 3 || levelId == 4){
+				if(result !=null && result.length>0){
+				
+					var assemblyShemeNameArrDeptScheme=[];
+					var NABARDArrDeptScheme =[];
+					var NREGPArrDeptScheme =[];
+					var CRRArrDeptScheme=[];
+					var RDFArrDeptScheme=[];
+					var MRRArrDeptScheme=[];
+					var FC13ArrDeptScheme=[];
+					for(var i in result){
+						
+						
+						if(result[i].subList !=null && result[i].subList.length>0){
+							for(var j in result[i].subList){
+								
+								
+								if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
+									for(var k in result[i].subList[j].subList){
+										if(levelId == 3){
+												assemblyShemeNameArrDeptScheme.push(result[i].subList[j].subList[k].addressVO.districtName+"<br/>("+result[i].subList[j].subList[k].year+result[i].subList[j].subList[k].name+")")
+											}else if(levelId == 4){
+												assemblyShemeNameArrDeptScheme.push(result[i].subList[j].subList[k].addressVO.assemblyName+"<br/>("+result[i].subList[j].subList[k].year+result[i].subList[j].subList[k].name+")")
+											}
+											if(result[i].subList[j].subList[k].subList !=null && result[i].subList[j].subList[k].subList.length>0){
+											for(var l in result[i].subList[j].subList[k].subList){
+												if(result[i].subList[j].subList[k].subList[l].id == 1){
+													NABARDArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+												 }else if(result[i].subList[j].subList[k].subList[l].id == 2){
+													 NREGPArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+												 }else if(result[i].subList[j].subList[k].subList[l].id == 3){
+													 CRRArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+												 }else if(result[i].subList[j].subList[k].subList[l].id == 4){
+													 RDFArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+												 }else if(result[i].subList[j].subList[k].subList[l].id == 5){
+													 MRRArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+												 }else if(result[i].subList[j].subList[k].subList[l].id == 6){
+													 FC13ArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+												 }
+											}
+										}
+										
+									}
+								}
+							}
+						}
+						var mainJosnObjArrDeptScheme=[];
+						if(NABARDArrDeptScheme != null && NABARDArrDeptScheme.length > 0){
+							mainJosnObjArrDeptScheme.push({name:'NABARD',data:NABARDArrDeptScheme,color:"#309AFF"});  
+						}
+						if(MRRArrDeptScheme != null && MRRArrDeptScheme.length > 0){
+							mainJosnObjArrDeptScheme.push({name:'MRR',data:MRRArrDeptScheme,color:"#01A64E"});  
+						}
+						if(NREGPArrDeptScheme != null && NREGPArrDeptScheme.length > 0){
+							mainJosnObjArrDeptScheme.push({name:'NREGP',data:NREGPArrDeptScheme,color:"#FF0DAD"});  
+						}
+						if(CRRArrDeptScheme != null && CRRArrDeptScheme.length > 0){
+							mainJosnObjArrDeptScheme.push({name:'CRR',data:CRRArrDeptScheme,color:"#FF872C"});  
+						}
+						if(RDFArrDeptScheme != null && RDFArrDeptScheme.length > 0){
+							mainJosnObjArrDeptScheme.push({name:'RDF',data:RDFArrDeptScheme,color:"#3C46FF"});  
+						}
+						if(FC13ArrDeptScheme != null && FC13ArrDeptScheme.length > 0){
+							mainJosnObjArrDeptScheme.push({name:'13th FC',data:FC13ArrDeptScheme,color:"#5B5B5B"});  
+						}
+					}
+						var length = result.length
+						var height = '';
+						if(length == 0)
+						{
+							height = length * 100;
+						}else if(length > 3){
+							height = length * 120;
+						}
+						if(length > 8)
+						{
+							$(".scroller"+divId).mCustomScrollbar({setHeight:'600px'})
+						}
+						//$(".chart"+divId).css("height","4000px")
+						$(".chart"+divId).height(height);
+						$(".chart"+divId).highcharts({
+							chart: {
+								type: 'bar',
+								backgroundColor:'transparent'
+							
+							},
+							title: {
+								text: null
+							},
+							subtitle: {
+								text: null
+							},
+							xAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								categories: assemblyShemeNameArrDeptScheme
+							},
+							yAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+								title: {
+									text: null
+								},
+								labels: {
+									enabled:false
+								},
+								stackLabels: {
+									useHTML: true,
+									//align: 'left',
+									enabled: true,
+									style: {
+										fontWeight: 'bold',
+										color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+									},
+									formatter: function() {
+										return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
+										//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+										//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+										//return (this.total);
+									} 
+								
+								}
+							
+							},
+							tooltip: {
+								formatter: function () {
+								var s = '<b>' + this.x + '</b>';
+
+									$.each(this.points, function () {
+										if(this.series.name != "Series 1")  
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+										this.y/* +' - ' +
+										(Highcharts.numberFormat(this.percentage,1)+'%'); */
+									});
+									
+									return s;
+								},
+								shared: true
+							},
+							plotOptions: {
+								bar: {
+									stacking: 'normal',
+									pointWidth: 30,
+									gridLineWidth: 15
+								}
+							},
+							legend: {
+								verticalAlign:'top',
+								enabled: true
+							},
+							series: mainJosnObjArrDeptScheme
+						});
 					
 				}
 			}
@@ -1084,11 +1354,12 @@
 	}
 	
 	function getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type){
+		$("#"+divId).html(spinner);
 		var levelValues = [];
-		var financialYrIdArr = [$('#financialYearId').val()];
+		var financialYrIdArr = $('#financialYearId').val();
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
-		var deptIdsArr = [];
+		var deptIdsArr = $("#DepartmentsId").val();
 
 		var json = {
 			blockLevelId : levelId, 
@@ -1111,10 +1382,11 @@
 			},
 			success : function(ajaxresp){
 				if(ajaxresp != null && ajaxresp.length>0){
-					alert("department , scheme wise chart");
-					//buildLocationWiseAmountDetails(ajaxresp,divId,type);
+					buildLocationWiseAmountDetails(ajaxresp,divId,type,levelId);
 				}else
-					alert('No data available..');
+				{
+					$("#"+divId).html("NO DATA AVAILABLE");
+				}
 			}
 		});
 	}
@@ -1355,6 +1627,7 @@
 					$("#DepartmentsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 				}
 			}
+			$("#DepartmentsId").trigger("chosen:updated");
 		});
 	}
 	function getAllFiniancialYears()
@@ -1395,8 +1668,8 @@
 		  deptId : deptId,
 		  sourceId : sourceId,
 		  financialYrIdList : financialYrIdList,  
-		  fromDateStr : "01/06/2017",       
-		  toDateStr : "10/06/2017"  
+		  fromDateStr : glStartDate,       
+		  toDateStr : glEndDate  
 		}
 		$.ajax({
 			url : "getAllSubLocationsBySuperLocationId",     

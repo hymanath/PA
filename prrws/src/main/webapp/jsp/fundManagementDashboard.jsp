@@ -43,7 +43,7 @@
 							Financial Year: <select id="financialYearId" class="chosenSelect" multiple>Select Financial Year </select>
 						</li>
 						<li>
-							Department: <select id="DepartmentsId"  class="chosenSelect" ><option>Select Department</option></select>
+							Department: <select id="DepartmentsId"  class="chosenSelect" multiple><option>Select Department</option></select>
 						</li>
 						
 						<li>
@@ -189,6 +189,7 @@
 									<ul class="switch-btn pull-right" tab-switch="stateLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
+										<li attr_type="deptscheme">Department Level</li>
 									</ul>
 								</div>
 							</div>
@@ -231,6 +232,7 @@
 									<ul class="switch-btn pull-right" tab-switch="distLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
+										<li attr_type="deptscheme">Department Level</li>
 									</ul>
 								</div>
 							</div>
@@ -297,6 +299,7 @@
 									<ul class="switch-btn pull-right" tab-switch="mandalLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
+										<li attr_type="deptscheme">Department Level</li>
 									</ul>
 								</div>
 							</div>
@@ -339,6 +342,7 @@
 									<ul class="switch-btn pull-right" tab-switch="consLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
+										<li attr_type="deptscheme">Department Level</li>
 									</ul>
 								</div>
 							</div>
