@@ -722,5 +722,28 @@ public class CommonMethodsUtilService {
 		    return d;
 		  }
 		
-		
+		/**
+		 * @author  Srishailam Pittala 
+		 * @Date 8th June,2017
+		 * @description if List<Long> contains zero value , we need to clear all data
+		 * @param List<Long>
+		 * @return List<Long> if contains zero empty list otherwise same input list we are returning.
+		 */
+		public List<Long> makeEmptyListByZeroValue(List<Long> list){
+			List<Long> returnList = null;
+			try {
+				if(isListOrSetValid(list)){
+					if(list.contains(0L))
+						returnList =  new ArrayList<Long>(0);
+				}
+				if(returnList != null)
+					return returnList;
+				else
+					return list;
+
+			} catch (Exception e) {
+				LOG.error(" Exception Occured in makeEmptyListByZeroValue() , CommonMethodsUtilService class.");
+			}
+			return null;
+		}
 }
