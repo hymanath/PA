@@ -203,7 +203,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(sourceIdsList != null && sourceIdsList.size()>0)
 			sb.append("  ");
 		if(sDate != null && eDate != null){
-			sb.append(" and date(modal.insertedTime) between  :sDate and :eDate " );
+			sb.append(" and (date(modal.insertedTime) between  :sDate and :eDate) " );
 		}
 		if(type != null && type.equalsIgnoreCase("highest")){
 			sb.append(" group by modal.locationValue order by sum(modal.sactionAmount) desc ");
