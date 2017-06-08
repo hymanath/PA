@@ -189,7 +189,7 @@
 									<ul class="switch-btn pull-right" tab-switch="stateLevel">
 										<li class="active" attr_type="overview">overview</li>
 										<li attr_type="scheme">Scheme level</li>
-										<li attr_type="deptscheme">Department Level</li>
+										<!--<li attr_type="deptscheme">Department Level</li>-->
 									</ul>
 								</div>
 							</div>
