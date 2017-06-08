@@ -29,6 +29,8 @@ function onLoadClicks()
 		getSubDeptsFrParentDept($(this).val());
 		if($(this).val() == '33')
 		{
+			$("#petitionerTableId tbody").html("");
+			$("#petitionerTableId").hide();
 			$("#revenueDeptSplBlock").show();
 		}else{
 			$("#revenueDeptSplBlock").hide();
@@ -59,6 +61,48 @@ function onLoadClicks()
 	
 	var globalIncrement = 0;
 	$(document).on("click","#addOneMorePetitionerId",function(){
+		$("#errMsgLandDistId").html("");
+		$("#errMsgLandManId").html("");
+		$("#errMsgLandVillId").html("");
+		$("#errMsgLandSurNOId").html("");
+		$("#errMsgLandAcersId").html("");
+		$("#errMsgLandCentId").html("");
+		
+		var departmetId = $("#departmentId").val();
+		if(departmetId != null && departmetId == 33){
+			var landDist = $("#districtsPetitionerId").val();
+			var landMand = $("#mandalsPetitionerId").val();
+			var landVill = $("#villagePetitionerId").val();
+			var landSurvey = $("#surveyNoPetitionerId").val();
+			var landAcers = $("#landInAcresPetitionerId").val();
+			var landCant = $("#landInCentPeitionerId").val();
+			
+			if(landDist == null || landDist == 0){
+				$("#errMsgLandDistId").html("Select District");
+				return;
+			}
+			if(landMand == null || landMand == 0){
+				$("#errMsgLandManId").html("Select Mandal");
+				return;
+			}
+			if(landVill == null || landVill == 0){
+				$("#errMsgLandVillId").html("Select Village");
+				return;
+			}
+			if(landSurvey == '' || landSurvey.length == 0 || landSurvey == 0){
+				$("#errMsgLandSurNOId").html("Enter Survey NO.");
+				return;
+			}
+			if(landAcers == '' || landAcers.length == 0 || landAcers == 0){
+				$("#errMsgLandAcersId").html("Enter Land In Acers");
+				return;
+			}
+			if(landCant == '' || landCant.length == 0 || landCant == 0){
+				$("#errMsgLandCentId").html("Enter Land In Cents");
+				return;
+			}
+		}
+		
 		$("#petitionerTableId").show();
 		var str='';
 		str+='<tr>';
@@ -406,7 +450,7 @@ function buildProfileData(i)
 		str+='<input type="text" value="'+profileData[i].name+'" class="form-control" id="petitionerNameId" name="meekosamGrievanceVO.petitionerName"/>';
 	str+='</div>';
 	str+='<div class="col-sm-3 m_top10">';
-		str+='<label>Relative Name <span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgPetRelNameId"></span></label>';
+		str+='<label>Relative Name </label>';
 		str+='<input type="text" value="'+profileData[i].relativeName+'" class="form-control" id="petitionerRelativeNameId" name="meekosamGrievanceVO.petitionerRelativeName"/>';
 	str+='</div>';
 	str+='<div class="col-sm-2 m_top10">';
@@ -545,6 +589,14 @@ function getAllMainDepartments(){
 function getIssueTypesForDepartment(){
 	$('#issueTypeId').empty();
 	$('#issueTypeId').trigger('chosen:updated');
+	$(".issueClass").hide();
+	$("#buildPetitionerData").html("");
+	//$("#revenueDeptSplBlock").hide();
+	$("#subDepartmentSelectId").val(0).trigger("chosen:updated");
+	$("#locationLevelSelectId").empty().trigger("chosen:updated");
+	$("#parentLevelDivId").html("");
+	$("#designationsId").empty().trigger("chosen:updated");
+	$("#officerNamesId").empty().trigger("chosen:updated");
 	
 	var deptId = $("#departmentId").val();
 	var jsObj={
@@ -567,6 +619,14 @@ function getIssueTypesForDepartment(){
 }
 
 $(document).on("change",".issueTypeClass",function(){
+	$("#buildPetitionerData").html("");
+	//$("#revenueDeptSplBlock").hide();
+	$("#subDepartmentSelectId").val(0).trigger("chosen:updated");
+	$("#locationLevelSelectId").empty().trigger("chosen:updated");
+	$("#parentLevelDivId").html("");
+	$("#designationsId").empty().trigger("chosen:updated");
+	$("#officerNamesId").empty().trigger("chosen:updated");
+	
 	var issueType = $(this).val();
 	var value = $(this).attr("attr_val");
 	var divId = $(this).attr("attr_divId");
@@ -756,6 +816,13 @@ function buildDynamicValuesForIssue(result)
 }
 
 function getSubDeptsFrParentDept(departmentId){
+	$("#subDepartmentSelectId").empty();
+	$("#subDepartmentSelectId").trigger("chosen:updated");
+	$("#locationLevelSelectId").empty().trigger("chosen:updated");
+	$("#parentLevelDivId").html("");
+	$("#designationsId").empty().trigger("chosen:updated");
+	$("#officerNamesId").empty().trigger("chosen:updated");
+	
 	var jobj = {
 		parntDeptId : departmentId
 	}
@@ -766,7 +833,7 @@ function getSubDeptsFrParentDept(departmentId){
 		data : {task:JSON.stringify(jobj)} 
 	}).done(function(result){
 		if(result != null && result.length > 0){
-			$("#subDepartmentSelectId").html('');
+			//$("#subDepartmentSelectId").html('');
 			$('#subDepartmentSelectId').append('<option value="0">Select Sub Department</option>')
 			for(var i in result){	
 				$('#subDepartmentSelectId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
@@ -776,6 +843,8 @@ function getSubDeptsFrParentDept(departmentId){
 	});
 }
 function getParentLevelsOfLevel(departmentId){
+	$("#designationsId").empty().trigger("chosen:updated");
+	$("#officerNamesId").empty().trigger("chosen:updated");
 	
 	var jsObj = {
 		departmentId : departmentId,
@@ -796,12 +865,12 @@ function buildParentLevelsOfLevel(result,departmentId){
 		
 		for(var i in result){
 			if(i<result.length-1){
-				str+='<div class="col-sm-4 m_top10">';
+				str+='<div class="col-sm-4 m_top10 locationLevelDivCls">';
 					str+='<label>'+result[i].name+'<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClas" style="color:#FF4C64;"></span></label>';
 					str+='<select  class="chosenSelect" id="locationSubLevelSelectId'+result[i].id+'" onchange="getGovtSubLevelInfo('+departmentId+','+result[i].id+')"  ></select>';
 				str+='</div>';
 			}else{
-				str+='<div class="col-sm-4 m_top10">';
+				str+='<div class="col-sm-4 m_top10 locationLevelDivCls">';
 					str+='<label>Location<span style="color:red">*</span>&nbsp;&nbsp; <span class="errorMsgClass" style="color:#FF4C64;" id="errMsgAssignLocationId"></span></label>';
 					str+='<select  class="chosenSelect locationCls" id="locationSubLevelSelectId'+result[i].id+'"  name="meekosamGrievanceVO.assignLevelValue"></select>';
 				str+='</div>';
@@ -1134,11 +1203,11 @@ function saveGrievanceInfo(){
 		$("#errMsgPetNameId").html("Enter Name");
 		return;
 	}
-	if(petitionerRelativeNAme == '' || petitionerRelativeNAme.length == 0){
+	/*if(petitionerRelativeNAme == '' || petitionerRelativeNAme.length == 0){
 		$("#errMsgPetRelNameId").html("Enter Relative Name");
 		return;
-	}
-	if(petitionerGender == 0){
+	}*/
+	if(petitionerGender == null || petitionerGender == 0){
 		$("#errMsgPetGenId").html("Select Gender");
 		return;
 	}
@@ -1173,104 +1242,39 @@ function saveGrievanceInfo(){
 		$("#errMsgPetAadharId").html("Enter AadharNo");
 		return;
 	}*/
+	if(petitionerdistricts == null || petitionerdistricts == 0){
+		$("#errMsgPetDistrictId").html("Select District");
+		return;
+	}
+	if(petitionermandals == null || petitionermandals == 0){
+		$("#errMsgPetMandalId").html("Select Mandal/Muncipality");
+		return;
+	}
+	if(petitionerpanchayats == null || petitionerpanchayats == 0){
+		$("#errMsgPetVillageId").html("Select Village/Ward");
+		return;
+	}
 	if(petitionerhouseNo == '' || petitionerhouseNo.length == 0){
 		$("#errMsgPetHouseNOId").html("Enter HouseNO");
 		return;
 	}
-	if(petitionerdistricts == 0){
-		$("#errMsgPetDistrictId").html("Select District");
-		return;
-	}
-	if(petitionermandals == 0){
-		$("#errMsgPetMandalId").html("Select Mandal/Muncipality");
-		return;
-	}
-	if(petitionerpanchayats == 0){
-		$("#errMsgPetVillageId").html("Select Village/Ward");
-		return;
-	}
-	if(caste == 0){
+	if(caste == "undefined" || caste == null || caste == 0){
 		$("#errMsgPetCasteId").html("Select Caste");
 		return;
 	}
-	if(occupation == 0){
+	if(occupation == null || occupation == 0){
 		$("#errMsgPetOccupationId").html("Select Occupation");
 		return;
 	}
-	if(argeeCategory == 0){
+	if(argeeCategory == null || argeeCategory == 0){
 		$("#errMsgPetArgeeId").html("Select Argee Category");
 		return;
 	}
-	if(annaulIncome == 0){
+	if(annaulIncome == "undefined" || annaulIncome == null || annaulIncome == 0){
 		$("#errMsgPetIncomeId").html("Select Annual Income");
 		return;
 	}
 	
-	if(category == 0){
-		$("#errMsgCategoryId").html("Select Category");
-		return;
-	}
-	if(department == 0){
-		$("#errMsgDepartmentId").html("Select Department");
-		return;
-	}
-	if(issueType == 0){
-		$("#errMsgIssueTypeId").html("Select IssueType");
-		return;
-	}
-	/*if(issueSubType == 0){
-		$("#errMsgIssueSubTypeId").html("Select Issue SubType");
-		return;
-	}*/
-	
-	if(alertLevelId == 0){
-		$("#errMsgAlertLevelId").html("Select Level");
-		return;
-	}
-	if(alertLevelId == 1){
-		if(alertDistrict == 0){
-			$("#errMsgAlertDistId").html("Select District");
-			return;
-		}
-		$("#hiddenAlertLocationLevelId").val(3);
-		$("#hiddenAlertLocationValueId").val(alertDistrict);
-	}
-	if(alertLevelId == 2){
-		if(alertDistrict == 0){
-			$("#errMsgAlertDistId").html("Select District");
-			return;
-		}
-		if(alertMandal == 0){
-			$("#errMsgAlertMandId").html("Select Mandal");
-			return;
-		}
-		
-		if(alertMandal.substring(0,1) == 1)
-			$("#hiddenAlertLocationLevelId").val(5);
-		else
-			$("#hiddenAlertLocationLevelId").val(7);
-		$("#hiddenAlertLocationValueId").val(alertMandal);
-	}
-	if(alertLevelId == 3){
-		if(alertDistrict == 0){
-			$("#errMsgAlertDistId").html("Select District");
-			return;
-		}
-		if(alertMandal == 0){
-			$("#errMsgAlertMandId").html("Select Mandal/Muncipality");
-			return;
-		}
-		if(alertVillage == 0){
-			$("#errMsgAlertVillId").html("Select Village/Ward");
-			return;
-		}
-		
-		if(alertMandal.substring(0,1) == 1)
-			$("#hiddenAlertLocationLevelId").val(6);
-		else
-			$("#hiddenAlertLocationLevelId").val(8);
-		$("#hiddenAlertLocationValueId").val(alertVillage);
-	}
 	if(alertTitle == '' || alertTitle.length == 0){
 		$("#errMsgAlertTitleId").html("Enter Alert Title");
 		return;
@@ -1280,6 +1284,77 @@ function saveGrievanceInfo(){
 		return;
 	}
 	
+	/*if(issueSubType == 0){
+		$("#errMsgIssueSubTypeId").html("Select Issue SubType");
+		return;
+	}*/
+	
+	if(alertLevelId == null || alertLevelId == 0){
+		$("#errMsgAlertLevelId").html("Select Level");
+		return;
+	}
+	if(alertLevelId == 1){
+		if(alertDistrict == null || alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		$("#hiddenAlertLocationLevelId").val(3);
+		$("#hiddenAlertLocationValueId").val(alertDistrict);
+	}
+	if(alertLevelId == 2){
+		if(alertDistrict == null || alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		if(alertMandal == null || alertMandal == 0){
+			$("#errMsgAlertMandId").html("Select Mandal");
+			return;
+		}
+		
+		if(alertMandal != null && alertMandal.substring(0,1) == 1)
+			$("#hiddenAlertLocationLevelId").val(5);
+		else
+			$("#hiddenAlertLocationLevelId").val(7);
+		$("#hiddenAlertLocationValueId").val(alertMandal);
+	}
+	if(alertLevelId == 3){
+		if(alertDistrict == null || alertDistrict == 0){
+			$("#errMsgAlertDistId").html("Select District");
+			return;
+		}
+		if(alertMandal == null || alertMandal == 0){
+			$("#errMsgAlertMandId").html("Select Mandal/Muncipality");
+			return;
+		}
+		if(alertVillage == null || alertVillage == 0){
+			$("#errMsgAlertVillId").html("Select Village/Ward");
+			return;
+		}
+		
+		if(alertMandal != null && alertMandal.substring(0,1) == 1)
+			$("#hiddenAlertLocationLevelId").val(6);
+		else
+			$("#hiddenAlertLocationLevelId").val(8);
+		$("#hiddenAlertLocationValueId").val(alertVillage);
+	}
+	if(category == null || category == 0){
+		$("#errMsgCategoryId").html("Select Category");
+		return;
+	}
+	
+	if(department == null || department == 0){
+		$("#errMsgDepartmentId").html("Select Department");
+		return;
+	}
+	if(issueType == null || issueType == 0){
+		$("#errMsgIssueTypeId").html("Select IssueType");
+		return;
+	}
+	
+	if(department == 33 && $("#petitionerTableId tr").length <= 1){
+		$("#errMsgLandDetailsId").html("Add Atlest One Land Details");
+		return;
+	}
 	/*if(referredBy == 0){
 		$("#errMsgReferredById").html("Select Referred By");
 		return;
@@ -1293,23 +1368,23 @@ function saveGrievanceInfo(){
 		return;
 	}*/
 	
-	if(subDepartment == 0){
+	if(subDepartment == null || subDepartment == 0){
 		$("#errMsgSubDeptId").html("Select SubDepartment");
 		return;
 	}
-	if(assignLevelId == 0){
+	if(assignLevelId == null || assignLevelId == 0){
 		$("#errMsgLevelId").html("Select Location Level");
 		return;
 	}
-	if(assignLevelValue == 0){
+	if(assignLevelValue == "undefined" || assignLevelValue == null || assignLevelValue == 0){
 		$("#errMsgAssignLocationId").html("Select Location");
 		return;
 	}
-	if(designation == 0){
+	if(designation == null || designation == 0){
 		$("#errMsgDesignationId").html("Select Designation");
 		return;
 	}
-	if(officer == 0){
+	if(officer == null || officer == 0){
 		$("#errMsgOfficerId").html("Select Officer");
 		return;
 	}
@@ -1404,4 +1479,17 @@ function clearFields(){
 	$("#alertTitleId").html("");
 	$("#alertdescriptionId").html("");
 	$("#categoryId").val(0).trigger("chosen:updated");
+}
+
+function refreshDetails(){
+	$("#departmentId").val(0).trigger("chosen:updated");
+	$("#issueTypeId").empty().trigger("chosen:updated");
+	$(".issueClass").hide();
+	$("#buildPetitionerData").html("");
+	$("#revenueDeptSplBlock").hide();
+	$("#subDepartmentSelectId").empty().trigger("chosen:updated");
+	$("#locationLevelSelectId").empty().trigger("chosen:updated");
+	$("#parentLevelDivId").html("");
+	$("#designationsId").empty().trigger("chosen:updated");
+	$("#officerNamesId").empty().trigger("chosen:updated");
 }
