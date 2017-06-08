@@ -69,7 +69,7 @@
 			{
 				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','scheme');
 			}else if(blockType == 'deptscheme'){
-				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(2,'stateLevlOvervw','deptscheme')
+				//getFinancialYearWiseDeptsWiseSchemeAmountDetails(2,'stateLevlOvervw','deptscheme')
 			}
 		}
 	});
