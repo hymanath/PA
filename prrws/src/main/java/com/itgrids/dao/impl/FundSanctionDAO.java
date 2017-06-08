@@ -572,6 +572,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			query.setDate("sDate", sDate);
 			query.setDate("eDate", eDate);
 		}
+		if(financialYrIdList != null && financialYrIdList.size() > 0){
+			query.setParameterList("financialYrIdList", financialYrIdList);
+		}
 		return query.list();
 	}
 	@Override
@@ -608,6 +611,9 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(sDate != null && eDate != null){
 			query.setDate("sDate", sDate);
 			query.setDate("eDate", eDate);
+		}
+		if(financialYrIdList != null && financialYrIdList.size() > 0){
+			query.setParameterList("financialYrIdList", financialYrIdList);
 		}
 		return query.list();
 	}
