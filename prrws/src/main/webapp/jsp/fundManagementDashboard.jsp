@@ -37,10 +37,10 @@
 				<ul class="list-inline navbar-header-custom">
 					<li>Note: All Amount in Lakhs</li>
 					<li>
-						Financial Year: <select id="financialYearId"></select>
+						Financial Year: <select id="financialYearId" onchange="newOnLoadCalls();">Select Financial Year </select>
 					</li>
 					<li>
-						Department: <select id="DepartmentsId"><option>Select Department</option></select>
+						Department: <select id="DepartmentsId" onchange="newOnLoadCalls();" ><option>Select Department</option></select>
 					</li>
 					
 					<li>
