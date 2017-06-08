@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -22,7 +24,7 @@ public interface IMeekosamGrievanceService {
 	public List<KeyValueVO> getMeekosamSubIssueTypeListForParentIssueType(Long parentIssueTypeId);
 	public List<MeekosamDynamicVO> getAllDynamicFieldsAndDataForIsueType(Long issueTypeId);
 	public List<PetitionerDetailsVO> searchPetitionerDetailsByVoterNoAadharNoMobileNo(String cardNo, String type);
-	public ResultStatus saveMeekosamGrievance(final MeekosamGrievanceVO inputvo,final Long userId);
+	public ResultStatus saveMeekosamGrievance(final MeekosamGrievanceVO inputvo,final Long userId,final Map<File,String> mapFiles);
 	public List<KeyValueVO> getAllPublicRepresentativeTypes();
 	public List<KeyValueVO> getPublicReresentativesByTypeAndDistrict(Long typeId,Long districtId);
 	public List<Long> getUserDepartments(Long userId);
