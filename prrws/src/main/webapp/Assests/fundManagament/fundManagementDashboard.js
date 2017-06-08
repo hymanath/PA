@@ -1,21 +1,13 @@
-//+function ($) {
 	//onLoadCalls();
 	//onLoadClicks();
 	onLoadInitialisations();
-	var glStartDate='';
-	var glEndDate='';
-	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+	var glStartDate = moment().subtract(5,'years').format("DD/MM/YYYY");
+	var glEndDate = moment().add(5,'years').format("DD/MM/YYYY");
+	//var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+	var spinner = '<h1 class="loader">  <span>L</span>  <span>O</span>  <span>A</span>  <span>D</span>  <span>I</span>  <span>N</span>  <span>G</span></h1>';
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
 	function onLoadCalls()
 	{
-		onLoadClicks();
-		var dateStr = $('#mainDate').val().split('-');
-		glStartDate = dateStr[0].trim();
-		glEndDate = dateStr[1].trim();
-		
-		
-		//getAllDepartments();
-		//getAllFiniancialYears();
 		getLocationWiseFundDetails(3,'highest','highFundDist');
 		getLocationWiseFundDetails(4,'highest','highFundCons');
 		getLocationWiseFundDetails(3,'lowest','lowFundDist');
@@ -25,9 +17,8 @@
 		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
 		getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
 		getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
+		getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview');
 		getAllSubLocationsBySuperLocationId(21);
-		//getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview');
-		
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
 		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
 		getTotalFunds('totFund');
@@ -42,87 +33,87 @@
 		
 	}
 	
-	function newOnLoadCalls()
-	{
-		onLoadClicks();
-		var dateStr = $('#mainDate').val().split('-');
-		glStartDate = dateStr[0].trim();
-		glEndDate = dateStr[1].trim();
-		
-		
-		//getAllDepartments();
-		//getAllFiniancialYears();
-		getLocationWiseFundDetails(3,'highest','highFundDist');
-		getLocationWiseFundDetails(4,'highest','highFundCons');
-		getLocationWiseFundDetails(3,'lowest','lowFundDist');
-		getLocationWiseFundDetails(4,'lowest','lowFundCons');
-		getAverageFundForAnyLevel(3,'avgFundDist');
-		getAverageFundForAnyLevel(4,'avgFundCons');
-		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
-		getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
-		getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
-		getAllSubLocationsBySuperLocationId(21);
-		//getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview');
-		
-		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
-		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
-		getTotalFunds('totFund');
-		getTotalSchemes(4,'totFundScheme');
-		// getSchemeWiseHighestAndLowestFund("highest");
-		// getSchemeWiseHighestAndLowestFund("lowest");
-		getTotalLocationsByScopeId(4,'totFundCons');
-		// getTotalLocationsByScopeId(5);
-		// getTotalLocationsByScopeId(6);
-		
-		getAverageFundForScheme('avgFundScheme');
-	}
-	function onLoadClicks()
-	{
-		
-	}
 	$(document).on("click","[tab-switch] li",function(){
-			$(this).closest("ul").find("li").removeClass("active");
-			$(this).addClass("active");
-			var blockName = $(this).closest("ul").attr("tab-switch");
-			var blockType = $(this).attr("attr_type");
-			if(blockName == 'consLevel')
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		var blockName = $(this).closest("ul").attr("tab-switch");
+		var blockType = $(this).attr("attr_type");
+		if(blockName == 'consLevel')
+		{
+			if(blockType == 'overview')
 			{
-				if(blockType == 'overview')
-				{
-					getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
-				}else if(blockType == 'scheme')
-				{
-					getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme');
-				}else if(blockType == 'deptscheme'){
-					 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
-				}
-			}else if(blockName == 'distLevel')
+				getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
+			}else if(blockType == 'scheme')
 			{
-				if(blockType == 'overview')
-				{
-					getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
-				}else if(blockType == 'scheme')
-				{
-					getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme');
-				}else if(blockType == 'deptscheme'){
-					 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
-				}
-			}else if(blockName == 'stateLevel')
-			{
-				if(blockType == 'overview')
-				{
-					getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
-				}else if(blockType == 'scheme')
-				{
-					getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','scheme');
-				}
+				getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme');
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
 			}
-		});
+		}else if(blockName == 'distLevel')
+		{
+			if(blockType == 'overview')
+			{
+				getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
+			}else if(blockType == 'scheme')
+			{
+				getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme');
+			}else if(blockType == 'deptscheme'){
+				 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
+			}
+		}else if(blockName == 'stateLevel')
+		{
+			if(blockType == 'overview')
+			{
+				getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
+			}else if(blockType == 'scheme')
+			{
+				getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','scheme');
+			}
+		}
+	});
+	$(document).on('change','.constLevelDistNames',function(){
+		var locationScopeId = $("#constLevelDistNames").val();
+	    getAllSubLocationsBySuperLocationId(locationScopeId);
+	});
 	function onLoadInitialisations()
 	{
+		$(document).keydown(function(event){
+			if(event.keyCode==123){
+				alert("Hoo no! don't try to expose me");
+				return false;
+			}
+			else if(event.ctrlKey && event.shiftKey && event.keyCode==73){        
+				alert("Hoo no! don't try to expose me");
+				return false;  //Prevent from ctrl+shift+i
+			}
+		});
+		header = $('header section'),
+		$(window).scroll(function(){
+			var windowScrollTop = $(window).scrollTop();
+
+			if (windowScrollTop>50) {
+				header.addClass("header-fixed");
+			} else {
+				header.removeClass("header-fixed");
+			}
+		});
+		$(".chosenSelect").chosen();
 		
-		$("#mainDate").daterangepicker();
-		$('#mainDate').val('01/31/2010 - 01/31/2020');
+		$("#mainDate").daterangepicker({
+			startDate: moment().subtract(5,'years'),
+			endDate:moment().add(5,'years'),
+			format:"DD/MM/YYYY"
+		});
+		$('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+			glStartDate = picker.startDate.format('DD/MM/YYYY')
+			glEndDate = picker.endDate.format('DD/MM/YYYY')
+			onLoadCalls();
+		});
+		$(document).on("change","#financialYearId",function(){
+			$(".switch-btn li").removeClass("active");
+			$(".switch-btn li:first-child").addClass("active");
+			onLoadCalls();
+		});
 		getAllDepartments();
 		getAllFiniancialYears();		
 	}
@@ -159,7 +150,7 @@
 					enabled:false
 				},
 				stackLabels: {
-					//useHTML: true,
+					useHTML: true,	
 					//align: 'left',
 					enabled: true,
 					style: {
@@ -167,10 +158,10 @@
 						color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 					},
 					formatter: function() {
-					
+						return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
 						//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 						//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-						return (this.total);
+						//return (this.total);
 					} 
 				
 				}
@@ -241,10 +232,6 @@
 			},
 			success: function(ajaxresp) {
 				buildLocationWiseFundDetails(ajaxresp,divId)
-			},
-			error: function(request,error) { 
-				//alert(request.responseText);
-				//alert(error);
 			}
 		});
 	}
@@ -255,10 +242,13 @@
 		{
 			str+='<h4 class="panel-title text-capital district-name"> '+ajaxresp.name+'</h4>';
 		}
-		if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0")
+		if(ajaxresp.totalAmt != null && ajaxresp.totalAmt != "0.0" && divId != 'avgFundDist' && divId != 'avgFundCons')
 		{
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.totalAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
+		}else if(divId == 'avgFundDist' || divId == 'avgFundCons'){
+			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.averageAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
 		}
+		
 		/* if(ajaxresp.fundedLoc != null)
 		{
 			str+='<h3>'+ajaxresp.fundedLoc+'</h3>';
@@ -280,7 +270,7 @@
 					str+='</li>';
 				}
 			str+='</ul>';
-		}else if(ajaxresp.detailsVOs.length > 0)
+		}else if(ajaxresp.detailsVOs.length > 0  && divId != 'avgFundDist' && divId != 'avgFundCons')
 		{
 			str+='<ul class="list-inline">';
 				for(var i in ajaxresp.detailsVOs)
@@ -289,6 +279,18 @@
 						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
 						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
 						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].totalAmt+'</p>';
+					str+='</li>';
+				}
+			str+='</ul>';
+		}else if(divId == 'avgFundDist' || divId == 'avgFundCons')
+		{
+			str+='<ul class="list-inline">';
+				for(var i in ajaxresp.detailsVOs)
+				{
+					str+='<li class="text-center">';
+						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
+						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
+						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].averageAmt+'</p>';
 					str+='</li>';
 				}
 			str+='</ul>';
@@ -342,9 +344,6 @@
 				}else{
 					$("#"+divId).html("NO DATA AVAILABLE");
 				}
-			},
-			error : function(request,error){
-				alert(error);
 			}
 		});
 	}
@@ -355,6 +354,19 @@
 			str+='<div class="chart'+divId+'"></div>';
 		str+='</div>';
 		$("#"+divId).html(str);
+		var length = result.length
+		var height = '';
+		if(length == 0)
+		{
+			height = length * 100;
+		}else if(length > 3){
+			height = length * 60;
+		}
+		if(length > 8)
+		{
+			$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
+		}
+		$(".chart"+divId).height(height);
 		var table='';
 		if(type == 'overview')
 		{
@@ -362,24 +374,42 @@
 				table+='<thead class="text-center">';
 					table+='<tr>';
 						table+='<th></th>';
-						table+='<th colspan="2">2014-2015</th>';
-						table+='<th colspan="2">All Financial Years</th>';
+						table+='<th></th>';
+						for(var i in result[0].locationList1)
+						{
+							table+='<th colspan="2" class="text-center">'+result[0].locationList1[i].financialYear+'</th>';
+						}
 					table+='</tr>';
 					table+='<tr>';
-						table+='<th>District</th>';
-						table+='<th>No</th>';
-						table+='<th>Amt.</th>';
-						table+='<th>No</th>';
-						table+='<th>Amt.</th>';
+						table+='<th>ID</th>';
+						if(levelId == '2')
+						{
+							table+='<th>State</th>';
+						}else if(levelId == '3'){
+							table+='<th>District</th>';
+						}else if(levelId == '4')
+						{
+							table+='<th>Constituency</th>';
+						}else if(levelId == '5')
+						{
+							table+='<th>Mandal</th>';
+						}
+						
+						for(var i in result[0].locationList1)
+						{
+							table+='<th class="text-center no-right-border">No</th>';
+							table+='<th class="text-center">Amt.</th>';
+						}
 					table+='</tr>';
 				table+='</thead>';
 				table+='<tbody>';
 					for(var i in result){
 						table+='<tr>';
+							table+='<td>'+result[i].locationId+'</td>';
 							table+='<td>'+result[i].locationName+'</td>';
 							for(var j in result[i].locationList1){
-								table+='<td>'+result[i].locationList1[j].count+'</td>';
-								table+='<td>'+result[i].locationList1[j].amount+'</td>';
+								table+='<td class="text-center no-right-border">'+result[i].locationList1[j].count+'</td>';
+								table+='<td class="text-center">'+result[i].locationList1[j].amount+'</td>';
 							}
 						table+='</tr>';
 					}
@@ -388,11 +418,78 @@
 			table+='</table>';
 		}else if(type == 'scheme')
 		{
-			
+			if(result[0].subList.length >= 2)
+			{
+				table+='<div class="table-responsive">';
+			}	
+			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
+				table+='<thead class="text-center">';
+					table+='<tr>';
+						table+='<th></th>';
+						table+='<th></th>';
+						for(var j in result[0].subList)
+						{
+							table+='<th class="text-center" colspan="'+((result[0].subList[0].subList.length)*2)+'">'+result[0].subList[j].year+'</th>';
+						}
+					table+='</tr>';
+					table+='<tr>';
+						table+='<th></th>';
+						table+='<th></th>';
+						for(var i in result[0].subList)
+						{
+							for(var j in result[0].subList[0].subList){
+								table+='<th colspan="2" class="text-center">'+result[0].subList[0].subList[j].name+'</th>';
+							}
+						}
+					table+='</tr>';
+					table+='<tr>';
+						table+='<th>ID</th>';
+						if(levelId == '2')
+						{
+							table+='<th>State</th>';
+						}else if(levelId == '3'){
+							table+='<th>District</th>';
+						}else if(levelId == '4')
+						{
+							table+='<th>Constituency</th>';
+						}else if(levelId == '5')
+						{
+							table+='<th>Mandal</th>';
+						}
+						for(var i in result[0].subList)
+						{
+							for(var j in result[0].subList[0].subList){
+								table+='<th class="text-center no-right-border">No</th>';
+								table+='<th class="text-center">Amt.</th>';
+							}
+						}
+					table+='</tr>';
+				table+='</thead>';
+				table+='<tbody>';
+					for(var i in result){
+						table+='<tr>';
+							table+='<td>'+result[i].addressVO.districtId+'</td>';
+							table+='<td>'+result[i].addressVO.districtName+'</td>';
+							for(var j in result[i].subList){
+								for(var k in result[i].subList[j].subList)
+								{
+									table+='<td class="text-center no-right-border">'+result[i].subList[j].subList[k].count+'</td>';
+									table+='<td class="text-center">'+result[i].subList[j].subList[k].totalCount+'</td>';
+								}
+							}
+						table+='</tr>';
+					}
+					
+				table+='</tbody>';
+			table+='</table>';
+			if(result[0].subList.length >= 2)
+			{
+				table+='</div>';
+			}	
 		}
 		
 		$("#"+divId+"Table").html(table);
-		
+		$("#dataTable"+divId).dataTable();
 		
 		if(type == 'overview')
 		{
@@ -410,78 +507,91 @@
 							}
 						}
 					}
-						$(".chart"+divId).highcharts({
-							chart: {
-								type: 'bar',
-								backgroundColor:'transparent'
-							
-							},
+					var length = result.length
+					var height = '';
+					if(length == 0)
+					{
+						height = length * 100;
+					}else if(length > 3){
+						height = length * 120;
+					}
+					if(length > 8)
+					{
+						$(".scroller"+divId).mCustomScrollbar({setHeight:'600px'})
+					}
+					$(".chart"+divId).height(height);
+					$(".chart"+divId).highcharts({
+						chart: {
+							type: 'bar',
+							backgroundColor:'transparent'
+						
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						xAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							categories: locationNamesArr,
+							labels: {
+							   enabled: true,
+								
+							}
+						},
+						yAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
 							title: {
 								text: null
 							},
-							subtitle: {
-								text: null
+							labels: {
+								enabled:false
 							},
-							xAxis: {
-							 min: 0,
-								 gridLineWidth: 0,
-								 minorGridLineWidth: 0,
-								 categories: locationNamesArr,
-								 labels: {
-								   enabled: true,
-									
-								}
-							},
-							yAxis: {
-									min: 0,
-									gridLineWidth: 0,
-									minorGridLineWidth: 0,
-								title: {
-									text: null
+							stackLabels: {
+								useHTML: true,
+								align: 'left',
+								enabled: true,
+								style: {
+									fontWeight: 'bold',
+									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
-								labels: {
-									enabled:false
-								},
-								stackLabels: {
-									useHTML: true,
-									align: 'left',
-									enabled: true,
-									style: {
-										fontWeight: 'bold',
-										color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-									},
-									formatter: function() {
-									
-										return '<span style="top:16px; position: absolute;"><br/><h3><i class="fa fa-inr"></i>: '+this.total+'</h3></span>';
-										//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-										//return (this.total);
-									} 
+								formatter: function() {
 								
-								}
+									return '<span style="top:16px; position: absolute;"><br/><h3><i class="fa fa-inr"></i>: '+this.total+'</h3></span>';
+									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+									//return (this.total);
+								} 
 							
-							},
-							tooltip: {
-								 pointFormat: '<b>{point.y}</b>',
-								 shared:true
-							},
-							plotOptions: {
-								bar: {
-									stacking: 'normal',
-									pointWidth: 30,
-									gridLineWidth: 15
-								}
-							},
-							legend: {
-								verticalAlign:'top',
-								enabled: false
-							},
-							series: [{
-								 name: '',
-								 data: mainlocationArr,
-								 color: '#FF872C'
-								 
-							}]
-						});
+							}
+						
+						},
+						tooltip: {
+							 pointFormat: '<b>{point.y}</b>',
+							 shared:true
+						},
+						plotOptions: {
+							bar: {
+								stacking: 'normal',
+								pointWidth: 30,
+								gridLineWidth: 15
+							}
+						},
+						legend: {
+							verticalAlign:'top',
+							enabled: false
+						},
+						series: [{
+							 name: '',
+							 data: mainlocationArr,
+							 color: '#FF872C'
+							 
+						}]
+					});
 				}else{
 					$(".chart"+divId).html("No Data AVailable")
 				}
@@ -532,79 +642,79 @@
 					}
 					$(".chart"+divId).height(height);
 					$(".chart"+divId).highcharts({
-							chart: {
-								type: 'bar',
-								backgroundColor:'transparent'
-							
-							},
-							title: {
-								text: null
-							},
-							subtitle: {
-								text: null
-							},
-							xAxis: {
+						chart: {
+							type: 'bar',
+							backgroundColor:'transparent'
+						
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						xAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							categories: locationLevelNames
+						},
+						yAxis: {
 								min: 0,
 								gridLineWidth: 0,
 								minorGridLineWidth: 0,
-								categories: locationLevelNames
+							title: {
+								text: null
 							},
-							yAxis: {
-									min: 0,
-									gridLineWidth: 0,
-									minorGridLineWidth: 0,
-								title: {
-									text: null
+							labels: {
+								enabled:false
+							},
+							stackLabels: {
+								useHTML: true,
+								//align: 'left',
+								enabled: true,
+								style: {
+									fontWeight: 'bold',
+									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
-								labels: {
-									enabled:false
-								},
-								stackLabels: {
-									//useHTML: true,
-									//align: 'left',
-									enabled: true,
-									style: {
-										fontWeight: 'bold',
-										color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-									},
-									formatter: function() {
-									
-										//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-										//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-										return (this.total);
-									} 
-								
-								}
+								formatter: function() {
+									return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
+									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+									//return (this.total);
+								} 
 							
-							},
-							tooltip: {
-								formatter: function () {
-								var s = '<b>' + this.x + '</b>';
+							}
+						
+						},
+						tooltip: {
+							formatter: function () {
+							var s = '<b>' + this.x + '</b>';
 
-									$.each(this.points, function () {
-										if(this.series.name != "Series 1")  
-										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-										this.y/* +' - ' +
-										(Highcharts.numberFormat(this.percentage,1)+'%'); */
-									});
+								$.each(this.points, function () {
+									if(this.series.name != "Series 1")  
+									s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									this.y/* +' - ' +
+									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+								});
 
-									return s;
-								},
-								shared: true
+								return s;
 							},
-							plotOptions: {
-								bar: {
-									stacking: 'normal',
-									pointWidth: 30,
-									gridLineWidth: 15
-								},
+							shared: true
+						},
+						plotOptions: {
+							bar: {
+								stacking: 'normal',
+								pointWidth: 30,
+								gridLineWidth: 15
 							},
-							legend: {
-								verticalAlign:'top',
-								enabled: true
-							},
-							series: mainJosnObjLocArr
-						});
+						},
+						legend: {
+							verticalAlign:'top',
+							enabled: true
+						},
+						series: mainJosnObjLocArr
+					});
 				}
 			}
 			
@@ -618,11 +728,11 @@
 					
 					var yearsArr=[];
 					var NABARDArr =[];
-						var NREGPArr =[];
-						var CRRArr=[];
-						var RDFArr=[];
-						var MRRArr=[];
-						var FC13Arr=[]; 
+					var NREGPArr =[];
+					var CRRArr=[];
+					var RDFArr=[];
+					var MRRArr=[];
+					var FC13Arr=[]; 
 					for(var i in result){
 						
 						
@@ -651,26 +761,24 @@
 						}
 						var mainJosnObjArr=[];
 						if(NABARDArr != null && NABARDArr.length > 0){
-							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#309AFF"});  
 						}
 						if(MRRArr != null && MRRArr.length > 0){
-							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#01A64E"});  
 						}
 						if(NREGPArr != null && NREGPArr.length > 0){
-							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#FF0DAD"});  
 						}
 						if(CRRArr != null && CRRArr.length > 0){
 							mainJosnObjArr.push({name:'CRR',data:CRRArr,color:"#FF872C"});  
 						}
 						if(RDFArr != null && RDFArr.length > 0){
-							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#3C46FF"});  
 						}
 						if(FC13Arr != null && FC13Arr.length > 0){
-							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
 						}
 					}
-					console.log(mainJosnObjArr)
-					console.log(yearsArr)
 					$(".chart"+divId).highcharts({
 						chart: {
 							type: 'bar',
@@ -700,7 +808,7 @@
 								enabled:false
 							},
 							stackLabels: {
-								//useHTML: true,
+								useHTML: true,
 								//align: 'left',
 								enabled: true,
 								style: {
@@ -708,10 +816,10 @@
 									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
 								formatter: function() {
-								
+									return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
 									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
 									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-									return (this.total);
+									//return (this.total);
 								} 
 							
 							}
@@ -753,14 +861,12 @@
 				
 					var assemblyShemeNameArr=[];
 					var NABARDArr =[];
-						var NREGPArr =[];
-						var CRRArr=[];
-						var RDFArr=[];
-						var MRRArr=[];
-						var FC13Arr=[];
+					var NREGPArr =[];
+					var CRRArr=[];
+					var RDFArr=[];
+					var MRRArr=[];
+					var FC13Arr=[];
 					for(var i in result){
-						
-						
 						if(result[i].subList !=null && result[i].subList.length>0){
 							for(var j in result[i].subList){
 								if(levelId == 3){
@@ -790,115 +896,114 @@
 								}
 							}
 						}
-						
-						var mainJosnObjArr=[];
+						var mainJosnObjArr= [];
 						if(NABARDArr != null && NABARDArr.length > 0){
-							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#309AFF"});  
 						}
 						if(MRRArr != null && MRRArr.length > 0){
-							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#01A64E"});  
 						}
 						if(NREGPArr != null && NREGPArr.length > 0){
-							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#FF0DAD"});  
 						}
 						if(CRRArr != null && CRRArr.length > 0){
 							mainJosnObjArr.push({name:'CRR',data:CRRArr,color:"#FF872C"});  
 						}
 						if(RDFArr != null && RDFArr.length > 0){
-							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#3C46FF"});  
 						}
 						if(FC13Arr != null && FC13Arr.length > 0){
-							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#FF872C"});  
+							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
 						}
 					}
-						/* var length = result.length
-						var height = '';
-						if(length == 0)
-						{
-							height = length * 100;
-						}else if(length > 3){
-							height = length * 120;
-						}
-						if(length > 8)
-						{
-							$(".scroller"+divId).mCustomScrollbar({setHeight:'600px'})
-						} */
-						$(".chart"+divId).css("height","1500px")
-						//$(".chart"+divId).height(height);
-						$(".chart"+divId).highcharts({
-								chart: {
-									type: 'bar',
-									backgroundColor:'transparent'
-								
+					var length = result.length
+					var height = '';
+					if(length == 0)
+					{
+						height = length * 100;
+					}else if(length > 3){
+						height = length * 120;
+					}
+					if(length > 8)
+					{
+						$(".scroller"+divId).mCustomScrollbar({setHeight:'600px'})
+					}
+						//$(".chart"+divId).css("height","1500px")
+					$(".chart"+divId).height(height);
+					$(".chart"+divId).highcharts({
+						chart: {
+							type: 'bar',
+							backgroundColor:'transparent'
+						
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						xAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							categories: assemblyShemeNameArr
+						},
+						yAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+							title: {
+								text: null
+							},
+							labels: {
+								enabled:false
+							},
+							stackLabels: {
+								useHTML: true,
+								//align: 'left',
+								enabled: true,
+								style: {
+									fontWeight: 'bold',
+									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
 								},
-								title: {
-									text: null
-								},
-								subtitle: {
-									text: null
-								},
-								xAxis: {
-									min: 0,
-									gridLineWidth: 0,
-									minorGridLineWidth: 0,
-									categories: assemblyShemeNameArr
-								},
-								yAxis: {
-										min: 0,
-										gridLineWidth: 0,
-										minorGridLineWidth: 0,
-									title: {
-										text: null
-									},
-									labels: {
-										enabled:false
-									},
-									stackLabels: {
-										//useHTML: true,
-										//align: 'left',
-										enabled: true,
-										style: {
-											fontWeight: 'bold',
-											color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-										},
-										formatter: function() {
-										
-											//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-											//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-											return (this.total);
-										} 
-									
-									}
-								
-								},
-								tooltip: {
-									formatter: function () {
-									var s = '<b>' + this.x + '</b>';
+								formatter: function() {
+									return '<span><i class="fa fa-inr"></i>: '+this.total+'</span>';
+									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+									//return (this.total);
+								} 
+							
+							}
+						
+						},
+						tooltip: {
+							formatter: function () {
+							var s = '<b>' + this.x + '</b>';
 
-										$.each(this.points, function () {
-											if(this.series.name != "Series 1")  
-											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-											this.y/* +' - ' +
-											(Highcharts.numberFormat(this.percentage,1)+'%'); */
-										});
-										
-										return s;
-									},
-									shared: true
-								},
-								plotOptions: {
-									bar: {
-										stacking: 'normal',
-										pointWidth: 30,
-										gridLineWidth: 15
-									}
-								},
-								legend: {
-									verticalAlign:'top',
-									enabled: true
-								},
-								series: mainJosnObjArr
-							});
+								$.each(this.points, function () {
+									if(this.series.name != "Series 1")  
+									s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									this.y/* +' - ' +
+									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+								});
+								
+								return s;
+							},
+							shared: true
+						},
+						plotOptions: {
+							bar: {
+								stacking: 'normal',
+								pointWidth: 30,
+								gridLineWidth: 15
+							}
+						},
+						legend: {
+							verticalAlign:'top',
+							enabled: true
+						},
+						series: mainJosnObjArr
+					});
 					
 				}
 			}
@@ -940,10 +1045,7 @@
 			},
 			success: function(ajaxresp) {
 			buildLocationWiseFundDetails(ajaxresp,divId);
-			},
-			error: function(request,error) { 
-		
-		}
+			}
 		});
    }
 	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,type){
@@ -976,10 +1078,7 @@
 				if(ajaxresp != null && ajaxresp.length>0)
 					buildLocationWiseAmountDetails(ajaxresp,divId,type,levelId);
 				else
-					alert('No data available..');
-				},
-			error : function(request,error){
-				alert(error);
+					$("#"+divId).html("NO DATA AVAILABLE");
 			}
 		});
 	}
@@ -1016,9 +1115,6 @@
 					//buildLocationWiseAmountDetails(ajaxresp,divId,type);
 				}else
 					alert('No data available..');
-				},
-			error : function(request,error){
-				alert(error);
 			}
 		});
 	}
@@ -1100,10 +1196,6 @@
 			},
 			success: function(ajaxresp) {
 				buildLocationWiseFundDetails(ajaxresp,divId)
-			},
-			error: function(request,error) { 
-				//alert(request.responseText);
-				//alert(error);
 			}
 		});
 	}
@@ -1146,10 +1238,6 @@
 			},
 			success: function(ajaxresp) {
 				buildLocationWiseFundDetails(ajaxresp,divId);
-			},
-			error: function(request,error) { 
-				//alert(request.responseText);
-				//alert(error);
 			}
 		});
 	}
@@ -1187,10 +1275,6 @@
 			},
 			success: function(ajaxresp) {
 				buildLocationWiseFundDetails(ajaxresp,divId);
-			},
-			error: function(request,error) { 
-			//alert(request.responseText);
-			//alert(error);
 			}
         });
 	}	
@@ -1218,9 +1302,6 @@
 			},
 			success : function(ajaxresp){
 				buildLocationWiseFundDetails(ajaxresp,divId);
-			},
-			error : function(request,error){
-				alert(error);
 			}
 		});
 	}
@@ -1247,9 +1328,6 @@
 			},
 			success : function(ajaxresp){
 				buildLocationWiseFundDetails(ajaxresp,divId);
-			},
-			error : function(request,error){
-				alert(error);
 			}
 		});
 	}
@@ -1303,51 +1381,41 @@
 			}
 			$("#financialYearId").chosen();
 			$("#financialYearId").trigger('chosen:updated');
-			 onLoadCalls();	
+			onLoadCalls();	
 		});
    }
-   $(document).on('click','.applyBtn',function(){
-	   onLoadCalls();	   
-   });
-	$(document).on('change','.constLevelDistNames',function(){
-		var locationScopeId = $("#constLevelDistNames").val();
-	     getAllSubLocationsBySuperLocationId(locationScopeId);
-   });
    
-   function getAllSubLocationsBySuperLocationId(locationScopeId){
+   
+	function getAllSubLocationsBySuperLocationId(locationScopeId){
 		var financialYrIdList = $('#financialYearId').val();; 
 		var deptId = 0;
 		var sourceId = 0;
-    var json = {
-      superLocationId : locationScopeId, 
-      deptId : deptId,
-      sourceId : sourceId,
-      financialYrIdList : financialYrIdList,  
-      fromDateStr : "01/06/2017",       
-      toDateStr : "10/06/2017"  
-    }
-    $.ajax({
-      url : "getAllSubLocationsBySuperLocationId",     
-      data : JSON.stringify(json),
-      type : "POST",  
-      dataTypa : 'json',   
-      beforeSend: function(xhr) {
-        xhr.setRequestHeader("Accept", "application/json");
-        xhr.setRequestHeader("Content-Type", "application/json");
-      },
-      success : function(result){   
-        if(result !=null && result.length>0){
-			$("#distLevelDistrictNames").append('<option value="0">SELECT DISTRICT</option>');
-			$("#constLevelDistNames").append('<option value="0">SELECT DISTRICT</option>');
-			for(var i in result){
-			  $("#distLevelDistrictNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
-			   $("#constLevelDistNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+		var json = {
+		  superLocationId : locationScopeId, 
+		  deptId : deptId,
+		  sourceId : sourceId,
+		  financialYrIdList : financialYrIdList,  
+		  fromDateStr : "01/06/2017",       
+		  toDateStr : "10/06/2017"  
+		}
+		$.ajax({
+			url : "getAllSubLocationsBySuperLocationId",     
+			data : JSON.stringify(json),
+			type : "POST",  
+			dataTypa : 'json',   
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success : function(result){   
+				if(result !=null && result.length>0){
+					$("#distLevelDistrictNames").append('<option value="0">SELECT DISTRICT</option>');
+					$("#constLevelDistNames").append('<option value="0">SELECT DISTRICT</option>');
+					for(var i in result){
+						$("#distLevelDistrictNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+						$("#constLevelDistNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+					}
+				}
 			}
-		  }
-      },
-      error : function(request,error){
-        alert(error);
-      }
-    });
-   }
-//}(jQuery);
+		});
+	}
