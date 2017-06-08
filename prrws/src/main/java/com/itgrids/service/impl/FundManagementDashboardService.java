@@ -396,6 +396,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			Long totalAmount = 0L;
 			Long totalCount = 0L;
 			//push amount and count into vo
+			
 			if(financialYearIdAndLocationIdAndAmountMap != null && financialYearIdAndLocationIdAndAmountMap.size() > 0){
 				locVoList = new ArrayList<LocationVO>();
 				for(Entry<Long,Map<Long,Long>> param : financialYearIdAndLocationIdAndAmountMap.entrySet()){
