@@ -197,7 +197,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 										yearVO.getSubList().add(schemeVO);
 									}
 								}
-							}else{
+							}else if(!commonMethodsUtilService.isListOrSetValid(yearVO.getSubList())){
 								for (Long schemeId : schemesMap.keySet()) {
 									FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
 									FundSchemeVO schemeVO = new FundSchemeVO();					
@@ -216,6 +216,23 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						for (FundSchemeVO yearVO : fundLocationVO.getSubList()) {
 							availableYearIds.add(yearVO.getYearId());
 							yearVO.setAddressVO(fundLocationVO.getAddressVO());
+							
+							Set<Long> availableSchemeIds = new HashSet<Long>(0);
+							for (FundSchemeVO schemeVO : yearVO.getSubList()) {
+								availableSchemeIds.add(schemeVO.getId());
+							}
+							
+							for (Long schemeId : schemesMap.keySet()) {
+								if(!availableSchemeIds.contains(schemeId)){
+									FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
+									FundSchemeVO schemeVO = new FundSchemeVO();					
+									schemeVO.setId(tempSchemeVO.getId());
+									schemeVO.setName(tempSchemeVO.getName());
+									schemeVO.setCount(0L);
+									schemeVO.setTotalCount(0L);
+									yearVO.getSubList().add(schemeVO);
+								}
+							}
 						}
 						
 						for (Long yearId : yearsMap.keySet()) {
@@ -225,6 +242,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 								FundSchemeVO yearVO = new FundSchemeVO();
 								yearVO.setYearId(tempYearVO.getYearId());
 								yearVO.setYear(tempYearVO.getYear());
+								yearVO.setAddressVO(fundLocationVO.getAddressVO());
 								
 								for (Long schemeId : schemesMap.keySet()) {
 									FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
@@ -238,6 +256,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 								fundLocationVO.getSubList().add(yearVO);
 							}
 						}
+						
 					}else if(!commonMethodsUtilService.isListOrSetValid(fundLocationVO.getSubList())){
 						for (Long yearId : yearsMap.keySet()) {
 								FundSchemeVO tempYearVO = yearsMap.get(yearId);
@@ -613,6 +632,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			
 			//create a map for financialYearId and financialyear
 			Map<Long,String> financialYearIdAndFinancialYearMap = new HashMap<Long,String>();
+			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYearsByIds(inputVO.getFinancialYrIdList());
+			if(financialYearList != null && financialYearList.size() > 0){
+				for(Object[] param : financialYearList){
+					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			
 			
 			//create a map of financialYearId and map of locationId and amount
 			Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap = new LinkedHashMap<Long,Map<Long,Long>>();
@@ -657,7 +683,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					locationVO.setLocationId(locId);
 					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(locationIdAndNameMap.get(locId)));
 					//call this method to set the amount and count details.
-					pushCountAndAmountDetails(locationVO,financialYearIdAndLocationIdAndAmountMap,financialYearIdAndLocationIdAndCountMap,inputVO.getFinancialYrIdList());
+					pushCountAndAmountDetails(locationVO,financialYearIdAndLocationIdAndAmountMap,financialYearIdAndLocationIdAndCountMap,financialYearIdAndFinancialYearMap);
 					finalList.add(locationVO);
 				}
 			}
@@ -684,20 +710,12 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			return null;
 		}
 	}
-	public void pushCountAndAmountDetails(LocationVO locationVO,Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap,Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndCountMap,List<Long> financialyearIdList){
+	public void pushCountAndAmountDetails(LocationVO locationVO,Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap,Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndCountMap,Map<Long,String> financialYearIdAndFinancialYearMap){
 		try{
 			List<LocationVO> locVoList = null;
 			LocationVO locVO = null;
 			Long totalAmount = 0L;
 			Long totalCount = 0L;
-			//create a map for financialYearId and financialyear
-			Map<Long,String> financialYearIdAndFinancialYearMap = new HashMap<Long,String>();
-			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYears();
-			if(financialYearList != null && financialYearList.size() > 0){
-				for(Object[] param : financialYearList){
-					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-				}
-			}
 			
 			//push amount and count into vo
 			if(financialYearIdAndFinancialYearMap != null && financialYearIdAndFinancialYearMap.size() > 0){
