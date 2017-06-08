@@ -6,10 +6,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,7 +206,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			}
 			
 			//collect all the location ids(uses to create the final list)
-			List<Long> locationIdList = new ArrayList<Long>();
+			Set<Long> locationIdList = new HashSet<Long>();
 			if(amountList != null && amountList.size() > 0){
 				for(Object[] param : amountList){
 					locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
@@ -222,15 +224,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				locationIdAndNameMap.put(1L, "Andhra Pradesh");
 			}
 			
-			//create a map for financialYearId and financialyear
-			Map<Long,String> financialYearIdAndFinancialYearMap = new HashMap<Long,String>();
+			
 			
 			//create a map of financialYearId and map of locationId and amount
 			Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap = new LinkedHashMap<Long,Map<Long,Long>>();
 			Map<Long,Long> locationIdAndAmountMap = null;
 			if(amountList != null && amountList.size() > 0){
 				for(Object[] param : amountList){
-					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 					locationIdAndAmountMap = financialYearIdAndLocationIdAndAmountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(locationIdAndAmountMap != null){
 						locationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
@@ -268,7 +268,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					locationVO.setLocationId(locId);
 					locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(locationIdAndNameMap.get(locId)));
 					//call this method to set the amount and count details.
-					pushCountAndAmountDetails(locationVO,financialYearIdAndLocationIdAndAmountMap,financialYearIdAndLocationIdAndCountMap,financialYearIdAndFinancialYearMap);
+					pushCountAndAmountDetails(locationVO,financialYearIdAndLocationIdAndAmountMap,financialYearIdAndLocationIdAndCountMap,inputVO.getFinancialYrIdList());
 					finalList.add(locationVO);
 				}
 			}
@@ -295,26 +295,41 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			return null;
 		}
 	}
-	public void pushCountAndAmountDetails(LocationVO locationVO,Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap,Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndCountMap,Map<Long,String> financialYearIdAndFinancialYearMap){
+	public void pushCountAndAmountDetails(LocationVO locationVO,Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap,Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndCountMap,List<Long> financialyearIdList){
 		try{
 			List<LocationVO> locVoList = null;
 			LocationVO locVO = null;
 			Long totalAmount = 0L;
 			Long totalCount = 0L;
+			//create a map for financialYearId and financialyear
+			Map<Long,String> financialYearIdAndFinancialYearMap = new HashMap<Long,String>();
+			List<Object[]> financialYearList = financialYearDAO.getAllFiniancialYears();
+			if(financialYearList != null && financialYearList.size() > 0){
+				for(Object[] param : financialYearList){
+					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+				}
+			}
+			
 			//push amount and count into vo
-			if(financialYearIdAndLocationIdAndAmountMap != null && financialYearIdAndLocationIdAndAmountMap.size() > 0){
+			if(financialYearIdAndFinancialYearMap != null && financialYearIdAndFinancialYearMap.size() > 0){
 				locVoList = new ArrayList<LocationVO>();
-				for(Entry<Long,Map<Long,Long>> param : financialYearIdAndLocationIdAndAmountMap.entrySet()){
-					//if(param.getValue().containsKey(locationVO.getLocationId())){
+				for(Entry<Long,String> param : financialYearIdAndFinancialYearMap.entrySet()){
 					locVO = new LocationVO();
 					locVO.setFinancialYearId(param.getKey());
 					locVO.setFinancialYear(commonMethodsUtilService.getStringValueForObject(financialYearIdAndFinancialYearMap.get(param.getKey())));
-					locVO.setAmount(commonMethodsUtilService.getLongValueForObject(param.getValue().get(locationVO.getLocationId())));
-					totalAmount = totalAmount + commonMethodsUtilService.getLongValueForObject(param.getValue().get(locationVO.getLocationId()));
-					locVO.setCount(commonMethodsUtilService.getLongValueForObject(financialYearIdAndLocationIdAndCountMap.get(param.getKey()).get(locationVO.getLocationId())));
-					totalCount = totalCount + commonMethodsUtilService.getLongValueForObject(financialYearIdAndLocationIdAndCountMap.get(param.getKey()).get(locationVO.getLocationId()));
+					if(financialYearIdAndLocationIdAndAmountMap.get(param.getKey()) != null){
+						locVO.setAmount(commonMethodsUtilService.getLongValueForObject(financialYearIdAndLocationIdAndAmountMap.get(param.getKey()).get(locationVO.getLocationId())));
+						totalAmount = totalAmount + commonMethodsUtilService.getLongValueForObject(financialYearIdAndLocationIdAndAmountMap.get(param.getKey()).get(locationVO.getLocationId()));
+					}else{
+						locVO.setAmount(0L);
+					}
+					if(financialYearIdAndLocationIdAndCountMap.get(param.getKey()) != null){
+						locVO.setCount(commonMethodsUtilService.getLongValueForObject(financialYearIdAndLocationIdAndCountMap.get(param.getKey()).get(locationVO.getLocationId())));
+						totalCount = totalCount + commonMethodsUtilService.getLongValueForObject(financialYearIdAndLocationIdAndCountMap.get(param.getKey()).get(locationVO.getLocationId()));
+					}else{
+						locVO.setCount(0L);
+					}
 					locVoList.add(locVO);
-					//}
 				}
 				locVO = new LocationVO();
 				locVO.setFinancialYearId(0L);
