@@ -9,11 +9,13 @@
 @dark_brown_color:#999999;
 @dark_blue_color:#3C46FF;
 @dark_yellow_color:#FFBA00;
+@roboto_font:'Roboto', sans-serif;
 
 body
 {
 	color:@black_color;
 	background-color:@light_ash_color;
+	font-family: @roboto_font;
 }
 
 header
@@ -24,6 +26,11 @@ nav
 {
 	background-color:@black_color;	
 	color:@dark_yellow_color;
+	font-family: @roboto_font;
+}
+.m_top5
+{
+	margin-top:5px !important;
 }
 .m_top10
 {
@@ -44,8 +51,8 @@ nav
 	padding:8px 12px;
 	li
 	{
-		padding:8px 12px;
-		border-right:1px solid @black_color;
+		padding:2px 8px 3px 12px;
+		border-right:1px solid @dark_brown_color;
 	}
 	li:last-child
 	{
@@ -68,6 +75,10 @@ nav
 		background: #EBEBEB;
 	}
 }
+.panel-title.text-muted
+{
+	color:#777
+}
 main
 {
 	margin-top:30px;
@@ -75,6 +86,7 @@ main
 h1,h2,h3,h4,h5,h6,p,ul
 {
 	margin:0px !important;
+	font-family: @roboto_font;
 }
 .panel-black
 {
@@ -139,8 +151,8 @@ h3
 			border-bottom:2px solid @dark_brown_color !important;
 			text-align:center;
 			background-color:@white_color;
-			border-left-width:3px !important;
-			border-right-width:3px !important;
+			border-left-width:5px !important;
+			border-right-width:5px !important;
 			border-style:solid;
 		}
 	}
@@ -277,4 +289,42 @@ h3
     -webkit-transform: scale(1);
             transform: scale(1); 
       } 
+}
+.no-left-border
+{
+	border-left-width:0px !important;
+}
+.no-right-border
+{
+	border-right-width:0px !important;
+}
+.pagination
+{
+	li
+	{
+		a
+		{
+			border-width:0px;
+			&:hover
+			{
+				background-color:@dark_blue_color;
+				color:@white_color;
+			}
+		}
+	}
+	li , li:first-child , li:last-child
+	{
+		a
+		{
+			border-radius: 16px !important;
+		}
+	}
+	.active
+	{
+		a
+		{
+			border-radius: 50%;
+			box-shadow:0px 0px 3px 2px rgba(0,0,0,0.4);
+		}
+	}
 }
