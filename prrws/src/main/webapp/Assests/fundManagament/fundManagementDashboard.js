@@ -1,13 +1,56 @@
-+function ($) {
-	onLoadCalls();
-	onLoadClicks();
+//+function ($) {
+	//onLoadCalls();
+	//onLoadClicks();
 	onLoadInitialisations();
+	var glStartDate='';
+	var glEndDate='';
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	///Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations
 	function onLoadCalls()
 	{
-		getAllDepartments();
-		getAllFiniancialYears();
+		onLoadClicks();
+		var dateStr = $('#mainDate').val().split('-');
+		glStartDate = dateStr[0].trim();
+		glEndDate = dateStr[1].trim();
+		
+		
+		//getAllDepartments();
+		//getAllFiniancialYears();
+		getLocationWiseFundDetails(3,'highest','highFundDist');
+		getLocationWiseFundDetails(4,'highest','highFundCons');
+		getLocationWiseFundDetails(3,'lowest','lowFundDist');
+		getLocationWiseFundDetails(4,'lowest','lowFundCons');
+		getAverageFundForAnyLevel(3,'avgFundDist');
+		getAverageFundForAnyLevel(4,'avgFundCons');
+		//getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
+		getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
+		getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
+		//getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview');
+		
+		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
+		getSchemeWiseHighestAndLowestFund('lowest','lowFundScheme');
+		getTotalFunds('totFund');
+		getTotalSchemes(4,'totFundScheme');
+		// getSchemeWiseHighestAndLowestFund("highest");
+		// getSchemeWiseHighestAndLowestFund("lowest");
+		getTotalLocationsByScopeId(4,'totFundCons');
+		// getTotalLocationsByScopeId(5);
+		// getTotalLocationsByScopeId(6);
+		
+		getAverageFundForScheme('avgFundScheme');
+		
+	}
+	
+	function newOnLoadCalls()
+	{
+		onLoadClicks();
+		var dateStr = $('#mainDate').val().split('-');
+		glStartDate = dateStr[0].trim();
+		glEndDate = dateStr[1].trim();
+		
+		
+		//getAllDepartments();
+		//getAllFiniancialYears();
 		getLocationWiseFundDetails(3,'highest','highFundDist');
 		getLocationWiseFundDetails(4,'highest','highFundCons');
 		getLocationWiseFundDetails(3,'lowest','lowFundDist');
@@ -63,6 +106,9 @@
 	{
 		
 		$("#mainDate").daterangepicker();
+		$('#mainDate').val('01/31/2010 - 01/31/2020');
+		getAllDepartments();
+		getAllFiniancialYears();		
 	}
 	
 	function highChart(divId,namesArr,DataArr)
@@ -147,7 +193,7 @@
 	{
 		$("#"+divId).html(spinner);
 		var levelValues = [];
-		var financialYrIdArr = [1,2];
+		var financialYrIdArr = [$('#financialYearId').val()];
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = [];
@@ -156,8 +202,8 @@
 			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
-			fromDateStr : "01-06-2013",       
-			toDateStr : "10-06-2020",
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr,
@@ -249,15 +295,15 @@
 	function getLocationWiseAmountDetails(levelId,divId,type){
 		$("#"+divId).html(spinner);
 		var levelValues = [];
-		var financialYrIdList = [1];
+		var financialYrIdList = [$('#financialYearId').val()];
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdList,
 			sortingType : "name",      //name,count    
 			order : "desc",   //asc,desc
-			fromDateStr : "01/06/2017",       
-			toDateStr : "10/06/2017"
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
 		}
 		$.ajax({
 			url : "getLocationWiseAmountDetails",  
@@ -377,7 +423,7 @@
 					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
 				}
 				if(amountArr1 != null && amountArr1.length > 0){
-					mainJosnObjArr.push({name:'All Financial Year',data:amountArr1,color:"#5B5B5B"});  
+					//mainJosnObjArr.push({name:'All Financial Year',data:amountArr1,color:"#5B5B5B"});  
 				} 
 				
 			}
@@ -471,7 +517,7 @@
 					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
 				}
 				if(amountArr1 != null && amountArr1.length > 0){
-					mainJosnObjArr.push({name:'All Financial Year',data:amountArr1,color:"#5B5B5B"});  
+					//mainJosnObjArr.push({name:'All Financial Year',data:amountArr1,color:"#5B5B5B"});  
 				} 
 				
 			}
@@ -569,7 +615,7 @@
 	function getTotalFunds(divId)
 	{
 		  var levelValues = [];
-		  var financialYrIdArr = [1,2];
+		  var financialYrIdArr =[$('#financialYearId').val()];
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
@@ -578,8 +624,8 @@
 			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
-			fromDateStr : "01-06-2013",       
-			toDateStr : "10-06-2020",
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr
@@ -613,8 +659,8 @@
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
-			fromDateStr : "01-06-2013",       
-			toDateStr : "10-06-2020",
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr
@@ -695,8 +741,8 @@
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
-			fromDateStr : "01-06-2013",       
-			toDateStr : "10-06-2020",
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr
@@ -726,7 +772,7 @@
 	function getSchemeWiseHighestAndLowestFund(type,divId)
 	{
 		  var levelValues = [];
-		  var financialYrIdArr = [1,2];
+		  var financialYrIdArr = [$('#financialYearId').val()];
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
@@ -735,8 +781,8 @@
 			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
-			fromDateStr : "01-06-2013",       
-			toDateStr : "10-06-2020",
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr,
@@ -763,7 +809,7 @@
 	function getTotalLocationsByScopeId(locScopeId,divId)
 	{
 		  var levelValues = [];
-		  var financialYrIdArr = [1,2];
+		  var financialYrIdArr = [$('#financialYearId').val()];
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
@@ -772,8 +818,8 @@
 			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
-			fromDateStr : "01-06-2013",       
-			toDateStr : "10-06-2020",
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr
@@ -797,7 +843,7 @@
         });
 	}	
 	function getAverageFundForScheme(divId){
-		var financialYrIdList = [1]; 
+		var financialYrIdList = [$('#financialYearId').val()]; 
 		var deptId = 0;
 		var sourceId = 0;
 		var schemeId = 0;
@@ -806,8 +852,8 @@
 			sourceId : sourceId,
 			schemeId : schemeId,
 			financialYrIdList : financialYrIdList,
-			fromDateStr : "01/06/2017",       
-			toDateStr : "10/06/2017"
+			fromDateStr : glStartDate,//"01/06/2013",       
+			toDateStr : glEndDate,//"10/06/2020",
 		}
 		$.ajax({
 			url : "getAverageFundForScheme",  
@@ -828,15 +874,15 @@
 	}
 	function getAverageFundForAnyLevel(levelId,divId){
 		var levelValues = [];
-		var financialYrIdList = [1]; 
+		var financialYrIdList = [$('#financialYearId').val()]; 
 		var deptId = 0;
 		var sourceId = 0;
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdList,
-			fromDateStr : "01/06/2017",       
-			toDateStr : "10/06/2017"   
+			fromDateStr : glStartDate,//"01/06/2013",       
+			toDateStr : glEndDate,//"10/06/2020",   
 		}
 		$.ajax({
 			url : "getAverageFundForAnyLevel",  
@@ -872,9 +918,11 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
+			$("#DepartmentsId").find('option').remove();
+			$("#DepartmentsId").append("<option value='0'>Select Department </option>");
 			if(result != null && result.length >0){
 				for(var i in result){
-					$("#DepartmentsId").append("<option value="+result[i].departmentsId+">"+result[i].departmentsName+"</option>");
+					$("#DepartmentsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 				}
 			}
 		});
@@ -893,11 +941,18 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
+			$("#financialYearId").find('option').remove();
+			$("#financialYearId").append("<option value='0'>Select Financial Year </option>");
 			if(result != null && result.length >0){
 				for(var i in result){
-					$("#financialYearId").append("<option value="+result[i].financialYear+">"+result[i].financialYear+"</option>");
+					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
 				}
+				$("#financialYearId").val(2);
 			}
+			 onLoadCalls();	
 		});
    }
-}(jQuery);
+   $(document).on('click','.applyBtn',function(){
+	   onLoadCalls();	   
+   });
+//}(jQuery);
