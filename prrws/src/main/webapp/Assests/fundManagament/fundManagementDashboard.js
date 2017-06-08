@@ -22,9 +22,10 @@
 		getLocationWiseFundDetails(4,'lowest','lowFundCons');
 		getAverageFundForAnyLevel(3,'avgFundDist');
 		getAverageFundForAnyLevel(4,'avgFundCons');
-		//getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
+		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
 		getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
 		getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
+		getAllSubLocationsBySuperLocationId(21);
 		//getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview');
 		
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
@@ -57,9 +58,10 @@
 		getLocationWiseFundDetails(4,'lowest','lowFundCons');
 		getAverageFundForAnyLevel(3,'avgFundDist');
 		getAverageFundForAnyLevel(4,'avgFundCons');
-		//getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
+		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
 		getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
 		getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
+		getAllSubLocationsBySuperLocationId(21);
 		//getLocationWiseAmountDetails(5,'mandalLevlOvervw','overview');
 		
 		getSchemeWiseHighestAndLowestFund('highest','highFundScheme');
@@ -76,7 +78,9 @@
 	}
 	function onLoadClicks()
 	{
-		$(document).on("click","[tab-switch] li",function(){
+		
+	}
+	$(document).on("click","[tab-switch] li",function(){
 			$(this).closest("ul").find("li").removeClass("active");
 			$(this).addClass("active");
 			var blockName = $(this).closest("ul").attr("tab-switch");
@@ -103,9 +107,17 @@
 				}else if(blockType == 'deptscheme'){
 					 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
 				}
+			}else if(blockName == 'stateLevel')
+			{
+				if(blockType == 'overview')
+				{
+					getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
+				}else if(blockType == 'scheme')
+				{
+					getSchemeWiseLocationWiseAmountDetails(2,'stateLevlOvervw','scheme');
+				}
 			}
 		});
-	}
 	function onLoadInitialisations()
 	{
 		
@@ -197,7 +209,7 @@
 	{
 		$("#"+divId).html(spinner);
 		var levelValues = [];
-		var financialYrIdArr = [$('#financialYearId').val()];
+		var financialYrIdArr = $('#financialYearId').val();
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = [];
@@ -304,7 +316,7 @@
 	function getLocationWiseAmountDetails(levelId,divId,type){
 		$("#"+divId).html(spinner);
 		var levelValues = [];
-		var financialYrIdList = [$('#financialYearId').val()];
+		var financialYrIdList = $('#financialYearId').val();
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -376,255 +388,529 @@
 			table+='</table>';
 		}else if(type == 'scheme')
 		{
-			table+='<table class="table table-bordered table-condensed" id="dataTable'+divId+'" style="width:100%;">';
-				table+='<thead class="text-center">';
-					table+='<tr>';
-						table+='<th></th>';
-						table+='<th colspan="2">2014-2015</th>';
-						table+='<th colspan="2">All Financial Years</th>';
-					table+='</tr>';
-					table+='<tr>';
-						table+='<th>District</th>';
-						table+='<th>No</th>';
-						table+='<th>Amt.</th>';
-						table+='<th>No</th>';
-						table+='<th>Amt.</th>';
-					table+='</tr>';
-				table+='</thead>';
-				table+='<tbody>';
-					for(var i in result){
-						table+='<tr>';
-							table+='<td>'+result[i].addressVO.districtName+'</td>';
-							for(var j in result[i].subList)
-							{
-								table+='<td>'+result[i].subList[0].subList[0].count+'</td>';
-								table+='<td>'+result[i].subList[0].subList[1].totalCount+'</td>';
-							}
-						table+='</tr>';
-					}
-					
-				table+='</tbody>';
-			table+='</table>';
+			
 		}
 		
 		$("#"+divId+"Table").html(table);
-		$("#dataTable"+divId).DataTable();
+		
+		
 		if(type == 'overview')
 		{
-			var locationNamesArr=[];
-			var amountArr =[];
-			var amountArr1 =[];
-			for(var i in result){
-				locationNamesArr.push(result[i].locationName);
-				
-				if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
-					for(var j in result[i].locationList1){
-						
-						 if(result[i].locationList1[j].financialYearId == 1){
-							amountArr.push(result[i].locationList1[j].amount)
-						}else if(result[i].locationList1[j].financialYearId == 0){
-							amountArr1.push(result[i].locationList1[j].amount)
-						}   
+			if(levelId == 2){
+				if(result !=null && result.length>0){
+					var locationNamesArr=[];
+					var mainlocationArr =[];
+					for(var i in result){
+						if(result[i].locationList1 !=null &&  result[i].locationList1.length>0){
+							for(var j in result[i].locationList1){
+								if(result[i].locationList1[j].financialYearId != 0){
+									mainlocationArr.push({y:result[i].locationList1[j].amount})
+								}
+								locationNamesArr.push("Year<br/>"+result[i].locationList1[j].financialYear);
+							}
+						}
 					}
+						$(".chart"+divId).highcharts({
+							chart: {
+								type: 'bar',
+								backgroundColor:'transparent'
+							
+							},
+							title: {
+								text: null
+							},
+							subtitle: {
+								text: null
+							},
+							xAxis: {
+							 min: 0,
+								 gridLineWidth: 0,
+								 minorGridLineWidth: 0,
+								 categories: locationNamesArr,
+								 labels: {
+								   enabled: true,
+									
+								}
+							},
+							yAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+								title: {
+									text: null
+								},
+								labels: {
+									enabled:false
+								},
+								stackLabels: {
+									useHTML: true,
+									align: 'left',
+									enabled: true,
+									style: {
+										fontWeight: 'bold',
+										color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+									},
+									formatter: function() {
+									
+										return '<span style="top:16px; position: absolute;"><br/><h3><i class="fa fa-inr"></i>: '+this.total+'</h3></span>';
+										//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+										//return (this.total);
+									} 
+								
+								}
+							
+							},
+							tooltip: {
+								 pointFormat: '<b>{point.y}</b>',
+								 shared:true
+							},
+							plotOptions: {
+								bar: {
+									stacking: 'normal',
+									pointWidth: 30,
+									gridLineWidth: 15
+								}
+							},
+							legend: {
+								verticalAlign:'top',
+								enabled: false
+							},
+							series: [{
+								 name: '',
+								 data: mainlocationArr,
+								 color: '#FF872C'
+								 
+							}]
+						});
+				}else{
+					$(".chart"+divId).html("No Data AVailable")
 				}
-				var mainJosnObjArr=[];
-				if(amountArr != null && amountArr.length > 0){
-					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
-				}
-				if(amountArr1 != null && amountArr1.length > 0){
-					//mainJosnObjArr.push({name:'All Financial Year',data:amountArr1,color:"#5B5B5B"});  
-				} 
 				
+			}else if(levelId == 3 || levelId == 4){
+				
+				if(result !=null && result.length>0){
+					var locationLevelNames=[];
+					var year1415Arr=[];
+					var year1516Arr=[];
+					var year1617Arr=[];
+					
+					for(var i in result){
+						locationLevelNames.push(result[i].locationName);
+						if(result[i].locationList1 !=null && result[i].locationList1.length>0){
+							for(var j in result[i].locationList1){
+								if(result[i].locationList1[j].financialYearId==1){
+									 year1415Arr.push({"y":result[i].locationList1[j].amount}); 
+								}else if(result[i].locationList1[j].financialYearId==2){
+									 year1516Arr.push({"y":result[i].locationList1[j].amount}); 
+								}else if(result[i].locationList1[j].financialYearId==3){
+									 year1617Arr.push({"y":result[i].locationList1[j].amount}); 
+								}
+							}
+						}
+						var mainJosnObjLocArr = [];
+						   if(year1415Arr != null && year1415Arr.length > 0){
+							mainJosnObjLocArr.push({name:'2014-2015',data:year1415Arr,color:"#FE6603"});  
+						  }
+						   if(year1516Arr != null && year1516Arr.length > 0){
+							mainJosnObjLocArr.push({name:'2015-2016',data:year1516Arr,color:"#4546B6"});  
+						  }
+						  if(year1617Arr != null && year1617Arr.length > 0){
+							mainJosnObjLocArr.push({name:'2016-2017',data:year1617Arr,color:"#0065FE"});  
+						  }
+					}
+					var length = result.length
+					var height = '';
+					if(length == 0)
+					{
+						height = length * 100;
+					}else if(length > 3){
+						height = length * 60;
+					}
+					if(length > 8)
+					{
+						$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
+					}
+					$(".chart"+divId).height(height);
+					$(".chart"+divId).highcharts({
+							chart: {
+								type: 'bar',
+								backgroundColor:'transparent'
+							
+							},
+							title: {
+								text: null
+							},
+							subtitle: {
+								text: null
+							},
+							xAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+								categories: locationLevelNames
+							},
+							yAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+								title: {
+									text: null
+								},
+								labels: {
+									enabled:false
+								},
+								stackLabels: {
+									//useHTML: true,
+									//align: 'left',
+									enabled: true,
+									style: {
+										fontWeight: 'bold',
+										color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+									},
+									formatter: function() {
+									
+										//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+										//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+										return (this.total);
+									} 
+								
+								}
+							
+							},
+							tooltip: {
+								formatter: function () {
+								var s = '<b>' + this.x + '</b>';
+
+									$.each(this.points, function () {
+										if(this.series.name != "Series 1")  
+										s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+										this.y/* +' - ' +
+										(Highcharts.numberFormat(this.percentage,1)+'%'); */
+									});
+
+									return s;
+								},
+								shared: true
+							},
+							plotOptions: {
+								bar: {
+									stacking: 'normal',
+									pointWidth: 30,
+									gridLineWidth: 15
+								},
+							},
+							legend: {
+								verticalAlign:'top',
+								enabled: true
+							},
+							series: mainJosnObjLocArr
+						});
+				}
 			}
-			var length = result.length
-			var height = '';
-			if(length == 0)
-			{
-				height = length * 100;
-			}else if(length > 3){
-				height = length * 40;
-			}
-			if(length > 8)
-			{
-				$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
-			}
-			$(".chart"+divId).height(height);
+			
+			
 		}else if(type == 'scheme')
 		{
 			
-			var locationNames=[];
-			for(var i in result){
-			  var yearArr1415=[];
-			  var yearArr1516=[];
-			  var amount2 = [];
-			  if(levelId == 3){
-				  if(result[i].addressVO !=null && result[i].addressVO.length>0){
-					  for(var j in result[i].addressVO){
-						 locationNames.push(result[i].addressVO[j].districtName); 
-					  }
-				  }
-				   
-			  }else if(levelId == 4){
-				   if(result[i].addressVO !=null && result[i].addressVO.length>0){
-					  for(var j in result[i].addressVO){
-						 locationNames.push(result[i].addressVO[j].districtName); 
-					  }
-				  }
-			  }
-			  
-			  if(result[i].subList !=null && result[i].subList.length>0){
-				for(var j in result[i].subList){
-				  
-				  if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
-					for(var k in result[i].subList[j].subList){
-					  
-					  if(result[i].subList[j].yearId==1){
-						  
-						yearArr1415.push(result[i].subList[j].subList[k].totalCount);
-						
-					  }else if(result[i].subList[j].yearId==2){
-						yearArr1516.push(result[i].subList[j].subList[k].totalCount);
-					  }
-					  
-					  
-					}
-					
-					var mainFinancialJosnObjArr = [];
-					   if(proposalPendingArr != null && proposalPendingArr.length > 0){
-					  mainFinancialJosnObjArr.push({name:'Proposal Pending',data:proposalPendingArr,color:"#FEA723"});  
-					  }
-					   if(proposalRejectedArr != null && proposalRejectedArr.length > 0){
-					  mainFinancialJosnObjArr.push({name:'Proposal Rejected',data:proposalRejectedArr,color:"#F15A25"});  
-					  }
-				  }
-				}
-			  }
-			}
-			  
-			  
-			  
-			var locationNamesArr=[];
-			var amountArr =[];
-			var amountArr1 =[];
-			for(var i in result){
-				locationNamesArr.push(result[i].addressVO.districtName);
+			if(levelId == 2){
 				
-				if(result[i].subList !=null &&  result[i].subList.length>0){
-					for(var j in result[i].subList){
-						for(var k in result[i].subList[j].subList)
-						{
-							if(result[i].subList[j].financialYearId == 1){
-								amountArr.push(result[i].subList[j].subList[k].totalCount)
-							}else if(result[i].subList[j].financialYearId == 0){
-								amountArr1.push(result[i].subList[j].subList[k].totalCount)
-							}   
+				if(result !=null && result.length>0){
+					
+					var yearsArr=[];
+					var NABARDArr =[];
+						var NREGPArr =[];
+						var CRRArr=[];
+						var RDFArr=[];
+						var MRRArr=[];
+						var FC13Arr=[]; 
+					for(var i in result){
+						
+						
+						if(result[i].subList !=null && result[i].subList.length>0){
+							for(var j in result[i].subList){
+								
+								yearsArr.push(result[i].subList[j].year);
+								if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
+									for(var k in result[i].subList[j].subList){
+										if(result[i].subList[j].subList[k].id == 1){
+											NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 2){
+											 NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 3){
+											 CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 4){
+											 RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 5){
+											 MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 6){
+											 FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }
+									}
+								}	
+							}
+						}
+						var mainJosnObjArr=[];
+						if(NABARDArr != null && NABARDArr.length > 0){
+							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#FF872C"});  
+						}
+						if(MRRArr != null && MRRArr.length > 0){
+							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#FF872C"});  
+						}
+						if(NREGPArr != null && NREGPArr.length > 0){
+							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#FF872C"});  
+						}
+						if(CRRArr != null && CRRArr.length > 0){
+							mainJosnObjArr.push({name:'CRR',data:CRRArr,color:"#FF872C"});  
+						}
+						if(RDFArr != null && RDFArr.length > 0){
+							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#FF872C"});  
+						}
+						if(FC13Arr != null && FC13Arr.length > 0){
+							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#FF872C"});  
 						}
 					}
-				}
-				var mainJosnObjArr=[];
-				if(amountArr != null && amountArr.length > 0){
-					mainJosnObjArr.push({name:'2014-2015',data:amountArr,color:"#FF872C"});  
-				}
-				if(amountArr1 != null && amountArr1.length > 0){
-					//mainJosnObjArr.push({name:'All Financial Year',data:amountArr1,color:"#5B5B5B"});  
-				} 
-				
-			}
-			var length = result.length
-			var height = '';
-			if(length == 0)
-			{
-				height = length * 100;
-			}else if(length > 3){
-				height = length * 40;
-			}
-			if(length > 8)
-			{
-				$(".scroller"+divId).mCustomScrollbar({setHeight:'400px'})
-			}
-			$(".chart"+divId).height(height);
-		}
-			$(".chart"+divId).highcharts({
-				chart: {
-					type: 'bar',
-					backgroundColor:'transparent'
-				
-				},
-				title: {
-					text: null
-				},
-				subtitle: {
-					text: null
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: locationNamesArr
-				},
-				yAxis: {
-						min: 0,
-						gridLineWidth: 0,
-						minorGridLineWidth: 0,
-					title: {
-						text: null
-					},
-					labels: {
-						enabled:false
-					},
-					stackLabels: {
-						//useHTML: true,
-						//align: 'left',
-						enabled: true,
-						style: {
-							fontWeight: 'bold',
-							color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
-						},
-						formatter: function() {
+					console.log(mainJosnObjArr)
+					console.log(yearsArr)
+					$(".chart"+divId).highcharts({
+						chart: {
+							type: 'bar',
+							backgroundColor:'transparent'
 						
-							//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
-							//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
-							return (this.total);
-						} 
+						},
+						title: {
+							text: null
+						},
+						subtitle: {
+							text: null
+						},
+						xAxis: {
+							min: 0,
+							gridLineWidth: 0,
+							minorGridLineWidth: 0,
+							categories: yearsArr
+						},
+						yAxis: {
+								min: 0,
+								gridLineWidth: 0,
+								minorGridLineWidth: 0,
+							title: {
+								text: null
+							},
+							labels: {
+								enabled:false
+							},
+							stackLabels: {
+								//useHTML: true,
+								//align: 'left',
+								enabled: true,
+								style: {
+									fontWeight: 'bold',
+									color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+								},
+								formatter: function() {
+								
+									//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+									//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+									return (this.total);
+								} 
+							
+							}
+						
+						},
+						tooltip: {
+							formatter: function () {
+							var s = '<b>' + this.x + '</b>';
+
+								$.each(this.points, function () {
+									if(this.series.name != "Series 1")  
+									s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+									this.y/* +' - ' +
+									(Highcharts.numberFormat(this.percentage,1)+'%'); */
+								});
+								
+								return s;
+							},
+							shared: true
+						},
+						plotOptions: {
+							bar: {
+								stacking: 'normal',
+								pointWidth: 30,
+								gridLineWidth: 15
+							}
+						},
+						legend: {
+							verticalAlign:'top',
+							enabled: true
+						},
+						series: mainJosnObjArr
+					});
 					
-					}
+				}
+			}else if(levelId == 3 || levelId == 4){
 				
-				},
-				tooltip: {
-					formatter: function () {
-					var s = '<b>' + this.x + '</b>';
-
-						$.each(this.points, function () {
-							if(this.series.name != "Series 1")  
-							s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-							this.y/* +' - ' +
-							(Highcharts.numberFormat(this.percentage,1)+'%'); */
-						});
-
-						return s;
-					},
-					shared: true
-				},
-				plotOptions: {
-					bar: {
-						stacking: 'normal',
-						pointWidth: 30,
-						gridLineWidth: 15
+				if(result !=null && result.length>0){
+				
+					var assemblyShemeNameArr=[];
+					var NABARDArr =[];
+						var NREGPArr =[];
+						var CRRArr=[];
+						var RDFArr=[];
+						var MRRArr=[];
+						var FC13Arr=[];
+					for(var i in result){
+						
+						
+						if(result[i].subList !=null && result[i].subList.length>0){
+							for(var j in result[i].subList){
+								if(levelId == 3){
+									assemblyShemeNameArr.push(result[i].subList[j].addressVO.districtName+"<br/>("+result[i].subList[j].year+")")
+								}else if(levelId == 4){
+									assemblyShemeNameArr.push(result[i].subList[j].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+")")
+								}
+								
+								if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
+									for(var k in result[i].subList[j].subList){
+										
+										if(result[i].subList[j].subList[k].id == 1){
+											 NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 2){
+											 NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 3){
+											 CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 4){
+											 RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 5){
+											 MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }else if(result[i].subList[j].subList[k].id == 6){
+											 FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
+										 }
+										
+									}
+								}
+							}
+						}
+						
+						var mainJosnObjArr=[];
+						if(NABARDArr != null && NABARDArr.length > 0){
+							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#FF872C"});  
+						}
+						if(MRRArr != null && MRRArr.length > 0){
+							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#FF872C"});  
+						}
+						if(NREGPArr != null && NREGPArr.length > 0){
+							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#FF872C"});  
+						}
+						if(CRRArr != null && CRRArr.length > 0){
+							mainJosnObjArr.push({name:'CRR',data:CRRArr,color:"#FF872C"});  
+						}
+						if(RDFArr != null && RDFArr.length > 0){
+							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#FF872C"});  
+						}
+						if(FC13Arr != null && FC13Arr.length > 0){
+							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#FF872C"});  
+						}
 					}
-				},
-				legend: {
-					verticalAlign:'top',
-					enabled: true
-				},
-				series: mainJosnObjArr
-			});
+						/* var length = result.length
+						var height = '';
+						if(length == 0)
+						{
+							height = length * 100;
+						}else if(length > 3){
+							height = length * 120;
+						}
+						if(length > 8)
+						{
+							$(".scroller"+divId).mCustomScrollbar({setHeight:'600px'})
+						} */
+						$(".chart"+divId).css("height","1500px")
+						//$(".chart"+divId).height(height);
+						$(".chart"+divId).highcharts({
+								chart: {
+									type: 'bar',
+									backgroundColor:'transparent'
+								
+								},
+								title: {
+									text: null
+								},
+								subtitle: {
+									text: null
+								},
+								xAxis: {
+									min: 0,
+									gridLineWidth: 0,
+									minorGridLineWidth: 0,
+									categories: assemblyShemeNameArr
+								},
+								yAxis: {
+										min: 0,
+										gridLineWidth: 0,
+										minorGridLineWidth: 0,
+									title: {
+										text: null
+									},
+									labels: {
+										enabled:false
+									},
+									stackLabels: {
+										//useHTML: true,
+										//align: 'left',
+										enabled: true,
+										style: {
+											fontWeight: 'bold',
+											color: (Highcharts.theme && Highcharts.theme.textColor) || '#333'
+										},
+										formatter: function() {
+										
+											//return '<span style="top:16px; position: absolute;"><br/>'+this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')</span>';
+											//return this.options.alertPerc[this.x]+'%'+' '+'('+this.total+')';
+											return (this.total);
+										} 
+									
+									}
+								
+								},
+								tooltip: {
+									formatter: function () {
+									var s = '<b>' + this.x + '</b>';
+
+										$.each(this.points, function () {
+											if(this.series.name != "Series 1")  
+											s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+											this.y/* +' - ' +
+											(Highcharts.numberFormat(this.percentage,1)+'%'); */
+										});
+										
+										return s;
+									},
+									shared: true
+								},
+								plotOptions: {
+									bar: {
+										stacking: 'normal',
+										pointWidth: 30,
+										gridLineWidth: 15
+									}
+								},
+								legend: {
+									verticalAlign:'top',
+									enabled: true
+								},
+								series: mainJosnObjArr
+							});
+					
+				}
+			}
+		}
+			
 		
 	}
 	
 	function getTotalFunds(divId)
 	{
 		  var levelValues = [];
-		  var financialYrIdArr =[$('#financialYearId').val()];
+		  var financialYrIdArr =$('#financialYearId').val();
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
@@ -662,7 +948,7 @@
    }
 	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,type){
 		var levelValues = [];
-		var financialYrIdArr = [$('#financialYearId').val()];
+		var financialYrIdArr = $('#financialYearId').val();
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = [];
@@ -688,7 +974,7 @@
 			},
 			success : function(ajaxresp){
 				if(ajaxresp != null && ajaxresp.length>0)
-					buildLocationWiseAmountDetails(ajaxresp,divId,type);
+					buildLocationWiseAmountDetails(ajaxresp,divId,type,levelId);
 				else
 					alert('No data available..');
 				},
@@ -783,7 +1069,7 @@
 	function getTotalSchemes(levelId,divId)
 	{
 		  var levelValues = [];
-		  var financialYrIdArr = [1,2];
+		  var financialYrIdArr = $('#financialYearId').val();
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
@@ -828,7 +1114,7 @@
 	function getSchemeWiseHighestAndLowestFund(type,divId)
 	{
 		  var levelValues = [];
-		  var financialYrIdArr = [$('#financialYearId').val()];
+		  var financialYrIdArr = $('#financialYearId').val();
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
@@ -870,7 +1156,7 @@
 	function getTotalLocationsByScopeId(locScopeId,divId)
 	{
 		  var levelValues = [];
-		  var financialYrIdArr = [$('#financialYearId').val()];
+		  var financialYrIdArr = $('#financialYearId').val();
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
@@ -909,7 +1195,7 @@
         });
 	}	
 	function getAverageFundForScheme(divId){
-		var financialYrIdList = [$('#financialYearId').val()]; 
+		var financialYrIdList = $('#financialYearId').val(); 
 		var deptId = 0;
 		var sourceId = 0;
 		var schemeId = 0;
@@ -940,7 +1226,7 @@
 	}
 	function getAverageFundForAnyLevel(levelId,divId){
 		var levelValues = [];
-		var financialYrIdList = [$('#financialYearId').val()]; 
+		var financialYrIdList = $('#financialYearId').val(); 
 		var deptId = 0;
 		var sourceId = 0;
 		var json = {
@@ -1015,10 +1301,53 @@
 				}
 				$("#financialYearId").val(2);
 			}
+			$("#financialYearId").chosen();
+			$("#financialYearId").trigger('chosen:updated');
 			 onLoadCalls();	
 		});
    }
    $(document).on('click','.applyBtn',function(){
 	   onLoadCalls();	   
    });
+	$(document).on('change','.constLevelDistNames',function(){
+		var locationScopeId = $("#constLevelDistNames").val();
+	     getAllSubLocationsBySuperLocationId(locationScopeId);
+   });
+   
+   function getAllSubLocationsBySuperLocationId(locationScopeId){
+		var financialYrIdList = $('#financialYearId').val();; 
+		var deptId = 0;
+		var sourceId = 0;
+    var json = {
+      superLocationId : locationScopeId, 
+      deptId : deptId,
+      sourceId : sourceId,
+      financialYrIdList : financialYrIdList,  
+      fromDateStr : "01/06/2017",       
+      toDateStr : "10/06/2017"  
+    }
+    $.ajax({
+      url : "getAllSubLocationsBySuperLocationId",     
+      data : JSON.stringify(json),
+      type : "POST",  
+      dataTypa : 'json',   
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json");
+      },
+      success : function(result){   
+        if(result !=null && result.length>0){
+			$("#distLevelDistrictNames").append('<option value="0">SELECT DISTRICT</option>');
+			$("#constLevelDistNames").append('<option value="0">SELECT DISTRICT</option>');
+			for(var i in result){
+			  $("#distLevelDistrictNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+			   $("#constLevelDistNames").append('<option value="'+result[i].id+'">'+result[i].name+' </option>');
+			}
+		  }
+      },
+      error : function(request,error){
+        alert(error);
+      }
+    });
+   }
 //}(jQuery);

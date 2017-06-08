@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
+<link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/fh-3.1.2/sc-1.4.2/datatables.min.css"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
@@ -38,10 +39,10 @@
 				<ul class="list-inline navbar-header-custom">
 					<li>Note: All Amount in Lakhs</li>
 					<li>
-						Financial Year: <select id="financialYearId"></select>
+						Financial Year: <select id="financialYearId" onchange="newOnLoadCalls();" multiple>Select Financial Year </select>
 					</li>
 					<li>
-						Department: <select id="DepartmentsId"><option>Select Department</option></select>
+						Department: <select id="DepartmentsId" onchange="newOnLoadCalls();" ><option>Select Department</option></select>
 					</li>
 					
 					<li>
@@ -181,7 +182,7 @@
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-sm-6">
-									<h4 class="panel-title text-capital">mandal level overview</h4>
+									<h4 class="panel-title text-capital">State level overview</h4>
 								</div>
 								<div class="col-sm-6">
 									<ul class="switch-btn pull-right" tab-switch="stateLevel">
@@ -194,8 +195,8 @@
 						<div class="panel-body">
 							<div>
 								<ul class="nav nav-tabs pull-right" role="tablist">
-									<li role="presentation" class="active"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-									<li role="presentation"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+									<li role="presentation" class="active"><a href="#stateLevelGraph" aria-controls="stateLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+									<li role="presentation"><a href="#stateLevelTable" aria-controls="stateLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 								</ul>
 
 								<div class="tab-content">
@@ -237,18 +238,42 @@
 							<div>
 								<!-- Nav tabs -->
 								<ul class="nav nav-tabs pull-right" role="tablist">
-									<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-									<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+									<li role="presentation" class="active"><a href="#distLevelGraph" aria-controls="distLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+									<li role="presentation"><a href="#distLevelTable" aria-controls="distLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 								</ul>
 
 								<!-- Tab panes -->
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="distLevelGraph">
 										<div class="row">
+												<div class="col-sm-12">
+													<div class="col-md-2 col-xs-12 col-sm-4">
+														<ul class="list-inline activeUlCls sortingDivDistCls">
+															<li class="active " attr_sorting_type="count" attr_order_type="desc">
+																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+															</li>
+															<li class="" attr_sorting_type="count" attr_order_type="asc">
+																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+															</li>
+															<li class="" attr_sorting_type="name" attr_order_type="asc">
+																A-Z
+															</li>
+															<li class="" attr_sorting_type="name" attr_order_type="desc">
+																Z-A
+															</li>
+														</ul>
+													</div>
+													<div class="col-sm-3 distLevelCls" >
+														<select class="form-control" id="distLevelDistrictNames" >
+														</select>
+													</div>
+												</div>
+											</div>
 											<div class="col-sm-12">
 												<div id="distLevlOvervw"></div>
 											</div>
-										</div>
+										
+										
 									</div>
 									<div role="tabpanel" class="tab-pane" id="distLevelTable">
 										<div class="row">
@@ -322,12 +347,40 @@
 						<div class="panel-body">
 							<div>
 								<ul class="nav nav-tabs pull-right" role="tablist">
-									<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
-									<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+									<li role="presentation" class="active"><a href="#consLevelGraph" aria-controls="consLevelGraph" role="tab" data-toggle="tab"><i class="fa fa-bar-chart"></i></a></li>
+									<li role="presentation"><a href="#consLevelTable" aria-controls="consLevelTable" role="tab" data-toggle="tab"><i class="fa fa-table"></i></a></li>
 								</ul>
 
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
+										<div class="row">
+											<div class="col-sm-12">
+												<div class="col-md-2 col-xs-12 col-sm-4">
+													<ul class="list-inline activeUlCls sortingDivConstCls">
+														<li class="active " attr_sorting_type="count" attr_order_type="desc">
+															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+														</li>
+														<li class="" attr_sorting_type="count" attr_order_type="asc">
+															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="asc">
+															A-Z
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="desc">
+															Z-A
+														</li>
+													</ul>
+												</div>
+												<div class="col-sm-3 constiLevelDistCls" >
+													<select class="form-control" id="constLevelDistNames" >
+													</select>
+												</div>
+												<div class="col-sm-3 constiLevelCls" >
+													<select class="form-control" id="constLevelConstNames" >
+													</select>
+												</div>
+											</div>
+										</div>
 										<div class="row">
 											<div class="col-sm-12">
 												<div id="consLevlOvervw"></div>
@@ -355,6 +408,7 @@
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="https://code.highcharts.com/highcharts.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js" type="text/javascript"></script>
