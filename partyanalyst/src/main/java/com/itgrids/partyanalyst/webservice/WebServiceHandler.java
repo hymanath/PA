@@ -2767,7 +2767,7 @@ public class WebServiceHandler {
 		}
 		catch(Exception e)
 		{
-			LOG.error("Exception Occured in getAmsAppValidateLoginDetails() Method,WebServiceHandler Class ",e);
+			LOG.error("Exception Occured in getAmsAppAlertsBasicCounts() Method,WebServiceHandler Class ",e);
 		    return null;
 		}	
 	}
