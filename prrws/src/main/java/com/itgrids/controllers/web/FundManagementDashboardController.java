@@ -105,6 +105,15 @@ public class FundManagementDashboardController {
 			return ajaxResult;
 		}	
 		
+		@RequestMapping(value="/getFinancialYearWiseDeptsWiseSchemeDetails", method = RequestMethod.POST,
+				produces = MediaType.APPLICATION_JSON_VALUE,
+				consumes = MediaType.APPLICATION_JSON_VALUE)
+				public @ResponseBody List<FundSchemeVO> getFinancialYearWiseDeptsWiseSchemeDetails(@RequestBody InputVO inputVO){
+					List<FundSchemeVO> ajaxResult = fundManagementDashboardService.getFinancialYearWiseDeptsWiseSchemeDetails(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),inputVO.getSchemeIdsList(),
+							inputVO.getFromDateStr(),inputVO.getToDateStr(),inputVO.getBlockLevelId(),inputVO.getLevelValues());
+					return ajaxResult;
+				}	
+		
 		@RequestMapping(value="/getAllDistrictByStateId", method = RequestMethod.POST,
 		        produces = MediaType.APPLICATION_JSON_VALUE,
 		        consumes = MediaType.APPLICATION_JSON_VALUE)
