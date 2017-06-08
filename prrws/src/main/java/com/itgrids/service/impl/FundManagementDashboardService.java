@@ -32,6 +32,7 @@ import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.service.IFundManagementDashboardService;
 import com.itgrids.utils.CommonMethodsUtilService;
+import com.itgrids.utils.IConstants;
 import com.itgrids.utils.SetterAndGetterUtilService;
 /*
  * Author : Swadhin K Lenka
@@ -118,14 +119,16 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					
 					Long keyId=0L;
 					if(searchScopeId != null){
-						if(searchScopeId.longValue() ==2L)
+						if(searchScopeId.longValue() ==IConstants.STATE_LEVEL_SCOPE_ID)
 							keyId = 1L;
-						else if(searchScopeId.longValue() ==3L)
+						else if(searchScopeId.longValue() ==IConstants.DISTRICT_LEVEL_SCOPE_ID)
 							keyId = addressVO.getDistrictId();
-						else if(searchScopeId.longValue() ==4L)
+						else if(searchScopeId.longValue() ==IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
 							keyId = addressVO.getAssemblyId();
-						else if(searchScopeId.longValue() ==5L)
+						else if(searchScopeId.longValue() ==IConstants.MANDAL_LEVEL_SCOPE_ID)
 							keyId = addressVO.getTehsilId();
+						else if(searchScopeId.longValue() ==IConstants.VILLAGE_LEVEL_SCOPE_ID)
+							keyId = addressVO.getPanchayatId();
 					}
 					
 					if(locationMap.get(keyId) != null){
@@ -293,7 +296,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			List<Object[]> locationInfoList = null;
 			if(levelValues != null && levelValues.size() > 0){//[1, 2014-2015, 109, 5, 19520000]
 				amountList = fundSanctionDAO.getLocationWiseAmount(levelId,levelValues,fromDate,toDate,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId());
-				if(levelId != null && levelId.longValue() > 2L)
+				if(levelId != null && levelId.longValue() > IConstants.STATE_LEVEL_SCOPE_ID)
 				locationInfoList = fundSanctionDAO.getLocationInfo(levelId, levelValues);
 			}
 			
@@ -312,7 +315,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 				}
 			}
-			if(levelId != null && levelId.longValue() == 2L){
+			if(levelId != null && levelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
 				locationIdAndNameMap.put(1L, "Andhra Pradesh");
 			}
 			
@@ -457,7 +460,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
 			
 			
-			Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,4l,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+			Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 			
 			List<Object[]> highFund = fundSanctionDAO.getLocationWiseFundHighAndLow(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,inputVO.getBlockLevelId(),inputVO.getType(),inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 			if(highFund != null && highFund.size() >0){
@@ -527,13 +530,13 @@ public LocationFundDetailsVO getTotalFunds(InputVO inputVO){
 		inputVO.setSourceIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
 		inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
 		
-		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,4l,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 
 		if(totalfund != null && totalfund.longValue() > 0l){
 			retusnVo.setTotalAmt(totalfund.toString());
 		}
 		if(retusnVo.getTotalAmt() != null){
-			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,4l,null,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+			List<Object[]> locWiseGrantTypes = fundSanctionDAO.getLocationWiseGrantTypesFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,null,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 			setGrantTypesToVO(locWiseGrantTypes,retusnVo);
 		}
 	}catch(Exception e){
@@ -552,8 +555,6 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 	LocationFundDetailsVO retusnVo =new LocationFundDetailsVO();
 	//SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
 	try{
-		Date startDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
-		Date endDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
 		
 		inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
 		inputVO.setDeptIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList()));
@@ -563,14 +564,16 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 		 List<Object[]>  locations= fundSanctionDAO.getLocationsCountDetails(inputVO.getBlockLevelId(),inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 		 
 		 Long totalLocations=0l;
+		 		 
+		 if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID)
+			 totalLocations = IConstants.TOTAL_AP_TOTAL_DISTRICTS;
+		else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
+			 totalLocations = IConstants.TOTAL_AP_TOTAL_CONSTITUENCIES;
+		else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID)
+			 totalLocations =IConstants.TOTAL_AP_TOTAL_MANDALS;
+		else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID)
+			 totalLocations =IConstants.TOTAL_AP_TOTAL_VILLAGES;
 		 
-		 if(inputVO.getBlockLevelId() == 4l){
-			 totalLocations = 175l;
-		 }else  if(inputVO.getBlockLevelId() == 5l){
-			 totalLocations = 700l;
-		 } if(inputVO.getBlockLevelId() == 6l){
-			 totalLocations = 7000l;
-		 } 
 		 if(commonMethodsUtilService.isListOrSetValid(locations)){
 			 for(Object[] obj :locations){
 				 retusnVo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
@@ -610,7 +613,19 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 			if(totalFundAndCountDtls != null && totalFundAndCountDtls.size() > 0){
 				retusnVo.setTotalAmt(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]));
 				retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[0]))));
-				retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),Long.parseLong(retusnVo.getTotalAmt())));
+				//retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),Long.parseLong(retusnVo.getTotalAmt())));
+				
+				if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID)
+					retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),IConstants.TOTAL_AP_TOTAL_DISTRICTS));
+				else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
+					retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),IConstants.TOTAL_AP_TOTAL_CONSTITUENCIES));
+				else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID)
+					retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),IConstants.TOTAL_AP_TOTAL_MANDALS));
+				else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID)
+					retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),IConstants.TOTAL_AP_TOTAL_VILLAGES));
+				
+					
+				
 			}//[2, 1900000]
 			List<Object[]> grantTypeDtlsList = grantTypeDAO.getGrandTypeDtls();
 			setGrantTypeToVo(retusnVo,grantTypeDtlsList);
@@ -621,7 +636,16 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 					fundDetailsVO = (LocationFundDetailsVO)setterAndGetterUtilService.getMatchedVOfromList(retusnVo.getDetailsVOs(), "id", commonMethodsUtilService.getStringValueForObject(param[0]));
 					fundDetailsVO.setTotalAmt(commonMethodsUtilService.getStringValueForObject(param[3]));
 					fundDetailsVO.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[2]))));
-					fundDetailsVO.setPerc(commonMethodsUtilService.calculatePercantage(fundDetailsVO.getAverageAmt().longValue(),Long.parseLong(fundDetailsVO.getTotalAmt())));
+					//fundDetailsVO.setPerc(commonMethodsUtilService.calculatePercantage(fundDetailsVO.getAverageAmt().longValue(),Long.parseLong(fundDetailsVO.getTotalAmt())));
+					
+					if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID)
+						retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),IConstants.TOTAL_AP_TOTAL_DISTRICTS));
+					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
+							retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),IConstants.TOTAL_AP_TOTAL_CONSTITUENCIES));
+					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID)
+						retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),IConstants.TOTAL_AP_TOTAL_MANDALS));
+					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID)
+						retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),IConstants.TOTAL_AP_TOTAL_VILLAGES));
 				}
 			}
 			
@@ -729,7 +753,7 @@ public LocationFundDetailsVO getSchemeWiseHighestAndLowestFund(InputVO inputVO )
 		inputVO.setSourceIdsList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
 		inputVO.setSearchLvlVals(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList()));
 		
-		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,4l,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
+		Long totalfund = fundSanctionDAO.getTotalFund(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 		List<Object[]> schemeFund = fundSanctionDAO.getSchemeWiseFundHighAndLow(inputVO.getFinancialYrIdList(),inputVO.getDeptIdsList(),inputVO.getSourceIdsList(),startDate,endDate,inputVO.getType(),inputVO.getSearchLevelId(),inputVO.getSearchLvlVals());
 		if(schemeFund != null && schemeFund.size() >0){
 			setFundDetails(schemeFund,returnVO,inputVO.getType(),totalfund);
@@ -848,15 +872,15 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			superLocationIdStr = superLocationIdStr.substring(1);
 			Long superLocationId = Long.parseLong(superLocationIdStr);
 			Long superLocationLevelId = Long.parseLong(superLocationLevelIdStr);
-			if(superLocationLevelId != null && superLocationLevelId.longValue() == 2L){//get districtIds
-				locationList = fundSanctionDAO.getAllDistrictByStateId(superLocationId,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),3L,sDate,eDate);
-				lvlIdStr = "3";
-			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == 3L){//get constituencyIds
-				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),4L,sDate,eDate);
-				lvlIdStr = "4";
-			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == 4L){//get tehsilIds
+			if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
+				locationList = fundSanctionDAO.getAllDistrictByStateId(superLocationId,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),IConstants.DISTRICT_LEVEL_SCOPE_ID,sDate,eDate);
+				lvlIdStr = IConstants.DISTRICT_LEVEL_SCOPE_ID.toString();
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
+				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,sDate,eDate);
+				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
 				
-			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == 4L){//get panchayatIds
+			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){//get panchayatIds
 				
 			}
 			if(locationList != null && locationList.size() > 0){
