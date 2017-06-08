@@ -29,6 +29,12 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 
 	}
 	
+	/*
+	 * Date : 06/06/2017
+	 * Author :Srishailam Pittala
+	 * @description : to get financial year  and scheme wise funds transaction details
+	 */
+	
 	public List<Object[]> getFinancialYearWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList){
 		StringBuilder queryStr = new StringBuilder();
@@ -41,7 +47,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(financialYearIdsList != null && financialYearIdsList.size()>0)
 			queryStr.append(" and model.financialYearId in (:financialYearIdsList) ");
 		if(deptIdsList != null && deptIdsList.size()>0)
-			queryStr.append("  ");
+			queryStr.append(" and model.department.departmentId in (:deptIdsList) ");
 		if(sourceIdsList != null && sourceIdsList.size()>0)
 			queryStr.append("  ");
 		if(schemeIdsList != null && schemeIdsList.size()>0)
@@ -61,7 +67,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		if(financialYearIdsList != null && financialYearIdsList.size()>0)
 			query.setParameterList("financialYearIdsList", financialYearIdsList);
 		if(deptIdsList != null && deptIdsList.size()>0)
-			;
+			query.setParameterList("deptIdsList", deptIdsList);
 		if(sourceIdsList != null && sourceIdsList.size()>0)
 			;
 		if(schemeIdsList != null && schemeIdsList.size()>0)
@@ -77,6 +83,61 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		
 		return query.list();
 	}
+	
+	/*
+	 * Date : 08/06/2017
+	 * Author :Srishailam Pittala
+	 * @description : to get financial year ,  Department wise and scheme wise funds transaction details
+	 */
+	public List<Object[]> getFinancialYearWiseDeptsWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
+			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct  model.govtSchemeId, model.govtScheme.schemeName, "
+				+ " model.financialYear.financialYearId, model.financialYear.yearDesc, count(model.govtSchemeId), sum(model.sactionAmount), "
+				+ " model.locationScopeId, model.locationValue, model.locationAddress.districtId, model.locationAddress.district.districtName, "
+				+ " model.locationAddress.constituencyId, model.locationAddress.constituency.name, model.department.departmentId, model.department.departmentName ");
+		queryStr.append(" from FundSanction model ");
+		queryStr.append(" where model.isDeleted ='N' ");
+		if(financialYearIdsList != null && financialYearIdsList.size()>0)
+			queryStr.append(" and model.financialYearId in (:financialYearIdsList) ");
+		if(deptIdsList != null && deptIdsList.size()>0)
+			queryStr.append(" and model.department.departmentId in (:deptIdsList) ");
+		if(sourceIdsList != null && sourceIdsList.size()>0)
+			queryStr.append("  ");
+		if(schemeIdsList != null && schemeIdsList.size()>0)
+			queryStr.append(" and model.govtSchemeId in (:schemeIdsList) ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and ( date(model.updatedTime) between :startDate and :endDate)  ");
+		if(searchScopeId != null && searchScopeId.longValue()>0L)
+			queryStr.append(" and model.locationScopeId =:searchScopeId ");
+		if(searchScopeValuesList != null && searchScopeValuesList.size()>0)
+			queryStr.append(" and model.locationValue in (:searchScopeValuesList) ");
+		
+		queryStr.append(" group by model.locationScopeId,model.locationValue,model.financialYearId,model.department.departmentId,model.govtSchemeId ");
+		queryStr.append(" order by model.locationScopeId,model.locationValue,model.financialYearId,model.department.departmentId,model.govtSchemeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(financialYearIdsList != null && financialYearIdsList.size()>0)
+			query.setParameterList("financialYearIdsList", financialYearIdsList);
+		if(deptIdsList != null && deptIdsList.size()>0)
+			query.setParameterList("deptIdsList", deptIdsList);
+		if(sourceIdsList != null && sourceIdsList.size()>0)
+			;
+		if(schemeIdsList != null && schemeIdsList.size()>0)
+			query.setParameterList("schemeIdsList", schemeIdsList);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(searchScopeId != null && searchScopeId.longValue()>0L)
+			query.setParameter("searchScopeId", searchScopeId);
+		if(searchScopeValuesList != null && searchScopeValuesList.size()>0)
+			query.setParameterList("searchScopeValuesList", searchScopeValuesList);
+		
+		return query.list();
+	}
+	
 	public List<Object[]> getLocationsCountDetails(Long locatioinTypeId,List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,Long searchLevlId,List<Long> searchLvlVals){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select distinct model.locationScopeId,count( distinct model.locationValue), sum(model.sactionAmount) from   ");

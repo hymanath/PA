@@ -16,6 +16,7 @@ public interface IFundManagementDashboardService {
 	public List<LocationVO> getLocationWiseAmountDetails(InputVO inputVO);
 	public List<FundSchemeVO> getFinancialYearWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 	List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList);
+	public List<FundSchemeVO> getFinancialYearWiseDeptsWiseSchemeDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,List<Long> sourceIdsList,List<Long> schemeIdsList,String startDateStr,String endDateStr,Long searchScopeId,List<Long> searchScopeValuesList);
 	public LocationFundDetailsVO getLocationWiseFundDetails(InputVO inputVO);
 	public LocationFundDetailsVO getTotalFunds(InputVO inputVO);
 	public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO);

@@ -89,6 +89,8 @@
 				}else if(blockType == 'scheme')
 				{
 					getSchemeWiseLocationWiseAmountDetails(4,'consLevlOvervw','scheme');
+				}else if(blockType == 'deptscheme'){
+					 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
 				}
 			}else if(blockName == 'distLevel')
 			{
@@ -98,6 +100,8 @@
 				}else if(blockType == 'scheme')
 				{
 					getSchemeWiseLocationWiseAmountDetails(3,'distLevlOvervw','scheme');
+				}else if(blockType == 'deptscheme'){
+					 getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type)
 				}
 			}
 		});
@@ -658,7 +662,7 @@
    }
 	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,type){
 		var levelValues = [];
-		var financialYrIdArr = [1,2];
+		var financialYrIdArr = [$('#financialYearId').val()];
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = [];
@@ -686,6 +690,45 @@
 				if(ajaxresp != null && ajaxresp.length>0)
 					buildLocationWiseAmountDetails(ajaxresp,divId,type);
 				else
+					alert('No data available..');
+				},
+			error : function(request,error){
+				alert(error);
+			}
+		});
+	}
+	
+	function getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type){
+		var levelValues = [];
+		var financialYrIdArr = [$('#financialYearId').val()];
+		var sourceIdsArr = [];
+		var schemeIdsArr = [];
+		var deptIdsArr = [];
+
+		var json = {
+			blockLevelId : levelId, 
+			levelValues : levelValues ,
+			financialYrIdList : financialYrIdArr,
+			fromDateStr : glStartDate,//"01-06-2013",       
+			toDateStr : glEndDate,//"10-06-2020",
+			sourceIdsList:sourceIdsArr,
+			schemeIdsList:schemeIdsArr,
+			deptIdsList:deptIdsArr
+		}
+		$.ajax({
+			url : "getFinancialYearWiseDeptsWiseSchemeDetails",  
+			data : JSON.stringify(json),
+			type : "POST",
+			dataTypa : 'json',   
+			beforeSend: function(xhr) {
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success : function(ajaxresp){
+				if(ajaxresp != null && ajaxresp.length>0){
+					alert("department , scheme wise chart");
+					//buildLocationWiseAmountDetails(ajaxresp,divId,type);
+				}else
 					alert('No data available..');
 				},
 			error : function(request,error){
