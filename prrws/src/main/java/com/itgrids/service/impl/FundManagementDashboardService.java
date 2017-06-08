@@ -110,7 +110,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					AddressVO addressVO = new AddressVO();
 					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[8]));
 					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
-					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[8]));
+					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[10]));
 					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[11]));
 					addressVO.setTehsilId(0L);
 					addressVO.setTehsilName("");
@@ -320,7 +320,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					AddressVO addressVO = new AddressVO();
 					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[8]));
 					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
-					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[8]));
+					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[10]));
 					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[11]));
 					addressVO.setTehsilId(0L);
 					addressVO.setTehsilName("");
