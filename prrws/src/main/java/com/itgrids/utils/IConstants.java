@@ -12,5 +12,25 @@ public interface IConstants {
     public static final String TIME_ZONE_INDIA = "Asia/Calcutta";
     public static final String DATE_PATTERN = "dd/MM/yyyy";
     public static final String DATE_PATTERN_WITH_SECONDS = "yyyy-MM-dd HH:mm:ss";
+    
+    public static final Long COUNTRY_LEVEL_SCOPE_ID = 1L;
+    public static final Long STATE_LEVEL_SCOPE_ID = 2L;
+    public static final Long DISTRICT_LEVEL_SCOPE_ID = 3L;
+    public static final Long CONSTITUENCY_LEVEL_SCOPE_ID = 4L;
+    public static final Long MANDAL_LEVEL_SCOPE_ID = 5L;
+    public static final Long VILLAGE_LEVEL_SCOPE_ID = 6L;
+    public static final Long MUNICIPAL_CORP_GMC_LEVEL_SCOPE_ID = 7L;
+    public static final Long WARD_LEVEL_SCOPE_ID = 8L;
+    public static final Long BOOTH_LEVEL_SCOPE_ID = 9L;
+    public static final Long PARLIAMENT_CONSTITUENCY_LEVEL_SCOPE_ID = 10L;
+    public static final Long HAMLET_LEVEL_SCOPE_ID = 11L;
+    public static final Long URBAN_LOCALITY_LEVEL_SCOPE_ID = 12L;
+    public static final Long URBAN_BLOCK_LEVEL_SCOPE_ID = 13L;
+    
+    public static final Long TOTAL_AP_TOTAL_DISTRICTS = 13L;
+    public static final Long TOTAL_AP_TOTAL_CONSTITUENCIES = 175L;
+    public static final Long TOTAL_AP_TOTAL_MANDALS = 664L;
+    public static final Long TOTAL_AP_TOTAL_VILLAGES = 16624L;
+    
 	
 }
