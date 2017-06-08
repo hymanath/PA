@@ -6,4 +6,6 @@ import com.itgrids.model.User;
 
 public interface IUserDAO extends GenericDao<User,Long>{
 	
+	public User loginAuthentication(String userName,String password);
+	
 }
