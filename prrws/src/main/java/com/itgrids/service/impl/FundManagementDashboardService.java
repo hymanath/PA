@@ -354,6 +354,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						FundSchemeVO deptsVO = new FundSchemeVO();					
 						deptsVO.setId(commonMethodsUtilService.getLongValueForObject(param[12]));
 						deptsVO.setName(commonMethodsUtilService.getStringValueForObject(param[13]));
+						deptsVO.setYearId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						deptsVO.setYear(commonMethodsUtilService.getStringValueForObject(param[3]));
+						deptsVO.setAddressVO(addressVO);
 						
 						FundSchemeVO schemeVO = new FundSchemeVO();					
 						schemeVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -374,6 +377,10 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 							deptsVO = new FundSchemeVO();					
 							deptsVO.setId(commonMethodsUtilService.getLongValueForObject(param[12]));
 							deptsVO.setName(commonMethodsUtilService.getStringValueForObject(param[13]));
+							deptsVO.setYearId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							deptsVO.setYear(commonMethodsUtilService.getStringValueForObject(param[3]));
+							deptsVO.setAddressVO(addressVO);
+							
 							
 							FundSchemeVO schemeVO = new FundSchemeVO();					
 							schemeVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -451,6 +458,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 											deptsVO.getSubList().add(schemeVO);
 										}
 									}
+									deptsVO.setYearId(yearVO.getYearId());
+									deptsVO.setYear(yearVO.getYear());
+									deptsVO.setAddressVO(fundLocationVO.getAddressVO());
 									yearVO.setAddressVO(fundLocationVO.getAddressVO());
 								}
 							}
@@ -475,6 +485,9 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 											deptVO.getSubList().add(schemeVO);
 										}
 									}
+									deptVO.setYearId(yearVO.getYearId());
+									deptVO.setYear(yearVO.getYear());
+									deptVO.setAddressVO(fundLocationVO.getAddressVO());
 								}
 								
 								for (Long deptId : deptsMap.keySet()) {
@@ -483,6 +496,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 										FundSchemeVO deptsVO = new FundSchemeVO();					
 										deptsVO.setId(tempDeptVO.getId());
 										deptsVO.setName(tempDeptVO.getName());
+										deptsVO.setYearId(yearVO.getYearId());
+										deptsVO.setYear(yearVO.getYear());
 										
 										for (Long schemeId : schemesMap.keySet()) {
 											FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
@@ -494,6 +509,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 											deptsVO.getSubList().add(schemeVO);
 										}
 										yearVO.getSubList().add(deptsVO);
+										deptsVO.setAddressVO(fundLocationVO.getAddressVO());
 									}
 								}
 								
@@ -503,6 +519,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 										FundSchemeVO deptsVO = new FundSchemeVO();					
 										deptsVO.setId(tempDeptVO.getId());
 										deptsVO.setName(tempDeptVO.getName());
+										deptsVO.setYearId(yearVO.getYearId());
+										deptsVO.setYear(yearVO.getYear());
 										
 										for (Long schemeId : schemesMap.keySet()) {
 											FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
@@ -513,6 +531,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 											schemeVO.setTotalCount(0L);
 											deptsVO.getSubList().add(schemeVO);
 										}
+										deptsVO.setAddressVO(fundLocationVO.getAddressVO());
 										yearVO.getSubList().add(deptsVO);
 								}
 							}
@@ -523,7 +542,43 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						for (FundSchemeVO yearVO : fundLocationVO.getSubList()) {
 							availableYearIds.add(yearVO.getYearId());
 							yearVO.setAddressVO(fundLocationVO.getAddressVO());
-							
+						}
+						
+						for (Long yearId : yearsMap.keySet()) {
+							if(!availableYearIds.contains(yearId)){
+								FundSchemeVO tempYearVO = yearsMap.get(yearId);
+								
+								FundSchemeVO yearVO = new FundSchemeVO();
+								yearVO.setYearId(tempYearVO.getYearId());
+								yearVO.setYear(tempYearVO.getYear());
+								
+								
+								for (Long deptId : deptsMap.keySet()) {
+									FundSchemeVO tempDeptVO = deptsMap.get(deptId);
+									FundSchemeVO deptsVO = new FundSchemeVO();					
+									deptsVO.setId(tempDeptVO.getId());
+									deptsVO.setName(tempDeptVO.getName());
+									deptsVO.setYearId(yearVO.getYearId());
+									deptsVO.setYear(yearVO.getYear());
+									
+									for (Long schemeId : schemesMap.keySet()) {
+										FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
+										FundSchemeVO schemeVO = new FundSchemeVO();					
+										schemeVO.setId(tempSchemeVO.getId());
+										schemeVO.setName(tempSchemeVO.getName());
+										schemeVO.setCount(0L);
+										schemeVO.setTotalCount(0L);
+										deptsVO.getSubList().add(schemeVO);
+									}
+									deptsVO.setAddressVO(fundLocationVO.getAddressVO());
+									yearVO.getSubList().add(deptsVO);
+								}
+								
+								fundLocationVO.getSubList().add(yearVO);
+							}
+						}
+						
+						for (FundSchemeVO yearVO : fundLocationVO.getSubList()) {
 							Set<Long> availableDeptIds = new HashSet<Long>(0);
 							for (FundSchemeVO deptVO : yearVO.getSubList()) {
 								availableDeptIds.add(deptVO.getId());
@@ -534,6 +589,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 										FundSchemeVO deptsVO = new FundSchemeVO();					
 										deptsVO.setId(tempDeptVO.getId());
 										deptsVO.setName(tempDeptVO.getName());
+										deptsVO.setYearId(yearVO.getYearId());
+										deptsVO.setYear(yearVO.getYear());
 										
 										for (Long schemeId : schemesMap.keySet()) {
 											FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
@@ -544,6 +601,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 											schemeVO.setTotalCount(0L);
 											deptsVO.getSubList().add(schemeVO);
 										}
+										deptsVO.setAddressVO(fundLocationVO.getAddressVO());
 										yearVO.getSubList().add(deptsVO);
 									}
 								}
@@ -565,38 +623,7 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 									}
 								}
 							}
-						}
-						
-						for (Long yearId : yearsMap.keySet()) {
-							if(!availableYearIds.contains(yearId)){
-								FundSchemeVO tempYearVO = yearsMap.get(yearId);
-								
-								FundSchemeVO yearVO = new FundSchemeVO();
-								yearVO.setYearId(tempYearVO.getYearId());
-								yearVO.setYear(tempYearVO.getYear());
-								
-								
-								for (Long deptId : deptsMap.keySet()) {
-									FundSchemeVO tempDeptVO = deptsMap.get(deptId);
-									FundSchemeVO deptsVO = new FundSchemeVO();					
-									deptsVO.setId(tempDeptVO.getId());
-									deptsVO.setName(tempDeptVO.getName());
-									
-									for (Long schemeId : schemesMap.keySet()) {
-										FundSchemeVO tempSchemeVO = schemesMap.get(schemeId);
-										FundSchemeVO schemeVO = new FundSchemeVO();					
-										schemeVO.setId(tempSchemeVO.getId());
-										schemeVO.setName(tempSchemeVO.getName());
-										schemeVO.setCount(0L);
-										schemeVO.setTotalCount(0L);
-										deptsVO.getSubList().add(schemeVO);
-									}
-									yearVO.getSubList().add(deptsVO);
-								}
-								
-								fundLocationVO.getSubList().add(yearVO);
-							}
-						}
+						}						
 					}else if(!commonMethodsUtilService.isListOrSetValid(fundLocationVO.getSubList())){
 						for (Long yearId : yearsMap.keySet()) {
 								FundSchemeVO tempYearVO = yearsMap.get(yearId);
@@ -621,6 +648,10 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 										schemeVO.setTotalCount(0L);
 										deptsVO.getSubList().add(schemeVO);
 									}
+									
+									deptsVO.setYearId(tempYearVO.getYearId());
+									deptsVO.setYear(tempYearVO.getYear());
+									deptsVO.setAddressVO(fundLocationVO.getAddressVO());
 									yearVO.getSubList().add(deptsVO);
 								}
 								
