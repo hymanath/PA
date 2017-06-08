@@ -25,7 +25,7 @@ public class DepartmentDAO extends GenericDaoHibernate<Department, Long> impleme
 	public List<Object[]> getAllDepartments(){
 	    StringBuilder sb = new StringBuilder();
 	    sb.append(" select model.departmentId,model.departmentName from Department model "+
-	               " order by model.departmentId DESC");
+	               " order by model.departmentName ");
 	    Query query = getSession().createQuery(sb.toString());
 	    return query.list(); 
 	    

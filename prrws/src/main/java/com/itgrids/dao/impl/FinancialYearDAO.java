@@ -24,7 +24,7 @@ public class FinancialYearDAO extends GenericDaoHibernate<FinancialYear, Long> i
 	
 	public List<Object[]> getAllFiniancialYears(){
 	      StringBuilder sb = new StringBuilder();
-	      sb.append(" select model.financialYearId,model.yearDesc from FinancialYear model "+ 
+	      sb.append(" select distinct  model.financialYearId,model.yearDesc from FinancialYear model "+ 
 	                 " order by model.yearDesc desc ");
 	      Query query = getSession().createQuery(sb.toString());
 	      return query.list(); 
