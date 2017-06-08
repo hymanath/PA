@@ -8,12 +8,12 @@
 <link href="Assests/css/bootstrap.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/css/custom.less" type="text/less" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/less" rel="stylesheet"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.15/fh-3.1.2/sc-1.4.2/datatables.min.css"/>
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.2/less.min.js"></script>
+<script src="Assests/Plugins/Less/less.js"></script>
 </head>
 <body>
 <header>
@@ -33,31 +33,32 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12">
-				<ul class="list-inline navbar-header-custom">
-					<li>Note: All Amount in Lakhs</li>
-					<li>
-						Financial Year: <select id="financialYearId" onchange="newOnLoadCalls();" multiple>Select Financial Year </select>
-					</li>
-					<li>
-						Department: <select id="DepartmentsId" onchange="newOnLoadCalls();" ><option>Select Department</option></select>
-					</li>
+	<section>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<ul class="list-inline navbar-header-custom">
+						<li>Note: All Amount in Lakhs</li>
+						<li>
+							Financial Year: <select id="financialYearId" class="chosenSelect" multiple>Select Financial Year </select>
+						</li>
+						<li>
+							Department: <select id="DepartmentsId"  class="chosenSelect" ><option>Select Department</option></select>
+						</li>
+						
+						<li>
+							Date : 
+							<div class="form-group has-feedback">
+								<input type="text" class="form-control" id="mainDate"/>
+								<span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
+							</div>
+						</li>
+					</ul>
 					
-					<li>
-						<div class="input-group">
-							<span class="input-group-addon">
-								<i class="glyphicon glyphicon-calendar"></i>
-							</span>
-							<input type="text" class="form-control" id="mainDate"/>
-						</div>
-					</li>
-				</ul>
-				
+				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 </header>
 <main>
 	<section>
@@ -246,34 +247,32 @@
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="distLevelGraph">
 										<div class="row">
-												<div class="col-sm-12">
-													<div class="col-md-2 col-xs-12 col-sm-4">
-														<ul class="list-inline activeUlCls sortingDivDistCls">
-															<li class="active " attr_sorting_type="count" attr_order_type="desc">
-																<i class="glyphicon glyphicon-sort-by-attributes" ></i>
-															</li>
-															<li class="" attr_sorting_type="count" attr_order_type="asc">
-																<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
-															</li>
-															<li class="" attr_sorting_type="name" attr_order_type="asc">
-																A-Z
-															</li>
-															<li class="" attr_sorting_type="name" attr_order_type="desc">
-																Z-A
-															</li>
-														</ul>
-													</div>
-													<div class="col-sm-3 distLevelCls" >
-														<select class="form-control" id="distLevelDistrictNames" >
-														</select>
-													</div>
+											<!--<div class="col-sm-12">
+												<div class="col-md-2 col-xs-12 col-sm-4">
+													<ul class="list-inline activeUlCls sortingDivDistCls">
+														<li class="active " attr_sorting_type="count" attr_order_type="desc">
+															<i class="glyphicon glyphicon-sort-by-attributes" ></i>
+														</li>
+														<li class="" attr_sorting_type="count" attr_order_type="asc">
+															<i class="glyphicon glyphicon-sort-by-attributes-alt" style="transform:rotate(180deg)"></i>
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="asc">
+															A-Z
+														</li>
+														<li class="" attr_sorting_type="name" attr_order_type="desc">
+															Z-A
+														</li>
+													</ul>
 												</div>
-											</div>
+												<div class="col-sm-3 distLevelCls" >
+													<select class="form-control" id="distLevelDistrictNames" >
+													</select>
+												</div>
+											</div>-->
 											<div class="col-sm-12">
 												<div id="distLevlOvervw"></div>
 											</div>
-										
-										
+										</div>
 									</div>
 									<div role="tabpanel" class="tab-pane" id="distLevelTable">
 										<div class="row">
@@ -287,7 +286,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-12">
+				<!--<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
 							<div class="row">
@@ -328,7 +327,7 @@
 							</div>
 						</div>
 					</div>
-				</div>
+				</div>-->
 				<div class="col-sm-12">
 					<div class="panel panel-default panel-black">
 						<div class="panel-heading">
@@ -354,7 +353,7 @@
 								<div class="tab-content">
 									<div role="tabpanel" class="tab-pane active" id="consLevelGraph">
 										<div class="row">
-											<div class="col-sm-12">
+											<!--<div class="col-sm-12">
 												<div class="col-md-2 col-xs-12 col-sm-4">
 													<ul class="list-inline activeUlCls sortingDivConstCls">
 														<li class="active " attr_sorting_type="count" attr_order_type="desc">
@@ -379,7 +378,7 @@
 													<select class="form-control" id="constLevelConstNames" >
 													</select>
 												</div>
-											</div>
+											</div>-->
 										</div>
 										<div class="row">
 											<div class="col-sm-12">
@@ -406,13 +405,13 @@
 <footer></footer>
 <script type="text/javascript" src="Assests/js/jquery-1.11.3.js"></script>
 <script type="text/javascript" src="Assests/js/bootstrap.js"></script>
+<script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
-<script src="https://code.highcharts.com/highcharts.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.15/fh-3.1.2/sc-1.4.2/datatables.min.js"></script>
+<script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Scroller/jquery.mousewheel.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/fundManagament/fundManagementDashboard.js"></script>
 
 <!--Please do write the onload calls in the onLoadCalls function and the clicks in the onLoadClicks and initialisation of any kind of plugin in the onLoadInitialisations-->
