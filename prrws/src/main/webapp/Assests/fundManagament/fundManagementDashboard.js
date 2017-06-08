@@ -197,9 +197,12 @@
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = [];
+		var searchLevelId = 0;
+		var searchLevelVals = [];
+		//searchLevelVals.push(13);
   
 		  var json = {
-			blockLevelId : 4, 
+			blockLevelId : locationId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : glStartDate,//"01-06-2013",       
@@ -207,7 +210,9 @@
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr,
-			type:dataType
+			type:dataType,
+			searchLevelId:searchLevelId,
+			searchLvlVals:searchLevelVals
 		  }
 		$.ajax({
 			url: 'getLocationWiseFundDetails',
@@ -238,10 +243,10 @@
 		{
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.totalAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
 		}
-		if(ajaxresp.fundedLoc != null)
+		/* if(ajaxresp.fundedLoc != null)
 		{
 			str+='<h3>'+ajaxresp.fundedLoc+'</h3>';
-		}
+		} */
 		if(ajaxresp.totSchemes != null)
 		{
 			str+='<h3>'+ajaxresp.totSchemes+'</h3>';
@@ -619,7 +624,9 @@
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
-		  
+		  var searchLevelId = 0;
+		  var searchLevelVals = [];
+		 // searchLevelVals.push(1);
 		  var json = {
 			blockLevelId : 4, 
 			levelValues : levelValues ,
@@ -628,7 +635,9 @@
 			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
-			deptIdsList:deptIdsArr
+			deptIdsList:deptIdsArr,
+			searchLevelId:searchLevelId,
+			searchLvlVals:searchLevelVals
 		  }
 		$.ajax({
 			url: 'getTotalFunds',
@@ -644,8 +653,7 @@
 			},
 			error: function(request,error) { 
 		
-		
-			}
+		}
 		});
    }
 	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,type){
@@ -736,6 +744,9 @@
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
+		  var searchLevelId = 0;
+		  var searchLevelVals = [];
+		  //searchLevelVals.push(1);
 		  
 		  var json = {
 			blockLevelId : levelId, 
@@ -745,7 +756,9 @@
 			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
-			deptIdsList:deptIdsArr
+			deptIdsList:deptIdsArr,
+			searchLevelId:searchLevelId,
+			searchLvlVals:searchLevelVals
 		  }
 		$.ajax({
 			url: 'getTotalSchemes',
@@ -776,6 +789,9 @@
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
+		  var searchLevelId = 0;
+		  var searchLevelVals = [];
+		  //searchLevelVals.push(1);
 		  
 		  var json = {
 			blockLevelId : 4, 
@@ -786,7 +802,9 @@
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
 			deptIdsList:deptIdsArr,
-			type:type
+			type:type,
+			searchLevelId:searchLevelId,
+			searchLvlVals:searchLevelVals
 		  }
 		$.ajax({
 			url: 'getSchemeWiseHighestAndLowestFund',
@@ -813,7 +831,10 @@
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
-  
+		var searchLevelId = 0;
+		var searchLevelVals = [];
+		//searchLevelVals.push(1);
+		
 		  var json = {
 			blockLevelId : 4, 
 			levelValues : levelValues ,
@@ -822,7 +843,9 @@
 			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
-			deptIdsList:deptIdsArr
+			deptIdsList:deptIdsArr,
+			searchLevelId:searchLevelId,
+			searchLvlVals:searchLevelVals
 		  }
 		$.ajax({
 			url: 'getTotalLocationsByScopeId',
