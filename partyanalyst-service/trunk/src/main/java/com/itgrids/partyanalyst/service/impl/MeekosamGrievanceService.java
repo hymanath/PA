@@ -1,13 +1,19 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -17,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertAssignedOfficerTrackingNewDAO;
 import com.itgrids.partyanalyst.dao.IAlertCommentDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
+import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertMeekosamIssueFieldRelationDataDAO;
 import com.itgrids.partyanalyst.dao.IAlertMeekosamPetitionerDAO;
 import com.itgrids.partyanalyst.dao.IAlertMeekosamReferalDetailsDAO;
@@ -56,6 +63,7 @@ import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerNew;
 import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
 import com.itgrids.partyanalyst.model.AlertComment;
+import com.itgrids.partyanalyst.model.AlertDocument;
 import com.itgrids.partyanalyst.model.AlertMeekosamIssueFieldRelationData;
 import com.itgrids.partyanalyst.model.AlertMeekosamPetitioner;
 import com.itgrids.partyanalyst.model.AlertMeekosamReferalDetails;
@@ -69,6 +77,7 @@ import com.itgrids.partyanalyst.service.IMeekosamGrievanceService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 
 public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 
@@ -107,8 +116,15 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 	private IMeekosamPublicRepresentativeTypeRelationDAO meekosamPublicRepresentativeTypeRelationDAO;
 	private IAlertMeekosamReferalDetailsDAO alertMeekosamReferalDetailsDAO;
 	private IGovtAlertDepartmentLocationNewDAO govtAlertDepartmentLocationNewDAO;
+	private IAlertDocumentDAO alertDocumentDAO;
 	
 	
+	public IAlertDocumentDAO getAlertDocumentDAO() {
+		return alertDocumentDAO;
+	}
+	public void setAlertDocumentDAO(IAlertDocumentDAO alertDocumentDAO) {
+		this.alertDocumentDAO = alertDocumentDAO;
+	}
 	public IGovtAlertDepartmentLocationNewDAO getGovtAlertDepartmentLocationNewDAO() {
 		return govtAlertDepartmentLocationNewDAO;
 	}
@@ -775,7 +791,7 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 		}
 	}
 	
-	public ResultStatus saveMeekosamGrievance(final MeekosamGrievanceVO inputvo,final Long userId){
+	public ResultStatus saveMeekosamGrievance(final MeekosamGrievanceVO inputvo,final Long userId,final Map<File,String> mapFiles){
 		ResultStatus resultStatus = new ResultStatus();
 		try {
 			resultStatus = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
@@ -863,6 +879,8 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 						alert.setGeneralGrievanceTypeId(1l);
 					alert = alertDAO.save(alert);
 					
+					saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
+					
 					AlertComment alertComment = new AlertComment();
 					alertComment.setComments(inputvo.getGrievanceDesc().toString());
 					alertComment.setAlertId(alert.getAlertId());
@@ -909,9 +927,11 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 					petitioner.setMeekosamCasteCategoryId(inputvo.getPetitionerCaste());
 					petitioner.setMeekosamArgeeCategoryId(inputvo.getPetitionerArgeeCategory());
 					petitioner.setMeekosamAnnualIncomeId(inputvo.getPetitionerAnnulaIncome());
-					petitioner.setInsertedBy(userId);
+					if(inputvo.getMeekosamPetitionerId() == null || inputvo.getMeekosamPetitionerId().longValue() == 0l){
+						petitioner.setInsertedBy(userId);
+						petitioner.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					}
 					petitioner.setUpdatedBy(userId);
-					petitioner.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 					petitioner.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 					petitioner.setIsDeleted("N");
 					petitioner = meekosamPetitionerDAO.save(petitioner);
@@ -1105,5 +1125,128 @@ public class MeekosamGrievanceService implements IMeekosamGrievanceService{
 			LOG.error("Error occured getDistrictForGrievanceRequest() method of MeekosamGrievanceService",e);
 		}
 		return returnList;
+	}
+	
+	 public String saveAlertDocumentNew(Long alertId,Long userId,final Map<File,String> documentMap){
+			
+		try{
+			
+			DateUtilService dt = new DateUtilService();
+			
+			String folderName = folderCreationForAlertsAttachmentNew();
+			AlertDocument alertDocument = null;  
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			 int year = calendar.get(Calendar.YEAR);
+			 int month = calendar.get(Calendar.MONTH);
+			 //int day = calendar.get(Calendar.DAY_OF_MONTH);
+			 int temp = month+1;
+			 String monthText = getMonthForInt(temp);
+			
+			 StringBuilder pathBuilder = null;
+			 StringBuilder str ;
+			 
+			 SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+			 String dateStr = sdf.format(new Date());
+			 String yearStr = String.valueOf(year);
+			 
+			
+			 for (Map.Entry<File, String> entry : documentMap.entrySet())
+			 {
+
+				 pathBuilder = new StringBuilder();
+				 
+				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+				 String ext = "";
+				 String fName = "";
+				 String[] extension  = entry.getValue().split("\\.");
+				 if(extension.length > 1){
+					 ext = extension[extension.length-1];
+					 fName = extension[0];
+				 }
+				 String destPath = folderName+"/"+randomNumber+"."+ext;
+				 
+				 
+				 pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(ext);
+				 
+				 String fileCpyStts = copyFile(entry.getKey().getAbsolutePath(),destPath);
+				 
+					if(fileCpyStts.equalsIgnoreCase("error")){
+						LOG.error(" Exception Raise in copying file in saveAlertDocumentNew ");
+						throw new ArithmeticException();
+					}
+					
+					alertDocument = new AlertDocument();
+					alertDocument.setDocumentPath(pathBuilder.toString());
+					alertDocument.setDocumentName(StringEscapeUtils.escapeJava(fName));     
+					alertDocument.setAlertId(alertId);
+					alertDocument.setInsertedTime(dt.getCurrentDateAndTime());
+					alertDocument.setIsDeleted("N");
+					alertDocument.setInsertedBy(userId);
+					alertDocument = alertDocumentDAO.save(alertDocument);
+					
+			 }
+		}catch(Exception e){
+			LOG.error("Exception Occured in saveAlertDocumentNew() in MeekosamGrievanceService", e);
+			return "faliure";
+		}
+		return "success";
+	}
+	 
+	 public static String folderCreationForAlertsAttachmentNew(){
+	  	 try {
+	  		 LOG.debug(" in FolderForNotCadre ");
+	  		
+	  		 String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+	  		 
+	  		Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			int year = calendar.get(Calendar.YEAR);
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+			String dateStr = sdf.format(new Date());
+			 
+			 String notCadreImagesFoldr = staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr;
+			 
+			 String foldrSts = ActivityService.createFolder(notCadreImagesFoldr);
+			 if(!foldrSts.equalsIgnoreCase("SUCCESS")){
+				 return "FAILED";
+			 }
+			 
+			 return staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr;
+			 
+		} catch (Exception e) {
+			LOG.error(" Failed to Create ");
+			return "FAILED";
+		}
+	}
+	 
+	 public static String getMonthForInt(int num) {    
+		String month = "";
+		DateFormatSymbols dfs = new DateFormatSymbols();
+		String[] months = dfs.getMonths();
+		if (num >= 1 && num <= 12 ) {
+			month = months[num-1];
+		}
+		return month;  
+	}
+	 
+	 public String copyFile(String sourcePath,String destinationPath){
+		 try{
+			File destFile = new File(destinationPath);
+			 if (!destFile.exists()) 
+				 destFile.createNewFile();
+			 File file = new File(sourcePath);
+			if(file.exists()){
+				FileUtils.copyFile(file,destFile);
+				LOG.error("Copy Success");
+				return "success";
+			}
+		  }catch(Exception e){
+			  LOG.error("Exception raised in copyFile in MeekosamGrievanceService ", e);
+			  LOG.error("Copy Error");
+			  return "error";
+		  }
+		 return "failure";
 	}
 }
