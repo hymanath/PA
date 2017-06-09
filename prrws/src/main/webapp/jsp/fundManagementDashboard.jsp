@@ -40,14 +40,14 @@
 					<ul class="list-inline navbar-header-custom">
 						<li>Note: All Amount in Lakhs</li>
 						<li>
-							Financial Year: <select id="financialYearId" class="chosenSelect" multiple>Select Financial Year </select>
+							Financial Year: <select id="financialYearId" class="chosenSelect" multiple>All Financial Year </select>
 						</li>
 						<li>
-							Department: <select id="DepartmentsId"  class="chosenSelect" multiple><option>Select Department</option></select>
+							Department: <select id="DepartmentsId"  class="chosenSelect" multiple><option>All Departments</option></select>
 						</li>
 						
 						<li>
-							Date : 
+							
 							<div class="form-group has-feedback">
 								<input type="text" class="form-control" id="mainDate"/>
 								<span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
