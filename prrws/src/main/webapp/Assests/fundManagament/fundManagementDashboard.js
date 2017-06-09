@@ -322,6 +322,14 @@
 		$("#"+divId).html(spinner);
 		var levelValues = [];
 		var financialYrIdList = $('#financialYearId').val();
+		if ($.inArray('0', financialYrIdList) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdList = financialYrIdList.concat(strx);
+			financialYrIdList.shift();
+			
+		}
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -521,21 +529,25 @@
 						table+='<tr>';
 							table+='<th></th>';
 							table+='<th></th>';
-							for(var j in result[0].subList[0].subList)
-							{
-								table+='<th class="text-center" colspan="'+((result[0].subList[0].subList[0].subList.length)*2)+'">'+result[0].subList[0].subList[j].name+'</th>';
+							for(var i in result[0].subList){
+								for(var j in result[0].subList[i].subList)
+								{
+									table+='<th class="text-center" colspan="'+((result[0].subList[0].subList[0].subList.length)*2)+'">'+result[0].subList[i].subList[j].name+'</th>';
+								}
 							}
+							
 						table+='</tr>';
 						table+='<tr>';
 							table+='<th></th>';
 							table+='<th></th>';
-							for(var j in result[0].subList[0].subList){
-								for(var k in result[0].subList[0].subList[0].subList)
-								{
-									table+='<th colspan="2" class="text-center">'+result[0].subList[0].subList[0].subList[k].name+'</th>';
+							for(var i in result[0].subList){
+								for(var j in result[0].subList[i].subList){
+									for(var k in result[0].subList[i].subList[j].subList)
+									{
+										table+='<th colspan="2" class="text-center">'+result[0].subList[i].subList[j].subList[k].name+'</th>';
+									}
 								}
-							}
-							
+							}	
 						table+='</tr>';
 						table+='<tr>';
 							table+='<th>ID</th>';
@@ -551,11 +563,13 @@
 							{
 								table+='<th>Mandal</th>';
 							}
-							for(var j in result[0].subList[0].subList){
-								for(var k in result[0].subList[0].subList[0].subList)
-								{
-									table+='<th class="text-center no-right-border">No</th>';
-									table+='<th class="text-center">Amt.</th>';
+							for(var i in result[0].subList){
+								for(var j in result[0].subList[i].subList){
+									for(var k in result[0].subList[i].subList[j].subList)
+									{
+										table+='<th class="text-center no-right-border">No</th>';
+										table+='<th class="text-center">Amt.</th>';
+									}
 								}
 							}
 						table+='</tr>';
@@ -801,6 +815,7 @@
 						
 						},
 						tooltip: {
+							useHTML: true,
 							formatter: function () {
 							var s = '<b>' + this.x + '</b>';
 
@@ -1123,13 +1138,13 @@
 			if(levelId == 3 || levelId == 4){
 				if(result !=null && result.length>0){
 				
-					var assemblyShemeNameArrDeptScheme=[];
-					var NABARDArrDeptScheme =[];
-					var NREGPArrDeptScheme =[];
-					var CRRArrDeptScheme=[];
-					var RDFArrDeptScheme=[];
-					var MRRArrDeptScheme=[];
-					var FC13ArrDeptScheme=[];
+					var assemblyShemeNameArr=[];
+					var NABARDArr =[];
+					var NREGPArr =[];
+					var CRRArr=[];
+					var RDFArr=[];
+					var MRRArr=[];
+					var FC13Arr=[];
 					for(var i in result){
 						
 						
@@ -1140,24 +1155,24 @@
 								if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
 									for(var k in result[i].subList[j].subList){
 										if(levelId == 3){
-												assemblyShemeNameArrDeptScheme.push(result[i].subList[j].subList[k].addressVO.districtName+"<br/>("+result[i].subList[j].subList[k].year+result[i].subList[j].subList[k].name+")")
+												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.districtName+"<br/>("+result[i].subList[j].subList[k].year+" "+result[i].subList[j].subList[k].name+")")
 											}else if(levelId == 4){
-												assemblyShemeNameArrDeptScheme.push(result[i].subList[j].subList[k].addressVO.assemblyName+"<br/>("+result[i].subList[j].subList[k].year+result[i].subList[j].subList[k].name+")")
+												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.assemblyName+"<br/>("+result[i].subList[j].subList[k].year+" "+result[i].subList[j].subList[k].name+")")
 											}
 											if(result[i].subList[j].subList[k].subList !=null && result[i].subList[j].subList[k].subList.length>0){
 											for(var l in result[i].subList[j].subList[k].subList){
 												if(result[i].subList[j].subList[k].subList[l].id == 1){
-													NABARDArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													NABARDArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
 												 }else if(result[i].subList[j].subList[k].subList[l].id == 2){
-													 NREGPArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 NREGPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
 												 }else if(result[i].subList[j].subList[k].subList[l].id == 3){
-													 CRRArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 CRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
 												 }else if(result[i].subList[j].subList[k].subList[l].id == 4){
-													 RDFArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 RDFArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
 												 }else if(result[i].subList[j].subList[k].subList[l].id == 5){
-													 MRRArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 MRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
 												 }else if(result[i].subList[j].subList[k].subList[l].id == 6){
-													 FC13ArrDeptScheme.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 FC13Arr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
 												 }
 											}
 										}
@@ -1166,33 +1181,34 @@
 								}
 							}
 						}
-						var mainJosnObjArrDeptScheme=[];
-						if(NABARDArrDeptScheme != null && NABARDArrDeptScheme.length > 0){
-							mainJosnObjArrDeptScheme.push({name:'NABARD',data:NABARDArrDeptScheme,color:"#309AFF"});  
-						}
-						if(MRRArrDeptScheme != null && MRRArrDeptScheme.length > 0){
-							mainJosnObjArrDeptScheme.push({name:'MRR',data:MRRArrDeptScheme,color:"#01A64E"});  
-						}
-						if(NREGPArrDeptScheme != null && NREGPArrDeptScheme.length > 0){
-							mainJosnObjArrDeptScheme.push({name:'NREGP',data:NREGPArrDeptScheme,color:"#FF0DAD"});  
-						}
-						if(CRRArrDeptScheme != null && CRRArrDeptScheme.length > 0){
-							mainJosnObjArrDeptScheme.push({name:'CRR',data:CRRArrDeptScheme,color:"#FF872C"});  
-						}
-						if(RDFArrDeptScheme != null && RDFArrDeptScheme.length > 0){
-							mainJosnObjArrDeptScheme.push({name:'RDF',data:RDFArrDeptScheme,color:"#3C46FF"});  
-						}
-						if(FC13ArrDeptScheme != null && FC13ArrDeptScheme.length > 0){
-							mainJosnObjArrDeptScheme.push({name:'13th FC',data:FC13ArrDeptScheme,color:"#5B5B5B"});  
-						}
 					}
+						var mainJosnObjArr=[];
+						if(NABARDArr != null && NABARDArr.length > 0){
+							mainJosnObjArr.push({name:'NABARD',data:NABARDArr,color:"#309AFF"});  
+						}
+						if(MRRArr != null && MRRArr.length > 0){
+							mainJosnObjArr.push({name:'MRR',data:MRRArr,color:"#01A64E"});  
+						}
+						if(NREGPArr != null && NREGPArr.length > 0){
+							mainJosnObjArr.push({name:'NREGP',data:NREGPArr,color:"#FF0DAD"});  
+						}
+						if(CRRArr != null && CRRArr.length > 0){
+							mainJosnObjArr.push({name:'CRR',data:CRRArr,color:"#FF872C"});  
+						}
+						if(RDFArr != null && RDFArr.length > 0){
+							mainJosnObjArr.push({name:'RDF',data:RDFArr,color:"#3C46FF"});  
+						}
+						if(FC13Arr != null && FC13Arr.length > 0){
+							mainJosnObjArr.push({name:'13th FC',data:FC13Arr,color:"#5B5B5B"});  
+						}
+					
 						var length = result.length
 						var height = '';
 						if(length == 0)
 						{
 							height = length * 100;
 						}else if(length > 3){
-							height = length * 120;
+							height = length * 300;
 						}
 						if(length > 8)
 						{
@@ -1216,7 +1232,7 @@
 								min: 0,
 								gridLineWidth: 0,
 								minorGridLineWidth: 0,
-								categories: assemblyShemeNameArrDeptScheme
+								categories: assemblyShemeNameArr
 							},
 							yAxis: {
 									min: 0,
@@ -1272,7 +1288,7 @@
 								verticalAlign:'top',
 								enabled: true
 							},
-							series: mainJosnObjArrDeptScheme
+							series: mainJosnObjArr
 						});
 					
 				}
@@ -1319,12 +1335,22 @@
 		});
    }
 	function getSchemeWiseLocationWiseAmountDetails(levelId,divId,type){
+		$("#"+divId).html(spinner);
 		var levelValues = [];
-		var financialYrIdArr = $('#financialYearId').val();
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = [];
-
+		
+		var financialYrIdArr = $('#financialYearId').val();
+		if ($.inArray('0', financialYrIdArr) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdArr = financialYrIdArr.concat(strx);
+			financialYrIdArr.shift();
+			
+		}
+		
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -1356,11 +1382,19 @@
 	function getFinancialYearWiseDeptsWiseSchemeAmountDetails(levelId,divId,type){
 		$("#"+divId).html(spinner);
 		var levelValues = [];
-		var financialYrIdArr = $('#financialYearId').val();
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = $("#DepartmentsId").val();
-
+		
+		var financialYrIdArr = $('#financialYearId').val();
+		if ($.inArray('0', financialYrIdArr) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdArr = financialYrIdArr.concat(strx);
+			financialYrIdArr.shift();
+			
+		}
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -1620,13 +1654,14 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#DepartmentsId").find('option').remove();
-			$("#DepartmentsId").append("<option value='0'>Select Department </option>");
+			//$("#DepartmentsId").find('option').remove();
+			$("#DepartmentsId").append("<option value='0'>All Departments </option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					$("#DepartmentsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 				}
 			}
+			$("#DepartmentsId").val(0)
 			$("#DepartmentsId").trigger("chosen:updated");
 		});
 	}
@@ -1644,13 +1679,13 @@
 				xhr.setRequestHeader("Content-Type", "application/json");
 			}
 		}).done(function(result){
-			$("#financialYearId").find('option').remove();
-			$("#financialYearId").append("<option value='0'>Select Financial Year </option>");
+			//$("#financialYearId").find('option').remove();
+			$("#financialYearId").append("<option value='0'>All Financial Year </option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
 				}
-				$("#financialYearId").val(2);
+				$("#financialYearId").val(["1", "2"]);
 			}
 			$("#financialYearId").chosen();
 			$("#financialYearId").trigger('chosen:updated');
