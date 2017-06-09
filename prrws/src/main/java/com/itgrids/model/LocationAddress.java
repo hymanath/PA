@@ -20,8 +20,13 @@ public class LocationAddress{
 	private Long locationAddressId;
 	private Long constituencyId;
 	private Long districtId;
+	private Long tehsilId;
+	private Long panchayatId;
+	
 	private Constituency constituency;
 	private District district;
+	private Tehsil tehsil;
+	private Panchayat panchayat;
 
 	@Id
 	@Column(name="location_address_id")
@@ -66,5 +71,41 @@ public class LocationAddress{
 	public void setDistrict(District district) {
 		this.district = district;
 	}
+	
+	@Column(name="tehsil_id")
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	
+	@Column(name="panchayat_id")
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "tehsil_id", insertable = false, updatable = false)
+	public Tehsil getTehsil() {
+		return tehsil;
+	}
+	public void setTehsil(Tehsil tehsil) {
+		this.tehsil = tehsil;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "panchayat_id", insertable = false, updatable = false)
+	public Panchayat getPanchayat() {
+		return panchayat;
+	}
+	public void setPanchayat(Panchayat panchayat) {
+		this.panchayat = panchayat;
+	}
+	
+	
 	
 }
