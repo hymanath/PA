@@ -203,4 +203,6 @@ public interface IAlertManagementSystemService {
 	 public List<AmsKeyValueVO> getAlertStatusForAms();
 	 public List<AmsKeyValueVO> getSubTaskAlertStatusForAms();
 	 public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(Long userId,String fromDateStr,String toDateStr,List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
+	 public ResultStatus uploadDocumentsForRejoinderStatus(final StringBuilder pathBuilder,final Long alertId,final Long userId);
+	 public List<AlertVO> getRejoinderDocumentsForAlert(Long alertId);
 }        

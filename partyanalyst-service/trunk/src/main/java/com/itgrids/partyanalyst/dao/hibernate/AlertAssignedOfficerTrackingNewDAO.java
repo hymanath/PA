@@ -160,11 +160,13 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     					",alertFeedbackStatus.status" +
     					",alertCaller.alertCallerId" +
     					",alertCaller.callerName  " +
+    					" ,govtRejoinderAction.action" +
     					" from AlertAssignedOfficerTrackingNew model " +
     					" left outer join model.alertDepartmentComment alertDepartmentComment " +
     					" left outer join model.alertStatus alertStatus " +
     					" left outer join model.alertDepartmentDocument alertDepartmentDocument " +
     					" left outer join model.alertSeviority alertSeviority " +
+    					" left outer join model.govtRejoinderAction govtRejoinderAction" +
     					" left outer join model.alertFeedbackStatus alertFeedbackStatus with alertFeedbackStatus.isDeleted = 'N' " +
     					" left outer join model.alertCaller alertCaller, " +
     					" GovtAlertActionType govtAlertActionType," +
@@ -180,5 +182,36 @@ public class AlertAssignedOfficerTrackingNewDAO extends GenericDaoHibernate<Aler
     	query.setParameter("alertId",alertId);
     	
     	return query.list();
+    }
+    public List<AlertAssignedOfficerTrackingNew> getExistRecordFrRejinderStatus(Long alertId){
+    	Query query = getSession().createQuery("select model" +
+    			" from AlertAssignedOfficerTrackingNew model" +
+    			" where model.alert.alertId = :alertId " +
+    			" and model.govtRejoinderAction.govtRejoinderActionId is not null " +
+    			" order by model.alertAssignedOfficerTrackingId desc ");
+    	query.setParameter("alertId", alertId);
+    	
+    	return  query.list();
+    }
+    public List<Object[]> getRejoinderDocumentsForAlert(Long alertId){
+    	Query query = getSession().createQuery(" select distinct model.alertDepartmentDocument.alertDepartmentDocumentId,model.alertDepartmentDocument.document," +
+    			" model.govtRejoinderAction.action," +
+    			" model.alertDepartmentDocument.insertedTime," +
+    			" model.govtRejoinderAction.govtRejoinderActionId "
+    			+ " from AlertAssignedOfficerTrackingNew model "
+    			+ " where model.alertId=:alertId " +
+    			" and model.govtAlertActionType.govtAlertActionTypeId = 6l and model.govtRejoinderAction.govtRejoinderActionId is not null");
+    	query.setParameter("alertId", alertId);
+    	return query.list();
+    }
+    public List<String> getRejoinderStatusForAlert(Long alertId){
+    	Query query = getSession().createQuery(" select " +
+    			" model.govtRejoinderAction.action"
+    			+ " from AlertAssignedOfficerTrackingNew model "
+    			+ " where model.alertId=:alertId " +
+    			" and model.govtAlertActionType.govtAlertActionTypeId = 6l and model.govtRejoinderAction.govtRejoinderActionId is not null" +
+    			" order by model.alertAssignedOfficerTrackingId desc");
+    	query.setParameter("alertId", alertId);
+    	return  query.list();
     }
 }

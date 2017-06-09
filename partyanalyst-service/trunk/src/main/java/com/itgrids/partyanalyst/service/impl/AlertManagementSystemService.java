@@ -62,6 +62,7 @@ import com.itgrids.partyanalyst.dao.IGovtOfficerSubTaskTrackingDAO;
 import com.itgrids.partyanalyst.dao.IGovtProposalCategoryDAO;
 import com.itgrids.partyanalyst.dao.IGovtProposalPropertyCategoryDAO;
 import com.itgrids.partyanalyst.dao.IGovtProposalPropertyCategoryTrackingDAO;
+import com.itgrids.partyanalyst.dao.IGovtRejoinderActionDAO;
 import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
@@ -166,6 +167,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IAlertCommentDAO alertCommentDAO;
 	private IAmsOfficerOtpDetailsDAO amsOfficerOtpDetailsDAO;
 	private SmsCountrySmsService smsCountrySmsService;
+	private IGovtRejoinderActionDAO govtRejoinderActionDAO;
 	
 	
 	public SmsCountrySmsService getSmsCountrySmsService() {
@@ -516,6 +518,14 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 
 	public void setAlertCommentDAO(IAlertCommentDAO alertCommentDAO) {
 		this.alertCommentDAO = alertCommentDAO;
+	}
+
+	public IGovtRejoinderActionDAO getGovtRejoinderActionDAO() {
+		return govtRejoinderActionDAO;
+	}
+
+	public void setGovtRejoinderActionDAO(IGovtRejoinderActionDAO govtRejoinderActionDAO) {
+		this.govtRejoinderActionDAO = govtRejoinderActionDAO;
 	}
 
 	//Business Method
@@ -1028,19 +1038,6 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 						
 						
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(new Date());
-						 int year = calendar.get(Calendar.YEAR);
-						 int month = calendar.get(Calendar.MONTH);
-						// int day = calendar.get(Calendar.DAY_OF_MONTH);
-						 int temp = month+1;
-						 String monthText = getMonthForInt(temp);
-						 SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
-						 String dateStr = sdf.format(new Date());
-						 String yearStr = String.valueOf(year);
-						 
-						 StringBuilder str ; 
-						 
 						/* here only we are updating for one assigned officer. But we can assing to multiple members . because of this we need to update present status of alert
 						 * for every assigned user. so am iterating the whole assigned officers 
 						 * Srishailam Pittala 
@@ -1171,7 +1168,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 							}else{
 								rs.setMessage("Already In ProposalStatus");
 							}
-						}/*else if(statusId == 10l){
+						}else if(statusId == 10l){
 							
 							if(alert != null && statusId != null && statusId.longValue()>0L){
 								alert.setAlertStatusId(statusId);
@@ -1201,10 +1198,10 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 									aaon.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 									alertAssignedOfficerNewDAO.save(aaon);
 									
-									String folderName = folderCreationForAlertsAttachmentNew();
+									/*String folderName = folderCreationForAlertsAttachmentNew();
 									AlertDepartmentDocumentNew addn = null;	
 									
-									/*if(mapfiles != null && mapfiles.size() > 0){
+									if(mapfiles != null && mapfiles.size() > 0){
 										 AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
 										 for (Map.Entry<File, String> entry : mapfiles.entrySet()){
 											 str = new StringBuilder();
@@ -1228,7 +1225,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 												addn = alertDepartmentDocumentNewDAO.save(addn);
 									}*/
 									
-									/*AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
+									AlertAssignedOfficerTrackingNew aaotn = new AlertAssignedOfficerTrackingNew();
 										if(statusId == 8l || statusId == 9l)
 											aaon.setIsApproved("N");
 									aaotn.setAlertAssignedOfficerId(aaon.getAlertAssignedOfficerId());
@@ -1242,9 +1239,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 									if(adcn != null)
 										aaotn.setAlertDepartmentCommentId(adcn.getAlertDepartmentCommentId());
 									
-									if(addn != null)
-										aaotn.setAlertDepartmentDocumentId(addn.getAlertDepartmentDocumentId());
-						
+									
 									aaotn.setInsertedBy(userId);
 									aaotn.setAlertStatusId(aaon.getAlertStatusId());
 									aaotn.setUpdatedBy(userId);
@@ -1258,7 +1253,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 								}
 							}
 						
-						}*/else{
+						}else{
 							//Alert alert = alertDAO.get(alertId);
 							if(alert != null && statusId != null && statusId.longValue()>0L){
 								alert.setAlertStatusId(statusId);
@@ -10245,6 +10240,7 @@ public List<List<AlertTrackingVO>> viewAlertHistoryNew(Long alertId, String task
 						alertTrackingVO.setDocument(commonMethodsUtilService.getStringValueForObject(param[6]));
 						alertTrackingVO.setDueDate(commonMethodsUtilService.getStringValueForObject(param[7]));
 						alertTrackingVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[9]));
+						alertTrackingVO.setRejinderStatus(commonMethodsUtilService.getStringValueForObject(param[20]));
 						if(alertTrackingVO.getStatus().trim().equalsIgnoreCase("Proposal")){
 							List<Object[]> statusList = govtProposalPropertyCategoryDAO.getProposalStatusFrAlert(alertId);
 							if(statusList != null && statusList.size() > 0){
@@ -12561,7 +12557,103 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
   		}
   		return returnVO;
   	}
-	
+
+	public ResultStatus uploadDocumentsForRejoinderStatus(final StringBuilder pathBuilder,final Long alertId,final Long userId){
+
+		final ResultStatus resultStatus = new ResultStatus();
+		try {
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+		/*String folderName = folderCreationForAlertsAttachmentNew();
+		CustomReport customReport = null;
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		 int year = calendar.get(Calendar.YEAR);
+		 int month = calendar.get(Calendar.MONTH);
+		// int day = calendar.get(Calendar.DAY_OF_MONTH);
+		 int temp = month+1;
+		 String monthText = getMonthForInt(temp);
+		 SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+		 String dateStr = sdf.format(new Date());
+		 String yearStr = String.valueOf(year);
+		 
+		 StringBuilder str ;
+		 
+		 if(mapfiles != null && mapfiles.size() > 0){
+			// AlertAssignedOfficerNew aaon = alertAssignedOfficerNewDAO.getModelForAlert(alertId).get(0);
+			 for (Map.Entry<File, String> entry : mapfiles.entrySet()){
+				 str = new StringBuilder();
+				 Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+				 String destPath = folderName+"/"+randomNumber+"."+entry.getValue();
+				 StringBuilder pathBuilder = new StringBuilder();
+				  pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(randomNumber).append(".").append(entry.getValue());
+				 str.append(randomNumber).append(".").append(entry.getValue());
+				String fileCpyStts = activityService.copyFile(entry.getKey().getAbsolutePath(),destPath);
+				 
+					if(fileCpyStts.equalsIgnoreCase("error")){
+						resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						LOG.error(" Exception Raise in copying file");
+						throw new ArithmeticException();
+					}*/
+					
+					AlertDepartmentDocumentNew addn = new AlertDepartmentDocumentNew();
+					addn.setDocument(pathBuilder.toString());
+					addn.setInsertedBy(userId);
+					addn.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+					addn = alertDepartmentDocumentNewDAO.save(addn);
+					
+					List<AlertAssignedOfficerTrackingNew> alertAssignedOfficerTrackingNewList = alertAssignedOfficerTrackingNewDAO.getExistRecordFrRejinderStatus(alertId);
+					if(commonMethodsUtilService.isListOrSetValid(alertAssignedOfficerTrackingNewList)){
+						AlertAssignedOfficerTrackingNew alertAssignedOfficerTrackingNew =  alertAssignedOfficerTrackingNewList.get(0);
+						alertAssignedOfficerTrackingNew.setAlertDepartmentDocumentId(addn.getAlertDepartmentDocumentId());
+					}
+			 	//}
+		 	//}
+		
+		 resultStatus.setExceptionMsg("success");
+				}
+			});
+		}catch (Exception e) {
+			resultStatus.setExceptionMsg("failure");
+			LOG.error(" Exception Occured in uploadDocumentsForRejoinderStatus() method, Exception - ",e);
+		}
+		return resultStatus;
+	}
+	public List<AlertVO> getRejoinderDocumentsForAlert(Long alertId){
+  		List<AlertVO> typeList = new ArrayList<AlertVO>(0);
+  		try {
+  			//List<AlertVO> typeList = new ArrayList<AlertVO>();
+  			//Map<Long,AlertVO> rejinderType
+  			List<Object[]> rejinderTypeList = govtRejoinderActionDAO.getAllActions();
+  			if(commonMethodsUtilService.isListOrSetValid(rejinderTypeList)){
+  				for (Object[] objects : rejinderTypeList) {
+					AlertVO vo = new AlertVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					typeList.add(vo);
+				}
+  			}
+			List<Object[]> objList = alertAssignedOfficerTrackingNewDAO.getRejoinderDocumentsForAlert(alertId);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					
+					AlertVO vo = getMatchVO1(typeList,commonMethodsUtilService.getLongValueForObject(objects[4]));
+					if(vo != null){
+						AlertVO subvo = new AlertVO();
+						subvo.setId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						subvo.setName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						subvo.setDate1(commonMethodsUtilService.getStringValueForObject(objects[3]));
+						vo.getSubList1().add(subvo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured getDocumentsForAlert() method of AlertManagementSystemService",e);
+		}
+  		return typeList;
+  	}
 	public List<AmsKeyValueVO> getAlertSeverityForAms(){   
 		try{
 			

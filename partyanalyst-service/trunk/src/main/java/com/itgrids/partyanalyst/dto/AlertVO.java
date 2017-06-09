@@ -53,7 +53,7 @@ public class AlertVO {
 	private Long locationId;
 	private String locationName;
 	
-	private List<AlertVO> subList1;
+	private List<AlertVO> subList1 = new ArrayList<AlertVO>(0);
 	private List<AlertVO> subList2 = new ArrayList<AlertVO>(0);
 	private String title;
 	private String date1;
