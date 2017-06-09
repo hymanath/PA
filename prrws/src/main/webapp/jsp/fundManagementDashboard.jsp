@@ -133,11 +133,11 @@
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Village</h4>
-								<div id="avgFundScheme" class="m_top5"></div>
+								<div id="" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Source</h4>
-								<div id="avgFundScheme" class="m_top5"></div>
+								<div id="" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Scheme</h4>
