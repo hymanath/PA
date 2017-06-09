@@ -28,7 +28,7 @@
 					<p>Funds Management System</p>
 				</div>
 				<div class="col-sm-1 pull-right">
-					<img src="Assests/images/lokBabu.png" class="m_top20"/>
+					<img src="Assests/images/lokesh.png" class="m_top10"/>
 				</div>
 			</div>
 		</div>
@@ -40,10 +40,10 @@
 					<ul class="list-inline navbar-header-custom">
 						<li>Note: All Amount in Lakhs</li>
 						<li>
-							Financial Year: <select id="financialYearId" class="chosenSelect" multiple>All Financial Year </select>
+							Financial Year: <select id="financialYearId" class="chosenSelect" multiple></select>
 						</li>
 						<li>
-							Department: <select id="DepartmentsId"  class="chosenSelect" multiple><option>All Departments</option></select>
+							Department: <select id="DepartmentsId"  class="chosenSelect" multiple></select>
 						</li>
 						
 						<li>
@@ -133,11 +133,11 @@
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Village</h4>
-								<div id="" class="m_top5"></div>
+								<div id="avgFundVillage" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Source</h4>
-								<div id="" class="m_top5"></div>
+								<div id="avgFundSource" class="m_top5"></div>
 							</td>
 							<td>
 								<h4 class="panel-title text-muted">Average Funded Scheme</h4>

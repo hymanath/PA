@@ -214,7 +214,14 @@
 		var searchLevelId = 0;
 		var searchLevelVals = [];
 		//searchLevelVals.push(13);
-  
+		if ($.inArray('0', financialYrIdArr) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdArr = financialYrIdArr.concat(strx);
+			financialYrIdArr.shift();
+			
+		}	
 		  var json = {
 			blockLevelId : locationId, 
 			levelValues : levelValues ,
@@ -870,24 +877,44 @@
 						
 						if(result[i].subList !=null && result[i].subList.length>0){
 							for(var j in result[i].subList){
-								
-								yearsArr.push(result[i].subList[j].year);
-								if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
-									for(var k in result[i].subList[j].subList){
-										if(result[i].subList[j].subList[k].id == 1){
-											NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 2){
-											 NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 3){
-											 CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 4){
-											 RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 5){
-											 MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 6){
-											 FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }
+								var countAvailable = false;
+								if(result[i].subList[j].subList != null && result[i].subList[j].subList.length > 0){
+									for(var s in result[i].subList[j].subList){
+										if(result[i].subList[j].subList[s].totalCount != null && result[i].subList[j].subList[s].totalCount > 0){
+											countAvailable = true;
+										}
 									}
+								}
+								if(countAvailable){
+									yearsArr.push(result[i].subList[j].year);
+								}
+								
+								
+								if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
+									var countAvailable = false;
+									for(var s in result[i].subList[j].subList){
+										if(result[i].subList[j].subList[s].totalCount != null && result[i].subList[j].subList[s].totalCount > 0){
+											countAvailable = true;
+										}
+									}
+									if(countAvailable){
+										for(var k in result[i].subList[j].subList){
+											if(result[i].subList[j].subList[k].id == 1){
+												NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 2){
+												 NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 3){
+												 CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 4){
+												 RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 5){
+												 MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 6){
+												 FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }
+										}
+									}
+									
 								}	
 							}
 						}
@@ -958,6 +985,7 @@
 						
 						},
 						tooltip: {
+							useHTML: true,
 							formatter: function () {
 							var s = '<b>' + this.x + '</b>';
 
@@ -1001,30 +1029,49 @@
 					for(var i in result){
 						if(result[i].subList !=null && result[i].subList.length>0){
 							for(var j in result[i].subList){
-								if(levelId == 3){
-									assemblyShemeNameArr.push(result[i].subList[j].addressVO.districtName+"<br/>("+result[i].subList[j].year+")")
-								}else if(levelId == 4){
-									assemblyShemeNameArr.push(result[i].subList[j].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+")")
+								var countAvailable = false;
+								if(result[i].subList[j].subList != null && result[i].subList[j].subList.length > 0){
+									for(var s in result[i].subList[j].subList){
+										if(result[i].subList[j].subList[s].totalCount != null && result[i].subList[j].subList[s].totalCount > 0){
+											countAvailable = true;
+										}
+									}
+								}
+								if(countAvailable){
+									if(levelId == 3){
+										assemblyShemeNameArr.push(result[i].subList[j].addressVO.districtName+"<br/>("+result[i].subList[j].year+")")
+									}else if(levelId == 4){
+										assemblyShemeNameArr.push(result[i].subList[j].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+")")
+									}
 								}
 								
+								
 								if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
-									for(var k in result[i].subList[j].subList){
-										
-										if(result[i].subList[j].subList[k].id == 1){
-											 NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 2){
-											 NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 3){
-											 CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 4){
-											 RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 5){
-											 MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }else if(result[i].subList[j].subList[k].id == 6){
-											 FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
-										 }
-										
+									var countAvailable = false;
+									for(var s in result[i].subList[j].subList){
+										if(result[i].subList[j].subList[s].totalCount != null && result[i].subList[j].subList[s].totalCount > 0){
+											countAvailable = true;
+										}
 									}
+									if(countAvailable){
+										for(var k in result[i].subList[j].subList){
+											 if(result[i].subList[j].subList[k].id == 1){
+												 NABARDArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 2){
+												 NREGPArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 3){
+												 CRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 4){
+												 RDFArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 5){
+												 MRRArr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }else if(result[i].subList[j].subList[k].id == 6){
+												 FC13Arr.push({"y":result[i].subList[j].subList[k].totalCount})
+											 }
+											
+										}
+									}
+									
 								}
 							}
 						}
@@ -1108,6 +1155,7 @@
 						
 						},
 						tooltip: {
+							useHTML: true,
 							formatter: function () {
 							var s = '<b>' + this.x + '</b>';
 
@@ -1158,27 +1206,47 @@
 								
 								if(result[i].subList[j].subList !=null && result[i].subList[j].subList.length>0){
 									for(var k in result[i].subList[j].subList){
-										if(levelId == 3){
-												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.districtName+"<br/>("+result[i].subList[j].subList[k].year+" "+result[i].subList[j].subList[k].name+")")
+										var countAvailable = false;
+										if(result[i].subList[j].subList[k].subList != null && result[i].subList[j].subList[k].subList.length > 0){
+											for(var s in result[i].subList[j].subList[k].subList){
+												if(result[i].subList[j].subList[k].subList[s].totalCount != null && result[i].subList[j].subList[k].subList[s].totalCount > 0){
+													countAvailable = true;
+												}
+											}
+										}
+										if(countAvailable){
+											if(levelId == 3){
+												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.districtName+"<br/>("+result[i].subList[j].year+":"+result[i].subList[j].subList[k].name+")")
 											}else if(levelId == 4){
-												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.assemblyName+"<br/>("+result[i].subList[j].subList[k].year+" "+result[i].subList[j].subList[k].name+")")
+												assemblyShemeNameArr.push(result[i].subList[j].subList[k].addressVO.assemblyName+"<br/>("+result[i].subList[j].year+":"+result[i].subList[j].subList[k].name+")")
 											}
-											if(result[i].subList[j].subList[k].subList !=null && result[i].subList[j].subList[k].subList.length>0){
-											for(var l in result[i].subList[j].subList[k].subList){
-												if(result[i].subList[j].subList[k].subList[l].id == 1){
-													NABARDArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-												 }else if(result[i].subList[j].subList[k].subList[l].id == 2){
-													 NREGPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-												 }else if(result[i].subList[j].subList[k].subList[l].id == 3){
-													 CRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-												 }else if(result[i].subList[j].subList[k].subList[l].id == 4){
-													 RDFArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-												 }else if(result[i].subList[j].subList[k].subList[l].id == 5){
-													 MRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-												 }else if(result[i].subList[j].subList[k].subList[l].id == 6){
-													 FC13Arr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
-												 }
+										}
+											
+										if(result[i].subList[j].subList[k].subList !=null && result[i].subList[j].subList[k].subList.length>0){
+											var countAvailable = false;
+											for(var s in result[i].subList[j].subList[k].subList){
+												if(result[i].subList[j].subList[k].subList[s].totalCount > 0){
+													countAvailable = true;
+												}
 											}
+											if(countAvailable){
+												for(var l in result[i].subList[j].subList[k].subList){
+													 if(result[i].subList[j].subList[k].subList[l].id == 1){
+														NABARDArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 }else if(result[i].subList[j].subList[k].subList[l].id == 2){
+														 NREGPArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 }else if(result[i].subList[j].subList[k].subList[l].id == 3){
+														 CRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 }else if(result[i].subList[j].subList[k].subList[l].id == 4){
+														 RDFArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 }else if(result[i].subList[j].subList[k].subList[l].id == 5){
+														 MRRArr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 }else if(result[i].subList[j].subList[k].subList[l].id == 6){
+														 FC13Arr.push({"y":result[i].subList[j].subList[k].subList[l].totalCount})
+													 }
+												}
+											}
+											
 										}
 										
 									}
@@ -1267,6 +1335,7 @@
 							
 							},
 							tooltip: {
+								useHTML: true,
 								formatter: function () {
 								var s = '<b>' + this.x + '</b>';
 
@@ -1312,6 +1381,15 @@
 		  var searchLevelId = 0;
 		  var searchLevelVals = [];
 		 // searchLevelVals.push(1);
+		   if ($.inArray('0', financialYrIdArr) != -1)
+			{
+				var stringIds = "1,2,3";
+				strx   = stringIds.split(',');
+				financialYrIdArr = financialYrIdArr.concat(strx);
+				financialYrIdArr.shift();
+				
+			}
+		  
 		  var json = {
 			blockLevelId : 4, 
 			levelValues : levelValues ,
@@ -1482,7 +1560,14 @@
 		  var searchLevelId = 0;
 		  var searchLevelVals = [];
 		  //searchLevelVals.push(1);
-		  
+		  	if ($.inArray('0', financialYrIdArr) != -1)
+			{
+				var stringIds = "1,2,3";
+				strx   = stringIds.split(',');
+				financialYrIdArr = financialYrIdArr.concat(strx);
+				financialYrIdArr.shift();
+				
+			}
 		  var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -1523,7 +1608,14 @@
 		  var searchLevelId = 3;
 		  var searchLevelVals = [];
 		  searchLevelVals.push(13);
-		  
+		  if ($.inArray('0', financialYrIdArr) != -1)
+			{
+				var stringIds = "1,2,3";
+				strx   = stringIds.split(',');
+				financialYrIdArr = financialYrIdArr.concat(strx);
+				financialYrIdArr.shift();
+				
+			}
 		  var json = {
 			blockLevelId : 4, 
 			levelValues : levelValues ,
@@ -1561,7 +1653,14 @@
 		var searchLevelId = 3;
 		var searchLevelVals = [];
 		searchLevelVals.push(13);
-		
+		if ($.inArray('0', financialYrIdArr) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdArr = financialYrIdArr.concat(strx);
+			financialYrIdArr.shift();
+			
+		}
 		  var json = {
 			blockLevelId : 4, 
 			levelValues : levelValues ,
@@ -1593,6 +1692,15 @@
 		var deptId = 0;
 		var sourceId = 0;
 		var schemeId = 0;
+		if ($.inArray('0', financialYrIdList) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdList = financialYrIdList.concat(strx);
+			financialYrIdList.shift();
+			
+		}
+		
 		var json = {
 			deptId : deptId,
 			sourceId : sourceId,
@@ -1620,6 +1728,14 @@
 		var financialYrIdList = $('#financialYearId').val(); 
 		var deptId = 0;
 		var sourceId = 0;
+		if ($.inArray('0', financialYrIdList) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdList = financialYrIdList.concat(strx);
+			financialYrIdList.shift();
+			
+		}
 		var json = {
 			blockLevelId : levelId, 
 			levelValues : levelValues ,
@@ -1645,6 +1761,7 @@
 
 	
 	function getAllDepartments(){
+		$("#DepartmentsId").html('');
 		var json = {
 
 		}
@@ -1659,7 +1776,7 @@
 			}
 		}).done(function(result){
 			//$("#DepartmentsId").find('option').remove();
-			$("#DepartmentsId").append("<option value='0'>All Departments </option>");
+			$("#DepartmentsId").append("<option value='0'>All</option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					$("#DepartmentsId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
@@ -1671,6 +1788,7 @@
 	}
 	function getAllFiniancialYears()
 	{
+		$("#financialYearId").html('');
 		var json = {
 		}
 		$.ajax({                
@@ -1684,7 +1802,7 @@
 			}
 		}).done(function(result){
 			//$("#financialYearId").find('option').remove();
-			$("#financialYearId").append("<option value='0'>All Financial Year </option>");
+			$("#financialYearId").append("<option value='0'>All</option>");
 			if(result != null && result.length >0){
 				for(var i in result){
 					$("#financialYearId").append("<option value="+result[i].financialYearId+">"+result[i].financialYear+"</option>");
@@ -1702,6 +1820,14 @@
 		var financialYrIdList = $('#financialYearId').val();; 
 		var deptId = 0;
 		var sourceId = 0;
+		if ($.inArray('0', financialYrIdList) != -1)
+		{
+			var stringIds = "1,2,3";
+			strx   = stringIds.split(',');
+			financialYrIdList = financialYrIdList.concat(strx);
+			financialYrIdList.shift();
+			
+		}
 		var json = {
 		  superLocationId : locationScopeId, 
 		  deptId : deptId,
