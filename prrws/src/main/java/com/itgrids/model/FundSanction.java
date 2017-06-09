@@ -33,7 +33,6 @@ public class FundSanction{
 	private String isDeleted;
 	private Long departmentId;
 	
-	private LocationAddress locationAddress;
 	private FinancialYear financialYear;
 	private GrantType grantType;
 	private GovtScheme govtScheme;
@@ -144,15 +143,6 @@ public class FundSanction{
 		this.departmentId = departmentId;
 	}
 	
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "address_id", insertable = false, updatable = false)
-	public LocationAddress getLocationAddress() {
-		return locationAddress;
-	}
-	public void setLocationAddress(LocationAddress locationAddress) {
-		this.locationAddress = locationAddress;
-	}
-
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "financial_year_id", insertable = false, updatable = false)
 	public FinancialYear getFinancialYear() {
