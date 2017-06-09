@@ -7,7 +7,6 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IFundSanctionDAO;
 import com.itgrids.model.FundSanction;
+import com.itgrids.model.FundSanctionLocation;
 import com.itgrids.utils.IConstants;
 
 @Repository
@@ -38,29 +38,82 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 	public List<Object[]> getFinancialYearWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
 			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct  model.govtSchemeId, model.govtScheme.schemeName, "
-				+ " model.financialYear.financialYearId, model.financialYear.yearDesc, count(model.govtSchemeId), sum(model.sactionAmount), "
+		queryStr.append(" select distinct  model.fundSanction.govtSchemeId, model.fundSanction.govtScheme.schemeName, "
+				+ " model.fundSanction.financialYear.financialYearId, model.fundSanction.financialYear.yearDesc, count(model.fundSanction.govtSchemeId), sum(model.fundSanction.sactionAmount), "
 				+ " model.locationScopeId, model.locationValue, model.locationAddress.districtId, model.locationAddress.district.districtName, "
 				+ " model.locationAddress.constituencyId, model.locationAddress.constituency.name ");
-		queryStr.append(" from FundSanction model ");
+		queryStr.append(" from FundSanctionLocation model ");
 		queryStr.append(" where model.isDeleted ='N' ");
 		if(financialYearIdsList != null && financialYearIdsList.size()>0)
-			queryStr.append(" and model.financialYearId in (:financialYearIdsList) ");
+			queryStr.append(" and model.fundSanction.financialYearId in (:financialYearIdsList) ");
 		if(deptIdsList != null && deptIdsList.size()>0)
-			queryStr.append(" and model.department.departmentId in (:deptIdsList) ");
+			queryStr.append(" and model.fundSanction.department.departmentId in (:deptIdsList) ");
 		if(sourceIdsList != null && sourceIdsList.size()>0)
 			queryStr.append("  ");
 		if(schemeIdsList != null && schemeIdsList.size()>0)
-			queryStr.append(" and model.govtSchemeId in (:schemeIdsList) ");
+			queryStr.append(" and model.fundSanction.govtSchemeId in (:schemeIdsList) ");
 		if(startDate != null && endDate != null)
-			queryStr.append(" and ( date(model.updatedTime) between :startDate and :endDate)  ");
+			queryStr.append(" and ( date(model.fundSanction.updatedTime) between :startDate and :endDate)  ");
 		if(searchScopeId != null && searchScopeId.longValue()>0L)
 			queryStr.append(" and model.locationScopeId =:searchScopeId ");
 		if(searchScopeValuesList != null && searchScopeValuesList.size()>0)
 			queryStr.append(" and model.locationValue in (:searchScopeValuesList) ");
 		
-		queryStr.append(" group by model.locationScopeId,model.locationValue,model.financialYearId,model.govtSchemeId ");
-		queryStr.append(" order by model.locationScopeId,model.locationValue,model.financialYearId,model.govtSchemeId ");
+		queryStr.append(" group by model.locationScopeId,model.locationValue,model.fundSanction.financialYearId,model.fundSanction.govtSchemeId ");
+		queryStr.append(" order by model.locationScopeId,model.locationValue,model.fundSanction.financialYearId,model.fundSanction.govtSchemeId ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(financialYearIdsList != null && financialYearIdsList.size()>0)
+			query.setParameterList("financialYearIdsList", financialYearIdsList);
+		if(deptIdsList != null && deptIdsList.size()>0)
+			query.setParameterList("deptIdsList", deptIdsList);
+		if(sourceIdsList != null && sourceIdsList.size()>0)
+			;
+		if(schemeIdsList != null && schemeIdsList.size()>0)
+			query.setParameterList("schemeIdsList", schemeIdsList);
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(searchScopeId != null && searchScopeId.longValue()>0L)
+			query.setParameter("searchScopeId", searchScopeId);
+		if(searchScopeValuesList != null && searchScopeValuesList.size()>0)
+			query.setParameterList("searchScopeValuesList", searchScopeValuesList);
+		
+		return query.list();
+	}
+	/*
+	 * Date : 08/06/2017
+	 * Author :Srishailam Pittala
+	 * @description : to get financial year ,  Department wise and scheme wise funds transaction details
+	 */
+	public List<Object[]> getFinancialYearWiseDeptsWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
+			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select distinct  model.fundSanction.govtSchemeId, model.fundSanction.govtScheme.schemeName, "
+				+ " model.fundSanction.financialYear.financialYearId, model.fundSanction.financialYear.yearDesc, count(model.fundSanction.govtSchemeId), sum(model.fundSanction.sactionAmount), "
+				+ " model.locationScopeId, model.locationValue, model.locationAddress.districtId, model.locationAddress.district.districtName, "
+				+ " model.locationAddress.constituencyId, model.locationAddress.constituency.name, model.fundSanction.department.departmentId, model.fundSanction.department.departmentName ");
+		queryStr.append(" from FundSanctionLocation model ");
+		queryStr.append(" where model.isDeleted ='N' ");
+		if(financialYearIdsList != null && financialYearIdsList.size()>0)
+			queryStr.append(" and model.fundSanction.financialYearId in (:financialYearIdsList) ");
+		if(deptIdsList != null && deptIdsList.size()>0)
+			queryStr.append(" and model.fundSanction.department.departmentId in (:deptIdsList) ");
+		if(sourceIdsList != null && sourceIdsList.size()>0)
+			queryStr.append("  ");
+		if(schemeIdsList != null && schemeIdsList.size()>0)
+			queryStr.append(" and model.fundSanction.govtSchemeId in (:schemeIdsList) ");
+		if(startDate != null && endDate != null)
+			queryStr.append(" and ( date(model.fundSanction.updatedTime) between :startDate and :endDate)  ");
+		if(searchScopeId != null && searchScopeId.longValue()>0L)
+			queryStr.append(" and model.locationScopeId =:searchScopeId ");
+		if(searchScopeValuesList != null && searchScopeValuesList.size()>0)
+			queryStr.append(" and model.locationValue in (:searchScopeValuesList) ");
+		
+		queryStr.append(" group by model.locationScopeId,model.locationValue,model.fundSanction.financialYearId,model.fundSanction.department.departmentId,model.fundSanction.govtSchemeId ");
+		queryStr.append(" order by model.locationScopeId,model.locationValue,model.fundSanction.financialYearId,model.fundSanction.department.departmentId,model.fundSanction.govtSchemeId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		
@@ -84,59 +137,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		return query.list();
 	}
 	
-	/*
-	 * Date : 08/06/2017
-	 * Author :Srishailam Pittala
-	 * @description : to get financial year ,  Department wise and scheme wise funds transaction details
-	 */
-	public List<Object[]> getFinancialYearWiseDeptsWiseScheameDetails(List<Long> financialYearIdsList,List<Long> deptIdsList,
-			List<Long> sourceIdsList,List<Long> schemeIdsList,Date startDate,Date endDate,Long searchScopeId,List<Long> searchScopeValuesList){
-		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select distinct  model.govtSchemeId, model.govtScheme.schemeName, "
-				+ " model.financialYear.financialYearId, model.financialYear.yearDesc, count(model.govtSchemeId), sum(model.sactionAmount), "
-				+ " model.locationScopeId, model.locationValue, model.locationAddress.districtId, model.locationAddress.district.districtName, "
-				+ " model.locationAddress.constituencyId, model.locationAddress.constituency.name, model.department.departmentId, model.department.departmentName ");
-		queryStr.append(" from FundSanction model ");
-		queryStr.append(" where model.isDeleted ='N' ");
-		if(financialYearIdsList != null && financialYearIdsList.size()>0)
-			queryStr.append(" and model.financialYearId in (:financialYearIdsList) ");
-		if(deptIdsList != null && deptIdsList.size()>0)
-			queryStr.append(" and model.department.departmentId in (:deptIdsList) ");
-		if(sourceIdsList != null && sourceIdsList.size()>0)
-			queryStr.append("  ");
-		if(schemeIdsList != null && schemeIdsList.size()>0)
-			queryStr.append(" and model.govtSchemeId in (:schemeIdsList) ");
-		if(startDate != null && endDate != null)
-			queryStr.append(" and ( date(model.updatedTime) between :startDate and :endDate)  ");
-		if(searchScopeId != null && searchScopeId.longValue()>0L)
-			queryStr.append(" and model.locationScopeId =:searchScopeId ");
-		if(searchScopeValuesList != null && searchScopeValuesList.size()>0)
-			queryStr.append(" and model.locationValue in (:searchScopeValuesList) ");
-		
-		queryStr.append(" group by model.locationScopeId,model.locationValue,model.financialYearId,model.department.departmentId,model.govtSchemeId ");
-		queryStr.append(" order by model.locationScopeId,model.locationValue,model.financialYearId,model.department.departmentId,model.govtSchemeId ");
-		
-		Query query = getSession().createQuery(queryStr.toString());
-		
-		if(financialYearIdsList != null && financialYearIdsList.size()>0)
-			query.setParameterList("financialYearIdsList", financialYearIdsList);
-		if(deptIdsList != null && deptIdsList.size()>0)
-			query.setParameterList("deptIdsList", deptIdsList);
-		if(sourceIdsList != null && sourceIdsList.size()>0)
-			;
-		if(schemeIdsList != null && schemeIdsList.size()>0)
-			query.setParameterList("schemeIdsList", schemeIdsList);
-		if(startDate != null && endDate != null){
-			query.setDate("startDate", startDate);
-			query.setDate("endDate", endDate);
-		}
-		if(searchScopeId != null && searchScopeId.longValue()>0L)
-			query.setParameter("searchScopeId", searchScopeId);
-		if(searchScopeValuesList != null && searchScopeValuesList.size()>0)
-			query.setParameterList("searchScopeValuesList", searchScopeValuesList);
-		
-		return query.list();
-	}
+	
 	
 	/**
 	 * @author Srishailam Pittala <srishailam.pittala@itgrids.com>
@@ -242,7 +243,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 
 	@Override
 	public List<Long> getLocationValues(Long scopeId) {
-		Criteria criteria=getSession().createCriteria(FundSanction.class);
+		Criteria criteria=getSession().createCriteria(FundSanctionLocation.class);
 		ProjectionList projectionList = Projections.projectionList();
 		projectionList.add(Projections.distinct(Projections.property("locationValue")));
 		criteria.setProjection(projectionList);
@@ -253,31 +254,29 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 	public List<Object[]> getLocationWiseAmount(Long levelId, List<Long> levelValues,Date fromDate,Date toDate,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList){
 		StringBuilder sb = new StringBuilder();  
 		sb.append(" select "
-				+ " model.financialYear.financialYearId "//0
-				+ " ,model.financialYear.yearDesc "//1
-				+ " ,model.locationValue "//2
-				+ " ,count(model.locationValue) "//3
-				+ " ,sum(model.sactionAmount) "//4
+				+ " fundSanctionLocation.fundSanction.financialYear.financialYearId "//0
+				+ " ,fundSanctionLocation.fundSanction.financialYear.yearDesc "//1
+				+ " ,fundSanctionLocation.locationValue "//2
+				+ " ,count(fundSanctionLocation.locationValue) "//3
+				+ " ,sum(fundSanctionLocation.fundSanction.sactionAmount) "//4
 				+ " from "
-				+ " FundSanction model "
-				+ " left outer join model.locationAddress locationAddress "
-				+ " left outer join locationAddress.district district "
-				+ " left outer join locationAddress.constituency constituency "
+				+ " FundSanctionLocation fundSanctionLocation "
 				+ " where "
-				+ " model.isDeleted = 'N' "
-				+ " and model.locationScopeId = :levelId "
-				+ " and model.locationValue in (:levelValues) "
-				+ " and model.insertedTime between :fromDate and :toDate ");
+				+ " fundSanctionLocation.isDeleted = 'N' "
+				+ " and fundSanctionLocation.fundSanction.isDeleted = 'N' "
+				+ " and fundSanctionLocation.locationScopeId = :levelId "
+				+ " and fundSanctionLocation.locationValue in (:levelValues) "
+				+ " and fundSanctionLocation.fundSanction.insertedTime between :fromDate and :toDate ");
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
-			sb.append(" and model.financialYearId in (:financialYrIdList) ");
+			sb.append(" and fundSanctionLocation.fundSanction.financialYear.financialYearId in (:financialYrIdList) ");
 		}
 		if(deptIdList !=null && deptIdList.size() > 0){
-			sb.append(" and model.department.departmentId in (:deptIdList) ");
+			sb.append(" and fundSanctionLocation.fundSanction.department.departmentId in (:deptIdList) ");
 		}
 		if(sourceIdList !=null && sourceIdList.size() > 0){
 			
 		}
-		sb.append(" group by model.financialYear.financialYearId, model.locationValue order by model.financialYear.financialYearId ");
+		sb.append(" group by fundSanctionLocation.fundSanction.financialYear.financialYearId, fundSanctionLocation.locationValue order by fundSanctionLocation.fundSanction.financialYear.financialYearId ");
 		Query query = getSession().createQuery(sb.toString());
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
 			query.setParameterList("financialYrIdList", financialYrIdList);
@@ -294,20 +293,20 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 	@Override
 	public List<Object[]> getLocationInfo(Long levelId, List<Long> levelValues){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select distinct model.locationValue ");
+		sb.append(" select distinct fundSanctionLocation.locationValue ");
 		if(levelId != null && levelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 			sb.append(" , district.districtName ");
 		}else if(levelId != null && levelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			sb.append(" , constituency.name ");
 		}
-		sb.append(" from FundSanction model "
-				+ " left outer join model.locationAddress locationAddress "
+		sb.append(" from FundSanctionLocation fundSanctionLocation "
+				+ " left outer join fundSanctionLocation.locationAddress locationAddress "
 				+ " left outer join locationAddress.district district "
 				+ " left outer join locationAddress.constituency constituency "
 				+ " where "
-				+ " model.isDeleted = 'N' "
-				+ " and model.locationScopeId = :levelId "
-				+ " and model.locationValue in (:levelValues) ");
+				+ " fundSanctionLocation.isDeleted = 'N' "
+				+ " and fundSanctionLocation.locationScopeId = :levelId "
+				+ " and fundSanctionLocation.locationValue in (:levelValues) ");
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("levelId", levelId);
 		query.setParameterList("levelValues", levelValues);
@@ -619,33 +618,33 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select " );
 		if(group.equalsIgnoreCase("two")){
-			sb.append(" modal.grantType.grantTypeId, modal.grantType.type, " );
+			sb.append(" fundSanctionLocation.fundSanction.grantType.grantTypeId, fundSanctionLocation.fundSanction.grantType.type, " );
 		}
-		sb.append(" count(modal.locationValue),sum(modal.sactionAmount) ");
-		sb.append(" from FundSanction modal where modal.isDeleted='N' ");
-		
+		sb.append(" count(fundSanctionLocation.locationValue),sum(fundSanctionLocation.fundSanction.sactionAmount) ");
+		sb.append(" from FundSanctionLocation fundSanctionLocation where fundSanctionLocation.isDeleted='N' ");
+		sb.append(" and fundSanctionLocation.fundSanction.isDeleted='N' ");
 		
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
-			sb.append(" and modal.financialYearId in (:financialYrIdList)  " );
+			sb.append(" and fundSanctionLocation.fundSanction.financialYearId in (:financialYrIdList)  " );
 		}
 		if(sDate != null && eDate != null){
-			sb.append(" and date(modal.insertedTime) between  :sDate and :eDate " );
+			sb.append(" and date(fundSanctionLocation.fundSanction.insertedTime) between  :sDate and :eDate " );
 		}
 		
 		if(scopeId != null && scopeId.longValue() > 0l ){
-			sb.append(" and modal.locationScopeId = :locationScopeId  " );
+			sb.append(" and fundSanctionLocation.locationScopeId = :locationScopeId  " );
 		}
 		if(departmentIdList != null && departmentIdList.size() > 0 ){
-			sb.append(" and modal.department.departmentId in (:departmentIdList)  " );
+			sb.append(" and fundSanctionLocation.fundSanction.department.departmentId in (:departmentIdList)  " );
 		}
 		if(sourceIdList != null && sourceIdList.size() > 0 ){
 			
 		}
 		sb.append(" group by ");
 		if(group.equalsIgnoreCase("two")){
-			sb.append(" modal.grantType.grantTypeId,modal.locationScopeId  " );
+			sb.append(" fundSanctionLocation.fundSanction.grantType.grantTypeId,fundSanctionLocation.locationScopeId  " );
 		}else{
-			sb.append(" modal.locationScopeId  " );
+			sb.append(" fundSanctionLocation.locationScopeId  " );
 		}
 		
 		Query query = getSession().createQuery(sb.toString());
@@ -669,23 +668,24 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 	@Override
 	public List<Object[]> getTotalFundForScheme(List<Long> financialYrIdList,List<Long> departmentIdList,List<Long> sourceIdLIst,List<Long> schemeIdList,Date sDate,Date eDate){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select count(distinct modal.govtScheme.govtSchemeId),sum(modal.sactionAmount) " );
+		sb.append(" select count(distinct fundSanctionLocation.fundSanction.govtScheme.govtSchemeId),sum(fundSanctionLocation.fundSanction.sactionAmount) " );
 		
-		sb.append(" from FundSanction modal where modal.isDeleted='N' ");
+		sb.append(" from FundSanctionLocation fundSanctionLocation where fundSanctionLocation.isDeleted='N' ");
+		sb.append(" and fundSanctionLocation.fundSanction.isDeleted='N' ");
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
-			sb.append(" and modal.financialYearId in (:financialYrIdList)  " );
+			sb.append(" and fundSanctionLocation.fundSanction.financialYearId in (:financialYrIdList)  " );
 		}
 		if(schemeIdList != null && schemeIdList.size() > 0){
-			sb.append(" and modal.govtScheme.govtSchemeId in (:schemeIdList) " );
+			sb.append(" and fundSanctionLocation.fundSanction.govtScheme.govtSchemeId in (:schemeIdList) " );
 		}
 		if(departmentIdList != null && departmentIdList.size() > 0){
-			sb.append(" and modal.department.departmentId in (:departmentIdList)  " );
+			sb.append(" and fundSanctionLocation.fundSanction.department.departmentId in (:departmentIdList)  " );
 		}
 		if(sourceIdLIst != null && sourceIdLIst.size() > 0){
 			//;
 		}
 		if(sDate != null && eDate != null){
-			sb.append(" and date(modal.insertedTime) between  :sDate and :eDate " );
+			sb.append(" and date(fundSanctionLocation.fundSanction.insertedTime) between  :sDate and :eDate " );
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
@@ -714,13 +714,14 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 			sb.append(" constituency.constituencyId ");
 		}
 		sb.append(" from "
-				+ " FundSanction fundSanction "
-				+ " left outer join fundSanction.locationAddress locationAddress "
+				+ " FundSanctionLocation fundSanctionLocation "
+				+ " left outer join fundSanctionLocation.fundSanction fundSanction "
+				+ " left outer join fundSanctionLocation.locationAddress locationAddress "
 				+ " left outer join locationAddress.district district ");
 		if(blockLevelId != null && blockLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
 			sb.append(" left outer join locationAddress.constituency constituency ");
 		}
-		sb.append(" where fundSanction.isDeleted='N' and fundSanction.locationScopeId = :blockLevelId ");
+		sb.append(" where fundSanctionLocation.isDeleted='N' and fundSanctionLocation.fundSanction.isDeleted='N' and fundSanctionLocation.locationScopeId = :blockLevelId ");
 		if(locationLevelId != null && locationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
 			sb.append(" and district.districtId = :locationId ");
 		}else if(locationLevelId != null && locationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
@@ -737,18 +738,18 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" select distinct district.districtId, district.districtName");
 		
 		sb.append(" from "
-				+ " FundSanction fundSanction "
-				+ " left outer join fundSanction.locationAddress locationAddress "
+				+ " FundSanctionLocation fundSanctionLocation "
+				+ " left outer join fundSanctionLocation.locationAddress locationAddress "
 				+ " left outer join locationAddress.district district ");
-		sb.append(" where fundSanction.isDeleted='N' and fundSanction.locationScopeId = :locationScopeId ");
+		sb.append(" where fundSanctionLocation.isDeleted='N' and fundSanctionLocation.locationScopeId = :locationScopeId ");
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
-			sb.append(" and fundSanction.financialYearId in (:financialYrIdList)  " );
+			sb.append(" and fundSanctionLocation.fundSanction.financialYearId in (:financialYrIdList)  " );
 		}
 		if(sDate != null && eDate != null){
-			sb.append(" and date(fundSanction.insertedTime) between  :sDate and :eDate " );
+			sb.append(" and date(fundSanctionLocation.fundSanction.insertedTime) between  :sDate and :eDate " );
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
-			sb.append(" fundSanction.department.departmentId in (:deptIdList) ");
+			sb.append(" fundSanctionLocation.fundSanction.department.departmentId in (:deptIdList) ");
 		}
 		if(sourceIdList != null && sourceIdList.size() > 0){
 			
@@ -774,20 +775,20 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" select distinct constituency.constituencyId, constituency.name ");
 		
 		sb.append(" from "
-				+ " FundSanction fundSanction "
-				+ " left outer join fundSanction.locationAddress locationAddress "
+				+ " FundSanctionLocation fundSanctionLocation "
+				+ " left outer join fundSanctionLocation.locationAddress locationAddress "
 				+ " left outer join locationAddress.district district "
 				+ " left outer join locationAddress.constituency constituency ");
-		sb.append(" where fundSanction.isDeleted='N' and fundSanction.locationScopeId = :locationScopeId "
+		sb.append(" where fundSanctionLocation.isDeleted='N' and fundSanctionLocation.locationScopeId = :locationScopeId "
 				+ " and district.districtId = :superLocationId ");
 		if(financialYrIdList != null && financialYrIdList.size() > 0){
-			sb.append(" and fundSanction.financialYearId in (:financialYrIdList)  " );
+			sb.append(" and fundSanctionLocation.fundSanction.financialYearId in (:financialYrIdList)  " );
 		}
 		if(sDate != null && eDate != null){
-			sb.append(" and date(fundSanction.insertedTime) between  :sDate and :eDate " );
+			sb.append(" and date(fundSanctionLocation.fundSanction.insertedTime) between  :sDate and :eDate " );
 		}
 		if(deptIdList != null && deptIdList.size() > 0){
-			sb.append(" fundSanction.department.departmentId in (:deptIdList) ");
+			sb.append(" fundSanctionLocation.fundSanction.department.departmentId in (:deptIdList) ");
 		}
 		if(sourceIdList != null && sourceIdList.size() > 0){
 			
