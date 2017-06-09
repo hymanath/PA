@@ -12,6 +12,10 @@
 		getLocationWiseFundDetails(4,'highest','highFundCons');
 		getLocationWiseFundDetails(3,'lowest','lowFundDist');
 		getLocationWiseFundDetails(4,'lowest','lowFundCons');
+		getLocationWiseFundDetails(5,'highest','highFundMandal');
+		getLocationWiseFundDetails(6,'highest','highFundVillage');
+		getLocationWiseFundDetails(5,'lowest','lowFundMandal');
+		getLocationWiseFundDetails(6,'lowest','lowFundVillage');
 		getAverageFundForAnyLevel(3,'avgFundDist');
 		getAverageFundForAnyLevel(4,'avgFundCons');
 		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
@@ -1516,9 +1520,9 @@
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
-		  var searchLevelId = 0;
+		  var searchLevelId = 3;
 		  var searchLevelVals = [];
-		  //searchLevelVals.push(1);
+		  searchLevelVals.push(13);
 		  
 		  var json = {
 			blockLevelId : 4, 
@@ -1554,9 +1558,9 @@
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
 		  var deptIdsArr = [];
-		var searchLevelId = 0;
+		var searchLevelId = 3;
 		var searchLevelVals = [];
-		//searchLevelVals.push(1);
+		searchLevelVals.push(13);
 		
 		  var json = {
 			blockLevelId : 4, 
