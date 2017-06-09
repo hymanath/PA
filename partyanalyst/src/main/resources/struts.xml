@@ -17557,7 +17557,7 @@
   	<result type="json" name="success">		   
     	<param name="root">alertCoreDashBoardVOs</param>
   	</result>	
-   </action> 
+   </action>
    <action name="getDistrictForGrievanceRequestAction" class="meekosamGrievanceAction"  method="getDistrictForGrievanceRequest">
 		<result type="json" name="success">		   
 			<param name="root">keyValueVOList</param>
@@ -17583,5 +17583,10 @@
 			<param name="root">alertOverviewVO</param>       
 		</result> 
 	</action>
+  	<action name="uploadDocumentsForRejoinderStatusAction" class="alertManagementSystemAction" method="uploadDocumentsForRejoinderStatus">
+  	   <result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+    </action>
  </package>
 </struts>
