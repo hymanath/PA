@@ -1527,6 +1527,17 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 							}
 						 }
 					 }
+					 if(alertVO.getStatusId() == 10l){
+						 List<String> rejinderStatusList = alertAssignedOfficerTrackingNewDAO.getRejoinderStatusForAlert(alertId);
+						 if(commonMethodsUtilService.isListOrSetValid(rejinderStatusList)){
+							 String status = rejinderStatusList.get(0);
+							 	alertVO.setComment(commonMethodsUtilService.getStringValueForObject(status));
+						 }	 
+						 List<AlertVO> rejoindcumntList = alertManagementSystemService.getRejoinderDocumentsForAlert(alertId);
+						 if(commonMethodsUtilService.isListOrSetValid(rejoindcumntList)){
+							 alertVO.setRejinderDocList(rejoindcumntList);
+						 }
+					 }
 					 alertVO.setStatusColor(params[32] != null ?params[32].toString() : "");
 					 if(dueDateList != null && dueDateList.size() > 0){
 						 Date date =new SimpleDateFormat("yyyy-MM-dd").parse(dueDateList.get(dueDateList.size()-1).toString());

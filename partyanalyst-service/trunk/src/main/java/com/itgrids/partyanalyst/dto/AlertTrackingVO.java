@@ -49,6 +49,7 @@ public class AlertTrackingVO {
 	private String category;
 	private Long categoryId;
 	private String approvedAmount;
+	private String rejinderStatus;
 	public AlertTrackingVO(){}
 	public AlertTrackingVO(Long alertId,String comment,String date){
 		this.alertId=alertId;
@@ -331,6 +332,12 @@ public class AlertTrackingVO {
 	}
 	public void setApprovedAmount(String approvedAmount) {
 		this.approvedAmount = approvedAmount;
+	}
+	public String getRejinderStatus() {
+		return rejinderStatus;
+	}
+	public void setRejinderStatus(String rejinderStatus) {
+		this.rejinderStatus = rejinderStatus;
 	}
 	
 }

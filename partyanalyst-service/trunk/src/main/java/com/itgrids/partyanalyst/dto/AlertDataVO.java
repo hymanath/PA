@@ -55,7 +55,7 @@ public class AlertDataVO {
 	private String dueDate;
 	private Long severityId;
 	private List<AlertTrackingVO> subList1 = new ArrayList<AlertTrackingVO>(0);
-	private List<KeyValueVO> rejinderDocList = new ArrayList<KeyValueVO>(0);
+	private List<AlertVO> rejinderDocList = new ArrayList<AlertVO>(0);
 	
 	public List<AlertTrackingVO> getSubList1() {
 		return subList1;
@@ -322,10 +322,10 @@ public class AlertDataVO {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
-	public List<KeyValueVO> getRejinderDocList() {
+	public List<AlertVO> getRejinderDocList() {
 		return rejinderDocList;
 	}
-	public void setRejinderDocList(List<KeyValueVO> rejinderDocList) {
+	public void setRejinderDocList(List<AlertVO> rejinderDocList) {
 		this.rejinderDocList = rejinderDocList;
 	}
 	
