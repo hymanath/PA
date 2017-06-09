@@ -20,9 +20,6 @@ public class FundSanction{
 	private static final long serialVersionUID = -2853930539938433902L;
 
 	private Long fundSactionId;
-	private Long locationScopeId;
-	private Long locationValue;
-	private Long addressId;
 	private String workName;
 	private Long sactionAmount;
 	private String goNoDate;
@@ -51,32 +48,6 @@ public class FundSanction{
 	public void setFundSactionId(Long fundSactionId) {
 		this.fundSactionId = fundSactionId;
 	}
-
-	@Column(name="location_scope_id")
-	public Long getLocationScopeId() {
-		return locationScopeId;
-	}
-	public void setLocationScopeId(Long locationScopeId) {
-		this.locationScopeId = locationScopeId;
-	}
-	
-	@Column(name="location_value")
-	public Long getLocationValue() {
-		return locationValue;
-	}
-
-	public void setLocationValue(Long locationValue) {
-		this.locationValue = locationValue;
-	}
-	
-	@Column(name="address_id")
-	public Long getAddressId() {
-		return addressId;
-	}
-	public void setAddressId(Long addressId) {
-		this.addressId = addressId;
-	}
-
 	@Column(name="work_name")
 	public String getWorkName() {
 		return workName;
