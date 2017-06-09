@@ -751,8 +751,13 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			}
 			List<Object[]> amountList = null;
 			List<Object[]> locationInfoList = null;
+			
+			List<Long> financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
+			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
+			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
+			
 			if(levelValues != null && levelValues.size() > 0){//[1, 2014-2015, 109, 5, 19520000]
-				amountList = fundSanctionDAO.getLocationWiseAmount(levelId,levelValues,fromDate,toDate,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId());
+				amountList = fundSanctionDAO.getLocationWiseAmount(levelId,levelValues,fromDate,toDate,financialYearIdsList,deptIdsList,sourceIdsList);
 				if(levelId != null && levelId.longValue() > IConstants.STATE_LEVEL_SCOPE_ID)
 				locationInfoList = fundSanctionDAO.getLocationInfo(levelId, levelValues);
 			}
@@ -1063,9 +1068,10 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 			Date eDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
 			
 			inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
-			
+			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
+			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
 			//scope wise count and amount dtls
-			List<Object[]> totalFundAndCountDtls= fundSanctionDAO.getTotalFundAndCountDtls(inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),sDate,eDate,inputVO.getBlockLevelId(),"one",inputVO.getDeptId());
+			List<Object[]> totalFundAndCountDtls= fundSanctionDAO.getTotalFundAndCountDtls(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId(),"one");
 			if(totalFundAndCountDtls != null && totalFundAndCountDtls.size() > 0){
 				retusnVo.setTotalAmt(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]));
 				//retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[0]))));
@@ -1085,7 +1091,7 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 			List<Object[]> grantTypeDtlsList = grantTypeDAO.getGrandTypeDtls();
 			setGrantTypeToVo(retusnVo,grantTypeDtlsList);
 			//grant wise then scope wise count and amount dtls
-			List<Object[]> totalFundAndCountGrantWiseList = fundSanctionDAO.getTotalFundAndCountDtls(inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),sDate,eDate,inputVO.getBlockLevelId(),"two",inputVO.getDeptId());
+			List<Object[]> totalFundAndCountGrantWiseList = fundSanctionDAO.getTotalFundAndCountDtls(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId(),"two");
 			if(totalFundAndCountGrantWiseList != null && totalFundAndCountGrantWiseList.size() > 0){
 				for(Object[] param : totalFundAndCountGrantWiseList){
 					fundDetailsVO = (LocationFundDetailsVO)setterAndGetterUtilService.getMatchedVOfromList(retusnVo.getDetailsVOs(), "id", commonMethodsUtilService.getStringValueForObject(param[0]));
@@ -1093,15 +1099,15 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 					//retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[0]))));
 					
 					if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID)
-						retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/IConstants.TOTAL_AP_TOTAL_DISTRICTS));
+						fundDetailsVO.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/IConstants.TOTAL_AP_TOTAL_DISTRICTS));
 					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
-						retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/IConstants.TOTAL_AP_TOTAL_CONSTITUENCIES));
+						fundDetailsVO.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/IConstants.TOTAL_AP_TOTAL_CONSTITUENCIES));
 					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID)
-						retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/IConstants.TOTAL_AP_TOTAL_MANDALS));
+						fundDetailsVO.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/IConstants.TOTAL_AP_TOTAL_MANDALS));
 					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID)
-						retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/IConstants.TOTAL_AP_TOTAL_VILLAGES));
+						fundDetailsVO.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/IConstants.TOTAL_AP_TOTAL_VILLAGES));
 					
-					retusnVo.setPerc(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),Long.parseLong(retusnVo.getTotalAmt())));
+					fundDetailsVO.setPerc(commonMethodsUtilService.calculatePercantage(fundDetailsVO.getAverageAmt().longValue(),Long.parseLong(fundDetailsVO.getTotalAmt())));
 					
 				}
 			}
@@ -1127,8 +1133,11 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 			Date eDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
 			
 			inputVO.setFinancialYrIdList(commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList()));
+			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
+			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
+			List<Long> schemeIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSchemeIdsList());
+			List<Object[]> totalFundForSchemeList = fundSanctionDAO.getTotalFundForScheme(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,schemeIdsList,sDate,eDate);
 			
-			List<Object[]> totalFundForSchemeList = fundSanctionDAO.getTotalFundForScheme(inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),inputVO.getSchemeId(),sDate,eDate,inputVO.getDeptId());
 			if(totalFundForSchemeList != null && totalFundForSchemeList.size() > 0){
 				if(!commonMethodsUtilService.getStringValueForObject(totalFundForSchemeList.get(0)[1]).equalsIgnoreCase("0")){
 					retusnVo.setTotalAmt(commonMethodsUtilService.getStringValueForObject(totalFundForSchemeList.get(0)[1]));
@@ -1329,11 +1338,14 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			superLocationIdStr = superLocationIdStr.substring(1);
 			Long superLocationId = Long.parseLong(superLocationIdStr);
 			Long superLocationLevelId = Long.parseLong(superLocationLevelIdStr);
+			
+			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
+			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
 			if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
-				locationList = fundSanctionDAO.getAllDistrictByStateId(superLocationId,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),IConstants.DISTRICT_LEVEL_SCOPE_ID,sDate,eDate);
+				locationList = fundSanctionDAO.getAllDistrictByStateId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,IConstants.DISTRICT_LEVEL_SCOPE_ID,sDate,eDate);
 				lvlIdStr = IConstants.DISTRICT_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
-				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),inputVO.getDeptId(),inputVO.getSourceId(),IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,sDate,eDate);
+				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,sDate,eDate);
 				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
 				
