@@ -3,17 +3,22 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
@@ -36,6 +41,8 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.ICccDashboardService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.RandomNumberGeneraion;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -6220,4 +6227,50 @@ public String getAlertSourceWiseAlert(){
 		}
 		return Action.SUCCESS;	
 	}
+	public String uploadDocumentsForRejoinderStatus(){
+		try{
+			
+			Long userId = 0l;
+			
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				userId = regVo.getRegistrationID();
+			}
+			
+			 String imageName=null;
+			 Long alertId = alertVO.getAlertId();
+				
+				for(int i=0;i<imageForDisplay.size();i++){
+		        	  String fileType = imageForDisplayContentType.get(i).substring(imageForDisplayContentType.get(i).indexOf("/")+1, imageForDisplayContentType.get(i).length());
+			        	 
+			          imageName= UUID.randomUUID().toString()+"_"+imageForDisplayFileName.get(i);
+			          //Integer randomNumber = RandomNumberGeneraion.randomGenerator(8);
+			          
+			          String staticPath = IConstants.STATIC_CONTENT_FOLDER_URL;
+				  		 
+				  		Calendar calendar = Calendar.getInstance();
+						calendar.setTime(new Date());
+						int year = calendar.get(Calendar.YEAR);
+						SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+						String dateStr = sdf.format(new Date());
+						 String yearStr = String.valueOf(year);
+						 
+						 String filePath = staticPath+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr;
+				        
+				        // String filePath=IConstants.STATIC_CONTENT_FOLDER_URL+"images/"+IConstants.ALERTS_ATTACHMENTS+"/"+year+"/"+dateStr;//STATIC_CONTENT_FOLDER_URL/images/IConstants.ALERTS_ATTACHMENTS/year/datestr
+			        	 
+			          File fileToCreate = new File(filePath,imageName);
+			          FileUtils.copyFile(imageForDisplay.get(i), fileToCreate);
+					  
+					  StringBuilder pathBuilder = new StringBuilder();
+					  pathBuilder.append("alerts_attachments/").append(yearStr).append("/").append(dateStr).append("/").append(imageName);
+					  resultStatus = alertManagementSystemService.uploadDocumentsForRejoinderStatus(pathBuilder,alertId,userId);
+				 }
+		}catch (Exception e) {
+			LOG.error("Exception Occured in reportUploadForm() method, Exception - ",e); 
+		}
+		return Action.SUCCESS;	
+	
+	}
+	
 }

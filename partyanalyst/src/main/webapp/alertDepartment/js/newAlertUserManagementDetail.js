@@ -4,7 +4,7 @@ if(wurl.length == 3){
 	wurl = url.substr(0,(url.indexOf(".in")+3));
 }
 var actionUrl = '';
-var alertStatusGlobalId = 0;  
+var alertStatusGlobalId = 0; 
 onLoadCalls()
 function onLoadCalls()
 {
@@ -356,6 +356,9 @@ function onLoadClicks()
 		$("#errMsgAprAmuntId").html('');
 		$("#approvedAmountId").val('');
 		alertStatusGlobalId= $(this).attr("attr_id");
+		if(alertStatusGlobalId == 10){
+			$("#rejinderRespnseId").hide();
+		}
 		var statusSelectedName = $("#radio-"+alertStatusGlobalId).parent().find('span').html();
 		if(statusSelectedName == "Proposal"){
 			$(".proposalAppendBlockDivCls").show();
@@ -911,7 +914,6 @@ function onLoadClicks()
 		//$('input[name=statusChange]:checked', '#updateStatusChangeBody').val()
 		var comment = $("#updateStatusChangeComment").val()
 		var alertId = $(this).attr("attr_alert_id");
-		//var statusId=$('input[name=statusChange]:checked', '#updateStatusChangeBody').val();
 		var subTaskId = $(this).attr("subTaskId");
 		var proposalCategoryId =0;
 		 var amount = 0;
@@ -922,6 +924,7 @@ function onLoadClicks()
 		}
 		if(alertStatusGlobalId == 10){
 			 rejoinderActionId= $("input[name=RejoinderChekBx]:checked").val();
+			 var imageVal = $("#rejoinderAttachmentId").val();
 		}
 		
 		if(subTaskId != null && subTaskId>0){
@@ -942,16 +945,24 @@ function onLoadClicks()
 				alert("Please Enter Amount");
 				return;
 			 }
-			 var numericExpression = /^[0-9]+$/;
-			if(!$('#amountId').val().match(numericExpression)){
-				$("#errMsgAmuntId").html('<span style="color:red">Please Enter Numeric Value Only.....</span>');
+				 var numericExpression = /^[0-9]+$/;
+				if(!$('#amountId').val().match(numericExpression)){
+					$("#errMsgAmuntId").html('<span style="color:red">Please Enter Numeric Value Only.....</span>');
+					return;
+				}else{
+					$("#errMsgAmuntId").html('');
+				}
+			}
+		}
+		if(alertStatusGlobalId == 10){
+			if(typeof rejoinderActionId == "undefined"){
+				alert("Please Check Any Rejoinder Action");
 				return;
-			}else{
-				$("#errMsgAmuntId").html('');
 			}
-			}
-			
-			
+			if(imageVal == ''){
+				alert("Please Browse File");
+				return;
+			 }
 		}
 		if(comment == null || comment.trim() == "")
 		{
@@ -970,7 +981,7 @@ function onLoadClicks()
 				comment: comment,
 				proposalCategoryId : proposalCategoryId,
 				proposalAmount : amount,
-				rejoinderActionTypeId : 0
+				rejoinderActionTypeId : rejoinderActionId
 			}
 			
 		if(subTaskId != null && subTaskId>0){
@@ -1002,36 +1013,41 @@ function onLoadClicks()
 			url: callURL,
 			data: {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			
-			$("#updateStatusChangeAjaxSymbol").html('');
-			if(result != null && result.exceptionMsg == 'success' && result.message == null)
-			{
-				$("#updateStatusChangeMsg").html("status updated successfully");
-				$("#commentPostingSpinner").html("status updated successfully");
-				
-				if(subTaskId == null || subTaskId.length == 0){
-					getCommentsForAlert(alertId);
+			if(alertStatusGlobalId == 10){
+				uploadAttachmentsFrRejinderStatus();
+			} 
+			setTimeout(function(){
+			 $("#updateStatusChangeAjaxSymbol").html('');
+				if(result != null && result.exceptionMsg == 'success' && result.message == null)
+				{
+					$("#updateStatusChangeMsg").html("status updated successfully");
+					$("#commentPostingSpinner").html("status updated successfully");
 					
-				}else{
-					getSubAlertsDetails(alertId,subTaskId);
-				}
-				
-				setTimeout(function(){
-					$("#commentPostingSpinner").html(" ");
-					$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
-					$('#alertManagementPopup1').modal('hide');
+					if(subTaskId == null || subTaskId.length == 0){
+						getCommentsForAlert(alertId);
+						
+					}else{
+						getSubAlertsDetails(alertId,subTaskId);
+					}
 					
-					
-				},1500);
-				rightSideExpandView(alertId);
 					setTimeout(function(){
-						$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
-					},750);
-			}else if(result.message != null && result.message == "Already In ProposalStatus"){
-				alert("This Alert Already In ProposalStatus.Just Update Proposal Status");
-			}else{
-				alert("try again");
-			}
+						$("#commentPostingSpinner").html(" ");
+						$("#updateStatusChangeMsg").html("status not updated successfully,Pls try again");
+						$('#alertManagementPopup1').modal('hide');
+						
+						
+					},1500);
+					rightSideExpandView(alertId);
+						setTimeout(function(){
+							$("[expanded-block='block1']").show().css("transition"," ease-in, width 0.7s ease-in-out");
+						},750);
+				}else if(result.message != null && result.message == "Already In ProposalStatus"){
+					alert("This Alert Already In ProposalStatus.Just Update Proposal Status");
+				}else{
+					alert("try again");
+				}
+			},2000);
+			
 		});
 	});
 	$(document).on("click",".proposalCheckbox",function(){
@@ -1454,6 +1470,8 @@ function displayStatus(result)
 }
 
 function getAlertStatusHistory(alertId){
+	alertStatusGlobalId = 0;
+	
 	var jsObj ={
 		alertId : alertId
 	}
@@ -1681,6 +1699,10 @@ function rightSideExpandView(alertId)
 									str+='<li data-toggle="tooltip" data-placement="top" title="Present Proposal Status" id="proposalId" style="display:none;" > ';
 										str+='<span class="status-icon arrow-icon"></span><span id="presntPrposalstatusId"></span>';
 									str+='</li>';
+								
+									str+='<li data-toggle="tooltip" data-placement="top" title="Present Rejoinder Status" id="rejoinderId" style="display:none;" > ';
+										str+='<span class="status-icon arrow-icon"></span><span id="presntRejoinderstatusId"></span>';
+									str+='</li>';
 									
 									 str+='<li class="list-icons-down" data-toggle="tooltip" data-placement="top" title="Sub Task "  id="displaySubTasksliId" style="display:none;">';
 										str+='<i class="fa fa-level-down" aria-hidden="true" id="displaySubTasksli"></i>';
@@ -1789,6 +1811,7 @@ function rightSideExpandView(alertId)
 							str+='<div id="alertDetails"></div>';
 							str+='<div id="articleAttachment"></div>';
 							str+='<div id="alertCategory"></div>';
+							str+='<div id="rejoinderAttachments"></div>';
 							str+='<div id="alertSubtask"></div>';
 							//str+='<div id="alertComments"></div>';
 							str+='<div id="alertGeneralComments"></div>';
@@ -2511,6 +2534,7 @@ function getAlertData(alertId)
 }
   
   var globalProposalStatus;
+  var globalRejoinderStatus;
 function buildAlertDataNew(result)
 {
 	var str='';
@@ -2519,7 +2543,13 @@ function buildAlertDataNew(result)
 	if($("#displayStatusId #statusId").html() == 'Proposal'){
 		$("#proposalId").show();
 		globalProposalStatus = result[0].committeeName;
-		$("#presntPrposalstatusId").html(result[0].committeeName)
+		$("#presntPrposalstatusId").html(result[0].committeeName);
+	}
+	if($("#displayStatusId #statusId").html() == 'Rejoinder'){
+		$("#rejoinderId").show();
+		globalRejoinderStatus = result[0].comment;
+		$("#presntRejoinderstatusId").html(result[0].comment);
+		//globalRejoinderStatus = result[0].comment;
 	}
 	$("#impactLevel").html(result[0].regionScope);
 	if(result[0].severity != null)
@@ -2593,8 +2623,54 @@ function buildAlertDataNew(result)
 		}
 		
 	str1+='</div>';
+	
+	var str2='';
+	
+	str2+='<div class="row m_top20">';
+	
+		if(result[i].rejinderDocList !=null && result[i].rejinderDocList.length>0){
+			str2+='<div class="col-sm-1 text-center body-icons">';
+				str2+='<i class="fa fa-reply-all fa-2x"></i>';
+			str2+='</div>';
+			str2+='<div class="col-sm-11">';
+				str2+='<div class="bg_EE">';
+					for(var j in result[i].rejinderDocList)
+					{
+						str2+='<div class="media">';
+							str2+='<div class="media-left">';
+							if(j == 0){
+								str2+='<i class="fa fa-commenting-o fa-2x" aria-hidden="true" style="color:orange"></i>';
+							}else if(j == 1 && result[i].rejinderDocList[j].subList1 != null && result[i].rejinderDocList[j].subList1.length > 0 ){
+								str2+='<i class="fa fa-commenting fa-2x" aria-hidden="true" style="color:red"></i>';
+							}
+							str2+='</div>';
+							str2+='<div class="media-body">';
+								if(j == 0 && result[i].rejinderDocList[j].subList1 != null){
+									str2+='<p><span style="color:orange">'+result[i].rejinderDocList[j].name+'</span></p>';
+								}else if(j == 1 && result[i].rejinderDocList[j].subList1 != null && result[i].rejinderDocList[j].subList1.length > 0 ){
+									str2+='<p><span style="color:red">'+result[i].rejinderDocList[j].name+'</span></p>';
+								}
+								
+								for(var k in result[i].rejinderDocList[j].subList1)
+								{
+									 var nameArr = result[i].rejinderDocList[j].subList1[k].name.split('/');
+									 var name = nameArr[3];
+									str2+='<p><i class="fa fa-file-o" aria-hidden="true"></i>&nbsp;&nbsp;<a href="http://www.mytdp.com/images/"'+result[i].rejinderDocList[j].subList1[k].name+' style="cursor:pointer;">'+name+'</a>&nbsp;&nbsp;(<i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;'+result[i].rejinderDocList[j].subList1[k].date1+')</p>';
+								}
+								
+							str2+='</div>';
+						str2+='</div>';
+					}
+					
+				str2+='</div>';
+			str2+='</div>';
+		}
+		
+	str2+='</div>';
+	
 	$("#alertDetails").html(str);
 	$("#articleAttachment").html(str1);
+	$("#rejoinderAttachments").html(str2);
 	
 }
 function buildSocialMediaImage(result){
@@ -3020,6 +3096,9 @@ function buildCommentsForAlert(result)
 							}else{
 								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
 							}
+						}else if(result[i][j].status == 'Rejoinder'){
+							str+=''+result[i][j].status+'';
+								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Rejoinder Status </span> :'+result[i][j].rejinderStatus+'</p>';
 						}else {
 							str+=''+result[i][j].status+'</p>';
 						} 
@@ -4256,6 +4335,9 @@ function alertHistory(result)
 							}else{
 								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
 							}
+						 }else if(result[i][j].status == 'Rejoinder'){
+							str+=''+result[i][j].status+'';
+								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Rejoinder Status </span> :'+result[i][j].rejinderStatus+'</p>';
 						}else {
 							str+=''+result[i][j].status+'</p>';
 						} 
@@ -4426,7 +4508,7 @@ function alertHistory(result)
 //alert status 
 function alertStatusHistory(result,alertId)
 {
-
+  
 	var str='';
 	var str1='';
 	
@@ -4541,6 +4623,17 @@ function alertStatusHistory(result,alertId)
 		}
 		
 	}
+	if(globalStatusId == 10 ){
+		alertStatusGlobalId = 10;
+		$("#changeStatusDivId").hide();
+		if( globalRejoinderStatus == 'Rejoinder Request'){
+			$(".rejoinderDivCls").show();
+			$("#rejinderRespnseId").show();
+		}else{
+			//$(".rejoinderDivCls").hide();
+			$("#changeStatudCheckBoxId").hide();
+		}
+	}
 	
 	
 	var options = {
@@ -4585,7 +4678,7 @@ function alertStatus(result,alertId)
 	var str=''; 
 		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
 			str1+='<div class="panel-heading" style="margin-left: 20px;">';
-				str1+='<div class="row">';
+				str1+='<div class="row" id="changeStatusDivId">';
 				for(var i in result)
 				{
 					
@@ -4636,26 +4729,29 @@ function alertStatus(result,alertId)
 				str1+='</div>';
 			str1+='</div>';
 			
-
-			/* str1+='<div class="panel panel-default rejoinderDivCls" style="display:none;background-color:#ededed">';
+			 str1+='<div class="panel panel-default rejoinderDivCls" style="display:none;background-color:#ededed">';
 				str1+='<div class="panel-heading" style="background-color:#ededed;padding-left:15px;">';
 					str1+='<h4 class="panel-title">Rejoinder Status</h4>';
 				str1+='</div>';
-				str1+='<div class="panel-body" style="background-color:#ededed">';
+				str1+='<div class="panel-body" style="background-color:#ededed" >';
 					str1+='<div class="row">';
 						str1+='<div class="col-sm-12">';
 							str1+='<div class="m_top10">';
-								str1+='<label class="checkbox-inline">';
+								str1+='<label class="checkbox-inline" id="rejinderReqId">';
 								  str1+='<input type="checkbox" class="rejoinderCheckbox" value="1" name="RejoinderChekBx">Rejoinder Request<span style="color:red">*</span>';
 								str1+='</label>';
-								str1+='<label class="checkbox-inline">';
+								str1+='<label class="checkbox-inline" id="rejinderRespnseId">';
 								  str1+='<input type="checkbox" class="rejoinderCheckbox" value="2" name="RejoinderChekBx">Rejoinder Response<span style="color:red">*</span>';
 								str1+='</label>';
+								str1+='<form id="alertAssignAttachemntFrRejoinderStatusId" name="uploadAttachementFrRejoinderStatus">';
+									str1+='<input type="file" id="rejoinderAttachmentId" name="imageForDisplay" style="margin-top:21px; margin-left:35px;">';
+									str1+='<input type="hidden" value="'+alertId+'" name="alertVO.alertId">';
+								str1+='</form>';
 							str1+='</div>';
 						str1+='</div>';
 					str1+='</div>';
 				str1+='</div>';
-			str1+='</div>'; */
+			str1+='</div>'; 
 
 			
 			str1+='<div class="panel-body pad_0 m_top20">';
@@ -5499,4 +5595,19 @@ function alertDeptmentExistInLogin(alertId){
 		}
 	});
 }
-	
+
+ function uploadAttachmentsFrRejinderStatus(){
+		var uploadHandler = { 
+			upload: function(o) {
+				var uploadResult = o.responseText;
+				}
+		};
+		YAHOO.util.Connect.setForm('uploadAttachementFrRejoinderStatus',true);  
+		YAHOO.util.Connect.asyncRequest('POST','uploadDocumentsForRejoinderStatusAction.action',uploadHandler);
+		
+};
+$(document).on("click",".rejoinderCheckbox",function(){
+		$(".rejoinderCheckbox").prop("checked",false);
+		$(this).prop("checked",true);
+});
+ 
