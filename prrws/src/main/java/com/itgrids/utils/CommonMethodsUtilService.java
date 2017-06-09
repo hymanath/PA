@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -743,6 +744,19 @@ public class CommonMethodsUtilService {
 
 			} catch (Exception e) {
 				LOG.error(" Exception Occured in makeEmptyListByZeroValue() , CommonMethodsUtilService class.");
+			}
+			return null;
+		}
+		public Double roundUptoTwoDecimalPoint(Double value){
+			try{
+				 DecimalFormat df = new DecimalFormat("##.00");
+				if(value != null && value.doubleValue() > 0){
+					return Double.parseDouble(df.format(value));
+				}else{
+					return 0.0d;
+				}
+			}catch(Exception e){
+				LOG.error(" Exception Occured in roundUptoTwoDecimalPoint() , CommonMethodsUtilService class.");
 			}
 			return null;
 		}
