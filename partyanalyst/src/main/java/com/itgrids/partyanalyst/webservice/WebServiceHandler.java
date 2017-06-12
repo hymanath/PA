@@ -35,6 +35,8 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
+import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
+import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
 import com.itgrids.partyanalyst.dto.AttendanceVO;
@@ -2785,6 +2787,22 @@ public class WebServiceHandler {
 		catch(Exception e)
 		{
 			LOG.error("Exception Occured in getOfficerAlertDetails() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getAllAlertDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public AmsVO getAllAlertDetails(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getAllAlertDetails(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getAllAlertDetails() Method,WebServiceHandler Class ",e);
 		    return null;
 		}	
 	}
