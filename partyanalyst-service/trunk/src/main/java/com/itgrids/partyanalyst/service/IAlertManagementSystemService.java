@@ -10,8 +10,10 @@ import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
+import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
+import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
@@ -213,4 +215,5 @@ public interface IAlertManagementSystemService {
 				List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds);
 	 public ResultStatus uploadDocumentsForRejoinderStatus(final StringBuilder pathBuilder,final Long alertId,final Long userId);
 	 public List<AlertVO> getRejoinderDocumentsForAlert(Long alertId);
+	 public AmsVO getAllAlertDetails(AmsAppLoginVO keyVo);
 }        
