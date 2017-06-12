@@ -58,4 +58,17 @@ public class UserGroupRelationDAO extends GenericDaoHibernate<UserGroupRelation,
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<String> getEntitlements(Long userId){
+		Query query = getSession().createSQLQuery(" select E.entitlement_type " +
+				" from user_group_relation UGR,user_group_entitlement UGE," +
+				" entitlement E,group_entitlement_relation GER where user_id =:userId " +
+				" and UGE.user_group_id = UGR.user_group_id " +
+				" and GER.group_entitlement_id = UGE.group_entitlement_id  " +
+				" and E.entitlement_id = GER.entitlement_id " +
+				" group by E.entitlement_id ");
+		query.setParameter("userId", userId);
+		return query.list();
+		
+	}
 }
