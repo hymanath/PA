@@ -2772,4 +2772,21 @@ public class WebServiceHandler {
 		}	
 	}
 	
+	@POST
+	@Path("/getOfficerAlertDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsDataVO> getOfficerAlertDetails(AmsDataVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getOfficerAlertDetails(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getOfficerAlertDetails() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	
 }
