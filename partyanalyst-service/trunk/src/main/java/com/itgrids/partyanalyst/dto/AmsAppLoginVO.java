@@ -12,6 +12,8 @@ public class AmsAppLoginVO implements Serializable{
 	private String status;
 	private String password;
 	private String isOtp;
+	private Long alertId;
+	private String task;
 	
 	public AmsAppLoginVO(){}
 	public AmsAppLoginVO(Long userId, String userName){
@@ -56,8 +58,17 @@ public class AmsAppLoginVO implements Serializable{
 	public void setIsOtp(String isOtp) {
 		this.isOtp = isOtp;
 	}
-	
-	
-	
+	public Long getAlertId() {
+		return alertId;
+	}
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
+	public String getTask() {
+		return task;
+	}
+	public void setTask(String task) {
+		this.task = task;
+	}
 	
 }
