@@ -70,6 +70,8 @@ import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
+import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
+import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
 import com.itgrids.partyanalyst.dto.CadreCommitteeMemberVO;
@@ -5005,11 +5007,22 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					 amsDataVO.getGovtAlertSubTaksStatusIdsList(),amsDataVO.getMondayGrievanceTypeIdsList(),
 					 amsDataVO.getJanmabhoomiTypeIdsList(),amsDataVO.getSpecialGrievanceTypeIdsList(),amsDataVO.getGeneralGrievanceTypeIdsList());
 			 
-		} catch (Exception e) {
+		} catch (Exception e){
 			e.printStackTrace();
 			log.error("Exception raised at getOfficerAlertDetails", e);
 		}
 		 return finalList;
+	 }
+	 public AmsVO getAllAlertDetails(AmsAppLoginVO keyVo){
+		 AmsVO finalvo = new AmsVO();
+		 try {
+			
+			 finalvo = alertManagementSystemService.getAllAlertDetails(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getAllAlertDetails", e);
+		}
+		 return finalvo;
 	 }
 	 
 }
