@@ -128,10 +128,16 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					FundSchemeVO fundLocationVO = new FundSchemeVO();
 					
 					AddressVO addressVO = new AddressVO();
-					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[8]));
-					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
-					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[10]));
-					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					if(searchScopeId != null && searchScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
+						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					}
 					addressVO.setTehsilId(0L);
 					addressVO.setTehsilName("");
 					addressVO.setLocalElectionBodyId(0L);
@@ -457,10 +463,10 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						yearsMap.put(yearVO.getYearId(), yearVO);
 					}
 					
-					if(deptsMap.get(commonMethodsUtilService.getLongValueForObject(param[12])) == null){
+					if(deptsMap.get(commonMethodsUtilService.getLongValueForObject(param[8])) == null){
 						FundSchemeVO deptsVO = new FundSchemeVO();					
-						deptsVO.setId(commonMethodsUtilService.getLongValueForObject(param[12]));
-						deptsVO.setName(commonMethodsUtilService.getStringValueForObject(param[13]));
+						deptsVO.setId(commonMethodsUtilService.getLongValueForObject(param[8]));
+						deptsVO.setName(commonMethodsUtilService.getStringValueForObject(param[9]));
 						deptsVO.setYearId(commonMethodsUtilService.getLongValueForObject(param[2]));
 						deptsVO.setYear(commonMethodsUtilService.getStringValueForObject(param[3]));
 						
@@ -482,10 +488,16 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 					FundSchemeVO fundLocationVO = new FundSchemeVO();
 					
 					AddressVO addressVO = new AddressVO();
-					addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[8]));
-					addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[9]));
-					addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[10]));
-					addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[11]));
+					if(searchScopeId != null && searchScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
+						addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){
+						addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					}else if(searchScopeId != null && searchScopeId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){
+						addressVO.setAssemblyId(commonMethodsUtilService.getLongValueForObject(param[6]));
+						addressVO.setAssemblyName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					}
 					addressVO.setTehsilId(0L);
 					addressVO.setTehsilName("");
 					addressVO.setLocalElectionBodyId(0L);
@@ -529,8 +541,8 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						yearVO.setAddressVO(addressVO);
 						
 						FundSchemeVO deptsVO = new FundSchemeVO();					
-						deptsVO.setId(commonMethodsUtilService.getLongValueForObject(param[12]));
-						deptsVO.setName(commonMethodsUtilService.getStringValueForObject(param[13]));
+						deptsVO.setId(commonMethodsUtilService.getLongValueForObject(param[8]));
+						deptsVO.setName(commonMethodsUtilService.getStringValueForObject(param[9]));
 						deptsVO.setYearId(commonMethodsUtilService.getLongValueForObject(param[2]));
 						deptsVO.setYear(commonMethodsUtilService.getStringValueForObject(param[3]));
 						deptsVO.setAddressVO(addressVO);
@@ -546,11 +558,11 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 						yearVO.getSubList().add(deptsVO);
 						fundLocationVO.getSubList().add(yearVO);
 					}else{
-						FundSchemeVO deptsVO = (FundSchemeVO) setterAndGetterUtilService.getMatchedVOfromList(yearVO.getSubList(), "id", commonMethodsUtilService.getLongValueForObject(param[12]).toString());
+						FundSchemeVO deptsVO = (FundSchemeVO) setterAndGetterUtilService.getMatchedVOfromList(yearVO.getSubList(), "id", commonMethodsUtilService.getLongValueForObject(param[8]).toString());
 						if(deptsVO == null){
 							deptsVO = new FundSchemeVO();					
-							deptsVO.setId(commonMethodsUtilService.getLongValueForObject(param[12]));
-							deptsVO.setName(commonMethodsUtilService.getStringValueForObject(param[13]));
+							deptsVO.setId(commonMethodsUtilService.getLongValueForObject(param[8]));
+							deptsVO.setName(commonMethodsUtilService.getStringValueForObject(param[9]));
 							deptsVO.setYearId(commonMethodsUtilService.getLongValueForObject(param[2]));
 							deptsVO.setYear(commonMethodsUtilService.getStringValueForObject(param[3]));
 							deptsVO.setAddressVO(addressVO);
@@ -1063,30 +1075,24 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 			
 			Date fromDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getFromDateStr(),"MM/dd/yyyy","");
 			Date toDate = commonMethodsUtilService.stringTODateConvertion(inputVO.getToDateStr(),"MM/dd/yyyy","");
-			
-			if(inputVO.getLocationId() == null || inputVO.getLocationId().longValue() == 0L){
-				levelValues = fundSanctionDAO.getLocationValues(inputVO.getBlockLevelId());
-			}else{
-				//get the locationId here 
+			Long locationId = null; 
+			Long locationLevelId = null;
+			if((inputVO.getLocationId() != null && inputVO.getLocationId().longValue() > 0L)){
 				String locationIdStr = inputVO.getLocationId().toString();
 				String locationLevelIdStr = locationIdStr.substring(0, 1);
 				locationIdStr = locationIdStr.substring(1);
-				Long locationId = Long.parseLong(locationIdStr);
-				Long locationLevelId = Long.parseLong(locationLevelIdStr);
-				levelValues = fundSanctionDAO.getLocationBlockLevelIds(locationId,locationLevelId,inputVO.getBlockLevelId());
+				locationId = Long.parseLong(locationIdStr);
+				locationLevelId = Long.parseLong(locationLevelIdStr);
 			}
 			List<Object[]> amountList = null;
-			List<Object[]> locationInfoList = null;
 			
 			List<Long> financialYearIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getFinancialYrIdList());
 			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
 			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
 			
-			if(levelValues != null && levelValues.size() > 0){//[1, 2014-2015, 109, 5, 19520000]
-				amountList = fundSanctionDAO.getLocationWiseAmount(levelId,levelValues,fromDate,toDate,financialYearIdsList,deptIdsList,sourceIdsList);
-				if(levelId != null && levelId.longValue() > IConstants.STATE_LEVEL_SCOPE_ID)
-				locationInfoList = fundSanctionDAO.getLocationInfo(levelId, levelValues);
-			}
+			
+			amountList = fundSanctionDAO.getLocationWiseAmount(levelId,locationId,locationLevelId,fromDate,toDate,financialYearIdsList,deptIdsList,sourceIdsList);
+		
 			
 			//collect all the location ids(uses to create the final list)
 			Set<Long> locationIdList = new HashSet<Long>();
@@ -1094,17 +1100,6 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				for(Object[] param : amountList){
 					locationIdList.add(commonMethodsUtilService.getLongValueForObject(param[2]));
 				}
-			}
-			
-			//create a map for locationId and locationName
-			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
-			if(locationInfoList != null && locationInfoList.size() > 0){
-				for(Object[] param : locationInfoList){
-					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
-				}
-			}
-			if(levelId != null && levelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
-				locationIdAndNameMap.put(1L, "Andhra Pradesh");
 			}
 			
 			//create a map for financialYearId and financialyear
@@ -1116,19 +1111,22 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				}
 			}
 			
+			//create a map for locationId and locationName
+			Map<Long,String> locationIdAndNameMap = new HashMap<Long,String>();
 			
 			//create a map of financialYearId and map of locationId and amount
 			Map<Long,Map<Long,Long>> financialYearIdAndLocationIdAndAmountMap = new LinkedHashMap<Long,Map<Long,Long>>();
 			Map<Long,Long> locationIdAndAmountMap = null;
 			if(amountList != null && amountList.size() > 0){
 				for(Object[] param : amountList){
+					locationIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
 					financialYearIdAndFinancialYearMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
 					locationIdAndAmountMap = financialYearIdAndLocationIdAndAmountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(locationIdAndAmountMap != null){
-						locationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[5]));
 					}else{
 						locationIdAndAmountMap = new HashMap<Long, Long>();
-						locationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						locationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[5]));
 						financialYearIdAndLocationIdAndAmountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),locationIdAndAmountMap);
 					}
 				}
@@ -1141,10 +1139,10 @@ public class FundManagementDashboardService implements IFundManagementDashboardS
 				for(Object[] param : amountList){
 					locationIdAndCountMap = financialYearIdAndLocationIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(locationIdAndCountMap != null){
-						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[3]));
+						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
 					}else{
 						locationIdAndCountMap = new HashMap<Long, Long>();
-						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[3]));
+						locationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
 						financialYearIdAndLocationIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),locationIdAndCountMap);
 					}
 				}
@@ -1397,41 +1395,26 @@ public LocationFundDetailsVO getTotalLocationsByScopeId(InputVO inputVO){
 			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
 			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
 			//scope wise count and amount dtls
-			List<Object[]> totalFundAndCountDtls= fundSanctionDAO.getTotalFundAndCountDtls(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId(),"one");
+			List<Object[]> totalFundAndCountDtls= fundSanctionDAO.getTotalFundAndCountDtls(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId());
+			Long totalAmount = 0L;
+			Long totalLocCount = 0L;
 			if(totalFundAndCountDtls != null && totalFundAndCountDtls.size() > 0){
-				retusnVo.setTotalAmt(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]));
-				//retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[0]))));
-				
-				if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID)
-					retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/IConstants.TOTAL_AP_TOTAL_DISTRICTS)));
-				else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
-					retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/IConstants.TOTAL_AP_TOTAL_CONSTITUENCIES)));
-				else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID)
-					retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/IConstants.TOTAL_AP_TOTAL_MANDALS)));
-				else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID)
-					retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/IConstants.TOTAL_AP_TOTAL_VILLAGES)));
+				for(Object[] param : totalFundAndCountDtls){
+					totalAmount = totalAmount + commonMethodsUtilService.getLongValueForObject(param[3]);
+					totalLocCount = totalLocCount + commonMethodsUtilService.getLongValueForObject(param[2]);
+				}
+				retusnVo.setTotalAmt(totalAmount.toString());
+				retusnVo.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint(Double.valueOf(totalAmount.toString())/(Double.valueOf(totalLocCount.toString()))));
 				retusnVo.setPerc(commonMethodsUtilService.roundUptoTwoDecimalPoint(commonMethodsUtilService.calculatePercantage(retusnVo.getAverageAmt().longValue(),Long.parseLong(retusnVo.getTotalAmt()))));
-				
-			}//[2, 1900000]
+			}
 			List<Object[]> grantTypeDtlsList = grantTypeDAO.getGrandTypeDtls();
 			setGrantTypeToVo(retusnVo,grantTypeDtlsList);
 			//grant wise then scope wise count and amount dtls
-			List<Object[]> totalFundAndCountGrantWiseList = fundSanctionDAO.getTotalFundAndCountDtls(inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate,inputVO.getBlockLevelId(),"two");
-			if(totalFundAndCountGrantWiseList != null && totalFundAndCountGrantWiseList.size() > 0){
-				for(Object[] param : totalFundAndCountGrantWiseList){
+			if(totalFundAndCountDtls != null && totalFundAndCountDtls.size() > 0){
+				for(Object[] param : totalFundAndCountDtls){
 					fundDetailsVO = (LocationFundDetailsVO)setterAndGetterUtilService.getMatchedVOfromList(retusnVo.getDetailsVOs(), "id", commonMethodsUtilService.getStringValueForObject(param[0]));
 					fundDetailsVO.setTotalAmt(commonMethodsUtilService.getStringValueForObject(param[3]));
-					//retusnVo.setAverageAmt((Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[1]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(totalFundAndCountDtls.get(0)[0]))));
-					
-					if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID)
-						fundDetailsVO.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/IConstants.TOTAL_AP_TOTAL_DISTRICTS)));
-					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID)
-						fundDetailsVO.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/IConstants.TOTAL_AP_TOTAL_CONSTITUENCIES)));
-					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID)
-						fundDetailsVO.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/IConstants.TOTAL_AP_TOTAL_MANDALS)));
-					else if(inputVO.getBlockLevelId() != null && inputVO.getBlockLevelId().longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID)
-						fundDetailsVO.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/IConstants.TOTAL_AP_TOTAL_VILLAGES)));
-					
+					fundDetailsVO.setAverageAmt(commonMethodsUtilService.roundUptoTwoDecimalPoint((Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[3]))/Double.valueOf(commonMethodsUtilService.getStringValueForObject(param[2])))));
 					fundDetailsVO.setPerc(commonMethodsUtilService.roundUptoTwoDecimalPoint(commonMethodsUtilService.calculatePercantage(fundDetailsVO.getAverageAmt().longValue(),Long.parseLong(fundDetailsVO.getTotalAmt()))));
 					
 				}
@@ -1667,10 +1650,10 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 			List<Long> deptIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getDeptIdsList());
 			List<Long> sourceIdsList = commonMethodsUtilService.makeEmptyListByZeroValue(inputVO.getSourceIdsList());
 			if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){//get districtIds
-				locationList = fundSanctionDAO.getAllDistrictByStateId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,IConstants.DISTRICT_LEVEL_SCOPE_ID,sDate,eDate);
+				locationList = fundSanctionDAO.getAllDistrictByStateId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate);
 				lvlIdStr = IConstants.DISTRICT_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.DISTRICT_LEVEL_SCOPE_ID){//get constituencyIds
-				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,IConstants.CONSTITUENCY_LEVEL_SCOPE_ID,sDate,eDate);
+				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate);
 				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
 				
