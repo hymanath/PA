@@ -226,4 +226,5 @@ public interface IWebServiceHandlerService {
     public String getOfficerOtpStatus(Long userId,String otpStr);
     public AmsDataVO getAmsFilterCategoryTypes(Long userId);
     public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(AmsDataVO vo);
+    public List<AmsDataVO> getOfficerAlertDetails(AmsDataVO amsDataVO);
 }

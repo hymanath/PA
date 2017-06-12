@@ -74,6 +74,7 @@ import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
+import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
@@ -12499,11 +12500,20 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
     	}
     }
 	
-	public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(Long userId,String fromDateStr,String toDateStr,List<Long> printIdList, List<Long> electronicIdList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
+	public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(Long userId,String fromDateStr,String toDateStr,List<Long> printIdList, 
+			List<Long> electronicIdList,List<Long> calCntrIdList,List<Long> socialMediaTypeIds,List<Long> alertSeverityIds,
+			List<Long> alertStatusIds,List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,
+			List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds,List<Long> subTaskAlertStatusIds){
   		
   		DistrictOfficeViewAlertVO returnVO = new DistrictOfficeViewAlertVO();
   		try{
-  			Date fromDate = null;
+  			//getDistrictOfficerAlertsCountView
+  			
+  			returnVO =  getDistrictOfficerAlertsCountView(userId,fromDateStr,toDateStr,printIdList, electronicIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,
+  					alertStatusIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+  			
+  			
+  			/*Date fromDate = null;
   			Date toDate = null;
   			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
   			if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
@@ -12549,7 +12559,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
   				myAlertsCompletedList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsCountView(govtDepDesigOffcrIds,govtOffcrIds,"completed",fromDate,toDate,printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
   				myAlertsStatusList = alertAssignedOfficerNewDAO.getDistrictOfficerMyAlertsStatusWiseDetails(govtDepDesigOffcrIds, govtOffcrIds,fromDate,toDate,printIdList,electronicIdList,calCntrIdList,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
   			}
-  			setIASOfficerStatusWiseCountView(myAlertsTodayList,myAlertsCompletedList,myAlertsStatusList,returnVO,"MyAlerts");
+  			setIASOfficerStatusWiseCountView(myAlertsTodayList,myAlertsCompletedList,myAlertsStatusList,returnVO,"MyAlerts");*/
   			
   		}catch(Exception e){
   			e.printStackTrace();
@@ -12697,5 +12707,168 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 		}
 		return null;
 	}
+	
+	public List<AmsDataVO> getOfficerAlertDetails(Long userId,String countType,String alertType,
+			List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList,String fromDateStr,String toDateStr,List<Long>
+			socialMediaTypeIds,List<Long> alertSeverityIds, List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,
+			List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds){
+		
+		List<AmsDataVO> finalVoList = new ArrayList<AmsDataVO>(0);
+		
+		try {
+			
+			List<Long> govtDeptDesgOffIds = new ArrayList<Long>(0);  
+			Set<Long> govtOffrcrSetIds = new HashSet<Long>(0);  
+			List<Long> govtOffrcrIds = new ArrayList<Long>(0);
+			
+			List<Object[]> designationList = govtDepartmentDesignationOfficerDetailsNewDAO.getOfficerDesingationDetails(userId);
+			if(designationList != null && designationList.size() > 0){
+				for(Object[] param : designationList){
+					govtDeptDesgOffIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					govtOffrcrSetIds.add(commonMethodsUtilService.getLongValueForObject(param[1]));
+				}
+			}
+			
+			if(govtOffrcrSetIds !=null){
+				govtOffrcrIds.addAll(govtOffrcrSetIds);
+			}
+			
+			
+
+			Date fromDate = null;
+      		Date toDate = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            if(fromDateStr != null && fromDateStr.trim().length() > 0 && toDateStr != null && toDateStr.trim().length() > 0){
+            	fromDate = sdf.parse(fromDateStr);
+            	toDate = sdf.parse(toDateStr);
+            }
+		    List<Long> alertIdList = null;
+		
+			prepareRequiredParameter(printIdsList,electronicIdsList,calCntrIdList,socialMediaTypeIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);//Setting Parameter
+			
+			if(alertType != null && alertType.equalsIgnoreCase("alert")){
+				 alertIdList = alertAssignedOfficerNewDAO.getDistrictOfficerAlertsIds(govtDeptDesgOffIds,govtOffrcrIds,countType,printIdsList,electronicIdsList,calCntrIdList,fromDate,toDate,socialMediaTypeIds,alertSeverityIds,alertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+			}else {
+				 	alertIdList = govtAlertSubTaskDAO.getDistrictOfficerSubTasksAlertIds(govtDeptDesgOffIds,govtOffrcrIds,countType,alertType,printIdsList,electronicIdsList,calCntrIdList,fromDate,toDate,socialMediaTypeIds,subTaskAlertStatusIds,mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);
+			}
+			if(alertIdList != null && alertIdList.size() > 0){
+				List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdList));
+				setAlertDtlsForAms(finalVoList, list); 
+			}
+			setSubListCountForAms(finalVoList, alertIdList);
+		
+			
+			/*getDistrictOfficerAlertDetails(govtDeptDesgOffIds,govtOffrcrIds,countType,alertType,
+					printIdsList,  electronicIdsList, calCntrIdList,fromDateStr,toDateStr,socialMediaTypeIds,
+					alertSeverityIds, alertStatusIds,subTaskAlertStatusIds,
+					mondayGrievanceTypeIds,janmabhoomiTypeIds,specialGrievanceTypeIds,generalGrievanceTypeIds);*/
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error(" Exception Occured in getOfficerAlertDetails() method, Exception - ",e);
+		}
+		return finalVoList;
+		
+	}
+	
+	public void setAlertDtlsForAms(List<AmsDataVO> amsDataVoList, List<Object[]> alertList){
+		try{
+			SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = dateUtilService.getCurrentDateAndTime();
+			String td = myFormat.format(today);
+			Long dist = 0l;
+			Long statusId = 0L;  
+			AmsDataVO amsDataVO = null;  
+			String alertSource = "";
+			if(alertList != null && alertList.size() > 0){  
+				for(Object[] param : alertList ){
+					amsDataVO = new AmsDataVO();
+					amsDataVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					amsDataVO.setCreatedDate(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10));
+					amsDataVO.setUpdatedDate(commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+					amsDataVO.setStatusId(commonMethodsUtilService.getLongValueForObject(param[3]));
+					amsDataVO.setStatus(commonMethodsUtilService.getStringValueForObject(param[4]));
+					amsDataVO.setSevertyColor(commonMethodsUtilService.getStringValueForObject(param[24]));
+					amsDataVO.setStatusColor(commonMethodsUtilService.getStringValueForObject(param[25]));
+					if(param.length > 26){
+						amsDataVO.setProblem(commonMethodsUtilService.getStringValueForObject(param[26]));
+						amsDataVO.setRelatedTo(commonMethodsUtilService.getStringValueForObject(param[27]));
+					}
+					statusId = commonMethodsUtilService.getLongValueForObject(param[3]);
+					if(param[1] != null && param[2] != null){
+						if(statusId == 4L || statusId == 5L || statusId == 6L || statusId == 7L){
+							dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),commonMethodsUtilService.getStringValueForObject(param[2]).substring(0, 10));
+						}else{
+							dist = dateUtilService.noOfDayBetweenDates(commonMethodsUtilService.getStringValueForObject(param[1]).substring(0, 10),td);
+						}  
+						amsDataVO.setInterval(dist);
+					}
+					amsDataVO.setAlertLevel(commonMethodsUtilService.getStringValueForObject(param[8]));
+					amsDataVO.setTitle(commonMethodsUtilService.getStringValueForObject(param[9]));    
+					
+					if(param[23] != null){
+						amsDataVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[23]));	
+					}else if(param[22] != null){
+						amsDataVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[22]));	
+					}else if(param[10] != null){
+						amsDataVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[10]));	
+					}else if(param[11] != null){
+						amsDataVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[11]));	
+					}else if(param[20] != null){
+						amsDataVO.setLocation(commonMethodsUtilService.getStringValueForObject(param[20]));
+					}
+
+					if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 2L){//print
+							if(param[17] != null){
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[17]);
+							}else{
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
+							}
+							 
+						}else if(commonMethodsUtilService.getLongValueForObject(param[5]).longValue() == 3L){//electronic 
+							if(param[19] != null){
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[19]);
+							}else{
+								alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);
+							}
+						}else{
+							alertSource = commonMethodsUtilService.getStringValueForObject(param[13]);//for social media,call center and other category
+						}
+						amsDataVO.setSource(alertSource);
+					 
+						amsDataVoList.add(amsDataVO);
+					
+				}  
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error(" Exception Occured in setAlertDtlsForAms() method, Exception - ",e);
+		}
+	}
+	public void setSubListCountForAms(List<AmsDataVO> finalVoList,List<Long> alertIds){
+		 try{
+			 List<Object[]> subtaskCountList = null;
+				if(alertIds != null && alertIds.size() > 0){
+					subtaskCountList = govtAlertSubTaskDAO.getSubTaskCount(alertIds);
+				}
+				//create a map from alertId and subtask count.
+				Map<Long,Long> alertIdAndSubTaskCountMap = new HashMap<Long,Long>();
+				if(subtaskCountList != null && subtaskCountList.size() > 0){
+					for(Object[] param : subtaskCountList){
+						alertIdAndSubTaskCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]),commonMethodsUtilService.getLongValueForObject(param[1]));
+					}
+				}
+				if(finalVoList != null && finalVoList.size() > 0){
+					for(AmsDataVO AmsDataVO : finalVoList){
+						if(alertIdAndSubTaskCountMap.get(AmsDataVO.getId()) != null){
+							AmsDataVO.setSubTaskCount(alertIdAndSubTaskCountMap.get(AmsDataVO.getId()));
+						}
+					}
+				}
+		 }catch (Exception e) {
+				LOG.error(" Exception Occured in setSubListCountForAms() method, Exception - ",e);
+		}
+		
+	 }
 	
 }
