@@ -49,7 +49,7 @@
 						<li>
 							
 							<div class="form-group has-feedback">
-								<input type="text" class="form-control" id="mainDate"/>
+								<input type="text" class="form-control" id="dateRangePicker"/>
 								<span class="glyphicon glyphicon-calendar form-control-feedback" aria-hidden="true"></span>
 							</div>
 						</li>
