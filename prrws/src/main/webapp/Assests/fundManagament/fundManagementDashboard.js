@@ -105,7 +105,7 @@
 		});
 		$(".chosenSelect").chosen();
 		
-		$("#mainDate").daterangepicker({
+		/*$("#mainDate").daterangepicker({
 			startDate: moment().subtract(5,'years'),
 			endDate:moment().add(5,'years'),
 			format:"DD/MM/YYYY",
@@ -115,7 +115,47 @@
 			glStartDate = picker.startDate.format('DD/MM/YYYY')
 			glEndDate = picker.endDate.format('DD/MM/YYYY')
 			onLoadCalls();
-		});
+		});*/
+		
+		//srujna
+		$("#dateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: glStartDate,
+		endDate: glEndDate,
+		locale: {
+		  format: 'DD/MM/YYYY'
+		},
+		ranges: {
+			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
+			'Today' : [moment(), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()]
+		}
+	});
+    var dates= $("#dateRangePicker").val();
+	var date=dates.split('-');
+	var pickerDates = date[0]+'-'+date[1]
+	//var pickerDates = glStartDate+' - '+glEndDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePicker").val('All');
+	}
+	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+		    glStartDate = picker.startDate.format('DD/MM/YYYY')
+			glEndDate = picker.endDate.format('DD/MM/YYYY')
+		if(picker.chosenLabel == 'All')
+		{
+			$("#dateRangePicker").val('All');
+		}
+		
+		onLoadCalls();
+	});  //srujna
+		
 		$(document).on("change","#financialYearId",function(){
 			$(".switch-btn li").removeClass("active");
 			$(".switch-btn li:first-child").addClass("active");
@@ -210,7 +250,7 @@
 		var financialYrIdArr = $('#financialYearId').val();
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
-		var deptIdsArr = [];
+		var deptIdsArr = $('#DepartmentsId').val();  
 		var searchLevelId = 0;
 		var searchLevelVals = [];
 		//searchLevelVals.push(13);
@@ -1377,7 +1417,7 @@
 		  var financialYrIdArr =$('#financialYearId').val();
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
-		  var deptIdsArr = [];
+		  var deptIdsArr = $('#DepartmentsId').val();
 		  var searchLevelId = 0;
 		  var searchLevelVals = [];
 		 // searchLevelVals.push(1);
@@ -1556,7 +1596,7 @@
 		  var financialYrIdArr = $('#financialYearId').val();
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
-		  var deptIdsArr = [];
+		  var deptIdsArr =  $('#DepartmentsId').val();
 		  var searchLevelId = 0;
 		  var searchLevelVals = [];
 		  //searchLevelVals.push(1);
@@ -1604,7 +1644,7 @@
 		  var financialYrIdArr = $('#financialYearId').val();
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
-		  var deptIdsArr = [];
+		  var deptIdsArr =  $('#DepartmentsId').val();
 		  var searchLevelId = 3;
 		  var searchLevelVals = [];
 		  searchLevelVals.push(13);
@@ -1649,7 +1689,7 @@
 		  var financialYrIdArr = $('#financialYearId').val();
 		  var sourceIdsArr = [];
 		  var schemeIdsArr = [];
-		  var deptIdsArr = [];
+		  var deptIdsArr =  $('#DepartmentsId').val();
 		var searchLevelId = 0;
 		var searchLevelVals = [];
 		//searchLevelVals.push(13);
@@ -1689,7 +1729,8 @@
 	}	
 	function getAverageFundForScheme(divId){
 		var financialYrIdList = $('#financialYearId').val(); 
-		var deptId = 0;
+		var deptIdsArr = $('#DepartmentsId').val();
+		//var deptId = 0;
 		var sourceId = 0;
 		var schemeId = 0;
 		if ($.inArray('0', financialYrIdList) != -1)
@@ -1702,7 +1743,7 @@
 		}
 		
 		var json = {
-			deptId : deptId,
+			deptIdsList : deptIdsArr,
 			sourceId : sourceId,
 			schemeId : schemeId,
 			financialYrIdList : financialYrIdList,
@@ -1815,10 +1856,11 @@
 		});
    }
    
-   
+    
 	function getAllSubLocationsBySuperLocationId(locationScopeId){
-		var financialYrIdList = $('#financialYearId').val();; 
-		var deptId = 0;
+		var financialYrIdList = $('#financialYearId').val();
+		var deptIdsArr = $('#DepartmentsId').val();
+		//var deptId = 0;
 		var sourceId = 0;
 		if ($.inArray('0', financialYrIdList) != -1)
 		{
@@ -1830,7 +1872,7 @@
 		}
 		var json = {
 		  superLocationId : locationScopeId, 
-		  deptId : deptId,
+		  deptIdsList : deptIdsArr,
 		  sourceId : sourceId,
 		  financialYrIdList : financialYrIdList,  
 		  fromDateStr : glStartDate,       
@@ -1857,3 +1899,8 @@
 			}
 		});
 	}
+	$(document).on("change","#DepartmentsId,#dateRangePicker",function(){
+			$(".switch-btn li").removeClass("active");
+			$(".switch-btn li:first-child").addClass("active");
+			onLoadCalls();
+		});
