@@ -22,4 +22,5 @@ public interface IUserGroupRelationDAO extends
 	
 	public Integer deleteAllUser(Long userId);
 	public List<String> getUserIdCount(Long userId);
+	public List<String> getEntitlements(Long userId);
 }
