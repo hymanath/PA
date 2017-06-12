@@ -4259,7 +4259,13 @@
 		<property name="alertCommentDAO" ref="alertCommentDAO" ></property>
 		<property name="amsOfficerOtpDetailsDAO" ref="amsOfficerOtpDetailsDAO" ></property>		
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" ></property>
-		<property name="govtRejoinderActionDAO" ref="govtRejoinderActionDAO" ></property>		
+		<property name="govtRejoinderActionDAO" ref="govtRejoinderActionDAO" ></property>
+		<property name="alertDocumentDAO" ref="alertDocumentDAO" ></property>
+		<property name="setterAndGetterUtilService" ref="setterAndGetterUtilService" ></property>
+		<property name="alertCandidateDAO" ref="alertCandidateDAO" ></property>
+		<property name="tdpCadreCandidateDAO" ref="tdpCadreCandidateDAO" ></property>
+		<property name="cadreCommitteeService" ref="cadreCommitteeService" ></property>
+		<property name="tdpCommitteeMemberDAO" ref="tdpCommitteeMemberDAO" ></property>		
    </bean>
    <bean name="meekosamGrievanceService" class="com.itgrids.partyanalyst.service.impl.MeekosamGrievanceService">
    		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
