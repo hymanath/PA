@@ -4982,10 +4982,34 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		 try {
 			 returnVO = alertManagementSystemService.getAmsAppAlertsBasicCounts(amsDataVO.getId(),amsDataVO.getFromDate(),amsDataVO.getToDate(),amsDataVO.getNewsPaperIdsList(),amsDataVO.getChanelIdsListNew(),
 					 amsDataVO.getAlertCallCenterTypeIdsList(),amsDataVO.getSocailMediaTypeIdsList(),amsDataVO.getAlertSeverityIdsList(),amsDataVO.getAlertStatusIdsList(),amsDataVO.getMondayGrievanceTypeIdsList(),
-					 amsDataVO.getJanmabhoomiTypeIdsList(),amsDataVO.getSpecialGrievanceTypeIdsList(),amsDataVO.getGeneralGrievanceTypeIdsList());
+					 amsDataVO.getJanmabhoomiTypeIdsList(),amsDataVO.getSpecialGrievanceTypeIdsList(),amsDataVO.getGeneralGrievanceTypeIdsList(),
+					 amsDataVO.getGovtAlertSubTaksStatusIdsList());
 		} catch (Exception e) {
 			log.error("Exception raised at getAmsAppAlertsBasicCounts", e);
 		}
 		 return returnVO;
 	 }
+
+	 public List<AmsDataVO> getOfficerAlertDetails(AmsDataVO amsDataVO){
+		 List<AmsDataVO> finalList = new ArrayList<AmsDataVO>();
+		 try {
+			
+			// Long userId,String countType,String alertType,
+				//List<Long> printIdsList, List<Long> electronicIdsList,List<Long> calCntrIdList,String fromDateStr,String toDateStr,List<Long>
+				//socialMediaTypeIds,List<Long> alertSeverityIds, List<Long> alertStatusIds,List<Long> subTaskAlertStatusIds,
+				//List<Long> mondayGrievanceTypeIds,List<Long> janmabhoomiTypeIds,List<Long> specialGrievanceTypeIds,List<Long> generalGrievanceTypeIds
+				
+			 finalList = alertManagementSystemService.getOfficerAlertDetails(amsDataVO.getId(),amsDataVO.getCountType(),amsDataVO.getAlertType(),
+					 amsDataVO.getNewsPaperIdsList(),amsDataVO.getChanelIdsListNew(),amsDataVO.getAlertCallCenterTypeIdsList(),amsDataVO.getFromDate(),
+					 amsDataVO.getToDate(),amsDataVO.getSocailMediaTypeIdsList(),amsDataVO.getAlertSeverityIdsList(),amsDataVO.getAlertStatusIdsList(),
+					 amsDataVO.getGovtAlertSubTaksStatusIdsList(),amsDataVO.getMondayGrievanceTypeIdsList(),
+					 amsDataVO.getJanmabhoomiTypeIdsList(),amsDataVO.getSpecialGrievanceTypeIdsList(),amsDataVO.getGeneralGrievanceTypeIdsList());
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception raised at getOfficerAlertDetails", e);
+		}
+		 return finalList;
+	 }
+	 
 }
