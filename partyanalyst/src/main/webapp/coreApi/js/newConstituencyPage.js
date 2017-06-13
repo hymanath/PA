@@ -3,7 +3,7 @@ var globalConsId = 232;
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 function onLoadAjaxCalls()
 {
-	getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
+	/* getCandidateAndPartyInfoForConstituency();//get candidates inforamtion
 	getCountsForConstituency(); //Assembly election details
 	getAllPartiesAllElectionResultsChart(); //Assembly Election Detail
 	getPrintMediaCountsForConstituencyPage(); //electronic media
@@ -13,8 +13,9 @@ function onLoadAjaxCalls()
 	getVotersAndcadreAgeWiseCount();
 	getVotersAndCadreCasteWiseCount("voter");
 	getVotersAndCadreCasteWiseCount("cadre");
-	getCasteGroupNAgeWiseVoterNCadreCounts();
+	getCasteGroupNAgeWiseVoterNCadreCounts(); */
 	getCasteNAgeWiseVoterNCadreCounts();
+	getEnrollmentYearWiseCadres();
 }
 function getCandidateAndPartyInfoForConstituency(){
 	$("#candidateProfile").html('<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>');
@@ -636,6 +637,19 @@ function getCasteNAgeWiseVoterNCadreCounts(){
 	 $.ajax({
       type : "GET",
       url : "getCasteNAgeWiseVoterNCadreCountsAction.action",
+      dataType : 'json',
+      data : {task :JSON.stringify(jsObj)}
+    }).done(function(result){  
+	});	
+}
+function getEnrollmentYearWiseCadres(){
+	jsObj={
+		enrollmentYearId:4,
+		constituencyId:232
+	}
+	 $.ajax({
+      type : "GET",
+      url : "getEnrollmentYearAgeGroupWiseCadresAction.action",
       dataType : 'json',
       data : {task :JSON.stringify(jsObj)}
     }).done(function(result){  

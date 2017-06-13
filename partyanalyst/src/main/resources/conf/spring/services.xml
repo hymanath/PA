@@ -4312,6 +4312,8 @@
   		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" ></property>
   		<property name="voterCastInfoDAO" ref="voterCastInfoDAO" ></property>
   		<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" ></property>
+  		<property name="enrollmentYearDAO" ref="enrollmentYearDAO" ></property>
+  		<property name="casteCategoryDAO" ref="casteCategoryDAO" ></property>
   </bean>
 </beans>			
 	
