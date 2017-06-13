@@ -12962,7 +12962,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 								category = categoryList.get(0);
 						}
 					}
-			returnVo.setCategoryName(category);
+			returnVo.setCategory(category);
 		 }catch (Exception e) {
 				LOG.error(" Exception Occured in getAllAlertDetails() method, Exception - ",e);
 		}
