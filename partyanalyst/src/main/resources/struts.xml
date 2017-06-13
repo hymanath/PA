@@ -17583,10 +17583,20 @@
 			<param name="root">alertOverviewVO</param>       
 		</result> 
 	</action>
-  	<action name="uploadDocumentsForRejoinderStatusAction" class="alertManagementSystemAction" method="uploadDocumentsForRejoinderStatus">
+	<action name="uploadDocumentsForRejoinderStatusAction" class="alertManagementSystemAction" method="uploadDocumentsForRejoinderStatus">
   	   <result type="json" name="success">
 			<param name="root">resultStatus</param>
 		</result>
     </action>
+	<action name="getEnrollmentYearWiseCadresAction" class="locationDashboardAction"  method="getEnrollmentYearWiseCadres">
+		<result type="json" name="success">    
+			<param name="root">keyValueVOList</param>       
+		</result> 
+	</action>
+	<action name="getEnrollmentYearAgeGroupWiseCadresAction" class="locationDashboardAction"  method="getEnrollmentYearAgeGroupWiseCadres">
+		<result type="json" name="success">    
+			<param name="root">keyValueVOList</param>       
+		</result> 
+	</action>
  </package>
 </struts>

@@ -13,6 +13,7 @@ import com.itgrids.core.api.service.ILocationDashboardService;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyElectionResultsVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.opensymphony.xwork2.Action;
@@ -36,8 +37,15 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 	private IConstituencyPageService constituencyPageService;
 	private List<ConstituencyElectionResultsVO> constituencyElectionResultsVO;
 	private List<LocationVotersVO> locationVotersVOList;
+	private List<KeyValueVO> keyValueVOList;
 	
 	
+	public List<KeyValueVO> getKeyValueVOList() {
+		return keyValueVOList;
+	}
+	public void setKeyValueVOList(List<KeyValueVO> keyValueVOList) {
+		this.keyValueVOList = keyValueVOList;
+	}
 	public List<LocationVotersVO> getLocationVotersVOList() {
 		return locationVotersVOList;
 	}
@@ -180,6 +188,25 @@ public class LocationDashboardAction extends ActionSupport implements ServletReq
 			 locationVotersVOList = locationDashboardService.getCasteNAgeWiseVoterNCadreCounts(jObj.getLong("constituencyId"),jObj.getLong("publicationDateId"),jObj.getLong("casteGroupId"),jObj.getLong("casteId"));
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String getEnrollmentYearWiseCadres(){
+		 try {
+			 keyValueVOList = locationDashboardService.getEnrollmentYearWiseCadres();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEnrollmentYearWiseCadres", e);
+		}
+		 return Action.SUCCESS;
+	 }
+	 
+	 public String getEnrollmentYearAgeGroupWiseCadres(){
+		 try {
+			 jObj = new JSONObject(getTask());
+			 locationVotersVOList = locationDashboardService.getEnrollmentYearAgeGroupWiseCadres(jObj.getLong("constituencyId"),jObj.getLong("enrollmentYearId"));
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEnrollmentYearAgeGroupWiseCadres", e);
 		}
 		 return Action.SUCCESS;
 	 }
