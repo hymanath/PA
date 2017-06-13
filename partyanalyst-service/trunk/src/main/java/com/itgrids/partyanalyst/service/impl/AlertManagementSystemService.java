@@ -13764,4 +13764,357 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 		}
 		return null;
 	}
+	  public List<AmsTrackingVO> getSubTaskInfoForAlertForAms(AmsAppLoginVO VO){
+      	List<AmsTrackingVO> voList = new ArrayList<AmsTrackingVO>(0); 
+      	try {
+      		List<Object[]> objList = govtAlertSubTaskDAO.getSubTaskInfoForAlert(VO.getAlertId());
+      		Map<Long,AmsTrackingVO> tempMap = new LinkedHashMap<Long, AmsTrackingVO>(0);
+      		List<Long> assignedToList  =new ArrayList<Long>(0);
+      		Map<Long,String> userLocationMap = new HashMap<Long, String>(0);
+      		Map<Long,Long> subtaskUserMap = new HashMap<Long, Long>(0);
+      		
+      		if(objList != null && objList.size() > 0){
+      			for (Object[] obj : objList) {
+      				Long subTaskGovtOfficerId  = commonMethodsUtilService.getLongValueForObject(obj[6]);
+      				Long govtDepartmentDesignationOfficerId  = commonMethodsUtilService.getLongValueForObject(obj[7]);
+      				List<Object[]> userList = govtDepartmentDesignationOfficerDetailsDAO.getUserIdForDeptDesigOfficerIdAndGovtOfficerId(subTaskGovtOfficerId,govtDepartmentDesignationOfficerId);
+      				if(commonMethodsUtilService.isListOrSetValid(userList)){
+      					for (Object[] param : userList) {
+      						subtaskUserMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), commonMethodsUtilService.getLongValueForObject(param[0]));
+      						if(!assignedToList.contains(commonMethodsUtilService.getLongValueForObject(param[0])))
+                  				assignedToList.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+							}
+      				}
+      			}
+      			
+      			if(commonMethodsUtilService.isListOrSetValid(assignedToList)){
+      				List<Object[]> userdtls = govtDepartmentDesignationOfficerDetailsNewDAO.getDesignationNameForUsers(assignedToList);
+      				if(commonMethodsUtilService.isListOrSetValid(userdtls)){
+      					String location="";
+      					for (Object[] param : userdtls) {
+  							Long locationTypeId = commonMethodsUtilService.getLongValueForObject(param[3]);
+  							Long scopeValue = commonMethodsUtilService.getLongValueForObject(param[4]);
+  							Long assignTO = commonMethodsUtilService.getLongValueForObject(param[6]);
+  							
+  							if(locationTypeId != null && locationTypeId.longValue()>0L){
+  								GovtDepartmentWorkLocation workLocation = govtDepartmentWorkLocationDAO.get(scopeValue);
+  								if(workLocation != null)
+  									location=workLocation.getLocationName();
+  							}
+  							userLocationMap.put(assignTO, location);
+  						}
+      				}
+      			}
+      		}
+      		
+      		if(objList != null && objList.size() > 0){
+      			List<Long> subTaskIds = new ArrayList<Long>(0);
+      			for (Object[] obj : objList) {
+          		
+      				AmsTrackingVO vo = new AmsTrackingVO();
+      				vo.setUserId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+      				vo.setUserName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+      				vo.setStatus(commonMethodsUtilService.getStringValueForObject(obj[4]));
+						vo.setColor(commonMethodsUtilService.getStringValueForObject(obj[5]));
+      				vo.setAlertId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+      				vo.setTitle(commonMethodsUtilService.getStringValueForObject(obj[1]));
+      				vo.setDate(commonMethodsUtilService.getStringValueForObject(obj[3]));
+      				vo.setAlertTypeStr("others");//default sub task owner is other person , by comparing login userid
+      				tempMap.put((Long)obj[0], vo);
+      				subTaskIds.add(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					}
+      			
+      			List<Long> govtDeptDesigOfficerIdList = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOfficerIdListByUserId(VO.getUserId());
+      			List<Object[]> subTaskOwnersList = govtAlertSubTaskDAO.getGovtDeptDesigOfficerIdsListBySubTaskId(subTaskIds);
+      			
+      			if(commonMethodsUtilService.isListOrSetValid(subTaskOwnersList)){
+      				for (Object[] param : subTaskOwnersList) {
+      					AmsTrackingVO vo  = tempMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+      					if(vo != null){
+      						if(govtDeptDesigOfficerIdList.contains(commonMethodsUtilService.getLongValueForObject(param[1]))){
+      							vo.setAlertTypeStr("owner");//setting sub task owner is owner of this subtask , by comparing login userid
+      						}
+      					}
+						}
+      			}
+      			
+      			
+      			List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksCommentsAndStatusHistory(subTaskIds);
+      			if(officersList != null && officersList.size() > 0){
+      				for (Object[] objects : officersList) {
+							if(tempMap.get((Long)objects[0]) != null){
+								AmsTrackingVO vo  = tempMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+								if(vo != null){
+									if(!commonMethodsUtilService.getStringValueForObject(objects[2]).isEmpty())
+										vo.getCommentList().add(new AmsTrackingVO(commonMethodsUtilService.getLongValueForObject(objects[0]), 
+											 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3])));
+									vo.setUserName(commonMethodsUtilService.getStringValueForObject(objects[4]));
+									vo.setMobileNO(commonMethodsUtilService.getStringValueForObject(objects[5]));
+									vo.setDesignation(commonMethodsUtilService.getStringValueForObject(objects[6]));
+									vo.setDeptName(commonMethodsUtilService.getStringValueForObject(objects[7]));
+									Long assignedTo = subtaskUserMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+									vo.setLocation(userLocationMap.get(assignedTo) != null ? userLocationMap.get(assignedTo) :"");
+								}
+							}
+						}
+      			}
+      			
+      			
+      			List<Object[]> objectsList = govtOfficerSubTaskTrackingDAO.getCommentsForSubTasks(subTaskIds);
+      			if(objectsList != null && objectsList.size() > 0){
+      				for (Object[] objects : objectsList) {
+							if(tempMap.get((Long)objects[0]) != null){
+								tempMap.get((Long)objects[0]).setCount((Long)objects[1]);
+							}
+						}
+      			}
+      			
+      		}
+      		
+      		if(tempMap != null && tempMap.size() > 0){
+      			AmsTrackingVO returnVO = new AmsTrackingVO();
+      			for (Long subTaskId : tempMap.keySet()) {
+      				AmsTrackingVO vo  = tempMap.get(subTaskId);
+  					if(vo != null){
+  						if(vo.getAlertTypeStr().trim().equalsIgnoreCase("owner"))
+  							returnVO.getAttachementsList().add(vo);
+  						else
+  							returnVO.getCommentList().add(vo);
+  					}
+					}
+      			voList.add(returnVO);
+      		}
+			} catch (Exception e) {
+				LOG.error("Error occured getSubTaskInfoForAlertForAms() method of AlertManagementSystemService");
+			}	
+      	return voList;
+      } 
+	  public List<AmsAppVO> getStatusCompletionInfoForSubTaskForAms(AmsAppLoginVO inputVo){
+    		try{
+    			List<AmsAppVO> finalList = new ArrayList<AmsAppVO>();
+    			
+    			GovtAlertSubTask govtAlertSubTask = govtAlertSubTaskDAO.get(inputVo.getSubTaskId());
+    			
+    			Long assignedByOfficerId=govtAlertSubTask.getCreatedBy();//sub task assigned by 
+    			Long assignedToOfficerId = govtAlertSubTask.getGovtDepartmentDesignationOfficerId();
+    			String subTaskUserTypeStr ="other";
+    			
+    			//get all govt dept desig off ids
+      		List<Long> govtDeptDesigOfficerIdList = govtDepartmentDesignationOfficerDetailsNewDAO.getGovtDeptDesigOfficerIdListByUserId(inputVo.getUserId());
+    			
+    			if(assignedByOfficerId != null && inputVo.getUserId() != null && assignedByOfficerId.longValue() == inputVo.getUserId().longValue()){
+    				subTaskUserTypeStr="assignedBy";//setting sub task owner is owner of this subtask , by comparing login userid
+				}
+    			else if(govtDeptDesigOfficerIdList.contains(assignedToOfficerId)){
+    				subTaskUserTypeStr="assignedTo";//setting sub task owner is owner of this subtask , by comparing login userid
+				}
+    			
+    			Long currentStatusId = govtAlertSubTask.getAlertSubTaskStatusId();
+    			
+      		//get govt dept desig off id by alertId
+      		Long govtDeptDesigOfficerId = alertAssignedOfficerNewDAO.getGovtDeptDesigOfficerIdListByUserId(inputVo.getAlertId());
+      		
+      		//to check whether the logedin user is owner of the subtask or not.
+      		
+      		Long govtDeptDesigOfficerId2 = govtAlertSubTaskDAO.getGovtDeptDesigOfficerIdBySubTaskId(inputVo.getSubTaskId());
+      		
+      		
+      		String isAccess = "";
+      		//if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId)){
+      		if(subTaskUserTypeStr.equalsIgnoreCase("assignedBy")){
+      			if(govtAlertSubTask.getAlertSubTaskStatusId() != null && govtAlertSubTask.getAlertSubTaskStatusId().longValue() == 3L){
+      				isAccess = "true";
+      			}
+      			
+      			Long[] availableIdsArr = {6L,7L};// reopen, closed 
+      			
+      			List<Long> availableIdsList = new ArrayList<Long>(0);
+      			availableIdsList.addAll(Arrays.asList(availableIdsArr));
+      			
+      			List<AlertSubTaskStatus> objList = alertSubTaskStatusDAO.getAll();
+      			if(objList != null && objList.size() > 0){
+      				for (AlertSubTaskStatus param : objList) {
+      					if(currentStatusId.longValue() != param.getAlertSubTaskStatusId().longValue()){
+      						    AmsAppVO VO = new AmsAppVO();
+	        					VO.setId(param.getAlertSubTaskStatusId());
+	                			VO.setName(param.getStatus());
+	                			if(availableIdsList.contains(VO.getId()))
+	                				finalList.add(VO);
+      					}
+  					}
+      			}
+      			
+      		//}else if(govtDeptDesigOfficerIdList != null && govtDeptDesigOfficerId2 != null && govtDeptDesigOfficerIdList.size() > 0 && govtDeptDesigOfficerIdList.contains(govtDeptDesigOfficerId2)){
+      		}if(subTaskUserTypeStr.equalsIgnoreCase("assignedTo")){
+      			
+      			Long[] availableIdsArr = {1L,2L,3L,4L,5L};
+      			
+      			List<Long> availableIdsList = new ArrayList<Long>(0);
+      			availableIdsList.addAll(Arrays.asList(availableIdsArr));
+      			
+      			List<AlertSubTaskStatus> objList = alertSubTaskStatusDAO.getAll();
+      			if(objList != null && objList.size() > 0){
+      				for (AlertSubTaskStatus param : objList) {
+      					if(currentStatusId.longValue() != param.getAlertSubTaskStatusId().longValue()){
+      						    AmsAppVO VO = new AmsAppVO();
+	        					VO.setId(param.getAlertSubTaskStatusId());
+	                			VO.setName(param.getStatus());
+	                			if(availableIdsList.contains(VO.getId()))
+	                				finalList.add(VO);
+      					}
+  					}
+      			}
+      			
+      		}
+      		Long alertSubStatusId = govtAlertSubTask.getAlertSubTaskStatusId();
+      		
+      		if(!commonMethodsUtilService.isListOrSetValid(finalList)){
+      			AmsAppVO VO = new AmsAppVO();
+					VO.setId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
+      			VO.setName(govtAlertSubTask.getAlertSubTaskStatus().getStatus());
+      			finalList.add(VO);
+      		}
+      		
+      		String userName = "";
+      		String locationName = "";
+      		String deptName = "";
+      		String desigName  = "";
+      		
+  			List<Object[]> desigList = govtDepartmentDesignationOfficerDetailsNewDAO.getLocationNameByAssignedOficer(assignedByOfficerId);
+  			if(desigList != null && desigList.size() > 0){
+  				for (Object[] objects : desigList) {
+  					userName = commonMethodsUtilService.getStringValueForObject(objects[0]);
+  					locationName = commonMethodsUtilService.getStringValueForObject(objects[3]);
+  					deptName = commonMethodsUtilService.getStringValueForObject(objects[2]);
+  					desigName = commonMethodsUtilService.getStringValueForObject(objects[1]);
+  				}
+  			}
+  			if(finalList != null && finalList.size() > 0){
+  				AmsAppVO vo = finalList.get(0);
+  				Long assignedUserId = govtAlertSubTask.getCreatedBy();
+  				if(assignedUserId != null){
+  					List<String> deptList = govtAlertDepartmentLocationNewDAO.getAccessDepartmentList(assignedUserId);
+  					if(deptList != null && deptList.size() > 0){
+  						StringBuilder strBuild = new StringBuilder();
+  						if(deptList.size() > 3){
+  							for(int i=1 ; i <= 3 ; i++){
+  								strBuild.append(deptList.get(i));
+  								strBuild.append(",");
+  							}
+  							strBuild.append("...");
+  						}else{
+  							for(String str : deptList){
+  								strBuild.append(str);
+  								strBuild.append(",");
+  							}
+  						}  
+  						vo.setDeptName(strBuild.toString());
+  					}
+  				}
+  				
+  				//vo.setDeptName(govtAlertSubTask.getAlertAssignedOfficer().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());
+  				vo.setAssignedByOfficerStr(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getOfficerName());
+  				vo.setAssignedOfficerStr(govtAlertSubTask.getSubTaskGovtOfficer().getOfficerName());
+  				//vo.setMobileNo(govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo() != null ?govtAlertSubTask.getAlertAssignedOfficer().getGovtOfficer().getMobileNo():"");//mobile No for Assigned By
+  				vo.setMobileNo(govtAlertSubTask.getSubTaskGovtOfficer().getMobileNo() != null ?govtAlertSubTask.getSubTaskGovtOfficer().getMobileNo():"");//mobile No for Assigned to
+  				vo.setDesignation(desigName);
+  				vo.setAlertId(inputVo.getSubTaskId());
+  				vo.setDescription(govtAlertSubTask.getAlert().getDescription());
+  				vo.setMainTitle(govtAlertSubTask.getAlert().getTitle());
+  				vo.setTitle(govtAlertSubTask.getTitle());
+  				vo.setDateStr(govtAlertSubTask.getCreatedTime() != null ? govtAlertSubTask.getCreatedTime().toString().substring(0, 10):"");
+  				vo.setDueDateStr(govtAlertSubTask.getDueDate() != null ? govtAlertSubTask.getDueDate().toString().substring(0, 10):"");
+  				
+  				vo.setIsAccess(isAccess);
+  				vo.setStatus(alertSubTaskStatusDAO.get(currentStatusId).getStatus());
+  				vo.setStatusId(commonMethodsUtilService.getLongValueForObject(alertSubStatusId));
+  				vo.setColor(alertSubTaskStatusDAO.get(currentStatusId).getColor());
+  				vo.setCategoryId(govtAlertSubTask.getAlert().getAlertCategoryId());
+  				vo.setPositionName(locationName);//LocationName for Assigned By
+  				vo.setCallerName(govtAlertSubTask.getGovtDepartmentDesignationOfficer().getLevelValueGovtDepartmentWorkLocation().getLocationName());//Location for assignedTo
+  				vo.setBoardName(govtAlertSubTask.getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName());//depart for assigned to
+  				
+      		/*	List<Long> subTaskIds = new ArrayList<Long>(0);
+  				List<Long> userIds = new ArrayList<Long>(0);
+  				subTaskIds.add(vo.getAlertId());
+  				List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistory(subTaskIds);
+      			if(officersList != null && officersList.size() > 0){
+	    				for (Object[] objects : officersList) {
+	    					//userIds.add(commonMethodsUtilService.getLongValueForObject(objects[11]));
+
+							//}
+					//}
+      			//List<Object[]> deptList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistoryByUser(userIds);
+      			//if(deptList != null && deptList.size() > 0){
+	    				//for (Object[] objects : deptList) {
+								if(!commonMethodsUtilService.getStringValueForObject(objects[2]).isEmpty()){
+									vo.getCommentList().add(new AlertTrackingVO(commonMethodsUtilService.getLongValueForObject(objects[0]), 
+										 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3]),
+										 commonMethodsUtilService.getStringValueForObject(objects[4]),commonMethodsUtilService.getStringValueForObject(objects[6]),commonMethodsUtilService.getStringValueForObject(objects[7]),commonMethodsUtilService.getStringValueForObject(objects[10])));
+								}
+								
+								if(!commonMethodsUtilService.getStringValueForObject(objects[8]).isEmpty()){
+									vo.getSubList().add(commonMethodsUtilService.getStringValueForObject(objects[8]));
+								
+
+							}
+	    				}
+      			}*/
+  				List<Long> subTaskIds = new ArrayList<Long>(0);
+  				Set<Long> userIds = new HashSet<Long>(0);
+  				Map<Long,AmsTrackingVO> map = new LinkedHashMap<Long, AmsTrackingVO>(0);
+  				subTaskIds.add(vo.getAlertId());
+  				List<Object[]> officersList = govtOfficerSubTaskTrackingDAO.getSubTasksStatusHistory(subTaskIds);
+      			if(officersList != null && officersList.size() > 0){
+	    				for (Object[] objects : officersList) {
+	    					userIds.add(commonMethodsUtilService.getLongValueForObject(objects[11]));
+								if(!commonMethodsUtilService.getStringValueForObject(objects[2]).isEmpty()){
+									vo.getCommentList().add(new AmsTrackingVO(commonMethodsUtilService.getLongValueForObject(objects[0]), 
+										 commonMethodsUtilService.getStringValueForObject(objects[2]),commonMethodsUtilService.getStringValueForObject(objects[3]),
+										 commonMethodsUtilService.getStringValueForObject(objects[4]),commonMethodsUtilService.getStringValueForObject(objects[6]),commonMethodsUtilService.getStringValueForObject(objects[7]),commonMethodsUtilService.getStringValueForObject(objects[10]),commonMethodsUtilService.getLongValueForObject(objects[11])));
+								}
+								
+								if(!commonMethodsUtilService.getStringValueForObject(objects[8]).isEmpty()){
+									vo.getSubList().add(commonMethodsUtilService.getStringValueForObject(objects[8]));
+							}
+	    	    		}
+	            	}
+	    		    
+      			List<Object[]> deptList = govtDepartmentDesignationOfficerDetailsNewDAO.getDesigAndDepartForUser(new ArrayList<Long>(userIds));
+      			if(deptList != null && deptList.size() > 0){
+	    				for (Object[] object : deptList) {
+	    					Long usrId = commonMethodsUtilService.getLongValueForObject(object[0]);
+	    					AmsTrackingVO trackingVO = map.get(usrId);
+	    					if(trackingVO == null){
+	    						trackingVO  = new AmsTrackingVO();
+	    						trackingVO.setUserName(commonMethodsUtilService.getStringValueForObject(object[1]));
+	    						trackingVO.setDesignation(commonMethodsUtilService.getStringValueForObject(object[2]));
+	    						trackingVO.setLocation(commonMethodsUtilService.getStringValueForObject(object[3]));
+	    						trackingVO.setDeptName(commonMethodsUtilService.getStringValueForObject(object[4]));
+	    						map.put(usrId,trackingVO);
+	    					}
+							}
+	    				}
+      			
+      			if(vo.getCommentList() != null && !vo.getCommentList().isEmpty()){
+      				for (AmsTrackingVO desigVO: vo.getCommentList()) {
+      					Long usrId = desigVO.getUserId();
+      					AmsTrackingVO finalVO = map.get(usrId);
+      					if(finalVO != null){
+      						desigVO.setUserName(finalVO.getUserName());
+      						desigVO.setDesignation(finalVO.getDesignation());
+      						desigVO.setLocation(finalVO.getLocation());
+      						desigVO.setDeptName(finalVO.getDeptName());
+      					}
+						}
+      			}
+      			vo.setUserType(subTaskUserTypeStr);// assignedBy user or assignedTo user
+      			
+  			}
+  			return 	finalList;
+    		}catch(Exception e){
+    			e.printStackTrace();
+    		}
+    		return null;
+    	}
 }

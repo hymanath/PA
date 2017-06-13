@@ -69,8 +69,9 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
+import com.itgrids.partyanalyst.dto.AmsAppVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
-import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
+import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
@@ -5024,5 +5025,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalvo;
 	 }
-	 
+	 public List<AmsTrackingVO> getSubTaskAlertDetails(AmsAppLoginVO keyVo){
+		 List<AmsTrackingVO> finalVOLst = new ArrayList<AmsTrackingVO>(0);
+		 try {
+			
+			 finalVOLst = alertManagementSystemService.getSubTaskInfoForAlertForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getSubTaskAlertDetails", e);
+		}
+		 return finalVOLst;
+	 }
+	 public List<AmsAppVO> getSubTaskAlertDetailedInfo(AmsAppLoginVO keyVo){
+		 List<AmsAppVO> finalVOLst = new ArrayList<AmsAppVO>(0);
+		 try {
+			
+			 finalVOLst = alertManagementSystemService.getStatusCompletionInfoForSubTaskForAms(keyVo);
+			 
+		} catch (Exception e) {
+			log.error("Exception raised at getSubTaskAlertDetails", e);
+		}
+		 return finalVOLst;
+	 }
 }
