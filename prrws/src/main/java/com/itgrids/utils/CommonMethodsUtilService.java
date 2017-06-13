@@ -747,6 +747,13 @@ public class CommonMethodsUtilService {
 			}
 			return null;
 		}
+		/**
+		 * @author  Swadhin Lenka 
+		 * @Date 9th June,2017
+		 * @description we need to keep two decimal place
+		 * @param List<Long>
+		 * @return if argument is not null java.lang.Double else 0.0
+		 */
 		public Double roundUptoTwoDecimalPoint(Double value){
 			try{
 				 DecimalFormat df = new DecimalFormat("##.00");
