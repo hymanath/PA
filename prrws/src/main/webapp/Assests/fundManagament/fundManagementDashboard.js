@@ -18,6 +18,8 @@
 		getLocationWiseFundDetails(6,'lowest','lowFundVillage');
 		getAverageFundForAnyLevel(3,'avgFundDist');
 		getAverageFundForAnyLevel(4,'avgFundCons');
+		getAverageFundForAnyLevel(5,'avgFundMandal');
+		getAverageFundForAnyLevel(6,'avgFundVillage');
 		getLocationWiseAmountDetails(2,'stateLevlOvervw','overview');
 		getLocationWiseAmountDetails(3,'distLevlOvervw','overview');
 		getLocationWiseAmountDetails(4,'consLevlOvervw','overview');
@@ -30,8 +32,8 @@
 		// getSchemeWiseHighestAndLowestFund("highest");
 		// getSchemeWiseHighestAndLowestFund("lowest");
 		getTotalLocationsByScopeId(4,'totFundCons');
-		// getTotalLocationsByScopeId(5);
-		// getTotalLocationsByScopeId(6);
+		 getTotalLocationsByScopeId(5,'totFundMandal');
+		 getTotalLocationsByScopeId(6,'totFundVillage');
 		
 		getAverageFundForScheme('avgFundScheme');
 		
@@ -1714,7 +1716,7 @@
 			
 		}
 		  var json = {
-			blockLevelId : 4, 
+			blockLevelId : locScopeId, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : glStartDate,//"01-06-2013",       
