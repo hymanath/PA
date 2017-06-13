@@ -1431,6 +1431,7 @@
 			}
 		  
 		  var json = {
+			
 			blockLevelId : 4, 
 			levelValues : levelValues ,
 			financialYrIdList : financialYrIdArr,
@@ -1462,6 +1463,8 @@
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
 		var deptIdsArr = [];
+		var searchLevelId = 0;
+		var searchLevelVals = [];
 		
 		var financialYrIdArr = $('#financialYearId').val();
 		if ($.inArray('0', financialYrIdArr) != -1)
@@ -1474,14 +1477,17 @@
 		}
 		
 		var json = {
+			searchLevelId:4,
 			blockLevelId : levelId, 
-			levelValues : levelValues ,
+			levelValues : [11] ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : glStartDate,//"01-06-2013",       
 			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
-			deptIdsList:deptIdsArr
+			deptIdsList:deptIdsArr,			
+			sortingType :"name",
+			order :"desc"		
 		}
 		$.ajax({
 			url : "getFinancialYearWiseScheameDetails",  
@@ -1506,6 +1512,9 @@
 		var levelValues = [];
 		var sourceIdsArr = [];
 		var schemeIdsArr = [];
+		var searchLevelId = 0;
+		var searchLevelVals = [];
+		
 		var deptIdsArr = $("#DepartmentsId").val();
 		
 		var financialYrIdArr = $('#financialYearId').val();
@@ -1518,14 +1527,17 @@
 			
 		}
 		var json = {
+			searchLevelId:4,
 			blockLevelId : levelId, 
-			levelValues : levelValues ,
+			levelValues : [11] ,
 			financialYrIdList : financialYrIdArr,
 			fromDateStr : glStartDate,//"01-06-2013",       
 			toDateStr : glEndDate,//"10-06-2020",
 			sourceIdsList:sourceIdsArr,
 			schemeIdsList:schemeIdsArr,
-			deptIdsList:deptIdsArr
+			deptIdsList:deptIdsArr,			
+			sortingType :"name",
+			order :"desc"		
 		}
 		$.ajax({
 			url : "getFinancialYearWiseDeptsWiseSchemeDetails",  
