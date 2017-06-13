@@ -1,26 +1,34 @@
 package com.itgrids.core.api.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.core.api.service.ILocationDashboardService;
+import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreEnrollmentYearDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CasteCategoryDAO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsForConstituencyTypesVO;
 import com.itgrids.partyanalyst.dto.CandidateInfoForConstituencyVO;
+import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.LocationVotersVO;
+import com.itgrids.partyanalyst.model.CasteCategory;
+import com.itgrids.partyanalyst.model.EnrollmentYear;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class LocationDashboardService implements ILocationDashboardService{
@@ -32,8 +40,22 @@ public class LocationDashboardService implements ILocationDashboardService{
 	private ITdpCadreEnrollmentYearDAO tdpCadreEnrollmentYearDAO;
 	private IVoterCastInfoDAO voterCastInfoDAO; 
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IEnrollmentYearDAO enrollmentYearDAO;
+	private ICasteCategoryDAO casteCategoryDAO;
 	
 	
+	public ICasteCategoryDAO getCasteCategoryDAO() {
+		return casteCategoryDAO;
+	}
+	public void setCasteCategoryDAO(ICasteCategoryDAO casteCategoryDAO) {
+		this.casteCategoryDAO = casteCategoryDAO;
+	}
+	public IEnrollmentYearDAO getEnrollmentYearDAO() {
+		return enrollmentYearDAO;
+	}
+	public void setEnrollmentYearDAO(IEnrollmentYearDAO enrollmentYearDAO) {
+		this.enrollmentYearDAO = enrollmentYearDAO;
+	}
 	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
 		return userVoterDetailsDAO;
 	}
@@ -617,9 +639,139 @@ public class LocationDashboardService implements ILocationDashboardService{
 					entry.getValue().setMaleCadrePerc(((entry.getValue().getMaleCadres()*100.00)/totalMaleCadres)+" %");
 					entry.getValue().setFemaleCadrePerc(((entry.getValue().getFemaleCadres()*100.00)/totalFemaleCadres)+" %");
 				}
+				
+				voList.addAll(map.values());
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getCasteNAgeWiseVoterNCadreCounts", e);
+		}
+		return voList;
+	}
+	
+	public List<KeyValueVO> getEnrollmentYearWiseCadres(){
+		List<KeyValueVO> voList = new LinkedList<KeyValueVO>();
+		try {
+			List<Object[]> objList = tdpCadreEnrollmentYearDAO.getEnrollmentYearWiseCadres();
+			
+			if(objList != null && objList.size() > 0){
+				Map<Long,List<Long>> resultMap = new LinkedHashMap<Long, List<Long>>();
+				for (Object[] objects : objList) {
+					if(resultMap.get((Long)objects[0]) == null){
+						resultMap.put((Long)objects[0], new ArrayList<Long>(0));
+					}
+					resultMap.get((Long)objects[0]).add((Long)objects[1]);
+				}
+				
+				Set<Long> keySet = resultMap.keySet();
+				List<Long> ketList = new ArrayList<Long>(0);
+				ketList.addAll(keySet);
+				
+				for(int i=0;i<ketList.size();i++) {
+					List<Long> firstList = resultMap.get(ketList.get(i));
+					List<Long> secondList = resultMap.get(ketList.get(i+1));
+					
+					KeyValueVO resultVO = new KeyValueVO();  
+					resultVO.setId(ketList.get(i));
+					resultVO.setCount(Long.parseLong(firstList.size()+""));
+					
+					for (Long long1 : firstList) {
+						if(secondList.contains(firstList)){
+							resultVO.setTotalCount(resultVO.getTotalCount()+1l);
+						}else{
+							resultVO.setScopeValue(resultVO.getScopeValue()+1l);
+						}
+					}
+					
+					voList.add(resultVO);
+				}
+				
+				KeyValueVO lastVO = new KeyValueVO();
+				lastVO.setId(ketList.get(ketList.size()-1));
+				lastVO.setCount(Long.parseLong(resultMap.get(ketList.get(ketList.size()-1)).size()+""));
+				voList.add(lastVO);
+				
+				List<EnrollmentYear> enrolmentYear = enrollmentYearDAO.getAll();
+				Map<Long,String> enrollmentMap = new HashMap<Long, String>();
+				for (EnrollmentYear enrollmentYear : enrolmentYear) {
+					enrollmentMap.put(enrollmentYear.getEnrollmentYearId(), enrollmentYear.getDescription());
+				}
+				
+				if(voList != null && voList.size() > 0){
+					for (KeyValueVO kvv : voList) {
+						kvv.setName(enrollmentMap.get(kvv.getId()));
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEnrollmentYearWiseCadres", e);
+		}
+		return voList;
+	}
+	
+	public List<LocationVotersVO> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId,Long enrollmentYearId){
+		List<LocationVotersVO> voList = new LinkedList<LocationVotersVO>();
+		try {
+			//0-voterAgeRangeId,1-ageRange,2-gender,3-casteCategoryId,4-categoryName,5-count
+			List<Object[]> objList =  tdpCadreEnrollmentYearDAO.getEnrollmentYearAgeGroupWiseCadres(constituencyId,enrollmentYearId);
+			
+			Map<Long,LocationVotersVO> ageRangeMap = new LinkedHashMap<Long, LocationVotersVO>();
+			if(objList != null && objList.size() > 0){
+				List<CasteCategory> ccList = casteCategoryDAO.getAll();
+				for (Object[] objects : objList) {
+					if(ageRangeMap.get((Long)objects[0]) == null){
+						LocationVotersVO vo = new LocationVotersVO();
+						vo.setAgeRangeId((Long)objects[0]);
+						vo.setAgeRange(objects[1].toString());
+						if(objects[2].toString().equalsIgnoreCase("M")){
+							vo.setMaleCadres(vo.getMaleCadres()+(Long)objects[5]);
+						}else if(objects[2].toString().equalsIgnoreCase("F")){
+							vo.setFemaleCadres(vo.getFemaleCadres()+(Long)objects[5]);
+						}
+						
+						vo.setLocationVotersVOList(getCasteCategorySkeleton(ccList));
+						
+						LocationVotersVO matchedCasteVO = getMatchedVO(vo.getLocationVotersVOList(),(Long)objects[3]);
+						if(matchedCasteVO != null){
+							matchedCasteVO.setTotalCadres((Long)objects[5]);
+						}
+						
+						ageRangeMap.put((Long)objects[0],vo);
+					}else{
+						LocationVotersVO vo = ageRangeMap.get((Long)objects[0]);
+						if(objects[2].toString().equalsIgnoreCase("M")){
+							vo.setMaleCadres(vo.getMaleCadres()+(Long)objects[5]);
+						}else if(objects[2].toString().equalsIgnoreCase("F")){
+							vo.setFemaleCadres(vo.getFemaleCadres()+(Long)objects[5]);
+						}
+						
+						LocationVotersVO matchedCasteVO = getMatchedVO(vo.getLocationVotersVOList(),(Long)objects[3]);
+						if(matchedCasteVO != null){
+							matchedCasteVO.setTotalCadres(matchedCasteVO.getTotalCadres()+(Long)objects[5]);
+						}
+					}
+					
+					
+				}
+			}
+			
+			if(ageRangeMap != null && ageRangeMap.size() > 0){
+				voList.addAll(ageRangeMap.values());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEnrollmentYearAgeGroupWiseCadres", e);
+		}
+		return voList;
+	}
+	
+	public List<LocationVotersVO> getCasteCategorySkeleton(List<CasteCategory> ccList){
+		List<LocationVotersVO> voList = new ArrayList<LocationVotersVO>(0);
+		if(ccList != null && ccList.size() > 0){
+			for (CasteCategory cc : ccList) {
+				LocationVotersVO vo = new LocationVotersVO();
+				vo.setAgeRangeId(cc.getCasteCategoryId());
+				vo.setAgeRange(cc.getCategoryName());
+				voList.add(vo);
+			}
 		}
 		return voList;
 	}

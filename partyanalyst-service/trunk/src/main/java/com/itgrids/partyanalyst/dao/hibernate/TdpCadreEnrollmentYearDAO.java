@@ -1064,6 +1064,38 @@ public class TdpCadreEnrollmentYearDAO extends GenericDaoHibernate<TdpCadreEnrol
 					" group by model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.gender " +
 					" order by model.tdpCadre.voterAgeRange.voterAgeRangeId ");
 			
+			query.setParameter("casteGroupId", casteGroupId);
+			query.setParameter("enrollmentYearId", IConstants.PRESENT_CADRE_ENROLLMENT_YEAR);
+			query.setParameter("casteId", casteId);
+			query.setParameter("constituencyId", constituencyId);
+			
+			return query.list();
+		}
+		
+		public List<Object[]> getEnrollmentYearWiseCadres(){
+			Query query = getSession().createQuery(" select model.enrollmentYearId,model.tdpCadreId " +
+					" from TdpCadreEnrollmentYear model " +
+					" where model.isDeleted = 'N' and model.tdpCadre.isDeleted='N' and model.enrollmentYear.isActive='Y' " +
+					" order by model.enrollmentYear.enrollmentYearId desc ");
+			return query.list();
+		}
+		
+		public List<Object[]> getEnrollmentYearAgeGroupWiseCadres(Long constituencyId,Long enrollmentYearId){
+			//0-voterAgeRangeId,1-ageRange,2-gender,3-casteCategoryId,4-categoryName,5-count
+			Query query = getSession().createQuery(" select model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.voterAgeRange.ageRange," +
+					" model.tdpCadre.gender,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.categoryName," +
+					" count(model.tdpCadreId) " +
+					" from TdpCadreEnrollmentYear model " +
+					" where model.isDeleted = 'N' and model.tdpCadre.isDeleted = 'N' " +
+					" and model.tdpCadre.enrollmentYear = 2014 " +
+					" and model.enrollmentYearId = :enrollmentYearId " +
+					" and model.tdpCadre.userAddress.constituency.constituencyId = :constituencyId " +
+					" group by model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.gender,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId " +
+					" order by model.tdpCadre.voterAgeRange.voterAgeRangeId,model.tdpCadre.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+			
+			query.setParameter("enrollmentYearId", enrollmentYearId);
+			query.setParameter("constituencyId", constituencyId);
+			
 			return query.list();
 		}
 }
