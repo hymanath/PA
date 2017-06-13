@@ -2791,18 +2791,18 @@ public class WebServiceHandler {
 		}	
 	}
 	@POST
-	@Path("/getAllAlertDetails")
+	@Path("/getAlertDetailsInfoForAms")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public AmsVO getAllAlertDetails(AmsAppLoginVO vo)
+	public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO vo)
 	{
 		try{
 			
-			return webServiceHandlerService.getAllAlertDetails(vo);
+			return webServiceHandlerService.getAlertDetailsInfoForAms(vo);
 		}
 		catch(Exception e)
 		{
-			LOG.error("Exception Occured in getAllAlertDetails() Method,WebServiceHandler Class ",e);
+			LOG.error("Exception Occured in getAlertDetailsInfoForAms() Method,WebServiceHandler Class ",e);
 		    return null;
 		}	
 	}
