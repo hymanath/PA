@@ -15,6 +15,7 @@ public class LocationVO implements Serializable {
 	private String financialYear;
 	private List<LocationVO> locationList1;
 	private List<LocationVO> locationList2;
+	private String amunt = "0.0";
 	
 	public Long getLocationLevelId() {
 		return locationLevelId;
@@ -76,5 +77,12 @@ public class LocationVO implements Serializable {
 		}
 		return locationList2;
 	}
+	public String getAmunt() {
+		return amunt;
+	}
+	public void setAmunt(String amunt) {
+		this.amunt = amunt;
+	}
+	
 	
 }

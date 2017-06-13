@@ -19,6 +19,9 @@ public class LocationFundDetailsVO implements Serializable{
 	private Double fundedPerc;
 	private Double nonFundedPerc;
 	private Long totSchemes;
+	private String ttlAmt="0.0";
+	private String avrgeAmt="0.0";
+	private String fundAvageAmt ="0.0";
 	
 	private List<IdNameVO> subList = new ArrayList<IdNameVO>();
 	private List<LocationFundDetailsVO> detailsVOs;	
@@ -103,5 +106,25 @@ public class LocationFundDetailsVO implements Serializable{
 		}
 		return detailsVOs;
 	}
+	public String getTtlAmt() {
+		return ttlAmt;
+	}
+	public void setTtlAmt(String ttlAmt) {
+		this.ttlAmt = ttlAmt;
+	}
+	public String getAvrgeAmt() {
+		return avrgeAmt;
+	}
+	public void setAvrgeAmt(String avrgeAmt) {
+		this.avrgeAmt = avrgeAmt;
+	}
+	public String getFundAvageAmt() {
+		return fundAvageAmt;
+	}
+	public void setFundAvageAmt(String fundAvageAmt) {
+		this.fundAvageAmt = fundAvageAmt;
+	}
+	
+	
 	
 }

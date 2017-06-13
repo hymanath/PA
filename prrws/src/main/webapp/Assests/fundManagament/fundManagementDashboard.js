@@ -302,7 +302,7 @@
 		{
 			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.totalAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
 		}else if(divId == 'avgFundDist' || divId == 'avgFundCons'){
-			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.averageAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
+			str+='<h3><i class="fa fa-inr"></i>: '+ajaxresp.avrgeAmt+'<small class="text-success">'+ajaxresp.perc+' %</small></h3>';
 		}
 		
 		/* if(ajaxresp.fundedLoc != null)
@@ -322,7 +322,7 @@
 					str+='<li class="text-center">';
 						str+='<p class="text-muted">'+ajaxresp.subList[i].name+'</p>';
 						str+='<p class="text-success"><small>'+ajaxresp.subList[i].percentage+'%</small></p>';
-						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.subList[i].total+'</p>';
+						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.subList[i].totl+'</p>';
 					str+='</li>';
 				}
 			str+='</ul>';
@@ -346,7 +346,7 @@
 					str+='<li class="text-center">';
 						str+='<p class="text-muted">'+ajaxresp.detailsVOs[i].name+'</p>';
 						str+='<p class="text-success"><small>'+ajaxresp.detailsVOs[i].perc+'%</small></p>';
-						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].averageAmt+'</p>';
+						str+='<p class="panel-title" style="font-size:14px;"><i class="fa fa-inr"></i>: '+ajaxresp.detailsVOs[i].fundAvageAmt+'</p>';
 					str+='</li>';
 				}
 			str+='</ul>';
