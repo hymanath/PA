@@ -11,8 +11,10 @@ import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertsSummeryVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
+import com.itgrids.partyanalyst.dto.AmsAppVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
+import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
@@ -216,4 +218,6 @@ public interface IAlertManagementSystemService {
 	 public ResultStatus uploadDocumentsForRejoinderStatus(final StringBuilder pathBuilder,final Long alertId,final Long userId);
 	 public List<AlertVO> getRejoinderDocumentsForAlert(Long alertId);
 	 public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo);
+	 public List<AmsTrackingVO> getSubTaskInfoForAlertForAms(AmsAppLoginVO VO);
+	 public List<AmsAppVO> getStatusCompletionInfoForSubTaskForAms(AmsAppLoginVO inputVo);
 }        

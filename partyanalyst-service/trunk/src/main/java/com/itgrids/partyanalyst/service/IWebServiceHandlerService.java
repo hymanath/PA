@@ -14,8 +14,10 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
+import com.itgrids.partyanalyst.dto.AmsAppVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
+import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.CadreAddressVO;
@@ -230,4 +232,6 @@ public interface IWebServiceHandlerService {
     public DistrictOfficeViewAlertVO getAmsAppAlertsBasicCounts(AmsDataVO vo);
     public List<AmsDataVO> getOfficerAlertDetails(AmsDataVO amsDataVO);
     public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo);
+    public List<AmsAppVO> getSubTaskAlertDetailedInfo(AmsAppLoginVO keyVo);
+    public List<AmsTrackingVO> getSubTaskAlertDetails(AmsAppLoginVO keyVo);
 }
