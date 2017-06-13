@@ -34,8 +34,9 @@ import com.itgrids.partyanalyst.dto.AlertOverviewVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
+import com.itgrids.partyanalyst.dto.AmsAppVO;
 import com.itgrids.partyanalyst.dto.AmsDataVO;
-import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
+import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
 import com.itgrids.partyanalyst.dto.AttendanceQuestionnariWSVO;
 import com.itgrids.partyanalyst.dto.AttendanceTabUserVO;
@@ -2803,6 +2804,38 @@ public class WebServiceHandler {
 		catch(Exception e)
 		{
 			LOG.error("Exception Occured in getAlertDetailsInfoForAms() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getSubTaskAlertDetails")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsTrackingVO> getSubTaskAlertDetails(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getSubTaskAlertDetails(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getSubTaskAlertDetails() Method,WebServiceHandler Class ",e);
+		    return null;
+		}	
+	}
+	@POST
+	@Path("/getSubTaskAlertDetailedInfo")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<AmsAppVO> getSubTaskAlertDetailedInfo(AmsAppLoginVO vo)
+	{
+		try{
+			
+			return webServiceHandlerService.getSubTaskAlertDetailedInfo(vo);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getSubTaskAlertDetails() Method,WebServiceHandler Class ",e);
 		    return null;
 		}	
 	}
