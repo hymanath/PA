@@ -60,9 +60,17 @@ public class AmsVO implements Serializable {
 	
 	private String dueDate;
 	private Long severityId;
-	private List<AlertTrackingVO> subList1 = new ArrayList<AlertTrackingVO>(0);
+	private List<AmsTrackingVO> subList1 = new ArrayList<AmsTrackingVO>(0);
 	private List<AlertVO> rejinderDocList = new ArrayList<AlertVO>(0);
+	private String CategoryName;
 	
+	
+	public String getCategoryName() {
+		return CategoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		CategoryName = categoryName;
+	}
 	public List<AmsAppVO> getStatusComplteInfoLst() {
 		return statusComplteInfoLst;
 	}
@@ -351,10 +359,10 @@ public class AmsVO implements Serializable {
 	public void setSeverityId(Long severityId) {
 		this.severityId = severityId;
 	}
-	public List<AlertTrackingVO> getSubList1() {
+	public List<AmsTrackingVO> getSubList1() {
 		return subList1;
 	}
-	public void setSubList1(List<AlertTrackingVO> subList1) {
+	public void setSubList1(List<AmsTrackingVO> subList1) {
 		this.subList1 = subList1;
 	}
 	public List<AlertVO> getRejinderDocList() {
