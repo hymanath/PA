@@ -3447,7 +3447,7 @@ IUserVoterDetailsDAO{
 	 
 	 public List<Object[]> getVotersCasteNAgeGroupWiseCount(Long casteGroupId,Long casteId,Long constituencyId,Long publicationDateId){
 		//0-ageRangeId,1-ageRange,2-gender,3-votersCount
-		 Query query = getSession().createQuery(" select model.voter.voterAgeRange.voterAgeRangeId,select model.voter.voterAgeRange.ageRange, " +
+		 Query query = getSession().createQuery(" select model.voter.voterAgeRange.voterAgeRangeId,model.voter.voterAgeRange.ageRange, " +
 		 		" model.voter.gender,count(model.voter.voterId) " +
 		 		" from UserVoterDetails model,BoothPublicationVoter model1 " +
 		 		" where model.voter.voterId = model1.voter.voterId " +

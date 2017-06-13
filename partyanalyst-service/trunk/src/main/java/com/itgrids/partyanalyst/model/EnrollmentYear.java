@@ -18,6 +18,7 @@ public class EnrollmentYear {
 	//enrollment_year_id,year,order_no
 	private Long enrollmentYearId;
 	private Long year;
+	private String description;
 	private Long orderNo;
 	private String isActive;
 	
@@ -53,6 +54,14 @@ public class EnrollmentYear {
 	}
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
+	}
+	
+	@Column(name="description")
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	
