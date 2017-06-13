@@ -12,6 +12,7 @@ public class IdNameVO implements Serializable{
 	private double average;
 	private double percentage;
 	private Long count;
+	private String totl;
 	
 	
 	public Long getCount() {
@@ -49,6 +50,12 @@ public class IdNameVO implements Serializable{
 	}
 	public void setPercentage(double percentage) {
 		this.percentage = percentage;
+	}
+	public String getTotl() {
+		return totl;
+	}
+	public void setTotl(String totl) {
+		this.totl = totl;
 	}
 	
 	

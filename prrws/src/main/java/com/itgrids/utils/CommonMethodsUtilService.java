@@ -767,22 +767,22 @@ public class CommonMethodsUtilService {
 			}
 			return null;
 		}
-		public String calculateAmountInWords(Long number){
-			String amountStr = number.toString();
-			int lenght = amountStr.trim().length();
-			if(lenght <= 7){
-				amountStr =amountStr+" lack ";
-				
-			}
-			if(lenght > 7){
-				String amountStr2;
-				String amountStr1;
-				amountStr1=amountStr.substring(lenght-7,lenght);
-				amountStr2=amountStr.substring(0,lenght-7);
-		        amountStr =amountStr2+"."+amountStr1+" crores ";
-			}
-			
-			return amountStr;
-			
-		}
+		public  String calculateAmountInWords(Long number){
+		      String amountStr = number.toString();
+		      int lenght = amountStr.trim().length();
+		      if(lenght == 7){
+		        amountStr=amountStr.substring(0,2);
+		        amountStr =amountStr+" lk ";
+		        
+		      }
+		      if(lenght > 7){
+		        String amountStr2;
+		        String amountStr1;
+		        amountStr1=amountStr.substring(lenght-7,lenght-5);
+		        amountStr2=amountStr.substring(0,lenght-7);
+		            amountStr =amountStr2+"."+amountStr1 + "cr";
+		           
+		      }
+		      return amountStr;  
+		    }
 }
