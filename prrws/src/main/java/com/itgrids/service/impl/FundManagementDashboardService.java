@@ -1656,9 +1656,11 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				locationList = fundSanctionDAO.getAllConstituencyByDistrictId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate);
 				lvlIdStr = IConstants.CONSTITUENCY_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.CONSTITUENCY_LEVEL_SCOPE_ID){//get tehsilIds
-				
+				locationList = fundSanctionDAO.getAllTehsilByConstituencyId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate);
+				lvlIdStr = IConstants.MANDAL_LEVEL_SCOPE_ID.toString();
 			}else if(superLocationLevelId != null && superLocationLevelId.longValue() == IConstants.MANDAL_LEVEL_SCOPE_ID){//get panchayatIds
-				
+				locationList = fundSanctionDAO.getAllPanchayatByTehsilId(superLocationId,inputVO.getFinancialYrIdList(),deptIdsList,sourceIdsList,sDate,eDate);
+				lvlIdStr = IConstants.VILLAGE_LEVEL_SCOPE_ID.toString();
 			}
 			if(locationList != null && locationList.size() > 0){
 				for(Object[] param : locationList){

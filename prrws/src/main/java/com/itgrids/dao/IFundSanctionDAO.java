@@ -28,4 +28,6 @@ public interface IFundSanctionDAO extends GenericDao<FundSanction,Long>{
 	public List<Long> getLocationBlockLevelIds(Long locationId,Long locationLevelId,Long blockLevelId);
 	public List<Object[]> getAllDistrictByStateId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId,Date sDate,Date eDate);
 	public List<Object[]> getAllConstituencyByDistrictId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptId,List<Long> sourceId,Date sDate,Date eDate);
+	public List<Object[]> getAllTehsilByConstituencyId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate);
+	public List<Object[]> getAllPanchayatByTehsilId(Long superLocationId,List<Long> financialYrIdList,List<Long> deptIdList,List<Long> sourceIdList,Date sDate,Date eDate);
 }
