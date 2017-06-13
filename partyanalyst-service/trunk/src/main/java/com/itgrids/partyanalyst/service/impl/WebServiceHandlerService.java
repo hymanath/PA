@@ -5013,11 +5013,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		 return finalList;
 	 }
-	 public AmsVO getAllAlertDetails(AmsAppLoginVO keyVo){
+	 public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo){
 		 AmsVO finalvo = new AmsVO();
 		 try {
 			
-			 finalvo = alertManagementSystemService.getAllAlertDetails(keyVo);
+			 finalvo = alertManagementSystemService.getAlertDetailsInfoForAms(keyVo);
 			 
 		} catch (Exception e) {
 			log.error("Exception raised at getAllAlertDetails", e);

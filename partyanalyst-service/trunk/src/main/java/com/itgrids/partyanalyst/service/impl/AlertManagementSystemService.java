@@ -12923,7 +12923,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 		}
 		
 	 }
-	public AmsVO getAllAlertDetails(AmsAppLoginVO keyVo){
+	public AmsVO getAlertDetailsInfoForAms(AmsAppLoginVO keyVo){
 		AmsVO returnVo = new AmsVO();
 		 try{
 			 Long alertId = keyVo.getAlertId();
@@ -12945,8 +12945,9 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			 List<AmsVO> alertsData = getAlertsDataForSms(alertId);
 			 returnVo.getAlertsDataList().addAll(alertsData);//getAlertsData
 			 
+			//getStatusCompletionInfo
 			 List<AmsAppVO> statusInfoLst = getStatusCompletionInfoNewForAms(alertId,keyVo.getUserId());
-			 returnVo.getStatusComplteInfoLst().addAll(statusInfoLst);//getStatusCompletionInfo
+			 returnVo.getStatusComplteInfoLst().addAll(statusInfoLst);
 			 
 			 List<List<AmsTrackingVO>> historyLst = viewAlertHistoryNewForAms(alertId,keyVo.getTask());
 			 returnVo.getViewHistroyLst().addAll(historyLst);//viewAlertHistory
@@ -13112,7 +13113,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 			SimpleDateFormat sdf1 = new SimpleDateFormat("hh:mm:ss a");
 			List<Object[]> trackingList = null;
-			if(task != null && !task.trim().isEmpty() && task.trim().length() > 0 && task.trim().equalsIgnoreCase("alertTracking")){
+			if(task != null && !task.trim().isEmpty() && task.trim().length() > 0 && task.trim().equalsIgnoreCase("task")){
 				trackingList = alertAssignedOfficerTrackingNewDAO.getAlertTrackingDtls(alertId);
 			}else{
 				trackingList = govtOfficerSubTaskTrackingDAO.getSubTaskAlertTrackingDtls(alertId);
@@ -13242,7 +13243,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 								}
 							}
 							alertTrackingVO.setSeverty(commonMethodsUtilService.getStringValueForObject(param[11]));
-							if(task != null && !task.trim().isEmpty() && task.trim().length() > 0 && task.trim().equalsIgnoreCase("alertTracking")){
+							if(task != null && !task.trim().isEmpty() && task.trim().length() > 0 && task.trim().equalsIgnoreCase("task")){
 								alertTrackingVO.setAlertFeedbackStatusId(commonMethodsUtilService.getLongValueForObject(param[16]));
 								alertTrackingVO.setAlertFeedbackStatus(commonMethodsUtilService.getStringValueForObject(param[17]));
 								alertTrackingVO.setAlertCallerId(commonMethodsUtilService.getLongValueForObject(param[18]));
@@ -13646,7 +13647,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 				}
 			}
 		} catch (Exception e) {
-			LOG.error(" Exception Occured in getSubTaskDetails() method, Exception - ",e);
+			LOG.error(" Exception Occured in getSubTaskDetailsForAms() method, Exception - ",e);
 		}        		
 		return returnList;
 	}
@@ -13750,7 +13751,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			}
 			
 		} catch (Exception e) {
-			LOG.error(" Exception Occured in viewAlertHistory() method, Exception - ",e);
+			LOG.error(" Exception Occured in viewSubTaskHistoryForAms() method, Exception - ",e);
 		}
 		return finalList;
 	}
