@@ -12950,6 +12950,19 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			 
 			 List<List<AmsTrackingVO>> historyLst = viewAlertHistoryNewForAms(alertId,keyVo.getTask());
 			 returnVo.getViewHistroyLst().addAll(historyLst);//viewAlertHistory
+			 
+
+			 String category = null;
+					Long govtDeptId = alertDAO.getGovtDepartmentIdForAlert(alertId);
+					if(govtDeptId != null && govtDeptId.longValue() > 0l){
+						Long cnpDeptId = govtDepartmentDAO.getCNPGovtDepartmentIdForGovtDepartment(govtDeptId);
+						if(cnpDeptId != null && cnpDeptId.longValue() > 0l){
+							List<String> categoryList = alertCandidateDAO.getCategoryListForAlertAndDepartment(alertId, cnpDeptId);
+							if(categoryList != null && !categoryList.isEmpty())
+								category = categoryList.get(0);
+						}
+					}
+			returnVo.setCategoryName(category);
 		 }catch (Exception e) {
 				LOG.error(" Exception Occured in getAllAlertDetails() method, Exception - ",e);
 		}
@@ -13363,6 +13376,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 				 }
 				 alertVO.setDocumentList(documentList);
 				 alertVO.setDocumentNameList(documentNameList);
+				 //alertVO.setCategoryName(category);
 				 LocationVO locationVO = new LocationVO();
 				 locationVO.setWardId(params[23] != null ? (Long)params[23] : null);
 				 locationVO.setWardName(params[24] != null ? params[24].toString() : "");
@@ -13439,7 +13453,7 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 		 if(commonMethodsUtilService.isListOrSetValid(returnList)){
 			 AmsVO alertVO =  returnList.get(0);
 			 if(alertVO != null){
-				 List<AlertTrackingVO> subTasksList = getSubTaskDetails(alertVO.getId());
+				 List<AmsTrackingVO> subTasksList = getSubTaskDetailsForAms(alertVO.getId());
 				 if(commonMethodsUtilService.isListOrSetValid(subTasksList))
 					 alertVO.setSubList1(subTasksList);
 			 }
@@ -13618,5 +13632,135 @@ public String generatingAndSavingOTPDetails(String mobileNoStr){
 			   }
 		    }
 		}
+	}
+	public List<AmsTrackingVO> getSubTaskDetailsForAms(Long alertId){
+		List<AmsTrackingVO> returnList = null;
+		try {
+			List<Long> alertIds = new ArrayList<Long>(0);
+			alertIds.add(alertId);
+			List<Long> subTasksAlertIdsList = govtAlertSubTaskDAO.getSubTasksIdsList(alertIds);
+			if(commonMethodsUtilService.isListOrSetValid(subTasksAlertIdsList)){
+				returnList = new ArrayList<AmsTrackingVO>(0);
+				for (Long subtaskId : subTasksAlertIdsList) {
+					returnList.addAll(viewSubTaskHistoryForAms(subtaskId));							
+				}
+			}
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getSubTaskDetails() method, Exception - ",e);
+		}        		
+		return returnList;
+	}
+	public List<AmsTrackingVO> viewSubTaskHistoryForAms(Long subTaskId){
+		List<AmsTrackingVO> finalList = new ArrayList<AmsTrackingVO>(0);
+		SimpleDateFormat dbSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		SimpleDateFormat dateSdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat timeSdf = new SimpleDateFormat("HH:mm");
+		try {
+			
+			List<GovtOfficerSubTaskTracking> qryRstList = govtOfficerSubTaskTrackingDAO.getModelForSubTask(subTaskId);
+			
+			if(qryRstList != null && qryRstList.size() > 0){
+				
+				GovtAlertSubTask gast = govtAlertSubTaskDAO.get(subTaskId);
+				
+				for (GovtOfficerSubTaskTracking govtOfficerSubTaskTracking : qryRstList) {
+					
+					String userName = govtOfficerSubTaskTracking.getGovtAlertSubTask().getSubTaskGovtOfficer().getOfficerName()+" - "+govtOfficerSubTaskTracking.getGovtAlertSubTask().getSubTaskGovtOfficer().getMobileNo();
+					String designation = govtOfficerSubTaskTracking.getGovtAlertSubTask().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getDesignationName()
+							+" & "+govtOfficerSubTaskTracking.getGovtAlertSubTask().getGovtDepartmentDesignationOfficer().getGovtDepartmentDesignation().getGovtDepartment().getDepartmentName();
+					
+					AmsTrackingVO matchedDateVO = getMatchedDateVOForAms(finalList,dateSdf.format(dbSdf.parse(govtOfficerSubTaskTracking.getInsertedTime().toString())));
+					
+					if(matchedDateVO == null){
+						matchedDateVO = new AmsTrackingVO();
+						matchedDateVO.setUserName(userName);
+						matchedDateVO.setDesignation(designation);
+						matchedDateVO.setTitle(gast.getTitle().toString());
+						matchedDateVO.setAlertId(gast.getGovtAlertSubTaskId());
+						matchedDateVO.setDate(dateSdf.format(dbSdf.parse(govtOfficerSubTaskTracking.getInsertedTime().toString())));
+						finalList.add(matchedDateVO);
+					}
+					
+					matchedDateVO = getMatchedDateVOForAms(finalList,dateSdf.format(dbSdf.parse(govtOfficerSubTaskTracking.getInsertedTime().toString())));
+					
+					AmsTrackingVO matchedTimeVO = getMatchedDateVOForAms(matchedDateVO.getTimeList(),timeSdf.format(dbSdf.parse(govtOfficerSubTaskTracking.getInsertedTime().toString())));
+					if(matchedTimeVO == null){
+						matchedTimeVO = new AmsTrackingVO();
+						matchedTimeVO.setDate(timeSdf.format(dbSdf.parse(govtOfficerSubTaskTracking.getInsertedTime().toString())));
+						matchedDateVO.setTitle(gast.getTitle().toString());
+						matchedDateVO.setAlertId(gast.getGovtAlertSubTaskId());
+						matchedDateVO.setUserName(userName);
+						matchedDateVO.setDesignation(designation);
+						matchedDateVO.getTimeList().add(matchedTimeVO);
+					}
+					
+					matchedTimeVO = getMatchedDateVOForAms(matchedDateVO.getTimeList(),timeSdf.format(dbSdf.parse(govtOfficerSubTaskTracking.getInsertedTime().toString())));
+					
+					if(govtOfficerSubTaskTracking.getAlertDepartmentDocumentId() != null && govtOfficerSubTaskTracking.getAlertDepartmentDocumentId() > 0l && govtOfficerSubTaskTracking.getAlertDepartmentDocument() != null){
+						AmsTrackingVO vo = new AmsTrackingVO();
+						vo.getStrList().add(govtOfficerSubTaskTracking.getAlertDepartmentDocument().getDocument());
+						vo.setTitle(gast.getTitle().toString());
+						vo.setAlertId(gast.getGovtAlertSubTaskId());
+						vo.setUserName(userName);
+						vo.setDesignation(designation);
+						matchedTimeVO.getAttachementsList().add(vo);
+					}
+					
+					if(govtOfficerSubTaskTracking.getAlertDepartmentCommentId() != null && govtOfficerSubTaskTracking.getAlertDepartmentCommentId() > 0l && govtOfficerSubTaskTracking.getAlertDepartmentComment() != null){
+						AmsTrackingVO vo = new AmsTrackingVO();
+						vo.getStrList().add(govtOfficerSubTaskTracking.getAlertDepartmentComment().getComment());
+						vo.setTitle(gast.getTitle().toString());
+						vo.setAlertId(gast.getGovtAlertSubTaskId());
+						vo.setUserName(userName);
+						vo.setDesignation(designation);
+						matchedTimeVO.getCommentList().add(vo);
+					}
+					
+					if(govtOfficerSubTaskTracking.getDueDate() != null && !govtOfficerSubTaskTracking.getDueDate().toString().trim().isEmpty()){
+						AmsTrackingVO vo = new AmsTrackingVO();
+						vo.getStrList().add(govtOfficerSubTaskTracking.getDueDate().toString());
+						vo.setTitle(gast.getTitle().toString());
+						vo.setAlertId(gast.getGovtAlertSubTaskId());
+						vo.setUserName(userName);
+						vo.setDesignation(designation);
+						matchedTimeVO.getDueDateList().add(vo);
+					}
+					
+					if(govtOfficerSubTaskTracking.getAlertSubTaskStatusId() != null && govtOfficerSubTaskTracking.getAlertSubTaskStatusId() > 0l && govtOfficerSubTaskTracking.getAlertSubTaskStatusId() != null){
+						AmsTrackingVO vo = new AmsTrackingVO();
+						vo.getStrList().add(govtOfficerSubTaskTracking.getAlertSubTaskStatus().getStatus());
+						vo.setTitle(gast.getTitle().toString());
+						vo.setAlertId(gast.getGovtAlertSubTaskId());
+						vo.setUserName(userName);
+						vo.setDesignation(designation);
+						matchedTimeVO.getStatusList().add(vo);
+					}
+					
+					if(govtOfficerSubTaskTracking.getAlertSeverityId() != null && govtOfficerSubTaskTracking.getAlertSeverityId() > 0l && govtOfficerSubTaskTracking.getAlertSeverity() != null){
+						AmsTrackingVO vo = new AmsTrackingVO();
+						vo.getStrList().add(govtOfficerSubTaskTracking.getAlertSeverity().getSeverity());
+						vo.setTitle(gast.getTitle().toString());
+						vo.setAlertId(gast.getGovtAlertSubTaskId());
+						vo.setUserName(userName);
+						vo.setDesignation(designation);
+						matchedTimeVO.getPriorityList().add(vo);
+					}
+					
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in viewAlertHistory() method, Exception - ",e);
+		}
+		return finalList;
+	}
+	public AmsTrackingVO getMatchedDateVOForAms(List<AmsTrackingVO> voList,String str){
+		if(voList != null && voList.size() > 0){
+			for (AmsTrackingVO alertTrackingVO : voList) {
+				if(alertTrackingVO.getDate().equalsIgnoreCase(str))
+					return alertTrackingVO;
+			}
+		}
+		return null;
 	}
 }
